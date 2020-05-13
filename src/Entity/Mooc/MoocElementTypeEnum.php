@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Mooc;
+namespace App\Entity\Mooc;
 
 use MyCLabs\Enum\Enum;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Intl;
+namespace App\Intl;
 
 use Collator;
 use Symfony\Component\Intl\Intl;

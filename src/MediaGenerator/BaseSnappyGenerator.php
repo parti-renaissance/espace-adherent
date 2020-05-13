@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\MediaGenerator;
+namespace App\MediaGenerator;
 
 use Knp\Snappy\GeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;

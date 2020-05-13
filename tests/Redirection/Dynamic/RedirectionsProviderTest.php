@@ -1,6 +1,6 @@
 <?php
 
-use AppBundle\Redirection\Dynamic\RedirectionsProvider;
+use App\Redirection\Dynamic\RedirectionsProvider;
 use PHPUnit\Framework\TestCase;
 
 class RedirectionsProviderTest extends TestCase

@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\RepublicanSilence;
+namespace App\RepublicanSilence;
 
-use AppBundle\Exception\InvalidAdherentTypeException;
-use AppBundle\RepublicanSilence\TagExtractor\CitizenProjectReferentTagExtractor;
-use AppBundle\RepublicanSilence\TagExtractor\CommitteeReferentTagExtractor;
-use AppBundle\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
-use AppBundle\RepublicanSilence\TagExtractor\MunicipalChefReferentTagExtractor;
-use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractor;
-use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
-use AppBundle\RepublicanSilence\TagExtractor\SenatorReferentTagExtractor;
+use App\Exception\InvalidAdherentTypeException;
+use App\RepublicanSilence\TagExtractor\CitizenProjectReferentTagExtractor;
+use App\RepublicanSilence\TagExtractor\CommitteeReferentTagExtractor;
+use App\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
+use App\RepublicanSilence\TagExtractor\MunicipalChefReferentTagExtractor;
+use App\RepublicanSilence\TagExtractor\ReferentTagExtractor;
+use App\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
+use App\RepublicanSilence\TagExtractor\SenatorReferentTagExtractor;
 
 abstract class ReferentTagExtractorFactory
 {

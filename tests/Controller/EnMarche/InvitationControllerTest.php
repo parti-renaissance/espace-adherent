@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Entity\Invite;
-use AppBundle\Mailer\Message\MovementInvitationMessage;
-use AppBundle\Repository\InvitationRepository;
+use App\Entity\Invite;
+use App\Mailer\Message\MovementInvitationMessage;
+use App\Repository\InvitationRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

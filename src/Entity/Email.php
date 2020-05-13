@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Mailer\Message\Message;
+use App\Mailer\Message\Message;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Table(name="emails")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EmailRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EmailRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -90,7 +90,7 @@ class Email
 
         return new static(
             $message->getUuid(),
-            str_replace('AppBundle\\Mailer\\Message\\', '', \get_class($message)),
+            str_replace('App\\Mailer\\Message\\', '', \get_class($message)),
             $message->getReplyTo() ?? 'EnMarche',
             $recipients,
             $requestPayload

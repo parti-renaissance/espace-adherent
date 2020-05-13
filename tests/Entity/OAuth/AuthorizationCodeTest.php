@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\OAuth\AuthorizationCode;
-use AppBundle\Entity\OAuth\Client;
+use App\Entity\Adherent;
+use App\Entity\OAuth\AuthorizationCode;
+use App\Entity\OAuth\Client;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

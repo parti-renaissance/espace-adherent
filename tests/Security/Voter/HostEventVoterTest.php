@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter;
+namespace Tests\App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventPermissions;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\HostEventVoter;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Event;
+use App\Event\EventPermissions;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\HostEventVoter;
 use Ramsey\Uuid\UuidInterface;
 
 class HostEventVoterTest extends AbstractAdherentVoterTest

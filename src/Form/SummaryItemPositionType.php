@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Summary\SummaryItemDisplayOrderer;
-use AppBundle\Summary\SummaryItemPositionableInterface;
+use App\Summary\SummaryItemDisplayOrderer;
+use App\Summary\SummaryItemPositionableInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;

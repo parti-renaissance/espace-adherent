@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\Timeline;
+namespace App\Repository\Timeline;
 
-use AppBundle\Entity\Timeline\Measure;
+use App\Entity\Timeline\Measure;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

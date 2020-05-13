@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Procuration\Exception;
+namespace App\Procuration\Exception;
 
 class InvalidProcurationFlowException extends \LogicException
 {

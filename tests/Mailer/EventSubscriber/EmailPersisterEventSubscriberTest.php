@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\EventSubscriber;
+namespace Tests\App\Mailer\EventSubscriber;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Entity\Email;
-use AppBundle\Mailer\Event\MailerEvent;
-use AppBundle\Mailer\EventSubscriber\EmailPersisterEventSubscriber;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
-use AppBundle\Repository\EmailRepository;
+use App\Entity\Adherent;
+use App\Entity\CommitteeFeedItem;
+use App\Entity\Email;
+use App\Mailer\Event\MailerEvent;
+use App\Mailer\EventSubscriber\EmailPersisterEventSubscriber;
+use App\Mailer\Message\CommitteeMessageNotificationMessage;
+use App\Repository\EmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Test\Mailer\DummyEmailTemplate;
-use Tests\AppBundle\Test\Mailer\Message\DummyMessage;
+use Tests\App\Test\Mailer\DummyEmailTemplate;
+use Tests\App\Test\Mailer\Message\DummyMessage;
 
 class EmailPersisterEventSubscriberTest extends TestCase
 {

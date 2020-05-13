@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\OrderSection;
+use App\Entity\OrderSection;
 use Doctrine\ORM\EntityRepository;
 
 class OrderSectionRepository extends EntityRepository

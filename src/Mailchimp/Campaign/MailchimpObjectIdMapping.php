@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign;
+namespace App\Mailchimp\Campaign;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\AdherentMessageTypeEnum;
 
 class MailchimpObjectIdMapping
 {

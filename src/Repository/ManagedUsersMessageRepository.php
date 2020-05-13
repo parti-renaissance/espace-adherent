@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\ManagedUsersMessage;
+use App\Entity\ManagedUsersMessage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 abstract class ManagedUsersMessageRepository extends ServiceEntityRepository

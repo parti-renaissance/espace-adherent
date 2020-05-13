@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\React;
+namespace App\React;
 
 class PageMetaData implements PageMetaDataInterface
 {

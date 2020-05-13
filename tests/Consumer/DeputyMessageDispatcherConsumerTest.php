@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Consumer;
+namespace Tests\App\Consumer;
 
-use AppBundle\Consumer\DeputyMessageDispatcherConsumer;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\DeputyManagedUsersMessage;
-use AppBundle\Entity\District;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\DeputyManagedUsersMessageRepository;
+use App\Consumer\DeputyMessageDispatcherConsumer;
+use App\Entity\Adherent;
+use App\Entity\DeputyManagedUsersMessage;
+use App\Entity\District;
+use App\Mailer\MailerService;
+use App\Repository\AdherentRepository;
+use App\Repository\DeputyManagedUsersMessageRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;

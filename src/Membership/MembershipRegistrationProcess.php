@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 

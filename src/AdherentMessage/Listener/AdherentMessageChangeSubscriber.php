@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Listener;
+namespace App\AdherentMessage\Listener;
 
-use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
-use AppBundle\AdherentMessage\Command\AdherentMessageDeleteCommand;
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use App\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\AdherentMessage\Command\AdherentMessageDeleteCommand;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\MailchimpCampaign;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;

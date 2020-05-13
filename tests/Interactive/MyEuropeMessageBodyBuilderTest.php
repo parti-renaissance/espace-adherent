@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Interactive;
+namespace Tests\App\Interactive;
 
-use AppBundle\Entity\MyEuropeChoice;
-use AppBundle\Interactive\MyEuropeMessageBodyBuilder;
-use AppBundle\Interactive\MyEuropeProcessor;
-use AppBundle\Repository\MyEuropeChoiceRepository;
+use App\Entity\MyEuropeChoice;
+use App\Interactive\MyEuropeMessageBodyBuilder;
+use App\Interactive\MyEuropeProcessor;
+use App\Repository\MyEuropeChoiceRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

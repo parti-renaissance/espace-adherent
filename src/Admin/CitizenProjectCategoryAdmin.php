@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\BaseEventCategory;
-use AppBundle\Form\CitizenProjectCategorySkillType;
+use App\Entity\BaseEventCategory;
+use App\Form\CitizenProjectCategorySkillType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

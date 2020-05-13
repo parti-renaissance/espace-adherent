@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\CitizenAction\CitizenActionManager;
-use AppBundle\CitizenAction\CitizenActionRegistrationCommandHandler;
-use AppBundle\Controller\EntityControllerTrait;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Event\EventRegistrationCommand;
-use AppBundle\Exception\BadUuidRequestException;
-use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Form\EventRegistrationType;
-use AppBundle\Repository\CitizenProjectMembershipRepository;
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
+use App\CitizenAction\CitizenActionManager;
+use App\CitizenAction\CitizenActionRegistrationCommandHandler;
+use App\Controller\EntityControllerTrait;
+use App\Entity\CitizenAction;
+use App\Event\EventRegistrationCommand;
+use App\Exception\BadUuidRequestException;
+use App\Exception\InvalidUuidException;
+use App\Form\EventRegistrationType;
+use App\Repository\CitizenProjectMembershipRepository;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

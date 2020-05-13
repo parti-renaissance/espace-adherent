@@ -1,25 +1,25 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\Collection\AdherentCharterCollection;
-use AppBundle\Collection\CertificationRequestCollection;
-use AppBundle\Collection\CitizenProjectMembershipCollection;
-use AppBundle\Collection\CommitteeMembershipCollection;
-use AppBundle\Entity\AdherentCharter\AdherentCharterInterface;
-use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Exception\AdherentAlreadyEnabledException;
-use AppBundle\Exception\AdherentException;
-use AppBundle\Exception\AdherentTokenException;
-use AppBundle\Geocoder\GeoPointInterface;
-use AppBundle\Membership\ActivityPositions;
-use AppBundle\Membership\MembershipInterface;
-use AppBundle\Membership\MembershipRequest;
-use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
-use AppBundle\Subscription\SubscriptionTypeEnum;
-use AppBundle\ValueObject\Genders;
+use App\Collection\AdherentCharterCollection;
+use App\Collection\CertificationRequestCollection;
+use App\Collection\CitizenProjectMembershipCollection;
+use App\Collection\CommitteeMembershipCollection;
+use App\Entity\AdherentCharter\AdherentCharterInterface;
+use App\Entity\BoardMember\BoardMember;
+use App\Exception\AdherentAlreadyEnabledException;
+use App\Exception\AdherentException;
+use App\Exception\AdherentTokenException;
+use App\Geocoder\GeoPointInterface;
+use App\Membership\ActivityPositions;
+use App\Membership\MembershipInterface;
+use App\Membership\MembershipRequest;
+use App\OAuth\Model\User as InMemoryOAuthUser;
+use App\Subscription\SubscriptionTypeEnum;
+use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -65,8 +65,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="adherents_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\RevokeReferentTeamMemberRolesListener"})
+ * @ORM\Entity(repositoryClass="App\Repository\AdherentRepository")
+ * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener"})
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  *
@@ -203,7 +203,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var ReferentManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\ReferentManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $managedArea;
 
@@ -219,35 +219,35 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var CoordinatorManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $coordinatorCitizenProjectArea;
 
     /**
      * @var CoordinatorManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $coordinatorCommitteeArea;
 
     /**
      * @var ProcurationManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\ProcurationManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $procurationManagedArea;
 
     /**
      * @var AssessorManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AssessorManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\AssessorManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $assessorManagedArea;
 
     /**
      * @var AssessorRoleAssociation|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AssessorRoleAssociation", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="App\Entity\AssessorRoleAssociation", cascade={"all"})
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $assessorRole;
@@ -255,7 +255,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var MunicipalManagerRoleAssociation|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\MunicipalManagerRoleAssociation", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\MunicipalManagerRoleAssociation", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $municipalManagerRole;
@@ -263,7 +263,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var MunicipalManagerSupervisorRole|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\MunicipalManagerSupervisorRole", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\MunicipalManagerSupervisorRole", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $municipalManagerSupervisorRole;
@@ -271,14 +271,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var BoardMember|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
     private $boardMember;
 
     /**
      * @var JecouteManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\JecouteManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\JecouteManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $jecouteManagedArea;
 
@@ -304,14 +304,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $committeeFeedItems;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\AdherentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\AdherentTag")
      */
     private $tags;
 
     /**
      * @var District|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\District", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\District", cascade={"persist"})
      */
     private $managedDistrict;
 
@@ -367,14 +367,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $mandates;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\IdeasWorkshop\Idea", mappedBy="author", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\IdeasWorkshop\Idea", mappedBy="author", fetch="EXTRA_LAZY")
      */
     private $ideas;
 
     /**
      * @var Media|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
      * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true)
      */
     private $media;
@@ -443,7 +443,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var MunicipalChiefManagedArea|null
      *
      * @Assert\Valid
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\MunicipalChiefManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\MunicipalChiefManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $municipalChiefManagedArea;
 
@@ -459,21 +459,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var Collection|AdherentCharterInterface[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AdherentCharter\AbstractAdherentCharter", mappedBy="adherent", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="App\Entity\AdherentCharter\AbstractAdherentCharter", mappedBy="adherent", cascade={"all"})
      */
     private $charters;
 
     /**
      * @var SenatorArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\SenatorArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\SenatorArea", cascade={"all"}, orphanRemoval=true)
      */
     private $senatorArea;
 
     /**
      * @var ConsularManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ConsularManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\ConsularManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $consularManagedArea;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\ApplicationRequest;
+namespace App\Form\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequestTag;
+use App\Entity\ApplicationRequest\ApplicationRequestTag;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

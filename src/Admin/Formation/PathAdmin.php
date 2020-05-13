@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\Formation;
+namespace App\Admin\Formation;
 
-use AppBundle\Form\PositionType;
+use App\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

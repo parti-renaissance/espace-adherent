@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Legislative;
+namespace App\Legislative;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

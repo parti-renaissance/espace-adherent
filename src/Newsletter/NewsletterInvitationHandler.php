@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Newsletter;
+namespace App\Newsletter;
 
-use AppBundle\Entity\NewsletterInvite;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\NewsletterInvitationMessage;
+use App\Entity\NewsletterInvite;
+use App\Mailer\MailerService;
+use App\Mailer\Message\NewsletterInvitationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

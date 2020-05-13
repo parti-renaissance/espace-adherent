@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\ConsularDistrict;
-use AppBundle\Geocoder\GeocoderInterface;
-use AppBundle\Repository\ConsularDistrictRepository;
+use App\Entity\ConsularDistrict;
+use App\Geocoder\GeocoderInterface;
+use App\Repository\ConsularDistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;

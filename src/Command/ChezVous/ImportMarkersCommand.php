@@ -1,21 +1,21 @@
 <?php
 
-namespace AppBundle\Command\ChezVous;
+namespace App\Command\ChezVous;
 
-use AppBundle\ChezVous\Marker\DedoublementClasses;
-use AppBundle\ChezVous\Marker\MaisonServiceAccueilPublic;
-use AppBundle\ChezVous\Marker\MissionBern;
-use AppBundle\ChezVous\MarkerChoiceLoader;
-use AppBundle\ChezVous\Measure\DedoublementClasses as MeasureDedoublementClasses;
-use AppBundle\ChezVous\Measure\MissionBern as MeasureMissionBern;
-use AppBundle\ChezVous\MeasureChoiceLoader;
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\Marker;
-use AppBundle\Entity\ChezVous\Measure;
-use AppBundle\Entity\ChezVous\MeasureType;
-use AppBundle\Repository\ChezVous\CityRepository;
-use AppBundle\Repository\ChezVous\MarkerRepository;
-use AppBundle\Repository\ChezVous\MeasureRepository;
+use App\ChezVous\Marker\DedoublementClasses;
+use App\ChezVous\Marker\MaisonServiceAccueilPublic;
+use App\ChezVous\Marker\MissionBern;
+use App\ChezVous\MarkerChoiceLoader;
+use App\ChezVous\Measure\DedoublementClasses as MeasureDedoublementClasses;
+use App\ChezVous\Measure\MissionBern as MeasureMissionBern;
+use App\ChezVous\MeasureChoiceLoader;
+use App\Entity\ChezVous\City;
+use App\Entity\ChezVous\Marker;
+use App\Entity\ChezVous\Measure;
+use App\Entity\ChezVous\MeasureType;
+use App\Repository\ChezVous\CityRepository;
+use App\Repository\ChezVous\MarkerRepository;
+use App\Repository\ChezVous\MeasureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;

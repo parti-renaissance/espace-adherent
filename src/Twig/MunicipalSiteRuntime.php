@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\MunicipalSite\ApiDriver;
+use App\Entity\Adherent;
+use App\MunicipalSite\ApiDriver;
 use Psr\SimpleCache\CacheInterface;
 
 class MunicipalSiteRuntime

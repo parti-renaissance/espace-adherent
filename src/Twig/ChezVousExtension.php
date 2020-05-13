@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\ChezVous\MeasureChoiceLoader;
+use App\ChezVous\MeasureChoiceLoader;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

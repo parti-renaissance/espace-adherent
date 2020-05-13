@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\Jecoute\NationalSurvey;
-use AppBundle\Form\Admin\JecouteAdminSurveyQuestionFormType;
+use App\Entity\Administrator;
+use App\Entity\Jecoute\NationalSurvey;
+use App\Form\Admin\JecouteAdminSurveyQuestionFormType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

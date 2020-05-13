@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Donation;
+namespace Tests\App\Donation;
 
-use AppBundle\Donation\DonationRequestUtils;
-use AppBundle\Donation\PayboxPaymentUnsubscription;
-use AppBundle\Entity\Donation;
-use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
-use AppBundle\Mailer\MailerService;
+use App\Donation\DonationRequestUtils;
+use App\Donation\PayboxPaymentUnsubscription;
+use App\Entity\Donation;
+use App\Exception\PayboxPaymentUnsubscriptionException;
+use App\Mailer\MailerService;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 

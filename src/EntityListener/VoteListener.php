@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\EntityListener;
+namespace App\EntityListener;
 
-use AppBundle\Entity\IdeasWorkshop\Vote;
+use App\Entity\IdeasWorkshop\Vote;
 
 class VoteListener
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository\ChezVous;
+namespace App\Repository\ChezVous;
 
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\MeasureType;
+use App\Entity\ChezVous\City;
+use App\Entity\ChezVous\MeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Symfony\Bridge\Doctrine\RegistryInterface;

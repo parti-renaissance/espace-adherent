@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\DataFixtures\AutoIncrementResetter;
-use AppBundle\Entity\Jecoute\Choice;
-use AppBundle\Entity\Jecoute\SuggestedQuestion;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
+use App\DataFixtures\AutoIncrementResetter;
+use App\Entity\Jecoute\Choice;
+use App\Entity\Jecoute\SuggestedQuestion;
+use App\Jecoute\SurveyQuestionTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

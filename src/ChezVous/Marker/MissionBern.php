@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\ChezVous\Marker;
+namespace App\ChezVous\Marker;
 
 class MissionBern extends AbstractMarker
 {

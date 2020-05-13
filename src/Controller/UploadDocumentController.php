@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\UserDocument;
-use AppBundle\UserDocument\UserDocumentManager;
+use App\Entity\UserDocument;
+use App\UserDocument\UserDocumentManager;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use League\Flysystem\FileNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

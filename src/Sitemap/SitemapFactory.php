@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Sitemap;
+namespace App\Sitemap;
 
-use AppBundle\Entity\Article;
-use AppBundle\Entity\ArticleCategory;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\Media;
-use AppBundle\Entity\Mooc\Chapter;
-use AppBundle\Entity\Mooc\Mooc;
-use AppBundle\Entity\OrderArticle;
-use AppBundle\Entity\Page;
-use AppBundle\Exception\SitemapException;
-use AppBundle\Repository\MediaRepository;
+use App\Entity\Article;
+use App\Entity\ArticleCategory;
+use App\Entity\Committee;
+use App\Entity\Event;
+use App\Entity\Media;
+use App\Entity\Mooc\Chapter;
+use App\Entity\Mooc\Mooc;
+use App\Entity\OrderArticle;
+use App\Entity\Page;
+use App\Exception\SitemapException;
+use App\Repository\MediaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

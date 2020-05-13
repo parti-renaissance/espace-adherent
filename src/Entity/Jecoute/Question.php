@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\Jecoute;
+namespace App\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
-use AppBundle\Validator\SurveyQuestionTypeChoice;
+use App\Jecoute\SurveyQuestionTypeEnum;
+use App\Validator\SurveyQuestionTypeChoice;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -52,7 +52,7 @@ class Question
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"AppBundle\Jecoute\SurveyQuestionTypeEnum", "all"})
+     * @Assert\Choice(callback={"App\Jecoute\SurveyQuestionTypeEnum", "all"})
      *
      * @JMS\Groups({"survey_list"})
      */

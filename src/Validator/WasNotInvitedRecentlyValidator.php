@@ -1,7 +1,8 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
+use App\Entity\Invite;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\Constraint;
@@ -17,7 +18,7 @@ class WasNotInvitedRecentlyValidator extends ConstraintValidator
 
     public function __construct(EntityManager $entityManager, PropertyAccessor $propertyAccessor)
     {
-        $this->invitationRepository = $entityManager->getRepository('AppBundle:Invite');
+        $this->invitationRepository = $entityManager->getRepository(Invite::class);
         $this->propertyAccessor = $propertyAccessor;
     }
 

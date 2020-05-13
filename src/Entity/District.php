@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *  - France: https://www.data.gouv.fr/s/resources/contours-precis-des-circonscriptions-legislatives/20170511-183720/circonscriptions-legislatives.json
  *  - Other countries: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
  *
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DistrictRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DistrictRepository")
  * @ORM\Table(
  *     name="districts",
  *     uniqueConstraints={
@@ -72,7 +72,7 @@ class District
     /**
      * @var GeoData
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\GeoData", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="App\Entity\GeoData", cascade={"all"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $geoData;
@@ -80,7 +80,7 @@ class District
     /**
      * @var ReferentTag|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\OneToOne(targetEntity="App\Entity\ReferentTag")
      */
     private $referentTag;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Donation\PayboxPaymentUnsubscription;
-use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
-use AppBundle\Repository\DonationRepository;
+use App\Donation\PayboxPaymentUnsubscription;
+use App\Exception\PayboxPaymentUnsubscriptionException;
+use App\Repository\DonationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

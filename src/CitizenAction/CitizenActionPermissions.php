@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\CitizenAction;
+namespace App\CitizenAction;
 
 final class CitizenActionPermissions
 {

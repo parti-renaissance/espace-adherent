@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Entity\Donator;
-use AppBundle\Entity\DonatorKinship;
+use App\Entity\Donator;
+use App\Entity\DonatorKinship;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;

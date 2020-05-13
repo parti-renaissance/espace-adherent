@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Entity\Jecoute\DataSurvey;
-use AppBundle\Jecoute\GenderEnum;
+use App\Entity\Jecoute\DataSurvey;
+use App\Jecoute\GenderEnum;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

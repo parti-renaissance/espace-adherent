@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -9,19 +9,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthorInterface;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\EnabledInterface;
-use AppBundle\Entity\EntityNameSlugTrait;
-use AppBundle\Entity\EntityTimestampableTrait;
-use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Filter\ContributorsCountFilter;
-use AppBundle\Filter\IdeaStatusFilter;
-use AppBundle\Filter\OrTextSearchFilter;
-use AppBundle\Report\ReportType;
-use AppBundle\Validator\CommitteeMember;
-use AppBundle\Validator\MandatoryQuestion;
+use App\Entity\Adherent;
+use App\Entity\AuthorInterface;
+use App\Entity\Committee;
+use App\Entity\EnabledInterface;
+use App\Entity\EntityNameSlugTrait;
+use App\Entity\EntityTimestampableTrait;
+use App\Entity\Report\ReportableInterface;
+use App\Filter\ContributorsCountFilter;
+use App\Filter\IdeaStatusFilter;
+use App\Filter\OrTextSearchFilter;
+use App\Report\ReportType;
+use App\Validator\CommitteeMember;
+use App\Validator\MandatoryQuestion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -121,7 +121,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "object.getAuthor() == user",
  *             "path": "/ideas-workshop/ideas/{id}/publish",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\IdeaController::publish",
+ *             "controller": "App\Controller\Api\IdeasWorkshop\IdeaController::publish",
  *             "normalization_context": {"groups": {"idea_list_read"}},
  *             "validation_groups": {"idea_publish"},
  *             "swagger_context": {
@@ -142,7 +142,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "object.getAuthor() == user",
  *             "path": "/ideas-workshop/ideas/{id}/extend",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\IdeaController::extend",
+ *             "controller": "App\Controller\Api\IdeasWorkshop\IdeaController::extend",
  *             "normalization_context": {"groups": {"idea_read"}},
  *             "swagger_context": {
  *                 "parameters": {
@@ -200,7 +200,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount", "commentsCount"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"name"})
  *
- * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeasWorkshop\IdeaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\IdeasWorkshop\IdeaRepository")
  *
  * @ORM\Table(
  *     name="ideas_workshop_idea",
@@ -281,7 +281,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     private $needs;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="ideas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="ideas")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
      * @Assert\NotNull(message="idea.author.not_null", groups={"idea_publish"})
@@ -327,7 +327,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     /**
      * @var Committee
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      *
      * @CommitteeMember
      *

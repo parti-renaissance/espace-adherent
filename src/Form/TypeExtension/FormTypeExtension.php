@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\TypeExtension;
+namespace App\Form\TypeExtension;
 
-use AppBundle\Form\DataTransformer\NullToStringTransformer;
+use App\Form\DataTransformer\NullToStringTransformer;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;

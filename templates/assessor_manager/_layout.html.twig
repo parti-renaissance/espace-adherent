@@ -34,27 +34,27 @@
                         {% set pages = [
                             {
                                 route: 'app_assessor_manager_requests',
-                                status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::UNPROCESSED'),
+                                status: constant('App\\Assessor\\Filter\\AssessorRequestFilters::UNPROCESSED'),
                                 label: 'Demandes à traiter'
                             },
                             {
                                 route: 'app_assessor_manager_requests',
-                                status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::PROCESSED'),
+                                status: constant('App\\Assessor\\Filter\\AssessorRequestFilters::PROCESSED'),
                                 label: 'Demandes traitées'
                             },
                             {
                                 route: 'app_assessor_manager_vote_places',
-                                status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::UNASSOCIATED'),
+                                status: constant('App\\Assessor\\Filter\\VotePlaceFilters::UNASSOCIATED'),
                                 label: 'Bureaux de vote disponibles'
                             },
                             {
                                 route: 'app_assessor_manager_vote_places',
-                                status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::ASSOCIATED'),
+                                status: constant('App\\Assessor\\Filter\\VotePlaceFilters::ASSOCIATED'),
                                 label: 'Bureaux de vote assignés'
                             },
                             {
                                 route: 'app_assessor_manager_requests',
-                                status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::DISABLED'),
+                                status: constant('App\\Assessor\\Filter\\AssessorRequestFilters::DISABLED'),
                                 label: 'Demandes désactivées'
                             }
                         ] %}

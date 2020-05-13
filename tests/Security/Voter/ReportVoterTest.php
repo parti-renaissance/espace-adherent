@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter;
+namespace Tests\App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
-use AppBundle\Report\ReportPermissions;
-use AppBundle\Security\Voter\ReportVoter;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
+use App\Report\ReportPermissions;
+use App\Security\Voter\ReportVoter;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

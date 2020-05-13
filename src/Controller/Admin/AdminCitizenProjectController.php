@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\CitizenProject\CitizenProjectAuthority;
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Exception\BaseGroupException;
-use AppBundle\Exception\CitizenProjectMembershipException;
+use App\CitizenProject\CitizenProjectAuthority;
+use App\CitizenProject\CitizenProjectManager;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Exception\BaseGroupException;
+use App\Exception\CitizenProjectMembershipException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

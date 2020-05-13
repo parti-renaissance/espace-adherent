@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter\Committee;
+namespace Tests\App\Security\Voter\Committee;
 
-use AppBundle\Documents\DocumentPermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\FileUploadVoter;
-use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
+use App\Documents\DocumentPermissions;
+use App\Entity\Adherent;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\FileUploadVoter;
+use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class FileUploadVoterTest extends AbstractAdherentVoterTest
 {

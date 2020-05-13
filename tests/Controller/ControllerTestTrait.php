@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EventCategory;
-use AppBundle\Entity\InstitutionalEventCategory;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Messenger\MessageRecorder\MessageRecorderInterface;
+use App\Entity\Adherent;
+use App\Entity\EventCategory;
+use App\Entity\InstitutionalEventCategory;
+use App\Entity\ReferentTag;
+use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -16,7 +16,7 @@ use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\App\TestHelperTrait;
 
 /**
  * @method static assertSame($expected, $actual, $message = '')

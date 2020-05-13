@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Election;
+namespace App\Election;
 
-use AppBundle\Entity\Election\VotePlaceResult;
+use App\Entity\Election\VotePlaceResult;
 
 class VotePlacesResult
 {

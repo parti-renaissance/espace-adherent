@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeFeedItemRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CommitteeFeedItemRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -42,7 +42,7 @@ class CommitteeFeedItem implements UserDocumentInterface
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BaseEvent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\BaseEvent", fetch="EAGER")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
      */
     private $event;
@@ -67,7 +67,7 @@ class CommitteeFeedItem implements UserDocumentInterface
     /**
      * @var UserDocument[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\UserDocument", cascade={"all"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\UserDocument", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinTable(
      *     name="committee_feed_item_user_documents",
      *     joinColumns={

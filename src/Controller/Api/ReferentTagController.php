@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Entity\ReferentTag;
+use App\Repository\ReferentTagRepository;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;

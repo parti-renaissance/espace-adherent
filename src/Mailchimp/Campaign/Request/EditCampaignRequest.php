@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\Request;
+namespace App\Mailchimp\Campaign\Request;
 
-use AppBundle\Mailchimp\RequestInterface;
+use App\Mailchimp\RequestInterface;
 
 class EditCampaignRequest implements RequestInterface
 {

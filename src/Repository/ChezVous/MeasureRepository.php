@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository\ChezVous;
+namespace App\Repository\ChezVous;
 
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\Measure;
-use AppBundle\Entity\ChezVous\MeasureType;
+use App\Entity\ChezVous\City;
+use App\Entity\ChezVous\Measure;
+use App\Entity\ChezVous\MeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

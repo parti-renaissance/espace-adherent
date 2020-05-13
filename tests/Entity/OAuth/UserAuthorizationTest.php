@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\Entity\OAuth\UserAuthorization;
-use AppBundle\Entity\PostAddress;
-use AppBundle\OAuth\Model\Scope;
+use App\Entity\Adherent;
+use App\Entity\OAuth\Client;
+use App\Entity\OAuth\UserAuthorization;
+use App\Entity\PostAddress;
+use App\OAuth\Model\Scope;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -43,7 +43,7 @@ class UserAuthorizationTest extends TestCase
 
     /**
      * @expectedException \DomainException
-     * @expectedExceptionMessage Instance of AppBundle\OAuth\Model\Scope must be provided
+     * @expectedExceptionMessage Instance of App\OAuth\Model\Scope must be provided
      */
     public function testSupportsScopesExceptionWhenScopeTypeIsNotValid(): void
     {

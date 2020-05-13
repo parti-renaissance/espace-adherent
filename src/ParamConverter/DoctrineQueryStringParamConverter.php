@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\ParamConverter;
+namespace App\ParamConverter;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter;

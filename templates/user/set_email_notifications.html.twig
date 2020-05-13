@@ -7,7 +7,7 @@
         {{ form_errors(form) }}
 
         {% set help_messages = {
-            (constant('AppBundle\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
+            (constant('App\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
         } %}
 
         {% for group_choices in form.subscriptionTypes.vars.choices %}
@@ -37,10 +37,10 @@
                 </p>
 
                 <h3 class="b__nudge--bottom">Les comités que je suis</h3>
-                <div>{{ render(controller('AppBundle:EnMarche/Adherent:listMyCommittees', { noResultMessage: 'Aucun comité pour l\'instant' })) }}</div>
+                <div>{{ render(controller('App\\Controller\\EnMarche\\AdherentController:listMyCommitteesAction', { noResultMessage: 'Aucun comité pour l\'instant' })) }}</div>
 
                 <h3 class="b__nudge--bottom b__nudge--top">Les projets citoyens que je suis</h3>
-                <div>{{ render(controller('AppBundle:EnMarche/Adherent:listMyCitizenProjects', { noResultMessage: 'Aucun projet pour l\'instant' })) }}</div>
+                <div>{{ render(controller('App\\Controller\\EnMarche\\AdherentController:listMyCitizenProjectsAction', { noResultMessage: 'Aucun projet pour l\'instant' })) }}</div>
             </div>
         {% endif %}
     {{ form_end(form) }}

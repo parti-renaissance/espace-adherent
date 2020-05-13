@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Adherent\AdherentRoleEnum;
-use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
-use AppBundle\Entity\IdeasWorkshop\Idea;
+use App\Adherent\AdherentRoleEnum;
+use App\Entity\IdeasWorkshop\AuthorCategoryEnum;
+use App\Entity\IdeasWorkshop\Idea;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;

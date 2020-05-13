@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\MemberRequest;
+namespace App\Mailchimp\Synchronisation\MemberRequest;
 
-use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
+use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 abstract class AbstractMemberRequestBuilder
 {

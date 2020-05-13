@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Test\Mailer;
+namespace Tests\App\Test\Mailer;
 
-use AppBundle\Mailer\EmailClientInterface;
+use App\Mailer\EmailClientInterface;
 use Psr\Log\LoggerInterface;
 
 class NullEmailClient implements EmailClientInterface

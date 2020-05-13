@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Admin\ReportAdmin;
-use AppBundle\Entity\Report\Report;
+use App\Admin\ReportAdmin;
+use App\Entity\Report\Report;
 use Sonata\DoctrineORMAdminBundle\Builder\ShowBuilder;
 
 class AdminReportRuntime

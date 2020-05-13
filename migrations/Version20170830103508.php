@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\DataFixtures\ORM\LoadOrderSectionData;
+use App\DataFixtures\ORM\LoadOrderSectionData;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

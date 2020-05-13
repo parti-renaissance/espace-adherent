@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\BaseEventCategory;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\District;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Search\SearchParametersFilter;
-use AppBundle\Statistics\StatisticsParametersFilter;
-use AppBundle\Utils\RepositoryUtils;
+use App\Entity\Adherent;
+use App\Entity\BaseEvent;
+use App\Entity\BaseEventCategory;
+use App\Entity\CitizenAction;
+use App\Entity\Committee;
+use App\Entity\District;
+use App\Entity\Event;
+use App\Entity\ReferentTag;
+use App\Geocoder\Coordinates;
+use App\Search\SearchParametersFilter;
+use App\Statistics\StatisticsParametersFilter;
+use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;

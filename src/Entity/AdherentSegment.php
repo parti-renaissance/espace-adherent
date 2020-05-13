@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\AdherentMessage\StaticSegmentInterface;
+use App\AdherentMessage\StaticSegmentInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -11,8 +11,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentSegmentRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\AdherentSegmentListener"})
+ * @ORM\Entity(repositoryClass="App\Repository\AdherentSegmentRepository")
+ * @ORM\EntityListeners({"App\EntityListener\AdherentSegmentListener"})
  *
  * @ApiResource(
  *     collectionOperations={
@@ -62,7 +62,7 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
      * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"AppBundle\AdherentSegment\AdherentSegmentTypeEnum", "toArray"}, strict=true)
+     * @Assert\Choice(callback={"App\AdherentSegment\AdherentSegmentTypeEnum", "toArray"}, strict=true)
      *
      * @Groups({"write"})
      */
@@ -71,7 +71,7 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank

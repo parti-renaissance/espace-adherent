@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ProgrammaticFoundation;
+namespace App\Entity\ProgrammaticFoundation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;

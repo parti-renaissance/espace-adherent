@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BannedAdherentRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\BannedAdherentRepository")
  */
 class BannedAdherent
 {

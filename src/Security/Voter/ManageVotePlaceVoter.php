@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Address\Address;
+use App\Entity\Adherent;
+use App\Entity\VotePlace;
+use App\Intl\FranceCitiesBundle;
 
 class ManageVotePlaceVoter extends AbstractAdherentVoter
 {

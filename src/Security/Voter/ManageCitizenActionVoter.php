@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\CitizenAction\CitizenActionPermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Repository\CitizenProjectMembershipRepository;
+use App\CitizenAction\CitizenActionPermissions;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Repository\CitizenProjectMembershipRepository;
 
 class ManageCitizenActionVoter extends AbstractAdherentVoter
 {

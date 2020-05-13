@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage;
+namespace App\Entity\AdherentMessage;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Timestampable;

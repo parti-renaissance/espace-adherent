@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\AdherentExpirableTokenInterface;
-use AppBundle\ValueObject\SHA1;
+use App\Entity\AdherentExpirableTokenInterface;
+use App\ValueObject\SHA1;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\Uuid;
 

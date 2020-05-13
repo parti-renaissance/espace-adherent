@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Address;
+namespace App\Address;
 
-use AppBundle\Geocoder\GeocodableInterface;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Validator\Address as AssertValidAddress;
-use AppBundle\Validator\GeocodableAddress as AssertGeocodableAddress;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\Geocoder\GeocodableInterface;
+use App\Intl\FranceCitiesBundle;
+use App\Validator\Address as AssertValidAddress;
+use App\Validator\GeocodableAddress as AssertGeocodableAddress;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

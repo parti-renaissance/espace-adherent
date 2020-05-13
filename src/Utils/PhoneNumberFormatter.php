@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Utils;
+namespace App\Utils;
 
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;

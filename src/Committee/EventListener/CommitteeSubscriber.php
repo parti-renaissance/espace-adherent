@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Committee\EventListener;
+namespace App\Committee\EventListener;
 
-use AppBundle\Committee\CommitteeEvent;
-use AppBundle\Events;
+use App\Committee\CommitteeEvent;
+use App\Events;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;

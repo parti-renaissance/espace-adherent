@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Donation\DonatorExtractCommand;
-use AppBundle\Form\DataTransformer\StringToArrayTransformer;
+use App\Donation\DonatorExtractCommand;
+use App\Form\DataTransformer\StringToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

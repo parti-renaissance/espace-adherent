@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\Repository\EventRepository;
-use AppBundle\Search\SearchParametersFilter;
+use App\DataFixtures\ORM\LoadEventCategoryData;
+use App\Repository\EventRepository;
+use App\Search\SearchParametersFilter;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

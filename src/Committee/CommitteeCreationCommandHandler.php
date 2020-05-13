@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
-use AppBundle\Referent\ReferentTagManager;
+use App\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CommitteeCreationConfirmationMessage;
+use App\Referent\ReferentTagManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeCreationCommandHandler

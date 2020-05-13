@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\DataTransformer;
+namespace App\DataTransformer;
 
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTransformer as BaseValueToDuplicatesTransformer;

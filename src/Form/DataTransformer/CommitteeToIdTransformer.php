@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\DataTransformer;
+namespace App\Form\DataTransformer;
 
-use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeRepository;
+use App\Entity\Committee;
+use App\Repository\CommitteeRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 

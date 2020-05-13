@@ -46,7 +46,7 @@
 
             <section class="donation__informations__recap">
                 <h3 class="donation-subtitle">Vous faites <span>un don</span> de :</h3>
-                <h1 class="donation__informations__amount b__nudge--top-large">{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' <span>/ mois</span>' }}</h1>
+                <h1 class="donation__informations__amount b__nudge--top-large">{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('App\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' <span>/ mois</span>' }}</h1>
                 <div class="donation__amount-chooser">
                     <div class="donation__amount-chooser__after-taxes">
                         soit <span class="after-taxes-amount">{{ (donation.amount * 0.34)|localizedcurrency('EUR')|replace({',00' : ''})}}</span> après réduction d’impôt

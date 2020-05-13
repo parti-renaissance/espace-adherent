@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\EventListener;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentSpaceAccessInformation;
+use App\Entity\Adherent;
+use App\Entity\ReferentSpaceAccessInformation;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;

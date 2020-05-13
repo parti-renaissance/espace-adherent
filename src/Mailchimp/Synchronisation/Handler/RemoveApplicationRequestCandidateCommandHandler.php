@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Handler;
+namespace App\Mailchimp\Synchronisation\Handler;
 
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
+use App\Mailchimp\Manager;
+use App\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class RemoveApplicationRequestCandidateCommandHandler implements MessageHandlerInterface

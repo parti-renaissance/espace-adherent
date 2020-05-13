@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\Procuration;
+namespace App\Form\Procuration;
 
-use AppBundle\Entity\Election;
-use AppBundle\Procuration\ElectionContext;
-use AppBundle\Repository\ElectionRepository;
+use App\Entity\Election;
+use App\Procuration\ElectionContext;
+use App\Repository\ElectionRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

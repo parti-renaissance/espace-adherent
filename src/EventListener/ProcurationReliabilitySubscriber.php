@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\EventListener;
 
-use AppBundle\Procuration\Event\ProcurationEvents;
-use AppBundle\Procuration\Event\ProcurationProxyEvent;
-use AppBundle\Procuration\ProcurationReliabilityProcessor;
+use App\Procuration\Event\ProcurationEvents;
+use App\Procuration\Event\ProcurationProxyEvent;
+use App\Procuration\ProcurationReliabilityProcessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

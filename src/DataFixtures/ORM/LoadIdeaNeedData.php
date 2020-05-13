@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\DataFixtures\AutoIncrementResetter;
-use AppBundle\Entity\IdeasWorkshop\Need;
+use App\DataFixtures\AutoIncrementResetter;
+use App\Entity\IdeasWorkshop\Need;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

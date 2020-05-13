@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\Jecoute;
+namespace App\Repository\Jecoute;
 
-use AppBundle\Entity\Jecoute\DataAnswer;
+use App\Entity\Jecoute\DataAnswer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;

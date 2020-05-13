@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Referent\ReferentMessage;
+use App\Referent\ReferentMessage;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Table(name="referent_managed_users_message")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentManagedUsersMessageRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReferentManagedUsersMessageRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

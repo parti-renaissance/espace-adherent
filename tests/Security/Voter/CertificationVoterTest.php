@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter;
+namespace Tests\App\Security\Voter;
 
-use AppBundle\Adherent\CertificationPermissions;
-use AppBundle\Collection\CertificationRequestCollection;
-use AppBundle\Entity\Adherent;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\CertificationVoter;
+use App\Adherent\CertificationPermissions;
+use App\Collection\CertificationRequestCollection;
+use App\Entity\Adherent;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\CertificationVoter;
 
 /**
  * @group certification

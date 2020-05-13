@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Api;
+namespace Tests\App\Api;
 
-use AppBundle\Api\CommitteeProvider;
-use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeRepository;
+use App\Api\CommitteeProvider;
+use App\Entity\Committee;
+use App\Repository\CommitteeRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

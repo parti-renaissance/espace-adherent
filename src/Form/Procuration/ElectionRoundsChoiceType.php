@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\Procuration;
+namespace App\Form\Procuration;
 
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Procuration\ElectionContext;
-use AppBundle\Repository\ElectionRoundRepository;
+use App\Entity\ElectionRound;
+use App\Procuration\ElectionContext;
+use App\Repository\ElectionRoundRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;

@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Command;
+namespace Tests\App\Command;
 
-use AppBundle\DataFixtures\ORM\LoadIdeaData;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Mailer\Message\IdeaFinalizeNotificationMessage;
-use AppBundle\Mailer\Message\IdeaFinalizePreNotificationMessage;
+use App\DataFixtures\ORM\LoadIdeaData;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Mailer\Message\IdeaFinalizeNotificationMessage;
+use App\Mailer\Message\IdeaFinalizePreNotificationMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group command

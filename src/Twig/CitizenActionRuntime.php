@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\CitizenAction\CitizenActionPermissions;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\CitizenProject;
+use App\CitizenAction\CitizenActionPermissions;
+use App\Entity\CitizenAction;
+use App\Entity\CitizenProject;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CitizenActionRuntime

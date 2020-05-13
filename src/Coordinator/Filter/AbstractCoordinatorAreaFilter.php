@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Coordinator\Filter;
+namespace App\Coordinator\Filter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseGroup;
+use App\Entity\Adherent;
+use App\Entity\BaseGroup;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 

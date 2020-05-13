@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository\VotingPlatform;
+namespace App\Repository\VotingPlatform;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\VotingPlatform\Vote;
+use App\Entity\Adherent;
+use App\Entity\VotingPlatform\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

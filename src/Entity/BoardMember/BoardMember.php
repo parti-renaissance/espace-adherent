@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\BoardMember;
+namespace App\Entity\BoardMember;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,7 +35,7 @@ class BoardMember
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="boardMember")
+     * @ORM\OneToOne(targetEntity="App\Entity\Adherent", inversedBy="boardMember")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $adherent;
@@ -47,7 +47,7 @@ class BoardMember
      *
      * @Assert\NotBlank(message="board_member.area.invalid_choice", groups={"elections"})
      * @Assert\Choice(
-     *     callback={"AppBundle\Entity\BoardMember\BoardMember", "getAreas"},
+     *     callback={"App\Entity\BoardMember\BoardMember", "getAreas"},
      *     message="board_member.area.invalid_choice",
      *     strict=true
      * )
@@ -57,7 +57,7 @@ class BoardMember
     /**
      * @var Role[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\Role", inversedBy="boardMembers", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\BoardMember\Role", inversedBy="boardMembers", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="board_member_roles",
      *     joinColumns={
@@ -75,7 +75,7 @@ class BoardMember
     /**
      * @var BoardMember[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", inversedBy="owners", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\BoardMember\BoardMember", inversedBy="owners", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="saved_board_members",
      *     joinColumns={
@@ -89,7 +89,7 @@ class BoardMember
     private $savedMembers;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="savedMembers")
+     * @ORM\ManyToMany(targetEntity="App\Entity\BoardMember\BoardMember", mappedBy="savedMembers")
      *
      * @var BoardMember[]
      */

@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\Committee;
+namespace Tests\App\Committee;
 
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
-use AppBundle\Exception\CommitteeMembershipException;
-use AppBundle\Geocoder\Coordinates;
+use App\Collection\AdherentCollection;
+use App\Committee\CommitteeManager;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\Entity\ReferentTag;
+use App\Entity\Reporting\CommitteeMembershipHistory;
+use App\Exception\CommitteeMembershipException;
+use App\Geocoder\Coordinates;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

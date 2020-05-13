@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Contact;
+namespace App\Contact;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentContactMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\AdherentContactMessage;
 
 class ContactMessageHandler
 {

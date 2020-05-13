@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Report;
+namespace App\Report;
 
-use AppBundle\Entity\Report\CitizenActionReport;
-use AppBundle\Entity\Report\CitizenProjectReport;
-use AppBundle\Entity\Report\CommitteeReport;
-use AppBundle\Entity\Report\CommunityEventReport;
-use AppBundle\Entity\Report\IdeasWorkshop\IdeaReport;
-use AppBundle\Entity\Report\IdeasWorkshop\ThreadCommentReport;
-use AppBundle\Entity\Report\IdeasWorkshop\ThreadReport;
-use AppBundle\Entity\Report\ReportableInterface;
+use App\Entity\Report\CitizenActionReport;
+use App\Entity\Report\CitizenProjectReport;
+use App\Entity\Report\CommitteeReport;
+use App\Entity\Report\CommunityEventReport;
+use App\Entity\Report\IdeasWorkshop\IdeaReport;
+use App\Entity\Report\IdeasWorkshop\ThreadCommentReport;
+use App\Entity\Report\IdeasWorkshop\ThreadReport;
+use App\Entity\Report\ReportableInterface;
 
 final class ReportType
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\CitizenAction\EventListener;
+namespace App\CitizenAction\EventListener;
 
-use AppBundle\CitizenAction\CitizenActionEvent;
-use AppBundle\Events;
+use App\CitizenAction\CitizenActionEvent;
+use App\Events;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;

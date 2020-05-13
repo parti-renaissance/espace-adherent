@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\NewsletterInvite;
+use App\Entity\NewsletterInvite;
 use Doctrine\ORM\EntityRepository;
 
 class NewsletterInviteRepository extends EntityRepository

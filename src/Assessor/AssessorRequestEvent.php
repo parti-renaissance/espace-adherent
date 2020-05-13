@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
-use AppBundle\Entity\AssessorRequest;
+use App\Entity\AssessorRequest;
 use Symfony\Component\EventDispatcher\Event;
 
 class AssessorRequestEvent extends Event

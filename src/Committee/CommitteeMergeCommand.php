@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\Committee;
-use AppBundle\Validator\MergeableCommittees;
+use App\Entity\Administrator;
+use App\Entity\Committee;
+use App\Validator\MergeableCommittees;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

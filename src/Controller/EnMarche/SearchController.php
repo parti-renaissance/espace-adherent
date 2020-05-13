@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\CitizenActionCategory;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\EntityPostAddressTrait;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventCategory;
-use AppBundle\Entity\EventGroupCategory;
-use AppBundle\Geocoder\Exception\GeocodingException;
-use AppBundle\Search\SearchParametersFilter;
-use AppBundle\Search\SearchResultsProvidersManager;
+use App\Entity\CitizenActionCategory;
+use App\Entity\Committee;
+use App\Entity\EntityPostAddressTrait;
+use App\Entity\Event;
+use App\Entity\EventCategory;
+use App\Entity\EventGroupCategory;
+use App\Geocoder\Exception\GeocodingException;
+use App\Search\SearchParametersFilter;
+use App\Search\SearchResultsProvidersManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

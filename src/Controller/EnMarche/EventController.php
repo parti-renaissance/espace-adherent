@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventInvitation;
-use AppBundle\Event\EventRegistrationCommand;
-use AppBundle\Event\EventRegistrationManager;
-use AppBundle\Exception\BadUuidRequestException;
-use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Form\EventInvitationType;
-use AppBundle\Form\EventRegistrationType;
-use AppBundle\Repository\EventRepository;
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
+use App\Entity\Event;
+use App\Event\EventInvitation;
+use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationManager;
+use App\Exception\BadUuidRequestException;
+use App\Exception\InvalidUuidException;
+use App\Form\EventInvitationType;
+use App\Form\EventRegistrationType;
+use App\Repository\EventRepository;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

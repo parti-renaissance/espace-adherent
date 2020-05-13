@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\ProgrammaticFoundation;
+namespace App\Entity\ProgrammaticFoundation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\Entity\EntityIdentityTrait;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,7 +63,7 @@ class Approach
 
     /**
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ProgrammaticFoundation\SubApproach",
+     *     targetEntity="App\Entity\ProgrammaticFoundation\SubApproach",
      *     mappedBy="approach",
      *     cascade={"all"},
      *     orphanRemoval=true

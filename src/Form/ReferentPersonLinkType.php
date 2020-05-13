@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use AppBundle\Form\DataTransformer\CommitteeTransformer;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Form\DataTransformer\CommitteeTransformer;
+use App\Repository\AdherentRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

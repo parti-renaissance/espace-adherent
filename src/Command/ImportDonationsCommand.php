@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\Donation\DonatorManager;
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
-use AppBundle\Repository\DonatorRepository;
-use AppBundle\ValueObject\Genders;
+use App\Address\PostAddressFactory;
+use App\Donation\DonatorManager;
+use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Donation;
+use App\Entity\Donator;
+use App\Repository\DonatorRepository;
+use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Redirection\Dynamic;
+namespace App\Redirection\Dynamic;
 
-use AppBundle\Entity\Redirection;
-use AppBundle\Repository\RedirectionRepository;
+use App\Entity\Redirection;
+use App\Repository\RedirectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\Serializer;
 use Psr\Cache\CacheItemPoolInterface;

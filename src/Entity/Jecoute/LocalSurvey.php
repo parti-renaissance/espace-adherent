@@ -1,21 +1,21 @@
 <?php
 
-namespace AppBundle\Entity\Jecoute;
+namespace App\Entity\Jecoute;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthoredInterface;
-use AppBundle\Jecoute\SurveyTypeEnum;
+use App\Entity\Adherent;
+use App\Entity\AuthoredInterface;
+use App\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Jecoute\LocalSurveyRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\LocalSurveyRepository")
  */
 class LocalSurvey extends Survey implements AuthoredInterface
 {
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $author;

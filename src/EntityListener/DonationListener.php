@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\EntityListener;
+namespace App\EntityListener;
 
-use AppBundle\Donation\DonationEvents;
-use AppBundle\Donation\DonatorWasUpdatedEvent;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
+use App\Donation\DonationEvents;
+use App\Donation\DonatorWasUpdatedEvent;
+use App\Entity\Donation;
+use App\Entity\Donator;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

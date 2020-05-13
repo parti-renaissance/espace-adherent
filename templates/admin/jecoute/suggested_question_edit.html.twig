@@ -8,7 +8,7 @@
             const displayChoices = function(questionType) {
                 const choicesBlock = $(".sonata-ba-collapsed-fields div[id$='_choices']").first();
 
-                if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
+                if ('{{ constant('App\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
                     choicesBlock.hide();
                 } else {
                     choicesBlock.show();

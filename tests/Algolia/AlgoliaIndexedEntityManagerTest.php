@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Algolia;
+namespace Tests\App\Algolia;
 
-use AppBundle\Algolia\AlgoliaIndexedEntityManager;
-use AppBundle\Algolia\ManualIndexerInterface;
-use AppBundle\Entity\AlgoliaIndexedEntityInterface;
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Entity\Timeline\Theme;
+use App\Algolia\AlgoliaIndexedEntityManager;
+use App\Algolia\ManualIndexerInterface;
+use App\Entity\AlgoliaIndexedEntityInterface;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\Theme;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 

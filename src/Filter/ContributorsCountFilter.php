@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Filter;
+namespace App\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use AppBundle\Entity\IdeasWorkshop\Idea;
+use App\Entity\IdeasWorkshop\Idea;
 use Doctrine\ORM\QueryBuilder;
 
 final class ContributorsCountFilter extends AbstractFilter

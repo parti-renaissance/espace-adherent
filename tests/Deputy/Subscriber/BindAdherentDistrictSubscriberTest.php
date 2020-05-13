@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\AppBundle\Deputy\Subscriber;
+namespace Tests\App\Deputy\Subscriber;
 
-use AppBundle\Deputy\Subscriber\BindAdherentDistrictSubscriber;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\District;
-use AppBundle\Entity\GeoData;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Entity\ReferentTaggableEntity;
-use AppBundle\Membership\ActivityPositions;
-use AppBundle\Membership\AdherentAccountWasCreatedEvent;
-use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
-use AppBundle\Repository\DistrictRepository;
+use App\Deputy\Subscriber\BindAdherentDistrictSubscriber;
+use App\Entity\Adherent;
+use App\Entity\District;
+use App\Entity\GeoData;
+use App\Entity\PostAddress;
+use App\Entity\ReferentTag;
+use App\Entity\ReferentTaggableEntity;
+use App\Membership\ActivityPositions;
+use App\Membership\AdherentAccountWasCreatedEvent;
+use App\Membership\AdherentProfileWasUpdatedEvent;
+use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;

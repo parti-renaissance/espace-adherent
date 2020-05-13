@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Interactive;
+namespace App\Interactive;
 
-use AppBundle\Entity\MyEuropeChoice;
-use AppBundle\Entity\MyEuropeInvitation;
+use App\Entity\MyEuropeChoice;
+use App\Entity\MyEuropeInvitation;
 
 class MyEuropeSerializer
 {

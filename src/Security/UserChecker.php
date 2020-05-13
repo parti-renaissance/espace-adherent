@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security;
+namespace App\Security;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Exception\AccountNotValidatedException;
+use App\Entity\Adherent;
+use App\Exception\AccountNotValidatedException;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;

@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Form\NewsletterInvitationType;
-use AppBundle\Form\NewsletterSubscriptionType;
-use AppBundle\Form\NewsletterUnsubscribeType;
-use AppBundle\Newsletter\Invitation;
-use AppBundle\Newsletter\NewsletterSubscriptionHandler;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use App\Address\GeoCoder;
+use App\Entity\NewsletterSubscription;
+use App\Form\NewsletterInvitationType;
+use App\Form\NewsletterSubscriptionType;
+use App\Form\NewsletterUnsubscribeType;
+use App\Newsletter\Invitation;
+use App\Newsletter\NewsletterSubscriptionHandler;
+use App\Repository\NewsletterSubscriptionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

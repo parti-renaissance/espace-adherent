@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Subscription;
+namespace App\Subscription;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Entity\SubscriptionType;
-use AppBundle\History\EmailSubscriptionHistoryHandler;
+use App\Entity\Adherent;
+use App\Entity\NewsletterSubscription;
+use App\Entity\SubscriptionType;
+use App\History\EmailSubscriptionHistoryHandler;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SubscriptionHandler

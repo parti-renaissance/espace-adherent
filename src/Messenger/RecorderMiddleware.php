@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Messenger;
+namespace App\Messenger;
 
-use AppBundle\Messenger\MessageRecorder\MessageRecorderInterface;
+use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;

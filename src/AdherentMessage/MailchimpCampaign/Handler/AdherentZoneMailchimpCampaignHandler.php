@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\AdherentMessage\MailchimpCampaign\Handler;
+namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
-use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use AppBundle\Entity\AdherentMessage\SenatorAdherentMessage;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\SenatorAdherentMessage;
 
 class AdherentZoneMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {

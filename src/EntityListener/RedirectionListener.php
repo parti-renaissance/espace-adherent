@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\EntityListener;
+namespace App\EntityListener;
 
-use AppBundle\Entity\Redirection;
-use AppBundle\Redirection\Dynamic\RedirectionManager;
+use App\Entity\Redirection;
+use App\Redirection\Dynamic\RedirectionManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class RedirectionListener

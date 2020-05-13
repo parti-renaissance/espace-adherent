@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Listener;
+namespace App\AdherentMessage\Listener;
 
-use AppBundle\AdherentMessage\Events;
-use AppBundle\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface;
-use AppBundle\AdherentMessage\MessageEvent;
+use App\AdherentMessage\Events;
+use App\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface;
+use App\AdherentMessage\MessageEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitialiseMailchimpCampaignEntitySubscriber implements EventSubscriberInterface

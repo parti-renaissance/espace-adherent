@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\Events;
-use AppBundle\Referent\ReferentTagManager;
+use App\Address\PostAddressFactory;
+use App\Events;
+use App\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Admin\Formation;
+namespace App\Admin\Formation;
 
-use AppBundle\Admin\MediaSynchronisedAdminTrait;
-use AppBundle\Entity\Formation\File;
-use AppBundle\Form\Admin\BaseFileType;
-use AppBundle\Form\PositionType;
+use App\Admin\MediaSynchronisedAdminTrait;
+use App\Entity\Formation\File;
+use App\Form\Admin\BaseFileType;
+use App\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

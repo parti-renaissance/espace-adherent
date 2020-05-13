@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +24,7 @@ class SenatorArea
     /**
      * @var ReferentTag|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
      */
     private $departmentTag;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Adherent\AdherentRoleEnum;
-use AppBundle\Entity\Adherent;
+use App\Adherent\AdherentRoleEnum;
+use App\Entity\Adherent;
 
 class LaREMAdherentVoter extends AbstractAdherentVoter
 {

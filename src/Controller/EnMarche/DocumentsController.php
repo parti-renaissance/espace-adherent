@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Documents\DocumentRepository;
-use AppBundle\Entity\Adherent;
+use App\Documents\DocumentRepository;
+use App\Entity\Adherent;
 use League\Flysystem\FileNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

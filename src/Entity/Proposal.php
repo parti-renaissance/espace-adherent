@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="proposals")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProposalRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProposalRepository")
  */
 class Proposal implements EntityContentInterface, EntitySoftDeletedInterface
 {
@@ -39,7 +39,7 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface
     /**
      * @var ProposalTheme[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProposalTheme")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProposalTheme")
      */
     private $themes;
 
@@ -53,7 +53,7 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface
     /**
      * @var Media|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media")
      *
      * @Assert\NotBlank
      */

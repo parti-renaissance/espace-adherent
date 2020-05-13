@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Report\CitizenProjectReport;
-use AppBundle\Entity\Report\IdeasWorkshop\IdeaReport;
-use AppBundle\Entity\Report\IdeasWorkshop\ThreadCommentReport;
-use AppBundle\Entity\Report\IdeasWorkshop\ThreadReport;
-use AppBundle\Entity\Report\ReportReasonEnum;
+use App\Entity\Report\CitizenProjectReport;
+use App\Entity\Report\IdeasWorkshop\IdeaReport;
+use App\Entity\Report\IdeasWorkshop\ThreadCommentReport;
+use App\Entity\Report\IdeasWorkshop\ThreadReport;
+use App\Entity\Report\ReportReasonEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

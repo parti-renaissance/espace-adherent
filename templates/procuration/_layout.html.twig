@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Procuration' %}
-{% block canonical_url url('app_procuration_request', {step: constant('AppBundle\\Entity\\ProcurationRequest::STEP_URI_VOTE')}) %}
+{% block canonical_url url('app_procuration_request', {step: constant('App\\Entity\\ProcurationRequest::STEP_URI_VOTE')}) %}
 
 {% block open_graph_image (homepage_url ~ static_asset('procuration-sharer_2.jpg', { q: 70 }))|raw %}
 

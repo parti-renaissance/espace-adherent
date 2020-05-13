@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\MemberSummary\JobExperience;
-use AppBundle\Entity\MemberSummary\Language;
-use AppBundle\Entity\MemberSummary\MissionType;
-use AppBundle\Entity\MemberSummary\Training;
-use AppBundle\Summary\Contribution;
-use AppBundle\Summary\JobDuration;
-use AppBundle\Summary\JobLocation;
+use App\Entity\MemberSummary\JobExperience;
+use App\Entity\MemberSummary\Language;
+use App\Entity\MemberSummary\MissionType;
+use App\Entity\MemberSummary\Training;
+use App\Summary\Contribution;
+use App\Summary\JobDuration;
+use App\Summary\JobLocation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SummaryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SummaryRepository")
  * @ORM\Table(name="summaries")
  *
  * @Algolia\Index(autoIndex=false)
@@ -65,7 +65,7 @@ class Summary
      * @ORM\Column
      *
      * @Assert\NotBlank(groups={"synthesis"})
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\Contribution", "all"}, groups={"synthesis"})
+     * @Assert\Choice(strict=true, callback={"\App\Summary\Contribution", "all"}, groups={"synthesis"})
      */
     private $contributionWish = '';
 
@@ -100,7 +100,7 @@ class Summary
     /**
      * @var MissionType[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\MemberSummary\MissionType")
+     * @ORM\ManyToMany(targetEntity="App\Entity\MemberSummary\MissionType")
      * @ORM\JoinTable(
      *     name="summary_mission_type_wishes",
      *     joinColumns={
@@ -135,7 +135,7 @@ class Summary
     /**
      * @var JobExperience[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\JobExperience", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\MemberSummary\JobExperience", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
      * @ORM\OrderBy({"displayOrder": "ASC"})
      */
     private $experiences;
@@ -143,7 +143,7 @@ class Summary
     /**
      * @var Skill[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Skill", inversedBy="summaries", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="summaries", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="summary_skills",
      *     joinColumns={
@@ -162,7 +162,7 @@ class Summary
     /**
      * @var Language[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Language", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\MemberSummary\Language", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
      */
@@ -171,7 +171,7 @@ class Summary
     /**
      * @var Training[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MemberSummary\Training", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\MemberSummary\Training", mappedBy="summary", indexBy="id", cascade={"all"}, orphanRemoval=true)
      * @ORM\OrderBy({"displayOrder": "ASC"})
      *
      * @Assert\Valid
@@ -303,7 +303,7 @@ class Summary
 
     /**
      * @Assert\Choice(
-     *     callback={"AppBundle\Membership\ActivityPositions", "all"},
+     *     callback={"App\Membership\ActivityPositions", "all"},
      *     message="adherent.activity_position.invalid_choice",
      *     strict=true,
      *     groups={"synthesis"}

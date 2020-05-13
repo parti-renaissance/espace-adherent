@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin\Extension;
+namespace App\Admin\Extension;
 
-use AppBundle\Algolia\AlgoliaIndexedEntityManager;
-use AppBundle\Entity\AlgoliaIndexedEntityInterface;
+use App\Algolia\AlgoliaIndexedEntityManager;
+use App\Entity\AlgoliaIndexedEntityInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 

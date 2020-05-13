@@ -1,7 +1,7 @@
 {% extends 'interactive/_layout.html.twig' %}
 
 {% block javascripts %}
-    {% if transition is constant('AppBundle\\Interactive\\MyEuropeProcessor::TRANSITION_SEND') %}
+    {% if transition is constant('App\\Interactive\\MyEuropeProcessor::TRANSITION_SEND') %}
         {% import 'javascript.js.twig' as js %}
 
         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\ElectedRepresentative;
+namespace App\Repository\ElectedRepresentative;
 
-use AppBundle\Entity\ElectedRepresentative\Mandate;
+use App\Entity\ElectedRepresentative\Mandate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

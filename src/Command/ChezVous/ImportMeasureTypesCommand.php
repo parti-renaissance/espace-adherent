@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Command\ChezVous;
+namespace App\Command\ChezVous;
 
-use AppBundle\Entity\ChezVous\MeasureType;
+use App\Entity\ChezVous\MeasureType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

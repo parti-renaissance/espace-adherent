@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Committee\Feed;
+namespace App\Committee\Feed;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
+use App\Committee\CommitteeManager;
+use App\Entity\Committee;
+use App\Entity\CommitteeFeedItem;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CommitteeMessageNotificationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

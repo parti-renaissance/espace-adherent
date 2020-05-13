@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\ProgrammaticFoundation;
+namespace App\Entity\ProgrammaticFoundation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,14 +63,14 @@ class SubApproach
     private $isExpanded;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProgrammaticFoundation\Approach", inversedBy="subApproaches")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProgrammaticFoundation\Approach", inversedBy="subApproaches")
      * @Assert\NotNull(message="programmatic_foundation.parent.required.sub_approach")
      */
     private $approach;
 
     /**
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ProgrammaticFoundation\Measure",
+     *     targetEntity="App\Entity\ProgrammaticFoundation\Measure",
      *     mappedBy="subApproach",
      *     cascade={"all"},
      *     orphanRemoval=true

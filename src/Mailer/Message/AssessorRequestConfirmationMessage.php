@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Assessor\AssessorRequestCommand;
+use App\Assessor\AssessorRequestCommand;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Intl\Intl;
 

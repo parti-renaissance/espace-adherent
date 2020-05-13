@@ -1,23 +1,23 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Address\GeoCoder;
-use AppBundle\Report\ReportType;
+use App\Address\GeoCoder;
+use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\InstitutionalEventRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\InstitutionalEventRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
 class InstitutionalEvent extends BaseEvent implements AuthoredInterface
 {
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\InstitutionalEventCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\InstitutionalEventCategory")
      */
     protected $category;
 

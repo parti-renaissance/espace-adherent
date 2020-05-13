@@ -7,5 +7,5 @@ services:
             $mailer: '@app.mailer.transactional'
             $votingProcessWorkflow: '@state_machine.voting_process'
 
-    AppBundle\VotingPlatform\:
+    App\VotingPlatform\:
         resource: ../../src/VotingPlatform/

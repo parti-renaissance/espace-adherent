@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\Admin\ChezVous;
+namespace App\Form\Admin\ChezVous;
 
-use AppBundle\ChezVous\MeasureChoiceLoader;
-use AppBundle\Entity\ChezVous\Measure;
-use AppBundle\Entity\ChezVous\MeasureType as MeasureTypeEntity;
+use App\ChezVous\MeasureChoiceLoader;
+use App\Entity\ChezVous\Measure;
+use App\Entity\ChezVous\MeasureType as MeasureTypeEntity;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

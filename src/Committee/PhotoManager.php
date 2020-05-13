@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Entity\Committee;
+use App\Entity\Committee;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 

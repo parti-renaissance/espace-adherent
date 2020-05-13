@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Command;
+namespace App\Mailchimp\Synchronisation\Command;
 
-use AppBundle\Mailchimp\SynchronizeMessageInterface;
+use App\Mailchimp\SynchronizeMessageInterface;
 
 class RemoveNewsletterMemberCommand implements SynchronizeMessageInterface
 {

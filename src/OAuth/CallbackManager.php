@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\OAuth;
+namespace App\OAuth;
 
-use AppBundle\Repository\OAuth\ClientRepository;
+use App\Repository\OAuth\ClientRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;

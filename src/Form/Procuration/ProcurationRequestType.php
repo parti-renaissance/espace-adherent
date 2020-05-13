@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Procuration;
+namespace App\Form\Procuration;
 
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Form\UnitedNationsCountryType;
+use App\Entity\ProcurationRequest;
+use App\Form\UnitedNationsCountryType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

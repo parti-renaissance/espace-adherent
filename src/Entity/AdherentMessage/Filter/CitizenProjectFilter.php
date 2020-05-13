@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage\Filter;
 
-use AppBundle\Entity\CitizenProject;
+use App\Entity\CitizenProject;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,7 +16,7 @@ class CitizenProjectFilter extends AbstractAdherentMessageFilter implements Adhe
     /**
      * @var CitizenProject
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProject")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CitizenProject")
      *
      * @Assert\NotBlank
      */

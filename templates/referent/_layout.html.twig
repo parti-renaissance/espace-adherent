@@ -148,7 +148,7 @@
     {% if not hasCharterAccepted %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
-                {{ js.chart_acceptation('#chart_dialog', constant('AppBundle\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_REFERENT')) }}
+                {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_REFERENT')) }}
             });
         </script>
     {% endif %}

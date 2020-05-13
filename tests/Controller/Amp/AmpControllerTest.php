@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Amp;
+namespace Tests\App\Controller\Amp;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

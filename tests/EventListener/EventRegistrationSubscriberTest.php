@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\EventListener;
+namespace Tests\App\EventListener;
 
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventCategory;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Event\EventRegistrationEvent;
-use AppBundle\Event\EventRegistrationSubscriber;
-use AppBundle\Mailer\MailerService;
+use App\Entity\Event;
+use App\Entity\EventCategory;
+use App\Entity\EventRegistration;
+use App\Entity\PostAddress;
+use App\Event\EventRegistrationEvent;
+use App\Event\EventRegistrationSubscriber;
+use App\Mailer\MailerService;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

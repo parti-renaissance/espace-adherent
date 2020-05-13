@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="elections")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ElectionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
  *
  * @UniqueEntity("name")
  *
@@ -64,7 +64,7 @@ class Election
     /**
      * @var ElectionRound[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Count(min=1, minMessage="election.rounds.min_count")
      */

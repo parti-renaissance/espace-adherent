@@ -85,12 +85,12 @@
                     {% endif %}
                     {% if app.user.isCoordinatorCitizenProjectSector %}
                         <li>
-                            <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace responsable engagement citoyen</a>
+                            <a href="{{ path('app_coordinator_citizen_project', { s: constant('App\\Entity\\CitizenProject::PENDING')}) }}">Espace responsable engagement citoyen</a>
                         </li>
                     {% endif %}
                     {% if app.user.isCoordinatorCommitteeSector %}
                         <li>
-                            <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
+                            <a href="{{ path('app_coordinator_committees', { s: constant('App\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
                         </li>
                     {% endif %}
                     {% if app.user.isProcurationManager %}

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Report;
+namespace App\Report;
 
-use AppBundle\Entity\Report\Report;
-use AppBundle\Entity\Report\ReportableInterface;
+use App\Entity\Report\Report;
+use App\Entity\Report\ReportableInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ReportManager
@@ -25,7 +25,7 @@ class ReportManager
     }
 
     /**
-     * @param string $type is one of the constant defined in \AppBundle\Report\ReportType class
+     * @param string $type is one of the constant defined in \App\Report\ReportType class
      *
      * @throws \InvalidArgumentException if $type is not valid
      *

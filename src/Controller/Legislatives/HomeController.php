@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Legislatives;
+namespace App\Controller\Legislatives;
 
-use AppBundle\Entity\LegislativeCandidate;
-use AppBundle\Entity\LegislativeDistrictZone;
+use App\Entity\LegislativeCandidate;
+use App\Entity\LegislativeDistrictZone;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

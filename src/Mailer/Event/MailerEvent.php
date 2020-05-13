@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailer\Event;
+namespace App\Mailer\Event;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
-use AppBundle\Mailer\Exception\MailerException;
-use AppBundle\Mailer\Message\Message;
+use App\Mailer\AbstractEmailTemplate;
+use App\Mailer\Exception\MailerException;
+use App\Mailer\Message\Message;
 use Symfony\Component\EventDispatcher\Event;
 
 class MailerEvent extends Event

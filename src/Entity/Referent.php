@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="referent", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="referent_slug_unique", columns="slug")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReferentRepository")
  *
  * @Algolia\Index(autoIndex=false)
  * @UniqueEntity(fields="slug", groups="Admin")
@@ -40,7 +40,7 @@ class Referent implements EntityMediaInterface
      *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
      *     groups="Admin"
@@ -101,7 +101,7 @@ class Referent implements EntityMediaInterface
     /**
      * @var ReferentArea[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentArea", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentArea", fetch="EAGER")
      * @ORM\JoinTable(
      *     name="referent_areas",
      *     joinColumns={
@@ -124,7 +124,7 @@ class Referent implements EntityMediaInterface
     /**
      * @var Collection|ReferentPersonLink[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink", mappedBy="referent", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\ReferentOrganizationalChart\ReferentPersonLink", mappedBy="referent", cascade={"persist"})
      */
     private $referentPersonLinks;
 

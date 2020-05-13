@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\MemberRequest;
+namespace App\Mailchimp\Synchronisation\MemberRequest;
 
-use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberTagsRequest;
-use AppBundle\Newsletter\NewsletterTypeEnum;
-use AppBundle\Newsletter\NewsletterValueObject;
+use App\Mailchimp\Synchronisation\Request\MemberRequest;
+use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
+use App\Newsletter\NewsletterTypeEnum;
+use App\Newsletter\NewsletterValueObject;
 
 class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
 {

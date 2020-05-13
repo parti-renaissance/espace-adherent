@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Address;
+namespace Tests\App\Address;
 
-use AppBundle\Address\GeoCoder;
+use App\Address\GeoCoder;
 use GeoIp2\Exception\GeoIp2Exception;
 use GeoIp2\Model\City;
 use GeoIp2\ProviderInterface;

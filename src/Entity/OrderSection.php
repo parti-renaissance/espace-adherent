@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="order_sections")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderSectionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OrderSectionRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -43,7 +43,7 @@ class OrderSection
     /**
      * @var OrderArticle[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\OrderArticle", mappedBy="sections")
+     * @ORM\ManyToMany(targetEntity="App\Entity\OrderArticle", mappedBy="sections")
      * @ORM\OrderBy({"position": "ASC"})
      */
     private $articles;

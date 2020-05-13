@@ -1,21 +1,21 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\Entity\Report\CitizenActionReport;
-use AppBundle\Entity\Report\CitizenProjectReport;
-use AppBundle\Entity\Report\CommitteeReport;
-use AppBundle\Entity\Report\CommunityEventReport;
-use AppBundle\Report\ReportType;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCitizenActionData;
+use App\DataFixtures\ORM\LoadCitizenProjectData;
+use App\DataFixtures\ORM\LoadEventData;
+use App\Entity\Report\CitizenActionReport;
+use App\Entity\Report\CitizenProjectReport;
+use App\Entity\Report\CommitteeReport;
+use App\Entity\Report\CommunityEventReport;
+use App\Report\ReportType;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

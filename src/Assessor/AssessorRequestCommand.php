@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
-use AppBundle\Entity\AssessorOfficeEnum;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
-use AppBundle\ValueObject\Genders;
+use App\Entity\AssessorOfficeEnum;
+use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,7 +15,7 @@ class AssessorRequestCommand
     /**
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"fill_personal_info"})
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
      *     groups={"fill_personal_info"}
@@ -147,7 +147,7 @@ class AssessorRequestCommand
     /**
      * @Assert\NotBlank(message="assessor.office.invalid_choice", groups={"fill_assessor_info"})
      * @Assert\Choice(
-     *     callback={"AppBundle\Entity\AssessorOfficeEnum", "toArray"},
+     *     callback={"App\Entity\AssessorOfficeEnum", "toArray"},
      *     message="assessor.office.invalid_choice",
      *     strict=true,
      *     groups={"fill_assessor_info"}

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Election;
+namespace App\VotingPlatform\Election;
 
-use AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand;
+use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use Symfony\Component\Workflow\StateMachine;
 
 class VoteCommandProcessor

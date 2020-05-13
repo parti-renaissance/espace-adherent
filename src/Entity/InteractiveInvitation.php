@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,14 +9,14 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\InteractiveInvitationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\InteractiveInvitationRepository")
  * @ORM\Table(name="interactive_invitations", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="interactive_invitations_uuid_unique", columns="uuid")
  * })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "my_europe": "AppBundle\Entity\MyEuropeInvitation",
+ *     "my_europe": "App\Entity\MyEuropeInvitation",
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -79,7 +79,7 @@ abstract class InteractiveInvitation
     protected $createdAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\InteractiveChoice", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="App\Entity\InteractiveChoice", fetch="EAGER")
      * @ORM\JoinTable(
      *     name="interactive_invitation_has_choices",
      *     joinColumns={

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\City;
-use AppBundle\Entity\MunicipalManagerRoleAssociation;
-use AppBundle\MunicipalManager\Filter\AssociationCityFilter;
+use App\Entity\Adherent;
+use App\Entity\City;
+use App\Entity\MunicipalManagerRoleAssociation;
+use App\MunicipalManager\Filter\AssociationCityFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;

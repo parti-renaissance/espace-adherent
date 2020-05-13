@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\ApplicationRequest;
 use Ramsey\Uuid\Uuid;
 
 final class ApplicationRequestConfirmationMessage extends Message

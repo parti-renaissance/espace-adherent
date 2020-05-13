@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\CitizenAction;
+namespace App\CitizenAction;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenActionCancellationMessage;
-use AppBundle\Mailer\Message\CitizenActionNotificationMessage;
-use AppBundle\Repository\EventRegistrationRepository;
+use App\CitizenProject\CitizenProjectManager;
+use App\Entity\Adherent;
+use App\Entity\CitizenAction;
+use App\Entity\EventRegistration;
+use App\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CitizenActionCancellationMessage;
+use App\Mailer\Message\CitizenActionNotificationMessage;
+use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

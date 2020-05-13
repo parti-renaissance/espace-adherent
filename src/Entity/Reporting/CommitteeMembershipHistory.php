@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\Reporting;
+namespace App\Entity\Reporting;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Entity\ReferentTag;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\Entity\ReferentTag;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,7 +38,7 @@ class CommitteeMembershipHistory
     /**
      * @var Committee
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", cascade={"persist"})
      */
     private $committee;
 
@@ -55,7 +55,7 @@ class CommitteeMembershipHistory
     /**
      * @var Collection|ReferentTag[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      */
     private $referentTags;
 

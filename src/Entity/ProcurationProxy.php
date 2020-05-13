@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Utils\AreaUtils;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\Intl\FranceCitiesBundle;
+use App\Utils\AreaUtils;
+use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="procuration_proxies")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationProxyRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProcurationProxyRepository")
 
  * @Algolia\Index(autoIndex=false)
  */
@@ -49,7 +49,7 @@ class ProcurationProxy
      *
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProcurationRequest", mappedBy="foundProxy")
+     * @ORM\OneToMany(targetEntity="App\Entity\ProcurationRequest", mappedBy="foundProxy")
      */
     private $foundRequests;
 
@@ -76,7 +76,7 @@ class ProcurationProxy
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"front"})
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
      *     groups={"front"}
@@ -133,7 +133,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
+     *     "(this.getCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"front"}
      * )
@@ -165,7 +165,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=255, groups={"front"})
      * @Assert\Expression(
-     *     "not (this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
+     *     "not (this.getCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"front"}
      * )
@@ -220,7 +220,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
+     *     "(this.getVoteCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"front"}
      * )
@@ -268,7 +268,7 @@ class ProcurationProxy
     /**
      * @var ElectionRound[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ElectionRound")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ElectionRound")
      * @ORM\JoinTable(name="procuration_proxies_to_election_rounds")
      *
      * @Assert\Count(min=1, minMessage="procuration.election_rounds.min_count", groups={"front"})
@@ -299,7 +299,7 @@ class ProcurationProxy
      *     groups={"front", "Default"}
      * )
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value <= 2) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value <= 3)",
+     *     "(this.getVoteCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value <= 2) or (this.getVoteCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value <= 3)",
      *     message="procuration.vote_country.conditions",
      *     groups={"front", "Default"}
      * )

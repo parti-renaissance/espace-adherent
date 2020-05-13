@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use A2lix\I18nDoctrineBundle\Doctrine\Interfaces\OneLocaleInterface;
 

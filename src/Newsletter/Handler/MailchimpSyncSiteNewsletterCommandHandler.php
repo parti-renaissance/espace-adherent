@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Newsletter\Handler;
+namespace App\Newsletter\Handler;
 
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
-use AppBundle\Newsletter\NewsletterValueObject;
+use App\Mailchimp\Manager;
+use App\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
+use App\Newsletter\NewsletterValueObject;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class MailchimpSyncSiteNewsletterCommandHandler implements MessageHandlerInterface

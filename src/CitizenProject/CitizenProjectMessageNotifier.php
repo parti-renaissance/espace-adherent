@@ -1,21 +1,21 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Coordinator\Filter\CitizenProjectFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
-use AppBundle\Mailer\Message\CitizenProjectCreationCoordinatorNotificationMessage;
-use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
-use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
-use AppBundle\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
-use AppBundle\Mailer\Message\TurnkeyProjectApprovalConfirmationMessage;
-use AppBundle\Repository\AdherentRepository;
+use App\Committee\CommitteeManager;
+use App\Coordinator\Filter\CitizenProjectFilter;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
+use App\Mailer\Message\CitizenProjectCreationConfirmationMessage;
+use App\Mailer\Message\CitizenProjectCreationCoordinatorNotificationMessage;
+use App\Mailer\Message\CitizenProjectCreationNotificationMessage;
+use App\Mailer\Message\CitizenProjectNewFollowerMessage;
+use App\Mailer\Message\CitizenProjectRequestCommitteeSupportMessage;
+use App\Mailer\Message\TurnkeyProjectApprovalConfirmationMessage;
+use App\Repository\AdherentRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;

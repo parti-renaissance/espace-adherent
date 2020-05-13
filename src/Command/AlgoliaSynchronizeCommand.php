@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Algolia\ManualIndexer;
-use AppBundle\Entity\Article;
-use AppBundle\Entity\Clarification;
-use AppBundle\Entity\CustomSearchResult;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\Page;
-use AppBundle\Entity\Proposal;
-use AppBundle\Entity\Timeline\Manifesto;
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Entity\Timeline\Theme;
+use App\Algolia\ManualIndexer;
+use App\Entity\Article;
+use App\Entity\Clarification;
+use App\Entity\CustomSearchResult;
+use App\Entity\Event;
+use App\Entity\Page;
+use App\Entity\Proposal;
+use App\Entity\Timeline\Manifesto;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\Theme;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

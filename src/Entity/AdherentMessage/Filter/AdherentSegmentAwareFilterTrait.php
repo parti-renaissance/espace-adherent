@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage\Filter;
 
-use AppBundle\Entity\AdherentSegment;
+use App\Entity\AdherentSegment;
 
 trait AdherentSegmentAwareFilterTrait
 {
     /**
      * @var AdherentSegment|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AdherentSegment")
+     * @ORM\ManyToOne(targetEntity="App\Entity\AdherentSegment")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $adherentSegment;

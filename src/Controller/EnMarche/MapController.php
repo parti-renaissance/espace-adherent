@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventCategory;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Event;
+use App\Entity\EventCategory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 

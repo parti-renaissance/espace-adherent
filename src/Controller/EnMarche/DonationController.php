@@ -1,25 +1,25 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Donation\DonationRequestHandler;
-use AppBundle\Donation\DonationRequestUtils;
-use AppBundle\Donation\PayboxFormFactory;
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Donation\PayboxPaymentUnsubscription;
-use AppBundle\Donation\TransactionCallbackHandler;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
-use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
-use AppBundle\Form\ConfirmActionType;
-use AppBundle\Form\DonationRequestType;
-use AppBundle\Form\NewsletterSubscriptionType;
-use AppBundle\Membership\MembershipRegistrationProcess;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\DonationRepository;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use App\Donation\DonationRequest;
+use App\Donation\DonationRequestHandler;
+use App\Donation\DonationRequestUtils;
+use App\Donation\PayboxFormFactory;
+use App\Donation\PayboxPaymentSubscription;
+use App\Donation\PayboxPaymentUnsubscription;
+use App\Donation\TransactionCallbackHandler;
+use App\Entity\Donation;
+use App\Entity\NewsletterSubscription;
+use App\Exception\InvalidPayboxPaymentSubscriptionValueException;
+use App\Exception\PayboxPaymentUnsubscriptionException;
+use App\Form\ConfirmActionType;
+use App\Form\DonationRequestType;
+use App\Form\NewsletterSubscriptionType;
+use App\Membership\MembershipRegistrationProcess;
+use App\Repository\AdherentRepository;
+use App\Repository\DonationRepository;
+use App\Repository\NewsletterSubscriptionRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

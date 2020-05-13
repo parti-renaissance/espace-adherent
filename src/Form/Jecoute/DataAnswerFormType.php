@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\Jecoute;
+namespace App\Form\Jecoute;
 
-use AppBundle\Entity\Jecoute\Choice;
-use AppBundle\Entity\Jecoute\DataAnswer;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
+use App\Entity\Jecoute\Choice;
+use App\Entity\Jecoute\DataAnswer;
+use App\Entity\Jecoute\SurveyQuestion;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

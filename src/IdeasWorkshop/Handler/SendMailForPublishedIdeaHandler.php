@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\IdeasWorkshop\Handler;
+namespace App\IdeasWorkshop\Handler;
 
-use AppBundle\IdeasWorkshop\Command\SendMailForPublishedIdeaCommand;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\IdeaPublishMessage;
+use App\IdeasWorkshop\Command\SendMailForPublishedIdeaCommand;
+use App\Mailer\MailerService;
+use App\Mailer\Message\IdeaPublishMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

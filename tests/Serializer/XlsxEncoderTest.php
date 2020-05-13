@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Exporter;
+namespace Tests\App\Exporter;
 
-use AppBundle\Serializer\XlsxEncoder;
+use App\Serializer\XlsxEncoder;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PHPUnit\Framework\TestCase;
 

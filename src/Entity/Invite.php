@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
-use AppBundle\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
+use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="invitations")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\InvitationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\InvitationRepository")
  *
  * @AssertWasNotInvitedRecently(
  *     emailField="email",

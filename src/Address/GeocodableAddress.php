@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Address;
+namespace App\Address;
 
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Intl\FranceCitiesBundle;
 
 final class GeocodableAddress
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Intl\UnitedNationsBundle;
-use AppBundle\Membership\ActivityPositions;
-use AppBundle\Summary\Contribution;
-use AppBundle\Summary\JobDuration;
-use AppBundle\Summary\JobLocation;
+use App\Intl\UnitedNationsBundle;
+use App\Membership\ActivityPositions;
+use App\Summary\Contribution;
+use App\Summary\JobDuration;
+use App\Summary\JobLocation;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

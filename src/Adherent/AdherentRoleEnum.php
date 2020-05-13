@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Adherent;
+namespace App\Adherent;
 
 use MyCLabs\Enum\Enum;
 

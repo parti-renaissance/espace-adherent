@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\OAuth;
+namespace Tests\App\OAuth;
 
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\OAuth\CallbackManager;
-use AppBundle\Repository\OAuth\ClientRepository;
+use App\Entity\OAuth\Client;
+use App\OAuth\CallbackManager;
+use App\Repository\OAuth\ClientRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidInterface;

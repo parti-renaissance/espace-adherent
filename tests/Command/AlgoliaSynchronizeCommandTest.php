@@ -1,9 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Command;
+namespace Tests\App\Command;
 
+use App\Entity\Event;
+use App\Entity\Timeline\Theme;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group command
@@ -28,25 +30,25 @@ class AlgoliaSynchronizeCommandTest extends WebTestCase
     {
         return [
             [
-                ['entityName' => 'AppBundle:Event'],
-                ['Synchronizing entity AppBundle\Entity\Event ... done, 21 records indexed'],
+                ['entityName' => Event::class],
+                ['Synchronizing entity App\Entity\Event ... done, 21 records indexed'],
             ],
             [
-                ['entityName' => 'AppBundle\Entity\Timeline\Theme'],
-                ['Synchronizing entity AppBundle\Entity\Timeline\Theme ... done, 5 records indexed'],
+                ['entityName' => Theme::class],
+                ['Synchronizing entity App\Entity\Timeline\Theme ... done, 5 records indexed'],
             ],
             [
                 [], // no parameters
                 [
-                    'Synchronizing entity AppBundle\Entity\Article ... done, 180 records indexed',
-                    'Synchronizing entity AppBundle\Entity\Proposal ... done, 3 records indexed',
-                    'Synchronizing entity AppBundle\Entity\Clarification ... done, 21 records indexed',
-                    'Synchronizing entity AppBundle\Entity\CustomSearchResult ... done, 2 records indexed',
-                    'Synchronizing entity AppBundle\Entity\Event ... done, 21 records indexed',
-                    'Synchronizing entity AppBundle\Entity\Timeline\Profile ... done, 5 records indexed',
-                    'Synchronizing entity AppBundle\Entity\Timeline\Manifesto ... done, 3 records indexed',
-                    'Synchronizing entity AppBundle\Entity\Timeline\Theme ... done, 5 records indexed',
-                    'Synchronizing entity AppBundle\Entity\Timeline\Measure ... done, 17 records indexed',
+                    'Synchronizing entity App\Entity\Article ... done, 180 records indexed',
+                    'Synchronizing entity App\Entity\Proposal ... done, 3 records indexed',
+                    'Synchronizing entity App\Entity\Clarification ... done, 21 records indexed',
+                    'Synchronizing entity App\Entity\CustomSearchResult ... done, 2 records indexed',
+                    'Synchronizing entity App\Entity\Event ... done, 21 records indexed',
+                    'Synchronizing entity App\Entity\Timeline\Profile ... done, 5 records indexed',
+                    'Synchronizing entity App\Entity\Timeline\Manifesto ... done, 3 records indexed',
+                    'Synchronizing entity App\Entity\Timeline\Theme ... done, 5 records indexed',
+                    'Synchronizing entity App\Entity\Timeline\Measure ... done, 17 records indexed',
                 ],
             ],
         ];

@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Address\Address;
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
-use AppBundle\Entity\Transaction;
+use App\Address\Address;
+use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Adherent;
+use App\Entity\Donation;
+use App\Entity\Donator;
+use App\Entity\Transaction;
 use Cocur\Slugify\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;

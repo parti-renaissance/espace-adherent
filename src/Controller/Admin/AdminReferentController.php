@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use AppBundle\Exporter\ReferentPersonLinkExport;
-use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Exporter\ReferentPersonLinkExport;
+use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\Response;

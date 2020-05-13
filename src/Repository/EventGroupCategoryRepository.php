@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\BaseEventCategory;
+use App\Entity\BaseEventCategory;
 
 class EventGroupCategoryRepository extends BaseEventCategoryRepository
 {

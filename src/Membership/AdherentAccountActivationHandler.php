@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Security\AuthenticationUtils;
+use App\Entity\Adherent;
+use App\Entity\AdherentActivationToken;
+use App\Security\AuthenticationUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AdherentAccountActivationHandler

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\ContentSection;
+namespace App\Mailchimp\Campaign\ContentSection;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
-use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
-use AppBundle\Utils\StringCleaner;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
+use App\Utils\StringCleaner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeMessageSectionBuilder implements ContentSectionBuilderInterface

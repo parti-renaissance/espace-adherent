@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,7 +25,7 @@ class ReferentManagedArea
     /**
      * @var ReferentTag[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      * @ORM\JoinTable(
      *     name="referent_managed_areas_tags",
      *     joinColumns={

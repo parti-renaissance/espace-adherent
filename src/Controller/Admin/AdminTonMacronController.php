@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Entity\TonMacronChoice;
-use AppBundle\Entity\TonMacronFriendInvitation;
+use App\Entity\TonMacronChoice;
+use App\Entity\TonMacronFriendInvitation;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

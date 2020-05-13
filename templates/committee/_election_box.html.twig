@@ -62,8 +62,8 @@
                             <div>
                                 {% set candidate_url_params = {slug: committee.slug} %}
 
-                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
-                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::MALE')})) }}">Homme</a>
+                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
+                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::MALE')})) }}">Homme</a>
                             </div>
                         </div>
                     </div>

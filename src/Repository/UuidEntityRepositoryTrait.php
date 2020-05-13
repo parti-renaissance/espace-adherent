@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Exception\InvalidUuidException;
+use App\Exception\InvalidUuidException;
 use Ramsey\Uuid\Uuid;
 
 trait UuidEntityRepositoryTrait

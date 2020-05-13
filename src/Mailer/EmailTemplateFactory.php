@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer;
+namespace App\Mailer;
 
-use AppBundle\Mailer\Message\Message;
+use App\Mailer\Message\Message;
 
 class EmailTemplateFactory
 {

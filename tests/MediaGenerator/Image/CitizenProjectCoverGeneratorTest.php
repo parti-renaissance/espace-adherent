@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\MediaGenerator\Image;
+namespace Tests\App\MediaGenerator\Image;
 
-use AppBundle\MediaGenerator\Command\CitizenProjectImageCommand;
-use AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator;
-use AppBundle\MediaGenerator\MediaContent;
+use App\MediaGenerator\Command\CitizenProjectImageCommand;
+use App\MediaGenerator\Image\CitizenProjectCoverGenerator;
+use App\MediaGenerator\MediaContent;
 use Knp\Snappy\GeneratorInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Templating\EngineInterface;

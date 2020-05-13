@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
 final class CommitteePermissions
 {

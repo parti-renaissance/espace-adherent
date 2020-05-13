@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Election;
+namespace App\Form\Election;
 
-use AppBundle\Entity\Election\MinistryVoteResult;
+use App\Entity\Election\MinistryVoteResult;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;

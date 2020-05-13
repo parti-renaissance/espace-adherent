@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,7 +28,7 @@ class VoteChoice
     /**
      * @var VoteResult
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\VoteResult", inversedBy="voteChoices")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\VoteResult", inversedBy="voteChoices")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $voteResult;
@@ -36,7 +36,7 @@ class VoteChoice
     /**
      * @var CandidateGroup
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\CandidateGroup")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\CandidateGroup")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $candidateGroup;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Handler;
+namespace App\Mailchimp\Synchronisation\Handler;
 
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
+use App\Mailchimp\Manager;
+use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class AdherentDeleteCommandHandler implements MessageHandlerInterface

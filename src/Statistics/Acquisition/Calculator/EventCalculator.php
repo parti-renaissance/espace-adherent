@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Entity\Event;
-use AppBundle\Repository\EventRepository;
-use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Entity\Event;
+use App\Repository\EventRepository;
+use App\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
+use App\Statistics\Acquisition\StatisticsRequest;
 
 class EventCalculator extends AbstractCalculator
 {

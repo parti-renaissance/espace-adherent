@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Validator\ChezVous;
+namespace App\Validator\ChezVous;
 
-use AppBundle\ChezVous\Measure\BaisseNombreChomeurs;
-use AppBundle\ChezVous\Measure\CouvertureFibre;
-use AppBundle\ChezVous\MeasureChoiceLoader;
+use App\ChezVous\Measure\BaisseNombreChomeurs;
+use App\ChezVous\Measure\CouvertureFibre;
+use App\ChezVous\MeasureChoiceLoader;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

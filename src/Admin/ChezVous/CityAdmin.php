@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin\ChezVous;
+namespace App\Admin\ChezVous;
 
-use AppBundle\Form\Admin\ChezVous\MarkerType;
-use AppBundle\Form\Admin\ChezVous\MeasureType;
+use App\Form\Admin\ChezVous\MarkerType;
+use App\Form\Admin\ChezVous\MeasureType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

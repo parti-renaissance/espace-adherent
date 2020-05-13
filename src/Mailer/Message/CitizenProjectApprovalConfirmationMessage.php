@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\CitizenProject;
+use App\Entity\CitizenProject;
 use Ramsey\Uuid\Uuid;
 
 final class CitizenProjectApprovalConfirmationMessage extends Message

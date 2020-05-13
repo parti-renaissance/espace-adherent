@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\EventListener;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\MunicipalManagerSupervisorRole;
-use AppBundle\Entity\Referent;
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use AppBundle\Entity\ReferentTeamMember;
-use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
+use App\Entity\Adherent;
+use App\Entity\MunicipalManagerSupervisorRole;
+use App\Entity\Referent;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\ReferentTeamMember;
+use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;

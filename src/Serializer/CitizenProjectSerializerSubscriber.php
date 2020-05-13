@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Serializer;
+namespace App\Serializer;
 
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\CitizenProject;
+use App\Repository\AdherentRepository;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

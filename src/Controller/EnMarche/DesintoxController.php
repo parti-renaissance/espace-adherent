@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\Clarification;
-use AppBundle\Entity\Page;
-use AppBundle\Repository\ClarificationRepository;
+use App\Entity\Clarification;
+use App\Entity\Page;
+use App\Repository\ClarificationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;

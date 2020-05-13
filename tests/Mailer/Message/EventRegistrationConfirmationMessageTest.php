@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\Entity\EventRegistration;
+use App\Mailer\Message\EventRegistrationConfirmationMessage;
 
 class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
 {

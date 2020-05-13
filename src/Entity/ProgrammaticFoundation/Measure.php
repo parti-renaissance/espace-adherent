@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\ProgrammaticFoundation;
+namespace App\Entity\ProgrammaticFoundation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -64,14 +64,14 @@ class Measure
     private $isExpanded;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProgrammaticFoundation\SubApproach", inversedBy="measures")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProgrammaticFoundation\SubApproach", inversedBy="measures")
      * @Assert\NotNull(message="programmatic_foundation.parent.required.measure")
      */
     private $subApproach;
 
     /**
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ProgrammaticFoundation\Project",
+     *     targetEntity="App\Entity\ProgrammaticFoundation\Project",
      *     mappedBy="measure",
      *     cascade={"all"},
      *     orphanRemoval=true
@@ -82,7 +82,7 @@ class Measure
     private $projects;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProgrammaticFoundation\Tag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProgrammaticFoundation\Tag")
      * @ORM\JoinTable(name="programmatic_foundation_measure_tag")
      * @SymfonySerializer\Groups({"approach_list_read"})
      */

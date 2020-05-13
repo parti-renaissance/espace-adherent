@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Donation;
+namespace Tests\App\Donation;
 
-use AppBundle\Repository\DonationRepository;
-use AppBundle\Repository\TransactionRepository;
+use App\Repository\DonationRepository;
+use App\Repository\TransactionRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

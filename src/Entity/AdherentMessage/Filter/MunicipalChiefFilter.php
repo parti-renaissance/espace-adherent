@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage\Filter;
 
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

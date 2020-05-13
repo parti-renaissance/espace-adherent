@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\ChezVous\Marker;
+namespace App\ChezVous\Marker;
 
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\Marker;
+use App\Entity\ChezVous\City;
+use App\Entity\ChezVous\Marker;
 
 abstract class AbstractMarker
 {

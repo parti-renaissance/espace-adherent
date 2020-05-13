@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Invite;
+use App\Entity\Invite;
 
 final class MovementInvitationMessage extends Message
 {

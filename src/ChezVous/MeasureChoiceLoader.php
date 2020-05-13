@@ -1,22 +1,22 @@
 <?php
 
-namespace AppBundle\ChezVous;
+namespace App\ChezVous;
 
-use AppBundle\ChezVous\Measure\BaisseNombreChomeurs;
-use AppBundle\ChezVous\Measure\ChequeEnergie;
-use AppBundle\ChezVous\Measure\ConversionSurfaceAgricoleBio;
-use AppBundle\ChezVous\Measure\CouvertureFibre;
-use AppBundle\ChezVous\Measure\CreationEntreprise;
-use AppBundle\ChezVous\Measure\DedoublementClasses;
-use AppBundle\ChezVous\Measure\EmploisFrancs;
-use AppBundle\ChezVous\Measure\MaisonServiceAccueilPublic;
-use AppBundle\ChezVous\Measure\MissionBern;
-use AppBundle\ChezVous\Measure\PassCulture;
-use AppBundle\ChezVous\Measure\PrimeConversionAutomobile;
-use AppBundle\ChezVous\Measure\QuartierReconqueteRepublicaine;
-use AppBundle\ChezVous\Measure\SuppressionTaxeHabitation;
-use AppBundle\Entity\ChezVous\MeasureType;
-use AppBundle\Repository\ChezVous\MeasureTypeRepository;
+use App\ChezVous\Measure\BaisseNombreChomeurs;
+use App\ChezVous\Measure\ChequeEnergie;
+use App\ChezVous\Measure\ConversionSurfaceAgricoleBio;
+use App\ChezVous\Measure\CouvertureFibre;
+use App\ChezVous\Measure\CreationEntreprise;
+use App\ChezVous\Measure\DedoublementClasses;
+use App\ChezVous\Measure\EmploisFrancs;
+use App\ChezVous\Measure\MaisonServiceAccueilPublic;
+use App\ChezVous\Measure\MissionBern;
+use App\ChezVous\Measure\PassCulture;
+use App\ChezVous\Measure\PrimeConversionAutomobile;
+use App\ChezVous\Measure\QuartierReconqueteRepublicaine;
+use App\ChezVous\Measure\SuppressionTaxeHabitation;
+use App\Entity\ChezVous\MeasureType;
+use App\Repository\ChezVous\MeasureTypeRepository;
 
 class MeasureChoiceLoader
 {

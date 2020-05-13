@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Intl;
+namespace Tests\App\Intl;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Entity\ReferentTag;
+use App\Intl\FranceCitiesBundle;
 use PHPUnit\Framework\TestCase;
 
 class FranceCitiesBundleTest extends TestCase

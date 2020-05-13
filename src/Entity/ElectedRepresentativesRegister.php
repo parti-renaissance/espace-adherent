@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ElectedRepresentativesRegisterRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentativesRegisterRepository")
  */
 class ElectedRepresentativesRegister
 {
@@ -27,7 +27,7 @@ class ElectedRepresentativesRegister
     private $communeId;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(name="adherent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $adherent;

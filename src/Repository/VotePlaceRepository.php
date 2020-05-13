@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
-use AppBundle\Assessor\Filter\VotePlaceFilters;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AssessorOfficeEnum;
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Entity\VotePlace;
+use App\Assessor\Filter\AssociationVotePlaceFilter;
+use App\Assessor\Filter\VotePlaceFilters;
+use App\Entity\Adherent;
+use App\Entity\AssessorOfficeEnum;
+use App\Entity\AssessorRequest;
+use App\Entity\VotePlace;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;

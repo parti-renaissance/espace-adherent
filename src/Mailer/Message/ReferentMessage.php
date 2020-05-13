@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Projection\ManagedUser;
-use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
+use App\Entity\Projection\ManagedUser;
+use App\Referent\ReferentMessage as ReferentMessageModel;
 use Ramsey\Uuid\Uuid;
 
 final class ReferentMessage extends Message

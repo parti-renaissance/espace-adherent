@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;

@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Geocoder\Subscriber;
+namespace App\Geocoder\Subscriber;
 
-use AppBundle\Donation\DonationEvents;
-use AppBundle\Events;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Geocoder\Exception\GeocodingException;
-use AppBundle\Geocoder\GeocodableEntityEventInterface;
-use AppBundle\Geocoder\GeocoderInterface;
-use AppBundle\Geocoder\GeoPointInterface;
-use AppBundle\Membership\AdherentEvents;
-use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
+use App\Donation\DonationEvents;
+use App\Events;
+use App\Geocoder\Coordinates;
+use App\Geocoder\Exception\GeocodingException;
+use App\Geocoder\GeocodableEntityEventInterface;
+use App\Geocoder\GeocoderInterface;
+use App\Geocoder\GeoPointInterface;
+use App\Membership\AdherentEvents;
+use App\Membership\AdherentProfileWasUpdatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

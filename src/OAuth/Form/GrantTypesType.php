@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\OAuth\Form;
+namespace App\OAuth\Form;
 
-use AppBundle\OAuth\Model\GrantTypeEnum;
+use App\OAuth\Model\GrantTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

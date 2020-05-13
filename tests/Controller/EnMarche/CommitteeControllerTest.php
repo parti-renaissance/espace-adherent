@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
-use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\Committee;
+use App\Entity\CommitteeFeedItem;
+use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
+use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
+use App\Mailer\Message\CommitteeNewFollowerMessage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\MessengerTestTrait;
+use Tests\App\MessengerTestTrait;
 
 /**
  * @group functional

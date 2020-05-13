@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Command;
+namespace App\AdherentMessage\Command;
 
-use AppBundle\Mailchimp\SynchronizeMessageInterface;
+use App\Mailchimp\SynchronizeMessageInterface;
 
 class SynchronizeAdherentSegmentCommand implements SynchronizeMessageInterface
 {

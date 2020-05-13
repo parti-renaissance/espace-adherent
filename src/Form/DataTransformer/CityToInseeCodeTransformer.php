@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\DataTransformer;
+namespace App\Form\DataTransformer;
 
-use AppBundle\Entity\City;
-use AppBundle\Repository\CityRepository;
+use App\Entity\City;
+use App\Repository\CityRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 

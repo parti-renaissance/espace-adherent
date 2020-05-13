@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdhesionReportMessage;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\ReferentTagRepository;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Entity\Adherent;
+use App\Entity\ReferentTag;
+use App\Mailer\MailerService;
+use App\Mailer\Message\AdhesionReportMessage;
+use App\Repository\AdherentRepository;
+use App\Repository\ReferentTagRepository;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Console\Command\Command;

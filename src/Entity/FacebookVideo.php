@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\FacebookVideoRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FacebookVideoRepository")
  * @ORM\Table(name="facebook_videos")
  *
  * @Algolia\Index(autoIndex=false)

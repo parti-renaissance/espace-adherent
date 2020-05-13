@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthorInterface;
-use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Report\ReportType;
+use App\Entity\Adherent;
+use App\Entity\AuthorInterface;
+use App\Entity\Report\ReportableInterface;
+use App\Report\ReportType;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -57,7 +57,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/ideas-workshop/thread_comments/{id}/approve",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadCommentController:approve",
+ *             "controller": "App\Controller\Api\IdeasWorkshop\ApproveThreadCommentController:approve",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -75,7 +75,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/ideas-workshop/thread_comments/{id}/disapprove",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadCommentController:disapprove",
+ *             "controller": "App\Controller\Api\IdeasWorkshop\ApproveThreadCommentController:disapprove",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -131,8 +131,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\UniqueConstraint(name="threads_comments_uuid_unique", columns="uuid")
  *     }
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ThreadCommentRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\IdeaThreadCommentListener"})
+ * @ORM\Entity(repositoryClass="App\Repository\ThreadCommentRepository")
+ * @ORM\EntityListeners({"App\EntityListener\IdeaThreadCommentListener"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
  * @Algolia\Index(autoIndex=false)

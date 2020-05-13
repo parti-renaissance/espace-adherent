@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Event\EventListener;
+namespace App\Event\EventListener;
 
-use AppBundle\Event\EventEvent;
-use AppBundle\Events;
+use App\Event\EventEvent;
+use App\Events;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;

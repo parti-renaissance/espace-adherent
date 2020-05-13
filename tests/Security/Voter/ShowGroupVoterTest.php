@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter;
+namespace Tests\App\Security\Voter;
 
-use AppBundle\CitizenProject\CitizenProjectPermissions;
-use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseGroup;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\ShowGroupVoter;
+use App\CitizenProject\CitizenProjectPermissions;
+use App\Committee\CommitteePermissions;
+use App\Entity\Adherent;
+use App\Entity\BaseGroup;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\ShowGroupVoter;
 use Ramsey\Uuid\UuidInterface;
 
 class ShowGroupVoterTest extends AbstractAdherentVoterTest

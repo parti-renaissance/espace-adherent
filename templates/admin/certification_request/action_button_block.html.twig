@@ -1,4 +1,4 @@
-{% if is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::BLOCK'), object) %}
+{% if is_granted(constant('App\\Adherent\\CertificationPermissions::BLOCK'), object) %}
     <li>
         <a href="{{ admin.generateObjectUrl('block', object) }}" class="sonata-action-element" title="Refuser">
             <i class="fa fa-check"></i> Bloquer la certification

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Entity\Media;
+use App\Entity\Media;
 use League\Glide\Signatures\SignatureFactory;
 use Symfony\Bridge\Twig\Extension\AssetExtension as BaseAssetExtension;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;

@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
-use AppBundle\Deputy\DeputyMessage;
-use AppBundle\Deputy\DeputyMessageNotifier;
-use AppBundle\Form\DeputyMessageType;
-use AppBundle\Referent\ManagedCommitteesExporter;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CommitteeRepository;
+use App\Controller\CanaryControllerTrait;
+use App\Deputy\DeputyMessage;
+use App\Deputy\DeputyMessageNotifier;
+use App\Form\DeputyMessageType;
+use App\Referent\ManagedCommitteesExporter;
+use App\Repository\AdherentRepository;
+use App\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition;
+namespace App\Statistics\Acquisition;
 
-use AppBundle\Statistics\Acquisition\Calculator\CalculatorInterface;
+use App\Statistics\Acquisition\Calculator\CalculatorInterface;
 
 class Aggregator
 {

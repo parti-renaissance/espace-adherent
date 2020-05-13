@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ElectedRepresentative;
+namespace App\Entity\ElectedRepresentative;
 
 use MyCLabs\Enum\Enum;
 

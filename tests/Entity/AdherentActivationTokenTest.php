@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\AdherentActivationToken;
+use App\Entity\AdherentActivationToken;
 
 class AdherentActivationTokenTest extends AbstractAdherentTokenTest
 {

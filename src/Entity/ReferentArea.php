@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentAreaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReferentAreaRepository")
  * @ORM\Table(name="referent_area", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="referent_area_area_code_unique", columns="area_code")
  * })

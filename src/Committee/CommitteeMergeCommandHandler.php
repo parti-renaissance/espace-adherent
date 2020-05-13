@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Collection\CommitteeMembershipCollection;
-use AppBundle\Committee\Event\FollowCommitteeEvent;
-use AppBundle\Committee\Event\UnfollowCommitteeEvent;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Entity\Reporting\CommitteeMembershipAction;
-use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
-use AppBundle\Entity\Reporting\CommitteeMergeHistory;
-use AppBundle\Events;
-use AppBundle\Membership\UserEvents;
-use AppBundle\Repository\CommitteeMembershipRepository;
+use App\Collection\CommitteeMembershipCollection;
+use App\Committee\Event\FollowCommitteeEvent;
+use App\Committee\Event\UnfollowCommitteeEvent;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\Entity\Reporting\CommitteeMembershipAction;
+use App\Entity\Reporting\CommitteeMembershipHistory;
+use App\Entity\Reporting\CommitteeMergeHistory;
+use App\Events;
+use App\Membership\UserEvents;
+use App\Repository\CommitteeMembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

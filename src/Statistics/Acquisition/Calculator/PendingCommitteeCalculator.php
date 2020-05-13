@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Entity\Committee;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Entity\Committee;
+use App\Statistics\Acquisition\StatisticsRequest;
 
 class PendingCommitteeCalculator extends AbstractCommitteeCalculator
 {

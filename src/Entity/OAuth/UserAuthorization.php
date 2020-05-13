@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Entity\OAuth;
+namespace App\Entity\OAuth;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\OAuth\Model\Scope;
+use App\Entity\Adherent;
+use App\Entity\EntityIdentityTrait;
+use App\OAuth\Model\Scope;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\OAuth\UserAuthorizationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OAuth\UserAuthorizationRepository")
  * @ORM\Table(name="user_authorizations", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="user_authorizations_unique", columns={"user_id", "client_id"})
  * })
@@ -27,7 +27,7 @@ class UserAuthorization
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
@@ -35,7 +35,7 @@ class UserAuthorization
     /**
      * @var Client
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OAuth\Client")
+     * @ORM\ManyToOne(targetEntity="App\Entity\OAuth\Client")
      * @ORM\JoinColumn(name="client_id", referencedColumnName="id", onDelete="RESTRICT")
      */
     private $client;

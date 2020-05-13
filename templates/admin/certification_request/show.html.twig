@@ -3,9 +3,9 @@
 {% import 'admin/certification_request/_macros.html.twig' as macros %}
 
 {% set adherent = object.adherent %}
-{% set can_approve = is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::APPROVE'), object) %}
-{% set can_refuse = is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::REFUSE'), object) %}
-{% set can_block = is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::BLOCK'), object) %}
+{% set can_approve = is_granted(constant('App\\Adherent\\CertificationPermissions::APPROVE'), object) %}
+{% set can_refuse = is_granted(constant('App\\Adherent\\CertificationPermissions::REFUSE'), object) %}
+{% set can_block = is_granted(constant('App\\Adherent\\CertificationPermissions::BLOCK'), object) %}
 
 {% block show %}
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem;
-use AppBundle\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem;
-use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem;
+use App\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem;
+use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

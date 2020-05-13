@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
 use ApiPlatform\Core\Metadata\Resource\Factory\CachedResourceMetadataFactory;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class IdeaThreadNormalizer implements NormalizerInterface

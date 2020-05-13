@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ApplicationRequest;
+namespace App\Entity\ApplicationRequest;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="application_request_theme")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRequest\ThemeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ApplicationRequest\ThemeRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

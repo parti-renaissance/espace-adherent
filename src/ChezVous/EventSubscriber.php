@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\ChezVous;
+namespace App\ChezVous;
 
-use AppBundle\Events;
-use AppBundle\Producer\ChezVous\AlgoliaProducerInterface;
+use App\Events;
+use App\Producer\ChezVous\AlgoliaProducerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EventSubscriber implements EventSubscriberInterface

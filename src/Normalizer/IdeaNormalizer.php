@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
+use App\Entity\Adherent;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Repository\IdeasWorkshop\IdeaRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

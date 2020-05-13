@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Content;
+namespace App\Content;
 
-use AppBundle\Entity\OrderArticle;
+use App\Entity\OrderArticle;
 
 class OrderArticleFactory
 {

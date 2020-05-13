@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Doctrine;
+namespace App\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\VisibleStatusesInterface;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Entity\VisibleStatusesInterface;
 use Doctrine\ORM\QueryBuilder;
 
 class VisibleStatusesExtension implements ContextAwareQueryCollectionExtensionInterface

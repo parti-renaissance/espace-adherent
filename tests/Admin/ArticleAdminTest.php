@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Admin;
+namespace Tests\App\Admin;
 
-use AppBundle\Entity\Article;
+use App\Entity\Article;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

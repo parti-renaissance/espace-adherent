@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\LegislativeDistrictZone;
+use App\Entity\LegislativeDistrictZone;
 use Doctrine\ORM\EntityRepository;
 
 class LegislativeDistrictZoneRepository extends EntityRepository

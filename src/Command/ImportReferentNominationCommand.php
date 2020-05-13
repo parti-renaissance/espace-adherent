@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Content\MediaFactory;
-use AppBundle\Entity\Media;
-use AppBundle\Entity\Referent;
-use AppBundle\Entity\ReferentArea;
-use AppBundle\Repository\MediaRepository;
-use AppBundle\Repository\ReferentAreaRepository;
-use AppBundle\Repository\ReferentRepository;
-use AppBundle\ValueObject\Genders;
+use App\Content\MediaFactory;
+use App\Entity\Media;
+use App\Entity\Referent;
+use App\Entity\ReferentArea;
+use App\Repository\MediaRepository;
+use App\Repository\ReferentAreaRepository;
+use App\Repository\ReferentRepository;
+use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManager;
 use League\Flysystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

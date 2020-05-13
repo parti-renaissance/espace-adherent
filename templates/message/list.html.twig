@@ -31,8 +31,8 @@
                                 <label class="filter__label" for="message-status-filter">Statut</label>
                                 <select class="filter__field" id="message-status-filter" name="status">
                                     <option value="">Tous les messages</option>
-                                    <option {{ message_filter_status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') }}">Messages envoyés</option>
-                                    <option {{ message_filter_status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') }}">Brouillons</option>
+                                    <option {{ message_filter_status == constant('App\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') ? 'selected="selected"' }} value="{{ constant('App\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') }}">Messages envoyés</option>
+                                    <option {{ message_filter_status == constant('App\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'selected="selected"' }} value="{{ constant('App\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') }}">Brouillons</option>
                                 </select>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                 {% for message in messages %}
                     <tr>
                         <td>
-                            <span class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
+                            <span class="{{ message.status == constant('App\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
                                 {{ message.status|trans }}
                             </span>
                         </td>

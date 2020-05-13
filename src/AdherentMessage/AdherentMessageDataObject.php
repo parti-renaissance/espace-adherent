@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\AdherentMessage;
+namespace App\AdherentMessage;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class AdherentMessageDataObject

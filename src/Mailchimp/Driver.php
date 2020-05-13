@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailchimp;
+namespace App\Mailchimp;
 
-use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
-use AppBundle\Mailchimp\Campaign\Request\EditCampaignRequest;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberTagsRequest;
+use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
+use App\Mailchimp\Campaign\Request\EditCampaignRequest;
+use App\Mailchimp\Synchronisation\Request\MemberRequest;
+use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;

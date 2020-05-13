@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity represents a link between CitizenProject and Committee.
  *
  * @ORM\Table(name="citizen_project_committee_supports")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenProjectCommitteeSupportRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CitizenProjectCommitteeSupportRepository")
  * @Algolia\Index(autoIndex=false)
  */
 class CitizenProjectCommitteeSupport
@@ -25,12 +25,12 @@ class CitizenProjectCommitteeSupport
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProject", inversedBy="committeeSupports", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\CitizenProject", inversedBy="committeeSupports", cascade={"persist"})
      */
     private $citizenProject;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee", fetch="EAGER", inversedBy="citizenProjectSupports", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", fetch="EAGER", inversedBy="citizenProjectSupports", cascade={"persist"})
      */
     private $committee;
 

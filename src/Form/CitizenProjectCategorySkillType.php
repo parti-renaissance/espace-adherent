@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\CitizenProjectCategorySkill;
-use AppBundle\Entity\CitizenProjectSkill;
+use App\Entity\CitizenProjectCategorySkill;
+use App\Entity\CitizenProjectSkill;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

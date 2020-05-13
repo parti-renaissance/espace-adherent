@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Query\Mysql;
+namespace App\Query\Mysql;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;

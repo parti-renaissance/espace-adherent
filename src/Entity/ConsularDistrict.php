@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ConsularDistrictRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ConsularDistrictRepository")
  * @ORM\Table(
  *     uniqueConstraints={@ORM\UniqueConstraint(name="consular_district_code_unique", columns="code")}
  * )

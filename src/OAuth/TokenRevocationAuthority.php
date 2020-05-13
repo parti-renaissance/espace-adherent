@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\OAuth;
+namespace App\OAuth;
 
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\Repository\OAuth\AccessTokenRepository;
-use AppBundle\Repository\OAuth\RefreshTokenRepository;
+use App\Entity\OAuth\Client;
+use App\Repository\OAuth\AccessTokenRepository;
+use App\Repository\OAuth\RefreshTokenRepository;
 
 class TokenRevocationAuthority
 {

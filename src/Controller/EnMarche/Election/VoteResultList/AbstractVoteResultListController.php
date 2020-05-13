@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VoteResultList;
+namespace App\Controller\EnMarche\Election\VoteResultList;
 
-use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election\VoteResultListCollection;
-use AppBundle\Form\VoteResultListCollectionType;
-use AppBundle\Repository\Election\VoteResultListCollectionRepository;
+use App\Election\ElectionManager;
+use App\Entity\City;
+use App\Entity\Election\VoteResultListCollection;
+use App\Form\VoteResultListCollectionType;
+use App\Repository\Election\VoteResultListCollectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;

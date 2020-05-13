@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Committee\Feed;
+namespace App\Committee\Feed;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

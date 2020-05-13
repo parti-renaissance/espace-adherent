@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Command;
+namespace Tests\App\Command;
 
-use AppBundle\Command\ImportReferentBioPictureCommand;
-use AppBundle\Entity\Media;
-use AppBundle\Entity\Referent;
+use App\Command\ImportReferentBioPictureCommand;
+use App\Entity\Media;
+use App\Entity\Referent;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group command

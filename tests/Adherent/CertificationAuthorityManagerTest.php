@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Adherent;
+namespace Tests\App\Adherent;
 
-use AppBundle\Adherent\CertificationAuthorityManager;
-use AppBundle\Repository\AdherentRepository;
+use App\Adherent\CertificationAuthorityManager;
+use App\Repository\AdherentRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

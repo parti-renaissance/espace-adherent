@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Adherent\UnregistrationHandler;
-use AppBundle\Entity\Adherent;
-use AppBundle\Membership\UserEvent;
-use AppBundle\Membership\UserEvents;
-use AppBundle\Repository\AdherentRepository;
+use App\Adherent\UnregistrationHandler;
+use App\Entity\Adherent;
+use App\Membership\UserEvent;
+use App\Membership\UserEvents;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\WebHook;
+namespace App\WebHook;
 
 use MyCLabs\Enum\Enum;
 

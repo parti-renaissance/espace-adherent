@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Consumer;
+namespace App\Consumer;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\Message;
+use App\Mailer\MailerService;
+use App\Mailer\Message\Message;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints\Count;

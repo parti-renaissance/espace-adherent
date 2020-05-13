@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\HomeBlock;
+use App\Entity\HomeBlock;
 use Doctrine\ORM\EntityRepository;
 
 class HomeBlockRepository extends EntityRepository

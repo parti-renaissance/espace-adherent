@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Procuration\ElectionContext;
-use AppBundle\Procuration\Exception\InvalidProcurationFlowException;
+use App\Entity\ElectionRound;
+use App\Procuration\ElectionContext;
+use App\Procuration\Exception\InvalidProcurationFlowException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;

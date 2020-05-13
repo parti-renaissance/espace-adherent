@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Repository\VotePlaceRepository;
+use App\Address\Address;
+use App\Entity\VotePlace;
+use App\Intl\FranceCitiesBundle;
+use App\Repository\VotePlaceRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\Extension;
+namespace App\Admin\Extension;
 
-use AppBundle\Form\EventListener\EmptyTranslationRemoverListener;
+use App\Form\EventListener\EmptyTranslationRemoverListener;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Form\FormMapper;
 

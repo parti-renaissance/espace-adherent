@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\CitizenProjectCategory;
+use App\Entity\CitizenProjectCategory;
 use Doctrine\ORM\EntityRepository;
 
 class CitizenProjectCategorySkillRepository extends EntityRepository

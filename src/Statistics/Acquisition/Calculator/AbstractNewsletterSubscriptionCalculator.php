@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
-use AppBundle\Repository\EmailSubscriptionHistoryRepository;
-use AppBundle\Statistics\Acquisition\Calculator\Category\NewsletterSubscriptionCategoryTrait;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Entity\Reporting\EmailSubscriptionHistoryAction;
+use App\Repository\EmailSubscriptionHistoryRepository;
+use App\Statistics\Acquisition\Calculator\Category\NewsletterSubscriptionCategoryTrait;
+use App\Statistics\Acquisition\StatisticsRequest;
 
 abstract class AbstractNewsletterSubscriptionCalculator extends AbstractCalculator
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Csv\CsvResponseFactory;
-use AppBundle\Repository\AdherentRepository;
+use App\Csv\CsvResponseFactory;
+use App\Repository\AdherentRepository;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Election;
+namespace App\Entity\Election;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\City;
+use App\Entity\City;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

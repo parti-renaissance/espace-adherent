@@ -10,4 +10,4 @@ exercise_html_purifier:
         Attr.AllowedFrameTargets: "_blank"
         CSS.AllowedProperties: text-align,border-style,border-width,float,height,width,margin
         AutoFormat.Custom:
-            - '@AppBundle\HTMLPurifier\Injector\ImageDimension'
+            - '@App\HTMLPurifier\Injector\ImageDimension'

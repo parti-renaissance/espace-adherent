@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Test\Recaptcha;
+namespace Tests\App\Test\Recaptcha;
 
-use AppBundle\Recaptcha\RecaptchaApiClient;
+use App\Recaptcha\RecaptchaApiClient;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
 

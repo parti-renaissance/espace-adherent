@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeCandidacy;
+use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

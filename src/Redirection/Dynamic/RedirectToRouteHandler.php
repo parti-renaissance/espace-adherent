@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Redirection\Dynamic;
+namespace App\Redirection\Dynamic;
 
-use AppBundle\Repository\ArticleRepository;
-use AppBundle\Repository\EventRepository;
-use AppBundle\Repository\OrderArticleRepository;
-use AppBundle\Repository\ProposalRepository;
+use App\Repository\ArticleRepository;
+use App\Repository\EventRepository;
+use App\Repository\OrderArticleRepository;
+use App\Repository\ProposalRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

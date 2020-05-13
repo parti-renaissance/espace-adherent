@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\Report\Report;
-use AppBundle\Entity\Report\ReportReasonEnum;
-use AppBundle\Report\ReportCommand;
-use AppBundle\Report\ReportCreationCommandHandler;
-use AppBundle\Report\ReportManager;
-use AppBundle\Report\ReportType;
+use App\Entity\Report\Report;
+use App\Entity\Report\ReportReasonEnum;
+use App\Report\ReportCommand;
+use App\Report\ReportCreationCommandHandler;
+use App\Report\ReportManager;
+use App\Report\ReportType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +25,7 @@ class ReportController extends AbstractController
      *     "/report/{type}/{uuid}",
      *     name="api_report",
      *     requirements={
-     *         "type": AppBundle\Report\ReportType::TYPES_URI_PATTERN,
+     *         "type": App\Report\ReportType::TYPES_URI_PATTERN,
      *         "uuid": "%pattern_uuid%"
      *     },
      *     methods={"POST"}

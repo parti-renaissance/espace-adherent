@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity\Timeline;
+namespace Tests\App\Entity\Timeline;
 
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Entity\Timeline\ProfileTranslation;
+use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\ProfileTranslation;
 use PHPUnit\Framework\TestCase;
 
 class ProfileTest extends TestCase

@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\EventListener;
+namespace Tests\App\EventListener;
 
-use AppBundle\Entity\Mooc\AttachmentFile;
-use AppBundle\EntityListener\FileListener;
+use App\Entity\Mooc\AttachmentFile;
+use App\EntityListener\FileListener;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

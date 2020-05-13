@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Search;
+namespace App\Search;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Repository\CitizenProjectRepository;
+use App\CitizenProject\CitizenProjectManager;
+use App\Repository\CitizenProjectRepository;
 
 class CitizenProjectSearchResultsProvider implements SearchResultsProviderInterface
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\ApplicationRequestCandidate;
+namespace App\Controller\EnMarche\ApplicationRequestCandidate;
 
-use AppBundle\ApplicationRequest\ApplicationRequestRepository;
-use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
-use AppBundle\ApplicationRequest\Filter\ListFilter;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Form\ApplicationRequest\ApplicationRequestListFilterType;
-use AppBundle\Form\ApplicationRequest\ApplicationRequestTagsType;
+use App\ApplicationRequest\ApplicationRequestRepository;
+use App\ApplicationRequest\ApplicationRequestTypeEnum;
+use App\ApplicationRequest\Filter\ListFilter;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Form\ApplicationRequest\ApplicationRequestListFilterType;
+use App\Form\ApplicationRequest\ApplicationRequestTagsType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

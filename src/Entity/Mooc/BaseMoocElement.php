@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Mooc;
+namespace App\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityTimestampableTrait;
+use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,9 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     MoocElementTypeEnum::VIDEO: "AppBundle\Entity\Mooc\MoocVideoElement",
- *     MoocElementTypeEnum::QUIZ: "AppBundle\Entity\Mooc\MoocQuizElement",
- *     MoocElementTypeEnum::IMAGE: "AppBundle\Entity\Mooc\MoocImageElement",
+ *     MoocElementTypeEnum::VIDEO: "App\Entity\Mooc\MoocVideoElement",
+ *     MoocElementTypeEnum::QUIZ: "App\Entity\Mooc\MoocQuizElement",
+ *     MoocElementTypeEnum::IMAGE: "App\Entity\Mooc\MoocImageElement",
  * })
  *
  * @Algolia\Index(autoIndex=false)

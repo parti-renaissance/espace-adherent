@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Timeline;
+namespace App\Timeline;
 
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Repository\Timeline\MeasureRepository;
+use App\Entity\Timeline\Measure;
+use App\Repository\Timeline\MeasureRepository;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class TimelineImageFactory

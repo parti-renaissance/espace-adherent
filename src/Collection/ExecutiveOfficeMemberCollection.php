@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Collection;
+namespace App\Collection;
 
-use AppBundle\Entity\Biography\ExecutiveOfficeMember;
+use App\Entity\Biography\ExecutiveOfficeMember;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ExecutiveOfficeMemberCollection extends ArrayCollection

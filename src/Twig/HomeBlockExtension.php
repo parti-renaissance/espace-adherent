@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Entity\HomeBlock;
+use App\Entity\HomeBlock;
 use Doctrine\Common\Persistence\ObjectManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

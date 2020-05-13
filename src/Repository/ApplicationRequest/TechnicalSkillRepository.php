@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\ApplicationRequest;
+namespace App\Repository\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
+use App\Entity\ApplicationRequest\TechnicalSkill;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;

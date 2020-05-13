@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Request;
+namespace App\Mailchimp\Synchronisation\Request;
 
 class MemberRequest implements MemberRequestInterface
 {

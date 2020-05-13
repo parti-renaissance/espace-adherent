@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Referent;
-use AppBundle\Entity\ReferentArea;
-use AppBundle\ValueObject\Genders;
+use App\Entity\Referent;
+use App\Entity\ReferentArea;
+use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Producer\ChezVous;
+namespace App\Producer\ChezVous;
 
-use AppBundle\Entity\ChezVous\MeasureType;
+use App\Entity\ChezVous\MeasureType;
 
 interface AlgoliaProducerInterface
 {

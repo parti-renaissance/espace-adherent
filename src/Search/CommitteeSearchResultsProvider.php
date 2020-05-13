@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Search;
+namespace App\Search;
 
-use AppBundle\Repository\CommitteeRepository;
+use App\Repository\CommitteeRepository;
 
 class CommitteeSearchResultsProvider implements SearchResultsProviderInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Geocoder\GeocodableEntityEventInterface;
-use AppBundle\Geocoder\GeocodableInterface;
+use App\Geocoder\GeocodableEntityEventInterface;
+use App\Geocoder\GeocodableInterface;
 
 final class DonationWasUpdatedEvent extends DonationEvent implements GeocodableEntityEventInterface
 {

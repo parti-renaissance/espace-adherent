@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\LegislativeCandidate;
-use AppBundle\Entity\LegislativeDistrictZone;
+use App\Entity\LegislativeCandidate;
+use App\Entity\LegislativeDistrictZone;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;

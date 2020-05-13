@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter;
+namespace Tests\App\Security\Voter;
 
-use AppBundle\CitizenAction\CitizenActionPermissions;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventPermissions;
-use AppBundle\Repository\EventRegistrationRepository;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\AttendEventVoter;
+use App\CitizenAction\CitizenActionPermissions;
+use App\Entity\CitizenAction;
+use App\Entity\Event;
+use App\Event\EventPermissions;
+use App\Repository\EventRegistrationRepository;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\AttendEventVoter;
 
 class AttendEventVoterTest extends AbstractAdherentVoterTest
 {

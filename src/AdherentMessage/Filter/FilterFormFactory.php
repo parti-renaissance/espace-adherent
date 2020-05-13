@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Filter;
+namespace App\AdherentMessage\Filter;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\Entity\Adherent;
-use AppBundle\Exception\InvalidAdherentMessageType;
-use AppBundle\Form\AdherentMessage\AdherentZoneFilterType;
-use AppBundle\Form\AdherentMessage\CommitteeFilterType;
-use AppBundle\Form\AdherentMessage\MunicipalChiefFilterType;
-use AppBundle\Form\AdherentMessage\ReferentFilterType;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\Entity\Adherent;
+use App\Exception\InvalidAdherentMessageType;
+use App\Form\AdherentMessage\AdherentZoneFilterType;
+use App\Form\AdherentMessage\CommitteeFilterType;
+use App\Form\AdherentMessage\MunicipalChiefFilterType;
+use App\Form\AdherentMessage\ReferentFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 

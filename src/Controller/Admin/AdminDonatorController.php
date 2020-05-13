@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Donation\DonatorExtractCommand;
-use AppBundle\Donation\DonatorExtractCommandHandler;
-use AppBundle\Donation\DonatorMergeCommand;
-use AppBundle\Donation\DonatorMergeCommandHandler;
-use AppBundle\Form\Admin\DonatorExtractType;
-use AppBundle\Form\Admin\DonatorMergeType;
+use App\Donation\DonatorExtractCommand;
+use App\Donation\DonatorExtractCommandHandler;
+use App\Donation\DonatorMergeCommand;
+use App\Donation\DonatorMergeCommandHandler;
+use App\Form\Admin\DonatorExtractType;
+use App\Form\Admin\DonatorMergeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

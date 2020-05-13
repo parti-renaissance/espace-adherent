@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\MessageLimiter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Repository\AdherentMessageRepository;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\MessageLimiter;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Repository\AdherentMessageRepository;
 
 class AdherentMessageLimitVoter extends AbstractAdherentVoter
 {

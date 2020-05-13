@@ -1,8 +1,8 @@
 <?php
 
-namespace Test\AppBundle\MediaGenerator;
+namespace Test\App\MediaGenerator;
 
-use AppBundle\MediaGenerator\MediaContent;
+use App\MediaGenerator\MediaContent;
 use PHPUnit\Framework\TestCase;
 
 class MediaContentTest extends TestCase

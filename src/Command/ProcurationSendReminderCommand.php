@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\ProcurationRequest;
+use App\Entity\ProcurationRequest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,7 +17,7 @@ class ProcurationSendReminderCommand extends ContainerAwareCommand
     private $manager;
 
     /**
-     * @var \AppBundle\Procuration\ProcurationReminderHandler
+     * @var \App\Procuration\ProcurationReminderHandler
      */
     private $reminder;
 

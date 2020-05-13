@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
-use AppBundle\Entity\City;
-use AppBundle\Entity\Department;
-use AppBundle\Entity\ElectedRepresentative\ElectedRepresentative;
-use AppBundle\Entity\ElectedRepresentative\Mandate;
-use AppBundle\Entity\ElectedRepresentative\Zone;
-use AppBundle\Repository\ElectedRepresentative\MandateRepository;
+use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
+use App\Entity\City;
+use App\Entity\Department;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\ElectedRepresentative\Mandate;
+use App\Entity\ElectedRepresentative\Zone;
+use App\Repository\ElectedRepresentative\MandateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;

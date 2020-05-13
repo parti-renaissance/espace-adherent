@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Entity\PostAddress;
+use App\Entity\Adherent;
+use App\Entity\BaseEvent;
+use App\Entity\CitizenAction;
+use App\Entity\Committee;
+use App\Entity\CommitteeFeedItem;
+use App\Entity\Event;
+use App\Entity\EventRegistration;
+use App\Entity\PostAddress;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractEventMessageTest extends TestCase

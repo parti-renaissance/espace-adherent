@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Form\Jecoute\ChoiceFormType;
-use AppBundle\Form\Jecoute\QuestionChoiceType;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
+use App\Form\Jecoute\ChoiceFormType;
+use App\Form\Jecoute\QuestionChoiceType;
+use App\Jecoute\SurveyQuestionTypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

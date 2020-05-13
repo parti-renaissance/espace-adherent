@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Collection\CitizenProjectMembershipCollection;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectMembership;
+use App\Collection\AdherentCollection;
+use App\Collection\CitizenProjectMembershipCollection;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectMembership;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;

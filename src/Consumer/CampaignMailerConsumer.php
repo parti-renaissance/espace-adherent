@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Consumer;
+namespace App\Consumer;
 
 class CampaignMailerConsumer extends AbstractMailerConsumer
 {

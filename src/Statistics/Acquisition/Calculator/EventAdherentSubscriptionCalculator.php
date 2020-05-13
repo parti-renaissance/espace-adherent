@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
 class EventAdherentSubscriptionCalculator extends AbstractEventSubscriptionCalculator
 {

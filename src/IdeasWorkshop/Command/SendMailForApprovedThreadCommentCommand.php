@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\IdeasWorkshop\Command;
+namespace App\IdeasWorkshop\Command;
 
-use AppBundle\Entity\IdeasWorkshop\BaseComment;
+use App\Entity\IdeasWorkshop\BaseComment;
 
 class SendMailForApprovedThreadCommentCommand
 {

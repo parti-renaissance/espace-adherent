@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\CitizenAction;
+namespace App\CitizenAction;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\CitizenActionCategory;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Event\BaseEventCommand;
-use AppBundle\Validator\DateRange;
+use App\Address\Address;
+use App\Entity\Adherent;
+use App\Entity\CitizenAction;
+use App\Entity\CitizenActionCategory;
+use App\Entity\CitizenProject;
+use App\Event\BaseEventCommand;
+use App\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
 
 /**

@@ -2,17 +2,17 @@
 
 namespace Entity;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\MemberSummary\JobExperience;
-use AppBundle\Entity\MemberSummary\Language;
-use AppBundle\Entity\MemberSummary\Training;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\Skill;
-use AppBundle\Entity\Summary;
-use AppBundle\Membership\ActivityPositions;
-use AppBundle\Summary\Contribution;
-use AppBundle\Summary\JobDuration;
-use AppBundle\Summary\JobLocation;
+use App\Entity\Adherent;
+use App\Entity\MemberSummary\JobExperience;
+use App\Entity\MemberSummary\Language;
+use App\Entity\MemberSummary\Training;
+use App\Entity\PostAddress;
+use App\Entity\Skill;
+use App\Entity\Summary;
+use App\Membership\ActivityPositions;
+use App\Summary\Contribution;
+use App\Summary\JobDuration;
+use App\Summary\JobLocation;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;

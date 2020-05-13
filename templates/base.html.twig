@@ -142,7 +142,7 @@
             {% endfor %}
         {% endblock %}
 
-        {% block banner include('banner/call.html.twig', { banner: get_home_block(constant('AppBundle\\Entity\\HomeBlock::HEADER_BANNER')) }) %}
+        {% block banner include('banner/call.html.twig', { banner: get_home_block(constant('App\\Entity\\HomeBlock::HEADER_BANNER')) }) %}
 
         {% block header %}
             {{ include('components/_header.html.twig') }}

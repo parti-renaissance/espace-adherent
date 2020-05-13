@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Report;
+namespace App\Entity\Report;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\CitizenProject;
+use App\Entity\CitizenProject;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,7 +16,7 @@ class CitizenProjectReport extends Report
     /**
      * @var CitizenProject
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProject")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CitizenProject")
      * @ORM\JoinColumn(name="citizen_project_id")
      */
     protected $subject;

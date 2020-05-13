@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,7 +9,7 @@ trait EntityMediaTrait
     /**
      * @var Media|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
      */
     private $media;
 

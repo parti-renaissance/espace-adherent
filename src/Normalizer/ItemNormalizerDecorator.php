@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use ApiPlatform\Core\Serializer\ItemNormalizer;

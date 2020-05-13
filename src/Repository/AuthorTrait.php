@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 
 trait AuthorTrait
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage;
+namespace App\Entity\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\AdherentMessageTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

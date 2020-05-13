@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Form\CitizenProjectImageType;
-use AppBundle\Form\CitizenProjectTractType;
-use AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator;
-use AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator;
+use App\Entity\CitizenProject;
+use App\Form\CitizenProjectImageType;
+use App\Form\CitizenProjectTractType;
+use App\MediaGenerator\Image\CitizenProjectCoverGenerator;
+use App\MediaGenerator\Pdf\CitizenProjectTractGenerator;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\WebHook\WebHook;
-use AppBundle\WebHook\Event;
-use AppBundle\WebHook\Service;
+use App\Entity\WebHook\WebHook;
+use App\WebHook\Event;
+use App\WebHook\Service;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

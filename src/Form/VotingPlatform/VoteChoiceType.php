@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form\VotingPlatform;
+namespace App\Form\VotingPlatform;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

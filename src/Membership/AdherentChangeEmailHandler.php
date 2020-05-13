@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentChangeEmailToken;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentChangeEmailMessage;
-use AppBundle\Repository\AdherentChangeEmailTokenRepository;
+use App\Entity\Adherent;
+use App\Entity\AdherentChangeEmailToken;
+use App\Mailer\MailerService;
+use App\Mailer\Message\AdherentChangeEmailMessage;
+use App\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

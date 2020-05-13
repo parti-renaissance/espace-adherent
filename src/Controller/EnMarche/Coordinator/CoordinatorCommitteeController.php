@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Coordinator;
+namespace App\Controller\EnMarche\Coordinator;
 
-use AppBundle\Coordinator\Filter\CommitteeFilter;
-use AppBundle\Entity\Committee;
-use AppBundle\Exception\BaseGroupException;
-use AppBundle\Form\CoordinatorAreaType;
+use App\Coordinator\Filter\CommitteeFilter;
+use App\Entity\Committee;
+use App\Exception\BaseGroupException;
+use App\Form\CoordinatorAreaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

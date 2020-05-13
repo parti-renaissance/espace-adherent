@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter;
+namespace Tests\App\Security\Voter;
 
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\MembershipVoter;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\MembershipVoter;
 
 class MembershipVoterTest extends AbstractAdherentVoterTest
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle;
+namespace Tests\App;
 
-use AppBundle\Messenger\MessageRecorder\MessageRecorderInterface;
+use App\Messenger\MessageRecorder\MessageRecorderInterface;
 
 trait MessengerTestTrait
 {

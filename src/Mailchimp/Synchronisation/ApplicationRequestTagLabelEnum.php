@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation;
+namespace App\Mailchimp\Synchronisation;
 
 use MyCLabs\Enum\Enum;
 

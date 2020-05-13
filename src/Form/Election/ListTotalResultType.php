@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Election;
+namespace App\Form\Election;
 
-use AppBundle\Entity\Election\ListTotalResult;
+use App\Entity\Election\ListTotalResult;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;

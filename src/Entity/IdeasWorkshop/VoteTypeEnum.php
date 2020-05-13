@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use MyCLabs\Enum\Enum;
 

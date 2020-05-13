@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Mailer\Message\CitizenActionNotificationMessage;
+use App\Mailer\Message\CitizenActionNotificationMessage;
 
 class CitizenActionNotificationMessageTest extends AbstractEventMessageTest
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCommitteeSupport;
-use AppBundle\Entity\Committee;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCommitteeSupport;
+use App\Entity\Committee;
 use Doctrine\ORM\EntityRepository;
 
 class CitizenProjectCommitteeSupportRepository extends EntityRepository

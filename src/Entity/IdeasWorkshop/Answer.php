@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\Entity\UserDocument;
-use AppBundle\Entity\UserDocumentInterface;
-use AppBundle\Entity\UserDocumentTrait;
-use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
+use App\Entity\UserDocument;
+use App\Entity\UserDocumentInterface;
+use App\Entity\UserDocumentTrait;
+use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -85,7 +85,7 @@ class Answer implements UserDocumentInterface
     /**
      * @var UserDocument[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\UserDocument", cascade={"all"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\UserDocument", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinTable(
      *     name="ideas_workshop_answer_user_documents",
      *     joinColumns={

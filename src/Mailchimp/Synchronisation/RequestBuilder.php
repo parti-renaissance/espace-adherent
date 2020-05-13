@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation;
+namespace App\Mailchimp\Synchronisation;
 
-use AppBundle\Collection\CommitteeMembershipCollection;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\SubscriptionType;
-use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberTagsRequest;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Collection\CommitteeMembershipCollection;
+use App\Entity\Adherent;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Entity\PostAddress;
+use App\Entity\SubscriptionType;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Manager;
+use App\Mailchimp\Synchronisation\Request\MemberRequest;
+use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
+use App\Repository\ReferentTagRepository;
 
 class RequestBuilder
 {

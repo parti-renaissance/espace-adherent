@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Entity\Donation;
+use App\Entity\Donation;
 use Symfony\Component\EventDispatcher\Event;
 
 class DonationEvent extends Event

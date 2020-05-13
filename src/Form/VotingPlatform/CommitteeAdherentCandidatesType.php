@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\VotingPlatform;
+namespace App\Form\VotingPlatform;
 
-use AppBundle\Entity\VotingPlatform\CandidateGroup;
-use AppBundle\Entity\VotingPlatform\VoteChoice;
-use AppBundle\VotingPlatform\Election\VoteCommand\CommitteeAdherentVoteCommand;
+use App\Entity\VotingPlatform\CandidateGroup;
+use App\Entity\VotingPlatform\VoteChoice;
+use App\VotingPlatform\Election\VoteCommand\CommitteeAdherentVoteCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

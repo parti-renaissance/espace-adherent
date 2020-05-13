@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Unregistration;
+use App\Entity\Unregistration;
 
 class UnregistrationSerializer
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailer\EventSubscriber;
+namespace App\Mailer\EventSubscriber;
 
-use AppBundle\Entity\Email;
-use AppBundle\Mailer\Event\MailerEvent;
-use AppBundle\Mailer\Event\MailerEvents;
-use AppBundle\Repository\EmailRepository;
+use App\Entity\Email;
+use App\Mailer\Event\MailerEvent;
+use App\Mailer\Event\MailerEvents;
+use App\Repository\EmailRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

@@ -1,7 +1,7 @@
 <?php
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\ReferentTag;
+use App\Repository\AdherentRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
 
 class ReferentTagContext extends RawMinkContext

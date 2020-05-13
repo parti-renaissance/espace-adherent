@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Address\Address;
+use App\Entity\Adherent;
+use App\Repository\ReferentTagRepository;
 
 class ManagedUserVoter extends AbstractAdherentVoter
 {

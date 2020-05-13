@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Form\DataTransformer\CityToInseeCodeTransformer;
-use AppBundle\MunicipalManager\MunicipalManagerAssociationValueObject;
+use App\Form\DataTransformer\CityToInseeCodeTransformer;
+use App\MunicipalManager\MunicipalManagerAssociationValueObject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;

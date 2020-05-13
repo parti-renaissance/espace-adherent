@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage;
+namespace App\Entity\AdherentMessage;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\AdherentMessage\AdherentMessageDataObject;
-use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EntityIdentityTrait;
+use App\AdherentMessage\AdherentMessageDataObject;
+use App\AdherentMessage\AdherentMessageStatusEnum;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\Adherent;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentMessageRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AdherentMessageRepository")
  * @ORM\Table(name="adherent_messages")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
@@ -51,7 +51,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      */
     private $author;
 
@@ -91,7 +91,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var AdherentMessageFilterInterface|null
      *
      * @ORM\OneToOne(
-     *     targetEntity="AppBundle\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter",
+     *     targetEntity="App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter",
      *     inversedBy="message",
      *     cascade={"all"},
      *     fetch="EAGER",
@@ -111,7 +111,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var MailchimpCampaign[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\AdherentMessage\MailchimpCampaign",
+     *     targetEntity="App\Entity\AdherentMessage\MailchimpCampaign",
      *     mappedBy="message",
      *     cascade={"all"},
      *     orphanRemoval=true

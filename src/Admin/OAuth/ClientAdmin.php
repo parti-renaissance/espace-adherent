@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Admin\OAuth;
+namespace App\Admin\OAuth;
 
-use AppBundle\Form\WebHookType;
-use AppBundle\OAuth\ClientManager;
-use AppBundle\OAuth\Form\GrantTypesType;
-use AppBundle\OAuth\Form\ScopesType;
+use App\Form\WebHookType;
+use App\OAuth\ClientManager;
+use App\OAuth\Form\GrantTypesType;
+use App\OAuth\Form\ScopesType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

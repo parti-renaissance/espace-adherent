@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="home_blocks")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\HomeBlockRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\HomeBlockRepository")
  *
  * @UniqueEntity(fields={"position"})
  *
@@ -82,7 +82,7 @@ class HomeBlock
     /**
      * @var Media|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media")
      *
      * @Assert\NotBlank
      */
@@ -146,7 +146,7 @@ class HomeBlock
      *
      * @ORM\Column(length=6, nullable=true)
      *
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Admin\Color", "all"})
+     * @Assert\Choice(strict=true, callback={"\App\Admin\Color", "all"})
      */
     private $colorCta;
 
@@ -155,7 +155,7 @@ class HomeBlock
      *
      * @ORM\Column(length=6, nullable=true)
      *
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Admin\Color", "all"})
+     * @Assert\Choice(strict=true, callback={"\App\Admin\Color", "all"})
      */
     private $bgColor;
 

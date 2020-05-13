@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

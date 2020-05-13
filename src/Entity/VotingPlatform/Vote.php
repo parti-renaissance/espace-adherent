@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VotingPlatform\VoteRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoteRepository")
  *
  * @ORM\Table(name="voting_platform_vote", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_id", "election_id"}),
@@ -28,7 +28,7 @@ class Vote
     /**
      * @var Voter
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Voter", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Voter", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $voter;
@@ -36,7 +36,7 @@ class Vote
     /**
      * @var Election
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Election")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Election")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $election;

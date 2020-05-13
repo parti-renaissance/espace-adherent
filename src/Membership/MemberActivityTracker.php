@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\EventRegistrationRepository;
-use AppBundle\Repository\EventRepository;
+use App\Entity\Adherent;
+use App\Repository\EventRegistrationRepository;
+use App\Repository\EventRepository;
 
 class MemberActivityTracker
 {

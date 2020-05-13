@@ -83,9 +83,9 @@ services:
         class: Symfony\Component\Messenger\Transport\Sender\SendersLocator
         arguments:
             $senders:
-                AppBundle\Mailchimp\CampaignMessageInterface: { mailchimp_campaign: '@messenger.transport.mailchimp_campaign' }
-                AppBundle\Mailchimp\SynchronizeMessageInterface: { mailchimp_sync: '@messenger.transport.mailchimp_sync' }
-                AppBundle\Messenger\Message\AsynchronousMessageInterface: { default: '@messenger.transport.default' }
+                App\Mailchimp\CampaignMessageInterface: { mailchimp_campaign: '@messenger.transport.mailchimp_campaign' }
+                App\Mailchimp\SynchronizeMessageInterface: { mailchimp_sync: '@messenger.transport.mailchimp_sync' }
+                App\Messenger\Message\AsynchronousMessageInterface: { default: '@messenger.transport.default' }
 
     Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface: '@messenger.transport.senders_locator'
 
@@ -103,6 +103,6 @@ services:
         tags: [container.service_locator]
         arguments: [[]]
 
-    AppBundle\Messenger\:
+    App\Messenger\:
         resource: '../../src/Messenger/*'
         exclude: '../../src/Messenger/{Message}'

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Repository\NewsletterSubscriptionRepository;
-use AppBundle\Statistics\Acquisition\Calculator\Category\NewsletterSubscriptionCategoryTrait;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Repository\NewsletterSubscriptionRepository;
+use App\Statistics\Acquisition\Calculator\Category\NewsletterSubscriptionCategoryTrait;
+use App\Statistics\Acquisition\StatisticsRequest;
 
 class NewsletterSubscriptionFridayListCalculator extends AbstractCalculator
 {

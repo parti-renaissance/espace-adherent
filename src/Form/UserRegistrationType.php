@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\DataTransformer\ValueToDuplicatesTransformer;
-use AppBundle\Membership\MembershipRequest;
-use AppBundle\Validator\Repeated;
+use App\DataTransformer\ValueToDuplicatesTransformer;
+use App\Membership\MembershipRequest;
+use App\Validator\Repeated;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;

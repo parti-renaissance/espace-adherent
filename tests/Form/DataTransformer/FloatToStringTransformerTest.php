@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Form\DataTransformer;
+namespace Tests\App\Form\DataTransformer;
 
-use AppBundle\Form\DataTransformer\FloatToStringTransformer;
+use App\Form\DataTransformer\FloatToStringTransformer;
 use PHPUnit\Framework\TestCase;
 
 class FloatToStringTransformerTest extends TestCase

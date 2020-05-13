@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
+use App\Entity\Adherent;
+use App\Entity\Event;
 use Ramsey\Uuid\Uuid;
 
 final class EventNotificationMessage extends Message

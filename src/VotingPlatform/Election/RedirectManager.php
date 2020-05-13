@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Election;
+namespace App\VotingPlatform\Election;
 
-use AppBundle\Entity\VotingPlatform\Election;
-use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
+use App\Entity\VotingPlatform\Election;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RedirectManager

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche\VotingPlatform;
+namespace Tests\App\Controller\EnMarche\VotingPlatform;
 
-use AppBundle\DataFixtures\ORM\LoadVotingPlatformElectionData;
+use App\DataFixtures\ORM\LoadVotingPlatformElectionData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

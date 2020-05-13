@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\BoardMember\BoardMemberFilter;
-use AppBundle\BoardMember\BoardMemberManager;
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BoardMember\Role;
-use AppBundle\Repository\AdherentRepository;
+use App\BoardMember\BoardMemberFilter;
+use App\BoardMember\BoardMemberManager;
+use App\Collection\AdherentCollection;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\Adherent;
+use App\Entity\BoardMember\Role;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

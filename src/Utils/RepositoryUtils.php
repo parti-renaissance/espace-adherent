@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Utils;
+namespace App\Utils;
 
-use AppBundle\Statistics\StatisticsParametersFilter;
+use App\Statistics\StatisticsParametersFilter;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\QueryBuilder;
 

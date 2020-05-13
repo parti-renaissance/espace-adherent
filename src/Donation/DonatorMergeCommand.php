@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Entity\Donator;
+use App\Entity\Donator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class DonatorMergeCommand

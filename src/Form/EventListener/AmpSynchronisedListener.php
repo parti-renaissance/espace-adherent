@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\EventListener;
+namespace App\Form\EventListener;
 
-use AppBundle\Entity\EntityContentInterface;
+use App\Entity\EntityContentInterface;
 use League\CommonMark\CommonMarkConverter;
 use Lullabot\AMP\AMP;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

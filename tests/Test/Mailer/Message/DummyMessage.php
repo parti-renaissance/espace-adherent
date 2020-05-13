@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Test\Mailer\Message;
+namespace Tests\App\Test\Mailer\Message;
 
-use AppBundle\Mailer\Message\Message;
+use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
 class DummyMessage extends Message

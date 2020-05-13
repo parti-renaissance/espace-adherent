@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Events;
+use App\Entity\CitizenProject;
+use App\Events;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectManagementAuthority

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Newsletter;
+namespace App\Newsletter;
 
 final class Events
 {

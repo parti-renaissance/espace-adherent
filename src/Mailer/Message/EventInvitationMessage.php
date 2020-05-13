@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventInvite;
+use App\Entity\Event;
+use App\Entity\EventInvite;
 use Ramsey\Uuid\Uuid;
 
 final class EventInvitationMessage extends Message

@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\InstitutionalEvent;
+namespace App\InstitutionalEvent;
 
-use AppBundle\Address\Address;
-use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEventCategory;
-use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Entity\InstitutionalEventCategory;
-use AppBundle\Event\BaseEventCommand;
-use AppBundle\Validator\DateRange;
+use App\Address\Address;
+use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\BaseEventCategory;
+use App\Entity\InstitutionalEvent;
+use App\Entity\InstitutionalEventCategory;
+use App\Event\BaseEventCommand;
+use App\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 

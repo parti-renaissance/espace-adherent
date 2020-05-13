@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Membership\MembershipInterface;
-use AppBundle\Repository\AdherentChangeEmailTokenRepository;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Membership\MembershipInterface;
+use App\Repository\AdherentChangeEmailTokenRepository;
+use App\Repository\AdherentRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

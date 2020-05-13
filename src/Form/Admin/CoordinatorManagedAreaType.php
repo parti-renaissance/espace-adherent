@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Entity\CoordinatorManagedArea;
-use AppBundle\Form\DataTransformer\StringToArrayTransformer;
+use App\Entity\CoordinatorManagedArea;
+use App\Form\DataTransformer\StringToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

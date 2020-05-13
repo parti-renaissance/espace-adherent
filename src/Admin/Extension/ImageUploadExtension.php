@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin\Extension;
+namespace App\Admin\Extension;
 
-use AppBundle\Admin\ImageUploadAdminInterface;
-use AppBundle\Entity\Image;
+use App\Admin\ImageUploadAdminInterface;
+use App\Entity\Image;
 use League\Flysystem\Filesystem;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;

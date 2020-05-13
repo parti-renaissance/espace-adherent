@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Report\Listener;
+namespace App\Report\Listener;
 
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\IdeasWorkshop\Events;
-use AppBundle\Report\ReportManager;
-use AppBundle\Report\ReportType;
-use AppBundle\Repository\ReportRepository;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\Entity\Report\ReportableInterface;
+use App\IdeasWorkshop\Events;
+use App\Report\ReportManager;
+use App\Report\ReportType;
+use App\Repository\ReportRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Referent;
+namespace App\Referent;
 
-use AppBundle\Entity\EntityPostAddressInterface;
-use AppBundle\Utils\AreaUtils;
+use App\Entity\EntityPostAddressInterface;
+use App\Utils\AreaUtils;
 
 class ManagedAreaUtils extends AreaUtils
 {

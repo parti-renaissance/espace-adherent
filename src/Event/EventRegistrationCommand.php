@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Subscription\SubscriptionTypeEnum;
-use AppBundle\Validator\EventRegistration;
+use App\Entity\Adherent;
+use App\Entity\BaseEvent;
+use App\Subscription\SubscriptionTypeEnum;
+use App\Validator\EventRegistration;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;

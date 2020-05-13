@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\AdherentMessage\Command\CreateStaticSegmentCommand;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
-use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
+use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCitizenProjectData;
+use App\Entity\CitizenProject;
+use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
+use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
+use App\Mailer\Message\CitizenProjectNewFollowerMessage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\MessengerTestTrait;
+use Tests\App\MessengerTestTrait;
 
 /**
  * @group functional

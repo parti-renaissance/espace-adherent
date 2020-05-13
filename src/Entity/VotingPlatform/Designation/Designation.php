@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform\Designation;
+namespace App\Entity\VotingPlatform\Designation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\Entity\EntityTimestampableTrait;
-use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VotingPlatform\DesignationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\DesignationRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

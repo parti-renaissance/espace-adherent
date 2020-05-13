@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\AdherentMessage;
+namespace App\Form\AdherentMessage;
 
-use AppBundle\AdherentSegment\AdherentSegmentTypeEnum;
-use AppBundle\Entity\AdherentMessage\Filter\AdherentSegmentAwareFilterInterface;
-use AppBundle\Form\AdherentSegmentType;
+use App\AdherentSegment\AdherentSegmentTypeEnum;
+use App\Entity\AdherentMessage\Filter\AdherentSegmentAwareFilterInterface;
+use App\Form\AdherentSegmentType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

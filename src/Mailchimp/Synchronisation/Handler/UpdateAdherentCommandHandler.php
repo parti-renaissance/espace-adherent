@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Handler;
+namespace App\Mailchimp\Synchronisation\Handler;
 
-use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use AppBundle\Mailchimp\Synchronisation\Command\UpdateAdherentCommand;
-use AppBundle\Mailchimp\Webhook\EventTypeEnum;
-use AppBundle\Mailchimp\Webhook\WebhookHandler;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Synchronisation\Command\UpdateAdherentCommand;
+use App\Mailchimp\Webhook\EventTypeEnum;
+use App\Mailchimp\Webhook\WebhookHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class UpdateAdherentCommandHandler implements MessageHandlerInterface

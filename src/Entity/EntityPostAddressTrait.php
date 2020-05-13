@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Geocoder\Coordinates;
+use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Intl\Intl;
@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 trait EntityPostAddressTrait
 {
     /**
-     * @ORM\Embedded(class="AppBundle\Entity\PostAddress", columnPrefix="address_")
+     * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
      */

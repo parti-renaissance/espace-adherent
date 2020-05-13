@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
 final class CitizenProjectPermissions
 {

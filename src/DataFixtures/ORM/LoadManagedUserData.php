@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Projection\ManagedUser;
-use AppBundle\Entity\Projection\ManagedUserFactory;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Entity\Projection\ManagedUser;
+use App\Entity\Projection\ManagedUserFactory;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

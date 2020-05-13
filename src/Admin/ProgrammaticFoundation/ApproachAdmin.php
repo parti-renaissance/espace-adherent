@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\ProgrammaticFoundation;
+namespace App\Admin\ProgrammaticFoundation;
 
-use AppBundle\Form\PurifiedTextareaType;
+use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

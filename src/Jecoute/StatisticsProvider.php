@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Jecoute;
+namespace App\Jecoute;
 
-use AppBundle\Entity\Jecoute\Survey;
-use AppBundle\Repository\Jecoute\QuestionRepository;
+use App\Entity\Jecoute\Survey;
+use App\Repository\Jecoute\QuestionRepository;
 
 class StatisticsProvider
 {

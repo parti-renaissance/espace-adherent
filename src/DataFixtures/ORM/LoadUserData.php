@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Membership\AdherentFactory;
+use App\Entity\Adherent;
+use App\Entity\AdherentActivationToken;
+use App\Entity\PostAddress;
+use App\Membership\AdherentFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

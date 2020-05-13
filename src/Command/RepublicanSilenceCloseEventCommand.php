@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\RepublicanSilence;
-use AppBundle\Event\EventCanceledHandler;
-use AppBundle\Repository\CitizenActionRepository;
-use AppBundle\Repository\EventRepository;
-use AppBundle\RepublicanSilence\RepublicanSilenceManager;
+use App\Entity\RepublicanSilence;
+use App\Event\EventCanceledHandler;
+use App\Repository\CitizenActionRepository;
+use App\Repository\EventRepository;
+use App\RepublicanSilence\RepublicanSilenceManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

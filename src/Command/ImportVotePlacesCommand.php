@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\VotePlace;
-use AppBundle\VotePlace\VotePlaceFactory;
+use App\Entity\VotePlace;
+use App\VotePlace\VotePlaceFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

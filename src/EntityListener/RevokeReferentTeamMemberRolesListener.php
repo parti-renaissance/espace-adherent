@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\EntityListener;
+namespace App\EntityListener;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\MunicipalManagerSupervisorRole;
-use AppBundle\Entity\ReferentManagedArea;
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use AppBundle\Entity\ReferentTeamMember;
+use App\Entity\Adherent;
+use App\Entity\MunicipalManagerSupervisorRole;
+use App\Entity\ReferentManagedArea;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\ReferentTeamMember;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 

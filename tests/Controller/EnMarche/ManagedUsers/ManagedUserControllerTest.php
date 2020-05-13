@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche\ManagedUsers;
+namespace Tests\App\Controller\EnMarche\ManagedUsers;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 class ManagedUserControllerTest extends WebTestCase
 {

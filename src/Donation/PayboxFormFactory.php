@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Entity\Donation;
+use App\Entity\Donation;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request as LexikRequestHandler;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

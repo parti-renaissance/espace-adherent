@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Api;
+namespace Tests\App\Controller\Api;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadAdherentData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ApiControllerTestTrait;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ApiControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

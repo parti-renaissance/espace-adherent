@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign;
+namespace App\Mailchimp\Campaign;
 
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Mailchimp\Campaign\Request\EditCampaignRequest;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\Request\EditCampaignRequest;
 
 class CampaignRequestBuilder
 {

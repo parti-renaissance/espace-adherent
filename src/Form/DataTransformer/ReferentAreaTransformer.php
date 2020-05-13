@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\DataTransformer;
+namespace App\Form\DataTransformer;
 
-use AppBundle\Entity\ReferentArea;
+use App\Entity\ReferentArea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;

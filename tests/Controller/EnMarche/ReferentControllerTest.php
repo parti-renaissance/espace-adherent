@@ -1,20 +1,20 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Entity\ReferentManagedUsersMessage;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
-use AppBundle\Mailer\Message\InstitutionalEventInvitationMessage;
-use AppBundle\Repository\ReferentManagedUsersMessageRepository;
+use App\Address\GeoCoder;
+use App\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\Entity\Event;
+use App\Entity\InstitutionalEvent;
+use App\Entity\ReferentManagedUsersMessage;
+use App\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\Mailer\Message\InstitutionalEventInvitationMessage;
+use App\Repository\ReferentManagedUsersMessageRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MessengerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\MessengerTestTrait;
 
 /**
  * @group functional

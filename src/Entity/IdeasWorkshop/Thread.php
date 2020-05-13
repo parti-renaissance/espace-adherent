@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthorInterface;
-use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Report\ReportType;
+use App\Entity\Adherent;
+use App\Entity\AuthorInterface;
+use App\Entity\Report\ReportableInterface;
+use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -64,7 +64,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/ideas-workshop/threads/{id}/approve",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadController:approve",
+ *             "controller": "App\Controller\Api\IdeasWorkshop\ApproveThreadController:approve",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -82,7 +82,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/ideas-workshop/threads/{id}/disapprove",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "access_control": "object.getIdeaAuthor() == user",
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\ApproveThreadController:disapprove",
+ *             "controller": "App\Controller\Api\IdeasWorkshop\ApproveThreadController:disapprove",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -147,8 +147,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\UniqueConstraint(name="threads_uuid_unique", columns="uuid")
  *     }
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ThreadRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\IdeaThreadListener"})
+ * @ORM\Entity(repositoryClass="App\Repository\ThreadRepository")
+ * @ORM\EntityListeners({"App\EntityListener\IdeaThreadListener"})
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *

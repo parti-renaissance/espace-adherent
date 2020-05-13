@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\MemberSummary\JobExperience;
-use AppBundle\Entity\MemberSummary\Language;
-use AppBundle\Entity\MemberSummary\MissionType;
-use AppBundle\Entity\MemberSummary\Training;
-use AppBundle\Entity\Skill;
-use AppBundle\Summary\Contract;
-use AppBundle\Summary\Contribution;
-use AppBundle\Summary\JobDuration;
-use AppBundle\Summary\JobLocation;
-use AppBundle\Summary\SummaryFactory;
+use App\Entity\Adherent;
+use App\Entity\MemberSummary\JobExperience;
+use App\Entity\MemberSummary\Language;
+use App\Entity\MemberSummary\MissionType;
+use App\Entity\MemberSummary\Training;
+use App\Entity\Skill;
+use App\Summary\Contract;
+use App\Summary\Contribution;
+use App\Summary\JobDuration;
+use App\Summary\JobLocation;
+use App\Summary\SummaryFactory;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;

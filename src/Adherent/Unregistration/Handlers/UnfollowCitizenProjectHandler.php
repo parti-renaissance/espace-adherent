@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration\Handlers;
+namespace App\Adherent\Unregistration\Handlers;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Entity\Adherent;
+use App\CitizenProject\CitizenProjectManager;
+use App\Entity\Adherent;
 
 class UnfollowCitizenProjectHandler implements UnregistrationAdherentHandlerInterface
 {

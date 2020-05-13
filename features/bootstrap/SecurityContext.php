@@ -1,10 +1,10 @@
 <?php
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\AdministratorRepository;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
+use App\Repository\AdherentRepository;
+use App\Repository\AdministratorRepository;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;

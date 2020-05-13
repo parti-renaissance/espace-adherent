@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\Entity\Projection\ManagedUser;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\ManagedUsers\ManagedUsersFilter;
-use AppBundle\Repository\Projection\ManagedUserRepository;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Entity\Projection\ManagedUser;
+use App\Entity\ReferentTag;
+use App\ManagedUsers\ManagedUsersFilter;
+use App\Repository\Projection\ManagedUserRepository;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Election;
+namespace App\Entity\Election;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ElectionRound;
+use App\Entity\Adherent;
+use App\Entity\ElectionRound;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -27,7 +27,7 @@ abstract class BaseVoteResult
     /**
      * @var ElectionRound
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectionRound")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ElectionRound")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $electionRound;
@@ -65,7 +65,7 @@ abstract class BaseVoteResult
      *
      * @Gedmo\Blameable(on="create")
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      */
     protected $createdBy;
 
@@ -74,7 +74,7 @@ abstract class BaseVoteResult
      *
      * @Gedmo\Blameable(on="update")
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      */
     protected $updatedBy;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Committee\CommitteeMergeCommand;
-use AppBundle\Committee\CommitteeMergeCommandHandler;
-use AppBundle\Entity\Reporting\CommitteeMergeHistory;
-use AppBundle\Form\Admin\CommitteeMergeType;
-use AppBundle\Form\ConfirmActionType;
+use App\Committee\CommitteeMergeCommand;
+use App\Committee\CommitteeMergeCommandHandler;
+use App\Entity\Reporting\CommitteeMergeHistory;
+use App\Form\Admin\CommitteeMergeType;
+use App\Form\ConfirmActionType;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

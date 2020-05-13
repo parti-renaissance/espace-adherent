@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\DependencyInjection\Compiler;
+namespace App\DependencyInjection\Compiler;
 
-use AppBundle\Security\Firewall\ExceptionListener;
+use App\Security\Firewall\ExceptionListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

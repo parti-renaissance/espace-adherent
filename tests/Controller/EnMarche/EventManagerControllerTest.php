@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\Entity\Event;
-use AppBundle\Mailer\Message\EventCancellationMessage;
-use AppBundle\Mailer\Message\EventContactMembersMessage;
-use AppBundle\Mailer\Message\EventUpdateMessage;
+use App\DataFixtures\ORM\LoadEventCategoryData;
+use App\DataFixtures\ORM\LoadEventData;
+use App\Entity\Event;
+use App\Mailer\Message\EventCancellationMessage;
+use App\Mailer\Message\EventContactMembersMessage;
+use App\Mailer\Message\EventUpdateMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

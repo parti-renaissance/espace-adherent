@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use CrEOF\Spatial\PHP\Types\Geometry\GeometryInterface;
 use CrEOF\Spatial\PHP\Types\Geometry\MultiPolygon;

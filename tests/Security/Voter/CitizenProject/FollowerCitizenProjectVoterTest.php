@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter\CitizenProject;
+namespace Tests\App\Security\Voter\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectPermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\CitizenProject\FollowerCitizenProjectVoter;
-use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
+use App\CitizenProject\CitizenProjectPermissions;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectMembership;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\CitizenProject\FollowerCitizenProjectVoter;
+use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class FollowerCitizenProjectVoterTest extends AbstractAdherentVoterTest
 {

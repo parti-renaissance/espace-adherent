@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
-use AppBundle\Repository\AdherentActivationTokenRepository;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\EmailRepository;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\Adherent;
+use App\Entity\AdherentActivationToken;
+use App\Mailer\Message\AdherentAccountActivationMessage;
+use App\Repository\AdherentActivationTokenRepository;
+use App\Repository\AdherentRepository;
+use App\Repository\EmailRepository;
+use App\Subscription\SubscriptionTypeEnum;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

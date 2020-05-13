@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Validator;
+namespace Tests\App\Validator;
 
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Utils\AreaUtils;
-use AppBundle\Validator\FrenchAddressOrNationalityDonation;
-use AppBundle\Validator\FrenchAddressOrNationalityDonationValidator;
+use App\Donation\DonationRequest;
+use App\Utils\AreaUtils;
+use App\Validator\FrenchAddressOrNationalityDonation;
+use App\Validator\FrenchAddressOrNationalityDonationValidator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 

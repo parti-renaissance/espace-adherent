@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Membership;
+namespace Tests\App\Membership;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Membership\ActivityPositions;
-use AppBundle\Membership\AdherentFactory;
-use AppBundle\Membership\MembershipRequest;
+use App\Address\Address;
+use App\Entity\Adherent;
+use App\Entity\PostAddress;
+use App\Membership\ActivityPositions;
+use App\Membership\AdherentFactory;
+use App\Membership\MembershipRequest;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;

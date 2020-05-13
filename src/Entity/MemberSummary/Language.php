@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\MemberSummary;
+namespace App\Entity\MemberSummary;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Summary;
+use App\Entity\Summary;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -70,7 +70,7 @@ class Language
     /**
      * @var Summary|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Summary", inversedBy="languages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Summary", inversedBy="languages")
      */
     private $summary;
 

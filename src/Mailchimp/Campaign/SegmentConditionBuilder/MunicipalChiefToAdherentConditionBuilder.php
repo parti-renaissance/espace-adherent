@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
+namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Mailchimp\Exception\InvalidFilterException;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Intl\FranceCitiesBundle;
+use App\Mailchimp\Exception\InvalidFilterException;
+use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
 {

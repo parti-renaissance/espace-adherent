@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Doctrine\Filter;
+namespace App\Doctrine\Filter;
 
-use AppBundle\Entity\EnabledInterface;
+use App\Entity\EnabledInterface;
 use Doctrine\ORM\Mapping\ClassMetaData;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 

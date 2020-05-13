@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\AdherentMessage\StaticSegmentInterface;
-use AppBundle\Exception\CommitteeAlreadyApprovedException;
-use AppBundle\Report\ReportType;
-use AppBundle\ValueObject\Link;
+use App\AdherentMessage\StaticSegmentInterface;
+use App\Exception\CommitteeAlreadyApprovedException;
+use App\Report\ReportType;
+use App\ValueObject\Link;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +24,7 @@ use Ramsey\Uuid\UuidInterface;
  *             "method": "GET",
  *             "path": "/committees/me",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
- *             "controller": "AppBundle\Controller\Api\CommitteesController::myCommitteesAction",
+ *             "controller": "App\Controller\Api\CommitteesController::myCommitteesAction",
  *             "normalization_context": {
  *                 "groups": {"my_committees"},
  *             },
@@ -82,7 +82,7 @@ use Ramsey\Uuid\UuidInterface;
  *         @ORM\Index(name="committee_status_idx", columns="status")
  *     }
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -144,7 +144,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     /**
      * @var CitizenProjectCommitteeSupport|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport", mappedBy="committee")
+     * @ORM\OneToMany(targetEntity="App\Entity\CitizenProjectCommitteeSupport", mappedBy="committee")
      */
     private $citizenProjectSupports;
 
@@ -170,7 +170,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     /**
      * @var CommitteeElection|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
      */
     private $committeeElection;
 

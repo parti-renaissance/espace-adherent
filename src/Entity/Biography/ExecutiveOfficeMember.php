@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity\Biography;
+namespace App\Entity\Biography;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Validator\UniqueExecutiveOfficeMemberRole;
+use App\Validator\UniqueExecutiveOfficeMemberRole;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Biography\ExecutiveOfficeMemberRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Biography\ExecutiveOfficeMemberRepository")
  * @ORM\Table(
  *     name="biography_executive_office_member",
  *     uniqueConstraints={

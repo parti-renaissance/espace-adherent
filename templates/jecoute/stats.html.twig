@@ -72,7 +72,7 @@
                     <label class="label__header--large form form__label">{{ (items|first).question_content }}</label>
 
                     {% for question in items if question.total > 0 %}
-                        {% if question.type == constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') %}
+                        {% if question.type == constant('App\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') %}
                             <div class="b__nudge--top b__nudge--bottom-small">
                                 <a data-question-uuid="{{ question.uuid }}" data-space-name="{{ space_name }}" class="data-answers-open-popin btn-secondary btn-secondary--blue">
                                     Voir les {{ question.total_simple_field }} réponses

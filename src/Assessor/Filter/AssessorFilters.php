@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Assessor\Filter;
+namespace App\Assessor\Filter;
 
-use AppBundle\Exception\AssessorException;
-use AppBundle\Intl\UnitedNationsBundle;
+use App\Exception\AssessorException;
+use App\Intl\UnitedNationsBundle;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Form\AdherentMessage;
+namespace App\Form\AdherentMessage;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use AppBundle\Form\GenderType;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Form\GenderType;
+use App\Intl\FranceCitiesBundle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

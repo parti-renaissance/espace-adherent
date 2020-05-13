@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\Formation\Module;
-use AppBundle\Entity\Page;
-use AppBundle\Repository\Formation\PathRepository;
+use App\Entity\Formation\Module;
+use App\Entity\Page;
+use App\Repository\Formation\PathRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

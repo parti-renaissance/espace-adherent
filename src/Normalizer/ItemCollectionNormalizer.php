@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;

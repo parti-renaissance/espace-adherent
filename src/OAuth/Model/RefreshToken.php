@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\OAuth\Model;
+namespace App\OAuth\Model;
 
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;

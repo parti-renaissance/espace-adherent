@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
-use AppBundle\Repository\EventRegistrationRepository;
+use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\Event;
+use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class EventRuntime

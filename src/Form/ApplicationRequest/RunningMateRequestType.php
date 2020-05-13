@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\ApplicationRequest;
+namespace App\Form\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\RunningMateRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;

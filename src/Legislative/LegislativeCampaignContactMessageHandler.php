@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Legislative;
+namespace App\Legislative;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\LegislativeCampaignContactMessage as MailerLegislativeCampaignContactMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\LegislativeCampaignContactMessage as MailerLegislativeCampaignContactMessage;
 
 class LegislativeCampaignContactMessageHandler
 {

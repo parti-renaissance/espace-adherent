@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\VotePlace;
+use App\Entity\Adherent;
+use App\Entity\VotePlace;
 
 class AssessorRoleAssociationValueObject
 {

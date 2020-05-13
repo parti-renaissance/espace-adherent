@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Entity\Event;
-use AppBundle\Search\SearchParametersFilter;
+use App\Entity\Event;
+use App\Search\SearchParametersFilter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

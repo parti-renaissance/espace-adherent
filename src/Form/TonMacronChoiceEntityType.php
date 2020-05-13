@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\TonMacronChoice;
-use AppBundle\Repository\TonMacronChoiceRepository;
+use App\Entity\TonMacronChoice;
+use App\Repository\TonMacronChoiceRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SocialShareRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SocialShareRepository")
  * @ORM\Table(name="social_shares")
  *
  * @Algolia\Index(autoIndex=false)
@@ -90,14 +90,14 @@ class SocialShare
     private $twitterUrl = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SocialShareCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\SocialShareCategory")
      *
      * @Assert\NotBlank
      */
     private $socialShareCategory;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
      *
      * @Assert\NotBlank
      */

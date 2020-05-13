@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\CitizenProject\CitizenProjectCommand;
-use AppBundle\CitizenProject\CitizenProjectCreationCommand;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCategory;
-use AppBundle\Entity\CitizenProjectSkill;
-use AppBundle\Form\DataTransformer\CommitteeTransformer;
+use App\CitizenProject\CitizenProjectCommand;
+use App\CitizenProject\CitizenProjectCreationCommand;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCategory;
+use App\Entity\CitizenProjectSkill;
+use App\Form\DataTransformer\CommitteeTransformer;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

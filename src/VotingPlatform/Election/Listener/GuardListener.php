@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Election\Listener;
+namespace App\VotingPlatform\Election\Listener;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\VotingPlatform\VoteRepository;
-use AppBundle\Repository\VotingPlatform\VotersListRepository;
-use AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand;
+use App\Entity\Adherent;
+use App\Repository\VotingPlatform\VoteRepository;
+use App\Repository\VotingPlatform\VotersListRepository;
+use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\Event\GuardEvent;

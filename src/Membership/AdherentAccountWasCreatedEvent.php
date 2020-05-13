@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 
 final class AdherentAccountWasCreatedEvent extends AdherentEvent
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Donation\DonationRequestUtils;
-use AppBundle\Entity\Donation;
+use App\Donation\DonationRequestUtils;
+use App\Entity\Donation;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;

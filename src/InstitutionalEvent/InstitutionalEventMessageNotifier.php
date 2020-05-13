@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\InstitutionalEvent;
+namespace App\InstitutionalEvent;
 
-use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\InstitutionalEventInvitationMessage;
+use App\Entity\InstitutionalEvent;
+use App\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\InstitutionalEventInvitationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InstitutionalEventMessageNotifier implements EventSubscriberInterface

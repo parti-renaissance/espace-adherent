@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Geocoder;
+namespace App\Geocoder;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\PostAddress;
+use App\Entity\Adherent;
+use App\Entity\PostAddress;
 
 class CoordinatesFactory
 {

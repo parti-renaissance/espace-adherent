@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\EventListener;
+namespace App\Form\EventListener;
 
-use AppBundle\Repository\SkillRepository;
+use App\Repository\SkillRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

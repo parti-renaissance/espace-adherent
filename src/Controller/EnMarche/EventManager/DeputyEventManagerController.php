@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\EventManager;
+namespace App\Controller\EnMarche\EventManager;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Event\EventManagerSpaceEnum;
-use AppBundle\Repository\EventRepository;
+use App\Entity\Adherent;
+use App\Event\EventManagerSpaceEnum;
+use App\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 

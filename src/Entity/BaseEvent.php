@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Geocoder\GeoPointInterface;
+use App\Address\GeoCoder;
+use App\Entity\Report\ReportableInterface;
+use App\Geocoder\GeoPointInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -29,10 +29,10 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "event": "AppBundle\Entity\Event",
- *     "citizen_action": "AppBundle\Entity\CitizenAction",
- *     "institutional_event": "AppBundle\Entity\InstitutionalEvent",
- *     "municipal_event": "AppBundle\Entity\MunicipalEvent",
+ *     "event": "App\Entity\Event",
+ *     "citizen_action": "App\Entity\CitizenAction",
+ *     "institutional_event": "App\Entity\InstitutionalEvent",
+ *     "municipal_event": "App\Entity\MunicipalEvent",
  * })
  *
  * @Algolia\Index
@@ -64,7 +64,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
     /**
      * @var Collection|ReferentTag[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      * @ORM\JoinTable(
      *     name="event_referent_tag",
      *     joinColumns={
@@ -108,7 +108,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @Gedmo\Slug(
      *     fields={"beginAt", "canonicalName"},
      *     dateFormat="Y-m-d",
-     *     handlers={@Gedmo\SlugHandler(class="AppBundle\Event\UniqueEventNameHandler")}
+     *     handlers={@Gedmo\SlugHandler(class="App\Event\UniqueEventNameHandler")}
      * )
      *
      * @Algolia\Attribute
@@ -169,7 +169,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="RESTRICT")
      */
     protected $organizer;

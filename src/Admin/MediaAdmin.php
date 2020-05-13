@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Media;
+use App\Entity\Media;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

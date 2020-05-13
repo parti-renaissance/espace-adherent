@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="unregistrations")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UnregistrationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\UnregistrationRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -101,14 +101,14 @@ class Unregistration
     /**
      * @var Collection|ReferentTag[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      */
     private $referentTags;
 
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      */
     private $excludedBy;
 

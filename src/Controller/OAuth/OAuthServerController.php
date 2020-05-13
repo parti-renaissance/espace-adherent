@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\OAuth;
+namespace App\Controller\OAuth;
 
-use AppBundle\Form\ConfirmActionType;
-use AppBundle\OAuth\OAuthAuthorizationManager;
-use AppBundle\Repository\OAuth\ClientRepository;
+use App\Form\ConfirmActionType;
+use App\OAuth\OAuthAuthorizationManager;
+use App\Repository\OAuth\ClientRepository;
 use Lcobucci\JWT\Parser;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\Extension;
+namespace App\Admin\Extension;
 
-use AppBundle\Form\EventListener\AmpSynchronisedListener;
+use App\Form\EventListener\AmpSynchronisedListener;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Form\FormMapper;
 

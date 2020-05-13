@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\JeMarcheReport;
+use App\Entity\JeMarcheReport;
 use Ramsey\Uuid\Uuid;
 
 final class JeMarcheReportMessage extends Message

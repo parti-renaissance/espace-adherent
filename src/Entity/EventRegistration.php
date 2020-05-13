@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRegistrationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EventRegistrationRepository")
  * @ORM\Table(name="events_registrations", indexes={
  *     @ORM\Index(name="event_registration_email_address_idx", columns={"email_address"}),
  *     @ORM\Index(name="event_registration_adherent_uuid_idx", columns={"adherent_uuid"}),
@@ -22,7 +22,7 @@ class EventRegistration
     use EntityPersonNameTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BaseEvent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\BaseEvent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $event;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\OAuth\Store;
+namespace App\OAuth\Store;
 
-use AppBundle\OAuth\Model\Client as InMemoryClient;
-use AppBundle\Repository\OAuth\ClientRepository;
+use App\OAuth\Model\Client as InMemoryClient;
+use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface as OAuthClientRepositoryInterface;
 use Ramsey\Uuid\Uuid;

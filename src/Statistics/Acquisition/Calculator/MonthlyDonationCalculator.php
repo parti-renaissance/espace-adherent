@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Entity\Donation;
+use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Donation;
 
 class MonthlyDonationCalculator extends AbstractDonationCountCalculator
 {

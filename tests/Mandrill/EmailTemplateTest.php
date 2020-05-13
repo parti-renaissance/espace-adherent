@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Mandrill;
+namespace Tests\App\Mandrill;
 
-use AppBundle\Mandrill\EmailTemplate;
+use App\Mandrill\EmailTemplate;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Test\Mailer\Message\DummyMessage;
+use Tests\App\Test\Mailer\Message\DummyMessage;
 
 class EmailTemplateTest extends TestCase
 {

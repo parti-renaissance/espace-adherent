@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Election;
+namespace App\Election;
 
-use AppBundle\Entity\City;
-use AppBundle\Repository\Election\CityVoteResultRepository;
-use AppBundle\Repository\Election\MinistryVoteResultRepository;
-use AppBundle\Repository\Election\VotePlaceResultRepository;
+use App\Entity\City;
+use App\Repository\Election\CityVoteResultRepository;
+use App\Repository\Election\MinistryVoteResultRepository;
+use App\Repository\Election\VotePlaceResultRepository;
 
 class CityResultAggregator
 {

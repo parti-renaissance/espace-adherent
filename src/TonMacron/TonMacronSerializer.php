@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\TonMacron;
+namespace App\TonMacron;
 
-use AppBundle\Entity\TonMacronChoice;
-use AppBundle\Entity\TonMacronFriendInvitation;
+use App\Entity\TonMacronChoice;
+use App\Entity\TonMacronFriendInvitation;
 
 class TonMacronSerializer
 {

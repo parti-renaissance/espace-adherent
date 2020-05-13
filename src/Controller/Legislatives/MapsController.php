@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller\Legislatives;
+namespace App\Controller\Legislatives;
 
-use AppBundle\Entity\Event;
+use App\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

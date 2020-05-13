@@ -1,9 +1,11 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Content\HomeBlockFactory;
-use AppBundle\Content\MediaFactory;
+use App\Content\HomeBlockFactory;
+use App\Content\MediaFactory;
+use App\Entity\HomeBlock;
+use App\Entity\Media;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
@@ -54,7 +56,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
 
     private function loadMedias()
     {
-        $repository = $this->em->getRepository('AppBundle:Media');
+        $repository = $this->em->getRepository(Media::class);
 
         foreach (self::$data as $homeBlockData) {
             if (!\array_key_exists('path', $homeBlockData)) {
@@ -90,7 +92,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
 
     private function loadHomeBlocks()
     {
-        $repository = $this->em->getRepository('AppBundle:HomeBlock');
+        $repository = $this->em->getRepository(HomeBlock::class);
 
         foreach (self::$data as $i => $homeBlockData) {
             if ($repository->findOneBy(['position' => $i])) {

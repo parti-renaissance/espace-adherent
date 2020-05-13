@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election\MinistryListTotalResult;
-use AppBundle\Entity\Election\MinistryVoteResult;
-use AppBundle\Repository\CityRepository;
-use AppBundle\Repository\Election\MinistryVoteResultRepository;
+use App\Election\ElectionManager;
+use App\Entity\City;
+use App\Entity\Election\MinistryListTotalResult;
+use App\Entity\Election\MinistryVoteResult;
+use App\Repository\CityRepository;
+use App\Repository\Election\MinistryVoteResultRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;

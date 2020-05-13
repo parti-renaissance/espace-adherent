@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\InstitutionalEventCategory;
-use AppBundle\Form\DataTransformer\EventDateTimeZoneTransformer;
-use AppBundle\Form\DataTransformer\StringToArrayTransformer;
-use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
+use App\Entity\InstitutionalEventCategory;
+use App\Form\DataTransformer\EventDateTimeZoneTransformer;
+use App\Form\DataTransformer\StringToArrayTransformer;
+use App\InstitutionalEvent\InstitutionalEventCommand;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;

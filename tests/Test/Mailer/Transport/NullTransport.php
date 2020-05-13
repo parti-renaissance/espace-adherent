@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Test\Mailer\Transport;
+namespace Tests\App\Test\Mailer\Transport;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
-use AppBundle\Mailer\Transport\TransportInterface;
+use App\Mailer\AbstractEmailTemplate;
+use App\Mailer\Transport\TransportInterface;
 use Psr\Log\LoggerInterface;
 
 class NullTransport implements TransportInterface

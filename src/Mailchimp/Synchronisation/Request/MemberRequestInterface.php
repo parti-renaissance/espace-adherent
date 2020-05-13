@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Request;
+namespace App\Mailchimp\Synchronisation\Request;
 
-use AppBundle\Mailchimp\RequestInterface;
+use App\Mailchimp\RequestInterface;
 
 interface MemberRequestInterface extends RequestInterface
 {

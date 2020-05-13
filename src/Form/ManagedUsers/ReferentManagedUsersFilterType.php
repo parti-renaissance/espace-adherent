@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\ManagedUsers;
+namespace App\Form\ManagedUsers;
 
-use AppBundle\Form\MyReferentCommitteeChoiceType;
+use App\Form\MyReferentCommitteeChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ReferentManagedUsersFilterType extends ManagedUsersFilterType

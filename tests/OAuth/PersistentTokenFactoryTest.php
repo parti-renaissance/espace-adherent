@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\OAuth;
+namespace Tests\App\OAuth;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\OAuth\AccessToken;
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\OAuth\Model\AccessToken as InMemoryAccessToken;
-use AppBundle\OAuth\Model\AuthorizationCode as InMemoryAuthorizationCode;
-use AppBundle\OAuth\Model\Client as InMemoryClient;
-use AppBundle\OAuth\Model\RefreshToken as InMemoryRefreshToken;
-use AppBundle\OAuth\Model\Scope as InMemoryScope;
-use AppBundle\OAuth\PersistentTokenFactory;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\OAuth\AccessTokenRepository;
-use AppBundle\Repository\OAuth\ClientRepository;
+use App\Entity\Adherent;
+use App\Entity\OAuth\AccessToken;
+use App\Entity\OAuth\Client;
+use App\OAuth\Model\AccessToken as InMemoryAccessToken;
+use App\OAuth\Model\AuthorizationCode as InMemoryAuthorizationCode;
+use App\OAuth\Model\Client as InMemoryClient;
+use App\OAuth\Model\RefreshToken as InMemoryRefreshToken;
+use App\OAuth\Model\Scope as InMemoryScope;
+use App\OAuth\PersistentTokenFactory;
+use App\Repository\AdherentRepository;
+use App\Repository\OAuth\AccessTokenRepository;
+use App\Repository\OAuth\ClientRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -177,7 +177,7 @@ class PersistentTokenFactoryTest extends TestCase
 
     /**
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to find AppBundle\Entity\Adherent entity by its identifier "9410cccb-c91e-4f51-a31f-f2bcadc52f94".
+     * @expectedExceptionMessage Unable to find App\Entity\Adherent entity by its identifier "9410cccb-c91e-4f51-a31f-f2bcadc52f94".
      */
     public function testTryCreateAccessTokenWithoutUserFails(): void
     {
@@ -197,7 +197,7 @@ class PersistentTokenFactoryTest extends TestCase
 
     /**
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to find AppBundle\Entity\OAuth\Client entity by its identifier "07aba895-11b6-45f9-b95f-7fdb3d9b43c1".
+     * @expectedExceptionMessage Unable to find App\Entity\OAuth\Client entity by its identifier "07aba895-11b6-45f9-b95f-7fdb3d9b43c1".
      */
     public function testTryCreateAccessTokenWithoutClientFails(): void
     {

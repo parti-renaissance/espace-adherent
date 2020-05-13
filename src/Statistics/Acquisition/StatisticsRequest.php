@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition;
+namespace App\Statistics\Acquisition;
 
-use AppBundle\Utils\DateTimeFactory;
+use App\Utils\DateTimeFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class StatisticsRequest

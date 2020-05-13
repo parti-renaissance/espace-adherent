@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Entity\Timeline\Theme;
-use AppBundle\Repository\Timeline\ProfileRepository;
-use AppBundle\Repository\Timeline\ThemeRepository;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\Theme;
+use App\Repository\Timeline\ProfileRepository;
+use App\Repository\Timeline\ThemeRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

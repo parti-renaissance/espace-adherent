@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Serializer;
+namespace Tests\App\Serializer;
 
-use AppBundle\Serializer\IcalSerializationVisitor;
+use App\Serializer\IcalSerializationVisitor;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use PHPUnit\Framework\TestCase;
 

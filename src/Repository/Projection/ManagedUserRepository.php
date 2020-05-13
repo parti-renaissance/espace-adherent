@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Repository\Projection;
+namespace App\Repository\Projection;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\Entity\Projection\ManagedUser;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\ManagedUsers\ManagedUsersFilter;
-use AppBundle\Repository\PaginatorTrait;
-use AppBundle\Repository\ReferentTagRepository;
-use AppBundle\Repository\ReferentTrait;
+use App\Entity\Projection\ManagedUser;
+use App\Intl\FranceCitiesBundle;
+use App\ManagedUsers\ManagedUsersFilter;
+use App\Repository\PaginatorTrait;
+use App\Repository\ReferentTagRepository;
+use App\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;

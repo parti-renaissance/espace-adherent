@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\TonMacron;
+namespace App\TonMacron;
 
-use AppBundle\Entity\TonMacronFriendInvitation;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\TonMacronFriendMessage;
+use App\Entity\TonMacronFriendInvitation;
+use App\Mailer\MailerService;
+use App\Mailer\Message\TonMacronFriendMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;

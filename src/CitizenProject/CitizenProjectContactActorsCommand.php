@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CitizenProjectContactActorsCommand

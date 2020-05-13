@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Jecoute;
+namespace Tests\App\Jecoute;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
-use AppBundle\Jecoute\StatisticsExporter;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
-use AppBundle\Repository\Jecoute\DataAnswerRepository;
+use App\Entity\Adherent;
+use App\Entity\Jecoute\LocalSurvey;
+use App\Entity\Jecoute\Question;
+use App\Entity\Jecoute\SurveyQuestion;
+use App\Jecoute\StatisticsExporter;
+use App\Jecoute\SurveyQuestionTypeEnum;
+use App\Repository\Jecoute\DataAnswerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

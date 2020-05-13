@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentSpaceAccessInformation;
+use App\Entity\Adherent;
+use App\Entity\ReferentSpaceAccessInformation;
 use PHPUnit\Framework\TestCase;
 
 class ReferentSpaceAccessInformationTest extends TestCase

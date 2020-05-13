@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ChezVous;
+namespace App\Entity\ChezVous;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ChezVous\MeasureTypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ChezVous\MeasureTypeRepository")
  * @ORM\Table(name="chez_vous_measure_types")
  *
  * @Algolia\Index(autoIndex=false)
@@ -33,7 +33,7 @@ class MeasureType
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
-     * @Assert\Choice(callback={"AppBundle\ChezVous\MeasureChoiceLoader", "getTypeChoices"})
+     * @Assert\Choice(callback={"App\ChezVous\MeasureChoiceLoader", "getTypeChoices"})
      *
      * @Algolia\Attribute
      */

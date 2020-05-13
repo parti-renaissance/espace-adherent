@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\AdherentCharter;
+namespace App\AdherentCharter;
 
-use AppBundle\Entity\AdherentCharter\AdherentCharterInterface;
-use AppBundle\Entity\AdherentCharter\DeputyCharter;
-use AppBundle\Entity\AdherentCharter\MunicipalChiefCharter;
-use AppBundle\Entity\AdherentCharter\ReferentCharter;
-use AppBundle\Entity\AdherentCharter\SenatorCharter;
+use App\Entity\AdherentCharter\AdherentCharterInterface;
+use App\Entity\AdherentCharter\DeputyCharter;
+use App\Entity\AdherentCharter\MunicipalChiefCharter;
+use App\Entity\AdherentCharter\ReferentCharter;
+use App\Entity\AdherentCharter\SenatorCharter;
 
 abstract class AdherentCharterFactory
 {

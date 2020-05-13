@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VoteResultList;
+namespace App\Controller\EnMarche\Election\VoteResultList;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;

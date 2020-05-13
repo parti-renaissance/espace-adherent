@@ -1,17 +1,17 @@
 {% macro get_donation_status_badge(status) %}
     {% spaceless %}
         <span class="badge
-            {% if status is constant('AppBundle\\Entity\\Donation::STATUS_FINISHED') %}
+            {% if status is constant('App\\Entity\\Donation::STATUS_FINISHED') %}
                 bg-green
-            {% elseif status is constant('AppBundle\\Entity\\Donation::STATUS_SUBSCRIPTION_IN_PROGRESS') %}
+            {% elseif status is constant('App\\Entity\\Donation::STATUS_SUBSCRIPTION_IN_PROGRESS') %}
                 bg-blue
-            {% elseif status is constant('AppBundle\\Entity\\Donation::STATUS_FINISHED') %}
+            {% elseif status is constant('App\\Entity\\Donation::STATUS_FINISHED') %}
                 bg-teal
-            {% elseif status is constant('AppBundle\\Entity\\Donation::STATUS_CANCELED') %}
+            {% elseif status is constant('App\\Entity\\Donation::STATUS_CANCELED') %}
                 bg-orange
-            {% elseif status is constant('AppBundle\\Entity\\Donation::STATUS_ERROR') %}
+            {% elseif status is constant('App\\Entity\\Donation::STATUS_ERROR') %}
                 bg-red
-            {% elseif status is constant('AppBundle\\Entity\\Donation::STATUS_REFUNDED') %}
+            {% elseif status is constant('App\\Entity\\Donation::STATUS_REFUNDED') %}
                 bg-yellow
             {% endif %}
             ">
@@ -23,11 +23,11 @@
 {% macro get_donation_type_badge(type) %}
     {% spaceless %}
         <span class="badge
-            {% if type is constant('AppBundle\\Entity\\Donation::TYPE_CB') %}
+            {% if type is constant('App\\Entity\\Donation::TYPE_CB') %}
                 bg-blue
-            {% elseif type is constant('AppBundle\\Entity\\Donation::TYPE_CHECK') %}
+            {% elseif type is constant('App\\Entity\\Donation::TYPE_CHECK') %}
                 bg-green
-            {% elseif type is constant('AppBundle\\Entity\\Donation::TYPE_TRANSFER') %}
+            {% elseif type is constant('App\\Entity\\Donation::TYPE_TRANSFER') %}
                 bg-purple
             {% endif %}
             ">

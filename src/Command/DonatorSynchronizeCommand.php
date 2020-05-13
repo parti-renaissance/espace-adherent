@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Donation\DonatorManager;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
-use AppBundle\Repository\DonatorRepository;
+use App\Donation\DonatorManager;
+use App\Entity\Donation;
+use App\Entity\Donator;
+use App\Repository\DonatorRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;

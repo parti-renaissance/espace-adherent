@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentResetPasswordToken;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentResetPasswordConfirmationMessage;
-use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
+use App\Entity\Adherent;
+use App\Entity\AdherentResetPasswordToken;
+use App\Mailer\MailerService;
+use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
+use App\Mailer\Message\AdherentResetPasswordMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;

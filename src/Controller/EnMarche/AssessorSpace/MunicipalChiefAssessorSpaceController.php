@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AssessorSpace;
+namespace App\Controller\EnMarche\AssessorSpace;
 
-use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
-use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
-use AppBundle\Entity\Election;
-use AppBundle\Form\Assessor\DefaultVotePlaceFilterType;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Assessor\Filter\AssessorRequestExportFilter;
+use App\Assessor\Filter\AssociationVotePlaceFilter;
+use App\Entity\Election;
+use App\Form\Assessor\DefaultVotePlaceFilterType;
+use App\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;

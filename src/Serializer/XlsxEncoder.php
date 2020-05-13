@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Serializer;
+namespace App\Serializer;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;

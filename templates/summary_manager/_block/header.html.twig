@@ -21,7 +21,7 @@
                 {% endif %}
                 <p class="text--body">{{ summary.professionalSynopsis }}</p>
                 <div class="cv__header--modify">
-                    <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_SYNTHESIS') }) }}" class="button">
+                    <a href="{{ path('app_summary_manager_step', { step: constant('App\\Form\\SummaryType::STEP_SYNTHESIS') }) }}" class="button">
                         Modifier mes ambitions</a>
                 </div>
             </div>
@@ -32,7 +32,7 @@
 {% block summary_contact %}
     {{ parent() }}
     <div class="cv__header__contact--modify">
-        <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_CONTACT') }) }}" class="button">Modifier les moyens de me contacter</a>
+        <a href="{{ path('app_summary_manager_step', { step: constant('App\\Form\\SummaryType::STEP_CONTACT') }) }}" class="button">Modifier les moyens de me contacter</a>
     </div>
 {% endblock %}
 

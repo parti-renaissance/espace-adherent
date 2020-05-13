@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\VotingPlatform;
+namespace App\Controller\EnMarche\VotingPlatform;
 
-use AppBundle\Entity\VotingPlatform\Election;
-use AppBundle\Form\ConfirmActionType;
-use AppBundle\Form\VotingPlatform\CommitteeAdherentCandidatesType;
-use AppBundle\Form\VotingPlatform\VoteCandidateType;
-use AppBundle\Repository\VotingPlatform\CandidateGroupRepository;
-use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
-use AppBundle\VotingPlatform\Election\RedirectManager;
-use AppBundle\VotingPlatform\Election\VoteCommandProcessor;
-use AppBundle\VotingPlatform\Election\VoteCommandStorage;
+use App\Entity\VotingPlatform\Election;
+use App\Form\ConfirmActionType;
+use App\Form\VotingPlatform\CommitteeAdherentCandidatesType;
+use App\Form\VotingPlatform\VoteCandidateType;
+use App\Repository\VotingPlatform\CandidateGroupRepository;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Election\RedirectManager;
+use App\VotingPlatform\Election\VoteCommandProcessor;
+use App\VotingPlatform\Election\VoteCommandStorage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Legislative\LegislativeCampaignContactMessage as CampaignContactMessage;
+use App\Legislative\LegislativeCampaignContactMessage as CampaignContactMessage;
 use Ramsey\Uuid\Uuid;
 
 final class LegislativeCampaignContactMessage extends Message

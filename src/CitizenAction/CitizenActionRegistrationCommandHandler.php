@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\CitizenAction;
+namespace App\CitizenAction;
 
-use AppBundle\Event\EventRegistrationCommand;
-use AppBundle\Event\EventRegistrationFactory;
-use AppBundle\Event\EventRegistrationManager;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
+use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationFactory;
+use App\Event\EventRegistrationManager;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CitizenActionRegistrationConfirmationMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CitizenActionRegistrationCommandHandler

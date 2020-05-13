@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenActionCategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CitizenActionCategoryRepository")
  * @ORM\Table(
  *     name="citizen_action_categories",
  *     uniqueConstraints={

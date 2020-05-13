@@ -8,10 +8,10 @@
         <service id="League\CommonMark\CommonMarkConverter" />
 
         <!-- Content -->
-        <prototype namespace="AppBundle\Content\" resource="../../src/Content" />
+        <prototype namespace="App\Content\" resource="../../src/Content" />
 
         <!-- Feed -->
-        <service id="app.feed_generator.article" class="AppBundle\Feed\ArticleFeedGenerator">
+        <service id="app.feed_generator.article" class="App\Feed\ArticleFeedGenerator">
             <argument>%locale%</argument>
             <argument>%feed_ttl%</argument>
             <argument type="service" id="router" />
@@ -19,19 +19,19 @@
         </service>
 
         <!-- Sitemap -->
-        <service id="AppBundle\Sitemap\SitemapFactory">
+        <service id="App\Sitemap\SitemapFactory">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="router" />
             <argument type="service" id="cache.app" />
         </service>
 
         <!-- Documents -->
-        <service id="AppBundle\Documents\DocumentRepository" public="false">
+        <service id="App\Documents\DocumentRepository" public="false">
             <argument type="service" id="app.storage" />
         </service>
 
-        <service id="app.document_manager" class="AppBundle\Documents\DocumentManager">
-            <argument type="service" id="AppBundle\Documents\DocumentRepository"/>
+        <service id="app.document_manager" class="App\Documents\DocumentManager">
+            <argument type="service" id="App\Documents\DocumentRepository"/>
             <argument type="service" id="app.committee.manager"/>
         </service>
 
@@ -39,7 +39,7 @@
         <service id="app.storage" class="League\Flysystem\Filesystem">
             <argument type="service">
                 <service class="League\Flysystem\Adapter\AdapterInterface">
-                    <factory class="AppBundle\Storage\FilesystemAdapterFactory" method="createAdapter" />
+                    <factory class="App\Storage\FilesystemAdapterFactory" method="createAdapter" />
                     <argument>%kernel.environment%</argument>
                     <argument>%kernel.project_dir%/app/data</argument>
                     <argument>%env(GCLOUD_PROJECT_ID)%</argument>

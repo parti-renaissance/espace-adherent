@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Interactive;
+namespace App\Interactive;
 
-use AppBundle\Repository\MyEuropeChoiceRepository;
+use App\Repository\MyEuropeChoiceRepository;
 
 class MyEuropeMessageBodyBuilder
 {

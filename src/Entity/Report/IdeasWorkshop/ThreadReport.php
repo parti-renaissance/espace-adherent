@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\Report\IdeasWorkshop;
+namespace App\Entity\Report\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\Report\Report;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\Report\Report;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +17,7 @@ class ThreadReport extends Report
     /**
      * @var Thread
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\IdeasWorkshop\Thread")
+     * @ORM\ManyToOne(targetEntity="App\Entity\IdeasWorkshop\Thread")
      * @ORM\JoinColumn(name="thread_id", onDelete="CASCADE")
      */
     protected $subject;

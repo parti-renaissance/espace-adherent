@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Command;
+namespace App\AdherentMessage\Command;
 
-use AppBundle\Mailchimp\CampaignMessageInterface;
+use App\Mailchimp\CampaignMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
 class AdherentMessageChangeCommand implements CampaignMessageInterface

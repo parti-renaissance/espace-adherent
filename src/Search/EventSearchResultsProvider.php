@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Search;
+namespace App\Search;
 
-use AppBundle\Repository\EventRepository;
+use App\Repository\EventRepository;
 
 class EventSearchResultsProvider implements SearchResultsProviderInterface
 {

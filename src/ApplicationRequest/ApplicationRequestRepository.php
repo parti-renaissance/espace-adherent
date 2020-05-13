@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\ApplicationRequest;
+namespace App\ApplicationRequest;
 
-use AppBundle\ApplicationRequest\Filter\ListFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
-use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
+use App\ApplicationRequest\Filter\ListFilter;
+use App\Entity\Adherent;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\Repository\ApplicationRequest\RunningMateRequestRepository;
+use App\Repository\ApplicationRequest\VolunteerRequestRepository;
 
 class ApplicationRequestRepository
 {

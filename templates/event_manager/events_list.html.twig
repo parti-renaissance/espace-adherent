@@ -84,7 +84,7 @@
         </a>
     </div>
 
-    {% if space_name != constant('AppBundle\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
+    {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
         <div class="datagrid__table__tabs">
             <div class="datagrid__table__tabs__items">
                 {% if is_active_route(app.request, "app_#{space_name}_event_manager_events") %}

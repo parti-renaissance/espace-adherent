@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\ApplicationRequestCandidate;
+namespace App\Controller\EnMarche\ApplicationRequestCandidate;
 
-use AppBundle\ApplicationRequest\ApplicationRequestRepository;
-use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
-use AppBundle\ApplicationRequest\Filter\ListFilter;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Form\ApplicationRequest\ApplicationRequestListFilterType;
-use AppBundle\Security\Voter\MunicipalChiefVoter;
+use App\ApplicationRequest\ApplicationRequestRepository;
+use App\ApplicationRequest\ApplicationRequestTypeEnum;
+use App\ApplicationRequest\Filter\ListFilter;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Form\ApplicationRequest\ApplicationRequestListFilterType;
+use App\Security\Voter\MunicipalChiefVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

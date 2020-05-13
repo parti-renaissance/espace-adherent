@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;

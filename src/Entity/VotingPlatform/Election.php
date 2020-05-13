@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VotingPlatform\ElectionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\ElectionRepository")
  *
  * @ORM\Table(name="voting_platform_election")
  *
@@ -24,14 +24,14 @@ class Election
     /**
      * @var Designation
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Designation\Designation")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation")
      */
     private $designation;
 
     /**
      * @var ElectionEntity
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\VotingPlatform\ElectionEntity", mappedBy="election", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\ElectionEntity", mappedBy="election", cascade={"all"})
      */
     private $electionEntity;
 
@@ -39,7 +39,7 @@ class Election
      * @var CandidateGroup[]|ArrayCollection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\VotingPlatform\CandidateGroup",
+     *     targetEntity="App\Entity\VotingPlatform\CandidateGroup",
      *     mappedBy="election",
      *     cascade={"all"},
      *     orphanRemoval=true

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Geocoder\GeoPointInterface;
+use App\Donation\PayboxPaymentSubscription;
+use App\Geocoder\GeoPointInterface;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,8 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\Index(name="donation_status_idx", columns={"status"})
  * })
  *
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\DonationListener"})
+ * @ORM\Entity(repositoryClass="App\Repository\DonationRepository")
+ * @ORM\EntityListeners({"App\EntityListener\DonationListener"})
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -191,7 +191,7 @@ class Donation implements GeoPointInterface
     private $transactions;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DonationTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\DonationTag")
      */
     private $tags;
 

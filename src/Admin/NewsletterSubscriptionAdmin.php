@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Newsletter\Events;
-use AppBundle\Newsletter\NewsletterEvent;
+use App\Newsletter\Events;
+use App\Newsletter\NewsletterEvent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

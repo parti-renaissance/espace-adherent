@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Api;
+namespace App\Api;
 
-use AppBundle\Repository\CommitteeRepository;
+use App\Repository\CommitteeRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeProvider

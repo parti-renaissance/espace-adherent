@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\CitizenAction\CitizenActionCommand;
-use AppBundle\Entity\CitizenActionCategory;
+use App\CitizenAction\CitizenActionCommand;
+use App\Entity\CitizenActionCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;

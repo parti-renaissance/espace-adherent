@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Procuration\ProcurationManager;
-use AppBundle\Procuration\ProcurationRequestSerializer;
-use AppBundle\Repository\ProcurationRequestRepository;
+use App\Entity\ProcurationRequest;
+use App\Procuration\ProcurationManager;
+use App\Procuration\ProcurationRequestSerializer;
+use App\Repository\ProcurationRequestRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;

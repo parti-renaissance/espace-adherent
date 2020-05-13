@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Invite;
-use AppBundle\Form\InvitationType;
-use AppBundle\Form\SimpleInvitationType;
-use AppBundle\Invitation\InvitationRequestHandler;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Invite;
+use App\Form\InvitationType;
+use App\Form\SimpleInvitationType;
+use App\Invitation\InvitationRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Command\ChezVous;
+namespace App\Command\ChezVous;
 
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\Department;
-use AppBundle\Entity\ChezVous\Region;
-use AppBundle\Repository\ChezVous\CityRepository;
-use AppBundle\Repository\ChezVous\DepartmentRepository;
-use AppBundle\Repository\ChezVous\RegionRepository;
+use App\Entity\ChezVous\City;
+use App\Entity\ChezVous\Department;
+use App\Entity\ChezVous\Region;
+use App\Repository\ChezVous\CityRepository;
+use App\Repository\ChezVous\DepartmentRepository;
+use App\Repository\ChezVous\RegionRepository;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;

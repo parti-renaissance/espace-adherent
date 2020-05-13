@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\OAuth\AuthorizationValidators;
+namespace App\OAuth\AuthorizationValidators;
 
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Rsa\Sha256;

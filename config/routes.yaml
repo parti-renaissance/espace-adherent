@@ -3,28 +3,28 @@
 #
 app_health:
     host:     "%app_host%"
-    resource: "@AppBundle/Controller/HealthController.php"
+    resource: "../src/Controller/HealthController.php"
     type:     "annotation"
 
 #
 # Assets
 #
 app_assets:
-    resource: "@AppBundle/Controller/AssetsController.php"
+    resource: "../src/Controller/AssetsController.php"
     type:     "annotation"
 
 #
 # Mooc
 #
 app_mooc:
-    resource: "@AppBundle/Controller/MoocController.php"
+    resource: "../src/Controller/MoocController.php"
     type:     "annotation"
 
 #
 # User uploaded documents
 #
 app_documents:
-    resource: "@AppBundle/Controller/UploadDocumentController.php"
+    resource: "../src/Controller/UploadDocumentController.php"
     type:     "annotation"
 
 #
@@ -32,7 +32,7 @@ app_documents:
 #
 app_api:
     host:     "%app_host%"
-    resource: "@AppBundle/Controller/Api"
+    resource: "../src/Controller/Api"
     type:     "annotation"
     prefix:   "%api_path_prefix%"
     defaults:
@@ -58,7 +58,7 @@ swagger_ui:
 #
 app_legislatives_api:
     host:     "{app_domaines}"
-    resource: "@AppBundle/Controller/Api/LegislativesController.php"
+    resource: "../src/Controller/Api/LegislativesController.php"
     type:     "annotation"
     prefix:   "%api_path_prefix%"
     defaults:
@@ -71,7 +71,7 @@ app_legislatives_api:
 #
 app_oauth:
     host:     "%app_host%"
-    resource: "@AppBundle/Controller/OAuth"
+    resource: "../src/Controller/OAuth"
     type:     "annotation"
     prefix:   "/oauth/v2"
 
@@ -102,7 +102,7 @@ admin_crud:
 
 app_admin:
     host:     "%app_host%"
-    resource: "@AppBundle/Controller/Admin"
+    resource: "../src/Controller/Admin"
     type:     "annotation"
     prefix:   "/admin"
 
@@ -119,7 +119,7 @@ map_events:
     host:    "%app_host%"
     path:    /evenements/la-carte
     methods: GET
-    defaults: { _controller: 'AppBundle:EnMarche/Map:events' }
+    defaults: { _controller: 'App\Controller\EnMarche\MapController:eventsAction' }
 
 react_citizen_projects:
     host:     "%app_host%"
@@ -128,7 +128,7 @@ react_citizen_projects:
 
 app_enmarche:
     host:     "%app_host%"
-    resource: "@AppBundle/Controller/EnMarche"
+    resource: "../src/Controller/EnMarche"
     type:     "annotation"
 
 #
@@ -136,7 +136,7 @@ app_enmarche:
 #
 app_enmarche_amp:
     host:     "%amp_host%"
-    resource: "@AppBundle/Controller/Amp"
+    resource: "../src/Controller/Amp"
     type:     "annotation"
 
 #
@@ -144,7 +144,7 @@ app_enmarche_amp:
 #
 app_legislatives:
     host:     "%legislatives_host%"
-    resource: "@AppBundle/Controller/Legislatives"
+    resource: "../src/Controller/Legislatives"
     type:     "annotation"
 
 #
@@ -188,6 +188,6 @@ app_static_page:
     host:    "%app_host%"
     path:    /{slug}
     methods: GET
-    defaults: { _controller: 'AppBundle:EnMarche/Page:showPage' }
+    defaults: { _controller: 'App\Controller\EnMarche\PageController:showPageAction' }
     requirements:
         slug: .+

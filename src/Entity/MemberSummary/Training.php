@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\MemberSummary;
+namespace App\Entity\MemberSummary;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntitySpanTrait;
-use AppBundle\Entity\Summary;
-use AppBundle\Summary\SummaryItemPositionableInterface;
+use App\Entity\EntitySpanTrait;
+use App\Entity\Summary;
+use App\Summary\SummaryItemPositionableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -86,7 +86,7 @@ class Training implements SummaryItemPositionableInterface
     /**
      * @var Summary|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Summary", inversedBy="trainings")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Summary", inversedBy="trainings")
      */
     private $summary;
 

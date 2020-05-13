@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Donation;
+namespace Tests\App\Donation;
 
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\PostAddress;
+use App\Donation\DonationRequest;
+use App\Entity\Adherent;
+use App\Entity\PostAddress;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;

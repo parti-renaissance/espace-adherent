@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\EventRegistration;
+use App\Entity\Adherent;
+use App\Entity\CitizenAction;
+use App\Entity\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
 final class CitizenActionCancellationMessage extends Message

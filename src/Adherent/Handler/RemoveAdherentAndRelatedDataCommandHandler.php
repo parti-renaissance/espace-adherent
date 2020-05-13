@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Adherent\Handler;
+namespace App\Adherent\Handler;
 
-use AppBundle\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
-use AppBundle\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface;
-use AppBundle\Repository\AdherentRepository;
+use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
+use App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface;
+use App\Repository\AdherentRepository;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;

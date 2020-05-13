@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
-use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
+use App\Entity\IdeasWorkshop\AuthorCategoryEnum;
+use App\Entity\IdeasWorkshop\IdeaStatusEnum;
+use App\Repository\IdeasWorkshop\IdeaRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

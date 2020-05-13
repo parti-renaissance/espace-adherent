@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Exception;
+namespace App\Mailchimp\Exception;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use Symfony\Component\Messenger\Transport\AmqpExt\Exception\RejectMessageExceptionInterface;
 
 class InvalidFilterException extends \InvalidArgumentException implements RejectMessageExceptionInterface

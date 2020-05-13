@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\MunicipalManagerAttribution;
+namespace App\Controller\EnMarche\MunicipalManagerAttribution;
 
-use AppBundle\Form\MunicipalManagerCityListType;
-use AppBundle\Form\ReferentCityFilterType;
-use AppBundle\MunicipalManager\Filter\AssociationCityFilter;
-use AppBundle\MunicipalManager\MunicipalManagerRole\MunicipalManagerAssociationManager;
-use AppBundle\Repository\CityRepository;
+use App\Form\MunicipalManagerCityListType;
+use App\Form\ReferentCityFilterType;
+use App\MunicipalManager\Filter\AssociationCityFilter;
+use App\MunicipalManager\MunicipalManagerRole\MunicipalManagerAssociationManager;
+use App\Repository\CityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

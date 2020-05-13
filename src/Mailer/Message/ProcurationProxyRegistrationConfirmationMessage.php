@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\ProcurationProxy;
+use App\Entity\ProcurationProxy;
 use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyRegistrationConfirmationMessage extends Message

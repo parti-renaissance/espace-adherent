@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\ReferentArea;
+use App\Entity\ReferentArea;
 use PHPUnit\Framework\TestCase;
 
 class ReferentAreaTest extends TestCase

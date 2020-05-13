@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Committee;
-use AppBundle\Validator\UniqueCommittee as AssertUniqueCommittee;
+use App\Address\Address;
+use App\Entity\Committee;
+use App\Validator\UniqueCommittee as AssertUniqueCommittee;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

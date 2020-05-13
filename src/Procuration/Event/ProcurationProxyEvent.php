@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Procuration\Event;
+namespace App\Procuration\Event;
 
-use AppBundle\Entity\ProcurationProxy;
+use App\Entity\ProcurationProxy;
 use Symfony\Component\EventDispatcher\Event;
 
 class ProcurationProxyEvent extends Event

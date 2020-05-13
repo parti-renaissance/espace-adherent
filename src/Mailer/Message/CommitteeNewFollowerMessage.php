@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
+use App\Entity\Adherent;
+use App\Entity\Committee;
 use Ramsey\Uuid\Uuid;
 
 final class CommitteeNewFollowerMessage extends Message

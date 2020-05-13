@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook\Handler;
+namespace App\Mailchimp\Webhook\Handler;
 
-use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use AppBundle\Mailchimp\Webhook\EventTypeEnum;
-use AppBundle\Newsletter\NewsletterSubscriptionHandler;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Webhook\EventTypeEnum;
+use App\Newsletter\NewsletterSubscriptionHandler;
 
 class NewsletterUnsubscribeHandler implements WebhookHandlerInterface
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentCharter;
+namespace App\Entity\AdherentCharter;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 
 interface AdherentCharterInterface
 {

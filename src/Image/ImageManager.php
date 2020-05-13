@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Image;
+namespace App\Image;
 
-use AppBundle\Entity\ImageOwnerInterface;
-use AppBundle\Storage\ImageStorage;
+use App\Entity\ImageOwnerInterface;
+use App\Storage\ImageStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageManager

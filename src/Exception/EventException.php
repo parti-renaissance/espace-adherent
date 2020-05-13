@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Exception;
+namespace App\Exception;
 
-use AppBundle\Entity\Event;
+use App\Entity\Event;
 
 class EventException extends \RuntimeException
 {

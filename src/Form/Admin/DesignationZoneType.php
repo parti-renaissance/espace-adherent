@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\VotingPlatform\Designation\DesignationZoneEnum;
+use App\VotingPlatform\Designation\DesignationZoneEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

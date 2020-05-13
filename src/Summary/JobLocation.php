@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Summary;
+namespace App\Summary;
 
 class JobLocation
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\AdherentResetPasswordToken;
+use App\Entity\AdherentResetPasswordToken;
 
 class AdherentResetPasswordTokenTest extends AbstractAdherentTokenTest
 {

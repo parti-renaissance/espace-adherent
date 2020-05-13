@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\JeMarche;
+namespace App\JeMarche;
 
-use AppBundle\Entity\JeMarcheReport;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\JeMarcheReportMessage;
+use App\Entity\JeMarcheReport;
+use App\Mailer\MailerService;
+use App\Mailer\Message\JeMarcheReportMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class JeMarcheReportHandler

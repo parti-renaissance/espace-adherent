@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\OAuth;
+namespace App\OAuth;
 
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;

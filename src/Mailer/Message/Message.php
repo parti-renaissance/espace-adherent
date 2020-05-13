@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
 use Ramsey\Uuid\UuidInterface;
 

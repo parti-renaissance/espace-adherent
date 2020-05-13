@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Test\Mailer;
+namespace Tests\App\Test\Mailer;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
+use App\Mailer\AbstractEmailTemplate;
 
 class DummyEmailTemplate extends AbstractEmailTemplate
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Serializer;
+namespace Tests\App\Serializer;
 
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\MunicipalEvent;
-use AppBundle\Serializer\EventICalHandler;
-use AppBundle\Serializer\IcalSerializationVisitor;
+use App\Entity\CitizenAction;
+use App\Entity\Event;
+use App\Entity\MunicipalEvent;
+use App\Serializer\EventICalHandler;
+use App\Serializer\IcalSerializationVisitor;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\SerializationContext;
 use PHPUnit\Framework\TestCase;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\RepublicanSilence\TagExtractor;
+namespace Tests\App\RepublicanSilence\TagExtractor;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\District;
-use AppBundle\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
+use App\Entity\Adherent;
+use App\Entity\District;
+use App\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
 use PHPUnit\Framework\TestCase;
 
 class DistrictReferentTagExtractorTest extends TestCase

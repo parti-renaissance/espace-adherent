@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventContactMembersMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\EventContactMembersMessage;
 
 class EventContactMembersCommandHandler
 {

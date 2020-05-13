@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
 class Color
 {

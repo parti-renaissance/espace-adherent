@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Fixer;
+namespace App\Fixer;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;

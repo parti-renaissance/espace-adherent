@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Admin\ElectedRepresentative;
+namespace App\Admin\ElectedRepresentative;
 
-use AppBundle\Election\VoteListNuanceEnum;
-use AppBundle\Entity\ElectedRepresentative\LaREMSupportEnum;
-use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
-use AppBundle\Form\ElectedRepresentative\ZoneType;
+use App\Election\VoteListNuanceEnum;
+use App\Entity\ElectedRepresentative\LaREMSupportEnum;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Form\ElectedRepresentative\ZoneType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;

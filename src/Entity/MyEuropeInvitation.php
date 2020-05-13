@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Interactive\MyEuropeProcessor;
+use App\Interactive\MyEuropeProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MyEuropeInvitationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MyEuropeInvitationRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

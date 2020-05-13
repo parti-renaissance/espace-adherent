@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Transport;
+namespace App\Mailer\Transport;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
-use AppBundle\Mailer\EmailClientInterface;
+use App\Mailer\AbstractEmailTemplate;
+use App\Mailer\EmailClientInterface;
 
 class ApiTransport implements TransportInterface
 {

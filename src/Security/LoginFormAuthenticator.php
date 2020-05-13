@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security;
+namespace App\Security;
 
-use AppBundle\Entity\FailedLoginAttempt;
-use AppBundle\Repository\FailedLoginAttemptRepository;
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
+use App\Entity\FailedLoginAttempt;
+use App\Repository\FailedLoginAttemptRepository;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

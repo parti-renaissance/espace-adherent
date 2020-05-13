@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Assessor\AssessorManager;
-use AppBundle\Assessor\AssessorRequestExporter;
-use AppBundle\Assessor\Filter\AssessorRequestFilters;
-use AppBundle\Assessor\Filter\VotePlaceFilters;
-use AppBundle\Entity\ActionEnum;
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Exception\AssessorException;
-use AppBundle\Form\ConfirmActionType;
-use AppBundle\Repository\AssessorRequestRepository;
-use AppBundle\Repository\VotePlaceRepository;
-use AppBundle\Serializer\XlsxEncoder;
+use App\Assessor\AssessorManager;
+use App\Assessor\AssessorRequestExporter;
+use App\Assessor\Filter\AssessorRequestFilters;
+use App\Assessor\Filter\VotePlaceFilters;
+use App\Entity\ActionEnum;
+use App\Entity\AssessorRequest;
+use App\Entity\VotePlace;
+use App\Exception\AssessorException;
+use App\Form\ConfirmActionType;
+use App\Repository\AssessorRequestRepository;
+use App\Repository\VotePlaceRepository;
+use App\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -97,8 +97,8 @@ class AssessorManagerController extends Controller
      *     name="app_assessor_manager_request_associate",
      *     methods={"GET", "POST"}
      * )
-     * @ParamConverter("assessorRequest", class="AppBundle\Entity\AssessorRequest", options={"mapping": {"uuid": "uuid"}})
-     * @ParamConverter("votePlace", class="AppBundle\Entity\VotePlace", options={"id": "votePlaceId"})
+     * @ParamConverter("assessorRequest", class="App\Entity\AssessorRequest", options={"mapping": {"uuid": "uuid"}})
+     * @ParamConverter("votePlace", class="App\Entity\VotePlace", options={"id": "votePlaceId"})
      * @Security("is_granted('MANAGE', assessorRequest)")
      */
     public function assessorRequestAssociateAction(
@@ -172,7 +172,7 @@ class AssessorManagerController extends Controller
     /**
      * @Route(
      *     "/transform/{uuid}/{action}",
-     *     requirements={"uuid": "%pattern_uuid%", "action": AppBundle\Entity\ActionEnum::ACTIONS_URI_REGEX },
+     *     requirements={"uuid": "%pattern_uuid%", "action": App\Entity\ActionEnum::ACTIONS_URI_REGEX },
      *     name="app_assessor_manager_request_transform",
      *     methods={"GET"}
      * )

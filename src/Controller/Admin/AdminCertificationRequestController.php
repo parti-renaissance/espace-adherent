@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Adherent\CertificationAuthorityManager;
-use AppBundle\Adherent\CertificationPermissions;
-use AppBundle\Entity\CertificationRequest;
-use AppBundle\Form\ConfirmActionType;
+use App\Adherent\CertificationAuthorityManager;
+use App\Adherent\CertificationPermissions;
+use App\Entity\CertificationRequest;
+use App\Form\ConfirmActionType;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;

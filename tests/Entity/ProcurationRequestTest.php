@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Entity\ProcurationRequest;
+use App\Entity\ProcurationProxy;
+use App\Entity\ProcurationRequest;
 use PHPUnit\Framework\TestCase;
 
 class ProcurationRequestTest extends TestCase

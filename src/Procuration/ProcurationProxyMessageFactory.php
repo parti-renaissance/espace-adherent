@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Procuration;
+namespace App\Procuration;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Mailer\Message\ProcurationProxyCancelledMessage;
-use AppBundle\Mailer\Message\ProcurationProxyFoundMessage;
-use AppBundle\Mailer\Message\ProcurationProxyRegistrationConfirmationMessage;
-use AppBundle\Mailer\Message\ProcurationProxyReminderMessage;
-use AppBundle\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
-use AppBundle\Routing\RemoteUrlGenerator;
+use App\Entity\Adherent;
+use App\Entity\ProcurationProxy;
+use App\Entity\ProcurationRequest;
+use App\Mailer\Message\ProcurationProxyCancelledMessage;
+use App\Mailer\Message\ProcurationProxyFoundMessage;
+use App\Mailer\Message\ProcurationProxyRegistrationConfirmationMessage;
+use App\Mailer\Message\ProcurationProxyReminderMessage;
+use App\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
+use App\Routing\RemoteUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProcurationProxyMessageFactory

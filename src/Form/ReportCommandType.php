@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\Report\ReportReasonEnum;
-use AppBundle\Report\ReportCommand;
+use App\Entity\Report\ReportReasonEnum;
+use App\Report\ReportCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

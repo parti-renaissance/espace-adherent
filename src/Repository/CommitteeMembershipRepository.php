@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Collection\CommitteeMembershipCollection;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Event\Filter\ListFilterObject;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Collection\AdherentCollection;
+use App\Collection\CommitteeMembershipCollection;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\Event\Filter\ListFilterObject;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;

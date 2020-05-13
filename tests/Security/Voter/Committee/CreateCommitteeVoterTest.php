@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter\Committee;
+namespace Tests\App\Security\Voter\Committee;
 
-use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\Committee\CreateCommitteeVoter;
-use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
+use App\Committee\CommitteePermissions;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Repository\CommitteeRepository;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\Committee\CreateCommitteeVoter;
+use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
 {

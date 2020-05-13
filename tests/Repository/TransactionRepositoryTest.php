@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\Entity\Transaction;
-use AppBundle\Repository\TransactionRepository;
+use App\Entity\Transaction;
+use App\Repository\TransactionRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 class TransactionRepositoryTest extends WebTestCase
 {

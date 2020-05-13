@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\ApplicationRequest\Listener;
+namespace App\ApplicationRequest\Listener;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
+use App\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;

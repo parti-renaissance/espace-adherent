@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Feed;
+namespace App\Feed;
 
-use AppBundle\Feed\Exception\FeedGeneratorException;
+use App\Feed\Exception\FeedGeneratorException;
 use Suin\RSSWriter\FeedInterface;
 
 interface FeedGeneratorInterface

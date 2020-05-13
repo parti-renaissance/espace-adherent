@@ -32,7 +32,7 @@
                         key: 'zone',
                         name: 'Zone',
                     },
-                    {% if type == constant('AppBundle\\Jecoute\\SurveyTypeEnum::LOCAL') %}
+                    {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                         {
                             key: 'author',
                             name: 'Créateur',
@@ -62,12 +62,12 @@
                             createdAt: survey.createdAt|date('d/m/Y'),
                             questionsCount: data.questions_count,
                             responsesCount: data.responses_count,
-                            zone: survey is instanceof('AppBundle\\Entity\\Jecoute\\LocalSurvey') ? survey.city : 'Département',
+                            zone: survey is instanceof('App\\Entity\\Jecoute\\LocalSurvey') ? survey.city : 'Département',
                             publish: survey.published ? '<span class="status status__1">Publié</span>' :
                                 '<span class="status status__2">Non publié</span>',
                         } %}
 
-                        {% if type == constant('AppBundle\\Jecoute\\SurveyTypeEnum::LOCAL') %}
+                        {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                             {% set row = row|merge({
                                 author: survey.author ? survey.author.fullName : 'Ancien adhérent',
                                 menu: [
@@ -117,7 +117,7 @@
         </div>
 
         <div class="datagrid__table__tabs__items">
-            {% if type == constant('AppBundle\\Jecoute\\SurveyTypeEnum::LOCAL') %}
+            {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                 <h3>Questionnaires locaux</h3>
                 <span class="separator"></span>
                 <h3><a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}">Questionnaires nationaux</a></h3>

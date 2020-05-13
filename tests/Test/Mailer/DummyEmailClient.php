@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Test\Mailer;
+namespace Tests\App\Test\Mailer;
 
-use AppBundle\Mailer\AbstractEmailClient;
-use AppBundle\Mailer\EmailClientInterface;
-use AppBundle\Mailer\Exception\MailerException;
+use App\Mailer\AbstractEmailClient;
+use App\Mailer\EmailClientInterface;
+use App\Mailer\Exception\MailerException;
 use Symfony\Component\HttpFoundation\Response;
 
 class DummyEmailClient extends AbstractEmailClient implements EmailClientInterface

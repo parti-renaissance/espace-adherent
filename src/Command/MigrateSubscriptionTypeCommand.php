@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\Entity\SubscriptionType;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Entity\Adherent;
+use App\Entity\CitizenProjectMembership;
+use App\Entity\SubscriptionType;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;

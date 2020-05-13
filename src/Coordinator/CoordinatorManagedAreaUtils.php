@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Coordinator;
+namespace App\Coordinator;
 
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Utils\AreaUtils;
+use App\Entity\CitizenProject;
+use App\Utils\AreaUtils;
 
 class CoordinatorManagedAreaUtils extends AreaUtils
 {

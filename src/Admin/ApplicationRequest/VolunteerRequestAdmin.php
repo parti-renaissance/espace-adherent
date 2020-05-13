@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin\ApplicationRequest;
+namespace App\Admin\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
-use AppBundle\Entity\ApplicationRequest\Theme;
+use App\Entity\ApplicationRequest\TechnicalSkill;
+use App\Entity\ApplicationRequest\Theme;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Admin\DistrictAdmin;
+use App\Admin\DistrictAdmin;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

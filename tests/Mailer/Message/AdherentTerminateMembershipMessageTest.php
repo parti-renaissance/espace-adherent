@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
-use AppBundle\Mailer\Message\MessageRecipient;
+use App\Entity\Adherent;
+use App\Mailer\Message\AdherentTerminateMembershipMessage;
+use App\Mailer\Message\MessageRecipient;
 use PHPUnit\Framework\TestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\App\TestHelperTrait;
 
 class AdherentTerminateMembershipMessageTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\MediaGenerator\Command;
+namespace App\MediaGenerator\Command;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;

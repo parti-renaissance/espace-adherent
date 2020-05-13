@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
+use App\Entity\CitizenProjectMembership;
+use App\Entity\CommitteeMembership;
+use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;

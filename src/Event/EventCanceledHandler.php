@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\CitizenAction\CitizenActionEvent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\Event as CommitteeEvent;
-use AppBundle\Events;
+use App\CitizenAction\CitizenActionEvent;
+use App\Entity\BaseEvent;
+use App\Entity\CitizenAction;
+use App\Entity\Event as CommitteeEvent;
+use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

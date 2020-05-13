@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Entity\ReferentTag;
+use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -25,12 +25,12 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
 
     public function __construct(
         ReferentTagRepository $referentTagRepository,
-        ClientInterface $client,
+        ClientInterface $mailchimpClient,
         ObjectManager $entityManager,
         string $mailchimpListId
     ) {
         $this->referentTagRepository = $referentTagRepository;
-        $this->client = $client;
+        $this->client = $mailchimpClient;
         $this->entityManager = $entityManager;
         $this->mailchimpListId = $mailchimpListId;
 

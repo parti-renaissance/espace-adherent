@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AdherentMessage;
+namespace App\Controller\EnMarche\AdherentMessage;
 
-use AppBundle\AdherentMessage\StatisticsAggregator;
-use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
-use AppBundle\Mailchimp\Manager;
+use App\AdherentMessage\StatisticsAggregator;
+use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Mailchimp\Manager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\ApplicationRequest;
+namespace App\Form\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Repository\ApplicationRequest\TechnicalSkillRepository;
+use App\Entity\ApplicationRequest\TechnicalSkill;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Repository\ApplicationRequest\TechnicalSkillRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

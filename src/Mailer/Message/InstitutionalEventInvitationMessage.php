@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\InstitutionalEvent;
+use App\Entity\InstitutionalEvent;
 use Ramsey\Uuid\Uuid;
 
 final class InstitutionalEventInvitationMessage extends Message

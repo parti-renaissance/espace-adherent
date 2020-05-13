@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

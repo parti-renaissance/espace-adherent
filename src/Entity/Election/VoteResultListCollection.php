@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Entity\Election;
+namespace App\Entity\Election;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\City;
-use AppBundle\Entity\ElectionRound;
+use App\Entity\City;
+use App\Entity\ElectionRound;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Election\VoteResultListCollectionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Election\VoteResultListCollectionRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -29,14 +29,14 @@ class VoteResultListCollection
     /**
      * @var City
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City")
+     * @ORM\ManyToOne(targetEntity="App\Entity\City")
      */
     private $city;
 
     /**
      * @var VoteResultList[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\VoteResultList", mappedBy="listCollection", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Election\VoteResultList", mappedBy="listCollection", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Count(min=1)
      */
@@ -45,7 +45,7 @@ class VoteResultListCollection
     /**
      * @var ElectionRound
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectionRound")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ElectionRound")
      */
     private $electionRound;
 

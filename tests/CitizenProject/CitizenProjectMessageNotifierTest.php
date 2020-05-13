@@ -1,20 +1,20 @@
 <?php
 
-namespace Tests\AppBundle\CitizenProject;
+namespace Tests\App\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectFollowerChangeEvent;
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
-use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
-use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Repository\AdherentRepository;
+use App\CitizenProject\CitizenProjectFollowerChangeEvent;
+use App\CitizenProject\CitizenProjectManager;
+use App\CitizenProject\CitizenProjectMessageNotifier;
+use App\CitizenProject\CitizenProjectWasApprovedEvent;
+use App\CitizenProject\CitizenProjectWasCreatedEvent;
+use App\Collection\AdherentCollection;
+use App\Committee\CommitteeManager;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCitizenProjectData;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Mailer\MailerService;
+use App\Repository\AdherentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;

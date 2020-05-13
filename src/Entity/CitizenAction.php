@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Address\GeoCoder;
-use AppBundle\Report\ReportType;
+use App\Address\GeoCoder;
+use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenActionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CitizenActionRepository")
  */
 class CitizenAction extends BaseEvent
 {

@@ -7,7 +7,7 @@
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript">
         const displayChoices = function(questionType) {
-            if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
+            if ('{{ constant('App\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
                 $(questionType).parents('.survey-question-type').nextAll('.question-choices').hide();
             } else {
                 $(questionType).parents('.survey-question-type').nextAll('.question-choices').show();

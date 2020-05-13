@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Assessor\Filter;
+namespace App\Assessor\Filter;
 
 class AssessorRequestExportFilter
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Content;
+namespace App\Content;
 
-use AppBundle\Entity\Media;
+use App\Entity\Media;
 use Symfony\Component\HttpFoundation\File\File;
 
 class MediaFactory

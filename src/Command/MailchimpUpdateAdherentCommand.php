@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Mailchimp\Synchronisation\Command\UpdateAdherentCommand;
+use App\Mailchimp\Synchronisation\Command\UpdateAdherentCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

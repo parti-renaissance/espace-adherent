@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Committee;
+namespace Tests\App\Committee;
 
-use AppBundle\Address\Address;
-use AppBundle\Committee\CommitteeCreationCommand;
-use AppBundle\Committee\CommitteeFactory;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Referent\ReferentTagManager;
+use App\Address\Address;
+use App\Committee\CommitteeCreationCommand;
+use App\Committee\CommitteeFactory;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\PostAddress;
+use App\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 

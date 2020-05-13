@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\EntityListener;
+namespace App\EntityListener;
 
-use AppBundle\AdherentMessage\Command\CreateStaticSegmentCommand;
-use AppBundle\AdherentMessage\Command\SynchronizeAdherentSegmentCommand;
-use AppBundle\Entity\AdherentSegment;
+use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\AdherentMessage\Command\SynchronizeAdherentSegmentCommand;
+use App\Entity\AdherentSegment;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\Messenger\MessageBusInterface;
 

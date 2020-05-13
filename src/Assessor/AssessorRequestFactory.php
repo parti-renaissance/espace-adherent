@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Entity\VotePlace;
+use App\Entity\AssessorRequest;
+use App\Entity\VotePlace;
 use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;

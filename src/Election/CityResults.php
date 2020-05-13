@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Election;
+namespace App\Election;
 
-use AppBundle\Entity\Election\CityVoteResult;
-use AppBundle\Entity\Election\ListTotalResult as ListTotalResultEntity;
-use AppBundle\Entity\Election\MinistryListTotalResult;
-use AppBundle\Entity\Election\MinistryVoteResult;
-use AppBundle\Entity\Election\VotePlaceResult;
+use App\Entity\Election\CityVoteResult;
+use App\Entity\Election\ListTotalResult as ListTotalResultEntity;
+use App\Entity\Election\MinistryListTotalResult;
+use App\Entity\Election\MinistryVoteResult;
+use App\Entity\Election\VotePlaceResult;
 
 class CityResults
 {

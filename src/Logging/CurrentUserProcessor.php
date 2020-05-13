@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Logging;
+namespace App\Logging;
 
 use Symfony\Component\Security\Core\Security;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
+use App\Entity\Adherent;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EventInvitation

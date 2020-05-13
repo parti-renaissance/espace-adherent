@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Election;
+namespace App\Entity\Election;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\ElectionRound;
+use App\Entity\ElectionRound;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,7 +33,7 @@ abstract class BaseWithListCollectionResult extends BaseVoteResult
     /**
      * @var ListTotalResult[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\ListTotalResult", mappedBy="voteResult", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Election\ListTotalResult", mappedBy="voteResult", cascade={"all"})
      */
     private $listTotalResults;
 

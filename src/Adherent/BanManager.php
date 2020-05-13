@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Adherent;
+namespace App\Adherent;
 
-use AppBundle\Adherent\Unregistration\UnregistrationCommand;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\BannedAdherent;
-use AppBundle\Membership\MembershipRequestHandler;
+use App\Adherent\Unregistration\UnregistrationCommand;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
+use App\Entity\BannedAdherent;
+use App\Membership\MembershipRequestHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class BanManager

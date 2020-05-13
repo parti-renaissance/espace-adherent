@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\Election;
+namespace App\Admin\Election;
 
-use AppBundle\Entity\Election\CityPartner;
+use App\Entity\Election\CityPartner;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

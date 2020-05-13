@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin\ProgrammaticFoundation;
+namespace App\Admin\ProgrammaticFoundation;
 
-use AppBundle\Entity\ProgrammaticFoundation\SubApproach;
-use AppBundle\Entity\ProgrammaticFoundation\Tag;
-use AppBundle\Form\PurifiedTextareaType;
+use App\Entity\ProgrammaticFoundation\SubApproach;
+use App\Entity\ProgrammaticFoundation\Tag;
+use App\Form\PurifiedTextareaType;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

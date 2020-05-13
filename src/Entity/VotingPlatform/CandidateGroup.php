@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VotingPlatform\CandidateGroupRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\CandidateGroupRepository")
  *
  * @ORM\Table(name="voting_platform_candidate_group")
  *
@@ -24,7 +24,7 @@ class CandidateGroup
      * @var Candidate[]|ArrayCollection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\VotingPlatform\Candidate",
+     *     targetEntity="App\Entity\VotingPlatform\Candidate",
      *     cascade={"all"},
      *     mappedBy="candidateGroup",
      *     orphanRemoval=true
@@ -35,7 +35,7 @@ class CandidateGroup
     /**
      * @var Election
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Election", inversedBy="candidateGroups")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="candidateGroups")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $election;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Procuration\Event;
+namespace App\Procuration\Event;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ProcurationRequest;
+use App\Entity\Adherent;
+use App\Entity\ProcurationRequest;
 use Symfony\Component\EventDispatcher\Event;
 
 class ProcurationRequestEvent extends Event

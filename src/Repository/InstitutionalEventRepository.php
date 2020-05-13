@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\InstitutionalEvent;
+use App\Entity\Adherent;
+use App\Entity\InstitutionalEvent;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class InstitutionalEventRepository extends EventRepository

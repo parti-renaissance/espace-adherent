@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Entity\Event;
-use AppBundle\Events;
+use App\Entity\CommitteeFeedItem;
+use App\Entity\Event;
+use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

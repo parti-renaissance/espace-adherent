@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Routing;
+namespace App\Routing;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;

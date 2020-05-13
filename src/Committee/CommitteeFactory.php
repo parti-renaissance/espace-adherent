@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\Entity\Committee;
-use AppBundle\Referent\ReferentTagManager;
+use App\Address\PostAddressFactory;
+use App\Entity\Committee;
+use App\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 

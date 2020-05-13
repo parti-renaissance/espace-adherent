@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\Entity\Report\ReportableInterface;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\Entity\Report\ReportableInterface;
 
 class IdeasWorkshopRuntime
 {

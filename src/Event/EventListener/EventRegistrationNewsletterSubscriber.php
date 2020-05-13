@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Event\EventListener;
+namespace App\Event\EventListener;
 
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Event\EventRegistrationEvent;
-use AppBundle\Events;
-use AppBundle\Newsletter\NewsletterSubscriptionHandler;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use App\Entity\NewsletterSubscription;
+use App\Event\EventRegistrationEvent;
+use App\Events;
+use App\Newsletter\NewsletterSubscriptionHandler;
+use App\Repository\AdherentRepository;
+use App\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

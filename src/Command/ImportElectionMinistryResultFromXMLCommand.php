@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Election\ElectionManager;
-use AppBundle\Election\VoteListNuanceEnum;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Election\MinistryListTotalResult;
-use AppBundle\Repository\CityRepository;
+use App\Election\ElectionManager;
+use App\Election\VoteListNuanceEnum;
+use App\Entity\Adherent;
+use App\Entity\Election\MinistryListTotalResult;
+use App\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sabre\Xml\Service;
 use Symfony\Component\Console\Command\Command;

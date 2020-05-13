@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\MemberSummary\Language;
+use App\Entity\MemberSummary\Language;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType as CoreLanguageType;
 use Symfony\Component\Form\FormBuilderInterface;

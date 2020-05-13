@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Newsletter\Listener;
+namespace App\Newsletter\Listener;
 
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;
-use AppBundle\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
-use AppBundle\Newsletter\Events;
-use AppBundle\Newsletter\NewsletterEvent;
+use App\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;
+use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
+use App\Newsletter\Events;
+use App\Newsletter\NewsletterEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;

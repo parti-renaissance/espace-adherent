@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\Admin\Election;
+namespace App\Form\Admin\Election;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Election\CityCandidate;
-use AppBundle\ValueObject\Genders;
+use App\Address\Address;
+use App\Entity\Election\CityCandidate;
+use App\ValueObject\Genders;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

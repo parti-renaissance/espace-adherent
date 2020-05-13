@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Jecoute;
+namespace App\Jecoute;
 
 final class SurveyEvents
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election;
+namespace App\Controller\EnMarche\Election;
 
-use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\City;
-use AppBundle\Form\Election\MinistryVoteResultType;
+use App\Election\ElectionManager;
+use App\Entity\City;
+use App\Form\Election\MinistryVoteResultType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\EntityListener;
+namespace App\EntityListener;
 
-use AppBundle\Entity\Article;
-use AppBundle\Redirection\Dynamic\RedirectionManager;
+use App\Entity\Article;
+use App\Redirection\Dynamic\RedirectionManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 

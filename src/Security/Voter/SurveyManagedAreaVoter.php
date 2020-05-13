@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Repository\Jecoute\LocalSurveyRepository;
+use App\Entity\Adherent;
+use App\Entity\Jecoute\LocalSurvey;
+use App\Repository\Jecoute\LocalSurveyRepository;
 
 class SurveyManagedAreaVoter extends AbstractAdherentVoter
 {

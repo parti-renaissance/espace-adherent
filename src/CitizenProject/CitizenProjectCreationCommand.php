@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Address\NullableAddress;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\TurnkeyProject;
+use App\Address\NullableAddress;
+use App\Entity\Adherent;
+use App\Entity\TurnkeyProject;
 
 class CitizenProjectCreationCommand extends CitizenProjectCommand
 {

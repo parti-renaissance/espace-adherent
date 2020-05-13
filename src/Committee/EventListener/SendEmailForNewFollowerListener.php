@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Committee\EventListener;
+namespace App\Committee\EventListener;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Committee\Event\FollowCommitteeEvent;
-use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
+use App\Committee\CommitteeManager;
+use App\Committee\Event\FollowCommitteeEvent;
+use App\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CommitteeNewFollowerMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

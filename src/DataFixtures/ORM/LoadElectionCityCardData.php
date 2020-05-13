@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election\CityCard;
-use AppBundle\Entity\Election\CityContact;
-use AppBundle\Entity\Election\CityManager;
-use AppBundle\Entity\Election\CityPartner;
-use AppBundle\Entity\Election\CityPrevision;
+use App\Entity\City;
+use App\Entity\Election\CityCard;
+use App\Entity\Election\CityContact;
+use App\Entity\Election\CityManager;
+use App\Entity\Election\CityPartner;
+use App\Entity\Election\CityPrevision;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumber;

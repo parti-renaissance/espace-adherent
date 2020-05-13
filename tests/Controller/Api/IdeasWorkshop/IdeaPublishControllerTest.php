@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Api\IdeasWorkshop;
+namespace Tests\App\Controller\Api\IdeasWorkshop;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 class IdeaPublishControllerTest extends WebTestCase
 {

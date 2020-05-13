@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage\Filter;
 
-use AppBundle\Entity\Committee;
+use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
 
 trait BasicUserFiltersTrait
@@ -45,7 +45,7 @@ trait BasicUserFiltersTrait
     /**
      * @var Committee
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      */
     private $committee;
 

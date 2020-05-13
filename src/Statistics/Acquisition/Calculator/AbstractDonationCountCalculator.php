@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Entity\Adherent;
+use App\Statistics\Acquisition\StatisticsRequest;
 use Doctrine\ORM\Query\Expr\Join;
 
 abstract class AbstractDonationCountCalculator extends AbstractDonationCalculator

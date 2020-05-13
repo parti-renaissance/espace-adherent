@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
 /**
  * @method assertArrayHasKey($key, $array, $message = '')

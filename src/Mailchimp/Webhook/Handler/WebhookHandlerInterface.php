@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook\Handler;
+namespace App\Mailchimp\Webhook\Handler;
 
 interface WebhookHandlerInterface
 {

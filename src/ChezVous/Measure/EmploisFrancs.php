@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\ChezVous\Measure;
+namespace App\ChezVous\Measure;
 
 class EmploisFrancs extends AbstractMeasure
 {

@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Entity\Timeline;
+namespace App\Entity\Timeline;
 
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\AbstractTranslatableEntity;
-use AppBundle\Entity\AlgoliaIndexedEntityInterface;
-use AppBundle\Entity\EntityMediaInterface;
-use AppBundle\Entity\EntityMediaTrait;
+use App\Entity\AbstractTranslatableEntity;
+use App\Entity\AlgoliaIndexedEntityInterface;
+use App\Entity\EntityMediaInterface;
+use App\Entity\EntityMediaTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="timeline_themes")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\ThemeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Timeline\ThemeRepository")
  *
  * @Algolia\Index(
  *     autoIndex=false,
@@ -55,7 +55,7 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     /**
      * @var Measure[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Timeline\Measure", mappedBy="themes")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Timeline\Measure", mappedBy="themes")
      */
     private $measures;
 

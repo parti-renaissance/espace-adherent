@@ -39,7 +39,7 @@
             });
 
             const displayChoices = function(questionType) {
-                if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
+                if ('{{ constant('App\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
                     $(questionType).parents('.survey-question-type').nextAll('.question-choices').hide();
                 } else {
                     $(questionType).parents('.survey-question-type').nextAll('.question-choices').show();
@@ -112,7 +112,7 @@
             const selectConcernedZoneChoices = function (selectedInput) {
                 const cityField = $("input[name='survey_form[city]']");
 
-                if ('{{ constant('AppBundle\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}' === $(selectedInput).val()) {
+                if ('{{ constant('App\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}' === $(selectedInput).val()) {
                     cityField.show();
                 } else {
                     cityField.hide().val('');

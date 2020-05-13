@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Summary;
+namespace App\Summary;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\MemberSummary\JobExperience;
-use AppBundle\Entity\MemberSummary\Language;
-use AppBundle\Entity\MemberSummary\Training;
-use AppBundle\Entity\Summary;
-use AppBundle\Repository\SummaryRepository;
+use App\Entity\Adherent;
+use App\Entity\MemberSummary\JobExperience;
+use App\Entity\MemberSummary\Language;
+use App\Entity\MemberSummary\Training;
+use App\Entity\Summary;
+use App\Repository\SummaryRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;

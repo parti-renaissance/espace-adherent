@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Entity\ReferentOrganizationalChart;
+namespace App\Entity\ReferentOrganizationalChart;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Referent;
-use AppBundle\Validator\ValidAdherentCoReferent;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Referent;
+use App\Validator\ValidAdherentCoReferent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository")
  *
  * @ValidAdherentCoReferent
  */
@@ -81,7 +81,7 @@ class ReferentPersonLink
     /**
      * @var Referent
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Referent", inversedBy="referentPersonLinks", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Referent", inversedBy="referentPersonLinks", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $referent;
@@ -89,7 +89,7 @@ class ReferentPersonLink
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", cascade={"persist"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", cascade={"persist"}, fetch="EAGER")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $adherent;
@@ -118,7 +118,7 @@ class ReferentPersonLink
     /**
      * @var Committee[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Committee")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Committee")
      */
     private $restrictedCommittees;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Address\AddressInterface;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Address\AddressInterface;
+use App\Intl\FranceCitiesBundle;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

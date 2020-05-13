@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Assessor\AssessorRequestFactory;
-use AppBundle\Entity\AssessorOfficeEnum;
-use AppBundle\Entity\VotePlace;
+use App\Assessor\AssessorRequestFactory;
+use App\Entity\AssessorOfficeEnum;
+use App\Entity\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;

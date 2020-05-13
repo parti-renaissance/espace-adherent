@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\RepublicanSilence;
+namespace App\RepublicanSilence;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Entity\RepublicanSilence;
-use AppBundle\Repository\ReferentTagRepository;
-use AppBundle\Repository\RepublicanSilenceRepository;
+use App\Address\Address;
+use App\Entity\ReferentTag;
+use App\Entity\RepublicanSilence;
+use App\Repository\ReferentTagRepository;
+use App\Repository\RepublicanSilenceRepository;
 use Psr\SimpleCache\CacheInterface;
 
 class RepublicanSilenceManager

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Newsletter;
+namespace App\Newsletter;
 
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
+use App\Entity\NewsletterSubscription;
+use App\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
 
 class NewsletterValueObject
 {

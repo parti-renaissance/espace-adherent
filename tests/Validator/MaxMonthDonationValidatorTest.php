@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Validator;
+namespace Tests\App\Validator;
 
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Validator\MaxMonthDonation;
-use AppBundle\Validator\MaxMonthDonationValidator;
+use App\Donation\DonationRequest;
+use App\Validator\MaxMonthDonation;
+use App\Validator\MaxMonthDonationValidator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 

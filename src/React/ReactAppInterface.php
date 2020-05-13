@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\React;
+namespace App\React;
 
 use Symfony\Component\Routing\Route;
 

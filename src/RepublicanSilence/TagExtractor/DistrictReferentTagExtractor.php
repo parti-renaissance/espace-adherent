@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\RepublicanSilence\TagExtractor;
+namespace App\RepublicanSilence\TagExtractor;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Utils\AreaUtils;
+use App\Entity\Adherent;
+use App\Utils\AreaUtils;
 
 class DistrictReferentTagExtractor implements ReferentTagExtractorInterface
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage;
+namespace App\Entity\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageDataObject;
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\CommitteeAdherentMessageDataObject;
+use App\AdherentMessage\AdherentMessageDataObject;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\CommitteeAdherentMessageDataObject;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

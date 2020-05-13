@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Entity\MyEuropeChoice;
-use AppBundle\Entity\MyEuropeInvitation;
+use App\Entity\MyEuropeChoice;
+use App\Entity\MyEuropeInvitation;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

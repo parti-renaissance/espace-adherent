@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Command;
+namespace Tests\App\Command;
 
-use AppBundle\Command\ProcurationSendReminderCommand;
-use AppBundle\Mailer\Message\ProcurationProxyReminderMessage;
+use App\Command\ProcurationSendReminderCommand;
+use App\Mailer\Message\ProcurationProxyReminderMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group procuration

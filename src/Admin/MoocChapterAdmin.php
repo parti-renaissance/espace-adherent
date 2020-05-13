@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Mooc\BaseMoocElement;
-use AppBundle\Entity\Mooc\Mooc;
+use App\Entity\Mooc\BaseMoocElement;
+use App\Entity\Mooc\Mooc;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

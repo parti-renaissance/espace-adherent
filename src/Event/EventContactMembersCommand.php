@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EventContactMembersCommand

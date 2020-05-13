@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\EntityMediaInterface;
+use App\Entity\EntityMediaInterface;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 

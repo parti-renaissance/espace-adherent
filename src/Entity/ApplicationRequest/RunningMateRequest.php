@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity\ApplicationRequest;
+namespace App\Entity\ApplicationRequest;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
+use App\ApplicationRequest\ApplicationRequestTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="application_request_running_mate")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ApplicationRequest\RunningMateRequestRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

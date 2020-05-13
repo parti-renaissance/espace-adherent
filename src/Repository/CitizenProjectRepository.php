@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Coordinator\Filter\CitizenProjectFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseGroup;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Search\SearchParametersFilter;
+use App\Coordinator\Filter\CitizenProjectFilter;
+use App\Entity\Adherent;
+use App\Entity\BaseGroup;
+use App\Entity\CitizenProject;
+use App\Geocoder\Coordinates;
+use App\Search\SearchParametersFilter;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

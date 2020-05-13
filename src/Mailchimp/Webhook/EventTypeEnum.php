@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook;
+namespace App\Mailchimp\Webhook;
 
 use MyCLabs\Enum\Enum;
 

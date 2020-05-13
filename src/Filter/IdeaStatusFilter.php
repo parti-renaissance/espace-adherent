@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Filter;
+namespace App\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Entity\IdeasWorkshop\IdeaStatusEnum;
+use App\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\QueryBuilder;
 
 final class IdeaStatusFilter extends AbstractFilter

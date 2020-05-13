@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security\Voter\Committee;
+namespace App\Security\Voter\Committee;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Security\Voter\AbstractAdherentVoter;
 
 class MemberOfCommitteeVoter extends AbstractAdherentVoter
 {

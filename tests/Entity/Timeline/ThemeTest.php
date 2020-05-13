@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Entity\Timeline;
+namespace Tests\App\Entity\Timeline;
 
-use AppBundle\Entity\Media;
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Entity\Timeline\MeasureTranslation;
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Entity\Timeline\Theme;
-use AppBundle\Entity\Timeline\ThemeTranslation;
+use App\Entity\Media;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\MeasureTranslation;
+use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\Theme;
+use App\Entity\Timeline\ThemeTranslation;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 

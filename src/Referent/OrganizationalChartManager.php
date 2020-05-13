@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Referent;
+namespace App\Referent;
 
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class OrganizationalChartManager

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\CommitteeElection;
-use AppBundle\Entity\VotingPlatform\Designation\Designation;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\VotingPlatform\DesignationRepository;
-use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
+use App\Entity\CommitteeElection;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\Repository\CommitteeRepository;
+use App\Repository\VotingPlatform\DesignationRepository;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventInvite;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventInvitationMessage;
-use AppBundle\Routing\RemoteUrlGenerator;
+use App\Entity\Event;
+use App\Entity\EventInvite;
+use App\Mailer\MailerService;
+use App\Mailer\Message\EventInvitationMessage;
+use App\Routing\RemoteUrlGenerator;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class EventInvitationHandler

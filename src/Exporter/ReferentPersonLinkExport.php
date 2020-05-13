@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Exporter;
+namespace App\Exporter;
 
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Response;

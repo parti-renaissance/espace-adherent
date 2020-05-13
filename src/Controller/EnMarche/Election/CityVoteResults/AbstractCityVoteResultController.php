@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\CityVoteResults;
+namespace App\Controller\EnMarche\Election\CityVoteResults;
 
-use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election\CityVoteResult;
-use AppBundle\Form\Election\VoteResultWithListsType;
+use App\Election\ElectionManager;
+use App\Entity\City;
+use App\Entity\Election\CityVoteResult;
+use App\Form\Election\VoteResultWithListsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

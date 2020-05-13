@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TransactionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TransactionRepository")
  * @ORM\Table(name="donation_transactions", indexes={
  *     @ORM\Index(name="donation_transactions_result_idx", columns={"paybox_result_code"})
  * })
@@ -94,7 +94,7 @@ class Transaction
     /**
      * @var Donation
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Donation", inversedBy="transactions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Donation", inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $donation;

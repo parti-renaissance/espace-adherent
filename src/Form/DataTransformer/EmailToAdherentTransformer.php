@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\DataTransformer;
+namespace App\Form\DataTransformer;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Repository\AdherentRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 

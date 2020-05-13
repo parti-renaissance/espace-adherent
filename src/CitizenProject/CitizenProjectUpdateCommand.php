@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Address\NullableAddress;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCommitteeSupport;
+use App\Address\NullableAddress;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCommitteeSupport;
 
 class CitizenProjectUpdateCommand extends CitizenProjectCommand
 {

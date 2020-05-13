@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mandrill;
+namespace App\Mandrill;
 
-use AppBundle\Mailer\EmailClientInterface;
-use AppBundle\Mailer\Exception\MailerException;
+use App\Mailer\EmailClientInterface;
+use App\Mailer\Exception\MailerException;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\HttpFoundation\Response;
 

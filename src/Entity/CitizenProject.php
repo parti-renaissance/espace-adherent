@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\AdherentMessage\StaticSegmentInterface;
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
-use AppBundle\Report\ReportType;
+use App\AdherentMessage\StaticSegmentInterface;
+use App\Collection\AdherentCollection;
+use App\Exception\CitizenProjectAlreadyApprovedException;
+use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *         @ORM\Index(name="citizen_project_status_idx", columns="status")
  *     }
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenProjectRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CitizenProjectRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -72,7 +72,7 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
     protected $slug;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CitizenProjectCategory")
      *
      * @Algolia\Attribute
      */
@@ -112,7 +112,7 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
      * @var CitizenProjectCommitteeSupport[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\CitizenProjectCommitteeSupport",
+     *     targetEntity="App\Entity\CitizenProjectCommitteeSupport",
      *     fetch="EAGER",
      *     mappedBy="citizenProject",
      *     orphanRemoval=true,
@@ -124,7 +124,7 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
     /**
      * @var Skill[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CitizenProjectSkill")
+     * @ORM\ManyToMany(targetEntity="App\Entity\CitizenProjectSkill")
      * @ORM\JoinTable(
      *     name="citizen_projects_skills",
      *     joinColumns={
@@ -510,7 +510,7 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
     /**
      * Marks this citizen project as approved.
      *
-     * @throws \AppBundle\Exception\CitizenProjectAlreadyApprovedException
+     * @throws \App\Exception\CitizenProjectAlreadyApprovedException
      */
     public function approved(string $timestamp = 'now'): void
     {

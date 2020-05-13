@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Projection;
+namespace App\Entity\Projection;
 
 class ManagedUserFactory
 {

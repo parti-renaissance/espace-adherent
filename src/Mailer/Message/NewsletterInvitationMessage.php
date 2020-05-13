@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\NewsletterInvite;
+use App\Entity\NewsletterInvite;
 use Ramsey\Uuid\Uuid;
 
 final class NewsletterInvitationMessage extends Message

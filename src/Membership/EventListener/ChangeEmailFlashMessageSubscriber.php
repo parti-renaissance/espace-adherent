@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Membership\EventListener;
+namespace App\Membership\EventListener;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\AdherentChangeEmailTokenRepository;
+use App\Entity\Adherent;
+use App\Repository\AdherentChangeEmailTokenRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;

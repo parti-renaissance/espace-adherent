@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\WebHook\WebHook;
-use AppBundle\WebHook\Event;
-use AppBundle\WebHook\Service;
+use App\Entity\WebHook\WebHook;
+use App\WebHook\Event;
+use App\WebHook\Service;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

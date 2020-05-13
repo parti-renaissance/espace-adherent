@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Test\Producer;
+namespace Tests\App\Test\Producer;
 
-use AppBundle\Deputy\DeputyMessage;
-use AppBundle\Producer\DeputyMessageDispatcherProducerInterface;
+use App\Deputy\DeputyMessage;
+use App\Producer\DeputyMessageDispatcherProducerInterface;
 
 class DeputyMessageNullProducer implements DeputyMessageDispatcherProducerInterface
 {

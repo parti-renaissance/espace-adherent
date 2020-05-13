@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security\Voter\Committee;
+namespace App\Security\Voter\Committee;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
+use App\Entity\Adherent;
+use App\Security\Voter\AbstractAdherentVoter;
 
 class CommitteeCandidacyVoter extends AbstractAdherentVoter
 {

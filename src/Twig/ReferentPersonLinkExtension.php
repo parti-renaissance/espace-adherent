@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Entity\Referent;
-use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\Referent;
+use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Twig\Extension\AbstractExtension;
 
 class ReferentPersonLinkExtension extends AbstractExtension

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\Procuration;
+namespace App\Form\Procuration;
 
-use AppBundle\Form\GenderType;
-use AppBundle\Form\UnitedNationsCountryType;
-use AppBundle\Procuration\ElectionContext;
+use App\Form\GenderType;
+use App\Form\UnitedNationsCountryType;
+use App\Procuration\ElectionContext;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;

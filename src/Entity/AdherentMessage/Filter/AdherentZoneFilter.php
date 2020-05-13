@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage\Filter;
 
-use AppBundle\Entity\ReferentTag;
+use App\Entity\ReferentTag;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,7 +16,7 @@ class AdherentZoneFilter extends AbstractUserFilter
     /**
      * @var ReferentTag
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
      *
      * @Assert\NotBlank
      */

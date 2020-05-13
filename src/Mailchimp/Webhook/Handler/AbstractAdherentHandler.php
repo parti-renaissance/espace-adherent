@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook\Handler;
+namespace App\Mailchimp\Webhook\Handler;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use AppBundle\Mailchimp\MailchimpSubscriptionLabelMapping;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\MailchimpSubscriptionLabelMapping;
+use App\Repository\AdherentRepository;
 
 abstract class AbstractAdherentHandler implements WebhookHandlerInterface
 {

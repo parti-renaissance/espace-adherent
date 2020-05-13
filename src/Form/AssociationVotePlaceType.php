@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\VotePlace;
-use AppBundle\Repository\VotePlaceRepository;
+use App\Entity\VotePlace;
+use App\Repository\VotePlaceRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

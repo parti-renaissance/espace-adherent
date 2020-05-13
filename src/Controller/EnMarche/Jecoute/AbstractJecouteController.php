@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Jecoute;
+namespace App\Controller\EnMarche\Jecoute;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Entity\Jecoute\NationalSurvey;
-use AppBundle\Entity\Jecoute\Survey;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
-use AppBundle\Form\Jecoute\SurveyFormType;
-use AppBundle\Jecoute\StatisticsExporter;
-use AppBundle\Jecoute\StatisticsProvider;
-use AppBundle\Jecoute\SurveyTypeEnum;
-use AppBundle\Repository\Jecoute\DataAnswerRepository;
-use AppBundle\Repository\Jecoute\LocalSurveyRepository;
-use AppBundle\Repository\Jecoute\NationalSurveyRepository;
-use AppBundle\Repository\Jecoute\SuggestedQuestionRepository;
+use App\Entity\Adherent;
+use App\Entity\Jecoute\LocalSurvey;
+use App\Entity\Jecoute\NationalSurvey;
+use App\Entity\Jecoute\Survey;
+use App\Entity\Jecoute\SurveyQuestion;
+use App\Form\Jecoute\SurveyFormType;
+use App\Jecoute\StatisticsExporter;
+use App\Jecoute\StatisticsProvider;
+use App\Jecoute\SurveyTypeEnum;
+use App\Repository\Jecoute\DataAnswerRepository;
+use App\Repository\Jecoute\LocalSurveyRepository;
+use App\Repository\Jecoute\NationalSurveyRepository;
+use App\Repository\Jecoute\SuggestedQuestionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;

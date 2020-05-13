@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 /**
- * Interface is used for denormalization to get a logged user (ex. AppBundle\Normalizer\AuthorDenormalizer).
+ * Interface is used for denormalization to get a logged user (ex. App\Normalizer\AuthorDenormalizer).
  */
 interface AuthorInterface
 {

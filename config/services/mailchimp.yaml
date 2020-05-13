@@ -7,52 +7,52 @@ services:
             $interests: '%adherent_interests%'
 
     _instanceof:
-        AppBundle\Mailchimp\Webhook\Handler\WebhookHandlerInterface:
+        App\Mailchimp\Webhook\Handler\WebhookHandlerInterface:
             tags: ['app.mailchimp.webhook_handler']
-        AppBundle\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
+        App\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
             tags: ['app.mailchimp.campaign.handler']
-        AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface:
+        App\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface:
             tags: ['app.mailchimp.campaign.segment_condition_builder']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
 
-    AppBundle\Mailchimp\Webhook\Handler\:
+    App\Mailchimp\Webhook\Handler\:
         resource: ../../src/Mailchimp/Webhook/Handler/
 
-    AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\:
+    App\Mailchimp\Campaign\SegmentConditionBuilder\:
         resource: ../../src/Mailchimp/Campaign/SegmentConditionBuilder/
 
-    AppBundle\AdherentMessage\MailchimpCampaign\:
+    App\AdherentMessage\MailchimpCampaign\:
         resource: ../../src/AdherentMessage/MailchimpCampaign/
 
-    AppBundle\Mailchimp\Webhook\WebhookHandler:
+    App\Mailchimp\Webhook\WebhookHandler:
         arguments: [!tagged 'app.mailchimp.webhook_handler']
 
-    AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder:
+    App\Mailchimp\Campaign\SegmentConditionsBuilder:
         arguments:
             $builders: !tagged 'app.mailchimp.campaign.segment_condition_builder'
 
-    AppBundle\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
+    App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
         arguments: [!tagged 'app.mailchimp.campaign.handler']
 
-    AppBundle\AdherentMessage\StatisticsAggregator: ~
+    App\AdherentMessage\StatisticsAggregator: ~
 
-    AppBundle\Mailchimp\Synchronisation\Handler\:
+    App\Mailchimp\Synchronisation\Handler\:
         resource: ../../src/Mailchimp/Synchronisation/Handler/
 
-    AppBundle\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler:
+    App\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler:
         tags:
             - { name: 'monolog.logger', channel: 'mailchimp_sync' }
         calls:
             - ['setLogger', ['@logger']]
 
-    AppBundle\AdherentMessage\Handler\:
+    App\AdherentMessage\Handler\:
         resource: ../../src/AdherentMessage/Handler/
 
-    AppBundle\Newsletter\Handler\:
+    App\Newsletter\Handler\:
         resource: ../../src/Newsletter/Handler/
 
-    AppBundle\Mailchimp\SignUp\SignUpHandler:
+    App\Mailchimp\SignUp\SignUpHandler:
         arguments:
             $client: '@app.http_client.mailchimp_signup'
             $subscriptionGroupId: '%env(MAILCHIMP_SIGNUP_SUBSCRIPTION_GROUP_ID)%'

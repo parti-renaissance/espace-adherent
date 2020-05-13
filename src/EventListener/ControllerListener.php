@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

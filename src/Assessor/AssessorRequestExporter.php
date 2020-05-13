@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Serializer\XlsxEncoder;
-use AppBundle\Utils\PhoneNumberFormatter;
+use App\Entity\AssessorRequest;
+use App\Serializer\XlsxEncoder;
+use App\Utils\PhoneNumberFormatter;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Translation\TranslatorInterface;
 

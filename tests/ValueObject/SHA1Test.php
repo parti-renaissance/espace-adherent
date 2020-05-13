@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\ValueObject;
+namespace Tests\App\ValueObject;
 
-use AppBundle\ValueObject\SHA1;
+use App\ValueObject\SHA1;
 use PHPUnit\Framework\TestCase;
 
 class SHA1Test extends TestCase

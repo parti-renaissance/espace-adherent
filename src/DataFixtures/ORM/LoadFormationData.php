@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Content\MediaFactory;
-use AppBundle\Entity\Formation\Axe;
-use AppBundle\Entity\Formation\Module;
-use AppBundle\Entity\Formation\Path;
-use AppBundle\Entity\Media;
+use App\Content\MediaFactory;
+use App\Entity\Formation\Axe;
+use App\Entity\Formation\Module;
+use App\Entity\Formation\Path;
+use App\Entity\Media;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\AdherentMessage\MailchimpCampaign\Handler;
+namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 
 interface MailchimpCampaignHandlerInterface
 {

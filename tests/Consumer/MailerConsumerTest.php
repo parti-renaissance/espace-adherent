@@ -1,9 +1,9 @@
 <?php
 
-namespace Test\AppBundle\Consumer;
+namespace Test\App\Consumer;
 
-use AppBundle\Consumer\MailerConsumer;
-use AppBundle\Mailer\MailerService;
+use App\Consumer\MailerConsumer;
+use App\Mailer\MailerService;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Algolia;
+namespace App\Algolia;
 
-use AppBundle\Entity\AlgoliaIndexedEntityInterface;
-use AppBundle\Entity\Timeline\Measure;
+use App\Entity\AlgoliaIndexedEntityInterface;
+use App\Entity\Timeline\Measure;
 
 class AlgoliaIndexedEntityManager
 {

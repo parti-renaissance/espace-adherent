@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Referent;
+namespace App\Referent;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentManagedUsersMessage;
-use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
+use App\Entity\Adherent;
+use App\Entity\ReferentManagedUsersMessage;
+use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;

@@ -1,23 +1,23 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AssessorSpace;
+namespace App\Controller\EnMarche\AssessorSpace;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\Assessor\AssessorRole\AssessorAssociationManager;
-use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
-use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
-use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\AssessorRoleAssociation;
-use AppBundle\Entity\Election;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Exporter\AssessorsExporter;
-use AppBundle\Exporter\VoteResultsExporter;
-use AppBundle\Form\AssessorVotePlaceListType;
-use AppBundle\Form\CreateVotePlaceType;
-use AppBundle\Repository\Election\VotePlaceResultRepository;
-use AppBundle\Repository\ElectionRepository;
-use AppBundle\Repository\VotePlaceRepository;
-use AppBundle\Security\Voter\ManageVotePlaceVoter;
+use App\Assessor\AssessorRole\AssessorAssociationManager;
+use App\Assessor\Filter\AssessorRequestExportFilter;
+use App\Assessor\Filter\AssociationVotePlaceFilter;
+use App\Election\ElectionManager;
+use App\Entity\AssessorRoleAssociation;
+use App\Entity\Election;
+use App\Entity\VotePlace;
+use App\Exporter\AssessorsExporter;
+use App\Exporter\VoteResultsExporter;
+use App\Form\AssessorVotePlaceListType;
+use App\Form\CreateVotePlaceType;
+use App\Repository\Election\VotePlaceResultRepository;
+use App\Repository\ElectionRepository;
+use App\Repository\VotePlaceRepository;
+use App\Security\Voter\ManageVotePlaceVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

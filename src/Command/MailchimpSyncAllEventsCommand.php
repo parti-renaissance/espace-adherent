@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\AdherentMessage\Command\CreateStaticSegmentCommand;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
+use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectMembership;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;

@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Entity\Timeline;
+namespace App\Entity\Timeline;
 
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\AbstractTranslatableEntity;
-use AppBundle\Entity\AlgoliaIndexedEntityInterface;
+use App\Entity\AbstractTranslatableEntity;
+use App\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="timeline_profiles")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\ProfileRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Timeline\ProfileRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

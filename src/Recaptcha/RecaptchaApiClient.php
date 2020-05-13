@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Recaptcha;
+namespace App\Recaptcha;
 
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\RequestStack;

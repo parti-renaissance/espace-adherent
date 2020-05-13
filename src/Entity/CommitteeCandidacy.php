@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
-use AppBundle\ValueObject\Genders;
+use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeCandidacyRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
  */
 class CommitteeCandidacy implements ImageOwnerInterface
 {
@@ -52,7 +52,7 @@ class CommitteeCandidacy implements ImageOwnerInterface
     /**
      * @var CommitteeElection
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CommitteeElection")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeElection")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $committeeElection;
@@ -60,7 +60,7 @@ class CommitteeCandidacy implements ImageOwnerInterface
     /**
      * @var CommitteeMembership
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommitteeMembership", mappedBy="committeeCandidacy")
+     * @ORM\OneToOne(targetEntity="App\Entity\CommitteeMembership", mappedBy="committeeCandidacy")
      */
     private $committeeMembership;
 

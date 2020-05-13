@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Article;
-use AppBundle\Entity\Clarification;
-use AppBundle\Entity\EntityContentInterface;
-use AppBundle\Entity\Page;
-use AppBundle\Entity\Proposal;
+use App\Entity\Article;
+use App\Entity\Clarification;
+use App\Entity\EntityContentInterface;
+use App\Entity\Page;
+use App\Entity\Proposal;
 use Doctrine\ORM\EntityManager;
 use League\CommonMark\CommonMarkConverter;
 use Lullabot\AMP\AMP;

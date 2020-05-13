@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Serializer;
+namespace App\Serializer;
 
-use AppBundle\Entity\Mooc\Mooc;
+use App\Entity\Mooc\Mooc;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;

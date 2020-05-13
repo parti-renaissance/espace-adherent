@@ -1,39 +1,39 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
-use AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadIdeaData;
-use AppBundle\DataFixtures\ORM\LoadIdeaThreadCommentData;
-use AppBundle\DataFixtures\ORM\LoadIdeaThreadData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
-use AppBundle\Entity\SubscriptionType;
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\Entity\Unregistration;
-use AppBundle\Mailer\Message\AdherentContactMessage;
-use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
-use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\EmailRepository;
-use AppBundle\Repository\UnregistrationRepository;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
+use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadIdeaData;
+use App\DataFixtures\ORM\LoadIdeaThreadCommentData;
+use App\DataFixtures\ORM\LoadIdeaThreadData;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
+use App\Entity\IdeasWorkshop\AuthorCategoryEnum;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\Entity\Reporting\EmailSubscriptionHistory;
+use App\Entity\SubscriptionType;
+use App\Entity\TurnkeyProject;
+use App\Entity\Unregistration;
+use App\Mailer\Message\AdherentContactMessage;
+use App\Mailer\Message\AdherentTerminateMembershipMessage;
+use App\Mailer\Message\CitizenProjectCreationConfirmationMessage;
+use App\Mailer\Message\CommitteeCreationConfirmationMessage;
+use App\Repository\CommitteeRepository;
+use App\Repository\EmailRepository;
+use App\Repository\UnregistrationRepository;
+use App\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

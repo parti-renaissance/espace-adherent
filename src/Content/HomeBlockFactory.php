@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Content;
+namespace App\Content;
 
-use AppBundle\Entity\HomeBlock;
+use App\Entity\HomeBlock;
 
 class HomeBlockFactory
 {

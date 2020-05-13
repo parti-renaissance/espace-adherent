@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Address\Address;
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Donation\DonationRequestUtils;
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Entity\Adherent;
-use AppBundle\Form\DataTransformer\FloatToStringTransformer;
-use AppBundle\Membership\MembershipRegistrationProcess;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\ValueObject\Genders;
+use App\Address\Address;
+use App\Donation\DonationRequest;
+use App\Donation\DonationRequestUtils;
+use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Adherent;
+use App\Form\DataTransformer\FloatToStringTransformer;
+use App\Membership\MembershipRegistrationProcess;
+use App\Repository\AdherentRepository;
+use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

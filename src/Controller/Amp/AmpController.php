@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\Amp;
+namespace App\Controller\Amp;
 
-use AppBundle\Controller\CanaryControllerTrait;
-use AppBundle\Entity\Article;
-use AppBundle\Entity\OrderArticle;
-use AppBundle\Entity\Proposal;
-use AppBundle\Sitemap\SitemapFactory;
+use App\Controller\CanaryControllerTrait;
+use App\Entity\Article;
+use App\Entity\OrderArticle;
+use App\Entity\Proposal;
+use App\Sitemap\SitemapFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

@@ -62,7 +62,7 @@
                             {{ macros.get_donation_status_badge(donation.status) }}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                            {% if donation.type is constant('AppBundle\\Entity\\Donation::TYPE_CB') and not donation.transactions.isEmpty %}
+                            {% if donation.type is constant('App\\Entity\\Donation::TYPE_CB') and not donation.transactions.isEmpty %}
                                 <ol>
                                     {% for transaction in donation.transactions %}
                                         <li>
@@ -222,20 +222,20 @@
 {% endblock %}
 
 {% block app_admin_elected_representative_label_name_text_widget -%}
-    {% set shouldSetOther = form.vars.value is not empty and form.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+    {% set shouldSetOther = form.vars.value is not empty and form.vars.value not in constant('App\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
     <select id="{{ form.vars.id }}-label-names" class="filter__field form form__field">
         <option value="" {{ form.vars.value is not empty ? 'selected="selected"' }}></option>
-        {% for key, label in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
-            <option value="{{ label }}" {{ form.vars.value == label or (shouldSetOther and label == constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER')) ? 'selected="selected"' }}>{{ label }}</option>
+        {% for key, label in constant('App\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+            <option value="{{ label }}" {{ form.vars.value == label or (shouldSetOther and label == constant('App\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER')) ? 'selected="selected"' }}>{{ label }}</option>
         {% endfor %}
     </select>
     {{ form_widget(form, { attr: { style: "margin-top: 15px;" } }) }}
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var other = '{{ constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER') }}';
+            var other = '{{ constant('App\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER') }}';
             var labelNamesSelect = $('#{{ form.vars.id }}-label-names');
-            {% if form.vars.value is not empty and form.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+            {% if form.vars.value is not empty and form.vars.value not in constant('App\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
             $(labelNamesSelect).val(other);
             {% endif %}
 
@@ -308,16 +308,16 @@
             {{ form_row(form.presidentialElectionYear) }}
         </td>
         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-            {% set years = constant('AppBundle\\Entity\\ElectedRepresentative\\CandidateNameEnum::ALL') %}
+            {% set years = constant('App\\Entity\\ElectedRepresentative\\CandidateNameEnum::ALL') %}
             {% set candidates = years[form.presidentialElectionYear.vars.value] %}
             {% set shouldSetOther = form.candidate.vars.value is not empty and form.candidate.vars.value not in candidates %}
             <select id="{{ form.candidate.vars.id }}-candidate-names" class="filter__field form form__field">
                 <option value="" {{ form.candidate.vars.value is not empty ? 'selected="selected"' }}></option>
 
-                {% for year, candidates in constant('AppBundle\\Entity\\ElectedRepresentative\\CandidateNameEnum::ALL') %}
+                {% for year, candidates in constant('App\\Entity\\ElectedRepresentative\\CandidateNameEnum::ALL') %}
                     <optgroup label="{{ year }}">
                         {% for candidate in candidates %}
-                            <option value="{{ candidate }}" {{ form.candidate.vars.value == candidate or (shouldSetOther and candidate == constant('AppBundle\\Entity\\ElectedRepresentative\\CandidateNameEnum::OTHER')) ? 'selected="selected"' }}>{{ candidate }}</option>
+                            <option value="{{ candidate }}" {{ form.candidate.vars.value == candidate or (shouldSetOther and candidate == constant('App\\Entity\\ElectedRepresentative\\CandidateNameEnum::OTHER')) ? 'selected="selected"' }}>{{ candidate }}</option>
                         {% endfor %}
                     </optgroup>
                 {% endfor %}
@@ -329,7 +329,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var other = '{{ constant('AppBundle\\Entity\\ElectedRepresentative\\CandidateNameEnum::OTHER') }}';
+            var other = '{{ constant('App\\Entity\\ElectedRepresentative\\CandidateNameEnum::OTHER') }}';
             var year = $('#{{ form.presidentialElectionYear.vars.id }}').val();
             var candidateNamesSelect = $('#{{ form.candidate.vars.id }}-candidate-names');
             candidateNamesSelect.find("optgroup:not([label='" + year + "'])").remove();

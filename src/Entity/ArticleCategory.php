@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="articles_categories")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleCategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ArticleCategoryRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

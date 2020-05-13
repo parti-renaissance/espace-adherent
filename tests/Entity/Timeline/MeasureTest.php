@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Entity\Timeline;
+namespace Tests\App\Entity\Timeline;
 
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Entity\Timeline\MeasureTranslation;
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Entity\Timeline\Theme;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\MeasureTranslation;
+use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\Theme;
 use PHPUnit\Framework\TestCase;
 
 class MeasureTest extends TestCase

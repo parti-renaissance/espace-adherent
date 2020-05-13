@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\BoardMember\BoardMemberFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\ReferentTagRepository;
+use App\BoardMember\BoardMemberFilter;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
+use App\Entity\ReferentTag;
+use App\Repository\AdherentRepository;
+use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

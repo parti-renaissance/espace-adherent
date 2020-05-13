@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Deputy\DeputyMessage as DeputyMessageModel;
-use AppBundle\Entity\Adherent;
+use App\Deputy\DeputyMessage as DeputyMessageModel;
+use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
 final class DeputyMessage extends Message

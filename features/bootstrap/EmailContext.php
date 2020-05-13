@@ -1,6 +1,6 @@
 <?php
 
-use AppBundle\Repository\EmailRepository;
+use App\Repository\EmailRepository;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\RawMinkContext;

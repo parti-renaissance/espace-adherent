@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VotePlaceResults;
+namespace App\Controller\EnMarche\Election\VotePlaceResults;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;

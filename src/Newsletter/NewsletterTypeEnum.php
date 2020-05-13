@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Newsletter;
+namespace App\Newsletter;
 
 use MyCLabs\Enum\Enum;
 

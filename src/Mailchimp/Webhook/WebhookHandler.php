@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook;
+namespace App\Mailchimp\Webhook;
 
-use AppBundle\Mailchimp\Webhook\Handler\WebhookHandlerInterface;
+use App\Mailchimp\Webhook\Handler\WebhookHandlerInterface;
 
 class WebhookHandler
 {

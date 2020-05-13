@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\EventListener;
+namespace App\Mailchimp\Synchronisation\EventListener;
 
-use AppBundle\AdherentMessage\StaticSegmentInterface;
-use AppBundle\CitizenProject\CitizenProjectFollowerChangeEvent;
-use AppBundle\Committee\Event\CommitteeEventInterface;
-use AppBundle\Committee\Event\FollowCommitteeEvent;
-use AppBundle\Entity\Adherent;
-use AppBundle\Events;
-use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
-use AppBundle\Membership\UserEvent;
-use AppBundle\Membership\UserEvents;
-use AppBundle\Utils\ArrayUtils;
+use App\AdherentMessage\StaticSegmentInterface;
+use App\CitizenProject\CitizenProjectFollowerChangeEvent;
+use App\Committee\Event\CommitteeEventInterface;
+use App\Committee\Event\FollowCommitteeEvent;
+use App\Entity\Adherent;
+use App\Events;
+use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
+use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
+use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
+use App\Membership\UserEvent;
+use App\Membership\UserEvents;
+use App\Utils\ArrayUtils;
 use JMS\Serializer\ArrayTransformerInterface;
 use JMS\Serializer\SerializationContext;
 use Ramsey\Uuid\UuidInterface;

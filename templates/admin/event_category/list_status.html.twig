@@ -1,7 +1,7 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.status == constant('AppBundle\\Entity\\BaseEventCategory::ENABLED')  %}
+    {% if object.status == constant('App\\Entity\\BaseEventCategory::ENABLED')  %}
         <span class="label label-success">Visible</span>
     {% else %}
         <span class="label label-danger">Masqué</span>

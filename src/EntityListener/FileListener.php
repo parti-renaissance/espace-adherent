@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\EntityListener;
+namespace App\EntityListener;
 
-use AppBundle\Entity\EntityFileInterface;
+use App\Entity\EntityFileInterface;
 use Doctrine\ORM\Mapping as ORM;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;

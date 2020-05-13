@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\Entity\Adherent;
+use App\Address\PostAddressFactory;
+use App\Entity\Adherent;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
 use League\Glide\Signatures\Signature;
 use League\Glide\Signatures\SignatureFactory;

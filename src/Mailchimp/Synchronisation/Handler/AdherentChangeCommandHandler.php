@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Handler;
+namespace App\Mailchimp\Synchronisation\Handler;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Mailchimp\Manager;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
+use App\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

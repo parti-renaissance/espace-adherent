@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Producer;
+namespace App\Producer;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
+use App\Mailer\AbstractEmailTemplate;
 
 interface MailerProducerInterface
 {

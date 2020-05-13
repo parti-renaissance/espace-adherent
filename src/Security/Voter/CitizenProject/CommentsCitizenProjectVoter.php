@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Security\Voter\CitizenProject;
+namespace App\Security\Voter\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectPermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
+use App\CitizenProject\CitizenProjectPermissions;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Security\Voter\AbstractAdherentVoter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class CommentsCitizenProjectVoter extends AbstractAdherentVoter

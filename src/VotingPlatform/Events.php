@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\VotingPlatform;
+namespace App\VotingPlatform;
 
 final class Events
 {

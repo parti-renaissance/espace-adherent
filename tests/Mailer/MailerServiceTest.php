@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\AppBundle\Mailer;
+namespace Tests\App\Mailer;
 
-use AppBundle\Mailer\EmailTemplateFactory;
-use AppBundle\Mailer\Event\MailerEvent;
-use AppBundle\Mailer\Event\MailerEvents;
-use AppBundle\Mailer\MailerService;
+use App\Mailer\EmailTemplateFactory;
+use App\Mailer\Event\MailerEvent;
+use App\Mailer\Event\MailerEvents;
+use App\Mailer\MailerService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Tests\AppBundle\Test\Mailer\DummyEmailTemplate;
-use Tests\AppBundle\Test\Mailer\Message\DummyMessage;
-use Tests\AppBundle\Test\Mailer\Transport\FailingTransport;
-use Tests\AppBundle\Test\Mailer\Transport\NullTransport;
+use Tests\App\Test\Mailer\DummyEmailTemplate;
+use Tests\App\Test\Mailer\Message\DummyMessage;
+use Tests\App\Test\Mailer\Transport\FailingTransport;
+use Tests\App\Test\Mailer\Transport\NullTransport;
 
 class MailerServiceTest extends TestCase
 {

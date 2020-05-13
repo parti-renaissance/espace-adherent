@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Geocoder;
+namespace App\Geocoder;
 
-use AppBundle\Geocoder\Exception\GeocodingException;
+use App\Geocoder\Exception\GeocodingException;
 use Geocoder\Geocoder as BazingaGeocoder;
 
 class Geocoder implements GeocoderInterface

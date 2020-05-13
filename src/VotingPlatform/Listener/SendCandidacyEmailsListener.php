@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Listener;
+namespace App\VotingPlatform\Listener;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeCandidacyCreatedConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeCandidacyRemovedConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeNewCandidacyNotificationMessage;
-use AppBundle\Mailer\Message\CommitteeRemovedCandidacyNotificationMessage;
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
-use AppBundle\VotingPlatform\Event\CommitteeCandidacyEvent;
-use AppBundle\VotingPlatform\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CommitteeCandidacyCreatedConfirmationMessage;
+use App\Mailer\Message\CommitteeCandidacyRemovedConfirmationMessage;
+use App\Mailer\Message\CommitteeNewCandidacyNotificationMessage;
+use App\Mailer\Message\CommitteeRemovedCandidacyNotificationMessage;
+use App\Security\Http\Session\AnonymousFollowerSession;
+use App\VotingPlatform\Event\CommitteeCandidacyEvent;
+use App\VotingPlatform\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

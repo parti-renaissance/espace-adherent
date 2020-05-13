@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Collection;
+namespace App\Collection;
 
-use AppBundle\Entity\CitizenProjectMembership;
+use App\Entity\CitizenProjectMembership;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class CitizenProjectMembershipCollection extends ArrayCollection

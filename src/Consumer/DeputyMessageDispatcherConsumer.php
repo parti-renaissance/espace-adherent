@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Consumer;
+namespace App\Consumer;
 
-use AppBundle\Deputy\DeputyMessage;
-use AppBundle\Entity\DeputyManagedUsersMessage;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DeputyMessage as Message;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\DeputyManagedUsersMessageRepository;
+use App\Deputy\DeputyMessage;
+use App\Entity\DeputyManagedUsersMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\DeputyMessage as Message;
+use App\Repository\AdherentRepository;
+use App\Repository\DeputyManagedUsersMessageRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use Symfony\Component\Validator\Constraints as Assert;

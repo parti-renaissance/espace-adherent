@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\ApplicationRequest\Listener;
+namespace App\ApplicationRequest\Listener;
 
-use AppBundle\ApplicationRequest\ApplicationRequestEvent;
-use AppBundle\ApplicationRequest\ApplicationRequestRepository;
-use AppBundle\ApplicationRequest\Events;
+use App\ApplicationRequest\ApplicationRequestEvent;
+use App\ApplicationRequest\ApplicationRequestRepository;
+use App\ApplicationRequest\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class HideDuplicateRequestsSubscriber implements EventSubscriberInterface

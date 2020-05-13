@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Membership;
+namespace Tests\App\Membership;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Membership\MemberActivityCollection;
+use App\Entity\Adherent;
+use App\Entity\BaseEvent;
+use App\Entity\EventRegistration;
+use App\Membership\MemberActivityCollection;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;

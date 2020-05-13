@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\React\ReactAppRegistry;
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
+use App\React\ReactAppRegistry;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ReactController extends Controller
 {
-    public function appAction(ReactAppRegistry $registry, Request $request): Response
+    public function __invoke(ReactAppRegistry $registry, Request $request): Response
     {
         $app = $registry->getApp($request->attributes->get('_react_app'));
 

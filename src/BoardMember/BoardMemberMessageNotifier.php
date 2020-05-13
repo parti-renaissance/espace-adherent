@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\BoardMember;
+namespace App\BoardMember;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\BoardMemberContactAdherentsMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\BoardMemberContactAdherentsMessage;
 
 class BoardMemberMessageNotifier
 {

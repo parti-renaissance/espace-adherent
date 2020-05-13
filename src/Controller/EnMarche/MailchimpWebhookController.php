@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Mailchimp\Webhook\EventTypeEnum;
-use AppBundle\Mailchimp\Webhook\WebhookHandler;
+use App\Mailchimp\Webhook\EventTypeEnum;
+use App\Mailchimp\Webhook\WebhookHandler;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

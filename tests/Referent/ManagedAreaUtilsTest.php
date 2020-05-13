@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Referent;
+namespace Tests\App\Referent;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Referent\ManagedAreaUtils;
+use App\Entity\Adherent;
+use App\Referent\ManagedAreaUtils;
 use PHPUnit\Framework\TestCase;
 
 class ManagedAreaUtilsTest extends TestCase

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Collection\AdherentCollection;
+use App\Collection\AdherentCollection;
 
 class MultipleReferentsFoundException extends \LogicException
 {

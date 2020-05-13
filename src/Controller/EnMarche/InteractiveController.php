@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
-use AppBundle\Entity\MyEuropeInvitation;
-use AppBundle\Form\MyEuropeType;
+use App\Controller\CanaryControllerTrait;
+use App\Entity\MyEuropeInvitation;
+use App\Form\MyEuropeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

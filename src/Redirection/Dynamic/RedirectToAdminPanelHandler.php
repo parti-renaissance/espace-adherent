@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Redirection\Dynamic;
+namespace App\Redirection\Dynamic;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;

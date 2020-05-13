@@ -15,22 +15,22 @@ old_sound_rabbit_mq:
         mailer_campaign:
             connection:       default
             exchange_options: { name: 'mailer-delayed-campaign', type: direct }
-            class:            AppBundle\Producer\MailerProducer
+            class:            App\Producer\MailerProducer
 
         mailer_transactional:
             connection:       default
             exchange_options: { name: 'mailer-delayed-transactional', type: direct }
-            class:            AppBundle\Producer\MailerProducer
+            class:            App\Producer\MailerProducer
 
         deputy_message_dispatcher:
             connection:       default
             exchange_options: { name: 'deputy-message-dispatcher', type: direct }
-            class:            AppBundle\Producer\DeputyMessageDispatcherProducer
+            class:            App\Producer\DeputyMessageDispatcherProducer
 
         chezvous_algolia:
             connection:       default
             exchange_options: { name: 'chezvous_algolia', type: direct }
-            class:            AppBundle\Producer\ChezVous\AlgoliaProducer
+            class:            App\Producer\ChezVous\AlgoliaProducer
 
         sync_api:
             connection: default
@@ -41,40 +41,40 @@ old_sound_rabbit_mq:
             connection:        default
             exchange_options:  { name: 'mailer-delayed-campaign', type: direct }
             queue_options:     { name: 'mailer-delayed-campaign', durable: false }
-            callback:          AppBundle\Consumer\CampaignMailerConsumer
+            callback:          App\Consumer\CampaignMailerConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         mailer_transactional:
             connection:        default
             exchange_options:  { name: 'mailer-delayed-transactional', type: direct }
             queue_options:     { name: 'mailer-delayed-transactional', durable: false }
-            callback:          AppBundle\Consumer\TransactionalMailerConsumer
+            callback:          App\Consumer\TransactionalMailerConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         referent_message_dispatcher:
             connection:        default
             exchange_options:  { name: 'referent-message-dispatcher', type: direct }
             queue_options:     { name: 'referent-message-dispatcher', durable: false }
-            callback:          AppBundle\Consumer\ReferentMessageDispatcherConsumer
+            callback:          App\Consumer\ReferentMessageDispatcherConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         deputy_message_dispatcher:
             connection:        default
             exchange_options:  { name: 'deputy-message-dispatcher', type: direct }
             queue_options:     { name: 'deputy-message-dispatcher', durable: false }
-            callback:          AppBundle\Consumer\DeputyMessageDispatcherConsumer
+            callback:          App\Consumer\DeputyMessageDispatcherConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         chezvous_algolia:
             connection:        default
             exchange_options:  { name: 'chezvous_algolia', type: direct }
             queue_options:     { name: 'chezvous_algolia', durable: false }
-            callback:          AppBundle\Consumer\ChezVous\AlgoliaConsumer
+            callback:          App\Consumer\ChezVous\AlgoliaConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         mailer:
             connection:        default
             exchange_options:  { name: 'mails', type: direct }
             queue_options:     { name: 'mails', durable: false, routing_keys: [mailer.scheduled_mail] }
-            callback:          AppBundle\Consumer\MailerConsumer
+            callback:          App\Consumer\MailerConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }

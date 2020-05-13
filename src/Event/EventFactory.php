@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Address\Address;
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\CitizenAction\CitizenActionCommand;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Entity\PostAddress;
-use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
-use AppBundle\Referent\ReferentTagManager;
+use App\Address\Address;
+use App\Address\PostAddressFactory;
+use App\CitizenAction\CitizenActionCommand;
+use App\Entity\CitizenAction;
+use App\Entity\Event;
+use App\Entity\InstitutionalEvent;
+use App\Entity\PostAddress;
+use App\InstitutionalEvent\InstitutionalEventCommand;
+use App\Referent\ReferentTagManager;
 use Ramsey\Uuid\Uuid;
 
 class EventFactory

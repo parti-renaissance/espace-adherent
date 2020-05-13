@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Utils;
+namespace App\Utils;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Exception\AdherentCollectionException;
+use App\Entity\Adherent;
+use App\Exception\AdherentCollectionException;
 use Ramsey\Uuid\Uuid;
 
 class GroupUtils

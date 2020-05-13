@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Intl\VoteOfficeBundle;
+use App\Intl\FranceCitiesBundle;
+use App\Intl\VoteOfficeBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

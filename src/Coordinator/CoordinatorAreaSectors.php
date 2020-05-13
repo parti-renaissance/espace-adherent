@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Coordinator;
+namespace App\Coordinator;
 
 final class CoordinatorAreaSectors
 {

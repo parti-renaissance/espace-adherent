@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\OAuth\Repository;
+namespace App\OAuth\Repository;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;

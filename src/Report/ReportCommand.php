@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Report;
+namespace App\Report;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Entity\Report\ReportReasonEnum;
+use App\Entity\Adherent;
+use App\Entity\Report\ReportableInterface;
+use App\Entity\Report\ReportReasonEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 

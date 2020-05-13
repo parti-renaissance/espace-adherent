@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage\Filter;
 
-use AppBundle\Entity\AdherentSegment;
+use App\Entity\AdherentSegment;
 
 interface AdherentSegmentAwareFilterInterface
 {

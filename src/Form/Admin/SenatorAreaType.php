@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Entity\SenatorArea;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Entity\ReferentTag;
+use App\Entity\SenatorArea;
+use App\Repository\ReferentTagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Entity\Event;
-use AppBundle\Repository\EventRegistrationRepository;
-use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Entity\Event;
+use App\Repository\EventRegistrationRepository;
+use App\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
+use App\Statistics\Acquisition\StatisticsRequest;
 use Doctrine\ORM\Query\Expr\Join;
 
 abstract class AbstractEventSubscriptionCalculator extends AbstractCalculator

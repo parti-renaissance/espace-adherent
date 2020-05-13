@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Exception\CitizenProjectMembershipException;
+use App\Exception\CitizenProjectMembershipException;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -25,7 +25,7 @@ use Ramsey\Uuid\UuidInterface;
  *         @ORM\Index(name="citizen_project_memberships_role_idx", columns="privilege")
  *     }
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CitizenProjectMembershipRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CitizenProjectMembershipRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

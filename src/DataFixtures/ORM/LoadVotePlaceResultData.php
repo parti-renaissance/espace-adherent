@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Election\VotePlaceResult;
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Entity\VotePlace;
+use App\Entity\Election\VotePlaceResult;
+use App\Entity\ElectionRound;
+use App\Entity\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

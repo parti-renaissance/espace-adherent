@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\IdeasWorkshop\Listener;
+namespace App\IdeasWorkshop\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\IdeasWorkshop\Command\SendMailForApprovedThreadCommentCommand;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\IdeasWorkshop\Command\SendMailForApprovedThreadCommentCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

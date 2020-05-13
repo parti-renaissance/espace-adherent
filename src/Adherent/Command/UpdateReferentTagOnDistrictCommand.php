@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Adherent\Command;
+namespace App\Adherent\Command;
 
-use AppBundle\Messenger\Message\AsynchronousMessageInterface;
+use App\Messenger\Message\AsynchronousMessageInterface;
 
 class UpdateReferentTagOnDistrictCommand implements AsynchronousMessageInterface
 {

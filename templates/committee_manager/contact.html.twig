@@ -9,7 +9,7 @@
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.ckeditor('message', null, constant('AppBundle\\Entity\\UserDocument::TYPE_COMMITTEE_CONTACT'), false, true) }}
+            {{ js.ckeditor('message', null, constant('App\\Entity\\UserDocument::TYPE_COMMITTEE_CONTACT'), false, true) }}
         });
     </script>
 {% endblock %}

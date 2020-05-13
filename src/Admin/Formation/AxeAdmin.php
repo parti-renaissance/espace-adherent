@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin\Formation;
+namespace App\Admin\Formation;
 
-use AppBundle\Admin\MediaSynchronisedAdminTrait;
-use AppBundle\Form\PositionType;
+use App\Admin\MediaSynchronisedAdminTrait;
+use App\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

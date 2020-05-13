@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Deputy;
+namespace App\Deputy;
 
-use AppBundle\Entity\DeputyManagedUsersMessage;
-use AppBundle\Producer\DeputyMessageDispatcherProducerInterface;
+use App\Entity\DeputyManagedUsersMessage;
+use App\Producer\DeputyMessageDispatcherProducerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class DeputyMessageNotifier

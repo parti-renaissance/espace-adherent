@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\ManagedUsers;
+namespace App\Controller\EnMarche\ManagedUsers;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Form\ManagedUsers\ReferentManagedUsersFilterType;
-use AppBundle\ManagedUsers\ManagedUsersFilter;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Entity\Adherent;
+use App\Form\ManagedUsers\ReferentManagedUsersFilterType;
+use App\ManagedUsers\ManagedUsersFilter;
+use App\Subscription\SubscriptionTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

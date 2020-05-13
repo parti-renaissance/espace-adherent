@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Content;
+namespace App\Content;
 
-use AppBundle\Entity\Article;
+use App\Entity\Article;
 
 class ArticleFactory
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Algolia;
+namespace App\Algolia;
 
 use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
 use Algolia\AlgoliaSearchBundle\Indexer\ManualIndexer as BaseManualIndexer;

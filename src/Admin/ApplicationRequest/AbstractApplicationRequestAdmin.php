@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\ApplicationRequest;
+namespace App\Admin\ApplicationRequest;
 
-use AppBundle\Form\GenderType;
+use App\Form\GenderType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

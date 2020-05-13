@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\ElectedRepresentative;
+namespace App\Form\ElectedRepresentative;
 
-use AppBundle\Entity\ElectedRepresentative\Zone;
-use AppBundle\Repository\ElectedRepresentative\ZoneRepository;
+use App\Entity\ElectedRepresentative\Zone;
+use App\Repository\ElectedRepresentative\ZoneRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

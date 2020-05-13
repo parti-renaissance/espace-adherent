@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Repository\DonationRepository;
-use AppBundle\Statistics\Acquisition\Calculator\Category\DonationCategoryTrait;
+use App\Repository\DonationRepository;
+use App\Statistics\Acquisition\Calculator\Category\DonationCategoryTrait;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 

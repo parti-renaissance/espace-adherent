@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
+use App\Repository\IdeasWorkshop\IdeaRepository;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 class IdeaDatagrid extends DatagridDecorator

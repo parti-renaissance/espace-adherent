@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ReferentOrganizationalChart;
+namespace App\Entity\ReferentOrganizationalChart;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,13 +9,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @Gedmo\Tree(type="nested")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository")
  * @ORM\Table(name="organizational_chart_item")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string", length=20)
  * @ORM\DiscriminatorMap({
- *     "person_orga_item": "AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem",
- *     "group_orga_item": "AppBundle\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem"
+ *     "person_orga_item": "App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem",
+ *     "group_orga_item": "App\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem"
  * })
  */
 abstract class AbstractOrganizationalChartItem

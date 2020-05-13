@@ -1,18 +1,18 @@
 <?php
 
-use AppBundle\CitizenAction\CitizenActionEvent;
-use AppBundle\CitizenProject\CitizenProjectEvent;
-use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
-use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
-use AppBundle\Committee\CommitteeEvent;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventEvent;
-use AppBundle\Events;
-use AppBundle\Membership\UserEvent;
+use App\CitizenAction\CitizenActionEvent;
+use App\CitizenProject\CitizenProjectEvent;
+use App\CitizenProject\CitizenProjectWasCreatedEvent;
+use App\CitizenProject\CitizenProjectWasUpdatedEvent;
+use App\Committee\CommitteeEvent;
+use App\Entity\Adherent;
+use App\Entity\CitizenAction;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
+use App\Entity\Event;
+use App\Event\EventEvent;
+use App\Events;
+use App\Membership\UserEvent;
 use Behat\Behat\Context\Context;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

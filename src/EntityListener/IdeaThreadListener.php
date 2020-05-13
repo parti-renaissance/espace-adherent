@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\EntityListener;
+namespace App\EntityListener;
 
-use AppBundle\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\Thread;
 
 class IdeaThreadListener
 {

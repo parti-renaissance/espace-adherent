@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "my_europe": "AppBundle\Entity\MyEuropeChoice",
+ *     "my_europe": "App\Entity\MyEuropeChoice",
  * })
  * @Algolia\Index(autoIndex=false)
  */

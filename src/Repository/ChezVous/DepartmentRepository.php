@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\ChezVous;
+namespace App\Repository\ChezVous;
 
-use AppBundle\Entity\ChezVous\Department;
+use App\Entity\ChezVous\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

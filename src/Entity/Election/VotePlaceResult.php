@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Entity\Election;
+namespace App\Entity\Election;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Entity\VotePlace;
+use App\Entity\ElectionRound;
+use App\Entity\VotePlace;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Election\VotePlaceResultRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Election\VotePlaceResultRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -17,7 +17,7 @@ class VotePlaceResult extends BaseWithListCollectionResult
     /**
      * @var VotePlace
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace", inversedBy="voteResults")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotePlace", inversedBy="voteResults")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $votePlace;

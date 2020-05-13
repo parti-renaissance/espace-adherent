@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\OAuth;
+namespace App\OAuth;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\Entity\OAuth\UserAuthorization;
-use AppBundle\OAuth\Model\Scope;
-use AppBundle\Repository\OAuth\UserAuthorizationRepository;
+use App\Entity\Adherent;
+use App\Entity\OAuth\Client;
+use App\Entity\OAuth\UserAuthorization;
+use App\OAuth\Model\Scope;
+use App\Repository\OAuth\UserAuthorizationRepository;
 
 class OAuthAuthorizationManager
 {

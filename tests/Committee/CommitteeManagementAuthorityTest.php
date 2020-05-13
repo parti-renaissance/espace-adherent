@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\AppBundle\Committee;
+namespace Tests\App\Committee;
 
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Committee\CommitteeManagementAuthority;
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
+use App\Collection\AdherentCollection;
+use App\Committee\CommitteeManagementAuthority;
+use App\Committee\CommitteeManager;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
+use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -74,7 +74,7 @@ class CommitteeManagementAuthorityTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Committee\MultipleReferentsFoundException
+     * @expectedException \App\Committee\MultipleReferentsFoundException
      */
     public function testNotifyReferentsForApprovalWithMultipleReferents()
     {

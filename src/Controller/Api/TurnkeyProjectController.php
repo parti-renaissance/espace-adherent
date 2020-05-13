@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\Repository\TurnkeyProjectRepository;
+use App\Entity\TurnkeyProject;
+use App\Repository\TurnkeyProjectRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;

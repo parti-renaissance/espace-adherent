@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\MunicipalManagerAttribution;
+namespace App\Controller\EnMarche\MunicipalManagerAttribution;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\MunicipalManager\Filter\AssociationCityFilter;
+use App\Entity\Adherent;
+use App\MunicipalManager\Filter\AssociationCityFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 

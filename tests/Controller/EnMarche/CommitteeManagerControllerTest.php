@@ -1,27 +1,27 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
-use AppBundle\Mailer\Message\EventNotificationMessage;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
-use AppBundle\Repository\CommitteeFeedItemRepository;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use AppBundle\Repository\EventRepository;
+use App\Committee\CommitteeManager;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadEventCategoryData;
+use App\Entity\Committee;
+use App\Entity\CommitteeFeedItem;
+use App\Entity\CommitteeMembership;
+use App\Entity\Event;
+use App\Entity\PostAddress;
+use App\Mailer\Message\CommitteeMessageNotificationMessage;
+use App\Mailer\Message\EventNotificationMessage;
+use App\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\Repository\CommitteeFeedItemRepository;
+use App\Repository\CommitteeMembershipRepository;
+use App\Repository\EventRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

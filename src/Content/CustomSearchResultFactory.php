@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Content;
+namespace App\Content;
 
-use AppBundle\Entity\CustomSearchResult;
+use App\Entity\CustomSearchResult;
 
 class CustomSearchResultFactory
 {

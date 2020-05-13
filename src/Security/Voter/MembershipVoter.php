@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 
 class MembershipVoter extends AbstractAdherentVoter
 {

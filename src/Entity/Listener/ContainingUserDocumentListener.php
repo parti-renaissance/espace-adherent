@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity\Listener;
+namespace App\Entity\Listener;
 
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\IdeasWorkshop\Answer;
-use AppBundle\Entity\UserDocument;
-use AppBundle\Entity\UserDocumentInterface;
-use AppBundle\UserDocument\UserDocumentManager;
+use App\Entity\CommitteeFeedItem;
+use App\Entity\Event;
+use App\Entity\IdeasWorkshop\Answer;
+use App\Entity\UserDocument;
+use App\Entity\UserDocumentInterface;
+use App\UserDocument\UserDocumentManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;

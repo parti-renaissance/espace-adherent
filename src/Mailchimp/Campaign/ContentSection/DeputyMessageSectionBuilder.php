@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\ContentSection;
+namespace App\Mailchimp\Campaign\ContentSection;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
-use AppBundle\Utils\StringCleaner;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
+use App\Utils\StringCleaner;
 
 class DeputyMessageSectionBuilder implements ContentSectionBuilderInterface
 {

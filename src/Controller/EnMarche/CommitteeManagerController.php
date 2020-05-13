@@ -1,23 +1,23 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Committee\CommitteeCommand;
-use AppBundle\Committee\CommitteeContactMembersCommand;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Event\EventCommand;
-use AppBundle\Event\EventRegistrationCommand;
-use AppBundle\Event\Filter\ListFilterObject;
-use AppBundle\Form\CommitteeCommandType;
-use AppBundle\Form\CommitteeMemberFilterType;
-use AppBundle\Form\ContactMembersType;
-use AppBundle\Form\EventCommandType;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use AppBundle\Serializer\XlsxEncoder;
-use AppBundle\Utils\GroupUtils;
+use App\Address\GeoCoder;
+use App\Committee\CommitteeCommand;
+use App\Committee\CommitteeContactMembersCommand;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\Event\EventCommand;
+use App\Event\EventRegistrationCommand;
+use App\Event\Filter\ListFilterObject;
+use App\Form\CommitteeCommandType;
+use App\Form\CommitteeMemberFilterType;
+use App\Form\ContactMembersType;
+use App\Form\EventCommandType;
+use App\Repository\CommitteeMembershipRepository;
+use App\Serializer\XlsxEncoder;
+use App\Utils\GroupUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

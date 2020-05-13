@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Validator;
+namespace Tests\App\Validator;
 
-use AppBundle\Validator\DateRange;
-use AppBundle\Validator\DateRangeValidator;
+use App\Validator\DateRange;
+use App\Validator\DateRangeValidator;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 

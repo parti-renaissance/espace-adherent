@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\ReferentManagedUsersMessage;
+use App\Entity\ReferentManagedUsersMessage;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ReferentManagedUsersMessageRepository extends ManagedUsersMessageRepository

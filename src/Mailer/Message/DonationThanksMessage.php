@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Transaction;
+use App\Entity\Transaction;
 
 final class DonationThanksMessage extends Message
 {

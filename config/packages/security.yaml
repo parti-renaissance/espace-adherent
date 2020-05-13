@@ -5,8 +5,8 @@ security:
     erase_credentials: false
 
     encoders:
-        AppBundle\Entity\Administrator: bcrypt
-        AppBundle\Entity\Adherent: bcrypt
+        App\Entity\Administrator: bcrypt
+        App\Entity\Adherent: bcrypt
         legacy_encoder:
             algorithm:        sha1
             encode_as_base64: false
@@ -357,7 +357,7 @@ security:
             stateless: true
             guard:
                 authenticators:
-                    - 'AppBundle\OAuth\OAuthAuthenticator'
+                    - 'App\OAuth\OAuthAuthenticator'
 
         admin:
             context: main_context
@@ -378,7 +378,7 @@ security:
                 csrf_token_id: authenticate
                 csrf_token_generator: security.csrf.token_manager
 
-                failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
+                failure_handler: App\Security\Http\AuthenticationFailureHandler
             two_factor:
                 auth_form_path: admin_security_2fa
                 check_path: admin_security_2fa_check
@@ -400,16 +400,16 @@ security:
             logout:
                 path: logout
                 target: homepage
-            user_checker: AppBundle\Security\UserChecker
+            user_checker: App\Security\UserChecker
             json_login:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             guard:
                 authenticators:
-                    - AppBundle\Security\LoginFormAuthenticator
+                    - App\Security\LoginFormAuthenticator
                     - lexik_jwt_authentication.jwt_token_authenticator
-                entry_point: AppBundle\Security\LoginFormAuthenticator
+                entry_point: App\Security\LoginFormAuthenticator
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }

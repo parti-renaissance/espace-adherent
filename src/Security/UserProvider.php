@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security;
+namespace App\Security;
 
-use AppBundle\Repository\FailedLoginAttemptRepository;
-use AppBundle\Security\Exception\BadCredentialsException;
-use AppBundle\Security\Exception\MaxLoginAttemptException;
+use App\Repository\FailedLoginAttemptRepository;
+use App\Security\Exception\BadCredentialsException;
+use App\Security\Exception\MaxLoginAttemptException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;

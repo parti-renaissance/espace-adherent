@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Admin\ElectedRepresentative;
+namespace App\Admin\ElectedRepresentative;
 
-use AppBundle\Address\Address;
-use AppBundle\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
-use AppBundle\Election\VoteListNuanceEnum;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ElectedRepresentative\ElectedRepresentative;
-use AppBundle\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
-use AppBundle\Entity\ElectedRepresentative\LabelNameEnum;
-use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
-use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use AppBundle\Form\AdherentEmailType;
-use AppBundle\Form\ElectedRepresentative\SponsorshipType;
-use AppBundle\Form\GenderType;
-use AppBundle\Repository\ElectedRepresentative\MandateRepository;
+use App\Address\Address;
+use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
+use App\Election\VoteListNuanceEnum;
+use App\Entity\Adherent;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
+use App\Entity\ElectedRepresentative\LabelNameEnum;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
+use App\Form\AdherentEmailType;
+use App\Form\ElectedRepresentative\SponsorshipType;
+use App\Form\GenderType;
+use App\Repository\ElectedRepresentative\MandateRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

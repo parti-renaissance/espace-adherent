@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Form\CityFilterType;
-use AppBundle\MunicipalManager\Filter\AssociationCityFilter;
-use AppBundle\Repository\CityRepository;
+use App\Form\CityFilterType;
+use App\MunicipalManager\Filter\AssociationCityFilter;
+use App\Repository\CityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

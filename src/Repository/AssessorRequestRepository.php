@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
-use AppBundle\Assessor\Filter\AssessorRequestFilters;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Entity\VotePlace;
+use App\Assessor\Filter\AssessorRequestExportFilter;
+use App\Assessor\Filter\AssessorRequestFilters;
+use App\Entity\Adherent;
+use App\Entity\AssessorRequest;
+use App\Entity\VotePlace;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;

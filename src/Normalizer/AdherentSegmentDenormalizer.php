@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Entity\AdherentSegment;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\AdherentSegment;
+use App\Repository\AdherentRepository;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;

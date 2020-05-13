@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\TonMacronFriendInvitation;
+use App\Entity\TonMacronFriendInvitation;
 use Ramsey\Uuid\Uuid;
 
 final class TonMacronFriendMessage extends Message

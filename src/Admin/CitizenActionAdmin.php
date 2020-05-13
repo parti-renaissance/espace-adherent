@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\CitizenAction\CitizenActionEvent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Events;
-use AppBundle\Form\CitizenActionCategoryType;
-use AppBundle\Form\UnitedNationsCountryType;
-use AppBundle\Referent\ReferentTagManager;
+use App\CitizenAction\CitizenActionEvent;
+use App\Entity\CitizenAction;
+use App\Events;
+use App\Form\CitizenActionCategoryType;
+use App\Form\UnitedNationsCountryType;
+use App\Referent\ReferentTagManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

@@ -1,25 +1,25 @@
 <?php
 
-namespace Tests\AppBundle\Geocoder\Subscriber;
+namespace Tests\App\Geocoder\Subscriber;
 
-use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
-use AppBundle\Committee\CommitteeEvent;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCategory;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\NullablePostAddress;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Geocoder\GeoPointInterface;
-use AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
-use AppBundle\Membership\ActivityPositions;
-use AppBundle\Membership\AdherentAccountWasCreatedEvent;
-use AppBundle\Membership\AdherentProfileWasUpdatedEvent;
+use App\CitizenProject\CitizenProjectWasCreatedEvent;
+use App\Committee\CommitteeEvent;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCategory;
+use App\Entity\Committee;
+use App\Entity\NullablePostAddress;
+use App\Entity\PostAddress;
+use App\Geocoder\GeoPointInterface;
+use App\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
+use App\Membership\ActivityPositions;
+use App\Membership\AdherentAccountWasCreatedEvent;
+use App\Membership\AdherentProfileWasUpdatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Test\Geocoder\DummyGeocoder;
+use Tests\App\Test\Geocoder\DummyGeocoder;
 
 class EntityAddressGeocodingSubscriberTest extends TestCase
 {

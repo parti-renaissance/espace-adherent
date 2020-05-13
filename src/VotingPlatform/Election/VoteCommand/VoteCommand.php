@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Election\VoteCommand;
+namespace App\VotingPlatform\Election\VoteCommand;
 
-use AppBundle\Entity\VotingPlatform\CandidateGroup;
-use AppBundle\Entity\VotingPlatform\Election;
-use AppBundle\Entity\VotingPlatform\VoteChoice;
-use AppBundle\VotingPlatform\Election\VoteCommandStateEnum;
+use App\Entity\VotingPlatform\CandidateGroup;
+use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\VoteChoice;
+use App\VotingPlatform\Election\VoteCommandStateEnum;
 
 class VoteCommand
 {

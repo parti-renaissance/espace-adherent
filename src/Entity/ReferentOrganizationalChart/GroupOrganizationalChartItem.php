@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ReferentOrganizationalChart;
+namespace App\Entity\ReferentOrganizationalChart;
 
 use Doctrine\ORM\Mapping as ORM;
 

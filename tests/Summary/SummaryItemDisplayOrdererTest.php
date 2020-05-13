@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Summary;
+namespace Tests\App\Summary;
 
-use AppBundle\Summary\SummaryItemDisplayOrderer;
-use AppBundle\Summary\SummaryItemPositionableInterface;
+use App\Summary\SummaryItemDisplayOrderer;
+use App\Summary\SummaryItemPositionableInterface;
 use PHPUnit\Framework\TestCase;
 
 class SummaryItemDisplayOrdererTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ChezVous;
+namespace App\Entity\ChezVous;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;

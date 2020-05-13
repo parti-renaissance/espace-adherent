@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\DeputyManagedUsersMessage;
+use App\Entity\DeputyManagedUsersMessage;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class DeputyManagedUsersMessageRepository extends ManagedUsersMessageRepository

@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Controller\EntityControllerTrait;
-use AppBundle\Entity\MemberSummary\JobExperience;
-use AppBundle\Entity\MemberSummary\Language;
-use AppBundle\Entity\MemberSummary\Training;
-use AppBundle\Entity\Skill;
-use AppBundle\Form\JobExperienceType;
-use AppBundle\Form\LanguageType;
-use AppBundle\Form\SummaryType;
-use AppBundle\Form\TrainingType;
-use AppBundle\Membership\MemberActivityTracker;
-use AppBundle\Repository\SkillRepository;
-use AppBundle\Summary\SummaryManager;
+use App\Controller\EntityControllerTrait;
+use App\Entity\MemberSummary\JobExperience;
+use App\Entity\MemberSummary\Language;
+use App\Entity\MemberSummary\Training;
+use App\Entity\Skill;
+use App\Form\JobExperienceType;
+use App\Form\LanguageType;
+use App\Form\SummaryType;
+use App\Form\TrainingType;
+use App\Membership\MemberActivityTracker;
+use App\Repository\SkillRepository;
+use App\Summary\SummaryManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

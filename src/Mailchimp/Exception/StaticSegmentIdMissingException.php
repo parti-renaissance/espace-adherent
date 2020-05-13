@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp\Exception;
+namespace App\Mailchimp\Exception;
 
 use Symfony\Component\Messenger\Transport\AmqpExt\Exception\RejectMessageExceptionInterface;
 

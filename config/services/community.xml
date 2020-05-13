@@ -4,26 +4,26 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <!-- Newsletter -->
-        <service id="app.newsletter_subscription.factory" class="AppBundle\Newsletter\NewsletterSubscriptionFactory" />
+        <service id="app.newsletter_subscription.factory" class="App\Newsletter\NewsletterSubscriptionFactory" />
 
-        <service id="app.newsletter_subscription.handler" class="AppBundle\Newsletter\NewsletterSubscriptionHandler">
+        <service id="app.newsletter_subscription.handler" class="App\Newsletter\NewsletterSubscriptionHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher" />
         </service>
 
-        <service id="app.newsletter_invitation.handler" class="AppBundle\Newsletter\NewsletterInvitationHandler">
+        <service id="app.newsletter_invitation.handler" class="App\Newsletter\NewsletterInvitationHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="router" />
         </service>
 
         <!-- Invitation -->
-        <service id="AppBundle\Invitation\InvitationRequestHandler">
+        <service id="App\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <service id="app.validator.was_not_invited_recently_validator" class="AppBundle\Validator\WasNotInvitedRecentlyValidator">
+        <service id="app.validator.was_not_invited_recently_validator" class="App\Validator\WasNotInvitedRecentlyValidator">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="property_accessor" />
 
@@ -31,81 +31,81 @@
         </service>
 
         <!-- Procuration -->
-        <service id="app.procuration.proxy_message_factory" class="AppBundle\Procuration\ProcurationProxyMessageFactory" public="false">
+        <service id="app.procuration.proxy_message_factory" class="App\Procuration\ProcurationProxyMessageFactory" public="false">
             <argument type="service" id="app.routing.remote_url_generator" />
             <argument>%procurations_reply_to_email%</argument>
         </service>
 
-        <service id="app.procuration.reminder_handler" class="AppBundle\Procuration\ProcurationReminderHandler">
+        <service id="app.procuration.reminder_handler" class="App\Procuration\ProcurationReminderHandler">
             <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="app.procuration.proxy_message_factory"/>
         </service>
 
         <!-- Je Marche -->
-         <service id="app.je_marche_report_handler" class="AppBundle\JeMarche\JeMarcheReportHandler">
+         <service id="app.je_marche_report_handler" class="App\JeMarche\JeMarcheReportHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailer.transactional" />
         </service>
 
         <!-- Ton Macron -->
-         <service id="app.ton_macron.invitation_processor_handler" class="AppBundle\TonMacron\InvitationProcessorHandler">
+         <service id="app.ton_macron.invitation_processor_handler" class="App\TonMacron\InvitationProcessorHandler">
              <argument type="service" id="app.ton_macron.message_body_builder"/>
              <argument type="service" id="doctrine.orm.entity_manager"/>
              <argument type="service" id="app.mailer.campaign"/>
              <argument type="service" id="state_machine.ton_macron_invitation"/>
          </service>
 
-        <service id="app.ton_macron.message_body_builder" class="AppBundle\TonMacron\TonMacronMessageBodyBuilder">
+        <service id="app.ton_macron.message_body_builder" class="App\TonMacron\TonMacronMessageBodyBuilder">
             <argument type="service" id="twig"/>
-            <argument type="service" id="AppBundle\Repository\TonMacronChoiceRepository"/>
+            <argument type="service" id="App\Repository\TonMacronChoiceRepository"/>
         </service>
 
-        <service id="app.ton_macron.serializer" class="AppBundle\TonMacron\TonMacronSerializer" />
+        <service id="app.ton_macron.serializer" class="App\TonMacron\TonMacronSerializer" />
 
         <!-- Interactives -->
-        <service id="app.interactive.my_europe_processor_handler" class="AppBundle\Interactive\MyEuropeProcessorHandler">
+        <service id="app.interactive.my_europe_processor_handler" class="App\Interactive\MyEuropeProcessorHandler">
             <argument type="service" id="app.my_europe.message_body_builder"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="state_machine.my_europe"/>
         </service>
 
-        <service id="app.my_europe.message_body_builder" class="AppBundle\Interactive\MyEuropeMessageBodyBuilder">
+        <service id="app.my_europe.message_body_builder" class="App\Interactive\MyEuropeMessageBodyBuilder">
             <argument type="service" id="twig"/>
-            <argument type="service" id="AppBundle\Repository\MyEuropeChoiceRepository"/>
+            <argument type="service" id="App\Repository\MyEuropeChoiceRepository"/>
         </service>
 
-        <service id="app.my_europe.serializer" class="AppBundle\Interactive\MyEuropeSerializer" />
+        <service id="app.my_europe.serializer" class="App\Interactive\MyEuropeSerializer" />
 
         <!-- Facebook filters -->
-        <service id="app.facebook.profile_importer" class="AppBundle\Facebook\ProfileImporter">
+        <service id="app.facebook.profile_importer" class="App\Facebook\ProfileImporter">
             <argument type="service" id="app.facebook.api" />
-            <argument type="service" id="AppBundle\Repository\FacebookProfileRepository" />
+            <argument type="service" id="App\Repository\FacebookProfileRepository" />
         </service>
 
-        <service id="app.facebook.picture_importer" class="AppBundle\Facebook\PictureImporter">
+        <service id="app.facebook.picture_importer" class="App\Facebook\PictureImporter">
             <argument type="service" id="csa_guzzle.client.facebook_graph_api" />
             <argument type="service" id="cache.app" />
         </service>
 
-        <service id="app.facebook.picture_filterer" class="AppBundle\Facebook\PictureFilterer">
+        <service id="app.facebook.picture_filterer" class="App\Facebook\PictureFilterer">
             <argument type="service" id="app.imagine" />
         </service>
 
-        <service id="app.facebook.picture_uploader" class="AppBundle\Facebook\PictureUploader">
+        <service id="app.facebook.picture_uploader" class="App\Facebook\PictureUploader">
             <argument type="service" id="app.facebook.api" />
             <argument type="service" id="filesystem" />
             <argument>%kernel.cache_dir%</argument>
         </service>
 
         <!-- Summary -->
-        <service id="AppBundle\Summary\SummaryFactory">
+        <service id="App\Summary\SummaryFactory">
             <argument type="service" id="cocur_slugify" />
         </service>
 
-        <service id="AppBundle\Summary\SummaryManager">
-            <argument type="service" id="AppBundle\Summary\SummaryFactory" />
-            <argument type="service" id="AppBundle\Repository\SummaryRepository" />
+        <service id="App\Summary\SummaryManager">
+            <argument type="service" id="App\Summary\SummaryFactory" />
+            <argument type="service" id="App\Repository\SummaryRepository" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="router" />
             <argument type="service" id="app.storage" />

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use App\Entity\NewsletterSubscription;
+use App\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

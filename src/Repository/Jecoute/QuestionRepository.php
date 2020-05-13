@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Repository\Jecoute;
+namespace App\Repository\Jecoute;
 
-use AppBundle\Entity\Jecoute\DataAnswer;
-use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Entity\Jecoute\Survey;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
+use App\Entity\Jecoute\DataAnswer;
+use App\Entity\Jecoute\Question;
+use App\Entity\Jecoute\Survey;
+use App\Entity\Jecoute\SurveyQuestion;
+use App\Jecoute\SurveyQuestionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;

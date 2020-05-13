@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\EventRegistration;
+use App\Entity\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
 final class EventRegistrationConfirmationMessage extends Message

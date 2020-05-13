@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Documents;
+namespace App\Documents;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Entity\Adherent;
+use App\Committee\CommitteeManager;
+use App\Entity\Adherent;
 
 class DocumentManager
 {

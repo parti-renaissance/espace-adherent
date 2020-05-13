@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository\ChezVous;
+namespace App\Repository\ChezVous;
 
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\Marker;
+use App\Entity\ChezVous\City;
+use App\Entity\ChezVous\Marker;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

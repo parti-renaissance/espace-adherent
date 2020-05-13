@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\Timeline;
+namespace App\Entity\Timeline;
 
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\AbstractTranslatableEntity;
-use AppBundle\Entity\AlgoliaIndexedEntityInterface;
+use App\Entity\AbstractTranslatableEntity;
+use App\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="timeline_measures")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\MeasureRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Timeline\MeasureRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -93,7 +93,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     /**
      * @var Profile[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Timeline\Profile")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Timeline\Profile")
      * @ORM\JoinTable(
      *     name="timeline_measures_profiles",
      *     joinColumns={
@@ -109,7 +109,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     /**
      * @var Theme[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Timeline\Theme", inversedBy="measures")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Timeline\Theme", inversedBy="measures")
      * @ORM\JoinTable(
      *     name="timeline_themes_measures",
      *     joinColumns={
@@ -125,7 +125,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     /**
      * @var Manifesto
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Timeline\Manifesto")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Timeline\Manifesto")
      * @ORM\JoinColumn(nullable=false)
      */
     private $manifesto;

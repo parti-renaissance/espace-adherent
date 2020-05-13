@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin\ChezVous;
+namespace App\Admin\ChezVous;
 
-use AppBundle\ChezVous\MeasureTypeEvent;
-use AppBundle\Events;
+use App\ChezVous\MeasureTypeEvent;
+use App\Events;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

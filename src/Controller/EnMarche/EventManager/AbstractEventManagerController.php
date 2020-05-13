@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\EventManager;
+namespace App\Controller\EnMarche\EventManager;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventCommand;
-use AppBundle\Event\EventCommandHandler;
-use AppBundle\Event\EventRegistrationCommand;
-use AppBundle\Event\EventRegistrationCommandHandler;
-use AppBundle\Form\EventCommandType;
+use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\Event;
+use App\Event\EventCommand;
+use App\Event\EventCommandHandler;
+use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationCommandHandler;
+use App\Form\EventCommandType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

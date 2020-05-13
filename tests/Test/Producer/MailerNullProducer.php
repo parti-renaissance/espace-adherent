@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Test\Producer;
+namespace Tests\App\Test\Producer;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
-use AppBundle\Producer\MailerProducerInterface;
+use App\Mailer\AbstractEmailTemplate;
+use App\Producer\MailerProducerInterface;
 
 class MailerNullProducer implements MailerProducerInterface
 {

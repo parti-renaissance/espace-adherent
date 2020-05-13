@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\TurnkeyProject\TurnkeyProjectManager;
+use App\Entity\TurnkeyProject;
+use App\TurnkeyProject\TurnkeyProjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

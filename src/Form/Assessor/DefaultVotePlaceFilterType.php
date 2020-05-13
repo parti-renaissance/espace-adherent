@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Assessor;
+namespace App\Form\Assessor;
 
-use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
+use App\Assessor\Filter\AssociationVotePlaceFilter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

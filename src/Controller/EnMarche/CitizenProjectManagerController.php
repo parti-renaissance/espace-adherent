@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\CitizenProject\CitizenProjectContactActorsCommand;
-use AppBundle\CitizenProject\CitizenProjectContactActorsCommandHandler;
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\CitizenProject\CitizenProjectUpdateCommand;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Form\CitizenProjectCommandType;
-use AppBundle\Form\CitizenProjectContactActorsType;
-use AppBundle\Utils\GroupUtils;
+use App\CitizenProject\CitizenProjectContactActorsCommand;
+use App\CitizenProject\CitizenProjectContactActorsCommandHandler;
+use App\CitizenProject\CitizenProjectManager;
+use App\CitizenProject\CitizenProjectUpdateCommand;
+use App\Entity\CitizenProject;
+use App\Form\CitizenProjectCommandType;
+use App\Form\CitizenProjectContactActorsType;
+use App\Utils\GroupUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;

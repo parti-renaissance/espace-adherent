@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Intl;
+namespace App\Intl;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Utils\AreaUtils;
+use App\Entity\ReferentTag;
+use App\Utils\AreaUtils;
 
 class FranceCitiesBundle
 {

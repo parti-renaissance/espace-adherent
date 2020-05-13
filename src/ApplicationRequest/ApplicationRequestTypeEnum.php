@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\ApplicationRequest;
+namespace App\ApplicationRequest;
 
 use MyCLabs\Enum\Enum;
 

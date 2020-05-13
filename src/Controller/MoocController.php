@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\Mooc\AttachmentFile;
-use AppBundle\Storage\FileRequestHandler;
+use App\Entity\Mooc\AttachmentFile;
+use App\Storage\FileRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

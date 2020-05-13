@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
+use App\Repository\NewsletterSubscriptionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository\Timeline;
+namespace App\Repository\Timeline;
 
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Repository\TranslatableRepositoryTrait;
+use App\Entity\Timeline\Profile;
+use App\Repository\TranslatableRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
