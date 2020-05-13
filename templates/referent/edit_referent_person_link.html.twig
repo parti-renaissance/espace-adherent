@@ -86,20 +86,20 @@
                 </div>
 
                 {% if 'referent.radio.limited_co_referent' == choice.vars.label %}
-                    <div class="l__row">
-                        <div class="l__col--half">
+                        <div class="form__row b__nudge--top">
                             <div class="em-form__group em-form__type-and-select">
-                                {{ form_label(form.restrictedCommittees_search, 'Comités', { required: true }) }}
-                                {{ form_widget(form.restrictedCommittees_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher un comité' } }) }}
+                                {{ form_label(form.restrictedCommittees_search, 'Aux comités', { required: true }) }}
+                                {{ form_widget(form.restrictedCommittees_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher un comité', class: 'form__field' } }) }}
+
                                 {{ form_errors(form.restrictedCommittees) }}
                                 <div class="type-and-select__tags">
                                     {{ form_widget(form.restrictedCommittees) }}
                                 </div>
                             </div>
                         </div>
-                        <div class="l__col--half">
+                        <div class="form__row">
                             <div class="em-form__group em-form__type-and-select">
-                                {{ form_label(form.restrictedCities_search, 'Villes', { required: true }) }}
+                                {{ form_label(form.restrictedCities_search, 'Aux villes', { required: true }) }}
                                 {{ form_widget(form.restrictedCities_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher une ville ou un code postal' } }) }}
                                 {{ form_errors(form.restrictedCities) }}
                                 <div class="type-and-select__tags">
@@ -107,7 +107,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 {% endif %}
             {% endfor %}
         </div>

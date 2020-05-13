@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use App\Form\DataTransformer\CommitteeTransformer;
 use App\Repository\AdherentRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -20,12 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ReferentPersonLinkType extends AbstractType
 {
     private $adherentRepository;
-    private $committeeTransformer;
 
-    public function __construct(AdherentRepository $adherentRepository, CommitteeTransformer $committeeTransformer)
+    public function __construct(AdherentRepository $adherentRepository)
     {
         $this->adherentRepository = $adherentRepository;
-        $this->committeeTransformer = $committeeTransformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -61,7 +58,7 @@ class ReferentPersonLinkType extends AbstractType
             ])
             ->add('restrictedCommittees', CollectionType::class, [
                 'required' => false,
-                'entry_type' => TextType::class,
+                'entry_type' => CommitteeUuidType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -126,7 +123,6 @@ class ReferentPersonLinkType extends AbstractType
             ))
         ;
 
-        $builder->get('restrictedCommittees')->addModelTransformer($this->committeeTransformer);
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
