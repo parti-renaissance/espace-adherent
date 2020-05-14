@@ -253,66 +253,78 @@
         <a href="{{ path('donation_index') }}" class="btn btn--red">Donner</a>
     </div>
 
-    <div class="adherent-dropdown">
-        <div class="l__wrapper">
-            <div class="l__row l__row--top">
-                <div class="adherent-dropdown__col">
-                    <div class="adherent-profile__id b__nudge--bottom">
-                        <div class="name">{{ app.user.partialName }}</div>
-                    </div>
-                    <ul class="adherent-profile__roles b__nudge--bottom">
-                        {% for role in get_adherent_role_labels(app.user) %}
-                            <li>{{ role }}</li>
-                        {% endfor %}
-                    </ul>
-                    <div class="adherent-profile__completion b__nudge--bottom">
-                        <div class="text--body text--small b__nudge--bottom-small">
-                            <!-- If is not completed -->
-                            Complétion du profil : 50%
-                            <!-- If is completed TODO
-                            👏 Profil complété ! -->
+    {% if has_role_user %}
+        <div class="adherent-dropdown">
+            <div class="l__wrapper">
+                <div class="l__row l__row--top">
+                    <div class="adherent-dropdown__col">
+                        <div class="adherent-profile__id l__row b__nudge--bottom">
+                            <div class="name b__nudge--right-nano">{{ app.user.partialName }}</div>
+                            {% if is_certified %}
+                                <div class="l__row">
+                                    {% include('components/_certification_logo.html.twig') %}
+                                    <!-- <span class="text--body text--small text--bold text--blue b__nudge--left-nano">Profil certifié</span> -->
+                                </div>
+                            {% endif %}
                         </div>
-                        <div class="gauge">
-                            <span></span>
+                        <ul class="adherent-profile__roles b__nudge--bottom">
+                            {% for role in get_adherent_role_labels(app.user) %}
+                                <li>{{ role }}</li>
+                            {% endfor %}
+                        </ul>
+                        <div class="adherent-profile__completion b__nudge--bottom">
+                            <div class="text--body text--small b__nudge--bottom-small">
+                                <!-- If is not completed -->
+                                Complétion du profil : 50%
+                                <!-- If is completed TODO
+                                👏 Profil complété ! -->
+                            </div>
+                            <div class="gauge">
+                                <span></span>
+                            </div>
+                            <div class="b__nudge--top-10">
+                                <a href="#" class="text--body text--small text--blue--dark link--no-decor">Compléter mon profil</a>
+                            </div>
                         </div>
+                        <ul class="">
+                            <li class="space--5-0"><a href="" class="text--body text--small link--no-decor">Formation</a></li>
+                            <li class="space--5-0"><a href="" class="text--body text--small link--no-decor">Aide</a></li>
+                            <li class="space--5-0"><a href="" class="text--body text--small link--no-decor">Déconnexion</a></li>
+                        </ul>
                     </div>
-                    <ul class="">
-                        <li class="space--5-0"><a href="" class="text--body text--small link--no-decor">Formation</a></li>
-                        <li class="space--5-0"><a href="" class="text--body text--small link--no-decor">Aide</a></li>
-                        <li class="space--5-0"><a href="" class="text--body text--small link--no-decor">Déconnexion</a></li>
-                    </ul>
-                </div>
-                <div class="adherent-dropdown__col">
-                    <span class="adherent-dropdown__menu--head">Informations</span>
-                    <ul class="adherent-dropdown__menu--items">
-                        <li><a href="#">Général</a></li>
-                        <li><a href="#">Certification du profil</a></li>
-                        <li><a href="#">E-mail et mot de passe</a></li>
-                        <li><a href="#">Centres d'intéret</a></li>
-                        <li><a href="#">Engagement</a></li>
-                        <li><a href="#">Élections</a></li>
-                        <li><a href="#">Communication</a></li>
-                    </ul>
-                </div>
-                <div class="adherent-dropdown__col">
-                    <span class="adherent-dropdown__menu--head">Activités</span>
-                    <ul class="adherent-dropdown__menu--items">
-                        <li><a href="#">Mes comités</a></li>
-                        <li><a href="#">Mes événements</a></li>
-                        <li><a href="#">Mes projets citoyens</a></li>
-                        <li><a href="#">Mon atelier des idées</a></li>
-                        <li><a href="#">Mes dons</a></li>
-                    </ul>
-                </div>
-                <div class="adherent-dropdown__col">
-                    <span class="adherent-dropdown__menu--head">Documents</span>
-                    <ul class="adherent-dropdown__menu--items">
-                        <li><a href="#">Mes documents</a></li>
-                    </ul>
+                    <div class="adherent-dropdown__col">
+                        <span class="adherent-dropdown__menu--head">Informations</span>
+                        <ul class="adherent-dropdown__menu--items">
+                            <li><a href="#">Général</a></li>
+                            <li><a href="#">Certification du profil</a></li>
+                            <li><a href="#">E-mail et mot de passe</a></li>
+                            <li><a href="#">Centres d'intéret</a></li>
+                            <li><a href="#">Engagement</a></li>
+                            <li><a href="#">Élections</a></li>
+                            <li><a href="#">Communication</a></li>
+                        </ul>
+                    </div>
+                    <div class="adherent-dropdown__col">
+                        <span class="adherent-dropdown__menu--head">Activités</span>
+                        <ul class="adherent-dropdown__menu--items">
+                            <li><a href="#">Mes comités</a></li>
+                            <li><a href="#">Mes événements</a></li>
+                            <li><a href="#">Mes projets citoyens</a></li>
+                            <li><a href="#">Mon atelier des idées</a></li>
+                            <li><a href="#">Mes dons</a></li>
+                        </ul>
+                    </div>
+                    <div class="adherent-dropdown__col">
+                        <span class="adherent-dropdown__menu--head">Documents</span>
+                        <ul class="adherent-dropdown__menu--items">
+                            <li><a href="#">Mes documents</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+
 </nav>
 {% if is_granted('ROLE_SUPERVISOR') or
     is_granted('ROLE_HOST') or

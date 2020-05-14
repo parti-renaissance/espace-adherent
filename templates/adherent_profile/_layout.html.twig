@@ -11,7 +11,10 @@
                                 {{app.user.initials}}
                             </div>
                             <div class="adherent-profile__id">
-                                <div class="name">{{ app.user.partialName }}</div>
+                                <div class="name l__row">
+                                    {{ app.user.partialName }}
+                                    {% include('components/_certification_logo.html.twig') %}
+                                </div>
                                 <div class="adhesion-date">Inscrit{{ app.user.female ? "e" }} en {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}</div>
                             </div>
                         </div>
