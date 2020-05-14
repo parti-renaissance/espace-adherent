@@ -11,6 +11,8 @@
 {% endblock %}
 
 {% block content %}
+    {% set committee_election = committee.committeeElection %}
+
     <main class="committee">
         <header class="committee__header--slim background--blue">
             <div class="l__wrapper committee__header__content">
@@ -35,8 +37,8 @@
                     <p class="text--body text--dark b__nudge--bottom-50">
                         Ajoutez une photo de vous et un texte de présentation à votre candidature.
                         Ces informations resteront modifiables jusqu'à la clôture des candidatures.
-                        <!-- le <strong>{{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y") }}</strong>
-                        à <strong>{{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}</strong> -->
+                        <!-- le <strong>{{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y") }}</strong>
+                        à <strong>{{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}</strong> -->
                         Si vous préférez ne rien mettre, cliquez sur « passer cette étape ».
                     </p>
                     {{ form_start(form, {attr: {class: 'em-form'}}) }}

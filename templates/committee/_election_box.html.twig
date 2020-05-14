@@ -1,4 +1,5 @@
 {% set candidacy_committee_membership = app.user.memberships.committeeCandidacyMembership %}
+{% set committee_election = committee.committeeElection %}
 
 {% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE') %}
 {% set member_is_candidate_in_committee = able_to_candidate and candidacy_committee_membership == membership %}
@@ -25,7 +26,7 @@
 
             Vous êtes candidat pour représenter les adhérents de votre comité.
             <!-- Vous pouvez modifier ou retirer votre candidature jusqu'au
-            {{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
+            {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
 
         {% else %}
             {% if member_voting_in_committee %}
@@ -33,46 +34,57 @@
             {% endif %}
 
             <!-- Les candidatures sont ouvertes dans tous les comités du
-            {{ election_static_date.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-            au {{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
+            {{ committee_election.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+            au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
         {% endif %}
 
-        <!-- La designation se tiendra en ligne du {{ election_static_date.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-        au {{ election_static_date.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
+        <!-- La designation se tiendra en ligne du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+        au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
     </p>
 
     <div class="elections-actions l__row--wrap">
-        {% if able_to_candidate %}
-            {% if member_is_candidate_in_committee %}
-                <a href="{{ path('app_committee_update_candidacy', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Je modifie ma candidature</a>
-            {% elseif candidacy_committee_membership is null and member_voting_in_committee %}
-                {% if app.user.isOtherGender() %}
-                    <a href="#"
-                       class="btn btn--pink btn--no-wrap em-modal--trigger"
-                       id="committee-toggle-candidacy"
-                       data-confirm-content-element="#committee-candidacy-gender-choice-content"
-                    >Je candidate</a>
+        {% if committee_election.isCandidacyPeriodActive %}
+            {% if able_to_candidate %}
+                {% if member_is_candidate_in_committee %}
+                    <a href="{{ path('app_committee_update_candidacy', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Je modifie ma candidature</a>
+                {% elseif candidacy_committee_membership is null and member_voting_in_committee %}
+                    {% if app.user.isOtherGender() %}
+                        <a href="#"
+                           class="btn btn--pink btn--no-wrap em-modal--trigger"
+                           id="committee-toggle-candidacy"
+                           data-confirm-content-element="#committee-candidacy-gender-choice-content"
+                        >Je candidate</a>
 
-                    <div class="hidden" id="committee-candidacy-gender-choice-content">
-                        <div class="text--center font-roboto">
-                            <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
-                                Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
-                            </p>
+                        <div class="hidden" id="committee-candidacy-gender-choice-content">
+                            <div class="text--center font-roboto">
+                                <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
+                                    Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
+                                </p>
 
-                            <div>
-                                {% set candidate_url_params = {slug: committee.slug} %}
+                                <div>
+                                    {% set candidate_url_params = {slug: committee.slug} %}
 
-                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
-                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::MALE')})) }}">Homme</a>
+                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
+                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::MALE')})) }}">Homme</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% else %}
-                    <a href="{{ path('app_committee_candidate', {slug: committee.slug}) }}"
-                       id="committee-toggle-candidacy"
-                       class="btn btn--pink btn--no-wrap"
-                    >Je candidate</a>
+                    {% else %}
+                        <a href="{{ path('app_committee_candidate', {slug: committee.slug}) }}"
+                           id="committee-toggle-candidacy"
+                           class="btn btn--pink btn--no-wrap"
+                        >Je candidate</a>
+                    {% endif %}
                 {% endif %}
+            {% endif %}
+        {% elseif committee_election.isVotePeriodActive %}
+            {% set voting_platform_election = get_voting_platform_election_for_committee(committee) %}
+
+            {% if voting_platform_election and is_granted('ABLE_TO_VOTE', voting_platform_election) %}
+                <a href="{{ path('app_voting_platform_index', {uuid: voting_platform_election.uuid}) }}"
+                   id="committee-toggle-candidacy"
+                   class="btn btn--pink btn--no-wrap"
+                >Je participe</a>
             {% endif %}
         {% endif %}
 
@@ -80,7 +92,7 @@
             Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
         </div>
 
-        {% if member_is_candidate_in_committee %}
+        {% if member_is_candidate_in_committee and committee_election.isCandidacyPeriodActive %}
             <div class="candidacy-remove text--body text--small b__nudge--top">
                 <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
                       class="link--no-decor text--blue--dark em-confirm--trigger box-el"

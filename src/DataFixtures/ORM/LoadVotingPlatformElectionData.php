@@ -107,7 +107,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $this->manager->persist($election);
 
         $election = new Election(
-            $this->getReference('designation-1'),
+            $this->getReference('designation-2'),
             Uuid::fromString(self::ELECTION_UUID2)
         );
 

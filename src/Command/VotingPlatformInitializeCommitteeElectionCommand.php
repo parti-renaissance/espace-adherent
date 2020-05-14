@@ -57,9 +57,7 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
 
     private function configureCommitteeElections(Designation $designation): void
     {
-        $offset = 0;
-
-        while ($committees = $this->committeeRepository->findAllWithoutStartedElection($designation, $offset)) {
+        while ($committees = $this->committeeRepository->findAllWithoutStartedElection($designation)) {
             foreach ($committees as $committee) {
                 $this->io->progressAdvance();
 
@@ -69,7 +67,7 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
             $this->entityManager->flush();
             $this->entityManager->clear();
 
-            $offset += \count($committees);
+            $designation = $this->entityManager->merge($designation);
         }
     }
 

@@ -39,15 +39,15 @@ Feature:
                 },
                 {
                     "name": "candidacy_end_date",
-                    "content": "lundi 22 juin 2020, 00h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "vote_start_date",
-                    "content": "lundi 22 juin 2020, 08h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "vote_end_date",
-                    "content": "dimanche 5 juillet 2020, 20h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "committee_url",
@@ -92,11 +92,11 @@ Feature:
                 },
                 {
                     "name": "vote_start_date",
-                    "content": "lundi 22 juin 2020, 08h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "vote_end_date",
-                    "content": "dimanche 5 juillet 2020, 20h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "committee_url",
@@ -118,13 +118,13 @@ Feature:
     When I am on "/comites/en-marche-comite-de-rouen"
     Then I should see "JE CANDIDATE"
 
-    When I am on "/comites/en-marche-comite-de-evry"
+    When I am on "/comites/en-marche-comite-de-berlin"
     Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations."
 
     When I am on "/espace-adherent/mes-comites"
-    And I click the ".adherent__activity--committee .switch" selector
+    And I click the ".adherent__activity--committee:nth-child(3) .switch" selector
     Then I should see "Changement du comité de désignation"
-    And I should see "Vous êtes sur le point de changer votre comité de désignation. Vous ne participerez plus aux désignations dans le comité En Marche - Comité de Rouen, êtes-vous sûr de vouloir maintenant participer aux désignations dans le comité En Marche - Comité de Évry ?"
+    And I should see "Vous êtes sur le point de changer votre comité de désignation. Vous ne participerez plus aux désignations dans le comité En Marche - Comité de Rouen, êtes-vous sûr de vouloir maintenant participer aux désignations dans le comité En Marche - Comité de Berlin ?"
     And I should see "CONFIRMER"
 
     When I click the "button.btn.btn--blue" selector
@@ -133,12 +133,12 @@ Feature:
     When I am on "/comites/en-marche-comite-de-rouen"
     Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations."
 
-    Given I am on "/comites/en-marche-comite-de-evry"
+    Given I am on "/comites/en-marche-comite-de-berlin"
     Then I should see "JE CANDIDATE"
     When I follow "committee-toggle-candidacy"
-    Then I should be on "/comites/en-marche-comite-de-evry/candidater"
+    Then I should be on "/comites/en-marche-comite-de-berlin/candidater"
     When I press "Passer cette étape"
-    Then I should be on "/comites/en-marche-comite-de-evry"
+    Then I should be on "/comites/en-marche-comite-de-berlin"
     And I should see "Votre candidature a bien été enregistrée"
     And I should have 1 email "CommitteeCandidacyCreatedConfirmationMessage" for "assesseur@en-marche-dev.fr" with payload:
     """
@@ -155,23 +155,23 @@ Feature:
                 },
                 {
                     "name": "committee_name",
-                    "content": "En Marche - Comité de Évry"
+                    "content": "En Marche - Comité de Berlin"
                 },
                 {
                     "name": "candidacy_end_date",
-                    "content": "lundi 22 juin 2020, 00h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "vote_start_date",
-                    "content": "lundi 22 juin 2020, 08h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "vote_end_date",
-                    "content": "dimanche 5 juillet 2020, 20h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "cancel_candidacy_url",
-                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-evry?remove-candidacy=1&anonymous_authentication_intention=\/connexion"
+                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-berlin?remove-candidacy=1&anonymous_authentication_intention=\/connexion"
                 }
             ],
             "from_name": "La R\u00e9publique En Marche !",
@@ -185,7 +185,7 @@ Feature:
         }
     }
     """
-    And I should have 1 email "CommitteeNewCandidacyNotificationMessage" for "francis.brioul@yahoo.com" with payload:
+    And I should have 1 email "CommitteeNewCandidacyNotificationMessage" for "martine.lindt@gmail.com" with payload:
     """
     {
         "template_name": "committee-new-candidacy-notification",
@@ -196,7 +196,7 @@ Feature:
             "global_merge_vars": [
                 {
                     "name": "supervisor_first_name",
-                    "content": "Francis"
+                    "content": "Martine"
                 },
                 {
                     "name": "candidate_civility",
@@ -212,23 +212,23 @@ Feature:
                 },
                 {
                     "name": "vote_start_date",
-                    "content": "lundi 22 juin 2020, 08h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "vote_end_date",
-                    "content": "dimanche 5 juillet 2020, 20h00"
+                    "content": "@string@"
                 },
                 {
                     "name": "committee_url",
-                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-evry"
+                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-berlin"
                 }
             ],
             "from_name": "La R\u00e9publique En Marche !",
             "to": [
                 {
-                    "email": "francis.brioul@yahoo.com",
+                    "email": "martine.lindt@gmail.com",
                     "type": "to",
-                    "name": "Francis Brioul"
+                    "name": "Martine Lindt"
                 }
             ]
         }

@@ -14,7 +14,6 @@ use App\Form\VotingPlatform\CandidacyBiographyType;
 use App\Image\ImageManager;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\ValueObject\Genders;
-use App\VotingPlatform\Designation\ElectionStaticDate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -61,7 +60,6 @@ class CommitteeController extends Controller
             'committee_timeline' => $feeds,
             'committee_timeline_forms' => $this->createTimelineDeleteForms($feeds),
             'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
-            'election_static_date' => new ElectionStaticDate(),
         ]);
     }
 
@@ -240,6 +238,12 @@ class CommitteeController extends Controller
     ): Response {
         $this->disableInProduction();
 
+        if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
+            $this->addFlash('error', 'Vous ne pouvez pas candidater pour cette désignation.');
+
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        }
+
         /** @var Adherent $adherent */
         $candidacyGender = $adherent->getGender();
 
@@ -278,7 +282,6 @@ class CommitteeController extends Controller
         return $this->render('committee/edit_candidacy.html.twig', [
             'form' => $form->createView(),
             'committee' => $committee,
-            'election_static_date' => new ElectionStaticDate(),
         ]);
     }
 
@@ -295,6 +298,12 @@ class CommitteeController extends Controller
         ImageManager $imageManager
     ): Response {
         $this->disableInProduction();
+
+        if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
+            $this->addFlash('error', 'Vous ne pouvez plus modifier votre candidature.');
+
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        }
 
         /** @var Adherent $adherent */
         if (!$candidacy = $manager->getCandidacy($adherent, $committee)) {
@@ -326,7 +335,6 @@ class CommitteeController extends Controller
             'candidacy' => $candidacy,
             'committee' => $committee,
             'form' => $form->createView(),
-            'election_static_date' => new ElectionStaticDate(),
         ]);
     }
 
@@ -338,6 +346,12 @@ class CommitteeController extends Controller
     public function removeCandidacy(Request $request, Committee $committee, CommitteeManager $manager): Response
     {
         $this->disableInProduction();
+
+        if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
+            $this->addFlash('error', 'Vous ne pouvez pas retirer votre candidature.');
+
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        }
 
         $manager->removeCandidacy($this->getUser(), $committee);
 
