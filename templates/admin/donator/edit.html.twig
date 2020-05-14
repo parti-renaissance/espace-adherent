@@ -15,7 +15,7 @@
                                 <tr>
                                     <th class="sonata-ba-list-field-header-text">Téléphone</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ object.adherent.phone|phone_number_format }}
+                                        {{ object.adherent.phone ? object.adherent.phone|phone_number_format }}
                                     </td>
                                 </tr>
                                 <tr>
