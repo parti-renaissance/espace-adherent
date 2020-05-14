@@ -664,3 +664,12 @@
     }
 
 }
+
+.em-card {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    background-color: $white;
+    border: 1px solid $lines-grey;
+    padding: 30px;
+}

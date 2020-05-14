@@ -3,29 +3,50 @@
 {% block adherent_profile_content %}
     <section class="adherent-profile__section b__nudge--bottom-50" id="comittees">
         <h1 class="text--medium-large">Mes comités</h1>
+        <h2 class="section-subtitle">Vos comités</h2>
+
+        <div class="l__col">
+            <article class="em-card">
+                <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">En Marche - 9ème - Maubeuge Lamartine</h2>
+            </article>
+        </div>
     </section>
 
     <section class="adherent-profile__section b__nudge--bottom-50" id="events">
         <h1 class="text--medium-large">Mes événements</h1>
+        <nav class="tabs-nav b__nudge--bottom-larger">
+            <ul>
+                <li class="active"><a href="#" class="tabs-nav__item">À venir</a></li>
+                <li><a href="#" class="tabs-nav__item">Passés</a></li>
+            </ul>
+        </nav>
+        <h2 class="section-subtitle">Vos événements à venir</h2>
     </section>
 
     <section class="adherent-profile__section b__nudge--bottom-50" id="citizen-projects">
         <h1 class="text--medium-large">Mes projets citoyens</h1>
+        <nav class="tabs-nav b__nudge--bottom-larger">
+            <ul>
+                <li class="active"><a href="#" class="tabs-nav__item">Project(s) créé(s)</a></li>
+                <li><a href="#" class="tabs-nav__item">Projet(s) rejoint(s)</a></li>
+            </ul>
+        </nav>
+        <h2 class="section-subtitle">Vos projets créé(s)</h2>
     </section>
 
     <section class="adherent-profile__section b__nudge--bottom-50" id="adi">
         <h1 class="text--medium-large">Mon atelier des idées</h1>
+        <nav class="tabs-nav b__nudge--bottom-larger">
+            <ul>
+                <li class="active"><a href="#" class="tabs-nav__item">Mes propositions</a></li>
+                <li><a href="#" class="tabs-nav__item">Mes contrivutions</a></li>
+                <li><a href="#" class="tabs-nav__item">Mes votes</a></li>
+            </ul>
+        </nav>
+        <h2 class="section-subtitle">Vos propositions</h2>
     </section>
 
     <section class="adherent-profile__section b__nudge--bottom-50" id="donations">
-        <h1 class="text--medium-large">Mes dons</h1>
-
-        <p class="text--body">Merci pour votre engagement à nos côtés !</p>
-        <p class="text--body text--bold">Votre dernier don remonte à 2 mois.</p>
-        <p class="text--body text--small text--muted">
-            Veuillez noter que :<br />
-            - Les dons effectués par chèque ne sont pas encore visibles sur cette page. <br />
-            - Votre reçu fiscal sera envoyé entre avril et juin, il n'est pas nécessaire de le joindre à la déclaration de revenus de mai. Une fois obtenu, conservez-le pour pouvoir le présenter en cas de contrôle de l'administration fiscale.
-        </p>
+        {{ include("adherent_profile/activity/_donation.html.twig") }}
     </section>
 {% endblock %}
