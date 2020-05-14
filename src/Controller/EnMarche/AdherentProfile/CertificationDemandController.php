@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AdherentProfil;
+namespace App\Controller\EnMarche\AdherentProfile;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/informations/certification", name="app_adherent_profil_certification_demand", methods={"GET"})
+ * @Route("/informations/certification", name="app_adherent_profile_certification_demand", methods={"GET"})
  */
 class CertificationDemandController extends AbstractController
 {

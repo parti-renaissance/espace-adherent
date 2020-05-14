@@ -35,13 +35,13 @@
                     <nav class="adherent-profile__menu adherent-profile__menu--desktop">
                         <div class="menu-section">
                             <div class="menu-section__heading {{ is_active_route(app.request, [
-                            'app_adherent_profil_general_information_update*' ,
-                            'app_adherent_profil_certification_demand*' ,
-                            'app_adherent_profil_email_password_update*' ,
-                            'app_adherent_profil_interests_update*' ,
-                            'app_adherent_profil_engagement_update*' ,
-                            'app_adherent_profil_elections*' ,
-                            'app_adherent_profil_subscription_update*'
+                            'app_adherent_profile_general_information_update*' ,
+                            'app_adherent_profile_certification_demand*' ,
+                            'app_adherent_profile_email_password_update*' ,
+                            'app_adherent_profile_interests_update*' ,
+                            'app_adherent_profile_engagement_update*' ,
+                            'app_adherent_profile_elections*' ,
+                            'app_adherent_profile_subscription_update*'
                             ] ) ? 'active' }}">
                                 <div class="icon-container">
                                     {% include('components/_adherent-menu/active/profile.html.twig') %}
@@ -49,46 +49,46 @@
                                 <span>Informations</span>
                             </div>
                             <ul class="menu-section__items">
-                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_general_information_update*') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_profil_general_information_update') }}">Général</a>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profile_general_information_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profile_general_information_update') }}">Général</a>
                                 </li>
-                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_certification_demand*') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_profil_certification_demand') }}">Certification du profil</a>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profile_certification_demand*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profile_certification_demand') }}">Certification du profil</a>
                                 </li>
-                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_email_password_update*') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_profil_email_password_update') }}">E-mail et mot de passe</a>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profile_email_password_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profile_email_password_update') }}">E-mail et mot de passe</a>
                                 </li>
-                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_interests_update*') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_profil_interests_update') }}">Centres d'intérêt</a>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profile_interests_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profile_interests_update') }}">Centres d'intérêt</a>
                                 </li>
-                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_engagement_update*') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_profil_engagement_update') }}">Engagement</a>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profile_engagement_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profile_engagement_update') }}">Engagement</a>
                                 </li>
-                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_elections*') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_profil_elections') }}">Élections</a>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profile_elections*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profile_elections') }}">Élections</a>
                                 </li>
-                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_subscriptions_update*') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_profil_subscriptions_update') }}">Communication</a>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profile_subscriptions_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profile_subscriptions_update') }}">Communication</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="menu-section">
-                            <a href="{{ path('app_adherent_profil_activity') }}" class="menu-section__heading">
+                            <a href="{{ path('app_adherent_profile_activity') }}" class="menu-section__heading">
                                 <div class="icon-container">
                                     {% include('components/_adherent-menu/default/activity.html.twig') %}
                                 </div>
                                 <span href="">Activités</span>
                             </a>
                             <ul class="menu-section__items">
-                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mes comités</a></li>
-                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mes événements</a></li>
-                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mes projets citoyens</a></li>
-                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mon atelier des idées</a></li>
-                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mes dons</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity') }}">Mes comités</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity') }}">Mes événements</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity') }}">Mes projets citoyens</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity') }}">Mon atelier des idées</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity') }}">Mes dons</a></li>
                             </ul>
                         </div>
                         <div class="menu-section">
-                            <a href="{{ path('app_adherent_profil_documents') }}" class="menu-section__heading">
+                            <a href="{{ path('app_adherent_profile_documents') }}" class="menu-section__heading">
                                 <div class="icon-container">
                                     {% include('components/_adherent-menu/default/documents.html.twig') %}
                                 </div>

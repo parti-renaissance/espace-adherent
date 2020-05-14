@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AdherentProfil;
+namespace App\Controller\EnMarche\AdherentProfile;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/informations/communications", name="app_adherent_profil_subscriptions_update", methods={"GET"})
+ * @Route("/informations/communications", name="app_adherent_profile_subscriptions_update", methods={"GET"})
  */
 class SubscriptionsPreferencesUpdateController extends AbstractController
 {

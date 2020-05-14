@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AdherentProfil;
+namespace App\Controller\EnMarche\AdherentProfile;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/informations/engagement", name="app_adherent_profil_engagement_update", methods={"GET"})
+ * @Route("/informations/engagement", name="app_adherent_profile_engagement_update", methods={"GET"})
  */
 class EngagementUpdateController extends AbstractController
 {
