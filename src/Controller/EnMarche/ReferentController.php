@@ -3,10 +3,13 @@
 namespace App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
+use App\Controller\CanaryControllerTrait;
+use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
+use App\Form\ElectedRepresentative\ElectedRepresentativeFilterType;
 use App\Form\InstitutionalEventCommandType;
 use App\Form\ReferentPersonLinkType;
 use App\InstitutionalEvent\InstitutionalEventCommand;
@@ -17,12 +20,14 @@ use App\Referent\ManagedInstitutionalEventsExporter;
 use App\Referent\OrganizationalChartManager;
 use App\Repository\CitizenProjectRepository;
 use App\Repository\CommitteeRepository;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\InstitutionalEventRepository;
 use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use App\Repository\ReferentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +41,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ReferentController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/evenements-institutionnels", name="app_referent_institutional_events", methods={"GET"})
      *
@@ -278,5 +285,45 @@ class ReferentController extends Controller
         $managedTags = $referent->getManagedArea()->getTags();
 
         return new JsonResponse(FranceCitiesBundle::searchCitiesForTags($managedTags->toArray(), $search));
+    }
+
+    /**
+     * @Route("/elus", name="app_referent_elected_representatives_list", methods={"GET"})
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function listElectedRepresentative(
+        Request $request,
+        ElectedRepresentativeRepository $electedRepresentativeRepository
+    ): Response {
+        $this->disableInProduction();
+
+        /** @var Adherent $referent */
+        $referent = $this->getUser();
+        $filter = new ListFilter($referent->getManagedArea()->getTags()->toArray());
+
+        $form = $this
+            ->createFilterForm($filter)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $filter = new ListFilter($referent->getManagedArea()->getTags()->toArray());
+        }
+
+        $electedRepresentatives = $electedRepresentativeRepository->searchByFilter($filter, $request->query->getInt('page', 1));
+
+        return $this->render('elected_representative/list.html.twig', [
+            'elected_representatives' => $electedRepresentatives,
+            'filter' => $filter,
+            'total_count' => $electedRepresentativeRepository->countForReferentTags($filter->getReferentTags()),
+        ]);
+    }
+
+    private function createFilterForm(ListFilter $filter = null): FormInterface
+    {
+        return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
+            'method' => Request::METHOD_GET,
+            'csrf_protection' => false,
+        ]);
     }
 }

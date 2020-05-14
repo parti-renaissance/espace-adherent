@@ -15,7 +15,7 @@ class LoadElectedRepresentativesRegisterData extends Fixture
             [1, 1, null, 'conseiller_municipal', '01', 'AIN', 'BOUILLOUX', 'Delphine', 'female', '1977-08-02', 2, 'Salariés agricoles', '2014-03-23', null, null, 'NC', 1203080, 'Française', 1, 'L\'Abergement-Clémenciat', 780, '967d13cb5074d0752a39b39b3078f83a'],
             [1, 1, null, 'conseiller_municipal', '01', 'AIN', 'BOULON', 'Daniel', 'male', '1951-03-04', 61, 'Retraités salariés privés', '2014-03-23', 'Maire', '2014-03-23', 'DIV', 694516, 'Française', 1, 'L\'Abergement-Clémenciat', 780, '879a745996db861ed36af1016b74d063'],
             [1, 1, null, 'conseiller_municipal', '01', 'AIN', 'BUET', 'Roger', 'male', '1952-04-21', 1, 'Agriculteurs propriétaires exploit.', '2014-03-23', 'Troisième adjoint au maire', '2014-03-23', 'DIV', 873399, 'Française', 1, 'L\'Abergement-Clémenciat', 780, '3fe0efa5ce50c6eb76a804cffa536b61'],
-            [1, 1, null, 'conseiller_municipal', '01', 'AIN', 'LLOBELL', 'André', 'male', '1951-11-03', 62, 'Retraités de l\'enseignement', '2014-03-23', 'Second adjoint au maire', '2014-03-23', 'DIV', 873404, 'Française', 1, 'L\'Abergement-Clémenciat', 780, '73ea9b609b9e10db8acf74a0ba3b7811'],
+            [1, 1, null, 'conseiller_municipal', '01', 'AIN', 'LOBELL', 'André', 'male', '1951-11-03', 62, 'Retraités de l\'enseignement', '2014-03-23', 'Second adjoint au maire', '2014-03-23', 'DIV', 873404, 'Française', 1, 'L\'Abergement-Clémenciat', 780, '73ea9b609b9e10db8acf74a0ba3b7811'],
         ];
 
         foreach ($elus as $data) {

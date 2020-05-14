@@ -39,6 +39,7 @@ class LoadDistrictData extends AbstractFixture implements ContainerAwareInterfac
             $tag->setType(ReferentTag::TYPE_DISTRICT);
             $district->setReferentTag($tag);
             $manager->persist($tag);
+            $this->setReference("referent_tag_circo_{$district->getCode()}", $tag);
         }
 
         $manager->flush();
