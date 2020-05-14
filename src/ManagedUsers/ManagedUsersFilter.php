@@ -371,6 +371,12 @@ class ManagedUsersFilter
 
     public function toArray(): array
     {
+        $roles = [
+            'CommitteeSupervisors' => $this->includeCommitteeSupervisors,
+            'CommitteeHosts' => $this->includeCommitteeHosts,
+            'CitizenProjectHosts' => $this->includeCitizenProjectHosts,
+        ];
+
         return array_merge(
             [
                 'gender' => $this->gender,
@@ -387,14 +393,21 @@ class ManagedUsersFilter
                 'sort' => $this->sort,
                 'order' => $this->order,
                 'committee' => $this->committee ? $this->committee->getUuidAsString() : null,
+                'includeRoles' => array_keys(
+                    \array_filter($roles, static function ($role) {
+                        return true === $role;
+                    })
+                ),
+                'excludeRoles' => array_keys(
+                    \array_filter($roles, static function ($role) {
+                        return false === $role;
+                    })
+                ),
             ],
             array_filter([
                 'includeAdherentsNoCommittee' => $this->includeAdherentsNoCommittee,
                 'includeAdherentsInCommittee' => $this->includeAdherentsInCommittee,
-                'includeCommitteeSupervisors' => $this->includeCommitteeSupervisors,
-                'includeCommitteeHosts' => $this->includeCommitteeHosts,
-                'includeCitizenProjectHosts' => $this->includeCitizenProjectHosts,
-            ])
+            ]),
         );
     }
 }
