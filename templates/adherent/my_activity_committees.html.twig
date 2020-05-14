@@ -6,28 +6,30 @@
 {% block tab %}
     <div class="l__wrapper--narrow b__nudge--bottom-huge">
         {% for membership in committeeMemberships %}
+            {% set committee = membership.committee %}
+
             <div class="adherent__activity adherent__activity--committee space--30">
                 <div class="committee__details">
                     <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
                         <a class="link--no-decor"
-                           href="{{ path("app_committee_show", { slug: membership.committee.slug }) }}">
-                            {{ membership.committee.name }}
+                           href="{{ path("app_committee_show", { slug: committee.slug }) }}">
+                            {{ committee.name }}
                         </a>
                     </h2>
                     <div class="font-roboto">
-                        <span class="text--bold b__nudge--right-small">{{ membership.committee.getCityName }}</span>
-                        <span>{{ 'committee.members_count'|transchoice(membership.committee.membersCount) }}</span>
+                        <span class="text--bold b__nudge--right-small">{{ committee.getCityName }}</span>
+                        <span>{{ 'committee.members_count'|transchoice(committee.membersCount) }}</span>
                     </div>
                 </div>
                 <div class="committee__actions">
                     <div class="left l__row">
-                        <a href="{{ path("app_committee_show", { slug: membership.committee.slug }) }}"
+                        <a href="{{ path("app_committee_show", { slug: committee.slug }) }}"
                            class="btn btn--blue b__nudge--right-small">
                             Voir
                         </a>
 
-                        {% if committee_candidacy_membership == membership %}
-                            <a href="{{ path("app_committee_remove_candidacy", { slug: committee_candidacy_membership.committee.slug }) }}"
+                        {% if committee_candidacy_membership == membership and committee.committeeElection and committee.committeeElection.isCandidacyPeriodActive %}
+                            <a href="{{ path("app_committee_remove_candidacy", { slug: committee.slug }) }}"
                                class="btn btn--ghosting--pink b__nudge--right-small em-confirm--trigger"
                                data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
                             >
@@ -41,8 +43,8 @@
                                 <input
                                     type="checkbox"
                                     class="vote-switcher"
-                                    data-committee-title="{{ membership.committee.name }}"
-                                    data-committee-slug="{{ membership.committee.slug }}"
+                                    data-committee-title="{{ committee.name }}"
+                                    data-committee-slug="{{ committee.slug }}"
                                     data-token="{{ csrf_token('committee.vote') }}"
                                     {{ not is_able_to_change_vote ? 'disabled="disabled"' }}
                                     {{ membership.isVotingCommittee ? 'checked="checked"' }}
