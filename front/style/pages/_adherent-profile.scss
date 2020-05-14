@@ -90,30 +90,87 @@
             &__heading {
                 display: block;
                 position: relative;
-                margin-bottom: 25px;
                 font-size: 18px;
                 font-family: $font-roboto;
                 color: $silver-grey;
                 border: none;
                 padding-left: 38px;
-                line-height: 20px;
+                line-height: 30px;
+                cursor: pointer;
 
-                &.active {
-                    font-weight: bold;
-                    color: $black;
-                }
+                background-position: left center;
+                background-repeat: no-repeat;
+
+                &.menu-section-informations { background-image: url('/images/icons/adherent_menu/default/informations.svg'); }
+                &.menu-section-informations.active { background-image: url('/images/icons/adherent_menu/active/informations.svg'); }
+
+                &.menu-section-activity { background-image: url('/images/icons/adherent_menu/default/activity.svg'); }
+                &.menu-section-activity.active { background-image: url('/images/icons/adherent_menu/active/activity.svg'); }
+
+                &.menu-section-documents { background-image: url('/images/icons/adherent_menu/default/documents.svg'); }
+                &.menu-section-documents.active { background-image: url('/images/icons/adherent_menu/active/documents.svg'); }
 
                 .icon-container {
                     width: 20px;
                     height: 20px;
                     position: absolute;
                     left: 0;
+                    top: 3px;
+                }
+
+                .trigger-container {
+                    display: block;
+                    position: absolute;
+                    right: 0;
                     top: 0;
+                    background-color: rgba(123,136,155,0);
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 20px;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        width: 6px;
+                        height: 6px;
+                        width: 6px;
+                        height: 6px;
+                        left: 11px;
+                        top: 10px;
+                        transform: rotate(-45deg);
+                        border-left: 2px solid;
+                        border-bottom: 2px solid;
+                        border-color: $silver-grey;
+                    }
+                }
+
+                &:hover {
+                    .trigger-container {
+                        background-color: rgba(123,136,155,0.1);
+                    }
+                }
+
+                &.is-opened {
+
+                    .trigger-container {
+                        background-color: rgba(123,136,155,0.1);
+                        transform: rotate(180deg);
+
+                        &::before {
+                            border-color: $black;
+                        }
+                    }
+                }
+
+                &.active {
+                    font-weight: bold;
+                    color: $black;
                 }
             }
 
             &__items {
-                display: block;
+                display: none;
+                padding-top: 10px;
 
                 li {
                     margin: 10px 0;

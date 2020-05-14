@@ -1,5 +1,32 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    <!-- En attente de reload la bonne lib jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <!-- Accordeon nav -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(function($){
+                var contents = $('.jsItemsSection');
+                var titles = $('.jsHeadSection');
+                titles.on('click',function(){
+                    var title = $(this);
+                    contents.filter(':visible').slideUp(function(){
+                    	$(this).prev('.jsHeadSection').removeClass('is-opened');
+                    });
+
+                    var content = title.next('.jsItemsSection');
+
+                    if (!content.is(':visible')) {
+                        content.slideDown(function(){title.addClass('is-opened')});
+                    }
+                });
+            })(jQuery);
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
     <main id="adherent-profile">
         <div class="l__wrapper">
@@ -37,7 +64,7 @@
                     </div>
                     <nav class="adherent-profile__menu adherent-profile__menu--desktop">
                         <div class="menu-section">
-                            <div class="menu-section__heading {{ is_active_route(app.request, [
+                            <div class="menu-section__heading menu-section-informations jsHeadSection {{ is_active_route(app.request, [
                             'app_adherent_profile_general_information_update*' ,
                             'app_adherent_profile_certification_demand*' ,
                             'app_adherent_profile_email_password_update*' ,
@@ -46,12 +73,10 @@
                             'app_adherent_profile_elections*' ,
                             'app_adherent_profile_subscription_update*'
                             ] ) ? 'active' }}">
-                                <div class="icon-container">
-                                    {% include('components/_adherent-menu/active/profile.html.twig') %}
-                                </div>
                                 <span>Informations</span>
+                                <span class="trigger-container"></span>
                             </div>
-                            <ul class="menu-section__items">
+                            <ul class="menu-section__items jsItemsSection">
                                 <li class="{{ is_active_route(app.request, 'app_adherent_profile_general_information_update*') ? 'active' }}">
                                     <a href="{{ path('app_adherent_profile_general_information_update') }}">Général</a>
                                 </li>
@@ -76,13 +101,11 @@
                             </ul>
                         </div>
                         <div class="menu-section">
-                            <a href="{{ path('app_adherent_profile_activity') }}" class="menu-section__heading">
-                                <div class="icon-container">
-                                    {% include('components/_adherent-menu/default/activity.html.twig') %}
-                                </div>
+                            <div class="menu-section__heading menu-section-activity jsHeadSection {{ is_active_route(app.request, 'app_adherent_profile_activity*') ? 'active' }}">
                                 <span href="">Activités</span>
-                            </a>
-                            <ul class="menu-section__items">
+                                <span class="trigger-container"></span>
+                            </div>
+                            <ul class="menu-section__items jsItemsSection">
                                 <li><a href="{{ path('app_adherent_profile_activity') }}">Mes comités</a></li>
                                 <li><a href="{{ path('app_adherent_profile_activity') }}">Mes événements</a></li>
                                 <li><a href="{{ path('app_adherent_profile_activity') }}">Mes projets citoyens</a></li>
@@ -91,10 +114,7 @@
                             </ul>
                         </div>
                         <div class="menu-section">
-                            <a href="{{ path('app_adherent_profile_documents') }}" class="menu-section__heading">
-                                <div class="icon-container">
-                                    {% include('components/_adherent-menu/default/documents.html.twig') %}
-                                </div>
+                            <a href="{{ path('app_adherent_profile_documents') }}" class="menu-section__heading menu-section-documents {{ is_active_route(app.request, 'app_adherent_profile_documents*') ? 'active' }}">
                                 <span>Documents</span>
                             </a>
                         </div>
