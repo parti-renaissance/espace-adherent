@@ -65,9 +65,9 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "female":3,
+      "female":2,
       "male":5,
-      "total":8,
+      "total":7,
       "adherents": [
           {"date": "2018-04", "total": 7},
           {"date": "2018-03", "total": 7},
@@ -85,7 +85,7 @@ Feature:
           {"date": "2017-11", "count": 2}
       ],
       "email_subscriptions": [
-          {"date": "2018-04", "subscribed_emails_local_host": 8, "subscribed_emails_referents": 8},
+          {"date": "2018-04", "subscribed_emails_local_host": 7, "subscribed_emails_referents": 7},
           {"date": "2018-03", "subscribed_emails_local_host": 0, "subscribed_emails_referents": 0},
           {"date": "2018-02", "subscribed_emails_local_host": 4, "subscribed_emails_referents": 0},
           {"date": "2018-01", "subscribed_emails_local_host": 3, "subscribed_emails_referents": 0},
@@ -111,7 +111,6 @@ Feature:
       "managedAreaTagCodes": [
         "75008",
         "75009",
-        "75",
         "77"
       ],
       "country": "FR",
@@ -129,7 +128,6 @@ Feature:
           "codes": [
             "75008",
             "75009",
-            "75",
             "77"
           ]
         },

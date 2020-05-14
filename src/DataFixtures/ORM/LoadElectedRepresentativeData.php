@@ -317,6 +317,54 @@ class LoadElectedRepresentativeData extends Fixture
 
         $manager->persist($erWithNotElectedMandate);
 
+        // with mandate CITY_COUNCIL 75007
+        $erParis = new ElectedRepresentative('Arrondissement', 'PARIS', 'male', new \DateTime('1972-02-02'));
+        $mandate = new Mandate(
+            MandateTypeEnum::CITY_COUNCIL,
+            true,
+            VoteListNuanceEnum::NC,
+            null,
+            $this->getReference('zone-city-75007'),
+            $erWithNotElectedMandate,
+            true,
+            new \DateTime('2019-03-15')
+        );
+        $erParis->addMandate($mandate);
+
+        $manager->persist($erParis);
+
+        // with mandate DEPUTY CIRCO 75
+        $erParis2 = new ElectedRepresentative('Circonscription', 'PARIS', 'female', new \DateTime('1982-03-03'));
+        $mandate = new Mandate(
+            MandateTypeEnum::DEPUTY,
+            true,
+            VoteListNuanceEnum::REM,
+            LaREMSupportEnum::OFFICIAL,
+            $this->getReference('zone-district-75008'),
+            $erWithNotElectedMandate,
+            true,
+            new \DateTime('2019-01-11')
+        );
+        $erParis2->addMandate($mandate);
+
+        $manager->persist($erParis2);
+
+        // with mandate SENATOR 75
+        $erParis3 = new ElectedRepresentative('Département', 'PARIS', 'male', new \DateTime('1962-04-04'));
+        $mandate = new Mandate(
+            MandateTypeEnum::SENATOR,
+            true,
+            VoteListNuanceEnum::RN,
+            null,
+            $this->getReference('zone-dpt-75'),
+            $erWithNotElectedMandate,
+            true,
+            new \DateTime('2018-01-11')
+        );
+        $erParis3->addMandate($mandate);
+
+        $manager->persist($erParis3);
+
         $manager->flush();
     }
 
