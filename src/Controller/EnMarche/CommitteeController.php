@@ -266,12 +266,6 @@ class CommitteeController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('save')->isClicked() && $candidacy->getImage()) {
-                $imageManager->saveImage($candidacy);
-            } elseif ($form->get('skip')->isClicked()) {
-                $candidacy->setBiography(null);
-            }
-
             if ($manager->candidateInCommittee($candidacy, $adherent, $committee)) {
                 $this->addFlash('info', 'Votre candidature a bien été enregistrée');
 
@@ -316,14 +310,6 @@ class CommitteeController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($candidacy->isRemoveImage()) {
-                if ($candidacy->hasImageName()) {
-                    $imageManager->removeImage($candidacy);
-                }
-            } elseif ($candidacy->getImage()) {
-                $imageManager->saveImage($candidacy);
-            }
-
             $manager->saveCandidacy($candidacy);
 
             $this->addFlash('info', 'Votre candidature a bien été modifiée');

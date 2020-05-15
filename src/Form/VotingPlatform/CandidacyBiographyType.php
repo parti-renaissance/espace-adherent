@@ -3,6 +3,7 @@
 namespace App\Form\VotingPlatform;
 
 use App\Entity\CommitteeCandidacy;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -35,9 +36,12 @@ class CandidacyBiographyType extends AbstractType
             ->add('save', SubmitType::class)
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event) {
             $data = $event->getData();
-            if (!empty($data['croppedImage'])) {
+
+            if (isset($data['skip'])) {
+                unset($data['croppedImage'], $data['biography'], $data['image']);
+            } elseif (!empty($data['croppedImage'])) {
                 if (false !== strpos($data['croppedImage'], 'base64,')) {
                     $imageData = explode('base64,', $data['croppedImage'], 2);
                     $content = $imageData[1];
@@ -46,7 +50,7 @@ class CandidacyBiographyType extends AbstractType
 
                     $data['image'] = new UploadedFile(
                         $tmpFile,
-                        'profile-image.png',
+                        Uuid::uuid4()->toString().'.png',
                         str_replace([';', 'data:'], '', $imageData[0]),
                         null,
                         null,
@@ -54,15 +58,15 @@ class CandidacyBiographyType extends AbstractType
                     );
 
                     unset($data['croppedImage']);
-                    $event->setData($data);
                 } elseif (-1 == $data['croppedImage']) {
                     unset($data['croppedImage'], $data['image']);
-                    $event->setData($data);
                     /** @var CommitteeCandidacy $model */
                     $model = $event->getForm()->getData();
                     $model->setRemoveImage(true);
                 }
             }
+
+            $event->setData($data);
         });
     }
 

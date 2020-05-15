@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,6 +24,13 @@ class CommitteeCandidacy implements ImageOwnerInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid")
+     */
+    protected $uuid;
 
     /**
      * @var string
@@ -66,8 +75,9 @@ class CommitteeCandidacy implements ImageOwnerInterface
 
     private $removeImage = false;
 
-    public function __construct(CommitteeElection $election, string $gender = null)
+    public function __construct(CommitteeElection $election, string $gender = null, UuidInterface $uuid = null)
     {
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->committeeElection = $election;
         $this->gender = $gender;
     }
@@ -75,6 +85,11 @@ class CommitteeCandidacy implements ImageOwnerInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getCommitteeElection(): CommitteeElection

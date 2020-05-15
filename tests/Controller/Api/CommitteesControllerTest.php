@@ -71,7 +71,6 @@ class CommitteesControllerTest extends WebTestCase
         self::assertCount(2, $data['candidacies']);
 
         self::assertArraySubset([
-            'photo' => '/assets/images/candidacies/profile/d12d8c8acd3f8fb0ee8faddec72868c6.jpg',
             'gender' => 'male',
             'first_name' => 'Bob',
             'last_name' => 'Assesseur',

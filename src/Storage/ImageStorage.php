@@ -27,7 +27,7 @@ class ImageStorage
     public function save(UploadedFile $file, string $path, string $oldPath = null): void
     {
         // Clears the old file if needed
-        if (null !== $oldPath) {
+        if (null !== $oldPath && $this->storage->has($oldPath)) {
             $this->storage->delete($oldPath);
         }
 
