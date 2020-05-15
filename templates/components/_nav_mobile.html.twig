@@ -309,3 +309,35 @@
         </div>
     </div>
 </nav>
+
+<!-- New mobile nav -->
+<div class="em-nav-mobile l__col l__col--top">
+    <div class="em-nav-mobile__adherent-profile">
+        <div class="adherent-profile__id l__row b__nudge--bottom">
+            <div class="name b__nudge--right-nano">{{ app.user.partialName }}</div>
+        </div>
+        <ul class="adherent-profile__roles b__nudge--bottom">
+            {% for role in get_adherent_role_labels(app.user) %}
+                <li>{{ role }}</li>
+            {% endfor %}
+        </ul>
+        <div class="adherent-profile__completion b__nudge--bottom">
+            <div class="text--body text--small b__nudge--bottom-small">
+                <!-- If is not completed -->
+                Complétion du profil : 50%
+                <!-- If is completed TODO
+                👏 Profil complété ! -->
+            </div>
+            <div class="gauge">
+                <span></span>
+            </div>
+            <div class="b__nudge--top-10">
+                <a href="#" class="text--body text--small text--blue--dark link--no-decor">Compléter mon profil</a>
+            </div>
+        </div>
+    </div>
+    <div class="em-nav-mobile__menu">
+        azureaze
+        aze
+    </div>
+</div>
