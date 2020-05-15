@@ -1,0 +1,23 @@
+{% import 'voting_platform/_macros.html.twig' as helper %}
+
+<div class="candidate__box l__row  b__nudge--bottom-medium">
+    <div class="box__content">
+        {% for candidate in candidate_group.candidates %}
+            {{ helper.display_candidate_photo(candidate) }}
+
+            <div class="candidate-infos">
+                <h3 class="candidate-name text--medium b__nudge--bottom-tiny">{{ candidate.fullName }}</h3>
+
+                <div class="text-muted">{{ votes }} bulletins</div>
+            </div>
+        {% endfor %}
+
+        <div class="progress-bar--container">
+            {% set votes_rate = votes * 100 / resume.expressed %}
+            <div class="progress-bar">
+                <div class="slider" style="width: {{ votes_rate }}%"></div>
+            </div>
+            <div>{{ votes_rate|number_format(0) }}%</div>
+        </div>
+    </div>
+</div>

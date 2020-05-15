@@ -88,6 +88,7 @@ class DesignationAdmin extends AbstractAdmin
     public function configureListFields(ListMapper $list)
     {
         $list
+            ->add('id', null, ['label' => '#'])
             ->add('type', 'trans', ['format' => 'voting_platform.designation.type_%s'])
             ->add('zones', 'array')
             ->add('voteStartDate', null, ['label' => 'Ouverture du vote'])

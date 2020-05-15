@@ -45,4 +45,19 @@ class CandidateGroupRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }
+
+    /**
+     * @return CandidateGroup[]
+     */
+    public function findWithResultsForElection(Election $election): array
+    {
+        return $this->createQueryBuilder('cg')
+            ->addSelect('c')
+            ->innerJoin('cg.candidates', 'c')
+            ->where('cg.election = :election')
+            ->setParameter('election', $election)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

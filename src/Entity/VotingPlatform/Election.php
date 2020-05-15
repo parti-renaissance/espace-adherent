@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityDesignationTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\VotingPlatform\Collection\CandidateGroupsCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -77,5 +78,13 @@ class Election
             $candidateGroup->setElection($this);
             $this->candidateGroups->add($candidateGroup);
         }
+    }
+
+    /**
+     * @return CandidateGroup[]|CandidateGroupsCollection
+     */
+    public function getCandidateGroups(): CandidateGroupsCollection
+    {
+        return new CandidateGroupsCollection($this->candidateGroups->toArray());
     }
 }

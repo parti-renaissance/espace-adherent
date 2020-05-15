@@ -1,0 +1,9 @@
+{% macro display_candidate_photo(candidate) %}
+    <div class="candidate-photo avatar-initials avatar--large avatar--style-01">
+        {% if candidate.hasPhoto %}
+            <img src="{{ path('asset_url', {path: candidate.imagePath}) }}" alt="photo" />
+        {% else %}
+            {{ candidate.initials }}
+        {% endif %}
+    </div>
+{% endmacro %}

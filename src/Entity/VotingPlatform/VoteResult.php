@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoteResultRepository")
  *
  * @ORM\Table(name="voting_platform_vote_result", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_key", "election_id"}),

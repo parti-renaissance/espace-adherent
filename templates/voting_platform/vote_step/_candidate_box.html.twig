@@ -1,3 +1,5 @@
+{% import 'voting_platform/_macros.html.twig' as helper %}
+
 <div class="candidate__box l__row  b__nudge--bottom-medium">
     {{ form_widget(form) }}
     {{ form_label(form, ' ') }}
@@ -5,13 +7,7 @@
     <div class="box__content">
         {% if candidate_group %}
             {% for candidate in candidate_group.candidates %}
-                <div class="candidate-photo avatar-initials avatar--large avatar--style-01">
-                    {% if candidate.hasPhoto %}
-                        <img src="{{ path('asset_url', {path: candidate.imagePath}) }}" alt="photo" />
-                    {% else %}
-                        {{ candidate.initials }}
-                    {% endif %}
-                </div>
+                {{ helper.display_candidate_photo(candidate) }}
 
                 <div class="candidate-infos">
                     <h3 class="candidate-name text--medium b__nudge--bottom-tiny">{{ candidate.fullName }}</h3>

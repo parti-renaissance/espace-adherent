@@ -15,7 +15,7 @@ class RedirectManager
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function getRedirection(Election $election): ?string
+    public function getRedirection(Election $election): string
     {
         switch ($election->getDesignationType()) {
             case DesignationTypeEnum::COMMITTEE_ADHERENT:
