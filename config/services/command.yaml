@@ -5,7 +5,7 @@ services:
         public: false
         bind:
             $mailer: '@app.mailer.transactional'
-            $mailchimpClient: 'csa_guzzle.client.mailchimp_api'
+            $mailchimpClient: '@csa_guzzle.client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
 
     App\Command\:
