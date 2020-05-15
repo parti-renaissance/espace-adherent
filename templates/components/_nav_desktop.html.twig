@@ -254,16 +254,15 @@
     </div>
 
     {% if has_role_user %}
-        <div class="adherent-nav-dropdown">
+        <div class="em-nav em-nav-dropdown">
             <div class="l__wrapper">
                 <div class="l__row l__row--top">
-                    <div class="adherent-nav-dropdown__col">
+                    <div class="em-nav-dropdown__col">
                         <div class="adherent-profile__id l__row b__nudge--bottom">
                             <div class="name b__nudge--right-nano">{{ app.user.partialName }}</div>
                             {% if is_certified %}
                                 <div class="l__row">
                                     {% include('components/_certification_logo.html.twig') %}
-                                    <!-- <span class="text--body text--small text--bold text--blue b__nudge--left-nano">Profil certifié</span> -->
                                 </div>
                             {% endif %}
                         </div>
@@ -292,33 +291,39 @@
                             <li class="space--5-0"><a href="" class="text--body text--small link--no-decor">Déconnexion</a></li>
                         </ul>
                     </div>
-                    <div class="adherent-nav-dropdown__col">
-                        <span class="adherent-nav-dropdown__menu--head">Informations</span>
-                        <ul class="adherent-nav-dropdown__menu--items">
-                            <li><a href="#">Général</a></li>
-                            <li><a href="#">Certification du profil</a></li>
-                            <li><a href="#">E-mail et mot de passe</a></li>
-                            <li><a href="#">Centres d'intéret</a></li>
-                            <li><a href="#">Engagement</a></li>
-                            <li><a href="#">Élections</a></li>
-                            <li><a href="#">Communication</a></li>
-                        </ul>
+                    <div class="em-nav-dropdown__col">
+                        <div class="em-nav__menu em-nav__menu--dropdown">
+                            <span class="head">Informations</span>
+                            <ul class="items">
+                                <li><a href="#">Général</a></li>
+                                <li><a href="#">Certification du profil</a></li>
+                                <li><a href="#">E-mail et mot de passe</a></li>
+                                <li><a href="#">Centres d'intéret</a></li>
+                                <li><a href="#">Engagement</a></li>
+                                <li><a href="#">Élections</a></li>
+                                <li><a href="#">Communication</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="adherent-nav-dropdown__col">
-                        <span class="adherent-nav-dropdown__menu--head">Activités</span>
-                        <ul class="adherent-nav-dropdown__menu--items">
-                            <li><a href="#">Mes comités</a></li>
-                            <li><a href="#">Mes événements</a></li>
-                            <li><a href="#">Mes projets citoyens</a></li>
-                            <li><a href="#">Mon atelier des idées</a></li>
-                            <li><a href="#">Mes dons</a></li>
-                        </ul>
+                    <div class="em-nav-dropdown__col">
+                        <div class="em-nav__menu em-nav__menu--dropdown">
+                            <span class="head">Activités</span>
+                            <ul class="items">
+                                <li><a href="#">Mes comités</a></li>
+                                <li><a href="#">Mes événements</a></li>
+                                <li><a href="#">Mes projets citoyens</a></li>
+                                <li><a href="#">Mon atelier des idées</a></li>
+                                <li><a href="#">Mes dons</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="adherent-nav-dropdown__col">
-                        <span class="adherent-nav-dropdown__menu--head">Documents</span>
-                        <ul class="adherent-nav-dropdown__menu--items">
-                            <li><a href="#">Mes documents</a></li>
-                        </ul>
+                    <div class="em-nav-dropdown__col">
+                        <div class="em-nav__menu em-nav__menu--dropdown">
+                            <span class="head">Documents</span>
+                            <ul class="items">
+                                <li><a href="#">Mes documents</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
