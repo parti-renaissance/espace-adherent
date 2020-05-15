@@ -263,7 +263,7 @@
         </service>
 
         <service id="app.admin.referent" class="App\Admin\ReferentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Référents" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Trombi Référents" group="Territoire" />
 
             <argument />
             <argument>App\Entity\Referent</argument>
@@ -324,6 +324,15 @@
             <argument>App\Entity\AssessorRequest</argument>
             <argument />
         </service>
+
+        <service id="app.admin.election" class="App\Admin\ElectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Assesseurs » Élections" group="Territoire" />
+
+            <argument />
+            <argument>App\Entity\Election</argument>
+            <argument />
+        </service>
+
 
         <service id="app.admin.jecoute_suggested_question" class="App\Admin\JecouteSuggestedQuestionAdmin">
             <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questions panier" group="Territoire" />
@@ -890,7 +899,7 @@
         </service>
 
         <service id="app.admin.legislative_candidate" class="App\Admin\LegislativeCandidateAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Élus" group="Politique" />
+            <tag name="sonata.admin" manager-type="orm" label="Trombi Élus" group="Politique" />
 
             <argument />
             <argument>App\Entity\LegislativeCandidate</argument>
@@ -947,14 +956,6 @@
 
             <argument />
             <argument>App\Entity\ElectedRepresentative\PoliticalFunction</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.election" class="App\Admin\ElectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Élections" group="Politique" />
-
-            <argument />
-            <argument>App\Entity\Election</argument>
             <argument />
         </service>
 
