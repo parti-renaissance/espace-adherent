@@ -77,14 +77,23 @@
                     {% endif %}
                 {% endif %}
             {% endif %}
-        {% elseif committee_election.isVotePeriodActive %}
+        {% else %}
             {% set voting_platform_election = get_voting_platform_election_for_committee(committee) %}
 
-            {% if voting_platform_election and is_granted('ABLE_TO_VOTE', voting_platform_election) %}
-                <a href="{{ path('app_voting_platform_index', {uuid: voting_platform_election.uuid}) }}"
-                   id="committee-toggle-candidacy"
-                   class="btn btn--pink btn--no-wrap"
-                >Je participe</a>
+            {% if voting_platform_election %}
+                {% if committee_election.isVotePeriodActive %}
+                    {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
+                        <a href="{{ path('app_voting_platform_index', {uuid: voting_platform_election.uuid}) }}"
+                           id="committee-toggle-candidacy"
+                           class="btn btn--pink btn--no-wrap"
+                        >Je participe</a>
+                    {% endif %}
+                {% elseif committee_election.isResultPeriodActive %}
+                    <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}"
+                       id="committee-toggle-candidacy"
+                       class="btn btn--pink btn--no-wrap"
+                    >Voir les résultats</a>
+                {% endif %}
             {% endif %}
         {% endif %}
 

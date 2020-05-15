@@ -417,7 +417,8 @@ security:
         - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
-        - { path: '^/admin/(2fa|logout)', role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+        - { path: '^/admin/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
-        - { path: '^/membre/.*', roles: IS_AUTHENTICATED_FULLY }
+        - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }

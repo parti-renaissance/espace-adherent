@@ -7,7 +7,9 @@ use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
+use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
+use App\Entity\VotingPlatform\VoteResult;
 use App\Entity\VotingPlatform\VotersList;
 use App\ValueObject\Genders;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -115,6 +117,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
 
         $this->loadCandidates($election);
         $this->loadVoters($election);
+        $this->loadResults($election);
 
         $this->manager->persist($election);
     }
@@ -127,5 +130,37 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $list->addVoter($this->voters[$adherent->getId()] ?? $this->voters[$adherent->getId()] = new Voter($adherent));
 
         $this->manager->persist($list);
+    }
+
+    private function loadResults(Election $election): void
+    {
+        $candidateGroups = $election->getCandidateGroups();
+
+        $women = $candidateGroups->getWomanCandidateGroups();
+        $men = $candidateGroups->getManCandidateGroups();
+
+        for ($i = 1; $i < 100; ++$i) {
+            $result = new VoteResult($election, uniqid());
+
+            // WOMAN
+            $choice = new VoteChoice();
+            if (0 === $i % 10) {
+                $choice->setIsBlank(true);
+            } else {
+                $choice->setCandidateGroup($women[array_rand($women, 1)]);
+            }
+            $result->addVoteChoice($choice);
+
+            // MAN
+            $choice = new VoteChoice();
+            if (0 === $i % 15) {
+                $choice->setIsBlank(true);
+            } else {
+                $choice->setCandidateGroup($men[array_rand($men, 1)]);
+            }
+            $result->addVoteChoice($choice);
+
+            $this->manager->persist($result);
+        }
     }
 }

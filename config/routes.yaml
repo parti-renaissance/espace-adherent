@@ -183,6 +183,11 @@ app_redirect_inscription:
         route: app_membership_join
         permanent: true
 
+app_voting_platform:
+    resource: "../src/Controller/EnMarche/VotingPlatform"
+    type:     "annotation"
+    prefix:   "/elections/{uuid}"
+
 # This route must be loaded the last to prevent an override
 app_static_page:
     host:    "%app_host%"

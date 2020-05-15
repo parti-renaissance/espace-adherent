@@ -54,4 +54,9 @@ class Vote
         $this->election = $election;
         $this->votedAt = new \DateTime();
     }
+
+    public function getVotedAt(): \DateTime
+    {
+        return $this->votedAt;
+    }
 }

@@ -9,7 +9,7 @@ trait EntityDesignationTrait
     /**
      * @var Designation
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", fetch="EAGER")
      */
     private $designation;
 
@@ -42,7 +42,12 @@ trait EntityDesignationTrait
     {
         $now = new \DateTime();
 
-        return $this->getCandidacyPeriodStartDate() <= $now && $now < $this->getVoteEndDate();
+        return $this->getCandidacyPeriodStartDate() <= $now
+            && (
+                $now < $this->getVoteEndDate()
+                || $this->isResultPeriodActive()
+            )
+        ;
     }
 
     public function isCandidacyPeriodActive(): bool
@@ -57,5 +62,16 @@ trait EntityDesignationTrait
         $now = new \DateTime();
 
         return $this->getVoteStartDate() <= $now && $now < $this->getVoteEndDate();
+    }
+
+    public function isResultPeriodActive(): bool
+    {
+        $now = new \DateTime();
+
+        return $this->getVoteEndDate() <= $now
+            && $now < (clone $this->getVoteEndDate())->modify(
+                sprintf('+%d days', $this->designation->getResultDisplayDelay())
+            )
+        ;
     }
 }

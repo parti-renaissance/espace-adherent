@@ -1,0 +1,9 @@
+<div class="l__wrapper--slim">
+    {% for uuid, votes in candidates %}
+        {% set candidate_group = candidate_groups|filter(candidate_group => candidate_group.uuid.toString == uuid)|first %}
+
+        {% if candidate_group %}
+            {% include 'voting_platform/results/_candidate_box.html.twig' %}
+        {% endif %}
+    {% endfor %}
+</div>
