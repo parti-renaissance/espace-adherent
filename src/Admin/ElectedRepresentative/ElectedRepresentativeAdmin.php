@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -76,9 +77,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Fonctions actuelles',
                 'template' => 'admin/elected_representative/list_political_functions.html.twig',
             ])
-            ->add('adherent', null, [
-                'label' => 'Adhérent',
-                'template' => 'admin/elected_representative/list_is_adherent.html.twig',
+            ->add('type', null, [
+                'label' => 'Type',
+                'template' => 'admin/elected_representative/list_type.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
@@ -132,9 +133,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('birthPlace', null, [
                     'label' => 'Lieu de naissance',
-                ])
-                ->add('isSupportingLaREM', null, [
-                    'label' => 'Sympathisant LaREM',
                 ])
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
@@ -201,8 +199,8 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'required' => false,
                     'label' => 'Lieu de naissance',
                 ])
-                ->add('isSupportingLaREM', null, [
-                    'label' => 'Sympathisant LaREM',
+                ->add('userListDefinitions', null, [
+                    'label' => 'Catégories',
                 ])
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
@@ -450,6 +448,16 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                             return false;
                     }
                 },
+            ])
+            ->add('userListDefinitions', ModelAutocompleteFilter::class, [
+                'label' => 'Catégories',
+                'show_filter' => true,
+                'field_options' => [
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'multiple' => true,
+                    'property' => 'label',
+                ],
             ])
         ;
     }

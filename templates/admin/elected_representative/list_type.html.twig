@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.isAdherent is null %}
+        <span class="label label-primary">Peut-être</span><br />
+    {% elseif object.isAdherent %}
+        <span class="label label-success">Adhérent(e)</span><br />
+    {% endif %}
+    {% for userListDefinition in object.userListDefinitions %}
+        {% set labelClass = '' %}
+        {% if userListDefinition.label == constant('App\\Entity\\UserListDefinitionEnum::LABEL_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM') %}
+            {% set labelClass = 'label-warning' %}
+        {% elseif userListDefinition.label == constant('App\\Entity\\UserListDefinitionEnum::LABEL_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER') %}
+            {% set labelClass = 'label-danger' %}
+        {% endif %}
+        <span class="label {{ labelClass }}">{{ userListDefinition.label }}</span><br />
+    {% endfor %}
+{% endblock %}

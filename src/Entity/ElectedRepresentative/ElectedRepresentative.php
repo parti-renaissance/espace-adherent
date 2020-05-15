@@ -4,6 +4,7 @@ namespace App\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
+use App\Entity\EntityUserListDefinitionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ElectedRepresentative
 {
+    use EntityUserListDefinitionTrait;
     /**
      * @var int
      *
@@ -127,16 +129,9 @@ class ElectedRepresentative
     /**
      * @var bool|null
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isSupportingLaREM;
-
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $hasFollowedTraining;
+    private $hasFollowedTraining = false;
 
     /**
      * @var bool|null
@@ -232,20 +227,8 @@ class ElectedRepresentative
      */
     private $sponsorships;
 
-    public function __construct(
-        string $firstName,
-        string $lastName,
-        string $gender,
-        \DateTime $birthDate,
-        int $officialId = null,
-        UuidInterface $uuid = null
-    ) {
-        $this->uuid = $uuid ?: Uuid::uuid4();
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->gender = $gender;
-        $this->birthDate = $birthDate;
-        $this->officialId = $officialId;
+    public function __construct()
+    {
         $this->socialNetworkLinks = new ArrayCollection();
         $this->mandates = new ArrayCollection();
         $this->politicalFunctions = new ArrayCollection();
@@ -253,6 +236,26 @@ class ElectedRepresentative
         $this->sponsorships = new ArrayCollection();
 
         $this->initializeSponsorships();
+    }
+
+    public static function create(
+        string $firstName,
+        string $lastName,
+        string $gender,
+        \DateTime $birthDate,
+        int $officialId = null,
+        UuidInterface $uuid = null
+    ): self {
+        $electedRepresentative = new self();
+
+        $electedRepresentative->uuid = $uuid ?: Uuid::uuid4();
+        $electedRepresentative->firstName = $firstName;
+        $electedRepresentative->lastName = $lastName;
+        $electedRepresentative->gender = $gender;
+        $electedRepresentative->birthDate = $birthDate;
+        $electedRepresentative->officialId = $officialId;
+
+        return $electedRepresentative;
     }
 
     public function getId(): int
@@ -363,16 +366,6 @@ class ElectedRepresentative
     public function setComment(?string $comment = null): void
     {
         $this->comment = $comment;
-    }
-
-    public function getIsSupportingLaREM(): ?bool
-    {
-        return $this->isSupportingLaREM;
-    }
-
-    public function setIsSupportingLaREM(?bool $isSupportingLaREM = null): void
-    {
-        $this->isSupportingLaREM = $isSupportingLaREM;
     }
 
     public function hasFollowedTraining(): ?bool
