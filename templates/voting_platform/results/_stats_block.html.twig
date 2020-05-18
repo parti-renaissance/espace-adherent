@@ -1,4 +1,4 @@
-<div class="side-block">
+<aside class="side-block">
     {% if my_vote is defined and my_vote %}
         <div class="participated-block b__nudge--bottom-medium">
             Vous avez participé à cette désignation le {{ my_vote.votedAt|localizeddate('none', 'none', 'fr_FR', null, "d/MM/yyyy à HH:mm") }}.
@@ -23,4 +23,4 @@
             <span class="text--medium">{{ resume.blank ?? 0 }}</span>
         </div>
     </div>
-</div>
+</aside>

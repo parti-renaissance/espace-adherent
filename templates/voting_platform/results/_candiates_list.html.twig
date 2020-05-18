@@ -1,4 +1,4 @@
-<div class="l__wrapper--slim">
+<div class="candidates-block">
     {% for uuid, votes in candidates %}
         {% set candidate_group = candidate_groups|filter(candidate_group => candidate_group.uuid.toString == uuid)|first %}
 

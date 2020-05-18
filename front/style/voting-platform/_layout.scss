@@ -73,7 +73,6 @@
     }
 
     .candidate__box {
-
         position: relative;
         border: 1px solid $lines-grey;
         background-color: $white;
@@ -85,105 +84,8 @@
             padding: 30px;
         }
 
-        input[type='radio'] {
-            position: absolute;
-            z-index: -1;
-            opacity: 0;
-
-            &:checked + label {
-                box-shadow: 0 0 0 5px rgba(29, 95, 209, 0.1);
-                border: solid 1px $blue--dark;
-            }
-
-            &:checked + label:before {
-                box-sizing: border-box;
-                border: 8px solid $blue--dark;
-                background: $white;
-                content: '';
-            }
-
-            &:disabled + label {
-                cursor: not-allowed;
-
-                &:before {
-                    background-color: $pale-grey;
-
-                    &:hover {
-                        border-color: $lines-grey;
-                    }
-                }
-            }
-        }
-
-        label {
-            display: inline-block;
-            cursor: pointer;
-            position: absolute;
-            left: 0;
-            right : 0;
-            top: 0;
-            bottom: 0;
-            margin: 0;
-            border-radius: 3px;
-            transition: all 0.2s;
-            -webkit-transition: all 0.2s;
-            border: solid 1px transparent;
-
-            &:hover {
-                border: solid 1px $blue--dark;
-            }
-
-            &:before {
-                box-sizing: border-box;
-                content: ' ';
-                width: 22px;
-                height: 22px;
-                min-width: 22px;
-                min-height: 22px;
-                margin-right: 15px;
-                background: $white;
-                border: 2px solid $lines-grey;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: absolute;
-                left: calc(50% - 11px);
-                bottom: 20px;
-                transition: all 0.2s;
-                -webkit-transition: all 0.2s;
-                border-radius: 50px;
-
-                @media (min-width: $mobile) {
-                    left: auto;
-                    bottom: auto;
-                    top: calc(50% - 11px);
-                    right: 8%;
-                }
-            }
-        }
-
         .box__content {
-            position: relative;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             width: 100%;
-
-            @media (min-width: $mobile) {
-                flex-direction: row;
-            }
-
-            .candidate-infos {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                @media (min-width: $mobile) {
-                    align-items: flex-start;
-                    margin-left: 20px;
-                }
-            }
 
             .candidate-name {
                 font-weight: normal;
@@ -191,19 +93,142 @@
 
             .candidate-photo {
                 overflow: hidden;
-                margin-bottom: 10px;
-
-                @media (min-width: $mobile) {
-                    margin-bottom: 0;
-                }
 
                 img {
                     height: 100%;
                 }
             }
+        }
+    }
 
-            .candidate-biography {
-                pointer-events: all;
+    .election-vote {
+        .candidate__box {
+            input[type='radio'] {
+                position: absolute;
+                z-index: -1;
+                opacity: 0;
+
+                &:checked + label {
+                    box-shadow: 0 0 0 5px rgba(29, 95, 209, 0.1);
+                    border: solid 1px $blue--dark;
+                }
+
+                &:checked + label:before {
+                    box-sizing: border-box;
+                    border: 8px solid $blue--dark;
+                    background: $white;
+                    content: '';
+                }
+
+                &:disabled + label {
+                    cursor: not-allowed;
+
+                    &:before {
+                        background-color: $pale-grey;
+
+                        &:hover {
+                            border-color: $lines-grey;
+                        }
+                    }
+                }
+            }
+
+            label {
+                display: inline-block;
+                cursor: pointer;
+                position: absolute;
+                left: 0;
+                right : 0;
+                top: 0;
+                bottom: 0;
+                margin: 0;
+                border-radius: 3px;
+                transition: all 0.2s;
+                -webkit-transition: all 0.2s;
+                border: solid 1px transparent;
+
+                &:hover {
+                    border: solid 1px $blue--dark;
+                }
+
+                &:before {
+                    box-sizing: border-box;
+                    content: ' ';
+                    width: 22px;
+                    height: 22px;
+                    min-width: 22px;
+                    min-height: 22px;
+                    margin-right: 15px;
+                    background: $white;
+                    border: 2px solid $lines-grey;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    left: calc(50% - 11px);
+                    bottom: 20px;
+                    transition: all 0.2s;
+                    -webkit-transition: all 0.2s;
+                    border-radius: 50px;
+
+                    @media (min-width: $mobile) {
+                        left: auto;
+                        bottom: auto;
+                        top: calc(50% - 11px);
+                        right: 8%;
+                    }
+                }
+            }
+
+            .box__content {
+                position: relative;
+                pointer-events: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                @media (min-width: $mobile) {
+                    flex-direction: row;
+                }
+
+                .candidate-infos {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    @media (min-width: $mobile) {
+                        align-items: flex-start;
+                        margin-left: 20px;
+                    }
+                }
+
+                .candidate-photo {
+                    margin-bottom: 10px;
+
+                    @media (min-width: $mobile) {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .candidate-biography {
+                    pointer-events: all;
+                }
+            }
+        }
+    }
+
+    .election-results {
+        .candidate__box {
+            .box__content {
+                .candidate-infos {
+                    width: 100%;
+                }
+
+                .candidate-photo {
+                    overflow: hidden;
+                    margin-right: 20px;
+                    min-width: 66px;
+                }
             }
         }
     }
