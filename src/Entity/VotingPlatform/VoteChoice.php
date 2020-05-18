@@ -62,4 +62,14 @@ class VoteChoice
     {
         $this->isBlank = $isBlank;
     }
+
+    public function isBlank(): bool
+    {
+        return $this->isBlank;
+    }
+
+    public function getCandidateGroup(): ?CandidateGroup
+    {
+        return $this->candidateGroup;
+    }
 }

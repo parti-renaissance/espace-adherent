@@ -1,9 +1,20 @@
 <div class="candidates-block">
+    {% set sorted = [] %}
     {% for uuid, votes in candidates %}
         {% set candidate_group = candidate_groups|filter(candidate_group => candidate_group.uuid.toString == uuid)|first %}
 
         {% if candidate_group %}
-            {% include 'voting_platform/results/_candidate_box.html.twig' %}
+            {% set sorted = sorted|merge([candidate_group]) %}
         {% endif %}
+    {% endfor %}
+
+    {% for candidate_group in candidate_groups if candidate_group not in sorted %}
+        {% set sorted = sorted|merge([candidate_group]) %}
+    {% endfor %}
+
+    {% for candidate_group in sorted %}
+        {% include 'voting_platform/results/_candidate_box.html.twig' with {
+            votes: candidates[candidate_group.uuid.toString] ?? 0
+        }%}
     {% endfor %}
 </div>

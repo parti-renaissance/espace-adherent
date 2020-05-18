@@ -72,4 +72,17 @@ class VoteResult
             $this->voteChoices->add($choice);
         }
     }
+
+    /**
+     * @return VoteChoice[]
+     */
+    public function getVoteChoices(): array
+    {
+        return $this->voteChoices->toArray();
+    }
+
+    public function getVoterKey(): string
+    {
+        return $this->voterKey;
+    }
 }
