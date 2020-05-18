@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait ImageTrait
@@ -23,9 +24,7 @@ trait ImageTrait
                 md5(
                     sprintf(
                         '%s@%s',
-                        method_exists($this, 'getUuid')
-                            ? $this->getUuid()->toString()
-                            : \strval($this->getId()),
+                        method_exists($this, 'getUuid') ? $this->getUuid()->toString() : ($this->getId() ?? Uuid::uuid4()),
                         $image->getClientOriginalName()
                     )
                 ),

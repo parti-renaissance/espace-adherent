@@ -108,7 +108,9 @@ export default class CandidaciesListWidget extends Modal {
                             <span className="text--data-value">{this.state.data.metadata.females}</span>
                             <span className="text--dark"> ({numberFormat(
                                 0 === this.state.data.metadata.total ? 0
-                                    : (this.state.data.metadata.females * 100) / this.state.data.metadata.total
+                                    : Math.round(
+                                        (this.state.data.metadata.females * 100) / this.state.data.metadata.total
+                                    )
                                 )} %)
                             </span>
                         </div>

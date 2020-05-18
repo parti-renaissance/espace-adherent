@@ -9,10 +9,14 @@ use App\Image\ImageManager;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadCommitteeCandidacyData extends Fixture
 {
+    private const CANDIDACY_UUID_1 = '9780b1ca-79c1-4f53-babd-643ebb2ca3cc';
+    private const CANDIDACY_UUID_2 = '5417fda6-6aeb-47ab-9da3-46d60046a3d5';
+
     public function load(ObjectManager $manager)
     {
         /** @var Adherent $adherent */
@@ -23,7 +27,11 @@ class LoadCommitteeCandidacyData extends Fixture
         $voteCommitteeMembership = $adherent->getMembershipFor($committee);
         $voteCommitteeMembership->enableVote();
         $voteCommitteeMembership->setCommitteeCandidacy(
-            $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), $adherent->getGender())
+            $candidacy = new CommitteeCandidacy(
+                $committee->getCommitteeElection(),
+                $adherent->getGender(),
+                Uuid::fromString(self::CANDIDACY_UUID_1)
+            )
         );
         $candidacy->setBiography('Voici ma plus belle candidature. Votez pour moi uniquement!');
         $candidacy->setImage(new UploadedFile(
@@ -45,7 +53,11 @@ class LoadCommitteeCandidacyData extends Fixture
         $voteCommitteeMembership = $adherent->getMembershipFor($committee);
         $voteCommitteeMembership->enableVote();
         $voteCommitteeMembership->setCommitteeCandidacy(
-            $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), Genders::FEMALE)
+            $candidacy = new CommitteeCandidacy(
+                $committee->getCommitteeElection(),
+                Genders::FEMALE,
+                Uuid::fromString(self::CANDIDACY_UUID_2)
+            )
         );
 
         $manager->persist($candidacy);

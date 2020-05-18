@@ -24,6 +24,7 @@ use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
 use App\VotingPlatform\Event\CommitteeCandidacyEvent;
+use App\VotingPlatform\Event\UpdateCommitteeCandidacyEvent;
 use App\VotingPlatform\Events as VotingPlatformEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -32,8 +33,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManager
 {
-    const EXCLUDE_HOSTS = false;
-    const INCLUDE_HOSTS = true;
+    public const EXCLUDE_HOSTS = false;
+    public const INCLUDE_HOSTS = true;
 
     private const COMMITTEE_PROPOSALS_COUNT = 3;
 
@@ -621,12 +622,10 @@ class CommitteeManager
         return $membership->getCommitteeCandidacy();
     }
 
-    public function saveCandidacy(CommitteeCandidacy $candidacy)
+    public function saveCandidacy(CommitteeCandidacy $candidacy): void
     {
-        if (!$candidacy->getId()) {
-            $this->getManager()->persist($candidacy);
-        }
-
         $this->getManager()->flush();
+
+        $this->dispatcher->dispatch(VotingPlatformEvents::CANDIDACY_UPDATED, new UpdateCommitteeCandidacyEvent($candidacy));
     }
 }
