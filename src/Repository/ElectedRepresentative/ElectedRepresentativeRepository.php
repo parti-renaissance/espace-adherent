@@ -8,6 +8,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -82,11 +83,31 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             $qb->leftJoin($alias.'.mandates', 'mandate');
         }
 
-        return $qb
+        $hasParis = false;
+        foreach ($referentTags as $tag) {
+            if (0 === mb_strpos($tag->getCode(), '750') || 0 === mb_strpos($tag->getCode(), 'CIRCO_750')) {
+                $hasParis = true;
+
+                break;
+            }
+        }
+
+        $zoneCondition = new Orx();
+        $zoneCondition->add('tag IN (:tags)');
+        $qb->setParameter('tags', $referentTags);
+        // if referent has some Paris tag, we should return elected representatives of all Paris zones
+        if ($hasParis) {
+            $zoneCondition->add('tag.code LIKE :paris_arr OR tag.code LIKE :paris_circo');
+            $qb->setParameter('paris_arr', '750%');
+            $qb->setParameter('paris_circo', 'CIRCO\_750%');
+        }
+
+        $qb
             ->leftJoin('mandate.zone', 'zone')
             ->leftJoin('zone.referentTags', 'tag')
-            ->andWhere('tag IN (:tags)')
-            ->setParameter('tags', $referentTags)
+            ->andWhere($zoneCondition)
         ;
+
+        return $qb;
     }
 }

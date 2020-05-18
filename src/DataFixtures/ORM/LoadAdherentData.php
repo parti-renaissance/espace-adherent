@@ -469,7 +469,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent75and77->setReferent(
             [
                 $this->getReference('referent_tag_77'),
-                $this->getReference('referent_tag_75'),
                 $this->getReference('referent_tag_75008'),
                 $this->getReference('referent_tag_75009'),
             ],

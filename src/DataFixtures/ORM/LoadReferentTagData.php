@@ -29,7 +29,7 @@ class LoadReferentTagData extends Fixture
                     foreach (\range(1, 20) as $district) {
                         $district = \str_pad($district, 2, '0', \STR_PAD_LEFT);
 
-                        $this->createReferentTag($manager, "750$district", "750$district");
+                        $this->createReferentTag($manager, "Paris 750$district", "750$district");
                     }
 
                     $this->createReferentTag($manager, 'Paris', '75', ReferentTag::TYPE_DEPARTMENT);

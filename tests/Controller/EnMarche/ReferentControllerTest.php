@@ -529,6 +529,17 @@ class ReferentControllerTest extends WebTestCase
         $this->assertContains('LOBELL', $crawler->filter('tbody tr.referent__item')->eq(3)->text());
     }
 
+    public function testListElectedRepresentativesForParis()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus');
+
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('PARIS Circonscription', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('PARIS Arrondissement', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+    }
+
     public function providePages()
     {
         return [

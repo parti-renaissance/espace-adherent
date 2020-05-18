@@ -86,6 +86,7 @@ class LoadZoneData extends Fixture
         '13001' => 'Bouches-du-Rhône, 1ère circonscription (13-01)',
         '59009' => 'Nord, 9ème circonscription (59-09)',
         '75007' => 'Paris, 7ème circonscription (75-07)',
+        '75008' => 'Paris, 8ème circonscription (75-08)',
         '76002' => 'Seine-Maritime, 2ème circonscription (76-02)',
         '77001' => 'Seine-et-Marne, 1ère circonscription (77-01)',
         '69010' => 'Rhône, 10ème circonscription (69-10)',
@@ -99,6 +100,9 @@ class LoadZoneData extends Fixture
         foreach (self::CITIES as $code => $name) {
             $zoneCity = new Zone($this->getReference('zone-category-ville'), $name);
             $zoneCity->addReferentTag($this->getReference('referent_tag_'.substr($code, 0, 2)));
+            if ('75007' == $code) {
+                $zoneCity->addReferentTag($this->getReference('referent_tag_'.$code));
+            }
 
             $manager->persist($zoneCity);
             $this->setReference("zone-city-$code", $zoneCity);
@@ -138,14 +142,16 @@ class LoadZoneData extends Fixture
             $zoneRegion->addReferentTag($this->getReference("referent_tag_circo_$code"));
 
             $manager->persist($zoneRegion);
-            $this->setReference("zone-region-$code", $zoneRegion);
+            $this->setReference("zone-district-$code", $zoneRegion);
         }
 
         $zoneCorsica = new Zone($this->getReference('zone-category-corse'), 'Corse');
+        $zoneCorsica->addReferentTag($this->getReference('referent_tag_20'));
         $manager->persist($zoneCorsica);
         $this->setReference('zone-corsica', $zoneCorsica);
 
         $zoneFOF = new Zone($this->getReference('zone-category-fde'), 'Français de l\'Étranger');
+        $zoneFOF->addReferentTag($this->getReference('referent_tag_fof'));
         $manager->persist($zoneFOF);
         $this->setReference('zone-fof', $zoneFOF);
 
