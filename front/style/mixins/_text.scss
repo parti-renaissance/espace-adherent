@@ -340,6 +340,11 @@ $text--size-extra-large--big: 128px;
         padding: 0 5px;
     }
 
+    &--on-yellow {
+        background: $yellow;
+        padding: 0 5px;
+    }
+
     &--on-pink {
         color: white;
         background: $pink;

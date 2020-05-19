@@ -1,26 +1,26 @@
-<aside class="side-block">
+<aside class="election__aside">
     {% if my_vote is defined and my_vote %}
-        <div class="participated-block b__nudge--bottom-medium">
-            Vous avez participé à cette désignation le {{ my_vote.votedAt|localizeddate('none', 'none', 'fr_FR', null, "d/MM/yyyy à HH:mm") }}.
+        <div class="election__participated space--30">
+            <p class="text--body text--white text--bold">Vous avez participé à cette désignation le {{ my_vote.votedAt|localizeddate('none', 'none', 'fr_FR', null, "d/MM/yyyy à HH:mm") }}.</p>
         </div>
     {% endif %}
 
-    <div class="stats-block">
-        <h3 class="b__nudge--bottom-medium">Les chiffres de la désignation</h3>
+    <div class="election__stats space--30">
+        <h3 class="text--medium-large b__nudge--bottom-large">Les <span class="text--on-yellow">chiffres</span> de la désignation</h3>
 
-        <div>
-            <span class="text--silver-gray">Participants</span><br>
-            <span class="text--medium">{{ resume.participated ?? 0 }}</span>
+        <div class="el">
+            <div class="title">Participants</div>
+            <span class="value">{{ resume.participated ?? 0 }}</span>
         </div>
 
-        <div>
-            <span class="text--silver-gray">Bulletins expérimés</span><br>
-            <span class="text--medium">{{ resume.expressed ?? 0 }}</span>
+        <div class="el">
+            <div class="title">Bulletins expérimés</div>
+            <span class="value">{{ resume.expressed ?? 0 }}</span>
         </div>
 
-        <div>
-            <span class="text--silver-gray">Bulletins blanc exprimés</span><br>
-            <span class="text--medium">{{ resume.blank ?? 0 }}</span>
+        <div class="el">
+            <div class="title">Bulletins blanc exprimés</div>
+            <span class="value">{{ resume.blank ?? 0 }}</span>
         </div>
     </div>
 </aside>

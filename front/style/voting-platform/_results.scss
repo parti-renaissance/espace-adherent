@@ -2,31 +2,62 @@
     .candidate-tabs--container {
         .candidate-tab .tab--container {
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
+            flex-direction: column;
+
+            @media (min-width: $tablet) {
+                flex-direction: row;
+            }
 
             .candidates-block {
                 flex-basis: 100%;
-                margin-right: 24px;
-            }
-            .side-block {
-                flex: 0 0 300px;
-            }
+                margin-bottom: 24px;
 
-            .stats-block {
-                background-color: $white;
-                padding: 15px;
-
-                & > div {
-                    margin-bottom: 10px;
+                @media (min-width: $tablet) {
+                    margin-right: 24px;
                 }
             }
 
-            .participated-block {
-                margin: 24px 0;
-                padding: 20px;
-                background: $pink;
-                color: $white;
+            .election {
+                &__aside {
+                    flex: 0 0 100%;
+
+                    @media (min-width: $tablet) {
+                        flex: 0 0 300px;
+                    }
+                }
+
+                &__participated {
+                    background: $pink;
+                    color: $white;
+                    border-radius: 3px;
+                    margin-bottom: 24px;
+
+                    p {
+                        margin: 0;
+                    }
+                }
+
+                &__stats {
+                    background-color: $white;
+                    border-radius: 3px;
+
+                    .el {
+                        font-family: $font-roboto;
+                        margin: 20px 0;
+
+                        .title {
+                            font-size: 16px;
+                            color: $neutral-grey;
+                            margin-bottom: 10px;
+                        }
+
+                        .value {
+                            font-size: 28px;
+                            color: $black;
+                            font-weight: bold;
+                        }
+                    }
+                }
             }
 
             .table--container {
@@ -40,7 +71,7 @@
         }
     }
 
-    .progress-bar{
+    .progress-bar {
         &__gauge {
             flex-basis: 100%;
             height: 12px;

@@ -77,12 +77,6 @@
         border: 1px solid $lines-grey;
         background-color: $white;
         border-radius: 3px;
-        margin: 24px 0;
-        padding: 30px 30px 60px;
-
-        @media (min-width: $mobile) {
-            padding: 30px;
-        }
 
         .box__content {
             width: 100%;
@@ -103,6 +97,13 @@
 
     .election-vote {
         .candidate__box {
+            padding: 30px 30px 60px;
+            margin: 24px 0;
+
+            @media (min-width: $mobile) {
+                padding: 30px;
+            }
+
             input[type='radio'] {
                 position: absolute;
                 z-index: -1;
@@ -219,6 +220,13 @@
 
     .election-results {
         .candidate__box {
+            padding: 30px;
+            margin-bottom: 24px;
+
+            &:first-child {
+                margin-bottom: 0;
+            }
+
             .box__content {
                 .candidate-infos {
                     width: 100%;
