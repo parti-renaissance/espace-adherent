@@ -47,24 +47,24 @@
 
                 <div class="candidate-tab candidate-tab--3" style="display: none;">
                     <div class="tab--container">
-                        <div class="l__col--wrap l__wrapper--slim">
-                            <h3>Bulletins dépouillés</h3>
-
-                            <p>Cette page recense la totalité des {{ results.aggregated.resume[0].participated }} bulletins dépouillés lors de cette désignations.</p>
-                            <p>Retrouvez vos bulletins avec le N° anonyme qui vous a été transmis lors du versement de vos bulletins dans l'urne.</p>
-
+                        <div class="l__col--wrap election__ballots-detail">
+                            <h3 class="text--default-large text--bold font-roboto b__nudge--bottom-small">Bulletins dépouillés</h3>
+                            <p class="text--body text--dark b__nudge--bottom">
+                                Cette page recense la totalité des {{ results.aggregated.resume[0].participated }} bulletins dépouillés lors de cette désignations.<br /><br />
+                                Retrouvez vos bulletins avec le N° anonyme qui vous a été transmis lors du versement de vos bulletins dans l'urne.
+                            </p>
                             <div class="table--container">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>N° anonyme</th>
-                                            <th>Bulletin F</th>
-                                            <th>Bulletin H</th>
+                                <table class="text--left">
+                                    <thead class="b__nudge--bottom">
+                                        <tr class="text--body">
+                                            <th class="space--10-0">N° anonyme</th>
+                                            <th class="space--10-0">Bulletin F</th>
+                                            <th class="space--10-0">Bulletin H</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for vote in results.votes %}
-                                            <tr>
+                                            <tr class="text--body text--dark">
                                                 <td>{{ vote.voterKey }}</td>
                                                 <td>
                                                     {% if vote.voteChoices[0].isBlank %}

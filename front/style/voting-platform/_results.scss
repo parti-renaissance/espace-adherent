@@ -58,16 +58,21 @@
                         }
                     }
                 }
-            }
 
-            .table--container {
-                background: $white;
-                padding: 30px;
-
-                table {
+                &__ballots-detail {
                     width: 100%;
+                    max-width: 676px;
+
+                    .table--container {
+                        background: $white;
+                        padding: 40px;
+
+                        table {
+                            width: 100%;
+                        }
+                    }
                 }
-            }
+            }    
         }
     }
 
