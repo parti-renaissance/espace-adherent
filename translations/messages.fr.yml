@@ -676,16 +676,23 @@ election.city_card.priority.high: P1
 election.city_card.priority.medium: P2
 election.city_card.priority.without: sans priorité
 
+adherent.extract.field.firstName: Prénom
+adherent.extract.field.lastName: Nom
+adherent.extract.field.gender: Sexe
+adherent.extract.field.birthDate: Date de naissance
+adherent.extract.field.nationality: Nationalité
+adherent.extract.field.phone: Téléphone
+adherent.extract.field.registeredAt: Date d'adhésion
+adherent.extract.field.country: Pays de résidence
+adherent.extract.field.postalCode: Code postal
+adherent.extract.field.city: Ville
+adherent.extract.field.address: Adresse postale
+
 donator.extract.field.firstName: Prénom
 donator.extract.field.lastName: Nom
 donator.extract.field.gender: Sexe
-donator.extract.field.birthDate: Date de naissance
-donator.extract.field.nationality: Nationalité
-donator.extract.field.phone: Téléphone
-donator.extract.field.registeredAt: Date d'adhésion
+donator.extract.field.city: Ville
 donator.extract.field.country: Pays de résidence
-donator.extract.field.postalCode: Code postal
-donator.extract.field.address: Adresse postale
 
 #
 # CertificationRequest

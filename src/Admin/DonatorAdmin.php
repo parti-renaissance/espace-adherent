@@ -42,12 +42,19 @@ class DonatorAdmin extends AbstractAdmin
     ];
 
     private $donatorManager;
+    private $adherentAdmin;
 
-    public function __construct(string $code, string $class, string $baseControllerName, DonatorManager $donatorManager)
-    {
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        DonatorManager $donatorManager,
+        AdherentAdmin $adherentAdmin
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->donatorManager = $donatorManager;
+        $this->adherentAdmin = $adherentAdmin;
     }
 
     public function configureActionButtons($action, $object = null)
@@ -58,6 +65,9 @@ class DonatorAdmin extends AbstractAdmin
             ],
             'extract' => [
                 'template' => 'admin/donator/extract/extract_button.html.twig',
+            ],
+            'extract_adherents' => [
+                'template' => 'admin/adherent/extract/extract_button.html.twig',
             ],
         ]);
     }
