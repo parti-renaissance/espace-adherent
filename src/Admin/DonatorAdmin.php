@@ -42,19 +42,12 @@ class DonatorAdmin extends AbstractAdmin
     ];
 
     private $donatorManager;
-    private $adherentAdmin;
 
-    public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        DonatorManager $donatorManager,
-        AdherentAdmin $adherentAdmin
-    ) {
+    public function __construct(string $code, string $class, string $baseControllerName, DonatorManager $donatorManager)
+    {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->donatorManager = $donatorManager;
-        $this->adherentAdmin = $adherentAdmin;
     }
 
     public function configureActionButtons($action, $object = null)

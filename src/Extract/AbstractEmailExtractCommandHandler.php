@@ -13,6 +13,7 @@ abstract class AbstractEmailExtractCommandHandler
 
     private $csvResponseFactory;
     protected $translator;
+    private $translatedKeys = [];
 
     public function __construct(CsvResponseFactory $csvResponseFactory, TranslatorInterface $translator)
     {
@@ -47,9 +48,13 @@ abstract class AbstractEmailExtractCommandHandler
 
     protected function translateField(string $field): string
     {
-        $key = sprintf('%s%s', $this->getTranslationPrefix(), $field);
+        if (!\array_key_exists($field, $this->translatedKeys)) {
+            $key = sprintf('%s%s', $this->getTranslationPrefix(), $field);
 
-        return $this->translator->trans($key);
+            $this->translatedKeys[$field] = $this->translator->trans($key);
+        }
+
+        return $this->translatedKeys[$field];
     }
 
     abstract public static function getTranslationPrefix(): string;
