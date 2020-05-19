@@ -1,0 +1,7 @@
+{% if is_granted('ROLE_APP_ADMIN_ADHERENT_EXTRACT') %}
+<li>
+    <a href="{{ path('admin_app_adherent_extract') }}" class="sonata-action-element" title="Extraction de données">
+        <i class="fa fa-download"></i> Extraction de données adhérents
+    </a>
+</li>
+{% endif %}

@@ -59,6 +59,9 @@ class DonatorAdmin extends AbstractAdmin
             'extract' => [
                 'template' => 'admin/donator/extract/extract_button.html.twig',
             ],
+            'extract_adherents' => [
+                'template' => 'admin/adherent/extract/extract_button.html.twig',
+            ],
         ]);
     }
 

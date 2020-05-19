@@ -3,115 +3,67 @@
 namespace App\Donation;
 
 use App\Csv\CsvResponseFactory;
-use App\Repository\AdherentRepository;
-use App\Utils\PhoneNumberFormatter;
-use League\Csv\Writer;
-use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Donator;
+use App\Extract\AbstractEmailExtractCommandHandler;
+use App\Repository\DonatorRepository;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class DonatorExtractCommandHandler
+class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
 {
-    private const CSV_DELIMITER = ';';
-
-    private $adherentRepository;
-    private $csvResponseFactory;
-    private $translator;
+    private $donatorRepository;
 
     public function __construct(
-        AdherentRepository $adherentRepository,
         CsvResponseFactory $csvResponseFactory,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        DonatorRepository $donatorRepository
     ) {
-        $this->adherentRepository = $adherentRepository;
-        $this->csvResponseFactory = $csvResponseFactory;
-        $this->translator = $translator;
+        parent::__construct($csvResponseFactory, $translator);
+
+        $this->donatorRepository = $donatorRepository;
     }
 
-    public function createResponse(DonatorExtractCommand $donatorExtractCommand): Response
+    protected function computeRow(array $row, string $email, array $fields): array
     {
-        $emails = $donatorExtractCommand->getEmails();
-        $fields = $donatorExtractCommand->getFields();
-
-        $csv = Writer::createFromPath('php://temp', 'r+');
-        $csv->setDelimiter(self::CSV_DELIMITER);
-
-        $csv->insertOne(array_merge([DonatorExtractCommand::FIELD_EMAIL], $fields));
-
-        foreach ($emails as $email) {
-            $row = [
-                $this->translateField(DonatorExtractCommand::FIELD_EMAIL) => $email,
-            ];
-
-            foreach ($fields as $field) {
-                $row[$this->translateField($field)] = null;
-            }
-
-            if ($adherent = $this->adherentRepository->findOneByEmail($email)) {
-                foreach ($fields as $field) {
-                    switch ($field) {
-                        case DonatorExtractCommand::FIELD_FIRST_NAME:
-                            $row[$this->translateField($field)] = $adherent->getFirstName();
-
-                            break;
-                        case DonatorExtractCommand::FIELD_LAST_NAME:
-                            $row[$this->translateField($field)] = $adherent->getLastName();
-
-                            break;
-                        case DonatorExtractCommand::FIELD_GENDER:
-                            $row[$this->translateField($field)] = $adherent->getGender()
-                                ? $this->translator->trans(sprintf('common.gender.%s', $adherent->getGender()))
-                                : null
-                            ;
-
-                            break;
-                        case DonatorExtractCommand::FIELD_BIRTH_DATE:
-                            $row[$this->translateField($field)] = $adherent->getBirthdate()
-                                ? $adherent->getBirthdate()->format('d/m/Y H:i:s')
-                                : null
-                            ;
-
-                            break;
-                        case DonatorExtractCommand::FIELD_NATIONALITY:
-                            $row[$this->translateField($field)] = $adherent->getNationality();
-
-                            break;
-                        case DonatorExtractCommand::FIELD_PHONE:
-                            $row[$this->translateField($field)] = PhoneNumberFormatter::format($adherent->getPhone());
-
-                            break;
-                        case DonatorExtractCommand::FIELD_REGISTERED_AT:
-                            $row[$this->translateField($field)] = $adherent->getRegisteredAt()
-                                ? $adherent->getRegisteredAt()->format('d/m/Y H:i:s')
-                                : null
-                            ;
-
-                            break;
-                        case DonatorExtractCommand::FIELD_COUNTRY:
-                            $row[$this->translateField($field)] = $adherent->getCountry();
-
-                            break;
-                        case DonatorExtractCommand::FIELD_POSTAL_CODE:
-                            $row[$this->translateField($field)] = $adherent->getPostalCode();
-
-                            break;
-                        case DonatorExtractCommand::FIELD_ADDRESS:
-                            $row[$this->translateField($field)] = $adherent->getInlineFormattedAddress();
-
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            $csv->insertOne($row);
+        /** @var Donator $donator */
+        if (!$donator = $this->donatorRepository->findOneBy(['emailAddress' => $email])) {
+            return $row;
         }
 
-        return $this->csvResponseFactory->createStreamedResponse($csv);
+        foreach ($fields as $field) {
+            switch ($field) {
+                case DonatorExtractCommand::FIELD_FIRST_NAME:
+                    $row[$this->translateField($field)] = $donator->getFirstName();
+
+                    break;
+                case DonatorExtractCommand::FIELD_LAST_NAME:
+                    $row[$this->translateField($field)] = $donator->getLastName();
+
+                    break;
+                case DonatorExtractCommand::FIELD_GENDER:
+                    $row[$this->translateField($field)] = $donator->getGender()
+                        ? $this->translator->trans(sprintf('common.gender.%s', $donator->getGender()))
+                        : null
+                    ;
+
+                    break;
+                case DonatorExtractCommand::FIELD_CITY:
+                    $row[$this->translateField($field)] = $donator->getCity();
+
+                    break;
+                case DonatorExtractCommand::FIELD_COUNTRY:
+                    $row[$this->translateField($field)] = $donator->getCountry();
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $row;
     }
 
-    private function translateField(string $field): string
+    public static function getTranslationPrefix(): string
     {
-        return $this->translator->trans("donator.extract.field.$field");
+        return 'donator.extract.field.';
     }
 }

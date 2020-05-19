@@ -2,10 +2,13 @@
 
 namespace App\Controller\Admin;
 
+use App\Adherent\AdherentExtractCommand;
+use App\Adherent\AdherentExtractCommandHandler;
 use App\Adherent\BanManager;
 use App\Adherent\CertificationAuthorityManager;
 use App\Adherent\CertificationPermissions;
 use App\Entity\Adherent;
+use App\Form\Admin\Extract\AdherentExtractType;
 use App\Form\ConfirmActionType;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
@@ -132,6 +135,28 @@ class AdminAdherentCRUDController extends CRUDController
             'object' => $adherent,
             'action' => 'uncertify',
             'elements' => $this->admin->getShow(),
+        ]);
+    }
+
+    public function extractAction(
+        Request $request,
+        AdherentExtractCommandHandler $adherentExtractCommandHandler
+    ): Response {
+        $this->admin->checkAccess('extract');
+
+        $adherentExtractCommand = new AdherentExtractCommand();
+
+        $form = $this
+            ->createForm(AdherentExtractType::class, $adherentExtractCommand)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $adherentExtractCommandHandler->createResponse($adherentExtractCommand);
+        }
+
+        return $this->render('admin/adherent/extract/request.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

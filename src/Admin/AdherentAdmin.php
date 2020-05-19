@@ -61,6 +61,7 @@ class AdherentAdmin extends AbstractAdmin
         'ban' => 'BAN',
         'certify' => 'CERTIFY',
         'uncertify' => 'UNCERTIFY',
+        'extract' => 'EXTRACT',
     ];
 
     private $dispatcher;
@@ -92,6 +93,7 @@ class AdherentAdmin extends AbstractAdmin
             ->add('ban', $this->getRouterIdParameter().'/ban')
             ->add('certify', $this->getRouterIdParameter().'/certify')
             ->add('uncertify', $this->getRouterIdParameter().'/uncertify')
+            ->add('extract', 'extract')
             ->remove('create')
             ->remove('delete')
         ;
@@ -122,6 +124,8 @@ class AdherentAdmin extends AbstractAdmin
                 $actions['uncertify'] = ['template' => 'admin/adherent/action_button_uncertify.html.twig'];
             }
         }
+
+        $actions['extract'] = ['template' => 'admin/adherent/extract/extract_button.html.twig'];
 
         return $actions;
     }

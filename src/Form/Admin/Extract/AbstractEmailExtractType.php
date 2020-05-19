@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Form\Admin;
+namespace App\Form\Admin\Extract;
 
-use App\Donation\DonatorExtractCommand;
 use App\Form\DataTransformer\StringToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DonatorExtractType extends AbstractType
+abstract class AbstractEmailExtractType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -22,9 +20,9 @@ class DonatorExtractType extends AbstractType
                 ],
             ])
             ->add('fields', ChoiceType::class, [
-                'choices' => DonatorExtractCommand::FIELD_CHOICES,
+                'choices' => $this->getFieldChoices(),
                 'choice_label' => function (string $choice) {
-                    return "donator.extract.field.$choice";
+                    return $this->getTranslationPrefix().$choice;
                 },
                 'required' => true,
                 'expanded' => true,
@@ -38,10 +36,7 @@ class DonatorExtractType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => DonatorExtractCommand::class,
-        ]);
-    }
+    abstract protected function getFieldChoices(): array;
+
+    abstract protected function getTranslationPrefix(): string;
 }
