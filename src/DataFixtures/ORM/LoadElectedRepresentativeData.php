@@ -402,7 +402,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erParis);
 
         // with mandate DEPUTY CIRCO 75
-        $erParis2 = new ElectedRepresentative('Circonscription', 'PARIS', 'female', new \DateTime('1982-03-03'));
+        $erParis2 = new ElectedRepresentative('Circonscription', 'PARISS', 'female', new \DateTime('1982-03-03'));
         $mandate = new Mandate(
             MandateTypeEnum::DEPUTY,
             true,

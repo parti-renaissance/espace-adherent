@@ -538,7 +538,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
         $this->assertContains('PARIS Arrondissement', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertContains('PARIS Circonscription', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('PARISS Circonscription', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
     }
 
     public function testShowElectedRepresentative()

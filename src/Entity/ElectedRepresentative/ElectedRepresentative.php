@@ -265,6 +265,11 @@ class ElectedRepresentative
         return $this->uuid;
     }
 
+    public function setUuid(UuidInterface $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+
     public function getLastName(): string
     {
         return $this->lastName;
