@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Election\VoteListNuanceEnum;
+use App\Entity\ElectedRepresentative\CandidateNameEnum;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
@@ -16,15 +17,40 @@ use App\Entity\ElectedRepresentative\SocialNetworkLink;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\Uuid;
 
 class LoadElectedRepresentativeData extends Fixture
 {
+    public const ELECTED_REPRESENTATIVE_1_UUID = '34b0b236-b72e-4161-8f9f-7f23f935758f';
+    public const ELECTED_REPRESENTATIVE_2_UUID = '4b8bb9fd-0645-47fd-bb9a-3515bf46618a';
+    public const ELECTED_REPRESENTATIVE_3_UUID = '84187220-348c-44ef-a297-28e3af88b74b';
+    public const ELECTED_REPRESENTATIVE_4_UUID = '07f02feb-86e3-4de9-9970-a1528fd0165e';
+    public const ELECTED_REPRESENTATIVE_5_UUID = '2e6a1018-71bd-4ae9-b17c-f93626e306f6';
+    public const ELECTED_REPRESENTATIVE_6_UUID = '82ec811a-45f7-4527-97ef-3dea61af131b';
+    public const ELECTED_REPRESENTATIVE_7_UUID = '867aed08-9e1a-4ec1-b2da-097e1de70132';
+
     public function load(ObjectManager $manager): void
     {
         // with adherent, mandate 92 CITY_COUNCIL : functions OTHER_MEMBER, PRESIDENT_OF_EPCI
-        $erAdherent92 = new ElectedRepresentative('Michelle', 'DUFOUR', 'female', new \DateTime('1972-11-23'), 1203084);
+        $erAdherent92 = new ElectedRepresentative(
+            'Michelle',
+            'DUFOUR',
+            'female',
+            new \DateTime('1972-11-23'),
+            1203084,
+            Uuid::fromString(self::ELECTED_REPRESENTATIVE_1_UUID)
+        );
         $erAdherent92->setAdherent($this->getReference('adherent-5'));
         $erAdherent92->setIsAdherent(true);
+        foreach ($erAdherent92->getSponsorships() as $sponsorship) {
+            if (2012 === $sponsorship->getPresidentialElectionYear()) {
+                $sponsorship->setCandidate(CandidateNameEnum::FRANCOIS_HOLLANDE, $erAdherent92);
+            }
+
+            if (2017 === $sponsorship->getPresidentialElectionYear()) {
+                $sponsorship->setCandidate(CandidateNameEnum::EMMANUEL_MACRON, $erAdherent92);
+            }
+        }
         $label = new ElectedRepresentativeLabel(
             LabelNameEnum::LAREM,
             $erAdherent92,
@@ -65,7 +91,14 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erAdherent92);
 
         // with mandate 92 CITY_COUNCIL : functions MAYOR, PRESIDENT_OF_EPCI (finished)
-        $erCityCouncilWithFinishedFunction = new ElectedRepresentative('Delphine', 'BOUILLOUX', 'female', new \DateTime('1977-08-02'), 1203080);
+        $erCityCouncilWithFinishedFunction = new ElectedRepresentative(
+            'Delphine',
+            'BOUILLOUX',
+            'female',
+            new \DateTime('1977-08-02'),
+            1203080,
+            Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
+        );
         $this->setPhoneNumber($erCityCouncilWithFinishedFunction, '0999887766');
         $label = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
@@ -97,8 +130,8 @@ class LoadElectedRepresentativeData extends Fixture
             $erCityCouncilWithFinishedFunction,
             $mandate,
             false,
-            new \DateTime('2019-06-02'),
-            new \DateTime('2016-01-06')
+            new \DateTime('2016-06-02'),
+            new \DateTime('2019-01-06')
         );
         $twitter = new SocialNetworkLink('https://twitter.com/DeBou', SocialLinkTypeEnum::TWITTER, $erCityCouncilWithFinishedFunction);
         $instagram = new SocialNetworkLink('https://instagram.com/deBou', SocialLinkTypeEnum::INSTAGRAM, $erCityCouncilWithFinishedFunction);
@@ -118,8 +151,15 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erCityCouncilWithFinishedFunction);
 
         // with mandate 76 CITY_COUNCIL : functions DEPUTY_MAYOR
-        // with mandate 76 EPCI_MEMBER : functions PRESIDENT_OF_EPCI
-        $er2Mandates = new ElectedRepresentative('Daniel', 'BOULON', 'male', new \DateTime('1951-03-04'), 694516);
+        // with mandate 76 EPCI_MEMBER (not elected) : functions PRESIDENT_OF_EPCI
+        $er2Mandates = new ElectedRepresentative(
+            'Daniel',
+            'BOULON',
+            'male',
+            new \DateTime('1951-03-04'),
+            694516,
+            Uuid::fromString(self::ELECTED_REPRESENTATIVE_3_UUID)
+        );
         $er2Mandates->setIsAdherent(null);
         $label1 = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
@@ -154,7 +194,7 @@ class LoadElectedRepresentativeData extends Fixture
         );
         $mandate2 = new Mandate(
             MandateTypeEnum::EPCI_MEMBER,
-            true,
+            false,
             VoteListNuanceEnum::DIV,
             LaREMSupportEnum::NOT_SUPPORTED,
             $this->getReference('zone-city-76000'),
@@ -168,7 +208,7 @@ class LoadElectedRepresentativeData extends Fixture
             $er2Mandates,
             $mandate2,
             false,
-            new \DateTime('2019-07-23 ')
+            new \DateTime('2019-07-23')
         );
         $er2Mandates->addLabel($label1);
         $er2Mandates->addLabel($label2);
@@ -180,8 +220,15 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($er2Mandates);
 
         // with mandate 94 SENATOR, no function
-        // with mandate 76 DEPUTY : functions OTHER_MEMBER
-        $er2MandatesOneFinished = new ElectedRepresentative('Roger', 'BUET', 'male', new \DateTime('1952-04-21'), 873399);
+        // with mandate 76 DEPUTY finished : functions OTHER_MEMBER
+        $er2MandatesOneFinished = new ElectedRepresentative(
+            'Roger',
+            'BUET',
+            'male',
+            new \DateTime('1952-04-21'),
+            873399,
+            Uuid::fromString(self::ELECTED_REPRESENTATIVE_4_UUID)
+        );
         $label = new ElectedRepresentativeLabel(
             LabelNameEnum::OTHER,
             $er2MandatesOneFinished,
@@ -215,7 +262,7 @@ class LoadElectedRepresentativeData extends Fixture
             $er2MandatesOneFinished,
             $mandate2,
             false,
-            new \DateTime('2019-07-23 ')
+            new \DateTime('2019-07-23')
         );
         $er2MandatesOneFinished->addLabel($label);
         $er2MandatesOneFinished->addMandate($mandate1);
@@ -225,7 +272,14 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($er2MandatesOneFinished);
 
         // with mandate EURO_DEPUTY, no function
-        $erEuroDeputy2Labels = new ElectedRepresentative('Sans', 'OFFICIELID', 'male', new \DateTime('1951-11-03'), 873404);
+        $erEuroDeputy2Labels = new ElectedRepresentative(
+            'Sans',
+            'OFFICIELID',
+            'male',
+            new \DateTime('1951-11-03'),
+            873404,
+            Uuid::fromString(self::ELECTED_REPRESENTATIVE_5_UUID)
+        );
         $label1 = new ElectedRepresentativeLabel(
             LabelNameEnum::MRC,
             $erEuroDeputy2Labels,
@@ -251,13 +305,20 @@ class LoadElectedRepresentativeData extends Fixture
         );
         $erEuroDeputy2Labels->addLabel($label1);
         $erEuroDeputy2Labels->addLabel($label2);
-        $erEuroDeputy2Labels->addMandate($mandate1);
+        $erEuroDeputy2Labels->addMandate($mandate);
 
         $manager->persist($erEuroDeputy2Labels);
 
         // with mandate 13 DEPUTY : functions VICE_PRESIDENT_OF_EPCI
         // with mandate 13 REGIONAL_COUNCIL : functions PRESIDENT_OF_EPCI
-        $er2Mandates2Functions = new ElectedRepresentative('André', 'LOBELL', 'male', new \DateTime('1951-11-03'), 873404);
+        $er2Mandates2Functions = new ElectedRepresentative(
+            'André',
+            'LOBELL',
+            'male',
+            new \DateTime('1951-11-03'),
+            873404,
+            Uuid::fromString(self::ELECTED_REPRESENTATIVE_6_UUID)
+        );
         $mandate1 = new Mandate(
             MandateTypeEnum::DEPUTY,
             true,
@@ -292,7 +353,7 @@ class LoadElectedRepresentativeData extends Fixture
             $er2Mandates2Functions,
             $mandate2,
             false,
-            new \DateTime('2019-05-10 ')
+            new \DateTime('2019-05-10')
         );
         $er2Mandates2Functions->addMandate($mandate1);
         $er2Mandates2Functions->addMandate($mandate2);
@@ -302,7 +363,14 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($er2Mandates2Functions);
 
         // with not elected mandate Corsica CORSICA_ASSEMBLY_MEMBER
-        $erWithNotElectedMandate = new ElectedRepresentative('Jesuis', 'PASELU', 'male', new \DateTime('1981-01-03'));
+        $erWithNotElectedMandate = new ElectedRepresentative(
+            'Jesuis',
+            'PASELU',
+            'male',
+            new \DateTime('1981-01-03'),
+            null,
+            Uuid::fromString(self::ELECTED_REPRESENTATIVE_7_UUID)
+        );
         $mandate = new Mandate(
             MandateTypeEnum::CORSICA_ASSEMBLY_MEMBER,
             false,

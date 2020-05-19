@@ -4,6 +4,8 @@ namespace App\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Exception\BadMandateTypeException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -116,6 +118,20 @@ class Mandate
     private $electedRepresentative;
 
     /**
+     * @var PoliticalFunction[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\ElectedRepresentative\PoliticalFunction",
+     *     mappedBy="mandate",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     *
+     * @Assert\Valid
+     */
+    private $politicalFunctions;
+
+    /**
      * @var int
      *
      * @ORM\Column(type="smallint", options={"default": 1})
@@ -142,6 +158,8 @@ class Mandate
         $this->onGoing = $onGoing;
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
+
+        $this->politicalFunctions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,6 +170,11 @@ class Mandate
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    public function getName(): string
+    {
+        return (string) array_search($this->type, MandateTypeEnum::CHOICES);
     }
 
     public function setType(string $type): void
@@ -251,6 +274,24 @@ class Mandate
     public function setNumber(int $number): void
     {
         $this->number = $number;
+    }
+
+    public function addPoliticalFunction(PoliticalFunction $politicalFunction): void
+    {
+        if (!$this->politicalFunctions->contains($politicalFunction)) {
+            $this->politicalFunctions->add($politicalFunction);
+            $politicalFunction->setMandate($this);
+        }
+    }
+
+    public function removePoliticalFunction(PoliticalFunction $politicalFunction): void
+    {
+        $this->politicalFunctions->removeElement($politicalFunction);
+    }
+
+    public function getPoliticalFunctions(): Collection
+    {
+        return $this->politicalFunctions;
     }
 
     public function __toString(): string

@@ -88,7 +88,7 @@ class PoliticalFunction
     /**
      * @var Mandate|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Mandate")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Mandate", inversedBy="politicalFunctions")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank

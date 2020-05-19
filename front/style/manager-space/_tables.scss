@@ -177,6 +177,10 @@
     font-size: $text--size-small;
     margin-bottom: 15px;
 
+    &.small-min-width {
+        min-width: 450px;
+    }
+
     thead {
         @include manager-table-thead;
 

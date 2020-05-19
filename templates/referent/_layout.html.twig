@@ -91,7 +91,7 @@
                             </li>
 
                             {% if is_canary_enabled() %}
-                                <li class="{{ is_active_route(app.request, 'app_referent_elected_representatives_list') ? 'active' }}">
+                                <li class="{{ is_active_route(app.request, 'app_referent_elected_representatives_*') ? 'active' }}">
                                     <a href="{{ path('app_referent_elected_representatives_list') }}">Élus</a>
                                 </li>
                             {% endif %}
