@@ -959,6 +959,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.elected_representative_zone" class="App\Admin\ElectedRepresentative\ZoneAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\ElectedRepresentative\Zone</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.user_list_definition" class="App\Admin\UserListDefinitionAdmin">
             <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
 
