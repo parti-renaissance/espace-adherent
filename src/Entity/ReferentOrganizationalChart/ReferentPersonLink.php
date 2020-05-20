@@ -271,9 +271,12 @@ class ReferentPersonLink
         $this->personOrganizationalChartItem = $personOrganizationalChartItem;
     }
 
-    public function getRestrictedCommittees(): Collection
+    /**
+     * @return Committee[]
+     */
+    public function getRestrictedCommittees(): array
     {
-        return $this->restrictedCommittees;
+        return $this->restrictedCommittees->toArray();
     }
 
     public function addRestrictedCommittee(Committee $restrictedCommittee): void
@@ -286,6 +289,11 @@ class ReferentPersonLink
     public function removeRestrictedCommittee(Committee $restrictedCommittee): void
     {
         $this->restrictedCommittees->removeElement($restrictedCommittee);
+    }
+
+    public function setRestrictedCommittees(?array $restrictedCommittees): void
+    {
+        $this->restrictedCommittees = new ArrayCollection($restrictedCommittees);
     }
 
     public function getRestrictedCities(): ?array

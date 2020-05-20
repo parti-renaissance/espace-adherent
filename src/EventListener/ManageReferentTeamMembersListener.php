@@ -22,6 +22,8 @@ class ManageReferentTeamMembersListener implements EventSubscriber
     /** @var ReferentPersonLinkRepository */
     private $repository;
 
+    private $relatedPersonLinks = [];
+
     public function __construct(Security $security)
     {
         $this->security = $security;
@@ -51,15 +53,23 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                 ) {
                     if ($adherent->isCoReferent()) {
                         if (!$personLink->isCoReferent()) {
+                            $teamMember = $adherent->getReferentTeamMember();
                             $personLink->setCoReferent($adherent->isLimitedCoReferent() ? ReferentPersonLink::LIMITED_CO_REFERENT : ReferentPersonLink::CO_REFERENT);
+                            $personLink->setRestrictedCommittees($teamMember->getRestrictedCommittees()->toArray());
+                            $personLink->setRestrictedCities($teamMember->getRestrictedCities());
+
                             $uow->recomputeSingleEntityChangeSet($this->manager->getClassMetadata(ReferentPersonLink::class), $personLink);
-                        } elseif ($personLink->isLimitedCoReferent() !== $adherent->isLimitedCoReferent()) {
-                            $this->updateReferentTeamMemberFromPersonLink($adherent->getReferentTeamMember(), $personLink);
-                            array_map(static function (ReferentPersonLink $otherPersonLink) use ($personLink) {
+                        } else {
+                            $this->updateReferentTeamMemberFromPersonLink($teamMember = $adherent->getReferentTeamMember(), $personLink);
+                            array_map(function (ReferentPersonLink $otherPersonLink) use ($personLink, $teamMember) {
                                 if ($personLink === $otherPersonLink) {
                                     return;
                                 }
                                 $otherPersonLink->setCoReferent($personLink->getCoReferent());
+                                $otherPersonLink->setRestrictedCommittees($personLink->getRestrictedCommittees());
+                                $otherPersonLink->setRestrictedCities($personLink->getRestrictedCities());
+
+                                $this->relatedPersonLinks[] = $otherPersonLink->getId();
                             }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
                             $uow->computeChangeSets();
                         }
@@ -109,7 +119,7 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $personLink) {
-            if ($personLink instanceof ReferentPersonLink) {
+            if ($personLink instanceof ReferentPersonLink && !\in_array($personLink->getId(), $this->relatedPersonLinks)) {
                 $changeSet = $uow->getEntityChangeSet($personLink);
 
                 if (isset($changeSet['adherent'])) {
@@ -132,6 +142,8 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                                 return;
                             }
                             $otherPersonLink->setCoReferent($personLink->getCoReferent());
+                            $otherPersonLink->setRestrictedCities($personLink->getRestrictedCities());
+                            $otherPersonLink->setRestrictedCommittees($personLink->getRestrictedCommittees());
                         }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
                     }
                 } else {
@@ -141,6 +153,8 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                                 return;
                             }
                             $otherPersonLink->setCoReferent(null);
+                            $otherPersonLink->setRestrictedCities(null);
+                            $otherPersonLink->setRestrictedCommittees(null);
                         }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
 
                         $this->manager->remove($adherent->getReferentTeamMember());
@@ -228,15 +242,21 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         $adherent->setReferentTeamMember($member = new ReferentTeamMember(
             $currentReferent,
             $personLink->isLimitedCoReferent(),
-            $personLink->getRestrictedCommittees()->toArray(),
+            $personLink->getRestrictedCommittees(),
             $personLink->getRestrictedCities()
         ));
         $this->manager->persist($member);
-        $coReferent = $personLink->getCoReferent();
 
-        array_map(static function (ReferentPersonLink $personLink) use ($adherent, $coReferent) {
-            $personLink->setAdherent($adherent);
-            $personLink->setCoReferent($coReferent);
+        array_map(function (ReferentPersonLink $otherPersonLink) use ($adherent, $personLink) {
+            if ($personLink === $otherPersonLink) {
+                return;
+            }
+            $otherPersonLink->setAdherent($adherent);
+            $otherPersonLink->setCoReferent($personLink->getCoReferent());
+            $otherPersonLink->setRestrictedCommittees($personLink->getRestrictedCommittees());
+            $otherPersonLink->setRestrictedCities($personLink->getRestrictedCities());
+
+            $this->relatedPersonLinks[] = $otherPersonLink->getId();
         }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
     }
 
@@ -249,9 +269,10 @@ class ManageReferentTeamMembersListener implements EventSubscriber
             implode(',', $currentReferent->getManagedAreaTagCodes())
         );
 
-        array_map(static function (ReferentPersonLink $personLink) use ($adherent) {
+        array_map(function (ReferentPersonLink $personLink) use ($adherent) {
             $personLink->setAdherent($adherent);
             $personLink->setIsJecouteManager(true);
+            $this->relatedPersonLinks[] = $personLink->getId();
         }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
     }
 
@@ -262,9 +283,10 @@ class ManageReferentTeamMembersListener implements EventSubscriber
     ): void {
         $adherent->setMunicipalManagerSupervisorRole($role = new MunicipalManagerSupervisorRole($currentReferent));
 
-        array_map(static function (ReferentPersonLink $personLink) use ($adherent) {
+        array_map(function (ReferentPersonLink $personLink) use ($adherent) {
             $personLink->setAdherent($adherent);
             $personLink->setIsMunicipalManagerSupervisor(true);
+            $this->relatedPersonLinks[] = $personLink->getId();
         }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
     }
 
@@ -288,7 +310,7 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         ReferentPersonLink $personLink
     ): void {
         $member->setLimited($personLink->isLimitedCoReferent());
-        $member->setRestrictedCommitttees($personLink->getRestrictedCommittees()->toArray());
+        $member->setRestrictedCommittees($personLink->getRestrictedCommittees());
         $member->setRestrictedCities($personLink->getRestrictedCities());
     }
 }

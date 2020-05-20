@@ -43,31 +43,31 @@ class ReferentTeamMember
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $limited = false;
+    private $limited;
 
     /**
      * @var Committee[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Committee")
      */
-    private $restrictedCommitttees;
+    private $restrictedCommittees;
 
     /**
      * @var array|null
      *
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $restrictedCities = [];
+    private $restrictedCities;
 
     public function __construct(
         Adherent $referent,
         bool $limited = false,
-        array $restrictedCommitttees = [],
+        array $restrictedCommittees = [],
         array $restrictedCities = []
     ) {
         $this->referent = $referent;
         $this->limited = $limited;
-        $this->restrictedCommitttees = new ArrayCollection($restrictedCommitttees);
+        $this->restrictedCommittees = new ArrayCollection($restrictedCommittees);
         $this->restrictedCities = $restrictedCities;
     }
 
@@ -101,14 +101,14 @@ class ReferentTeamMember
         $this->limited = $limited;
     }
 
-    public function getRestrictedCommitttees(): Collection
+    public function getRestrictedCommittees(): Collection
     {
-        return $this->restrictedCommitttees;
+        return $this->restrictedCommittees;
     }
 
-    public function setRestrictedCommitttees(array $restrictedCommitttees): void
+    public function setRestrictedCommittees(array $restrictedCommittees): void
     {
-        $this->restrictedCommitttees = new ArrayCollection($restrictedCommitttees);
+        $this->restrictedCommittees = new ArrayCollection($restrictedCommittees);
     }
 
     public function getRestrictedCities(): ?array
@@ -127,7 +127,7 @@ class ReferentTeamMember
             function (Committee $committee) {
                 return $committee->getUuidAsString();
             },
-            $this->restrictedCommitttees->toArray()
+            $this->restrictedCommittees->toArray()
         );
     }
 }
