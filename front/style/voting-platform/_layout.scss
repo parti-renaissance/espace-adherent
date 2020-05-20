@@ -53,10 +53,6 @@
             line-height: normal;
             max-width: 650px;
         }
-
-        .has-voted-header {
-            margin-top: 15vh;
-        }
     }
 
     .vote-tabs--container {
@@ -332,15 +328,13 @@
 
     .envelope-container {
         width: 100%;
-        margin-top: -30%;
-
-        @media (min-width: 460px) {
-            margin-top: -130px;
-        }
+        margin-top: -60px;
+        margin-bottom: 40px;
 
         .envelope {
             display: block;
-            width: 100%;
+            width: 150px;
+            margin: 0 auto;
             position: relative;
             text-align: center;
 
@@ -377,11 +371,11 @@
 
             .body {
                 z-index: 2;
-                margin-top: -24.5%;
+                margin-top: -26.5%;
 
-                @media (min-width: 460px) {
-                    margin-top: -108px;
-                }
+                // @media (min-width: 460px) {
+                //     margin-top: -108px;
+                // }
             }
 
             .paper {
