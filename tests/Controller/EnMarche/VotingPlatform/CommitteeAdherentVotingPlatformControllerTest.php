@@ -81,7 +81,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
 
         $this->client->submit($crawler->selectButton('Confirmer mon vote')->form());
 
-        self::assertContains('A voté !', $this->client->getResponse()->getContent());
+        self::assertContains('Félicitations, vos bulletins sont dans l\'urne !', $this->client->getResponse()->getContent());
 
         $crawler = $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
