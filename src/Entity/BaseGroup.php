@@ -164,7 +164,7 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
 
     public function decrementMembersCount(int $increment = 1): void
     {
-        $this->membersCount -= $increment;
+        $this->membersCount = $increment >= $this->membersCount ? 0 : $this->membersCount - $increment;
     }
 
     /**
