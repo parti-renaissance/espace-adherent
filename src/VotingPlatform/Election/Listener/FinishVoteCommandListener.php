@@ -65,7 +65,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $vote = $this->generateVote($election);
 
         // 2. generate a unique key to save the vote result with
-        $voterKey = $this->generateVoterKey();
+        $voterKey = VoteResult::generateVoterKey();
 
         // 3. create vote result with unique key
         $voteResult = $this->createVoteResult($election, $command, $voterKey);
@@ -109,10 +109,5 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         }
 
         return $voteResult;
-    }
-
-    private function generateVoterKey(): string
-    {
-        return uniqid();
     }
 }

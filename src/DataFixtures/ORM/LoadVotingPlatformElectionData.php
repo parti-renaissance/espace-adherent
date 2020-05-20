@@ -140,7 +140,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $men = $candidateGroups->getManCandidateGroups();
 
         for ($i = 1; $i < 100; ++$i) {
-            $result = new VoteResult($election, uniqid());
+            $result = new VoteResult($election, VoteResult::generateVoterKey());
 
             // WOMAN
             $choice = new VoteChoice();

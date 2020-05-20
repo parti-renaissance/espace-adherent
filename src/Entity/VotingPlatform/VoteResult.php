@@ -85,4 +85,13 @@ class VoteResult
     {
         return $this->voterKey;
     }
+
+    public static function generateVoterKey(): string
+    {
+        $matches = [];
+        preg_match('/([[:alnum:]]{3})([[:alnum:]]{4})([[:alnum:]]{3})/i', bin2hex(random_bytes(5)), $matches);
+        array_shift($matches);
+
+        return implode('-', $matches);
+    }
 }

@@ -9,7 +9,6 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -67,10 +66,6 @@ class ReferentPersonLinkType extends AbstractType
             ->add('restrictedCommittees_search', TextType::class, [
                 'mapped' => false,
                 'required' => false,
-                'filter_emojis' => true,
-                'attr' => [
-                    'placeholder' => 'Ajouter le comité local',
-                ],
             ])
             ->add('restrictedCities', CollectionType::class, [
                 'required' => true,
@@ -80,7 +75,7 @@ class ReferentPersonLinkType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
-            ->add('restrictedCities_search', SearchType::class, [
+            ->add('restrictedCities_search', TextType::class, [
                 'mapped' => false,
                 'required' => false,
             ])
