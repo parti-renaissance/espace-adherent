@@ -230,6 +230,12 @@ $text--size-extra-large--big: 128px;
     margin-left: 5px;
 }
 
+@mixin tabs-nav-item {
+    font-family: $font-roboto;
+    font-weight: normal;
+    font-size: 16px;
+    color: $silver-grey;
+}
 
 .text {
     &--breakword {
@@ -331,6 +337,11 @@ $text--size-extra-large--big: 128px;
 
     &--on-white {
         background: white;
+        padding: 0 5px;
+    }
+
+    &--on-yellow {
+        background: $yellow;
         padding: 0 5px;
     }
 

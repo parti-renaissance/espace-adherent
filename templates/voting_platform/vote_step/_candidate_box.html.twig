@@ -7,7 +7,9 @@
     <div class="box__content">
         {% if candidate_group %}
             {% for candidate in candidate_group.candidates %}
-                {{ helper.display_candidate_photo(candidate) }}
+                <div class="candidate-photo avatar-initials avatar--large avatar--style-01">
+                    {{ helper.display_candidate_photo(candidate) }}
+                </div>
 
                 <div class="candidate-infos">
                     <h3 class="candidate-name text--medium b__nudge--bottom-tiny">{{ candidate.fullName }}</h3>

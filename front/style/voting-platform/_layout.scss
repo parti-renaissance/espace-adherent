@@ -53,10 +53,6 @@
             line-height: normal;
             max-width: 650px;
         }
-
-        .has-voted-header {
-            margin-top: 15vh;
-        }
     }
 
     .vote-tabs--container {
@@ -73,117 +69,13 @@
     }
 
     .candidate__box {
-
         position: relative;
         border: 1px solid $lines-grey;
         background-color: $white;
         border-radius: 3px;
-        margin: 24px 0;
-        padding: 30px 30px 60px;
-
-        @media (min-width: $mobile) {
-            padding: 30px;
-        }
-
-        input[type='radio'] {
-            position: absolute;
-            z-index: -1;
-            opacity: 0;
-
-            &:checked + label {
-                box-shadow: 0 0 0 5px rgba(29, 95, 209, 0.1);
-                border: solid 1px $blue--dark;
-            }
-
-            &:checked + label:before {
-                box-sizing: border-box;
-                border: 8px solid $blue--dark;
-                background: $white;
-                content: '';
-            }
-
-            &:disabled + label {
-                cursor: not-allowed;
-
-                &:before {
-                    background-color: $pale-grey;
-
-                    &:hover {
-                        border-color: $lines-grey;
-                    }
-                }
-            }
-        }
-
-        label {
-            display: inline-block;
-            cursor: pointer;
-            position: absolute;
-            left: 0;
-            right : 0;
-            top: 0;
-            bottom: 0;
-            margin: 0;
-            border-radius: 3px;
-            transition: all 0.2s;
-            -webkit-transition: all 0.2s;
-            border: solid 1px transparent;
-
-            &:hover {
-                border: solid 1px $blue--dark;
-            }
-
-            &:before {
-                box-sizing: border-box;
-                content: ' ';
-                width: 22px;
-                height: 22px;
-                min-width: 22px;
-                min-height: 22px;
-                margin-right: 15px;
-                background: $white;
-                border: 2px solid $lines-grey;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: absolute;
-                left: calc(50% - 11px);
-                bottom: 20px;
-                transition: all 0.2s;
-                -webkit-transition: all 0.2s;
-                border-radius: 50px;
-
-                @media (min-width: $mobile) {
-                    left: auto;
-                    bottom: auto;
-                    top: calc(50% - 11px);
-                    right: 8%;
-                }
-            }
-        }
 
         .box__content {
-            position: relative;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             width: 100%;
-
-            @media (min-width: $mobile) {
-                flex-direction: row;
-            }
-
-            .candidate-infos {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                @media (min-width: $mobile) {
-                    align-items: flex-start;
-                    margin-left: 20px;
-                }
-            }
 
             .candidate-name {
                 font-weight: normal;
@@ -191,19 +83,156 @@
 
             .candidate-photo {
                 overflow: hidden;
-                margin-bottom: 10px;
-
-                @media (min-width: $mobile) {
-                    margin-bottom: 0;
-                }
 
                 img {
                     height: 100%;
                 }
             }
+        }
+    }
 
-            .candidate-biography {
-                pointer-events: all;
+    .election-vote {
+        .candidate__box {
+            padding: 30px 30px 60px;
+            margin: 24px 0;
+
+            @media (min-width: $mobile) {
+                padding: 30px;
+            }
+
+            input[type='radio'] {
+                position: absolute;
+                z-index: -1;
+                opacity: 0;
+
+                &:checked + label {
+                    box-shadow: 0 0 0 5px rgba(29, 95, 209, 0.1);
+                    border: solid 1px $blue--dark;
+                }
+
+                &:checked + label:before {
+                    box-sizing: border-box;
+                    border: 8px solid $blue--dark;
+                    background: $white;
+                    content: '';
+                }
+
+                &:disabled + label {
+                    cursor: not-allowed;
+
+                    &:before {
+                        background-color: $pale-grey;
+
+                        &:hover {
+                            border-color: $lines-grey;
+                        }
+                    }
+                }
+            }
+
+            label {
+                display: inline-block;
+                cursor: pointer;
+                position: absolute;
+                left: 0;
+                right : 0;
+                top: 0;
+                bottom: 0;
+                margin: 0;
+                border-radius: 3px;
+                transition: all 0.2s;
+                -webkit-transition: all 0.2s;
+                border: solid 1px transparent;
+
+                &:hover {
+                    border: solid 1px $blue--dark;
+                }
+
+                &:before {
+                    box-sizing: border-box;
+                    content: ' ';
+                    width: 22px;
+                    height: 22px;
+                    min-width: 22px;
+                    min-height: 22px;
+                    margin-right: 15px;
+                    background: $white;
+                    border: 2px solid $lines-grey;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    left: calc(50% - 11px);
+                    bottom: 20px;
+                    transition: all 0.2s;
+                    -webkit-transition: all 0.2s;
+                    border-radius: 50px;
+
+                    @media (min-width: $mobile) {
+                        left: auto;
+                        bottom: auto;
+                        top: calc(50% - 11px);
+                        right: 8%;
+                    }
+                }
+            }
+
+            .box__content {
+                position: relative;
+                pointer-events: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                @media (min-width: $mobile) {
+                    flex-direction: row;
+                }
+
+                .candidate-infos {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    @media (min-width: $mobile) {
+                        align-items: flex-start;
+                        margin-left: 20px;
+                    }
+                }
+
+                .candidate-photo {
+                    margin-bottom: 10px;
+
+                    @media (min-width: $mobile) {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .candidate-biography {
+                    pointer-events: all;
+                }
+            }
+        }
+    }
+
+    .election-results {
+        .candidate__box {
+            padding: 30px;
+            margin-bottom: 24px;
+
+            &:first-child {
+                margin-bottom: 0;
+            }
+
+            .box__content {
+                .candidate-infos {
+                    width: 100%;
+                }
+
+                .candidate-photo {
+                    overflow: hidden;
+                    margin-right: 20px;
+                    min-width: 66px;
+                }
             }
         }
     }
@@ -299,15 +328,13 @@
 
     .envelope-container {
         width: 100%;
-        margin-top: -30%;
-
-        @media (min-width: 460px) {
-            margin-top: -130px;
-        }
+        margin-top: -60px;
+        margin-bottom: 40px;
 
         .envelope {
             display: block;
-            width: 100%;
+            width: 150px;
+            margin: 0 auto;
             position: relative;
             text-align: center;
 
@@ -344,11 +371,11 @@
 
             .body {
                 z-index: 2;
-                margin-top: -24.5%;
+                margin-top: -26.5%;
 
-                @media (min-width: 460px) {
-                    margin-top: -108px;
-                }
+                // @media (min-width: 460px) {
+                //     margin-top: -108px;
+                // }
             }
 
             .paper {

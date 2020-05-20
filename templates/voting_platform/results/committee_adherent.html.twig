@@ -4,89 +4,95 @@
 
 {% block results_content %}
     <div>
-        <nav class="l__wrapper--slim results__menu b__nudge--bottom-large">
-            <ul>
-                <li class="active"><a href="#" class="results-tab--toggle">Résultats femmes</a></li>
-                <li><a href="#" class="results-tab--toggle">Résultats hommes</a></li>
-                <li><a href="#" class="results-tab--toggle">Bulletins dépouillés</a></li>
-            </ul>
-        </nav>
+        <div class="l__wrapper--medium">
+            <nav class="tabs-nav border-on results__menu b__nudge--bottom-larger">
+                <ul>
+                    <li class="active"><a href="#" class="tabs-nav__item results-tab--toggle">Résultats femmes</a></li>
+                    <li><a href="#" class="tabs-nav__item results-tab--toggle">Résultats hommes</a></li>
+                    <li><a href="#" class="tabs-nav__item results-tab--toggle">Bulletins dépouillés</a></li>
+                </ul>
+            </nav>
+        </div>
 
-        <div class="candidate-tabs--container">
-            <div class="candidate-tab candidate-tab--1">
-                <div class="tab--container">
-                    {% include 'voting_platform/results/_candiates_list.html.twig' with {
-                        'candidate_groups': election.candidateGroups.womanCandidateGroups,
-                        'candidates': results.aggregated.candidates,
-                        'resume': results.aggregated.resume[0],
-                    } %}
 
-                    {% include 'voting_platform/results/_stats_block.html.twig' with {
-                        'resume': results.aggregated.resume[0],
-                    } %}
+        <div class="l__wrapper--medium">
+            <div class="candidate-tabs--container">
+                <div class="candidate-tab candidate-tab--1">
+                    <div class="tab--container">
+                        {% include 'voting_platform/results/_candiates_list.html.twig' with {
+                            'candidate_groups': election.candidateGroups.womanCandidateGroups,
+                            'candidates': results.aggregated.candidates,
+                            'resume': results.aggregated.resume[0],
+                        } %}
+
+                        {% include 'voting_platform/results/_stats_block.html.twig' with {
+                            'resume': results.aggregated.resume[0],
+                        } %}
+                    </div>
                 </div>
-            </div>
 
-            <div class="candidate-tab candidate-tab--2" style="display: none;">
-                <div class="tab--container">
-                    {% include 'voting_platform/results/_candiates_list.html.twig' with {
-                        'candidate_groups': election.candidateGroups.manCandidateGroups,
-                        'candidates': results.aggregated.candidates,
-                        'resume': results.aggregated.resume[1],
-                    } %}
+                <div class="candidate-tab candidate-tab--2" style="display: none;">
+                    <div class="tab--container">
+                        {% include 'voting_platform/results/_candiates_list.html.twig' with {
+                            'candidate_groups': election.candidateGroups.manCandidateGroups,
+                            'candidates': results.aggregated.candidates,
+                            'resume': results.aggregated.resume[1],
+                        } %}
 
-                    {% include 'voting_platform/results/_stats_block.html.twig' with {
-                        'resume': results.aggregated.resume[1],
-                    } %}
+                        {% include 'voting_platform/results/_stats_block.html.twig' with {
+                            'resume': results.aggregated.resume[1],
+                        } %}
+                    </div>
                 </div>
-            </div>
 
-            <div class="candidate-tab candidate-tab--3" style="display: none;">
-                <div class="tab--container">
-                    <div class="l__col--wrap l__wrapper--slim">
-                        <h3>Bulletins dépouillés</h3>
-
-                        <p>Cette page recense la totalité des {{ results.aggregated.resume[0].participated }} bulletins dépouillés lors de cette désignations.</p>
-                        <p>Retrouvez vos bulletins avec le N° anonyme qui vous a été transmis lors du versement de vos bulletins dans l'urne.</p>
-
-                        <div class="table--container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>N° anonyme</th>
-                                        <th>Bulletin F</th>
-                                        <th>Bulletin H</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for vote in results.votes %}
-                                        <tr>
-                                            <td>{{ vote.voterKey }}</td>
-                                            <td>
-                                                {% if vote.voteChoices[0].isBlank %}
-                                                    ~
-                                                {% else %}
-                                                    {% set candidate = vote.voteChoices[0].candidateGroup.candidates|first %}
-                                                    {{ candidate.firstName }} {{ candidate.lastName }}
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if vote.voteChoices[1].isBlank %}
-                                                    ~
-                                                {% else %}
-                                                    {% set candidate = vote.voteChoices[1].candidateGroup.candidates|first %}
-                                                    {{ candidate.firstName }} {{ candidate.lastName }}
-                                                {% endif %}
-                                            </td>
+                <div class="candidate-tab candidate-tab--3" style="display: none;">
+                    <div class="tab--container">
+                        <div class="l__col--wrap election__ballots-detail">
+                            <h3 class="text--default-large text--bold font-roboto b__nudge--bottom-small">Bulletins dépouillés</h3>
+                            <p class="text--body text--dark b__nudge--bottom">
+                                Cette page recense la totalité des {{ results.aggregated.resume[0].participated }} bulletins dépouillés lors de cette désignations.<br /><br />
+                                Retrouvez vos bulletins avec le N° anonyme qui vous a été transmis lors du versement de vos bulletins dans l'urne.
+                            </p>
+                            <div class="table--container">
+                                <table class="text--left">
+                                    <thead class="b__nudge--bottom">
+                                        <tr class="text--body">
+                                            <th class="space--10-0">N° anonyme</th>
+                                            <th class="space--10-0">Bulletin F</th>
+                                            <th class="space--10-0">Bulletin H</th>
                                         </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {% for vote in results.votes %}
+                                            <tr class="text--body text--dark">
+                                                <td>{{ vote.voterKey }}</td>
+                                                <td>
+                                                    {% if vote.voteChoices[0].isBlank %}
+                                                        ~
+                                                    {% else %}
+                                                        {% set candidate = vote.voteChoices[0].candidateGroup.candidates|first %}
+                                                        {{ candidate.firstName }} {{ candidate.lastName }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if vote.voteChoices[1].isBlank %}
+                                                        ~
+                                                    {% else %}
+                                                        {% set candidate = vote.voteChoices[1].candidateGroup.candidates|first %}
+                                                        {{ candidate.firstName }} {{ candidate.lastName }}
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 {% endblock %}
 

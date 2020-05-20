@@ -1,0 +1,40 @@
+.tabs-nav {
+
+    &.border-on {
+        border-bottom: 1px solid $lines-grey;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: -1px;
+
+        li {
+            display: inline-block;
+            margin-right: 30px;
+            position: relative;
+
+            .tabs-nav__item {
+                @include tabs-nav-item;
+                padding: 12px 0;
+                display: inline-block;
+                border-bottom: 3px solid transparent;
+
+                &:hover {
+                    color: $black;
+                    border-color: $turquoise;
+                }
+            }
+
+            &.active {
+
+                .tabs-nav__item {
+                    color: $black;
+                    font-weight: bold;
+                    border-color: $turquoise;
+                }
+            }
+        }
+    }
+}

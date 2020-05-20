@@ -2,104 +2,83 @@
     .candidate-tabs--container {
         .candidate-tab .tab--container {
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
+            flex-direction: column;
 
-            & > div {
-                &:first-child {
-                    flex-grow: 2;
-                }
-
-                &:last-child {
-                    flex-grow: 1;
-                    margin-left: 20px;
-                }
+            @media (min-width: $tablet) {
+                flex-direction: row;
             }
 
-            .stats-block {
-                background-color: $white;
-                padding: 15px;
-
-                & > div {
-                    margin-bottom: 10px;
-                }
-            }
-
-            .participated-block {
-                padding: 20px;
-                background: $pink;
-                color: $white;
-            }
-
-            .table--container {
-                background: $white;
-                padding: 30px;
-
-                table {
-                    width: 100%;
-                }
-            }
-        }
-    }
-
-    .results__menu {
-        ul {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            border-bottom: 1px solid $lines-grey;
-
-            li {
-                display: inline-block;
-                margin: 0 15px -1px 0;
+            .candidates-block {
+                flex-basis: 100%;
+                margin-bottom: 24px;
 
                 @media (min-width: $tablet) {
-                    margin: 10px 18px -1px 0;
+                    margin-right: 24px;
+                }
+            }
+
+            .election {
+                &__aside {
+                    flex: 0 0 100%;
+
+                    @media (min-width: $tablet) {
+                        flex: 0 0 300px;
+                    }
                 }
 
-                &:first-child {
-                    margin-left: 0;
+                &__participated {
+                    background: $pink;
+                    color: $white;
+                    border-radius: 3px;
+                    margin-bottom: 24px;
+
+                    p {
+                        margin: 0;
+                    }
                 }
 
-                &:last-child {
-                    margin-right: 0;
-                }
+                &__stats {
+                    background-color: $white;
+                    border-radius: 3px;
 
-                & a {
-                    font-size: 16px;
-                    display: inline-block;
-                    padding: 5px 0;
-                    border-bottom: 2px solid transparent;
+                    .el {
+                        font-family: $font-roboto;
+                        margin: 20px 0;
 
-                    &:hover {
-                        color: $black;
-                        @media (min-width: $tablet) {
-                            border-bottom-color: $turquoise;
+                        .title {
+                            font-size: 16px;
+                            color: $neutral-grey;
+                            margin-bottom: 10px;
+                        }
+
+                        .value {
+                            font-size: 28px;
+                            color: $black;
+                            font-weight: bold;
                         }
                     }
                 }
 
-                &:hover {
-                    & .toggle-menu {
-                        display: block;
-                    }
-                }
+                &__ballots-detail {
+                    width: 100%;
+                    max-width: 676px;
 
-                &.active a {
-                    color: $black;
-                    font-weight: bold;
-                    @media (min-width: $tablet) {
-                        border-bottom-color: $turquoise;
+                    .table--container {
+                        background: $white;
+                        padding: 40px;
+
+                        table {
+                            width: 100%;
+                        }
                     }
                 }
-            }
+            }    
         }
     }
 
-    .progress-bar--container {
-        flex-grow: 2;
-
-        .progress-bar {
+    .progress-bar {
+        &__gauge {
+            flex-basis: 100%;
             height: 12px;
             border-radius: 6px;
             background: $gray--lighter;
@@ -107,8 +86,15 @@
             .slider {
                 height: 100%;
                 border-radius: 6px;
-                background: #2bbaff;
+                background: $blue;
             }
+        }
+
+        &__value {
+            flex: 0 0 54px;
+            font-size: 18px;
+            color: $black;
+            font-weight: bold;
         }
     }
 }
