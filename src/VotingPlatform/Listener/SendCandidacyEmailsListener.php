@@ -39,15 +39,7 @@ class SendCandidacyEmailsListener implements EventSubscriberInterface
         $this->mailer->sendMessage(CommitteeCandidacyCreatedConfirmationMessage::create(
             $event->getCandidate(),
             $committee->getCommitteeElection(),
-            $this->urlGenerator->generate(
-                'app_committee_show',
-                [
-                    'slug' => $committee->getSlug(),
-                    'remove-candidacy' => true,
-                    AnonymousFollowerSession::AUTHENTICATION_INTENTION => '/connexion',
-                ],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
+            $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
 
         $this->notifySupervisor($event, CommitteeNewCandidacyNotificationMessage::class);

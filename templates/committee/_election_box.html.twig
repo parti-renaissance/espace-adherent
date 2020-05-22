@@ -13,7 +13,7 @@
                 <span class="em-tooltip--trigger">?</span>
                 <div class="em-tooltip--content">
                     <p>
-                        <strong>Le Conseil Territorial</strong> est le parlement de LaREM dans chaque territoire – il comprend,
+                        <strong>Le Conseil territorial</strong> est le parlement de LaREM dans chaque territoire – il comprend,
                         outre les adhérents désignés par les comités, tous les animateurs locaux et tous les élus LaREM du territoire.
                     </p>
                 </div>
@@ -31,6 +31,8 @@
         {% else %}
             {% if member_voting_in_committee %}
                 Candidatez pour représenter les adhérents de votre comité pour un mandat de 2 ans.
+            {% else %}
+                Les adhérents ayant choisi ce comité pour participer à la désignation peuvent y candidater.
             {% endif %}
 
             <!-- Les candidatures sont ouvertes dans tous les comités du
