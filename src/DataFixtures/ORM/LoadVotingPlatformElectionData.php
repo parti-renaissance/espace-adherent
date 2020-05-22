@@ -139,6 +139,11 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $women = $candidateGroups->getWomanCandidateGroups();
         $men = $candidateGroups->getManCandidateGroups();
 
+        $counters = [
+            'women' => [],
+            'men' => [],
+        ];
+
         for ($i = 1; $i < 100; ++$i) {
             $result = new VoteResult($election, VoteResult::generateVoterKey());
 
@@ -147,7 +152,8 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             if (0 === $i % 10) {
                 $choice->setIsBlank(true);
             } else {
-                $choice->setCandidateGroup($women[array_rand($women, 1)]);
+                $choice->setCandidateGroup($women[$index = array_rand($women, 1)]);
+                !isset($counters['women'][$index]) ? $counters['women'][$index] = 1 : ++$counters['women'][$index];
             }
             $result->addVoteChoice($choice);
 
@@ -156,11 +162,18 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             if (0 === $i % 15) {
                 $choice->setIsBlank(true);
             } else {
-                $choice->setCandidateGroup($men[array_rand($men, 1)]);
+                $choice->setCandidateGroup($men[$index = array_rand($men, 1)]);
+                !isset($counters['men'][$index]) ? $counters['men'][$index] = 1 : ++$counters['men'][$index];
             }
             $result->addVoteChoice($choice);
 
             $this->manager->persist($result);
         }
+
+        arsort($counters['women']);
+        arsort($counters['men']);
+
+        $women[key($counters['women'])]->setElected(true);
+        $men[key($counters['men'])]->setElected(true);
     }
 }

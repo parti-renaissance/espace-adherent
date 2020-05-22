@@ -219,10 +219,6 @@
             padding: 30px;
             margin-bottom: 24px;
 
-            &:first-child {
-                margin-bottom: 0;
-            }
-
             &.elected {
                 border: solid 3px $blue;
             }

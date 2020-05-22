@@ -1,22 +1,27 @@
 {% import 'voting_platform/_macros.html.twig' as helper %}
 
-<div class="candidate__box elected l__row  b__nudge--bottom-medium">
+<div class="candidate__box {{ candidate_group.elected ? 'elected' }} l__row  b__nudge--bottom-medium">
     <div class="box__content l__row">
         <div class="candidate-photo avatar-initials avatar--medium avatar--style-01">
             {% for candidate in candidate_group.candidates %}
                 {{ helper.display_candidate_photo(candidate) }}
             {% endfor %}
         </div>
+
         <div class="candidate-infos l__col">
             {% for candidate in candidate_group.candidates %}
                 <div class="l__row l__row--h-stretch">
                     <h3 class="candidate-name text--medium b__nudge--bottom-tiny">
                         {{ candidate.fullName }}
-                        <span class="elected-tag text--body text--on-yellow text--bold">Candidat désigné</span>
+
+                        {% if candidate_group.elected %}
+                            <span class="elected-tag text--body text--on-yellow text--bold">Candidat désigné</span>
+                        {% endif %}
                     </h3>
                     <div class="text--body text--right text--dark">{{ votes }} bulletins</div>
                 </div>
             {% endfor %}
+
             <div class="l__row progress-bar">
                 {% set votes_rate = votes * 100 / resume.expressed %}
                 <div class="progress-bar__gauge">
