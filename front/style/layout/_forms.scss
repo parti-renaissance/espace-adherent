@@ -529,11 +529,21 @@ label {
         background-color: $pink--light;
     }
 
+    &--pink {
+        background-color: $pink;
+        color: $white;
+    }
+
     &__inner {
         @include wrapper;
         padding: 20px 0;
         font-family: $font-roboto;
         text-align: center;
+    }
+
+    &--close-link {
+        line-height: 17px;
+        width: 20px;
     }
 }
 

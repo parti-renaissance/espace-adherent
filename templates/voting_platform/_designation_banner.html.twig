@@ -1,0 +1,41 @@
+{% if is_granted('ROLE_ADHERENT') %}
+    {% set selected_committee = null %}
+    {% set has_started_designation = false %}
+
+    {% for membership in app.user.memberships if not selected_committee and membership.committee.committeeElection %}
+        {% if not has_started_designation %}
+            {% set has_started_designation = true %}
+        {% endif %}
+
+        {% if membership.isVotingCommittee %}
+            {% set selected_committee = membership.committee %}
+        {% endif %}
+    {% endfor %}
+
+    {% if selected_committee or has_started_designation %}
+        {% block designation_banner %}
+            <div class="flash flash--pink" style="display: none;" id="designation-banner">
+                <div class="flash__inner l__row l__row--center">
+                    <div >
+                        {% if selected_committee %}
+                            Une désignation est ouverte dans <a class="link--no-decor link--white" href="{{ path('app_committee_show', {slug: selected_committee.slug}) }}"><strong>votre comité</strong></a> !
+                        {% else %}
+                            Des désignations sont ouvertes, <a class="link--no-decor link--white" href="{{ path('app_adherent_committees') }}"><strong>choisissez un comité de désignation</strong></a> pour y participer.
+                        {% endif %}
+                    </div>
+
+                    <a href="#" class="link--no--decor flash--close-link" title="Masquer" onClick="document.cookie = 'dismiss_designation_banner=true;';this.parentNode.parentNode.removeChild(this.parentNode);">
+                        <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                    </a>
+                </div>
+            </div>
+        {% endblock %}
+
+        <script>
+            if (!document.cookie.match(new RegExp('dismiss_designation_banner=true'))) {
+                var banner = document.querySelector('#designation-banner');
+                if (banner) { banner.style.display = 'block'; }
+            }
+        </script>
+    {% endif %}
+{% endif %}

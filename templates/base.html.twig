@@ -144,6 +144,8 @@
 
         {% block banner include('banner/call.html.twig', { banner: get_home_block(constant('App\\Entity\\HomeBlock::HEADER_BANNER')) }) %}
 
+        {% block designation_banner include('voting_platform/_designation_banner.html.twig') %}
+
         {% block header %}
             {{ include('components/_header.html.twig') }}
         {% endblock %}
