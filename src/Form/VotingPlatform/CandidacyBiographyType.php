@@ -29,7 +29,7 @@ class CandidacyBiographyType extends AbstractType
             ])
             ->add('biography', TextareaType::class, [
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 500],
                 'filter_emojis' => true,
                 'required' => false,
             ])

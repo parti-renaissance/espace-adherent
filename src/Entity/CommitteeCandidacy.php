@@ -44,7 +44,7 @@ class CommitteeCandidacy implements ImageOwnerInterface
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\Length(max="2000")
+     * @Assert\Length(max=500)
      */
     private $biography;
 

@@ -72,4 +72,26 @@ class VoteResult
             $this->voteChoices->add($choice);
         }
     }
+
+    /**
+     * @return VoteChoice[]
+     */
+    public function getVoteChoices(): array
+    {
+        return $this->voteChoices->toArray();
+    }
+
+    public function getVoterKey(): string
+    {
+        return $this->voterKey;
+    }
+
+    public static function generateVoterKey(): string
+    {
+        $matches = [];
+        preg_match('/([[:alnum:]]{3})([[:alnum:]]{4})([[:alnum:]]{3})/i', bin2hex(random_bytes(5)), $matches);
+        array_shift($matches);
+
+        return implode('-', $matches);
+    }
 }

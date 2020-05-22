@@ -3,6 +3,7 @@
 namespace Tests\App\Controller\EnMarche\VotingPlatform;
 
 use App\DataFixtures\ORM\LoadVotingPlatformElectionData;
+use App\Repository\VotingPlatform\VoteResultRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\Controller\ControllerTestTrait;
@@ -84,6 +85,9 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
         self::assertContains('Félicitations, vos bulletins sont dans l\'urne !', $this->client->getResponse()->getContent());
 
         $crawler = $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
+
+        $results = $this->get(VoteResultRepository::class)->findAll();
+        $this->assertRegExp('/[[:alnum:]]{3}-[[:alnum:]]{4}-[[:alnum:]]{3}/', end($results)->getVoterKey());
 
         $this->assertStringEndsWith('/comites/en-marche-comite-de-evry', $crawler->getUri());
     }

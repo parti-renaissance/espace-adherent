@@ -63,23 +63,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for vote in results.votes %}
+                                        {% for vote_result in results.vote_results %}
                                             <tr class="text--body text--dark">
-                                                <td>{{ vote.voterKey }}</td>
+                                                <td>{{ vote_result.voterKey }}</td>
                                                 <td>
-                                                    {% if vote.voteChoices[0].isBlank %}
+                                                    {% if vote_result.voteChoices[0].isBlank %}
                                                         ~
                                                     {% else %}
-                                                        {% set candidate = vote.voteChoices[0].candidateGroup.candidates|first %}
-                                                        {{ candidate.firstName }} {{ candidate.lastName }}
+                                                        {{ (vote_result.voteChoices[0].candidateGroup.candidates|first).fullName }}
                                                     {% endif %}
                                                 </td>
                                                 <td>
-                                                    {% if vote.voteChoices[1].isBlank %}
+                                                    {% if vote_result.voteChoices[1].isBlank %}
                                                         ~
                                                     {% else %}
-                                                        {% set candidate = vote.voteChoices[1].candidateGroup.candidates|first %}
-                                                        {{ candidate.firstName }} {{ candidate.lastName }}
+                                                        {{ (vote_result.voteChoices[1].candidateGroup.candidates|first).fullName }}
                                                     {% endif %}
                                                 </td>
                                             </tr>
@@ -92,7 +90,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 {% endblock %}
 
