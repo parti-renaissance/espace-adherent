@@ -13,7 +13,7 @@
                 margin-bottom: 24px;
 
                 @media (min-width: $tablet) {
-                    margin-right: 24px;
+                    margin-right: 40px;
                 }
             }
 
@@ -72,7 +72,7 @@
                         }
                     }
                 }
-            }    
+            }
         }
     }
 
@@ -96,5 +96,13 @@
             color: $black;
             font-weight: bold;
         }
+    }
+
+    .elected-tag {
+        display: inline-block;
+        padding: 5px;
+        font-size: 12px;
+        line-height: 14px;
+        vertical-align: middle;
     }
 }

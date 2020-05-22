@@ -219,8 +219,8 @@
             padding: 30px;
             margin-bottom: 24px;
 
-            &:first-child {
-                margin-bottom: 0;
+            &.elected {
+                border: solid 3px $blue;
             }
 
             .box__content {
@@ -233,6 +233,14 @@
                     margin-right: 20px;
                     min-width: 66px;
                 }
+            }
+        }
+
+        .election__ballots-detail  {
+            .candidate-gender {
+                display: inline-flex;
+                vertical-align: text-bottom;
+                margin-left: 4px;
             }
         }
     }
@@ -348,19 +356,28 @@
             .tip {
                 will-change: transform;
                 transform-origin: 50% 100%;
-                animation-direction: normal;
-                animation-duration: 0.75s;
+                animation-direction: alternate;
+                animation-duration: 1.5s;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
-                animation-delay: 1.25s;
                 z-index: 1;
-                animation-iteration-count: 1;
+                animation-iteration-count: infinite;
             }
 
             @keyframes closeTip {
                 0% {
                     transform: rotateX(0deg);
                     z-index: 1;
+                }
+
+                45% {
+                    transform: rotateX(0deg);
+                    z-index: 1;
+                }
+
+                90% {
+                    transform: rotateX(180deg);
+                    z-index: 3;
                 }
 
                 100% {
@@ -372,25 +389,24 @@
             .body {
                 z-index: 2;
                 margin-top: -26.5%;
-
-                // @media (min-width: 460px) {
-                //     margin-top: -108px;
-                // }
             }
 
             .paper {
                 transform: translate(21px, -50px);
-                animation-direction: normal;
-                animation-duration: 0.75s;
+                animation-direction: alternate;
+                animation-duration: 1.5s;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
-                animation-delay: .5s;
-                animation-iteration-count: 1;
+                animation-iteration-count: infinite;
             }
 
             @keyframes slideIn {
                 0% {
                     transform: translate(21px, -50px);
+                }
+
+                70% {
+                    transform: translate(21px, 17px);
                 }
 
                 100% {

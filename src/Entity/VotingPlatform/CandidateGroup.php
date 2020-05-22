@@ -40,6 +40,13 @@ class CandidateGroup
      */
     private $election;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $elected = false;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -65,5 +72,15 @@ class CandidateGroup
     public function getCandidates(): array
     {
         return $this->candidates->toArray();
+    }
+
+    public function isElected(): bool
+    {
+        return $this->elected;
+    }
+
+    public function setElected(bool $elected): void
+    {
+        $this->elected = $elected;
     }
 }
