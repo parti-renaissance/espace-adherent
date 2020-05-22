@@ -170,8 +170,8 @@ Feature:
                     "content": "@string@"
                 },
                 {
-                    "name": "cancel_candidacy_url",
-                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-berlin?remove-candidacy=1&anonymous_authentication_intention=\/connexion"
+                    "name": "committee_url",
+                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-berlin"
                 }
             ],
             "from_name": "La R\u00e9publique En Marche !",

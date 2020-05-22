@@ -8,21 +8,21 @@ use Ramsey\Uuid\Uuid;
 
 final class CommitteeCandidacyCreatedConfirmationMessage extends Message
 {
-    public static function create(Adherent $candidate, CommitteeElection $election, string $cancelCandidacyUrl): self
+    public static function create(Adherent $candidate, CommitteeElection $election, string $committeeUrl): self
     {
         return new self(
             Uuid::uuid4(),
             $candidate->getEmailAddress(),
             $candidate->getFullName(),
             '[Désignations] Vous êtes maintenant candidat(e) !',
-            static::getTemplateVars($candidate, $election, $cancelCandidacyUrl),
+            static::getTemplateVars($candidate, $election, $committeeUrl),
         );
     }
 
     private static function getTemplateVars(
         Adherent $candidate,
         CommitteeElection $election,
-        string $cancelCandidacyUrl
+        string $committeeUrl
     ): array {
         return [
             'first_name' => $candidate->getFirstName(),
@@ -30,7 +30,7 @@ final class CommitteeCandidacyCreatedConfirmationMessage extends Message
             'candidacy_end_date' => self::dateToString($election->getCandidacyPeriodEndDate()),
             'vote_start_date' => self::dateToString($election->getVoteStartDate()),
             'vote_end_date' => self::dateToString($election->getVoteEndDate()),
-            'cancel_candidacy_url' => $cancelCandidacyUrl,
+            'committee_url' => $committeeUrl,
         ];
     }
 
