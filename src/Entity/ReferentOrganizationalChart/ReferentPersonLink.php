@@ -293,7 +293,7 @@ class ReferentPersonLink
 
     public function setRestrictedCommittees(?array $restrictedCommittees): void
     {
-        $this->restrictedCommittees = new ArrayCollection($restrictedCommittees);
+        $this->restrictedCommittees = new ArrayCollection($restrictedCommittees ?? []);
     }
 
     public function getRestrictedCities(): ?array
