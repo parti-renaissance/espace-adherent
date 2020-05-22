@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="user_list_definition_type_label_unique", columns={"type", "label"})
+ *     @ORM\UniqueConstraint(name="user_list_definition_type_code_unique", columns={"type", "code"})
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -38,15 +38,25 @@ class UserListDefinition
     /**
      * @var string|null
      *
+     * @ORM\Column(length=50)
+     *
+     * @Assert\NotBlank
+     */
+    private $code;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(length=100)
      *
      * @Assert\NotBlank
      */
     private $label;
 
-    public function __construct(string $type, string $label)
+    public function __construct(string $type, string $code, string $label)
     {
         $this->type = $type;
+        $this->code = $code;
         $this->label = $label;
     }
 
@@ -55,7 +65,7 @@ class UserListDefinition
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->type;
     }
@@ -65,7 +75,17 @@ class UserListDefinition
         $this->type = $type;
     }
 
-    public function getLabel(): ?string
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+    public function getLabel(): string
     {
         return $this->label;
     }
@@ -77,6 +97,6 @@ class UserListDefinition
 
     public function __toString(): string
     {
-        return (string) $this->label;
+        return $this->label;
     }
 }

@@ -8,16 +8,11 @@ final class UserListDefinitionEnum extends Enum
 {
     public const TYPE_ELECTED_REPRESENTATIVE = 'elected_representative';
 
-    public const LABEL_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM = 'Sympathisant(e) LaREM';
-    public const LABEL_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER = 'Participe aux instances';
+    public const CODE_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM = 'supporting_la_rem';
+    public const CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER = 'instances_member';
 
     public const TYPES = [
         self::TYPE_ELECTED_REPRESENTATIVE,
-    ];
-
-    public const TYPE_ELECTED_REPRESENTATIVE_LABELS = [
-        self::LABEL_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM,
-        self::LABEL_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER,
     ];
 
     public static function getTypes(): array

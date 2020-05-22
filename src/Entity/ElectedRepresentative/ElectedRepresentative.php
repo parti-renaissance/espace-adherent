@@ -25,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ElectedRepresentative
 {
     use EntityUserListDefinitionTrait;
+
     /**
      * @var int
      *

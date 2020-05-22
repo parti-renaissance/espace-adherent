@@ -11,10 +11,12 @@ use App\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
+use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
 use App\Repository\ElectedRepresentative\MandateRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -201,6 +203,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('userListDefinitions', null, [
                     'label' => 'Catégories',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er
+                            ->createQueryBuilder('uld')
+                            ->andWhere('uld.type = :type')
+                            ->setParameter('type', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+                            ->orderBy('uld.label', 'ASC')
+                        ;
+                    },
                 ])
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
@@ -457,6 +467,17 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'items_per_page' => 20,
                     'multiple' => true,
                     'property' => 'label',
+                    'callback' => function ($admin, $property, $value) {
+                        $datagrid = $admin->getDatagrid();
+                        $qb = $datagrid->getQuery();
+                        $alias = $qb->getRootAlias();
+                        $qb
+                            ->andWhere($alias.'.type = :type')
+                            ->setParameter('type', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+                            ->orderBy($alias.'.label', 'ASC')
+                        ;
+                        $datagrid->setValue($property, null, $value);
+                    },
                 ],
             ])
         ;
