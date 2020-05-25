@@ -32,7 +32,7 @@ if [ "$VERSION" = "master" ]; then
 
       if [ $diffInDay -gt $DOCKER_IMAGE_RETENTION_PERIOD ]; then
         image_id=$(echo $row | cut -f2)
-        gcloud container images delete "${RESOURCE_NAME}@${image_id}" --quiet
+        gcloud container images delete "${RESOURCE_NAME}@${image_id}" --quiet --force-delete-tags
       fi
     done
 fi
