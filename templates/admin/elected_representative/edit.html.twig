@@ -33,14 +33,8 @@
                             {{ form_row (form.birthPlace) }}
                         </div>
                     </div>
-                    <div class="inline-block">
-                        <div class="left row col-md-5">
-                            {{ form_row(form.isSupportingLaREM) }}
-                        </div>
-                        <div class="rigth row col-md-7">
-                            {{ form_row(form.hasFollowedTraining) }}
-                        </div>
-                    </div>
+                    {{ form_row(form.userListDefinitions) }}
+                    {{ form_row(form.hasFollowedTraining) }}
                     {{ form_row(form.comment) }}
                 </div>
             </div>

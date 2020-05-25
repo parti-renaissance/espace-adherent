@@ -32,7 +32,7 @@ class LoadElectedRepresentativeData extends Fixture
     public function load(ObjectManager $manager): void
     {
         // with adherent, mandate 92 CITY_COUNCIL : functions OTHER_MEMBER, PRESIDENT_OF_EPCI
-        $erAdherent92 = new ElectedRepresentative(
+        $erAdherent92 = ElectedRepresentative::create(
             'Michelle',
             'DUFOUR',
             'female',
@@ -91,7 +91,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erAdherent92);
 
         // with mandate 92 CITY_COUNCIL : functions MAYOR, PRESIDENT_OF_EPCI (finished)
-        $erCityCouncilWithFinishedFunction = new ElectedRepresentative(
+        $erCityCouncilWithFinishedFunction = ElectedRepresentative::create(
             'Delphine',
             'BOUILLOUX',
             'female',
@@ -152,7 +152,7 @@ class LoadElectedRepresentativeData extends Fixture
 
         // with mandate 76 CITY_COUNCIL : functions DEPUTY_MAYOR
         // with mandate 76 EPCI_MEMBER (not elected) : functions PRESIDENT_OF_EPCI
-        $er2Mandates = new ElectedRepresentative(
+        $er2Mandates = ElectedRepresentative::create(
             'Daniel',
             'BOULON',
             'male',
@@ -221,7 +221,7 @@ class LoadElectedRepresentativeData extends Fixture
 
         // with mandate 94 SENATOR, no function
         // with mandate 76 DEPUTY finished : functions OTHER_MEMBER
-        $er2MandatesOneFinished = new ElectedRepresentative(
+        $er2MandatesOneFinished = ElectedRepresentative::create(
             'Roger',
             'BUET',
             'male',
@@ -272,7 +272,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($er2MandatesOneFinished);
 
         // with mandate EURO_DEPUTY, no function
-        $erEuroDeputy2Labels = new ElectedRepresentative(
+        $erEuroDeputy2Labels = ElectedRepresentative::create(
             'Sans',
             'OFFICIELID',
             'male',
@@ -311,7 +311,7 @@ class LoadElectedRepresentativeData extends Fixture
 
         // with mandate 13 DEPUTY : functions VICE_PRESIDENT_OF_EPCI
         // with mandate 13 REGIONAL_COUNCIL : functions PRESIDENT_OF_EPCI
-        $er2Mandates2Functions = new ElectedRepresentative(
+        $er2Mandates2Functions = ElectedRepresentative::create(
             'André',
             'LOBELL',
             'male',
@@ -363,7 +363,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($er2Mandates2Functions);
 
         // with not elected mandate Corsica CORSICA_ASSEMBLY_MEMBER
-        $erWithNotElectedMandate = new ElectedRepresentative(
+        $erWithNotElectedMandate = ElectedRepresentative::create(
             'Jesuis',
             'PASELU',
             'male',
@@ -386,7 +386,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erWithNotElectedMandate);
 
         // with mandate CITY_COUNCIL 75007
-        $erParis = new ElectedRepresentative('Arrondissement', 'PARIS', 'male', new \DateTime('1972-02-02'));
+        $erParis = ElectedRepresentative::create('Arrondissement', 'PARIS', 'male', new \DateTime('1972-02-02'));
         $mandate = new Mandate(
             MandateTypeEnum::CITY_COUNCIL,
             true,
@@ -402,7 +402,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erParis);
 
         // with mandate DEPUTY CIRCO 75
-        $erParis2 = new ElectedRepresentative('Circonscription', 'PARISS', 'female', new \DateTime('1982-03-03'));
+        $erParis2 = ElectedRepresentative::create('Circonscription', 'PARISS', 'female', new \DateTime('1982-03-03'));
         $mandate = new Mandate(
             MandateTypeEnum::DEPUTY,
             true,
@@ -418,7 +418,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erParis2);
 
         // with mandate SENATOR 75
-        $erParis3 = new ElectedRepresentative('Département', 'PARIS', 'male', new \DateTime('1962-04-04'));
+        $erParis3 = ElectedRepresentative::create('Département', 'PARIS', 'male', new \DateTime('1962-04-04'));
         $mandate = new Mandate(
             MandateTypeEnum::SENATOR,
             true,

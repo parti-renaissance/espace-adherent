@@ -11,10 +11,12 @@ use App\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
+use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
 use App\Repository\ElectedRepresentative\MandateRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -25,6 +27,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -76,9 +79,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Fonctions actuelles',
                 'template' => 'admin/elected_representative/list_political_functions.html.twig',
             ])
-            ->add('adherent', null, [
-                'label' => 'Adhérent',
-                'template' => 'admin/elected_representative/list_is_adherent.html.twig',
+            ->add('type', null, [
+                'label' => 'Type',
+                'template' => 'admin/elected_representative/list_type.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
@@ -132,9 +135,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('birthPlace', null, [
                     'label' => 'Lieu de naissance',
-                ])
-                ->add('isSupportingLaREM', null, [
-                    'label' => 'Sympathisant LaREM',
                 ])
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
@@ -201,8 +201,16 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'required' => false,
                     'label' => 'Lieu de naissance',
                 ])
-                ->add('isSupportingLaREM', null, [
-                    'label' => 'Sympathisant LaREM',
+                ->add('userListDefinitions', null, [
+                    'label' => 'Catégories',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er
+                            ->createQueryBuilder('uld')
+                            ->andWhere('uld.type = :type')
+                            ->setParameter('type', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+                            ->orderBy('uld.label', 'ASC')
+                        ;
+                    },
                 ])
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
@@ -450,6 +458,27 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                             return false;
                     }
                 },
+            ])
+            ->add('userListDefinitions', ModelAutocompleteFilter::class, [
+                'label' => 'Catégories',
+                'show_filter' => true,
+                'field_options' => [
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'multiple' => true,
+                    'property' => 'label',
+                    'callback' => function ($admin, $property, $value) {
+                        $datagrid = $admin->getDatagrid();
+                        $qb = $datagrid->getQuery();
+                        $alias = $qb->getRootAlias();
+                        $qb
+                            ->andWhere($alias.'.type = :type')
+                            ->setParameter('type', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+                            ->orderBy($alias.'.label', 'ASC')
+                        ;
+                        $datagrid->setValue($property, null, $value);
+                    },
+                ],
             ])
         ;
     }
