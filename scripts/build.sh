@@ -23,8 +23,9 @@ if [ "$VERSION" = "master" ]; then
     # Clear oldest docker images
     now=$(date '+%s')
 
-    IFS=$'\n' ALL_IMAGES=($(gcloud container images list-tags $RESOURCE_NAME --format="get(timestamp.datetime,digest)"))
+    ALL_IMAGES=$(gcloud container images list-tags $RESOURCE_NAME --format="get(timestamp.datetime,digest)")
 
+    IFS=$'\n'
     for row in $ALL_IMAGES; do
       cond=$(date -d $(echo $row | cut -f1 | cut -c-10) '+%s')
       diffInDay=$(((now - cond) / (24 * 3600)))
