@@ -66,6 +66,7 @@ abstract class BaseVoteResult
      * @Gedmo\Blameable(on="create")
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     protected $createdBy;
 
@@ -75,6 +76,7 @@ abstract class BaseVoteResult
      * @Gedmo\Blameable(on="update")
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     protected $updatedBy;
 
