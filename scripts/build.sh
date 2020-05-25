@@ -5,8 +5,9 @@ set -xe
 perl -pi -e "s/default/$CIRCLE_SHA1/g" ./config/packages/app_version.yaml
 
 VERSION=${CIRCLE_TAG:-$CIRCLE_BRANCH}
-DOCKER_IMAGE_TAG="eu.gcr.io/$GCLOUD_PROJECT/app:$VERSION-$CIRCLE_SHA1"
-DOCKER_IMAGE_CACHE_TAG="eu.gcr.io/$GCLOUD_PROJECT/app:master"
+RESOURCE_NAME="eu.gcr.io/$GCLOUD_PROJECT/app"
+DOCKER_IMAGE_TAG="$RESOURCE_NAME:$VERSION-$CIRCLE_SHA1"
+DOCKER_IMAGE_CACHE_TAG="$RESOURCE_NAME:master"
 
 # Build the image
 gcloud docker -- pull $DOCKER_IMAGE_CACHE_TAG
@@ -18,4 +19,19 @@ gcloud docker -- push $DOCKER_IMAGE_TAG
 # Set image tag only for master
 if [ "$VERSION" = "master" ]; then
     gcloud container images add-tag $DOCKER_IMAGE_TAG $DOCKER_IMAGE_CACHE_TAG --quiet
+
+    # Clear oldest docker images
+    now=$(date '+%s')
+
+    IFS=$'\n' ALL_IMAGES=($(gcloud container images list-tags $RESOURCE_NAME --format="get(timestamp.datetime,digest)"))
+
+    for row in $ALL_IMAGES; do
+      cond=$(date -d $(echo $row | cut -f1 | cut -c-10) '+%s')
+      diffInDay=$(((now - cond) / (24 * 3600)))
+
+      if [ $diffInDay -gt $DOCKER_IMAGE_RETENTION_PERIOD ]; then
+        image_id=$(echo $row | cut -f2)
+        gcloud container images delete "${RESOURCE_NAME}@${image_id}" --quiet
+      fi
+    done
 fi
