@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche;
 use App\Adherent\Unregistration\UnregistrationCommand;
 use App\AdherentCharter\AdherentCharterFactory;
 use App\AdherentCharter\AdherentCharterTypeEnum;
+use App\Donation\DonationManager;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
 use App\Form\AdherentChangeEmailType;
@@ -21,7 +22,6 @@ use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\DonationRepository;
 use App\Repository\SubscriptionTypeRepository;
-use App\Repository\TransactionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -54,12 +54,14 @@ class UserController extends Controller
      */
     public function profileDonationAction(
         DonationRepository $donationRepository,
-        TransactionRepository $transactionRepository
+        DonationManager $donationManager
     ): Response {
-        $userEmail = $this->getUser()->getEmailAddress();
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+        $userEmail = $adherent->getEmailAddress();
 
         return $this->render('user/my_donation.html.twig', [
-            'successful_transactions' => $transactionRepository->findAllSuccessfulTransactionByEmail($userEmail),
+            'donations_history' => $donationManager->getHistory($adherent),
             'subscribed_donations' => $donationRepository->findAllSubscribedDonationByEmail($userEmail),
             'last_subscription_ended' => $donationRepository->findLastSubscriptionEndedDonationByEmail($userEmail),
         ]);

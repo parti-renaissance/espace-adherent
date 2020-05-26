@@ -29,7 +29,12 @@ abstract class AbstractEmailExtractCommandHandler
         $csv = Writer::createFromPath('php://temp', 'r+');
         $csv->setDelimiter(self::CSV_DELIMITER);
 
-        $csv->insertOne(array_merge([AbstractEmailExtractCommand::FIELD_EMAIL], $fields));
+        $csv->insertOne(array_map(
+            function (string $field) {
+                return $this->translateField($field);
+            },
+            array_merge([AbstractEmailExtractCommand::FIELD_EMAIL], $fields)
+        ));
 
         foreach ($emails as $email) {
             $row = [

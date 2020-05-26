@@ -21,17 +21,17 @@ class AdherentExtractCommand extends AbstractEmailExtractCommand
     public static function getFieldChoices(): array
     {
         return [
+            self::FIELD_GENDER,
             self::FIELD_FIRST_NAME,
             self::FIELD_LAST_NAME,
-            self::FIELD_GENDER,
-            self::FIELD_BIRTH_DATE,
+            self::FIELD_ADDRESS,
+            self::FIELD_POSTAL_CODE,
+            self::FIELD_CITY,
+            self::FIELD_COUNTRY,
             self::FIELD_NATIONALITY,
             self::FIELD_PHONE,
             self::FIELD_REGISTERED_AT,
-            self::FIELD_COUNTRY,
-            self::FIELD_POSTAL_CODE,
-            self::FIELD_CITY,
-            self::FIELD_ADDRESS,
+            self::FIELD_BIRTH_DATE,
         ];
     }
 }

@@ -407,6 +407,11 @@ class Donation implements GeoPointInterface
         return self::STATUS_SUBSCRIPTION_IN_PROGRESS === $this->getStatus();
     }
 
+    public function isSubscription(): bool
+    {
+        return PayboxPaymentSubscription::NONE !== $this->duration;
+    }
+
     public function getPayboxOrderRef(): ?string
     {
         return $this->payboxOrderRef;
@@ -589,5 +594,10 @@ class Donation implements GeoPointInterface
     public function markAsRefunded(): void
     {
         $this->status = self::STATUS_REFUNDED;
+    }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
     }
 }
