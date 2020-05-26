@@ -46,7 +46,7 @@ class DonationManager
         }
 
         usort($history, function (DonationValueObject $donation1, DonationValueObject $donation2) {
-            return $donation1->getDate() > $donation2->getDate() ? -1 : 1;
+            return $donation2->getDate() <=> $donation1->getDate();
         });
 
         return $history;

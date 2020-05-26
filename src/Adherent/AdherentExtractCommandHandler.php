@@ -78,7 +78,7 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
                     break;
                 case AdherentExtractCommand::FIELD_BIRTH_DATE:
                     $row[$this->translateField($field)] = $adherent->getBirthdate()
-                        ? $adherent->getBirthdate()->format('d/m/Y H:i:s')
+                        ? $adherent->getBirthdate()->format('d/m/Y')
                         : null
                     ;
 
