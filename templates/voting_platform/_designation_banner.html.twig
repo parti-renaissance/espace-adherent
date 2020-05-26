@@ -1,4 +1,4 @@
-{% if is_granted('ROLE_ADHERENT') %}
+{% if is_canary_enabled() and is_granted('ROLE_ADHERENT') %}
     {% set selected_committee = null %}
     {% set has_started_designation = false %}
 
