@@ -30,6 +30,13 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
 
         foreach ($fields as $field) {
             switch ($field) {
+                case AdherentExtractCommand::FIELD_GENDER:
+                    $row[$this->translateField($field)] = $adherent->getGender()
+                        ? $this->translator->trans(sprintf('common.gender.%s', $adherent->getGender()))
+                        : null
+                    ;
+
+                    break;
                 case AdherentExtractCommand::FIELD_FIRST_NAME:
                     $row[$this->translateField($field)] = $adherent->getFirstName();
 
@@ -38,18 +45,20 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
                     $row[$this->translateField($field)] = $adherent->getLastName();
 
                     break;
-                case AdherentExtractCommand::FIELD_GENDER:
-                    $row[$this->translateField($field)] = $adherent->getGender()
-                        ? $this->translator->trans(sprintf('common.gender.%s', $adherent->getGender()))
-                        : null
-                    ;
+                case AdherentExtractCommand::FIELD_ADDRESS:
+                    $row[$this->translateField($field)] = $adherent->getAddress();
 
                     break;
-                case AdherentExtractCommand::FIELD_BIRTH_DATE:
-                    $row[$this->translateField($field)] = $adherent->getBirthdate()
-                        ? $adherent->getBirthdate()->format('d/m/Y H:i:s')
-                        : null
-                    ;
+                case AdherentExtractCommand::FIELD_POSTAL_CODE:
+                    $row[$this->translateField($field)] = $adherent->getPostalCode();
+
+                    break;
+                case AdherentExtractCommand::FIELD_CITY:
+                    $row[$this->translateField($field)] = $adherent->getCityName();
+
+                    break;
+                case AdherentExtractCommand::FIELD_COUNTRY:
+                    $row[$this->translateField($field)] = $adherent->getCountry();
 
                     break;
                 case AdherentExtractCommand::FIELD_NATIONALITY:
@@ -67,20 +76,11 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
                     ;
 
                     break;
-                case AdherentExtractCommand::FIELD_COUNTRY:
-                    $row[$this->translateField($field)] = $adherent->getCountry();
-
-                    break;
-                case AdherentExtractCommand::FIELD_POSTAL_CODE:
-                    $row[$this->translateField($field)] = $adherent->getPostalCode();
-
-                    break;
-                case AdherentExtractCommand::FIELD_ADDRESS:
-                    $row[$this->translateField($field)] = $adherent->getAddress();
-
-                    break;
-                case AdherentExtractCommand::FIELD_CITY:
-                    $row[$this->translateField($field)] = $adherent->getCityName();
+                case AdherentExtractCommand::FIELD_BIRTH_DATE:
+                    $row[$this->translateField($field)] = $adherent->getBirthdate()
+                        ? $adherent->getBirthdate()->format('d/m/Y H:i:s')
+                        : null
+                    ;
 
                     break;
                 default:
