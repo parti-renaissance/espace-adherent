@@ -328,6 +328,40 @@ class DonationAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('minAmount', CallbackFilter::class, [
+                'label' => 'Montant minimum',
+                'show_filter' => true,
+                'field_type' => FormNumberType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value'] || !is_numeric($value['value'])) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.amount >= :min_amount")
+                        ->setParameter('min_amount', $value['value'] * 100)
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('maxAmount', CallbackFilter::class, [
+                'label' => 'Montant maximum',
+                'show_filter' => true,
+                'field_type' => FormNumberType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value'] || !is_numeric($value['value'])) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.amount <= :max_amount")
+                        ->setParameter('max_amount', $value['value'] * 100)
+                    ;
+
+                    return true;
+                },
+            ])
             ->add('tags', ModelFilter::class, [
                 'label' => 'Tags',
                 'show_filter' => true,
