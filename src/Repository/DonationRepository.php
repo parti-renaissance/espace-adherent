@@ -61,6 +61,20 @@ class DonationRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findOfflineDonationsByEmail(string $email): array
+    {
+        return $this->createQueryBuilder('donation')
+            ->innerJoin('donation.donator', 'donator')
+            ->andWhere('donator.emailAddress = :email')
+            ->andWhere('donation.type != :donation_type_cb')
+            ->setParameter('email', $email)
+            ->setParameter('donation_type_cb', Donation::TYPE_CB)
+            ->orderBy('donation.donatedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function getSubscriptionsForDonatorQueryBuilder(Donator $donator): QueryBuilder
     {
         return $this

@@ -13,10 +13,10 @@
 {% block adherent_profile_form %}
     <h2>Mes dons</h2>
 
-    {% if successful_transactions %}
+    {% if donations_history is not empty %}
         <div class="b__nudge--top b__nudge--bottom">
             Merci pour votre engagement à nos côtés ! <br/><br/>
-            Votre dernier don a été fait {{ successful_transactions|first.payboxDateTime|ago }}.
+            Votre dernier don a été fait {{ donations_history|first.date|ago }}.
             {% if subscribed_donations %}
                 <a href="{{ path('donation_subscription_cancel') }}">
                     {{ 'adherent.stop_donation'|transchoice(subscribed_donations|length) }}
@@ -35,7 +35,6 @@
             <div class="b__nudge--top text--small text--gray">
                 Veuillez noter que :
                 <ol>
-                    <li>Les dons effectués par chèque ne sont pas encore visibles sur cette page</li>
                     <li>Vous recevrez votre reçu fiscal entre avril et juin. Il n'est pas nécessaire de le joindre à la déclaration de revenus de mai. Quand vous l'aurez obtenu, conservez-le pour pouvoir le présenter en cas de contrôle de l'administration fiscale.</li>
                 </ol>
             </div>
@@ -59,17 +58,16 @@
                 </tr>
             </thead>
             <tbody>
-                {% for transaction in successful_transactions %}
-                    {% set donation = transaction.donation %}
+                {% for donation in donations_history %}
                     <tr>
                         <td>
-                            {{ transaction.payboxDateTime|localizeddate('medium', 'none') }}
+                            {{ donation.date|localizeddate('medium', 'none') }}
                         </td>
                         <td>
                             {{ donation.amountInEuros }} €
                         </td>
                         <td>
-                            {% if donation.duration %}
+                            {% if donation.isSubscription %}
                                 Don mensuel
                             {% else %}
                                 Don ponctuel
