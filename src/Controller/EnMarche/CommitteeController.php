@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche;
 
 use App\Committee\CommitteeManager;
-use App\Controller\CanaryControllerTrait;
 use App\Controller\EntityControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -11,7 +10,6 @@ use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeFeedItem;
 use App\Form\CommitteeFeedItemMessageType;
 use App\Form\VotingPlatform\CandidacyBiographyType;
-use App\Image\ImageManager;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -30,7 +28,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CommitteeController extends Controller
 {
     use EntityControllerTrait;
-    use CanaryControllerTrait;
 
     /**
      * @Route(name="app_committee_show", methods={"GET"})
@@ -197,8 +194,6 @@ class CommitteeController extends Controller
         Committee $committee,
         CommitteeManager $manager
     ): Response {
-        $this->disableInProduction();
-
         if (!$this->isCsrfTokenValid('committee.vote', $request->request->get('token'))) {
             return $this->json([
                 'status' => 'NOK',
@@ -233,11 +228,8 @@ class CommitteeController extends Controller
         UserInterface $adherent,
         Committee $committee,
         Request $request,
-        CommitteeManager $manager,
-        ImageManager $imageManager
+        CommitteeManager $manager
     ): Response {
-        $this->disableInProduction();
-
         if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
             $this->addFlash('error', 'Vous ne pouvez pas candidater pour cette désignation.');
 
@@ -288,11 +280,8 @@ class CommitteeController extends Controller
         Request $request,
         Committee $committee,
         UserInterface $adherent,
-        CommitteeManager $manager,
-        ImageManager $imageManager
+        CommitteeManager $manager
     ): Response {
-        $this->disableInProduction();
-
         if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
             $this->addFlash('error', 'Vous ne pouvez plus modifier votre candidature.');
 
@@ -331,8 +320,6 @@ class CommitteeController extends Controller
      */
     public function removeCandidacy(Request $request, Committee $committee, CommitteeManager $manager): Response
     {
-        $this->disableInProduction();
-
         if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
             $this->addFlash('error', 'Vous ne pouvez pas retirer votre candidature.');
 

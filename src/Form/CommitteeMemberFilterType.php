@@ -26,7 +26,6 @@ class CommitteeMemberFilterType extends AbstractType
             ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('joinedSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('joinedUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
-            //->add('votersOnly', CheckboxType::class, ['required' => false])
             ->add('sort', HiddenType::class, ['required' => false])
             ->add('order', HiddenType::class, ['required' => false])
             ->add('subscribed', ChoiceType::class, ['required' => false, 'placeholder' => 'common.all', 'choices' => [
@@ -34,6 +33,10 @@ class CommitteeMemberFilterType extends AbstractType
                 'common.adherent.unsubscribed' => false,
             ]])
         ;
+
+        if (true === $options['is_supervisor']) {
+            $builder->add('votersOnly', CheckboxType::class, ['required' => false]);
+        }
     }
 
     public function getBlockPrefix()
@@ -43,8 +46,12 @@ class CommitteeMemberFilterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => ListFilterObject::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => ListFilterObject::class,
+                'is_supervisor' => false,
+            ])
+            ->setAllowedTypes('is_supervisor', ['bool'])
+        ;
     }
 }
