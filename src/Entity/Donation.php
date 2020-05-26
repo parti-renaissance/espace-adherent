@@ -590,4 +590,9 @@ class Donation implements GeoPointInterface
     {
         $this->status = self::STATUS_REFUNDED;
     }
+
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
+    }
 }
