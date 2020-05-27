@@ -33,4 +33,20 @@ class VoterRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function existsForElection(Adherent $adherent, string $electionUuid): bool
+    {
+        return 0 < (int) $this->createQueryBuilder('voter')
+            ->select('COUNT(1)')
+            ->innerJoin(VotersList::class, 'list')
+            ->innerJoin('list.election', 'election')
+            ->where('voter.adherent = :adherent AND election.uuid = :election_uuid')
+            ->setParameters([
+                'adherent' => $adherent,
+                'election_uuid' => $electionUuid,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }
