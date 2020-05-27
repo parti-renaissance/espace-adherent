@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VotersListRepository")
+ * @ORM\Entity
  *
  * @ORM\Table(name="voting_platform_voters_list")
  *
