@@ -41,14 +41,13 @@
 
 {% block voting_platform_content %}
     <div class="l__wrapper--600 text--center">
-        <p class="text--body text--default-large text--dark"></p>
         <p class="text--body text--dark">
             Vos bulletins ont été anonymisés.<br/><br/>
             Le numéro ci-dessous, connu de vous seul, est l'unique moyen de tracer vos
             bulletins de votre choix au dépouillement. Retrouvez-le dans le détail des résultats.
         </p>
         <div class="b__nudge--bottom-large b__nudge--top-large">
-            <div class="text--on-white text--body inline-block space--20">G6T-76P-AZN</div>
+            <div class="text--on-white text--body inline-block space--20">{{ voter_key }}</div>
         </div>
         <p class="text--body text--smallest text--gray">
             Attention. Une fois cette page fermée, vous ne pourrez retrouver le numéro anonyme de vos bulletins que dans le mail

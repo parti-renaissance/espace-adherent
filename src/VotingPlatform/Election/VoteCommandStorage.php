@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class VoteCommandStorage
 {
-    public const SESSION_KEY = 'vote_process';
+    public const SESSION_KEY_COMMAND = 'vote_process.command';
+    public const SESSION_KEY_VOTER_KEY = 'vote_process.voter_key';
 
     private $session;
 
@@ -21,19 +22,19 @@ class VoteCommandStorage
 
     public function getVoteCommand(Election $election): VoteCommand
     {
-        $command = $this->session->get(self::SESSION_KEY);
+        $command = $this->session->get(self::SESSION_KEY_COMMAND);
 
         return $command instanceof VoteCommand ? $command : $this->createVoteCommand($election);
     }
 
     public function save(VoteCommand $voteCommand): void
     {
-        $this->session->set(self::SESSION_KEY, $voteCommand);
+        $this->session->set(self::SESSION_KEY_COMMAND, $voteCommand);
     }
 
     public function clear(): void
     {
-        $this->session->remove(self::SESSION_KEY);
+        $this->session->remove(self::SESSION_KEY_COMMAND);
     }
 
     private function createVoteCommand(Election $election): VoteCommand
@@ -43,5 +44,15 @@ class VoteCommandStorage
         }
 
         return new VoteCommand($election);
+    }
+
+    public function saveLastVoterKey(string $voterKey): void
+    {
+        $this->session->set(self::SESSION_KEY_VOTER_KEY, $voterKey);
+    }
+
+    public function getLastVoterKey(): ?string
+    {
+        return $this->session->get(self::SESSION_KEY_VOTER_KEY);
     }
 }

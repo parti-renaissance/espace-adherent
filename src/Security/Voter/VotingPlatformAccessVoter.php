@@ -23,6 +23,10 @@ class VotingPlatformAccessVoter extends AbstractAdherentVoter
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         /** @var Election $subject */
+        if (!$subject->isVotePeriodActive()) {
+            return false;
+        }
+
         $adherentIsInVotersList = $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toString());
 
         if (!$adherentIsInVotersList) {

@@ -13,6 +13,7 @@ use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
+use App\VotingPlatform\Election\VoteCommandStorage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Security;
@@ -25,19 +26,22 @@ class FinishVoteCommandListener implements EventSubscriberInterface
     private $voterRepository;
     private $electionRepository;
     private $candidateGroupRepository;
+    private $storage;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         Security $security,
         VoterRepository $voterRepository,
         ElectionRepository $electionRepository,
-        CandidateGroupRepository $candidateGroupRepository
+        CandidateGroupRepository $candidateGroupRepository,
+        VoteCommandStorage $storage
     ) {
         $this->entityManager = $entityManager;
         $this->security = $security;
         $this->voterRepository = $voterRepository;
         $this->electionRepository = $electionRepository;
         $this->candidateGroupRepository = $candidateGroupRepository;
+        $this->storage = $storage;
     }
 
     public static function getSubscribedEvents()
@@ -49,6 +53,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
 
     public function persistVote(Event $event): void
     {
+        /** @var VoteCommand $command */
         $command = $event->getSubject();
 
         if (!$command instanceof VoteCommand) {
@@ -74,6 +79,8 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $this->entityManager->persist($voteResult);
 
         $this->entityManager->flush();
+
+        $this->saveVoterKeyInSession($voterKey);
     }
 
     private function generateVote(Election $election): Vote
@@ -109,5 +116,10 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         }
 
         return $voteResult;
+    }
+
+    private function saveVoterKeyInSession(string $voterKey): void
+    {
+        $this->storage->saveLastVoterKey($voterKey);
     }
 }

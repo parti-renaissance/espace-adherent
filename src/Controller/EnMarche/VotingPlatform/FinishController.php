@@ -13,6 +13,10 @@ class FinishController extends AbstractController
 {
     public function __invoke(Election $election): Response
     {
-        return $this->renderElectionTemplate('voting_platform/finish.html.twig', $election);
+        return $this->renderElectionTemplate(
+            'voting_platform/finish.html.twig',
+            $election,
+            ['voter_key' => $this->storage->getLastVoterKey()]
+        );
     }
 }
