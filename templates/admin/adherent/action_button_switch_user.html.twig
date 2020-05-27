@@ -1,6 +1,8 @@
-<li>
-    <a href="{{ path('homepage', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
-        <i class="fa fa-user-secret" aria-hidden="true"></i>
-        Impersonnifier
-    </a>
-</li>
+{% if object.enabled %}
+    <li>
+        <a href="{{ path('homepage', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
+            <i class="fa fa-user-secret" aria-hidden="true"></i>
+            Impersonnifier
+        </a>
+    </li>
+{% endif %}
