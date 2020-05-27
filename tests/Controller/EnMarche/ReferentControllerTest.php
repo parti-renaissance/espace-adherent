@@ -523,7 +523,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertContains('Non', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertContains('Conseiller(e) municipal(e) (DIV)Rouen (76000)Membre d\'EPCI (DIV)Rouen (76000)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertContains(' G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(3)->text()));
+        $this->assertContains(' G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(4)->text()));
         $this->assertContains('Peut-être', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertContains('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
         $this->assertContains('Oui', $crawler->filter('tbody tr.referent__item')->eq(2)->text());

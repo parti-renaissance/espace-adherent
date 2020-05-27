@@ -215,6 +215,21 @@ class App {
         });
     }
 
+    runUserListDefinitions(memberType, type, wrapperSelector, checkboxSelector, mainCheckboxSelector,
+                           postApplyCallback) {
+        System.import('pages/user_list_definition').catch((error) => { throw error; }).then((module) => {
+            module.default(
+                memberType,
+                type,
+                wrapperSelector,
+                checkboxSelector,
+                mainCheckboxSelector,
+                this.get('api'),
+                postApplyCallback
+            );
+        });
+    }
+
     runGrandeMarcheEurope() {
         System.import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
             module.default();

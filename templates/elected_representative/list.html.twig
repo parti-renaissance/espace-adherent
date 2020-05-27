@@ -14,11 +14,14 @@
             </div>
 
             <div class="datagrid">
+                <div class="user-list-definition-manager-wrapper"></div>
+
                 <div class="b__nudge--bottom-larger">
                     <div class="datagrid__table-container">
                         <table class="datagrid__table-manager">
                             <thead>
                             <tr>
+                                <th width="50" class="space--20"><input type="checkbox" id="items-check-all" /></th>
                                 {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
 
                                 <th style="width: 100px;">
@@ -32,14 +35,16 @@
                                 <th style="width: 100px;">Mandats actuels (nuance)</th>
                                 <th style="width: 100px;">Fonctions actuelles</th>
                                 <th style="width: 100px;">Étiquettes</th>
+                                <th style="width: 100px;">Labels</th>
                                 <th style="width: 100px;">Réseaux sociaux</th>
                                 <th style="width: 100px;">Adhérent</th>
                                 <th style="width: 100px;">Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for elected_representative in elected_representatives %}
+                            {% for key, elected_representative in elected_representatives %}
                                 <tr class="referent__item">
+                                    <td><input type="checkbox" name="items[]" value="{{ elected_representative.id }}" /></td>
                                     <td class="adherent-identity">
                                         <div class="adherent-name">
                                             {{ elected_representative.lastName }} {{ elected_representative.firstName }}
@@ -65,6 +70,21 @@
                                             {{ label }}<br />
                                         {% endfor %}
                                     </td>
+                                    <td class="labels">
+                                        {% for label in elected_representative.userListDefinitions|slice(0, 2) %}
+                                            <span class="label">{{ label }}</span><br />
+                                        {% endfor %}
+
+                                        {% if elected_representative.userListDefinitions|length > 2 %}
+                                            <span id="show_more_labels_{{ key }}" class="text--body text--gray cursor--pointer">+{{ elected_representative.userListDefinitions|length - 2 }}</span>
+                                            <div id="other_labels_{{ key }}" class="visually-hidden">
+                                                {% for label in elected_representative.userListDefinitions|slice(2) %}
+                                                    <span class="label">{{ label }}</span><br />
+                                                {% endfor %}
+                                            </div>
+                                            <span id="show_less_labels_{{ key }}" class="text--body text--gray visually-hidden cursor--pointer">^</span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         {% for link in elected_representative.socialNetworkLinks %}
                                             <a target="_blank" rel="noopener" href="{{ link.url }}">
@@ -73,9 +93,9 @@
                                         {% endfor %}
                                     </td>
                                     <td>
-                                        <span class="status status__{{ elected_representative.isAdherent ? '1' : '2' }}">
-                                            {{ (elected_representative.isAdherent is null ? 'global.maybe' : (elected_representative.isAdherent ? 'global.yes' : 'global.no'))|trans }}
-                                        </span>
+                            <span class="status status__{{ elected_representative.isAdherent ? '1' : '2' }}">
+                                {{ (elected_representative.isAdherent is null ? 'global.maybe' : (elected_representative.isAdherent ? 'global.yes' : 'global.no'))|trans }}
+                            </span>
                                     </td>
                                     <td>
                                         <a href="{{ path('app_referent_elected_representatives_show', { uuid: elected_representative.uuid }) }}" class="text--blue--dark link--no-decor">Afficher</a>
@@ -104,4 +124,53 @@
             </div>
         </section>
     </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('td.labels').on('click', '[id^="show_more_labels_"], [id^="show_less_labels_"]', function() {
+                let elementId = $(this).attr('id');
+                $(this).click(function(){
+                    $('#'+elementId).toggleClass('visually-hidden');
+                    if (elementId.includes('more')) {
+                        $('#'+elementId.replace('show_more_labels', 'show_less_labels')).toggleClass('visually-hidden');
+                        $('#'+elementId.replace('show_more_labels', 'other_labels')).toggleClass('visually-hidden');
+                    } else {
+                        $('#'+elementId.replace('show_less_labels', 'show_more_labels')).toggleClass('visually-hidden');
+                        $('#'+elementId.replace('show_less_labels', 'other_labels')).toggleClass('visually-hidden');
+                    }
+                });
+            });
+
+            App.runUserListDefinitions(
+                '{{ constant('App\\Controller\\Api\\UserListDefinition\\ElectedRepresentativeUserListDefinitionController::MEMBER_TYPE') }}',
+                '{{ constant('App\\Entity\\UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE') }}',
+                '.user-list-definition-manager-wrapper',
+                'input[name="items[]"]',
+                '#items-check-all',
+                function (labels) {
+                    let cell = '';
+                    labels.slice(0, 2).forEach((label) => {
+                        cell += `<span class="label">${label.label}</span><br />`;
+                    });
+
+                    if (labels.length > 2) {
+                        const nb = Math.random().toString().slice(2,9);
+                        cell += `<span id="show_more_labels_${nb}" class="text--body text--gray cursor--pointer">+${labels.length - 2}</span>`;
+                        cell += `<div id="other_labels_${nb}" class="visually-hidden">`;
+                        labels.slice(2).forEach((label) => {
+                            cell += `<span class="label">${label.label}</span><br />`;
+                        });
+                        cell += '</div>';
+                        cell += `<span id="show_less_labels_${nb}" class="text--body text--gray visually-hidden cursor--pointer">^</span>`;
+                    }
+
+                    return cell;
+                }
+            );
+        });
+    </script>
 {% endblock %}

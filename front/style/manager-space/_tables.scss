@@ -277,6 +277,16 @@
                     white-space: nowrap;
                 }
 
+                & span.label {
+                    display: inline-block;
+                    background-color: #ebf4ff;
+                    padding: 6px 15px;
+                    margin: 5px 0;
+                    border-radius: 20px;
+                    font-weight: bold;
+                    color: #698ab3;
+                }
+
                 & span.status {
 
                     &:before {
@@ -364,6 +374,12 @@
         content: $checkbox__mark;
     }
 
+    input[type="checkbox"]:indeterminate {
+        background-color: $blue--dark;
+        border-color: $blue--dark;
+        content: $checkbox__indeterminate;
+    }
+
     .icn--no-result {
         vertical-align: middle;
         margin-right: 10px;
@@ -433,6 +449,67 @@
                     }
                 }
             }
+        }
+    }
+}
+
+.label-list {
+    max-width: 275px;
+    margin-top: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgba(99, 98, 150, 0.25);
+    background-color: #ffffff;
+
+    &--loader {
+        max-width: 275px;
+    }
+
+    .label {
+        line-height: normal;
+        background-color: #ffffff;
+        cursor: pointer;
+    }
+
+    .label:hover {
+        background-color: $pale-grey;
+    }
+
+    .apply-btn {
+        padding: 5px 35px;
+        border-top: 1px solid $lines-grey;
+        border-bottom: 0;
+        color: $blue--dark;
+        font-weight: normal;
+    }
+
+    .checkbox {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        padding: 2px;
+        margin: 5px;
+        border-radius: 1px;
+        border: solid 1px $filter-field-border;
+        background-color: #ffffff;
+        outline: 0;
+        vertical-align: middle;
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+        cursor: pointer;
+
+        &--checked {
+            background-color: $blue--dark;
+            border-color: $blue--dark;
+            content: $checkbox__mark;
+        }
+
+        &--indeterminate {
+            background-color: $blue--dark;
+            border-color: $blue--dark;
+            content: $checkbox__indeterminate;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\DataFixtures\AutoIncrementResetter;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\ElectedRepresentative\CandidateNameEnum;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -31,6 +32,8 @@ class LoadElectedRepresentativeData extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'elected_representative');
+
         // with adherent, mandate 92 CITY_COUNCIL : functions OTHER_MEMBER, PRESIDENT_OF_EPCI
         $erAdherent92 = ElectedRepresentative::create(
             'Michelle',
@@ -42,6 +45,7 @@ class LoadElectedRepresentativeData extends Fixture
         );
         $erAdherent92->setAdherent($this->getReference('adherent-5'));
         $erAdherent92->setIsAdherent(true);
+        $erAdherent92->addUserListDefinition($this->getReference('user-list-definition-instances_member'));
         foreach ($erAdherent92->getSponsorships() as $sponsorship) {
             if (2012 === $sponsorship->getPresidentialElectionYear()) {
                 $sponsorship->setCandidate(CandidateNameEnum::FRANCOIS_HOLLANDE, $erAdherent92);
@@ -100,6 +104,8 @@ class LoadElectedRepresentativeData extends Fixture
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
         );
         $this->setPhoneNumber($erCityCouncilWithFinishedFunction, '0999887766');
+        $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem'));
+        $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-instances_member'));
         $label = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
             $erCityCouncilWithFinishedFunction,
@@ -160,6 +166,7 @@ class LoadElectedRepresentativeData extends Fixture
             694516,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_3_UUID)
         );
+        $er2Mandates->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem'));
         $er2Mandates->setIsAdherent(null);
         $label1 = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
@@ -449,6 +456,7 @@ class LoadElectedRepresentativeData extends Fixture
         return [
             LoadAdherentData::class,
             LoadZoneData::class,
+            LoadUserListDefinitionData::class,
         ];
     }
 }
