@@ -463,7 +463,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Catégories',
                 'show_filter' => true,
                 'field_options' => [
-                    'minimum_input_length' => 1,
+                    'minimum_input_length' => 0,
                     'items_per_page' => 20,
                     'multiple' => true,
                     'property' => 'label',
