@@ -184,6 +184,24 @@
                             <p class="form-text text-muted text-center">
                                 {{ macros.get_certification_request_processed_by(object) }}
                             </p>
+
+                            {% if object.blockReason %}
+                                <p class="form-text text-muted text-center">
+                                    Bloquée:
+                                    <b>
+                                        {% if constant('App\\Adherent\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER') == object.blockReason %}
+                                            {{ object.customBlockReason }}
+                                        {% else %}
+                                            {{ ('certification_request.block_reason.' ~ object.blockReason)|trans }}
+                                        {% endif %}
+                                    </b>
+
+                                    {% if object.blockComment %}
+                                        <br>
+                                        ({{ object.blockComment }})
+                                    {% endif %}
+                                </p>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

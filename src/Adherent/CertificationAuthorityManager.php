@@ -51,10 +51,16 @@ class CertificationAuthorityManager
         $this->em->flush();
     }
 
-    public function block(CertificationRequest $certificationRequest, Administrator $administrator): void
+    public function block(CertificationRequestBlockCommand $blockCommand): void
     {
-        $certificationRequest->block();
-        $certificationRequest->process($administrator);
+        $certificationRequest = $blockCommand->getCertificationRequest();
+
+        $certificationRequest->block(
+            $blockCommand->getReason(),
+            $blockCommand->getCustomReason(),
+            $blockCommand->getComment()
+        );
+        $certificationRequest->process($blockCommand->getAdministrator());
 
         $this->em->flush();
     }

@@ -30,6 +30,18 @@ class CertificationRequest
         self::STATUS_BLOCKED,
     ];
 
+    public const REFUSAL_REASON_DOCUMENT_NOT_IN_CONFORMITY = 'document_not_in_conformity';
+    public const REFUSAL_REASON_DOCUMENT_NOT_READABLE = 'document_not_readable';
+    public const REFUSAL_REASON_INFORMATIONS_NOT_MATCHING = 'informations_not_matching';
+    public const REFUSAL_REASON_OTHER = 'other';
+
+    public const REFUSAL_REASONS = [
+        self::REFUSAL_REASON_DOCUMENT_NOT_IN_CONFORMITY,
+        self::REFUSAL_REASON_DOCUMENT_NOT_READABLE,
+        self::REFUSAL_REASON_INFORMATIONS_NOT_MATCHING,
+        self::REFUSAL_REASON_OTHER,
+    ];
+
     /**
      * @var \DateTime
      *
@@ -96,6 +108,54 @@ class CertificationRequest
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $processedAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=30, nullable=true)
+     */
+    private $blockReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $customBlockReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $blockComment;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=30, nullable=true)
+     *
+     * @Assert\Choice(choices=CertificationRequest::REFUSAL_REASONS)
+     */
+    private $refusalReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max=500)
+     */
+    private $customRefusalReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max=500)
+     */
+    private $refusalComment;
 
     public function __construct(Adherent $adherent)
     {
@@ -195,9 +255,12 @@ class CertificationRequest
         $this->status = self::STATUS_REFUSED;
     }
 
-    public function block(): void
+    public function block(?string $reason, ?string $customReason, ?string $comment): void
     {
         $this->status = self::STATUS_BLOCKED;
+        $this->blockReason = $reason;
+        $this->customBlockReason = $customReason;
+        $this->blockComment = $comment;
     }
 
     public function getDocument(): ?UploadedFile
@@ -223,5 +286,65 @@ class CertificationRequest
         );
 
         $this->documentMimeType = $document->getMimeType();
+    }
+
+    public function getBlockReason(): ?string
+    {
+        return $this->blockReason;
+    }
+
+    public function setBlockReason(?string $blockReason): void
+    {
+        $this->blockReason = $blockReason;
+    }
+
+    public function getCustomBlockReason(): ?string
+    {
+        return $this->customBlockReason;
+    }
+
+    public function setCustomBlockReason(?string $customBlockReason): void
+    {
+        $this->customBlockReason = $customBlockReason;
+    }
+
+    public function getBlockComment(): ?string
+    {
+        return $this->blockComment;
+    }
+
+    public function setBlockComment(?string $blockComment): void
+    {
+        $this->blockComment = $blockComment;
+    }
+
+    public function getRefusalReason(): ?string
+    {
+        return $this->refusalReason;
+    }
+
+    public function setRefusalReason(?string $refusalReason): void
+    {
+        $this->refusalReason = $refusalReason;
+    }
+
+    public function getCustomRefusalReason(): ?string
+    {
+        return $this->customRefusalReason;
+    }
+
+    public function setCustomRefusalReason(?string $customRefusalReason): void
+    {
+        $this->customRefusalReason = $customRefusalReason;
+    }
+
+    public function getRefusalComment(): ?string
+    {
+        return $this->refusalComment;
+    }
+
+    public function setRefusalComment(?string $refusalComment): void
+    {
+        $this->refusalComment = $refusalComment;
     }
 }

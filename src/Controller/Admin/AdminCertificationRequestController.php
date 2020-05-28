@@ -4,7 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Adherent\CertificationAuthorityManager;
 use App\Adherent\CertificationPermissions;
+use App\Adherent\CertificationRequestBlockCommand;
 use App\Entity\CertificationRequest;
+use App\Form\Admin\CertificationRequestBlockCommandType;
 use App\Form\ConfirmActionType;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -121,20 +123,20 @@ class AdminCertificationRequestController extends CRUDController
             return $this->redirectTo($certificationRequest);
         }
 
+        $blockCommand = new CertificationRequestBlockCommand($certificationRequest, $this->getUser());
+
         $form = $this
-            ->createForm(ConfirmActionType::class)
+            ->createForm(CertificationRequestBlockCommandType::class, $blockCommand)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('allow')->isClicked()) {
-                $certificationManager->block($certificationRequest, $this->getUser());
+            $certificationManager->block($blockCommand);
 
-                $this->addFlash('success', sprintf(
-                    'La demande de certification de l\'adhérent <b>%s</b> a bien été bloquée.',
-                    $certificationRequest->getAdherent()->getFullName()
-                ));
-            }
+            $this->addFlash('success', sprintf(
+                'La demande de certification de l\'adhérent <b>%s</b> a bien été bloquée.',
+                $certificationRequest->getAdherent()->getFullName()
+            ));
 
             return $this->redirectTo($certificationRequest);
         }
