@@ -202,6 +202,24 @@
                                     {% endif %}
                                 </p>
                             {% endif %}
+
+                            {% if object.refusalReason %}
+                                <p class="form-text text-muted text-center">
+                                    Refusée:
+                                    <b>
+                                        {% if constant('App\\Adherent\\CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER') == object.refusalReason %}
+                                            {{ object.customRefusalReason }}
+                                        {% else %}
+                                            {{ ('certification_request.refusal_reason.' ~ object.refusalReason)|trans }}
+                                        {% endif %}
+                                    </b>
+
+                                    {% if object.refusalComment %}
+                                        <br>
+                                        ({{ object.refusalComment }})
+                                    {% endif %}
+                                </p>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

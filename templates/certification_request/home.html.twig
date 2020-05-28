@@ -10,20 +10,8 @@
             <div class="title">Votre profil est certifié</div>
 
         {% elseif app.user.certificationRequests.hasBlockedCertificationRequest %}
-            {% set blockedCertificationRequest = app.user.certificationRequests.getBlockedCertificationRequest %}
-
             <img src="{{ asset('/images/icons/certification/blocked.svg') }}" />
             <div class="title b__nudge--bottom">Demande de certification bloquée</div>
-            {% if blockedCertificationRequest.blockReason %}
-            <p>
-                Justification:
-                {% if constant('App\\Adherent\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER') == blockedCertificationRequest.blockReason %}
-                    {{ blockedCertificationRequest.customBlockReason }}
-                {% else %}
-                    {{ ('certification_request.block_reason.' ~ blockedCertificationRequest.blockReason)|trans }}
-                {% endif %}
-            </p>
-            {% endif %}
             <p>Vous ne pouvez pas refaire de nouvelle demande pour l'instant.</p>
 
         {% elseif app.user.certificationRequests.hasPendingCertificationRequest %}
@@ -32,9 +20,21 @@
             <p>Votre demande est en attente d'approbation par nos équipes.</p>
 
         {% elseif app.user.certificationRequests.hasRefusedCertificationRequest %}
+            {% set refusedCertificationRequest = app.user.certificationRequests.getRefusedCertificationRequests.first %}
+
             <img src="{{ asset('/images/icons/certification/blocked.svg') }}" />
             <div class="title b__nudge--bottom">Demande de certification refusée</div>
             <p>Votre demande de certification a été refusée.<br />
+            {% if refusedCertificationRequest.refusalReason %}
+                <p>
+                    Justification:
+                    {% if constant('App\\Adherent\\CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER') == refusedCertificationRequest.refusalReason %}
+                        {{ refusedCertificationRequest.customRefusalReason }}
+                    {% else %}
+                        {{ ('certification_request.refusal_reason.' ~ refusedCertificationRequest.refusalReason)|trans }}
+                    {% endif %}
+                </p>
+            {% endif %}
             Vous pouvez <a class="link--blue--dark link--no-decor" href="{{ path('app_certification_request_form') }}">réessayer</a>.</p>
 
         {% else %}

@@ -43,10 +43,16 @@ class CertificationAuthorityManager
         $this->em->flush();
     }
 
-    public function refuse(CertificationRequest $certificationRequest, Administrator $administrator): void
+    public function refuse(CertificationRequestRefuseCommand $refuseCommand): void
     {
-        $certificationRequest->refuse();
-        $certificationRequest->process($administrator);
+        $certificationRequest = $refuseCommand->getCertificationRequest();
+
+        $certificationRequest->refuse(
+            $refuseCommand->getReason(),
+            $refuseCommand->getCustomReason(),
+            $refuseCommand->getComment()
+        );
+        $certificationRequest->process($refuseCommand->getAdministrator());
 
         $this->em->flush();
     }

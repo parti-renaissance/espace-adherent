@@ -30,18 +30,6 @@ class CertificationRequest
         self::STATUS_BLOCKED,
     ];
 
-    public const REFUSAL_REASON_DOCUMENT_NOT_IN_CONFORMITY = 'document_not_in_conformity';
-    public const REFUSAL_REASON_DOCUMENT_NOT_READABLE = 'document_not_readable';
-    public const REFUSAL_REASON_INFORMATIONS_NOT_MATCHING = 'informations_not_matching';
-    public const REFUSAL_REASON_OTHER = 'other';
-
-    public const REFUSAL_REASONS = [
-        self::REFUSAL_REASON_DOCUMENT_NOT_IN_CONFORMITY,
-        self::REFUSAL_REASON_DOCUMENT_NOT_READABLE,
-        self::REFUSAL_REASON_INFORMATIONS_NOT_MATCHING,
-        self::REFUSAL_REASON_OTHER,
-    ];
-
     /**
      * @var \DateTime
      *
@@ -134,8 +122,6 @@ class CertificationRequest
      * @var string|null
      *
      * @ORM\Column(length=30, nullable=true)
-     *
-     * @Assert\Choice(choices=CertificationRequest::REFUSAL_REASONS)
      */
     private $refusalReason;
 
@@ -143,8 +129,6 @@ class CertificationRequest
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(max=500)
      */
     private $customRefusalReason;
 
@@ -152,8 +136,6 @@ class CertificationRequest
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(max=500)
      */
     private $refusalComment;
 
@@ -250,9 +232,12 @@ class CertificationRequest
         $this->status = self::STATUS_APPROVED;
     }
 
-    public function refuse(): void
+    public function refuse(?string $reason, ?string $customReason, ?string $comment): void
     {
         $this->status = self::STATUS_REFUSED;
+        $this->refusalReason = $reason;
+        $this->customRefusalReason = $customReason;
+        $this->refusalComment = $comment;
     }
 
     public function block(?string $reason, ?string $customReason, ?string $comment): void
