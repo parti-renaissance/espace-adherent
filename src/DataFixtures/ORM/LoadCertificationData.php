@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Adherent\CertificationAuthorityManager;
-use App\Adherent\CertificationManager;
-use App\Adherent\CertificationRequestBlockCommand;
-use App\Adherent\CertificationRequestRefuseCommand;
+use App\Adherent\Certification\CertificationAuthorityManager;
+use App\Adherent\Certification\CertificationManager;
+use App\Adherent\Certification\CertificationRequestBlockCommand;
+use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\CertificationRequest;

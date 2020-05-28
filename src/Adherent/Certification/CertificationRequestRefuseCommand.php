@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Adherent;
+namespace App\Adherent\Certification;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

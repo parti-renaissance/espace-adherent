@@ -2,7 +2,7 @@
 
 namespace App\Form\Admin;
 
-use App\Adherent\CertificationRequestBlockCommand;
+use App\Adherent\Certification\CertificationRequestBlockCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

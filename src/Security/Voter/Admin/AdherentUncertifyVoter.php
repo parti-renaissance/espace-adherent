@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter\Admin;
 
-use App\Adherent\CertificationPermissions;
+use App\Adherent\Certification\CertificationPermissions;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 

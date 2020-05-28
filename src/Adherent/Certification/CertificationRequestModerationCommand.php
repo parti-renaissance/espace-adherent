@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Adherent;
+namespace App\Adherent\Certification;
 
 use App\Entity\Administrator;
 use App\Entity\CertificationRequest;

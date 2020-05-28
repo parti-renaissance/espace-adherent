@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Adherent\CertificationAuthorityManager;
-use App\Adherent\CertificationPermissions;
-use App\Adherent\CertificationRequestBlockCommand;
-use App\Adherent\CertificationRequestRefuseCommand;
+use App\Adherent\Certification\CertificationAuthorityManager;
+use App\Adherent\Certification\CertificationPermissions;
+use App\Adherent\Certification\CertificationRequestBlockCommand;
+use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
 use App\Form\Admin\CertificationRequestBlockCommandType;
 use App\Form\Admin\CertificationRequestRefuseCommandType;
