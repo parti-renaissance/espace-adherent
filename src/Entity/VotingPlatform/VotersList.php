@@ -35,7 +35,7 @@ class VotersList
     /**
      * @var Voter[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\Voter", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\Voter", cascade={"all"}, inversedBy="votersLists")
      * @ORM\JoinTable(name="voting_platform_voters_list_voter", joinColumns={@ORM\JoinColumn(onDelete="CASCADE")})
      */
     private $voters;
@@ -51,5 +51,13 @@ class VotersList
         if (!$this->voters->contains($voter)) {
             $this->voters->add($voter);
         }
+    }
+
+    /**
+     * @return Voter[]
+     */
+    public function getVoters(): array
+    {
+        return $this->voters->toArray();
     }
 }

@@ -4,11 +4,10 @@ namespace App\Repository\VotingPlatform;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
-use App\Entity\VotingPlatform\VotersList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query\Expr\Join;
 
 class VoterRepository extends ServiceEntityRepository
 {
@@ -24,10 +23,10 @@ class VoterRepository extends ServiceEntityRepository
 
     public function countForElection(Election $election): int
     {
-        return (int) $this->createQueryBuilder('v')
+        return (int) $this->createQueryBuilder('voter')
             ->select('COUNT(1)')
-            ->innerJoin(VotersList::class, 'vl', Join::ON)
-            ->where('vl.election = :election')
+            ->innerJoin('voter.votersLists', 'list')
+            ->where('list.election = :election')
             ->setParameter('election', $election)
             ->getQuery()
             ->getSingleScalarResult()
@@ -38,7 +37,7 @@ class VoterRepository extends ServiceEntityRepository
     {
         return 0 < (int) $this->createQueryBuilder('voter')
             ->select('COUNT(1)')
-            ->innerJoin(VotersList::class, 'list')
+            ->innerJoin('voter.votersLists', 'list')
             ->innerJoin('list.election', 'election')
             ->where('voter.adherent = :adherent AND election.uuid = :election_uuid')
             ->setParameters([
@@ -47,6 +46,20 @@ class VoterRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getSingleScalarResult()
+        ;
+    }
+
+    public function findForElection(Election $election): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->select('adherent.firstName', 'adherent.lastName')
+            ->addSelect(sprintf('(SELECT v.votedAt FROM %s AS v WHERE v.voter = voter) as vote', Vote::class))
+            ->innerJoin('voter.votersLists', 'list')
+            ->leftJoin('voter.adherent', 'adherent')
+            ->where('list.election = :election')
+            ->setParameter('election', $election)
+            ->getQuery()
+            ->getArrayResult()
         ;
     }
 }

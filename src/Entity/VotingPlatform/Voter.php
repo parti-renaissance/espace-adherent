@@ -4,6 +4,7 @@ namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,7 +26,7 @@ class Voter
     private $id;
 
     /**
-     * @var Adherent
+     * @var Adherent|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
@@ -39,7 +40,14 @@ class Voter
      */
     private $createdAt;
 
-    public function __construct(Adherent $adherent)
+    /**
+     * @var VotersList[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\VotersList", mappedBy="voters")
+     */
+    private $votersLists;
+
+    public function __construct(Adherent $adherent = null)
     {
         $this->adherent = $adherent;
         $this->createdAt = new \DateTime();
@@ -50,7 +58,7 @@ class Voter
         return $this->id;
     }
 
-    public function getAdherent(): Adherent
+    public function getAdherent(): ?Adherent
     {
         return $this->adherent;
     }

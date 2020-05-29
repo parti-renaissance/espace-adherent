@@ -1,0 +1,52 @@
+{% extends 'designation/_layout.html.twig' %}
+
+{% block designation_content %}
+    <section>
+        <div class="datagrid__pre-table b__nudge--bottom">
+            <h3>Désignations</h3>
+        </div>
+
+        <table class="datagrid__table-manager">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Participation</th>
+                    <th>Résultats</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for data in elections %}
+                    {% set election = data[0] %}
+                    {% set designation = election.designation %}
+                    <tr>
+                        <td>{{ "designation.label.type_#{designation.type}"|trans }}</td>
+                        <td>{{ designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}</td>
+                        <td>{{ data.voters_count ? (data.votes_count * 100 / data.voters_count)|round(2) : 0 }} %</td>
+                        <td>{{ data.woman_count }} F / {{ data.man_count }} H</td>
+                        <td>
+                            {% if designation.voteStartDate > 'now'|date %}
+                                {% set items = [{
+                                    href: path('app_supervisor_designations_voters_list', {committee_slug: committee.slug, uuid: election.uuid}),
+                                    label: 'Voir les détails',
+                                    linkAttr: {class: 'row-action link--no-decor'}
+                                }] %}
+
+                                {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text--center">
+                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" alt="aucun résultat" class="icn--no-result" width="30" />
+                            La liste est vide
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

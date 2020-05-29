@@ -4,6 +4,7 @@ namespace App\Repository\VotingPlatform;
 
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Election;
+use App\VotingPlatform\Collection\CandidateGroupsCollection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -14,19 +15,16 @@ class CandidateGroupRepository extends ServiceEntityRepository
         parent::__construct($registry, CandidateGroup::class);
     }
 
-    /**
-     * @return CandidateGroup[]
-     */
-    public function findForElection(Election $election): array
+    public function findForElection(Election $election): CandidateGroupsCollection
     {
-        return $this->createQueryBuilder('cg')
+        return new CandidateGroupsCollection($this->createQueryBuilder('cg')
             ->addSelect('candidate')
             ->innerJoin('cg.candidates', 'candidate')
             ->where('cg.election = :election')
             ->setParameter('election', $election)
             ->getQuery()
             ->getResult()
-        ;
+        );
     }
 
     public function findByUuids(array $uuids): array
@@ -44,20 +42,5 @@ class CandidateGroupRepository extends ServiceEntityRepository
     public function findOneByUuid(string $uuid): ?CandidateGroup
     {
         return $this->findOneBy(['uuid' => $uuid]);
-    }
-
-    /**
-     * @return CandidateGroup[]
-     */
-    public function findWithResultsForElection(Election $election): array
-    {
-        return $this->createQueryBuilder('cg')
-            ->addSelect('c')
-            ->innerJoin('cg.candidates', 'c')
-            ->where('cg.election = :election')
-            ->setParameter('election', $election)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 }

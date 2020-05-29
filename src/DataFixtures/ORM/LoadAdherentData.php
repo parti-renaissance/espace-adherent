@@ -802,6 +802,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee4->approved();
+        $committee4->setCommitteeElection(new CommitteeElection($this->getReference('designation-3')));
         $this->addReference('committee-4', $committee4);
 
         $committee5 = $committeeFactory->createFromArray([
