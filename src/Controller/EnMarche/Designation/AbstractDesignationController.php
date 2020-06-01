@@ -106,6 +106,8 @@ abstract class AbstractDesignationController extends AbstractController
 
     protected function getRouteParameters(Request $request): array
     {
-        return [];
+        return [
+            'committee_slug' => $request->attributes->get('committee_slug'),
+        ];
     }
 }

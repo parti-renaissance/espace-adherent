@@ -7,16 +7,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-animateur/{committee_slug}/designations", name="app_supervisor_designations")
+ * @Route(path="/espace-referent/comites/{committee_slug}/designations", name="app_referent_designations")
  *
  * @ParamConverter("committee", options={"mapping": {"committee_slug": "slug"}})
  *
- * @Security("is_granted('SUPERVISE_COMMITTEE', committee) and committee.isApproved()")
+ * @Security("is_granted('ROLE_REFERENT')")
  */
-class SupervisorDesignationController extends AbstractDesignationController
+class ReferentDesignationController extends AbstractDesignationController
 {
     protected function getSpaceType(): string
     {
-        return 'supervisor';
+        return 'referent';
     }
 }

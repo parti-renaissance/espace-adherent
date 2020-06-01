@@ -7,6 +7,7 @@ use App\Collection\CommitteeCollection;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\Event;
@@ -205,21 +206,36 @@ class CommitteeRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c')
             ->select('c AS committee')
             ->addSelect('SUM(IF(cm.enableVote = :true, 1, 0)) AS total_voters')
-            ->addSelect('SUM(IF(candidacy.id IS NOT NULL AND candidacy.gender = :male, 1, 0)) AS total_candidacy_male')
-            ->addSelect('SUM(IF(candidacy.id IS NOT NULL AND candidacy.gender = :female, 1, 0)) AS total_candidacy_female')
+            ->addSelect(sprintf('(%s) AS total_candidacy_male',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('SUM(IF(candidacy1.id IS NOT NULL AND candidacy1.gender = :male, 1, 0))')
+                    ->from(CommitteeCandidacy::class, 'candidacy1')
+                    ->innerJoin('candidacy1.committeeElection', 'election1')
+                    ->innerJoin('election1.designation', 'designation1')
+                    ->where('election1.committee = c AND designation1.candidacyStartDate <= :now AND :now <= designation1.voteEndDate')
+                    ->getDQL()
+            ))
+            ->addSelect(sprintf('(%s) AS total_candidacy_female',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('SUM(IF(candidacy2.id IS NOT NULL AND candidacy2.gender = :female, 1, 0))')
+                    ->from(CommitteeCandidacy::class, 'candidacy2')
+                    ->innerJoin('candidacy2.committeeElection', 'election2')
+                    ->innerJoin('election2.designation', 'designation2')
+                    ->where('election2.committee = c AND designation2.candidacyStartDate <= :now AND :now <= designation2.voteEndDate')
+                    ->getDQL()
+            ))
             ->where('c.status = :status')
             ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, 'cm.committee = c')
-            ->leftJoin('cm.committeeCandidacy', 'candidacy')
-            ->leftJoin('cm.adherent', 'adherent')
             ->setParameters([
                 'status' => Committee::APPROVED,
                 'male' => Genders::MALE,
                 'female' => Genders::FEMALE,
+                'now' => new \DateTime(),
                 'true' => true,
             ])
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
-            ->groupBy('c')
+            ->groupBy('c.id')
         ;
 
         $this->applyReferentGeoFilter($qb, $referent, 'c');
