@@ -155,6 +155,10 @@
     width: 100%;
     overflow-x: auto;
     padding-bottom: 70px;
+
+    &.pb-small {
+        padding-bottom: 30px;
+    }
 }
 
 .datagrid__action {
@@ -176,10 +180,6 @@
     color: $dark;
     font-size: $text--size-small;
     margin-bottom: 15px;
-
-    &.small-min-width {
-        min-width: 450px;
-    }
 
     thead {
         @include manager-table-thead;
@@ -366,6 +366,28 @@
     }
 }
 
+.datagrid__table-row {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: $tablet) {
+        flex-direction: row;
+    }
+
+    .datagrid__table-manager {
+        min-width: auto;
+    }
+
+    .datagrid__table-container {
+        @media (min-width: $tablet) {
+            margin-right: 40px;
+
+            &:last-child {
+                margin-top: 0;
+            }
+        }
+    }
+}
 
 .datagrid__pager {
     margin-top: 20px;
