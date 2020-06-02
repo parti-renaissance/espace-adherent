@@ -4,6 +4,11 @@
 {% set is_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
 
 {% block tab %}
+    <div class="l__wrapper--600 b__nudge--bottom-large text--justify">
+        Vous êtes membres de plusieurs comités ? Nous vous invitons à sélectionner un comité principal pour
+        participer aux désignations du binôme paritaire d'adhérent siégeant au Conseil territorial.
+    </div>
+
     <div class="l__wrapper--narrow b__nudge--bottom-huge">
         {% for membership in committeeMemberships %}
             {% set committee = membership.committee %}
