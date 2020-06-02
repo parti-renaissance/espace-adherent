@@ -2,7 +2,6 @@
 
 namespace App\Entity\Timeline;
 
-use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
@@ -10,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Knp\DoctrineBehaviors\Model\Translatable\Translatable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -88,7 +88,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      *
      * @Algolia\Attribute
      */
-    private $major = false;
+    private $major;
 
     /**
      * @var Profile[]|Collection
@@ -151,10 +151,9 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         $this->themes = new ArrayCollection($themes);
         $this->manifesto = $manifesto;
         $this->savedThemes = new ArrayCollection();
-        $this->translations = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         /** @var MeasureTranslation $translation */
         if ($translation = $this->translate()) {

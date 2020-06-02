@@ -35,9 +35,6 @@ doctrine:
             softdeleteable:
                 class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                 enabled: true
-            oneLocale:
-                class: A2lix\I18nDoctrineBundle\Doctrine\ORM\Filter\OneLocaleFilter
-                enabled: true
             enabled:
                 class:   App\Doctrine\Filter\EnabledFilter
                 enabled: true

@@ -3,13 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Timeline\Manifesto;
-use App\Entity\Timeline\ManifestoTranslation;
 use App\Entity\Timeline\Measure;
-use App\Entity\Timeline\MeasureTranslation;
 use App\Entity\Timeline\Profile;
-use App\Entity\Timeline\ProfileTranslation;
 use App\Entity\Timeline\Theme;
-use App\Entity\Timeline\ThemeTranslation;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -386,20 +382,19 @@ class LoadTimelineData extends AbstractFixture
         foreach (self::PROFILES as $reference => $metadatas) {
             $profil = new Profile();
 
-            $profil->addTranslation(new ProfileTranslation(
-                'fr',
-                $metadatas['title']['fr'],
-                $metadatas['slug']['fr'],
-                $metadatas['description']['fr']
-            ));
-            $profil->addTranslation(new ProfileTranslation(
-                'en',
-                $metadatas['title']['en'],
-                $metadatas['slug']['en'],
-                $metadatas['description']['en']
-            ));
+            $translation = $profil->translate('fr');
+            $translation->setTitle($metadatas['title']['fr']);
+            $translation->setSlug($metadatas['slug']['fr']);
+            $translation->setDescription($metadatas['description']['fr']);
+
+            $translation = $profil->translate('en');
+            $translation->setTitle($metadatas['title']['en']);
+            $translation->setSlug($metadatas['slug']['en']);
+            $translation->setDescription($metadatas['description']['en']);
 
             $this->addReference($reference, $profil);
+
+            $profil->mergeNewTranslations();
 
             $manager->persist($profil);
         }
@@ -407,20 +402,19 @@ class LoadTimelineData extends AbstractFixture
         foreach (self::THEMES as $reference => $metadatas) {
             $theme = new Theme($metadatas['featured'] ?? false);
 
-            $theme->addTranslation(new ThemeTranslation(
-                'fr',
-                $metadatas['title']['fr'],
-                $metadatas['slug']['fr'],
-                $metadatas['description']['fr']
-            ));
-            $theme->addTranslation(new ThemeTranslation(
-                'en',
-                $metadatas['title']['en'],
-                $metadatas['slug']['en'],
-                $metadatas['description']['en']
-            ));
+            $translation = $theme->translate('fr');
+            $translation->setTitle($metadatas['title']['fr']);
+            $translation->setSlug($metadatas['slug']['fr']);
+            $translation->setDescription($metadatas['description']['fr']);
+
+            $translation = $theme->translate('en');
+            $translation->setTitle($metadatas['title']['en']);
+            $translation->setSlug($metadatas['slug']['en']);
+            $translation->setDescription($metadatas['description']['en']);
 
             $this->addReference($reference, $theme);
+
+            $theme->mergeNewTranslations();
 
             $manager->persist($theme);
         }
@@ -428,18 +422,17 @@ class LoadTimelineData extends AbstractFixture
         foreach (self::MANIFESTOS as $reference => $metadatas) {
             $manifesto = new Manifesto();
 
-            $manifesto->addTranslation(new ManifestoTranslation(
-                'fr',
-                $metadatas['title']['fr'],
-                $metadatas['slug']['fr'],
-                $metadatas['description']['fr']
-            ));
-            $manifesto->addTranslation(new ManifestoTranslation(
-                'en',
-                $metadatas['title']['en'],
-                $metadatas['slug']['en'],
-                $metadatas['description']['en']
-            ));
+            $translation = $manifesto->translate('fr');
+            $translation->setTitle($metadatas['title']['fr']);
+            $translation->setSlug($metadatas['slug']['fr']);
+            $translation->setDescription($metadatas['description']['fr']);
+
+            $translation = $manifesto->translate('en');
+            $translation->setTitle($metadatas['title']['en']);
+            $translation->setSlug($metadatas['slug']['en']);
+            $translation->setDescription($metadatas['description']['en']);
+
+            $manifesto->mergeNewTranslations();
 
             $this->addReference($reference, $manifesto);
 
@@ -462,8 +455,11 @@ class LoadTimelineData extends AbstractFixture
                 true
             );
 
-            $measure->addTranslation(new MeasureTranslation('fr', $metadatas['title']['fr']));
-            $measure->addTranslation(new MeasureTranslation('en', $metadatas['title']['en']));
+            $measure->translate('fr')->setTitle($metadatas['title']['fr']);
+            $measure->translate('en')->setTitle($metadatas['title']['en']);
+
+            $measure->mergeNewTranslations();
+
             $manager->persist($measure);
         }
 

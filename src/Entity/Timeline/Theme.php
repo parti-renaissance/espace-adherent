@@ -2,7 +2,6 @@
 
 namespace App\Entity\Timeline;
 
-use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
@@ -11,6 +10,7 @@ use App\Entity\EntityMediaTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model\Translatable\Translatable;
 
 /**
  * @ORM\Table(name="timeline_themes")
@@ -50,7 +50,7 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
      *
      * @Algolia\Attribute
      */
-    private $featured = false;
+    private $featured;
 
     /**
      * @var Measure[]|Collection
@@ -63,14 +63,13 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     {
         $this->featured = $featured;
         $this->measures = new ArrayCollection();
-        $this->translations = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         /** @var ThemeTranslation $translation */
         if ($translation = $this->translate()) {
-            return $translation->getTitle();
+            return (string) $translation->getTitle();
         }
 
         return '';

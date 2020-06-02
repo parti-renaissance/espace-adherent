@@ -632,7 +632,7 @@
 
             <argument />
             <argument>App\Entity\Timeline\Manifesto</argument>
-            <argument>App\Controller\Admin\AdminTimelineManifestoController</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.timeline_profile" class="App\Admin\TimelineProfileAdmin">
@@ -640,7 +640,7 @@
 
             <argument />
             <argument>App\Entity\Timeline\Profile</argument>
-            <argument>App\Controller\Admin\AdminTimelineProfileController</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.timeline_theme" class="App\Admin\TimelineThemeAdmin">
@@ -648,7 +648,7 @@
 
             <argument />
             <argument>App\Entity\Timeline\Theme</argument>
-            <argument>App\Controller\Admin\AdminTimelineThemeController</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.timeline_measure" class="App\Admin\TimelineMeasureAdmin">
@@ -656,7 +656,7 @@
 
             <argument />
             <argument>App\Entity\Timeline\Measure</argument>
-            <argument>App\Controller\Admin\AdminTimelineMeasureController</argument>
+            <argument/>
         </service>
 
         <service id="app.admin.chez_vous_city" class="App\Admin\ChezVous\CityAdmin">
@@ -795,8 +795,7 @@
         </service>
 
         <service id="app.admin.empty_translation_remover_extension" class="App\Admin\Extension\EmptyTranslationRemoverAdminExtension">
-            <argument type="service" id="App\Form\EventListener\EmptyTranslationRemoverListener" />
-
+            <tag name="sonata.admin.extension" target="app.admin.timeline_manifesto" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />

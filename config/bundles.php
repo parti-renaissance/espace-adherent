@@ -21,7 +21,7 @@ return [
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle::class => ['all' => true],
     Endroid\QrCodeBundle\EndroidQrCodeBundle::class => ['all' => true],
-    A2lix\I18nDoctrineBundle\A2lixI18nDoctrineBundle::class => ['all' => true],
+    Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle::class => ['all' => true],
     A2lix\TranslationFormBundle\A2lixTranslationFormBundle::class => ['all' => true],
     Sonata\CoreBundle\SonataCoreBundle::class => ['all' => true],
     Sonata\BlockBundle\SonataBlockBundle::class => ['all' => true],
