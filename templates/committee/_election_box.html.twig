@@ -149,6 +149,10 @@
 
 {% if (count_male_candidates > 0 and count_female_candidates < 1) or (count_male_candidates < 1 and count_female_candidates > 0) %}
     <div class="alert alert--tips b__nudge--bottom-small">
-        {{ count_female_candidates < 1 ? 'Aucune femme n\'est encore candidate' : 'Aucun homme n\'est encore candidat'}}. La désignation ne pourra pas avoir lieu.
+        {% if count_female_candidates < 1 %}
+            Il n'y a pas encore de candidate dans votre comité. N'hésitez pas à en parler aux adhérentes autour de vous !
+        {% else %}
+            Il n'y a pas encore de candidat dans votre comité. N'hésitez pas à en parler aux adhérents autour de vous !
+        {% endif %}
     </div>
 {% endif %}
