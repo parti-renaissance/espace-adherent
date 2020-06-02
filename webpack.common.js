@@ -61,11 +61,13 @@ module.exports = {
         },
     },
     plugins: [
-        new CopyWebpackPlugin([
-            { from: path.resolve(__dirname, 'node_modules/select2/dist/js/select2.min.js'), to: './../select2/' },
-            { from: path.resolve(__dirname, 'node_modules/select2/dist/js/i18n/fr.js'), to: './../select2/' },
-            { from: path.resolve(__dirname, 'node_modules/select2/dist/css/select2.min.css'), to: './../select2/' },
-            { from: path.resolve(__dirname, 'node_modules/cropperjs/dist/cropper.min.css'), to: './../css/' },
-        ]),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: path.resolve(__dirname, 'node_modules/select2/dist/js/select2.min.js'), to: './../select2/' },
+                { from: path.resolve(__dirname, 'node_modules/select2/dist/js/i18n/fr.js'), to: './../select2/' },
+                { from: path.resolve(__dirname, 'node_modules/select2/dist/css/select2.min.css'), to: './../select2/' },
+                { from: path.resolve(__dirname, 'node_modules/cropperjs/dist/cropper.min.css'), to: './../css/' },
+            ],
+        }),
     ],
 };

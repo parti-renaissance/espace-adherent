@@ -5,7 +5,7 @@ ENV LANG="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8" \
     TERM="xterm" \
     DEBIAN_FRONTEND="noninteractive" \
-    NODE_VERSION=8.14.0 \
+    NODE_VERSION=10.20.1 \
     GOSU_VERSION=1.11 \
     COMPOSER_ALLOW_SUPERUSER=1
 
