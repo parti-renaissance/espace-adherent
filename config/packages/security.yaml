@@ -450,6 +450,11 @@ security:
             switch_user: true
             anonymous:
                 secret: '%env(SECRET)%'
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 7890000 # 3 months in seconds
+                path: /
+                token_provider: Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider
             logout:
                 path: logout
                 target: homepage

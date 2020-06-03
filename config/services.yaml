@@ -232,3 +232,5 @@ services:
             $firewallMap: '@security.firewall.map'
 
     App\Producer\MailerProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
+
+    Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider: ~
