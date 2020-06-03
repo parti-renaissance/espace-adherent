@@ -11,6 +11,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class LoadCertificationData extends Fixture
 {
@@ -19,7 +20,7 @@ class LoadCertificationData extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $this->certificationManager = new CertificationManager($manager, $this->getStorage());
+        $this->certificationManager = new CertificationManager($manager, $this->getStorage(), $this->getMessageBus());
         $this->certificationAuthorityManager = new CertificationAuthorityManager($manager);
 
         /** @var Adherent $adherent1 */
@@ -92,5 +93,10 @@ class LoadCertificationData extends Fixture
     private function getStorage(): Filesystem
     {
         return  $this->container->get('app.storage');
+    }
+
+    private function getMessageBus(): MessageBusInterface
+    {
+        return $this->container->get(MessageBusInterface::class);
     }
 }
