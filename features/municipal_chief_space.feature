@@ -1,3 +1,4 @@
+@municipalSpace
 @javascript
 Feature:
   As a municipal chief
