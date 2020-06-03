@@ -1,0 +1,35 @@
+{% extends 'designation/show_layout.html.twig' %}
+
+{% block designation_show_content %}
+    <div class="datagrid__pre-table b__nudge--bottom-50">
+        <h3>Résultats par scrutin : <span class="text--pink">{{ app.request.query.has('femme') ? 'Femme' : 'Homme' }}</span></h3>
+
+        <span class="datagrid__count">
+            <span>{{ candidate_groups|length|number_format(0, ',', ' ') }}</span> candidat{{ app.request.query.has('femme') ? 'e' }}s
+        </span>
+    </div>
+
+    <table class="datagrid__table-manager">
+        <thead>
+            <tr>
+                <th>Nom - prénom</th>
+                <th>Résultats</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for group in candidate_groups %}
+                <tr>
+                    <td>{{ group.candidates|first.fullName }}</td>
+                    <td>
+                        {% if election.isResultPeriodActive() %}
+                            {{ results[group.uuid.toString] ?? 0 }}
+                        {% else %}
+                            ~
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

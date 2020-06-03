@@ -1,0 +1,48 @@
+{% extends 'designation/show_layout.html.twig' %}
+
+{% block designation_show_content %}
+    <div class="datagrid__pre-table b__nudge--bottom-50">
+        <h3>Liste des inscrits / émargements</h3>
+
+        <span class="datagrid__count">
+            <span>{{ voters|length|number_format(0, ',', ' ') }}</span> inscrits
+        </span>
+    </div>
+
+    <table class="datagrid__table-manager">
+        <thead>
+            <tr>
+                <th>Nom - prénom</th>
+                <th>Date d'émargement</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for row in voters %}
+                <tr>
+                    <td>
+                        {% if row.firstName %}
+                            {{ row.firstName }} {{ row.lastName }}
+                        {% else %}
+                            <i class="text--muted text--smallest">Adhérent supprimé</i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if election.isResultPeriodActive() %}
+                            {{ row.vote ? row.vote|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}
+                        {% else %}
+                            ~
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2" class="text--center">
+                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" alt="aucun résultat" class="icn--no-result" width="30" />
+                        La liste est vide
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -14,13 +14,12 @@
             </nav>
         </div>
 
-
         <div class="l__wrapper--medium">
             <div class="candidate-tabs--container">
                 <div class="candidate-tab candidate-tab--1">
                     <div class="tab--container">
                         {% include 'voting_platform/results/_candiates_list.html.twig' with {
-                            'candidate_groups': election.candidateGroups.womanCandidateGroups,
+                            'candidate_groups': candidate_groups.womanCandidateGroups,
                             'candidates': results.aggregated.candidates,
                             'resume': results.aggregated.resume[0],
                         } %}
@@ -34,7 +33,7 @@
                 <div class="candidate-tab candidate-tab--2" style="display: none;">
                     <div class="tab--container">
                         {% include 'voting_platform/results/_candiates_list.html.twig' with {
-                            'candidate_groups': election.candidateGroups.manCandidateGroups,
+                            'candidate_groups': candidate_groups.manCandidateGroups,
                             'candidates': results.aggregated.candidates,
                             'resume': results.aggregated.resume[1],
                         } %}

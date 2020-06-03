@@ -29,7 +29,7 @@ class VoteController extends AbstractController
             ->createForm(
                 $this->getCandidateFormType($election),
                 $voteCommand,
-                ['candidates' => $candidateGroups = $this->candidateGroupRepository->findForElection($election)]
+                ['candidates' => $candidateGroups = $this->candidateGroupRepository->findForElection($election)->toArray()]
             )
             ->handleRequest($request)
         ;

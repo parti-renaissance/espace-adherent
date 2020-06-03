@@ -7,6 +7,7 @@ use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
+use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
@@ -22,6 +23,8 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
 {
     public const ELECTION_UUID1 = 'd678c30a-a94b-4ecf-8cfc-0e06d1fb16df';
     public const ELECTION_UUID2 = '278ec098-e5f2-45e3-9faf-a9b2cb9305fd';
+    public const ELECTION_UUID3 = 'b81c3585-c802-48f6-9dca-19d1d4e08c44';
+    public const ELECTION_UUID4 = '642ee8e6-916b-43b2-b0f9-8a821e5d9a2b';
 
     /**
      * @var \Faker\Generator
@@ -116,23 +119,68 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-5')));
 
         $this->loadCandidates($election);
-        $this->loadVoters($election);
-        $this->loadResults($election);
+        $votersList = $this->loadVoters($election);
+        $this->loadResults($election, $votersList);
+
+        $this->manager->persist($election);
+
+        $election = new Election(
+            $this->getReference('designation-3'),
+            Uuid::fromString(self::ELECTION_UUID3)
+        );
+
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-4')));
+
+        $this->loadCandidates($election);
+        $votersList = $this->loadVoters($election);
+        $this->loadResults($election, $votersList);
+
+        $this->manager->persist($election);
+
+        $election = new Election(
+            $this->getReference('designation-3'),
+            Uuid::fromString(self::ELECTION_UUID4)
+        );
+
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
+
+        $this->loadCandidates($election);
+        $votersList = $this->loadVoters($election);
+        $this->loadResults($election, $votersList);
+
+        $this->manager->persist($election);
+
+        $election = new Election(
+            $this->getReference('designation-4'),
+            Uuid::fromString(self::ELECTION_UUID4)
+        );
+
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
+
+        $this->loadCandidates($election);
+        $votersList = $this->loadVoters($election);
+        $this->loadResults($election, $votersList);
 
         $this->manager->persist($election);
     }
 
-    private function loadVoters(Election $election): void
+    private function loadVoters(Election $election): VotersList
     {
         $adherent = $this->getReference('assessor-1');
 
         $list = new VotersList($election);
         $list->addVoter($this->voters[$adherent->getId()] ?? $this->voters[$adherent->getId()] = new Voter($adherent));
 
+        for ($i = 1; $i <= 9; ++$i) {
+            $list->addVoter(new Voter());
+        }
+
         $this->manager->persist($list);
+
+        return $list;
     }
 
-    private function loadResults(Election $election): void
+    private function loadResults(Election $election, VotersList $votersList): void
     {
         $candidateGroups = $election->getCandidateGroups();
 
@@ -144,11 +192,17 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             'men' => [],
         ];
 
-        for ($i = 1; $i < 100; ++$i) {
+        foreach ($votersList->getVoters() as $i => $voter) {
+            if (0 === $i % 7) {
+                // simulate abstention
+                continue;
+            }
+
             $result = new VoteResult($election, VoteResult::generateVoterKey());
 
             // WOMAN
             $choice = new VoteChoice();
+
             if (0 === $i % 10) {
                 $choice->setIsBlank(true);
             } else {
@@ -167,6 +221,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             }
             $result->addVoteChoice($choice);
 
+            $this->manager->persist(new Vote($voter, $election));
             $this->manager->persist($result);
         }
 

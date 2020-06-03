@@ -22,7 +22,7 @@ class ResultsController extends AbstractController
             sprintf('voting_platform/results/%s.html.twig', $election->getDesignationType()),
             $election,
             [
-                'candidate_groups' => $this->candidateGroupRepository->findWithResultsForElection($election),
+                'candidate_groups' => $this->candidateGroupRepository->findForElection($election),
                 'results' => $resultAggregator->getResults($election),
             ]
         );

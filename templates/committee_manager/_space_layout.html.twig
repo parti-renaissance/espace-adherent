@@ -32,6 +32,10 @@
                     <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' }}">
                         <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Mes messages</a>
                     </li>
+
+                    <li class="{{ is_active_route(app.request, 'app_supervisor_designations_*') ? 'active' }}">
+                        <a href="{{ path('app_supervisor_designations_list', {committee_slug: committee.slug}) }}">Désignations</a>
+                    </li>
                 {% endif %}
 
                 <li>

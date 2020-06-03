@@ -124,6 +124,10 @@
                 &:hover {
                     color: $black;
                 }
+
+                &.active {
+                    color: $pink-hover;
+                }
             }
         }
 

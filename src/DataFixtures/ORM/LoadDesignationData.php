@@ -34,6 +34,28 @@ class LoadDesignationData extends Fixture
         $this->setReference('designation-2', $designation);
         $manager->persist($designation);
 
+        $designation = new Designation();
+        $designation->setZones([DesignationZoneEnum::FRANCE]);
+        $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
+        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTime('-1 week'));
+        $designation->setVoteStartDate(new \DateTime('-6 days'));
+        $designation->setVoteEndDate(new \DateTime('-1 hour'));
+
+        $this->setReference('designation-3', $designation);
+        $manager->persist($designation);
+
+        $designation = new Designation();
+        $designation->setZones([DesignationZoneEnum::FRANCE]);
+        $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
+        $designation->setCandidacyStartDate(new \DateTime('-6 months'));
+        $designation->setCandidacyEndDate(new \DateTime('-5 months'));
+        $designation->setVoteStartDate(new \DateTime('-5 months'));
+        $designation->setVoteEndDate(new \DateTime('-4 months'));
+
+        $this->setReference('designation-4', $designation);
+        $manager->persist($designation);
+
         $manager->flush();
     }
 }

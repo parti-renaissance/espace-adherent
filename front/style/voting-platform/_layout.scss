@@ -73,22 +73,6 @@
         border: 1px solid $lines-grey;
         background-color: $white;
         border-radius: 3px;
-
-        .box__content {
-            width: 100%;
-
-            .candidate-name {
-                font-weight: normal;
-            }
-
-            .candidate-photo {
-                overflow: hidden;
-
-                img {
-                    height: 100%;
-                }
-            }
-        }
     }
 
     .election-vote {
@@ -422,6 +406,24 @@
                 .paper {
                     animation-name: slideIn;
                 }
+            }
+        }
+    }
+}
+
+.candidate__box {
+    .box__content {
+        width: 100%;
+
+        .candidate-name {
+            font-weight: normal;
+        }
+
+        .candidate-photo {
+            overflow: hidden;
+
+            img {
+                height: 100%;
             }
         }
     }

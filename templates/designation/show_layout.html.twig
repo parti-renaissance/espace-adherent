@@ -1,0 +1,76 @@
+{% extends 'designation/_layout.html.twig' %}
+
+{% set designation = election.designation %}
+
+{% block designation_content %}
+    <section>
+        <div class="b__nudge--bottom">
+            <a href="{{ path("app_#{space_type}_designations_list", route_params|default({})) }}" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
+        </div>
+
+        <div class="datagrid__pre-table b__nudge--bottom">
+            <h3>{{ "designation.label.type_#{designation.type}"|trans }}
+                <span class="text--muted">
+                    {{ designation.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }} ~
+                    {{ designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}
+                </span>
+            </h3>
+        </div>
+
+        <div class="manager-overview">
+            <div class="manager-overview__row">
+                <div class="manager-overview__case">
+                    <span class="manager-overview__case--section">Inscrits</span>
+                    <span class="manager-overview__case--value"><span class="text--pink">{{ election_stats.voters_count }}</span></span>
+                    <h1 class="manager-overview__case--title">Inscrit{{ election_stats.voters_count > 1 ? 's' }}</h1>
+                </div>
+                <div class="manager-overview__case">
+                    <span class="manager-overview__case--section">Participants</span>
+                    <span class="manager-overview__case--value">
+                        <span class="text--pink">{{ election_stats.votes_count }}</span>
+                        <span class="text--medium">
+                            ({{ election_stats.voters_count ? (election_stats.votes_count * 100 / election_stats.voters_count)|round(2) : 0 }}%)
+                        </span>
+                    </span>
+                    <h1 class="manager-overview__case--title">Participant{{ election_stats.votes_count > 1 ? 's' }}</h1>
+                </div>
+                <div class="manager-overview__case">
+                    <span class="manager-overview__case--section">Candidatures</span>
+                    <span class="manager-overview__case--value">
+                        <span class="text--pink">{{ election_stats.woman_count }}</span><span class="text--small text--uppercase">Femme</span> /
+                        <span class="text--pink">{{ election_stats.man_count }}</span><span class="text--small text--uppercase">Homme</span>
+                    </span>
+                    <h1 class="manager-overview__case--title">Candidatures</h1>
+                </div>
+            </div>
+
+            <div class="datagrid__table__tabs b__nudge--top-15">
+                {% set link_params = {uuid: election.uuid}|merge(route_params|default({})) %}
+
+                <div class="datagrid__table__tabs__items">
+                    <h3>
+                        <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_voters_list") ? 'active' }}"
+                           href="{{ path("app_#{space_type}_designations_voters_list", link_params) }}">Liste d'émargement</a>
+                    </h3>
+                    <span class="separator"></span>
+                    <h3>
+                        <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('femme') ? 'active' }}"
+                           href="{{ path("app_#{space_type}_designations_results", {femme: true}|merge(link_params)) }}">Résultats Femme</a>
+                    </h3>
+                    <span class="separator"></span>
+                    <h3>
+                        <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('homme') ? 'active' }}"
+                           href="{{ path("app_#{space_type}_designations_results", {homme: true}|merge(link_params)) }}">Résultats Homme</a>
+                    </h3>
+                    <span class="separator"></span>
+                    <h3>
+                        <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_votes") ? 'active' }}"
+                           href="{{ path("app_#{space_type}_designations_votes", link_params) }}">Bulletins dépouillés</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        {% block designation_show_content %}{% endblock %}
+    </section>
+{% endblock %}

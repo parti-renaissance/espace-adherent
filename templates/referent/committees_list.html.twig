@@ -6,13 +6,13 @@
             <thead>
                 <tr>
                     <th width="250">Nom</th>
+                    <th width="150">Ville (code postal)</th>
+                    <th width="20" class="text--center">Membre</th>
                     {% if is_canary_enabled() %}
-                        <th width="20">Candidates</th>
-                        <th width="20">Candidats</th>
-                        <th width="20">Votants</th>
+                        <th width="20" class="text--center">Votants</th>
+                        <th width="20" class="text--center">Candidates / Candidats</th>
+                        <th width="20" class="text--center">Action</th>
                     {% endif %}
-                    <th width="100">Code postal</th>
-                    <th width="20">Membre</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,13 +24,19 @@
                             {{ committee.name }}
                         </a>
                     </td>
+                    <td>{{ committee.cityName }} ({{ committee.postalCode }})</td>
+                    <td class="text--center">{{ committee.membersCount }}</td>
                     {% if is_canary_enabled() %}
-                        <td>{{ committee_row.total_candidacy_female }}</td>
-                        <td>{{ committee_row.total_candidacy_male }}</td>
-                        <td>{{ committee_row.total_voters }}</td>
+                        <td class="text--center">{{ committee_row.total_voters }}</td>
+                        <td class="text--center">
+                            {% if committee_row.total_candidacy_female is not null %}
+                                {{ committee_row.total_candidacy_female }} F / {{ committee_row.total_candidacy_male }} H
+                            {% endif %}
+                        </td>
+                        <td class="text--center">
+                            <a href="{{ path('app_referent_designations_list', {committee_slug: committee.slug}) }}" class="link--no-decor">Désignations</a>
+                        </td>
                     {% endif %}
-                    <td>{{ committee.postalCode }}</td>
-                    <td>{{ committee.membersCount }}</td>
                 </tr>
             {% else %}
                 <tr>
