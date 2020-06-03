@@ -44,13 +44,13 @@ jobs:
             - checkout
 
             - restore_cache:
-                  key: composer-{{ checksum "composer.lock" }}
+                  key: composer-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
             - restore_cache:
-                  key: npm-{{ checksum "yarn.lock" }}
+                  key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
             - restore_cache:
-                  key: npm-adi-{{ checksum "./public/apps/atelier-des-idees/yarn.lock" }}
+                  key: npm-adi-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/atelier-des-idees/yarn.lock" }}
             - restore_cache:
-                  key: npm-cp-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
+                  key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
 
             - *generate_docker_hashes
             - *authenticate_on_registry
@@ -72,19 +72,19 @@ jobs:
             - save_cache:
                   paths:
                       - ./vendor
-                  key: composer-{{ checksum "composer.lock" }}
+                  key: composer-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
             - save_cache:
                   paths:
                       - ./node_modules
-                  key: npm-{{ checksum "yarn.lock" }}
+                  key: npm-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}
             - save_cache:
                   paths:
                       - ./public/apps/atelier-des-idees/node_modules
-                  key: npm-adi-{{ checksum "./public/apps/atelier-des-idees/yarn.lock" }}
+                  key: npm-adi-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/atelier-des-idees/yarn.lock" }}
             - save_cache:
                   paths:
                       - ./public/apps/projets-citoyens/node_modules
-                  key: npm-cp-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
+                  key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
 
             - persist_to_workspace:
                   root: ./
