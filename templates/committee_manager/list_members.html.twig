@@ -38,6 +38,12 @@
                                 {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
                                 {{ form_errors(form.city) }}
                             </div>
+
+                            {% if form.votersOnly is defined %}
+                                <div class="filter__row">
+                                    {{ form_row(form.votersOnly, {label: 'Votant dans ce comité'}) }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -132,10 +138,7 @@
                     </th>
 
                     {% if is_supervisor %}
-                        {% if is_canary_enabled()  %}
-                            <th width="150px">Votant dans le comité</th>
-                        {% endif %}
-
+                        <th width="150px">Votant dans le comité</th>
                         <th style="min-width: 150px;">Actions</th>
                     {% endif %}
                 </tr>
@@ -172,14 +175,11 @@
                         <td class="member-subscription-date">{{ membership.subscriptionDate|date('d/m/Y') }}</td>
 
                         {% if is_supervisor %}
-                            {% if is_canary_enabled() %}
-                                <td>
-                                    <span class="status status__{{ membership.isVotingCommittee() ? '1' : '2' }}">
-                                        {{ membership.isVotingCommittee() ? 'Votant(e)' : 'Non-votant(e)' }}
-                                    </span>
-                                </td>
-                            {% endif %}
-
+                            <td>
+                                <span class="status status__{{ membership.isVotingCommittee() ? '1' : '2' }}">
+                                    {{ membership.isVotingCommittee() ? 'Votant(e)' : 'Non-votant(e)' }}
+                                </span>
+                            </td>
                             <td>
                                 {% if is_promotable_host %}
                                     <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"

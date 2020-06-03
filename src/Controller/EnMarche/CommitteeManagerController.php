@@ -26,6 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -98,15 +99,18 @@ class CommitteeManagerController extends Controller
      * @Security("committee.isApproved()")
      */
     public function listMembersAction(
+        UserInterface $adherent,
         Request $request,
         Committee $committee,
         CommitteeMembershipRepository $repository,
         SerializerInterface $serializer
     ): Response {
+        /** @var Adherent $adherent */
         $form = $this
             ->createForm(CommitteeMemberFilterType::class, $filter = new ListFilterObject(), [
                 'method' => 'GET',
                 'csrf_protection' => false,
+                'is_supervisor' => $adherent->isSupervisorOf($committee),
             ])
             ->handleRequest($request)
         ;

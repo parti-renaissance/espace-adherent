@@ -119,7 +119,7 @@
             </div>
         </section>
     {% else %}
-        {% if is_canary_enabled() and has_role_adherent and committee.hasActiveElection and membership %}
+        {% if has_role_adherent and committee.hasActiveElection and membership %}
             {% include 'committee/_election_box.html.twig' %}
 
             <div id="modal-wrapper"></div>
@@ -212,7 +212,7 @@
                     }
                 }
 
-                {% if is_canary_enabled() and membership and committee.committeeElection %}
+                {% if membership and committee.committeeElection %}
                     App.runCandidacyModal('#candidacies-list-modal--trigger', '{{ committee.uuid }}');
                 {% endif %}
             {% endif %}
