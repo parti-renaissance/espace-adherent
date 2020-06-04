@@ -177,6 +177,11 @@
 
             &__tabs {
                 &.inputs {
+                    &--3 {
+                        .filter__radio__tab {
+                            flex-basis: 33%;
+                        }
+                    }
                     &--4 {
                         .filter__radio__tab {
                             flex-basis: 25%;

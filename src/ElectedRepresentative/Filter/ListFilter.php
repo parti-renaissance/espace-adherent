@@ -8,6 +8,55 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ListFilter
 {
     /**
+     * @var string|null
+     *
+     * @Assert\Length(max=255)
+     */
+    private $firstName;
+
+    /**
+     * @var string|null
+     *
+     * @Assert\Length(max=255)
+     */
+    private $lastName;
+
+    /**
+     * @var string|null
+     */
+    private $gender;
+
+    /**
+     * @var array|null
+     */
+    private $labels = [];
+
+    /**
+     * @var array|null
+     */
+    private $mandates = [];
+
+    /**
+     * @var array|null
+     */
+    private $politicalFunctions = [];
+
+    /**
+     * @var array|null
+     */
+    private $cities = [];
+
+    /**
+     * @var array|null
+     */
+    private $userListDefinitions = [];
+
+    /**
+     * @var bool|null
+     */
+    private $isAdherent;
+
+    /**
      * @var ReferentTag[]
      *
      * @Assert\NotNull
@@ -33,6 +82,96 @@ class ListFilter
     public function __construct(array $referentTags = [])
     {
         $this->referentTags = $referentTags;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getLabels(): ?array
+    {
+        return $this->labels;
+    }
+
+    public function setLabels(?array $labels): void
+    {
+        $this->labels = $labels;
+    }
+
+    public function getMandates(): ?array
+    {
+        return $this->mandates;
+    }
+
+    public function setMandates(?array $mandates): void
+    {
+        $this->mandates = $mandates;
+    }
+
+    public function getPoliticalFunctions(): ?array
+    {
+        return $this->politicalFunctions;
+    }
+
+    public function setPoliticalFunctions(?array $politicalFunctions): void
+    {
+        $this->politicalFunctions = $politicalFunctions;
+    }
+
+    public function getCities(): ?array
+    {
+        return $this->cities;
+    }
+
+    public function setCities(?array $cities): void
+    {
+        $this->cities = $cities;
+    }
+
+    public function getUserListDefinitions(): ?array
+    {
+        return $this->userListDefinitions;
+    }
+
+    public function setUserListDefinitions(?array $userListDefinitions): void
+    {
+        $this->userListDefinitions = $userListDefinitions;
+    }
+
+    public function isAdherent(): ?bool
+    {
+        return $this->isAdherent;
+    }
+
+    public function setIsAdherent(?bool $isAdherent): void
+    {
+        $this->isAdherent = $isAdherent;
     }
 
     /**

@@ -13,6 +13,90 @@
                 {% endif %}
             </div>
 
+            <div class="manager__filters">
+                <div class="manager__filters__form">
+                    {{ form_start(form) }}
+
+                    <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+                    {{ form_errors(form) }}
+
+                    <div class="manager__filters__row">
+                        <div class="manager__filters__section">
+                            <div class="manager__filters__group">
+                                <div class="filter__row">
+                                    <label class="filter__label">Nom</label>
+                                    {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                                    {{ form_errors(form.lastName) }}
+                                </div>
+
+                                <div class="filter__row">
+                                    <label class="filter__label">Prénom</label>
+                                    {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                                    {{ form_errors(form.firstName) }}
+                                </div>
+
+                                <div class="filter__row">
+                                    <label class="filter__label">Genre</label>
+                                    {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="manager__filters__section">
+                            <div class="manager__filters__group">
+
+                                <div class="filter__row">
+                                    <label class="filter__label">Étiquettes</label>
+                                    {{ form_widget(form.labels, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'elected_representative.filter.labels'|trans}}) }}
+                                </div>
+
+                                <div class="filter__row">
+                                    <label class="filter__label">Mandats</label>
+                                    {{ form_widget(form.mandates, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'elected_representative.filter.mandates'|trans}}) }}
+                                </div>
+
+                                <div class="filter__row">
+                                    <label class="filter__label">Fonctions</label>
+                                    {{ form_widget(form.politicalFunctions, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'elected_representative.filter.political_functions'|trans}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="manager__filters__section">
+                            <div class="manager__filters__group">
+                                <div class="filter__row">
+                                    <label class="filter__label">Villes</label>
+                                    {{ form_widget(form.cities, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'elected_representative.filter.cities'|trans}}) }}
+                                </div>
+
+                                <div class="filter__row">
+                                    <label class="filter__label">Labels</label>
+                                    {{ form_widget(form.userListDefinitions, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'elected_representative.filter.user_list_definitions'|trans}}) }}
+                                </div>
+
+                                <div class="filter__row">
+                                    <label class="filter__label">Adhérent</label>
+                                    {{ form_widget(form.isAdherent, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__actions b__nudge--top">
+                        <button type="submit" class="btn btn--black b__nudge--bottom-medium">Appliquer</button>
+
+                        {% if form.vars.submitted %}
+                            <a href="{{ path('app_referent_elected_representatives_list') }}" class="btn btn--no-border b__nudge--bottom-medium">
+                                Réinitialiser les filtres
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
             <div class="datagrid">
                 <div class="user-list-definition-manager-wrapper"></div>
 
@@ -93,9 +177,9 @@
                                         {% endfor %}
                                     </td>
                                     <td>
-                            <span class="status status__{{ elected_representative.isAdherent ? '1' : '2' }}">
-                                {{ (elected_representative.isAdherent is null ? 'global.maybe' : (elected_representative.isAdherent ? 'global.yes' : 'global.no'))|trans }}
-                            </span>
+                                        <span class="status status__{{ elected_representative.isAdherent ? '1' : '2' }}">
+                                            {{ (elected_representative.isAdherent ? 'global.yes' : 'global.no')|trans }}
+                                        </span>
                                     </td>
                                     <td>
                                         <a href="{{ path('app_referent_elected_representatives_show', { uuid: elected_representative.uuid }) }}" class="text--blue--dark link--no-decor">Afficher</a>
@@ -126,11 +210,25 @@
     </main>
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block final_javascripts %}
     {{ parent() }}
 
+    <script type="text/javascript" src="{{ asset('select2/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('select2/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
+            $('.multi_select2').each(function () {
+                $(this).select2({
+                    placeholder: this.dataset.placeholder || '',
+                    theme: 'default em-filters'
+                });
+            });
+
             $('td.labels').on('click', '[id^="show_more_labels_"], [id^="show_less_labels_"]', function() {
                 let elementId = $(this).attr('id');
                 $(this).click(function(){

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\ElectedRepresentative\Zone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -97,6 +98,8 @@ class LoadZoneData extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        AutoIncrementResetter::resetAutoIncrement($manager, 'elected_representative_zone');
+
         foreach (self::CITIES as $code => $name) {
             $zoneCity = new Zone($this->getReference('zone-category-ville'), $name);
             $zoneCity->addReferentTag($this->getReference('referent_tag_'.substr($code, 0, 2)));

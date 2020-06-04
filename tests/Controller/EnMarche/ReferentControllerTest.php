@@ -5,7 +5,6 @@ namespace Tests\App\Controller\EnMarche;
 use App\Address\GeoCoder;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\DataFixtures\ORM\LoadElectedRepresentativeData;
-use App\Entity\Event;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentManagedUsersMessage;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
@@ -518,16 +517,119 @@ class ReferentControllerTest extends WebTestCase
         $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Conseiller(e) municipal(e) (NC)Clichy (92110)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Maire', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertContains('Président(e) d\'EPCI', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('PS (2016)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Non', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertContains('Conseiller(e) municipal(e) (DIV)Rouen (76000)Membre d\'EPCI (DIV)Rouen (76000)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('Conseiller(e) municipal(e) (DIV)Rouen (76000)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertContains(' G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(4)->text()));
-        $this->assertContains('Peut-être', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('Non', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertContains('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
         $this->assertContains('Oui', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
         $this->assertContains('LOBELL', $crawler->filter('tbody tr.referent__item')->eq(3)->text());
+    }
+
+    public function testFilterElectedRepresentatives()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus');
+
+        $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
+
+        // filter by lastname
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[lastName]'] = 'BOU';
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+
+        // filter by firstname
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[lastName]'] = 'BOU';
+        $form['f[firstName]'] = 'Delphine';
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+
+        // filter by labels
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[lastName]'] = '';
+        $form['f[firstName]'] = '';
+        $form['f[labels]'] = ['PS', 'LaREM'];
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+
+        // filter by politicalFunctions
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[labels]'] = ['PS', 'LaREM'];
+        $form['f[politicalFunctions]'] = ['mayor'];
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+
+        // filter by mandates
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[labels]'] = [];
+        $form['f[politicalFunctions]'] = [];
+        $form['f[mandates]'] = ['membre_EPCI', 'depute'];
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('LOBELL André', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+
+        // filter by gender
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[mandates]'] = [];
+        $form['f[gender]'] = 'female';
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+
+        // filter not adherents
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[gender]'] = '';
+        $form['f[isAdherent]'] = 0;
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(3, $crawler->filter('tbody tr.referent__item'));
+
+        // filter by cities
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[isAdherent]'] = 0;
+        $form['f[cities]'] = [6];
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('LOBELL André', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+
+        // filter by userListDefinitions
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[isAdherent]'] = 0;
+        $form['f[cities]'] = [6];
+        $form['f[userListDefinitions]'] = [3];
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
     }
 
     public function testListElectedRepresentativesForParis()
