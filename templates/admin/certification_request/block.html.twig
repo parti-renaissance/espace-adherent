@@ -93,7 +93,7 @@
             var blockCustomReason = $('#block-custom-reason');
 
             $('#{{ form.reason.vars.id }}').change(function() {
-                if ('other' == $(this).val()) {
+                if ('{{ constant('App\\Adherent\\Certification\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER')}}' == $(this).val()) {
                     blockCustomReason.show();
                 } else {
                     blockCustomReason.hide();

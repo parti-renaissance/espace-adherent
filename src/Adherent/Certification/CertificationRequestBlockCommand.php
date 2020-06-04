@@ -4,7 +4,7 @@ namespace App\Adherent\Certification;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CertificationRequestBlockCommand extends CertificationRequestModerationCommand
+class CertificationRequestBlockCommand extends AbstractCertificationRequestModerationCommand
 {
     public const BLOCK_REASON_IDENTITY_THEFT = 'identity_theft';
     public const BLOCK_REASON_FALSE_DOCUMENT = 'false_document';

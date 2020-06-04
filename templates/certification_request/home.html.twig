@@ -28,7 +28,7 @@
             {% if refusedCertificationRequest.refusalReason %}
                 <p>
                     Justification:
-                    {% if constant('App\\Adherent\\CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER') == refusedCertificationRequest.refusalReason %}
+                    {% if refusedCertificationRequest.isRefusedWithOtherReason %}
                         {{ refusedCertificationRequest.customRefusalReason }}
                     {% else %}
                         {{ ('certification_request.refusal_reason.' ~ refusedCertificationRequest.refusalReason)|trans }}

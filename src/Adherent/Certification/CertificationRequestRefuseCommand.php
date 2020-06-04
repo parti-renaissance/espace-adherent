@@ -4,7 +4,7 @@ namespace App\Adherent\Certification;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CertificationRequestRefuseCommand extends CertificationRequestModerationCommand
+class CertificationRequestRefuseCommand extends AbstractCertificationRequestModerationCommand
 {
     public const REFUSAL_REASON_DOCUMENT_NOT_IN_CONFORMITY = 'document_not_in_conformity';
     public const REFUSAL_REASON_DOCUMENT_NOT_READABLE = 'document_not_readable';

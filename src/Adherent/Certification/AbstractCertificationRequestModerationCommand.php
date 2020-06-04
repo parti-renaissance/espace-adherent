@@ -6,7 +6,7 @@ use App\Entity\Administrator;
 use App\Entity\CertificationRequest;
 use Symfony\Component\Validator\Constraints as Assert;
 
-abstract class CertificationRequestModerationCommand
+abstract class AbstractCertificationRequestModerationCommand
 {
     private $certificationRequest;
     private $administrator;

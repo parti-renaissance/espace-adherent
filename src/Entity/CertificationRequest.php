@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -331,5 +332,10 @@ class CertificationRequest
     public function setRefusalComment(?string $refusalComment): void
     {
         $this->refusalComment = $refusalComment;
+    }
+
+    public function isRefusedWithOtherReason(): bool
+    {
+        return CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER === $this->refusalReason;
     }
 }

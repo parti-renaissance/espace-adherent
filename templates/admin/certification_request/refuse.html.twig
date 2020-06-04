@@ -91,7 +91,7 @@
             var refusalCustomReason = $('#refusal-custom-reason');
 
             $('#{{ form.reason.vars.id }}').change(function() {
-                if ('other' == $(this).val()) {
+                if ('{{ constant('App\\Adherent\\Certification\\CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER')}}' == $(this).val()) {
                     refusalCustomReason.show();
                 } else {
                     refusalCustomReason.hide();
