@@ -131,9 +131,9 @@
                                 {% endif %}
                             </div>
                             <div class="tab-pane fade in table-responsive" role="tabpanel" id="vote-results-history" aria-labelledby="vote-results-history-tab">
-                                {% if results.ministryVoteResult %}
-                                    {% set history_data = get_ministry_results_history(results.getMinistryVoteResult()) %}
+                                {% set history_data = get_ministry_results_history(object.city, results.getMinistryVoteResult()) %}
 
+                                {% if history_data and history_data.years is defined and history_data.years|length > 0 %}
                                     <div class="row">
                                         <div class="col-md-12">
                                             <table class="table table-bordered table-striped sonata-ba-list">
