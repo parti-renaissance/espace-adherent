@@ -30,3 +30,34 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block _delegate_access_restrictedCommittees_entry_row %}
+    {% spaceless %}
+        {% set committee = form.vars.data %}
+        <div class="type-and-select__item">
+            <span class="type-and-select__item--value">&nbsp;{% if committee %}{{ committee.name }}{% endif %}</span>
+            <span class="type-and-select__item--remove">
+                <img src="{{ asset('/images/icons/icn_remove-item.svg') }}" />
+            </span>
+            {{ form_widget(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _delegate_access_restrictedCities_entry_row %}
+    {% spaceless %}
+        <div class="type-and-select__item summary-favorite-city">
+            <span class="type-and-select__item--value favorite-city-value">
+                &nbsp;
+                {% if value is not empty %}
+                    {% set city_data = get_city_data_from_insee_code(value) %}
+                    {{ city_data.name }} ({{  city_data.postal_code }})
+                {% endif %}
+            </span>
+            <span class="type-and-select__item--remove favorite-city-remove">
+                <img src="{{ asset('/images/icons/icn_remove-item.svg') }}" />
+            </span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    {% endspaceless %}
+{% endblock %}

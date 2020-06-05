@@ -1,0 +1,13 @@
+<label for="js-select-adherent">Adherents:</label>
+
+<select id="js-select-adherent" style="min-width: 100px;">
+    <option value=""></option>
+    {% for user in users %}
+        <option class="js-adherent-row" data-email="{{ user.emailAddress }}">
+            {{ user.firstname }}
+            {{ user.lastname }}
+        </option>
+    {% endfor %}
+</select>
+
+<a href="#" title="refaire la recherche" class="js-undo-search">[X]</a>

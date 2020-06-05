@@ -18,7 +18,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez : <span>{{ app.user.managedDistrict }}</span></p>
+                            <p>Vous gérez : <span>{{ get_user(app.request.attributes.get('delegatedAccess')).managedDistrict }}</span></p>
                         </div>
                     </div>
                     <div class="second-section">
@@ -27,22 +27,57 @@
                         </h1>
                     </div>
                     <nav class="manager-header__menu">
+                        {% set isDeputy = is_granted('ROLE_DEPUTY') %}
                         <ul>
+                            {% if isDeputy %}
                             <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' }}">
                                 <a href="{{ path("app_message_deputy_list", route_params|default({})) }}">Mes messages</a>
                             </li>
+                            {% endif %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_MESSAGES', 'deputy') %}
+                                <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' }}">
+                                    <a href="{{ path("app_message_deputy_delegated_list", route_params|default({})) }}">Mes messages</a>
+                                </li>
+                            {% endif %}
 
+                            {% if isDeputy %}
                             <li class="{{ is_active_route(app.request, 'app_deputy_event_manager_*') ? 'active' }}">
                                 <a href="{{ path('app_deputy_event_manager_events') }}">Événements</a>
                             </li>
+                            {% endif %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_EVENTS', 'deputy') %}
+                                <li class="{{ is_active_route(app.request, 'app_deputy_event_manager_*') ? 'active' }}">
+                                    <a href="{{ path('app_deputy_event_manager_delegated_events') }}">Événements</a>
+                                </li>
+                            {% endif %}
 
+                            {% if isDeputy %}
                             <li class="{{ is_active_route(app.request, ['app_deputy_managed_users_list', 'app_deputy_adherent_invitation']) ? 'active' }}">
                                 <a href="{{ path('app_deputy_managed_users_list') }}">Adhérents</a>
                             </li>
+                            {% endif %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', 'deputy') %}
+                                <li class="{{ is_active_route(app.request, 'app_deputy_managed_users_delegated_list') ? 'active' }}">
+                                    <a href="{{ path('app_deputy_managed_users_delegated_list') }}">Adhérents</a>
+                                </li>
+                            {% endif %}
 
-                            <li class="{{ is_active_route(app.request, 'app_deputy_committees') ? 'active' }}">
-                                <a href="{{ path('app_deputy_committees') }}">Comités</a>
+                            {% if isDeputy %}
+                                <li class="{{ is_active_route(app.request, 'app_deputy_committees') ? 'active' }}">
+                                    <a href="{{ path('app_deputy_committees') }}">Comités</a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_COMMITTEE', 'deputy') %}
+                                <li class="{{ is_active_route(app.request, 'app_deputy_delegated_committees') ? 'active' }}">
+                                    <a href="{{ path('app_deputy_delegated_committees') }}">Comités</a>
+                                </li>
+                            {% endif %}
+
+                            {% if isDeputy %}
+                            <li class="{{ is_active_route(app.request, ['app_deputy_my_team_list', 'app_deputy_my_team_delegate_access']) ? 'active' }}">
+                                <a href="{{ path('app_deputy_my_team_list') }}">Mon équipe</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>

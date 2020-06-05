@@ -10,6 +10,7 @@ use App\Collection\CitizenProjectMembershipCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\MyTeam\DelegatedAccess;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -66,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
  * })
  * @ORM\Entity(repositoryClass="App\Repository\AdherentRepository")
- * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener"})
+ * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener", "App\EntityListener\RevokeDelegatedAccessListener"})
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  *
@@ -499,6 +500,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $certificationRequests;
 
+    /**
+     * @var DelegatedAccess[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\MyTeam\DelegatedAccess", mappedBy="delegator")
+     */
+    private $delegatedAccesses;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -508,6 +516,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->tags = new ArrayCollection();
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
+        $this->delegatedAccesses = new ArrayCollection();
     }
 
     public static function create(
@@ -1717,7 +1726,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function unserialize($serialized)
     {
-        list($this->id, $this->emailAddress, $this->password, $this->roles) = unserialize($serialized);
+        [$this->id, $this->emailAddress, $this->password, $this->roles] = unserialize($serialized);
     }
 
     public function setRemindSent(bool $remindSent): void
@@ -2006,5 +2015,30 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->certificationRequests->add($pendingCertificationRequest);
 
         return $pendingCertificationRequest;
+    }
+
+    public function getDelegatedAccesses()
+    {
+        return $this->delegatedAccesses;
+    }
+
+    public function addDelegatedAccess(DelegatedAccess $delegatedAccess)
+    {
+        if (!$this->delegatedAccesses->contains($delegatedAccess)) {
+            $this->delegatedAccesses->add($delegatedAccess);
+        }
+    }
+
+    public function removeDelegatedAccess(DelegatedAccess $delegatedAccess)
+    {
+        $this->delegatedAccesses->removeElement($delegatedAccess);
+    }
+
+    public function setDelegatedAccesses(iterable $delegatedAccesses): void
+    {
+        $this->delegatedAccesses->clear();
+        foreach ($delegatedAccesses as $delegatedAccess) {
+            $this->addDelegatedAccess($delegatedAccess);
+        }
     }
 }

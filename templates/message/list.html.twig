@@ -3,7 +3,7 @@
 {% block messages_main_block %}
     <div class="datagrid__pre-table b__nudge--bottom-small">
         <h3>{% block message_page_title %}Mes messages{% endblock %}</h3>
-        <a href="{{ path("app_message_#{message_type}_create", route_params|default({})) }}" class="btn-secondary btn-secondary--blue">
+        <a href="{{ path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_create", route_params|default({})) }}" class="btn-secondary btn-secondary--blue">
             + Nouveau message
         </a>
 
@@ -75,7 +75,7 @@
 
                             {% if not message.isSent %}
                                 {% set items = [{
-                                    href: path("app_message_#{message_type}_update", message_route_params),
+                                    href: path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_update", message_route_params),
                                     label: 'Modifier',
                                     linkAttr: {
                                         class: 'row-action text--blue--dark link--no-decor',
@@ -95,7 +95,7 @@
                                 }]) %}
                             {% else %}
                                 {% set items = items|merge([{
-                                    href: path("app_message_#{message_type}_filter", message_route_params|merge({l: true})),
+                                    href: path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_filter", message_route_params|merge({l: true})),
                                     label: 'Filtrer',
                                     linkAttr: {
                                         class: 'row-action text--blue--dark link--no-decor',
@@ -106,7 +106,7 @@
                             {% if message.isSynchronized %}
                                 {% set items = items|merge([
                                     {
-                                        href: path("app_message_#{message_type}_preview", message_route_params),
+                                        href: path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_preview", message_route_params),
                                         label: 'Visualiser',
                                         linkAttr: {
                                             class: 'row-action text--blue--dark link--no-decor',
@@ -132,7 +132,7 @@
                             {% endif %}
 
                             {% set items = items|merge([{
-                                href: path("app_message_#{message_type}_delete", message_route_params),
+                                href: path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_delete", message_route_params),
                                 label: 'Supprimer',
                                 linkAttr: {
                                     class: 'row-action text--dark link--no-decor',

@@ -41,6 +41,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         findOneByUuid as findOneByValidUuid;
     }
     use PaginatorTrait;
+    use GeoFilterTrait;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -505,6 +506,23 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
         }, array_column($query->getArrayResult(), 'uuid'));
+    }
+
+    public function findAdherentsByName(array $tags, ?string $name): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        if ($name) {
+            $qb
+                ->orWhere('LOWER(a.firstName) LIKE :name')
+                ->orWhere('LOWER(a.lastName) LIKE :name')
+                ->setParameter('name', '%'.strtolower($name).'%')
+            ;
+        }
+
+        $this->applyGeoFilter($qb, $tags, 'a');
+
+        return $qb->getQuery()->getResult();
     }
 
     public function countByGender(): array

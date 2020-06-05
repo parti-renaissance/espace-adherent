@@ -1,0 +1,15 @@
+{% extends base_template %}
+
+{% block my_team_content %}
+    <h2>Mon équipe</h2>
+
+    <ul>
+        {% for access in app.user.delegatedAccesses %}
+            <li>
+                <a href="{{ path('app_'~ space_name ~'_my_team_delegate_access_edit', {id: access.id}) }}">{{ access.delegated }} - {{ access.role }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('app_'~ space_name ~'_my_team_delegate_access') }}" class="btn">Déléguer un accès à mon espace</a>
+{% endblock %}

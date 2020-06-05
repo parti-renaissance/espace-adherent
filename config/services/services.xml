@@ -184,6 +184,7 @@
         </service>
         <!-- EventSubscriber -->
         <service id="App\EventSubscriber\CommentsCguSubscriber"/>
+        <service id="App\EventSubscriber\DelegatedAccessSubscriber"/>
 
         <!-- Exporter -->
         <prototype namespace="App\Exporter\" resource="../../src/Exporter/" />
@@ -213,6 +214,7 @@
         <service id="App\Form\AdherentMessage\AdherentZoneFilterType"/>
         <service id="App\Form\ManagedUsers\ManagedUsersFilterType"/>
         <service id="App\Form\ManagedUsers\ReferentManagedUsersFilterType"/>
+        <service id="App\Form\MyTeam\DelegateAccessType"/>
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">

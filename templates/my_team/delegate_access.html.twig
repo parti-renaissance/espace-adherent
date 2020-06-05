@@ -1,0 +1,114 @@
+{% extends base_template %}
+
+{% form_theme form 'referent/_form_theme.html.twig' %}
+
+{% block my_team_content %}
+    <h2>Mon équipe</h2>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            <h4 class="manager__filters__subtitle">Trouver un adhérent</h4>
+
+            {{ form_start(filter_form, {attr: {id: 'filter-form'}}) }}
+            {{ form_errors(filter_form) }}
+
+            <div class="manager__filters__row">
+                <div id="js-search-name" class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Nom</label>
+                            {{ form_widget(filter_form.name, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom ou un prénom'}}) }}
+                            {{ form_errors(filter_form.name) }}
+                        </div>
+
+                        <div class="manager__filters__actions b__nudge--top">
+                            <button type="submit" class="btn btn--black b__nudge--bottom-medium" name="f[by_name]">Rechercher</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="user-search"></div>
+            </div>
+
+            {{ form_end(filter_form) }}
+        </div>
+    </div>
+
+    {{ form_start(form, {attr: {id: 'delegate-access-form'}}) }}
+    <p>Adherent: <span id="js-selected-adherent-name">{{ form.delegated.vars.attr.fullname }}</span></p>
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Valider</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+
+    {% import 'javascript.js.twig' as js %}
+
+    <script>
+      Kernel.onLoad(function() {
+        $('.select2').select2({
+          tags: true,
+          createTag: function (params) {
+            return {
+              id: params.term,
+              text: params.term,
+              newOption: true,
+            }
+          }
+        });
+
+        $('#filter-form').on('submit', function (e) {
+          e.preventDefault();
+
+          $.ajax({
+            type: 'POST',
+            url: "{{ path('app_'~ space_name ~'_my_team_search') }}",
+            data: $(this).serialize(),
+          }).done(function(result) {
+            $('#user-search').html(result);
+            $('#js-search-name').hide();
+          })
+        });
+
+        $('#delegate-access-form').on('submit', function () {
+          var email = $('#delegate_access_email').val();
+          if (!!email.trim()) {
+            $('#delegate_access_delegated').val(email);
+          }
+        });
+
+        $(document).on('change', '#js-select-adherent', function () {
+          $('#delegate_access_delegated').val($(this).find('option:selected').data('email'));
+          $('#js-selected-adherent-name').text($(this).find('option:selected').text());
+        });
+
+        $(document).on('click', '.js-undo-search', function (e) {
+          e.preventDefault();
+          $('#js-search-name').show();
+          $('#js-selected-adherent-name').text('');
+          $('#user-search').html('');
+        });
+
+        {{ js.committee(
+          '#delegate_access_restrictedCommittees',
+          '#delegate_access_restrictedCommittees_search',
+          path('app_'~ space_name ~'_my_team_autocomplete_committee'),
+          '#delegate_access_restrictedCommittees_search'
+        ) }}
+        {{ js.applicationFavoriteCities(
+          '#delegate_access_restrictedCities',
+          '#delegate_access_restrictedCities_search',
+          path('app_'~ space_name ~'_my_team_autocomplete_city'),
+          '#delegate_access_restrictedCities_search'
+        ) }}
+      });
+    </script>
+{% endblock %}

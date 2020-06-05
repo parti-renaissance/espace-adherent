@@ -17,6 +17,15 @@ trait GeoFilterTrait
         $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), $alias);
     }
 
+    private function applyDeputyGeoFilter(QueryBuilder $qb, Adherent $deputy, string $alias): void
+    {
+        if (!$deputy->isDeputy()) {
+            return;
+        }
+
+        $this->applyGeoFilter($qb, [$deputy->getManagedDistrict()->getReferentTag()], $alias);
+    }
+
     /**
      * @param ReferentTag[] $referentTags
      */
@@ -41,9 +50,7 @@ trait GeoFilterTrait
             $code = $tag->getCode();
 
             if (is_numeric($code) || $tag->isDistrictTag()) {
-                if ($tag->isDistrictTag()) {
-                    $code = substr($code, 6, 2);
-                }
+                $code = $tag->getDepartmentCodeFromCirconscriptionName() ?? $code;
 
                 // Postal code prefix
                 $codesFilter->add(

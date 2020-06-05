@@ -13,6 +13,11 @@
         <a href="{{ path('app_referent_event_manager_events') }}">Espace référent</a>
     </li>
 {% endif %}
+{% if is_granted('IS_DELEGATED_REFERENT') %}
+    <li>
+        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegatedAccesses'), 'referent')) }}">Espace référent délégué</a>
+    </li>
+{% endif %}
 {% if app.user.isCoReferent %}
     <li>
         <a href="{{ path('app_referent_managed_users_list') }}">Espace référent partagé</a>
@@ -23,9 +28,19 @@
         <a href="{{ path('app_message_deputy_list') }}">Espace député</a>
     </li>
 {% endif %}
+{% if is_granted('IS_DELEGATED_DEPUTY') %}
+    <li>
+        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegatedAccesses'), 'deputy')) }}">Espace député délégué</a>
+    </li>
+{% endif %}
 {% if app.user.isSenator %}
     <li>
         <a href="{{ path('app_message_senator_list') }}">Espace sénateur</a>
+    </li>
+{% endif %}
+{% if is_granted('IS_DELEGATED_SENATOR') %}
+    <li>
+        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegatedAccesses'), 'senator')) }}">Espace sénateur délégué</a>
     </li>
 {% endif %}
 {% if app.user.isCoordinatorCitizenProjectSector %}

@@ -9,6 +9,12 @@ class DistrictReferentTagExtractor implements ReferentTagExtractorInterface
 {
     public function extractTags(Adherent $adherent, ?string $slug): array
     {
-        return AreaUtils::getCodeFromDistrict($adherent->getManagedDistrict());
+        $district = $adherent->getManagedDistrict();
+
+        if (null === $district) {
+            return [];
+        }
+
+        return AreaUtils::getCodeFromDistrict($district);
     }
 }
