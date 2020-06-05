@@ -3,10 +3,9 @@ import _ from 'lodash';
 import ReqwestApiClient from '../../services/api/ReqwestApiClient';
 import Content from './Content';
 import SearchBar from './SearchBar';
-import icnClose from './../../../web/images/icons/icn_close.svg';
-import logoPQM from './../../../web/images/projets-qui-marchent-logo-horizontal.svg';
+import icnClose from './../../../public/images/icons/icn_close.svg';
+import logoPQM from './../../../public/images/projets-qui-marchent-logo-horizontal.svg';
 import Breadcrumbs from './Breadcrumbs';
-import ToggleLeadingMeasures from './ToggleLeadingMeasures';
 import Loader from '../Loader';
 import ReactDOM from "react-dom";
 
@@ -168,7 +167,7 @@ export default class ProgrammaticFoundation extends React.Component {
             if (importantA && !importantB) {ret = -1}
             else if (importantB && !importantA) {ret = 1}
             else if (importantA && importantB) {ret = importantA - importantB}
-            else {ret = 0};
+            else {ret = 0}
 
             return(ret);
         });

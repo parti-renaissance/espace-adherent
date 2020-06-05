@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Modal from './Modal';
 import Loader from './Loader';
-import successImage from './../../web/images/icons/icn_success.svg';
+import successImage from './../../public/images/icons/icn_success.svg';
 
 const STORAGE_KEY = 'su';
 

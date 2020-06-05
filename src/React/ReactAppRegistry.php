@@ -32,7 +32,7 @@ class ReactAppRegistry
 
     public function readManifest(ReactAppInterface $app): ?array
     {
-        $filename = __DIR__.'/../../web/apps/'.$app->getDirectory().'/build/asset-manifest.json';
+        $filename = __DIR__.'/../../public/apps/'.$app->getDirectory().'/build/asset-manifest.json';
 
         try {
             $data = \GuzzleHttp\json_decode(file_get_contents($filename), true);

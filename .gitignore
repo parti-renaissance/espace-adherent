@@ -9,11 +9,12 @@
 /build/
 /var/
 /vendor/
-/web/bundles/
-/web/built/
-/web/js/jquery.collection.js
-/web/select2/
-/web/css/cropper.min.css
+/public/css/cropper.min.css
+/public/bundles/
+/public/built/
+/public/js/jquery.collection.js
+/public/select2/
+/public/apps/atelier-des-idees/src/App.css
 /.tmp
 /docker-compose.override.yml
 /gcloud-service-key.json
@@ -27,7 +28,6 @@
 /behat.yml
 /docker-dev.lock
 node_modules
-/web/apps/atelier-des-idees/src/App.css
 /.env.local
 /.env.local.php
 /.env.*.local
