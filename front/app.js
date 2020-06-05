@@ -281,9 +281,9 @@ class App {
         });
     }
 
-    runCandidacyModal(triggerSelector, committeeUuid) {
+    runCandidacyModal(triggerSelector) {
         System.import('pages/committee_candidacies').catch((error) => { throw error; }).then((module) => {
-            module.default(triggerSelector, this.get('api'), committeeUuid);
+            module.default(triggerSelector, this.get('api'));
         });
     }
 

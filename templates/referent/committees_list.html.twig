@@ -27,7 +27,9 @@
                     <td class="text--center">{{ committee_row.total_voters }}</td>
                     <td class="text--center">
                         {% if committee_row.total_candidacy_female is not null %}
-                            {{ committee_row.total_candidacy_female }} F / {{ committee_row.total_candidacy_male }} H
+                            <a href="#" class="link--no-decor text--blue--dark candidacies-list-modal--trigger" data-uuid="{{ committee.uuid }}">
+                                {{ committee_row.total_candidacy_female }} F / {{ committee_row.total_candidacy_male }} H
+                            </a>
                         {% endif %}
                     </td>
                     <td class="text--center">
@@ -45,4 +47,14 @@
             </tbody>
         </table>
     </div>
+
+    <div id="modal-wrapper"></div>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runCandidacyModal('.candidacies-list-modal--trigger');
+        });
+    </script>
 {% endblock %}

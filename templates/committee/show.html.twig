@@ -213,7 +213,7 @@
                 }
 
                 {% if membership and committee.committeeElection %}
-                    App.runCandidacyModal('#candidacies-list-modal--trigger', '{{ committee.uuid }}');
+                    App.runCandidacyModal('#candidacies-list-modal--trigger');
                 {% endif %}
             {% endif %}
         });

@@ -82,7 +82,7 @@ class CommitteesController extends Controller
     /**
      * @Route("/committees/{uuid}/candidacies", name="app_api_committee_candidacies_get", methods={"GET"})
      *
-     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
+     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee) or is_granted('ROLE_REFERENT')")
      */
     public function getCommitteeCandidaciesAction(
         Committee $committee,
