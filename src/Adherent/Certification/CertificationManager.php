@@ -7,16 +7,19 @@ use App\Entity\CertificationRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CertificationManager
 {
     private $entityManager;
     private $storage;
+    private $bus;
 
-    public function __construct(EntityManagerInterface $entityManager, Filesystem $storage)
+    public function __construct(EntityManagerInterface $entityManager, Filesystem $storage, MessageBusInterface $bus)
     {
         $this->entityManager = $entityManager;
         $this->storage = $storage;
+        $this->bus = $bus;
     }
 
     public function createRequest(Adherent $adherent): CertificationRequest
@@ -29,6 +32,8 @@ class CertificationManager
         $this->uploadDocument($certificationRequest);
 
         $this->entityManager->flush();
+
+        $this->bus->dispatch(new CertificationRequestProcessCommand($certificationRequest->getUuid()));
     }
 
     private function uploadDocument(CertificationRequest $certificationRequest): void

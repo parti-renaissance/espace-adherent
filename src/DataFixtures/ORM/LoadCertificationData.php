@@ -11,18 +11,24 @@ use App\Entity\Administrator;
 use App\Entity\CertificationRequest;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use League\Flysystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadCertificationData extends Fixture
 {
+    /**
+     * @var CertificationManager
+     */
     private $certificationManager;
+
+    /**
+     * @var CertificationAuthorityManager
+     */
     private $certificationAuthorityManager;
 
     public function load(ObjectManager $manager): void
     {
-        $this->certificationManager = new CertificationManager($manager, $this->getStorage());
-        $this->certificationAuthorityManager = new CertificationAuthorityManager($manager);
+        $this->certificationManager = $this->getCertificationManager();
+        $this->certificationAuthorityManager = $this->getCertificationAuthorityManager();
 
         /** @var Adherent $adherent1 */
         $adherent1 = $this->getReference('adherent-1');
@@ -106,8 +112,13 @@ class LoadCertificationData extends Fixture
         return $certificationRequest;
     }
 
-    private function getStorage(): Filesystem
+    private function getCertificationManager(): CertificationManager
     {
-        return  $this->container->get('app.storage');
+        return $this->container->get('autowired.'.CertificationManager::class);
+    }
+
+    private function getCertificationAuthorityManager(): CertificationAuthorityManager
+    {
+        return $this->container->get('autowired.'.CertificationAuthorityManager::class);
     }
 }
