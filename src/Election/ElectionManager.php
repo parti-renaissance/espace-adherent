@@ -152,11 +152,7 @@ class ElectionManager
      */
     public function getMunicipalMinistryResultsHistory(City $city): array
     {
-        if (!$election = $this->electionRepository->getMunicipalElection2014()) {
-            return [];
-        }
-
-        return $this->ministryVoteResultRepository->findAllForCity($city, $election->getRounds()->toArray());
+        return $this->ministryVoteResultRepository->findAllForCity($city);
     }
 
     public function getVotePlaceResult(
