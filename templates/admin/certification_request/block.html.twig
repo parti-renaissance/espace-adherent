@@ -1,5 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
 
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
 {% block title %}
     Demande de certification de <b>{{ admin.toString(object)|truncate(25) }}</b>
 {% endblock %}
@@ -18,12 +20,62 @@
                     <p>
                         L'adhérent ne pourra plus demander de nouvelle certification tant que cette demande ne sera pas débloquée.
                     </p>
-                    <div class="row">
-                        <div class="col-md-1">
-                            {{ form_widget(form.allow, { label: 'Bloquer', attr: { class: 'btn btn-warning' } }) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-solid box-warning">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                Justification privée du blocage
+                            </h4>
                         </div>
-                        <div class="col-md-1 col-md-offset-10">
-                            {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-info' } }) }}
+                        <div class="box-body">
+                            {{ form_row(form.reason, { label: 'Sélectionnez la justification du blocage' }) }}
+                            <div id="block-custom-reason">
+                                {{ form_row(form.customReason, { label: 'Précisez la justification du blocage' }) }}
+                            </div>
+
+                            <span class="help-block sonata-ba-field-help">
+                                Cette justification ne sera visible que des administrateurs.
+                                L'adhérent sera seulement informé que sa demande ne respecte pas
+                                les conditions d'utilisation du service.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box box-solid box-info">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                Commentaire privé
+                            </h4>
+                        </div>
+                        <div class="box-body">
+                            {{ form_row(form.comment, { label: 'Précisez la justification du blocage' }) }}
+
+                            <span class="help-block sonata-ba-field-help">
+                                Merci de détailler le plus clairement possible la raison du blocage.
+                                Ce commentaire ne sera visible que des administrateurs.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box box-solid">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-block btn-warning">
+                                Bloquer
+                            </button>
+                        </div>
+                        <div class="col-md-3 col-md-offset-6">
+                            <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn btn-block btn-info">
+                                Annuler
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -31,4 +83,23 @@
             {{ form_end(form) }}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var blockCustomReason = $('#block-custom-reason');
+
+            $('#{{ form.reason.vars.id }}').change(function() {
+                if ('{{ constant('App\\Adherent\\Certification\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER')}}' == $(this).val()) {
+                    blockCustomReason.show();
+                } else {
+                    blockCustomReason.hide();
+                    blockCustomReason.find('textarea').val('');
+                }
+            }).change();
+        });
+    </script>
 {% endblock %}

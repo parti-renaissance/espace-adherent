@@ -708,6 +708,16 @@ certification_request.status.approved: Approuvée
 certification_request.status.refused: Refusée
 certification_request.status.blocked: Bloquée
 
+certification_request.block_reason.identity_theft: Tentative d'usurpation d'identité
+certification_request.block_reason.false_document: Tentative de création de faux
+certification_request.block_reason.multi_account: Tentative de création de multi-comptes
+certification_request.block_reason.other: Autre (à préciser)
+
+certification_request.refusal_reason.document_not_in_conformity: La pièce fournie n'est pas conforme
+certification_request.refusal_reason.document_not_readable: La pièce fournie est illisible
+certification_request.refusal_reason.informations_not_matching: Les informations ne correspondent pas
+certification_request.refusal_reason.other: Autre (à préciser)
+
 #
 # AdherentCertificationHistory
 #

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -97,6 +98,48 @@ class CertificationRequest
      */
     private $processedAt;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=30, nullable=true)
+     */
+    private $blockReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $customBlockReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $blockComment;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=30, nullable=true)
+     */
+    private $refusalReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $customRefusalReason;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $refusalComment;
+
     public function __construct(Adherent $adherent)
     {
         $this->createdAt = new \DateTime();
@@ -190,14 +233,20 @@ class CertificationRequest
         $this->status = self::STATUS_APPROVED;
     }
 
-    public function refuse(): void
+    public function refuse(?string $reason, ?string $customReason, ?string $comment): void
     {
         $this->status = self::STATUS_REFUSED;
+        $this->refusalReason = $reason;
+        $this->customRefusalReason = $customReason;
+        $this->refusalComment = $comment;
     }
 
-    public function block(): void
+    public function block(?string $reason, ?string $customReason, ?string $comment): void
     {
         $this->status = self::STATUS_BLOCKED;
+        $this->blockReason = $reason;
+        $this->customBlockReason = $customReason;
+        $this->blockComment = $comment;
     }
 
     public function getDocument(): ?UploadedFile
@@ -223,5 +272,70 @@ class CertificationRequest
         );
 
         $this->documentMimeType = $document->getMimeType();
+    }
+
+    public function getBlockReason(): ?string
+    {
+        return $this->blockReason;
+    }
+
+    public function setBlockReason(?string $blockReason): void
+    {
+        $this->blockReason = $blockReason;
+    }
+
+    public function getCustomBlockReason(): ?string
+    {
+        return $this->customBlockReason;
+    }
+
+    public function setCustomBlockReason(?string $customBlockReason): void
+    {
+        $this->customBlockReason = $customBlockReason;
+    }
+
+    public function getBlockComment(): ?string
+    {
+        return $this->blockComment;
+    }
+
+    public function setBlockComment(?string $blockComment): void
+    {
+        $this->blockComment = $blockComment;
+    }
+
+    public function getRefusalReason(): ?string
+    {
+        return $this->refusalReason;
+    }
+
+    public function setRefusalReason(?string $refusalReason): void
+    {
+        $this->refusalReason = $refusalReason;
+    }
+
+    public function getCustomRefusalReason(): ?string
+    {
+        return $this->customRefusalReason;
+    }
+
+    public function setCustomRefusalReason(?string $customRefusalReason): void
+    {
+        $this->customRefusalReason = $customRefusalReason;
+    }
+
+    public function getRefusalComment(): ?string
+    {
+        return $this->refusalComment;
+    }
+
+    public function setRefusalComment(?string $refusalComment): void
+    {
+        $this->refusalComment = $refusalComment;
+    }
+
+    public function isRefusedWithOtherReason(): bool
+    {
+        return CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER === $this->refusalReason;
     }
 }

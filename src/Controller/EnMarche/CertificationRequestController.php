@@ -2,8 +2,8 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Adherent\CertificationManager;
-use App\Adherent\CertificationPermissions;
+use App\Adherent\Certification\CertificationManager;
+use App\Adherent\Certification\CertificationPermissions;
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Form\CertificationRequestType;

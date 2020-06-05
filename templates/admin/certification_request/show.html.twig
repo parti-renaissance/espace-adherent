@@ -3,9 +3,9 @@
 {% import 'admin/certification_request/_macros.html.twig' as macros %}
 
 {% set adherent = object.adherent %}
-{% set can_approve = is_granted(constant('App\\Adherent\\CertificationPermissions::APPROVE'), object) %}
-{% set can_refuse = is_granted(constant('App\\Adherent\\CertificationPermissions::REFUSE'), object) %}
-{% set can_block = is_granted(constant('App\\Adherent\\CertificationPermissions::BLOCK'), object) %}
+{% set can_approve = is_granted(constant('App\\Adherent\\Certification\\CertificationPermissions::APPROVE'), object) %}
+{% set can_refuse = is_granted(constant('App\\Adherent\\Certification\\CertificationPermissions::REFUSE'), object) %}
+{% set can_block = is_granted(constant('App\\Adherent\\Certification\\CertificationPermissions::BLOCK'), object) %}
 
 {% block show %}
 
@@ -184,6 +184,42 @@
                             <p class="form-text text-muted text-center">
                                 {{ macros.get_certification_request_processed_by(object) }}
                             </p>
+
+                            {% if object.blockReason %}
+                                <p class="form-text text-muted text-center">
+                                    Bloquée:
+                                    <b>
+                                        {% if constant('App\\Adherent\\Certification\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER') == object.blockReason %}
+                                            {{ object.customBlockReason }}
+                                        {% else %}
+                                            {{ ('certification_request.block_reason.' ~ object.blockReason)|trans }}
+                                        {% endif %}
+                                    </b>
+
+                                    {% if object.blockComment %}
+                                        <br>
+                                        ({{ object.blockComment }})
+                                    {% endif %}
+                                </p>
+                            {% endif %}
+
+                            {% if object.refusalReason %}
+                                <p class="form-text text-muted text-center">
+                                    Refusée:
+                                    <b>
+                                        {% if object.isRefusedWithOtherReason %}
+                                            {{ object.customRefusalReason }}
+                                        {% else %}
+                                            {{ ('certification_request.refusal_reason.' ~ object.refusalReason)|trans }}
+                                        {% endif %}
+                                    </b>
+
+                                    {% if object.refusalComment %}
+                                        <br>
+                                        ({{ object.refusalComment }})
+                                    {% endif %}
+                                </p>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

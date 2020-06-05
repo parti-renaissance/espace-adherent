@@ -1,4 +1,4 @@
-{% if is_granted(constant('App\\Adherent\\CertificationPermissions::UNCERTIFY'), object) %}
+{% if is_granted(constant('App\\Adherent\\Certification\\CertificationPermissions::UNCERTIFY'), object) %}
     <li>
         <a href="{{ admin.generateObjectUrl('uncertify', object) }}" class="sonata-action-element" title="Annuler la certification">
             <i class="fa fa-remove"></i> Annuler la certification

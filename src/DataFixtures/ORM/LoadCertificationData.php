@@ -2,8 +2,10 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Adherent\CertificationAuthorityManager;
-use App\Adherent\CertificationManager;
+use App\Adherent\Certification\CertificationAuthorityManager;
+use App\Adherent\Certification\CertificationManager;
+use App\Adherent\Certification\CertificationRequestBlockCommand;
+use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\CertificationRequest;
@@ -46,18 +48,33 @@ class LoadCertificationData extends Fixture
 
         // Adherent with refused then approved certification request
         $certificationRequest = $this->createRequest($adherent3);
-        $this->certificationAuthorityManager->refuse($certificationRequest, $administrator);
+        $refuseCommand = new CertificationRequestRefuseCommand($certificationRequest, $administrator);
+        $refuseCommand->setReason(CertificationRequestRefuseCommand::REFUSAL_REASON_INFORMATIONS_NOT_MATCHING);
+        $refuseCommand->setComment('Last names do not match.');
+        $this->certificationAuthorityManager->refuse($refuseCommand);
 
         $certificationRequest = $this->createRequest($adherent3);
         $this->certificationAuthorityManager->approve($certificationRequest, $administrator);
 
-        // Adherent with refused certification request
+        // Adherent with 2 refused certification request
         $certificationRequest = $this->createRequest($adherent4);
-        $this->certificationAuthorityManager->refuse($certificationRequest, $administrator);
+        $refuseCommand = new CertificationRequestRefuseCommand($certificationRequest, $administrator);
+        $refuseCommand->setReason(CertificationRequestRefuseCommand::REFUSAL_REASON_DOCUMENT_NOT_READABLE);
+        $refuseCommand->setComment('Informations are not readable.');
+        $this->certificationAuthorityManager->refuse($refuseCommand);
+
+        $certificationRequest = $this->createRequest($adherent4);
+        $refuseCommand = new CertificationRequestRefuseCommand($certificationRequest, $administrator);
+        $refuseCommand->setReason(CertificationRequestRefuseCommand::REFUSAL_REASON_INFORMATIONS_NOT_MATCHING);
+        $refuseCommand->setComment('First names do not match.');
+        $this->certificationAuthorityManager->refuse($refuseCommand);
 
         // Adherent with blocked certification request
         $certificationRequest = $this->createRequest($adherent5);
-        $this->certificationAuthorityManager->block($certificationRequest, $administrator);
+        $blockCommand = new CertificationRequestBlockCommand($certificationRequest, $administrator);
+        $blockCommand->setReason(CertificationRequestBlockCommand::BLOCK_REASON_FALSE_DOCUMENT);
+        $blockCommand->setComment('French ID should have blue borders.');
+        $this->certificationAuthorityManager->block($blockCommand);
 
         $manager->flush();
     }

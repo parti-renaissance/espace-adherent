@@ -2,7 +2,7 @@
 
 namespace Tests\App\Security\Voter;
 
-use App\Adherent\CertificationPermissions;
+use App\Adherent\Certification\CertificationPermissions;
 use App\Collection\CertificationRequestCollection;
 use App\Entity\Adherent;
 use App\Security\Voter\AbstractAdherentVoter;

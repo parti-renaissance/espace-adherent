@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Adherent\CertificationPermissions;
+use App\Adherent\Certification\CertificationPermissions;
 use App\Entity\Adherent;
 
 class CertificationVoter extends AbstractAdherentVoter

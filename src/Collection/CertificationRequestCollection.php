@@ -26,9 +26,15 @@ class CertificationRequestCollection extends ArrayCollection
 
     public function getRefusedCertificationRequests(): self
     {
-        return $this->filter(function (CertificationRequest $certificationRequest) {
+        $certificationRequests = $this->filter(function (CertificationRequest $certificationRequest) {
             return $certificationRequest->isRefused();
+        })->toArray();
+
+        usort($certificationRequests, function (CertificationRequest $request1, CertificationRequest $request2) {
+            return $request2->getId() <=> $request1->getId();
         });
+
+        return new self($certificationRequests);
     }
 
     public function hasRefusedCertificationRequest(): bool

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Adherent;
+namespace App\Adherent\Certification;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
@@ -43,18 +43,30 @@ class CertificationAuthorityManager
         $this->em->flush();
     }
 
-    public function refuse(CertificationRequest $certificationRequest, Administrator $administrator): void
+    public function refuse(CertificationRequestRefuseCommand $refuseCommand): void
     {
-        $certificationRequest->refuse();
-        $certificationRequest->process($administrator);
+        $certificationRequest = $refuseCommand->getCertificationRequest();
+
+        $certificationRequest->refuse(
+            $refuseCommand->getReason(),
+            $refuseCommand->getCustomReason(),
+            $refuseCommand->getComment()
+        );
+        $certificationRequest->process($refuseCommand->getAdministrator());
 
         $this->em->flush();
     }
 
-    public function block(CertificationRequest $certificationRequest, Administrator $administrator): void
+    public function block(CertificationRequestBlockCommand $blockCommand): void
     {
-        $certificationRequest->block();
-        $certificationRequest->process($administrator);
+        $certificationRequest = $blockCommand->getCertificationRequest();
+
+        $certificationRequest->block(
+            $blockCommand->getReason(),
+            $blockCommand->getCustomReason(),
+            $blockCommand->getComment()
+        );
+        $certificationRequest->process($blockCommand->getAdministrator());
 
         $this->em->flush();
     }

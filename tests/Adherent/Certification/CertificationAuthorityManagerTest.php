@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\App\Adherent;
+namespace Tests\App\Adherent\Certification;
 
-use App\Adherent\CertificationAuthorityManager;
+use App\Adherent\Certification\CertificationAuthorityManager;
+use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Repository\AdherentRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -85,7 +86,8 @@ class CertificationAuthorityManagerTest extends WebTestCase
         self::assertTrue($certificationRequest->isPending());
         self::assertNull($certificationRequest->getProcessedBy());
 
-        $this->certificationAuthorityManager->refuse($certificationRequest, $administrator);
+        $refuseCommand = new CertificationRequestRefuseCommand($certificationRequest, $administrator);
+        $this->certificationAuthorityManager->refuse($refuseCommand);
 
         $this->manager->refresh($adherent);
         $this->manager->refresh($certificationRequest);

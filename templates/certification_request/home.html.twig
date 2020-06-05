@@ -20,9 +20,21 @@
             <p>Votre demande est en attente d'approbation par nos équipes.</p>
 
         {% elseif app.user.certificationRequests.hasRefusedCertificationRequest %}
+            {% set refusedCertificationRequest = app.user.certificationRequests.getRefusedCertificationRequests.first %}
+
             <img src="{{ asset('/images/icons/certification/blocked.svg') }}" />
             <div class="title b__nudge--bottom">Demande de certification refusée</div>
             <p>Votre demande de certification a été refusée.<br />
+            {% if refusedCertificationRequest.refusalReason %}
+                <p>
+                    Justification:
+                    {% if refusedCertificationRequest.isRefusedWithOtherReason %}
+                        {{ refusedCertificationRequest.customRefusalReason }}
+                    {% else %}
+                        {{ ('certification_request.refusal_reason.' ~ refusedCertificationRequest.refusalReason)|trans }}
+                    {% endif %}
+                </p>
+            {% endif %}
             Vous pouvez <a class="link--blue--dark link--no-decor" href="{{ path('app_certification_request_form') }}">réessayer</a>.</p>
 
         {% else %}
