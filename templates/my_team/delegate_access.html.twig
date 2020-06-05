@@ -3,41 +3,107 @@
 {% form_theme form 'referent/_form_theme.html.twig' %}
 
 {% block my_team_content %}
-    <h2>Mon équipe</h2>
-
-    <div class="manager__filters">
+    <div class="manager__filters" id="js-by-name">
         <div class="manager__filters__form">
-            <h4 class="manager__filters__subtitle">Trouver un adhérent</h4>
+            <h4 class="manager__filters__subtitle">Rechercher un adhérent de mon territoire</h4>
 
             {{ form_start(filter_form, {attr: {id: 'filter-form'}}) }}
             {{ form_errors(filter_form) }}
-
-            <div class="manager__filters__row">
-                <div id="js-search-name" class="manager__filters__section">
-                    <div class="manager__filters__group">
-                        <div class="filter__row">
-                            <label class="filter__label">Nom</label>
-                            {{ form_widget(filter_form.name, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom ou un prénom'}}) }}
-                            {{ form_errors(filter_form.name) }}
-                        </div>
-
-                        <div class="manager__filters__actions b__nudge--top">
-                            <button type="submit" class="btn btn--black b__nudge--bottom-medium" name="f[by_name]">Rechercher</button>
+            <div id="js-search-name">
+                <div class="manager__filters__row">
+                    <div  class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Prénom et/ou nom</label>
+                                {{ form_widget(filter_form.name, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom et/ou un nom'}}) }}
+                                {{ form_errors(filter_form.name) }}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="user-search"></div>
+                <div class="manager__filters__row">
+                    <div class="manager__filters__actions b__nudge--top l__row--center">
+                        <button type="submit" class="btn btn--black" name="f[by_name]">Rechercher</button>
+                        <div class="text--body b__nudge--top-10 b__nudge--bottom-small">
+                            L'adhérent est hors de mon territoire - <span class="text--blue--dark link--no-decor" id="js-search-by-email" style="cursor: pointer;">Saisir son adresse e-mail</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manager__filters__section">
+                <div class="manager__filters__group">
+                    <div class="filter__row">
+                        <div id="user-search"></div>
+                    </div>
+                </div>
             </div>
 
             {{ form_end(filter_form) }}
         </div>
     </div>
 
-    {{ form_start(form, {attr: {id: 'delegate-access-form'}}) }}
-    <p>Adherent: <span id="js-selected-adherent-name">{{ form.delegated.vars.attr.fullname }}</span></p>
-    {{ form_widget(form) }}
-    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Valider</button>
-    {{ form_end(form) }}
+    <div>
+        {{ form_start(form, {attr: {id: 'delegate-access-form', class: 'em-form' }}) }}
+        {{ form_errors(form) }}
+
+        <div class="manager__filters" id="js-by-email" style="display: none;">
+            <div class="manager__filters__form">
+                <h4 class="manager__filters__subtitle">Saisir une adresse e-mail</h4>
+                <div class="manager__filters__row">
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">E-mail</label>
+                                {{ form_widget(form.email, {attr: {class: 'filter__field', placeholder: 'Entrez une adresse e-mail'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="manager__filters__actions">
+                    <div class="text--body text--blue--dark link--no-decor" id="js-search-by-name" style="cursor: pointer;">Rechercher par prénom et/ou nom</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="l__wrapper--slim">
+
+            <h2 id="js-selected-adherent-name" class="b__nudge--bottom">{{ form.delegated.vars.attr.fullname }}</h2>
+
+            <div class="form__row">
+                {{ form_label(form.roles, 'Rôle') }}
+                {{ form_widget(form.roles) }}
+            </div>
+
+            {{ form_widget(form.delegated) }}
+
+            <div class="em-form__group">
+                {{ form_label(form.accesses, 'Accès délégués', {label_attr: {class: 'em-form__label' }}) }}
+                <div class="em-form__legend">Ajoutez autant d'accès que nécessaire.</div>
+                {{ form_widget(form.accesses) }}
+            </div>
+
+            <div class="em-form__group">
+                <div class="em-form__label">Limiter l'accès aux données adhérent</div>
+                <div class="em-form__legend">Ajoutez autant de villes et/ou de comités que nécessaire.</div>
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.restrictedCommittees_search, 'Par comité') }}
+                {{ form_widget(form.restrictedCommittees_search) }}
+                {{ form_widget(form.restrictedCommittees) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_label(form.restrictedCities_search, 'Par ville') }}
+                {{ form_widget(form.restrictedCities_search) }}
+                {{ form_widget(form.restrictedCities) }}
+            </div>
+
+            <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--bottom-medium">Valider</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
@@ -109,6 +175,14 @@
           path('app_'~ space_name ~'_my_team_autocomplete_city'),
           '#delegate_access_restrictedCities_search'
         ) }}
+        $(document).on('click', '#js-search-by-email', function (e) {
+          $('#js-by-name').hide();
+          $('#js-by-email').show();
+        });
+        $(document).on('click', '#js-search-by-name', function (e) {
+          $('#js-by-email').hide();
+          $('#js-by-name').show();
+        });
       });
     </script>
 {% endblock %}

@@ -507,6 +507,55 @@
     }
 }
 
+.team-organization {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: -12px;
+    margin-right: -12px;
+
+
+    @media (min-width: $mobile) {
+
+    }
+
+    &__member-container {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 12px;
+
+        @media (min-width: $mobile) {
+            width: 50%;
+
+        }
+    }
+
+    &__member {
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 30px;
+        color: #000;
+        height: 150px;
+        border: 0;
+        border-radius: 3px;
+        box-shadow: 0 2px 0 0 rgba(0,0,0,.04), 0 2px 5px 0 rgba(0,0,0,.06);
+        background-color: #fff;
+        width: 100%;
+
+        .name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .roles {
+            margin-top: 5px;
+            font-size: 16px;
+            color: #8c8c8c;
+        }
+    }
+}
+
 // global components
 .alert {
     font-size: 15px;
