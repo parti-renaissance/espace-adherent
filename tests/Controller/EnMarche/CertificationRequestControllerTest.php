@@ -42,14 +42,14 @@ class CertificationRequestControllerTest extends WebTestCase
     public function testRefusedCertificationRequest(): void
     {
         $this->authenticateAsAdherent($this->client, $email = 'luciole1989@spambox.fr');
-        $this->assertEquals(1, $this->countCertificationRequests($email));
+        $this->assertEquals(2, $this->countCertificationRequests($email));
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
         $this->assertContains('Demande de certification refusée', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsSuccessful();
-        $this->assertEquals(2, $this->countCertificationRequests($email));
+        $this->assertEquals(3, $this->countCertificationRequests($email));
     }
 
     public function testBlockedCertificationRequest(): void

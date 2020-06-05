@@ -189,7 +189,7 @@
                                 <p class="form-text text-muted text-center">
                                     Bloquée:
                                     <b>
-                                        {% if constant('App\\Adherent\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER') == object.blockReason %}
+                                        {% if constant('App\\Adherent\\Certification\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER') == object.blockReason %}
                                             {{ object.customBlockReason }}
                                         {% else %}
                                             {{ ('certification_request.block_reason.' ~ object.blockReason)|trans }}

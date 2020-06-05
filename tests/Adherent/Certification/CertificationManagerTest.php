@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\App\Adherent;
+namespace Tests\App\Adherent\Certification;
 
-use App\Adherent\CertificationManager;
+use App\Adherent\Certification\CertificationManager;
 use App\Repository\AdherentRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -54,7 +54,7 @@ class CertificationManagerTest extends WebTestCase
 
         $certificationRequest = $this->certificationManager->createRequest($adherent);
         $certificationRequest->setDocument(new UploadedFile(
-            __DIR__.'/../../app/data/files/application_requests/curriculum/cv.pdf',
+            __DIR__.'/../../../app/data/files/application_requests/curriculum/cv.pdf',
             'cv.pdf',
             'application/pdf',
             1234
