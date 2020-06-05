@@ -213,7 +213,6 @@
                 }
 
                 .candidate-photo {
-                    overflow: hidden;
                     margin-right: 20px;
                     min-width: 66px;
                 }
@@ -417,14 +416,6 @@
 
         .candidate-name {
             font-weight: normal;
-        }
-
-        .candidate-photo {
-            overflow: hidden;
-
-            img {
-                height: 100%;
-            }
         }
     }
 }

@@ -100,7 +100,7 @@
         {% endif %}
 
         <div class="candidacies-list text--body text--small text--gray box-el">
-            Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
+            Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark box-el" data-uuid="{{ committee.uuid }}">la liste des candidats</a>
         </div>
 
         {% if member_is_candidate_in_committee and committee_election.isCandidacyPeriodActive %}

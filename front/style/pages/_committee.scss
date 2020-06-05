@@ -653,8 +653,7 @@
         }
     }
 
-    .preview-image--container,
-    .profile-image--container {
+    .preview-image--container {
         display: inline-block;
         width: 100px;
         height: 100px;
@@ -669,12 +668,6 @@
         color: $blue;
         font-style: italic;
         text-align: center;
-    }
-
-    .profile-image--container {
-        width: 60px;
-        height: 60px;
-        line-height: 60px;
     }
 }
 

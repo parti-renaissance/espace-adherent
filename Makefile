@@ -75,7 +75,7 @@ db: vendor wait-for-db                                                          
 	$(CONSOLE) doctrine:database:create --if-not-exists --no-debug
 	$(CONSOLE) doctrine:database:import -n --no-debug -- dump/dump-2019.sql
 	$(CONSOLE) doctrine:migrations:migrate -n --no-debug
-	$(CONSOLE) doctrine:fixtures:load -n --no-debug
+	$(CONSOLE) doctrine:fixtures:load -n
 
 db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
 	$(CONSOLE) doctrine:migration:diff --formatted --no-debug
@@ -90,7 +90,7 @@ db-rollback: vendor wait-for-db                                                 
 	$(CONSOLE) doctrine:migration:migrate prev -n --no-debug
 
 db-load: vendor wait-for-db                                                                            ## Reset the database fixtures
-	$(CONSOLE) doctrine:fixtures:load -n --no-debug
+	$(CONSOLE) doctrine:fixtures:load -n
 
 db-validate: vendor wait-for-db                                                                        ## Check the ORM mapping
 	$(CONSOLE) doctrine:schema:validate --no-debug
@@ -157,7 +157,7 @@ tfp-db: wait-for-db                                                             
 	$(CONSOLE) doctrine:database:import --env=test -n --no-debug -- dump/dump-2019.sql
 	$(CONSOLE) doctrine:migration:migrate -n --no-debug --env=test
 	$(CONSOLE) doctrine:schema:validate --no-debug --env=test
-	$(CONSOLE) doctrine:fixtures:load --no-debug --env=test -n
+	$(CONSOLE) doctrine:fixtures:load --env=test -n
 
 tj: node_modules                                                                                       ## Run the Javascript tests
 	$(EXEC) yarn test

@@ -49,13 +49,9 @@ export default class CandidaciesListWidget extends Modal {
 
         this.state.data.candidacies.forEach((candidacy, index) => {
             const template = <div key={index} className={'text--dark b__nudge--bottom-medium l__row'}>
-                <div className={'l__col profile-image--container'} style={
-                {
-                    ...(candidacy.photo ? { backgroundImage: `url("${candidacy.photo}")` } : {}),
-                }
-                }>
+                <div className='avatar-initials avatar--small avatar--style-01'>
                     {candidacy.photo ?
-                        '' :
+                        <img src={candidacy.photo} alt="photo" /> :
                         (candidacy.first_name.charAt(0) + candidacy.last_name.charAt(0)).toUpperCase()
                     }
                 </div>
