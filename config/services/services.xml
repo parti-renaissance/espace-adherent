@@ -660,10 +660,5 @@
         <!-- Newsletter -->
         <service id="App\Form\NewsletterSubscriptionType" />
 
-        <!-- Certification -->
-        <service id="App\Adherent\Certification\CertificationRequestProcessCommandHandler">
-            <tag name="messenger.message_handler"/>
-        </service>
-
     </services>
 </container>

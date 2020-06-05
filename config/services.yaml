@@ -41,6 +41,10 @@ services:
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
             tags: ['app.adherent.unregistration.handler']
+        App\Adherent\Certification\Handlers\CertificationRequestHandlerInterface:
+            tags: ['app.adherent.certification_request.handler']
+        Symfony\Component\Messenger\Handler\MessageHandlerInterface:
+            tags: ['messenger.message_handler']
 
     Algolia\AlgoliaSearchBundle\Indexer\Indexer: '@algolia.indexer'
 
@@ -49,7 +53,13 @@ services:
     App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.unregistration.handler'
-        tags: ['messenger.message_handler']
 
     App\Adherent\Unregistration\Handlers\:
         resource: ../src/Adherent/Unregistration/Handlers/
+
+    App\Adherent\Certification\:
+        resource: ../src/Adherent/Certification
+
+    App\Adherent\Certification\CertificationRequestProcessCommandHandler:
+        arguments:
+            $handlers: !tagged 'app.adherent.certification_request.handler'
