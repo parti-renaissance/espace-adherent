@@ -110,35 +110,43 @@
                     <div class="box-header">
                         <h4 class="box-title">Document</h4>
                     </div>
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-bordered table-striped sonata-ba-list">
-                            <tbody>
-                                <tr>
-                                    <th class="sonata-ba-list-field-header-text">Lien</th>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        <a href="{{ admin.generateObjectUrl('document', object, { download: true }) }}" target="_blank">
-                                            Cliquez ici pour voir le document
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="sonata-ba-list-field-header-text">Mime Type</th>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ object.documentMimeType }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="sonata-ba-list-field-header-text">Aperçu</th>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        <embed type="{{ object.documentMimeType }}"
-                                               src="{{ admin.generateObjectUrl('document', object) }}"
-                                               width="100%"
-                                               style="min-height: 400px"
-                                              >
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="box-body">
+                        {% if object.hasDocument %}
+                            <div class="table-responsive no-padding">
+                                <table class="table table-bordered table-striped sonata-ba-list">
+                                    <tbody>
+                                        <tr>
+                                            <th class="sonata-ba-list-field-header-text">Lien</th>
+                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                <a href="{{ admin.generateObjectUrl('document', object, { download: true }) }}" target="_blank">
+                                                    Cliquez ici pour voir le document
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="sonata-ba-list-field-header-text">Mime Type</th>
+                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                {{ object.documentMimeType }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="sonata-ba-list-field-header-text">Aperçu</th>
+                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                <embed type="{{ object.documentMimeType }}"
+                                                       src="{{ admin.generateObjectUrl('document', object) }}"
+                                                       width="100%"
+                                                       style="min-height: 400px"
+                                                      >
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p>
+                                Aucun document disponible.
+                            </p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

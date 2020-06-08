@@ -11,10 +11,12 @@ use Doctrine\ORM\EntityManagerInterface;
 class CertificationAuthorityManager
 {
     private $em;
+    private $documentManager;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, CertificationRequestDocumentManager $documentManager)
     {
         $this->em = $em;
+        $this->documentManager = $documentManager;
     }
 
     public function certify(Adherent $adherent, Administrator $administrator): void
@@ -40,6 +42,8 @@ class CertificationAuthorityManager
 
         $this->certifyAdherent($certificationRequest->getAdherent(), $administrator);
 
+        $this->removeDocument($certificationRequest);
+
         $this->em->flush();
     }
 
@@ -53,6 +57,8 @@ class CertificationAuthorityManager
             $refuseCommand->getComment()
         );
         $certificationRequest->process($refuseCommand->getAdministrator());
+
+        $this->removeDocument($certificationRequest);
 
         $this->em->flush();
     }
@@ -68,6 +74,8 @@ class CertificationAuthorityManager
         );
         $certificationRequest->process($blockCommand->getAdministrator());
 
+        $this->removeDocument($certificationRequest);
+
         $this->em->flush();
     }
 
@@ -76,5 +84,10 @@ class CertificationAuthorityManager
         $adherent->certify();
 
         $this->em->persist(AdherentCertificationHistory::createCertify($adherent, $administrator));
+    }
+
+    private function removeDocument(CertificationRequest $certificationRequest): void
+    {
+        $this->documentManager->removeDocument($certificationRequest);
     }
 }

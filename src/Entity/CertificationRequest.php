@@ -48,14 +48,14 @@ class CertificationRequest
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $documentName;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30, nullable=true)
      */
     private $documentMimeType;
 
@@ -280,6 +280,17 @@ class CertificationRequest
         );
 
         $this->documentMimeType = $document->getMimeType();
+    }
+
+    public function removeDocument(): void
+    {
+        $this->documentName = null;
+        $this->documentMimeType = null;
+    }
+
+    public function hasDocument(): bool
+    {
+        return null !== $this->documentName;
     }
 
     public function getBlockReason(): ?string

@@ -31,7 +31,7 @@ class CertificationRequestRefuseCommand extends AbstractCertificationRequestMode
      *
      * @Assert\Length(max=500)
      * @Assert\Expression(
-     *     expression="constant('App\\Adherent\\CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER') !== this.getReason() or value",
+     *     expression="constant('App\\Adherent\\Certification\\CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER') !== this.getReason() or value",
      *     message="Veuillez spécifier une raison de refus."
      * )
      */
