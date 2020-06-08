@@ -16,15 +16,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-depute")
+ * @Route("/espace-depute", name="app_deputy_")
  * @Security("is_granted('ROLE_DEPUTY')")
  */
 class DeputyController extends Controller
 {
     use CanaryControllerTrait;
 
+    public function getSpaceType(): string
+    {
+        return 'deputy';
+    }
+
     /**
-     * @Route("/utilisateurs/message", name="app_deputy_users_message", methods={"GET", "POST"})
+     * @Route("/utilisateurs/message", name="users_message", methods={"GET", "POST"})
      */
     public function usersSendMessageAction(Request $request, AdherentRepository $adherentRepository): Response
     {
@@ -53,7 +58,7 @@ class DeputyController extends Controller
     }
 
     /**
-     * @Route("/comites", name="app_deputy_committees", methods={"GET"})
+     * @Route("/comites", name="committees", methods={"GET"})
      */
     public function listCommitteesAction(
         CommitteeRepository $committeeRepository,

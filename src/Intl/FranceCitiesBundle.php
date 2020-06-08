@@ -223,6 +223,8 @@ class FranceCitiesBundle
                 $filters[] = AreaUtils::CODE_CORSICA_B;
             } elseif ($tag->isDepartmentTag() || $tag->isBoroughTag()) {
                 $filters[] = $tag->getCode();
+            } elseif ($code = $tag->getDepartmentCodeFromCirconscriptionName()) {
+                $filters[] = $code;
             }
         }
 

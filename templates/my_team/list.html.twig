@@ -1,0 +1,22 @@
+{% extends base_template %}
+
+{% block my_team_content %}
+    <div class="datagrid__pre-table b__nudge--bottom-small">
+        <h3>Mon équipe</h3>
+        <a href="{{ path('app_'~ space_name ~'_my_team_delegate_access') }}" class="btn-secondary btn-secondary--blue">Déléguer un accès à mon espace</a>
+    </div>
+
+    <div class="team-organization">
+        {% for access in delegatedAccesses %}
+            <div class="team-organization__member-container">
+                <a href="{{ path('app_'~ space_name ~'_my_team_delegate_access_edit', {id: access.id}) }}" class="team-organization__member">
+                    <div class="content">
+                        <h3 class="name">{{ access.delegated }}</h3>
+                        <div class="roles">{{ access.role }}</div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

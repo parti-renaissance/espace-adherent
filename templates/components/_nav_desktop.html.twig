@@ -287,7 +287,10 @@
         app.user.isAssessor +
         app.user.isMunicipalManager +
         app.user.isElectionResultsReporter +
-        is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR')
+        is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
+        is_granted('IS_DELEGATED_REFERENT') +
+        is_granted('IS_DELEGATED_DEPUTY') +
+        is_granted('IS_DELEGATED_SENATOR')
     %}
 
     <div class="background--darker l__hide--on-tablet">

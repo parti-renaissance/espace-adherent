@@ -8,7 +8,6 @@ use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\Filter\FilterFactory;
 use App\AdherentMessage\Filter\FilterFormFactory;
-use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Form\AdherentMessage\AdherentMessageType;
 use App\Mailchimp\Manager;
@@ -20,25 +19,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractMessageController extends Controller
 {
     /**
      * @Route(name="list", methods={"GET"})
-     *
-     * @param Adherent|UserInterface $adherent
      */
-    public function messageListAction(
-        Request $request,
-        UserInterface $adherent,
-        AdherentMessageRepository $repository
-    ): Response {
+    public function messageListAction(Request $request, AdherentMessageRepository $repository): Response
+    {
         $status = $request->query->get('status');
 
         if ($status && !AdherentMessageStatusEnum::isValid($status)) {
             throw new BadRequestHttpException('Invalid status');
         }
+
+        $adherent = $this->getUser();
 
         return $this->renderTemplate('message/list.html.twig', [
             'messages' => $paginator = $repository->findAllByAuthor(
@@ -56,14 +51,9 @@ abstract class AbstractMessageController extends Controller
 
     /**
      * @Route("/creer", name="create", methods={"GET", "POST"})
-     *
-     * @param Adherent|UserInterface $adherent
      */
-    public function createMessageAction(
-        Request $request,
-        UserInterface $adherent,
-        AdherentMessageManager $messageManager
-    ): Response {
+    public function createMessageAction(Request $request, AdherentMessageManager $messageManager): Response
+    {
         $message = new AdherentMessageDataObject();
 
         if ($request->isMethod('POST') && $request->request->has('message_content')) {
@@ -76,7 +66,7 @@ abstract class AbstractMessageController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message = AdherentMessageFactory::create($adherent, $form->getData(), $this->getMessageType());
+            $message = AdherentMessageFactory::create($this->getUser(), $form->getData(), $this->getMessageType());
 
             $messageManager->saveMessage($message);
 
@@ -159,15 +149,12 @@ abstract class AbstractMessageController extends Controller
      * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
-     *
-     * @param Adherent|UserInterface $adherent
      */
     public function filterMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
         FilterFormFactory $formFactory,
-        AdherentMessageManager $manager,
-        UserInterface $adherent
+        AdherentMessageManager $manager
     ): Response {
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
@@ -176,6 +163,8 @@ abstract class AbstractMessageController extends Controller
         if ($message->hasReadOnlyFilter()) {
             return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", ['message' => $message]);
         }
+
+        $adherent = $this->getUser();
 
         // Reset Filter object
         if ($request->query->has('reset') && $message->getFilter()) {
