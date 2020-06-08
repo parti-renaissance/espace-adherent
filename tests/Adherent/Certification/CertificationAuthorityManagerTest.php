@@ -104,7 +104,7 @@ class CertificationAuthorityManagerTest extends WebTestCase
         $this->init();
 
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->certificationAuthorityManager = new CertificationAuthorityManager($this->manager);
+        $this->certificationAuthorityManager = $this->container->get(CertificationAuthorityManager::class);
     }
 
     protected function tearDown()
