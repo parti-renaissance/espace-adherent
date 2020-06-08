@@ -19,8 +19,11 @@
 {% macro get_certification_request_processed_by(certification_request) %}
     {% if certification_request.isProcessed %}
         <i>
-            Traitée par <b>{{ certification_request.processedBy }}</b>
-            <br>
+            Traitée
+            {% if certification_request.processedBy %}
+                par <b>{{ certification_request.processedBy }}</b>
+                <br>
+            {% endif %}
             le <b>{{ certification_request.processedAt|localizeddate }}</b>
         </i>
     {% endif %}

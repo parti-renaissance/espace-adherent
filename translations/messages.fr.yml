@@ -716,6 +716,7 @@ certification_request.block_reason.other: Autre (à préciser)
 certification_request.refusal_reason.document_not_in_conformity: La pièce fournie n'est pas conforme
 certification_request.refusal_reason.document_not_readable: La pièce fournie est illisible
 certification_request.refusal_reason.informations_not_matching: Les informations ne correspondent pas
+certification_request.refusal_reason.process_timeout: La demande n'a pas pu être traitée
 certification_request.refusal_reason.other: Autre (à préciser)
 
 #

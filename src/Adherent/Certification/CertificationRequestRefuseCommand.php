@@ -9,12 +9,14 @@ class CertificationRequestRefuseCommand extends AbstractCertificationRequestMode
     public const REFUSAL_REASON_DOCUMENT_NOT_IN_CONFORMITY = 'document_not_in_conformity';
     public const REFUSAL_REASON_DOCUMENT_NOT_READABLE = 'document_not_readable';
     public const REFUSAL_REASON_INFORMATIONS_NOT_MATCHING = 'informations_not_matching';
+    public const REFUSAL_REASON_PROCESS_TIMEOUT = 'process_timeout';
     public const REFUSAL_REASON_OTHER = 'other';
 
     public const REFUSAL_REASONS = [
         self::REFUSAL_REASON_DOCUMENT_NOT_IN_CONFORMITY,
         self::REFUSAL_REASON_DOCUMENT_NOT_READABLE,
         self::REFUSAL_REASON_INFORMATIONS_NOT_MATCHING,
+        self::REFUSAL_REASON_PROCESS_TIMEOUT,
         self::REFUSAL_REASON_OTHER,
     ];
 
