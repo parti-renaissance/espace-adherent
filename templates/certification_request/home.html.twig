@@ -27,7 +27,7 @@
             <p>Votre demande de certification a été refusée.<br />
             {% if refusedCertificationRequest.refusalReason %}
                 <p>
-                    Justification:
+                    Raison:
                     {% if refusedCertificationRequest.isRefusedWithOtherReason %}
                         {{ refusedCertificationRequest.customRefusalReason }}
                     {% else %}

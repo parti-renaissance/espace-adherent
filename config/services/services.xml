@@ -659,5 +659,6 @@
 
         <!-- Newsletter -->
         <service id="App\Form\NewsletterSubscriptionType" />
+
     </services>
 </container>

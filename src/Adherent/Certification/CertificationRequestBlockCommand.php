@@ -31,7 +31,7 @@ class CertificationRequestBlockCommand extends AbstractCertificationRequestModer
      *
      * @Assert\Length(max=500)
      * @Assert\Expression(
-     *     expression="constant('App\\Adherent\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER') !== this.getReason() or value",
+     *     expression="constant('App\\Adherent\\Certification\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER') !== this.getReason() or value",
      *     message="Veuillez spécifier une raison de blocage."
      * )
      */

@@ -882,4 +882,29 @@ SQL;
 
         return $data;
     }
+
+    public function findDuplicateCertified(
+        string $firstName,
+        string $lastName,
+        \DateTimeInterface $birthDate,
+        Adherent $ignoredAdherent
+    ): ?Adherent {
+        return $this
+            ->createQueryBuilder('a')
+            ->andWhere('a.firstName = :first_name')
+            ->andWhere('a.lastName = :last_name')
+            ->andWhere('a.birthdate = :birth_date')
+            ->andWhere('a.certifiedAt IS NOT NULL')
+            ->andWhere('a != :ignored_adherent')
+            ->setParameters([
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'birth_date' => $birthDate,
+                'ignored_adherent' => $ignoredAdherent,
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

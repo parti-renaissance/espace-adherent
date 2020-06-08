@@ -85,7 +85,7 @@ class CertificationManagerTest extends WebTestCase
         $this->init();
 
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->certificationManager = new CertificationManager($this->manager, $this->getStorage());
+        $this->certificationManager = $this->container->get(CertificationManager::class);
     }
 
     protected function tearDown()
@@ -93,7 +93,7 @@ class CertificationManagerTest extends WebTestCase
         $this->kill();
 
         $this->adherentRepository = null;
-        $this->certificationAuthorityManager = null;
+        $this->certificationManager = null;
 
         parent::tearDown();
     }

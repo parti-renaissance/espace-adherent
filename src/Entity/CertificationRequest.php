@@ -48,14 +48,14 @@ class CertificationRequest
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $documentName;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30, nullable=true)
      */
     private $documentMimeType;
 
@@ -140,6 +140,14 @@ class CertificationRequest
      */
     private $refusalComment;
 
+    /**
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity=Adherent::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $foundDuplicatedAdherent;
+
     public function __construct(Adherent $adherent)
     {
         $this->createdAt = new \DateTime();
@@ -197,7 +205,7 @@ class CertificationRequest
         return $this->processedAt;
     }
 
-    public function process(Administrator $administrator): void
+    public function process(Administrator $administrator = null): void
     {
         $this->processedBy = $administrator;
         $this->processedAt = new \DateTime();
@@ -233,7 +241,7 @@ class CertificationRequest
         $this->status = self::STATUS_APPROVED;
     }
 
-    public function refuse(?string $reason, ?string $customReason, ?string $comment): void
+    public function refuse(?string $reason, ?string $customReason = null, ?string $comment = null): void
     {
         $this->status = self::STATUS_REFUSED;
         $this->refusalReason = $reason;
@@ -241,7 +249,7 @@ class CertificationRequest
         $this->refusalComment = $comment;
     }
 
-    public function block(?string $reason, ?string $customReason, ?string $comment): void
+    public function block(?string $reason, ?string $customReason = null, ?string $comment = null): void
     {
         $this->status = self::STATUS_BLOCKED;
         $this->blockReason = $reason;
@@ -272,6 +280,17 @@ class CertificationRequest
         );
 
         $this->documentMimeType = $document->getMimeType();
+    }
+
+    public function removeDocument(): void
+    {
+        $this->documentName = null;
+        $this->documentMimeType = null;
+    }
+
+    public function hasDocument(): bool
+    {
+        return null !== $this->documentName;
     }
 
     public function getBlockReason(): ?string
@@ -337,5 +356,15 @@ class CertificationRequest
     public function isRefusedWithOtherReason(): bool
     {
         return CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER === $this->refusalReason;
+    }
+
+    public function getFoundDuplicatedAdherent(): ?Adherent
+    {
+        return $this->foundDuplicatedAdherent;
+    }
+
+    public function setFoundDuplicatedAdherent(?Adherent $foundDuplicatedAdherent): void
+    {
+        $this->foundDuplicatedAdherent = $foundDuplicatedAdherent;
     }
 }

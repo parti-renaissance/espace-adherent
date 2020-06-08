@@ -68,14 +68,14 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-3">
+                            <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn btn-block btn-default">
+                                Annuler
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-md-offset-6">
                             <button type="submit" class="btn btn-block btn-warning">
                                 Bloquer
                             </button>
-                        </div>
-                        <div class="col-md-3 col-md-offset-6">
-                            <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn btn-block btn-info">
-                                Annuler
-                            </a>
                         </div>
                     </div>
                 </div>
