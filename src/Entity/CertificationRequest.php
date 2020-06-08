@@ -140,6 +140,14 @@ class CertificationRequest
      */
     private $refusalComment;
 
+    /**
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity=Adherent::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $foundDuplicatedAdherent;
+
     public function __construct(Adherent $adherent)
     {
         $this->createdAt = new \DateTime();
@@ -337,5 +345,15 @@ class CertificationRequest
     public function isRefusedWithOtherReason(): bool
     {
         return CertificationRequestRefuseCommand::REFUSAL_REASON_OTHER === $this->refusalReason;
+    }
+
+    public function getFoundDuplicatedAdherent(): ?Adherent
+    {
+        return $this->foundDuplicatedAdherent;
+    }
+
+    public function setFoundDuplicatedAdherent(?Adherent $foundDuplicatedAdherent): void
+    {
+        $this->foundDuplicatedAdherent = $foundDuplicatedAdherent;
     }
 }

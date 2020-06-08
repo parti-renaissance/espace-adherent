@@ -38,6 +38,7 @@ class CertificationRequestDuplicateHandler implements CertificationRequestHandle
             return;
         }
 
+        $certificationRequest->setFoundDuplicatedAdherent($duplicateCertifiedAdherent);
         $certificationRequest->block(CertificationRequestBlockCommand::BLOCK_REASON_MULTI_ACCOUNT);
         $certificationRequest->process();
 

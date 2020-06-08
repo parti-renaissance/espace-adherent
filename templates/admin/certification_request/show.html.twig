@@ -203,6 +203,14 @@
                                 </p>
                             {% endif %}
 
+                            {% if object.foundDuplicatedAdherent %}
+                                <p class="form-text text-muted text-center">
+                                    Duplicatat trouvé:
+                                    <br>
+                                    {% include('admin/adherent/_summary.html.twig') with { adherent: object.foundDuplicatedAdherent } %}
+                                </p>
+                            {% endif %}
+
                             {% if object.refusalReason %}
                                 <p class="form-text text-muted text-center">
                                     Refusée:
