@@ -48,9 +48,9 @@ class CertificationRequestProcessTimeoutCommand extends Command
 
         foreach ($certificationRequests as $certificationRequest) {
             $this->processTimeout($certificationRequest);
-        }
 
-        $this->em->flush();
+            $this->em->flush();
+        }
     }
 
     private function processTimeout(CertificationRequest $certificationRequest): void

@@ -33,7 +33,7 @@ class CertificationRequestDuplicateHandler implements CertificationRequestHandle
     {
         $adherent = $certificationRequest->getAdherent();
 
-        $duplicateCertifiedAdherent = $this->adherentRepository->findCertified(
+        $duplicateCertifiedAdherent = $this->adherentRepository->findDuplicateCertified(
             $adherent->getFirstName(),
             $adherent->getLastName(),
             $adherent->getBirthdate(),

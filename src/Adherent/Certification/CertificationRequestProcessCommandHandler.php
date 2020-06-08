@@ -7,11 +7,12 @@ use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class CertificationRequestProcessCommandHandler implements MessageHandlerInterface
+class CertificationRequestProcessCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

@@ -883,7 +883,7 @@ SQL;
         return $data;
     }
 
-    public function findCertified(
+    public function findDuplicateCertified(
         string $firstName,
         string $lastName,
         \DateTimeInterface $birthDate,
