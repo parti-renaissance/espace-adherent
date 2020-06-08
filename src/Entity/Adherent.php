@@ -2017,19 +2017,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $pendingCertificationRequest;
     }
 
-    public function getDelegatedAccesses()
+    public function getDelegatedAccesses(): ?DelegatedAccess
     {
         return $this->delegatedAccesses;
     }
 
-    public function addDelegatedAccess(DelegatedAccess $delegatedAccess)
+    public function addDelegatedAccess(DelegatedAccess $delegatedAccess): void
     {
         if (!$this->delegatedAccesses->contains($delegatedAccess)) {
             $this->delegatedAccesses->add($delegatedAccess);
         }
     }
 
-    public function removeDelegatedAccess(DelegatedAccess $delegatedAccess)
+    public function removeDelegatedAccess(DelegatedAccess $delegatedAccess): void
     {
         $this->delegatedAccesses->removeElement($delegatedAccess);
     }
