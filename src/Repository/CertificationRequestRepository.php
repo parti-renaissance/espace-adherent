@@ -8,6 +8,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CertificationRequestRepository extends ServiceEntityRepository
 {
+    use UuidEntityRepositoryTrait;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, CertificationRequest::class);

@@ -197,7 +197,7 @@ class CertificationRequest
         return $this->processedAt;
     }
 
-    public function process(Administrator $administrator): void
+    public function process(Administrator $administrator = null): void
     {
         $this->processedBy = $administrator;
         $this->processedAt = new \DateTime();
@@ -241,7 +241,7 @@ class CertificationRequest
         $this->refusalComment = $comment;
     }
 
-    public function block(?string $reason, ?string $customReason, ?string $comment): void
+    public function block(?string $reason, ?string $customReason = null, ?string $comment = null): void
     {
         $this->status = self::STATUS_BLOCKED;
         $this->blockReason = $reason;

@@ -114,11 +114,11 @@ class LoadCertificationData extends Fixture
 
     private function getCertificationManager(): CertificationManager
     {
-        return $this->container->get('autowired.'.CertificationManager::class);
+        return $this->container->get(CertificationManager::class);
     }
 
     private function getCertificationAuthorityManager(): CertificationAuthorityManager
     {
-        return $this->container->get('autowired.'.CertificationAuthorityManager::class);
+        return $this->container->get(CertificationAuthorityManager::class);
     }
 }
