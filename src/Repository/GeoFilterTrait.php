@@ -62,7 +62,19 @@ trait GeoFilterTrait
                 $qb->setParameter("code_$key", "$code%");
             } elseif ($tag->isDistrictTag()) {
                 if (!$referentTagsColumn) {
-                    throw new \LogicException('You need to specify the tags column name.');
+                    $code = substr($code, 6, 2);
+
+                    // Postal code prefix
+                    $codesFilter->add(
+                        $qb->expr()->andX(
+                            "${countryColumn} = 'FR'",
+                            $qb->expr()->like("${postalCodeColumn}", ":code_$key")
+                        )
+                    );
+
+                    $qb->setParameter("code_$key", "$code%");
+
+                    continue;
                 }
 
                 $codesFilter->add("$referentTagsColumn = :tag_$key");
