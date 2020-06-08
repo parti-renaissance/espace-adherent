@@ -55,14 +55,14 @@ class DelegatedAccess
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="delegatedAccesses")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      */
     private $delegator;
 
     /**
      * @var Adherent
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="delegatedAccesses")
      *
      * @Assert\NotBlank(message="Veuillez sélectionner un adhérent.")
      */

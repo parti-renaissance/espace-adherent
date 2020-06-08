@@ -34,7 +34,8 @@ trait GeoFilterTrait
         array $referentTags,
         string $alias,
         string $countryColumn = null,
-        string $postalCodeColumn = null
+        string $postalCodeColumn = null,
+        string $referentTagsColumn = null
     ): void {
         if (!$countryColumn) {
             $countryColumn = "$alias.postAddress.country";
@@ -49,9 +50,7 @@ trait GeoFilterTrait
         foreach ($referentTags as $key => $tag) {
             $code = $tag->getCode();
 
-            if (is_numeric($code) || $tag->isDistrictTag()) {
-                $code = $tag->getDepartmentCodeFromCirconscriptionName() ?? $code;
-
+            if (is_numeric($code)) {
                 // Postal code prefix
                 $codesFilter->add(
                     $qb->expr()->andX(
@@ -61,6 +60,13 @@ trait GeoFilterTrait
                 );
 
                 $qb->setParameter("code_$key", "$code%");
+            } elseif ($tag->isDistrictTag()) {
+                if (!$referentTagsColumn) {
+                    throw new \LogicException('You need to specify the tags column name.');
+                }
+
+                $codesFilter->add("$referentTagsColumn = :tag_$key");
+                $qb->setParameter("tag_$key", $tag);
             } elseif (2 === \mb_strlen($code)) {
                 // Country
                 $codesFilter->add($qb->expr()->eq("${countryColumn}", ":code_$key"));

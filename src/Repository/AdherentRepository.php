@@ -510,7 +510,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function findAdherentsByName(array $tags, ?string $name): array
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.referentTags', 'referent_tags')
+        ;
 
         if ($name) {
             $qb
@@ -520,7 +522,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ;
         }
 
-        $this->applyGeoFilter($qb, $tags, 'a');
+        $this->applyGeoFilter($qb, $tags, 'a', null, null, 'referent_tags');
 
         return $qb->getQuery()->getResult();
     }

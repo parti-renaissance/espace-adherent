@@ -201,13 +201,14 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
+            ->leftJoin('o.referentTags', 'referent_tags')
             ->where('e.published = :published')
             ->orderBy('e.beginAt', 'DESC')
             ->addOrderBy('e.name', 'ASC')
             ->setParameter('published', true)
         ;
 
-        $this->applyGeoFilter($qb, $referentTags, 'e');
+        $this->applyGeoFilter($qb, $referentTags, 'e', null, null, 'referent_tags');
 
         return $qb->getQuery()->getResult();
     }

@@ -9,6 +9,7 @@ use App\Form\MyTeam\MyTeamSearchAdherentType;
 use App\Intl\FranceCitiesBundle;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
+use App\Repository\MyTeam\DelegatedAccessRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,9 +22,13 @@ abstract class AbstractMyTeamController extends Controller
     /**
      * @Route("", name="list")
      */
-    public function list(): Response
+    public function list(DelegatedAccessRepository $delegatedAccessRepository): Response
     {
-        return $this->renderTemplate('my_team/list.html.twig');
+        $delegatedAccesses = $delegatedAccessRepository->findBy(['delegator' => $this->getUser()]);
+
+        return $this->renderTemplate('my_team/list.html.twig', [
+            'delegatedAccesses' => $delegatedAccesses,
+        ]);
     }
 
     /**

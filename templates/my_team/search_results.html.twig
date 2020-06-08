@@ -2,12 +2,9 @@
 <select id="js-select-adherent" style="min-width: 100px;" class="filter__field">
     <option value=""></option>
     {% for user in users %}
-        <option class="js-adherent-row" data-email="{{ user.emailAddress }}">
-            {{ user.firstname }}
-            {{ user.lastname }}
-        </option>
+        <option class="js-adherent-row" value="{{ user.emailAddress }}">{{ user }}</option>
     {% endfor %}
 </select>
 <div class="manager__filters__actions b__nudge--top">
-    <a href="#" title="refaire la recherche" class="btn btn--no-border b__nudge--bottom-medium js-undo-search">Réinitialiser</a>
+    <a href="#" title="Réinitialiser" class="btn btn--no-border b__nudge--bottom-medium js-undo-search">Réinitialiser</a>
 </div>

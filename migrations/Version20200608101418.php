@@ -5,9 +5,9 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20200605171830 extends AbstractMigration
+final class Version20200608101418 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE my_team_delegated_access (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
@@ -18,7 +18,7 @@ final class Version20200605171830 extends AbstractMigration
           restricted_cities LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\', 
           type VARCHAR(255) NOT NULL, 
           INDEX IDX_421C13B98825BEFA (delegator_id), 
-          UNIQUE INDEX UNIQ_421C13B9B7E7AE18 (delegated_id), 
+          INDEX IDX_421C13B9B7E7AE18 (delegated_id), 
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE my_team_delegate_access_committee (
@@ -48,7 +48,7 @@ final class Version20200605171830 extends AbstractMigration
           CONSTRAINT FK_C52A163FED1A100B FOREIGN KEY (committee_id) REFERENCES committees (id) ON DELETE CASCADE');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE my_team_delegate_access_committee DROP FOREIGN KEY FK_C52A163FFD98FA7A');
         $this->addSql('DROP TABLE my_team_delegated_access');

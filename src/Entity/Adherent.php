@@ -503,7 +503,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var DelegatedAccess[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\MyTeam\DelegatedAccess", mappedBy="delegator")
+     * @ORM\OneToMany(targetEntity="App\Entity\MyTeam\DelegatedAccess", mappedBy="delegated", cascade={"all"})
      */
     private $delegatedAccesses;
 

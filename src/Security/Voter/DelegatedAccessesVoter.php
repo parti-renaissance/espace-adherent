@@ -4,7 +4,6 @@ namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
-use App\Repository\MyTeam\DelegatedAccessRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -17,15 +16,11 @@ class DelegatedAccessesVoter extends Voter
     private const HAS_DELEGATED_ACCESS_COMMITTEE = 'HAS_DELEGATED_ACCESS_COMMITTEE';
     private const HAS_DELEGATED_ACCESS_MESSAGES = 'HAS_DELEGATED_ACCESS_MESSAGES';
 
-    /** @var DelegatedAccessRepository */
-    private $delegatedAccessRepository;
-
     /** @var RequestStack */
     private $requestStack;
 
-    public function __construct(DelegatedAccessRepository $delegatedAccessRepository, RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->delegatedAccessRepository = $delegatedAccessRepository;
         $this->requestStack = $requestStack;
     }
 
@@ -43,7 +38,7 @@ class DelegatedAccessesVoter extends Voter
 
         $delegatedAccess = $this->requestStack->getMasterRequest()->attributes->get('delegatedAccess');
 
-        if (!$delegatedAccess) {
+        if (!$delegatedAccess || $delegatedAccess->getType() !== $subject) {
             return false;
         }
 

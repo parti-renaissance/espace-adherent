@@ -46,7 +46,7 @@ class AbstractMessageControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
-        $crawler = $this->client->request('GET', '/espace-depute-delegue');
+        $crawler = $this->client->request('GET', '/espace-depute-delegue/evenements');
         self::assertCount(2, $crawler->filter('nav.manager-header__menu li'));
         self::assertCount(0, $crawler->filter('nav.manager-header__menu li a:contains("Mes messages")'));
         self::assertCount(0, $crawler->filter('nav.manager-header__menu li a:contains("Comités")'));
@@ -86,6 +86,22 @@ class AbstractMessageControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/');
         self::assertNotContains('Espace député délégué', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+    }
+
+    public function testAccessShouldBeOnDelegatedTypeIUse()
+    {
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
+
+        $crawler = $this->client->request('GET', '/');
+
+        self::assertContains('Espace député délégué', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertContains('Espace sénateur délégué', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+
+        $this->client->request('GET', '/espace-depute-delegue/messagerie');
+        $this->assertResponseStatusCode(403, $this->client->getResponse());
+
+        $this->client->request('GET', '/espace-senateur-delegue/messagerie');
+        $this->assertResponseStatusCode(200, $this->client->getResponse());
     }
 
     protected function setUp()

@@ -71,8 +71,8 @@
             <h2 id="js-selected-adherent-name" class="b__nudge--bottom">{{ form.delegated.vars.attr.fullname }}</h2>
 
             <div class="form__row">
-                {{ form_label(form.roles, 'Rôle') }}
-                {{ form_widget(form.roles) }}
+                {{ form_label(form.role, 'Rôle') }}
+                {{ form_widget(form.role) }}
             </div>
 
             {{ form_widget(form.delegated) }}
@@ -152,7 +152,7 @@
         });
 
         $(document).on('change', '#js-select-adherent', function () {
-          $('#delegate_access_delegated').val($(this).find('option:selected').data('email'));
+          $('#delegate_access_delegated').val($(this).find('option:selected').val());
           $('#js-selected-adherent-name').text($(this).find('option:selected').text());
         });
 
@@ -178,10 +178,12 @@
         $(document).on('click', '#js-search-by-email', function (e) {
           $('#js-by-name').hide();
           $('#js-by-email').show();
+          $('#js-selected-adherent-name').hide();
         });
         $(document).on('click', '#js-search-by-name', function (e) {
           $('#js-by-email').hide();
           $('#js-by-name').show();
+          $('#js-selected-adherent-name').show();
         });
       });
     </script>

@@ -6,6 +6,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 
 trait AccessDelegatorTrait
 {
+    // if you need to retrieve the current user and not the delegator, use parent::getUser() in your contoller
     protected function getUser()
     {
         $user = parent::getUser();

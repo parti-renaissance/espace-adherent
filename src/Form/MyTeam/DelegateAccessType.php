@@ -31,7 +31,7 @@ class DelegateAccessType extends AbstractType
     {
         $roles = DelegatedAccess::DEFAULT_ROLES;
 
-        if ($builder->getData()) {
+        if ($builder->getData() && $builder->getData()->getRole()) {
             $roles[] = $builder->getData()->getRole();
         }
 
@@ -58,7 +58,10 @@ class DelegateAccessType extends AbstractType
             ->add('accesses', ChoiceType::class, [
                 'expanded' => true,
                 'multiple' => true,
-                'choices' => array_combine(DelegatedAccess::ACCESSES, DelegatedAccess::ACCESSES),
+                'choices' => DelegatedAccess::ACCESSES,
+                'choice_label' => static function (string $choice) {
+                    return "delegated_access.form.access.$choice";
+                },
             ])
             ->add('restrictedCommittees_search', TextType::class, [
                 'mapped' => false,

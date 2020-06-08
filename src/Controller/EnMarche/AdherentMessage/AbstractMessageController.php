@@ -25,10 +25,8 @@ abstract class AbstractMessageController extends Controller
     /**
      * @Route(name="list", methods={"GET"})
      */
-    public function messageListAction(
-        Request $request,
-        AdherentMessageRepository $repository
-    ): Response {
+    public function messageListAction(Request $request, AdherentMessageRepository $repository): Response
+    {
         $status = $request->query->get('status');
 
         if ($status && !AdherentMessageStatusEnum::isValid($status)) {
@@ -54,10 +52,8 @@ abstract class AbstractMessageController extends Controller
     /**
      * @Route("/creer", name="create", methods={"GET", "POST"})
      */
-    public function createMessageAction(
-        Request $request,
-        AdherentMessageManager $messageManager
-    ): Response {
+    public function createMessageAction(Request $request, AdherentMessageManager $messageManager): Response
+    {
         $message = new AdherentMessageDataObject();
 
         if ($request->isMethod('POST') && $request->request->has('message_content')) {

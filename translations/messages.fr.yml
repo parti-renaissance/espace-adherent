@@ -732,3 +732,11 @@ voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
 voting_platform.designation.zone_outre_mer: Outre-Mer
 designation.label.type_committee_adherent: Désignation des binômes d'adhérents
+
+#
+# Delegated access
+#
+delegated_access.form.access.messages: Mes messages
+delegated_access.form.access.events: Événements
+delegated_access.form.access.adherents: Adhérents
+delegated_access.form.access.committee: Comités

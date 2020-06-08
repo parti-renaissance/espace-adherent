@@ -37,9 +37,19 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess3->setRole('Collaborateur parlementaire');
         $delegatedAccess3->setType('deputy');
         $delegatedAccess3->setAccesses([DelegatedAccess::ACCESS_EVENTS, DelegatedAccess::ACCESS_ADHERENTS]);
-        $delegatedAccess3->setRestrictedCities([]);
+        $delegatedAccess3->setRestrictedCities(['59360', '59350', '59044', '59002']);
 
         $manager->persist($delegatedAccess3);
+
+        // second access to same user, but of type senator, with different accesses
+        $delegatedAccess4 = new DelegatedAccess();
+        $delegatedAccess4->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
+        $delegatedAccess4->setDelegator($this->getReference('senator-59')); // deputy-ch-li@en-marche-dev.fr
+        $delegatedAccess4->setRole('Collaborateur parlementaire');
+        $delegatedAccess4->setType('senator');
+        $delegatedAccess4->setAccesses([DelegatedAccess::ACCESS_MESSAGES]);
+
+        $manager->persist($delegatedAccess4);
 
         $manager->flush();
     }

@@ -7,7 +7,7 @@
     </div>
 
     <div class="team-organization">
-        {% for access in app.user.delegatedAccesses %}
+        {% for access in delegatedAccesses %}
             <div class="team-organization__member-container">
                 <a href="{{ path('app_'~ space_name ~'_my_team_delegate_access_edit', {id: access.id}) }}" class="team-organization__member">
                     <div class="content">
