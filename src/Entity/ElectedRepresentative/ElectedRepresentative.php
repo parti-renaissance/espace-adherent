@@ -235,6 +235,7 @@ class ElectedRepresentative
         $this->politicalFunctions = new ArrayCollection();
         $this->labels = new ArrayCollection();
         $this->sponsorships = new ArrayCollection();
+        $this->userListDefinitions = new ArrayCollection();
 
         $this->initializeSponsorships();
     }

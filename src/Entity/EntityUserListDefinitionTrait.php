@@ -10,7 +10,7 @@ trait EntityUserListDefinitionTrait
     /**
      * @var Collection|UserListDefinition[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\UserListDefinition")
+     * @ORM\ManyToMany(targetEntity="App\Entity\UserListDefinition", cascade={"persist"})
      */
     protected $userListDefinitions;
 
@@ -31,6 +31,6 @@ trait EntityUserListDefinitionTrait
 
     public function removeUserListDefinition(UserListDefinition $userListDefinition): void
     {
-        $this->userListDefinitions->remove($userListDefinition);
+        $this->userListDefinitions->removeElement($userListDefinition);
     }
 }

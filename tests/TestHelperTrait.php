@@ -16,6 +16,7 @@ use App\Entity\CommitteeMembership;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\DonatorIdentifier;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Email;
 use App\Entity\Event;
 use App\Entity\EventRegistration;
@@ -42,6 +43,7 @@ use App\Entity\TonMacronChoice;
 use App\Entity\TonMacronFriendInvitation;
 use App\Entity\Transaction;
 use App\Entity\TurnkeyProject;
+use App\Entity\UserListDefinition;
 use App\Membership\ActivityPositions;
 use App\Repository\AdherentActivationTokenRepository;
 use App\Repository\AdherentRepository;
@@ -55,6 +57,7 @@ use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
 use App\Repository\DonatorIdentifierRepository;
 use App\Repository\DonatorRepository;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\EmailRepository;
 use App\Repository\EmailSubscriptionHistoryRepository;
 use App\Repository\EventRegistrationRepository;
@@ -78,6 +81,7 @@ use App\Repository\TonMacronChoiceRepository;
 use App\Repository\TonMacronFriendInvitationRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\TurnkeyProjectRepository;
+use App\Repository\UserListDefinitionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
@@ -324,6 +328,16 @@ trait TestHelperTrait
     public function getReferentSpaceAccessInformationRepository(): ReferentSpaceAccessInformationRepository
     {
         return $this->getRepository(ReferentSpaceAccessInformation::class);
+    }
+
+    public function getUserListDefinitionRepository(): UserListDefinitionRepository
+    {
+        return $this->getRepository(UserListDefinition::class);
+    }
+
+    public function getElectedRepresentativeRepository(): ElectedRepresentativeRepository
+    {
+        return $this->getRepository(ElectedRepresentative::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

@@ -6,7 +6,6 @@ use App\Address\GeoCoder;
 use App\Controller\CanaryControllerTrait;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
-use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
@@ -292,7 +291,7 @@ class ReferentController extends Controller
      * @Route("/elus", name="app_referent_elected_representatives_list", methods={"GET"})
      * @Security("is_granted('ROLE_REFERENT')")
      */
-    public function listElectedRepresentative(
+    public function listElectedRepresentatives(
         Request $request,
         ElectedRepresentativeRepository $electedRepresentativeRepository
     ): Response {

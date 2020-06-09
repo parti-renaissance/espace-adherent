@@ -205,7 +205,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'label' => 'Lieu de naissance',
                 ])
                 ->add('userListDefinitions', null, [
-                    'label' => 'Catégories',
+                    'label' => 'Labels',
                     'query_builder' => function (EntityRepository $er) {
                         return $er
                             ->createQueryBuilder('uld')
@@ -537,7 +537,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 },
             ])
             ->add('userListDefinitions', ModelAutocompleteFilter::class, [
-                'label' => 'Catégories',
+                'label' => 'Labels',
                 'show_filter' => true,
                 'field_options' => [
                     'minimum_input_length' => 0,

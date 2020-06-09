@@ -280,4 +280,22 @@ export default class ReqwestApiClient {
             type: 'json',
         });
     }
+
+    saveUserListDefinitionMembers(memberType, type, data, callback) {
+        this._createRequest(callback, {
+            method: 'post',
+            type: 'json',
+            url: `/api/${memberType}/user-list-definitions/members/save`,
+            data: data,
+        });
+    }
+
+    getUserListDefinitionsForType(memberType, type, data, callback) {
+        this._createRequest(callback, {
+            method: 'post',
+            type: 'json',
+            url: `/api/${memberType}/user-list-definitions/${type}/members`,
+            data: data,
+        });
+    }
 }

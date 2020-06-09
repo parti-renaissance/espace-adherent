@@ -26,32 +26,32 @@
             <div class="datagrid__table-container">
                 <table class="datagrid__table-manager">
                     <thead>
-                        <tr>
-                            {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
+                    <tr>
+                        {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
 
-                            <th style="width: 100px;">
-                                <a
+                        <th style="width: 100px;">
+                            <a
                                     href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
                                     class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
-                                >
-                                    Identité
-                                </a>
-                            </th>
-                            <th style="width: 100px;">Rôle</th>
-                            <th style="width: 100px;">Téléphone</th>
-                            <th style="width: 100px;">SMS/MMS</th>
-                            <th style="width: 100px;">Commune</th>
-                            <th style="width: 100px;">Comité</th>
-                            <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
-                                <a
+                            >
+                                Identité
+                            </a>
+                        </th>
+                        <th style="width: 100px;">Rôle</th>
+                        <th style="width: 100px;">Téléphone</th>
+                        <th style="width: 100px;">SMS/MMS</th>
+                        <th style="width: 100px;">Commune</th>
+                        <th style="width: 100px;">Comité</th>
+                        <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
+                            <a
                                     href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'createdAt', order: order})}) }}"
                                     class="sort-link sort-link--order-{{ filter.sort == 'createdAt' ? filter.order : 'a' }}"
-                                >
-                                    Adhésion le
-                                </a>
-                            </th>
-                            <th style="width: 100px;">{{ 'common.adherent.status_email'|trans }}</th>
-                        </tr>
+                            >
+                                Adhésion le
+                            </a>
+                        </th>
+                        <th style="width: 100px;">{{ 'common.adherent.status_email'|trans }}</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for user in users %}

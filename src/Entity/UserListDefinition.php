@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserListDefinitionRepository")
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="user_list_definition_type_code_unique", columns={"type", "code"})
  * })

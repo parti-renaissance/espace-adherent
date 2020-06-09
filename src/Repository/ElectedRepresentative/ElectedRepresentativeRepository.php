@@ -54,6 +54,24 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
     }
 
+    public function isInReferentManagedArea(ElectedRepresentative $electedRepresentative, array $referentTags): bool
+    {
+        $qb = $this
+            ->createQueryBuilder('er')
+        ;
+        $this->withActiveMandatesCondition($qb);
+
+        $res = $this
+            ->withZoneCondition($qb, $referentTags)
+            ->andWhere('er = :electedRepresentative')
+            ->setParameter('electedRepresentative', $electedRepresentative)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+
+        return null !== $res;
+    }
+
     private function createFilterQueryBuilder(ListFilter $filter): QueryBuilder
     {
         $qb = $this
