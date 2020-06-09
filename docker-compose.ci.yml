@@ -16,3 +16,6 @@ services:
     selenium:
         ports:
             - 5900:5900
+
+    rabbitmq:
+        image: rabbitmq:3.8.3-alpine
