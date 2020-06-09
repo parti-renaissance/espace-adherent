@@ -34,6 +34,7 @@ class ProcurationProxy
     private const RELIABILITY_ACTIVIST = 6;
     private const RELIABILITY_REPRESENTATIVE = 8;
 
+    private const MAX_FRENCH_REQUESTS = 2;
     private const MAX_FOREIGN_REQUESTS_FROM_FRANCE = 2;
     private const MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY = 3;
 
@@ -686,7 +687,8 @@ class ProcurationProxy
 
     private function processFrenchAvailability(): void
     {
-        $this->frenchRequestAvailable = $this->hasFreeSlots() && !$this->isProxyForFrenchRequest();
+        $this->frenchRequestAvailable = $this->hasFreeSlots()
+            && self::MAX_FRENCH_REQUESTS > $this->countFrenchRequests();
     }
 
     private function processForeignAvailability(): void
@@ -732,15 +734,15 @@ class ProcurationProxy
         return $this->proxiesCount - $this->foundRequests->count();
     }
 
-    private function isProxyForFrenchRequest(): bool
+    private function countFrenchRequests(): int
     {
-        foreach ($this->getFoundRequests() as $request) {
-            if (true === $request->isRequestFromFrance()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this
+            ->getFoundRequests()
+            ->filter(function (ProcurationRequest $request) {
+                return true === $request->isRequestFromFrance();
+            })
+            ->count()
+        ;
     }
 
     private function countForeignRequests(): int
