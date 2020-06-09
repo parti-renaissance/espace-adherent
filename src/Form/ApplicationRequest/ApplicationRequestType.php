@@ -84,12 +84,16 @@ class ApplicationRequestType extends AbstractType
             ->add('agreeToLREMValues', CheckboxType::class, [
                 'mapped' => false,
                 'required' => true,
-                'constraints' => [new Assert\IsTrue()],
+                'constraints' => [new Assert\IsTrue([
+                    'message' => 'common.checkbox.is_true',
+                ])],
             ])
             ->add('agreeToDataUse', CheckboxType::class, [
                 'mapped' => false,
                 'required' => true,
-                'constraints' => [new Assert\IsTrue()],
+                'constraints' => [new Assert\IsTrue([
+                    'message' => 'common.checkbox.is_true',
+                ])],
             ])
         ;
 

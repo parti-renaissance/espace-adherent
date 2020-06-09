@@ -129,11 +129,15 @@ class DonationRequestType extends AbstractType
             ])
             ->add('isPhysicalPerson', CheckboxType::class, [
                 'mapped' => false,
-                'constraints' => [new Assert\IsTrue()],
+                'constraints' => [new Assert\IsTrue([
+                    'message' => 'common.checkbox.is_true',
+                ])],
             ])
             ->add('hasFrenchNationality', CheckboxType::class, [
                 'mapped' => false,
-                'constraints' => [new Assert\IsTrue()],
+                'constraints' => [new Assert\IsTrue([
+                    'message' => 'common.checkbox.is_true',
+                ])],
             ])
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
             ->add('submit', SubmitType::class, [

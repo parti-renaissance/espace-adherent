@@ -112,11 +112,15 @@ class CitizenProjectCommandType extends AbstractType
             $builder
                 ->add('cgu', CheckboxType::class, [
                     'mapped' => false,
-                    'constraints' => [new Assert\IsTrue()],
+                    'constraints' => [new Assert\IsTrue([
+                        'message' => 'common.checkbox.is_true',
+                    ])],
                 ])
                 ->add('data_processing', CheckboxType::class, [
                     'mapped' => false,
-                    'constraints' => [new Assert\IsTrue()],
+                    'constraints' => [new Assert\IsTrue([
+                        'message' => 'common.checkbox.is_true',
+                    ])],
                 ])
             ;
         }

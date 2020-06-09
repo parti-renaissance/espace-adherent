@@ -34,7 +34,9 @@ class EventRegistrationType extends AbstractType
             ->add('emailAddress', EmailType::class)
             ->add('acceptTerms', CheckboxType::class, [
                 'mapped' => false,
-                'constraints' => [new Assert\IsTrue()],
+                'constraints' => [new Assert\IsTrue([
+                    'message' => 'common.checkbox.is_true',
+                ])],
             ])
         ;
 
