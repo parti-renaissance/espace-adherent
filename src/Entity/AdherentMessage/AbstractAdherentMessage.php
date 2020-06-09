@@ -36,7 +36,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     collectionOperations={},
  *     itemOperations={
  *         "get": {
- *             "access_control": "object.getAuthor() == user",
+ *             "access_control": "object.getAuthor() == user or object.isDelegatedAuthor(request.attributes.get('_delegatedAccesses', []))",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}}
  *         }
@@ -300,5 +300,16 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         foreach ($campaigns as $campaign) {
             $this->addMailchimpCampaign($campaign);
         }
+    }
+
+    public function isDelegatedAuthor(array $delegatedAccesses = [])
+    {
+        foreach ($delegatedAccesses as $delegatedAccess) {
+            if ($delegatedAccess->getType() === $this->getType()) {
+                return $delegatedAccess->getDelegator() === $this->getAuthor();
+            }
+        }
+
+        return false;
     }
 }

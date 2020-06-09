@@ -35,14 +35,14 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => 'setDelegatedAccessesInRequest',
+            KernelEvents::REQUEST => ['setDelegatedAccessesInRequest', 2], // needs to be called before api platform's DenyAccessListener (priotity = 1)
             KernelEvents::CONTROLLER => 'selectCurrentDelegatedAccess',
         ];
     }
 
     public function setDelegatedAccessesInRequest(GetResponseEvent $event)
     {
-        if ($this->requestStack->getMasterRequest() !== $event->getRequest()) {
+        if ($this->requestStack->getMasterRequest() !== $event->getRequest() && !$event->getRequest()->isXmlHttpRequest()) {
             return;
         }
 
@@ -63,7 +63,7 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
 
     public function selectCurrentDelegatedAccess(FilterControllerEvent $event): void
     {
-        if ($this->requestStack->getMasterRequest() !== $event->getRequest()) {
+        if ($this->requestStack->getMasterRequest() !== $event->getRequest() && !$event->getRequest()->isXmlHttpRequest()) {
             return;
         }
 
