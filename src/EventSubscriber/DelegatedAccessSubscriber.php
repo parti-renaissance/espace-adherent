@@ -5,6 +5,7 @@ namespace App\EventSubscriber;
 use App\Entity\Adherent;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -18,24 +19,33 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var RequestStack */
+    private $requestStack;
+
     public function __construct(
         DelegatedAccessRepository $delegatedAccessRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        RequestStack $requestStack
     ) {
         $this->delegatedAccessRepository = $delegatedAccessRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => 'setDelegatedAccessesInRequest',
+            KernelEvents::REQUEST => ['setDelegatedAccessesInRequest', 2], // needs to be called before api platform's DenyAccessListener (priotity = 1)
             KernelEvents::CONTROLLER => 'selectCurrentDelegatedAccess',
         ];
     }
 
     public function setDelegatedAccessesInRequest(GetResponseEvent $event)
     {
+        if ($this->requestStack->getMasterRequest() !== $event->getRequest() && !$event->getRequest()->isXmlHttpRequest()) {
+            return;
+        }
+
         $token = $this->tokenStorage->getToken();
 
         if (!$token) {
@@ -48,11 +58,15 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->getRequest()->attributes->set('delegatedAccesses', $this->delegatedAccessRepository->findAllDelegatedAccessForUser($adherent));
+        $event->getRequest()->attributes->set('delegated_accesses', $this->delegatedAccessRepository->findAllDelegatedAccessForUser($adherent));
     }
 
     public function selectCurrentDelegatedAccess(FilterControllerEvent $event): void
     {
+        if ($this->requestStack->getMasterRequest() !== $event->getRequest() && !$event->getRequest()->isXmlHttpRequest()) {
+            return;
+        }
+
         $route = $event->getRequest()->attributes->get('_route');
 
         if (false !== \strpos($route, '_delegated')) {
@@ -70,9 +84,9 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
                     return;
             }
 
-            foreach ($event->getRequest()->attributes->get('delegatedAccesses', []) as $delegatedAccess) {
+            foreach ($event->getRequest()->attributes->get('delegated_accesses', []) as $delegatedAccess) {
                 if ($delegatedAccess->getType() === $type) {
-                    $event->getRequest()->attributes->set('delegatedAccess', $delegatedAccess);
+                    $event->getRequest()->attributes->set('delegated_access', $delegatedAccess);
                     break;
                 }
             }

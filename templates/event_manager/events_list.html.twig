@@ -87,18 +87,18 @@
     {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
         <div class="datagrid__table__tabs">
             <div class="datagrid__table__tabs__items">
-                {% if is_active_route(app.request, "app_#{space_name}_event_manager_events") %}
+                {% if is_active_route(app.request, "app_#{space_name}_event_manager"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_events") %}
                     <h3>Tous les événements</h3>
                 {% else %}
-                    <h3><a href="{{ path("app_#{space_name}_event_manager_events") }}">Tous les événements</a></h3>
+                    <h3><a href="{{ path("app_#{space_name}_event_manager"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_events") }}">Tous les événements</a></h3>
                 {% endif %}
 
                 <span class="separator"></span>
 
-                {% if is_active_route(app.request, "app_#{space_name}_event_manager_events_mine") %}
+                {% if is_active_route(app.request, "app_#{space_name}_event_manager"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_events_mine") %}
                     <h3>Mes événements</h3>
                 {% else %}
-                    <h3><a href="{{ path("app_#{space_name}_event_manager_events_mine") }}">Mes événements</a></h3>
+                    <h3><a href="{{ path("app_#{space_name}_event_manager"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_events_mine") }}">Mes événements</a></h3>
                 {% endif %}
             </div>
         </div>
