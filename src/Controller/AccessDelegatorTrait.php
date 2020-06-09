@@ -20,7 +20,7 @@ trait AccessDelegatorTrait
         }
 
         /** @var DelegatedAccess $delegatedAccess */
-        $delegatedAccess = $this->get('request_stack')->getMasterRequest()->attributes->get('delegatedAccess');
+        $delegatedAccess = $this->get('request_stack')->getMasterRequest()->attributes->get('_delegatedAccess');
 
         if (!$delegatedAccess || $delegatedAccess->getType() !== $type) {
             throw new \LogicException("Current user does not have a \"$type\" access");

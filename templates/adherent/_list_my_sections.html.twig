@@ -15,7 +15,7 @@
 {% endif %}
 {% if is_granted('IS_DELEGATED_REFERENT') %}
     <li>
-        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegatedAccesses'), 'referent')) }}">Espace référent délégué</a>
+        <a href="{{ path(get_first_access_route(app.request.attributes.get('_delegatedAccesses'), 'referent')) }}">Espace référent délégué</a>
     </li>
 {% endif %}
 {% if app.user.isCoReferent %}
@@ -30,7 +30,7 @@
 {% endif %}
 {% if is_granted('IS_DELEGATED_DEPUTY') %}
     <li>
-        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegatedAccesses'), 'deputy')) }}">Espace député délégué</a>
+        <a href="{{ path(get_first_access_route(app.request.attributes.get('_delegatedAccesses'), 'deputy')) }}">Espace député délégué</a>
     </li>
 {% endif %}
 {% if app.user.isSenator %}
@@ -40,7 +40,7 @@
 {% endif %}
 {% if is_granted('IS_DELEGATED_SENATOR') %}
     <li>
-        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegatedAccesses'), 'senator')) }}">Espace sénateur délégué</a>
+        <a href="{{ path(get_first_access_route(app.request.attributes.get('_delegatedAccesses'), 'senator')) }}">Espace sénateur délégué</a>
     </li>
 {% endif %}
 {% if app.user.isCoordinatorCitizenProjectSector %}

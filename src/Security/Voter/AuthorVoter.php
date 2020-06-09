@@ -20,7 +20,7 @@ class AuthorVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $this->requestStack->getMasterRequest()->attributes->get('delegatedAccess')) {
+        if ($delegatedAccess = $this->requestStack->getMasterRequest()->attributes->get('_delegatedAccess')) {
             return $subject->getAuthor()->equals($delegatedAccess->getDelegator());
         }
 

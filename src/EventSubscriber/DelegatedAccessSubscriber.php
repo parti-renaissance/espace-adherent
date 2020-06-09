@@ -48,7 +48,7 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->getRequest()->attributes->set('delegatedAccesses', $this->delegatedAccessRepository->findAllDelegatedAccessForUser($adherent));
+        $event->getRequest()->attributes->set('_delegatedAccesses', $this->delegatedAccessRepository->findAllDelegatedAccessForUser($adherent));
     }
 
     public function selectCurrentDelegatedAccess(FilterControllerEvent $event): void
@@ -70,9 +70,9 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
                     return;
             }
 
-            foreach ($event->getRequest()->attributes->get('delegatedAccesses', []) as $delegatedAccess) {
+            foreach ($event->getRequest()->attributes->get('_delegatedAccesses', []) as $delegatedAccess) {
                 if ($delegatedAccess->getType() === $type) {
-                    $event->getRequest()->attributes->set('delegatedAccess', $delegatedAccess);
+                    $event->getRequest()->attributes->set('_delegatedAccess', $delegatedAccess);
                     break;
                 }
             }
