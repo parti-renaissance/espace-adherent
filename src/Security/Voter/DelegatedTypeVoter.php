@@ -37,7 +37,7 @@ class DelegatedTypeVoter extends Voter
             return false;
         }
 
-        $delegatedAccesses = $this->requestStack->getMasterRequest()->attributes->get('_delegatedAccesses');
+        $delegatedAccesses = $this->requestStack->getMasterRequest()->attributes->get('delegated_accesses');
 
         if (!$delegatedAccesses) {
             return false;

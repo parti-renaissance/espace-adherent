@@ -19,7 +19,7 @@ class DelegatedSenatorManagedUsersController extends SenatorManagedUsersControll
     protected function createFilterModel(): ManagedUsersFilter
     {
         /** @var DelegatedAccess $delegatedAccess */
-        $delegatedAccess = $this->get('request_stack')->getMasterRequest()->attributes->get('_delegatedAccess');
+        $delegatedAccess = $this->get('request_stack')->getMasterRequest()->attributes->get('delegated_access');
         if (!$delegatedAccess) {
             throw new \LogicException('No delegated access found');
         }

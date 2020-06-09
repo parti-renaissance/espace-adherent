@@ -18,7 +18,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez le département : <span>{{ get_user(app.request.attributes.get('_delegatedAccess')).senatorArea.departmentTag }}</span></p>
+                            <p>Vous gérez le département : <span>{{ get_user(app.request.attributes.get('delegated_access')).senatorArea.departmentTag }}</span></p>
                         </div>
                     </div>
                     <div class="second-section">
