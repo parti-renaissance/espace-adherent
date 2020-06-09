@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ApplicationRequestType extends AbstractType
 {
@@ -83,10 +84,12 @@ class ApplicationRequestType extends AbstractType
             ->add('agreeToLREMValues', CheckboxType::class, [
                 'mapped' => false,
                 'required' => true,
+                'constraints' => [new Assert\IsTrue()],
             ])
             ->add('agreeToDataUse', CheckboxType::class, [
                 'mapped' => false,
                 'required' => true,
+                'constraints' => [new Assert\IsTrue()],
             ])
         ;
 
