@@ -5,13 +5,13 @@ namespace App\Form\ApplicationRequest;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\Theme;
 use App\Form\AddressType;
+use App\Form\RequiredCheckboxType;
 use App\Intl\FranceCitiesBundle;
 use App\Repository\ApplicationRequest\ThemeRepository;
 use App\ValueObject\Genders;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -20,7 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class ApplicationRequestType extends AbstractType
 {
@@ -81,20 +80,8 @@ class ApplicationRequestType extends AbstractType
                 'required' => false,
                 'filter_emojis' => true,
             ])
-            ->add('agreeToLREMValues', CheckboxType::class, [
-                'mapped' => false,
-                'required' => true,
-                'constraints' => [new Assert\IsTrue([
-                    'message' => 'common.checkbox.is_true',
-                ])],
-            ])
-            ->add('agreeToDataUse', CheckboxType::class, [
-                'mapped' => false,
-                'required' => true,
-                'constraints' => [new Assert\IsTrue([
-                    'message' => 'common.checkbox.is_true',
-                ])],
-            ])
+            ->add('agreeToLREMValues', RequiredCheckboxType::class)
+            ->add('agreeToDataUse', RequiredCheckboxType::class)
         ;
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {

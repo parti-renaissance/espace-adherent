@@ -19,7 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class CitizenProjectCommandType extends AbstractType
 {
@@ -110,18 +109,8 @@ class CitizenProjectCommandType extends AbstractType
 
         if ($command instanceof CitizenProjectCreationCommand) {
             $builder
-                ->add('cgu', CheckboxType::class, [
-                    'mapped' => false,
-                    'constraints' => [new Assert\IsTrue([
-                        'message' => 'common.checkbox.is_true',
-                    ])],
-                ])
-                ->add('data_processing', CheckboxType::class, [
-                    'mapped' => false,
-                    'constraints' => [new Assert\IsTrue([
-                        'message' => 'common.checkbox.is_true',
-                    ])],
-                ])
+                ->add('cgu', RequiredCheckboxType::class)
+                ->add('data_processing', RequiredCheckboxType::class)
             ;
         }
 
