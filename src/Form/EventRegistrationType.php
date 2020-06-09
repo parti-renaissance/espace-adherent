@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class EventRegistrationType extends AbstractType
 {
@@ -32,12 +31,7 @@ class EventRegistrationType extends AbstractType
                 'format_identity_case' => true,
             ])
             ->add('emailAddress', EmailType::class)
-            ->add('acceptTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [new Assert\IsTrue([
-                    'message' => 'common.checkbox.is_true',
-                ])],
-            ])
+            ->add('acceptTerms', RequiredCheckboxType::class)
         ;
 
         $registration = $builder->getData();
