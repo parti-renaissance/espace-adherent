@@ -239,15 +239,9 @@ export default class UserListDefinitionWidget extends React.Component {
     }
 
     checkIfCanApply() {
-        const hasPartial = this.state.userListDefinitions.some(uld => uld.newStatus === STATUS_PARTIAL);
-        const noModifications = this.state.userListDefinitions.every(uld => uld.newStatus === uld.status);
-
-        let apply = false;
-        if (!hasPartial && !noModifications) {
-            apply = true;
-        }
-
-        this.setState({ canApply: apply });
+        this.setState({
+            canApply: this.state.userListDefinitions.some(uld => uld.newStatus !== uld.status),
+        });
     }
 
     updateMainCheckbox() {
@@ -263,6 +257,14 @@ export default class UserListDefinitionWidget extends React.Component {
 
         if (!this.type) {
             this.setState({ error: 'Pas de UserListDefinition type' });
+            return;
+        }
+
+        if (this.state.displayList) {
+            this.setState({
+                displayList: false,
+            });
+
             return;
         }
 
@@ -380,7 +382,11 @@ export default class UserListDefinitionWidget extends React.Component {
                             .find(`:input[value="${membreId}"]`).parents('tr').find('td.labels');
                         $(tdLabels).html(
                             this.postApplyCallback(
-                                this.state.userListDefinitions.filter(uld => uld.newStatus === STATUS_ALL)
+                                this.state.userListDefinitions.filter(
+                                    uld => uld.newStatus === STATUS_ALL
+                                            || (uld.status === STATUS_PARTIAL
+                                                && uld.ids && uld.ids.includes(membreId))
+                                )
                             )
                         );
                     });
