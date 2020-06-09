@@ -41,7 +41,7 @@
                         {{ include('citizen_project/_form.html.twig') }}
 
                         {% if form.cgu is defined %}
-                            <div class="form__checkbox form__checkbox--large">
+                            <div class="form__checkbox form__checkbox--large" id="field-cgu">
                                 <div>
                                     {{ form_widget(form.cgu) }}
                                     {% block _form_cgu_label %}
@@ -55,7 +55,7 @@
                         {% endif %}
 
                         {% if form.data_processing is defined %}
-                            <div class="form__checkbox form__checkbox--large ">
+                            <div class="form__checkbox form__checkbox--large" id="field-data-processing">
                                 <div>
                                     {{ form_widget(form.data_processing) }}
                                     {% block _form_data_processing_label %}
