@@ -93,6 +93,7 @@ class CertificationRequestControllerTest extends WebTestCase
         $form = $crawler->filter('form[name="certification_request"]')->form();
         $this->client->request('POST', '/espace-adherent/mon-compte/certification/demande', [
             'certification_request' => [
+                'cgu' => true,
                 '_token' => $form['certification_request[_token]']->getValue(),
             ],
         ], [
