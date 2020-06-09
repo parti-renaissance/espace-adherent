@@ -5,6 +5,7 @@ namespace App\EventSubscriber;
 use App\Entity\Adherent;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -18,12 +19,17 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var RequestStack */
+    private $requestStack;
+
     public function __construct(
         DelegatedAccessRepository $delegatedAccessRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        RequestStack $requestStack
     ) {
         $this->delegatedAccessRepository = $delegatedAccessRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()
@@ -36,6 +42,10 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
 
     public function setDelegatedAccessesInRequest(GetResponseEvent $event)
     {
+        if ($this->requestStack->getMasterRequest() !== $event->getRequest()) {
+            return;
+        }
+
         $token = $this->tokenStorage->getToken();
 
         if (!$token) {
@@ -53,6 +63,10 @@ class DelegatedAccessSubscriber implements EventSubscriberInterface
 
     public function selectCurrentDelegatedAccess(FilterControllerEvent $event): void
     {
+        if ($this->requestStack->getMasterRequest() !== $event->getRequest()) {
+            return;
+        }
+
         $route = $event->getRequest()->attributes->get('_route');
 
         if (false !== \strpos($route, '_delegated')) {
