@@ -664,6 +664,16 @@ elected_representative.mandate.larem_support.invested: Investi
 elected_representative.mandate.larem_support.official: Soutien officiel
 elected_representative.mandate.larem_support.informal: Soutien informel
 elected_representative.mandate.larem_support.not_supported: Pas soutenu
+elected_representative.labels: Étiquettes
+elected_representative.mandates: Mandats
+elected_representative.political_functions: Fonctions
+elected_representative.cities: Villes
+elected_representative.user_list_definitions: Labels
+elected_representative.filter.labels: Choisissez des étiquettes
+elected_representative.filter.mandates: Choisissez des mandates
+elected_representative.filter.political_functions: Choisissez des fonctions
+elected_representative.filter.cities: Choisissez des villes
+elected_representative.filter.user_list_definitions: Choisissez des labels
 
 #
 # Election

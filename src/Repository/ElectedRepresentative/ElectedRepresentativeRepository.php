@@ -5,6 +5,7 @@ namespace App\Repository\ElectedRepresentative;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\UserListDefinitionEnum;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -81,6 +82,85 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $this->withActiveMandatesCondition($qb);
         $this->withZoneCondition($qb, $filter->getReferentTags());
+
+        $qb
+            ->addSelect('mandate', 'zone', 'politicalFunction', 'userListDefinition', 'label')
+            ->addSelect('sponsorship', 'socialNetworkLink', 'userListDefinition')
+            ->leftJoin('er.labels', 'label')
+            ->leftJoin('er.sponsorships', 'sponsorship')
+            ->leftJoin('er.socialNetworkLinks', 'socialNetworkLink')
+            ->leftJoin('er.politicalFunctions', 'politicalFunction')
+            ->leftJoin('er.userListDefinitions', 'userListDefinition')
+        ;
+
+        if ($lastName = $filter->getLastName()) {
+            $qb
+                ->andWhere('er.lastName LIKE :last_name')
+                ->setParameter('last_name', '%'.$lastName.'%')
+            ;
+        }
+
+        if ($firstName = $filter->getFirstName()) {
+            $qb
+                ->andWhere('er.firstName LIKE :first_name')
+                ->setParameter('first_name', '%'.$firstName.'%')
+            ;
+        }
+
+        if ($gender = $filter->getGender()) {
+            $qb
+                ->andWhere('er.gender = :gender')
+                ->setParameter('gender', $gender)
+            ;
+        }
+
+        if ($labels = $filter->getLabels()) {
+            $qb
+                ->andWhere('label.name in (:labels)')
+                ->andWhere('label.onGoing = 1')
+                ->andWhere('label.finishYear IS NULL')
+                ->setParameter('labels', $labels)
+            ;
+        }
+
+        if ($mandates = $filter->getMandates()) {
+            $qb
+                ->andWhere('mandate.type in (:mandates)')
+                ->setParameter('mandates', $mandates)
+            ;
+        }
+
+        if ($politicalFunctions = $filter->getPoliticalFunctions()) {
+            $qb
+                ->andWhere('politicalFunction.name in (:politicalFunctions)')
+                ->andWhere('politicalFunction.onGoing = 1')
+                ->andWhere('politicalFunction.finishAt IS NULL')
+                ->setParameter('politicalFunctions', $politicalFunctions)
+            ;
+        }
+
+        if ($cities = $filter->getCities()) {
+            $qb
+                ->andWhere('mandate.zone in (:cities)')
+                ->setParameter('cities', $cities)
+            ;
+        }
+
+        if ($userListDefinitions = $filter->getUserListDefinitions()) {
+            $qb
+                ->andWhere('userListDefinition.id in (:userListDefinitions)')
+                ->andWhere('userListDefinition.type = :erType')
+                ->setParameter('userListDefinitions', $userListDefinitions)
+                ->setParameter('erType', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+            ;
+        }
+
+        $isAdherent = $filter->isAdherent();
+        if ($isAdherent) {
+            $qb->andWhere('er.isAdherent = 1');
+        } elseif (false === $isAdherent) {
+            $qb->andWhere('(er.isAdherent = 0 OR er.isAdherent IS NULL)');
+        }
 
         return $qb;
     }

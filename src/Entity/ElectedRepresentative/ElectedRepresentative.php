@@ -423,6 +423,13 @@ class ElectedRepresentative
         return $this->mandates;
     }
 
+    public function getCurrentMandates(): Collection
+    {
+        return $this->mandates->filter(function (Mandate $mandate) {
+            return $mandate->isElected() && $mandate->isOnGoing() && null === $mandate->getFinishAt();
+        });
+    }
+
     public function getElectedMandates(): Collection
     {
         return $this->mandates->filter(function (Mandate $mandate) {
@@ -450,16 +457,16 @@ class ElectedRepresentative
         $this->mandates->removeElement($mandate);
     }
 
-    public function getCurrentMandates(): Collection
-    {
-        return $this->mandates->filter(function (Mandate $mandate) {
-            return $mandate->isOnGoing();
-        });
-    }
-
     public function getPoliticalFunctions(): Collection
     {
         return $this->politicalFunctions;
+    }
+
+    public function getCurrentPoliticalFunctions(): Collection
+    {
+        return $this->politicalFunctions->filter(function (PoliticalFunction $politicalFunction) {
+            return $politicalFunction->isOnGoing() && null === $politicalFunction->getFinishAt();
+        });
     }
 
     public function addPoliticalFunction(PoliticalFunction $politicalFunction): void
@@ -473,13 +480,6 @@ class ElectedRepresentative
     public function removePoliticalFunction(PoliticalFunction $politicalFunction): void
     {
         $this->politicalFunctions->removeElement($politicalFunction);
-    }
-
-    public function getCurrentPoliticalFunctions(): Collection
-    {
-        return $this->politicalFunctions->filter(function (PoliticalFunction $politicalFunction) {
-            return $politicalFunction->isOnGoing();
-        });
     }
 
     public function exportIsAdherent(): string

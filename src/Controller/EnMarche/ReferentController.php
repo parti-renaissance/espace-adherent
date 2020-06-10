@@ -9,6 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
+use App\Entity\UserListDefinitionEnum;
 use App\Form\ElectedRepresentative\ElectedRepresentativeFilterType;
 use App\Form\InstitutionalEventCommandType;
 use App\Form\ReferentPersonLinkType;
@@ -315,6 +316,7 @@ class ReferentController extends Controller
         return $this->render('elected_representative/list.html.twig', [
             'elected_representatives' => $electedRepresentatives,
             'filter' => $filter,
+            'form' => $form->createView(),
             'total_count' => $electedRepresentativeRepository->countForReferentTags($filter->getReferentTags()),
         ]);
     }
@@ -335,6 +337,8 @@ class ReferentController extends Controller
     private function createFilterForm(ListFilter $filter = null): FormInterface
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
+            'referent_tags' => $this->getUser()->getManagedArea()->getTags()->toArray(),
+            'user_list_definition_type' => UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
         ]);

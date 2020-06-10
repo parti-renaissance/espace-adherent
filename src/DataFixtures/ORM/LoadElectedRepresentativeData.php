@@ -359,13 +359,23 @@ class LoadElectedRepresentativeData extends Fixture
             null,
             $er2Mandates2Functions,
             $mandate2,
-            false,
+            true,
             new \DateTime('2019-05-10')
+        );
+        $politicalFunction3 = new PoliticalFunction(
+            PoliticalFunctionNameEnum::VICE_PRESIDENT_OF_EPCI,
+            null,
+            $er2Mandates2Functions,
+            $mandate2,
+            false,
+            new \DateTime('2016-05-10'),
+            new \DateTime('2019-05-09')
         );
         $er2Mandates2Functions->addMandate($mandate1);
         $er2Mandates2Functions->addMandate($mandate2);
         $er2Mandates2Functions->addPoliticalFunction($politicalFunction1);
         $er2Mandates2Functions->addPoliticalFunction($politicalFunction2);
+        $er2Mandates2Functions->addPoliticalFunction($politicalFunction3);
 
         $manager->persist($er2Mandates2Functions);
 
