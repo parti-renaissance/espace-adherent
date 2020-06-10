@@ -37,6 +37,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $transactionalMailer: '@app.mailer.transactional'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
