@@ -658,6 +658,13 @@ retirement_simulator.profession.independant: indépendant
 retirement_simulator.profession.other: autre
 
 #
+# UserListDefinition
+#
+user_list_definition.type.elected_representative.label: Élu
+user_list_definition.type.adherent.label: Adhérent
+user_list_definition.type.thematic_community.label: Communauté thématique
+
+#
 # ElectedRepresentative
 #
 elected_representative.mandate.larem_support.invested: Investi

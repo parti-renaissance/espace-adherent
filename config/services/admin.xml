@@ -479,6 +479,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.user_list_definition" class="App\Admin\UserListDefinitionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Labels" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\UserListDefinition</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.client" class="App\Admin\OAuth\ClientAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Client" group="Tech" />
 
@@ -963,14 +971,6 @@
 
             <argument />
             <argument>App\Entity\ElectedRepresentative\Zone</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.user_list_definition" class="App\Admin\UserListDefinitionAdmin">
-            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
-
-            <argument />
-            <argument>App\Entity\UserListDefinition</argument>
             <argument />
         </service>
 
