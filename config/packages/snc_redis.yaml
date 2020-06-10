@@ -6,3 +6,4 @@ snc_redis:
             dsn: "redis://%env(REDIS_HOST)%"
     session:
         client: default
+        ttl: '%env(SESSION_TTL)%'
