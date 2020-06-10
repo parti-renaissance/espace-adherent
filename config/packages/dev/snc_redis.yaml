@@ -1,0 +1,4 @@
+snc_redis:
+    profiler_storage:
+        client: default
+        ttl: 7200
