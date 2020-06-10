@@ -100,8 +100,10 @@ export default class UserListDefinitionWidget extends React.Component {
             <div className="l__row">
                 <div className="pst--relative">
                     {0 < length ?
-                        <div className={`btn-secondary btn-secondary--blue ${1 > length ? 'btn-secondary--disabled' : ''}`}
-                            onClick={this.getUserListDefinitionsForType}>
+                        <div className={
+                            `btn-secondary btn-secondary--blue ${1 > length ? 'btn-secondary--disabled' 
+                        : ''}`}
+                        onClick={this.getUserListDefinitionsForType}>
                             ({length}) Ajouter un label
                         </div>
                     : ''}
