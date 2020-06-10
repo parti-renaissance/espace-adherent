@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche;
 
 use App\Controller\AccessDelegatorTrait;
+use App\Controller\CanaryControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,4 +14,5 @@ use Symfony\Component\Routing\Annotation\Route;
 class DelegatedDeputyController extends DeputyController
 {
     use AccessDelegatorTrait;
+    use CanaryControllerTrait;
 }

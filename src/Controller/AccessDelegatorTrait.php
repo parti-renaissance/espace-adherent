@@ -9,6 +9,8 @@ trait AccessDelegatorTrait
     // if you need to retrieve the current user and not the delegator, use parent::getUser() in your contoller
     protected function getUser()
     {
+        $this->disableInProduction();
+
         $user = parent::getUser();
 
         if (\method_exists($this, 'getSpaceType')) {
