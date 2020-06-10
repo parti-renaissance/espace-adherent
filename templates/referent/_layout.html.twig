@@ -136,18 +136,6 @@
             <div class="l__wrapper procuration-manager__content text--body">
                 {% block referent_content %}{% endblock %}
             </div>
-
-            <div id="managerOnScroll" class="manager__fixed-bar">
-                <div class="l__wrapper manager__fixed-bar__content">
-                    <p>Vous gérez : <span>{{ managedAreaTags }}</span></p>
-                    {% if is_granted('ROLE_REFERENT') %}
-                        <div class="direct-actions">
-                            <a href="{{ path('app_message_referent_create') }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-                            <a href="{{ path('app_referent_event_manager_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
         </section>
 
         {% if not hasCharterAccepted %}
@@ -175,10 +163,4 @@
             });
         </script>
     {% endif %}
-
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.manager_sticky_header('#managerOnScroll') }}
-        });
-    </script>
 {% endblock %}

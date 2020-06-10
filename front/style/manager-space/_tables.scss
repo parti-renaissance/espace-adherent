@@ -166,6 +166,15 @@
 }
 
 .datagrid__action {
+    min-height: 80px;
+    background-color: $white;
+
+    &--sticky-scroll {
+        position: sticky;
+        top: 0px;
+        z-index: 4;
+    }
+
     &--wrapper {
         display: flex;
         align-items: flex-start;
@@ -175,6 +184,7 @@
         margin-left: auto;
     }
 }
+
 
 .datagrid__table-manager {
     width: 100%;
@@ -265,7 +275,7 @@
                     }
                 }
 
-                &.municipal-candidate-tags span {
+                &.table-labels span {
                     display: inline-block;
                     margin: 0 5px 5px 0;
                     padding: 4px 8px;
@@ -275,16 +285,6 @@
                     font-size: 12px;
                     border: none;
                     white-space: nowrap;
-                }
-
-                & span.label {
-                    display: inline-block;
-                    background-color: #ebf4ff;
-                    padding: 6px 15px;
-                    margin: 5px 0;
-                    border-radius: 20px;
-                    font-weight: bold;
-                    color: #698ab3;
                 }
 
                 & span.status {
@@ -454,20 +454,30 @@
 }
 
 .label-list {
-    max-width: 275px;
-    margin-top: 10px;
-    border-radius: 4px;
+    position: absolute;
+    top: calc(100% + 10px);
+    width: 275px;
+    border-radius: 3px;
     box-shadow: 0 2px 4px 0 rgba(99, 98, 150, 0.25);
     background-color: #ffffff;
+    padding: 8px 0;
 
     &--loader {
-        max-width: 275px;
+        position: absolute;
+        top: calc(100% + 10px);
+        width: 275px;
+        border-radius: 3px;
+        box-shadow: 0 2px 4px 0 rgba(99, 98, 150, 0.25);
+        background-color: #ffffff;
+        padding: 8px 0;
     }
 
     .label {
-        line-height: normal;
+        line-height: 40px;
         background-color: #ffffff;
         cursor: pointer;
+        height: 40px;
+        padding: 0 12px;
     }
 
     .label:hover {
@@ -475,11 +485,12 @@
     }
 
     .apply-btn {
-        padding: 5px 35px;
         border-top: 1px solid $lines-grey;
-        border-bottom: 0;
-        color: $blue--dark;
-        font-weight: normal;
+        line-height: 40px;
+        background-color: #ffffff;
+        cursor: pointer;
+        height: 40px;
+        padding: 0 8px 0 44px;
     }
 
     .checkbox {
@@ -490,7 +501,7 @@
         width: 14px;
         height: 14px;
         padding: 2px;
-        margin: 5px;
+        margin-right : 12px;
         border-radius: 1px;
         border: solid 1px $filter-field-border;
         background-color: #ffffff;

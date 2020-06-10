@@ -45,7 +45,7 @@ Feature:
     When I select "4" from "application_request_tags_tags"
     And I press "Enregistrer"
     Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I should see "Tag 4" in the "table.datagrid__table-manager tbody tr td.municipal-candidate-tags" element
+    And I should see "Tag 4" in the "table.datagrid__table-manager tbody tr td.table-labels" element
 
   Scenario Outline: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "<user>"
@@ -100,7 +100,7 @@ Feature:
     When I select "4" from "application_request_tags_tags"
     And I press "Enregistrer"
     Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I should see "Tag 4" in the "table.datagrid__table-manager tbody tr td.municipal-candidate-tags" element
+    And I should see "Tag 4" in the "table.datagrid__table-manager tbody tr td.table-labels" element
 
   Scenario Outline: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "<user>"

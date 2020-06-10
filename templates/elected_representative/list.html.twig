@@ -3,7 +3,7 @@
 {% block referent_content %}
     <main>
         <section class="b__nudge--bottom-huge">
-            <div class="datagrid__pre-table b__nudge--bottom-larger">
+            <div class="datagrid__pre-table b__nudge--bottom">
                 <h3>Élus</h3>
 
                 {% if total_count %}
@@ -98,7 +98,7 @@
             </div>
 
             <div class="datagrid">
-                <div class="user-list-definition-manager-wrapper"></div>
+                <div class="l__row datagrid__action datagrid__action--sticky-scroll user-list-definition-manager-wrapper"></div>
 
                 <div class="b__nudge--bottom-larger">
                     <div class="datagrid__table-container">
@@ -116,7 +116,7 @@
                                         Identité
                                     </a>
                                 </th>
-                                <th style="width: 100px;">Mandats actuels (nuance)</th>
+                                <th style="min-width: 200px;">Mandats actuels (nuance)</th>
                                 <th style="width: 100px;">Fonctions actuelles</th>
                                 <th style="width: 100px;">Étiquettes</th>
                                 <th style="width: 100px;">Labels</th>
@@ -154,9 +154,9 @@
                                             {{ label }}<br />
                                         {% endfor %}
                                     </td>
-                                    <td class="labels">
+                                    <td class="table-labels">
                                         {% for label in elected_representative.userListDefinitions|slice(0, 2) %}
-                                            <span class="label">{{ label }}</span><br />
+                                            <span>{{ label }}</span><br />
                                         {% endfor %}
 
                                         {% if elected_representative.userListDefinitions|length > 2 %}
