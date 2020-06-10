@@ -285,6 +285,10 @@
                     font-size: 12px;
                     border: none;
                     white-space: nowrap;
+
+                    &.visually-hidden {
+                        display: none;
+                    }
                 }
 
                 & span.status {

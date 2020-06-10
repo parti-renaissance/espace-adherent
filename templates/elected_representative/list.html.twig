@@ -228,8 +228,8 @@
                     theme: 'default em-filters'
                 });
             });
-
-            $('td.labels').on('click', '[id^="show_more_labels_"], [id^="show_less_labels_"]', function() {
+            
+            $('td.table-labels').on('click', '[id^="show_more_labels_"], [id^="show_less_labels_"]', function() {
                 let elementId = $(this).attr('id');
                 $(this).click(function(){
                     $('#'+elementId).toggleClass('visually-hidden');
