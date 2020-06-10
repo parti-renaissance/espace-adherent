@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\ManagedUsers;
 
+use App\Controller\CanaryControllerTrait;
 use App\Entity\Committee;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -16,8 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DelegatedReferentManagedUsersController extends ReferentManagedUsersController
 {
+    use CanaryControllerTrait;
+
     protected function createFilterModel(): ManagedUsersFilter
     {
+        $this->disableInProduction();
+
         /** @var DelegatedAccess $delegatedAccess */
         $delegatedAccess = $this->get('request_stack')->getMasterRequest()->attributes->get('delegated_access');
         if (!$delegatedAccess) {
