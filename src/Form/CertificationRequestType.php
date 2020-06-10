@@ -14,6 +14,7 @@ class CertificationRequestType extends AbstractType
     {
         $builder
             ->add('document', FileType::class)
+            ->add('cgu', RequiredCheckboxType::class)
         ;
     }
 

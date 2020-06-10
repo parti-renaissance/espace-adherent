@@ -31,9 +31,7 @@ class EventRegistrationType extends AbstractType
                 'format_identity_case' => true,
             ])
             ->add('emailAddress', EmailType::class)
-            ->add('acceptTerms', CheckboxType::class, [
-                'mapped' => false,
-            ])
+            ->add('acceptTerms', RequiredCheckboxType::class)
         ;
 
         $registration = $builder->getData();

@@ -697,7 +697,7 @@ class AdherentControllerTest extends WebTestCase
 
         $errors = $this->client->getCrawler()->filter('.form__errors');
 
-        $this->assertSame(7, $errors->count());
+        $this->assertSame(9, $errors->count());
 
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
@@ -727,13 +727,21 @@ class AdherentControllerTest extends WebTestCase
             'Le numéro de téléphone est obligatoire.',
             $this->client->getCrawler()->filter('#citizen-project-phone > .form__errors > li')->text()
         );
+        $this->assertSame(
+            'Veuillez cocher cette case pour continuer',
+            $this->client->getCrawler()->filter('#field-cgu > .form__errors > li')->text()
+        );
+        $this->assertSame(
+            'Veuillez cocher cette case pour continuer',
+            $this->client->getCrawler()->filter('#field-data-processing > .form__errors > li')->text()
+        );
 
         $data = [];
         $data['citizen_project']['name'] = 'P';
         $data['citizen_project']['subtitle'] = 'test';
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
-        $this->assertSame(7, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(9, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
             'Vous devez saisir au moins 2 caractères.',
             $this->client->getCrawler()->filter('#field-name > .form__errors > li')->text()
@@ -765,6 +773,8 @@ class AdherentControllerTest extends WebTestCase
         $data['citizen_project']['address']['country'] = 'CH';
         $data['citizen_project']['phone']['country'] = 'CH';
         $data['citizen_project']['phone']['number'] = '31 359 21 11';
+        $data['citizen_project']['cgu'] = true;
+        $data['citizen_project']['data_processing'] = true;
 
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
@@ -812,6 +822,8 @@ class AdherentControllerTest extends WebTestCase
             'citizen_project[required_means]' => 'Mes actions.',
             'citizen_project[phone][number]' => '6 55 66 77 66',
             'citizen_project[phone][country]' => 'FR',
+            'citizen_project[cgu]' => true,
+            'citizen_project[data_processing]' => true,
         ]);
 
         $this->client->submit($form);
@@ -848,6 +860,8 @@ class AdherentControllerTest extends WebTestCase
             'citizen_project[phone][number]' => '6 22 33 44 55',
             'citizen_project[phone][country]' => 'FR',
             'citizen_project[district]' => 'Mon quartier',
+            'citizen_project[cgu]' => true,
+            'citizen_project[data_processing]' => true,
         ]);
 
         $this->client->submit($form);

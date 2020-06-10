@@ -109,12 +109,8 @@ class CitizenProjectCommandType extends AbstractType
 
         if ($command instanceof CitizenProjectCreationCommand) {
             $builder
-                ->add('cgu', CheckboxType::class, [
-                    'mapped' => false,
-                ])
-                ->add('data_processing', CheckboxType::class, [
-                    'mapped' => false,
-                ])
+                ->add('cgu', RequiredCheckboxType::class)
+                ->add('data_processing', RequiredCheckboxType::class)
             ;
         }
 

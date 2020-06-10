@@ -66,10 +66,11 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame(3, $crawler->filter('.form__errors')->count());
+        self::assertSame(4, $crawler->filter('.form__errors')->count());
         self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-first-name .form__errors > li')->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-last-name .form__errors > li')->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-email-address .form__errors > li')->text());
+        self::assertSame('Veuillez cocher cette case pour continuer', $crawler->filter('#field-accept-terms .form__errors > li')->text());
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form([
             'event_registration' => [

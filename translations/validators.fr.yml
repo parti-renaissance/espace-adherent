@@ -60,6 +60,8 @@ common.repeated: Les valeurs ne correspondent pas.
 
 common.personal_data_collection.required: L'acceptation des mentions d'information est obligatoire pour donner suite à votre demande.
 
+common.checkbox.is_true: Veuillez cocher cette case pour continuer
+
 #
 # Adherent
 #
