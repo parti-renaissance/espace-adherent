@@ -7,16 +7,18 @@ use App\Entity\MyTeam\DelegatedAccess;
 trait AccessDelegatorTrait
 {
     // if you need to retrieve the current user and not the delegator, use parent::getUser() in your contoller
-    protected function getUser()
+    protected function getUser(string $type = null)
     {
         $user = parent::getUser();
 
-        if (\method_exists($this, 'getSpaceType')) {
-            $type = $this->getSpaceType();
-        } elseif (\method_exists($this, 'getMessageType')) {
-            $type = $this->getMessageType();
-        } else {
-            throw new \LogicException('Unable to determine space type');
+        if (null === $type) {
+            if (\method_exists($this, 'getSpaceType')) {
+                $type = $this->getSpaceType();
+            } elseif (\method_exists($this, 'getMessageType')) {
+                $type = $this->getMessageType();
+            } else {
+                throw new \LogicException('Unable to determine space type');
+            }
         }
 
         /** @var DelegatedAccess $delegatedAccess */

@@ -26,6 +26,15 @@ trait GeoFilterTrait
         $this->applyGeoFilter($qb, [$deputy->getManagedDistrict()->getReferentTag()], $alias);
     }
 
+    private function applySenatorGeoFilter(QueryBuilder $qb, Adherent $senator, string $alias): void
+    {
+        if (!$senator->isSenator()) {
+            return;
+        }
+
+        $this->applyGeoFilter($qb, [$senator->getSenatorArea()->getDepartmentTag()], $alias);
+    }
+
     /**
      * @param ReferentTag[] $referentTags
      */

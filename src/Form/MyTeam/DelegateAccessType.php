@@ -35,6 +35,11 @@ class DelegateAccessType extends AbstractType
             $roles[] = $builder->getData()->getRole();
         }
 
+        $accesses = DelegatedAccess::ACCESSES;
+        if ('deputy' === $options['type']) {
+            $accesses[] = DelegatedAccess::ACCESS_COMMITTEE;
+        }
+
         $builder
             ->add('role', ChoiceType::class, [
                 'expanded' => false,
@@ -58,7 +63,7 @@ class DelegateAccessType extends AbstractType
             ->add('accesses', ChoiceType::class, [
                 'expanded' => true,
                 'multiple' => true,
-                'choices' => DelegatedAccess::ACCESSES,
+                'choices' => $accesses,
                 'choice_label' => static function (string $choice) {
                     return "delegated_access.form.access.$choice";
                 },
@@ -123,6 +128,10 @@ class DelegateAccessType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefined('type');
+        $resolver->setRequired('type');
+        $resolver->setAllowedTypes('type', 'string');
+
         $resolver->setDefaults([
             'data_class' => DelegatedAccess::class,
         ]);

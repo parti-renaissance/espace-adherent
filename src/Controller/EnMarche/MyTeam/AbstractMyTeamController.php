@@ -46,7 +46,7 @@ abstract class AbstractMyTeamController extends Controller
 
         $filterForm = $this->createForm(MyTeamSearchAdherentType::class);
 
-        $form = $this->createForm(DelegateAccessType::class, $delegatedAccess);
+        $form = $this->createForm(DelegateAccessType::class, $delegatedAccess, ['type' => $this->getSpaceType()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

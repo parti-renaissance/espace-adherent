@@ -45,7 +45,6 @@
 
     <div>
         {{ form_start(form, {attr: {id: 'delegate-access-form', class: 'em-form' }}) }}
-        {{ form_errors(form) }}
 
         <div class="manager__filters" id="js-by-email" style="display: none;">
             <div class="manager__filters__form">
@@ -65,6 +64,8 @@
                 </div>
             </div>
         </div>
+
+        {{ form_errors(form) }}
 
         <div class="l__wrapper--slim">
 

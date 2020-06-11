@@ -29,7 +29,6 @@ class DelegatedAccess
         self::ACCESS_MESSAGES,
         self::ACCESS_EVENTS,
         self::ACCESS_ADHERENTS,
-        self::ACCESS_COMMITTEE,
     ];
 
     /**
