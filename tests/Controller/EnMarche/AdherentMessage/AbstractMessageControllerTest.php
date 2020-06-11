@@ -13,6 +13,29 @@ class AbstractMessageControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    /**
+     * @dataProvider provideSpaces
+     */
+    public function testDifferentSpaceCanBeDelegated(string $email, string $spaceLabel, string $spaceSlug)
+    {
+        $this->authenticateAsAdherent($this->client, $email);
+
+        $crawler = $this->client->request('GET', '/');
+        self::assertContains($spaceLabel, $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+
+        $crawler = $this->client->click($crawler->selectLink($spaceLabel)->link());
+        $this->assertResponseStatusCode(200, $this->client->getResponse());
+
+        self::assertEquals('http://test.enmarche.code/'.$spaceSlug.'/messagerie', $crawler->getUri());
+    }
+
+    public function provideSpaces()
+    {
+        yield ['referent@en-marche-dev.fr', 'Espace député délégué', 'espace-depute-delegue'];
+        yield ['gisele-berthoux@caramail.com', 'Espace sénateur délégué', 'espace-senateur-delegue'];
+        yield ['gisele-berthoux@caramail.com', 'Espace député délégué', 'espace-depute-delegue'];
+    }
+
     public function testICanAccessADelegatedSpace()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
@@ -97,10 +120,10 @@ class AbstractMessageControllerTest extends WebTestCase
         self::assertContains('Espace député délégué', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
         self::assertContains('Espace sénateur délégué', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
 
-        $this->client->request('GET', '/espace-depute-delegue/messagerie');
+        $this->client->request('GET', '/espace-depute-delegue/utilisateurs');
         $this->assertResponseStatusCode(403, $this->client->getResponse());
 
-        $this->client->request('GET', '/espace-senateur-delegue/messagerie');
+        $this->client->request('GET', '/espace-senateur-delegue/utilisateurs');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
     }
 

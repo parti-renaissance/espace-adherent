@@ -6,14 +6,10 @@
             {% set back_url = path('homepage') %}
 
             {% if type is defined %}
-                {% if type == 'referent' %}
-                    {% set back_url = path('app_referent_managed_users_list') %}
-                {% elseif type == 'supervisor' %}
+                {% if type == 'supervisor' %}
                     {% set back_url = path('app_committee_manager_list_members', {slug: committee.slug}) %}
-                {% elseif type == 'deputy' %}
-                    {% set back_url = path('app_deputy_managed_users_list') %}
-                {% elseif type == 'senator' %}
-                    {% set back_url = path('app_senator_managed_users_list') %}
+                {% else %}
+                    {% set back_url = path("app_#{type}_managed_users"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_list") %}
                 {% endif %}
             {% endif %}
 
