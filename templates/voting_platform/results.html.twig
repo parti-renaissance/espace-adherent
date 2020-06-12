@@ -13,8 +13,114 @@
 {% block header_actions '' %}
 {% block voting_platform_ornametns '' %}
 
+{% set my_vote = get_my_vote_for_election(app.user, election) %}
+
 {% block voting_platform_content %}
     <div class="voting-platform__results election-results">
-        {% block results_content '' %}
+        <div>
+            <div class="l__wrapper--medium">
+                <nav class="tabs-nav border-on results__menu b__nudge--bottom-larger">
+                    <ul>
+                        {% for pool in pools %}
+                            <li {{ loop.index == 1 ? 'class="active"' }}>
+                                <a href="#" class="tabs-nav__item results-tab--toggle">Résultats {{ pool.title }}</a>
+                            </li>
+                        {% endfor %}
+
+                        <li><a href="#" class="tabs-nav__item results-tab--toggle">Bulletins dépouillés</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="l__wrapper--medium">
+                <div class="candidate-tabs--container">
+                    {% for pool in pools %}
+                        <div class="candidate-tab candidate-tab--{{ loop.index }}" {{ loop.index > 1 ? 'style="display: none;"' }}>
+                            <div class="tab--container">
+                                {% include 'voting_platform/results/_candiates_list.html.twig' with {
+                                    'candidate_groups': pool.candidateGroups,
+                                    'candidates': results.aggregated.candidates,
+                                    'resume': results.aggregated.resume[pool.id],
+                                } %}
+
+                                {% include 'voting_platform/results/_stats_block.html.twig' with {
+                                    'resume': results.aggregated.resume[pool.id],
+                                } %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="candidate-tab candidate-tab--{{ pools|length + 1 }}" style="display: none;">
+                        <div class="tab--container">
+                            <div class="l__col--wrap election__ballots-detail">
+                                <h3 class="text--default-large text--bold font-roboto b__nudge--bottom-small">Bulletins dépouillés</h3>
+                                <p class="text--body text--dark b__nudge--bottom">
+                                    Cette page recense la totalité des {{ results.aggregated.resume|first.participated - results.aggregated.resume|first.abstentions }} bulletins dépouillés lors de cette désignations.<br /><br />
+                                    Retrouvez vos bulletins avec le N° anonyme qui vous a été transmis lors du versement de vos bulletins dans l'urne.
+                                </p>
+                                <div class="table--container">
+                                    <table class="text--left">
+                                        <thead class="b__nudge--bottom">
+                                            <tr class="text--body">
+                                                <th class="space--10-0">N° anonyme</th>
+                                                <th class="space--10-0">Bulletin <span class="candidate-gender l__col l__col--center">F</span></th>
+                                                <th class="space--10-0">Bulletin <span class="candidate-gender l__col l__col--center">H</span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for vote_result in results.vote_results %}
+                                                <tr class="text--body text--dark">
+                                                    <td>{{ vote_result.voterKey }}</td>
+                                                    <td>
+                                                        {% if vote_result.voteChoices[0].isBlank %}
+                                                            ~
+                                                        {% else %}
+                                                            {{ (vote_result.voteChoices[0].candidateGroup.candidates|first).fullName }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if vote_result.voteChoices[1].isBlank %}
+                                                            ~
+                                                        {% else %}
+                                                            {{ (vote_result.voteChoices[1].candidateGroup.candidates|first).fullName }}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        findAll(dom('.results__menu'), 'a.results-tab--toggle').forEach(function(link, index) {
+            on(link, 'click', function (event) {
+                event.preventDefault();
+                toggleVoteTab(index);
+
+                removeClass(dom('.results__menu li.active'), 'active');
+                addClass(link.parentNode, 'active');
+            });
+        });
+
+        function toggleVoteTab(id) {
+            findAll(document, '.candidate-tabs--container > div').forEach(function(tab, index) {
+                if (index === id) {
+                    show(tab);
+                } else {
+                    hide(tab);
+                }
+            });
+        }
+    </script>
 {% endblock %}

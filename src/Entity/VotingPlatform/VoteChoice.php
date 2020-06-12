@@ -48,6 +48,19 @@ class VoteChoice
      */
     private $isBlank = false;
 
+    /**
+     * @var ElectionPool
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionPool")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $electionPool;
+
+    public function __construct(ElectionPool $electionPool)
+    {
+        $this->electionPool = $electionPool;
+    }
+
     public function setVoteResult(VoteResult $voteResult): void
     {
         $this->voteResult = $voteResult;
@@ -71,5 +84,10 @@ class VoteChoice
     public function getCandidateGroup(): ?CandidateGroup
     {
         return $this->candidateGroup;
+    }
+
+    public function getElectionPool(): ElectionPool
+    {
+        return $this->electionPool;
     }
 }

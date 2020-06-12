@@ -33,12 +33,12 @@ class CandidateGroup
     private $candidates;
 
     /**
-     * @var Election
+     * @var ElectionPool
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="candidateGroups")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionPool", inversedBy="candidateGroups")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $election;
+    private $electionPool;
 
     /**
      * @var bool
@@ -61,9 +61,9 @@ class CandidateGroup
         }
     }
 
-    public function setElection(Election $election): void
+    public function setElectionPool(ElectionPool $electionPool): void
     {
-        $this->election = $election;
+        $this->electionPool = $electionPool;
     }
 
     /**

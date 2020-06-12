@@ -59,23 +59,27 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
 
         $this->assertStringEndsWith(self::ELECTION_URI_1.'vote', $crawler->getUri());
 
-        $this->assertCount(12, $crawler->filter('.candidate__box'));
+        $this->assertCount(6, $crawler->filter('.candidate__box'));
 
         $form = $crawler->selectButton('Confirmer')->form();
-
-        $candidates = $form['election_candidates']['womanCandidate']->availableOptionValues();
+        $candidates = $form['election_candidates']['poolChoice']->availableOptionValues();
 
         self::assertCount(6, $candidates);
 
-        $this->client->submit($form, ['election_candidates' => [
-            'womanCandidate' => $candidates[0],
-        ]]);
+        $this->client->submit($form);
 
         $this->assertContains('Cette valeur ne doit pas être vide.', $this->client->getResponse()->getContent());
 
         $crawler = $this->client->submit($form, ['election_candidates' => [
-            'womanCandidate' => $candidates[0],
-            'manCandidate' => -1,
+            'poolChoice' => $candidates[0],
+        ]]);
+
+        $form = $crawler->selectButton('Confirmer')->form();
+
+        self::assertCount(6, $candidates);
+
+        $crawler = $this->client->submit($form, ['election_candidates' => [
+            'poolChoice' => '-1',
         ]]);
 
         self::assertContains('Confirmez-vous votre bulletin ?', $this->client->getResponse()->getContent());

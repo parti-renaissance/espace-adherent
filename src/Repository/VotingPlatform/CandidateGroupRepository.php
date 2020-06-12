@@ -3,7 +3,7 @@
 namespace App\Repository\VotingPlatform;
 
 use App\Entity\VotingPlatform\CandidateGroup;
-use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\VotingPlatform\Collection\CandidateGroupsCollection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -15,13 +15,15 @@ class CandidateGroupRepository extends ServiceEntityRepository
         parent::__construct($registry, CandidateGroup::class);
     }
 
-    public function findForElection(Election $election): CandidateGroupsCollection
+    public function findForElectionRound(ElectionRound $electionRound): CandidateGroupsCollection
     {
         return new CandidateGroupsCollection($this->createQueryBuilder('cg')
             ->addSelect('candidate')
             ->innerJoin('cg.candidates', 'candidate')
-            ->where('cg.election = :election')
-            ->setParameter('election', $election)
+            ->innerJoin('cg.electionPool', 'pool')
+            ->innerJoin('pool.electionRounds', 'round')
+            ->where('round = :election_round')
+            ->setParameter('election_round', $electionRound)
             ->getQuery()
             ->getResult()
         );

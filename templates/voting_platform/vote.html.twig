@@ -1,0 +1,28 @@
+{% extends base_layout %}
+
+{% block page_title 'Vote élection' %}
+
+{% block voting_platform_content %}
+    <div class="l__wrapper--slim election-vote b__nudge--bottom-60">
+        <h2 class="text--body text--black text--default-large b__nudge--bottom-larger">Étape 1 : Sélectionnez une candidate {{ pool.title }}</h2>
+
+        {{ form_start(form) }}
+
+            {{ form_errors(form.poolChoice) }}
+
+            <div>
+                {% for choice in form.poolChoice %}
+                    {% include 'voting_platform/vote_step/_candidate_box.html.twig' with {
+                        candidate_group: candidate_groups|filter(group => group.uuid.toString == choice.vars.value)|first,
+                        form: choice
+                    } %}
+                {% endfor %}
+            </div>
+
+            <div>
+                {{ form_row(form.confirm, {label: 'Confirmer', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-large'}}) }}
+                {{ form_row(form.back, {label: '⟵ Retour', attr: {class: 'btn btn--ghosting--blue btn--large-and-full b__nudge--top-15'}}) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

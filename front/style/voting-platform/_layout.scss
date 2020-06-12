@@ -55,19 +55,6 @@
         }
     }
 
-    .vote-tabs--container {
-        margin-top: 60px;
-
-        .vote-tab--1,
-        .vote-tab--2 {
-            display: none;
-
-            &.active {
-                display: block;
-            }
-        }
-    }
-
     .candidate__box {
         position: relative;
         border: 1px solid $lines-grey;

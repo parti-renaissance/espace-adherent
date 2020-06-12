@@ -28,6 +28,6 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
 
     public function findMyVoteForElection(Adherent $adherent, Election $election): ?Vote
     {
-        return $this->voteRepository->findVote($adherent, $election);
+        return $this->voteRepository->findVote($adherent, $election->getCurrentRound());
     }
 }

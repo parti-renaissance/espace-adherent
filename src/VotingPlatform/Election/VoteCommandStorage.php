@@ -3,8 +3,6 @@
 namespace App\VotingPlatform\Election;
 
 use App\Entity\VotingPlatform\Election;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
-use App\VotingPlatform\Election\VoteCommand\CommitteeAdherentVoteCommand;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -39,10 +37,6 @@ class VoteCommandStorage
 
     private function createVoteCommand(Election $election): VoteCommand
     {
-        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
-            return new CommitteeAdherentVoteCommand($election);
-        }
-
         return new VoteCommand($election);
     }
 

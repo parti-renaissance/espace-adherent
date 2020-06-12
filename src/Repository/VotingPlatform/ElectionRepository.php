@@ -8,6 +8,7 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\ValueObject\Genders;
+use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
@@ -65,13 +66,17 @@ class ElectionRepository extends ServiceEntityRepository
             ->addSelect(...$this->getElectionStatsSelectParts())
             ->innerJoin('election.designation', 'designation')
             ->innerJoin('election.electionEntity', 'election_entity')
-            ->innerJoin('election.candidateGroups', 'candidate_groups')
+            ->innerJoin('election.electionPools', 'pool')
+            ->innerJoin('pool.candidateGroups', 'candidate_groups')
             ->innerJoin('candidate_groups.candidates', 'candidate')
+            ->innerJoin('election.electionRounds', 'election_round')
             ->where('election_entity.committee = :committee')
+            ->andWhere('election_round.isActive = :true')
             ->setParameters([
                 'committee' => $committee,
                 'male' => Genders::MALE,
                 'female' => Genders::FEMALE,
+                'true' => true,
             ])
             ->orderBy('designation.voteEndDate', 'DESC')
             ->groupBy('election.id')
@@ -84,13 +89,17 @@ class ElectionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('election')
             ->addSelect(...$this->getElectionStatsSelectParts())
-            ->innerJoin('election.candidateGroups', 'candidate_groups')
+            ->innerJoin('election.electionRounds', 'election_round')
+            ->innerJoin('election.electionPools', 'pool')
+            ->innerJoin('pool.candidateGroups', 'candidate_groups')
             ->innerJoin('candidate_groups.candidates', 'candidate')
             ->where('election = :election')
+            ->andWhere('election_round.isActive = :true')
             ->setParameters([
                 'election' => $election,
                 'male' => Genders::MALE,
                 'female' => Genders::FEMALE,
+                'true' => true,
             ])
             ->getQuery()
             ->getSingleResult(Query::HYDRATE_ARRAY)
@@ -109,9 +118,28 @@ class ElectionRepository extends ServiceEntityRepository
                 Voter::class
             ),
             sprintf(
-                '(SELECT COUNT(vote.id) FROM %s AS vote WHERE vote.election = election) AS votes_count',
+                '(SELECT COUNT(vote.id) FROM %s AS vote WHERE vote.electionRound = election_round) AS votes_count',
                 Vote::class
             ),
         ];
+    }
+
+    /**
+     * @return Election[]
+     */
+    public function getElectionsToClose(\DateTime $date, int $limit = 50): array
+    {
+        return $this->createQueryBuilder('election')
+            ->addSelect('designation')
+            ->innerJoin('election.designation', 'designation')
+            ->where('designation.voteEndDate < :date AND election.status = :open')
+            ->setParameters([
+                'date' => $date,
+                'open' => ElectionStatusEnum::OPEN,
+            ])
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->getResult()
+        ;
     }
 }

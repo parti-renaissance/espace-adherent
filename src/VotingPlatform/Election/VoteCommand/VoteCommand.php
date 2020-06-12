@@ -2,10 +2,11 @@
 
 namespace App\VotingPlatform\Election\VoteCommand;
 
-use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class VoteCommand
 {
@@ -15,9 +16,13 @@ class VoteCommand
     private $state = VoteCommandStateEnum::INITIALIZE;
 
     /**
-     * @var CandidateGroup[]
+     * @var string
+     *
+     * @Assert\NotBlank
      */
-    private $candidateGroups = [];
+    private $poolChoice;
+
+    private $choicesByPools = [];
 
     /**
      * @var string
@@ -34,17 +39,19 @@ class VoteCommand
         return $this->state;
     }
 
-    public function setState($state): void
+    public function setState(string $state): void
     {
         $this->state = $state;
     }
 
-    /**
-     * @return CandidateGroup[]
-     */
-    public function getCandidateGroups(): array
+    public function getPoolChoice(): ?string
     {
-        return $this->candidateGroups;
+        return $this->poolChoice;
+    }
+
+    public function setPoolChoice(string $poolChoice): void
+    {
+        $this->poolChoice = $poolChoice;
     }
 
     public function isStart(): bool
@@ -74,8 +81,51 @@ class VoteCommand
 
     public function getCandidateGroupUuids(): array
     {
-        return array_filter($this->getCandidateGroups(), static function (string $value) {
+        return array_filter($this->choicesByPools, static function (string $value) {
             return VoteChoice::BLANK_VOTE_VALUE !== $value;
         });
+    }
+
+    public function getChoicesByPools(): array
+    {
+        return $this->choicesByPools;
+    }
+
+    /**
+     * @param ElectionPool[] $pools
+     */
+    public function updateForCurrentPool(array $pools): ?ElectionPool
+    {
+        if (0 === \count($this->choicesByPools)) {
+            return current($pools);
+        }
+
+        foreach ($pools as $pool) {
+            if (!isset($this->choicesByPools[$pool->getId()])) {
+                return $pool;
+            }
+        }
+
+        // update selected candidate for current pool
+        if (!empty($pool) && $this->choicesByPools[$pool->getId()]) {
+            $this->poolChoice = $this->choicesByPools[$pool->getId()];
+            unset($this->choicesByPools[$pool->getId()]);
+        }
+
+        return $pool ?? null;
+    }
+
+    public function updatePoolChoice(ElectionPool $pool): void
+    {
+        $this->choicesByPools[$pool->getId()] = $this->poolChoice;
+
+        $this->poolChoice = null;
+    }
+
+    public function removeLastChoice(): self
+    {
+        $this->poolChoice = array_pop($this->choicesByPools);
+
+        return $this;
     }
 }

@@ -6,8 +6,9 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityDesignationTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\VotingPlatform\Collection\CandidateGroupsCollection;
+use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -22,7 +23,9 @@ use Ramsey\Uuid\UuidInterface;
 class Election
 {
     use EntityIdentityTrait;
-    use EntityDesignationTrait;
+    use EntityDesignationTrait {
+        isVotePeriodActive as isDesignationVotePeriodActive;
+    }
 
     /**
      * @var ElectionEntity
@@ -32,23 +35,44 @@ class Election
     private $electionEntity;
 
     /**
-     * @var CandidateGroup[]|ArrayCollection
+     * @var string
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\VotingPlatform\CandidateGroup",
-     *     mappedBy="election",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
+     * @ORM\Column
      */
-    private $candidateGroups;
+    private $status = ElectionStatusEnum::OPEN;
 
-    public function __construct(Designation $designation, UuidInterface $uuid = null)
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $closedAt;
+
+    /**
+     * @var ElectionRound[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionRound", mappedBy="election", cascade={"all"})
+     */
+    private $electionRounds;
+
+    /**
+     * @var ElectionPool[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionPool", mappedBy="election", cascade={"all"})
+     */
+    private $electionPools;
+
+    public function __construct(Designation $designation, UuidInterface $uuid = null, array $rounds = [])
     {
         $this->designation = $designation;
         $this->uuid = $uuid ?? Uuid::uuid4();
 
-        $this->candidateGroups = new ArrayCollection();
+        $this->electionRounds = new ArrayCollection();
+        $this->electionPools = new ArrayCollection();
+
+        foreach ($rounds as $round) {
+            $this->addElectionRound($round);
+        }
     }
 
     public function getTitle(): string
@@ -72,19 +96,41 @@ class Election
         $this->electionEntity = $electionEntity;
     }
 
-    public function addCandidateGroup(CandidateGroup $candidateGroup): void
+    public function isVotePeriodActive(): bool
     {
-        if (!$this->candidateGroups->contains($candidateGroup)) {
-            $candidateGroup->setElection($this);
-            $this->candidateGroups->add($candidateGroup);
+        return ElectionStatusEnum::OPEN === $this->status && $this->isDesignationVotePeriodActive();
+    }
+
+    public function close(): void
+    {
+        $this->status = ElectionStatusEnum::CLOSED;
+        $this->closedAt = new \DateTime();
+    }
+
+    public function addElectionRound(ElectionRound $round): void
+    {
+        if (!$this->electionRounds->contains($round)) {
+            $round->setElection($this);
+            $this->electionRounds->add($round);
         }
     }
 
-    /**
-     * @return CandidateGroup[]|CandidateGroupsCollection
-     */
-    public function getCandidateGroups(): CandidateGroupsCollection
+    public function addElectionPool(ElectionPool $pool): void
     {
-        return new CandidateGroupsCollection($this->candidateGroups->toArray());
+        if (!$this->electionPools->contains($pool)) {
+            $pool->setElection($this);
+            $this->electionPools->add($pool);
+        }
+    }
+
+    public function getCurrentRound(): ?ElectionRound
+    {
+        foreach ($this->electionRounds as $round) {
+            if ($round->isActive()) {
+                return $round;
+            }
+        }
+
+        return null;
     }
 }

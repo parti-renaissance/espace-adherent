@@ -19,7 +19,7 @@ class VoteResultAggregator
 
     public function getResults(Election $election): array
     {
-        $voteResults = $this->voteResultRepository->getResults($election);
+        $voteResults = $this->voteResultRepository->getResults($election->getCurrentRound());
 
         $aggregated = [
             'candidates' => [],
@@ -30,8 +30,8 @@ class VoteResultAggregator
 
         foreach ($voteResults as $voteResult) {
             foreach ($voteResult->getVoteChoices() as $index => $voteChoice) {
-                if (!isset($aggregated['resume'][$index])) {
-                    $aggregated['resume'][$index] = [
+                if (!isset($aggregated['resume'][$poolId = $voteChoice->getElectionPool()->getId()])) {
+                    $aggregated['resume'][$poolId] = [
                         'blank' => 0,
                         'participated' => $participants,
                         'expressed' => 0,
@@ -40,9 +40,9 @@ class VoteResultAggregator
                 }
 
                 if (true === $voteChoice->isBlank()) {
-                    ++$aggregated['resume'][$index]['blank'];
+                    ++$aggregated['resume'][$poolId]['blank'];
                 } else {
-                    ++$aggregated['resume'][$index]['expressed'];
+                    ++$aggregated['resume'][$poolId]['expressed'];
 
                     $candidateGroupUuid = $voteChoice->getCandidateGroup()->getUuid()->toString();
 

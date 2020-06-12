@@ -18,13 +18,10 @@ class ResultsController extends AbstractController
             return $this->redirect($this->redirectManager->getRedirection($election));
         }
 
-        return $this->renderElectionTemplate(
-            sprintf('voting_platform/results/%s.html.twig', $election->getDesignationType()),
-            $election,
-            [
-                'candidate_groups' => $this->candidateGroupRepository->findForElection($election),
-                'results' => $resultAggregator->getResults($election),
-            ]
-        );
+        return $this->renderElectionTemplate('voting_platform/results.html.twig', $election, [
+            'candidate_groups' => $this->candidateGroupRepository->findForElectionRound($election->getCurrentRound()),
+            'results' => $resultAggregator->getResults($election),
+            'pools' => $election->getCurrentRound()->getElectionPools(),
+        ]);
     }
 }

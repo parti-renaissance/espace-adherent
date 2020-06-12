@@ -86,6 +86,18 @@ class Designation
      */
     private $resultDisplayDelay = 14;
 
+    /**
+     * Duration of the additional round in day
+     *
+     * @var int
+     *
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @Assert\NotBlank
+     * @Assert\GreaterThanOrEqual(0)
+     */
+    private $additionalRoundDuration = 5;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -159,6 +171,16 @@ class Designation
     public function setResultDisplayDelay(int $resultDisplayDelay): void
     {
         $this->resultDisplayDelay = $resultDisplayDelay;
+    }
+
+    public function getAdditionalRoundDuration(): int
+    {
+        return $this->additionalRoundDuration;
+    }
+
+    public function setAdditionalRoundDuration(int $additionalRoundDuration): void
+    {
+        $this->additionalRoundDuration = $additionalRoundDuration;
     }
 
     public function getTitle(): string

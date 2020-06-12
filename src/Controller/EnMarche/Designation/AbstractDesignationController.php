@@ -60,7 +60,7 @@ abstract class AbstractDesignationController extends AbstractController
         CandidateGroupRepository $candidateGroupRepository,
         VoteResultAggregator $aggregator
     ): Response {
-        $candidateGroups = $candidateGroupRepository->findForElection($election);
+        $candidateGroups = $candidateGroupRepository->findForElectionRound($election->getCurrentRound());
 
         return $this->renderTemplate('designation/results.html.twig', $request, [
             'committee' => $committee,

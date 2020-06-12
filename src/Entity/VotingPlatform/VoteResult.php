@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoteResultRepository")
  *
  * @ORM\Table(name="voting_platform_vote_result", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_key", "election_id"}),
+ *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_key", "election_round_id"}),
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -35,12 +35,12 @@ class VoteResult
     private $voterKey;
 
     /**
-     * @var Election
+     * @var ElectionRound
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Election")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionRound")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $election;
+    private $electionRound;
 
     /**
      * @var \DateTime
@@ -56,9 +56,9 @@ class VoteResult
      */
     private $voteChoices;
 
-    public function __construct(Election $election, string $voterKey)
+    public function __construct(ElectionRound $electionRound, string $voterKey)
     {
-        $this->election = $election;
+        $this->electionRound = $electionRound;
         $this->voterKey = $voterKey;
         $this->votedAt = new \DateTime();
 
