@@ -7,7 +7,6 @@ use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ReferentTag;
 use App\Referent\ReferentTagManager;
 use App\Repository\ReferentTagRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -101,19 +100,12 @@ class ReferentTagManagerTest extends WebTestCase
     /**
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function createAdherent($postalCode, array $referentCodes): Adherent
+    private function createAdherent(string $postalCode, array $referentCodes): Adherent
     {
-        $adherent = $this->createMock(Adherent::class);
-
-        $tags = new ArrayCollection();
-        foreach ($referentCodes as $code) {
-            $tags->add(new ReferentTag(null, $code));
-        }
-
-        $adherent->method('getCountry')->willReturn('FR');
-        $adherent->method('getReferentTags')->willReturn($tags);
-        $adherent->method('getPostalCode')->willReturn($postalCode);
-
-        return $adherent;
+        return $this->createConfiguredMock(Adherent::class, [
+            'getCountry' => 'FR',
+            'getReferentTagsCodes' => $referentCodes,
+            'getPostalCode' => $postalCode,
+        ]);
     }
 }

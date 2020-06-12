@@ -14,24 +14,28 @@ export default class AutocompletedAddressForm extends EventEmitter {
 
     buildWidget() {
         // Show the autocomplete when the address fields are not filled
-        if (this._showWhenFilled === true || !this._address.isFilled()) {
+        if (true === this._showWhenFilled || !this._address.isFilled()) {
             // Stop if google class is undefined
             if ('undefined' === typeof google) {
                 return;
             }
 
-            const autocomplete = new GooglePlaceAutocomplete(this._autocompleteWrapper, this._address, 'form form--full form__field em-form__field');
+            const autocomplete = new GooglePlaceAutocomplete(
+                this._autocompleteWrapper,
+                this._address,
+                'form form--full form__field em-form__field'
+            );
 
             autocomplete.build();
 
-            if (this._showWhenFilled === false) {
+            if (false === this._showWhenFilled) {
                 this.hideAddress();
             }
 
             show(this._autocompleteWrapper);
 
             autocomplete.on('changed', () => {
-                if (this._showWhenFilled === false) {
+                if (false === this._showWhenFilled) {
                     this.showAddress();
                     hide(this._autocompleteWrapper);
                 }
