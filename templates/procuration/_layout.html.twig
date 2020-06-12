@@ -30,7 +30,9 @@
                     </div>
             </section>
             <section class="l__wrapper">
-                {% include 'procuration/_faq.html.twig' %}
+                <div class="l__wrapper--slim">
+                    {% include 'procuration/_faq.html.twig' %}
+                </div>
 
                 {% block procuration_content %}{% endblock %}
             </section>
