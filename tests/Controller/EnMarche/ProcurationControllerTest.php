@@ -64,7 +64,7 @@ class ProcurationControllerTest extends WebTestCase
             'Si vous ne votez pas en France métropolitaine, renseignez-vous sur les dates.',
             trim($crawler->filter('.procuration__header--inner > div.text--body')->text())
         );
-        $this->assertSame(
+        $this->assertStringStartsWith(
             'Vous avez des questions concernant les modalités du vote par procuration ? Cliquez ici !',
             trim($crawler->filter('.procuration .l__wrapper p#procuration_faq')->text())
         );
@@ -87,9 +87,9 @@ class ProcurationControllerTest extends WebTestCase
             'La procuration avecLa République En Marche !',
             trim($crawler->filter('.procuration__header--outer h2')->text())
         );
-        $this->assertSame(
+        $this->assertStringStartsWith(
             'Vous avez des questions concernant les modalités du vote par procuration ? Cliquez ici !',
-            trim($crawler->filter('.procuration__upper > section > p#procuration_faq')->text())
+            trim($crawler->filter('.procuration__upper > section p#procuration_faq')->text())
         );
         $this->assertSame(
             'Un de nos volontaires peut porter votre voix',
@@ -131,9 +131,9 @@ class ProcurationControllerTest extends WebTestCase
             'La procuration avecLa République En Marche !',
             trim($crawler->filter('.procuration__header--outer h2')->text())
         );
-        $this->assertSame(
+        $this->assertStringStartsWith(
             'Vous avez des questions concernant les modalités du vote par procuration ? Cliquez ici !',
-            trim($crawler->filter('.procuration__upper > section > p#procuration_faq')->text())
+            trim($crawler->filter('.procuration__upper > section p#procuration_faq')->text())
         );
         $this->assertSame(
             'Portez la voix d\'un citoyen de votre ville',
