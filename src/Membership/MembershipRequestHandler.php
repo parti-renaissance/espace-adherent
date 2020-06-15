@@ -154,9 +154,9 @@ class MembershipRequestHandler
 
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($adherent);
 
-        $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
-
         $this->manager->flush();
+
+        $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
 
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
     }

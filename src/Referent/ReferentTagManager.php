@@ -4,7 +4,6 @@ namespace App\Referent;
 
 use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
-use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
 use App\Intl\FranceCitiesBundle;
 use App\Repository\ReferentTagRepository;
@@ -56,13 +55,7 @@ class ReferentTagManager
 
     public function isUpdateNeeded(Adherent $adherent): bool
     {
-        $currentTags = array_map(
-            function (ReferentTag $tag) {
-                return $tag->getCode();
-            },
-            $adherent->getReferentTags()->toArray()
-        );
-        $currentTags = array_values($currentTags);
+        $currentTags = array_values($adherent->getReferentTagsCodes());
         sort($currentTags);
 
         $newTags = ManagedAreaUtils::getLocalCodes($adherent);

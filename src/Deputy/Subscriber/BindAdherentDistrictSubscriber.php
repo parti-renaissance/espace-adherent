@@ -38,9 +38,7 @@ class BindAdherentDistrictSubscriber implements EventSubscriberInterface
                         continue;
                     }
 
-                    if (!$adherent->getReferentTags()->contains($district->getReferentTag())) {
-                        $adherent->addReferentTag($district->getReferentTag());
-                    }
+                    $adherent->addReferentTag($district->getReferentTag());
                 }
                 $this->em->flush();
             }

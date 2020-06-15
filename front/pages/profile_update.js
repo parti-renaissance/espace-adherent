@@ -9,7 +9,9 @@ export default () => {
     const cityNameField = dom('#adherent_address_cityName');
     const addressField = dom('#adherent_address_address');
 
-    hide(addressField.parentNode);
+    if ('undefined' !== typeof google) {
+        hide(addressField.parentNode);
+    }
 
     const autocompleteWidget = new AutocompletedAddressForm(
         autocompleteWrapper,
