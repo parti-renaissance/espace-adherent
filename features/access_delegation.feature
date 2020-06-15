@@ -32,7 +32,7 @@ Feature:
         When I select "michelle.dufour@example.ch" from "js-select-adherent"
         Then I should see "Michelle Dufour" in the "#js-selected-adherent-name" element
 
-        When I select "Collaborateur parlementaire" from "delegate_access_role"
+        When I select "Responsable communication" from "delegate_access_role"
         And I click the "#delegate_access_accesses label:contains('Mes messages')" selector
         And I click the "#delegate_access_accesses label:contains('Événements')" selector
         And I click the "#delegate_access_accesses label:contains('Adhérents')" selector
@@ -53,7 +53,7 @@ Feature:
         Then I should see "Saisir une adresse e-mail"
 
         When I fill in "delegate_access_email" with "carl999@example.fr"
-        And I select "Collaborateur parlementaire" from "delegate_access_role"
+        And I select "Responsable communication" from "delegate_access_role"
         And I click the "#delegate_access_accesses label:contains('Mes messages')" selector
         And I press "Valider"
         Then I should be on "/espace-depute/mon-equipe"

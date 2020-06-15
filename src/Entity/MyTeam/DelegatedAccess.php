@@ -18,7 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DelegatedAccess
 {
     public const DEFAULT_ROLES = [
-        'Collaborateur parlementaire',
+        'Responsable communication',
+        'Responsable mobilisation',
+        'Responsable phoning,',
     ];
 
     public const ACCESS_MESSAGES = 'messages';
