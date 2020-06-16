@@ -9,13 +9,6 @@ use Symfony\Component\Form\FormEvents;
 
 class EmptyTranslationRemoverListener implements EventSubscriberInterface
 {
-    private $optionalLocales;
-
-    public function __construct(array $locales, string $defaultLocale)
-    {
-        $this->optionalLocales = array_diff_key($locales, [$defaultLocale]);
-    }
-
     public static function getSubscribedEvents()
     {
         return [
@@ -30,6 +23,12 @@ class EmptyTranslationRemoverListener implements EventSubscriberInterface
             return;
         }
 
-        $translatable->removeEmptyTranslations($this->optionalLocales);
+        $translations = $translatable->getTranslations();
+
+        foreach ($translations as $translation) {
+            if ($translation->isEmpty()) {
+                $translations->removeElement($translation);
+            }
+        }
     }
 }

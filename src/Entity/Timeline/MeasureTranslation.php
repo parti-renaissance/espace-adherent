@@ -2,10 +2,9 @@
 
 namespace App\Entity\Timeline;
 
-use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translation;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use App\Entity\EntityTranslationInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model\Translatable\Translation;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,9 +17,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class MeasureTranslation implements EntityTranslationInterface
+class MeasureTranslation
 {
     use Translation;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer", options={"unsigned": true})
+     * @ORM\GeneratedValue
+     */
+    protected $id;
 
     /**
      * @var string|null
@@ -32,12 +40,6 @@ class MeasureTranslation implements EntityTranslationInterface
      */
     private $title;
 
-    public function __construct(string $locale = null, string $title = null)
-    {
-        $this->locale = $locale;
-        $this->title = $title;
-    }
-
     public function getTitle(): ?string
     {
         return $this->title;
@@ -46,10 +48,5 @@ class MeasureTranslation implements EntityTranslationInterface
     public function setTitle(?string $title): void
     {
         $this->title = $title;
-    }
-
-    public function isEmpty(): bool
-    {
-        return empty($this->title);
     }
 }

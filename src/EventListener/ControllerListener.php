@@ -18,7 +18,7 @@ class ControllerListener implements EventSubscriberInterface
 
     /**
      * Transforms controller of the KernelEvent to an array if this is not the case.
-     * It's done for the compatibility of ApiPlatformBundle and A2lixI18nDoctrineBundle.
+     * It's done for the compatibility of ApiPlatformBundle.
      */
     public function onKernelController(FilterControllerEvent $event)
     {

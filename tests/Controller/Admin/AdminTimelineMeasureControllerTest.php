@@ -226,8 +226,6 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
 
         $this->init();
 
-        $this->get('doctrine.orm.entity_manager')->getFilters()->disable('oneLocale');
-
         $this->measureRepository = $this->getRepository(Measure::class);
         $this->themeRepository = $this->getRepository(Theme::class);
         $this->profileRepository = $this->getRepository(Profile::class);

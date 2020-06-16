@@ -44,12 +44,6 @@ class AlgoliaSynchronizeCommand extends Command
         $this->algolia = $algolia;
         $this->manager = $manager;
 
-        $filters = $this->manager->getFilters();
-
-        if ($filters->isEnabled('oneLocale')) {
-            $filters->disable('oneLocale');
-        }
-
         parent::__construct();
     }
 

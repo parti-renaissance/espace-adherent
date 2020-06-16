@@ -8,18 +8,11 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class EmptyTranslationRemoverAdminExtension extends AbstractAdminExtension
 {
-    private $emptyTranslationRemoverListener;
-
-    public function __construct(EmptyTranslationRemoverListener $listener)
-    {
-        $this->emptyTranslationRemoverListener = $listener;
-    }
-
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->getFormBuilder()
-            ->addEventSubscriber($this->emptyTranslationRemoverListener)
+            ->addEventSubscriber(new EmptyTranslationRemoverListener())
         ;
     }
 }

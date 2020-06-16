@@ -161,8 +161,6 @@ class AdminChezVousCityControllerTest extends WebTestCase
 
         $this->init();
 
-        $this->get('doctrine.orm.entity_manager')->getFilters()->disable('oneLocale');
-
         $this->cityRepository = $this->get(CityRepository::class);
     }
 

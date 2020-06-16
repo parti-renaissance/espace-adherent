@@ -315,10 +315,6 @@
         </service>
 
         <!-- Timeline -->
-        <service id="App\Form\EventListener\EmptyTranslationRemoverListener">
-            <argument>%locales%</argument>
-            <argument>%locale%</argument>
-        </service>
         <service id="App\Timeline\TimelineFactory" />
         <service id="App\Timeline\TimelineImageFactory" public="true">
             <argument key="$cacheDirectory">%kernel.cache_dir%</argument>

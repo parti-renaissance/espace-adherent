@@ -50,7 +50,6 @@ class MeasureTest extends TestCase
 
         $this->assertEquals([$theme1, $theme2], $measure->getThemesToIndex()->toArray());
 
-        $measure->saveCurrentThemes();
         $measure->removeTheme($theme1);
         $measure->addTheme($theme3 = $this->createTheme());
 

@@ -2,9 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\EntityTranslationInterface;
 use App\Entity\Timeline\Profile;
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
 class TranslatableEntityTest extends TestCase
@@ -13,49 +11,31 @@ class TranslatableEntityTest extends TestCase
     {
         $translatable = new Profile();
 
-        $translatable->setTranslations(new ArrayCollection([
-            $french = $this->createTranslation('fr', false),
-            $english = $this->createTranslation('en', true),
-            $italian = $this->createTranslation('it', false),
-            $german = $this->createTranslation('de', true),
-        ]));
+        $french = $translatable->translate('fr');
+        $french->setTitle('titre');
+        $english = $translatable->translate('en');
+        $english->setTitle('title');
+        $italian = $translatable->translate('it');
+        $german = $translatable->translate('de');
 
-        $translatable->removeEmptyTranslations(['en', 'it']);
+        $translatable->mergeNewTranslations();
 
-        $this->assertTrue($translatable->getTranslations()->contains($french));
-        $this->assertFalse($translatable->getTranslations()->contains($english));
-        $this->assertTrue($translatable->getTranslations()->contains($italian));
-        $this->assertTrue($translatable->getTranslations()->contains($german));
+        $translations = $translatable->getTranslations();
+
+        $this->assertContains($french, $translations);
+        $this->assertContains($english, $translations);
+        $this->assertNotContains($german, $translations);
+        $this->assertNotContains($italian, $translations);
     }
 
     public function testTranslate()
     {
         $translatable = new Profile();
 
-        $translatable->setTranslations(new ArrayCollection([
-            $french = $this->createTranslation('fr', false),
-        ]));
+        $french = $translatable->translate('fr');
+        $french->setTitle('titre');
 
         $this->assertSame($french, $translatable->translate('fr'));
-        $this->assertNull($translatable->translate('en'));
-    }
-
-    private function createTranslation(string $locale, bool $empty = false): EntityTranslationInterface
-    {
-        $translation = $this->createMock(EntityTranslationInterface::class);
-
-        $translation
-            ->expects($this->any())
-            ->method('getLocale')
-            ->willReturn($locale)
-        ;
-
-        $translation
-            ->expects($this->any())
-            ->method('isEmpty')
-            ->willReturn($empty)
-        ;
-
-        return $translation;
+        $this->assertNotContains($translatable->translate('en'), $translatable->getTranslations());
     }
 }

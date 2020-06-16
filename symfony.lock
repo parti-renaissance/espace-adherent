@@ -1,7 +1,4 @@
 {
-    "a2lix/i18n-doctrine-bundle": {
-        "version": "0.2"
-    },
     "a2lix/translation-form-bundle": {
         "version": "2.4.1"
     },
@@ -355,6 +352,9 @@
     },
     "khanamiryan/qrcode-detector-decoder": {
         "version": "1.0.2"
+    },
+    "knplabs/doctrine-behaviors": {
+        "version": "1.6.1"
     },
     "knplabs/knp-menu": {
         "version": "2.3.0"
