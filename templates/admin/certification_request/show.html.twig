@@ -226,7 +226,7 @@
                                         {% if object.isRefusedWithOtherReason %}
                                             {{ object.customRefusalReason }}
                                         {% else %}
-                                            {{ ('certification_request.refusal_reason.' ~ object.refusalReason)|trans }}
+                                            {{ object.refusalReasonKey|trans }}
                                         {% endif %}
                                     </b>
 

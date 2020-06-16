@@ -367,4 +367,9 @@ class CertificationRequest
     {
         $this->foundDuplicatedAdherent = $foundDuplicatedAdherent;
     }
+
+    public function getRefusalReasonKey(): string
+    {
+        return 'certification_request.refusal_reason.'.$this->refusalReason;
+    }
 }

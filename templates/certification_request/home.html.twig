@@ -31,7 +31,7 @@
                     {% if refusedCertificationRequest.isRefusedWithOtherReason %}
                         {{ refusedCertificationRequest.customRefusalReason }}
                     {% else %}
-                        {{ ('certification_request.refusal_reason.' ~ refusedCertificationRequest.refusalReason)|trans }}
+                        {{ refusedCertificationRequest.refusalReasonKey|trans }}
                     {% endif %}
                 </p>
             {% endif %}
