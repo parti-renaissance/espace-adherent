@@ -8,15 +8,16 @@
 
 {% block content %}
 
-    <main class="newsletter-result">
-        <h2>
-            Nous venons de vous envoyer un mail pour confirmer votre inscription à la newsletter. <br />
-            Rendez-vous dans votre boite mail.
+    <main class="newsletter-result l__wrapper--500 space--60-0">
+        <h2 class="text--large b__nudge--bottom-larger">
+            Rendez-vous dans votre boite mail
         </h2>
 
-        <p>
-            <a href="{{ path('homepage') }}" class="btn btn--blue">Retourner à l'accueil</a>
+        <p class="text--body text--dark font-roboto b__nudge--bottom-larger">
+            Nous venons de vous envoyer un e-mail pour confirmer votre inscription à la newsletter.
         </p>
+
+        <a href="{{ path('homepage') }}" class="btn btn--blue">Retourner à l'accueil</a>
     </main>
 
 {% endblock %}

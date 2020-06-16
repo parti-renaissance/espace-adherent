@@ -9,56 +9,57 @@
 {% block content %}
 
     <main>
-        <section>
-            <div class="newsletter-page">
-                <h2 class="text--large b__nudge--top-large text--center l__wrapper--slim">
+        <section class="l__wrapper--600">
+            <div class="newsletter-page space--60-0">
+                <h2 class="text--large b__nudge--bottom-larger">
                     Je m'inscris à la newsletter
                 </h2>
-                <p class="text--body l__wrapper--medium b__nudge--top b__nudge--bottom-large">
+                <p class="text--body text--dark font-roboto b__nudge--bottom-larger">
                     Quelques secondes suffisent pour s'inscrire gratuitement à notre newsletter. Vous recevrez les informations concernant l'actualité du mouvement, nos dernières actions mais aussi des vidéos et des articles que nous préparons pour vous.<br />
-                    Notre objectif ? Faciliter, valoriser l'engagement citoyen ! Mais aussi vous informer et créer du lien.<br />
+                    Notre objectif ? Faciliter, valoriser l'engagement citoyen ! Mais aussi vous informer et créer du lien.<br /><br />
                     N'attendez plus. Inscrivez-vous !
                 </p>
 
-                <div class="newsletter-page__form l__wrapper--500">
-                    {{ form_start(form) }}
+                <div class="newsletter-page__form">
+                    {{ form_start(form, { attr: { class: 'em-form'} }) }}
 
                     {{ form_errors(form) }}
 
-                    <div class="form__row">
-                        {{ form_label(form.email, 'Votre adresse e-mail') }}
+                    <div class="em-form__group">
+                        {{ form_label(form.email, 'Votre adresse e-mail', { 'label_attr': {'class': 'em-form__label'} }) }}
                         {{ form_errors(form.email) }}
-                        {{ form_widget(form.email, { attr: { class: 'form--full' } }) }}
+                        {{ form_widget(form.email, { attr: { class: 'em-form__field' } }) }}
                     </div>
 
-                    <div class="form__row">
-                        {{ form_label(form.postalCode, 'Votre code postal') }}
+                    <div class="em-form__group">
+                        {{ form_label(form.postalCode, 'Votre code postal', { 'label_attr': {'class': 'em-form__label'} }) }}
                         {{ form_errors(form.postalCode) }}
-                        {{ form_widget(form.postalCode, { attr: { class: 'form--full' } }) }}
+                        {{ form_widget(form.postalCode, { attr: { class: 'em-form__field' } }) }}
                     </div>
 
-                    <div class="form__row">
-                        {{ form_label(form.country, 'Votre pays') }}
+                    <div class="em-form__group">
+                        {{ form_label(form.country, 'Votre pays', { 'label_attr': {'class': 'em-form__label'} }) }}
                         {{ form_errors(form.country) }}
-                        {{ form_widget(form.country, { attr: { class: 'form--full' } }) }}
+                        {{ form_widget(form.country, { attr: { class: 'em-form__field' } }) }}
                     </div>
 
-                    <div class="b__nudge--top text--small form__checkbox form__checkbox--large">
+                    <div class="em-form__group em-form__group--cgu">
                         {{ form_row(form.personalDataCollection) }}
                     </div>
 
-                    <p class="text--summary text--gray">
-                        Les données recueillies sur ce formulaire sont traitées par LaREM afin de vous envoyer la newsletter du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
-                        Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
-                        Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
-                        Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris, France ou <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
-                    </p>
-
-                    <div class="l__row l__row--center b__nudge--top">
-                        <button type="submit" class="btn btn--blue">
-                            Je m'inscris
-                        </button>
+                    <div class="em-form__group">
+                        <p class="em-form__cgu">
+                            Les données recueillies sur ce formulaire sont traitées par LaREM afin de vous envoyer la newsletter du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
+                            Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+                            Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+                            Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris, France ou <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
+                        </p>
                     </div>
+
+
+                    <button type="submit" class="btn btn--blue btn--large-and-full">
+                        Je m'inscris
+                    </button>
 
                     {{ form_end(form) }}
                 </div>
