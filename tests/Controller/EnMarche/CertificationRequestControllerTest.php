@@ -2,10 +2,13 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use App\Adherent\Certification\CertificationRequestProcessCommand;
 use App\Entity\CertificationRequest;
+use App\Mailer\Message\CertificationRequestPendingMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\MessengerTestTrait;
 
 /**
  * @group functional
@@ -14,6 +17,7 @@ use Tests\App\Controller\ControllerTestTrait;
 class CertificationRequestControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MessengerTestTrait;
 
     private $certificationRequestRepository;
 
@@ -48,7 +52,7 @@ class CertificationRequestControllerTest extends WebTestCase
         $this->assertResponseStatusCode(200, $this->client->getResponse());
         $this->assertContains('Demande de certification refusée', $crawler->filter('.certification-status')->text());
 
-        $this->assertCertificationRequestIsSuccessful();
+        $this->assertCertificationRequestIsSuccessful($email);
         $this->assertEquals(3, $this->countCertificationRequests($email));
     }
 
@@ -72,7 +76,7 @@ class CertificationRequestControllerTest extends WebTestCase
         $this->assertResponseStatusCode(200, $this->client->getResponse());
         $this->assertContains('Votre profil n\'est pas encore certifié.', $crawler->filter('.certification-status')->text());
 
-        $this->assertCertificationRequestIsSuccessful();
+        $this->assertCertificationRequestIsSuccessful($email);
         $this->assertEquals(1, $this->countCertificationRequests($email));
     }
 
@@ -85,7 +89,7 @@ class CertificationRequestControllerTest extends WebTestCase
         $this->assertResponseStatusCode(200, $this->client->getResponse());
     }
 
-    private function assertCertificationRequestIsSuccessful(): void
+    private function assertCertificationRequestIsSuccessful(string $email): void
     {
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification/demande');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
@@ -107,6 +111,9 @@ class CertificationRequestControllerTest extends WebTestCase
             ],
         ]);
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/certification', $this->client);
+
+        $this->assertCountMails(1, CertificationRequestPendingMessage::class, $email);
+        $this->assertMessageIsDispatched(CertificationRequestProcessCommand::class);
 
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(200, $this->client->getResponse());

@@ -12,11 +12,16 @@ class CertificationAuthorityManager
 {
     private $em;
     private $documentManager;
+    private $messageNotifier;
 
-    public function __construct(EntityManagerInterface $em, CertificationRequestDocumentManager $documentManager)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        CertificationRequestDocumentManager $documentManager,
+        CertificationRequestNotifier $messageNotifier
+    ) {
         $this->em = $em;
         $this->documentManager = $documentManager;
+        $this->messageNotifier = $messageNotifier;
     }
 
     public function certify(Adherent $adherent, Administrator $administrator): void
@@ -45,6 +50,8 @@ class CertificationAuthorityManager
         $this->removeDocument($certificationRequest);
 
         $this->em->flush();
+
+        $this->messageNotifier->sendApprovalMessage($certificationRequest);
     }
 
     public function refuse(CertificationRequestRefuseCommand $refuseCommand): void
@@ -61,6 +68,8 @@ class CertificationAuthorityManager
         $this->removeDocument($certificationRequest);
 
         $this->em->flush();
+
+        $this->messageNotifier->sendRefusalMessage($certificationRequest);
     }
 
     public function block(CertificationRequestBlockCommand $blockCommand): void
@@ -77,6 +86,8 @@ class CertificationAuthorityManager
         $this->removeDocument($certificationRequest);
 
         $this->em->flush();
+
+        $this->messageNotifier->sendBlockMessage($certificationRequest);
     }
 
     private function certifyAdherent(Adherent $adherent, Administrator $administrator): void

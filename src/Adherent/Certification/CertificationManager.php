@@ -12,15 +12,18 @@ class CertificationManager
     private $entityManager;
     private $bus;
     private $documentManager;
+    private $messageNotifier;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         MessageBusInterface $bus,
-        CertificationRequestDocumentManager $documentManager
+        CertificationRequestDocumentManager $documentManager,
+        CertificationRequestNotifier $messageNotifier
     ) {
         $this->entityManager = $entityManager;
         $this->bus = $bus;
         $this->documentManager = $documentManager;
+        $this->messageNotifier = $messageNotifier;
     }
 
     public function createRequest(Adherent $adherent): CertificationRequest
@@ -35,5 +38,7 @@ class CertificationManager
         $this->entityManager->flush();
 
         $this->bus->dispatch(new CertificationRequestProcessCommand($certificationRequest->getUuid()));
+
+        $this->messageNotifier->sendPendingMessage($certificationRequest);
     }
 }

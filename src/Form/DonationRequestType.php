@@ -12,7 +12,6 @@ use App\Membership\MembershipRegistrationProcess;
 use App\Repository\AdherentRepository;
 use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -26,7 +25,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationRequestType extends AbstractType
 {
@@ -127,18 +125,8 @@ class DonationRequestType extends AbstractType
             ->add('code', IntegerType::class, [
                 'required' => false,
             ])
-            ->add('isPhysicalPerson', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [new Assert\IsTrue([
-                    'message' => 'common.checkbox.is_true',
-                ])],
-            ])
-            ->add('hasFrenchNationality', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [new Assert\IsTrue([
-                    'message' => 'common.checkbox.is_true',
-                ])],
-            ])
+            ->add('isPhysicalPerson', RequiredCheckboxType::class)
+            ->add('hasFrenchNationality', RequiredCheckboxType::class)
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
             ->add('submit', SubmitType::class, [
                 'label' => 'Continuer',

@@ -3,7 +3,11 @@
 namespace Tests\App\Adherent\Certification;
 
 use App\Adherent\Certification\CertificationAuthorityManager;
+use App\Adherent\Certification\CertificationRequestBlockCommand;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
+use App\Mailer\Message\CertificationRequestApprovedMessage;
+use App\Mailer\Message\CertificationRequestBlockedMessage;
+use App\Mailer\Message\CertificationRequestRefusedMessage;
 use App\Repository\AdherentRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -56,7 +60,7 @@ class CertificationAuthorityManagerTest extends WebTestCase
 
     public function testApprove(): void
     {
-        $adherent = $this->adherentRepository->findOneByEmail('carl999@example.fr');
+        $adherent = $this->adherentRepository->findOneByEmail($email = 'carl999@example.fr');
         $administrator = $this->getAdministratorRepository()->findOneBy(['emailAddress' => 'superadmin@en-marche-dev.fr']);
 
         self::assertFalse($adherent->isCertified());
@@ -73,11 +77,12 @@ class CertificationAuthorityManagerTest extends WebTestCase
         self::assertTrue($adherent->isCertified());
         self::assertTrue($certificationRequest->isApproved());
         self::assertSame($administrator, $certificationRequest->getProcessedBy());
+        $this->assertCountMails(1, CertificationRequestApprovedMessage::class, $email);
     }
 
     public function testRefuse(): void
     {
-        $adherent = $this->adherentRepository->findOneByEmail('carl999@example.fr');
+        $adherent = $this->adherentRepository->findOneByEmail($email = 'carl999@example.fr');
         $administrator = $this->getAdministratorRepository()->findOneBy(['emailAddress' => 'superadmin@en-marche-dev.fr']);
 
         self::assertFalse($adherent->isCertified());
@@ -95,6 +100,30 @@ class CertificationAuthorityManagerTest extends WebTestCase
         self::assertFalse($adherent->isCertified());
         self::assertTrue($certificationRequest->isRefused());
         self::assertSame($administrator, $certificationRequest->getProcessedBy());
+        $this->assertCountMails(1, CertificationRequestRefusedMessage::class, $email);
+    }
+
+    public function testBlock(): void
+    {
+        $adherent = $this->adherentRepository->findOneByEmail($email = 'carl999@example.fr');
+        $administrator = $this->getAdministratorRepository()->findOneBy(['emailAddress' => 'superadmin@en-marche-dev.fr']);
+
+        self::assertFalse($adherent->isCertified());
+
+        $certificationRequest = $adherent->getCertificationRequests()->getPendingCertificationRequest();
+        self::assertTrue($certificationRequest->isPending());
+        self::assertNull($certificationRequest->getProcessedBy());
+
+        $blockCommand = new CertificationRequestBlockCommand($certificationRequest, $administrator);
+        $this->certificationAuthorityManager->block($blockCommand);
+
+        $this->manager->refresh($adherent);
+        $this->manager->refresh($certificationRequest);
+
+        self::assertFalse($adherent->isCertified());
+        self::assertTrue($certificationRequest->isBlocked());
+        self::assertSame($administrator, $certificationRequest->getProcessedBy());
+        $this->assertCountMails(1, CertificationRequestBlockedMessage::class, $email);
     }
 
     protected function setUp()
