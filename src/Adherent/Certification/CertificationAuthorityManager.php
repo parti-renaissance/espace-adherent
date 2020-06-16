@@ -17,7 +17,7 @@ class CertificationAuthorityManager
     public function __construct(
         EntityManagerInterface $em,
         CertificationRequestDocumentManager $documentManager,
-        CertificationRequestMessageNotifier $messageNotifier
+        CertificationRequestNotifier $messageNotifier
     ) {
         $this->em = $em;
         $this->documentManager = $documentManager;

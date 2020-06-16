@@ -11,7 +11,7 @@ use App\Mailer\Message\CertificationRequestRefusedMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class CertificationRequestMessageNotifier
+class CertificationRequestNotifier
 {
     private $mailer;
     private $urlGenerator;
@@ -47,7 +47,7 @@ class CertificationRequestMessageNotifier
         $this->mailer->sendMessage(CertificationRequestRefusedMessage::create(
             $certificationRequest,
             $refusalReason,
-            $this->urlGenerator->generate('app_certification_request_form')
+            $this->urlGenerator->generate('app_certification_request_form', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
     }
 

@@ -16,15 +16,7 @@ final class CertificationRequestBlockedMessage extends Message
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Votre profil ne peut pas être certifié',
-            [],
-            static::getRecipientVars($adherent->getFirstName())
+            ['first_name' => $adherent->getFirstName()]
         );
-    }
-
-    private static function getRecipientVars(string $firstName): array
-    {
-        return [
-            'first_name' => self::escape($firstName),
-        ];
     }
 }

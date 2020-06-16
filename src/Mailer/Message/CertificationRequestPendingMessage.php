@@ -16,15 +16,7 @@ final class CertificationRequestPendingMessage extends Message
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Votre demande a bien été reçue',
-            [],
-            static::getRecipientVars($adherent->getFirstName())
+            ['first_name' => $adherent->getFirstName()]
         );
-    }
-
-    private static function getRecipientVars(string $firstName): array
-    {
-        return [
-            'first_name' => self::escape($firstName),
-        ];
     }
 }

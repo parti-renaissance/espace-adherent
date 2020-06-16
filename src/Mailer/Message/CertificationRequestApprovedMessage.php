@@ -15,16 +15,8 @@ final class CertificationRequestApprovedMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Vous êtes certifié',
-            [],
-            static::getRecipientVars($adherent->getFirstName())
+            'Vous êtes certifié(e)',
+            ['first_name' => $adherent->getFirstName()]
         );
-    }
-
-    private static function getRecipientVars(string $firstName): array
-    {
-        return [
-            'first_name' => self::escape($firstName),
-        ];
     }
 }

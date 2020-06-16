@@ -18,7 +18,7 @@ class CertificationManager
         EntityManagerInterface $entityManager,
         MessageBusInterface $bus,
         CertificationRequestDocumentManager $documentManager,
-        CertificationRequestMessageNotifier $messageNotifier
+        CertificationRequestNotifier $messageNotifier
     ) {
         $this->entityManager = $entityManager;
         $this->bus = $bus;

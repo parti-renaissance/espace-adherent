@@ -19,24 +19,11 @@ final class CertificationRequestRefusedMessage extends Message
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Votre demande n\'a pas abouti',
-            [],
-            static::getRecipientVars(
-                $adherent->getFirstName(),
-                $refusalReason,
-                $certificationRequestUrl
-            )
+            [
+                'first_name' => $adherent->getFirstName(),
+                'refusal_reason' => $refusalReason,
+                'certification_request_url' => $certificationRequestUrl,
+            ]
         );
-    }
-
-    private static function getRecipientVars(
-        string $firstName,
-        string $refusalReason,
-        string $certificationRequestUrl
-    ): array {
-        return [
-            'first_name' => self::escape($firstName),
-            'refusal_reason' => $refusalReason,
-            'certification_request_url' => $certificationRequestUrl,
-        ];
     }
 }
