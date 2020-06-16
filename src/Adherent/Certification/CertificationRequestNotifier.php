@@ -41,7 +41,7 @@ class CertificationRequestNotifier
     {
         $refusalReason = $certificationRequest->isRefusedWithOtherReason()
             ? $certificationRequest->getCustomRefusalReason()
-            : $this->translator->trans($certificationRequest->getRefusalReason())
+            : $this->translator->trans($certificationRequest->getRefusalReasonKey())
         ;
 
         $this->mailer->sendMessage(CertificationRequestRefusedMessage::create(
