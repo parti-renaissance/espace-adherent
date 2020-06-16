@@ -29,7 +29,7 @@ class DelegatedAccess
     public const DEFAULT_ROLES = [
         'Responsable communication',
         'Responsable mobilisation',
-        'Responsable phoning,',
+        'Responsable phoning',
     ];
 
     public const ACCESS_MESSAGES = 'messages';

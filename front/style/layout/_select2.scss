@@ -8,7 +8,8 @@
         &.em-form {
 
             .select2-selection {
-                &--multiple {
+                &--multiple,
+                &--single {
                     @include em-form-field;
                     height: auto;
                     min-height: 60px;
@@ -18,16 +19,19 @@
                         font-weight: normal;
                     }
 
-                    .select2-selection__rendered {
-                        display: block;
-                        padding: 13px 0 0;
+                    .select2-selection {
 
-                        li {
-                            display: inline-block;
-                            float: none;
+                        &__rendered {
+                            display: block;
+                            padding: 16px 0 0;
+
+                            li {
+                                display: inline-block;
+                                float: none;
+                            }
                         }
 
-                        .select2-selection__choice {
+                        &__choice {
                             margin: 0 5px 5px 0;
                             padding: 0 15px 0 5px;
                             border-radius: 50px;
@@ -42,6 +46,17 @@
                                 padding: 0 5px;
                                 font-size: 15px;
                                 vertical-align: middle;
+                            }
+                        }
+
+                        &__arrow {
+                            background: $white url('/images/icons/icn-form-select.svg') no-repeat right 10px center;
+                            height: 58px;
+                            width: 58px;
+
+                            b {
+                                display: none;
+
                             }
                         }
                     }

@@ -3,73 +3,47 @@
 {% form_theme form 'referent/_form_theme.html.twig' %}
 
 {% block my_team_content %}
-    <div class="manager__filters" id="js-by-name">
-        <div class="manager__filters__form">
-            <h4 class="manager__filters__subtitle">Rechercher un adhérent de mon territoire</h4>
+    <a href="{{ path('app_'~ space_name ~'_my_team_list') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+         ⟵ Annuler
+    </a>
+    <div class="l__wrapper--slim">
+        <h2 class="b__nudge--bottom">Déléguer un accès à mon espace</h2>
 
-            {{ form_start(filter_form, {attr: {id: 'filter-form'}}) }}
-            {{ form_errors(filter_form) }}
-            <div id="js-search-name">
-                <div class="manager__filters__row">
-                    <div  class="manager__filters__section">
-                        <div class="manager__filters__group">
-                            <div class="filter__row">
-                                <label class="filter__label">Prénom et/ou nom</label>
-                                {{ form_widget(filter_form.name, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom et/ou un nom'}}) }}
-                                {{ form_errors(filter_form.name) }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="manager__filters__row">
-                    <div class="manager__filters__actions b__nudge--top l__row--center">
-                        <button type="submit" class="btn btn--black" name="f[by_name]">Rechercher</button>
-                        <div class="text--body b__nudge--top-10 b__nudge--bottom-small">
-                            L'adhérent est hors de mon territoire - <span class="text--blue--dark link--no-decor" id="js-search-by-email" style="cursor: pointer;">Saisir son adresse e-mail</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        {{ form_errors(form) }}
 
-            <div class="manager__filters__section">
-                <div class="manager__filters__group">
-                    <div class="filter__row">
-                        <div id="user-search"></div>
+        <div id="js-by-name" {% if form.email.vars.data %}style="display: none;"{% endif %}>
+            {{ form_start(filter_form, {attr: {id: 'search-form'}}) }}
+                {{ form_errors(filter_form) }}
+                <div class="form__row">
+                    {{ form_label(filter_form.name, 'Adhérent') }}
+                    <div class="pst--relative">
+                        {{ form_widget(filter_form.name, {value: form.vars.data.delegated ? form.vars.data.delegated.fullName, attr: {placeholder: 'Saisissez un prénom et/ou un nom'}}) }}
+                        <button type="submit" class="btn btn--blue pst--absolute" style="right: 12px; top: 10px;">Rechercher</button>
+                    </div>
+
+                    <div id="no-result" class="form form__error" style="display: none;">
+                        Aucun adhérent ne correspond à votre recherche
+                    </div>
+                    <div class="text--body b__nudge--top-10 b__nudge--bottom-small">
+                        L'adhérent est hors de mon territoire - <span class="text--blue--dark link--no-decor" id="js-search-by-email" style="cursor: pointer;">Saisir son adresse e-mail</span>
                     </div>
                 </div>
-            </div>
 
             {{ form_end(filter_form) }}
         </div>
+        <div id="user-search"></div>
     </div>
 
     <div>
         {{ form_start(form, {attr: {id: 'delegate-access-form', class: 'em-form' }}) }}
-
-        <div class="manager__filters" id="js-by-email" style="display: none;">
-            <div class="manager__filters__form">
-                <h4 class="manager__filters__subtitle">Saisir une adresse e-mail</h4>
-                <div class="manager__filters__row">
-                    <div class="manager__filters__section">
-                        <div class="manager__filters__group">
-                            <div class="filter__row">
-                                <label class="filter__label">E-mail</label>
-                                {{ form_widget(form.email, {attr: {class: 'filter__field', placeholder: 'Entrez une adresse e-mail'}}) }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="manager__filters__actions">
-                    <div class="text--body text--blue--dark link--no-decor" id="js-search-by-name" style="cursor: pointer;">Rechercher par prénom et/ou nom</div>
-                </div>
-            </div>
-        </div>
-
-        {{ form_errors(form) }}
-
         <div class="l__wrapper--slim">
 
-            <h2 id="js-selected-adherent-name" class="b__nudge--bottom">{{ form.delegated.vars.attr.fullname }}</h2>
+            <div id="js-by-email" {% if not form.email.vars.data %}style="display: none;"{% endif %}>
+                <div class="form__row">
+                    {{ form_row(form.email, {attr: {placeholder: 'Entrez une adresse e-mail'}}) }}
+                    <div class="text--body text--blue--dark link--no-decor b__nudge--top-10 b__nudge--bottom-small" id="js-search-by-name" style="cursor: pointer;">Rechercher par prénom et/ou nom</div>
+                </div>
+            </div>
 
             <div class="form__row">
                 {{ form_label(form.role, 'Rôle') }}
@@ -84,21 +58,23 @@
                 {{ form_widget(form.accesses) }}
             </div>
 
-            <div class="em-form__group">
-                <div class="em-form__label">Limiter l'accès aux données adhérent</div>
-                <div class="em-form__legend">Ajoutez autant de villes et/ou de comités que nécessaire.</div>
-            </div>
+            <div id="js-restrict-form" style="display: none">
+                <div class="em-form__group">
+                    <div class="em-form__label">Limiter l'accès aux données adhérent</div>
+                    <div class="em-form__legend">Ajoutez autant de villes et/ou de comités que nécessaire.</div>
+                </div>
 
-            <div class="form__row">
-                {{ form_label(form.restrictedCommittees_search, 'Par comité') }}
-                {{ form_widget(form.restrictedCommittees_search) }}
-                {{ form_widget(form.restrictedCommittees) }}
-            </div>
+                <div class="form__row">
+                    {{ form_label(form.restrictedCommittees_search, 'Par comité') }}
+                    {{ form_widget(form.restrictedCommittees_search) }}
+                    {{ form_widget(form.restrictedCommittees) }}
+                </div>
 
-            <div class="form__row">
-                {{ form_label(form.restrictedCities_search, 'Par ville') }}
-                {{ form_widget(form.restrictedCities_search) }}
-                {{ form_widget(form.restrictedCities) }}
+                <div class="form__row">
+                    {{ form_label(form.restrictedCities_search, 'Par ville') }}
+                    {{ form_widget(form.restrictedCities_search) }}
+                    {{ form_widget(form.restrictedCities) }}
+                </div>
             </div>
 
             <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--bottom-medium">Valider</button>
@@ -120,9 +96,10 @@
     {% import 'javascript.js.twig' as js %}
 
     <script>
-      Kernel.onLoad(function() {
+      Kernel.onLoad(function () {
         $('.select2').select2({
           tags: true,
+          theme: 'default em-form',
           createTag: function (params) {
             return {
               id: params.term,
@@ -132,16 +109,21 @@
           }
         });
 
-        $('#filter-form').on('submit', function (e) {
+        $('#search-form').on('submit', function (e) {
           e.preventDefault();
 
           $.ajax({
             type: 'POST',
             url: "{{ path('app_'~ space_name ~'_my_team_search') }}",
             data: $(this).serialize(),
-          }).done(function(result) {
-            $('#user-search').html(result);
-            $('#js-search-name').hide();
+          }).done(function (data) {
+            if (data.result) {
+              $('#user-search').html(data.content);
+              $('#js-by-name').hide();
+              $('#no-result').hide();
+            } else {
+              $('#no-result').show();
+            }
           })
         });
 
@@ -154,14 +136,21 @@
 
         $(document).on('change', '#js-select-adherent', function () {
           $('#delegate_access_delegated').val($(this).find('option:selected').val());
-          $('#js-selected-adherent-name').text($(this).find('option:selected').text());
+        });
+
+        $('input[type="checkbox"][value="adherents"]').on('change', function () {
+          if ($(this).is(':checked')) {
+            $('#js-restrict-form').show();
+          } else {
+            $('#js-restrict-form').hide();
+          }
         });
 
         $(document).on('click', '.js-undo-search', function (e) {
           e.preventDefault();
-          $('#js-search-name').show();
-          $('#js-selected-adherent-name').text('');
+          $('#js-by-name').show();
           $('#user-search').html('');
+          $('input', '#search-form').val('').focus();
         });
 
         {{ js.committee(
@@ -179,12 +168,10 @@
         $(document).on('click', '#js-search-by-email', function (e) {
           $('#js-by-name').hide();
           $('#js-by-email').show();
-          $('#js-selected-adherent-name').hide();
         });
         $(document).on('click', '#js-search-by-name', function (e) {
           $('#js-by-email').hide();
           $('#js-by-name').show();
-          $('#js-selected-adherent-name').show();
         });
       });
     </script>

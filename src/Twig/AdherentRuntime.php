@@ -71,6 +71,10 @@ class AdherentRuntime implements RuntimeExtensionInterface
             $labels[] = $adherent->isFemale() ? 'Référente 🥇' : 'Référent 🥇';
         }
 
+        if ($adherent->isDelegatedReferent()) {
+            $labels[] = $adherent->isFemale() ? 'Référente déléguée 🥇' : 'Référent délégué 🥇';
+        }
+
         if ($adherent->isCoReferent()) {
             $labels[] = 'Équipe du référent 🥈';
         }
@@ -79,8 +83,16 @@ class AdherentRuntime implements RuntimeExtensionInterface
             $labels[] = $adherent->isFemale() ? 'Députée 🏛' : 'Député 🏛';
         }
 
+        if ($adherent->isDelegatedDeputy()) {
+            $labels[] = $adherent->isFemale() ? 'Députée déléguée 🏛' : 'Député délégué 🏛';
+        }
+
         if ($adherent->isSenator()) {
             $labels[] = $adherent->isFemale() ? 'Sénatrice 🏛' : 'Sénateur 🏛';
+        }
+
+        if ($adherent->isDelegatedSenator()) {
+            $labels[] = $adherent->isFemale() ? 'Sénatrice déléguée 🏛' : 'Sénateur délégué 🏛';
         }
 
         if ($adherent->isSupervisor()) {

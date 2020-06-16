@@ -63,6 +63,8 @@ abstract class AbstractMyTeamController extends Controller
             $entityManager->persist($delegatedAccess);
             $entityManager->flush();
 
+            $this->addFlash('info', 'delegated_access.created_successfully');
+
             return $this->redirectToRoute(sprintf('app_%s_my_team_list', $this->getSpaceType()));
         }
 
@@ -73,6 +75,20 @@ abstract class AbstractMyTeamController extends Controller
     }
 
     /**
+     * @Route("/deleguer-acces/{uuid}/supprimer", name="delegate_access_delete", methods={"GET"})
+     * @Security("delegatedAccess.getDelegator() == user")
+     */
+    public function deleteDelegatedAccess(DelegatedAccess $delegatedAccess, EntityManagerInterface $entityManager)
+    {
+        $entityManager->remove($delegatedAccess);
+        $entityManager->flush();
+
+        $this->addFlash('info', 'delegated_access.deleted_successfully');
+
+        return $this->redirectToRoute(sprintf('app_%s_my_team_list', $this->getSpaceType()));
+    }
+
+    /**
      * @Route("/search", name="search", methods={"POST"})
      */
     public function search(Request $request, AdherentRepository $adherentRepository): Response
@@ -80,13 +96,21 @@ abstract class AbstractMyTeamController extends Controller
         $form = $this->createForm(MyTeamSearchAdherentType::class);
         $form->handleRequest($request);
 
+        $users = [];
         if ($form->isSubmitted() && $form->isValid()) {
             $users = $adherentRepository->findAdherentsByName($this->getManagedTags($this->getUser()), $form->get('name')->getData());
         }
 
-        return $this->renderTemplate('my_team/search_results.html.twig', [
-            'form' => $form->createView(),
-            'users' => $users ?? [],
+        if (empty($users)) {
+            return $this->json(['result' => false, 'content' => null]);
+        }
+
+        return $this->json([
+            'result' => true,
+            'content' => $this->renderView('my_team/search_results.html.twig', [
+                'form' => $form->createView(),
+                'users' => $users,
+            ]),
         ]);
     }
 

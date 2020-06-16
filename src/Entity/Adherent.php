@@ -1291,6 +1291,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             && !$this->managedArea->getTags()->isEmpty();
     }
 
+    public function isDelegatedReferent(): bool
+    {
+        return \in_array('ROLE_DELEGATED_REFERENT', $this->getRoles(), true);
+    }
+
     public function isCoReferent(): bool
     {
         return $this->referentTeamMember instanceof ReferentTeamMember;
@@ -1694,6 +1699,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->managedDistrict instanceof District;
     }
 
+    public function isDelegatedDeputy(): bool
+    {
+        return \in_array('ROLE_DELEGATED_DEPUTY', $this->getRoles(), true);
+    }
+
     public function isAdherent(): bool
     {
         return $this->adherent;
@@ -1940,6 +1950,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isSenator(): bool
     {
         return !empty($this->senatorArea);
+    }
+
+    public function isDelegatedSenator(): bool
+    {
+        return \in_array('ROLE_DELEGATED_SENATOR', $this->getRoles(), true);
     }
 
     public function isConsular(): bool
