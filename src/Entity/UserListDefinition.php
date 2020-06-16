@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -41,7 +40,7 @@ class UserListDefinition
      *
      * @ORM\Column(length=100)
      *
-     * @Gedmo\Slug(fields={"label"})
+     * @Assert\NotBlank
      */
     private $code;
 

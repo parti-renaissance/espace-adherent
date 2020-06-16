@@ -64,9 +64,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
             \sprintf('/api/elected-representative/user-list-definitions/%s/members', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE),
             [],
             [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
 
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
@@ -81,9 +79,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
             \sprintf('/api/elected-representative/user-list-definitions/%s/members', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE),
             ['ids' => [2, 3]],
             [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -95,10 +91,11 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
 
         $this->assertCount(2, $data);
         $this->assertArrayHasKey(0, $data);
-        $this->assertSame([
+        $this->assertArraySubset([
             'id' => 4,
             'type' => 'elected_representative',
             'code' => 'instances_member',
+            'color' => null,
             'label' => 'Participe aux instances',
             'ids' => ['2'],
         ], $data[0]);
@@ -120,9 +117,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
             \sprintf('/api/elected-representative/user-list-definitions/members/save'),
             [],
             [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
 
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
@@ -137,9 +132,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
             \sprintf('/api/elected-representative/user-list-definitions/members/save'),
             ['members' => []],
             [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
 
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
@@ -148,12 +141,12 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
     public function testSaveUserListDefinitionMembersForType()
     {
         $electedRepresentativeRepository = $this->getElectedRepresentativeRepository();
-        $userListDefinitionRepositor = $this->getUserListDefinitionRepository();
+        $userListDefinitionRepository = $this->getUserListDefinitionRepository();
         /** @var ElectedRepresentative $er2 */
         $er2 = $electedRepresentativeRepository->find(2);
         $er3 = $electedRepresentativeRepository->find(3);
-        $supportingLaRem = $userListDefinitionRepositor->findOneBy(['code' => UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM]);
-        $instancesMember = $userListDefinitionRepositor->findOneBy(['code' => UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER]);
+        $supportingLaRem = $userListDefinitionRepository->findOneBy(['code' => UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM]);
+        $instancesMember = $userListDefinitionRepository->findOneBy(['code' => UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER]);
 
         $this->assertTrue($er2->getUserListDefinitions()->contains($supportingLaRem));
         $this->assertTrue($er2->getUserListDefinitions()->contains($instancesMember));
@@ -172,9 +165,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
                 ],
             ],
             [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ]
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);

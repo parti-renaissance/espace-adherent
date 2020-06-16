@@ -921,7 +921,7 @@
             </call>
         </service>
 
-        <service id="app.admin.elected.representative" class="App\Admin\ElectedRepresentative\ElectedRepresentativeAdmin">
+        <service id="app.admin.elected_representative" class="App\Admin\ElectedRepresentative\ElectedRepresentativeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Registre des élus" group="Politique" />
 
             <argument />
@@ -934,7 +934,7 @@
             </call>
         </service>
 
-        <service id="app.admin.social_network_link" class="App\Admin\ElectedRepresentative\SocialNetworkLinkAdmin">
+        <service id="app.admin.elected_representative.social_network_link" class="App\Admin\ElectedRepresentative\SocialNetworkLinkAdmin">
             <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
 
             <argument />
@@ -942,7 +942,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.elected_representative_label" class="App\Admin\ElectedRepresentative\ElectedRepresentativeLabelAdmin">
+        <service id="app.admin.elected_representative.label" class="App\Admin\ElectedRepresentative\ElectedRepresentativeLabelAdmin">
             <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
 
             <argument />
@@ -950,7 +950,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.elected_representative_mandate" class="App\Admin\ElectedRepresentative\MandateAdmin">
+        <service id="app.admin.elected_representative.mandate" class="App\Admin\ElectedRepresentative\MandateAdmin">
             <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
 
             <argument />
@@ -958,7 +958,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.elected_representative_political_function" class="App\Admin\ElectedRepresentative\PoliticalFunctionAdmin">
+        <service id="app.admin.elected_representative.political_function" class="App\Admin\ElectedRepresentative\PoliticalFunctionAdmin">
             <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
 
             <argument />
@@ -966,7 +966,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.elected_representative_zone" class="App\Admin\ElectedRepresentative\ZoneAdmin">
+        <service id="app.admin.elected_representative.zone" class="App\Admin\ElectedRepresentative\ZoneAdmin">
             <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
 
             <argument />

@@ -14,7 +14,8 @@ class LoadUserListDefinitionData extends AbstractFixture
         $userListDefinitionSupportLaREM = new UserListDefinition(
             UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
             UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM,
-            'Sympathisant(e) LaREM');
+            'Sympathisant(e) LaREM'
+        );
         $manager->persist($userListDefinitionSupportLaREM);
 
         $this->addReference(
@@ -25,7 +26,8 @@ class LoadUserListDefinitionData extends AbstractFixture
         $userListDefinitionInstancesMember = new UserListDefinition(
             UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
             UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER,
-            'Participe aux instances');
+            'Participe aux instances'
+        );
         $manager->persist($userListDefinitionInstancesMember);
 
         $this->addReference(
