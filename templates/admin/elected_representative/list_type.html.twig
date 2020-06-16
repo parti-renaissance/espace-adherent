@@ -7,7 +7,7 @@
         <span class="label label-success">Adhérent(e)</span><br />
     {% endif %}
     {% for userListDefinition in object.userListDefinitions %}
-        {% set labelClass = '' %}
+        {% set labelClass = 'label-primary' %}
         {% if userListDefinition.code == constant('App\\Entity\\UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM') %}
             {% set labelClass = 'label-warning' %}
         {% elseif userListDefinition.code == constant('App\\Entity\\UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER') %}

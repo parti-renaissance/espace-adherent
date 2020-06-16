@@ -38,7 +38,7 @@ class UserListDefinition
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50)
+     * @ORM\Column(length=100)
      *
      * @Assert\NotBlank
      */
@@ -53,11 +53,17 @@ class UserListDefinition
      */
     private $label;
 
-    public function __construct(string $type, string $code, string $label)
+    /**
+     * @ORM\Column(length=7, nullable=true)
+     */
+    private $color;
+
+    public function __construct(string $type = null, string $code = null, string $label = null, string $color = null)
     {
         $this->type = $type;
         $this->code = $code;
         $this->label = $label;
+        $this->color = $color;
     }
 
     public function getId(): ?int
@@ -65,7 +71,7 @@ class UserListDefinition
         return $this->id;
     }
 
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -75,7 +81,7 @@ class UserListDefinition
         $this->type = $type;
     }
 
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
     }
@@ -85,7 +91,7 @@ class UserListDefinition
         $this->code = $code;
     }
 
-    public function getLabel(): string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
@@ -95,8 +101,18 @@ class UserListDefinition
         $this->label = $label;
     }
 
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): void
+    {
+        $this->color = $color;
+    }
+
     public function __toString(): string
     {
-        return $this->label;
+        return $this->label ?? '';
     }
 }

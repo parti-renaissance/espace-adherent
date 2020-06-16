@@ -235,7 +235,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ], [
                     'edit' => 'inline',
                     'inline' => 'table',
-                    'admin_code' => 'app.admin.social_network_link',
+                    'admin_code' => 'app.admin.elected_representative.social_network_link',
                 ])
             ->end()
             ->with(
@@ -250,7 +250,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ], [
                     'edit' => 'inline',
                     'inline' => 'table',
-                    'admin_code' => 'app.admin.elected_representative_label',
+                    'admin_code' => 'app.admin.elected_representative.label',
                 ])
             ->end()
             ->with(
@@ -272,7 +272,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ], [
                     'edit' => 'inline',
                     'inline' => 'table',
-                    'admin_code' => 'app.admin.elected_representative_mandate',
+                    'admin_code' => 'app.admin.elected_representative.mandate',
                 ])
             ->end()
             ->with('Fonctions')
@@ -282,7 +282,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ], [
                     'edit' => 'inline',
                     'inline' => 'table',
-                    'admin_code' => 'app.admin.elected_representative_political_function',
+                    'admin_code' => 'app.admin.elected_representative.political_function',
                 ])
             ->end()
         ;

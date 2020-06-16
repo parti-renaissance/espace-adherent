@@ -34,7 +34,7 @@ class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTes
 
     public function testAdherentIsNotGrantedIfTypeIsNotCorrect()
     {
-        $adherent = $this->getAdherentMock(false);
+        $adherent = $this->getAdherentMock();
 
         $this->assertGrantedForAdherent(
             false,
@@ -63,7 +63,7 @@ class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTes
 
     public function testAdherentIsNotGrantedIfNotReferentAndElectedRepresentativeType()
     {
-        $adherent = $this->getAdherentMock(true, false);
+        $adherent = $this->getAdherentMock(false);
 
         $this->assertGrantedForAdherent(
             false,
@@ -77,11 +77,11 @@ class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTes
     /**
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getAdherentMock(bool $isReferentCalled = true, bool $isReferent = true): Adherent
+    private function getAdherentMock(bool $isReferent = true): Adherent
     {
         $adherent = $this->createAdherentMock();
 
-        $adherent->expects($isReferentCalled ? $this->once() : $this->never())
+        $adherent->expects($this->any())
             ->method('isReferent')
             ->willReturn($isReferent)
         ;
