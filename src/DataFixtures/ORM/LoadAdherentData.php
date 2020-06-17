@@ -56,6 +56,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const REFERENT_3_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
     public const DEPUTY_1_UUID = '918f07e5-676b-49c0-b76d-72ce01cb2404';
     public const DEPUTY_2_UUID = 'ccd87fb0-7d98-433f-81e1-3dd8b14f79c0';
+    public const DEPUTY_3_UUID = '160cdf45-80c4-4663-aa21-0ae23091a381';
     public const SENATOR_UUID = '021268fe-d4b3-44a7-bce9-c001191249a7';
     public const ASSESSOR_UUID = 'ae341e67-6e4c-4ead-b4be-1ade6693d512';
     public const MUNICIPAL_MANAGER_UUID = 'c2ba1ce4-e103-415f-a67a-260b8c651b55';
@@ -559,6 +560,25 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
         $this->addReference('deputy-75-1', $deputy_75_1);
 
+        $deputy_75_2 = $adherentFactory->createFromArray([
+            'uuid' => self::DEPUTY_3_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'deputy-75-2@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Député',
+            'last_name' => 'PARIS II',
+            'address' => PostAddress::createFrenchAddress('26 rue Vivienne', '75002-75102', null, 48.870025, 2.340985),
+            'birthdate' => '1975-04-01',
+            'registered_at' => '2018-08-05 15:02:34',
+        ]);
+        $roles = new ArrayCollection();
+        $roles->add($this->getReference('deputy'));
+        $deputy_75_2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $deputy_75_2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
+        $deputy_75_2->addReferentTag($this->getReference('referent_tag_75'));
+        $deputy_75_1->addReferentTag($this->getReference('referent_tag_75002'));
+        $this->addReference('deputy-75-2', $deputy_75_2);
+
         $deputy_ch_li = $adherentFactory->createFromArray([
             'uuid' => self::DEPUTY_2_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -577,7 +597,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_ch_li->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('deputy-ch-li', $deputy_ch_li);
 
-        // sentator
+        // senator
         $senator_59 = $adherentFactory->createFromArray([
             'uuid' => self::SENATOR_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -717,6 +737,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key28 = AdherentActivationToken::generate($senator_59);
         $key29 = AdherentActivationToken::generate($assessor);
         $key30 = AdherentActivationToken::generate($municipalManager);
+        $key31 = AdherentActivationToken::generate($deputy_75_2);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -741,6 +762,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referentChild->activate($key18, '2017-02-07 13:20:45');
         $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
+        $deputy_75_2->activate($key31, '2017-07-26 12:14:51');
         $deputy_ch_li->activate($key21, '2017-06-26 12:14:51');
         $senator_59->activate($key28, '2017-06-26 12:14:51');
         $municipalChief1->activate($key23, '2019-06-10 09:19:00');
@@ -918,6 +940,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($coordinator);
         $manager->persist($coordinatorCP);
         $manager->persist($deputy_75_1);
+        $manager->persist($deputy_75_2);
         $manager->persist($deputy_ch_li);
         $manager->persist($senator_59);
         $manager->persist($municipalChief1);
@@ -963,6 +986,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($key25);
         $manager->persist($key26);
         $manager->persist($key27);
+        $manager->persist($key31);
 
         $manager->persist($resetPasswordToken);
 

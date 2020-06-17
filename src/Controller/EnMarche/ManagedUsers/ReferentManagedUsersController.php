@@ -33,7 +33,7 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
         ]);
     }
 
-    protected function createFilterModel(): ManagedUsersFilter
+    protected function createFilterModel(Request $request): ManagedUsersFilter
     {
         /** @var Adherent $referent */
         $referent = $this->getUser();

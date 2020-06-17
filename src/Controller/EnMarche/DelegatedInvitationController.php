@@ -16,10 +16,10 @@ class DelegatedInvitationController extends InvitationController
     use AccessDelegatorTrait;
 
     /**
-     * @Route("/espace-referent-delegue/invitation", name="app_referent_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "referent"})
-     * @Route("/espace-depute-delegue/invitation", name="app_deputy_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "deputy"})
-     * @Route("/espace-senateur-delegue/invitation", name="app_senator_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "senator"})
-     * @Route("/espace-comite-delegue/{slug}/invitation", name="app_supervisor_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "supervisor"})
+     * @Route("/espace-referent-delegue/{delegated_access_uuid}/invitation", name="app_referent_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "referent"})
+     * @Route("/espace-depute-delegue/{delegated_access_uuid}/invitation", name="app_deputy_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "deputy"})
+     * @Route("/espace-senateur-delegue/{delegated_access_uuid}/invitation", name="app_senator_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "senator"})
+     * @Route("/espace-comite-delegue/{delegated_access_uuid}/{slug}/invitation", name="app_supervisor_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "supervisor"})
      *
      * @Security("is_granted('ROLE_ADHERENT')")
      */
@@ -30,6 +30,6 @@ class DelegatedInvitationController extends InvitationController
         string $type,
         ?Committee $committee = null
     ): Response {
-        return parent::connectedAdherentInviteAction($request, $this->getUser($type), $handler, $type, $committee);
+        return parent::connectedAdherentInviteAction($request, $this->getMainUser($request), $handler, $type, $committee);
     }
 }

@@ -27,15 +27,12 @@ class SenatorEventManagerController extends AbstractEventManagerController
         return EventManagerSpaceEnum::SENATOR;
     }
 
-    protected function getEvents(string $type = null): array
+    protected function getEvents(Adherent $adherent, string $type = null): array
     {
-        /** @var Adherent $senator */
-        $senator = $this->getUser();
-
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            return $this->repository->findManagedBy([$senator->getSenatorArea()->getDepartmentTag()]);
+            return $this->repository->findManagedBy([$adherent->getSenatorArea()->getDepartmentTag()]);
         }
 
-        return $this->repository->findEventsByOrganizer($senator);
+        return $this->repository->findEventsByOrganizer($adherent);
     }
 }

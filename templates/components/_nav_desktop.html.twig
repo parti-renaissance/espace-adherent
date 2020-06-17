@@ -271,9 +271,9 @@
     is_granted('ROLE_ELECTION_RESULTS_REPORTER') or
     is_granted('ROLE_MUNICIPAL_MANAGER') or
     is_granted('ROLE_MUNICIPAL_MANAGER_SUPERVISOR') or
-    is_granted('IS_DELEGATED_REFERENT') or
-    is_granted('IS_DELEGATED_DEPUTY') or
-    is_granted('IS_DELEGATED_SENATOR')
+    is_granted('ROLE_DELEGATED_REFERENT') or
+    is_granted('ROLE_DELEGATED_DEPUTY') or
+    is_granted('ROLE_DELEGATED_SENATOR')
 %}
     {% set totalSections =
         (app.user.isSupervisor or app.user.isHost) +
@@ -291,9 +291,9 @@
         app.user.isMunicipalManager +
         app.user.isElectionResultsReporter +
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
-        is_granted('IS_DELEGATED_REFERENT') +
-        is_granted('IS_DELEGATED_DEPUTY') +
-        is_granted('IS_DELEGATED_SENATOR')
+        is_granted('ROLE_DELEGATED_REFERENT') +
+        is_granted('ROLE_DELEGATED_DEPUTY') +
+        is_granted('ROLE_DELEGATED_SENATOR')
     %}
 
     <div class="background--darker l__hide--on-tablet">

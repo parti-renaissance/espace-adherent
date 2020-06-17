@@ -9,7 +9,7 @@
     <div class="team-organization">
         {% for access in delegatedAccesses %}
             <div class="team-organization__member-container">
-                <a href="{{ path('app_'~ space_name ~'_my_team_delegate_access_edit', {id: access.id}) }}" class="team-organization__member">
+                <a href="{{ path('app_'~ space_name ~'_my_team_delegate_access_edit', {uuid: access.uuid}) }}" class="team-organization__member">
                     <div class="content">
                         <h3 class="name">{{ access.delegated }}</h3>
                         <div class="roles">{{ access.role }}</div>

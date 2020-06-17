@@ -38,7 +38,7 @@ class BoardMemberManagerTest extends WebTestCase
 
         $members = $this->boardMemberManager->paginateMembers($filter, $excludedMember);
 
-        $this->assertCount(7, $members);
+        $this->assertCount(8, $members);
         $this->assertContainsOnlyInstancesOf(Adherent::class, $members);
         $this->assertNotContains($excludedMember, $members);
     }
@@ -51,7 +51,7 @@ class BoardMemberManagerTest extends WebTestCase
         $paginator = $this->boardMemberManager->paginateMembers($filter, $excludedMember);
 
         $this->assertInstanceOf(Paginator::class, $paginator);
-        $this->assertCount(7, $paginator);
+        $this->assertCount(8, $paginator);
         $this->assertContainsOnlyInstancesOf(Adherent::class, $paginator);
         $this->assertNotContains($excludedMember, $paginator);
     }

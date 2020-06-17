@@ -42,7 +42,7 @@ Feature:
   Scenario: As deputy of 1st Paris district I can send message to the adherents.
     Given I am logged as "deputy@en-marche-dev.fr"
     When I am on "/espace-depute/utilisateurs/message"
-    Then the "recipient" field should contain "4 marcheur(s)"
+    Then the "recipient" field should contain "5 marcheur(s)"
     And the "sender" field should contain "Député PARIS I"
 
     # Try to send an empty form

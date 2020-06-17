@@ -184,7 +184,6 @@
         </service>
         <!-- EventSubscriber -->
         <service id="App\EventSubscriber\CommentsCguSubscriber"/>
-        <service id="App\EventSubscriber\DelegatedAccessSubscriber"/>
 
         <!-- Exporter -->
         <prototype namespace="App\Exporter\" resource="../../src/Exporter/" />

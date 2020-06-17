@@ -27,15 +27,12 @@ class DeputyEventManagerController extends AbstractEventManagerController
         return EventManagerSpaceEnum::DEPUTY;
     }
 
-    protected function getEvents(string $type = null): array
+    protected function getEvents(Adherent $adherent, string $type = null): array
     {
-        /** @var Adherent $deputy */
-        $deputy = $this->getUser();
-
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            return $this->repository->findManagedBy([$deputy->getManagedDistrict()->getReferentTag()]);
+            return $this->repository->findManagedBy([$adherent->getManagedDistrict()->getReferentTag()]);
         }
 
-        return $this->repository->findEventsByOrganizer($deputy);
+        return $this->repository->findEventsByOrganizer($adherent);
     }
 }

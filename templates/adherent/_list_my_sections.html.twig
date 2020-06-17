@@ -13,10 +13,12 @@
         <a href="{{ path('app_referent_event_manager_events') }}">Espace référent</a>
     </li>
 {% endif %}
-{% if is_canary_enabled() and is_granted('IS_DELEGATED_REFERENT') %}
-    <li>
-        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegated_accesses'), 'referent')) }}">Espace référent délégué</a>
-    </li>
+{% if is_canary_enabled() and is_granted('ROLE_DELEGATED_REFERENT') %}
+    {% for delegated_access in app.user.receivedDelegatedAccessOfType('referent') %}
+        <li>
+            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace délégué du référent {{ delegated_access.delegator }}</a>
+        </li>
+    {% endfor %}
 {% endif %}
 {% if app.user.isCoReferent %}
     <li>
@@ -28,20 +30,24 @@
         <a href="{{ path('app_message_deputy_list') }}">Espace député</a>
     </li>
 {% endif %}
-{% if is_canary_enabled() and is_granted('IS_DELEGATED_DEPUTY') %}
-    <li>
-        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegated_accesses'), 'deputy')) }}">Espace député délégué</a>
-    </li>
+{% if is_canary_enabled() and is_granted('ROLE_DELEGATED_DEPUTY') %}
+    {% for delegated_access in app.user.receivedDelegatedAccessOfType('deputy') %}
+        <li>
+            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace délégué du député {{ delegated_access.delegator }}</a>
+        </li>
+    {% endfor %}
 {% endif %}
 {% if app.user.isSenator %}
     <li>
         <a href="{{ path('app_message_senator_list') }}">Espace sénateur</a>
     </li>
 {% endif %}
-{% if is_canary_enabled() and is_granted('IS_DELEGATED_SENATOR') %}
-    <li>
-        <a href="{{ path(get_first_access_route(app.request.attributes.get('delegated_accesses'), 'senator')) }}">Espace sénateur délégué</a>
-    </li>
+{% if is_canary_enabled() and is_granted('ROLE_DELEGATED_SENATOR') %}
+    {% for delegated_access in app.user.receivedDelegatedAccessOfType('senator') %}
+        <li>
+            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace délégué du sénateur {{ delegated_access.delegator }}</a>
+        </li>
+    {% endfor %}
 {% endif %}
 {% if app.user.isCoordinatorCitizenProjectSector %}
     <li>

@@ -4,9 +4,9 @@
 
 {% block message_content %}
     {% if app.request.query.has('l') %}
-        {% set back_url = path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_list", route_params|default({})) %}
+        {% set back_url = get_path(message_type, 'message', 'list', app.request, route_params|default({})) %}
     {% else %}
-        {% set back_url = path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_update", route_params|default({})|merge({uuid: message.uuid})) %}
+        {% set back_url = get_path(message_type, 'message', 'update', app.request, route_params|default({})|merge({uuid: message.uuid})) %}
     {% endif %}
 
     <a href="{{ back_url }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
@@ -19,13 +19,13 @@
 
     {% if message.isSynchronized and not message.filter %}
         <div class="l__wrapper--slim text--center">
-            <a href="{{ path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_preview", route_params|default({})|merge({uuid: message.uuid, f: true})) }}"
+            <a href="{{ get_path(message_type, 'message', 'preview', app.request, route_params|default({})|merge({uuid: message.uuid, f: true})) }}"
                class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
                 Prévisualiser avant envoi
             </a>
 
             <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15"
-               href="{{ path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_test", route_params|default({})|merge({uuid: message.uuid})) }}">
+               href="{{ get_path(message_type, 'message', 'test', app.request, route_params|default({})|merge({uuid: message.uuid})) }}">
                 M'envoyer un message test
             </a>
         </div>

@@ -4,6 +4,7 @@ namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
+use App\Entity\MyTeam\DelegatedAccess;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class AuthorVoter extends AbstractAdherentVoter
@@ -20,7 +21,7 @@ class AuthorVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $this->requestStack->getMasterRequest()->attributes->get('delegated_access')) {
+        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getMasterRequest()->attributes->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             return $subject->getAuthor()->equals($delegatedAccess->getDelegator());
         }
 

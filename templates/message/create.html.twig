@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block message_content %}
-    <a href="{{ path("app_message_#{message_type}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_list", route_params|default({})) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+    <a href="{{ get_path(message_type, 'message', 'list', app.request, route_params|default({})) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
          ⟵ Retour
     </a>
     {% block message_form %}

@@ -26,12 +26,12 @@ abstract class AbstractManagedUsersController extends Controller
     public function listAction(Request $request, string $_format, ManagedUsersExporter $exporter): Response
     {
         $form = $this
-            ->createFilterForm($filter = $this->createFilterModel())
+            ->createFilterForm($filter = $this->createFilterModel($request))
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $filter = $this->createFilterModel();
+            $filter = $this->createFilterModel($request);
         }
 
         if ('html' !== $_format) {
@@ -50,7 +50,7 @@ abstract class AbstractManagedUsersController extends Controller
 
     abstract protected function getSpaceType(): string;
 
-    abstract protected function createFilterModel(): ManagedUsersFilter;
+    abstract protected function createFilterModel(Request $request): ManagedUsersFilter;
 
     abstract protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface;
 

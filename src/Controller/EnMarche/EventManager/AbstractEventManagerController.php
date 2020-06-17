@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractEventManagerController extends Controller
 {
@@ -36,10 +35,10 @@ abstract class AbstractEventManagerController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function eventsAction(string $type): Response
+    public function eventsAction(Request $request, string $type): Response
     {
         return $this->renderTemplate('event_manager/events_list.html.twig', [
-            'events' => $this->getEvents($type),
+            'events' => $this->getEvents($this->getMainUser($request), $type),
         ]);
     }
 
@@ -50,10 +49,11 @@ abstract class AbstractEventManagerController extends Controller
         Request $request,
         GeoCoder $geoCoder,
         EventCommandHandler $eventCommandHandler,
-        EventRegistrationCommandHandler $eventRegistrationCommandHandler,
-        UserInterface $user
+        EventRegistrationCommandHandler $eventRegistrationCommandHandler
     ): Response {
         /** @var Adherent $user */
+        $user = $this->getMainUser($request);
+
         $command = new EventCommand($user);
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
 
@@ -65,7 +65,7 @@ abstract class AbstractEventManagerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $event = $eventCommandHandler->handle($command, $this->getEventClassName());
 
-            $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
+            $registrationCommand = new EventRegistrationCommand($event, $user);
             $eventRegistrationCommandHandler->handle($registrationCommand);
 
             return $this->renderTemplate('event_manager/event_create.html.twig', [
@@ -80,7 +80,12 @@ abstract class AbstractEventManagerController extends Controller
 
     abstract protected function getSpaceType(): string;
 
-    abstract protected function getEvents(string $type = null): array;
+    abstract protected function getEvents(Adherent $adherent, string $type = null): array;
+
+    protected function getMainUser(Request $request)
+    {
+        return $this->getUser();
+    }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
