@@ -9,6 +9,7 @@ use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\MyTeam\DelegatedAccess;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,7 +37,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     collectionOperations={},
  *     itemOperations={
  *         "get": {
- *             "access_control": "object.getAuthor() == user or object.isDelegatedAuthor(request.attributes.get('delegated_accesses', []))",
+ *             "access_control": "object.getAuthor() == user or object.isDelegatedAuthor(user)",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}}
  *         }
@@ -302,11 +303,12 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         }
     }
 
-    public function isDelegatedAuthor(array $delegatedAccesses = [])
+    public function isDelegatedAuthor(Adherent $user): bool
     {
-        foreach ($delegatedAccesses as $delegatedAccess) {
-            if ($delegatedAccess->getType() === $this->getType()) {
-                return $delegatedAccess->getDelegator() === $this->getAuthor();
+        /** @var DelegatedAccess $delegatedAccess */
+        foreach ($user->getReceivedDelegatedAccesses() as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator() === $this->getAuthor()) {
+                return true;
             }
         }
 

@@ -1,6 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Espace député' %}
+{% set currentUserOrDelegator = current_user(app.request) %}
+
+{% block page_title %}
+    {% if app.user is same as(currentUserOrDelegator) %}
+        Espace député
+    {% else %}
+        Espace délégué du député {{ currentUserOrDelegator }}
+    {% endif %}
+{% endblock %}
+
 {% block canonical_url url('app_message_deputy_list') %}
 
 {% set hasCharterAccepted = app.user.charters.hasDeputyCharterAccepted %}
@@ -18,7 +27,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez : <span>{{ get_user(app.request.attributes.get('delegated_access')).managedDistrict }}</span></p>
+                            <p>Vous gérez : <span>{{ currentUserOrDelegator.managedDistrict }}</span></p>
                         </div>
                     </div>
                     <div class="second-section">
@@ -28,15 +37,16 @@
                     </div>
                     <nav class="manager-header__menu">
                         {% set isDeputy = is_granted('ROLE_DEPUTY') %}
+                        {% set delegated_access_uuid = app.request.attributes.get('delegated_access_uuid') %}
                         <ul>
                             {% if isDeputy %}
                             <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' }}">
                                 <a href="{{ path("app_message_deputy_list", route_params|default({})) }}">Mes messages</a>
                             </li>
                             {% endif %}
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_MESSAGES', 'deputy') %}
+                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' }}">
-                                    <a href="{{ path("app_message_deputy_delegated_list", route_params|default({})) }}">Mes messages</a>
+                                    <a href="{{ path("app_message_deputy_delegated_list", route_params|default({})|merge({delegated_access_uuid: delegated_access_uuid})) }}">Mes messages</a>
                                 </li>
                             {% endif %}
 
@@ -45,9 +55,9 @@
                                 <a href="{{ path('app_deputy_event_manager_events') }}">Événements</a>
                             </li>
                             {% endif %}
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_EVENTS', 'deputy') %}
+                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_deputy_event_manager_*') ? 'active' }}">
-                                    <a href="{{ path('app_deputy_event_manager_delegated_events') }}">Événements</a>
+                                    <a href="{{ path('app_deputy_event_manager_delegated_events', {delegated_access_uuid: delegated_access_uuid}) }}">Événements</a>
                                 </li>
                             {% endif %}
 
@@ -56,9 +66,9 @@
                                 <a href="{{ path('app_deputy_managed_users_list') }}">Adhérents</a>
                             </li>
                             {% endif %}
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', 'deputy') %}
+                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_deputy_managed_users_delegated_list') ? 'active' }}">
-                                    <a href="{{ path('app_deputy_managed_users_delegated_list') }}">Adhérents</a>
+                                    <a href="{{ path('app_deputy_managed_users_delegated_list', {delegated_access_uuid: delegated_access_uuid}) }}">Adhérents</a>
                                 </li>
                             {% endif %}
 
@@ -67,14 +77,14 @@
                                     <a href="{{ path('app_deputy_committees') }}">Comités</a>
                                 </li>
                             {% endif %}
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_COMMITTEE', 'deputy') %}
+                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_COMMITTEE', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_deputy_delegated_committees') ? 'active' }}">
-                                    <a href="{{ path('app_deputy_delegated_committees') }}">Comités</a>
+                                    <a href="{{ path('app_deputy_delegated_committees', {delegated_access_uuid: delegated_access_uuid}) }}">Comités</a>
                                 </li>
                             {% endif %}
 
                             {% if is_canary_enabled() and isDeputy %}
-                            <li class="{{ is_active_route(app.request, ['app_deputy_my_team_list', 'app_deputy_my_team_delegate_access']) ? 'active' }}">
+                            <li class="{{ is_active_route(app.request, 'app_deputy_my_team_*') ? 'active' }}">
                                 <a href="{{ path('app_deputy_my_team_list') }}">Mon équipe</a>
                             </li>
                             {% endif %}

@@ -34,7 +34,7 @@ class SenatorManagedUsersController extends AbstractManagedUsersController
         ]);
     }
 
-    protected function createFilterModel(): ManagedUsersFilter
+    protected function createFilterModel(Request $request): ManagedUsersFilter
     {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

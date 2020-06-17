@@ -52,18 +52,18 @@
                     </div>
 
                     {% set isReferent = is_granted('ROLE_REFERENT') %}
-                    {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ANY', 'referent') %}
+                    {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ANY', app.request) %}
                     <nav class="manager-header__menu">
                         <ul>
                             {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_event_manager_event*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_managed_users_list', 'app_jecoute_referent_*']) %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS', 'referent') %}
+                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
                             <li class="{{ is_active_route(app.request, 'app_referent_event_manager_event*') ? 'active' }}">
                                 <a href="{{ path('app_referent_event_manager_events') }}">Événements</a>
                             </li>
                             {% endif %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_COMMITTEE', 'referent') %}
+                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_COMMITTEE', app.request) %}
                             <li class="{{ is_active_route(app.request, ['app_referent_committees', 'app_referent_designations_*']) ? 'active' }}">
                                 <a href="{{ path('app_referent_committees') }}">Comités</a>
                             </li>
@@ -75,7 +75,7 @@
                             </li>
                             {% endif %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', 'referent') %}
+                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', app.request) %}
                             <li class="{{ is_active_route(app.request, ['app_referent_managed_users_list', 'app_referent_adherent_invitation']) ? 'active' }}">
                                 <a href="{{ path('app_referent_managed_users_list') }}">Adhérents</a>
                             </li>
@@ -109,7 +109,7 @@
                                 {% endif %}
                             {% endif %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES', 'referent') %}
+                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
                             <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'menu-right active' : 'menu-right' }}">
                                 <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
                             </li>

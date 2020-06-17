@@ -2,59 +2,93 @@
 
 namespace App\Twig;
 
+use App\Controller\AccessDelegatorTrait;
 use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class AdherentDelegatedAccessesExtension extends AbstractExtension
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    use AccessDelegatorTrait;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    /** @var Security */
+    private $security;
+
+    /** @var RouterInterface */
+    private $router;
+
+    public function __construct(Security $security, RouterInterface $router)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
+        $this->router = $router;
     }
 
     public function getFunctions()
     {
         return [
-            new TwigFunction('get_user', [$this, 'getUser']),
+            new TwigFunction('current_user', [$this, 'getCurrentUser']),
             new TwigFunction('get_first_access_route', [$this, 'getFirstAccessRoute']),
+            new TwigFunction('get_path', [$this, 'getPath']),
         ];
     }
 
-    public function getUser(?DelegatedAccess $delegatedAccess)
+    public function getCurrentUser(Request $request): UserInterface
     {
+        $user = $this->security->getUser();
+
+        $delegatedAccess = $user->getReceivedDelegatedAccessByUuid($request->attributes->get(DelegatedAccess::ATTRIBUTE_KEY));
+
         if ($delegatedAccess) {
             return $delegatedAccess->getDelegator();
         }
 
-        return $this->tokenStorage->getToken()->getUser();
+        return $user;
     }
 
-    public function getFirstAccessRoute(array $delegatedAccesses, string $type)
+    public function getFirstAccessRoute(DelegatedAccess $delegatedAccess): string
     {
-        $delegatedAccess = null;
-        foreach ($delegatedAccesses as $access) {
-            if ($access->getType() === $type) {
-                $delegatedAccess = $access;
-                break;
-            }
-        }
-
-        if (!$delegatedAccess) {
-            throw new \LogicException('No delegated access found. Unable to find route');
-        }
-
         $routes = [
-            DelegatedAccess::ACCESS_MESSAGES => "app_message_{$type}_delegated_list",
-            DelegatedAccess::ACCESS_EVENTS => "app_{$type}_event_manager_delegated_events",
-            DelegatedAccess::ACCESS_ADHERENTS => "app_{$type}_managed_users_delegated_list",
-            DelegatedAccess::ACCESS_COMMITTEE => "app_{$type}_delegated_committee",
+            DelegatedAccess::ACCESS_MESSAGES => "app_message_{$delegatedAccess->getType()}_delegated_list",
+            DelegatedAccess::ACCESS_EVENTS => "app_{$delegatedAccess->getType()}_event_manager_delegated_events",
+            DelegatedAccess::ACCESS_ADHERENTS => "app_{$delegatedAccess->getType()}_managed_users_delegated_list",
+            DelegatedAccess::ACCESS_COMMITTEE => "app_{$delegatedAccess->getType()}_delegated_committee",
         ];
 
         return $routes[$delegatedAccess->getAccesses()[0]];
+    }
+
+    public function getPath(
+        string $spaceName,
+        ?string $type,
+        string $action,
+        Request $request,
+        array $routeParams = []
+    ): string {
+        $delegatedAccess = $this->security->getUser()->getReceivedDelegatedAccessByUuid($request->attributes->get(DelegatedAccess::ATTRIBUTE_KEY));
+
+        // route is usually "app_{space}_{type}_...", but for messages it is "app_{type}_{space}_..."
+        if ('message' === $type) {
+            $route = sprintf(
+                'app_%s_%s%s_%s',
+                $type,
+                $spaceName,
+                $delegatedAccess ? '_delegated' : '',
+                $action
+            );
+        } else {
+            $route = sprintf(
+                'app_%s%s%s_%s',
+                $spaceName,
+                $type ? '_'.$type : '',
+                $delegatedAccess ? '_delegated' : '',
+                $action
+            );
+        }
+
+        return $this->router->generate($route, \array_merge($routeParams, $delegatedAccess ? [DelegatedAccess::ATTRIBUTE_KEY => $delegatedAccess->getUuid()] : []));
     }
 }

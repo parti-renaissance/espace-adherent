@@ -1,6 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Espace sénateur' %}
+{% set currentUserOrDelegator = current_user(app.request) %}
+
+{% block page_title %}
+    {% if app.user is same as(currentUserOrDelegator) %}
+        Espace sénateur
+    {% else %}
+        Espace délégué du sénateur {{ currentUserOrDelegator }}
+    {% endif %}
+{% endblock %}
+
 {% block canonical_url url('app_message_senator_list') %}
 
 {% set hasCharterAccepted = app.user.charters.hasSenatorCharterAccepted %}
@@ -18,7 +27,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez le département : <span>{{ get_user(app.request.attributes.get('delegated_access')).senatorArea.departmentTag }}</span></p>
+                            <p>Vous gérez le département : <span>{{ currentUserOrDelegator.senatorArea.departmentTag }}</span></p>
                         </div>
                     </div>
                     <div class="second-section">
@@ -28,9 +37,9 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
-                            {% if is_granted('HAS_DELEGATED_ACCESS_MESSAGES', 'senator') %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
                             <li class="{{ is_active_route(app.request, 'app_message_senator_*') ? 'active' }}">
-                                <a href="{{ path("app_message_senator_delegated_list", route_params|default({})) }}">Mes messages</a>
+                                <a href="{{ path("app_message_senator_delegated_list", route_params|default({})|merge({delegated_access_uuid: app.request.get('delegated_access_uuid')})) }}">Mes messages</a>
                             </li>
                             {% else %}
                             <li class="{{ is_active_route(app.request, 'app_message_senator_*') ? 'active' }}">
@@ -38,9 +47,9 @@
                             </li>
                             {% endif %}
 
-                            {% if is_granted('HAS_DELEGATED_ACCESS_EVENTS', 'senator') %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
                             <li class="{{ is_active_route(app.request, 'app_senator_event_manager_*') ? 'active' }}">
-                                <a href="{{ path('app_senator_event_manager_delegated_events') }}">Événements</a>
+                                <a href="{{ path('app_senator_event_manager_delegated_events', {delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')}) }}">Événements</a>
                             </li>
                             {% else %}
                             <li class="{{ is_active_route(app.request, 'app_senator_event_manager_*') ? 'active' }}">
@@ -48,9 +57,9 @@
                             </li>
                             {% endif %}
 
-                            {% if is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', 'senator') %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', app.request) %}
                             <li class="{{ is_active_route(app.request, 'app_senator_managed_users_delegated_list') ? 'active' }}">
-                                <a href="{{ path('app_senator_managed_users_delegated_list') }}">Adhérents</a>
+                                <a href="{{ path('app_senator_managed_users_delegated_list', {delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')}) }}">Adhérents</a>
                             </li>
                             {% else %}
                             <li class="{{ is_active_route(app.request, ['app_senator_managed_users_list', 'app_senator_adherent_invitation']) ? 'active' }}">

@@ -12,6 +12,7 @@ use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +39,9 @@ abstract class AbstractMyTeamController extends Controller
 
     /**
      * @Route("/deleguer-acces", name="delegate_access", methods={"GET", "POST"})
-     * @Route("/deleguer-acces/{id}", name="delegate_access_edit", methods={"GET", "POST"})
+     * @Route("/deleguer-acces/{uuid}", name="delegate_access_edit", methods={"GET", "POST"})
+     *
+     * @Security("delegatedAccess ? delegatedAccess.getDelegator() == user : true")
      */
     public function delegateAccess(
         Request $request,

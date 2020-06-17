@@ -2,11 +2,15 @@
 
 namespace App\Entity\MyTeam;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,9 +18,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\MyTeam\DelegatedAccessRepository")
  * @ORM\Table(name="my_team_delegated_access")
  * @UniqueEntity(fields={"delegator", "delegated"}, message="Vous avez déjà délégué des accès à cet adhérent.")
+ * @Algolia\Index(autoIndex=false)
  */
 class DelegatedAccess
 {
+    use EntityIdentityTrait;
+
+    public const ATTRIBUTE_KEY = 'delegated_access_uuid';
+
     public const DEFAULT_ROLES = [
         'Responsable communication',
         'Responsable mobilisation',
@@ -32,17 +41,6 @@ class DelegatedAccess
         self::ACCESS_EVENTS,
         self::ACCESS_ADHERENTS,
     ];
-
-    /**
-     * The unique auto incremented primary key.
-     *
-     * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
-    private $id;
 
     /**
      * @var string
@@ -63,7 +61,7 @@ class DelegatedAccess
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="delegatedAccesses")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="receivedDelegatedAccesses")
      *
      * @Assert\NotBlank(message="Veuillez sélectionner un adhérent.")
      */
@@ -100,14 +98,10 @@ class DelegatedAccess
      */
     private $type;
 
-    public function __construct()
+    public function __construct(UuidInterface $uuid = null)
     {
         $this->restrictedCommittees = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
     public function getRole(): ?string
@@ -138,7 +132,7 @@ class DelegatedAccess
     public function setDelegated(Adherent $delegated): void
     {
         $this->delegated = $delegated;
-        $delegated->addDelegatedAccess($this);
+        $delegated->addReceivedDelegatedAccess($this);
     }
 
     public function getAccesses(): ?array

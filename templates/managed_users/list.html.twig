@@ -14,11 +14,11 @@
     {% include 'managed_users/filter_form.html.twig' %}
 
     <div class="b__nudge--bottom datagrid__action--wrapper">
-        <a href="{{ path("app_#{space_name}_managed_users"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_list", {f: filter.toArray(), '_format': 'csv'}) }}" class="btn-secondary btn-secondary--blue">Exporter en CSV</a>
+        <a href="{{ get_path(space_name, 'managed_users', 'list', app.request, {f: filter.toArray(), '_format': 'csv'}) }}" class="btn-secondary btn-secondary--blue">Exporter en CSV</a>
 
-        <a href="{{ path("app_#{space_name}_managed_users"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_list", {f: filter.toArray(), '_format': 'xls'}) }}" class="btn-secondary btn-secondary--blue">Exporter en XLS</a>
+        <a href="{{ get_path(space_name, 'managed_users', 'list', app.request, {f: filter.toArray(), '_format': 'xls'}) }}" class="btn-secondary btn-secondary--blue">Exporter en XLS</a>
 
-        <a href="{{ path("app_#{space_name}"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_adherent_invitation") }}" class="btn-secondary btn-secondary--blue datagrid__action--align-right">Inviter à adhérer</a>
+        <a href="{{ get_path(space_name, null, 'adherent_invitation', app.request) }}" class="btn-secondary btn-secondary--blue datagrid__action--align-right">Inviter à adhérer</a>
     </div>
 
     <div class="datagrid">
@@ -31,7 +31,7 @@
 
                         <th style="width: 100px;">
                             <a
-                                    href="{{ path("app_#{space_name}_managed_users"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
+                                    href="{{ get_path(space_name, 'managed_users', 'list', app.request, {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
                                     class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
                             >
                                 Identité
@@ -44,7 +44,7 @@
                         <th style="width: 100px;">Comité</th>
                         <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
                             <a
-                                    href="{{ path("app_#{space_name}_managed_users"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_list", {f: filter.toArray()|merge({sort: 'createdAt', order: order})}) }}"
+                                    href="{{ get_path(space_name, 'managed_users', 'list', app.request, {f: filter.toArray()|merge({sort: 'createdAt', order: order})}) }}"
                                     class="sort-link sort-link--order-{{ filter.sort == 'createdAt' ? filter.order : 'a' }}"
                             >
                                 Adhésion le

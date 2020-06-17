@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\EventManager;
 
+use App\Entity\Adherent;
 use App\Entity\MunicipalEvent;
 use App\Event\EventManagerSpaceEnum;
 use App\Repository\MunicipalEventRepository;
@@ -27,9 +28,9 @@ class MunicipalChiefEventManagerController extends AbstractEventManagerControlle
         return EventManagerSpaceEnum::MUNICIPAL_CHIEF;
     }
 
-    protected function getEvents(string $type = null): array
+    protected function getEvents(Adherent $adherent, string $type = null): array
     {
-        return $this->repository->findEventsByOrganizer($this->getUser());
+        return $this->repository->findEventsByOrganizer($adherent);
     }
 
     protected function getEventClassName(): string

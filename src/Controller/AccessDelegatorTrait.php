@@ -3,33 +3,32 @@
 namespace App\Controller;
 
 use App\Entity\MyTeam\DelegatedAccess;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 trait AccessDelegatorTrait
 {
-    // if you need to retrieve the current user and not the delegator, use parent::getUser() in your contoller
-    protected function getUser(string $type = null)
+    protected function getMainUser(Request $request): UserInterface
     {
         $this->disableInProduction();
 
-        $user = parent::getUser();
+        return $this->getDelegatedAccess($request)->getDelegator();
+    }
 
-        if (null === $type) {
-            if (\method_exists($this, 'getSpaceType')) {
-                $type = $this->getSpaceType();
-            } elseif (\method_exists($this, 'getMessageType')) {
-                $type = $this->getMessageType();
-            } else {
-                throw new \LogicException('Unable to determine space type');
-            }
+    protected function getDelegatedAccess(Request $request): DelegatedAccess
+    {
+        $currentUser = $this->getUser();
+
+        if (!$currentUser) {
+            throw new \LogicException('User is not logged in');
         }
 
-        /** @var DelegatedAccess $delegatedAccess */
-        $delegatedAccess = $this->get('request_stack')->getMasterRequest()->attributes->get('delegated_access');
+        $delegatedAccess = $currentUser->getReceivedDelegatedAccessByUuid($request->attributes->get(DelegatedAccess::ATTRIBUTE_KEY));
 
-        if (!$delegatedAccess || $delegatedAccess->getType() !== $type) {
-            throw new \LogicException("Current user does not have a \"$type\" access");
+        if (null === $delegatedAccess) {
+            throw new \LogicException('Current user does not have a delegated access.');
         }
 
-        return $delegatedAccess->getDelegator() ?? $user;
+        return $delegatedAccess;
     }
 }

@@ -505,7 +505,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @ORM\OneToMany(targetEntity="App\Entity\MyTeam\DelegatedAccess", mappedBy="delegated", cascade={"all"})
      */
-    private $delegatedAccesses;
+    private $receivedDelegatedAccesses;
 
     public function __construct()
     {
@@ -516,7 +516,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->tags = new ArrayCollection();
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
-        $this->delegatedAccesses = new ArrayCollection();
+        $this->receivedDelegatedAccesses = new ArrayCollection();
     }
 
     public static function create(
@@ -728,7 +728,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ELECTION_RESULTS_REPORTER';
         }
 
-        return array_merge($roles, $this->roles);
+        foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
+            $roles[] = 'ROLE_DELEGATED_'.\strtoupper($delegatedAccess->getType());
+        }
+
+        return array_merge(\array_unique($roles), $this->roles);
     }
 
     public function addRoles(array $roles): void
@@ -2017,28 +2021,54 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $pendingCertificationRequest;
     }
 
-    public function getDelegatedAccesses(): ?DelegatedAccess
+    /**
+     * @return DelegatedAccess[]|Collection|iterable
+     */
+    public function getReceivedDelegatedAccesses(): iterable
     {
-        return $this->delegatedAccesses;
+        return $this->receivedDelegatedAccesses;
     }
 
-    public function addDelegatedAccess(DelegatedAccess $delegatedAccess): void
+    public function getReceivedDelegatedAccessByUuid(?string $delegatedAccessUuid)
     {
-        if (!$this->delegatedAccesses->contains($delegatedAccess)) {
-            $this->delegatedAccesses->add($delegatedAccess);
+        if (null === $delegatedAccessUuid) {
+            return null;
+        }
+
+        /** @var DelegatedAccess $delegatedAccess */
+        foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
+            if ($delegatedAccess->getUuid()->toString() === $delegatedAccessUuid) {
+                return $delegatedAccess;
+            }
+        }
+
+        return null;
+    }
+
+    public function addReceivedDelegatedAccess(DelegatedAccess $delegatedAccess): void
+    {
+        if (!$this->receivedDelegatedAccesses->contains($delegatedAccess)) {
+            $this->receivedDelegatedAccesses->add($delegatedAccess);
         }
     }
 
-    public function removeDelegatedAccess(DelegatedAccess $delegatedAccess): void
+    public function removeReceivedDelegatedAccess(DelegatedAccess $delegatedAccess): void
     {
-        $this->delegatedAccesses->removeElement($delegatedAccess);
+        $this->receivedDelegatedAccesses->removeElement($delegatedAccess);
     }
 
-    public function setDelegatedAccesses(iterable $delegatedAccesses): void
+    public function setReceivedDelegatedAccesses(iterable $delegatedAccesses): void
     {
-        $this->delegatedAccesses->clear();
+        $this->receivedDelegatedAccesses->clear();
         foreach ($delegatedAccesses as $delegatedAccess) {
-            $this->addDelegatedAccess($delegatedAccess);
+            $this->addReceivedDelegatedAccess($delegatedAccess);
         }
+    }
+
+    public function getReceivedDelegatedAccessOfType(string $type): iterable
+    {
+        return $this->receivedDelegatedAccesses->filter(static function (DelegatedAccess $delegatedAccess) use ($type) {
+            return $delegatedAccess->getType() === $type;
+        });
     }
 }

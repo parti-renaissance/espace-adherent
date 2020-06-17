@@ -35,9 +35,9 @@ class DeputyController extends Controller
     {
         $this->disableInProduction();
 
-        $currentUser = $this->getUser();
+        $currentUser = $this->getMainUser($request);
 
-        $message = DeputyMessage::create($this->getUser());
+        $message = DeputyMessage::create($currentUser);
 
         $form = $this
             ->createForm(DeputyMessageType::class, $message)
@@ -61,13 +61,19 @@ class DeputyController extends Controller
      * @Route("/comites", name="committees", methods={"GET"})
      */
     public function listCommitteesAction(
+        Request $request,
         CommitteeRepository $committeeRepository,
         ManagedCommitteesExporter $committeesExporter
     ): Response {
         return $this->render('deputy/committees_list.html.twig', [
             'managedCommitteesJson' => $committeesExporter->exportAsJson(
-                $committeeRepository->findAllInDistrict($this->getUser()->getManagedDistrict())
+                $committeeRepository->findAllInDistrict($this->getMainUser($request)->getManagedDistrict())
             ),
         ]);
+    }
+
+    protected function getMainUser(Request $request)
+    {
+        return $this->getUser();
     }
 }
