@@ -79,4 +79,18 @@ class ElectionRound
     {
         return $this->electionPools->toArray();
     }
+
+    public function disable(): void
+    {
+        $this->isActive = false;
+    }
+
+    public function setElectionPools(array $electionPools): void
+    {
+        $this->electionPools->clear();
+
+        foreach ($electionPools as $pool) {
+            $this->addElectionPool($pool);
+        }
+    }
 }

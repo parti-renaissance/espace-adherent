@@ -12,6 +12,7 @@ use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Orx;
 
 class ElectionRepository extends ServiceEntityRepository
 {
@@ -132,7 +133,11 @@ class ElectionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('election')
             ->addSelect('designation')
             ->innerJoin('election.designation', 'designation')
-            ->where('designation.voteEndDate < :date AND election.status = :open')
+            ->where((new Orx())->addMultiple([
+                'election.secondRoundEndDate IS NULL AND designation.voteEndDate < :date',
+                'election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate < :date',
+            ]))
+            ->andWhere('election.status = :open')
             ->setParameters([
                 'date' => $date,
                 'open' => ElectionStatusEnum::OPEN,

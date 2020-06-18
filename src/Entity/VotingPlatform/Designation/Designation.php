@@ -94,7 +94,7 @@ class Designation
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
      * @Assert\NotBlank
-     * @Assert\GreaterThanOrEqual(0)
+     * @Assert\GreaterThan(0)
      */
     private $additionalRoundDuration = 5;
 

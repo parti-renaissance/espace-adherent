@@ -71,6 +71,7 @@ class VoteController extends AbstractController
                 'form' => $form->createView(),
                 'candidate_groups' => $candidateGroups,
                 'pool' => $currentPool,
+                'pool_index' => array_search($currentPool, $pools),
             ]
         );
     }
