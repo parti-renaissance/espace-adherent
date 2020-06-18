@@ -46,12 +46,12 @@ class SupervisorDesignationControllerTest extends WebTestCase
 
         // Voter box
         $votersBox = $overviewCards->eq(0);
-        $this->assertContains('10', trim($votersBox->filter('.manager-overview__case--value')->text()));
+        $this->assertContains('11', trim($votersBox->filter('.manager-overview__case--value')->text()));
         $this->assertContains('Inscrits', trim($votersBox->filter('.manager-overview__case--title')->text()));
 
         // Vote box
         $votesBox = $overviewCards->eq(1);
-        $this->assertContains('80%', trim($votesBox->filter('.manager-overview__case--value')->text()));
+        $this->assertContains('72.73%', trim($votesBox->filter('.manager-overview__case--value')->text()));
         $this->assertContains('Participants', trim($votesBox->filter('.manager-overview__case--title')->text()));
 
         // Candidate box
@@ -62,7 +62,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
 
         $this->assertContains('Liste des inscrits / émargements', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
 
-        $this->assertCount(10, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(11, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertContains('Bob Assesseur', $crawler->filter('.datagrid__table-manager tbody')->text());
     }
 

@@ -33,7 +33,7 @@ class VotingPlatformAccessVoter extends AbstractAdherentVoter
             return false;
         }
 
-        $alreadyVoted = $this->voteRepository->alreadyVoted($adherent, $subject->getUuid()->toString());
+        $alreadyVoted = $this->voteRepository->alreadyVoted($adherent, $subject->getCurrentRound());
 
         if ($alreadyVoted) {
             return false;

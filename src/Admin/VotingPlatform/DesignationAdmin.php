@@ -65,6 +65,9 @@ class DesignationAdmin extends AbstractAdmin
                     ],
                 ])
             ->end()
+            ->with('Autre')
+                ->add('additionalRoundDuration', IntegerType::class, ['label' => 'Durée du tour bis (jours)', 'attr' => ['min' => 1]])
+            ->end()
             ->with('Résultats 🏆', ['box_class' => 'box box-solid box-default'])
                 ->add('resultDisplayDelay', IntegerType::class, ['label' => 'Durée d’affichage des résultats (jours)', 'attr' => ['min' => 0]])
             ->end()

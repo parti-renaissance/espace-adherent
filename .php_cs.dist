@@ -6,7 +6,6 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/config')
     ->in(__DIR__.'/migrations')
     ->in(__DIR__.'/features/bootstrap')
-    ->exclude(__DIR__.'app/data')
 ;
 
 return PhpCsFixer\Config::create()

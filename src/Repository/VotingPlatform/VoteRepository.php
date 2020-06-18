@@ -3,7 +3,7 @@
 namespace App\Repository\VotingPlatform;
 
 use App\Entity\Adherent;
-use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -15,30 +15,29 @@ class VoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Vote::class);
     }
 
-    public function alreadyVoted(Adherent $adherent, string $electionUuid): bool
+    public function alreadyVoted(Adherent $adherent, ElectionRound $electionRound): bool
     {
         return 0 < (int) $this->createQueryBuilder('vote')
             ->select('COUNT(1)')
             ->innerJoin('vote.voter', 'voter')
-            ->innerJoin('vote.election', 'election')
-            ->where('voter.adherent = :adherent AND election.uuid = :election_uuid')
+            ->where('voter.adherent = :adherent AND vote.electionRound = :election_round')
             ->setParameters([
                 'adherent' => $adherent,
-                'election_uuid' => $electionUuid,
+                'election_round' => $electionRound,
             ])
             ->getQuery()
             ->getSingleScalarResult()
         ;
     }
 
-    public function findVote(Adherent $adherent, Election $election): ?Vote
+    public function findVote(Adherent $adherent, ElectionRound $electionRound): ?Vote
     {
         return $this->createQueryBuilder('vote')
             ->innerJoin('vote.voter', 'voter')
-            ->where('voter.adherent = :adherent AND vote.election = :election')
+            ->where('voter.adherent = :adherent AND vote.electionRound = :election_round')
             ->setParameters([
                 'adherent' => $adherent,
-                'election' => $election,
+                'election_round' => $electionRound,
             ])
             ->getQuery()
             ->getOneOrNullResult()

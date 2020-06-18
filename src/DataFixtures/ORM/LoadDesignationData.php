@@ -12,6 +12,7 @@ class LoadDesignationData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        // Committee designation with started CANDIDATURE period
         $designation = new Designation();
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
@@ -23,6 +24,7 @@ class LoadDesignationData extends Fixture
         $this->setReference('designation-1', $designation);
         $manager->persist($designation);
 
+        // Committee designation with started VOTE period
         $designation = new Designation();
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
@@ -34,6 +36,7 @@ class LoadDesignationData extends Fixture
         $this->setReference('designation-2', $designation);
         $manager->persist($designation);
 
+        // Committee designation with started RESULT period
         $designation = new Designation();
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
@@ -45,6 +48,7 @@ class LoadDesignationData extends Fixture
         $this->setReference('designation-3', $designation);
         $manager->persist($designation);
 
+        // Archived Committee designation
         $designation = new Designation();
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);

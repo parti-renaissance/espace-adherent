@@ -14,7 +14,7 @@
 {% block voting_platform_content %}
     <div class="l__wrapper--narrow">
         <div class="ballot-paper-container">
-            {% for vote_choice in vote_command.candidateGroups %}
+            {% for vote_choice in vote_command.choicesByPools %}
                 <div class="ballot-paper">
                     <div class="ballot-paper__area">
                         <div class="ballot-paper__content l__col">
@@ -25,10 +25,6 @@
                                     {% for candidate in candidate_group.candidates %}
                                         <h3 class="text--medium">{{ candidate.fullName }}</h3>
                                         <span class="candidate-gender l__col l__col--center">{{ candidate.isMan ? 'H' : 'F' }}</span>
-
-                                        {% if not loop.last %}
-                                            <span class="separator"></span>
-                                        {% endif %}
                                     {% endfor %}
                                 {% else %}
                                     <h3 class="text--medium">Bulletin blanc</h3>

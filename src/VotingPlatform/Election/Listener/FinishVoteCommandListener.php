@@ -4,6 +4,8 @@ namespace App\VotingPlatform\Election\Listener;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPool;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
@@ -66,14 +68,16 @@ class FinishVoteCommandListener implements EventSubscriberInterface
             return;
         }
 
+        $electionRound = $election->getCurrentRound();
+
         // 1. create vote history for the current voter
-        $vote = $this->generateVote($election);
+        $vote = $this->generateVote($electionRound);
 
         // 2. generate a unique key to save the vote result with
         $voterKey = VoteResult::generateVoterKey();
 
         // 3. create vote result with unique key
-        $voteResult = $this->createVoteResult($election, $command, $voterKey);
+        $voteResult = $this->createVoteResult($electionRound, $command, $voterKey);
 
         $this->entityManager->persist($vote);
         $this->entityManager->persist($voteResult);
@@ -83,7 +87,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $this->saveVoterKeyInSession($voterKey);
     }
 
-    private function generateVote(Election $election): Vote
+    private function generateVote(ElectionRound $electionRound): Vote
     {
         /** @var Adherent $adherent */
         $adherent = $this->security->getUser();
@@ -92,15 +96,15 @@ class FinishVoteCommandListener implements EventSubscriberInterface
             $voter = new Voter($adherent);
         }
 
-        return new Vote($voter, $election);
+        return new Vote($voter, $electionRound);
     }
 
-    private function createVoteResult(Election $election, VoteCommand $command, string $voterKey): VoteResult
+    private function createVoteResult(ElectionRound $electionRound, VoteCommand $command, string $voterKey): VoteResult
     {
-        $voteResult = new VoteResult($election, $voterKey);
+        $voteResult = new VoteResult($electionRound, $voterKey);
 
-        foreach ($command->getCandidateGroups() as $choice) {
-            $voteChoice = new VoteChoice();
+        foreach ($command->getChoicesByPools() as $poolId => $choice) {
+            $voteChoice = new VoteChoice($this->entityManager->getPartialReference(ElectionPool::class, $poolId));
 
             if (VoteChoice::BLANK_VOTE_VALUE == $choice) {
                 $voteChoice->setIsBlank(true);

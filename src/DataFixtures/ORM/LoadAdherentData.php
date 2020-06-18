@@ -49,6 +49,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const ADHERENT_16_UUID = '25e75e2f-2f73-4f51-8542-bd511ba6a945';
     public const ADHERENT_17_UUID = '69fcc468-598a-49ac-a651-d4d3ee856446';
     public const ADHERENT_18_UUID = 'a2acfbda-6d5d-4614-b96a-ba00ab6fc7ee';
+    public const ADHERENT_19_UUID = '1529f096-12d7-42bb-8c98-a4966a730e2a';
     public const COORDINATOR_1_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     public const COORDINATOR_2_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
     public const REFERENT_1_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
@@ -420,6 +421,27 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent18->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('municipal-manager-roubaix', $adherent18);
 
+        $adherent19 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_19_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'cedric.lebon@en-marche-dev.fr',
+            'gender' => 'male',
+            'nationality' => 'FR',
+            'nickname_used' => true,
+            'first_name' => 'Cédric',
+            'last_name' => 'Lebon',
+            'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
+            'birthdate' => '1967-01-03',
+            'position' => 'retired',
+            'phone' => '33 187264236',
+            'registered_at' => '2018-01-03 08:47:54',
+        ]);
+        $adherent3->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent3->addReferentTag($this->getReference('referent_tag_75'));
+        $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
+
+        $this->addReference('adherent-20', $adherent19);
+
         $referent = $adherentFactory->createFromArray([
             'uuid' => self::REFERENT_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -738,6 +760,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key29 = AdherentActivationToken::generate($assessor);
         $key30 = AdherentActivationToken::generate($municipalManager);
         $key31 = AdherentActivationToken::generate($deputy_75_2);
+        $key32 = AdherentActivationToken::generate($adherent19);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -755,6 +778,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent16->activate($key22, '2017-05-04 09:34:21');
         $adherent17->activate($key26, '2017-06-25 11:36:48');
         $adherent18->activate($key27, '2017-06-25 11:36:48');
+        $adherent19->activate($key32, '2017-06-25 11:36:48');
         // $key15 is not activated, but adherent is enabled
         $referent->activate($key8, '2017-02-07 13:20:45');
         $coordinator->activate($key16, '2017-09-20 17:44:32');
@@ -948,6 +972,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($municipalChief3);
         $manager->persist($adherent17);
         $manager->persist($adherent18);
+        $manager->persist($adherent19);
         $manager->persist($assessor);
         $manager->persist($municipalManager);
 
@@ -1043,6 +1068,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($assessor->followCommittee($committee6));
         $manager->persist($assessor->followCommittee($committee7));
         $manager->persist($assessor->followCommittee($committee8));
+        $manager->persist($adherent19->followCommittee($committee4));
+        $manager->persist($membership = $adherent19->followCommittee($committee5));
+        $membership->enableVote();
 
         $manager->flush();
     }

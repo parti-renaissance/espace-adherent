@@ -9,6 +9,8 @@ use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
+use App\Entity\VotingPlatform\ElectionPool;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
 use App\Repository\CommitteeCandidacyRepository;
@@ -92,7 +94,10 @@ class VotingPlatformConfigureCommand extends Command
                     continue;
                 }
 
-                $this->configureNewElection(new Election($designation), new ElectionEntity($committee));
+                $election = new Election($designation, null, [new ElectionRound()]);
+                $election->setElectionEntity(new ElectionEntity($committee));
+
+                $this->configureNewElection($election);
             }
 
             $this->entityManager->clear();
@@ -103,13 +108,22 @@ class VotingPlatformConfigureCommand extends Command
         }
     }
 
-    private function configureNewElection(Election $election, ElectionEntity $electionEntity): void
+    private function configureNewElection(Election $election): void
     {
-        $election->setElectionEntity($electionEntity);
-        $committee = $electionEntity->getCommittee();
+        $electionRound = $election->getCurrentRound();
+        $committee = $election->getElectionEntity()->getCommittee();
 
         // Create candidates groups
         $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee);
+
+        $womanPool = new ElectionPool('Femme');
+        $manPool = new ElectionPool('Homme');
+
+        $electionRound->addElectionPool($womanPool);
+        $electionRound->addElectionPool($manPool);
+
+        $election->addElectionPool($womanPool);
+        $election->addElectionPool($manPool);
 
         foreach ($candidacies as $candidacy) {
             $adherent = $candidacy->getCommitteeMembership()->getAdherent();
@@ -124,7 +138,11 @@ class VotingPlatformConfigureCommand extends Command
             $candidate->setImagePath($candidacy->getImagePath());
             $candidate->setBiography($candidacy->getBiography());
 
-            $election->addCandidateGroup($group);
+            if ($candidate->isWoman()) {
+                $womanPool->addCandidateGroup($group);
+            } else {
+                $manPool->addCandidateGroup($group);
+            }
         }
 
         $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);

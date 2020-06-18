@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\VotingPlatform\Designation\Designation;
+use Doctrine\ORM\Mapping as ORM;
 
 trait EntityDesignationTrait
 {

@@ -23,7 +23,7 @@
             {% endfor %}
 
             <div class="l__row progress-bar">
-                {% set votes_rate = votes * 100 / resume.expressed %}
+                {% set votes_rate = resume.expressed == 0 ? 0 : votes * 100 / resume.expressed %}
                 <div class="progress-bar__gauge">
                     <div class="slider" style="width: {{ votes_rate }}%"></div>
                 </div>

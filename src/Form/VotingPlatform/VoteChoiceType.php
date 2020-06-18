@@ -20,6 +20,8 @@ class VoteChoiceType extends AbstractType
             'multiple' => false,
             'label' => false,
             'choice_label' => false,
+            'required' => false,
+            'placeholder' => false,
         ]);
     }
 }
