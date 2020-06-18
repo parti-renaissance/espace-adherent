@@ -49,16 +49,13 @@ class DelegateAccessType extends AbstractType
                 'choice_translation_domain' => false,
             ])
             ->add('delegated', HiddenType::class, [
-                'attr' => [
-                    'fullname' => $builder->getData()->getDelegated() ? $builder->getData()->getDelegated()->getFullName() : '',
-                ],
-                'invalid_message' => 'Aucun adhérent trouvé avec cette adresse email. Veuillez la vérifier et réessayer.',
+                'invalid_message' => 'Aucun adhérent trouvé avec cette adresse email. Veuillez réessayer.',
                 'error_bubbling' => true,
             ])
             ->add('email', EmailType::class, [
                 'mapped' => false,
                 'required' => false,
-                'label' => 'Ou entrer une adresse mail d\'adherent',
+                'label' => 'Email',
             ])
             ->add('accesses', ChoiceType::class, [
                 'expanded' => true,

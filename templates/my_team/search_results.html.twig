@@ -1,10 +1,13 @@
-<label class="filter__label" for="js-select-adherent">Adherents</label>
-<select id="js-select-adherent" style="min-width: 100px;" class="filter__field">
-    <option value=""></option>
-    {% for user in users %}
-        <option class="js-adherent-row" value="{{ user.emailAddress }}">{{ user }}</option>
-    {% endfor %}
-</select>
-<div class="manager__filters__actions b__nudge--top">
-    <a href="#" title="Réinitialiser" class="btn btn--no-border b__nudge--bottom-medium js-undo-search">Réinitialiser</a>
+<div class="form__row">
+    <label class="form form__label" for="js-select-adherent">Adherents</label>
+    <div class="pst--relative">
+        <select id="js-select-adherent" class="form form__field">
+            <option value="">Ouvrir pour voir les résultats</option>
+            {% for user in users %}
+                <option class="js-adherent-row" value="{{ user.emailAddress }}">{{ user }}</option>
+            {% endfor %}
+        </select>
+        <button title="Réinitialiser" class="btn btn--black js-undo-search pst--absolute" style="right: 12px; top: 10px;">Réinitialiser</button>
+    </div>
+
 </div>

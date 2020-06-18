@@ -23,14 +23,13 @@ Feature:
 
         When I follow "Déléguer un accès à mon espace"
         Then I should be on "/espace-depute/mon-equipe/deleguer-acces"
-        And I should see "Rechercher un adhérent de mon territoire"
+        And I should see "Déléguer un accès à mon espace"
 
         When I fill in "f_name" with "michelle"
         And I press "Rechercher"
         And I wait for "#js-select-adherent" element
 
         When I select "michelle.dufour@example.ch" from "js-select-adherent"
-        Then I should see "Michelle Dufour" in the "#js-selected-adherent-name" element
 
         When I select "Responsable communication" from "delegate_access_role"
         And I click the "#delegate_access_accesses label:contains('Mes messages')" selector
@@ -50,7 +49,7 @@ Feature:
         And I should see "L'adhérent est hors de mon territoire"
 
         When I click the "#js-search-by-email" selector
-        Then I should see "Saisir une adresse e-mail"
+        Then I should see "Email"
 
         When I fill in "delegate_access_email" with "carl999@example.fr"
         And I select "Responsable communication" from "delegate_access_role"

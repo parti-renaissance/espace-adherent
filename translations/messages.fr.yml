@@ -758,3 +758,5 @@ delegated_access.form.access.messages: Mes messages
 delegated_access.form.access.events: Événements
 delegated_access.form.access.adherents: Adhérents
 delegated_access.form.access.committee: Comités
+delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
+delegated_access.deleted_successfully: L'accès délégué à votre espace a correctement été supprimé
