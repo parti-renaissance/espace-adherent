@@ -167,7 +167,6 @@ class LoadElectedRepresentativeData extends Fixture
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_3_UUID)
         );
         $er2Mandates->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem'));
-        $er2Mandates->setIsAdherent(null);
         $label1 = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
             $er2Mandates,

@@ -159,7 +159,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         if ($isAdherent) {
             $qb->andWhere('er.isAdherent = 1');
         } elseif (false === $isAdherent) {
-            $qb->andWhere('(er.isAdherent = 0 OR er.isAdherent IS NULL)');
+            $qb->andWhere('er.isAdherent = 0');
         }
 
         return $qb;

@@ -135,11 +135,11 @@ class ElectedRepresentative
     private $hasFollowedTraining = false;
 
     /**
-     * @var bool|null
+     * @var bool
      *
-     * @ORM\Column(type="boolean", nullable=true, options={"default": false})
+     * @ORM\Column(type="boolean", options={"default": false})
      * @Assert\Expression(
-     *     "not (this.getAdherent() == null and value == true) or value == false or value == null",
+     *     "not (this.getAdherent() == null and value == true)",
      *     message="elected_representative.is_adherent.no_adherent_email"
      * )
      */
@@ -380,12 +380,12 @@ class ElectedRepresentative
         $this->hasFollowedTraining = $hasFollowedTraining;
     }
 
-    public function isAdherent(): ?bool
+    public function isAdherent(): bool
     {
         return $this->isAdherent;
     }
 
-    public function setIsAdherent(?bool $isAdherent = null): void
+    public function setIsAdherent(bool $isAdherent): void
     {
         $this->isAdherent = $isAdherent;
     }
@@ -484,7 +484,7 @@ class ElectedRepresentative
 
     public function exportIsAdherent(): string
     {
-        return null === $this->isAdherent ? 'peut-être' : ($this->isAdherent ? 'oui' : 'non');
+        return $this->isAdherent ? 'oui' : 'non';
     }
 
     public function exportMandates(): string
