@@ -11,6 +11,7 @@ final class LabelNameEnum extends Enum
     public const PS = 'PS';
     public const MRC = 'MRC';
     public const GS = 'G.s';
+    public const TDP = 'TDP';
     public const LAREM = 'LaREM';
     public const MODEM = 'Modem';
     public const MRSL = 'MRSL';
@@ -27,6 +28,7 @@ final class LabelNameEnum extends Enum
         self::PS,
         self::MRC,
         self::GS,
+        self::TDP,
         self::LAREM,
         self::MODEM,
         self::MRSL,
