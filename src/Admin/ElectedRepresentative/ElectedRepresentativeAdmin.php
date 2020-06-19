@@ -32,7 +32,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -140,9 +139,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
                 ])
-                ->add('comment', null, [
-                    'label' => 'Commentaire',
-                ])
             ->end()
         ;
     }
@@ -214,10 +210,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
-                ])
-                ->add('comment', TextareaType::class, [
-                    'required' => false,
-                    'label' => 'Commentaire',
                 ])
             ->end()
             ->with(

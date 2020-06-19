@@ -121,13 +121,6 @@ class ElectedRepresentative
     private $contactPhone;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(nullable=true)
-     */
-    private $comment;
-
-    /**
      * @var bool|null
      *
      * @ORM\Column(type="boolean", options={"default": false})
@@ -358,16 +351,6 @@ class ElectedRepresentative
     public function setContactPhone(PhoneNumber $contactPhone = null): void
     {
         $this->contactPhone = $contactPhone;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment = null): void
-    {
-        $this->comment = $comment;
     }
 
     public function hasFollowedTraining(): ?bool
