@@ -57,6 +57,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection
+            ->remove('show')
             ->remove('create')
             ->remove('delete')
         ;
@@ -86,7 +87,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
-                    'show' => [],
                     'edit' => [],
                 ],
             ])
