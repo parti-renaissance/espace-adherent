@@ -76,6 +76,10 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Mandats actuels (nuance politique)',
                 'template' => 'admin/elected_representative/list_mandates.html.twig',
             ])
+            ->add('currentZones', null, [
+                'label' => 'Périmètre(s) géographique(s)',
+                'template' => 'admin/elected_representative/list_zones.html.twig',
+            ])
             ->add('currentPoliticalFunctions', null, [
                 'label' => 'Fonctions actuelles',
                 'template' => 'admin/elected_representative/list_political_functions.html.twig',
