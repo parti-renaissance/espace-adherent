@@ -36,6 +36,7 @@ class ElectedRepresentativeLabelAdmin extends AbstractAdmin
                 ],
             ])
             ->add('beginYear', ChoiceType::class, [
+                'required' => false,
                 'label' => 'Date de début',
                 'placeholder' => '--',
                 'choices' => ElectedRepresentativeLabel::getYears(),
