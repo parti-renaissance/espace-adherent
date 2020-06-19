@@ -43,9 +43,8 @@ class ElectedRepresentativeLabel
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      *
-     * @Assert\NotNull
      * @Assert\Choice(callback="getYears")
      */
     private $beginYear;
@@ -119,7 +118,7 @@ class ElectedRepresentativeLabel
         return $this->beginYear;
     }
 
-    public function setBeginYear(int $beginYear): void
+    public function setBeginYear(?int $beginYear): void
     {
         $this->beginYear = $beginYear;
     }

@@ -7,8 +7,6 @@ use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
-use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\Zone;
@@ -34,7 +32,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -60,6 +57,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection
+            ->remove('show')
             ->remove('create')
             ->remove('delete')
         ;
@@ -78,6 +76,10 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Mandats actuels (nuance politique)',
                 'template' => 'admin/elected_representative/list_mandates.html.twig',
             ])
+            ->add('currentZones', null, [
+                'label' => 'Périmètre(s) géographique(s)',
+                'template' => 'admin/elected_representative/list_zones.html.twig',
+            ])
             ->add('currentPoliticalFunctions', null, [
                 'label' => 'Fonctions actuelles',
                 'template' => 'admin/elected_representative/list_political_functions.html.twig',
@@ -89,7 +91,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
-                    'show' => [],
                     'edit' => [],
                 ],
             ])
@@ -142,9 +143,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
                 ])
-                ->add('comment', null, [
-                    'label' => 'Commentaire',
-                ])
             ->end()
         ;
     }
@@ -181,7 +179,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'choices' => [
                         'global.yes' => true,
                         'global.no' => false,
-                        'global.maybe' => null,
                     ],
                 ])
                 ->add('adherentPhone', PhoneNumberType::class, [
@@ -217,10 +214,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('hasFollowedTraining', null, [
                     'label' => 'Formation Tous Politiques !',
-                ])
-                ->add('comment', TextareaType::class, [
-                    'required' => false,
-                    'label' => 'Commentaire',
                 ])
             ->end()
             ->with(
@@ -301,9 +294,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         $adherentEmail = $adherent ? $adherent->getEmailAddress() : null;
         $formAdherentEmail = $data['adherent'] ?: null;
 
-        // for any change of email, 'isAdherent' should be set to null ('Peut-être' value)
-        if ($adherentEmail !== $formAdherentEmail) {
-            $data['isAdherent'] = null;
+        // for any change of email, 'isAdherent' should be set to true ('oui' value)
+        if ($formAdherentEmail && $adherentEmail !== $formAdherentEmail) {
+            $data['isAdherent'] = true;
             $event->setData($data);
         }
     }
@@ -316,27 +309,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         // change mandates order
         if (!$electedRepresentative->getMandates()->isEmpty()) {
             ElectedRepresentativeMandatesOrderer::updateOrder($electedRepresentative->getMandates());
-        }
-
-        // if adherent, we should add the LaREM label, if it does not exist
-        $label = $electedRepresentative->getLabel(LabelNameEnum::LAREM);
-        if ($electedRepresentative->isAdherent()
-            && $electedRepresentative->getAdherent()
-            && !$label) {
-            $labelLaREM = new ElectedRepresentativeLabel(
-                LabelNameEnum::LAREM,
-                $electedRepresentative,
-                true,
-                $electedRepresentative->getAdherent()->getRegisteredAt()->format('Y')
-            );
-            $electedRepresentative->addLabel($labelLaREM);
-
-            return;
-        }
-
-        // and if not adherent, we should remove the LaREM label
-        if (true !== $electedRepresentative->isAdherent() && $label) {
-            $electedRepresentative->removeLabel($label);
         }
     }
 
@@ -511,7 +483,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'choices' => [
                         'yes',
                         'no',
-                        'maybe',
                     ],
                     'choice_label' => function (string $choice) {
                         return 'global.'.$choice;
@@ -525,10 +496,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                             return true;
                         case 'no':
                             $qb->andWhere(sprintf('%s.isAdherent = 0', $alias));
-
-                            return true;
-                        case 'maybe':
-                            $qb->andWhere(sprintf('%s.isAdherent IS NULL', $alias));
 
                             return true;
                         default:
