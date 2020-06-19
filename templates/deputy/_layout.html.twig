@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% set currentUserOrDelegator = current_user(app.request) %}
+{% set delegated_access = get_delegated_access(app.request) %}
 
 {% block page_title %}
     {% if app.user is same as(currentUserOrDelegator) %}
         Espace député
     {% else %}
-        Espace délégué du député {{ currentUserOrDelegator }}
+        Espace député délégué
     {% endif %}
 {% endblock %}
 
@@ -31,9 +32,14 @@
                         </div>
                     </div>
                     <div class="second-section">
-                        <h1 class="page-title text--large b__nudge--bottom">
-                            {{ block('page_title') }}
-                        </h1>
+                        <div>
+                            <h1 class="page-title text--large b__nudge--bottom">
+                                {{ block('page_title') }}
+                            </h1>
+                            {% if app.user is not same as(currentUserOrDelegator) %}
+                            <p class="text--body text--dark b__nudge--top-0">Vous êtes {{ delegated_access.role|lower }} du député {{ currentUserOrDelegator }}</p>
+                            {% endif %}
+                        </div>
                     </div>
                     <nav class="manager-header__menu">
                         {% set isDeputy = is_granted('ROLE_DEPUTY') %}

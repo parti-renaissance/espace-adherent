@@ -723,6 +723,21 @@ HELP
                         $qb->setParameter('printPrivilege', true);
                     }
 
+                    if ($delegatedTypes = array_intersect(
+                        [
+                            AdherentRoleEnum::DELEGATED_REFERENT,
+                            AdherentRoleEnum::DELEGATED_DEPUTY,
+                            AdherentRoleEnum::DELEGATED_SENATOR,
+                        ],
+                        $value['value']
+                    )) {
+                        $qb->leftJoin(\sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
+                        $where->add('rda.type IN (:delegated_types)');
+                        $qb->setParameter('delegated_types', \array_map(static function ($type) {
+                            return \substr($type, 10); // remove "delegated_" prefix
+                        }, $delegatedTypes));
+                    }
+
                     if ($where->count()) {
                         $qb->andWhere($where);
                     }

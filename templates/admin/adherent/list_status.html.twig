@@ -10,6 +10,10 @@
             <span class="label label-primary" style="padding: 2px;">Co-Référent</span><br/>
         {% endif %}
 
+        {% if object.isDelegatedReferent %}
+            <span class="label label-primary" style="padding: 2px;">Référent délégué</span><br/>
+        {% endif %}
+
         {% if object.isCoordinatorCitizenProjectSector %}
             <span class="label label-primary" style="padding: 2px;">REC</span><br/>
         {% endif %}
@@ -54,8 +58,16 @@
             <span class="label label-primary" style="padding: 2px;">Député</span><br/>
         {% endif %}
 
+        {% if object.isDelegatedDeputy %}
+            <span class="label label-primary" style="padding: 2px;">Député délégué</span><br/>
+        {% endif %}
+
         {% if object.isSenator %}
             <span class="label label-primary" style="padding: 2px;">Sénateur</span><br/>
+        {% endif %}
+
+        {% if object.isDelegatedSenator %}
+            <span class="label label-primary" style="padding: 2px;">Sénateur délégué</span><br/>
         {% endif %}
 
         {% if object.isMunicipalManager %}

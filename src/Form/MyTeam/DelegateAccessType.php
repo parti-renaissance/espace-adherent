@@ -45,12 +45,12 @@ class DelegateAccessType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'attr' => ['class' => 'select2'],
+                'placeholder' => '',
                 'choices' => \array_combine($roles, $roles),
                 'choice_translation_domain' => false,
             ])
             ->add('delegated', HiddenType::class, [
                 'invalid_message' => 'Aucun adhérent trouvé avec cette adresse email. Veuillez réessayer.',
-                'error_bubbling' => true,
             ])
             ->add('email', EmailType::class, [
                 'mapped' => false,
@@ -69,9 +69,6 @@ class DelegateAccessType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'filter_emojis' => true,
-                'attr' => [
-                    'placeholder' => 'Rechercher un comité',
-                ],
             ])
             ->add('restrictedCommittees', CollectionType::class, [
                 'required' => false,
@@ -85,9 +82,6 @@ class DelegateAccessType extends AbstractType
             ->add('restrictedCities_search', SearchType::class, [
                 'mapped' => false,
                 'required' => false,
-                'attr' => [
-                    'placeholder' => 'Rechercher une ville ou un code postal',
-                ],
             ])
             ->add('restrictedCities', CollectionType::class, [
                 'required' => true,
@@ -117,6 +111,7 @@ class DelegateAccessType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'attr' => ['class' => 'select2'],
+                'placeholder' => '',
                 'choices' => \array_combine($roles, $roles),
                 'choice_translation_domain' => false,
             ]);

@@ -518,8 +518,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if ($name) {
             $qb
-                ->orWhere('LOWER(a.firstName) LIKE :name')
-                ->orWhere('LOWER(a.lastName) LIKE :name')
+                ->orWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
                 ->setParameter('name', '%'.strtolower($name).'%')
             ;
         }

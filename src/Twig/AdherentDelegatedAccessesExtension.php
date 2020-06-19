@@ -31,6 +31,7 @@ class AdherentDelegatedAccessesExtension extends AbstractExtension
     {
         return [
             new TwigFunction('current_user', [$this, 'getCurrentUser']),
+            new TwigFunction('get_delegated_access', [$this, 'getDelegatedAccess']),
             new TwigFunction('get_first_access_route', [$this, 'getFirstAccessRoute']),
             new TwigFunction('get_path', [$this, 'getPath']),
         ];
@@ -47,6 +48,13 @@ class AdherentDelegatedAccessesExtension extends AbstractExtension
         }
 
         return $user;
+    }
+
+    public function getDelegatedAccess(Request $request)
+    {
+        $user = $this->security->getUser();
+
+        return $user->getReceivedDelegatedAccessByUuid($request->attributes->get(DelegatedAccess::ATTRIBUTE_KEY));
     }
 
     public function getFirstAccessRoute(DelegatedAccess $delegatedAccess): string

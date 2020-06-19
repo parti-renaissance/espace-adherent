@@ -1,5 +1,6 @@
-<div class="form__row">
-    <label class="form form__label" for="js-select-adherent">Adherents</label>
+<div id="search-result" class="form__row">
+    <label class="form form__label" for="js-select-adherent">Adhérent</label>
+    <div class="form__legend" style="font-size: 14px;">Sélectionnez un adhérent de votre territoire.</div>
     <div class="pst--relative">
         <select id="js-select-adherent" class="form form__field">
             <option value="">Ouvrir pour voir les résultats</option>
@@ -10,4 +11,7 @@
         <button title="Réinitialiser" class="btn btn--black js-undo-search pst--absolute" style="right: 12px; top: 10px;">Réinitialiser</button>
     </div>
 
+    <div class="text--body b__nudge--top-10 b__nudge--bottom-small">
+        L'adhérent est hors de mon territoire - <span class="text--blue--dark link--no-decor" id="js-search-by-email" style="cursor: pointer;">Saisir son adresse e-mail</span>
+    </div>
 </div>

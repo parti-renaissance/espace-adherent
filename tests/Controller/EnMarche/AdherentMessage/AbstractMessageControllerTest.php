@@ -31,10 +31,10 @@ class AbstractMessageControllerTest extends WebTestCase
 
     public function provideSpaces()
     {
-        yield ['referent@en-marche-dev.fr', 'Espace délégué du député Député CHLI FDESIX', 'espace-depute-delegue', 'messagerie'];
-        yield ['gisele-berthoux@caramail.com', 'Espace délégué du sénateur Bob Senateur (59)', 'espace-senateur-delegue', 'messagerie'];
-        yield ['gisele-berthoux@caramail.com', 'Espace délégué du député Député CHLI FDESIX', 'espace-depute-delegue', 'messagerie'];
-        yield ['gisele-berthoux@caramail.com', 'Espace délégué du député Député PARIS II', 'espace-depute-delegue', 'utilisateurs'];
+        yield ['referent@en-marche-dev.fr', 'Espace député partagé (FDE-06)', 'espace-depute-delegue', 'messagerie'];
+        yield ['gisele-berthoux@caramail.com', 'Espace sénateur partagé (59)', 'espace-senateur-delegue', 'messagerie'];
+        yield ['gisele-berthoux@caramail.com', 'Espace député partagé (FDE-06)', 'espace-depute-delegue', 'messagerie'];
+        yield ['gisele-berthoux@caramail.com', 'Espace député partagé (75002)', 'espace-depute-delegue', 'utilisateurs'];
     }
 
     public function testICanAccessADelegatedSpace()
@@ -43,8 +43,8 @@ class AbstractMessageControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/');
 
-        self::assertContains('Espace délégué du député Député CHLI FDESIX', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
-        $crawler = $this->client->click($crawler->selectLink('Espace délégué du député Député CHLI FDESIX')->link());
+        self::assertContains('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        $crawler = $this->client->click($crawler->selectLink('Espace député partagé (FDE-06)')->link());
 
         self::assertEquals('http://test.enmarche.code/espace-depute-delegue/2e80d106-4bcb-4b28-97c9-3856fc235b27/messagerie', $crawler->getUri());
         self::assertEquals(0, $crawler->filter('.datagrid__table-manager tbody tr td span.status__2')->count());
@@ -103,7 +103,7 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', '/');
-        self::assertContains('Espace délégué du député Député CHLI FDESIX', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertContains('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
 
         $this->logout($this->client);
         $this->getEntityManager(Adherent::class)->clear();
@@ -115,7 +115,7 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', '/');
-        self::assertNotContains('Espace délégué du député Député CHLI FDESIX', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertNotContains('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
     }
 
     /**
@@ -137,6 +137,14 @@ class AbstractMessageControllerTest extends WebTestCase
         yield ['/espace-senateur-delegue/411faa64-202d-4ff2-91ce-c98b29af28ef/messagerie', 200];
         yield ['/espace-depute-delegue/d2315289-a3fd-419c-a3dd-3e1ff71b754d/utilisateurs', 200];
         yield ['/espace-depute-delegue/d2315289-a3fd-419c-a3dd-3e1ff71b754d/messagerie', 403];
+    }
+
+    public function testADelegatedAdherentCanHaveNoAccesses()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $crawler = $this->client->request('GET', '/');
+        self::assertNotContains('Espace délégué du sénateur Bob Senateur (59)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
     }
 
     protected function setUp()
