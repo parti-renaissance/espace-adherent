@@ -13,6 +13,9 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ZoneRepository")
  * @ORM\Table(
  *     name="elected_representative_zone",
+ *     indexes={
+ *         @ORM\Index(name="elected_repr_zone_code", columns={"code"}),
+ *     },
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="elected_representative_zone_name_category_unique", columns={"name", "category_id"})
  *     })
@@ -65,6 +68,13 @@ class Zone
      */
     protected $referentTags;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $code;
+
     public function __construct(ZoneCategory $category = null, string $name = null)
     {
         $this->category = $category;
@@ -100,25 +110,5 @@ class Zone
     public function __toString(): string
     {
         return (string) $this->name;
-    }
-
-    /**
-     * @return Collection|ReferentTag[]
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
-    }
-
-    public function addReferentTag(ReferentTag $referentTag): void
-    {
-        if (!$this->referentTags->contains($referentTag)) {
-            $this->referentTags->add($referentTag);
-        }
-    }
-
-    public function removeReferentTag(ReferentTag $referentTag): void
-    {
-        $this->referentTags->remove($referentTag);
     }
 }
