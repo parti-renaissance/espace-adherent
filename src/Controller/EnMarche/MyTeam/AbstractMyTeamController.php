@@ -60,10 +60,11 @@ abstract class AbstractMyTeamController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $new = null === $delegatedAccess->getId();
             $entityManager->persist($delegatedAccess);
             $entityManager->flush();
 
-            $this->addFlash('info', 'delegated_access.created_successfully');
+            $this->addFlash('info', $new ? 'delegated_access.created_successfully' : 'delegated_access.updated_successfully');
 
             return $this->redirectToRoute(sprintf('app_%s_my_team_list', $this->getSpaceType()));
         }

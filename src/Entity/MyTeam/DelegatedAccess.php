@@ -47,6 +47,7 @@ class DelegatedAccess
      *
      * @ORM\Column(type="string")
      *
+     * @Assert\NotBlank(message="Veuillez renseigner un rôle.")
      * @Assert\Length(max=50)
      */
     private $role;
@@ -70,9 +71,7 @@ class DelegatedAccess
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
-     *
-     * @Assert\Count(min=1)
+     * @ORM\Column(type="simple_array", nullable=true)
      */
     private $accesses;
 
@@ -160,6 +159,11 @@ class DelegatedAccess
         if (!$this->restrictedCommittees->contains($restrictedCommittee)) {
             $this->restrictedCommittees->add($restrictedCommittee);
         }
+    }
+
+    public function removeRestrictedCommittee(Committee $restrictedCommittee)
+    {
+        $this->restrictedCommittees->removeElement($restrictedCommittee);
     }
 
     public function getRestrictedCities(): ?array

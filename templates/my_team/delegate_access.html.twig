@@ -9,16 +9,16 @@
     <div class="l__wrapper--slim">
         <h2 class="b__nudge--bottom">Déléguer un accès à mon espace</h2>
 
-        {{ form_errors(form) }}
-
         <div id="js-by-name" {% if form.email.vars.data %}style="display: none;"{% endif %}>
             {{ form_start(filter_form, {attr: {id: 'search-form'}}) }}
                 {{ form_errors(filter_form) }}
                 <div class="form__row">
                     {{ form_label(filter_form.name, 'Adhérent') }}
+                    <div class="form__legend" style="font-size: 14px;">Sélectionnez un adhérent de votre territoire.</div>
                     <div class="pst--relative">
                         {{ form_widget(filter_form.name, {value: form.vars.data.delegated ? form.vars.data.delegated.fullName, attr: {placeholder: 'Saisissez un prénom et/ou un nom'}}) }}
-                        <button type="submit" class="btn btn--blue pst--absolute" style="right: 12px; top: 10px;">Rechercher</button>
+                        <button title="Réinitialiser" class="btn btn--black js-undo-search pst--absolute" style="right: 12px; top: 10px;{{ not form.delegated.vars.data ? 'display: none;'}}">Réinitialiser</button>
+                        <button type="submit" id="js-search" class="btn btn--blue pst--absolute" style="right: 12px; top: 10px;{{ form.delegated.vars.data ? 'display: none;'}}">Rechercher</button>
                     </div>
 
                     <div id="no-result" class="form form__error" style="display: none;">
@@ -41,13 +41,16 @@
             <div id="js-by-email" {% if not form.email.vars.data %}style="display: none;"{% endif %}>
                 <div class="form__row">
                     {{ form_row(form.email, {attr: {placeholder: 'Entrez une adresse e-mail'}}) }}
+                    {{ form_errors(form) }}
                     <div class="text--body text--blue--dark link--no-decor b__nudge--top-10 b__nudge--bottom-small" id="js-search-by-name" style="cursor: pointer;">Rechercher par prénom et/ou nom</div>
                 </div>
             </div>
 
             <div class="form__row">
                 {{ form_label(form.role, 'Rôle') }}
+                <div class="form__legend" style="font-size: 14px;">Donnez un nom au rôle de cet adhérent.</div>
                 {{ form_widget(form.role) }}
+                {{ form_errors(form.role) }}
             </div>
 
             {{ form_widget(form.delegated) }}
@@ -58,21 +61,19 @@
                 {{ form_widget(form.accesses) }}
             </div>
 
-            <div id="js-restrict-form" style="display: none">
-                <div class="em-form__group">
-                    <div class="em-form__label">Limiter l'accès aux données adhérent</div>
-                    <div class="em-form__legend">Ajoutez autant de villes et/ou de comités que nécessaire.</div>
+            <div id="js-restrict-form" {% if not ('adherents' in form.accesses.vars.data) %}style="display: none"{% endif %}>
+                <div class="form__row">
+                    <div class="form__label">Limiter l'accès aux données adhérent</div>
+                    <div class="form__legend" style="font-size: 14px;">Ajoutez autant de villes et/ou de comités que nécessaire.</div>
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.restrictedCommittees_search, 'Par comité') }}
-                    {{ form_widget(form.restrictedCommittees_search) }}
+                    {{ form_widget(form.restrictedCommittees_search, {attr: {placeholder: 'Limiter à une liste de comités'}}) }}
                     {{ form_widget(form.restrictedCommittees) }}
                 </div>
 
                 <div class="form__row">
-                    {{ form_label(form.restrictedCities_search, 'Par ville') }}
-                    {{ form_widget(form.restrictedCities_search) }}
+                    {{ form_widget(form.restrictedCities_search, {attr: {placeholder: 'Limiter à une liste de villes'}}) }}
                     {{ form_widget(form.restrictedCities) }}
                 </div>
             </div>
@@ -151,6 +152,8 @@
           $('#js-by-name').show();
           $('#user-search').html('');
           $('input', '#search-form').val('').focus();
+          $('#js-search').show();
+          $('.js-undo-search').hide();
         });
 
         {{ js.committee(
@@ -168,10 +171,13 @@
         $(document).on('click', '#js-search-by-email', function (e) {
           $('#js-by-name').hide();
           $('#js-by-email').show();
+          $('#search-result').hide();
         });
         $(document).on('click', '#js-search-by-name', function (e) {
           $('#js-by-email').hide();
           $('#js-by-name').show();
+          $('.js-undo-search').hide();
+          $('#js-search').show();
         });
       });
     </script>

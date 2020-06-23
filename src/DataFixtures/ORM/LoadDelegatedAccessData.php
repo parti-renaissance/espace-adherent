@@ -14,6 +14,7 @@ class LoadDelegatedAccessData extends Fixture
     private const ACCESS_UUID_3 = '96076afb-2243-4251-97fe-8201d50c3256';
     private const ACCESS_UUID_4 = '411faa64-202d-4ff2-91ce-c98b29af28ef';
     private const ACCESS_UUID_5 = 'd2315289-a3fd-419c-a3dd-3e1ff71b754d';
+    private const ACCESS_UUID_6 = '7fdf8fb0-1628-4500-b0b2-34c40cc27a2c';
 
     public function load(ObjectManager $manager)
     {
@@ -59,14 +60,23 @@ class LoadDelegatedAccessData extends Fixture
         $manager->persist($delegatedAccess4);
 
         // second deputy access to same user, with different accesses
-        $delegatedAccess4 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_5));
-        $delegatedAccess4->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
-        $delegatedAccess4->setDelegator($this->getReference('deputy-75-2')); // deputy-75-2@en-marche-dev.fr
-        $delegatedAccess4->setRole('Collaborateur parlementaire');
-        $delegatedAccess4->setType('deputy');
-        $delegatedAccess4->setAccesses([DelegatedAccess::ACCESS_ADHERENTS]);
+        $delegatedAccess5 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_5));
+        $delegatedAccess5->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
+        $delegatedAccess5->setDelegator($this->getReference('deputy-75-2')); // deputy-75-2@en-marche-dev.fr
+        $delegatedAccess5->setRole('Collaborateur parlementaire');
+        $delegatedAccess5->setType('deputy');
+        $delegatedAccess5->setAccesses([DelegatedAccess::ACCESS_ADHERENTS]);
 
-        $manager->persist($delegatedAccess4);
+        $manager->persist($delegatedAccess5);
+
+        // no accesses
+        $delegatedAccess6 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_6));
+        $delegatedAccess6->setDelegated($this->getReference('adherent-8')); // referent@en-marche-dev.fr
+        $delegatedAccess6->setDelegator($this->getReference('senator-59')); // senateur@en-marche-dev.fr
+        $delegatedAccess6->setRole('Collaborateur parlementaire');
+        $delegatedAccess6->setType('senator');
+
+        $manager->persist($delegatedAccess6);
 
         $manager->flush();
     }

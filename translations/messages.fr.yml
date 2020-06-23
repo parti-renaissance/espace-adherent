@@ -60,8 +60,11 @@ adherent.activity_position.unemployed: En recherche d'emploi
 
 referent: référent
 coreferent: co-référent
+delegated_referent: référent délégué
 deputy: député
+delegated_deputy: député délégué
 senator: sénateur
+delegated_senator: sénateur délégué
 committee_supervisor: animateur
 supervisor: animateur
 committee_host: co-animateur
@@ -759,4 +762,5 @@ delegated_access.form.access.events: Événements
 delegated_access.form.access.adherents: Adhérents
 delegated_access.form.access.committee: Comités
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
+delegated_access.updated_successfully: L'accès délégué à votre espace a correctement été mis à jour
 delegated_access.deleted_successfully: L'accès délégué à votre espace a correctement été supprimé

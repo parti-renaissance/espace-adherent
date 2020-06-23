@@ -156,7 +156,7 @@
         {% include 'components/_modern_pagination.html.twig' with {
             current_page: messages.currentPage,
             total_pages: messages.lastPage,
-            pagination_route_params: route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {})
+            pagination_route_params: route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {})|merge(app.request.attributes.has('delegated_access_uuid') ? {delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')} : {})
         } %}
     {% endif %}
 

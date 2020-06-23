@@ -127,7 +127,7 @@
             {% include 'components/_modern_pagination.html.twig' with {
                 current_page: users.currentPage,
                 total_pages: users.lastPage,
-                pagination_route_params: {f: filter.toArray()}
+                pagination_route_params: {f: filter.toArray()}|merge(app.request.attributes.has('delegated_access_uuid') ? {f: filter.toArray(), delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')} : {}),
             } %}
         {% endif %}
 

@@ -1293,7 +1293,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedReferent(): bool
     {
-        return \in_array('ROLE_DELEGATED_REFERENT', $this->getRoles(), true);
+        foreach ($this->getReceivedDelegatedAccessOfType('referent') as $delegatedAccess) {
+            if (\count($delegatedAccess->getAccesses()) > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function isCoReferent(): bool
@@ -1701,7 +1707,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedDeputy(): bool
     {
-        return \in_array('ROLE_DELEGATED_DEPUTY', $this->getRoles(), true);
+        foreach ($this->getReceivedDelegatedAccessOfType('deputy') as $delegatedAccess) {
+            if (\count($delegatedAccess->getAccesses()) > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function isAdherent(): bool
@@ -1849,12 +1861,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isAdherentMessageRedactor(): bool
     {
         return $this->isReferent()
+            || $this->isDelegatedReferent()
             || $this->isDeputy()
+            || $this->isDelegatedDeputy()
             || $this->isHost()
             || $this->isSupervisor()
             || $this->isCitizenProjectAdministrator()
             || $this->isMunicipalChief()
             || $this->isSenator()
+            || $this->isDelegatedSenator()
         ;
     }
 
@@ -1954,7 +1969,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedSenator(): bool
     {
-        return \in_array('ROLE_DELEGATED_SENATOR', $this->getRoles(), true);
+        foreach ($this->getReceivedDelegatedAccessOfType('senator') as $delegatedAccess) {
+            if (\count($delegatedAccess->getAccesses()) > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function isConsular(): bool
