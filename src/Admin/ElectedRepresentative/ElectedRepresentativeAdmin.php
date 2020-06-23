@@ -7,6 +7,7 @@ use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\Zone;
@@ -72,6 +73,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         $query
             ->leftJoin("$alias.mandates", 'mandate')
             ->leftJoin("$alias.politicalFunctions", 'politicalFunction')
+            ->leftJoin("$alias.labels", 'label')
         ;
 
         return $query;
@@ -99,7 +101,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'template' => 'admin/elected_representative/list_political_functions.html.twig',
             ])
             ->add('type', null, [
-                'label' => 'Type',
+                'label' => 'Qualifications',
                 'template' => 'admin/elected_representative/list_type.html.twig',
             ])
             ->add('_action', null, [
@@ -581,6 +583,34 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         $datagrid->setValue($property, null, $value);
                     },
                 ],
+            ])
+            ->add('labelsName', CallbackFilter::class, [
+                'label' => 'Étiquettes',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => LabelNameEnum::ALL,
+                    'multiple' => true,
+                    'choice_label' => function (string $choice) {
+                        return $choice;
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $where = new Expr\Orx();
+
+                    foreach ($value['value'] as $key => $labelName) {
+                        $where->add("label.name = :label_name_$key");
+                        $qb->setParameter("label_name_$key", $labelName);
+                    }
+
+                    $qb->andWhere($where);
+
+                    return true;
+                },
             ])
         ;
     }
