@@ -4,7 +4,6 @@ namespace App\Controller\EnMarche;
 
 use App\Adherent\Certification\CertificationManager;
 use App\Adherent\Certification\CertificationPermissions;
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Form\CertificationRequestType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,15 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CertificationRequestController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route(name="home", methods="GET")
      */
     public function homeAction(): Response
     {
-        $this->disableInProduction();
-
         return $this->render('certification_request/home.html.twig');
     }
 
@@ -34,8 +29,6 @@ class CertificationRequestController extends Controller
      */
     public function requestAction(Request $request, CertificationManager $certificationManager): Response
     {
-        $this->disableInProduction();
-
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
