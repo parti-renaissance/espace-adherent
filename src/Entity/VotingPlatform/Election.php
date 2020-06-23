@@ -62,6 +62,13 @@ class Election
      */
     private $electionPools;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $secondRoundEndDate;
+
     public function __construct(Designation $designation, UuidInterface $uuid = null, array $rounds = [])
     {
         $this->designation = $designation;
@@ -98,7 +105,8 @@ class Election
 
     public function isVotePeriodActive(): bool
     {
-        return ElectionStatusEnum::OPEN === $this->status && $this->isDesignationVotePeriodActive();
+        return ElectionStatusEnum::OPEN === $this->status
+            && ($this->isDesignationVotePeriodActive() || $this->isSecondRoundVotePeriodActive());
     }
 
     public function close(): void
@@ -132,5 +140,25 @@ class Election
         }
 
         return null;
+    }
+
+    /**
+     * @param ElectionPool[] $pools
+     */
+    public function startSecondRound(array $pools): void
+    {
+        $this->getCurrentRound()->disable();
+
+        $this->addElectionRound($secondRound = new ElectionRound());
+        $secondRound->setElectionPools($pools);
+
+        $this->secondRoundEndDate = (clone $this->getVoteEndDate())->modify(
+            sprintf('+%d days', $this->getAdditionalRoundDuration())
+        );
+    }
+
+    public function isSecondRoundVotePeriodActive(): bool
+    {
+        return null !== $this->secondRoundEndDate && $this->secondRoundEndDate >= new \DateTime();
     }
 }

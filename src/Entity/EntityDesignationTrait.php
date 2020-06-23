@@ -83,4 +83,9 @@ trait EntityDesignationTrait
             )
         ;
     }
+
+    public function getAdditionalRoundDuration(): int
+    {
+        return $this->designation->getAdditionalRoundDuration();
+    }
 }

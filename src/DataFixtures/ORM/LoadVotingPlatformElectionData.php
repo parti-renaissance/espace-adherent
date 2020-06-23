@@ -28,6 +28,8 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
     public const ELECTION_UUID3 = 'b81c3585-c802-48f6-9dca-19d1d4e08c44';
     public const ELECTION_UUID4 = '642ee8e6-916b-43b2-b0f9-8a821e5d9a2b';
     public const ELECTION_UUID5 = '13dd81bf-df09-487b-813d-8cbec95189aa';
+    public const ELECTION_UUID6 = '071a3abc-fb4c-43c0-91b9-7cbeb1e02b92';
+    public const ELECTION_UUID7 = 'b58e5538-c6e7-10a4-88c3-de59305e61a8';
 
     /**
      * @var \Faker\Generator
@@ -52,6 +54,8 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
 
     private function loadCommitteeAdherentElections(): void
     {
+        // -------------------------------------------
+
         $election = new Election(
             $this->getReference('designation-1'),
             Uuid::fromString(self::ELECTION_UUID1),
@@ -64,6 +68,8 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $this->loadVoters($election);
 
         $this->manager->persist($election);
+
+        // -------------------------------------------
 
         $election = new Election(
             $this->getReference('designation-2'),
@@ -79,6 +85,8 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
 
         $this->manager->persist($election);
 
+        // -------------------------------------------
+
         $election = new Election(
             $this->getReference('designation-3'),
             Uuid::fromString(self::ELECTION_UUID3),
@@ -93,6 +101,25 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
 
         $this->manager->persist($election);
 
+        // -------------------------------------------
+
+        // Election with started second round
+        $election = new Election(
+            $this->getReference('designation-3'),
+            Uuid::fromString(self::ELECTION_UUID6),
+            [$round = new ElectionRound()]
+        );
+
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
+
+        $this->loadCommitteeAdherentElectionCandidates($election);
+        $votersList = $this->loadVoters($election);
+        $this->loadResults($round, $votersList);
+
+        $this->manager->persist($election);
+
+        // -------------------------------------------
+
         $election = new Election(
             $this->getReference('designation-3'),
             Uuid::fromString(self::ELECTION_UUID4),
@@ -104,12 +131,15 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
+        $election->close();
 
         $this->manager->persist($election);
 
+        // -------------------------------------------
+
         $election = new Election(
             $this->getReference('designation-4'),
-            Uuid::fromString(self::ELECTION_UUID4),
+            Uuid::fromString(self::ELECTION_UUID7),
             [$round = new ElectionRound()]
         );
 
@@ -118,13 +148,16 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
+        $election->close();
 
         $this->manager->persist($election);
+
+        // -------------------------------------------
 
         $election = new Election(
             $this->getReference('designation-3'),
             Uuid::fromString(self::ELECTION_UUID5),
-            [new ElectionRound(false), $round = new ElectionRound()]
+            [$round = new ElectionRound()]
         );
 
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-3')));
@@ -132,6 +165,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
+        $election->startSecondRound($round->getElectionPools());
 
         $this->manager->persist($election);
     }
