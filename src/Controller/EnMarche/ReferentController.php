@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
-use App\Controller\CanaryControllerTrait;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -42,8 +41,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ReferentController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/evenements-institutionnels", name="app_referent_institutional_events", methods={"GET"})
      *
@@ -296,8 +293,6 @@ class ReferentController extends Controller
         Request $request,
         ElectedRepresentativeRepository $electedRepresentativeRepository
     ): Response {
-        $this->disableInProduction();
-
         /** @var Adherent $referent */
         $referent = $this->getUser();
         $filter = new ListFilter($referent->getManagedArea()->getTags()->toArray());
@@ -327,8 +322,6 @@ class ReferentController extends Controller
      */
     public function showElectedRepresentative(Request $request, ElectedRepresentative $electedRepresentative): Response
     {
-        $this->disableInProduction();
-
         return $this->render('elected_representative/show.html.twig', [
             'elected_representative' => $electedRepresentative,
         ]);
