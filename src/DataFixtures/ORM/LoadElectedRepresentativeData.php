@@ -258,7 +258,7 @@ class LoadElectedRepresentativeData extends Fixture
             LaREMSupportEnum::NOT_SUPPORTED,
             $this->getReference('zone-city-76000'),
             $er2MandatesOneFinished,
-            true,
+            false,
             new \DateTime('2011-12-23'),
             new \DateTime('2015-02-23')
         );

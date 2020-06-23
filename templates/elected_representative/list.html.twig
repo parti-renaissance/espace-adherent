@@ -139,13 +139,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        {% for mandate in elected_representative.mandates %}
+                                        {% for mandate in elected_representative.currentMandates %}
                                             <b>{{ mandate }}</b><br />
                                             <i>{{ mandate.zone }}</i><br />
                                         {% endfor %}
                                     </td>
                                     <td>
-                                        {% for politicalFunction in elected_representative.politicalFunctions %}
+                                        {% for politicalFunction in elected_representative.currentPoliticalFunctions %}
                                             {{ politicalFunction }}<br />
                                         {% endfor %}
                                     </td>
