@@ -18,6 +18,7 @@ use App\Form\Admin\CoordinatorManagedAreaType;
 use App\Form\Admin\MunicipalChiefManagedAreaType;
 use App\Form\Admin\ReferentManagedAreaType;
 use App\Form\Admin\SenatorAreaType;
+use App\Form\Admin\SenatorialCandidateManagedAreaType;
 use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
@@ -376,6 +377,9 @@ Utiliser <strong>75100</strong> pour la ville de Paris,
 <strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
 HELP
 ,
+                ])
+                ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
+                    'label' => 'Candidat Sénatoriales 2020',
                 ])
                 ->add('jecouteManagedAreaCodesAsString', TextType::class, [
                     'label' => 'jecoute_manager',
@@ -736,6 +740,11 @@ HELP
                         $qb->setParameter('delegated_types', \array_map(static function ($type) {
                             return \substr($type, 10); // remove "delegated_" prefix
                         }, $delegatedTypes));
+                    }
+
+                    if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.senatorialCandidateManagedArea', $alias), 'senatorialCandidateManagedArea');
+                        $where->add('senatorialCandidateManagedArea IS NOT NULL');
                     }
 
                     if ($where->count()) {
