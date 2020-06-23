@@ -7,6 +7,7 @@ use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\UserListDefinitionEnum;
 use App\Repository\PaginatorTrait;
+use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -108,10 +109,22 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         }
 
         if ($gender = $filter->getGender()) {
-            $qb
-                ->andWhere('er.gender = :gender')
-                ->setParameter('gender', $gender)
-            ;
+            switch ($gender) {
+                case Genders::FEMALE:
+                case Genders::MALE:
+                    $qb
+                        ->andWhere('er.gender = :gender')
+                        ->setParameter('gender', $gender)
+                    ;
+
+                    break;
+                case Genders::UNKNOWN:
+                    $qb->andWhere('er.gender IS NULL');
+
+                    break;
+                default:
+                    break;
+            }
         }
 
         if ($labels = $filter->getLabels()) {

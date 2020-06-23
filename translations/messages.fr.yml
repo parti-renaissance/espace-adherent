@@ -6,6 +6,7 @@ common.gender.male: Masculin
 common.gender.woman: Femme
 common.gender.female: Féminin
 common.gender.other: Autre
+common.gender.unknown: N/A
 common.civility.mr: Monsieur
 common.civility.mrs: Madame
 common.email_address: Adresse email

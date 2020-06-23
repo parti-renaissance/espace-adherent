@@ -35,11 +35,11 @@ class LoadElectedRepresentativeData extends Fixture
         AutoIncrementResetter::resetAutoIncrement($manager, 'elected_representative');
 
         // with adherent, mandate 92 CITY_COUNCIL : functions OTHER_MEMBER, PRESIDENT_OF_EPCI
-        $erAdherent92 = ElectedRepresentative::create(
+        $erAdherent92 = $this->createElectedRepresentative(
             'Michelle',
             'DUFOUR',
-            'female',
             new \DateTime('1972-11-23'),
+            'female',
             1203084,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_1_UUID)
         );
@@ -95,11 +95,11 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erAdherent92);
 
         // with mandate 92 CITY_COUNCIL : functions MAYOR, PRESIDENT_OF_EPCI (finished)
-        $erCityCouncilWithFinishedFunction = ElectedRepresentative::create(
+        $erCityCouncilWithFinishedFunction = $this->createElectedRepresentative(
             'Delphine',
             'BOUILLOUX',
-            'female',
             new \DateTime('1977-08-02'),
+            'female',
             1203080,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
         );
@@ -158,11 +158,11 @@ class LoadElectedRepresentativeData extends Fixture
 
         // with mandate 76 CITY_COUNCIL : functions DEPUTY_MAYOR
         // with mandate 76 EPCI_MEMBER (not elected) : functions PRESIDENT_OF_EPCI
-        $er2Mandates = ElectedRepresentative::create(
+        $er2Mandates = $this->createElectedRepresentative(
             'Daniel',
             'BOULON',
-            'male',
             new \DateTime('1951-03-04'),
+            null,
             694516,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_3_UUID)
         );
@@ -227,11 +227,11 @@ class LoadElectedRepresentativeData extends Fixture
 
         // with mandate 94 SENATOR, no function
         // with mandate 76 DEPUTY finished : functions OTHER_MEMBER
-        $er2MandatesOneFinished = ElectedRepresentative::create(
+        $er2MandatesOneFinished = $this->createElectedRepresentative(
             'Roger',
             'BUET',
-            'male',
             new \DateTime('1952-04-21'),
+            'male',
             873399,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_4_UUID)
         );
@@ -278,11 +278,11 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($er2MandatesOneFinished);
 
         // with mandate EURO_DEPUTY, no function
-        $erEuroDeputy2Labels = ElectedRepresentative::create(
+        $erEuroDeputy2Labels = $this->createElectedRepresentative(
             'Sans',
             'OFFICIELID',
-            'male',
             new \DateTime('1951-11-03'),
+            'male',
             873404,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_5_UUID)
         );
@@ -317,11 +317,11 @@ class LoadElectedRepresentativeData extends Fixture
 
         // with mandate 13 DEPUTY : functions VICE_PRESIDENT_OF_EPCI
         // with mandate 13 REGIONAL_COUNCIL : functions PRESIDENT_OF_EPCI
-        $er2Mandates2Functions = ElectedRepresentative::create(
+        $er2Mandates2Functions = $this->createElectedRepresentative(
             'André',
             'LOBELL',
-            'male',
             new \DateTime('1951-11-03'),
+            'male',
             873404,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_6_UUID)
         );
@@ -379,11 +379,11 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($er2Mandates2Functions);
 
         // with not elected mandate Corsica CORSICA_ASSEMBLY_MEMBER
-        $erWithNotElectedMandate = ElectedRepresentative::create(
+        $erWithNotElectedMandate = $this->createElectedRepresentative(
             'Jesuis',
             'PASELU',
-            'male',
             new \DateTime('1981-01-03'),
+            'male',
             null,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_7_UUID)
         );
@@ -402,7 +402,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erWithNotElectedMandate);
 
         // with mandate CITY_COUNCIL 75007
-        $erParis = ElectedRepresentative::create('Arrondissement', 'PARIS', 'male', new \DateTime('1972-02-02'));
+        $erParis = $this->createElectedRepresentative('Arrondissement', 'PARIS', new \DateTime('1972-02-02'), 'male');
         $mandate = new Mandate(
             MandateTypeEnum::CITY_COUNCIL,
             true,
@@ -418,7 +418,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erParis);
 
         // with mandate DEPUTY CIRCO 75
-        $erParis2 = ElectedRepresentative::create('Circonscription', 'PARISS', 'female', new \DateTime('1982-03-03'));
+        $erParis2 = $this->createElectedRepresentative('Circonscription', 'PARISS', new \DateTime('1982-03-03'), 'female');
         $mandate = new Mandate(
             MandateTypeEnum::DEPUTY,
             true,
@@ -434,7 +434,7 @@ class LoadElectedRepresentativeData extends Fixture
         $manager->persist($erParis2);
 
         // with mandate SENATOR 75
-        $erParis3 = ElectedRepresentative::create('Département', 'PARIS', 'male', new \DateTime('1962-04-04'));
+        $erParis3 = $this->createElectedRepresentative('Département', 'PARIS', new \DateTime('1962-04-04'), 'male');
         $mandate = new Mandate(
             MandateTypeEnum::SENATOR,
             true,
@@ -458,6 +458,24 @@ class LoadElectedRepresentativeData extends Fixture
         $phone->setCountryCode('33');
         $phone->setNationalNumber($phoneNumber);
         $er->setContactPhone($phone);
+    }
+
+    private function createElectedRepresentative(
+        string $firstName,
+        string $lastName,
+        \DateTime $birthDate,
+        string $gender = null,
+        int $officialId = null,
+        string $uuid = null
+    ): ElectedRepresentative {
+        return ElectedRepresentative::create(
+            $firstName,
+            $lastName,
+            $birthDate,
+            $gender,
+            $officialId,
+            $uuid ? Uuid::fromString($uuid) : null
+        );
     }
 
     public function getDependencies(): array

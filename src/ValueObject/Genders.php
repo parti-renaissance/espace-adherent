@@ -7,6 +7,7 @@ final class Genders
     public const MALE = 'male';
     public const FEMALE = 'female';
     public const OTHER = 'other';
+    public const UNKNOWN = 'unknown';
 
     public const ALL = [
         self::FEMALE,
