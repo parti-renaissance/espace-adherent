@@ -2,6 +2,8 @@
 
 namespace App\UserListDefinition;
 
+use App\ElectedRepresentative\UserListDefinitionHistoryManager;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\EntityUserListDefinitionTrait;
 use App\Entity\UserListDefinitionEnum;
 use App\Exception\UserListDefinitionException;
@@ -15,23 +17,21 @@ class UserListDefinitionManager
     private const STATUS_MEMBER_OF = 'member_of';
     private const STATUS_NOT_MEMBER_OF = 'not_member_of';
 
-    /** @var EntityManagerInterface */
     private $em;
-
-    /** @var UserListDefinitionRepository */
     private $userListDefinitionRepository;
-
-    /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
+    private $historyManager;
 
     public function __construct(
         EntityManagerInterface $em,
         UserListDefinitionRepository $userListDefinitionRepository,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        UserListDefinitionHistoryManager $historyManager
     ) {
         $this->em = $em;
         $this->userListDefinitionRepository = $userListDefinitionRepository;
         $this->authorizationChecker = $authorizationChecker;
+        $this->historyManager = $historyManager;
     }
 
     public function getUserListDefinitionMembers(string $type, array $ids, $objectClass): array
@@ -62,6 +62,10 @@ class UserListDefinitionManager
         foreach ($userListDefinitions as $memberId => $lists) {
             if (!$member = $repository->find($memberId)) {
                 throw new UserListDefinitionMemberException(\sprintf('%s with id "%s" has not been found', $objectClass, $memberId));
+            }
+
+            if ($member instanceof ElectedRepresentative) {
+                $oldUserListDefinitions = $member->getUserListDefinitions()->toArray();
             }
 
             foreach ($lists as $status => $userListDefinitionIds) {
@@ -95,6 +99,10 @@ class UserListDefinitionManager
                             break;
                     }
                 }
+            }
+
+            if ($member instanceof ElectedRepresentative) {
+                $this->historyManager->handleChanges($member, $oldUserListDefinitions);
             }
         }
 
