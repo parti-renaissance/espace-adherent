@@ -2,6 +2,7 @@
 
 namespace Tests\App\UserListDefinition;
 
+use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\UserListDefinition;
@@ -87,7 +88,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $this->createMock(EntityManagerInterface::class),
             $userListDefinitionRepository,
-            $this->createMock(AuthorizationCheckerInterface::class)
+            $this->createMock(AuthorizationCheckerInterface::class),
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $gotMembers = $userListDefinitionManager->getUserListDefinitionMembers(
@@ -136,7 +138,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $userListDefinitionRepository,
-            $this->createMock(AuthorizationCheckerInterface::class)
+            $this->createMock(AuthorizationCheckerInterface::class),
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionException::class);
@@ -194,7 +197,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $userListDefinitionRepository,
-            $authorizationChecker
+            $authorizationChecker,
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionException::class);
@@ -237,7 +241,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $this->createMock(UserListDefinitionRepository::class),
-            $this->createMock(AuthorizationCheckerInterface::class)
+            $this->createMock(AuthorizationCheckerInterface::class),
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionMemberException::class);
@@ -302,7 +307,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $userListDefinitionRepository,
-            $authorizationChecker
+            $authorizationChecker,
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionMemberException::class);
@@ -421,7 +427,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $userListDefinitionRepository,
-            $authorizationChecker
+            $authorizationChecker,
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $userListDefinitionManager->updateUserListDefinitionMembers(
@@ -439,7 +446,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $this->userListDefinitionManager = new UserListDefinitionManager(
             $this->createMock(EntityManagerInterface::class),
             $this->createMock(UserListDefinitionRepository::class),
-            $this->createMock(AuthorizationCheckerInterface::class)
+            $this->createMock(AuthorizationCheckerInterface::class),
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
     }
 

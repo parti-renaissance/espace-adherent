@@ -17,8 +17,5 @@
     {% endfor %}
     {% for label in object.labels %}
         <span class="label label-default">{{ label }}</span>
-        {% if not loop.last %}
-            </br>
-        {% endif %}
     {% endfor %}
 {% endblock %}
