@@ -20,7 +20,7 @@ class CertificationVoter extends AbstractAdherentVoter
             case CertificationPermissions::CERTIFIED:
                 return $adherent->isCertified();
             case CertificationPermissions::REQUEST:
-                if ($adherent->isCertified()) {
+                if ($adherent->isCertified() || empty($adherent->getBirthdate())) {
                     return false;
                 }
 
