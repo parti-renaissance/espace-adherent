@@ -238,7 +238,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->groupBy('c.id')
         ;
 
-        $this->applyReferentGeoFilter($qb, $referent, 'c');
+        $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), 'c');
 
         return $qb->getQuery()->getResult();
     }
@@ -257,7 +257,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->orderBy('c.createdAt', 'DESC')
         ;
 
-        $this->applyReferentGeoFilter($qb, $referent, 'c');
+        $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), 'c');
 
         return $qb->getQuery()->getResult();
     }
@@ -388,7 +388,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
         ;
 
-        $this->applyReferentGeoFilter($qb, $referent, $alias);
+        $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), $alias);
 
         return $qb->getQuery()->getResult();
     }
@@ -400,7 +400,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
         ;
 
-        $this->applyDeputyGeoFilter($qb, $deputy, $alias);
+        $this->applyGeoFilter($qb, [$deputy->getManagedDistrict()->getReferentTag()], $alias);
 
         return $qb->getQuery()->getResult();
     }
@@ -412,7 +412,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
         ;
 
-        $this->applySenatorGeoFilter($qb, $senator, $alias);
+        $this->applyGeoFilter($qb, [$senator->getSenatorArea()->getDepartmentTag()], $alias);
 
         return $qb->getQuery()->getResult();
     }

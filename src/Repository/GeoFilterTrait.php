@@ -2,39 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\Adherent;
 use App\Entity\ReferentTag;
 use Doctrine\ORM\QueryBuilder;
 
 trait GeoFilterTrait
 {
-    private function applyReferentGeoFilter(QueryBuilder $qb, Adherent $referent, string $alias): void
-    {
-        if (!$referent->isReferent()) {
-            return;
-        }
-
-        $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), $alias);
-    }
-
-    private function applyDeputyGeoFilter(QueryBuilder $qb, Adherent $deputy, string $alias): void
-    {
-        if (!$deputy->isDeputy()) {
-            return;
-        }
-
-        $this->applyGeoFilter($qb, [$deputy->getManagedDistrict()->getReferentTag()], $alias);
-    }
-
-    private function applySenatorGeoFilter(QueryBuilder $qb, Adherent $senator, string $alias): void
-    {
-        if (!$senator->isSenator()) {
-            return;
-        }
-
-        $this->applyGeoFilter($qb, [$senator->getSenatorArea()->getDepartmentTag()], $alias);
-    }
-
     /**
      * @param ReferentTag[] $referentTags
      */
