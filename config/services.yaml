@@ -39,6 +39,10 @@ services:
         public: false
         bind:
             $transactionalMailer: '@app.mailer.transactional'
+            $votingProcessWorkflow: '@state_machine.voting_process'
+            $votingPlatformCache: !service
+                class: Symfony\Component\Cache\Simple\Psr6Cache
+                arguments: ['@app.cache.voting_platform']
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -65,3 +69,6 @@ services:
     App\Adherent\Certification\CertificationRequestProcessCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.certification_request.handler'
+
+    App\VotingPlatform\:
+        resource: ../src/VotingPlatform/

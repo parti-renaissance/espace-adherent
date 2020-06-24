@@ -43,4 +43,17 @@ class VoteRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findLastForAdherent(Adherent $adherent): ?Vote
+    {
+        return $this->createQueryBuilder('vote')
+            ->innerJoin('vote.voter', 'voter')
+            ->where('voter.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+            ->orderBy('vote.votedAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
