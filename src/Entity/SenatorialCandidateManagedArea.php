@@ -24,7 +24,7 @@ class SenatorialCandidateManagedArea
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="senatorial_candidate_areas_tags",
      *     joinColumns={
