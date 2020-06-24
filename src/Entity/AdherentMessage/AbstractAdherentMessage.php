@@ -37,7 +37,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     collectionOperations={},
  *     itemOperations={
  *         "get": {
- *             "access_control": "object.getAuthor() == user or object.isDelegatedAuthor(user)",
+ *             "access_control": "is_granted('ROLE_ADHERENT') and (object.getAuthor() == user or object.isDelegatedAuthor(user))",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}}
  *         }
