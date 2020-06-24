@@ -517,6 +517,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Conseiller(e) municipal(e) (NC)Clichy (92110)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Maire', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertNotContains('Président(e) d\'EPCI', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('PS (2016)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Non', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
@@ -599,6 +600,14 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
         $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[gender]'] = 'unknown';
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
 
         // filter not adherents
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();

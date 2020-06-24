@@ -65,9 +65,8 @@ class ElectedRepresentative
     /**
      * @var string
      *
-     * @ORM\Column(length=10)
+     * @ORM\Column(length=10, nullable=true)
      *
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"profile"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
@@ -236,8 +235,8 @@ class ElectedRepresentative
     public static function create(
         string $firstName,
         string $lastName,
-        string $gender,
         \DateTime $birthDate,
+        string $gender = null,
         int $officialId = null,
         UuidInterface $uuid = null
     ): self {
@@ -288,12 +287,12 @@ class ElectedRepresentative
         $this->firstName = $firstName;
     }
 
-    public function getGender(): string
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function setGender(string $gender): void
+    public function setGender(?string $gender = null): void
     {
         $this->gender = $gender;
     }

@@ -15,4 +15,10 @@
         {% endif %}
         <span class="label {{ labelClass }}">{{ userListDefinition.label }}</span><br />
     {% endfor %}
+    {% for label in object.labels %}
+        <span class="label label-default">{{ label }}</span>
+        {% if not loop.last %}
+            </br>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

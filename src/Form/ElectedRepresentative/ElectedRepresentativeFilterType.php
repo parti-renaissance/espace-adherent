@@ -11,6 +11,7 @@ use App\Entity\ElectedRepresentative\ZoneCategory;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
 use App\Repository\ElectedRepresentative\ZoneRepository;
+use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -31,6 +32,11 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'placeholder' => 'common.all',
                 'expanded' => true,
                 'required' => false,
+                'choices' => [
+                    'common.gender.woman' => Genders::FEMALE,
+                    'common.gender.man' => Genders::MALE,
+                    'common.gender.unknown' => Genders::UNKNOWN,
+                ],
             ])
             ->add('isAdherent', ChoiceType::class, [
                 'placeholder' => 'common.all',

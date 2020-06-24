@@ -7,6 +7,7 @@ use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\Zone;
@@ -29,6 +30,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -63,6 +65,20 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         ;
     }
 
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery();
+        $alias = $query->getRootAlias();
+
+        $query
+            ->leftJoin("$alias.mandates", 'mandate')
+            ->leftJoin("$alias.politicalFunctions", 'politicalFunction')
+            ->leftJoin("$alias.labels", 'label')
+        ;
+
+        return $query;
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -85,7 +101,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'template' => 'admin/elected_representative/list_political_functions.html.twig',
             ])
             ->add('type', null, [
-                'label' => 'Type',
+                'label' => 'Qualifications',
                 'template' => 'admin/elected_representative/list_type.html.twig',
             ])
             ->add('_action', null, [
@@ -323,8 +339,8 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Prénom',
                 'show_filter' => true,
             ])
-            ->add('mandates.type', CallbackFilter::class, [
-                'label' => 'Mandats actuels',
+            ->add('mandatesType', CallbackFilter::class, [
+                'label' => 'Mandats',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
@@ -339,18 +355,40 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     $where = new Expr\Orx();
 
                     foreach ($value['value'] as $mandate) {
-                        $where->add("$alias.type = :mandate_".$mandate);
-                        $qb->setParameter('mandate_'.$mandate, $mandate);
+                        $where->add("mandate.type = :mandate_$mandate");
+                        $qb->setParameter("mandate_$mandate", $mandate);
                     }
 
                     $qb->andWhere($where);
-                    $qb->andWhere("$alias.onGoing = 1");
 
                     return true;
                 },
             ])
-            ->add('politicalFunctions.name', CallbackFilter::class, [
-                'label' => 'Fonctions actuelles',
+            ->add('mandatesOnGoing', CallbackFilter::class, [
+                'label' => 'Mandat en cours ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    switch ($value['value']) {
+                        case BooleanType::TYPE_YES:
+                            $qb->andWhere('mandate.onGoing = 1');
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb->andWhere('mandate.onGoing = 0');
+
+                            break;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('politicalFunctionsName', CallbackFilter::class, [
+                'label' => 'Fonctions',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
@@ -365,12 +403,34 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     $where = new Expr\Orx();
 
                     foreach ($value['value'] as $politicalFunctions) {
-                        $where->add("$alias.name = :function_".$politicalFunctions);
-                        $qb->setParameter('function_'.$politicalFunctions, $politicalFunctions);
+                        $where->add("politicalFunction.name = :function_$politicalFunctions");
+                        $qb->setParameter("function_$politicalFunctions", $politicalFunctions);
                     }
 
                     $qb->andWhere($where);
-                    $qb->andWhere("$alias.onGoing = 1");
+
+                    return true;
+                },
+            ])
+            ->add('politicalFunctionsOnGoing', CallbackFilter::class, [
+                'label' => 'Fonction en cours ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    switch ($value['value']) {
+                        case BooleanType::TYPE_YES:
+                            $qb->andWhere('politicalFunction.onGoing = 1');
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb->andWhere('politicalFunction.onGoing = 0');
+
+                            break;
+                    }
 
                     return true;
                 },
@@ -419,8 +479,8 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         $queryBuilder = $datagrid->getQuery();
                         $queryBuilder
                             ->leftJoin($queryBuilder->getRootAlias().'.category', 'category')
-                            ->andWhere('category.name != :distict')
-                            ->setParameter('distict', ZoneCategory::DISTRICT)
+                            ->andWhere('category.name != :district')
+                            ->setParameter('district', ZoneCategory::DISTRICT)
                             ->orderBy($queryBuilder->getRootAlias().'.name', 'ASC')
                         ;
                         $datagrid->setValue($property, null, $value);
@@ -523,6 +583,34 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         $datagrid->setValue($property, null, $value);
                     },
                 ],
+            ])
+            ->add('labelsName', CallbackFilter::class, [
+                'label' => 'Étiquettes',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => LabelNameEnum::ALL,
+                    'multiple' => true,
+                    'choice_label' => function (string $choice) {
+                        return $choice;
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $where = new Expr\Orx();
+
+                    foreach ($value['value'] as $key => $labelName) {
+                        $where->add("label.name = :label_name_$key");
+                        $qb->setParameter("label_name_$key", $labelName);
+                    }
+
+                    $qb->andWhere($where);
+
+                    return true;
+                },
             ])
         ;
     }

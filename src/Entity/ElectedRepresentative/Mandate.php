@@ -82,8 +82,8 @@ class Mandate
      *     message="La date de fin du mandat doit être postérieure à la date de début."
      * )
      * @Assert\Expression(
-     *     "(value === null and (!this.isElected() or this.isOnGoing())) or (value !== null and this.isElected() and !this.isOnGoing())",
-     *     message="La date de fin peut être saisie que dans le cas où le mandat n'est pas en cours et est élu."
+     *     "not (value !== null and this.isOnGoing)",
+     *     message="La date de fin ne peut être saisie que dans le cas où le mandat n'est pas en cours."
      * )
      */
     private $finishAt;
