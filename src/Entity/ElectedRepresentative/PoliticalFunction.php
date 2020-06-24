@@ -69,8 +69,8 @@ class PoliticalFunction
      *     message="La date de fin doit être postérieure à la date de début."
      * )
      * @Assert\Expression(
-     *     "(value == null and this.isOnGoing()) or (value != null and !this.isOnGoing())",
-     *     message="La date de fin peut être saisie que dans le cas où la fonction n'est pas en cours."
+     *     "not (value !== null and this.isOnGoing())",
+     *     message="La date de fin ne peut être saisie que dans le cas où la fonction n'est pas en cours."
      * )
      */
     private $finishAt;
