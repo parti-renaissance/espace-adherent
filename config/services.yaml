@@ -38,6 +38,8 @@ services:
         autoconfigure: true
         public: false
         bind:
+            $mailchimpClient: '@csa_guzzle.client.mailchimp_api'
+            $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $transactionalMailer: '@app.mailer.transactional'
 
     _instanceof:
@@ -47,6 +49,9 @@ services:
             tags: ['app.adherent.certification_request.handler']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
+
+    App\Command\:
+        resource: '../src/Command/*'
 
     Algolia\AlgoliaSearchBundle\Indexer\Indexer: '@algolia.indexer'
 

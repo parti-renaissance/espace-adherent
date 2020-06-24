@@ -28,10 +28,10 @@ class SendAdhesionReportCommand extends Command
     private $io;
     private $reports = [];
 
-    public function __construct(AdherentRepository $repository, MailerService $mailer)
+    public function __construct(AdherentRepository $repository, MailerService $transactionalMailer)
     {
         $this->repository = $repository;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
 
         parent::__construct();
     }

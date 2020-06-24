@@ -27,12 +27,12 @@ class NotifyIdeaAuthorCommand extends Command
         EntityManagerInterface $entityManager,
         IdeaRepository $ideaRepository,
         UrlGeneratorInterface $urlGenerator,
-        MailerService $mailer
+        MailerService $transactionalMailer
     ) {
         $this->entityManager = $entityManager;
         $this->ideaRepository = $ideaRepository;
         $this->urlGenerator = $urlGenerator;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
 
         parent::__construct();
     }

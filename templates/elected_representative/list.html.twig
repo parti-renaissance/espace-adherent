@@ -187,7 +187,7 @@
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="7" class="text--center">
+                                    <td colspan="9" class="text--center">
                                         <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                                         Aucun résultat
                                     </td>
@@ -228,7 +228,7 @@
                     theme: 'default em-filters'
                 });
             });
-            
+
             $('td.table-labels').on('click', '[id^="show_more_labels_"], [id^="show_less_labels_"]', function() {
                 let elementId = $(this).attr('id');
                 $(this).click(function(){
@@ -243,32 +243,34 @@
                 });
             });
 
-            App.runUserListDefinitions(
-                '{{ constant('App\\Controller\\Api\\UserListDefinition\\ElectedRepresentativeUserListDefinitionController::MEMBER_TYPE') }}',
-                '{{ constant('App\\Entity\\UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE') }}',
-                '.user-list-definition-manager-wrapper',
-                'input[name="items[]"]',
-                '#items-check-all',
-                function (labels) {
-                    let cell = '';
-                    labels.slice(0, 2).forEach((label) => {
-                        cell += `<span class="label">${label.label}</span><br />`;
-                    });
-
-                    if (labels.length > 2) {
-                        const nb = Math.random().toString().slice(2,9);
-                        cell += `<span id="show_more_labels_${nb}" class="text--body text--gray cursor--pointer">+${labels.length - 2}</span>`;
-                        cell += `<div id="other_labels_${nb}" class="visually-hidden">`;
-                        labels.slice(2).forEach((label) => {
+            {% if elected_representatives.count %}
+                App.runUserListDefinitions(
+                    '{{ constant('App\\Controller\\Api\\UserListDefinition\\ElectedRepresentativeUserListDefinitionController::MEMBER_TYPE') }}',
+                    '{{ constant('App\\Entity\\UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE') }}',
+                    '.user-list-definition-manager-wrapper',
+                    'input[name="items[]"]',
+                    '#items-check-all',
+                    function (labels) {
+                        let cell = '';
+                        labels.slice(0, 2).forEach((label) => {
                             cell += `<span class="label">${label.label}</span><br />`;
                         });
-                        cell += '</div>';
-                        cell += `<span id="show_less_labels_${nb}" class="text--body text--gray visually-hidden cursor--pointer">^</span>`;
-                    }
 
-                    return cell;
-                }
-            );
+                        if (labels.length > 2) {
+                            const nb = Math.random().toString().slice(2,9);
+                            cell += `<span id="show_more_labels_${nb}" class="text--body text--gray cursor--pointer">+${labels.length - 2}</span>`;
+                            cell += `<div id="other_labels_${nb}" class="visually-hidden">`;
+                            labels.slice(2).forEach((label) => {
+                                cell += `<span class="label">${label.label}</span><br />`;
+                            });
+                            cell += '</div>';
+                            cell += `<span id="show_less_labels_${nb}" class="text--body text--gray visually-hidden cursor--pointer">^</span>`;
+                        }
+
+                        return cell;
+                    }
+                );
+            {% endif %}
         });
     </script>
 {% endblock %}
