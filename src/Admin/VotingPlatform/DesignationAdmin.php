@@ -95,6 +95,8 @@ class DesignationAdmin extends AbstractAdmin
             ->add('id', null, ['label' => '#'])
             ->add('type', 'trans', ['format' => 'voting_platform.designation.type_%s'])
             ->add('zones', 'array')
+            ->add('candidacyStartDate', null, ['label' => 'Ouverture des candidatures'])
+            ->add('candidacyEndDate', null, ['label' => 'Clôture des candidatures'])
             ->add('voteStartDate', null, ['label' => 'Ouverture du vote'])
             ->add('voteEndDate', null, ['label' => 'Clôture du vote'])
             ->add('_action', null, [

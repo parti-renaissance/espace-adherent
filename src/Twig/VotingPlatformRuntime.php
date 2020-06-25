@@ -23,11 +23,20 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
 
     public function findElectionForCommittee(Committee $committee): ?Election
     {
-        return $this->electionRepository->findOneForCommittee($committee);
+        if ($committeeElection = $committee->getCommitteeElection()) {
+            return $this->electionRepository->findOneForCommittee($committee, $committeeElection->getDesignation());
+        }
+
+        return null;
     }
 
     public function findMyVoteForElection(Adherent $adherent, Election $election): ?Vote
     {
         return $this->voteRepository->findVote($adherent, $election->getCurrentRound());
+    }
+
+    public function findMyLastVote(Adherent $adherent): ?Vote
+    {
+        return $this->voteRepository->findLastForAdherent($adherent, new \DateTime('-3 months'));
     }
 }

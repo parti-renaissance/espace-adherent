@@ -44,16 +44,23 @@ class VoteRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findLastForAdherent(Adherent $adherent): ?Vote
+    public function findLastForAdherent(Adherent $adherent, \DateTime $threshold = null): ?Vote
     {
-        return $this->createQueryBuilder('vote')
+        $qb = $this->createQueryBuilder('vote')
             ->innerJoin('vote.voter', 'voter')
             ->where('voter.adherent = :adherent')
             ->setParameter('adherent', $adherent)
             ->orderBy('vote.votedAt', 'DESC')
             ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        if ($threshold) {
+            $qb
+                ->andWhere('vote.votedAt >= :threshold')
+                ->setParameter('threshold', $threshold)
+            ;
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

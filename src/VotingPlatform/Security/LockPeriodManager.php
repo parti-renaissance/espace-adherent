@@ -3,6 +3,8 @@
 namespace App\VotingPlatform\Security;
 
 use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\VotingPlatform\Election\Listener\LockPeriodClearCacheListener;
 use Psr\SimpleCache\CacheInterface;
@@ -13,11 +15,16 @@ class LockPeriodManager
 
     private $cache;
     private $voteRepository;
+    private $electionRepository;
 
-    public function __construct(VoteRepository $voteRepository, CacheInterface $votingPlatformCache)
-    {
+    public function __construct(
+        VoteRepository $voteRepository,
+        ElectionRepository $electionRepository,
+        CacheInterface $votingPlatformCache
+    ) {
         $this->cache = $votingPlatformCache;
         $this->voteRepository = $voteRepository;
+        $this->electionRepository = $electionRepository;
     }
 
     /**
@@ -43,6 +50,25 @@ class LockPeriodManager
         }
 
         return $voteDate && $voteDate->diff(new \DateTime())->m < 3;
+    }
+
+    public function isCommitteeLocked(Committee $committee, bool $isAdmin = false): bool
+    {
+        $committeeElection = $committee->getCommitteeElection();
+
+        if ($committeeElection) {
+            $election = $this->electionRepository->findOneForCommittee($committee, $committeeElection->getDesignation());
+
+            $isLocked = $committeeElection->isLockPeriodActive() || ($election && $election->isLockPeriodActive());
+
+            if ($isLocked && $isAdmin && (new \DateTime()) < $committeeElection->getVoteStartDate()) {
+                return false;
+            }
+
+            return $isLocked;
+        }
+
+        return false;
     }
 
     public function clearForAdherent(Adherent $adherent): void

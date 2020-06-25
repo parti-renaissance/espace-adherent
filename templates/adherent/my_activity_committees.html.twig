@@ -1,7 +1,8 @@
 {% extends 'adherent/my_activity_layout.html.twig' %}
 
 {% set committee_candidacy_membership = app.user.memberships.committeeCandidacyMembership %}
-{% set is_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
+{% set is_adherent_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
+{% set last_vote = get_election_last_vote(app.user) %}
 
 {% block tab %}
     <div class="l__wrapper--narrow">
@@ -9,8 +10,18 @@
             Comment participer pour voter et candidater ? Nous vous invitons à sélectionner un comité principal, que vous soyez membre de plusieurs comités ou d'un seul, pour participer à la désignation du binôme paritaire d'adhérents siégeant au Conseil territorial.
             <br /><br />
             Pour candidater, rendez-vous sur la page de votre comité principal en cliquant sur le bouton « VOIR » puis suivez les instructions.
+
+            {% if last_vote %}
+                {% set vote_committee = last_vote.election.electionEntity.committee %}
+
+                <br /><br />
+                Vous avez voté dans le comité <b>{{ vote_committee.name }}</b>, le {{ last_vote.votedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}.
+                Vous ne pouvez plus changer de comité principal jusqu'au <b>{{ last_vote.votedAt|date_modify('+3 months')|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}</b>.
+                Voir les statuts ou réglement intérieur pour en savoir plus.
+            {% endif %}
         </div>
     </div>
+
     <div class="l__wrapper--narrow b__nudge--bottom-huge">
 
         {% for membership in committeeMemberships %}
@@ -45,7 +56,10 @@
                             </a>
                         {% endif %}
                     </div>
+
                     <div class="right">
+                        {% set committee_is_locked = not is_granted('COMMITTEE_IS_NOT_LOCKED', membership.committee) %}
+
                         <div class="em-switch__wrapper">
                             <label class="switch">
                                 <input
@@ -54,7 +68,7 @@
                                     data-committee-title="{{ committee.name }}"
                                     data-committee-slug="{{ committee.slug }}"
                                     data-token="{{ csrf_token('committee.vote') }}"
-                                    {{ not is_able_to_change_vote ? 'disabled="disabled"' }}
+                                    {{ not is_adherent_able_to_change_vote or committee_is_locked ? 'disabled="disabled"' }}
                                     {{ membership.isVotingCommittee ? 'checked="checked"' }}
                                 >
                                 <span class="slider"></span>
@@ -68,6 +82,10 @@
                             {% else %}
                                 <div class="legend">Vous devez retirer votre candidature pour pouvoir changer de comité de désignation.</div>
                             {% endif %}
+                        {% endif %}
+
+                        {% if committee_is_locked %}
+                            <div class="legend pink">Ce comité a une désignation en cours</div>
                         {% endif %}
                     </div>
                 </div>
@@ -84,7 +102,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% if is_able_to_change_vote %}
+    {% if is_adherent_able_to_change_vote %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
                 App.runMyActivityCommitteeList('.vote-switcher');

@@ -88,4 +88,18 @@ trait EntityDesignationTrait
     {
         return $this->designation->getAdditionalRoundDuration();
     }
+
+    public function isLockPeriodActive(): bool
+    {
+        $now = new \DateTime();
+        $candidateEndDate = clone $this->getCandidacyPeriodEndDate();
+
+        return $candidateEndDate->modify(sprintf('-%d days', $this->designation->getLockPeriodThreshold())) < $now
+            && ($this->isCandidacyPeriodActive() || $now < $this->getRealVoteEndDate());
+    }
+
+    public function getRealVoteEndDate(): \DateTime
+    {
+        return $this->getVoteEndDate();
+    }
 }

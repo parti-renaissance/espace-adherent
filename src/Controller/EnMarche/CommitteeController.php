@@ -183,9 +183,9 @@ class CommitteeController extends Controller
      * @Route("/voter", defaults={"enable": true}, name="app_committee_vote", condition="request.isXmlHttpRequest()", methods={"POST"})
      * @Route("/ne-plus-voter", defaults={"enable": false}, name="app_committee_unvote", condition="request.isXmlHttpRequest()", methods={"POST"})
      *
-     * @Security("is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE', committee)")
+     * @Security("is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') and is_granted('COMMITTEE_IS_NOT_LOCKED', committee)")
      *
-     * @param Adherent $adherent
+     * @param Adherent|UserInterface $adherent
      */
     public function toggleCommitteeVoteAction(
         bool $enable,
