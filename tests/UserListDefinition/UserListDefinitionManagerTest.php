@@ -2,6 +2,7 @@
 
 namespace Tests\App\UserListDefinition;
 
+use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\UserListDefinition;
@@ -12,6 +13,7 @@ use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\UserListDefinitionRepository;
 use App\UserListDefinition\UserListDefinitionManager;
 use App\UserListDefinition\UserListDefinitionPermissions;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -87,7 +89,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $this->createMock(EntityManagerInterface::class),
             $userListDefinitionRepository,
-            $this->createMock(AuthorizationCheckerInterface::class)
+            $this->createMock(AuthorizationCheckerInterface::class),
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $gotMembers = $userListDefinitionManager->getUserListDefinitionMembers(
@@ -136,7 +139,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $userListDefinitionRepository,
-            $this->createMock(AuthorizationCheckerInterface::class)
+            $this->createMock(AuthorizationCheckerInterface::class),
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionException::class);
@@ -194,7 +198,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $userListDefinitionRepository,
-            $authorizationChecker
+            $authorizationChecker,
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionException::class);
@@ -237,7 +242,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $this->createMock(UserListDefinitionRepository::class),
-            $this->createMock(AuthorizationCheckerInterface::class)
+            $this->createMock(AuthorizationCheckerInterface::class),
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionMemberException::class);
@@ -302,7 +308,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $userListDefinitionRepository,
-            $authorizationChecker
+            $authorizationChecker,
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionMemberException::class);
@@ -345,6 +352,10 @@ class UserListDefinitionManagerTest extends WebTestCase
             ->method('addUserListDefinition')
             ->with($userListDefinitionSLR)
         ;
+        $electedRepresentative1->expects($this->once())
+            ->method('getUserListDefinitions')
+            ->willReturn(new ArrayCollection())
+        ;
         $electedRepresentative2 = $this->createMock(ElectedRepresentative::class);
         $electedRepresentative2->expects($this->once())
             ->method('addUserListDefinition')
@@ -354,10 +365,18 @@ class UserListDefinitionManagerTest extends WebTestCase
             ->method('removeUserListDefinition')
             ->with($userListDefinitionSLR)
         ;
+        $electedRepresentative2->expects($this->once())
+            ->method('getUserListDefinitions')
+            ->willReturn(new ArrayCollection())
+        ;
         $electedRepresentative3 = $this->createMock(ElectedRepresentative::class);
         $electedRepresentative3->expects($this->once())
             ->method('removeUserListDefinition')
             ->with($userListDefinitionSLR)
+        ;
+        $electedRepresentative3->expects($this->once())
+            ->method('getUserListDefinitions')
+            ->willReturn(new ArrayCollection())
         ;
 
         $electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
@@ -421,7 +440,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
             $userListDefinitionRepository,
-            $authorizationChecker
+            $authorizationChecker,
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $userListDefinitionManager->updateUserListDefinitionMembers(
@@ -439,7 +459,8 @@ class UserListDefinitionManagerTest extends WebTestCase
         $this->userListDefinitionManager = new UserListDefinitionManager(
             $this->createMock(EntityManagerInterface::class),
             $this->createMock(UserListDefinitionRepository::class),
-            $this->createMock(AuthorizationCheckerInterface::class)
+            $this->createMock(AuthorizationCheckerInterface::class),
+            $this->createMock(UserListDefinitionHistoryManager::class)
         );
     }
 

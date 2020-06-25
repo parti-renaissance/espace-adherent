@@ -4,6 +4,7 @@ namespace App\Admin\ElectedRepresentative;
 
 use App\Address\Address;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
+use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -12,6 +13,7 @@ use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ElectedRepresentative\ZoneCategory;
+use App\Entity\UserListDefinition;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
 use App\Form\ElectedRepresentative\SponsorshipType;
@@ -49,11 +51,24 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     /** @var MandateRepository */
     private $mandateRepository;
 
-    public function __construct($code, $class, $baseControllerName, MandateRepository $mandateRepository)
-    {
+    /**
+     * @var UserListDefinition[]|array
+     */
+    private $userListDefinitionsBeforeUpdate;
+
+    private $userListDefinitionHistoryManager;
+
+    public function __construct(
+        $code,
+        $class,
+        $baseControllerName,
+        MandateRepository $mandateRepository,
+        UserListDefinitionHistoryManager $userListDefinitionHistoryManager
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->mandateRepository = $mandateRepository;
+        $this->userListDefinitionHistoryManager = $userListDefinitionHistoryManager;
     }
 
     protected function configureRoutes(RouteCollection $collection)
@@ -600,19 +615,35 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $where = new Expr\Orx();
-
-                    foreach ($value['value'] as $key => $labelName) {
-                        $where->add("label.name = :label_name_$key");
-                        $qb->setParameter("label_name_$key", $labelName);
-                    }
-
-                    $qb->andWhere($where);
+                    $qb->andWhere('label.name IN (:label_names)');
+                    $qb->setParameter('label_names', $value['value']);
 
                     return true;
                 },
             ])
         ;
+    }
+
+    /**
+     * @param ElectedRepresentative $subject
+     */
+    public function setSubject($subject)
+    {
+        if (null === $this->userListDefinitionsBeforeUpdate) {
+            $this->userListDefinitionsBeforeUpdate = $subject->getUserListDefinitions()->toArray();
+        }
+
+        parent::setSubject($subject);
+    }
+
+    /**
+     * @param ElectedRepresentative $subject
+     */
+    public function preUpdate($subject)
+    {
+        $this->userListDefinitionHistoryManager->handleChanges($subject, $this->userListDefinitionsBeforeUpdate);
+
+        parent::preUpdate($subject);
     }
 
     public function getExportFields()
