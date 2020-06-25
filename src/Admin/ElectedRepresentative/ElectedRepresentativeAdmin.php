@@ -17,6 +17,7 @@ use App\Form\AdherentEmailType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
 use App\Repository\ElectedRepresentative\MandateRepository;
+use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -173,6 +174,12 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
+                    'placeholder' => 'common.gender.unknown',
+                    'required' => false,
+                    'choices' => [
+                        'common.gender.woman' => Genders::FEMALE,
+                        'common.gender.man' => Genders::MALE,
+                    ],
                 ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
