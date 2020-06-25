@@ -98,6 +98,16 @@ class Designation
      */
     private $additionalRoundDuration = 5;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     *
+     * @Assert\NotBlank
+     * @Assert\GreaterThan(0)
+     */
+    private $lockPeriodThreshold = 3;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -191,5 +201,15 @@ class Designation
         }
 
         return '';
+    }
+
+    public function getLockPeriodThreshold(): int
+    {
+        return $this->lockPeriodThreshold;
+    }
+
+    public function setLockPeriodThreshold(int $lockPeriodThreshold): void
+    {
+        $this->lockPeriodThreshold = $lockPeriodThreshold;
     }
 }
