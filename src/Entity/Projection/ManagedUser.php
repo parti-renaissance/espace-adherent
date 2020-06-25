@@ -214,6 +214,13 @@ class ManagedUser
      */
     private $subscriptionTypes;
 
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $voteCommitteeId;
+
     public function __construct(
         int $status,
         string $type,
@@ -239,7 +246,8 @@ class ManagedUser
         array $supervisorTags = [],
         array $citizenProjects = null,
         array $citizenProjectsOrganizer = null,
-        UuidInterface $uuid = null
+        UuidInterface $uuid = null,
+        int $voteCommitteeId = null
     ) {
         $this->status = $status;
         $this->type = $type;
@@ -266,6 +274,7 @@ class ManagedUser
         $this->supervisorTags = $supervisorTags;
         $this->citizenProjects = $citizenProjects;
         $this->citizenProjectsOrganizer = $citizenProjectsOrganizer;
+        $this->voteCommitteeId = $voteCommitteeId;
     }
 
     public function getId(): int
@@ -462,5 +471,10 @@ class ManagedUser
         }
 
         return 'Adherent';
+    }
+
+    public function getVoteCommitteeId(): ?int
+    {
+        return $this->voteCommitteeId;
     }
 }

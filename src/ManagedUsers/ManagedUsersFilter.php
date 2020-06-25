@@ -92,7 +92,7 @@ class ManagedUsersFilter
      *
      * @Assert\NotNull
      */
-    private $referentTags = [];
+    private $referentTags;
 
     /**
      * @var bool|null
@@ -128,12 +128,17 @@ class ManagedUsersFilter
     /**
      * @var string[]
      */
-    private $committeeUuids = [];
+    private $committeeUuids;
 
     /**
      * @var string[]
      */
-    private $cities = [];
+    private $cities;
+
+    /**
+     * @var bool|null
+     */
+    private $voteInCommittee;
 
     public function __construct(
         string $subscriptionType = null,
@@ -324,6 +329,16 @@ class ManagedUsersFilter
         $this->emailSubscription = $emailSubscription;
     }
 
+    public function getVoteInCommittee(): ?bool
+    {
+        return $this->voteInCommittee;
+    }
+
+    public function setVoteInCommittee(?bool $voteInCommittee): void
+    {
+        $this->voteInCommittee = $voteInCommittee;
+    }
+
     public function getSubscriptionType(): ?string
     {
         return $this->subscriptionType;
@@ -390,6 +405,7 @@ class ManagedUsersFilter
                 'registeredUntil' => $this->registeredUntil ? $this->registeredUntil->format('Y-m-d') : null,
                 'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
                 'emailSubscription' => $this->emailSubscription,
+                'voteInCommittee' => $this->voteInCommittee,
                 'sort' => $this->sort,
                 'order' => $this->order,
                 'committee' => $this->committee ? $this->committee->getUuidAsString() : null,

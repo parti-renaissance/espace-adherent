@@ -61,7 +61,17 @@ class ManagedUsersFilterType extends AbstractType
                     return false === $choice ? '0' : (string) $choice;
                 },
             ])
-
+            ->add('voteInCommittee', ChoiceType::class, [
+                'required' => false,
+                'choices' => [
+                    'common.all' => null,
+                    'global.yes' => true,
+                    'global.no' => false,
+                ],
+                'choice_value' => function ($choice) {
+                    return false === $choice ? '0' : (string) $choice;
+                },
+            ])
             ->add('sort', HiddenType::class, ['required' => false])
             ->add('order', HiddenType::class, ['required' => false])
         ;

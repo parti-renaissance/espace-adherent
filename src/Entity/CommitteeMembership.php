@@ -92,7 +92,7 @@ class CommitteeMembership
     /**
      * Indicates if the adherent votes in this committee
      *
-     * @var bool
+     * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
      */
@@ -245,6 +245,9 @@ class CommitteeMembership
         $this->committeeCandidacy = null;
     }
 
+    /**
+     * @Groups({"adherent_committees_modal"})
+     */
     public function isVotingCommittee(): bool
     {
         return true === $this->enableVote;

@@ -88,6 +88,12 @@
                                 {% set committees_count = user.committees|length %}
 
                                 {% if committees_count > 0 and user.adherentUuid %}
+                                    {% if user.voteCommitteeId is not empty %}
+                                        <span class="b__nudge--right-nano">
+                                            <img src="{{ asset('/images/icons/icn_vote.svg') }}" alt="vote icon" title="Vote dans un comité"/>
+                                        </span>
+                                    {% endif %}
+
                                     {{ committees_count }} •
                                     <a
                                             href="javascript:void(0);"
