@@ -271,6 +271,7 @@
     is_granted('ROLE_ELECTION_RESULTS_REPORTER') or
     is_granted('ROLE_MUNICIPAL_MANAGER') or
     is_granted('ROLE_MUNICIPAL_MANAGER_SUPERVISOR') or
+    is_granted('ROLE_SENATORIAL_CANDIDATE') or
     is_granted('ROLE_DELEGATED_REFERENT') or
     is_granted('ROLE_DELEGATED_DEPUTY') or
     is_granted('ROLE_DELEGATED_SENATOR')
@@ -290,6 +291,7 @@
         app.user.isAssessor +
         app.user.isMunicipalManager +
         app.user.isElectionResultsReporter +
+        app.user.isSenatorialCandidate +
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
         is_granted('ROLE_DELEGATED_REFERENT') +
         is_granted('ROLE_DELEGATED_DEPUTY') +

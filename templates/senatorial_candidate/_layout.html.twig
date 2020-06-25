@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mon espace Senatoriales 2020' %}
+
+{% block banner '' %}
+
+{% set hasCharterAccepted = app.user.charters.hasSenatorialCandidateCharterAccepted %}
+
+{% block stylesheets %}
+    {% if not hasCharterAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="manager-space b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="el manager-information">
+                            <p>Vous gérez : <span>{{ app.user.senatorialCandidateManagedArea.departmentTags|join(', ') }}</span></p>
+                        </div>
+                        <div class="el">
+                            <p class="report">🐛 Bug ? Nouveau besoin ?
+                                <a href="mailto:cellule.technique.municipales&#64;en-marche.fr" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            {{ block('page_title') }}
+                        </h1>
+                    </div>
+                    <nav class="manager-header__menu">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, 'app_senatorial_candidate_elected_representatives_*') ? 'active' }}">
+                                <a href="{{ path('app_senatorial_candidate_elected_representatives_list') }}">Élus</a>
+                            </li>
+                            <li class="{{ is_active_route(app.request, 'app_senatorial_candidate_my_team_*') ? 'active' }}">
+                                <a href="{{ path('app_senatorial_candidate_my_team_list') }}">Mon équipe</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="l__wrapper text--body">
+                {% block senatorial_candidate_content %}{% endblock %}
+            </div>
+        </section>
+
+        {% if not hasCharterAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'senatorial_candidate.popup.title'|trans,
+                'fileUrl': 'senatorial_candidate.popup.file_url'|trans
+            } %}
+        {% endif %}
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+
+    {% if not hasCharterAccepted %}
+        <script type="text/javascript">
+          Kernel.onLoad(function() {
+              {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE')) }}
+          });
+        </script>
+    {% endif %}
+{% endblock %}

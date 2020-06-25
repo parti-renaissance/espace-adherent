@@ -20,6 +20,7 @@ use App\Entity\MunicipalManagerSupervisorRole;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
+use App\Entity\SenatorialCandidateManagedArea;
 use App\Membership\ActivityPositions;
 use App\Membership\AdherentFactory;
 use App\Subscription\SubscriptionTypeEnum;
@@ -61,6 +62,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const SENATOR_UUID = '021268fe-d4b3-44a7-bce9-c001191249a7';
     public const ASSESSOR_UUID = 'ae341e67-6e4c-4ead-b4be-1ade6693d512';
     public const MUNICIPAL_MANAGER_UUID = 'c2ba1ce4-e103-415f-a67a-260b8c651b55';
+    public const SENATORIAL_CANDIDATE_UUID = 'ab03c939-8f70-40a8-b2cd-d147ec7fd09e';
 
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -728,6 +730,24 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalManager->setMunicipalManagerRole(new MunicipalManagerRoleAssociation([$this->getReference('city-lille')]));
         $this->addReference('municipal-manager-1', $municipalManager);
 
+        $senatorialCandidate = $adherentFactory->createFromArray([
+            'uuid' => self::SENATORIAL_CANDIDATE_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'senatorial-candidate@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Senatorial',
+            'last_name' => 'Candidate 1',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1982-08-27',
+            'position' => 'employed',
+            'phone' => '33 673654349',
+            'registered_at' => '2019-06-10 09:19:00',
+        ]);
+        $senatorialCandidateManagedArea = new SenatorialCandidateManagedArea();
+        $senatorialCandidateManagedArea->addDepartmentTag($this->getReference('referent_tag_59'));
+        $senatorialCandidate->setSenatorialCandidateManagedArea($senatorialCandidateManagedArea);
+        $this->addReference('senatorial-candidate', $senatorialCandidate);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -761,6 +781,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key30 = AdherentActivationToken::generate($municipalManager);
         $key31 = AdherentActivationToken::generate($deputy_75_2);
         $key32 = AdherentActivationToken::generate($adherent19);
+        $key33 = AdherentActivationToken::generate($senatorialCandidate);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -794,6 +815,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalChief3->activate($key25, '2019-06-10 09:19:00');
         $assessor->activate($key29, '2019-06-10 09:19:00');
         $municipalManager->activate($key30, '2019-07-10 09:19:00');
+        $senatorialCandidate->activate($key33, '2019-07-10 09:19:00');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -975,6 +997,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent19);
         $manager->persist($assessor);
         $manager->persist($municipalManager);
+        $manager->persist($senatorialCandidate);
 
         // For Organizational chart: adherent which is co-referent and municipal manager supervisor in the referent@en-marche-dev.fr team
         $adherent6->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-8')));
@@ -1012,6 +1035,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($key26);
         $manager->persist($key27);
         $manager->persist($key31);
+        $manager->persist($key33);
 
         $manager->persist($resetPasswordToken);
 

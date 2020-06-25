@@ -9,6 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @Algolia\Index(autoIndex=false)
  */
-class ReferentCharter extends AbstractAdherentCharter
+class SenatorialCandidateCharter extends AbstractAdherentCharter
 {
 }

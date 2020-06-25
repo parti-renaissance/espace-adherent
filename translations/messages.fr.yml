@@ -84,6 +84,7 @@ municipal_manager: Responsable communal
 municipal_manager_supervisor: Responsable attribution
 election_results_reporter: Rapporteur résultats
 print_privilege: Accès LMI
+senatorial_candidate: Candidat Sénatoriales 2020
 
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !
@@ -765,3 +766,9 @@ delegated_access.form.access.committee: Comités
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
 delegated_access.updated_successfully: L'accès délégué à votre espace a correctement été mis à jour
 delegated_access.deleted_successfully: L'accès délégué à votre espace a correctement été supprimé
+
+#
+# Senatorial Candidate
+#
+senatorial_candidate.popup.title: Charte de bonne utilisation des outils numériques
+senatorial_candidate.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_candidat_senatoriales.pdf

@@ -449,6 +449,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $municipalChiefManagedArea;
 
     /**
+     * @var SenatorialCandidateManagedArea|null
+     *
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity="App\Entity\SenatorialCandidateManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $senatorialCandidateManagedArea;
+
+    /**
      * Access to external services regarding printing
      *
      * @var bool
@@ -730,6 +738,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         foreach ($this->receivedDelegatedAccesses as $delegatedAccess) {
             $roles[] = 'ROLE_DELEGATED_'.\strtoupper($delegatedAccess->getType());
+        }
+
+        if ($this->isSenatorialCandidate()) {
+            $roles[] = 'ROLE_SENATORIAL_CANDIDATE';
         }
 
         return array_merge(\array_unique($roles), $this->roles);
@@ -2106,5 +2118,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->receivedDelegatedAccesses->filter(static function (DelegatedAccess $delegatedAccess) use ($type) {
             return $delegatedAccess->getType() === $type;
         });
+    }
+
+    public function isSenatorialCandidate(): bool
+    {
+        return $this->senatorialCandidateManagedArea instanceof SenatorialCandidateManagedArea;
+    }
+
+    public function getSenatorialCandidateManagedArea(): ?SenatorialCandidateManagedArea
+    {
+        return $this->senatorialCandidateManagedArea;
+    }
+
+    public function setSenatorialCandidateManagedArea(
+        ?SenatorialCandidateManagedArea $senatorialCandidateManagedArea
+    ): void {
+        $this->senatorialCandidateManagedArea = $senatorialCandidateManagedArea;
     }
 }

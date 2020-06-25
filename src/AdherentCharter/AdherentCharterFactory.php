@@ -7,6 +7,7 @@ use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
+use App\Entity\AdherentCharter\SenatorialCandidateCharter;
 
 abstract class AdherentCharterFactory
 {
@@ -21,6 +22,8 @@ abstract class AdherentCharterFactory
                 return new DeputyCharter();
             case AdherentCharterTypeEnum::TYPE_SENATOR:
                 return new SenatorCharter();
+            case AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE:
+                return new SenatorialCandidateCharter();
         }
 
         return null;

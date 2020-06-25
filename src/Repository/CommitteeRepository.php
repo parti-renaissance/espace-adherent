@@ -417,6 +417,21 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findByPartialNameForSenatorialCandidate(
+        Adherent $senatorialCandidate,
+        string $search,
+        int $limit = 10
+    ): array {
+        $qb = $this
+            ->createPartialNameQueryBuilder($search, $alias = 'committee')
+            ->setMaxResults($limit)
+        ;
+
+        $this->applyGeoFilter($qb, $senatorialCandidate->getSenatorialCandidateManagedArea()->getDepartmentTags()->toArray(), $alias);
+
+        return $qb->getQuery()->getResult();
+    }
+
     private function createPartialNameQueryBuilder(string $search, string $alias = 'c'): QueryBuilder
     {
         return $this
