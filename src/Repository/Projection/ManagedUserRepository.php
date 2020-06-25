@@ -241,6 +241,10 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if (null !== $filter->getVoteInCommittee()) {
+            $qb->andWhere(sprintf('u.voteCommitteeId %s NULL', $filter->getVoteInCommittee() ? 'IS NOT' : 'IS'));
+        }
+
         return $qb;
     }
 

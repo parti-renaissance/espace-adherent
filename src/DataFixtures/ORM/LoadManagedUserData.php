@@ -19,6 +19,12 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
     {
         $managedUserFactory = $this->getManagedUserFactory();
 
+        $committee1 = $this->getReference('committee-1');
+        $committee3 = $this->getReference('committee-3');
+        $committee4 = $this->getReference('committee-4');
+        $committee5 = $this->getReference('committee-5');
+        $committee10 = $this->getReference('committee-10');
+
         $managedUser1 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'type' => ManagedUser::TYPE_ADHERENT,
@@ -52,8 +58,8 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'first_name' => $this->getReference('adherent-13')->getFirstName(),
             'last_name' => $this->getReference('adherent-13')->getLastName(),
             'birthday' => $this->getReference('adherent-13')->getBirthdate(),
-            'committees' => 'En Marche - Suisse',
-            'committee_uuids' => [LoadAdherentData::COMMITTEE_10_UUID],
+            'committees' => $committee10->getName(),
+            'committee_uuids' => [$committee10->getUuid()->toString()],
             'is_committee_member' => 1,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
@@ -75,8 +81,8 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'first_name' => $this->getReference('adherent-5')->getFirstName(),
             'last_name' => $this->getReference('adherent-5')->getLastName(),
             'birthday' => $this->getReference('adherent-5')->getBirthdate(),
-            'committees' => 'En Marche Paris 8',
-            'committee_uuids' => [LoadAdherentData::COMMITTEE_1_UUID],
+            'committees' => $committee1->getName(),
+            'committee_uuids' => [$committee1->getUuid()->toString()],
             'is_committee_member' => 0,
             'is_committee_host' => 1,
             'is_committee_supervisor' => 0,
@@ -102,8 +108,9 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'first_name' => $this->getReference('adherent-7')->getFirstName(),
             'last_name' => $this->getReference('adherent-7')->getLastName(),
             'birthday' => $this->getReference('adherent-7')->getBirthdate(),
-            'committees' => 'En Marche - Comité de Évry',
-            'committee_uuids' => [LoadAdherentData::COMMITTEE_5_UUID],
+            'committees' => implode('|', [$committee3->getName(), $committee4->getName(), $committee5->getName()]),
+            'committee_uuids' => [$committee3->getUuid()->toString(), $committee4->getUuid()->toString(), $committee5->getUuid()->toString()],
+            'vote_committee_id' => $committee3->getId(),
             'is_committee_member' => 0,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 1,

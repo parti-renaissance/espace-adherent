@@ -31,7 +31,8 @@ class ManagedUserFactory
             $data['supervisor_tags'] ?? [],
             $data['citizenProjects'] ?? null,
             $data['citizenProjectsOrganizer'] ?? null,
-            $data['uuid'] ?? null
+            $data['uuid'] ?? null,
+            $data['vote_committee_id'] ?? null
         );
     }
 
