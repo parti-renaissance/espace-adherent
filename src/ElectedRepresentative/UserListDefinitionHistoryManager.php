@@ -6,17 +6,17 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\Reporting\UserListDefinitionHistory;
 use App\Utils\ArrayUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserListDefinitionHistoryManager
 {
-    private $tokenStorage;
+    private $security;
     private $entityManager;
 
-    public function __construct(TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager)
+    public function __construct(Security $security, EntityManagerInterface $entityManager)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
         $this->entityManager = $entityManager;
     }
 
@@ -59,6 +59,6 @@ class UserListDefinitionHistoryManager
 
     private function getCurrentUser(): UserInterface
     {
-        return $this->tokenStorage->getToken()->getUser();
+        return $this->security->getUser();
     }
 }

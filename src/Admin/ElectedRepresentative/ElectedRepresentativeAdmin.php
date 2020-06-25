@@ -643,7 +643,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         $this->userListDefinitionHistoryManager->handleChanges($subject, $this->userListDefinitionsBeforeUpdate);
 
-        parent::postUpdate($subject);
+        parent::preUpdate($subject);
     }
 
     public function getExportFields()
