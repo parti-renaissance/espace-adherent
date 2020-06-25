@@ -13,6 +13,7 @@ use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\UserListDefinitionRepository;
 use App\UserListDefinition\UserListDefinitionManager;
 use App\UserListDefinition\UserListDefinitionPermissions;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -351,6 +352,10 @@ class UserListDefinitionManagerTest extends WebTestCase
             ->method('addUserListDefinition')
             ->with($userListDefinitionSLR)
         ;
+        $electedRepresentative1->expects($this->once())
+            ->method('getUserListDefinitions')
+            ->willReturn(new ArrayCollection())
+        ;
         $electedRepresentative2 = $this->createMock(ElectedRepresentative::class);
         $electedRepresentative2->expects($this->once())
             ->method('addUserListDefinition')
@@ -360,10 +365,18 @@ class UserListDefinitionManagerTest extends WebTestCase
             ->method('removeUserListDefinition')
             ->with($userListDefinitionSLR)
         ;
+        $electedRepresentative2->expects($this->once())
+            ->method('getUserListDefinitions')
+            ->willReturn(new ArrayCollection())
+        ;
         $electedRepresentative3 = $this->createMock(ElectedRepresentative::class);
         $electedRepresentative3->expects($this->once())
             ->method('removeUserListDefinition')
             ->with($userListDefinitionSLR)
+        ;
+        $electedRepresentative3->expects($this->once())
+            ->method('getUserListDefinitions')
+            ->willReturn(new ArrayCollection())
         ;
 
         $electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
