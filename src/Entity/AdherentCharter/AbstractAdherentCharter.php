@@ -2,6 +2,7 @@
 
 namespace App\Entity\AdherentCharter;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(columns={"adherent_id", "dtype"})
  * })
  * @ORM\InheritanceType("SINGLE_TABLE")
+ * @Algolia\Index(autoIndex=false)
  */
 abstract class AbstractAdherentCharter implements AdherentCharterInterface
 {

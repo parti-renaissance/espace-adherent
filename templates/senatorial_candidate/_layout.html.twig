@@ -19,7 +19,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="el manager-information">
-                            <p>Vous gérez : <span>{{ app.user.senatorialCandidateManagedArea.departmentTags.toArray|join(', ') }}</span></p>
+                            <p>Vous gérez : <span>{{ app.user.senatorialCandidateManagedArea.departmentTags|join(', ') }}</span></p>
                         </div>
                         <div class="el">
                             <p class="report">🐛 Bug ? Nouveau besoin ?
@@ -60,14 +60,14 @@
 {% endblock %}
 
 {% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+
     {% if not hasCharterAccepted %}
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
-
-        {% if js is not defined %}
-            {% import 'javascript.js.twig' as js %}
-        {% endif %}
-
         <script type="text/javascript">
           Kernel.onLoad(function() {
               {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE')) }}

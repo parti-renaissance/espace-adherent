@@ -449,8 +449,7 @@ class LoadElectedRepresentativeData extends Fixture
 
         $manager->persist($erParis3);
 
-
-        $erDepartment59 = ElectedRepresentative::create('Département', 'Nord', 'male', new \DateTime('1962-04-04'));
+        $erDepartment59 = ElectedRepresentative::create('Département', 'Nord', new \DateTime('1962-04-04'), 'male');
         $mandate = new Mandate(
             MandateTypeEnum::SENATOR,
             true,

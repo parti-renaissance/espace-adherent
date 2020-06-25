@@ -21,7 +21,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus');
 
-        $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(5, $crawler->filter('tbody tr.referent__item'));
         $this->assertCount(1, $crawler->filter('.status.status__1'));
         $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Conseiller(e) municipal(e) (NC)Clichy (92110)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
@@ -38,13 +38,14 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertContains('LOBELL', $crawler->filter('tbody tr.referent__item')->eq(3)->text());
     }
 
+    /** @group debug */
     public function testFilterElectedRepresentatives()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus');
 
-        $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(5, $crawler->filter('tbody tr.referent__item'));
 
         // filter by lastname
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -125,7 +126,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
 
         $crawler = $this->client->submit($form);
 
-        $this->assertCount(3, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
 
         // filter by cities
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();

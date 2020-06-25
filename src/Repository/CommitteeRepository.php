@@ -427,7 +427,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
         ;
 
-        $this->applySenatorialCandidateGeoFilter($qb, $senatorialCandidate, $alias);
+        $this->applyGeoFilter($qb, $senatorialCandidate->getSenatorialCandidateManagedArea()->getDepartmentTags()->toArray(), $alias);
 
         return $qb->getQuery()->getResult();
     }

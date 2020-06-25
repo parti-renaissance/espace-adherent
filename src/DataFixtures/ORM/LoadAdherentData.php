@@ -18,7 +18,6 @@ use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\MunicipalManagerRoleAssociation;
 use App\Entity\MunicipalManagerSupervisorRole;
 use App\Entity\PostAddress;
-use App\Entity\ReferentTag;
 use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
 use App\Entity\SenatorialCandidateManagedArea;
