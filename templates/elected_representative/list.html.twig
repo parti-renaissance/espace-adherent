@@ -166,7 +166,7 @@
                                                     <span class="label">{{ label }}</span><br />
                                                 {% endfor %}
                                             </div>
-                                            <span id="show_less_labels_{{ key }}" class="text--body text--gray visually-hidden cursor--pointer">^</span>
+                                            <span id="show_less_labels_{{ key }}" class="text--body text--gray visually-hidden cursor--pointer">-</span>
                                         {% endif %}
                                     </td>
                                     <td>
@@ -264,7 +264,7 @@
                                 cell += `<span class="label">${label.label}</span><br />`;
                             });
                             cell += '</div>';
-                            cell += `<span id="show_less_labels_${nb}" class="text--body text--gray visually-hidden cursor--pointer">^</span>`;
+                            cell += `<span id="show_less_labels_${nb}" class="text--body text--gray visually-hidden cursor--pointer">-</span>`;
                         }
 
                         return cell;
