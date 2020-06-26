@@ -25,6 +25,6 @@ class ReferentPersonLinkVoter extends Voter
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return (bool) $this->referentRepository->findOneByEmail($token->getUser()->getEmailAddress());
+        return $this->referentRepository->exists($token->getUser()->getEmailAddress());
     }
 }

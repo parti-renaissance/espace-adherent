@@ -146,6 +146,10 @@ class ManagedUsersFilter
         array $committeeUuids = [],
         array $cities = []
     ) {
+        if (empty($referentTags)) {
+            throw new \InvalidArgumentException('Referent tags could not be empty');
+        }
+
         $this->subscriptionType = $subscriptionType;
         $this->referentTags = $referentTags;
         $this->committeeUuids = $committeeUuids;
@@ -317,6 +321,8 @@ class ManagedUsersFilter
                 unset($this->referentTags[$key]);
             }
         }
+
+        $this->referentTags = array_values($this->referentTags);
     }
 
     public function getEmailSubscription(): ?bool
