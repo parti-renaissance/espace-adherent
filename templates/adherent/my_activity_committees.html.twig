@@ -4,13 +4,12 @@
 {% set is_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
 
 {% block tab %}
-    <div class="l__wrapper--narrow b__nudge--bottom-large text--justify font-roboto">
-        <p>Vous êtes membre de plusieurs comités ? Nous vous invitons à sélectionner un comité principal pour participer à la désignation du binôme paritaire d'adhérents siégeant au Conseil territorial.</p>
-
-        <p>Pour candidater, rendez-vous sur la page de votre comité principal en cliquant sur le bouton « VOIR » puis suivez les instructions.</p>
-    </div>
-
     <div class="l__wrapper--narrow b__nudge--bottom-huge">
+        <div class="alert alert--tips b__nudge--bottom-large">
+            Comment participer pour voter et candidater ? Nous vous invitons à sélectionner un comité principal, que vous soyez membres de plusieurs comités ou d'un seul, pour participer à la désignation du binôme paritaire d'adhérents siégeant au Conseil territorial.
+            <br /><br />
+            Pour candidater, rendez-vous sur la page de votre comité principal en cliquant sur le bouton « VOIR » puis suivez les instructions.
+        </div>
         {% for membership in committeeMemberships %}
             {% set committee = membership.committee %}
 
