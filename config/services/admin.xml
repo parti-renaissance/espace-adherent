@@ -900,9 +900,6 @@
             <argument />
             <argument>App\Entity\RepublicanSilence</argument>
             <argument />
-            <call method="setRepublicanSilenceManager">
-                <argument type="service" id="App\RepublicanSilence\RepublicanSilenceManager"/>
-            </call>
         </service>
 
         <service id="app.admin.legislative_candidate" class="App\Admin\LegislativeCandidateAdmin">

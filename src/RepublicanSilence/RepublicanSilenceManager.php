@@ -7,19 +7,14 @@ use App\Entity\ReferentTag;
 use App\Entity\RepublicanSilence;
 use App\Repository\ReferentTagRepository;
 use App\Repository\RepublicanSilenceRepository;
-use Psr\SimpleCache\CacheInterface;
 
 class RepublicanSilenceManager
 {
-    private const CACHE_PREFIX_KEY = 'republican_silence_';
-
     private $repository;
-    private $cache;
 
-    public function __construct(RepublicanSilenceRepository $repository, CacheInterface $cache)
+    public function __construct(RepublicanSilenceRepository $repository)
     {
         $this->repository = $repository;
-        $this->cache = $cache;
     }
 
     /**
@@ -27,17 +22,7 @@ class RepublicanSilenceManager
      */
     public function getRepublicanSilencesForDate(\DateTimeInterface $date): iterable
     {
-        $cacheKey = $this->getCacheKey($date);
-
-        if ($this->cache->has($cacheKey)) {
-            return $this->cache->get($cacheKey);
-        }
-
-        $silences = $this->repository->findStarted($date);
-
-        $this->cache->set($cacheKey, $silences, 86400); // with ttl: 24 H
-
-        return $silences;
+        return $this->repository->findStarted($date);
     }
 
     /**
@@ -63,16 +48,6 @@ class RepublicanSilenceManager
         }
 
         return false;
-    }
-
-    public function clearCache(\DateTimeInterface $date): bool
-    {
-        return $this->cache->delete($this->getCacheKey($date));
-    }
-
-    private function getCacheKey(\DateTimeInterface $date): string
-    {
-        return self::CACHE_PREFIX_KEY.$date->format('d-m-Y');
     }
 
     private function matchSilence(RepublicanSilence $silence, array $referentTagCodes): bool
