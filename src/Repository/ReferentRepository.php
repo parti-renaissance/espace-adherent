@@ -42,6 +42,15 @@ class ReferentRepository extends ServiceEntityRepository
         ;
     }
 
+    public function exists(string $email): bool
+    {
+        return 0 < $this->createQueryBuilderWithEmail($email)
+            ->select('COUNT(1)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     private function createQueryBuilderWithEmail(string $email): QueryBuilder
     {
         return $this->createQueryBuilder('referent')

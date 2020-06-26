@@ -198,9 +198,13 @@ class EventRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e')
             ->select('e', 'a', 'c', 'o')
+            ->addSelect('election', 'ref_team', 'board_member')
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
+            ->leftJoin('c.committeeElection', 'election')
+            ->leftJoin('o.referentTeamMember', 'ref_team')
+            ->leftJoin('o.boardMember', 'board_member')
             ->where('e.published = :published')
             ->orderBy('e.beginAt', 'DESC')
             ->addOrderBy('e.name', 'ASC')
