@@ -343,13 +343,7 @@
 
         <!-- Republican Silence -->
         <service id="App\RepublicanSilence\CheckRepublicanSilenceListener" />
-        <service id="App\RepublicanSilence\RepublicanSilenceManager">
-            <argument type="service" key="$cache">
-                <service class="Symfony\Component\Cache\Simple\Psr6Cache">
-                    <argument type="service" id="app.cache.republican_silence" />
-                </service>
-            </argument>
-        </service>
+        <service id="App\RepublicanSilence\RepublicanSilenceManager" />
 
         <service id="App\Election\ElectionManager" />
 

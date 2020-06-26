@@ -21,6 +21,5 @@ framework:
         pools:
             app.cache.redirection:
                 adapter: cache.adapter.doctrine
-            app.cache.republican_silence: ~
             app.cache.municipal_site: ~
             app.cache.voting_platform: ~
