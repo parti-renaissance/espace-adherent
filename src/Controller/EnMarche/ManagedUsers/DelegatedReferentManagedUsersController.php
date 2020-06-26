@@ -34,7 +34,7 @@ class DelegatedReferentManagedUsersController extends ReferentManagedUsersContro
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::REFERENT_EMAIL,
-            $delegatedAccess->getDelegator()->getReferentTags()->toArray(),
+            $delegatedAccess->getDelegator()->getManagedArea()->getTags()->toArray(),
             $delegatedAccess->getRestrictedCommittees()->map(static function (Committee $committee) {
                 return $committee->getUuidAsString();
             })->toArray(),

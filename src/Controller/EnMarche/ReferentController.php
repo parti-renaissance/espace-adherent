@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * All the route names should start with 'app_referent_', if not you should modify App\EventListener\RecordReferentLastVisitListener.
@@ -142,18 +141,6 @@ class ReferentController extends Controller
         $this->addFlash('info', 'referent.institutional_event.delete.success');
 
         return $this->redirectToRoute('app_referent_institutional_events');
-    }
-
-    /**
-     * @Route("/comites", name="app_referent_committees", methods={"GET"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function committeesAction(UserInterface $referent, CommitteeRepository $committeeRepository): Response
-    {
-        return $this->render('referent/committees_list.html.twig', [
-            'committees' => $committeeRepository->findReferentCommittees($referent),
-        ]);
     }
 
     /**

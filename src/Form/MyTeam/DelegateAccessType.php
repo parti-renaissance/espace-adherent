@@ -40,6 +40,10 @@ class DelegateAccessType extends AbstractType
             $accesses[] = DelegatedAccess::ACCESS_COMMITTEE;
         }
 
+        if ('referent' === $options['type']) {
+            $accesses[] = DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES;
+        }
+
         $builder
             ->add('role', ChoiceType::class, [
                 'expanded' => false,

@@ -2,7 +2,6 @@
 
 namespace App\Controller\EnMarche\ManagedUsers;
 
-use App\Entity\Adherent;
 use App\Form\ManagedUsers\ReferentManagedUsersFilterType;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Subscription\SubscriptionTypeEnum;
@@ -14,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-referent", name="app_referent_managed_users_", methods={"GET"})
  *
- * @Security("is_granted('ROLE_REFERENT') or is_granted('ROLE_COREFERENT')")
+ * @Security("is_granted('ROLE_REFERENT')")
  */
 class ReferentManagedUsersController extends AbstractManagedUsersController
 {
@@ -35,17 +34,9 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
 
     protected function createFilterModel(Request $request): ManagedUsersFilter
     {
-        /** @var Adherent $referent */
-        $referent = $this->getUser();
-
-        $referentTeamMember = $referent->getReferentTeamMember();
-
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::REFERENT_EMAIL,
-            ($referent->isCoReferent() ? $referent->getReferentOfReferentTeam() : $referent)
-                ->getManagedArea()->getTags()->toArray(),
-            $referent->isLimitedCoReferent() ? $referentTeamMember->getRestrictedCommitteeUuids() : [],
-            $referent->isLimitedCoReferent() ? $referentTeamMember->getRestrictedCities() : []
+            $this->getUser()->getManagedArea()->getTags()->toArray(),
         );
     }
 }
