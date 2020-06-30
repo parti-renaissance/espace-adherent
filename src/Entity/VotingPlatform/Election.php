@@ -25,6 +25,7 @@ class Election
     use EntityIdentityTrait;
     use EntityDesignationTrait {
         isVotePeriodActive as isDesignationVotePeriodActive;
+        getRealVoteEndDate as getDesignationRealVoteEndDate;
     }
 
     /**
@@ -103,6 +104,11 @@ class Election
         $this->electionEntity = $electionEntity;
     }
 
+    public function getRealVoteEndDate(): \DateTime
+    {
+        return $this->secondRoundEndDate ? $this->secondRoundEndDate : $this->getDesignationRealVoteEndDate();
+    }
+
     public function isVotePeriodActive(): bool
     {
         return ElectionStatusEnum::OPEN === $this->status
@@ -159,6 +165,6 @@ class Election
 
     public function isSecondRoundVotePeriodActive(): bool
     {
-        return null !== $this->secondRoundEndDate && $this->secondRoundEndDate >= new \DateTime();
+        return null !== $this->secondRoundEndDate && (new \DateTime()) <= $this->secondRoundEndDate;
     }
 }

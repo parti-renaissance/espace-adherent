@@ -53,6 +53,11 @@ class ElectionRound
         $this->isActive = $isActive;
     }
 
+    public function getElection(): Election
+    {
+        return $this->election;
+    }
+
     public function setElection(Election $election): void
     {
         $this->election = $election;

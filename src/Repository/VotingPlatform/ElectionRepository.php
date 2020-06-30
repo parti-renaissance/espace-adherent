@@ -41,7 +41,7 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOneForCommittee(Committee $committee): ?Election
+    public function findOneForCommittee(Committee $committee, Designation $designation): ?Election
     {
         return $this->createQueryBuilder('e')
             ->addSelect('d', 'ee')
@@ -51,9 +51,9 @@ class ElectionRepository extends ServiceEntityRepository
             ->andWhere('d = :designation')
             ->setParameters([
                 'committee' => $committee,
-                'designation' => $committee->getCommitteeElection()->getDesignation(),
+                'designation' => $designation,
             ])
-            ->orderBy('e.id', 'DESC')
+            ->orderBy('d.voteStartDate', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
