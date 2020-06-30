@@ -24,6 +24,7 @@
 {% endblock %}
 
 {% block content %}
+    {% set isReferent = is_granted('ROLE_REFERENT') %}
     <main>
         <section class="manager-space referent procuration-manager b__nudge--bottom-huge">
             <header class="manager-header">
@@ -53,15 +54,18 @@
                                 <p class="text--body text--dark b__nudge--top-0">Vous êtes {{ delegated_access.role|lower }} du réferent {{ currentUserOrDelegator }}</p>
                             {% endif %}
                         </div>
-                        {% if is_granted('ROLE_REFERENT') %}
+                        {% if isReferent or is_granted('ROLE_DELEGATED_REFERENT')  %}
                             <div class="direct-actions">
+                                {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
                                 <a href="{{ path('app_message_referent_create') }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                                {% endif %}
+                                {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
                                 <a href="{{ path('app_referent_event_manager_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>
 
-                    {% set isReferent = is_granted('ROLE_REFERENT') %}
                     {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ANY', app.request) %}
                     {% set delegated_access_uuid = app.request.attributes.get('delegated_access_uuid') %}
                     <nav class="manager-header__menu">
@@ -98,9 +102,15 @@
                             {% endif %}
 
                             {% if isReferent %}
-                            <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects') ? 'active' }}">
-                                <a href="{{ path('app_referent_citizen_projects') }}">Projets citoyens</a>
-                            </li>
+                                <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects_list') ? 'active' }}">
+                                    <a href="{{ path('app_referent_citizen_projects_list') }}">Projets citoyens</a>
+                                </li>
+                            {% endif %}
+
+                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects_delegated_list') ? 'active' }}">
+                                    <a href="{{ path('app_referent_citizen_projects_delegated_list', {delegated_access_uuid: delegated_access_uuid}) }}">Projets citoyens</a>
+                                </li>
                             {% endif %}
 
                             {% if isReferent %}
@@ -118,6 +128,12 @@
                             <li class="{{ is_active_route(app.request, 'app_jecoute_referent_*') ? 'active' }}">
                                 <a href="{{ path('app_jecoute_referent_local_surveys_list') }}">J'écoute</a>
                             </li>
+                            {% endif %}
+
+                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_JECOUTE', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_jecoute_referent_delegated_*') ? 'active' }}">
+                                    <a href="{{ path('app_jecoute_referent_delegated_local_surveys_list', {delegated_access_uuid: delegated_access_uuid}) }}">J'écoute</a>
+                                </li>
                             {% endif %}
 
                             {% if isReferent %}

@@ -6,6 +6,7 @@ use App\Entity\Jecoute\LocalSurvey;
 use App\Jecoute\JecouteSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -20,7 +21,7 @@ class MunicipalChiefJecouteController extends AbstractJecouteController
         return JecouteSpaceEnum::MUNICIPAL_CHIEF_SPACE;
     }
 
-    protected function getLocalSurveys(): array
+    protected function getLocalSurveys(Request $request): array
     {
         return $this->localSurveyRepository->findAllByAuthor($this->getUser());
     }
@@ -37,7 +38,7 @@ class MunicipalChiefJecouteController extends AbstractJecouteController
         ;
     }
 
-    protected function getSurveyTags(): array
+    protected function getSurveyTags(Request $request): array
     {
         return (array) $this->getUser()->getMunicipalChiefManagedArea()->getDepartmentalCode();
     }

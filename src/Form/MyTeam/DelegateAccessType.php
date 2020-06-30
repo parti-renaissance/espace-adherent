@@ -41,6 +41,8 @@ class DelegateAccessType extends AbstractType
         }
 
         if ('referent' === $options['type']) {
+            $accesses[] = DelegatedAccess::ACCESS_JECOUTE;
+            $accesses[] = DelegatedAccess::ACCESS_CITIZEN_PROJECTS;
             $accesses[] = DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES;
         }
 

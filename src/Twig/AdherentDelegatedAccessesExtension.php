@@ -78,8 +78,8 @@ class AdherentDelegatedAccessesExtension extends AbstractExtension
     ): string {
         $delegatedAccess = $this->security->getUser()->getReceivedDelegatedAccessByUuid($request->attributes->get(DelegatedAccess::ATTRIBUTE_KEY));
 
-        // route is usually "app_{space}_{type}_...", but for messages it is "app_{type}_{space}_..."
-        if ('message' === $type) {
+        // route is usually "app_{space}_{type}_...", but some are "app_{type}_{space}_..."
+        if (\in_array($type, ['message', 'jecoute'])) {
             $route = sprintf(
                 'app_%s_%s%s_%s',
                 $type,
