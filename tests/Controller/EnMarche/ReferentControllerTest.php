@@ -52,21 +52,6 @@ class ReferentControllerTest extends WebTestCase
     /**
      * @dataProvider providePages
      */
-    public function testReferentBackendIsAccessibleAsCoReferent($path)
-    {
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
-        $this->client->request(Request::METHOD_GET, $path);
-
-        if ('/espace-referent/utilisateurs' === $path) {
-            $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        } else {
-            $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
-        }
-    }
-
-    /**
-     * @dataProvider providePages
-     */
     public function testReferentBackendIsAccessibleAsReferent($path)
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
@@ -520,7 +505,6 @@ class ReferentControllerTest extends WebTestCase
     public function provideUsers(): iterable
     {
         yield ['referent@en-marche-dev.fr'];
-        yield ['benjyd@aol.com'];
     }
 
     /**

@@ -38,7 +38,6 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertContains('LOBELL', $crawler->filter('tbody tr.referent__item')->eq(3)->text());
     }
 
-    /** @group debug */
     public function testFilterElectedRepresentatives()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');

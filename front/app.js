@@ -216,7 +216,7 @@ class App {
     }
 
     runUserListDefinitions(memberType, type, wrapperSelector, checkboxSelector, mainCheckboxSelector,
-                           postApplyCallback) {
+                           delegatedAccessUuid, postApplyCallback) {
         System.import('pages/user_list_definition').catch((error) => { throw error; }).then((module) => {
             module.default(
                 memberType,
@@ -224,6 +224,7 @@ class App {
                 wrapperSelector,
                 checkboxSelector,
                 mainCheckboxSelector,
+                delegatedAccessUuid,
                 this.get('api'),
                 postApplyCallback
             );

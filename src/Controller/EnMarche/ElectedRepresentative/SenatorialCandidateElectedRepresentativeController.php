@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\ElectedRepresentative;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -16,7 +17,7 @@ class SenatorialCandidateElectedRepresentativeController extends AbstractElected
         return 'senatorial_candidate';
     }
 
-    protected function getManagedTags(): array
+    protected function getManagedTags(Request $request): array
     {
         return $this->getUser()->getSenatorialCandidateManagedArea()->getDepartmentTags()->toArray();
     }

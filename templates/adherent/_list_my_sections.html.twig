@@ -16,15 +16,9 @@
 {% if is_canary_enabled() and is_granted('ROLE_DELEGATED_REFERENT') %}
     {% for delegated_access in app.user.receivedDelegatedAccessOfType('referent') if delegated_access.accesses is not empty %}
         <li>
-            {# todo with referent delegated space : display first referentTag + count of rest, e.g. (75001 + 3) #}
-            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace référent partagé ({{ delegated_access.delegator.referentTags.0.code }})</a>
+            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace référent partagé ({{ delegated_access.delegator.referentTags.first.code }} <small>+{{ delegated_access.delegator.referentTags.count - 1 }}</small>)</a>
         </li>
     {% endfor %}
-{% endif %}
-{% if app.user.isCoReferent %}
-    <li>
-        <a href="{{ path('app_referent_managed_users_list') }}">Espace référent partagé</a>
-    </li>
 {% endif %}
 {% if app.user.isDeputy %}
     <li>

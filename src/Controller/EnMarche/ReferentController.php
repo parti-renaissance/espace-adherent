@@ -11,10 +11,8 @@ use App\Form\ReferentPersonLinkType;
 use App\InstitutionalEvent\InstitutionalEventCommand;
 use App\InstitutionalEvent\InstitutionalEventCommandHandler;
 use App\Intl\FranceCitiesBundle;
-use App\Referent\ManagedCitizenProjectsExporter;
 use App\Referent\ManagedInstitutionalEventsExporter;
 use App\Referent\OrganizationalChartManager;
-use App\Repository\CitizenProjectRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\InstitutionalEventRepository;
 use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
@@ -26,7 +24,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * All the route names should start with 'app_referent_', if not you should modify App\EventListener\RecordReferentLastVisitListener.
@@ -142,33 +139,6 @@ class ReferentController extends Controller
         $this->addFlash('info', 'referent.institutional_event.delete.success');
 
         return $this->redirectToRoute('app_referent_institutional_events');
-    }
-
-    /**
-     * @Route("/comites", name="app_referent_committees", methods={"GET"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function committeesAction(UserInterface $referent, CommitteeRepository $committeeRepository): Response
-    {
-        return $this->render('referent/committees_list.html.twig', [
-            'committees' => $committeeRepository->findReferentCommittees($referent),
-        ]);
-    }
-
-    /**
-     * @Route("/projets-citoyens", name="app_referent_citizen_projects", methods={"GET"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function citizenProjectsAction(
-        CitizenProjectRepository $citizenProjectRepository,
-        ManagedCitizenProjectsExporter $citizenProjectsExporter
-    ): Response {
-        return $this->render('referent/base_group_list.html.twig', [
-            'title' => 'Projets citoyens',
-            'managedGroupsJson' => $citizenProjectsExporter->exportAsJson($citizenProjectRepository->findManagedByReferent($this->getUser())),
-        ]);
     }
 
     /**

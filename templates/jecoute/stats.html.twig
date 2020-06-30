@@ -42,7 +42,7 @@
             });
 
             $('.data-answers-open-popin').click(function() {
-                let url = "{{ path("app_jecoute_#{space_name}_survey_stats_answers_list", { uuid: 'questionUuid' }) }}";
+                let url = "{{ get_path(space_name, 'jecoute', 'survey_stats_answers_list', app.request, { uuid: 'questionUuid' }) }}";
 
                 $.ajax({
                     url: url.replace('questionUuid', $(this).attr('data-question-uuid'))
@@ -57,7 +57,7 @@
 {% endblock %}
 
 {% block jecoute_content %}
-    <a href="{{ path("app_jecoute_#{space_name}_" ~ (data.survey.isNational ? 'national' : 'local') ~ "_surveys_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+    <a href="{{ get_path(space_name, 'jecoute', (data.survey.isNational ? 'national' : 'local') ~ '_surveys_list', app.request) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour
     </a>
 
@@ -107,7 +107,7 @@
         </div>
 
         <div class="form__row text--center">
-            <a href="{{ path("app_jecoute_#{space_name}_survey_stats", {uuid: data.survey.uuid, export: true}) }}" class="btn btn--ghosting--blue btn--large-and-full">Télécharger au format CSV</a>
+            <a href="{{ get_path(space_name, 'jecoute', 'survey_stats', app.request, {uuid: data.survey.uuid, export: true}) }}" class="btn btn--ghosting--blue btn--large-and-full">Télécharger au format CSV</a>
         </div>
     </div>
 

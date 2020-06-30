@@ -15,6 +15,9 @@ class DelegatedAccessesVoter extends Voter
     private const HAS_DELEGATED_ACCESS_ADHERENTS = 'HAS_DELEGATED_ACCESS_ADHERENTS';
     private const HAS_DELEGATED_ACCESS_COMMITTEE = 'HAS_DELEGATED_ACCESS_COMMITTEE';
     private const HAS_DELEGATED_ACCESS_MESSAGES = 'HAS_DELEGATED_ACCESS_MESSAGES';
+    private const HAS_DELEGATED_ACCESS_JECOUTE = 'HAS_DELEGATED_ACCESS_JECOUTE';
+    private const HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS = 'HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS';
+    private const HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES = 'HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES';
 
     protected function supports($attribute, $subject)
     {
@@ -45,6 +48,12 @@ class DelegatedAccessesVoter extends Voter
                 return \in_array(DelegatedAccess::ACCESS_COMMITTEE, $delegatedAccess->getAccesses(), true);
             case self::HAS_DELEGATED_ACCESS_MESSAGES:
                 return \in_array(DelegatedAccess::ACCESS_MESSAGES, $delegatedAccess->getAccesses(), true);
+            case self::HAS_DELEGATED_ACCESS_JECOUTE:
+                return \in_array(DelegatedAccess::ACCESS_JECOUTE, $delegatedAccess->getAccesses(), true);
+            case self::HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS:
+                return \in_array(DelegatedAccess::ACCESS_CITIZEN_PROJECTS, $delegatedAccess->getAccesses(), true);
+            case self::HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES:
+                return \in_array(DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES, $delegatedAccess->getAccesses(), true);
             default:
                 return false;
         }

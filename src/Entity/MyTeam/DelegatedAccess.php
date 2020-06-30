@@ -36,6 +36,9 @@ class DelegatedAccess
     public const ACCESS_EVENTS = 'events';
     public const ACCESS_ADHERENTS = 'adherents';
     public const ACCESS_COMMITTEE = 'committee';
+    public const ACCESS_JECOUTE = 'jecoute';
+    public const ACCESS_CITIZEN_PROJECTS = 'citizen_projects';
+    public const ACCESS_ELECTED_REPRESENTATIVES = 'elected_representatives';
     public const ACCESSES = [
         self::ACCESS_MESSAGES,
         self::ACCESS_EVENTS,

@@ -21,6 +21,7 @@ export default class UserListDefinitionWidget extends React.Component {
         this.api = props.api;
         this.postApplyCallback = props.postApplyCallback || null;
 
+        this.delegatedAccessUuid = props.delegatedAccessUuid;
         this.checkboxSelector = props.checkboxSelector;
         this.checkboxes = findAll(document, props.checkboxSelector);
 
@@ -375,6 +376,7 @@ export default class UserListDefinitionWidget extends React.Component {
         const uldMembers = this.prepareUserListDefinitionMembers();
         this.api.saveUserListDefinitionMembers(this.memberType, this.type, {
             members: uldMembers,
+            delegated_access_uuid: this.delegatedAccessUuid,
         }, (data) => {
             if ('' !== data) {
                 this.setState({

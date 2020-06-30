@@ -43,11 +43,11 @@ abstract class AbstractJecouteController extends Controller
      * @Route("", name="local_surveys_list", methods={"GET"}, defaults={"type": SurveyTypeEnum::LOCAL})
      * @Route("/questionnaires-nationaux", name="national_surveys_list", methods={"GET"}, defaults={"type": SurveyTypeEnum::NATIONAL})
      */
-    public function jecouteSurveysListAction(string $type): Response
+    public function jecouteSurveysListAction(Request $request, string $type): Response
     {
         return $this->renderTemplate('jecoute/surveys_list.html.twig', [
             'type' => $type,
-            'surveys' => $this->getListSurveys($type),
+            'surveys' => SurveyTypeEnum::LOCAL === $type ? $this->getLocalSurveys($request) : $this->nationalSurveyRepository->findAllPublishedWithStats(),
         ]);
     }
 
@@ -73,14 +73,14 @@ abstract class AbstractJecouteController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $localSurvey->setTags($this->getSurveyTags());
+            $localSurvey->setTags($this->getSurveyTags($request));
 
             $manager->persist($form->getData());
             $manager->flush();
 
             $this->addFlash('info', 'survey.create.success');
 
-            return $this->redirectToJecouteRoute('local_surveys_list');
+            return $this->redirectToJecouteRoute($request, 'local_surveys_list');
         }
 
         return $this->renderTemplate('jecoute/create.html.twig', [
@@ -115,7 +115,7 @@ abstract class AbstractJecouteController extends Controller
 
             $this->addFlash('info', 'survey.edit.success');
 
-            return $this->redirectToJecouteRoute('local_surveys_list');
+            return $this->redirectToJecouteRoute($request, 'local_surveys_list');
         }
 
         return $this->renderTemplate('jecoute/create.html.twig', [
@@ -193,8 +193,11 @@ abstract class AbstractJecouteController extends Controller
      *
      * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")
      */
-    public function jecouteSurveyDuplicateAction(LocalSurvey $survey, ObjectManager $manager): Response
-    {
+    public function jecouteSurveyDuplicateAction(
+        Request $request,
+        LocalSurvey $survey,
+        ObjectManager $manager
+    ): Response {
         $clonedSurvey = clone $survey;
 
         $manager->persist($clonedSurvey);
@@ -202,7 +205,7 @@ abstract class AbstractJecouteController extends Controller
 
         $this->addFlash('info', 'survey.duplicate.success');
 
-        return $this->redirectToJecouteRoute('local_surveys_list');
+        return $this->redirectToJecouteRoute($request, 'local_surveys_list');
     }
 
     /**
@@ -228,9 +231,9 @@ abstract class AbstractJecouteController extends Controller
     /**
      * @return LocalSurvey[]
      */
-    abstract protected function getLocalSurveys(): array;
+    abstract protected function getLocalSurveys(Request $request): array;
 
-    abstract protected function getSurveyTags(): array;
+    abstract protected function getSurveyTags(Request $request): array;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
@@ -243,7 +246,7 @@ abstract class AbstractJecouteController extends Controller
         ));
     }
 
-    protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
+    protected function redirectToJecouteRoute(Request $request, string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_${subName}", $parameters);
     }
@@ -251,17 +254,5 @@ abstract class AbstractJecouteController extends Controller
     protected function createSurveyForm(LocalSurvey $localSurvey): FormInterface
     {
         return $this->createForm(SurveyFormType::class, $localSurvey);
-    }
-
-    /**
-     * @return LocalSurvey[]|NationalSurvey[]
-     */
-    private function getListSurveys(string $type): array
-    {
-        if (SurveyTypeEnum::LOCAL === $type) {
-            return $this->getLocalSurveys();
-        }
-
-        return $this->nationalSurveyRepository->findAllPublishedWithStats();
     }
 }
