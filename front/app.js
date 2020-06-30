@@ -313,6 +313,12 @@ class App {
             module.default(inputElement);
         });
     }
+
+    runCountdownClock(clockSelector) {
+        System.import('services/utils/countdownClock').catch((error) => { throw error; }).then((module) => {
+            module.default(clockSelector);
+        });
+    }
 }
 
 window.App = new App();
