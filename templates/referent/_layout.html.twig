@@ -57,10 +57,10 @@
                         {% if isReferent or is_granted('ROLE_DELEGATED_REFERENT')  %}
                             <div class="direct-actions">
                                 {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
-                                <a href="{{ path('app_message_referent_create') }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                                <a href="{{ get_path('referent', 'message', 'create', app.request) }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
                                 {% endif %}
                                 {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
-                                <a href="{{ path('app_referent_event_manager_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                                <a href="{{ get_path('referent', 'event_manager', 'events_create', app.request) }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
                                 {% endif %}
                             </div>
                         {% endif %}
@@ -83,6 +83,11 @@
                                 </li>
                             {% endif %}
 
+                            {% if isReferent %}
+                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') }}">
+                                    <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
+                                </li>
+                            {% endif %}
                             {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_message_referent_delegated_*') ? 'active' }}">
                                     <a href="{{ path('app_message_referent_delegated_list', route_params|default({})|merge({delegated_access_uuid: delegated_access_uuid})) }}">Mes messages</a>

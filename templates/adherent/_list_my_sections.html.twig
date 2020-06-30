@@ -16,7 +16,7 @@
 {% if is_canary_enabled() and is_granted('ROLE_DELEGATED_REFERENT') %}
     {% for delegated_access in app.user.receivedDelegatedAccessOfType('referent') if delegated_access.accesses is not empty %}
         <li>
-            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace référent partagé ({{ delegated_access.delegator.referentTags.first.code }} <small>+{{ delegated_access.delegator.referentTags.count - 1 }}</small>)</a>
+            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace référent partagé ({{ delegated_access.delegator.managedArea.tags.first.code }} <small>+{{ delegated_access.delegator.managedArea.tags.count - 1 }}</small>)</a>
         </li>
     {% endfor %}
 {% endif %}

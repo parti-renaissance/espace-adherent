@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Adherent;
+use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\ReferentTag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
@@ -13,9 +15,12 @@ class MyReferentTagChoiceType extends AbstractType
 {
     private $security;
 
-    public function __construct(Security $security)
+    private $requestStack;
+
+    public function __construct(Security $security, RequestStack $requestStack)
     {
         $this->security = $security;
+        $this->requestStack = $requestStack;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -40,11 +45,14 @@ class MyReferentTagChoiceType extends AbstractType
             return [];
         }
 
-        if (!$user->isReferent() && !$user->isCoReferent()) {
+        if ($delegatedAccess = $user->getReceivedDelegatedAccessByUuid($this->requestStack->getMasterRequest()->attributes->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+            $user = $delegatedAccess->getDelegator();
+        }
+
+        if (!$user->isReferent()) {
             return [];
         }
 
-        return ($user->isCoReferent() ? $user->getReferentOfReferentTeam() : $user)
-            ->getManagedArea()->getTags()->toArray();
+        return $user->getManagedArea()->getTags()->toArray();
     }
 }
