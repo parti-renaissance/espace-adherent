@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-referent-delegue/{delegated_access_uuid}/jecoute", name="app_jecoute_referent_delegated_")
+ * @Route("/espace-referent-partage/{delegated_access_uuid}/jecoute", name="app_jecoute_referent_delegated_")
  *
  * @Security("is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_JECOUTE', request)")
  */

@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-referent-delegue/{delegated_access_uuid}/comites", name="app_referent_delegated_", methods={"GET"})
+ * @Route("/espace-referent-partage/{delegated_access_uuid}/comites", name="app_referent_delegated_", methods={"GET"})
  *
  * @Security("is_granted('ROLE_DELEGATED_REFERENT')")
  */
