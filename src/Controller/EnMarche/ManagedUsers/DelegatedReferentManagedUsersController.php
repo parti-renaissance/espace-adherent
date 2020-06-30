@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent-delegue/{delegated_access_uuid}", name="app_referent_managed_users_delegated_", methods={"GET"})
+ * @Route(path="/espace-referent-partage/{delegated_access_uuid}", name="app_referent_managed_users_delegated_", methods={"GET"})
  *
  * @Security("is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', request)")
  */

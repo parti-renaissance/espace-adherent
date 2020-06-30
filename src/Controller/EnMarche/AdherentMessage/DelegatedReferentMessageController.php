@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent-delegue/{delegated_access_uuid}/messagerie", name="app_message_referent_delegated_")
+ * @Route(path="/espace-referent-partage/{delegated_access_uuid}/messagerie", name="app_message_referent_delegated_")
  *
  * @Security("is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_MESSAGES', request)")
  */
