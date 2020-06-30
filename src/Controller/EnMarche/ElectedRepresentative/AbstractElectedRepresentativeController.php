@@ -22,15 +22,15 @@ abstract class AbstractElectedRepresentativeController extends Controller
         Request $request,
         ElectedRepresentativeRepository $electedRepresentativeRepository
     ): Response {
-        $filter = new ListFilter($this->getManagedTags($request));
+        $filter = new ListFilter($managedTags = $this->getManagedTags($request));
 
         $form = $this
-            ->createFilterForm($request, $filter)
+            ->createFilterForm($managedTags, $filter)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $filter = new ListFilter($this->getManagedTags($request));
+            $filter = new ListFilter($managedTags);
         }
 
         $electedRepresentatives = $electedRepresentativeRepository->searchByFilter($filter, $request->query->getInt('page', 1));
@@ -57,10 +57,10 @@ abstract class AbstractElectedRepresentativeController extends Controller
 
     abstract protected function getManagedTags(Request $request): array;
 
-    protected function createFilterForm(Request $request, ListFilter $filter = null): FormInterface
+    protected function createFilterForm(array $managedTags, ListFilter $filter = null): FormInterface
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
-            'referent_tags' => $this->getManagedTags($request),
+            'referent_tags' => $managedTags,
             'user_list_definition_type' => UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,

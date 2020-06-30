@@ -3,6 +3,7 @@
 namespace App\Form\MyTeam;
 
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Form\CommitteeUuidType;
 use App\Form\DataTransformer\AdherentToEmailTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -35,17 +36,6 @@ class DelegateAccessType extends AbstractType
             $roles[] = $builder->getData()->getRole();
         }
 
-        $accesses = DelegatedAccess::ACCESSES;
-        if ('deputy' === $options['type']) {
-            $accesses[] = DelegatedAccess::ACCESS_COMMITTEE;
-        }
-
-        if ('referent' === $options['type']) {
-            $accesses[] = DelegatedAccess::ACCESS_JECOUTE;
-            $accesses[] = DelegatedAccess::ACCESS_CITIZEN_PROJECTS;
-            $accesses[] = DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES;
-        }
-
         $builder
             ->add('role', ChoiceType::class, [
                 'expanded' => false,
@@ -66,7 +56,7 @@ class DelegateAccessType extends AbstractType
             ->add('accesses', ChoiceType::class, [
                 'expanded' => true,
                 'multiple' => true,
-                'choices' => $accesses,
+                'choices' => DelegatedAccessEnum::getAccessesForType($options['type']),
                 'choice_label' => static function (string $choice) {
                     return "delegated_access.form.access.$choice";
                 },
@@ -129,6 +119,7 @@ class DelegateAccessType extends AbstractType
         $resolver->setDefined('type');
         $resolver->setRequired('type');
         $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedValues('type', DelegatedAccessEnum::TYPES);
 
         $resolver->setDefaults([
             'data_class' => DelegatedAccess::class,

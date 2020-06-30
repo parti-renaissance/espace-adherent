@@ -26,6 +26,6 @@ class ReferentMyTeamController extends AbstractMyTeamController
 
     protected function getManagedTags(Adherent $adherent): array
     {
-        return $adherent->getReferentTags()->toArray();
+        return $adherent->getManagedArea()->getTags()->toArray();
     }
 }
