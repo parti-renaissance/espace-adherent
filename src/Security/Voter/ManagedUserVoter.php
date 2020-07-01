@@ -21,26 +21,26 @@ class ManagedUserVoter extends AbstractAdherentVoter
 
         // Check Referent role
         /** @var Adherent $adherent */
-        if ($user->isReferent() || $user->isCoReferent()) {
+        if ($user->isReferent() || $user->isDelegatedReferent()) {
             $isGranted = (bool) array_intersect(
                 $adherent->getReferentTagCodes(),
-                $user->isReferent() ? $user->getManagedAreaTagCodes() : $user->getReferentOfReferentTeam()->getManagedAreaTagCodes()
+                $user->getAllReferentManagedTagsCodes(),
             );
         }
 
         // Check Deputy role
-        if (!$isGranted && $user->isDeputy()) {
+        if (!$isGranted && ($user->isDeputy() || $user->isDelegatedDeputy())) {
             $isGranted = (bool) array_intersect(
                 $adherent->getReferentTagCodes(),
-                [$user->getManagedDistrict()->getReferentTag()->getCode()]
+                $user->getAllDeputyManagedTagsCodes(),
             );
         }
 
         // Check Senator role
-        if (!$isGranted && $user->isSenator()) {
-            $code = $user->getSenatorArea()->getDepartmentTag()->getCode();
-            $isGranted = (bool) array_intersect($adherent->getReferentTagCodes(), [$code])
-                || (ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $code && Address::FRANCE !== $adherent->getCountry());
+        if (!$isGranted && ($user->isSenator() || $user->isDelegatedSenator())) {
+            $codes = $user->getAllSenatorManagedTagsCodes();
+            $isGranted = (bool) array_intersect($adherent->getReferentTagCodes(), $codes)
+                || (\in_array(ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG, $codes, true) && Address::FRANCE !== $adherent->getCountry());
         }
 
         return $isGranted;

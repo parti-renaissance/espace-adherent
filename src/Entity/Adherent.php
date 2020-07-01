@@ -2135,4 +2135,46 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     ): void {
         $this->senatorialCandidateManagedArea = $senatorialCandidateManagedArea;
     }
+
+    public function getAllReferentManagedTagsCodes()
+    {
+        $tags = [];
+        if ($this->isReferent()) {
+            $tags = $this->getManagedArea()->getReferentTagCodes();
+        }
+
+        foreach ($this->getReceivedDelegatedAccessOfType('referent') as $delegatedAccess) {
+            $tags = \array_merge($tags, $delegatedAccess->getDelegator()->getManagedArea()->getReferentTagCodes());
+        }
+
+        return array_unique($tags);
+    }
+
+    public function getAllDeputyManagedTagsCodes()
+    {
+        $tags = [];
+        if ($this->isDeputy()) {
+            $tags = [$this->getManagedDistrict()->getReferentTag()->getCode()];
+        }
+
+        foreach ($this->getReceivedDelegatedAccessOfType('deputy') as $delegatedAccess) {
+            $tags[] = $delegatedAccess->getDelegator()->getManagedDistrict()->getReferentTag()->getCode();
+        }
+
+        return \array_unique($tags);
+    }
+
+    public function getAllSenatorManagedTagsCodes()
+    {
+        $tags = [];
+        if ($this->isSenator()) {
+            $tags = [$this->getSenatorArea()->getDepartmentTag()->getCode()];
+        }
+
+        foreach ($this->getReceivedDelegatedAccessOfType('senator') as $delegatedAccess) {
+            $tags[] = $delegatedAccess->getDelegator()->getSenatorArea()->getDepartmentTag()->getCode();
+        }
+
+        return \array_unique($tags);
+    }
 }

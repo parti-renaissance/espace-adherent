@@ -26,7 +26,17 @@ class AuthorVoter extends AbstractAdherentVoter
         }
 
         /** @var AuthoredInterface $subject */
-        return $subject->getAuthor()->equals($adherent);
+        if ($subject->getAuthor()->equals($adherent)) {
+            return true;
+        }
+
+        foreach ($adherent->getReceivedDelegatedAccesses() as $delegatedAccess) {
+            if ($subject->getAuthor()->equals($delegatedAccess->getDelegator())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function supports($attribute, $subject)
