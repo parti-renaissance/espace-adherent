@@ -63,7 +63,7 @@
 
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = '{{ path("app_message_#{space_name}_create") }}';
+            form.action = '{{ get_path(space_name, 'message', 'create', app.request) }}';
 
             var messageElement = document.createElement('input');
             messageElement.name = 'message_content';
