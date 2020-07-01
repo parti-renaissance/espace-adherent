@@ -46,6 +46,7 @@ services:
             $votingPlatformCache: !service
                 class: Symfony\Component\Cache\Simple\Psr6Cache
                 arguments: ['@app.cache.voting_platform']
+            $geoGouvApiClient: '@app.http_client.geo_gouv'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
