@@ -6,9 +6,9 @@
 
 {% block message_content %}
     {% if app.request.query.has('f') %}
-        {% set back_url = path("app_message_#{message_type}_filter", message_route_params) %}
+        {% set back_url = get_path(message_type, 'message', 'filter', app.request, message_route_params) %}
     {% else %}
-        {% set back_url = path("app_message_#{message_type}_list", route_params|default({})) %}
+        {% set back_url = get_path(message_type, 'message', 'list', app.request, route_params|default({})) %}
     {% endif %}
     <a href="{{ back_url }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour

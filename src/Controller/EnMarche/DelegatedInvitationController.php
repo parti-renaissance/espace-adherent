@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche;
 
 use App\Controller\AccessDelegatorTrait;
+use App\Controller\CanaryControllerTrait;
 use App\Entity\Committee;
 use App\Invitation\InvitationRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class DelegatedInvitationController extends InvitationController
 {
     use AccessDelegatorTrait;
+    use CanaryControllerTrait;
 
     /**
      * @Route("/espace-referent-partage/{delegated_access_uuid}/invitation", name="app_referent_delegated_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "referent"})
