@@ -6,11 +6,13 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
+use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterValueObject;
@@ -97,6 +99,21 @@ class Manager implements LoggerAwareInterface
                 $this->driver->updateMemberTags($request, $listId);
             }
         }
+    }
+
+    public function editElectedRepresentativeMember(
+        ElectedRepresentative $electedRepresentative,
+        ElectedRepresentativeChangeCommandInterface $message
+    ): void {
+        $requestBuilder = $this->requestBuildersLocator
+            ->get(RequestBuilder::class)
+            ->updateFromElectedRepresentative($electedRepresentative)
+        ;
+
+        $this->driver->editMember(
+            $requestBuilder->buildMemberRequest($message->getEmailAddress()),
+            $this->mailchimpObjectIdMapping->getElectedRepresentativeListId()
+        );
     }
 
     public function editApplicationRequestCandidate(ApplicationRequest $applicationRequest): void

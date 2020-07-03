@@ -6,6 +6,7 @@ use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\PostAddress;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -59,6 +60,17 @@ class RequestBuilder
             ->setActiveTags($this->getActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
+        ;
+    }
+
+    public function updateFromElectedRepresentative(ElectedRepresentative $electedRepresentative): self
+    {
+        return $this
+            ->setEmail($electedRepresentative->getContactEmail())
+            ->setGender($electedRepresentative->getGender())
+            ->setFirstName($electedRepresentative->getFirstName())
+            ->setLastName($electedRepresentative->getLastName())
+            ->setBirthDay($electedRepresentative->getBirthDate())
         ;
     }
 

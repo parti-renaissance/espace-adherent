@@ -558,6 +558,19 @@ class ElectedRepresentative
         return $this->birthDate ? $this->birthDate->diff(new \DateTime())->y : null;
     }
 
+    public function getEmailAddress(): ?string
+    {
+        if ($this->adherent) {
+            return $this->adherent->getEmailAddress();
+        }
+
+        if ($this->contactEmail) {
+            return $this->contactEmail;
+        }
+
+        return null;
+    }
+
     public function __toString(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);
