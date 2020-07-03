@@ -1305,13 +1305,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedReferent(): bool
     {
-        foreach ($this->getReceivedDelegatedAccessOfType('referent') as $delegatedAccess) {
-            if (\count($delegatedAccess->getAccesses()) > 0) {
-                return true;
-            }
-        }
-
-        return false;
+        return count($this->getReceivedDelegatedAccessOfType('referent')) > 0;
     }
 
     public function isCoReferent(): bool
@@ -1719,13 +1713,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedDeputy(): bool
     {
-        foreach ($this->getReceivedDelegatedAccessOfType('deputy') as $delegatedAccess) {
-            if (\count($delegatedAccess->getAccesses()) > 0) {
-                return true;
-            }
-        }
-
-        return false;
+        return count($this->getReceivedDelegatedAccessOfType('deputy')) > 0;
     }
 
     public function isAdherent(): bool
@@ -1981,13 +1969,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedSenator(): bool
     {
-        foreach ($this->getReceivedDelegatedAccessOfType('senator') as $delegatedAccess) {
-            if (\count($delegatedAccess->getAccesses()) > 0) {
-                return true;
-            }
-        }
-
-        return false;
+        return count($this->getReceivedDelegatedAccessOfType('senator')) > 0;
     }
 
     public function isConsular(): bool
@@ -2113,10 +2095,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
     }
 
-    public function getReceivedDelegatedAccessOfType(string $type): iterable
+    /**
+     * @return DelegatedAccess[]|Collection
+     */
+    public function getReceivedDelegatedAccessOfType(string $type): Collection
     {
         return $this->receivedDelegatedAccesses->filter(static function (DelegatedAccess $delegatedAccess) use ($type) {
-            return $delegatedAccess->getType() === $type;
+            return $delegatedAccess->getType() === $type && \count($delegatedAccess->getAccesses());
         });
     }
 

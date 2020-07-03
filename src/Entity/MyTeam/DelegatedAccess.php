@@ -139,7 +139,7 @@ class DelegatedAccess
 
     public function getAccesses(): ?array
     {
-        return $this->accesses;
+        return $this->accesses ? \array_filter($this->accesses) : null;
     }
 
     public function setAccesses(array $accesses): void
