@@ -137,9 +137,9 @@ class DelegatedAccess
         $delegated->addReceivedDelegatedAccess($this);
     }
 
-    public function getAccesses(): ?array
+    public function getAccesses(): array
     {
-        return $this->accesses;
+        return $this->accesses ? \array_filter($this->accesses) : [];
     }
 
     public function setAccesses(array $accesses): void
