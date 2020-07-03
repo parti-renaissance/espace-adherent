@@ -437,11 +437,17 @@
     "lullabot/amp": {
         "version": "1.1.3"
     },
+    "maennchen/zipstream-php": {
+        "version": "2.1.0"
+    },
     "marc1706/fast-image-size": {
         "version": "v1.1.4"
     },
     "markbaker/complex": {
         "version": "1.4.7"
+    },
+    "markbaker/matrix": {
+        "version": "1.2.0"
     },
     "masterminds/html5": {
         "version": "2.3.0"
