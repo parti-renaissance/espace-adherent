@@ -1305,7 +1305,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedReferent(): bool
     {
-        return count($this->getReceivedDelegatedAccessOfType('referent')) > 0;
+        return \count($this->getReceivedDelegatedAccessOfType('referent')) > 0;
     }
 
     public function isCoReferent(): bool
@@ -1713,7 +1713,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedDeputy(): bool
     {
-        return count($this->getReceivedDelegatedAccessOfType('deputy')) > 0;
+        return \count($this->getReceivedDelegatedAccessOfType('deputy')) > 0;
     }
 
     public function isAdherent(): bool
@@ -1969,7 +1969,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isDelegatedSenator(): bool
     {
-        return count($this->getReceivedDelegatedAccessOfType('senator')) > 0;
+        return \count($this->getReceivedDelegatedAccessOfType('senator')) > 0;
     }
 
     public function isConsular(): bool
