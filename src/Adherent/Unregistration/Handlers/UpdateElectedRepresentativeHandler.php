@@ -2,26 +2,26 @@
 
 namespace App\Adherent\Unregistration\Handlers;
 
+use App\ElectedRepresentative\ElectedRepresentativeEvent;
+use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
-use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeDeleteCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UpdateElectedRepresentativeHandler implements UnregistrationAdherentHandlerInterface
 {
-    private $bus;
+    private $dispatcher;
     private $manager;
     private $electedRepresentativeRepository;
 
     public function __construct(
-        MessageBusInterface $bus,
+        EventDispatcherInterface $dispatcher,
         EntityManagerInterface $manager,
         ElectedRepresentativeRepository $electedRepresentativeRepository
     ) {
-        $this->bus = $bus;
+        $this->dispatcher = $dispatcher;
         $this->manager = $manager;
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
     }
@@ -38,19 +38,12 @@ class UpdateElectedRepresentativeHandler implements UnregistrationAdherentHandle
             return;
         }
 
+        $this->dispatcher->dispatch(ElectedRepresentativeEvents::BEFORE_UPDATE, new ElectedRepresentativeEvent(clone $electedRepresentative));
+
         $electedRepresentative->removeAdherent();
 
         $this->manager->flush();
 
-        if ($electedRepresentative->getEmailAddress()) {
-            $this->bus->dispatch(new ElectedRepresentativeChangeCommand(
-                $electedRepresentative->getUuid(),
-                $adherent->getEmailAddress()
-            ));
-
-            return;
-        }
-
-        $this->bus->dispatch(new ElectedRepresentativeDeleteCommand($adherent->getEmailAddress()));
+        $this->dispatcher->dispatch(ElectedRepresentativeEvents::POST_UPDATE, new ElectedRepresentativeEvent($electedRepresentative));
     }
 }
