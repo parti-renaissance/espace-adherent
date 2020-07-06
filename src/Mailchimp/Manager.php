@@ -266,6 +266,11 @@ class Manager implements LoggerAwareInterface
         $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getMainListId());
     }
 
+    public function deleteElectedRepresentative(string $mail): void
+    {
+        $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getElectedRepresentativeListId());
+    }
+
     public function deleteNewsletterMember(string $mail): void
     {
         $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getNewsletterListId());

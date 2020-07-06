@@ -640,6 +640,10 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
      */
     public function setSubject($subject)
     {
+        if (null === $this->beforeUpdate) {
+            $this->beforeUpdate = clone $subject;
+        }
+
         if (null === $this->userListDefinitionsBeforeUpdate) {
             $this->userListDefinitionsBeforeUpdate = $subject->getUserListDefinitions()->toArray();
         }
@@ -655,6 +659,8 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         parent::preUpdate($object);
 
         $this->userListDefinitionHistoryManager->handleChanges($object, $this->userListDefinitionsBeforeUpdate);
+
+        $this->dispatcher->dispatch(ElectedRepresentativeEvents::BEFORE_UPDATE, new ElectedRepresentativeEvent($this->beforeUpdate));
     }
 
     /**

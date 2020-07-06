@@ -382,6 +382,11 @@ class ElectedRepresentative
         $this->adherent = $adherent;
     }
 
+    public function removeAdherent(): void
+    {
+        $this->adherent = null;
+    }
+
     public function getSocialNetworkLinks(): Collection
     {
         return $this->socialNetworkLinks;
