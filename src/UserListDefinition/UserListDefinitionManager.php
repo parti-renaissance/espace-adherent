@@ -2,6 +2,8 @@
 
 namespace App\UserListDefinition;
 
+use App\ElectedRepresentative\ElectedRepresentativeEvent;
+use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\EntityUserListDefinitionTrait;
@@ -10,6 +12,7 @@ use App\Exception\UserListDefinitionException;
 use App\Exception\UserListDefinitionMemberException;
 use App\Repository\UserListDefinitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserListDefinitionManager
@@ -18,17 +21,20 @@ class UserListDefinitionManager
     private const STATUS_NOT_MEMBER_OF = 'not_member_of';
 
     private $em;
+    private $dispatcher;
     private $userListDefinitionRepository;
     private $authorizationChecker;
     private $historyManager;
 
     public function __construct(
         EntityManagerInterface $em,
+        EventDispatcherInterface $dispatcher,
         UserListDefinitionRepository $userListDefinitionRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         UserListDefinitionHistoryManager $historyManager
     ) {
         $this->em = $em;
+        $this->dispatcher = $dispatcher;
         $this->userListDefinitionRepository = $userListDefinitionRepository;
         $this->authorizationChecker = $authorizationChecker;
         $this->historyManager = $historyManager;
@@ -58,6 +64,7 @@ class UserListDefinitionManager
     {
         $this->checkObjectClass($objectClass);
         $repository = $this->em->getRepository($objectClass);
+        $electedRepresentatives = [];
 
         foreach ($userListDefinitions as $memberId => $lists) {
             if (!$member = $repository->find($memberId)) {
@@ -65,6 +72,7 @@ class UserListDefinitionManager
             }
 
             if ($member instanceof ElectedRepresentative) {
+                $electedRepresentatives[] = $member;
                 $oldUserListDefinitions = $member->getUserListDefinitions()->toArray();
             }
 
@@ -107,6 +115,13 @@ class UserListDefinitionManager
         }
 
         $this->em->flush();
+
+        foreach ($electedRepresentatives as $electedRepresentative) {
+            $this->dispatcher->dispatch(
+                ElectedRepresentativeEvents::POST_UPDATE,
+                new ElectedRepresentativeEvent($electedRepresentative)
+            );
+        }
     }
 
     private function checkType(string $type): void

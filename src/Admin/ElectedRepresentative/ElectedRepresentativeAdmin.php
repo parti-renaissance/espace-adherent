@@ -3,6 +3,8 @@
 namespace App\Admin\ElectedRepresentative;
 
 use App\Address\Address;
+use App\ElectedRepresentative\ElectedRepresentativeEvent;
+use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
 use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Election\VoteListNuanceEnum;
@@ -34,6 +36,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\Form\Type\BooleanType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -49,25 +52,26 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         '_sort_by' => 'id',
     ];
 
-    /** @var MandateRepository */
+    private $dispatcher;
     private $mandateRepository;
+    private $userListDefinitionHistoryManager;
 
     /**
      * @var UserListDefinition[]|array
      */
     private $userListDefinitionsBeforeUpdate;
 
-    private $userListDefinitionHistoryManager;
-
     public function __construct(
         $code,
         $class,
         $baseControllerName,
+        EventDispatcherInterface $dispatcher,
         MandateRepository $mandateRepository,
         UserListDefinitionHistoryManager $userListDefinitionHistoryManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
+        $this->dispatcher = $dispatcher;
         $this->mandateRepository = $mandateRepository;
         $this->userListDefinitionHistoryManager = $userListDefinitionHistoryManager;
     }
@@ -644,13 +648,23 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ElectedRepresentative $subject
+     * @param ElectedRepresentative $object
      */
-    public function preUpdate($subject)
+    public function preUpdate($object)
     {
-        $this->userListDefinitionHistoryManager->handleChanges($subject, $this->userListDefinitionsBeforeUpdate);
+        parent::preUpdate($object);
 
-        parent::preUpdate($subject);
+        $this->userListDefinitionHistoryManager->handleChanges($object, $this->userListDefinitionsBeforeUpdate);
+    }
+
+    /**
+     * @param ElectedRepresentative $object
+     */
+    public function postUpdate($object)
+    {
+        parent::postUpdate($object);
+
+        $this->dispatcher->dispatch(ElectedRepresentativeEvents::POST_UPDATE, new ElectedRepresentativeEvent($object));
     }
 
     public function getExportFields()

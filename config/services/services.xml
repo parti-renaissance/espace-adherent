@@ -518,6 +518,7 @@
 
         <!-- Mailchimp -->
         <service id="App\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />
+        <service id="App\Mailchimp\Synchronisation\EventListener\ElectedRepresentativeEventSubscriber" />
         <service id="App\Mailchimp\Driver">
             <argument type="service" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>

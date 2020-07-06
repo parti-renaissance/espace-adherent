@@ -395,6 +395,10 @@ class RequestBuilder
             $tags[] = $label->getName();
         }
 
+        if ($electedRepresentative->isAdherent()) {
+            $tags[] = 'adherent';
+        }
+
         return array_unique($tags);
     }
 
