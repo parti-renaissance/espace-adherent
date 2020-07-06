@@ -57,7 +57,7 @@ class RequestBuilder
             ->setCountryName($adherent->getCountryName())
             ->setAdhesionDate($adherent->getRegisteredAt())
             ->setInterests($this->buildInterestArray($adherent))
-            ->setActiveTags($this->getActiveTags($adherent))
+            ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
         ;
@@ -66,11 +66,12 @@ class RequestBuilder
     public function updateFromElectedRepresentative(ElectedRepresentative $electedRepresentative): self
     {
         return $this
-            ->setEmail($electedRepresentative->getContactEmail())
+            ->setEmail($electedRepresentative->getEmailAddress())
             ->setGender($electedRepresentative->getGender())
             ->setFirstName($electedRepresentative->getFirstName())
             ->setLastName($electedRepresentative->getLastName())
             ->setBirthDay($electedRepresentative->getBirthDate())
+            ->setActiveTags($this->getElectedRepresentativeActiveTags($electedRepresentative))
         ;
     }
 
@@ -363,7 +364,7 @@ class RequestBuilder
         );
     }
 
-    private function getActiveTags(Adherent $adherent): array
+    private function getAdherentActiveTags(Adherent $adherent): array
     {
         $tags = $adherent->getReferentTagCodes();
 
@@ -372,6 +373,29 @@ class RequestBuilder
         }
 
         return $tags;
+    }
+
+    private function getElectedRepresentativeActiveTags(ElectedRepresentative $electedRepresentative): array
+    {
+        $tags = [];
+
+        foreach ($electedRepresentative->getCurrentMandates() as $mandate) {
+            $tags[] = $mandate->getType();
+        }
+
+        foreach ($electedRepresentative->getCurrentPoliticalFunctions() as $politicalFunction) {
+            $tags[] = $politicalFunction->getName();
+        }
+
+        foreach ($electedRepresentative->getUserListDefinitions() as $userListDefinition) {
+            $tags[] = $userListDefinition->getCode();
+        }
+
+        foreach ($electedRepresentative->getLabels() as $label) {
+            $tags[] = $label->getName();
+        }
+
+        return array_unique($tags);
     }
 
     private function getInactiveTags(Adherent $adherent): array

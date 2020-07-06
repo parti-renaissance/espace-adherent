@@ -41,6 +41,7 @@ class ElectedRepresentativeChangeCommandHandler implements MessageHandlerInterfa
         }
 
         $this->entityManager->refresh($electedRepresentative);
+        $this->entityManager->refresh($electedRepresentative->getAdherent());
 
         $this->manager->editElectedRepresentativeMember($electedRepresentative, $message);
 

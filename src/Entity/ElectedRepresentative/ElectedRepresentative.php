@@ -405,6 +405,9 @@ class ElectedRepresentative
         return $this->mandates;
     }
 
+    /**
+     * @return Mandate[]|Collection
+     */
     public function getCurrentMandates(): Collection
     {
         return $this->mandates->filter(function (Mandate $mandate) {
@@ -444,6 +447,9 @@ class ElectedRepresentative
         return $this->politicalFunctions;
     }
 
+    /**
+     * @return PoliticalFunction[]|Collection
+     */
     public function getCurrentPoliticalFunctions(): Collection
     {
         return $this->politicalFunctions->filter(function (PoliticalFunction $politicalFunction) {
@@ -479,6 +485,9 @@ class ElectedRepresentative
         return implode(', ', $this->getCurrentPoliticalFunctions()->toArray());
     }
 
+    /**
+     * @return ElectedRepresentativeLabel[]|Collection
+     */
     public function getLabels(): Collection
     {
         return $this->labels;
