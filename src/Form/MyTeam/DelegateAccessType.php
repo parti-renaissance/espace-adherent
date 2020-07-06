@@ -30,21 +30,9 @@ class DelegateAccessType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $roles = DelegatedAccess::DEFAULT_ROLES;
-
-        if ($builder->getData() && $builder->getData()->getRole()) {
-            $roles[] = $builder->getData()->getRole();
-        }
+        $this->addRoleField($builder, $options['type'], $builder->getData() ? $builder->getData()->getRole() : null);
 
         $builder
-            ->add('role', ChoiceType::class, [
-                'expanded' => false,
-                'multiple' => false,
-                'attr' => ['class' => 'select2'],
-                'placeholder' => '',
-                'choices' => \array_combine($roles, $roles),
-                'choice_translation_domain' => false,
-            ])
             ->add('delegated', HiddenType::class, [
                 'invalid_message' => 'Aucun adhérent trouvé avec cette adresse email. Veuillez réessayer.',
             ])
@@ -92,26 +80,16 @@ class DelegateAccessType extends AbstractType
 
         $builder->get('delegated')->addModelTransformer($this->transformer);
 
-        // allow user to add custom values for roles
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event) {
-            $form = $event->getForm();
+        if ('referent' !== $options['type']) {
+            // allow user to add custom values for roles
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+                $type = $event->getForm()->getConfig()->getOption('type');
 
-            $roles = DelegatedAccess::DEFAULT_ROLES;
-
-            if ($role = ($event->getData()['role'] ?? null)) {
-                $roles[] = $role;
-            }
-
-            $form->remove('role');
-            $form->add('role', ChoiceType::class, [
-                'expanded' => false,
-                'multiple' => false,
-                'attr' => ['class' => 'select2'],
-                'placeholder' => '',
-                'choices' => \array_combine($roles, $roles),
-                'choice_translation_domain' => false,
-            ]);
-        });
+                $form->remove('role');
+                $this->addRoleField($form, $type, $event->getData()['role'] ?? null);
+            });
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -124,5 +102,32 @@ class DelegateAccessType extends AbstractType
         $resolver->setDefaults([
             'data_class' => DelegatedAccess::class,
         ]);
+    }
+
+    protected function addRoleField($builder, string $type, ?string $role): void
+    {
+        if ('referent' === $type) {
+            $roles = DelegatedAccess::DEFAULT_REFERENT_ROLES;
+        } else {
+            $roles = DelegatedAccess::DEFAULT_ROLES;
+            if ($role && !\in_array($role, $roles, true)) {
+                $roles[] = $role;
+            }
+            dump($roles, $role);
+        }
+
+        $builder
+            ->add('role', ChoiceType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'attr' => ['class' => 'referent' === $type ? 'select2-standard' : 'select2-allow-add'],
+                'placeholder' => '',
+                'choices' => $roles,
+                'choice_label' => static function ($choice) {
+                    return $choice;
+                },
+                'choice_translation_domain' => false,
+            ])
+        ;
     }
 }
