@@ -57,6 +57,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     private $userListDefinitionHistoryManager;
 
     /**
+     * @var ElectedRepresentative
+     */
+    private $beforeUpdate;
+
+    /**
      * @var UserListDefinition[]|array
      */
     private $userListDefinitionsBeforeUpdate;
