@@ -20,6 +20,7 @@
                         <button title="Réinitialiser" class="btn btn--black js-undo-search pst--absolute" style="right: 12px; top: 10px;{{ not form.delegated.vars.data ? 'display: none;'}}">Réinitialiser</button>
                         <button type="submit" id="js-search" class="btn btn--blue pst--absolute" style="right: 12px; top: 10px;{{ form.delegated.vars.data ? 'display: none;'}}">Rechercher</button>
                     </div>
+                    {{ form_errors(form) }}
 
                     <div id="no-result" class="form form__error" style="display: none;">
                         Aucun adhérent ne correspond à votre recherche
@@ -98,7 +99,7 @@
 
     <script>
       Kernel.onLoad(function () {
-        $('.select2').select2({
+        $('.select2-allow-add').select2({
           tags: true,
           theme: 'default em-form',
           createTag: function (params) {
@@ -108,6 +109,9 @@
               newOption: true,
             }
           }
+        });
+        $('.select2-standard').select2({
+          theme: 'default em-form',
         });
 
         $('#search-form').on('submit', function (e) {

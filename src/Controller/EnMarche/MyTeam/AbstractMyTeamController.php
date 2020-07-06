@@ -28,7 +28,9 @@ abstract class AbstractMyTeamController extends Controller
      */
     public function list(DelegatedAccessRepository $delegatedAccessRepository): Response
     {
-        $this->disableInProduction();
+        if ('referent' !== $this->getSpaceType()) {
+            $this->disableInProduction();
+        }
 
         $delegatedAccesses = $delegatedAccessRepository->findBy(['delegator' => $this->getUser()]);
 
@@ -48,7 +50,9 @@ abstract class AbstractMyTeamController extends Controller
         EntityManagerInterface $entityManager,
         DelegatedAccess $delegatedAccess = null
     ): Response {
-        $this->disableInProduction();
+        if ('referent' !== $this->getSpaceType()) {
+            $this->disableInProduction();
+        }
 
         $delegatedAccess = $delegatedAccess ?? new DelegatedAccess();
         $delegatedAccess->setDelegator($this->getUser());
