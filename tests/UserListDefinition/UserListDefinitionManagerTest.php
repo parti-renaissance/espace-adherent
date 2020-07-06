@@ -16,6 +16,7 @@ use App\UserListDefinition\UserListDefinitionPermissions;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -88,6 +89,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $this->createMock(EntityManagerInterface::class),
+            $this->createMock(EventDispatcherInterface::class),
             $userListDefinitionRepository,
             $this->createMock(AuthorizationCheckerInterface::class),
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -138,6 +140,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
+            $this->createMock(EventDispatcherInterface::class),
             $userListDefinitionRepository,
             $this->createMock(AuthorizationCheckerInterface::class),
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -197,6 +200,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
+            $this->createMock(EventDispatcherInterface::class),
             $userListDefinitionRepository,
             $authorizationChecker,
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -241,6 +245,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
+            $this->createMock(EventDispatcherInterface::class),
             $this->createMock(UserListDefinitionRepository::class),
             $this->createMock(AuthorizationCheckerInterface::class),
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -307,6 +312,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
+            $this->createMock(EventDispatcherInterface::class),
             $userListDefinitionRepository,
             $authorizationChecker,
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -439,6 +445,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
+            $this->createMock(EventDispatcherInterface::class),
             $userListDefinitionRepository,
             $authorizationChecker,
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -458,6 +465,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $this->userListDefinitionManager = new UserListDefinitionManager(
             $this->createMock(EntityManagerInterface::class),
+            $this->createMock(EventDispatcherInterface::class),
             $this->createMock(UserListDefinitionRepository::class),
             $this->createMock(AuthorizationCheckerInterface::class),
             $this->createMock(UserListDefinitionHistoryManager::class)
