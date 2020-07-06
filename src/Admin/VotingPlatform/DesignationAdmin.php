@@ -40,6 +40,7 @@ class DesignationAdmin extends AbstractAdmin
                 ])
                 ->add('candidacyEndDate', DateTimeType::class, [
                     'label' => 'Clôture des candidatures',
+                    'required' => false,
                     'widget' => 'single_text',
                     'with_seconds' => true,
                     'attr' => [
@@ -50,6 +51,7 @@ class DesignationAdmin extends AbstractAdmin
             ->with('Vote 🗳', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])
                 ->add('voteStartDate', DateTimeType::class, [
                     'label' => 'Ouverture du vote',
+                    'required' => false,
                     'widget' => 'single_text',
                     'with_seconds' => true,
                     'attr' => [
@@ -58,6 +60,7 @@ class DesignationAdmin extends AbstractAdmin
                 ])
                 ->add('voteEndDate', DateTimeType::class, [
                     'label' => 'Clôture du vote',
+                    'required' => false,
                     'widget' => 'single_text',
                     'with_seconds' => true,
                     'attr' => [

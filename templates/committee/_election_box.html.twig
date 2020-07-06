@@ -1,5 +1,6 @@
 {% set candidacy_committee_membership = app.user.memberships.committeeCandidacyMembership %}
 {% set committee_election = committee.committeeElection %}
+{% set designation = committee_election.designation %}
 
 {% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE') %}
 {% set member_is_candidate_in_committee = able_to_candidate and candidacy_committee_membership == membership %}
@@ -21,12 +22,14 @@
         </h2>
     </div>
 
-    <p class="text--body text--dark text--small b__nudge--bottom b__nudge--top">
+    <div class="text--body text--dark text--small b__nudge--bottom b__nudge--top">
         {% if member_is_candidate_in_committee %}
 
             Vous êtes candidat pour représenter les adhérents de votre comité.
-            <!-- Vous pouvez modifier ou retirer votre candidature jusqu'au
-            {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
+            {% if designation.candidacyEndDate is not empty %}
+                Vous pouvez modifier ou retirer votre candidature jusqu'au
+                {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+            {% endif %}
 
         {% else %}
             {% if member_voting_in_committee %}
@@ -35,14 +38,22 @@
                 Les adhérents ayant choisi ce comité pour participer à la désignation peuvent y candidater.
             {% endif %}
 
-            <!-- Les candidatures sont ouvertes dans tous les comités du
-            {{ committee_election.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-            au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
+            {% if designation.candidacyEndDate is not empty %}
+                Les candidatures sont ouvertes dans tous les comités du
+                {{ committee_election.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+                au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+            {% endif %}
         {% endif %}
 
-        <!-- La designation se tiendra en ligne du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-        au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
-    </p>
+        {% if designation.candidacyEndDate is not empty %}
+            La designation se tiendra en ligne du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+            au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+        {% endif %}
+
+        {% if designation.candidacyEndDate is empty %}
+            <p>La date de la désignation n'a pas encore été fixée par votre Référent.</p>
+        {% endif %}
+    </div>
 
     <div class="text--body l__row--wrap">
         {% if committee_election.isCandidacyPeriodActive %}
