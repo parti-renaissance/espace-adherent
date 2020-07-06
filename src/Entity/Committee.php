@@ -5,6 +5,7 @@ namespace App\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\StaticSegmentInterface;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\Exception\CommitteeAlreadyApprovedException;
 use App\Report\ReportType;
 use App\ValueObject\Link;
@@ -168,11 +169,18 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $mailchimpId;
 
     /**
-     * @var CommitteeElection|null
+     * @var CommitteeElection[]
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
      */
-    private $committeeElection;
+    private $committeeElections;
+
+    /**
+     * @var Designation|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation")
+     */
+    private $currentDesignation;
 
     /**
      * A cached list of the hosts (for admin).
@@ -210,6 +218,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->postAddress = $address;
         $this->citizenProjectSupports = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
+        $this->committeeElections = new ArrayCollection();
 
         foreach ($citizenProjects as $citizenProject) {
             $this->addSupportOnCitizenProject($citizenProject);
@@ -258,13 +267,30 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function getCommitteeElection(): ?CommitteeElection
     {
-        return $this->committeeElection;
+        if (!$this->currentDesignation) {
+            return null;
+        }
+
+        foreach ($this->committeeElections as $election) {
+            if ($election->getDesignation() === $this->currentDesignation) {
+                return $election;
+            }
+        }
+
+        return null;
     }
 
-    public function setCommitteeElection(CommitteeElection $committeeElection): void
+    public function setCurrentDesignation(Designation $designation): void
     {
-        $committeeElection->setCommittee($this);
-        $this->committeeElection = $committeeElection;
+        $this->currentDesignation = $designation;
+    }
+
+    public function addCommitteeElection(CommitteeElection $committeeElection): void
+    {
+        if (!$this->committeeElections->contains($committeeElection)) {
+            $committeeElection->setCommittee($this);
+            $this->committeeElections->add($committeeElection);
+        }
     }
 
     public static function createSimple(
@@ -470,6 +496,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function hasActiveElection(): bool
     {
-        return $this->committeeElection && $this->committeeElection->isActive();
+        return $this->currentDesignation && $this->currentDesignation->isActive();
     }
 }

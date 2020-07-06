@@ -61,7 +61,7 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
             foreach ($committees as $committee) {
                 $this->io->progressAdvance();
 
-                $committee->setCommitteeElection(new CommitteeElection($designation));
+                $committee->addCommitteeElection(new CommitteeElection($designation));
             }
 
             $this->entityManager->flush();
