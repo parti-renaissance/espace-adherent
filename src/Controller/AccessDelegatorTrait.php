@@ -10,7 +10,9 @@ trait AccessDelegatorTrait
 {
     protected function getMainUser(Request $request): UserInterface
     {
-        $this->disableInProduction();
+        if ('referent' !== $this->getType()) {
+            $this->disableInProduction();
+        }
 
         return $this->getDelegatedAccess($request)->getDelegator();
     }
@@ -30,5 +32,22 @@ trait AccessDelegatorTrait
         }
 
         return $delegatedAccess;
+    }
+
+    protected function getType(): ?string
+    {
+        if (\method_exists($this, 'getSpaceType')) {
+            return $this->getSpaceType();
+        }
+
+        if (\method_exists($this, 'getSpaceName')) {
+            return $this->getSpaceName();
+        }
+
+        if (\method_exists($this, 'getMessageType')) {
+            return $this->getMessageType();
+        }
+
+        return null;
     }
 }

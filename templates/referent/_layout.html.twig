@@ -77,7 +77,7 @@
                                     <a href="{{ path('app_referent_event_manager_events') }}">Événements</a>
                                 </li>
                             {% endif %}
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_referent_event_manager_delegated_event*') ? 'active' }}">
                                     <a href="{{ path('app_referent_event_manager_delegated_events', {delegated_access_uuid: delegated_access_uuid}) }}">Événements</a>
                                 </li>
@@ -88,7 +88,7 @@
                                     <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
                                 </li>
                             {% endif %}
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_message_referent_delegated_*') ? 'active' }}">
                                     <a href="{{ path('app_message_referent_delegated_list', route_params|default({})|merge({delegated_access_uuid: delegated_access_uuid})) }}">Mes messages</a>
                                 </li>
@@ -100,7 +100,7 @@
                                 </li>
                             {% endif %}
 
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_COMMITTEE', app.request) %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_COMMITTEE', app.request) %}
                                 <li class="{{ is_active_route(app.request, ['app_referent_delegated_committees', 'app_referent_designations_delegated_*']) ? 'active' }}">
                                     <a href="{{ path('app_referent_delegated_committees', {delegated_access_uuid: delegated_access_uuid}) }}">Comités</a>
                                 </li>
@@ -112,7 +112,7 @@
                                 </li>
                             {% endif %}
 
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS', app.request) %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects_delegated_list') ? 'active' }}">
                                     <a href="{{ path('app_referent_citizen_projects_delegated_list', {delegated_access_uuid: delegated_access_uuid}) }}">Projets citoyens</a>
                                 </li>
@@ -123,7 +123,7 @@
                                 <a href="{{ path('app_referent_managed_users_list') }}">Adhérents</a>
                             </li>
                             {% endif %}
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', app.request) %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_referent_managed_users_delegated_*') ? 'active' }}">
                                     <a href="{{ path("app_referent_managed_users_delegated_list", route_params|default({})|merge({delegated_access_uuid: delegated_access_uuid})) }}">Adhérents</a>
                                 </li>
@@ -135,7 +135,7 @@
                             </li>
                             {% endif %}
 
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_JECOUTE', app.request) %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_JECOUTE', app.request) %}
                                 <li class="{{ is_active_route(app.request, 'app_jecoute_referent_delegated_*') ? 'active' }}">
                                     <a href="{{ path('app_jecoute_referent_delegated_local_surveys_list', {delegated_access_uuid: delegated_access_uuid}) }}">J'écoute</a>
                                 </li>
@@ -161,8 +161,8 @@
                                 </li>
                             {% endif %}
 
-                            {% if is_canary_enabled() and is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES', app.request) %}
-                                <li class="{{ is_active_route(app.request, 'app_referent_elected_representatives_delegated_*') ? 'active' }}">
+                            {% if is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_elected_representatives_*') ? 'active' }}">
                                     <a href="{{ path('app_referent_elected_representatives_delegated_list', {delegated_access_uuid: delegated_access_uuid}) }}">Élus</a>
                                 </li>
                             {% endif %}

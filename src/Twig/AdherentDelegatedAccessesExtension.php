@@ -63,7 +63,7 @@ class AdherentDelegatedAccessesExtension extends AbstractExtension
             DelegatedAccess::ACCESS_MESSAGES => "app_message_{$delegatedAccess->getType()}_delegated_list",
             DelegatedAccess::ACCESS_EVENTS => "app_{$delegatedAccess->getType()}_event_manager_delegated_events",
             DelegatedAccess::ACCESS_ADHERENTS => "app_{$delegatedAccess->getType()}_managed_users_delegated_list",
-            DelegatedAccess::ACCESS_COMMITTEE => "app_{$delegatedAccess->getType()}_delegated_committee",
+            DelegatedAccess::ACCESS_COMMITTEE => "app_{$delegatedAccess->getType()}_delegated_committees",
             DelegatedAccess::ACCESS_CITIZEN_PROJECTS => "app_{$delegatedAccess->getType()}_citizen_projects_delegated_list",
             DelegatedAccess::ACCESS_JECOUTE => "app_jecoute_{$delegatedAccess->getType()}_delegated_list",
             DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES => "app_{$delegatedAccess->getType()}_elected_representatives_delegated_list",

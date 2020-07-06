@@ -113,7 +113,6 @@ class DelegateAccessType extends AbstractType
             if ($role && !\in_array($role, $roles, true)) {
                 $roles[] = $role;
             }
-            dump($roles, $role);
         }
 
         $builder
