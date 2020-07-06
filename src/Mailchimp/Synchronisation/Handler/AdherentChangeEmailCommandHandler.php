@@ -47,7 +47,7 @@ class AdherentChangeEmailCommandHandler implements MessageHandlerInterface, Logg
             if ($electedRepresentative = $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent])) {
                 $this->bus->dispatch(new ElectedRepresentativeChangeCommand(
                     $electedRepresentative->getUuid(),
-                    $electedRepresentative->getEmailAddress()
+                    $message->getEmailAddress()
                 ));
             }
         }
