@@ -687,6 +687,60 @@ elected_representative.filter.political_functions: Choisissez des fonctions
 elected_representative.filter.cities: Choisissez des villes
 elected_representative.filter.user_list_definitions: Choisissez des labels
 
+elected_representative:
+    mailchimp_tag:
+        adherent: Adhérent(e)
+        # Mandate
+        conseiller_municipal: Conseiller(e) municipal(e)
+        membre_EPCI: Membre d'EPCI
+        conseiller_departemental: Conseiller(e) départemental(e)
+        conseiller_regional: Conseiller(e) régional(e)
+        membre_assemblee_corse: Membre de l'Assemblée de Corse
+        depute: Député(e)
+        senateur: Sénateur(rice)
+        euro_depute: Député(e) européen(ne)
+        # PoliticalFunction
+        mayor: Maire
+        deputy_mayor: Maire délégué(e)
+        mayor_assistant: Adjoint(e) au maire
+        president_of_regional_council: Président(e) de conseil régional
+        vice_president_of_regional_council: Vice-président(e) de conseil régional
+        president_of_departmental_council: Président(e) de conseil départemental
+        vice_president_of_departmental_council: Vice-président(e) de conseil départemental
+        deputy_vice_president_of_departmental_council: Vice-président(e) délégué du conseil départemental
+        secretary: Secrétaire
+        quaestor: Questeur(rice)
+        president_of_national_assembly: Président(e) de l'Assemblée nationale
+        vice_president_of_national_assembly: Vice-président(e) de l'Assemblée nationale
+        president_of_senate: Président(e) du Sénat
+        vice_president_of_senate: Vice-président(e) du Sénat
+        president_of_commission: Président(e) de commission
+        president_of_group: Président(e) de groupe
+        president_of_epci: Président(e) d'EPCI
+        vice_president_of_epci: Vice-président(e) d'EPCI
+        other_member_of_standing_committee: Autre membre commission permanente
+        other_member: Autre membre
+        # UserListDefinition
+        supporting_la_rem: Majorité Présidentielle
+        instances_member: Conseil Territorial
+        in-progress: En cours
+        # ElectedRepresentativeLabel
+        LFI: LFI
+        PCF: PCF
+        PS: PS
+        MRC: MRC
+        "G.s": G.s
+        TDP: TDP
+        LaREM: LaREM
+        Modem: Modem
+        MRSL: MRSL
+        Agir: Agir
+        UDI: UDI
+        LR: LR
+        DLF: DLF
+        RN: RN
+        "Autre parti": Autre parti
+
 #
 # Election
 #
