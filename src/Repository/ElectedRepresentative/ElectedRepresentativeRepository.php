@@ -7,6 +7,7 @@ use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\UserListDefinitionEnum;
 use App\Repository\PaginatorTrait;
+use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -17,6 +18,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class ElectedRepresentativeRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
+    use UuidEntityRepositoryTrait {
+        findOneByUuid as findOneByValidUuid;
+    }
 
     public function __construct(RegistryInterface $registry)
     {

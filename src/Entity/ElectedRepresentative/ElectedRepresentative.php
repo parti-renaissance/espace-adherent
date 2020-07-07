@@ -371,6 +371,11 @@ class ElectedRepresentative
         $this->hasFollowedTraining = $hasFollowedTraining;
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"elected_representative_change_diff"})
+     * @JMS\SerializedName("isAdherent")
+     */
     public function isAdherent(): bool
     {
         return $this->isAdherent;

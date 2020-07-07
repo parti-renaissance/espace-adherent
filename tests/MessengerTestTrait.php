@@ -21,4 +21,15 @@ trait MessengerTestTrait
 
         self::assertTrue($found, $help);
     }
+
+    public function assertMessageIsNotDispatched(string $unexpectedMessageClass): void
+    {
+        foreach ($this->getMessageRecorder()->getMessages() as $envelope) {
+            if (is_a($envelope->getMessage(), $unexpectedMessageClass)) {
+                self::fail("Message $unexpectedMessageClass found, but nof expected.");
+
+                break;
+            }
+        }
+    }
 }
