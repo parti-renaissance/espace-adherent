@@ -74,9 +74,12 @@
                             {% endif %}
 
                             {% if is_granted('ROLE_SENATOR') %}
-                            <li class="{{ is_active_route(app.request, ['app_senator_my_team_list', 'app_senator_my_team_delegate_access']) ? 'active' }}">
-                                <a href="{{ path('app_senator_my_team_list') }}">Mon équipe</a>
-                            </li>
+                                <li class="{{ is_active_route(app.request, 'app_senator_elected_representatives_*') ? 'active' }}">
+                                    <a href="{{ path('app_senator_elected_representatives_list') }}">Élus</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, ['app_senator_my_team_list', 'app_senator_my_team_delegate_access']) ? 'active' }}">
+                                    <a href="{{ path('app_senator_my_team_list') }}">Mon équipe</a>
+                                </li>
                             {% endif %}
                         </ul>
                     </nav>
