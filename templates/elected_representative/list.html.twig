@@ -1,5 +1,7 @@
 {% extends base_template %}
 
+{% set arelabelsEditable = 'referent' == space_name %}
+
 {% block elected_representatives_content %}
     <main>
         <section class="b__nudge--bottom-huge">
@@ -87,7 +89,7 @@
                         <button type="submit" class="btn btn--black b__nudge--bottom-medium">Appliquer</button>
 
                         {% if form.vars.submitted %}
-                            <a href="{{ get_path('referent', 'elected_representatives', 'list', app.request) }}" class="btn btn--no-border b__nudge--bottom-medium">
+                            <a href="{{ get_path(space_name, 'elected_representatives', 'list', app.request) }}" class="btn btn--no-border b__nudge--bottom-medium">
                                 Réinitialiser les filtres
                             </a>
                         {% endif %}
@@ -105,7 +107,9 @@
                         <table class="datagrid__table-manager">
                             <thead>
                             <tr>
+                                {% if arelabelsEditable %}
                                 <th width="50" class="space--20"><input type="checkbox" id="items-check-all" /></th>
+                                {% endif %}
                                 {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
 
                                 <th style="width: 100px;">
@@ -128,7 +132,9 @@
                             <tbody>
                             {% for key, elected_representative in elected_representatives %}
                                 <tr class="referent__item">
+                                    {% if arelabelsEditable %}
                                     <td><input type="checkbox" name="items[]" value="{{ elected_representative.id }}" /></td>
+                                    {% endif %}
                                     <td class="adherent-identity">
                                         <div class="adherent-name">
                                             {{ elected_representative.lastName }} {{ elected_representative.firstName }}
@@ -182,7 +188,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="{{ get_path('referent', 'elected_representatives', 'show', app.request, { uuid: elected_representative.uuid }) }}" class="text--blue--dark link--no-decor">Afficher</a>
+                                        <a href="{{ get_path(space_name, 'elected_representatives', 'show', app.request, { uuid: elected_representative.uuid }) }}" class="text--blue--dark link--no-decor">Afficher</a>
                                     </td>
                                 </tr>
                             {% else %}
@@ -243,7 +249,7 @@
                 });
             });
 
-            {% if elected_representatives.count %}
+            {% if arelabelsEditable and elected_representatives.count %}
                 App.runUserListDefinitions(
                     '{{ constant('App\\Controller\\Api\\UserListDefinition\\ElectedRepresentativeUserListDefinitionController::MEMBER_TYPE') }}',
                     '{{ constant('App\\Entity\\UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE') }}',
