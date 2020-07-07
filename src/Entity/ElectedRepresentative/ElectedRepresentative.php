@@ -607,32 +607,6 @@ class ElectedRepresentative
         return null;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
-     */
-    public function getActiveTagCodes(): array
-    {
-        $tags = [];
-
-        foreach ($this->getCurrentMandates() as $mandate) {
-            $tags[] = $mandate->getType();
-        }
-
-        foreach ($this->getCurrentPoliticalFunctions() as $politicalFunction) {
-            $tags[] = $politicalFunction->getName();
-        }
-
-        foreach ($this->getUserListDefinitions() as $userListDefinition) {
-            $tags[] = $userListDefinition->getLabel();
-        }
-
-        foreach ($this->getCurrentLabels() as $label) {
-            $tags[] = $label->getName();
-        }
-
-        return array_unique($tags);
-    }
-
     public function __toString(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);

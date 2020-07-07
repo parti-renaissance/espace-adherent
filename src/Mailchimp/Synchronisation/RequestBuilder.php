@@ -36,12 +36,14 @@ class RequestBuilder
     private $favoriteCitiesCodes;
     private $takenForCity = false;
     private $mailchimpObjectIdMapping;
+    private $electedRepresentativeTagsBuilder;
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
-    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
+    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping, ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder)
     {
         $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
+        $this->electedRepresentativeTagsBuilder = $electedRepresentativeTagsBuilder;
     }
 
     public function updateFromAdherent(Adherent $adherent): self
@@ -65,19 +67,13 @@ class RequestBuilder
 
     public function updateFromElectedRepresentative(ElectedRepresentative $electedRepresentative): self
     {
-        $activeTags = $electedRepresentative->getActiveTagCodes();
-
-        if ($electedRepresentative->isAdherent()) {
-            $activeTags[] = ElectedRepresentativeTagLabelEnum::ADHERENT_LABEL;
-        }
-
         return $this
             ->setEmail($electedRepresentative->getEmailAddress())
             ->setGender($electedRepresentative->getGender())
             ->setFirstName($electedRepresentative->getFirstName())
             ->setLastName($electedRepresentative->getLastName())
             ->setBirthDay($electedRepresentative->getBirthDate())
-            ->setActiveTags($activeTags)
+            ->setActiveTags($this->electedRepresentativeTagsBuilder->buildTags($electedRepresentative))
         ;
     }
 
