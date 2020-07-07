@@ -8,12 +8,12 @@ use App\Entity\EntityUserListDefinitionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -51,7 +51,7 @@ class ElectedRepresentative
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      *
-     * @JMS\Groups({"elected_representative_change_diff"})
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     private $lastName;
 
@@ -63,7 +63,7 @@ class ElectedRepresentative
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      *
-     * @JMS\Groups({"elected_representative_change_diff"})
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     private $firstName;
 
@@ -78,7 +78,7 @@ class ElectedRepresentative
      *     strict=true
      * )
      *
-     * @JMS\Groups({"elected_representative_change_diff"})
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     private $gender;
 
@@ -89,7 +89,7 @@ class ElectedRepresentative
      *
      * @Assert\NotNull
      *
-     * @JMS\Groups({"elected_representative_change_diff"})
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     private $birthDate;
 
@@ -372,9 +372,7 @@ class ElectedRepresentative
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\Groups({"elected_representative_change_diff"})
-     * @JMS\SerializedName("isAdherent")
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     public function isAdherent(): bool
     {
@@ -594,9 +592,7 @@ class ElectedRepresentative
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\Groups({"elected_representative_change_diff"})
-     * @JMS\SerializedName("emailAddress")
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     public function getEmailAddress(): ?string
     {
@@ -612,9 +608,7 @@ class ElectedRepresentative
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\Groups({"elected_representative_change_diff"})
-     * @JMS\SerializedName("activeTagCodes")
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     public function getActiveTagCodes(): array
     {

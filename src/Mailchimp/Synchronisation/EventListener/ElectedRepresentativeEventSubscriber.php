@@ -8,10 +8,9 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeDeleteCommand;
 use App\Utils\ArrayUtils;
-use JMS\Serializer\ArrayTransformerInterface;
-use JMS\Serializer\SerializationContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
 {
@@ -19,7 +18,7 @@ class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
     private $bus;
     private $beforeUpdate;
 
-    public function __construct(ArrayTransformerInterface $normalizer, MessageBusInterface $bus)
+    public function __construct(NormalizerInterface $normalizer, MessageBusInterface $bus)
     {
         $this->normalizer = $normalizer;
         $this->bus = $bus;
@@ -65,9 +64,12 @@ class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
 
     private function transformToArray(ElectedRepresentative $electedRepresentative): array
     {
-        return $this->normalizer->toArray(
+        return $this->normalizer->normalize(
             $electedRepresentative,
-            SerializationContext::create()->setGroups(['elected_representative_change_diff'])
+            'array',
+            [
+                'groups' => ['elected_representative_change_diff'],
+            ]
         );
     }
 }
