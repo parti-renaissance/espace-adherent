@@ -303,7 +303,8 @@ class CommitteeManagerTest extends WebTestCase
         $this->assertEquals(true, $adherent2->getMembershipFor($committee)->isFollower());
         $this->assertEquals(false, $adherent2->getMembershipFor($committee)->isSupervisor());
 
-        $adherent2->getMembershipFor($this->getCommittee(LoadAdherentData::COMMITTEE_6_UUID))->setCommitteeCandidacy(null);
+        $committee6 = $this->getCommittee(LoadAdherentData::COMMITTEE_6_UUID);
+        $adherent2->getMembershipFor($committee6)->removeCommitteeCandidacyForElection($committee6->getCommitteeElection());
 
         $this->committeeManager->changePrivilege($adherent2, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR);
 

@@ -618,9 +618,16 @@ class CommitteeRepository extends ServiceEntityRepository
     public function findAllWithoutStartedElection(Designation $designation, int $offset = 0, int $limit = 200): array
     {
         $qb = $this->createQueryBuilder('c')
-            ->leftJoin('c.committeeElection', 'el')
-            ->where('el IS NULL AND c.status = :status')
-            ->setParameter('status', Committee::APPROVED)
+            ->leftJoin('c.committeeElections', 'ce')
+            ->leftJoin('c.currentDesignation', 'd')
+            ->where('(c.currentDesignation IS NULL OR d.voteEndDate < :date)')
+            ->andWhere('c.status = :status')
+            ->andWhere('ce.designation != :designation')
+            ->setParameters([
+                'status' => Committee::APPROVED,
+                'designation' => $designation,
+                'date' => $designation->getCandidacyStartDate(),
+            ])
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->groupBy('c')

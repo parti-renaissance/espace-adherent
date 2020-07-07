@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
@@ -119,12 +118,6 @@ class VotingPlatformConfigureCommand extends Command
         $womanPool = new ElectionPool('Femme');
         $manPool = new ElectionPool('Homme');
 
-        $electionRound->addElectionPool($womanPool);
-        $electionRound->addElectionPool($manPool);
-
-        $election->addElectionPool($womanPool);
-        $election->addElectionPool($manPool);
-
         foreach ($candidacies as $candidacy) {
             $adherent = $candidacy->getCommitteeMembership()->getAdherent();
 
@@ -143,6 +136,16 @@ class VotingPlatformConfigureCommand extends Command
             } else {
                 $manPool->addCandidateGroup($group);
             }
+        }
+
+        if ($womanPool->getCandidateGroups()) {
+            $electionRound->addElectionPool($womanPool);
+            $election->addElectionPool($womanPool);
+        }
+
+        if ($manPool->getCandidateGroups()) {
+            $electionRound->addElectionPool($manPool);
+            $election->addElectionPool($manPool);
         }
 
         $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
@@ -164,42 +167,7 @@ class VotingPlatformConfigureCommand extends Command
     {
         $committee = $committeeElection->getCommittee();
 
-        // step 1: validate candidature Woman / Man
-        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee);
-
-        if (\count($candidacies) < 2) {
-            if ($this->io->isDebug()) {
-                $this->io->warning(sprintf('Committee "%s" does not have at least 2 candidates', $committee->getSlug()));
-            }
-
-            return false;
-        }
-
-        $womenCandidaciesCount = \count(array_filter($candidacies, static function (CommitteeCandidacy $candidacy) {
-            return $candidacy->isFemale();
-        }));
-
-        if ($womenCandidaciesCount < 1) {
-            if ($this->io->isDebug()) {
-                $this->io->warning(sprintf('Committee "%s" does not have at least one WOMAN candidate', $committee->getSlug()));
-            }
-
-            return false;
-        }
-
-        $menCandidaciesCount = \count(array_filter($candidacies, static function (CommitteeCandidacy $candidacy) {
-            return $candidacy->isMale();
-        }));
-
-        if ($menCandidaciesCount < 1) {
-            if ($this->io->isDebug()) {
-                $this->io->warning(sprintf('Committee "%s" does not have at least one MAN candidate', $committee->getSlug()));
-            }
-
-            return false;
-        }
-
-        // step 2: validate voters
+        // validate voters
         if (!$this->committeeMembershipRepository->committeeHasVoters($committee)) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have any voters', $committee->getSlug()));

@@ -870,7 +870,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee4->approved();
-        $committee4->setCommitteeElection(new CommitteeElection($this->getReference('designation-3')));
+        $committee4->setCurrentDesignation($designation = $this->getReference('designation-3'));
+        $committee4->addCommitteeElection(new CommitteeElection($designation));
         $this->addReference('committee-4', $committee4);
 
         $committee5 = $committeeFactory->createFromArray([
@@ -883,7 +884,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee5->approved();
-        $committee5->setCommitteeElection(new CommitteeElection($this->getReference('designation-2')));
+        $committee5->setCurrentDesignation($designation = $this->getReference('designation-2'));
+        $committee5->addCommitteeElection(new CommitteeElection($designation));
         $this->addReference('committee-5', $committee5);
 
         $committee6 = $committeeFactory->createFromArray([
@@ -896,7 +898,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 234823644',
         ]);
         $committee6->approved('2017-03-19 09:17:24');
-        $committee6->setCommitteeElection(new CommitteeElection($this->getReference('designation-1')));
+        $committee6->setCurrentDesignation($designation = $this->getReference('designation-1'));
+        $committee6->addCommitteeElection(new CommitteeElection($designation));
         $this->addReference('committee-6', $committee6);
 
         $committee7 = $committeeFactory->createFromArray([
@@ -909,7 +912,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '49 2211653540',
         ]);
         $committee7->approved('2017-03-19 13:43:26');
-        $committee7->setCommitteeElection(new CommitteeElection($this->getReference('designation-1')));
+        $committee7->setCurrentDesignation($designation = $this->getReference('designation-1'));
+        $committee7->addCommitteeElection(new CommitteeElection($designation));
         $this->addReference('committee-7', $committee7);
 
         $committee8 = $committeeFactory->createFromArray([

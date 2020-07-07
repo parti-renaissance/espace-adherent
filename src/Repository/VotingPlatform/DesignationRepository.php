@@ -32,7 +32,8 @@ class DesignationRepository extends ServiceEntityRepository
     public function getIncomingCandidacyDesignations(\DateTime $candidacyStartDate): array
     {
         return $this->createQueryBuilder('d')
-            ->where('d.candidacyStartDate <= :date AND d.candidacyEndDate > :date')
+            ->where('d.candidacyStartDate <= :date')
+            ->andWhere('(d.candidacyEndDate IS NULL OR d.candidacyEndDate > :date)')
             ->setParameter('date', $candidacyStartDate)
             ->getQuery()
             ->getResult()

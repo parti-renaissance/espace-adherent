@@ -64,7 +64,7 @@
                             <label class="switch">
                                 <input
                                     type="checkbox"
-                                    class="vote-switcher"
+                                    class="vote-switcher {{ is_adherent_able_to_change_vote and not committee_is_locked ? 'vote-switcher-enabled'}}"
                                     data-committee-title="{{ committee.name }}"
                                     data-committee-slug="{{ committee.slug }}"
                                     data-token="{{ csrf_token('committee.vote') }}"
@@ -84,7 +84,7 @@
                             {% endif %}
                         {% endif %}
 
-                        {% if committee_is_locked %}
+                        {% if committee.hasActiveElection %}
                             <div class="legend pink">Ce comité a une désignation en cours</div>
                         {% endif %}
                     </div>
@@ -105,7 +105,7 @@
     {% if is_adherent_able_to_change_vote %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
-                App.runMyActivityCommitteeList('.vote-switcher');
+                App.runMyActivityCommitteeList('.vote-switcher-enabled');
             });
         </script>
     {% endif %}

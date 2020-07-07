@@ -175,7 +175,11 @@ class CommitteeMergeCommandHandler
         });
 
         $votingAdherents = array_map(static function (CommitteeMembership $membership) {
-            $membership->removeCandidacy();
+            $election = $membership->getCommittee()->getCommitteeElection();
+            if ($election) {
+                $membership->removeCommitteeCandidacyForElection($election);
+            }
+
             $membership->disableVote();
 
             return $membership->getAdherent();

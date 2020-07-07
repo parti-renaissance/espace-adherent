@@ -26,7 +26,7 @@ class LoadCommitteeCandidacyData extends Fixture
 
         $voteCommitteeMembership = $adherent->getMembershipFor($committee);
         $voteCommitteeMembership->enableVote();
-        $voteCommitteeMembership->setCommitteeCandidacy(
+        $voteCommitteeMembership->addCommitteeCandidacy(
             $candidacy = new CommitteeCandidacy(
                 $committee->getCommitteeElection(),
                 $adherent->getGender(),
@@ -52,7 +52,7 @@ class LoadCommitteeCandidacyData extends Fixture
 
         $voteCommitteeMembership = $adherent->getMembershipFor($committee);
         $voteCommitteeMembership->enableVote();
-        $voteCommitteeMembership->setCommitteeCandidacy(
+        $voteCommitteeMembership->addCommitteeCandidacy(
             $candidacy = new CommitteeCandidacy(
                 $committee->getCommitteeElection(),
                 Genders::FEMALE,

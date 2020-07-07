@@ -95,7 +95,7 @@ class CommitteeRuntime implements RuntimeExtensionInterface
     {
         $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
 
-        return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy();
+        return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy($committee->getCommitteeElection());
     }
 
     public function countCommitteeCandidates(Committee $committee, bool $countMaleOnly = null): int

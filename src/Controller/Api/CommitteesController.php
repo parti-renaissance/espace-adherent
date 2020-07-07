@@ -88,20 +88,20 @@ class CommitteesController extends Controller
         Committee $committee,
         CommitteeMembershipRepository $repository
     ): Response {
-        $memberships = $repository->getCandidacyMemberships($committee);
+        $memberships = $repository->getCandidacyMemberships($committee->getCommitteeElection());
 
         return $this->json([
             'metadata' => [
                 'total' => \count($memberships),
                 'males' => \count(array_filter($memberships, static function (CommitteeMembership $membership) {
-                    return $membership->getCommitteeCandidacy()->isMale();
+                    return $membership->getCommitteeCandidacy($membership->getCommittee()->getCommitteeElection())->isMale();
                 })),
                 'females' => \count(array_filter($memberships, static function (CommitteeMembership $membership) {
-                    return $membership->getCommitteeCandidacy()->isFemale();
+                    return $membership->getCommitteeCandidacy($membership->getCommittee()->getCommitteeElection())->isFemale();
                 })),
             ],
             'candidacies' => array_map(function (CommitteeMembership $membership) {
-                $candidacy = $membership->getCommitteeCandidacy();
+                $candidacy = $membership->getCommitteeCandidacy($membership->getCommittee()->getCommitteeElection());
 
                 return [
                     'photo' => $candidacy->getImageName() ? $this->generateUrl('asset_url', ['path' => $candidacy->getImagePath()]) : null,

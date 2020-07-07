@@ -41,16 +41,7 @@ trait EntityDesignationTrait
 
     public function isActive(): bool
     {
-        $now = new \DateTime();
-
-        return $this->designation
-            && $this->getCandidacyPeriodStartDate() <= $now
-            && (
-                null === $this->getVoteEndDate()
-                || $now < $this->getVoteEndDate()
-                || $this->isResultPeriodActive()
-            )
-        ;
+        return $this->designation && $this->designation->isActive();
     }
 
     public function isCandidacyPeriodActive(): bool

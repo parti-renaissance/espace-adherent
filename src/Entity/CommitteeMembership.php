@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -99,16 +100,16 @@ class CommitteeMembership
     private $enableVote;
 
     /**
-     * @var CommitteeCandidacy|null
+     * @var CommitteeCandidacy[]
      *
-     * @ORM\OneToOne(
+     * @ORM\OneToMany(
      *     targetEntity="App\Entity\CommitteeCandidacy",
      *     cascade={"all"},
      *     orphanRemoval=true,
-     *     inversedBy="committeeMembership"
+     *     mappedBy="committeeMembership"
      * )
      */
-    private $committeeCandidacy;
+    private $committeeCandidacies;
 
     private function __construct(
         UuidInterface $uuid,
@@ -122,6 +123,8 @@ class CommitteeMembership
         $this->adherent = $adherent;
         $this->privilege = $privilege;
         $this->joinedAt = new \DateTime($subscriptionDate);
+
+        $this->committeeCandidacies = new ArrayCollection();
     }
 
     final public static function getHostPrivileges(): array
@@ -230,19 +233,44 @@ class CommitteeMembership
         $this->privilege = $privilege;
     }
 
-    public function getCommitteeCandidacy(): ?CommitteeCandidacy
+    public function getCommitteeCandidacy(?CommitteeElection $election): ?CommitteeCandidacy
     {
-        return $this->committeeCandidacy;
+        if (!$election) {
+            return null;
+        }
+
+        foreach ($this->committeeCandidacies as $candidacy) {
+            if ($candidacy->getCommitteeElection() === $election) {
+                return $candidacy;
+            }
+        }
+
+        return null;
     }
 
-    public function setCommitteeCandidacy(?CommitteeCandidacy $committeeCandidacy): void
+    public function addCommitteeCandidacy(CommitteeCandidacy $committeeCandidacy): void
     {
-        $this->committeeCandidacy = $committeeCandidacy;
+        if (
+            !$this->committeeCandidacies->contains($committeeCandidacy)
+            && null === $this->getCommitteeCandidacy($committeeCandidacy->getCommitteeElection())
+        ) {
+            $committeeCandidacy->setCommitteeMembership($this);
+            $this->committeeCandidacies->add($committeeCandidacy);
+        }
     }
 
-    public function removeCandidacy(): void
+    public function removeCommitteeCandidacy(CommitteeCandidacy $committeeCandidacy): void
     {
-        $this->committeeCandidacy = null;
+        $this->committeeCandidacies->removeElement($committeeCandidacy);
+    }
+
+    public function removeCommitteeCandidacyForElection(CommitteeElection $election): void
+    {
+        $candidacy = $this->getCommitteeCandidacy($election);
+
+        if ($candidacy) {
+            $this->removeCommitteeCandidacy($candidacy);
+        }
     }
 
     /**
@@ -291,5 +319,16 @@ class CommitteeMembership
         $key = sha1(sprintf('%s|%s', $adherentUuid->toString(), $committeeUuid->toString()));
 
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
+    }
+
+    public function hasActiveCommitteeCandidacy(): bool
+    {
+        foreach ($this->committeeCandidacies as $candidacy) {
+            if ($candidacy->isActive()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
