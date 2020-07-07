@@ -8,6 +8,7 @@ use App\Entity\EntityUserListDefinitionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -49,6 +50,8 @@ class ElectedRepresentative
      *
      * @Assert\NotBlank
      * @Assert\Length(max="50")
+     *
+     * @JMS\Groups({"elected_representative_change_diff"})
      */
     private $lastName;
 
@@ -59,6 +62,8 @@ class ElectedRepresentative
      *
      * @Assert\NotBlank
      * @Assert\Length(max="50")
+     *
+     * @JMS\Groups({"elected_representative_change_diff"})
      */
     private $firstName;
 
@@ -72,6 +77,8 @@ class ElectedRepresentative
      *     message="common.gender.invalid_choice",
      *     strict=true
      * )
+     *
+     * @JMS\Groups({"elected_representative_change_diff"})
      */
     private $gender;
 
@@ -81,6 +88,8 @@ class ElectedRepresentative
      * @ORM\Column(type="date")
      *
      * @Assert\NotNull
+     *
+     * @JMS\Groups({"elected_representative_change_diff"})
      */
     private $birthDate;
 
@@ -498,6 +507,13 @@ class ElectedRepresentative
         return $this->labels;
     }
 
+    public function getCurrentLabels(): Collection
+    {
+        return $this->labels->filter(function (ElectedRepresentativeLabel $label) {
+            return $label->isOnGoing();
+        });
+    }
+
     public function getSortedLabels(): Collection
     {
         $iterator = $this->labels->getIterator();
@@ -572,6 +588,11 @@ class ElectedRepresentative
         return $this->birthDate ? $this->birthDate->diff(new \DateTime())->y : null;
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"elected_representative_change_diff"})
+     * @JMS\SerializedName("emailAddress")
+     */
     public function getEmailAddress(): ?string
     {
         if ($this->adherent) {
@@ -583,6 +604,34 @@ class ElectedRepresentative
         }
 
         return null;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"elected_representative_change_diff"})
+     * @JMS\SerializedName("activeTagCodes")
+     */
+    public function getActiveTagCodes(): array
+    {
+        $tags = [];
+
+        foreach ($this->getCurrentMandates() as $mandate) {
+            $tags[] = $mandate->getType();
+        }
+
+        foreach ($this->getCurrentPoliticalFunctions() as $politicalFunction) {
+            $tags[] = $politicalFunction->getName();
+        }
+
+        foreach ($this->getUserListDefinitions() as $userListDefinition) {
+            $tags[] = $userListDefinition->getLabel();
+        }
+
+        foreach ($this->getCurrentLabels() as $label) {
+            $tags[] = $label->getName();
+        }
+
+        return array_unique($tags);
     }
 
     public function __toString(): string

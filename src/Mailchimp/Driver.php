@@ -41,6 +41,12 @@ class Driver implements LoggerAwareInterface
 
     public function updateMemberTags(MemberTagsRequest $request, string $listId): bool
     {
+        $this->sendRequest(
+            'POST',
+            sprintf('/lists/%s/members/%s/tags', $listId, md5($request->getMemberIdentifier())),
+            []
+        );
+
         return $this->sendRequest(
             'POST',
             sprintf('/lists/%s/members/%s/tags', $listId, md5($request->getMemberIdentifier())),

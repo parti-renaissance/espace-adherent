@@ -57,7 +57,7 @@ class MailchimpSyncAllElectedRepresentativesCommand extends Command
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
 
-        if (false === $this->io->confirm(sprintf('Are you sure to sync %d adherents?', $total), false)) {
+        if (false === $this->io->confirm(sprintf('Are you sure to sync %d elected representative?', $total), false)) {
             return 1;
         }
 

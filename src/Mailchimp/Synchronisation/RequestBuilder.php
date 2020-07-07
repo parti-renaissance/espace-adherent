@@ -65,13 +65,19 @@ class RequestBuilder
 
     public function updateFromElectedRepresentative(ElectedRepresentative $electedRepresentative): self
     {
+        $activeTags = $electedRepresentative->getActiveTagCodes();
+
+        if ($electedRepresentative->isAdherent()) {
+            $activeTags[] = ElectedRepresentativeTagLabelEnum::ADHERENT_LABEL;
+        }
+
         return $this
             ->setEmail($electedRepresentative->getEmailAddress())
             ->setGender($electedRepresentative->getGender())
             ->setFirstName($electedRepresentative->getFirstName())
             ->setLastName($electedRepresentative->getLastName())
             ->setBirthDay($electedRepresentative->getBirthDate())
-            ->setActiveTags($this->getElectedRepresentativeActiveTags($electedRepresentative))
+            ->setActiveTags($activeTags)
         ;
     }
 
@@ -373,33 +379,6 @@ class RequestBuilder
         }
 
         return $tags;
-    }
-
-    private function getElectedRepresentativeActiveTags(ElectedRepresentative $electedRepresentative): array
-    {
-        $tags = [];
-
-        foreach ($electedRepresentative->getCurrentMandates() as $mandate) {
-            $tags[] = $mandate->getType();
-        }
-
-        foreach ($electedRepresentative->getCurrentPoliticalFunctions() as $politicalFunction) {
-            $tags[] = $politicalFunction->getName();
-        }
-
-        foreach ($electedRepresentative->getUserListDefinitions() as $userListDefinition) {
-            $tags[] = $userListDefinition->getCode();
-        }
-
-        foreach ($electedRepresentative->getLabels() as $label) {
-            $tags[] = $label->getName();
-        }
-
-        if ($electedRepresentative->isAdherent()) {
-            $tags[] = 'adherent';
-        }
-
-        return array_unique($tags);
     }
 
     private function getInactiveTags(Adherent $adherent): array
