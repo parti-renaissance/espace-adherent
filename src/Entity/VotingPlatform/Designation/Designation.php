@@ -52,27 +52,27 @@ class Designation
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Assert\NotBlank
+     * @Assert\DateTime
      */
     private $candidacyEndDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Assert\NotBlank
+     * @Assert\DateTime
      */
     private $voteStartDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Assert\NotBlank
+     * @Assert\DateTime
      */
     private $voteEndDate;
 
@@ -211,5 +211,18 @@ class Designation
     public function setLockPeriodThreshold(int $lockPeriodThreshold): void
     {
         $this->lockPeriodThreshold = $lockPeriodThreshold;
+    }
+
+    /**
+     * @Assert\IsTrue(message="La combinaison des dates est invalide.")
+     */
+    public function isValid(): bool
+    {
+        return !empty($this->candidacyStartDate)
+            && (
+                (!empty($this->candidacyEndDate) && !empty($this->voteStartDate) && !empty($this->voteEndDate))
+                || (empty($this->candidacyEndDate) && empty($this->voteStartDate) && empty($this->voteEndDate))
+            )
+        ;
     }
 }

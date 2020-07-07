@@ -34,8 +34,8 @@ final class CommitteeCandidacyRemovedConfirmationMessage extends Message
         ];
     }
 
-    private static function dateToString(\DateTimeInterface $date): string
+    private static function dateToString(?\DateTimeInterface $date): string
     {
-        return parent::formatDate($date, 'EEEE d MMMM y, HH\'h\'mm');
+        return $date ? parent::formatDate($date, 'EEEE d MMMM y, HH\'h\'mm') : '';
     }
 }
