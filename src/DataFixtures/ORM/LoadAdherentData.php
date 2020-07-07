@@ -912,7 +912,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '49 2211653540',
         ]);
         $committee7->approved('2017-03-19 13:43:26');
-        $committee7->setCurrentDesignation($designation = $this->getReference('designation-3'));
+        $committee7->setCurrentDesignation($designation = $this->getReference('designation-1'));
         $committee7->addCommitteeElection(new CommitteeElection($designation));
         $this->addReference('committee-7', $committee7);
 

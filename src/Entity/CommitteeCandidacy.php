@@ -69,7 +69,8 @@ class CommitteeCandidacy implements ImageOwnerInterface
     /**
      * @var CommitteeMembership
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\CommitteeMembership", mappedBy="committeeCandidacy")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeMembership", inversedBy="committeeCandidacies")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $committeeMembership;
 
@@ -163,5 +164,10 @@ class CommitteeCandidacy implements ImageOwnerInterface
     public function setCommitteeMembership(CommitteeMembership $committeeMembership): void
     {
         $this->committeeMembership = $committeeMembership;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->committeeElection->isActive();
     }
 }

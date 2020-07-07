@@ -44,7 +44,7 @@ class FollowerCommitteeVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if ($membership->getCommitteeCandidacy() && $membership->getCommitteeCandidacy()->getCommitteeElection()->getCommittee()->equals($committee)) {
+        if ($membership->getCommitteeCandidacy($committee->getCommitteeElection())) {
             return false;
         }
 

@@ -62,6 +62,7 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
                 $this->io->progressAdvance();
 
                 $committee->addCommitteeElection(new CommitteeElection($designation));
+                $committee->setCurrentDesignation($designation);
             }
 
             $this->entityManager->flush();

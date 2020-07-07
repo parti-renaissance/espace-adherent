@@ -118,8 +118,9 @@ class CommitteeMembershipCollection extends ArrayCollection
 
     public function getCommitteeCandidacyMembership(): ?CommitteeMembership
     {
+        /** @var CommitteeMembership $membership */
         foreach ($this as $membership) {
-            if ($membership->getCommitteeCandidacy()) {
+            if ($membership->hasActiveCommitteeCandidacy()) {
                 return $membership;
             }
         }

@@ -22,7 +22,8 @@ class VoteCommandStorage
     {
         $command = $this->session->get(self::SESSION_KEY_COMMAND);
 
-        return $command instanceof VoteCommand ? $command : $this->createVoteCommand($election);
+        return $command instanceof VoteCommand && $command->getElectionUuid() === $election->getUuid()->toString() ?
+            $command : $this->createVoteCommand($election);
     }
 
     public function save(VoteCommand $voteCommand): void

@@ -402,7 +402,7 @@ class CommitteeManager
      */
     public function disableVoteInMembership(CommitteeMembership $membership): void
     {
-        if ($membership->getCommitteeCandidacy()) {
+        if ($membership->hasActiveCommitteeCandidacy()) {
             throw CommitteeMembershipException::createRunningCommitteeCandidacyException($membership->getUuid(), $committee->getName);
         }
 
@@ -415,7 +415,7 @@ class CommitteeManager
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
         if ($membership && $membership->isVotingCommittee()) {
-            $membership->setCommitteeCandidacy($candidacy);
+            $membership->addCommitteeCandidacy($candidacy);
 
             $this->getManager()->flush();
 
@@ -432,15 +432,14 @@ class CommitteeManager
 
     public function removeCandidacy(Adherent $adherent, Committee $committee): void
     {
+        $committeeElection = $committee->getCommitteeElection();
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
-        if ($membership && $candidacy = $membership->getCommitteeCandidacy()) {
-            // Initialise Doctrine Proxy object
-            $candidacy->getCommitteeElection();
+        if ($membership && $candidacy = $membership->getCommitteeCandidacy($committeeElection)) {
+            $manager = $this->getManager();
 
-            $membership->removeCandidacy();
-
-            $this->getManager()->flush();
+            $manager->remove($candidacy);
+            $manager->flush();
 
             $this->dispatcher->dispatch(
                 VotingPlatformEvents::CANDIDACY_REMOVED,
@@ -619,7 +618,7 @@ class CommitteeManager
     {
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
-        return $membership->getCommitteeCandidacy();
+        return $membership->getCommitteeCandidacy($committee->getCommitteeElection());
     }
 
     public function saveCandidacy(CommitteeCandidacy $candidacy): void

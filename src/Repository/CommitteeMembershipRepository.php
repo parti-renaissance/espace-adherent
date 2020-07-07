@@ -7,6 +7,7 @@ use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Event\Filter\ListFilterObject;
 use App\Subscription\SubscriptionTypeEnum;
@@ -584,14 +585,14 @@ SQL
     /**
      * @return CommitteeMembership[]
      */
-    public function getCandidacyMemberships(Committee $committee): array
+    public function getCandidacyMemberships(CommitteeElection $election): array
     {
         return $this->createQueryBuilder('m')
             ->addSelect('a', 'c')
-            ->innerJoin('m.committeeCandidacy', 'c')
+            ->innerJoin('m.committeeCandidacies', 'c')
             ->innerJoin('m.adherent', 'a')
-            ->where('m.committee = :committee')
-            ->setParameter('committee', $committee)
+            ->where('c.committeeElection = :election')
+            ->setParameter('election', $election)
             ->getQuery()
             ->getResult()
         ;
