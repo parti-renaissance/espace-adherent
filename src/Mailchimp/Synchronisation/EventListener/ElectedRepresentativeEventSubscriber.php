@@ -41,8 +41,9 @@ class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
     {
         $electedRepresentative = $event->getElectedRepresentative();
         $emailBeforeUpdate = isset($this->beforeUpdate['emailAddress']) ? $this->beforeUpdate['emailAddress'] : null;
+        $emailAfterUpdate = $electedRepresentative->getEmailAddress();
 
-        if (!$electedRepresentative->getEmailAddress() && $emailBeforeUpdate) {
+        if (!$emailAfterUpdate && $emailBeforeUpdate) {
             $this->bus->dispatch(new ElectedRepresentativeArchiveCommand($emailBeforeUpdate));
 
             return;
@@ -56,7 +57,7 @@ class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
         if ($changeFrom || $changeTo) {
             $this->bus->dispatch(new ElectedRepresentativeChangeCommand(
                 $electedRepresentative->getUuid(),
-                $emailBeforeUpdate ?? $electedRepresentative->getEmailAddress()
+                $emailAfterUpdate !== $emailBeforeUpdate ? $emailBeforeUpdate : null
             ));
         }
     }

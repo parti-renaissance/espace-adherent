@@ -7,12 +7,15 @@ use Ramsey\Uuid\UuidInterface;
 class ElectedRepresentativeChangeCommand implements ElectedRepresentativeChangeCommandInterface
 {
     private $uuid;
-    private $emailAddress;
+    private $oldEmailAddress;
 
-    public function __construct(UuidInterface $uuid, string $emailAddress)
+    public function __construct(UuidInterface $uuid, string $oldEmailAddress = null)
     {
         $this->uuid = $uuid;
-        $this->emailAddress = strtolower($emailAddress);
+
+        if ($oldEmailAddress) {
+            $this->oldEmailAddress = strtolower($oldEmailAddress);
+        }
     }
 
     public function getUuid(): UuidInterface
@@ -20,8 +23,8 @@ class ElectedRepresentativeChangeCommand implements ElectedRepresentativeChangeC
         return $this->uuid;
     }
 
-    public function getEmailAddress(): string
+    public function getOldEmailAddress(): ?string
     {
-        return $this->emailAddress;
+        return $this->oldEmailAddress;
     }
 }

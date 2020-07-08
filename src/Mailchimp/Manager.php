@@ -105,24 +105,24 @@ class Manager implements LoggerAwareInterface
         ElectedRepresentative $electedRepresentative,
         ElectedRepresentativeChangeCommandInterface $message
     ): void {
+        $emailAddress = $electedRepresentative->getEmailAddress();
+        $listId = $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
+
         $requestBuilder = $this->requestBuildersLocator
             ->get(RequestBuilder::class)
             ->updateFromElectedRepresentative($electedRepresentative)
         ;
 
         $result = $this->driver->editMember(
-            $requestBuilder->buildMemberRequest($message->getEmailAddress()),
-            $this->mailchimpObjectIdMapping->getElectedRepresentativeListId()
+            $requestBuilder->buildMemberRequest($message->getOldEmailAddress() ?? $emailAddress),
+            $listId
         );
 
         if ($result) {
-            $email = $electedRepresentative->getEmailAddress();
-            $listId = $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
-
-            $currentTags = $this->driver->getMemberTags($email, $listId);
+            $currentTags = $this->driver->getMemberTags($emailAddress, $listId);
 
             $this->driver->updateMemberTags(
-                $requestBuilder->createMemberTagsRequest($email, $currentTags),
+                $requestBuilder->createMemberTagsRequest($emailAddress, $currentTags),
                 $listId
             );
         }
