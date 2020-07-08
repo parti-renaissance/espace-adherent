@@ -114,7 +114,7 @@
 
                                 <th style="width: 100px;">
                                     <a
-                                            href="{{ path("app_referent_elected_representatives_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
+                                            href="{{ path("app_#{space_name}_elected_representatives_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
                                             class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
                                     >
                                         Identité
