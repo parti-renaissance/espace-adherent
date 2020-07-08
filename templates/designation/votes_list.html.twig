@@ -5,7 +5,7 @@
         <h3>Liste des bulletins dépouillés</h3>
 
         <span class="datagrid__count">
-            <span>{{ votes|length|number_format(0, ',', ' ') }}</span> bulletins
+            <span>{{ votes|length|number_format(0, ',', ' ') }}</span> bulletin{{ votes|length > 1 ? 's' }}
         </span>
     </div>
 

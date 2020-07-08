@@ -259,7 +259,7 @@
             }
         }
 
-        &:last-child {
+        &:nth-child(2) {
             margin: 0 auto;
             z-index: 3;
 

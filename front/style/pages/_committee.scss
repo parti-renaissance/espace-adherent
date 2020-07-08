@@ -604,7 +604,8 @@
         &:hover {
             background-color: $pink;
 
-            & > p {
+            & > div > p,
+            & > div .text--dark {
                 color: $white;
             }
 
@@ -615,6 +616,12 @@
             .box-el.btn {
                 color: $white;
                 border-color: $white;
+
+                &:hover {
+                    &.btn--disabled {
+                        color: $gray--light;
+                    }
+                }
             }
 
             a.box-el:not(.btn) {
