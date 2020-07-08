@@ -25,7 +25,7 @@
         <a href="{{ path('app_message_deputy_list') }}">Espace député</a>
     </li>
 {% endif %}
-{% if is_canary_enabled() and is_granted('ROLE_DELEGATED_DEPUTY') %}
+{% if is_granted('ROLE_DELEGATED_DEPUTY') %}
     {% for delegated_access in app.user.receivedDelegatedAccessOfType('deputy') %}
         <li>
             <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace député partagé ({{ delegated_access.delegator.managedDistrict.code }})</a>
@@ -37,7 +37,7 @@
         <a href="{{ path('app_message_senator_list') }}">Espace sénateur</a>
     </li>
 {% endif %}
-{% if is_canary_enabled() and is_granted('ROLE_DELEGATED_SENATOR') %}
+{% if is_granted('ROLE_DELEGATED_SENATOR') %}
     {% for delegated_access in app.user.receivedDelegatedAccessOfType('senator') %}
         <li>
             <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace sénateur partagé ({{ delegated_access.delegator.senatorArea.departmentTag.code }})</a>

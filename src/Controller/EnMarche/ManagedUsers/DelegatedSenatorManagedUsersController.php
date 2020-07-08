@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche\ManagedUsers;
 
 use App\Controller\AccessDelegatorTrait;
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Committee;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -20,12 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class DelegatedSenatorManagedUsersController extends SenatorManagedUsersController
 {
     use AccessDelegatorTrait;
-    use CanaryControllerTrait;
 
     protected function createFilterModel(Request $request): ManagedUsersFilter
     {
-        $this->disableInProduction();
-
         /** @var DelegatedAccess $delegatedAccess */
         $delegatedAccess = $this->getDelegatedAccess($request);
         if (!$delegatedAccess) {

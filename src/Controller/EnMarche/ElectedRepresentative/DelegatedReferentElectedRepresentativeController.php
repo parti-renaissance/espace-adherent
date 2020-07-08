@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche\ElectedRepresentative;
 
 use App\Controller\AccessDelegatorTrait;
-use App\Controller\CanaryControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class DelegatedReferentElectedRepresentativeController extends ReferentElectedRepresentativeController
 {
     use AccessDelegatorTrait;
-    use CanaryControllerTrait;
 
     protected function getManagedTags(Request $request): array
     {

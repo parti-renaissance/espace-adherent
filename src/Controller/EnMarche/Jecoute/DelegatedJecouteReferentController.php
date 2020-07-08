@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche\Jecoute;
 
 use App\Controller\AccessDelegatorTrait;
-use App\Controller\CanaryControllerTrait;
 use App\Entity\MyTeam\DelegatedAccess;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class DelegatedJecouteReferentController extends JecouteReferentController
 {
     use AccessDelegatorTrait;
-    use CanaryControllerTrait;
 
     protected function redirectToJecouteRoute(Request $request, string $subName, array $parameters = []): Response
     {

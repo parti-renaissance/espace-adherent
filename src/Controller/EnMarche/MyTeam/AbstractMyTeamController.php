@@ -2,7 +2,6 @@
 
 namespace App\Controller\EnMarche\MyTeam;
 
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Form\MyTeam\DelegateAccessType;
@@ -21,17 +20,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractMyTeamController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("", name="list")
      */
     public function list(DelegatedAccessRepository $delegatedAccessRepository): Response
     {
-        if ('referent' !== $this->getSpaceType()) {
-            $this->disableInProduction();
-        }
-
         $delegatedAccesses = $delegatedAccessRepository->findBy(['delegator' => $this->getUser()]);
 
         return $this->renderTemplate('my_team/list.html.twig', [
@@ -50,10 +43,6 @@ abstract class AbstractMyTeamController extends Controller
         EntityManagerInterface $entityManager,
         DelegatedAccess $delegatedAccess = null
     ): Response {
-        if ('referent' !== $this->getSpaceType()) {
-            $this->disableInProduction();
-        }
-
         $delegatedAccess = $delegatedAccess ?? new DelegatedAccess();
         $delegatedAccess->setDelegator($this->getUser());
         $delegatedAccess->setType($this->getSpaceType());

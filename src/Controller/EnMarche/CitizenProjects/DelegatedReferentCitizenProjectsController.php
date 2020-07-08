@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche\CitizenProjects;
 
 use App\Controller\AccessDelegatorTrait;
-use App\Controller\CanaryControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,5 +14,4 @@ use Symfony\Component\Routing\Annotation\Route;
 class DelegatedReferentCitizenProjectsController extends ReferentCitizenProjectsController
 {
     use AccessDelegatorTrait;
-    use CanaryControllerTrait;
 }

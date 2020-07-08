@@ -10,10 +10,6 @@ trait AccessDelegatorTrait
 {
     protected function getMainUser(Request $request): UserInterface
     {
-        if ('referent' !== $this->getType()) {
-            $this->disableInProduction();
-        }
-
         return $this->getDelegatedAccess($request)->getDelegator();
     }
 
