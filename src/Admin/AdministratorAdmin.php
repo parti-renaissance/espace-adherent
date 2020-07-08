@@ -106,6 +106,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_CLIENTS',
                     'ROLE_ADMIN_ORGANIGRAMM',
                     'ROLE_ADMIN_MOOC',
+                    'ROLE_ADMIN_EMAIL',
                     'ROLE_ADMIN_EMAIL_SUBSCRIPTION_TYPES',
                     'ROLE_ADMIN_LABEL',
                     'ROLE_ADMIN_BIOGRAPHY',
