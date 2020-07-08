@@ -134,6 +134,14 @@ class Driver implements LoggerAwareInterface
         );
     }
 
+    public function archiveMember(string $mail, string $listId): bool
+    {
+        return $this->sendRequest(
+            'DELETE',
+            sprintf('/lists/%s/members/%s', $listId, md5(strtolower($mail)))
+        );
+    }
+
     public function deleteMember(string $mail, string $listId): bool
     {
         return $this->sendRequest('POST', sprintf('/lists/%s/members/%s/actions/delete-permanent', $listId, md5(strtolower($mail))));

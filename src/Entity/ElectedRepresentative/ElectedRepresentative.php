@@ -147,6 +147,15 @@ class ElectedRepresentative
     private $isAdherent = false;
 
     /**
+     * Mailchimp unsubscribed date
+     *
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $emailUnsubscribedAt;
+
+    /**
      * @var Adherent|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
@@ -605,6 +614,16 @@ class ElectedRepresentative
         }
 
         return null;
+    }
+
+    public function unsubscribeEmails(): void
+    {
+        $this->emailUnsubscribedAt = new \DateTime();
+    }
+
+    public function isSubscribedToEmails(): bool
+    {
+        return null !== $this->emailUnsubscribedAt;
     }
 
     public function __toString(): string

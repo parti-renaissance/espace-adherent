@@ -2,12 +2,8 @@
 
 namespace App\Normalizer;
 
-use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\IdeasWorkshop\Idea;
 use App\Mailchimp\Synchronisation\ElectedRepresentativeTagsBuilder;
-use App\Repository\IdeasWorkshop\IdeaRepository;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ElectedRepresentativeNormalizer implements NormalizerInterface
@@ -15,10 +11,8 @@ class ElectedRepresentativeNormalizer implements NormalizerInterface
     private $normalizer;
     private $tagsBuilder;
 
-    public function __construct(
-        NormalizerInterface $normalizer,
-        ElectedRepresentativeTagsBuilder $tagsBuilder
-    ) {
+    public function __construct(NormalizerInterface $normalizer, ElectedRepresentativeTagsBuilder $tagsBuilder)
+    {
         $this->normalizer = $normalizer;
         $this->tagsBuilder = $tagsBuilder;
     }

@@ -40,8 +40,10 @@ class RequestBuilder
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
-    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping, ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder)
-    {
+    public function __construct(
+        MailchimpObjectIdMapping $mailchimpObjectIdMapping,
+        ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder
+    ) {
         $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
         $this->electedRepresentativeTagsBuilder = $electedRepresentativeTagsBuilder;
     }

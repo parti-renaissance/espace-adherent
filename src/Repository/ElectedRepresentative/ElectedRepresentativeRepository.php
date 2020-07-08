@@ -27,6 +27,20 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         parent::__construct($registry, ElectedRepresentative::class);
     }
 
+    public function findByEmail(string $email): array
+    {
+        $qb = $this
+            ->createQueryBuilder('elected_representative')
+            ->leftJoin('elected_representative.adherent', 'adherent')
+            ->andWhere((new Orx())
+                ->add('adherent.emailAddress = :email')
+                ->add('elected_representative.contactEmail = :email')
+            )
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * @return ElectedRepresentative[]|PaginatorInterface
      */
