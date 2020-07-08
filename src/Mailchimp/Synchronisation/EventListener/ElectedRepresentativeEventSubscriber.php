@@ -53,6 +53,11 @@ class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
         $changeFrom = ArrayUtils::arrayDiffRecursive($this->beforeUpdate, $afterUpdate);
         $changeTo = ArrayUtils::arrayDiffRecursive($afterUpdate, $this->beforeUpdate);
 
+        dump($this->beforeUpdate);
+        dump($afterUpdate);
+        dump($changeFrom);
+        dump($changeTo);
+        die;
         if ($changeFrom || $changeTo) {
             $this->bus->dispatch(new ElectedRepresentativeChangeCommand(
                 $electedRepresentative->getUuid(),

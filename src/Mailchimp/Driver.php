@@ -39,14 +39,28 @@ class Driver implements LoggerAwareInterface
         );
     }
 
+    public function getMemberTags(string $mail, string $listId): array
+    {
+        $response = $this->send('GET', sprintf('/lists/%s/members/%s/tags', $listId, md5($mail)));
+
+        if (!$this->isSuccessfulResponse($response)) {
+            return [];
+        }
+
+        $content = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+
+        $tags = [];
+        foreach ($content['tags'] ?? [] as $currentTag) {
+            if (isset($currentTag['name'])) {
+                $tags[] = $currentTag['name'];
+            }
+        }
+
+        return $tags;
+    }
+
     public function updateMemberTags(MemberTagsRequest $request, string $listId): bool
     {
-        $this->sendRequest(
-            'POST',
-            sprintf('/lists/%s/members/%s/tags', $listId, md5($request->getMemberIdentifier())),
-            []
-        );
-
         return $this->sendRequest(
             'POST',
             sprintf('/lists/%s/members/%s/tags', $listId, md5($request->getMemberIdentifier())),

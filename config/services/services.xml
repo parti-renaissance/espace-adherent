@@ -291,6 +291,7 @@
         <!-- Normalizer -->
         <service id="App\Normalizer\ItemCollectionNormalizer" />
         <service id="App\Normalizer\MunicipalEventNormalizer" />
+        <service id="App\Normalizer\ElectedRepresentativeNormalizer" />
         <service id="App\Normalizer\IdeaNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item" />
         </service>

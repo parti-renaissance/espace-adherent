@@ -116,9 +116,14 @@ class Manager implements LoggerAwareInterface
         );
 
         if ($result) {
+            $email = $electedRepresentative->getEmailAddress();
+            $listId = $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
+
+            $currentTags = $this->driver->getMemberTags($email, $listId);
+
             $this->driver->updateMemberTags(
-                $requestBuilder->createMemberTagsRequest($electedRepresentative->getEmailAddress(), $message->getRemovedTags()),
-                $this->mailchimpObjectIdMapping->getElectedRepresentativeListId()
+                $requestBuilder->createMemberTagsRequest($email, $currentTags),
+                $listId
             );
         }
     }
