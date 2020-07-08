@@ -195,7 +195,12 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         }
 
         $hasParis = false;
+        $districtDptCodes = [];
         foreach ($referentTags as $tag) {
+            if ($districtDptCode = $tag->getDepartmentCodeFromCirconscriptionName()) {
+                $districtDptCodes[] = $districtDptCode;
+            }
+
             if (0 === mb_strpos($tag->getCode(), '750') || 0 === mb_strpos($tag->getCode(), 'CIRCO_750')) {
                 $hasParis = true;
 
@@ -211,6 +216,11 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             $zoneCondition->add('tag.code LIKE :paris_arr OR tag.code LIKE :paris_circo');
             $qb->setParameter('paris_arr', '750%');
             $qb->setParameter('paris_circo', 'CIRCO\_750%');
+        }
+
+        if ($districtDptCodes) {
+            $zoneCondition->add('tag.code IN (:districtDptCodes)');
+            $qb->setParameter('districtDptCodes', $districtDptCodes);
         }
 
         $qb
