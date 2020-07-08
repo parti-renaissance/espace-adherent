@@ -4,6 +4,7 @@ namespace App\Adherent\Unregistration\Handlers;
 
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeDeleteCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,5 +43,12 @@ class UpdateElectedRepresentativeHandler implements UnregistrationAdherentHandle
         $this->manager->flush();
 
         $this->bus->dispatch(new ElectedRepresentativeDeleteCommand($adherent->getEmailAddress()));
+
+        if ($email = $electedRepresentative->getEmailAddress()) {
+            $this->bus->dispatch(new ElectedRepresentativeChangeCommand(
+                $electedRepresentative->getUuid(),
+                $email
+            ));
+        }
     }
 }
