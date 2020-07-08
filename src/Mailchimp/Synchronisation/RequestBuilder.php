@@ -76,6 +76,7 @@ class RequestBuilder
             ->setLastName($electedRepresentative->getLastName())
             ->setBirthDay($electedRepresentative->getBirthDate())
             ->setActiveTags($this->electedRepresentativeTagsBuilder->buildTags($electedRepresentative))
+            ->setIsSubscribeRequest(false === $electedRepresentative->isEmailUnsubscribed())
         ;
     }
 

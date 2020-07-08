@@ -156,6 +156,15 @@ class ElectedRepresentative
     private $emailUnsubscribedAt;
 
     /**
+     * Mailchimp unsubscribed status
+     *
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $emailUnsubscribed = false;
+
+    /**
      * @var Adherent|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
@@ -616,14 +625,20 @@ class ElectedRepresentative
         return null;
     }
 
+    public function subscribeEmails(): void
+    {
+        $this->emailUnsubscribed = false;
+    }
+
     public function unsubscribeEmails(): void
     {
+        $this->emailUnsubscribed = true;
         $this->emailUnsubscribedAt = new \DateTime();
     }
 
-    public function isSubscribedToEmails(): bool
+    public function isEmailUnsubscribed(): bool
     {
-        return null !== $this->emailUnsubscribedAt;
+        return $this->emailUnsubscribed;
     }
 
     public function __toString(): string

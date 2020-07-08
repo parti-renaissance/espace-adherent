@@ -14,6 +14,13 @@ class ElectedRepresentativeSubscriptionHandler
         $this->entityManager = $entityManager;
     }
 
+    public function subscribe(ElectedRepresentative $electedRepresentative): void
+    {
+        $electedRepresentative->subscribeEmails();
+
+        $this->entityManager->flush();
+    }
+
     public function unsubscribe(ElectedRepresentative $electedRepresentative): void
     {
         $electedRepresentative->unsubscribeEmails();

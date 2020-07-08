@@ -5,7 +5,7 @@ namespace App\Mailchimp\Webhook\Handler;
 use App\ElectedRepresentative\ElectedRepresentativeSubscriptionHandler;
 use App\Mailchimp\Webhook\EventTypeEnum;
 
-class ElectedRepresentativeUnsubscribeHandler extends AbstractElectedRepresentativeHandler
+class ElectedRepresentativeSubscribeHandler extends AbstractElectedRepresentativeHandler
 {
     private $subscriptionHandler;
 
@@ -17,12 +17,12 @@ class ElectedRepresentativeUnsubscribeHandler extends AbstractElectedRepresentat
     public function handle(array $data): void
     {
         foreach ($this->findElectedRepresentatives($data['email']) as $electedRepresentative) {
-            $this->subscriptionHandler->unsubscribe($electedRepresentative);
+            $this->subscriptionHandler->subscribe($electedRepresentative);
         }
     }
 
     public function support(string $type, string $listId): bool
     {
-        return EventTypeEnum::UNSUBSCRIBE === $type && parent::support($type, $listId);
+        return EventTypeEnum::SUBSCRIBE === $type && parent::support($type, $listId);
     }
 }
