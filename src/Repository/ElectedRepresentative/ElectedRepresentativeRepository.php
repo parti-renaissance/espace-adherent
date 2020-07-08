@@ -94,19 +94,13 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
     public function createWithEmailQueryBuilder(): QueryBuilder
     {
-        $qb = $this
+        return $this
             ->createQueryBuilder('elected_representative')
+            ->andWhere((new Orx())
+                ->add('elected_representative.adherent IS NOT NULL')
+                ->add('elected_representative.contactEmail IS NOT NULL')
+            )
         ;
-
-        $emailCondition = new Orx();
-        $emailCondition
-            ->add('elected_representative.adherent IS NOT NULL')
-            ->add('elected_representative.contactEmail IS NOT NULL')
-        ;
-
-        $qb->andWhere($emailCondition);
-
-        return $qb;
     }
 
     private function createFilterQueryBuilder(ListFilter $filter): QueryBuilder

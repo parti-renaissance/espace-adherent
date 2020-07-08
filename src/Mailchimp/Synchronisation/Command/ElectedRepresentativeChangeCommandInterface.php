@@ -10,6 +10,4 @@ interface ElectedRepresentativeChangeCommandInterface extends SynchronizeMessage
     public function getUuid(): UuidInterface;
 
     public function getEmailAddress(): string;
-
-    public function getRemovedTags(): array;
 }

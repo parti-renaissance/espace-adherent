@@ -22,26 +22,28 @@ class ElectedRepresentativeTagsBuilder
         $tags = [];
 
         foreach ($electedRepresentative->getCurrentMandates() as $mandate) {
-            $tags[] = $this->translateKey($mandate->getType());
+            $tags[] = $mandate->getType();
         }
 
         foreach ($electedRepresentative->getCurrentPoliticalFunctions() as $politicalFunction) {
-            $tags[] = $this->translateKey($politicalFunction->getName());
+            $tags[] = $politicalFunction->getName();
         }
 
         foreach ($electedRepresentative->getUserListDefinitions() as $userListDefinition) {
-            $tags[] = $this->translatekey($userListDefinition->getLabel());
+            $tags[] = $userListDefinition->getCode();
         }
 
         foreach ($electedRepresentative->getCurrentLabels() as $label) {
-            $tags[] = $this->translateKey($label->getName());
+            $tags[] = $label->getName();
         }
 
         if ($electedRepresentative->isAdherent()) {
-            $activeTags[] = $this->translateKey(self::ADHERENT_TAG);
+            $tags[] = self::ADHERENT_TAG;
         }
 
-        return array_unique($tags);
+        return array_map(function (string $tag) {
+            return $this->translateKey($tag);
+        }, array_unique($tags));
     }
 
     public function translateKey(string $key): string

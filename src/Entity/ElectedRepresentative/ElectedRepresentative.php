@@ -528,6 +528,9 @@ class ElectedRepresentative
         return $this->labels;
     }
 
+    /**
+     * @return ElectedRepresentativeLabel[]|Collection
+     */
     public function getCurrentLabels(): Collection
     {
         return $this->labels->filter(function (ElectedRepresentativeLabel $label) {
