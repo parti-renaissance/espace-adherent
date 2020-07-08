@@ -47,13 +47,15 @@
                             Voir
                         </a>
 
-                        {% if committee_candidacy_membership == membership and committee.committeeElection and committee.committeeElection.isCandidacyPeriodActive %}
-                            <a href="{{ path("app_committee_remove_candidacy", { slug: committee.slug }) }}"
-                               class="btn btn--ghosting--pink b__nudge--right-small em-confirm--trigger"
-                               data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
-                            >
-                                Retirer la candidature
-                            </a>
+                        {% if committee_candidacy_membership == membership and committee.committeeElection %}
+                            {% if committee.committeeElection.isCandidacyPeriodActive or (not committee.committeeElection.isVotePeriodStarted and is_granted('ROLE_PREVIOUS_ADMIN')) %}
+                                <a href="{{ path("app_committee_remove_candidacy", { slug: committee.slug }) }}"
+                                   class="btn btn--ghosting--pink b__nudge--right-small em-confirm--trigger"
+                                   data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
+                                >
+                                    Retirer la candidature
+                                </a>
+                            {% endif %}
                         {% endif %}
                     </div>
 

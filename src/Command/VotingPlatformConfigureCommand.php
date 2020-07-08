@@ -22,6 +22,7 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -48,7 +49,10 @@ class VotingPlatformConfigureCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Configure Voting Platform: create Election and voters/candidates lists');
+        $this
+            ->setDescription('Configure Voting Platform: create Election and voters/candidates lists')
+            ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in minutes for designation selection (1 min by default)', 1)
+        ;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -60,7 +64,9 @@ class VotingPlatformConfigureCommand extends Command
     {
         $date = new \DateTime();
 
-        $designations = $this->designationRepository->getIncomingDesignations($date);
+        $designations = $this->designationRepository->getIncomingDesignations(
+            $date->modify(sprintf('+%d minutes', (int) $input->getOption('interval')))
+        );
 
         $this->io->progressStart();
 
@@ -87,13 +93,17 @@ class VotingPlatformConfigureCommand extends Command
                     continue;
                 }
 
-                if (!$this->isValidCommitteeElection($committeeElection)) {
+                if (!$this->isValidCommitteeElection($committeeElection, $designation)) {
                     continue;
                 }
 
                 $this->io->progressAdvance();
 
-                $election = new Election($designation, null, [new ElectionRound()]);
+                $election = new Election(
+                    $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
+                    null,
+                    [new ElectionRound()]
+                );
                 $election->setElectionEntity(new ElectionEntity($committee));
 
                 $this->configureNewElection($election);
@@ -113,7 +123,7 @@ class VotingPlatformConfigureCommand extends Command
         $committee = $election->getElectionEntity()->getCommittee();
 
         // Create candidates groups
-        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee);
+        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $election->getDesignation());
 
         $womanPool = new ElectionPool('Femme');
         $manPool = new ElectionPool('Homme');
@@ -163,7 +173,7 @@ class VotingPlatformConfigureCommand extends Command
         $this->entityManager->flush();
     }
 
-    private function isValidCommitteeElection(CommitteeElection $committeeElection): bool
+    private function isValidCommitteeElection(CommitteeElection $committeeElection, Designation $designation): bool
     {
         $committee = $committeeElection->getCommittee();
 
@@ -171,6 +181,17 @@ class VotingPlatformConfigureCommand extends Command
         if (!$this->committeeMembershipRepository->committeeHasVoters($committee)) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have any voters', $committee->getSlug()));
+            }
+
+            return false;
+        }
+
+        // validate candidatures
+        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $designation);
+
+        if (0 === \count($candidacies)) {
+            if ($this->io->isDebug()) {
+                $this->io->warning(sprintf('Committee "%s" does not have at least 1 candidate', $committee->getSlug()));
             }
 
             return false;

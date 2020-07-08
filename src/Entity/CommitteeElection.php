@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\VotingPlatform\Designation\Designation;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,9 +29,17 @@ class CommitteeElection
      */
     private $committee;
 
+    /**
+     * @var CommitteeCandidacy[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidacy", mappedBy="committeeElection")
+     */
+    private $candidacies;
+
     public function __construct(Designation $designation = null)
     {
         $this->designation = $designation;
+        $this->candidacies = new ArrayCollection();
     }
 
     public function getId(): int
@@ -45,5 +55,10 @@ class CommitteeElection
     public function setCommittee(Committee $committee): void
     {
         $this->committee = $committee;
+    }
+
+    public function countCandidacies(): int
+    {
+        return $this->candidacies->count();
     }
 }

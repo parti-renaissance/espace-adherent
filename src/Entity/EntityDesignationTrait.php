@@ -62,6 +62,7 @@ trait EntityDesignationTrait
         $now = new \DateTime();
 
         return $this->designation
+            && $this->getVoteStartDate()
             && $this->getVoteStartDate() <= $now
             && (
                 null === $this->getVoteEndDate()
@@ -74,7 +75,7 @@ trait EntityDesignationTrait
     {
         $now = new \DateTime();
 
-        return $this->designation && $this->getVoteStartDate() <= $now;
+        return $this->designation && $this->getVoteStartDate() && $this->getVoteStartDate() <= $now;
     }
 
     public function isResultPeriodActive(): bool

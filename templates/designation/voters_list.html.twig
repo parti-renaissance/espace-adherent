@@ -5,7 +5,7 @@
         <h3>Liste des inscrits / émargements</h3>
 
         <span class="datagrid__count">
-            <span>{{ voters|length|number_format(0, ',', ' ') }}</span> inscrits
+            <span>{{ voters|length|number_format(0, ',', ' ') }}</span> inscrit{{ voters|length > 1 ? 's' }}
         </span>
     </div>
 

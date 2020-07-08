@@ -104,7 +104,7 @@ class Designation
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
      * @Assert\NotBlank
-     * @Assert\GreaterThan(0)
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $lockPeriodThreshold = 3;
 
@@ -252,7 +252,8 @@ class Designation
     {
         $now = new \DateTime();
 
-        return $this->getVoteEndDate() <= $now
+        return $this->getVoteEndDate()
+            && $this->getVoteEndDate() <= $now
             && $now < (clone $this->getVoteEndDate())->modify(sprintf('+%d days', $this->getResultDisplayDelay()))
         ;
     }

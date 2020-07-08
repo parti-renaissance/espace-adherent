@@ -321,9 +321,11 @@ class CommitteeController extends Controller
     public function removeCandidacy(Request $request, Committee $committee, CommitteeManager $manager): Response
     {
         if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
-            $this->addFlash('error', 'Vous ne pouvez pas retirer votre candidature.');
+            if (!(false === $committee->getCommitteeElection()->isVotePeriodStarted() && $this->isGranted('ROLE_PREVIOUS_ADMIN'))) {
+                $this->addFlash('error', 'Vous ne pouvez pas retirer votre candidature.');
 
-            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+            }
         }
 
         $manager->removeCandidacy($this->getUser(), $committee);

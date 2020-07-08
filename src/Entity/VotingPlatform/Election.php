@@ -5,6 +5,7 @@ namespace App\Entity\VotingPlatform;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityDesignationTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,6 +24,7 @@ use Ramsey\Uuid\UuidInterface;
 class Election
 {
     use EntityIdentityTrait;
+    use EntityTimestampableTrait;
     use EntityDesignationTrait {
         isVotePeriodActive as isDesignationVotePeriodActive;
         getRealVoteEndDate as getDesignationRealVoteEndDate;
