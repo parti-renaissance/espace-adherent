@@ -38,18 +38,20 @@
                     {% else %}
                         Les adhérents ayant choisi ce comité pour participer à la désignation peuvent y candidater.
                     {% endif %}
-
-                    {% if designation.candidacyEndDate is not empty %}
-                        Les candidatures sont ouvertes dans tous les comités du
-                        {{ committee_election.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-                        au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
-                    {% endif %}
                 </p>
             {% endif %}
 
             {% if designation.candidacyEndDate is not empty %}
-                <p>La designation se tiendra en ligne du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-                    au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.</p>
+                <p>
+                    {% if not member_is_candidate_in_committee %}
+                        Les candidatures sont ouvertes dans tous les comités du
+                        {{ committee_election.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+                        au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.<br>
+                    {% endif %}
+
+                    La designation se tiendra en ligne du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+                    au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+                </p>
             {% endif %}
         {% elseif not committee_election.isVotePeriodStarted %}
             <p>Les candidatures sont maintenants closes.</p>

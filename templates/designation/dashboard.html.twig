@@ -1,0 +1,9 @@
+{% extends 'designation/show_layout.html.twig' %}
+
+{% block designation_show_content %}
+    {% if election.isVotePeriodActive %}
+        <div class="alert alert--tips">
+            Retrouvez ici la liste d'émargement et une copie des résultats détaillés dès la clôture de cette désignation.
+        </div>
+    {% endif %}
+{% endblock %}

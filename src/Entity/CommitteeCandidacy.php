@@ -61,7 +61,7 @@ class CommitteeCandidacy implements ImageOwnerInterface
     /**
      * @var CommitteeElection
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeElection")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeElection", inversedBy="candidacies")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $committeeElection;

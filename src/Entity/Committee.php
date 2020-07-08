@@ -501,6 +501,8 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function hasActiveElection(): bool
     {
-        return $this->currentDesignation && $this->currentDesignation->isActive();
+        $election = $this->getCommitteeElection();
+
+        return $election && $election->getDesignation()->isActive();
     }
 }

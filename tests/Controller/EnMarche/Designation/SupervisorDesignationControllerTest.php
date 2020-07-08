@@ -39,7 +39,6 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $crawler = $this->client->click($link);
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertStringEndsWith('/liste-emargement', $crawler->getUri());
 
         $overviewCards = $crawler->filter('.manager-overview__case');
         $this->assertCount(3, $overviewCards);
@@ -60,8 +59,10 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $this->assertContains('5Homme', trim($candidateBox->filter('.manager-overview__case--value')->text()));
         $this->assertContains('Candidatures', trim($candidateBox->filter('.manager-overview__case--title')->text()));
 
-        $this->assertContains('Liste des inscrits / émargements', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
+        $crawler = $this->client->click($crawler->selectLink('Liste d\'émargement')->link());
 
+        $this->assertContains('Liste des inscrits / émargements', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
+        $this->assertStringEndsWith('/liste-emargement', $crawler->getUri());
         $this->assertCount(11, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertContains('Bob Assesseur', $crawler->filter('.datagrid__table-manager tbody')->text());
     }

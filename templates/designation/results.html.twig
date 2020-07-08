@@ -5,7 +5,7 @@
         <h3>Résultats par scrutin : <span class="text--pink">{{ app.request.query.has('femme') ? 'Femme' : 'Homme' }}</span></h3>
 
         <span class="datagrid__count">
-            <span>{{ candidate_groups|length|number_format(0, ',', ' ') }}</span> candidat{{ app.request.query.has('femme') ? 'e' }}s
+            <span>{{ candidate_groups|length|number_format(0, ',', ' ') }}</span> candidat{{ app.request.query.has('femme') ? 'e' }}{{ candidate_groups|length > 1 ? 's' }}
         </span>
     </div>
 

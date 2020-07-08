@@ -315,9 +315,9 @@ class App {
         });
     }
 
-    runCountdownClock(clockSelector) {
+    runCountdownClock(clockSelector, refreshPage = false) {
         System.import('services/utils/countdownClock').catch((error) => { throw error; }).then((module) => {
-            module.default(clockSelector);
+            module.default(clockSelector, refreshPage);
         });
     }
 }

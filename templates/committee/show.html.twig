@@ -120,9 +120,14 @@
         </section>
     {% else %}
         {% if has_role_adherent and committee.hasActiveElection and membership %}
-            {% include 'committee/_election_box.html.twig' %}
+            {% set committee_election = committee.committeeElection %}
 
-            <div id="modal-wrapper"></div>
+            {# If the vote was started, hide box if 0 candidates #}
+            {% if not committee_election.isVotePeriodStarted or committee_election.countCandidacies > 0 %}
+                {% include 'committee/_election_box.html.twig' %}
+
+                <div id="modal-wrapper"></div>
+            {% endif %}
         {% endif %}
 
         <section class="committee__timeline" id="committee-timeline">
@@ -217,7 +222,7 @@
                 {% endif %}
             {% endif %}
 
-            App.runCountdownClock('.em-countdown-clock');
+            App.runCountdownClock('.em-countdown-clock', true);
         });
     </script>
 {% endblock %}

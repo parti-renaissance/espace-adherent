@@ -38,32 +38,6 @@
                 </div>
             </div>
         {% endfor %}
-
-        {% for vote_choice in vote_command.choicesByPools %}
-            <div class="ballot-paper-container">
-                <div class="ballot-paper">
-                    <div class="ballot-paper__area">
-                        <div class="ballot-paper__content l__col">
-                            <div class="l__row l__row--center b__nudge--bottom-small">
-                                {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
-
-                                {% if candidate_group %}
-                                    {% for candidate in candidate_group.candidates %}
-                                        <h3 class="text--medium">Florence Dupont</h3>
-                                        <span class="candidate-gender l__col l__col--center">F</span>
-                                    {% endfor %}
-                                {% else %}
-                                    <h3 class="text--medium">Bulletin blanc</h3>
-                                {% endif %}
-                            </div>
-                            <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="text--body text--center link--no-decor link--blue--dark">
-                                Modifier mon choix
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
     </div>
 
     {{ form_start(form) }}

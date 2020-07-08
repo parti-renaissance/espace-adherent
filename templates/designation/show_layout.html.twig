@@ -44,31 +44,33 @@
                 </div>
             </div>
 
-            <div class="datagrid__table__tabs b__nudge--top-15">
-                {% set link_params = {uuid: election.uuid}|merge(route_params|default({})) %}
+            {% if not election.isVotePeriodActive %}
+                <div class="datagrid__table__tabs b__nudge--top-15">
+                    {% set link_params = {uuid: election.uuid}|merge(route_params|default({})) %}
 
-                <div class="datagrid__table__tabs__items">
-                    <h3>
-                        <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_voters_list") ? 'active' }}"
-                           href="{{ get_path(space_type, 'designations', 'voters_list', app.request, link_params) }}">Liste d'émargement</a>
-                    </h3>
-                    <span class="separator"></span>
-                    <h3>
-                        <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('femme') ? 'active' }}"
-                           href="{{ get_path(space_type, 'designations', 'results', app.request, {femme: true}|merge(link_params)) }}">Résultats Femme</a>
-                    </h3>
-                    <span class="separator"></span>
-                    <h3>
-                        <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('homme') ? 'active' }}"
-                           href="{{ get_path(space_type, 'designations', 'results', app.request, {homme: true}|merge(link_params)) }}">Résultats Homme</a>
-                    </h3>
-                    <span class="separator"></span>
-                    <h3>
-                        <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_votes") ? 'active' }}"
-                           href="{{ get_path(space_type, 'designations', 'votes', app.request, link_params) }}">Bulletins dépouillés</a>
-                    </h3>
+                    <div class="datagrid__table__tabs__items">
+                        <h3>
+                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_voters_list") ? 'active' }}"
+                               href="{{ get_path(space_type, 'designations', 'voters_list', app.request, link_params) }}">Liste d'émargement</a>
+                        </h3>
+                        <span class="separator"></span>
+                        <h3>
+                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('femme') ? 'active' }}"
+                               href="{{ get_path(space_type, 'designations', 'results', app.request, {femme: true}|merge(link_params)) }}">Résultats Femme</a>
+                        </h3>
+                        <span class="separator"></span>
+                        <h3>
+                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('homme') ? 'active' }}"
+                               href="{{ get_path(space_type, 'designations', 'results', app.request, {homme: true}|merge(link_params)) }}">Résultats Homme</a>
+                        </h3>
+                        <span class="separator"></span>
+                        <h3>
+                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_votes") ? 'active' }}"
+                               href="{{ get_path(space_type, 'designations', 'votes', app.request, link_params) }}">Bulletins dépouillés</a>
+                        </h3>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
 
         {% block designation_show_content %}{% endblock %}

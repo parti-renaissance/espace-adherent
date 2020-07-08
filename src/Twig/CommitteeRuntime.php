@@ -100,7 +100,7 @@ class CommitteeRuntime implements RuntimeExtensionInterface
 
     public function countCommitteeCandidates(Committee $committee, bool $countMaleOnly = null): int
     {
-        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee);
+        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $committee->getCurrentDesignation());
 
         if (null === $countMaleOnly) {
             return \count($candidacies);

@@ -70,7 +70,7 @@ class DesignationAdmin extends AbstractAdmin
             ->end()
             ->with('Autre')
                 ->add('additionalRoundDuration', IntegerType::class, ['label' => 'Durée du tour bis (jours)', 'attr' => ['min' => 1]])
-                ->add('lockPeriodThreshold', IntegerType::class, ['label' => 'Le seuil (en jour) de démarrage de la période de réserve avant la fermeture des candidatures', 'attr' => ['min' => 1]])
+                ->add('lockPeriodThreshold', IntegerType::class, ['label' => 'Le seuil (en jour) de démarrage de la période de réserve avant la fermeture des candidatures', 'attr' => ['min' => 0]])
             ->end()
             ->with('Résultats 🏆', ['box_class' => 'box box-solid box-default'])
                 ->add('resultDisplayDelay', IntegerType::class, ['label' => 'Durée d’affichage des résultats (jours)', 'attr' => ['min' => 0]])

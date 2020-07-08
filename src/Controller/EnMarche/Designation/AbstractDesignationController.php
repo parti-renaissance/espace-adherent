@@ -34,6 +34,18 @@ abstract class AbstractDesignationController extends AbstractController
     }
 
     /**
+     * @Route("/{uuid}", name="_dashboard", methods={"GET"})
+     */
+    public function dashboardAction(Request $request, Committee $committee, Election $election): Response
+    {
+        return $this->renderTemplate('designation/dashboard.html.twig', $request, [
+            'committee' => $committee,
+            'election' => $election,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($election),
+        ]);
+    }
+
+    /**
      * @Route("/{uuid}/liste-emargement", name="_voters_list", methods={"GET"})
      */
     public function listVotersAction(
@@ -42,6 +54,10 @@ abstract class AbstractDesignationController extends AbstractController
         Election $election,
         VoterRepository $voterRepository
     ): Response {
+        if ($election->isVotePeriodActive()) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+        }
+
         return $this->renderTemplate('designation/voters_list.html.twig', $request, [
             'committee' => $committee,
             'election' => $election,
@@ -60,6 +76,10 @@ abstract class AbstractDesignationController extends AbstractController
         CandidateGroupRepository $candidateGroupRepository,
         VoteResultAggregator $aggregator
     ): Response {
+        if ($election->isVotePeriodActive()) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+        }
+
         $candidateGroups = $candidateGroupRepository->findForElectionRound($election->getCurrentRound());
 
         return $this->renderTemplate('designation/results.html.twig', $request, [
@@ -82,6 +102,10 @@ abstract class AbstractDesignationController extends AbstractController
         Election $election,
         VoteResultAggregator $aggregator
     ): Response {
+        if ($election->isVotePeriodActive()) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+        }
+
         return $this->renderTemplate('designation/votes_list.html.twig', $request, [
             'committee' => $committee,
             'election' => $election,
@@ -102,6 +126,18 @@ abstract class AbstractDesignationController extends AbstractController
                 'route_params' => $this->getRouteParameters($request),
             ]
         ));
+    }
+
+    protected function redirectToSpaceRoute(
+        string $subName,
+        Committee $committee,
+        Election $election,
+        array $parameters = []
+    ): Response {
+        return $this->redirectToRoute("app_{$this->getSpaceType()}_designations_${subName}", array_merge([
+            'committee_slug' => $committee->getSlug(),
+            'uuid' => $election->getUuid()->toString(),
+        ], $parameters));
     }
 
     protected function getRouteParameters(Request $request): array

@@ -1,13 +1,13 @@
 import moment from 'moment';
 
-function initializeTimer(element) {
+function initializeTimer(element, refreshPage) {
     const container = find(element, '.clock-container');
 
     const interval = 1000;
     const diffTime = element.dataset.eventTimestamp - element.dataset.nowTimestamp;
     let duration = moment.duration(diffTime * 1000, 'milliseconds');
 
-    if (diffTime > 0) {
+    if (0 < diffTime) {
         const days = document.createElement('span');
         days.innerHTML = '00';
         addClass(days, 'days');
@@ -38,13 +38,15 @@ function initializeTimer(element) {
 
             const diff = duration.asMilliseconds() - interval;
 
-            if (diff > 0) {
+            if (0 < diff) {
                 duration = moment.duration(diff, 'milliseconds');
 
                 d = moment.duration(duration).days();
                 h = moment.duration(duration).hours();
                 m = moment.duration(duration).minutes();
                 s = moment.duration(duration).seconds();
+            } else if (refreshPage) {
+                window.location.reload();
             }
 
             // show how many hours, minutes and seconds are left
@@ -56,6 +58,6 @@ function initializeTimer(element) {
     }
 }
 
-export default (selector) => {
-    findAll(document, selector).forEach(initializeTimer);
+export default (selector, refreshPage = false) => {
+    findAll(document, selector).forEach(element => initializeTimer(element, refreshPage));
 };
