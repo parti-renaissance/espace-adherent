@@ -6,7 +6,7 @@ use App\ElectedRepresentative\ElectedRepresentativeEvent;
 use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
-use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeDeleteCommand;
+use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeArchiveCommand;
 use App\Utils\ArrayUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -43,7 +43,7 @@ class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
         $emailBeforeUpdate = isset($this->beforeUpdate['emailAddress']) ? $this->beforeUpdate['emailAddress'] : null;
 
         if (!$electedRepresentative->getEmailAddress() && $emailBeforeUpdate) {
-            $this->bus->dispatch(new ElectedRepresentativeDeleteCommand($emailBeforeUpdate));
+            $this->bus->dispatch(new ElectedRepresentativeArchiveCommand($emailBeforeUpdate));
 
             return;
         }

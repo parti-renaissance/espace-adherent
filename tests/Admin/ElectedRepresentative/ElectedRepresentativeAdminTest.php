@@ -5,7 +5,7 @@ namespace Tests\App\Controller\Admin\ElectedRepresentative;
 use App\DataFixtures\ORM\LoadElectedRepresentativeData;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
-use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeDeleteCommand;
+use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeArchiveCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -66,9 +66,9 @@ class ElectedRepresentativeAdminTest extends WebTestCase
         }
 
         if ($isDeleteMessageExpected) {
-            $this->assertMessageIsDispatched(ElectedRepresentativeDeleteCommand::class);
+            $this->assertMessageIsDispatched(ElectedRepresentativeArchiveCommand::class);
         } else {
-            $this->assertMessageIsNotDispatched(ElectedRepresentativeDeleteCommand::class);
+            $this->assertMessageIsNotDispatched(ElectedRepresentativeArchiveCommand::class);
         }
 
         $this->client->followRedirect();

@@ -4,7 +4,7 @@ namespace App\Mailchimp\Synchronisation\Command;
 
 use App\Mailchimp\SynchronizeMessageInterface;
 
-class ElectedRepresentativeDeleteCommand implements SynchronizeMessageInterface
+class ElectedRepresentativeArchiveCommand implements SynchronizeMessageInterface
 {
     private $email;
 
