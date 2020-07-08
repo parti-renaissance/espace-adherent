@@ -4,8 +4,8 @@ namespace Tests\App\Controller\Admin\ElectedRepresentative;
 
 use App\DataFixtures\ORM\LoadElectedRepresentativeData;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeArchiveCommand;
+use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;

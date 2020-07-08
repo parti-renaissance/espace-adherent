@@ -2,26 +2,25 @@
 
 namespace App\Adherent\Unregistration\Handlers;
 
-use App\ElectedRepresentative\ElectedRepresentativeEvent;
-use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeDeleteCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class UpdateElectedRepresentativeHandler implements UnregistrationAdherentHandlerInterface
 {
-    private $dispatcher;
+    private $bus;
     private $manager;
     private $electedRepresentativeRepository;
 
     public function __construct(
-        EventDispatcherInterface $dispatcher,
+        MessageBusInterface $bus,
         EntityManagerInterface $manager,
         ElectedRepresentativeRepository $electedRepresentativeRepository
     ) {
-        $this->dispatcher = $dispatcher;
+        $this->bus = $bus;
         $this->manager = $manager;
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
     }
@@ -38,12 +37,10 @@ class UpdateElectedRepresentativeHandler implements UnregistrationAdherentHandle
             return;
         }
 
-        $this->dispatcher->dispatch(ElectedRepresentativeEvents::BEFORE_UPDATE, new ElectedRepresentativeEvent(clone $electedRepresentative));
-
         $electedRepresentative->removeAdherent();
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(ElectedRepresentativeEvents::POST_UPDATE, new ElectedRepresentativeEvent($electedRepresentative));
+        $this->bus->dispatch(new ElectedRepresentativeDeleteCommand($adherent->getEmailAddress()));
     }
 }

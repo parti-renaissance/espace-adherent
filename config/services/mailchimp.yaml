@@ -58,12 +58,6 @@ services:
         calls:
             - ['setLogger', ['@logger']]
 
-    App\Mailchimp\Synchronisation\Handler\ElectedRepresentativeArchiveCommandHandler:
-        tags:
-            - { name: 'monolog.logger', channel: 'mailchimp_sync' }
-        calls:
-            - ['setLogger', ['@logger']]
-
     App\AdherentMessage\Handler\:
         resource: ../../src/AdherentMessage/Handler/
 
