@@ -324,7 +324,7 @@ class CommitteeMembership
     public function hasActiveCommitteeCandidacy(): bool
     {
         foreach ($this->committeeCandidacies as $candidacy) {
-            if ($candidacy->isActive()) {
+            if ($candidacy->isOngoing()) {
                 return true;
             }
         }

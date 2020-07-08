@@ -83,8 +83,6 @@ class VotingPlatformConfigureCommand extends Command
             foreach ($committeeElections as $committeeElection) {
                 $committee = $committeeElection->getCommittee();
 
-                $this->io->progressAdvance();
-
                 if ($this->electionRepository->hasElectionForCommittee($committee, $designation)) {
                     continue;
                 }
@@ -92,6 +90,8 @@ class VotingPlatformConfigureCommand extends Command
                 if (!$this->isValidCommitteeElection($committeeElection)) {
                     continue;
                 }
+
+                $this->io->progressAdvance();
 
                 $election = new Election($designation, null, [new ElectionRound()]);
                 $election->setElectionEntity(new ElectionEntity($committee));

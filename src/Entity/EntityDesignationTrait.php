@@ -39,9 +39,9 @@ trait EntityDesignationTrait
         return $this->designation->getVoteEndDate();
     }
 
-    public function isActive(): bool
+    public function isOngoing(): bool
     {
-        return $this->designation && $this->designation->isActive();
+        return $this->designation && $this->designation->isOngoing();
     }
 
     public function isCandidacyPeriodActive(): bool

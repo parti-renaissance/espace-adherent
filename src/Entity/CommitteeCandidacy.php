@@ -166,8 +166,8 @@ class CommitteeCandidacy implements ImageOwnerInterface
         $this->committeeMembership = $committeeMembership;
     }
 
-    public function isActive(): bool
+    public function isOngoing(): bool
     {
-        return $this->committeeElection->isActive();
+        return $this->committeeElection->isOngoing();
     }
 }

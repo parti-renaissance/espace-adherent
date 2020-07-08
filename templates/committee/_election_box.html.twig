@@ -22,32 +22,37 @@
         </h2>
     </div>
 
-    <div class="text--body text--dark text--small b__nudge--bottom b__nudge--top">
-        {% if member_is_candidate_in_committee %}
-
-            Vous êtes candidat pour représenter les adhérents de votre comité.
-            {% if designation.candidacyEndDate is not empty %}
-                Vous pouvez modifier ou retirer votre candidature jusqu'au
-                {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
-            {% endif %}
-
-        {% else %}
-            {% if member_voting_in_committee %}
-                Candidatez pour représenter les adhérents de votre comité pour un mandat de 2 ans.
+    <div class="text--body text--dark text--small b__nudge--top">
+        {% if committee_election.isCandidacyPeriodActive %}
+            {% if member_is_candidate_in_committee %}
+                <p>Vous êtes candidat pour représenter les adhérents de votre comité.
+                    {% if designation.candidacyEndDate is not empty %}
+                        Vous pouvez modifier ou retirer votre candidature jusqu'au
+                        {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+                    {% endif %}
+                </p>
             {% else %}
-                Les adhérents ayant choisi ce comité pour participer à la désignation peuvent y candidater.
+                <p>
+                    {% if member_voting_in_committee %}
+                        Candidatez pour représenter les adhérents de votre comité pour un mandat de 2 ans.
+                    {% else %}
+                        Les adhérents ayant choisi ce comité pour participer à la désignation peuvent y candidater.
+                    {% endif %}
+
+                    {% if designation.candidacyEndDate is not empty %}
+                        Les candidatures sont ouvertes dans tous les comités du
+                        {{ committee_election.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+                        au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+                    {% endif %}
+                </p>
             {% endif %}
 
             {% if designation.candidacyEndDate is not empty %}
-                Les candidatures sont ouvertes dans tous les comités du
-                {{ committee_election.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-                au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+                <p>La designation se tiendra en ligne du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+                    au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.</p>
             {% endif %}
-        {% endif %}
-
-        {% if designation.candidacyEndDate is not empty %}
-            La designation se tiendra en ligne du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-            au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+        {% elseif not committee_election.isVotePeriodStarted %}
+            <p>Les candidatures sont maintenants closes.</p>
         {% endif %}
 
         {% if designation.candidacyEndDate is empty %}
@@ -63,7 +68,7 @@
                 {% elseif candidacy_committee_membership is null and member_voting_in_committee %}
                     {% if app.user.isOtherGender() %}
                         <a href="#"
-                           class="btn btn--pink btn--no-wrap em-modal--trigger"
+                           class="btn btn--pink btn--no-wrap box-el em-modal--trigger"
                            id="committee-toggle-candidacy"
                            data-confirm-content-element="#committee-candidacy-gender-choice-content"
                         >Je candidate</a>
@@ -85,18 +90,18 @@
                     {% else %}
                         <a href="{{ path('app_committee_candidate', {slug: committee.slug}) }}"
                            id="committee-toggle-candidacy"
-                           class="btn btn--pink btn--no-wrap"
+                           class="btn btn--pink btn--no-wrap box-el"
                         >Je candidate</a>
                     {% endif %}
                 {% endif %}
             {% endif %}
         {% elseif not committee_election.isVotePeriodStarted %}
             <div class="em-countdown-clock" data-event-timestamp="{{ committee_election.voteStartDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
-                <span>Le vote ouvrira dans :</span>
+                <span class="text--dark text--small">Le vote ouvrira dans :</span>
                 <span class="clock-container"></span>
             </div>
 
-            <p>et se clôturera le {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.</p>
+            <p class="text--dark text--small">et se clôturera le {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.</p>
         {% else %}
             {% set voting_platform_election = get_voting_platform_election_for_committee(committee) %}
 
@@ -104,94 +109,97 @@
                 {% if voting_platform_election.isVotePeriodActive %}
                     {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
                         <div class="em-countdown-clock" data-event-timestamp="{{ committee_election.voteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
-                            <span>Il vous reste</span>
+                            <span class="text--dark text--small">Il vous reste</span>
                             <span class="clock-container"></span>
-                            <span>pour participer à la désignation.</span>
+                            <span class="text--dark text--small">pour participer à la désignation.</span>
                         </div>
 
                         <p>
                             <a href="{{ path('app_voting_platform_index', {uuid: voting_platform_election.uuid}) }}"
                                id="committee-toggle-candidacy"
-                               class="btn btn--pink btn--no-wrap"
+                               class="btn btn--pink btn--no-wrap box-el"
                             >Je participe</a>
                         </p>
                     {% else %}
                         {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election) %}
 
                         {% if my_vote %}
-                            <div>Votre choix a bien été enregistré.</div>
+                            <p class="text--dark text--small">Votre choix a bien été enregistré.</p>
 
                             <div class="em-countdown-clock" data-event-timestamp="{{ voting_platform_election.voteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
-                                <span>Les résultats seront publiés dans :</span>
+                                <span class="text--dark text--small">Les résultats seront publiés dans :</span>
                                 <span class="clock-container"></span>
                             </div>
 
-                            <p><a href="#" class="btn btn--disabled btn--no-wrap">Je participe</a></p>
+                            <p><a href="#" class="btn btn--disabled btn--no-wrap box-el">Je participe</a></p>
                         {% endif %}
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
-                    <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}"
-                       id="committee-toggle-candidacy"
-                       class="btn btn--pink btn--no-wrap"
-                    >Voir les résultats</a>
+                    <p class="text--small text--dark">Consulter les
+                        <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
+                    </p>
                 {% endif %}
             {% endif %}
         {% endif %}
 
-        <div class="candidacies-list text--body text--small text--gray box-el">
-            Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark box-el" data-uuid="{{ committee.uuid }}">la liste des candidats</a>
-        </div>
+        {% if not committee_election.isVotePeriodStarted %}
+            <p class="candidacies-list text--body text--small text--gray box-el">
+                Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark box-el" data-uuid="{{ committee.uuid }}">la liste des candidats</a>
+            </p>
+        {% endif %}
 
         {% if member_is_candidate_in_committee and committee_election.isCandidacyPeriodActive %}
-            <div class="candidacy-remove text--body text--small b__nudge--top">
+            <p class="candidacy-remove text--body text--small b__nudge--top">
                 <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
                       class="link--no-decor text--blue--dark em-confirm--trigger box-el"
                       data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
                       id="remove-candidacy-link">Retirer ma candidature
                 </a>
-            </div>
+            </p>
         {% endif %}
     </div>
 </section>
 
-{% if able_to_candidate and not member_voting_in_committee %}
-    <div class="alert alert--tips b__nudge--bottom-small">
-        Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations.<br />
-        Rendez-vous sur la page <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">mes activités</a></strong> pour choisir ou modifier votre comité de désignation.
-    </div>
-{% endif %}
+{% if committee_election.isCandidacyPeriodActive %}
+    {% if able_to_candidate and not member_voting_in_committee %}
+        <div class="alert alert--tips b__nudge--bottom-small">
+            Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations.<br />
+            Rendez-vous sur la page <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">mes activités</a></strong> pour choisir ou modifier votre comité de désignation.
+        </div>
+    {% endif %}
 
-{% if not able_to_candidate %}
-    <div class="alert alert--tips b__nudge--bottom-small">
-        Les
-        {% if app.user.supervisor %}
-            Animatrices et Animateurs
-        {% elseif app.user.referent %}
-            Référentes et Référents
-        {% elseif app.user.deputy %}
-            Députées et Députés
-        {% elseif app.user.senator %}
-            Sénatrices et Sénateurs
-        {% endif %}
-        sont membres de droit du Conseil territorial.
-        Vous ne pouvez donc pas candidater à cette désignation mais pourrez y voter.
+    {% if not able_to_candidate %}
+        <div class="alert alert--tips b__nudge--bottom-small">
+            Les
+            {% if app.user.supervisor %}
+                Animatrices et Animateurs
+            {% elseif app.user.referent %}
+                Référentes et Référents
+            {% elseif app.user.deputy %}
+                Députées et Députés
+            {% elseif app.user.senator %}
+                Sénatrices et Sénateurs
+            {% endif %}
+            sont membres de droit du Conseil territorial.
+            Vous ne pouvez donc pas candidater à cette désignation mais pourrez y voter.
 
-        {% if not app.user.supervisor %}
-            Rendez-vous sur la page <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">vos activités</a></strong>
-            pour choisir ou modifier votre comité de désignation.
-        {% endif %}
-    </div>
-{% endif %}
+            {% if not app.user.supervisor %}
+                Rendez-vous sur la page <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">vos activités</a></strong>
+                pour choisir ou modifier votre comité de désignation.
+            {% endif %}
+        </div>
+    {% endif %}
 
-{% set count_male_candidates = count_committee_candidates(committee, true) %}
-{% set count_female_candidates = count_committee_candidates(committee, false) %}
+    {% set count_male_candidates = count_committee_candidates(committee, true) %}
+    {% set count_female_candidates = count_committee_candidates(committee, false) %}
 
-{% if (count_male_candidates > 0 and count_female_candidates < 1) or (count_male_candidates < 1 and count_female_candidates > 0) %}
-    <div class="alert alert--tips b__nudge--bottom-small">
-        {% if count_female_candidates < 1 %}
-            Il n'y a pas encore de candidate dans votre comité. N'hésitez pas à en parler aux adhérentes autour de vous !
-        {% else %}
-            Il n'y a pas encore de candidat dans votre comité. N'hésitez pas à en parler aux adhérents autour de vous !
-        {% endif %}
-    </div>
+    {% if (count_male_candidates > 0 and count_female_candidates < 1) or (count_male_candidates < 1 and count_female_candidates > 0) %}
+        <div class="alert alert--tips b__nudge--bottom-small">
+            {% if count_female_candidates < 1 %}
+                Il n'y a pas encore de candidate dans votre comité. N'hésitez pas à en parler aux adhérentes autour de vous !
+            {% else %}
+                Il n'y a pas encore de candidat dans votre comité. N'hésitez pas à en parler aux adhérents autour de vous !
+            {% endif %}
+        </div>
+    {% endif %}
 {% endif %}

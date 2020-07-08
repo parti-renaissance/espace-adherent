@@ -2,7 +2,7 @@
     {% set selected_committee = null %}
     {% set has_started_designation = false %}
 
-    {% for membership in app.user.memberships if not selected_committee and membership.committee.hasActiveElection %}
+    {% for membership in app.user.memberships if not selected_committee and membership.committee.currentDesignation and membership.committee.currentDesignation.isOngoing %}
         {% if not has_started_designation %}
             {% set has_started_designation = true %}
         {% endif %}

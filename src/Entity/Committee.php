@@ -280,6 +280,11 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return null;
     }
 
+    public function getCurrentDesignation(): ?Designation
+    {
+        return $this->currentDesignation;
+    }
+
     public function setCurrentDesignation(Designation $designation): void
     {
         $this->currentDesignation = $designation;

@@ -226,6 +226,15 @@ class Designation
         ;
     }
 
+    public function isOngoing(): bool
+    {
+        $now = new \DateTime();
+
+        return $this->getCandidacyStartDate() <= $now
+            && (null === $this->getVoteEndDate() || $now < $this->getVoteEndDate())
+        ;
+    }
+
     public function isActive(): bool
     {
         $now = new \DateTime();
