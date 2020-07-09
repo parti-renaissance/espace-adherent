@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\Jecoute;
 
+use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
@@ -28,6 +29,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractJecouteController extends Controller
 {
+    use AccessDelegatorTrait;
+
     protected $localSurveyRepository;
     private $nationalSurveyRepository;
 
@@ -47,7 +50,7 @@ abstract class AbstractJecouteController extends Controller
     {
         return $this->renderTemplate('jecoute/surveys_list.html.twig', [
             'type' => $type,
-            'surveys' => SurveyTypeEnum::LOCAL === $type ? $this->getLocalSurveys($request) : $this->nationalSurveyRepository->findAllPublishedWithStats(),
+            'surveys' => SurveyTypeEnum::LOCAL === $type ? $this->getLocalSurveys($this->getMainUser($request->getSession())) : $this->nationalSurveyRepository->findAllPublishedWithStats(),
         ]);
     }
 
@@ -73,14 +76,14 @@ abstract class AbstractJecouteController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $localSurvey->setTags($this->getSurveyTags($request));
+            $localSurvey->setTags($this->getSurveyTags($this->getMainUser($request->getSession())));
 
             $manager->persist($form->getData());
             $manager->flush();
 
             $this->addFlash('info', 'survey.create.success');
 
-            return $this->redirectToJecouteRoute($request, 'local_surveys_list');
+            return $this->redirectToJecouteRoute('local_surveys_list');
         }
 
         return $this->renderTemplate('jecoute/create.html.twig', [
@@ -115,7 +118,7 @@ abstract class AbstractJecouteController extends Controller
 
             $this->addFlash('info', 'survey.edit.success');
 
-            return $this->redirectToJecouteRoute($request, 'local_surveys_list');
+            return $this->redirectToJecouteRoute('local_surveys_list');
         }
 
         return $this->renderTemplate('jecoute/create.html.twig', [
@@ -205,7 +208,7 @@ abstract class AbstractJecouteController extends Controller
 
         $this->addFlash('info', 'survey.duplicate.success');
 
-        return $this->redirectToJecouteRoute($request, 'local_surveys_list');
+        return $this->redirectToJecouteRoute('local_surveys_list');
     }
 
     /**
@@ -231,9 +234,9 @@ abstract class AbstractJecouteController extends Controller
     /**
      * @return LocalSurvey[]
      */
-    abstract protected function getLocalSurveys(Request $request): array;
+    abstract protected function getLocalSurveys(Adherent $adherent): array;
 
-    abstract protected function getSurveyTags(Request $request): array;
+    abstract protected function getSurveyTags(Adherent $adherent): array;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
@@ -246,7 +249,7 @@ abstract class AbstractJecouteController extends Controller
         ));
     }
 
-    protected function redirectToJecouteRoute(Request $request, string $subName, array $parameters = []): Response
+    protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_${subName}", $parameters);
     }

@@ -11,8 +11,7 @@ use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\ManageUserListDefinitionElectedRepresentativeVoter;
 use App\UserListDefinition\UserListDefinitionPermissions;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdherentVoterTest
 {
@@ -21,14 +20,13 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
      */
     private $electedRepresentativeRepository;
 
-    /** @var RequestStack */
-    private $requestStack;
+    /** @var SessionInterface */
+    private $session;
 
     protected function setUp(): void
     {
         $this->electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
-        $this->requestStack = $this->createMock(RequestStack::class);
-        $this->requestStack->method('getMasterRequest')->willReturn(new Request());
+        $this->session = $this->createMock(SessionInterface::class);
 
         parent::setUp();
     }
@@ -36,14 +34,14 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
     protected function tearDown(): void
     {
         $this->electedRepresentativeRepository = null;
-        $this->requestStack = null;
+        $this->session = null;
 
         parent::tearDown();
     }
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new ManageUserListDefinitionElectedRepresentativeVoter($this->electedRepresentativeRepository, $this->requestStack);
+        return new ManageUserListDefinitionElectedRepresentativeVoter($this->electedRepresentativeRepository, $this->session);
     }
 
     public function provideAnonymousCases(): iterable

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-senateur", name="app_senator_event_manager_")
  *
- * @Security("is_granted('ROLE_SENATOR')")
+ * @Security("is_granted('ROLE_SENATOR') or (is_granted('ROLE_DELEGATED_SENATOR') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")
  */
 class SenatorEventManagerController extends AbstractEventManagerController
 {

@@ -29,7 +29,7 @@
                         <td>
                             {% if designation.voteStartDate > 'now'|date %}
                                 {% set items = [{
-                                    href: get_path(space_type, 'designations', 'dashboard', app.request, {committee_slug: committee.slug, uuid: election.uuid}),
+                                    href: path("app_#{space_type}_designations_dashboard", {committee_slug: committee.slug, uuid: election.uuid}),
                                     label: 'Voir les détails',
                                     linkAttr: {class: 'row-action link--no-decor'}
                                 }] %}

@@ -5,38 +5,27 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AuthorVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'IS_AUTHOR_OF';
 
-    /** @var RequestStack */
-    private $requestStack;
+    /** @var SessionInterface */
+    private $session;
 
-    public function __construct(RequestStack $requestStack)
+    public function __construct(SessionInterface $session)
     {
-        $this->requestStack = $requestStack;
+        $this->session = $session;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getMasterRequest()->attributes->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             return $subject->getAuthor()->equals($delegatedAccess->getDelegator());
         }
 
-        /** @var AuthoredInterface $subject */
-        if ($subject->getAuthor()->equals($adherent)) {
-            return true;
-        }
-
-        foreach ($adherent->getReceivedDelegatedAccesses() as $delegatedAccess) {
-            if ($subject->getAuthor()->equals($delegatedAccess->getDelegator())) {
-                return true;
-            }
-        }
-
-        return false;
+        return $subject->getAuthor()->equals($adherent);
     }
 
     protected function supports($attribute, $subject)

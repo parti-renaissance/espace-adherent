@@ -5,23 +5,25 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SurveyManagedAreaVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'IS_SURVEY_MANAGER_OF';
 
-    /** @var RequestStack */
-    private $requestStack;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
-    public function __construct(RequestStack $requestStack)
+    public function __construct(SessionInterface $session)
     {
-        $this->requestStack = $requestStack;
+        $this->session = $session;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getMasterRequest()->attributes->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
 

@@ -298,9 +298,9 @@
         app.user.isSenatorialCandidate +
         app.user.isLre +
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
-        is_granted('ROLE_DELEGATED_REFERENT') +
-        is_granted('ROLE_DELEGATED_DEPUTY') +
-        is_granted('ROLE_DELEGATED_SENATOR')
+        app.user.isDelegatedReferent +
+        app.user.isDelegatedDeputy +
+        app.user.isDelegatedSenator
     %}
 
     <div class="background--darker l__hide--on-tablet">
