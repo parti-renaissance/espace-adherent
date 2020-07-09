@@ -6,11 +6,13 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
+use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
 use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use App\Mailchimp\Synchronisation\RequestBuilder;
 use App\Newsletter\NewsletterValueObject;
@@ -96,6 +98,28 @@ class Manager implements LoggerAwareInterface
                 // Active/Inactive member's tags
                 $this->driver->updateMemberTags($request, $listId);
             }
+        }
+    }
+
+    public function editElectedRepresentativeMember(
+        ElectedRepresentative $electedRepresentative,
+        ElectedRepresentativeChangeCommandInterface $message
+    ): void {
+        $emailAddress = $electedRepresentative->getEmailAddress();
+        $listId = $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
+
+        $requestBuilder = $this->requestBuildersLocator
+            ->get(RequestBuilder::class)
+            ->updateFromElectedRepresentative($electedRepresentative)
+        ;
+
+        $result = $this->driver->editMember(
+            $requestBuilder->buildMemberRequest($message->getOldEmailAddress() ?? $emailAddress),
+            $listId
+        );
+
+        if ($result) {
+            $this->updateMemberTags($emailAddress, $listId, $requestBuilder);
         }
     }
 
@@ -241,6 +265,16 @@ class Manager implements LoggerAwareInterface
         $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getMainListId());
     }
 
+    public function archiveElectedRepresentative(string $mail): void
+    {
+        $this->driver->archiveMember($mail, $this->mailchimpObjectIdMapping->getElectedRepresentativeListId());
+    }
+
+    public function deleteElectedRepresentative(string $mail): void
+    {
+        $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getElectedRepresentativeListId());
+    }
+
     public function deleteNewsletterMember(string $mail): void
     {
         $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getNewsletterListId());
@@ -263,5 +297,15 @@ class Manager implements LoggerAwareInterface
         if (!$campaign->getExternalId()) {
             throw new InvalidCampaignIdException(sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid()->toString()));
         }
+    }
+
+    private function updateMemberTags(string $emailAddress, string $listId, RequestBuilder $requestBuilder): void
+    {
+        $currentTags = $this->driver->getMemberTags($emailAddress, $listId);
+
+        $this->driver->updateMemberTags(
+            $requestBuilder->createMemberTagsRequest($emailAddress, $currentTags),
+            $listId
+        );
     }
 }

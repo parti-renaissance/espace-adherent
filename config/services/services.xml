@@ -291,6 +291,7 @@
         <!-- Normalizer -->
         <service id="App\Normalizer\ItemCollectionNormalizer" />
         <service id="App\Normalizer\MunicipalEventNormalizer" />
+        <service id="App\Normalizer\ElectedRepresentativeNormalizer" />
         <service id="App\Normalizer\IdeaNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item" />
         </service>
@@ -518,6 +519,7 @@
 
         <!-- Mailchimp -->
         <service id="App\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />
+        <service id="App\Mailchimp\Synchronisation\EventListener\ElectedRepresentativeEventSubscriber" />
         <service id="App\Mailchimp\Driver">
             <argument type="service" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
@@ -571,6 +573,7 @@
         <service id="App\Mailchimp\Campaign\MailchimpObjectIdMapping">
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_NEWSLETTER_LIST_ID)%</argument>
+            <argument type="string">%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_APPLICATION_REQUEST_CANDIDATE_LIST_ID)%</argument>
             <argument type="string">%env(json:MAILCHIMP_CAMPAIGN_FOLDER_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_TEMPLATE_IDS)%</argument>

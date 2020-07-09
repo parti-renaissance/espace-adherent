@@ -6,6 +6,7 @@ use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\PostAddress;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -35,12 +36,16 @@ class RequestBuilder
     private $favoriteCitiesCodes;
     private $takenForCity = false;
     private $mailchimpObjectIdMapping;
+    private $electedRepresentativeTagsBuilder;
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
-    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
-    {
+    public function __construct(
+        MailchimpObjectIdMapping $mailchimpObjectIdMapping,
+        ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder
+    ) {
         $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
+        $this->electedRepresentativeTagsBuilder = $electedRepresentativeTagsBuilder;
     }
 
     public function updateFromAdherent(Adherent $adherent): self
@@ -56,9 +61,22 @@ class RequestBuilder
             ->setCountryName($adherent->getCountryName())
             ->setAdhesionDate($adherent->getRegisteredAt())
             ->setInterests($this->buildInterestArray($adherent))
-            ->setActiveTags($this->getActiveTags($adherent))
+            ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
+        ;
+    }
+
+    public function updateFromElectedRepresentative(ElectedRepresentative $electedRepresentative): self
+    {
+        return $this
+            ->setEmail($electedRepresentative->getEmailAddress())
+            ->setGender($electedRepresentative->getGender())
+            ->setFirstName($electedRepresentative->getFirstName())
+            ->setLastName($electedRepresentative->getLastName())
+            ->setBirthDay($electedRepresentative->getBirthDate())
+            ->setActiveTags($this->electedRepresentativeTagsBuilder->buildTags($electedRepresentative))
+            ->setIsSubscribeRequest(false === $electedRepresentative->isEmailUnsubscribed())
         ;
     }
 
@@ -351,7 +369,7 @@ class RequestBuilder
         );
     }
 
-    private function getActiveTags(Adherent $adherent): array
+    private function getAdherentActiveTags(Adherent $adherent): array
     {
         $tags = $adherent->getReferentTagCodes();
 

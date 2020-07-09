@@ -7,6 +7,7 @@ use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\UserListDefinitionEnum;
 use App\Repository\PaginatorTrait;
+use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -17,10 +18,27 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class ElectedRepresentativeRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
+    use UuidEntityRepositoryTrait {
+        findOneByUuid as findOneByValidUuid;
+    }
 
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, ElectedRepresentative::class);
+    }
+
+    public function findByEmail(string $email): array
+    {
+        return $this
+            ->createQueryBuilder('elected_representative')
+            ->leftJoin('elected_representative.adherent', 'adherent')
+            ->andWhere((new Orx())
+                ->add('adherent.emailAddress = :email')
+                ->add('elected_representative.contactEmail = :email')
+            )
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     /**
@@ -72,6 +90,17 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
 
         return null !== $res;
+    }
+
+    public function createWithEmailQueryBuilder(): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('elected_representative')
+            ->andWhere((new Orx())
+                ->add('elected_representative.adherent IS NOT NULL')
+                ->add('elected_representative.contactEmail IS NOT NULL')
+            )
+        ;
     }
 
     private function createFilterQueryBuilder(ListFilter $filter): QueryBuilder

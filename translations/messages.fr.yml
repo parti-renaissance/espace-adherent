@@ -687,6 +687,60 @@ elected_representative.filter.political_functions: Choisissez des fonctions
 elected_representative.filter.cities: Choisissez des villes
 elected_representative.filter.user_list_definitions: Choisissez des labels
 
+elected_representative:
+    mailchimp_tag:
+        adherent: Adhérent(e)
+        # Mandate
+        conseiller_municipal: "[M] Conseiller(e) municipal(e)"
+        membre_EPCI: "[M] Membre d'EPCI"
+        conseiller_departemental: "[M] Conseiller(e) départemental(e)"
+        conseiller_regional: "[M] Conseiller(e) régional(e)"
+        membre_assemblee_corse: "[M] Membre de l'Assemblée de Corse"
+        depute: "[M] Député(e)"
+        senateur: "[M] Sénateur(rice)"
+        euro_depute: "[M] Député(e) européen(ne)"
+        # PoliticalFunction
+        mayor: "[F] Maire"
+        deputy_mayor: "[F] Maire délégué(e)"
+        mayor_assistant: "[F] Adjoint(e) au maire"
+        president_of_regional_council: "[F] Président(e) de conseil régional"
+        vice_president_of_regional_council: "[F] Vice-président(e) de conseil régional"
+        president_of_departmental_council: "[F] Président(e) de conseil départemental"
+        vice_president_of_departmental_council: "[F] Vice-président(e) de conseil départemental"
+        deputy_vice_president_of_departmental_council: "[F] Vice-président(e) délégué du conseil départemental"
+        secretary: "[F] Secrétaire"
+        quaestor: "[F] Questeur(rice)"
+        president_of_national_assembly: "[F] Président(e) de l'Assemblée nationale"
+        vice_president_of_national_assembly: "[F] Vice-président(e) de l'Assemblée nationale"
+        president_of_senate: "[F] Président(e) du Sénat"
+        vice_president_of_senate: "[F] Vice-président(e) du Sénat"
+        president_of_commission: "[F] Président(e) de commission"
+        president_of_group: "[F] Président(e) de groupe"
+        president_of_epci: "[F] Président(e) d'EPCI"
+        vice_president_of_epci: "[F] Vice-président(e) d'EPCI"
+        other_member_of_standing_committee: "[F] Autre membre commission permanente"
+        other_member: "[F] Autre membre"
+        # UserListDefinition
+        supporting_la_rem: "[L] Majorité Présidentielle"
+        instances_member: "[L] Conseil Territorial"
+        in-progress: "[L] En cours"
+        # ElectedRepresentativeLabel
+        LFI: "[E] LFI"
+        PCF: "[E] PCF"
+        PS: "[E] PS"
+        MRC: "[E] MRC"
+        "G.s": "[E] G.s"
+        TDP: "[E] TDP"
+        LaREM: "[E] LaREM"
+        Modem: "[E] Modem"
+        MRSL: "[E] MRSL"
+        Agir: "[E] Agir"
+        UDI: "[E] UDI"
+        LR: "[E] LR"
+        DLF: "[E] DLF"
+        RN: "[E] RN"
+        "Autre parti": "[E] Autre parti"
+
 #
 # Election
 #

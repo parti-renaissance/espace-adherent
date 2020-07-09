@@ -13,6 +13,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -49,6 +50,8 @@ class ElectedRepresentative
      *
      * @Assert\NotBlank
      * @Assert\Length(max="50")
+     *
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     private $lastName;
 
@@ -59,6 +62,8 @@ class ElectedRepresentative
      *
      * @Assert\NotBlank
      * @Assert\Length(max="50")
+     *
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     private $firstName;
 
@@ -72,6 +77,8 @@ class ElectedRepresentative
      *     message="common.gender.invalid_choice",
      *     strict=true
      * )
+     *
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     private $gender;
 
@@ -81,6 +88,8 @@ class ElectedRepresentative
      * @ORM\Column(type="date")
      *
      * @Assert\NotNull
+     *
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
      */
     private $birthDate;
 
@@ -136,6 +145,24 @@ class ElectedRepresentative
      * )
      */
     private $isAdherent = false;
+
+    /**
+     * Mailchimp unsubscribed date
+     *
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $emailUnsubscribedAt;
+
+    /**
+     * Mailchimp unsubscribed status
+     *
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $emailUnsubscribed = false;
 
     /**
      * @var Adherent|null
@@ -362,6 +389,9 @@ class ElectedRepresentative
         $this->hasFollowedTraining = $hasFollowedTraining;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
+     */
     public function isAdherent(): bool
     {
         return $this->isAdherent;
@@ -380,6 +410,11 @@ class ElectedRepresentative
     public function setAdherent(?Adherent $adherent = null): void
     {
         $this->adherent = $adherent;
+    }
+
+    public function removeAdherent(): void
+    {
+        $this->adherent = null;
     }
 
     public function getSocialNetworkLinks(): Collection
@@ -405,6 +440,9 @@ class ElectedRepresentative
         return $this->mandates;
     }
 
+    /**
+     * @return Mandate[]|Collection
+     */
     public function getCurrentMandates(): Collection
     {
         return $this->mandates->filter(function (Mandate $mandate) {
@@ -444,6 +482,9 @@ class ElectedRepresentative
         return $this->politicalFunctions;
     }
 
+    /**
+     * @return PoliticalFunction[]|Collection
+     */
     public function getCurrentPoliticalFunctions(): Collection
     {
         return $this->politicalFunctions->filter(function (PoliticalFunction $politicalFunction) {
@@ -479,9 +520,22 @@ class ElectedRepresentative
         return implode(', ', $this->getCurrentPoliticalFunctions()->toArray());
     }
 
+    /**
+     * @return ElectedRepresentativeLabel[]|Collection
+     */
     public function getLabels(): Collection
     {
         return $this->labels;
+    }
+
+    /**
+     * @return ElectedRepresentativeLabel[]|Collection
+     */
+    public function getCurrentLabels(): Collection
+    {
+        return $this->labels->filter(function (ElectedRepresentativeLabel $label) {
+            return $label->isOnGoing();
+        });
     }
 
     public function getSortedLabels(): Collection
@@ -556,6 +610,38 @@ class ElectedRepresentative
     public function getAge(): ?int
     {
         return $this->birthDate ? $this->birthDate->diff(new \DateTime())->y : null;
+    }
+
+    /**
+     * @SymfonySerializer\Groups({"elected_representative_change_diff"})
+     */
+    public function getEmailAddress(): ?string
+    {
+        if ($this->adherent) {
+            return $this->adherent->getEmailAddress();
+        }
+
+        if ($this->contactEmail) {
+            return $this->contactEmail;
+        }
+
+        return null;
+    }
+
+    public function subscribeEmails(): void
+    {
+        $this->emailUnsubscribed = false;
+    }
+
+    public function unsubscribeEmails(): void
+    {
+        $this->emailUnsubscribed = true;
+        $this->emailUnsubscribedAt = new \DateTime();
+    }
+
+    public function isEmailUnsubscribed(): bool
+    {
+        return $this->emailUnsubscribed;
     }
 
     public function __toString(): string
