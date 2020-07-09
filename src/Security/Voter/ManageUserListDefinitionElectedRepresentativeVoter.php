@@ -7,24 +7,24 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\UserListDefinition\UserListDefinitionPermissions;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ManageUserListDefinitionElectedRepresentativeVoter extends AbstractAdherentVoter
 {
     private $electedRepresentativeRepository;
-    private $requestStack;
+    private $session;
 
     public function __construct(
         ElectedRepresentativeRepository $electedRepresentativeRepository,
-        RequestStack $requestStack
+        SessionInterface $session
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
-        $this->requestStack = $requestStack;
+        $this->session = $session;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getMasterRequest()->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
 

@@ -17,9 +17,10 @@ class ReferentMessageControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
-        $crawler = $this->client->click(
+        $this->client->click(
             $this->client->request('GET', '/')->selectLink('Espace référent')->link()
         );
+        $crawler = $this->client->followRedirect();
 
         $crawler = $this->client->click($crawler->filter('div.direct-actions')->children()->eq(0)->link());
 

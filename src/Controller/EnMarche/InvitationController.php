@@ -14,10 +14,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class InvitationController extends Controller
 {
+    use AccessDelegatorTrait;
+
     /**
      * @Route("/invitation", name="invitation_form", methods={"GET", "POST"})
      */
@@ -54,11 +55,12 @@ class InvitationController extends Controller
      */
     public function connectedAdherentInviteAction(
         Request $request,
-        UserInterface $adherent,
         InvitationRequestHandler $handler,
         string $type,
         ?Committee $committee = null
     ): Response {
+        $adherent = $this->getMainUser($request->getSession());
+
         /** @var Adherent $adherent */
         $invite = new Invite();
         $invite->setFirstName($adherent->getFirstName());

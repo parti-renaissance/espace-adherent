@@ -2,8 +2,8 @@
 
 namespace App\Controller\EnMarche\ElectedRepresentative;
 
+use App\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -17,8 +17,8 @@ class DeputyElectedRepresentativeController extends AbstractElectedRepresentativ
         return 'deputy';
     }
 
-    protected function getManagedTags(Request $request): array
+    protected function getManagedTags(Adherent $adherent): array
     {
-        return [$this->getUser()->getManagedDistrict()->getReferentTag()];
+        return [$adherent->getManagedDistrict()->getReferentTag()];
     }
 }

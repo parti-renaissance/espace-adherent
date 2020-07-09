@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @ParamConverter("committee", options={"mapping": {"committee_slug": "slug"}})
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @Security("is_granted('ROLE_REFERENT') or is_granted('ROLE_DELEGATED_REFERENT')")
  */
 class ReferentDesignationController extends AbstractDesignationController
 {
