@@ -2,7 +2,9 @@
 
 namespace App\Controller\EnMarche\ElectedRepresentative;
 
+use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\ElectedRepresentative\Filter\ListFilter;
+use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\ElectedRepresentative\ElectedRepresentativeFilterType;
@@ -15,6 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractElectedRepresentativeController extends Controller
 {
+    use AccessDelegatorTrait;
+
     /**
      * @Route("/elus", name="list", methods={"GET"})
      */
@@ -22,7 +26,7 @@ abstract class AbstractElectedRepresentativeController extends Controller
         Request $request,
         ElectedRepresentativeRepository $electedRepresentativeRepository
     ): Response {
-        $filter = new ListFilter($managedTags = $this->getManagedTags($request));
+        $filter = new ListFilter($managedTags = $this->getManagedTags($this->getMainUser($request->getSession())));
 
         $form = $this
             ->createFilterForm($managedTags, $filter)
@@ -55,7 +59,7 @@ abstract class AbstractElectedRepresentativeController extends Controller
 
     abstract protected function getSpaceType(): string;
 
-    abstract protected function getManagedTags(Request $request): array;
+    abstract protected function getManagedTags(Adherent $adherent): array;
 
     protected function createFilterForm(array $managedTags, ListFilter $filter = null): FormInterface
     {

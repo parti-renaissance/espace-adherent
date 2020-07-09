@@ -27,7 +27,7 @@
 
             <br/>
 
-            <form method="POST" action="{{ get_path(space_name, 'message', 'create', app.request) }}">
+            <form method="POST" action="{{ path("app_message_#{space_name}_create") }}">
                 <input type="hidden" name='message_content' value="Inscrivez-vous à l'événement <a href='{{ url('app_event_show', { slug: event.slug }) }}'>ici</a>">
                 <button class="btn btn--blue b__nudge--bottom">L'envoyer par e-mail</button>
             </form>
@@ -35,18 +35,18 @@
             <br/>
 
             {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
-                <a href="{{ get_path(space_name, 'event_manager', 'events_mine', app.request) }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
+                <a href="{{ path("app_#{space_name}_event_manager_events_mine") }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
                     Voir tous mes événements
                 </a>
             {% else %}
-                <a href="{{ get_path(space_name, 'event_manager', 'events', app.request) }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
+                <a href="{{ path("app_#{space_name}_event_manager_events") }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
                     Voir tous les événements
                 </a>
             {% endif %}
 
         </div>
     {% else %}
-        <a href="{{ get_path(space_name, 'event_manager', 'events', app.request) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
+        <a href="{{ path("app_#{space_name}_event_manager_events") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
             ⟵ Annuler
         </a>
         <div class="l__wrapper--slim">

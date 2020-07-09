@@ -10,37 +10,37 @@
 {% endif %}
 {% if app.user.isReferent %}
     <li>
-        <a href="{{ path('app_referent_event_manager_events') }}">Espace référent</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'referent'}) }}">Espace référent</a>
     </li>
 {% endif %}
-{% if is_granted('ROLE_DELEGATED_REFERENT') %}
+{% if app.user.isDelegatedReferent %}
     {% for delegated_access in app.user.receivedDelegatedAccessOfType('referent') %}
         <li>
-            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace référent partagé ({{ delegated_access.delegator.managedArea.tags.first.code }} <small>+{{ delegated_access.delegator.managedArea.tags.count - 1 }}</small>)</a>
+            <a href="{{ path('app_access_delegation_set', {uuid: delegated_access.uuid}) }}">Espace référent partagé ({{ delegated_access.delegator.managedArea.tags.first.code }}{% if delegated_access.delegator.managedArea.tags.count > 1 %} <small>+{{ delegated_access.delegator.managedArea.tags.count - 1 }}</small>{% endif %})</a>
         </li>
     {% endfor %}
 {% endif %}
 {% if app.user.isDeputy %}
     <li>
-        <a href="{{ path('app_message_deputy_list') }}">Espace député</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'deputy'}) }}">Espace député</a>
     </li>
 {% endif %}
-{% if is_granted('ROLE_DELEGATED_DEPUTY') %}
+{% if app.user.isDelegatedDeputy %}
     {% for delegated_access in app.user.receivedDelegatedAccessOfType('deputy') %}
         <li>
-            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace député partagé ({{ delegated_access.delegator.managedDistrict.code }})</a>
+            <a href="{{ path('app_access_delegation_set', {uuid: delegated_access.uuid}) }}">Espace député partagé ({{ delegated_access.delegator.managedDistrict.code }})</a>
         </li>
     {% endfor %}
 {% endif %}
 {% if app.user.isSenator %}
     <li>
-        <a href="{{ path('app_message_senator_list') }}">Espace sénateur</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'senator'}) }}">Espace sénateur</a>
     </li>
 {% endif %}
-{% if is_granted('ROLE_DELEGATED_SENATOR') %}
+{% if app.user.isDelegatedSenator %}
     {% for delegated_access in app.user.receivedDelegatedAccessOfType('senator') %}
         <li>
-            <a href="{{ path(get_first_access_route(delegated_access), {delegated_access_uuid: delegated_access.uuid}) }}">Espace sénateur partagé ({{ delegated_access.delegator.senatorArea.departmentTag.code }})</a>
+            <a href="{{ path('app_access_delegation_set', {uuid: delegated_access.uuid}) }}">Espace sénateur partagé ({{ delegated_access.delegator.senatorArea.departmentTag.code }})</a>
         </li>
     {% endfor %}
 {% endif %}

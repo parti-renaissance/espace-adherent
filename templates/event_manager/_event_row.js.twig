@@ -10,7 +10,7 @@
         }
     ] %}
 
-    {% if is_granted('HOST_EVENT', event) or not is_granted('HAS_DELEGATED_ACCESS_ANY', app.request) %}
+    {% if is_granted('HOST_EVENT', event) %}
         {% set menu = menu|merge([
             {
                 label: 'Modifier',

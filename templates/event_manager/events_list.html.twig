@@ -63,7 +63,7 @@
 
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = '{{ get_path(space_name, 'message', 'create', app.request) }}';
+            form.action = '{{ path("app_message_#{space_name}_create") }}';
 
             var messageElement = document.createElement('input');
             messageElement.name = 'message_content';
@@ -79,7 +79,7 @@
 {% block event_manager_content %}
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>Événements</h3>
-        <a href="{{ get_path(space_name, 'event_manager', 'events_create', app.request) }}" class="btn-secondary btn-secondary--blue">
+        <a href="{{ path("app_#{space_name}_event_manager_events_create") }}" class="btn-secondary btn-secondary--blue">
             + Créer
         </a>
     </div>
@@ -87,18 +87,18 @@
     {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
         <div class="datagrid__table__tabs">
             <div class="datagrid__table__tabs__items">
-                {% if is_active_route(app.request, "app_#{space_name}_event_manager"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_events") %}
+                {% if is_active_route(app.request, "app_#{space_name}_event_manager_events") %}
                     <h3>Tous les événements</h3>
                 {% else %}
-                    <h3><a href="{{ get_path(space_name, 'event_manager', 'events', app.request) }}">Tous les événements</a></h3>
+                    <h3><a href="{{ path("app_#{space_name}_event_manager_events") }}">Tous les événements</a></h3>
                 {% endif %}
 
                 <span class="separator"></span>
 
-                {% if is_active_route(app.request, "app_#{space_name}_event_manager"~ ('delegated' in app.request.attributes.get('_route') ? '_delegated') ~"_events_mine") %}
+                {% if is_active_route(app.request, "app_#{space_name}_event_manager_events_mine") %}
                     <h3>Mes événements</h3>
                 {% else %}
-                    <h3><a href="{{ get_path(space_name, 'event_manager', 'events_mine', app.request) }}">Mes événements</a></h3>
+                    <h3><a href="{{ path("app_#{space_name}_event_manager_events_mine") }}">Mes événements</a></h3>
                 {% endif %}
             </div>
         </div>

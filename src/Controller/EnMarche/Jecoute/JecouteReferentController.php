@@ -2,15 +2,15 @@
 
 namespace App\Controller\EnMarche\Jecoute;
 
+use App\Entity\Adherent;
 use App\Jecoute\JecouteSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-referent/jecoute", name="app_jecoute_referent_")
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_JECOUTE'))")
  */
 class JecouteReferentController extends AbstractJecouteController
 {
@@ -19,13 +19,13 @@ class JecouteReferentController extends AbstractJecouteController
         return JecouteSpaceEnum::REFERENT_SPACE;
     }
 
-    protected function getLocalSurveys(Request $request): array
+    protected function getLocalSurveys(Adherent $adherent): array
     {
-        return $this->localSurveyRepository->findAllByTagsWithStats($this->getSurveyTags($request));
+        return $this->localSurveyRepository->findAllByTagsWithStats($this->getSurveyTags($adherent));
     }
 
-    protected function getSurveyTags(Request $request): array
+    protected function getSurveyTags(Adherent $adherent): array
     {
-        return $this->getUser()->getManagedAreaTagCodes();
+        return $adherent->getManagedAreaTagCodes();
     }
 }
