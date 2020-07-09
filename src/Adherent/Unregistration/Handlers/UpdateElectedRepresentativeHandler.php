@@ -44,11 +44,8 @@ class UpdateElectedRepresentativeHandler implements UnregistrationAdherentHandle
 
         $this->bus->dispatch(new ElectedRepresentativeDeleteCommand($adherent->getEmailAddress()));
 
-        if ($email = $electedRepresentative->getEmailAddress()) {
-            $this->bus->dispatch(new ElectedRepresentativeChangeCommand(
-                $electedRepresentative->getUuid(),
-                $email
-            ));
+        if ($electedRepresentative->getEmailAddress()) {
+            $this->bus->dispatch(new ElectedRepresentativeChangeCommand($electedRepresentative->getUuid()));
         }
     }
 }
