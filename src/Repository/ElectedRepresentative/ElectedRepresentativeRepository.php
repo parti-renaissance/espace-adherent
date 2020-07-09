@@ -36,6 +36,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
                 ->add('adherent.emailAddress = :email')
                 ->add('elected_representative.contactEmail = :email')
             )
+            ->setParameter('email', $email)
             ->getQuery()
             ->getResult()
         ;
