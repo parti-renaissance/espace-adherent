@@ -8,6 +8,7 @@ VERSION=${CIRCLE_TAG:-$CIRCLE_BRANCH}
 RESOURCE_NAME="eu.gcr.io/$GCLOUD_PROJECT/app"
 DOCKER_IMAGE_TAG="$RESOURCE_NAME:$VERSION-$CIRCLE_SHA1"
 DOCKER_IMAGE_CACHE_TAG="$RESOURCE_NAME:master"
+DOCKER_IMAGE_LATEST_TAG="$RESOURCE_NAME:latest"
 
 # Build the image
 gcloud docker -- pull $DOCKER_IMAGE_CACHE_TAG
@@ -18,7 +19,7 @@ gcloud docker -- push $DOCKER_IMAGE_TAG
 
 # Set image tag only for master
 if [ "$VERSION" = "master" ]; then
-    gcloud container images add-tag $DOCKER_IMAGE_TAG $DOCKER_IMAGE_CACHE_TAG --quiet
+    gcloud container images add-tag $DOCKER_IMAGE_TAG $DOCKER_IMAGE_CACHE_TAG $DOCKER_IMAGE_LATEST_TAG --quiet
 
     # Clear oldest docker images
     now=$(date '+%s')
