@@ -65,10 +65,6 @@ class SegmentConditionsBuilder
             if ($filter instanceof ReferentUserFilter && ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers())) {
                 return $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId();
             }
-
-            if ($filter instanceof ReferentElectedRepresentativeFilter) {
-                return $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
-            }
         }
 
         return $this->mailchimpObjectIdMapping->getListIdByMessageType($message->getType());
