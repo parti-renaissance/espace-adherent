@@ -12,10 +12,7 @@ class ElectedRepresentativeChangeCommand implements ElectedRepresentativeChangeC
     public function __construct(UuidInterface $uuid, string $oldEmailAddress = null)
     {
         $this->uuid = $uuid;
-
-        if ($oldEmailAddress) {
-            $this->oldEmailAddress = strtolower($oldEmailAddress);
-        }
+        $this->oldEmailAddress = $oldEmailAddress;
     }
 
     public function getUuid(): UuidInterface

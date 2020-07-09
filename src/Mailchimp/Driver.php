@@ -34,36 +34,27 @@ class Driver implements LoggerAwareInterface
     {
         return $this->sendRequest(
             'PUT',
-            sprintf('/lists/%s/members/%s', $listId, md5($request->getMemberIdentifier())),
+            sprintf('/lists/%s/members/%s', $listId, $this->createHash($request->getMemberIdentifier())),
             $request->toArray()
         );
     }
 
     public function getMemberTags(string $mail, string $listId): array
     {
-        $response = $this->send('GET', sprintf('/lists/%s/members/%s/tags', $listId, md5($mail)));
+        $response = $this->send('GET', sprintf('/lists/%s/members/%s/tags', $listId, $this->createHash($mail)));
 
         if (!$this->isSuccessfulResponse($response)) {
             return [];
         }
 
-        $content = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
-
-        $tags = [];
-        foreach ($content['tags'] ?? [] as $currentTag) {
-            if (isset($currentTag['name'])) {
-                $tags[] = $currentTag['name'];
-            }
-        }
-
-        return $tags;
+        return array_column($this->toArray($response)['tags'] ?? [], 'name');
     }
 
     public function updateMemberTags(MemberTagsRequest $request, string $listId): bool
     {
         return $this->sendRequest(
             'POST',
-            sprintf('/lists/%s/members/%s/tags', $listId, md5($request->getMemberIdentifier())),
+            sprintf('/lists/%s/members/%s/tags', $listId, $this->createHash($request->getMemberIdentifier())),
             $request->toArray()
         );
     }
@@ -144,7 +135,7 @@ class Driver implements LoggerAwareInterface
     {
         return $this->sendRequest(
             'DELETE',
-            sprintf('/lists/%s/segments/%d/members/%s', $this->listId, $segmentId, md5(strtolower($mail)))
+            sprintf('/lists/%s/segments/%d/members/%s', $this->listId, $segmentId, $this->createHash($mail))
         );
     }
 
@@ -152,13 +143,13 @@ class Driver implements LoggerAwareInterface
     {
         return $this->sendRequest(
             'DELETE',
-            sprintf('/lists/%s/members/%s', $listId, md5(strtolower($mail)))
+            sprintf('/lists/%s/members/%s', $listId, $this->createHash($mail))
         );
     }
 
     public function deleteMember(string $mail, string $listId): bool
     {
-        return $this->sendRequest('POST', sprintf('/lists/%s/members/%s/actions/delete-permanent', $listId, md5(strtolower($mail))));
+        return $this->sendRequest('POST', sprintf('/lists/%s/members/%s/actions/delete-permanent', $listId, $this->createHash($mail)));
     }
 
     public function getReportData(string $campaignId): array
@@ -200,6 +191,11 @@ class Driver implements LoggerAwareInterface
 
             return $this->lastResponse = $response;
         }
+    }
+
+    private function createHash(string $email): string
+    {
+        return md5(strtolower($email));
     }
 
     private function isSuccessfulResponse(?ResponseInterface $response): bool

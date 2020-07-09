@@ -119,12 +119,7 @@ class Manager implements LoggerAwareInterface
         );
 
         if ($result) {
-            $currentTags = $this->driver->getMemberTags($emailAddress, $listId);
-
-            $this->driver->updateMemberTags(
-                $requestBuilder->createMemberTagsRequest($emailAddress, $currentTags),
-                $listId
-            );
+            $this->updateMemberTags($emailAddress, $listId, $requestBuilder);
         }
     }
 
@@ -302,5 +297,15 @@ class Manager implements LoggerAwareInterface
         if (!$campaign->getExternalId()) {
             throw new InvalidCampaignIdException(sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid()->toString()));
         }
+    }
+
+    private function updateMemberTags(string $emailAddress, string $listId, RequestBuilder $requestBuilder): void
+    {
+        $currentTags = $this->driver->getMemberTags($emailAddress, $listId);
+
+        $this->driver->updateMemberTags(
+            $requestBuilder->createMemberTagsRequest($emailAddress, $currentTags),
+            $listId
+        );
     }
 }
