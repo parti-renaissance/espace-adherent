@@ -37,7 +37,7 @@ class AdherentChangeEmailCommandHandler implements MessageHandlerInterface, Logg
     {
         /** @var Adherent $adherent */
         if (!$adherent = $this->adherentRepository->findOneByUuid($uuid = $message->getUuid()->toString())) {
-            $this->logger->warning($error = sprintf('Adherent with UUID "%s" not found, message skipped', $uuid));
+            $this->logger->warning(sprintf('Adherent with UUID "%s" not found, message skipped', $uuid));
 
             return;
         }

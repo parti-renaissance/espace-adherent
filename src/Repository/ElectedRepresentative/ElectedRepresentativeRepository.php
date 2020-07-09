@@ -29,7 +29,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
     public function findByEmail(string $email): array
     {
-        $qb = $this
+        return $this
             ->createQueryBuilder('elected_representative')
             ->leftJoin('elected_representative.adherent', 'adherent')
             ->andWhere((new Orx())

@@ -35,7 +35,7 @@ class ElectedRepresentativeChangeCommandHandler implements MessageHandlerInterfa
     {
         /** @var ElectedRepresentative $electedRepresentative */
         if (!$electedRepresentative = $this->repository->findOneByUuid($uuid = $message->getUuid()->toString())) {
-            $this->logger->warning($error = sprintf('ElectedRepresentative with UUID "%s" not found, message skipped', $uuid));
+            $this->logger->warning(sprintf('ElectedRepresentative with UUID "%s" not found, message skipped', $uuid));
 
             return;
         }

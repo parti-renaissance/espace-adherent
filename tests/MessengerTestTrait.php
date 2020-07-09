@@ -26,7 +26,7 @@ trait MessengerTestTrait
     {
         foreach ($this->getMessageRecorder()->getMessages() as $envelope) {
             if (is_a($envelope->getMessage(), $unexpectedMessageClass)) {
-                self::fail("Message $unexpectedMessageClass found, but nof expected.");
+                self::fail("Message $unexpectedMessageClass found, but not expected.");
 
                 break;
             }
