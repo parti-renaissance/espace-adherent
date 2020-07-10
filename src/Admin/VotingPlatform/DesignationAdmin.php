@@ -21,6 +21,9 @@ class DesignationAdmin extends AbstractAdmin
     {
         $form
             ->with('Général 📜', ['box_class' => 'box box-solid box-primary'])
+                ->add('label', null, [
+                    'label' => 'Label',
+                ])
                 ->add('type', DesignationTypeType::class, [
                     'label' => 'Type d’élection',
                 ])
@@ -96,6 +99,7 @@ class DesignationAdmin extends AbstractAdmin
     {
         $list
             ->add('id', null, ['label' => '#'])
+            ->add('label')
             ->add('type', 'trans', ['format' => 'voting_platform.designation.type_%s'])
             ->add('zones', 'array')
             ->add('candidacyStartDate', null, ['label' => 'Ouverture des candidatures'])

@@ -870,8 +870,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee4->approved();
-        $committee4->setCurrentDesignation($designation = $this->getReference('designation-3'));
-        $committee4->addCommitteeElection(new CommitteeElection($designation));
+        $committee4->setCurrentElection(new CommitteeElection($this->getReference('designation-3')));
         $this->addReference('committee-4', $committee4);
 
         $committee5 = $committeeFactory->createFromArray([
@@ -884,8 +883,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee5->approved();
-        $committee5->setCurrentDesignation($designation = $this->getReference('designation-2'));
-        $committee5->addCommitteeElection(new CommitteeElection($designation));
+        $committee5->setCurrentElection(new CommitteeElection($this->getReference('designation-2')));
         $this->addReference('committee-5', $committee5);
 
         $committee6 = $committeeFactory->createFromArray([
@@ -898,8 +896,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 234823644',
         ]);
         $committee6->approved('2017-03-19 09:17:24');
-        $committee6->setCurrentDesignation($designation = $this->getReference('designation-1'));
-        $committee6->addCommitteeElection(new CommitteeElection($designation));
+        $committee6->setCurrentElection(new CommitteeElection($this->getReference('designation-1')));
         $this->addReference('committee-6', $committee6);
 
         $committee7 = $committeeFactory->createFromArray([
@@ -912,8 +909,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '49 2211653540',
         ]);
         $committee7->approved('2017-03-19 13:43:26');
-        $committee7->setCurrentDesignation($designation = $this->getReference('designation-1'));
-        $committee7->addCommitteeElection(new CommitteeElection($designation));
+        $committee7->setCurrentElection(new CommitteeElection($this->getReference('designation-1')));
         $this->addReference('committee-7', $committee7);
 
         $committee8 = $committeeFactory->createFromArray([
@@ -926,6 +922,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '65 66888868',
         ]);
         $committee8->approved('2017-04-10 20:23:18');
+        $committee8->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
         $this->addReference('committee-8', $committee8);
 
         $committee9 = $committeeFactory->createFromArray([
@@ -938,6 +935,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '1 2123150100',
         ]);
         $committee9->approved('2017-04-09 13:27:42');
+        $committee9->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
         $this->addReference('committee-9', $committee9);
 
         $committee10 = $committeeFactory->createFromArray([
@@ -950,6 +948,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee10->approved('2017-05-09 13:17:42');
+        $committee10->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
         $this->addReference('committee-10', $committee10);
 
         $committee11 = $committeeFactory->createFromArray([

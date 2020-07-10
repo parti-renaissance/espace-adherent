@@ -7,7 +7,7 @@ use App\Collection\CommitteeCollection;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeCandidacy;
+use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\Event;
@@ -209,19 +209,21 @@ class CommitteeRepository extends ServiceEntityRepository
             ->addSelect(sprintf('(%s) AS total_candidacy_male',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(candidacy1.id IS NOT NULL AND candidacy1.gender = :male, 1, 0))')
-                    ->from(CommitteeCandidacy::class, 'candidacy1')
-                    ->innerJoin('candidacy1.committeeElection', 'election1')
+                    ->from(CommitteeElection::class, 'election1')
+                    ->leftJoin('election1.candidacies', 'candidacy1')
                     ->innerJoin('election1.designation', 'designation1')
-                    ->where('election1.committee = c AND designation1.candidacyStartDate <= :now AND :now <= designation1.voteEndDate')
+                    ->where('election1.committee = c AND designation1.candidacyStartDate <= :now')
+                    ->andWhere('(designation1.voteEndDate IS NULL OR :now <= designation1.voteEndDate)')
                     ->getDQL()
             ))
             ->addSelect(sprintf('(%s) AS total_candidacy_female',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(candidacy2.id IS NOT NULL AND candidacy2.gender = :female, 1, 0))')
-                    ->from(CommitteeCandidacy::class, 'candidacy2')
-                    ->innerJoin('candidacy2.committeeElection', 'election2')
+                    ->from(CommitteeElection::class, 'election2')
+                    ->leftJoin('election2.candidacies', 'candidacy2')
                     ->innerJoin('election2.designation', 'designation2')
-                    ->where('election2.committee = c AND designation2.candidacyStartDate <= :now AND :now <= designation2.voteEndDate')
+                    ->where('election2.committee = c AND designation2.candidacyStartDate <= :now')
+                    ->andWhere('(designation2.voteEndDate IS NULL OR :now <= designation2.voteEndDate)')
                     ->getDQL()
             ))
             ->where('c.status = :status')
@@ -619,7 +621,7 @@ class CommitteeRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('c')
             ->leftJoin('c.currentDesignation', 'd')
-            ->where('(c.currentDesignation IS NULL OR d.voteEndDate < :date)')
+            ->where('(c.currentDesignation IS NULL OR (d.voteEndDate IS NOT NULL AND d.voteEndDate < :date))')
             ->andWhere('c.status = :status')
             ->setParameters([
                 'status' => Committee::APPROVED,

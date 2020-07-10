@@ -71,7 +71,7 @@ class VotingPlatformCloseElectionCommand extends Command
             }
         }
 
-        if (empty($secondRoundPools)) {
+        if (empty($secondRoundPools) || $election->getSecondRoundEndDate()) {
             $election->close();
         } else {
             $election->startSecondRound($secondRoundPools);

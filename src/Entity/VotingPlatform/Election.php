@@ -169,4 +169,9 @@ class Election
     {
         return null !== $this->secondRoundEndDate && (new \DateTime()) <= $this->secondRoundEndDate;
     }
+
+    public function getSecondRoundEndDate(): ?\DateTime
+    {
+        return $this->secondRoundEndDate;
+    }
 }

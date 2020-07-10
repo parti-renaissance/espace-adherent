@@ -46,7 +46,7 @@
                     {% if not member_is_candidate_in_committee %}
                         Les candidatures sont ouvertes dans tous les comités du
                         {{ committee_election.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-                        au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.<br>
+                        au {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
                     {% endif %}
 
                     La designation se tiendra en ligne du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}

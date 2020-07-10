@@ -505,4 +505,10 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
         return $election && $election->getDesignation()->isActive();
     }
+
+    public function setCurrentElection(CommitteeElection $committeeElection): void
+    {
+        $this->addCommitteeElection($committeeElection);
+        $this->setCurrentDesignation($committeeElection->getDesignation());
+    }
 }

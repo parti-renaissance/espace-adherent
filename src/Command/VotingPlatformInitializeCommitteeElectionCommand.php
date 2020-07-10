@@ -57,12 +57,14 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
 
     private function configureCommitteeElections(Designation $designation): void
     {
+        /** @var Designation $proxy */
+        $proxy = $this->entityManager->getPartialReference(Designation::class, $designation->getId());
+
         while ($committees = $this->committeeRepository->findAllWithoutStartedElection($designation)) {
             foreach ($committees as $committee) {
                 $this->io->progressAdvance();
 
-                $committee->addCommitteeElection(new CommitteeElection($designation));
-                $committee->setCurrentDesignation($designation);
+                $committee->setCurrentElection(new CommitteeElection($proxy));
             }
 
             $this->entityManager->flush();

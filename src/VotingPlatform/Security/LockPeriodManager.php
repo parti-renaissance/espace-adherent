@@ -61,8 +61,16 @@ class LockPeriodManager
 
             $isLocked = $committeeElection->isLockPeriodActive() || ($election && $election->isLockPeriodActive());
 
-            if ($isLocked && $isAdmin && (new \DateTime()) < $committeeElection->getVoteStartDate()) {
-                return false;
+            if ($isLocked) {
+                // unlock for admin impersonnifacation
+                if ($isAdmin && (new \DateTime()) < $committeeElection->getVoteStartDate()) {
+                    return false;
+                }
+
+                // unlock if 0 candidates
+                if (0 === $committeeElection->countCandidacies() && !$committeeElection->isCandidacyPeriodActive()) {
+                    return false;
+                }
             }
 
             return $isLocked;
