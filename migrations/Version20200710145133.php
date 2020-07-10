@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20200710072804 extends AbstractMigration
+final class Version20200710145133 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -43,6 +43,15 @@ final class Version20200710072804 extends AbstractMigration
           user_list_definitions JSON DEFAULT NULL, 
         ADD 
           is_adherent LONGTEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE mailchimp_campaign ADD mailchimp_segment_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE 
+          mailchimp_campaign 
+        ADD 
+          CONSTRAINT FK_CFABD309D21E482E FOREIGN KEY (mailchimp_segment_id) REFERENCES mailchimp_segment (id) ON DELETE 
+        SET 
+          NULL');
+        $this->addSql('CREATE INDEX IDX_CFABD309D21E482E ON mailchimp_campaign (mailchimp_segment_id)');
+        $this->addSql('ALTER TABLE mailchimp_segment CHANGE external_id external_id VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -60,5 +69,10 @@ final class Version20200710072804 extends AbstractMigration
           user_list_definitions, 
         DROP 
           is_adherent');
+        $this->addSql('ALTER TABLE mailchimp_campaign DROP FOREIGN KEY FK_CFABD309D21E482E');
+        $this->addSql('DROP INDEX IDX_CFABD309D21E482E ON mailchimp_campaign');
+        $this->addSql('ALTER TABLE mailchimp_campaign DROP mailchimp_segment_id');
+        $this->addSql('ALTER TABLE 
+          mailchimp_segment CHANGE external_id external_id VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
     }
 }

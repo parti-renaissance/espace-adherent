@@ -44,20 +44,20 @@ class MailchimpSegment
     private $label;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $externalId;
 
-    public function __construct(string $list, string $label, string $externalId)
+    public function __construct(string $list, string $label, string $externalId = null)
     {
         $this->list = $list;
         $this->label = $label;
         $this->externalId = $externalId;
     }
 
-    public static function createElectedRepresentativeSegment(string $label, string $externalId)
+    public static function createElectedRepresentativeSegment(string $label, string $externalId = null)
     {
         return new self(self::LIST_ELECTED_REPRESENTATIVE, $label, $externalId);
     }
@@ -87,12 +87,12 @@ class MailchimpSegment
         $this->label = $label;
     }
 
-    public function getExternalId(): string
+    public function getExternalId(): ?string
     {
         return $this->externalId;
     }
 
-    public function setExternalId(string $externalId): void
+    public function setExternalId(?string $externalId): void
     {
         $this->externalId = $externalId;
     }

@@ -40,7 +40,7 @@ class ReferentElectedRepresentativeMailchimpCampaignHandler extends AbstractMail
             $staticSegmentCondition = [
                 'type' => 'mailchimp_segment',
                 'value' => $mailchimpSegment,
-                'label' => $tag->getCode(),
+                'label' => $label,
             ];
 
             $filters[] = [$staticSegmentCondition];
