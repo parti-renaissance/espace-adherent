@@ -41,9 +41,14 @@ class ElectedRepresentativeTagsBuilder
             $tags[] = self::ADHERENT_TAG;
         }
 
-        return array_map(function (string $tag) {
+        $translatedTags = array_map(function (string $tag) {
             return $this->translateKey($tag);
         }, array_unique($tags));
+
+        return array_unique(array_merge(
+            $translatedTags,
+            $electedRepresentative->getActiveReferentTagCodes()
+        ));
     }
 
     public function translateKey(string $key): string
