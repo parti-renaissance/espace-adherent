@@ -4,45 +4,31 @@ namespace App\Command;
 
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
+use App\Entity\ReferentTag;
 use App\Repository\CitizenProjectRepository;
 use App\Repository\CommitteeRepository;
-use App\Repository\ReferentTagRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use GuzzleHttp\ClientInterface;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
+class MailchimpSegmentUpdateDbSegmentIdsCommand extends AbstractMailchimpReferentTagSegmentCommand
 {
     protected static $defaultName = 'mailchimp:segment:update-db-segment-ids';
 
-    private $referentTagRepository;
     private $committeeRepository;
     private $citizenProjectRepository;
-    private $client;
-    private $entityManager;
-    private $mailchimpListId;
-    /** @var SymfonyStyle */
-    private $io;
 
     public function __construct(
-        ReferentTagRepository $referentTagRepository,
-        CommitteeRepository $committeeRepository,
-        CitizenProjectRepository $citizenProjectRepository,
         ClientInterface $mailchimpClient,
-        ObjectManager $entityManager,
-        string $mailchimpListId
+        string $mailchimpMainListId,
+        string $mailchimpElectedRepresentativeListId,
+        CommitteeRepository $committeeRepository,
+        CitizenProjectRepository $citizenProjectRepository
     ) {
-        $this->referentTagRepository = $referentTagRepository;
+        parent::__construct($mailchimpClient, $mailchimpMainListId, $mailchimpElectedRepresentativeListId);
+
         $this->committeeRepository = $committeeRepository;
         $this->citizenProjectRepository = $citizenProjectRepository;
-        $this->client = $mailchimpClient;
-        $this->entityManager = $entityManager;
-        $this->mailchimpListId = $mailchimpListId;
-
-        parent::__construct();
     }
 
     protected function configure()
@@ -50,22 +36,21 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         $this->setDescription('Update Referent tags with Mailchimp external ids');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->io = new SymfonyStyle($input, $output);
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $list = $input->getArgument('list');
+
         $this->io->progressStart();
 
         $offset = 0;
         $limit = 1000;
 
-        while ($tags = $this->getTags($offset, $limit)) {
-            $this->updateReferentTags($tags);
-            $this->updateCommittees($tags);
-            $this->updateCitizenProjects($tags);
+        while ($tags = $this->getSegments($list, $offset, $limit)) {
+            $this->updateReferentTags($tags, $list);
+            if (self::LIST_MAIN === $list) {
+                $this->updateCommittees($tags);
+                $this->updateCitizenProjects($tags);
+            }
 
             $offset += $limit;
         }
@@ -73,7 +58,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         $this->io->progressFinish();
     }
 
-    private function updateReferentTags(array $segments): void
+    private function updateReferentTags(array $segments, string $list): void
     {
         $iterator = $this->referentTagRepository->createQueryBuilder('tag')
             ->where('tag.externalId IS NULL')
@@ -82,11 +67,23 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         ;
 
         foreach ($iterator as $refTag) {
+            /** @var ReferentTag $refTag */
             $refTag = current($refTag);
 
             foreach ($segments as $tag) {
                 if ($tag['name'] === $refTag->getCode()) {
-                    $refTag->setExternalId($tag['id']);
+                    switch ($list) {
+                        case self::LIST_MAIN:
+                            $refTag->setExternalId($tag['id']);
+
+                            break;
+                        case self::LIST_ELECTED_REPRESENTATIVE:
+                            $refTag->setExternalElectedRepresentativeListId($tag['id']);
+
+                            break;
+                        default:
+                            break;
+                    }
                     $this->io->progressAdvance();
                     break;
                 }
@@ -151,24 +148,5 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 
         $this->entityManager->flush();
         $this->entityManager->clear();
-    }
-
-    private function getTags(int $offset, int $limit): array
-    {
-        $params = [
-            'query' => [
-                'offset' => $offset,
-                'count' => $limit,
-                'fields' => 'segments.id,segments.name',
-            ],
-        ];
-
-        $response = $this->client->request('GET', sprintf('/3.0/lists/%s/segments', $this->mailchimpListId), $params);
-
-        if (200 !== $response->getStatusCode()) {
-            return [];
-        }
-
-        return json_decode((string) $response->getBody(), true)['segments'];
     }
 }

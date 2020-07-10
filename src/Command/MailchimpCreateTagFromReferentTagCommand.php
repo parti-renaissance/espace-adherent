@@ -3,53 +3,28 @@
 namespace App\Command;
 
 use App\Entity\ReferentTag;
-use App\Repository\ReferentTagRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-class MailchimpCreateTagFromReferentTagCommand extends Command
+class MailchimpCreateTagFromReferentTagCommand extends AbstractMailchimpReferentTagSegmentCommand
 {
     protected static $defaultName = 'mailchimp:sync:referent-tag';
 
-    private $referentTagRepository;
-    private $client;
-    private $entityManager;
-    private $mailchimpListId;
-    /** @var SymfonyStyle */
-    private $io;
-
-    public function __construct(
-        ReferentTagRepository $referentTagRepository,
-        ClientInterface $mailchimpClient,
-        ObjectManager $entityManager,
-        string $mailchimpListId
-    ) {
-        $this->referentTagRepository = $referentTagRepository;
-        $this->client = $mailchimpClient;
-        $this->entityManager = $entityManager;
-        $this->mailchimpListId = $mailchimpListId;
-
-        parent::__construct();
-    }
-
     protected function configure()
     {
-        $this->setDescription('Sync Referent tag with Mailchimp (create Mailchimp tag)');
-    }
+        parent::configure();
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->io = new SymfonyStyle($input, $output);
+        $this
+            ->setDescription('Sync Referent tag with Mailchimp (create Mailchimp tag)')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $url = sprintf('/3.0/lists/%s/segments', $this->mailchimpListId);
+        $list = $input->getArgument('list');
+
+        $url = sprintf('/3.0/lists/%s/segments', $this->getListId($list));
 
         $referentTags = $this->referentTagRepository->findBy(['externalId' => null]);
         $this->io->progressStart($countAllTags = \count($referentTags));
@@ -73,7 +48,18 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
                 $data = json_decode((string) $response->getBody(), true);
 
                 if (isset($data['id'])) {
-                    $tag->setExternalId($data['id']);
+                    switch ($list) {
+                        case self::LIST_MAIN:
+                            $tag->setExternalId($data['id']);
+
+                            break;
+                        case self::LIST_ELECTED_REPRESENTATIVE:
+                            $tag->setExternalElectedRepresentativeListId($data['id']);
+
+                            break;
+                        default:
+                            break;
+                    }
                     $this->entityManager->flush();
                     ++$countSyncTags;
                 }
