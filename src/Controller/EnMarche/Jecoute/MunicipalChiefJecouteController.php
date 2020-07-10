@@ -2,11 +2,11 @@
 
 namespace App\Controller\EnMarche\Jecoute;
 
-use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Jecoute\JecouteSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -21,9 +21,9 @@ class MunicipalChiefJecouteController extends AbstractJecouteController
         return JecouteSpaceEnum::MUNICIPAL_CHIEF_SPACE;
     }
 
-    protected function getLocalSurveys(Adherent $adherent): array
+    protected function getLocalSurveys(Request $request): array
     {
-        return $this->localSurveyRepository->findAllByAuthor($adherent);
+        return $this->localSurveyRepository->findAllByAuthor($this->getUser());
     }
 
     protected function createSurveyForm(LocalSurvey $localSurvey): FormInterface
@@ -38,8 +38,8 @@ class MunicipalChiefJecouteController extends AbstractJecouteController
         ;
     }
 
-    protected function getSurveyTags(Adherent $adherent): array
+    protected function getSurveyTags(Request $request): array
     {
-        return (array) $adherent->getMunicipalChiefManagedArea()->getDepartmentalCode();
+        return (array) $this->getUser()->getMunicipalChiefManagedArea()->getDepartmentalCode();
     }
 }

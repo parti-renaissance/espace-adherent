@@ -2,7 +2,6 @@
 
 namespace App\Controller\EnMarche\ManagedUsers;
 
-use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Exporter\ManagedUsersExporter;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\Projection\ManagedUserRepository;
@@ -14,8 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractManagedUsersController extends Controller
 {
-    use AccessDelegatorTrait;
-
     private $managedUsersRepository;
 
     public function __construct(ManagedUserRepository $managedUsersRepository)

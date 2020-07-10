@@ -8,7 +8,6 @@ use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\Filter\FilterFactory;
 use App\AdherentMessage\Filter\FilterFormFactory;
-use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Form\AdherentMessage\AdherentMessageType;
 use App\Mailchimp\Manager;
@@ -20,11 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractMessageController extends Controller
 {
-    use AccessDelegatorTrait;
-
     /**
      * @Route(name="list", methods={"GET"})
      */
@@ -36,7 +34,7 @@ abstract class AbstractMessageController extends Controller
             throw new BadRequestHttpException('Invalid status');
         }
 
-        $adherent = $this->getMainUser($request->getSession());
+        $adherent = $this->getMainUser($request);
 
         return $this->renderTemplate('message/list.html.twig', [
             'messages' => $paginator = $repository->findAllByAuthor(
@@ -69,17 +67,17 @@ abstract class AbstractMessageController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message = AdherentMessageFactory::create($this->getMainUser($request->getSession()), $form->getData(), $this->getMessageType());
+            $message = AdherentMessageFactory::create($this->getMainUser($request), $form->getData(), $this->getMessageType());
 
             $messageManager->saveMessage($message);
 
             $this->addFlash('info', 'adherent_message.created_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
+                return $this->redirectToMessageRoute($request, 'filter', ['uuid' => $message->getUuid()->toString()]);
             }
 
-            return $this->redirectToMessageRoute('update', ['uuid' => $message->getUuid()]);
+            return $this->redirectToMessageRoute($request, 'update', ['uuid' => $message->getUuid()]);
         }
 
         return $this->renderTemplate('message/create.html.twig', ['form' => $form->createView()]);
@@ -110,10 +108,10 @@ abstract class AbstractMessageController extends Controller
             $this->addFlash('info', 'adherent_message.updated_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
+                return $this->redirectToMessageRoute($request, 'filter', ['uuid' => $message->getUuid()->toString()]);
             }
 
-            return $this->redirectToMessageRoute('update', ['uuid' => $message->getUuid()]);
+            return $this->redirectToMessageRoute($request, 'update', ['uuid' => $message->getUuid()]);
         }
 
         return $this->renderTemplate('message/update.html.twig', ['form' => $form->createView()]);
@@ -138,14 +136,17 @@ abstract class AbstractMessageController extends Controller
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
-    public function deleteMessageAction(AbstractAdherentMessage $message, ObjectManager $manager): Response
-    {
+    public function deleteMessageAction(
+        Request $request,
+        AbstractAdherentMessage $message,
+        ObjectManager $manager
+    ): Response {
         $manager->remove($message);
         $manager->flush();
 
         $this->addFlash('info', 'adherent_message.deleted_successfully');
 
-        return $this->redirectToMessageRoute('list');
+        return $this->redirectToMessageRoute($request, 'list');
     }
 
     /**
@@ -167,13 +168,13 @@ abstract class AbstractMessageController extends Controller
             return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", ['message' => $message]);
         }
 
-        $adherent = $this->getMainUser($request->getSession());
+        $adherent = $this->getMainUser($request);
 
         // Reset Filter object
         if ($request->query->has('reset') && $message->getFilter()) {
             $manager->updateFilter($message, FilterFactory::create($adherent, $message->getType()));
 
-            return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
+            return $this->redirectToMessageRoute($request, 'filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
         $data = $message->getFilter() ?? FilterFactory::create($adherent, $message->getType());
@@ -188,7 +189,7 @@ abstract class AbstractMessageController extends Controller
 
             $this->addFlash('info', 'adherent_message.filter_updated');
 
-            return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
+            return $this->redirectToMessageRoute($request, 'filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
         return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", [
@@ -229,7 +230,7 @@ abstract class AbstractMessageController extends Controller
             $this->addFlash('info', 'adherent_message.campaign_sent_failure');
         }
 
-        return $this->redirectToMessageRoute('list');
+        return $this->redirectToMessageRoute($request, 'list');
     }
 
     /**
@@ -237,23 +238,30 @@ abstract class AbstractMessageController extends Controller
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
-    public function sendTestMessageAction(AbstractAdherentMessage $message, Manager $manager): Response
-    {
+    public function sendTestMessageAction(
+        Request $request,
+        AbstractAdherentMessage $message,
+        Manager $manager
+    ): Response {
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to test sending.');
         }
 
-        // we send test message to the current user, not the delegator if present
-        if ($manager->sendTestCampaign($message, [$this->getUser()->getEmailAddress()])) {
+        if ($manager->sendTestCampaign($message, [$this->getMainUser($request)->getEmailAddress()])) {
             $this->addFlash('info', 'adherent_message.test_campaign_sent_successfully');
         } else {
             $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
         }
 
-        return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
+        return $this->redirectToMessageRoute($request, 'filter', ['uuid' => $message->getUuid()->toString()]);
     }
 
     abstract protected function getMessageType(): string;
+
+    protected function getMainUser(Request $request): ?UserInterface
+    {
+        return $this->getUser();
+    }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
@@ -266,7 +274,7 @@ abstract class AbstractMessageController extends Controller
         ));
     }
 
-    protected function redirectToMessageRoute(string $subName, array $parameters = []): Response
+    protected function redirectToMessageRoute(Request $request, string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_message_{$this->getMessageType()}_${subName}", $parameters);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
+use App\Controller\CanaryControllerTrait;
 use App\Deputy\DeputyMessage;
 use App\Deputy\DeputyMessageNotifier;
 use App\Form\DeputyMessageType;
@@ -16,11 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-depute", name="app_deputy_")
- * @Security("is_granted('ROLE_DEPUTY') or (is_granted('ROLE_DELEGATED_DEPUTY') and is_granted('HAS_DELEGATED_ACCESS_COMMITTEE'))")
+ * @Security("is_granted('ROLE_DEPUTY')")
  */
 class DeputyController extends Controller
 {
-    use AccessDelegatorTrait;
+    use CanaryControllerTrait;
 
     public function getSpaceType(): string
     {
@@ -32,7 +33,9 @@ class DeputyController extends Controller
      */
     public function usersSendMessageAction(Request $request, AdherentRepository $adherentRepository): Response
     {
-        $currentUser = $this->getMainUser($request->getSession());
+        $this->disableInProduction();
+
+        $currentUser = $this->getMainUser($request);
 
         $message = DeputyMessage::create($currentUser);
 
@@ -64,8 +67,13 @@ class DeputyController extends Controller
     ): Response {
         return $this->render('deputy/committees_list.html.twig', [
             'managedCommitteesJson' => $committeesExporter->exportAsJson(
-                $committeeRepository->findAllInDistrict($this->getMainUser($request->getSession())->getManagedDistrict())
+                $committeeRepository->findAllInDistrict($this->getMainUser($request)->getManagedDistrict())
             ),
         ]);
+    }
+
+    protected function getMainUser(Request $request)
+    {
+        return $this->getUser();
     }
 }

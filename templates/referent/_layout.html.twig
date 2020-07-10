@@ -4,8 +4,8 @@
 
 {% block banner '' %}
 
-{% set currentUserOrDelegator = current_user() %}
-{% set delegated_access = get_delegated_access() %}
+{% set currentUserOrDelegator = current_user(app.request) %}
+{% set delegated_access = get_delegated_access(app.request) %}
 
 {% block page_title %}
     {% if app.user is same as(currentUserOrDelegator) %}
@@ -41,11 +41,9 @@
                                 </p>
                             {% endif %}
                         </div>
-                        {% if isReferent %}
                         <p class="report">🐛 Bug ? Nouveau besoin ?
                             <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
                         </p>
-                        {% endif %}
                     </div>
                     <div class="second-section">
                         <div>
@@ -58,56 +56,89 @@
                         </div>
                         {% if isReferent or is_granted('ROLE_DELEGATED_REFERENT')  %}
                             <div class="direct-actions">
-                                {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
-                                <a href="{{ path("app_message_referent_create") }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                                {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
+                                <a href="{{ get_path('referent', 'message', 'create', app.request) }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
                                 {% endif %}
-                                {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
-                                <a href="{{ path("app_referent_event_manager_events_create") }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                                {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
+                                <a href="{{ get_path('referent', 'event_manager', 'events_create', app.request) }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
                                 {% endif %}
                             </div>
                         {% endif %}
                     </div>
 
-                    {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ANY') %}
+                    {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ANY', app.request) %}
                     {% set delegated_access_uuid = app.request.attributes.get('delegated_access_uuid') %}
                     <nav class="manager-header__menu">
                         <ul>
                             {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_event_manager_event*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_managed_users_list', 'app_jecoute_referent_*']) %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
+                            {% if isReferent %}
                                 <li class="{{ is_active_route(app.request, 'app_referent_event_manager_event*') ? 'active' }}">
                                     <a href="{{ path('app_referent_event_manager_events') }}">Événements</a>
                                 </li>
                             {% endif %}
-
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
-                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'active' }}">
-                                    <a href="{{ path('app_message_referent_list', route_params|default({})) }}">Mes messages</a>
+                            {% if is_granted('HAS_DELEGATED_ACCESS_EVENTS', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_event_manager_delegated_event*') ? 'active' }}">
+                                    <a href="{{ path('app_referent_event_manager_delegated_events', {delegated_access_uuid: delegated_access_uuid}) }}">Événements</a>
                                 </li>
                             {% endif %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_COMMITTEE') %}
+                            {% if isReferent %}
+                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') }}">
+                                    <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_MESSAGES', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_message_referent_delegated_*') ? 'active' }}">
+                                    <a href="{{ path('app_message_referent_delegated_list', route_params|default({})|merge({delegated_access_uuid: delegated_access_uuid})) }}">Mes messages</a>
+                                </li>
+                            {% endif %}
+
+                            {% if isReferent %}
                                 <li class="{{ is_active_route(app.request, ['app_referent_committees', 'app_referent_designations_*']) ? 'active' }}">
                                     <a href="{{ path('app_referent_committees') }}">Comités</a>
                                 </li>
                             {% endif %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS') %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_COMMITTEE', app.request) %}
+                                <li class="{{ is_active_route(app.request, ['app_referent_delegated_committees', 'app_referent_designations_delegated_*']) ? 'active' }}">
+                                    <a href="{{ path('app_referent_delegated_committees', {delegated_access_uuid: delegated_access_uuid}) }}">Comités</a>
+                                </li>
+                            {% endif %}
+
+                            {% if isReferent %}
                                 <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects_list') ? 'active' }}">
                                     <a href="{{ path('app_referent_citizen_projects_list') }}">Projets citoyens</a>
                                 </li>
                             {% endif %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects_delegated_list') ? 'active' }}">
+                                    <a href="{{ path('app_referent_citizen_projects_delegated_list', {delegated_access_uuid: delegated_access_uuid}) }}">Projets citoyens</a>
+                                </li>
+                            {% endif %}
+
+                            {% if isReferent %}
                             <li class="{{ is_active_route(app.request, ['app_referent_managed_users_list', 'app_referent_adherent_invitation']) ? 'active' }}">
                                 <a href="{{ path('app_referent_managed_users_list') }}">Adhérents</a>
                             </li>
                             {% endif %}
+                            {% if is_granted('HAS_DELEGATED_ACCESS_ADHERENTS', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_managed_users_delegated_*') ? 'active' }}">
+                                    <a href="{{ path("app_referent_managed_users_delegated_list", route_params|default({})|merge({delegated_access_uuid: delegated_access_uuid})) }}">Adhérents</a>
+                                </li>
+                            {% endif %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_JECOUTE') %}
+                            {% if isReferent %}
                             <li class="{{ is_active_route(app.request, 'app_jecoute_referent_*') ? 'active' }}">
                                 <a href="{{ path('app_jecoute_referent_local_surveys_list') }}">J'écoute</a>
                             </li>
+                            {% endif %}
+
+                            {% if is_granted('HAS_DELEGATED_ACCESS_JECOUTE', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_jecoute_referent_delegated_*') ? 'active' }}">
+                                    <a href="{{ path('app_jecoute_referent_delegated_local_surveys_list', {delegated_access_uuid: delegated_access_uuid}) }}">J'écoute</a>
+                                </li>
                             {% endif %}
 
                             {% if isReferent %}
@@ -124,11 +155,15 @@
                                 <li class="{{ is_active_route(app.request, ['app_assessors_referent_*', 'app_vote_results_referent_index', 'app_referent_vote_result_list_edit', 'app_municipal_manager_referent_attribution_form', 'app_referent_city_vote_results_edit']) ? 'active' }}">
                                     <a href="{{ path('app_assessors_referent_attribution_form') }}">Assesseurs</a>
                                 </li>
-                            {% endif %}
 
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES') %}
                                 <li class="{{ is_active_route(app.request, 'app_referent_elected_representatives_*') ? 'active' }}">
                                     <a href="{{ path('app_referent_elected_representatives_list') }}">Élus</a>
+                                </li>
+                            {% endif %}
+
+                            {% if is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES', app.request) %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_elected_representatives_*') ? 'active' }}">
+                                    <a href="{{ path('app_referent_elected_representatives_delegated_list', {delegated_access_uuid: delegated_access_uuid}) }}">Élus</a>
                                 </li>
                             {% endif %}
 

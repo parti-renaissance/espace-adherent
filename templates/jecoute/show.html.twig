@@ -24,7 +24,7 @@
 
     {% form_theme form with ['jecoute/_form_theme.html.twig'] %}
 
-    <a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+    <a href="{{ get_path(space_name, 'jecoute', 'national_surveys_list', app.request) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour
     </a>
 

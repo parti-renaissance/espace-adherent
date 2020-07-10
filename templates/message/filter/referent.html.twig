@@ -46,7 +46,7 @@
 
                         <div class="filter__row" id="candidate-checkboxes-container">
                             <label class="filter__label">CANDIDATS</label>
-                            {% if 0 == current_user().managedAreaTagCodes|filter(code => code starts with '75')|length %}
+                            {% if 0 == current_user(app.request).managedAreaTagCodes|filter(code => code starts with '75')|length %}
                                 {{ form_row(form.contactOnlyRunningMates, {label: 'Colistiers'}) }}
                             {% endif %}
                             {{ form_row(form.contactOnlyVolunteers, {label: 'Bénévoles'}) }}

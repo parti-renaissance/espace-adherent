@@ -293,11 +293,11 @@
         app.user.isMunicipalManager +
         app.user.isElectionResultsReporter +
         app.user.isSenatorialCandidate +
+        app.user.isLre +
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
-        app.user.isDelegatedReferent +
-        app.user.isDelegatedDeputy +
-        app.user.isDelegatedSenator +
-        app.user.isLre
+        is_granted('ROLE_DELEGATED_REFERENT') +
+        is_granted('ROLE_DELEGATED_DEPUTY') +
+        is_granted('ROLE_DELEGATED_SENATOR')
     %}
 
     <div class="background--darker l__hide--on-tablet">

@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-depute", name="app_deputy_managed_users_", methods={"GET"})
  *
- * @Security("is_granted('ROLE_DEPUTY') or (is_granted('ROLE_DELEGATED_DEPUTY') and is_granted('HAS_DELEGATED_ACCESS_ADHERENTS'))")
+ * @Security("is_granted('ROLE_DEPUTY')")
  */
 class DeputyManagedUsersController extends AbstractManagedUsersController
 {
@@ -37,7 +37,7 @@ class DeputyManagedUsersController extends AbstractManagedUsersController
     protected function createFilterModel(Request $request): ManagedUsersFilter
     {
         /** @var Adherent $adherent */
-        $adherent = $this->getMainUser($request->getSession());
+        $adherent = $this->getUser();
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::DEPUTY_EMAIL,

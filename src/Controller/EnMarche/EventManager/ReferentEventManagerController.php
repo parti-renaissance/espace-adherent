@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-referent", name="app_referent_event_manager_")
  *
- * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))")
+ * @Security("is_granted('ROLE_REFERENT')")
  */
 class ReferentEventManagerController extends AbstractEventManagerController
 {

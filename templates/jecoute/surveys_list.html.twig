@@ -73,15 +73,15 @@
                                 menu: [
                                     {
                                         label: 'Éditer',
-                                        url: path("app_jecoute_#{space_name}_local_survey_edit", {uuid: survey.uuid})
+                                        url: get_path(space_name, 'jecoute', 'local_survey_edit', app.request, {uuid: survey.uuid})
                                     },
                                     {
                                         label: 'Dupliquer',
-                                        url: path("app_jecoute_#{space_name}_local_survey_duplicate", {uuid: survey.uuid})
+                                        url: get_path(space_name, 'jecoute', 'local_survey_duplicate', app.request, {uuid: survey.uuid})
                                     },
                                     {
                                         label: 'Statistiques',
-                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
+                                        url: get_path(space_name, 'jecoute', 'survey_stats', app.request, {uuid: survey.uuid})
                                     },
                                 ]
                             }) %}
@@ -90,11 +90,11 @@
                                 menu: [
                                     {
                                         label: 'Voir',
-                                        url: path("app_jecoute_#{space_name}_national_survey_show", {uuid: survey.uuid})
+                                        url: get_path(space_name, 'jecoute', 'national_survey_show', app.request, {uuid: survey.uuid})
                                     },
                                     {
                                         label: 'Statistiques',
-                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
+                                        url: get_path(space_name, 'jecoute', 'survey_stats', app.request, {uuid: survey.uuid})
                                     },
                                 ]
                             }) %}
@@ -120,15 +120,15 @@
             {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                 <h3>Questionnaires locaux</h3>
                 <span class="separator"></span>
-                <h3><a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}">Questionnaires nationaux</a></h3>
+                <h3><a href="{{ get_path(space_name, 'jecoute', 'national_surveys_list', app.request) }}">Questionnaires nationaux</a></h3>
             {% else %}
-                <h3><a href="{{ path("app_jecoute_#{space_name}_local_surveys_list") }}">Questionnaires locaux</a></h3>
+                <h3><a href="{{ get_path(space_name, 'jecoute', 'local_surveys_list', app.request) }}">Questionnaires locaux</a></h3>
                 <span class="separator"></span>
                 <h3>Questionnaires nationaux</h3>
             {% endif %}
         </div>
 
-        <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-secondary btn-secondary--blue">
+        <a href="{{ get_path(space_name, 'jecoute', 'local_survey_create', app.request) }}" class="btn-secondary btn-secondary--blue">
             + Créer un questionnaire local
         </a>
     </div>

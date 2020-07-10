@@ -118,7 +118,7 @@
                 <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
                 {% if message.filter %}
                     <a
-                        href="{{ path("app_message_#{message_type}_filter", {uuid: message.uuid, reset: true}) }}"
+                        href="{{ get_path(message_type, 'message', 'filter', app.request, {uuid: message.uuid, reset: true}) }}"
                         class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset"
                     >Réinitialiser le filtre</a>
                 {% endif %}

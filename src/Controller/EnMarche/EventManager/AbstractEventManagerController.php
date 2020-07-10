@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche\EventManager;
 
 use App\Address\GeoCoder;
-use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Event;
 use App\Event\EventCommand;
@@ -18,8 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractEventManagerController extends Controller
 {
-    use AccessDelegatorTrait;
-
     public const EVENTS_TYPE_ALL = 'all';
     public const EVENTS_TYPE_MINE = 'mine';
 
@@ -41,7 +38,7 @@ abstract class AbstractEventManagerController extends Controller
     public function eventsAction(Request $request, string $type): Response
     {
         return $this->renderTemplate('event_manager/events_list.html.twig', [
-            'events' => $this->getEvents($this->getMainUser($request->getSession()), $type),
+            'events' => $this->getEvents($this->getMainUser($request), $type),
         ]);
     }
 
@@ -55,7 +52,7 @@ abstract class AbstractEventManagerController extends Controller
         EventRegistrationCommandHandler $eventRegistrationCommandHandler
     ): Response {
         /** @var Adherent $user */
-        $user = $this->getMainUser($request->getSession());
+        $user = $this->getMainUser($request);
 
         $command = new EventCommand($user);
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
@@ -84,6 +81,11 @@ abstract class AbstractEventManagerController extends Controller
     abstract protected function getSpaceType(): string;
 
     abstract protected function getEvents(Adherent $adherent, string $type = null): array;
+
+    protected function getMainUser(Request $request)
+    {
+        return $this->getUser();
+    }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {

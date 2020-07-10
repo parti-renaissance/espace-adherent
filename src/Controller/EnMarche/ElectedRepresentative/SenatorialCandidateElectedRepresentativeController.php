@@ -2,13 +2,13 @@
 
 namespace App\Controller\EnMarche\ElectedRepresentative;
 
-use App\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-senatoriales", name="app_senatorial_candidate_elected_representatives_")
- * @Security("is_granted('ROLE_SENATORIAL_CANDIDATE') or (is_granted('ROLE_DELEGATED_SENATORIAL_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES'))")
+ * @Security("is_granted('ROLE_SENATORIAL_CANDIDATE')")
  */
 class SenatorialCandidateElectedRepresentativeController extends AbstractElectedRepresentativeController
 {
@@ -17,8 +17,8 @@ class SenatorialCandidateElectedRepresentativeController extends AbstractElected
         return 'senatorial_candidate';
     }
 
-    protected function getManagedTags(Adherent $adherent): array
+    protected function getManagedTags(Request $request): array
     {
-        return $adherent->getSenatorialCandidateManagedArea()->getDepartmentTags()->toArray();
+        return $this->getUser()->getSenatorialCandidateManagedArea()->getDepartmentTags()->toArray();
     }
 }

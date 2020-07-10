@@ -2,9 +2,9 @@
 
 namespace App\Controller\EnMarche\Jecoute;
 
-use App\Entity\Adherent;
 use App\Jecoute\JecouteSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -19,13 +19,13 @@ class JecouteManagerController extends AbstractJecouteController
         return JecouteSpaceEnum::MANAGER_SPACE;
     }
 
-    protected function getLocalSurveys(Adherent $adherent): array
+    protected function getLocalSurveys(Request $request): array
     {
-        return $this->localSurveyRepository->findAllByTagsWithStats($this->getSurveyTags($adherent));
+        return $this->localSurveyRepository->findAllByTagsWithStats($this->getSurveyTags($request));
     }
 
-    protected function getSurveyTags(Adherent $adherent): array
+    protected function getSurveyTags(Request $request): array
     {
-        return $adherent->getJecouteManagedArea()->getCodes();
+        return $this->getUser()->getJecouteManagedArea()->getCodes();
     }
 }
