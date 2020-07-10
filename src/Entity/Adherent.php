@@ -457,6 +457,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $senatorialCandidateManagedArea;
 
     /**
+     * @var LreArea|null
+     *
+     * @ORM\OneToOne(targetEntity="LreArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $lreArea;
+
+    /**
      * Access to external services regarding printing
      *
      * @var bool
@@ -742,6 +749,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isSenatorialCandidate()) {
             $roles[] = 'ROLE_SENATORIAL_CANDIDATE';
+        }
+
+        if ($this->isLre()) {
+            $roles[] = 'ROLE_LRE';
         }
 
         return array_merge(\array_unique($roles), $this->roles);
@@ -2119,6 +2130,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?SenatorialCandidateManagedArea $senatorialCandidateManagedArea
     ): void {
         $this->senatorialCandidateManagedArea = $senatorialCandidateManagedArea;
+    }
+
+    public function getLreArea(): ?LreArea
+    {
+        return $this->lreArea;
+    }
+
+    public function setLreArea(?LreArea $lreArea): void
+    {
+        $this->lreArea = $lreArea;
+    }
+
+    public function isLre(): bool
+    {
+        return $this->lreArea instanceof LreArea;
     }
 
     public function getAllReferentManagedTagsCodes()

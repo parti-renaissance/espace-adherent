@@ -5,6 +5,7 @@ namespace App\Collection;
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentCharter\DeputyCharter;
+use App\Entity\AdherentCharter\LreCharter;
 use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
@@ -48,6 +49,13 @@ class AdherentCharterCollection extends ArrayCollection
         });
     }
 
+    public function hasLreCharterAccepted(): bool
+    {
+        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
+            return $charter instanceof LreCharter;
+        });
+    }
+
     public function hasCharterAcceptedForType(string $type): bool
     {
         switch ($type) {
@@ -65,6 +73,9 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE:
                 return $this->hasSenatorialCandidateCharterAccepted();
+
+            case AdherentCharterTypeEnum::TYPE_LRE:
+                return $this->hasLreCharterAccepted();
         }
 
         return false;

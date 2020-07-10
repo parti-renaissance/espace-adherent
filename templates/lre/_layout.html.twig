@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'La République Ensemble' %}
+
+{% block banner '' %}
+
+{% set hasCharterAccepted = app.user.charters.hasLreCharterAccepted %}
+
+{% block stylesheets %}
+    {% if not hasCharterAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="manager-space b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="el manager-information">
+                            <p>Vous gérez : <span>{{ app.user.lreArea.referentTag }}</span></p>
+                        </div>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            {{ block('page_title') }}
+                        </h1>
+                    </div>
+                    <nav class="manager-header__menu">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, 'app_lre_elected_representatives_*') ? 'active' }}">
+                                <a href="{{ path('app_lre_elected_representatives_list') }}">Élus</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="l__wrapper text--body">
+                {% block lre_content %}{% endblock %}
+            </div>
+        </section>
+
+        {% if not hasCharterAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'lre.popup.title'|trans,
+                'fileUrl': 'lre.popup.file_url'|trans
+            } %}
+        {% endif %}
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+
+    {% if not hasCharterAccepted %}
+        <script type="text/javascript">
+          Kernel.onLoad(function() {
+              {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_LRE')) }}
+          });
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends base_template %}
 
-{% set arelabelsEditable = 'referent' == space_name %}
+{% set arelabelsEditable = space_name in ['referent', 'lre'] %}
 
 {% block elected_representatives_content %}
     <main>
@@ -250,9 +250,14 @@
             });
 
             {% if arelabelsEditable and elected_representatives.count %}
+                {% set labelType = 'referent' == space_name ?
+                    constant('App\\Entity\\UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE') :
+                    constant('App\\Entity\\UserListDefinitionEnum::TYPE_LRE')
+                %}
+
                 App.runUserListDefinitions(
                     '{{ constant('App\\Controller\\Api\\UserListDefinition\\ElectedRepresentativeUserListDefinitionController::MEMBER_TYPE') }}',
-                    '{{ constant('App\\Entity\\UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE') }}',
+                    '{{ labelType }}',
                     '.user-list-definition-manager-wrapper',
                     'input[name="items[]"]',
                     '#items-check-all',

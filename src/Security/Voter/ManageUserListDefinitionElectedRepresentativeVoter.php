@@ -28,14 +28,21 @@ class ManageUserListDefinitionElectedRepresentativeVoter extends AbstractAdheren
             $adherent = $delegatedAccess->getDelegator();
         }
 
-        if (!$adherent->isReferent()) {
-            return false;
+        if ($adherent->isReferent()) {
+            return $this->electedRepresentativeRepository->isInReferentManagedArea(
+                $subject,
+                $adherent->getManagedArea()->getTags()->toArray()
+            );
         }
 
-        return $this->electedRepresentativeRepository->isInReferentManagedArea(
-            $subject,
-            $adherent->getManagedArea()->getTags()->toArray()
-        );
+        if ($adherent->isLre()) {
+            return $this->electedRepresentativeRepository->isInReferentManagedArea(
+                $subject,
+                [$adherent->getLreArea()->getReferentTag()]
+            );
+        }
+
+        return false;
     }
 
     protected function supports($attribute, $subject)
