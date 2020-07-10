@@ -112,7 +112,7 @@ class VotingPlatformConfigureCommand extends Command
                 );
                 $election->setElectionEntity(new ElectionEntity($committee));
 
-                $this->configureNewElection($election);
+                $this->configureNewElection($election, $designation);
             }
 
             $this->entityManager->clear();
@@ -123,7 +123,7 @@ class VotingPlatformConfigureCommand extends Command
         }
     }
 
-    private function configureNewElection(Election $election): void
+    private function configureNewElection(Election $election, Designation $designation): void
     {
         $electionRound = $election->getCurrentRound();
         $committee = $election->getElectionEntity()->getCommittee();
@@ -180,8 +180,8 @@ class VotingPlatformConfigureCommand extends Command
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
-        $this->notifyVoters($adherents, $election, function (Adherent $adherent, Election $election) use ($committee) {
-            return new CommitteeElectionVoteIsOpenEvent($adherent, $election, $committee);
+        $this->notifyVoters($adherents, $designation, function (Adherent $adherent, Designation $designation) use ($committee) {
+            return new CommitteeElectionVoteIsOpenEvent($adherent, $designation, $committee);
         });
     }
 
@@ -212,10 +212,10 @@ class VotingPlatformConfigureCommand extends Command
         return true;
     }
 
-    private function notifyVoters(array $adherents, Election $election, \Closure $eventFactoryCallback): void
+    private function notifyVoters(array $adherents, Designation $designation, \Closure $eventFactoryCallback): void
     {
         foreach ($adherents as $adherent) {
-            $this->dispatcher->dispatch(Events::VOTE_OPEN, $eventFactoryCallback($adherent, $election));
+            $this->dispatcher->dispatch(Events::VOTE_OPEN, $eventFactoryCallback($adherent, $designation));
         }
     }
 

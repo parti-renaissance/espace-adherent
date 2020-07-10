@@ -39,4 +39,19 @@ class DesignationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @return Designation[]
+     */
+    public function getWithFinishCandidacyPeriod(\DateTime $candidacyStartDate): array
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.candidacyStartDate <= :date')
+            ->andWhere('d.candidacyEndDate < :date')
+            ->andWhere('d.voteStartDate > :date')
+            ->setParameter('date', $candidacyStartDate)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

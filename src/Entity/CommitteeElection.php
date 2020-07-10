@@ -36,6 +36,13 @@ class CommitteeElection
      */
     private $candidacies;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $adherentNotified = false;
+
     public function __construct(Designation $designation = null)
     {
         $this->designation = $designation;
@@ -60,5 +67,10 @@ class CommitteeElection
     public function countCandidacies(): int
     {
         return $this->candidacies->count();
+    }
+
+    public function setAdherentNotified(bool $adherentNotified): void
+    {
+        $this->adherentNotified = $adherentNotified;
     }
 }
