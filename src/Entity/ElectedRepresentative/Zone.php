@@ -17,7 +17,8 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *         @ORM\Index(name="elected_repr_zone_code", columns={"code"}),
  *     },
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="elected_representative_zone_name_category_unique", columns={"name", "category_id"})
+ *         @ORM\UniqueConstraint(name="elected_representative_zone_name_category_unique", columns={"name", "category_id"}),
+ *         @ORM\UniqueConstraint(name="elected_representative_zone_code_category_unique", columns={"code", "category_id"})
  *     })
  */
 class Zone
@@ -75,11 +76,24 @@ class Zone
      */
     private $code;
 
+    /**
+     * @var Collection|Zone[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\ElectedRepresentative\Zone")
+     * @ORM\JoinTable(
+     *     name="elected_representative_zone_parent",
+     *     joinColumns={@ORM\JoinColumn(name="child_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")}
+     * )
+     */
+    private $parents;
+
     public function __construct(ZoneCategory $category = null, string $name = null)
     {
         $this->category = $category;
         $this->name = $name;
         $this->referentTags = new ArrayCollection();
+        $this->parents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,6 +119,24 @@ class Zone
     public function setCategory(ZoneCategory $category): void
     {
         $this->category = $category;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return Collection|Zone[]
+     */
+    public function getParents(): Collection
+    {
+        return $this->parents;
     }
 
     public function __toString(): string
