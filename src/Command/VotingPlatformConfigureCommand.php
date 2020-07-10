@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Adherent;
 use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
@@ -19,12 +20,15 @@ use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Events;
+use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class VotingPlatformConfigureCommand extends Command
 {
@@ -46,6 +50,8 @@ class VotingPlatformConfigureCommand extends Command
     private $committeeMembershipRepository;
     /** @var VoterRepository */
     private $voterRepository;
+    /** @var EventDispatcherInterface */
+    private $dispatcher;
 
     protected function configure()
     {
@@ -162,8 +168,10 @@ class VotingPlatformConfigureCommand extends Command
 
         $list = new VotersList($election);
 
+        $adherents = [];
+
         foreach ($memberships as $membership) {
-            $adherent = $membership->getAdherent();
+            $adherents[] = $adherent = $membership->getAdherent();
 
             $list->addVoter($this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent));
         }
@@ -171,6 +179,10 @@ class VotingPlatformConfigureCommand extends Command
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
         $this->entityManager->flush();
+
+        $this->notifyVoters($adherents, $election, function (Adherent $adherent, Election $election) use ($committee) {
+            return new CommitteeElectionVoteIsOpenEvent($adherent, $election, $committee);
+        });
     }
 
     private function isValidCommitteeElection(CommitteeElection $committeeElection, Designation $designation): bool
@@ -198,6 +210,13 @@ class VotingPlatformConfigureCommand extends Command
         }
 
         return true;
+    }
+
+    private function notifyVoters(array $adherents, Election $election, \Closure $eventFactoryCallback): void
+    {
+        foreach ($adherents as $adherent) {
+            $this->dispatcher->dispatch(Events::VOTE_OPEN, $eventFactoryCallback($adherent, $election));
+        }
     }
 
     /** @required */
@@ -240,5 +259,11 @@ class VotingPlatformConfigureCommand extends Command
     public function setVoterRepository(VoterRepository $voterRepository): void
     {
         $this->voterRepository = $voterRepository;
+    }
+
+    /** @required */
+    public function setDispatcher(EventDispatcherInterface $dispatcher): void
+    {
+        $this->dispatcher = $dispatcher;
     }
 }
