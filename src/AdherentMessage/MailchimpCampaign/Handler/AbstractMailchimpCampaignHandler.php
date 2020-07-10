@@ -43,6 +43,9 @@ abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHand
                     } elseif ('text_merge' === $campaignFilter['type']) {
                         $campaign->setCity($campaignFilter['value']);
                         $campaign->setLabel($campaignFilter['label']);
+                    } elseif ('mailchimp_segment' === $campaignFilter['type']) {
+                        $campaign->setMailchimpSegment($campaignFilter['value']);
+                        $campaign->setLabel($campaignFilter['label']);
                     }
                 }
             } elseif (isset($campaigns[$i])) {

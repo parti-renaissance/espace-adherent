@@ -12,6 +12,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MailchimpSegment
 {
+    public const LIST_MAIN = 'main';
+    public const LIST_ELECTED_REPRESENTATIVE = 'eleted_representative';
+
+    public const LISTS = [
+        self::LIST_MAIN,
+        self::LIST_ELECTED_REPRESENTATIVE,
+    ];
+
     /**
      * @var int
      *
@@ -47,6 +55,11 @@ class MailchimpSegment
         $this->list = $list;
         $this->label = $label;
         $this->externalId = $externalId;
+    }
+
+    public static function createElectedRepresentativeSegment(string $label, string $externalId)
+    {
+        return new self(self::LIST_ELECTED_REPRESENTATIVE, $label, $externalId);
     }
 
     public function getId(): ?int

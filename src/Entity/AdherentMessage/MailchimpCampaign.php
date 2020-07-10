@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
+use App\Entity\MailchimpSegment;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -96,6 +97,14 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
      */
     private $city;
 
+    /**
+     * @var MailchimpSegment|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\MailchimpSegment")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $mailchimpSegment;
+
     public function __construct(AdherentMessageInterface $message)
     {
         $this->message = $message;
@@ -154,6 +163,16 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     public function setLabel(?string $label): void
     {
         $this->label = $label;
+    }
+
+    public function getMailchimpSegment(): ?MailchimpSegment
+    {
+        return $this->mailchimpSegment;
+    }
+
+    public function setMailchimpSegment(?MailchimpSegment $mailchimpSegment): void
+    {
+        $this->mailchimpSegment = $mailchimpSegment;
     }
 
     public function markAsSent(): void

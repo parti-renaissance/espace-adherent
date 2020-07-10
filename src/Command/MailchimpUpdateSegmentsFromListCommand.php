@@ -13,14 +13,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MailchimpUpdateSegmentsFromListCommand extends AbstractMailchimpReferentTagSegmentCommand
 {
-    protected const LIST_MAIN = 'main';
-    protected const LIST_ELECTED_REPRESENTATIVE = 'elected_representative';
-
-    protected const LISTS = [
-        self::LIST_MAIN,
-        self::LIST_ELECTED_REPRESENTATIVE,
-    ];
-
     protected static $defaultName = 'mailchimp:sync:segments';
 
     protected $entityManager;
@@ -51,7 +43,7 @@ class MailchimpUpdateSegmentsFromListCommand extends AbstractMailchimpReferentTa
     protected function configure()
     {
         $this
-            ->addArgument('list', null, InputArgument::REQUIRED, implode('|', self::LISTS))
+            ->addArgument('list', null, InputArgument::REQUIRED, implode('|', MailchimpSegment::LISTS))
             ->setDescription('Sync segments of a given list.')
         ;
     }
@@ -126,18 +118,18 @@ class MailchimpUpdateSegmentsFromListCommand extends AbstractMailchimpReferentTa
             return;
         }
 
-        $this->entityManager->persist(new MailchimpSegment($list, $label, $externalId));
+        $this->entityManager->persist(MailchimpSegment::createElectedRepresentativeSegment($label, $externalId));
     }
 
     private function getListId(string $list): string
     {
         switch ($list) {
-            case self::LIST_MAIN:
+            case MailchimpSegment::LIST_MAIN:
                 return $this->mailchimpMainListId;
-            case self::LIST_ELECTED_REPRESENTATIVE:
+            case MailchimpSegment::LIST_ELECTED_REPRESENTATIVE:
                 return $this->mailchimpElectedRepresentativeListId;
             default:
-                throw new \InvalidArgumentException(sprintf('List "%s"" is invalid. Available lists are: "%s".', $list, implode('", "', self::LISTS)));
+                throw new \InvalidArgumentException(sprintf('List "%s"" is invalid. Available lists are: "%s".', $list, implode('", "', MailchimpSegment::LISTS)));
         }
     }
 }
