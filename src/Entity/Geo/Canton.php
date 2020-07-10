@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Canton
+class Canton implements GeoInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;

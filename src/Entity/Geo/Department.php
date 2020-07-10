@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Department
+class Department implements GeoInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
