@@ -2,17 +2,16 @@
 
 namespace App\UserListDefinition;
 
-use App\ElectedRepresentative\ElectedRepresentativeEvent;
-use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\EntityUserListDefinitionTrait;
 use App\Entity\UserListDefinitionEnum;
 use App\Exception\UserListDefinitionException;
 use App\Exception\UserListDefinitionMemberException;
+use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Repository\UserListDefinitionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserListDefinitionManager
@@ -21,20 +20,20 @@ class UserListDefinitionManager
     private const STATUS_NOT_MEMBER_OF = 'not_member_of';
 
     private $em;
-    private $dispatcher;
+    private $bus;
     private $userListDefinitionRepository;
     private $authorizationChecker;
     private $historyManager;
 
     public function __construct(
         EntityManagerInterface $em,
-        EventDispatcherInterface $dispatcher,
+        MessageBusInterface $bus,
         UserListDefinitionRepository $userListDefinitionRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         UserListDefinitionHistoryManager $historyManager
     ) {
         $this->em = $em;
-        $this->dispatcher = $dispatcher;
+        $this->bus = $bus;
         $this->userListDefinitionRepository = $userListDefinitionRepository;
         $this->authorizationChecker = $authorizationChecker;
         $this->historyManager = $historyManager;
@@ -117,10 +116,7 @@ class UserListDefinitionManager
         $this->em->flush();
 
         foreach ($electedRepresentatives as $electedRepresentative) {
-            $this->dispatcher->dispatch(
-                ElectedRepresentativeEvents::POST_UPDATE,
-                new ElectedRepresentativeEvent($electedRepresentative)
-            );
+            $this->bus->dispatch(new ElectedRepresentativeChangeCommand($electedRepresentative->getUuid()));
         }
     }
 
