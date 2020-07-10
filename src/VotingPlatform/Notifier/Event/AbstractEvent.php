@@ -3,18 +3,18 @@
 namespace App\VotingPlatform\Notifier\Event;
 
 use App\Entity\Adherent;
-use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\Designation\Designation;
 use Symfony\Component\EventDispatcher\Event;
 
 class AbstractEvent extends Event implements ElectionNotifyEventInterface
 {
     private $adherent;
-    private $election;
+    private $designation;
 
-    public function __construct(Adherent $adherent, Election $election)
+    public function __construct(Adherent $adherent, Designation $designation)
     {
         $this->adherent = $adherent;
-        $this->election = $election;
+        $this->designation = $designation;
     }
 
     public function getAdherent(): Adherent
@@ -22,8 +22,8 @@ class AbstractEvent extends Event implements ElectionNotifyEventInterface
         return $this->adherent;
     }
 
-    public function getElection(): Election
+    public function getDesignation(): Designation
     {
-        return $this->election;
+        return $this->designation;
     }
 }

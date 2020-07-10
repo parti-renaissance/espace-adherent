@@ -3,14 +3,22 @@
 namespace App\Command;
 
 use App\Entity\VotingPlatform\CandidateGroup;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
+use App\Repository\CommitteeElectionRepository;
+use App\Repository\CommitteeMembershipRepository;
+use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Events;
+use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use App\VotingPlatform\VoteResult\VoteResultAggregator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class VotingPlatformCloseElectionCommand extends Command
 {
@@ -24,6 +32,14 @@ class VotingPlatformCloseElectionCommand extends Command
     private $resultAggregator;
     /** @var EntityManagerInterface */
     private $entityManager;
+    /** @var DesignationRepository */
+    private $designationRepository;
+    /** @var CommitteeElectionRepository */
+    private $committeeElectionRepository;
+    /** @var CommitteeMembershipRepository */
+    private $committeeMembershipRepository;
+    /** @var EventDispatcherInterface */
+    private $dispatcher;
 
     protected function configure()
     {
@@ -37,13 +53,20 @@ class VotingPlatformCloseElectionCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->closeElections();
+
+        $this->notifyForEndForCandidacy();
+    }
+
+    private function closeElections(): void
+    {
         $date = new \DateTime();
 
         $this->io->progressStart();
 
         while ($elections = $this->electionRepository->getElectionsToClose($date)) {
             foreach ($elections as $election) {
-                $this->closeElection($election);
+                $this->doCloseElection($election);
 
                 $this->io->progressAdvance();
             }
@@ -54,7 +77,7 @@ class VotingPlatformCloseElectionCommand extends Command
         $this->io->progressFinish();
     }
 
-    private function closeElection(Election $election): void
+    private function doCloseElection(Election $election): void
     {
         $candidatesGroupResults = $this->resultAggregator->getResults($election)['aggregated']['candidates'];
         $currentRound = $election->getCurrentRound();
@@ -105,6 +128,48 @@ class VotingPlatformCloseElectionCommand extends Command
         });
     }
 
+    private function notifyForEndForCandidacy(): void
+    {
+        $date = new \DateTime();
+
+        $designations = $this->designationRepository->getWithFinishCandidacyPeriod($date);
+
+        $this->io->progressStart();
+
+        foreach ($designations as $designation) {
+            if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
+                $this->notifyCommitteeElections($designation);
+            }
+        }
+
+        $this->io->progressFinish();
+    }
+
+    public function notifyCommitteeElections(Designation $designation): void
+    {
+        while ($committeeElections = $this->committeeElectionRepository->findAllToNotify($designation)) {
+            foreach ($committeeElections as $committeeElection) {
+                $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee = $committeeElection->getCommittee());
+
+                foreach ($memberships as $membership) {
+                    $this->dispatcher->dispatch(Events::CANDIDACY_PERIOD_CLOSE, new CommitteeElectionCandidacyPeriodIsOverEvent(
+                        $membership->getAdherent(),
+                        $designation,
+                        $committee
+                    ));
+                }
+
+                $committeeElection->setAdherentNotified(true);
+
+                $this->entityManager->flush();
+
+                $this->io->progressAdvance();
+            }
+
+            $this->entityManager->clear();
+        }
+    }
+
     /** @required */
     public function setResultAggregator(VoteResultAggregator $resultAggregator): void
     {
@@ -121,5 +186,29 @@ class VotingPlatformCloseElectionCommand extends Command
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
+    }
+
+    /** @required */
+    public function setDesignationRepository(DesignationRepository $designationRepository): void
+    {
+        $this->designationRepository = $designationRepository;
+    }
+
+    /** @required */
+    public function setCommitteeElectionRepository(CommitteeElectionRepository $committeeElectionRepository): void
+    {
+        $this->committeeElectionRepository = $committeeElectionRepository;
+    }
+
+    /** @required */
+    public function setCommitteeMembershipRepository(CommitteeMembershipRepository $committeeMembershipRepository): void
+    {
+        $this->committeeMembershipRepository = $committeeMembershipRepository;
+    }
+
+    /** @required */
+    public function setDispatcher(EventDispatcherInterface $dispatcher): void
+    {
+        $this->dispatcher = $dispatcher;
     }
 }

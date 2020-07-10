@@ -3,11 +3,11 @@
 namespace App\VotingPlatform\Notifier\Event;
 
 use App\Entity\Adherent;
-use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\Designation\Designation;
 
 interface ElectionNotifyEventInterface
 {
     public function getAdherent(): Adherent;
 
-    public function getElection(): Election;
+    public function getDesignation(): Designation;
 }
