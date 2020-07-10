@@ -1,0 +1,133 @@
+{% extends 'message/filter.html.twig' %}
+
+{% block filter_content %}
+    <div class="form__title b__nudge--bottom-larger">
+        <h3 class="text--medium  text--center">Filtrer mon message</h3>
+        <div class="form__step">
+            <span class="active">2</span>
+            / 2
+        </div>
+    </div>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form) }}
+
+            <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+            {{ form_errors(form) }}
+
+            <div class="manager__filters__row">
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Genre</label>
+                            {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Nom</label>
+                            {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                            {{ form_errors(form.lastName) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Prénom</label>
+                            {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                            {{ form_errors(form.firstName) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Mandats</label>
+                            {{ form_widget(form.mandates, {attr: {class: 'filter__field multi_select2', placeholder: 'Mandats'}}) }}
+                            {{ form_errors(form.mandates) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Fonctions</label>
+                            {{ form_widget(form.politicalFunctions, {attr: {class: 'filter__field multi_select2', placeholder: 'Fonctions politiques'}}) }}
+                            {{ form_errors(form.politicalFunctions) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Labels</label>
+                            {{ form_widget(form.userListDefinitions, {attr: {class: 'filter__field multi_select2', placeholder: 'Labels'}}) }}
+                            {{ form_errors(form.userListDefinitions) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Étiquettes</label>
+                            {{ form_widget(form.labels, {attr: {class: 'filter__field multi_select2', placeholder: 'Étiquettes'}}) }}
+                            {{ form_errors(form.labels) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                {% if message.filter %}
+                    <a
+                        href="{{ path('app_message_referent_filter', {uuid: message.uuid, reset: true}) }}"
+                        class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset"
+                    >Réinitialiser le filtre</a>
+                {% endif %}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.multi_select2').each(function () {
+                $(this).select2({
+                    placeholder: this.dataset.placeholder || '',
+                    theme: 'default em-filters'
+                });
+            });
+
+            var candidateChangeHandler = function () {
+                var disable = !!$('#candidate-checkboxes-container input:checked').length;
+                $('.candidate-incompatible').prop('disabled', disable);
+            };
+
+            candidateChangeHandler();
+
+            $('#candidate-checkboxes-container input').on('change', candidateChangeHandler);
+
+            $('.js-role-select').on('change', function() {
+                var selectedRoles = $(this).val(),
+                    $oppositeOptions = $('#'+$(this).data('opposite')).find('option'),
+                    $oppositeOption
+                ;
+
+                for (var i = 0; i < $oppositeOptions.length; i++) {
+                    $oppositeOption = $($oppositeOptions[i]);
+                    // disable or re-enable options for the opposite select
+                    $oppositeOption.attr('disabled', $.inArray($oppositeOption.val(), selectedRoles) > -1);
+                }
+            });
+
+            $('.js-role-select').trigger('change');
+        });
+    </script>
+{% endblock %}

@@ -29,7 +29,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     AdherentMessageTypeEnum::COMMITTEE: "CommitteeAdherentMessage",
  *     AdherentMessageTypeEnum::CITIZEN_PROJECT: "CitizenProjectAdherentMessage",
  *     AdherentMessageTypeEnum::MUNICIPAL_CHIEF: "MunicipalChiefAdherentMessage",
- *     AdherentMessageTypeEnum::SENATOR: "SenatorAdherentMessage"
+ *     AdherentMessageTypeEnum::SENATOR: "SenatorAdherentMessage",
+ *     AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE: "ReferentElectedRepresentativeMessage",
  * })
  *
  * @ApiResource(
