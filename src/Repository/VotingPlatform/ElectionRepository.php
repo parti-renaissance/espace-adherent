@@ -107,6 +107,29 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return Election[]
+     */
+    public function getElectionsToClose(\DateTime $date, int $limit = 50): array
+    {
+        return $this->createQueryBuilder('election')
+            ->addSelect('designation')
+            ->innerJoin('election.designation', 'designation')
+            ->where((new Orx())->addMultiple([
+                'election.secondRoundEndDate IS NULL AND designation.voteEndDate IS NOT NULL AND designation.voteEndDate < :date',
+                'election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate < :date',
+            ]))
+            ->andWhere('election.status = :open')
+            ->setParameters([
+                'date' => $date,
+                'open' => ElectionStatusEnum::OPEN,
+            ])
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->getResult()
+        ;
+    }
+
     private function getElectionStatsSelectParts(): array
     {
         return [
@@ -123,28 +146,5 @@ class ElectionRepository extends ServiceEntityRepository
                 Vote::class
             ),
         ];
-    }
-
-    /**
-     * @return Election[]
-     */
-    public function getElectionsToClose(\DateTime $date, int $limit = 50): array
-    {
-        return $this->createQueryBuilder('election')
-            ->addSelect('designation')
-            ->innerJoin('election.designation', 'designation')
-            ->where((new Orx())->addMultiple([
-                'election.secondRoundEndDate IS NULL AND designation.voteEndDate < :date',
-                'election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate < :date',
-            ]))
-            ->andWhere('election.status = :open')
-            ->setParameters([
-                'date' => $date,
-                'open' => ElectionStatusEnum::OPEN,
-            ])
-            ->getQuery()
-            ->setMaxResults($limit)
-            ->getResult()
-        ;
     }
 }

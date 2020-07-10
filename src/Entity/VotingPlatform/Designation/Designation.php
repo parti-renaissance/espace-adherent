@@ -24,6 +24,13 @@ class Designation
     /**
      * @var string|null
      *
+     * @ORM\Column(nullable=true)
+     */
+    private $label;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column
      *
      * @Assert\NotBlank
@@ -108,9 +115,20 @@ class Designation
      */
     private $lockPeriodThreshold = 3;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(string $label = null, UuidInterface $uuid = null)
     {
+        $this->label = $label;
         $this->uuid = $uuid ?? Uuid::uuid4();
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): void
+    {
+        $this->label = $label;
     }
 
     public function getType(): ?string

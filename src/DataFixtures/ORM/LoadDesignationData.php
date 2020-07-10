@@ -12,8 +12,8 @@ class LoadDesignationData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // Committee designation with started CANDIDATURE period
-        $designation = new Designation();
+        // Committee designation with started CANDIDATURE period in France
+        $designation = new Designation('Désignation avec les candidatures ouvertes');
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
@@ -25,7 +25,7 @@ class LoadDesignationData extends Fixture
         $manager->persist($designation);
 
         // Committee designation with started VOTE period
-        $designation = new Designation();
+        $designation = new Designation('Désignation avec les votes ouverts');
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
@@ -37,7 +37,7 @@ class LoadDesignationData extends Fixture
         $manager->persist($designation);
 
         // Committee designation with started RESULT period
-        $designation = new Designation();
+        $designation = new Designation('Désignation avec les résultats disponibles');
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
@@ -49,7 +49,7 @@ class LoadDesignationData extends Fixture
         $manager->persist($designation);
 
         // Archived Committee designation
-        $designation = new Designation();
+        $designation = new Designation('Désignation archivée');
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-6 months'));
@@ -58,6 +58,15 @@ class LoadDesignationData extends Fixture
         $designation->setVoteEndDate(new \DateTime('-4 months'));
 
         $this->setReference('designation-4', $designation);
+        $manager->persist($designation);
+
+        // Committee designation with started CANDIDATURE period in FDE
+        $designation = new Designation('Désignation en cours à l\'étranger');
+        $designation->setZones([DesignationZoneEnum::FDE]);
+        $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
+        $designation->setCandidacyStartDate(new \DateTime('-1 day'));
+
+        $this->setReference('designation-5', $designation);
         $manager->persist($designation);
 
         $manager->flush();
