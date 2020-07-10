@@ -15,6 +15,7 @@ use App\Entity\SubscriptionType;
 use App\Form\ActivityPositionType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
 use App\Form\Admin\CoordinatorManagedAreaType;
+use App\Form\Admin\LreAreaType;
 use App\Form\Admin\MunicipalChiefManagedAreaType;
 use App\Form\Admin\ReferentManagedAreaType;
 use App\Form\Admin\SenatorAreaType;
@@ -381,6 +382,10 @@ HELP
                 ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
                     'label' => 'Candidat Sénatoriales 2020',
                 ])
+                ->add('lreArea', LreAreaType::class, [
+                    'label' => 'La république ensemble',
+                    'required' => false,
+                ])
                 ->add('jecouteManagedAreaCodesAsString', TextType::class, [
                     'label' => 'jecoute_manager',
                     'required' => false,
@@ -740,6 +745,12 @@ HELP
                         $qb->setParameter('delegated_types', \array_map(static function ($type) {
                             return \substr($type, 10); // remove "delegated_" prefix
                         }, $delegatedTypes));
+                    }
+
+                    // LRE
+                    if (\in_array(AdherentRoleEnum::LRE, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.lreArea', $alias), 'lre');
+                        $where->add('lre IS NOT NULL');
                     }
 
                     if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value['value'], true)) {

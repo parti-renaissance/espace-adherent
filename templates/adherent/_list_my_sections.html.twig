@@ -102,3 +102,10 @@
         </a>
     </li>
 {% endif %}
+{% if app.user.isLre %}
+    <li>
+        <a href="{{ path('app_lre_elected_representatives_list') }}">
+            Espace La République Ensemble
+        </a>
+    </li>
+{% endif %}

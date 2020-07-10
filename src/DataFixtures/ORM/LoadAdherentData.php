@@ -14,6 +14,7 @@ use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\CommitteeElection;
 use App\Entity\CoordinatorManagedArea;
+use App\Entity\LreArea;
 use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\MunicipalManagerRoleAssociation;
 use App\Entity\MunicipalManagerSupervisorRole;
@@ -476,6 +477,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent->addReferentTag($this->getReference('referent_tag_77'));
         $referent->addCharter(new ReferentCharter());
+        $referent->setLreArea(new LreArea($this->getReference('referent_tag_76')));
         $this->addReference('adherent-8', $referent);
 
         $referent75and77 = $adherentFactory->createFromArray([

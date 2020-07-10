@@ -274,7 +274,8 @@
     is_granted('ROLE_SENATORIAL_CANDIDATE') or
     is_granted('ROLE_DELEGATED_REFERENT') or
     is_granted('ROLE_DELEGATED_DEPUTY') or
-    is_granted('ROLE_DELEGATED_SENATOR')
+    is_granted('ROLE_DELEGATED_SENATOR') or
+    is_granted('ROLE_LRE')
 %}
     {% set totalSections =
         (app.user.isSupervisor or app.user.isHost) +
@@ -295,7 +296,8 @@
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
         app.user.isDelegatedReferent +
         app.user.isDelegatedDeputy +
-        app.user.isDelegatedSenator
+        app.user.isDelegatedSenator +
+        app.user.isLre
     %}
 
     <div class="background--darker l__hide--on-tablet">

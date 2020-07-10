@@ -4,6 +4,7 @@ namespace App\AdherentCharter;
 
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentCharter\DeputyCharter;
+use App\Entity\AdherentCharter\LreCharter;
 use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
@@ -24,6 +25,8 @@ abstract class AdherentCharterFactory
                 return new SenatorCharter();
             case AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE:
                 return new SenatorialCandidateCharter();
+            case AdherentCharterTypeEnum::TYPE_LRE:
+                return new LreCharter();
         }
 
         return null;
