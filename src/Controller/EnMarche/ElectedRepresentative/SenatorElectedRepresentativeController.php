@@ -2,8 +2,8 @@
 
 namespace App\Controller\EnMarche\ElectedRepresentative;
 
-use App\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -17,8 +17,8 @@ class SenatorElectedRepresentativeController extends AbstractElectedRepresentati
         return 'senator';
     }
 
-    protected function getManagedTags(Adherent $adherent): array
+    protected function getManagedTags(Request $request): array
     {
-        return [$adherent->getSenatorArea()->getDepartmentTag()];
+        return [$this->getUser()->getSenatorArea()->getDepartmentTag()];
     }
 }

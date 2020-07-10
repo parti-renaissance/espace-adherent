@@ -6,9 +6,9 @@
 
 {% block message_content %}
     {% if app.request.query.has('f') %}
-        {% set back_url = path("app_message_#{message_type}_filter", message_route_params) %}
+        {% set back_url = get_path(message_type, 'message', 'filter', app.request, message_route_params) %}
     {% else %}
-        {% set back_url = path("app_message_#{message_type}_list", route_params|default({})) %}
+        {% set back_url = get_path(message_type, 'message', 'list', app.request, route_params|default({})) %}
     {% endif %}
     <a href="{{ back_url }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour
@@ -24,7 +24,11 @@
 
     {% set delegated_access = get_delegated_access(app.request) %}
     <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;"
-            src="{{ path("app_message_common_content", {uuid: message.uuid}) }}"
+            src="{{
+                delegated_access ?
+                path('app_message_common_delegated_content', {delegated_access_uuid: delegated_access.uuid, uuid: message.uuid}) :
+                path("app_message_common_content", {uuid: message.uuid})
+            }}"
     ></iframe>
     <div class="l__wrapper--slim b__nudge--top-40 text--center">
         {% if not message.isSent %}
@@ -47,12 +51,12 @@
                 {% if send_button_disabled %}
                     <a class="btn btn--large-and-full b__nudge--top btn--disabled" href="javascript:void(0);">Envoyer</a>
                 {% else %}
-                    <a href="{{ path("app_message_#{message_type}_send", message_route_params) }}" class="btn btn--large-and-full b__nudge--top btn--blue">Envoyer</a>
+                    <a href="{{ get_path(message_type, 'message', 'send', app.request, message_route_params) }}" class="btn btn--large-and-full b__nudge--top btn--blue">Envoyer</a>
                 {% endif %}
 
-                <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_update", message_route_params) }}">Editer le message</a>
+                <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ get_path(message_type, 'message', 'update', app.request, message_route_params) }}">Editer le message</a>
                 {% if not message.readOnlyFilter %}
-                    <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_filter", message_route_params) }}">Modifier les filtres</a>
+                    <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ get_path(message_type, 'message', 'filter', app.request, message_route_params) }}">Modifier les filtres</a>
                 {% endif %}
             </div>
         {% endif %}

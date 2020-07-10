@@ -17,7 +17,7 @@
                     <div class="form__legend" style="font-size: 14px;">Sélectionnez un adhérent de votre territoire.</div>
                     <div class="pst--relative">
                         {{ form_widget(filter_form.name, {value: form.vars.data.delegated ? form.vars.data.delegated.fullName, attr: {placeholder: 'Saisissez un prénom et/ou un nom'}}) }}
-                        <button type="button" title="Réinitialiser" class="btn btn--black js-undo-search pst--absolute" style="right: 12px; top: 10px;{{ not form.delegated.vars.data ? 'display: none;'}}">Réinitialiser</button>
+                        <button title="Réinitialiser" class="btn btn--black js-undo-search pst--absolute" style="right: 12px; top: 10px;{{ not form.delegated.vars.data ? 'display: none;'}}">Réinitialiser</button>
                         <button type="submit" id="js-search" class="btn btn--blue pst--absolute" style="right: 12px; top: 10px;{{ form.delegated.vars.data ? 'display: none;'}}">Rechercher</button>
                     </div>
                     {{ form_errors(form) }}

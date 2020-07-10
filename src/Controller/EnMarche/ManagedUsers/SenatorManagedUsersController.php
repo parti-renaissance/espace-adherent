@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-senateur", name="app_senator_managed_users_", methods={"GET"})
  *
- * @Security("is_granted('ROLE_SENATOR') or (is_granted('ROLE_DELEGATED_SENATOR') and is_granted('HAS_DELEGATED_ACCESS_ADHERENTS'))")
+ * @Security("is_granted('ROLE_SENATOR')")
  */
 class SenatorManagedUsersController extends AbstractManagedUsersController
 {
@@ -37,7 +37,7 @@ class SenatorManagedUsersController extends AbstractManagedUsersController
     protected function createFilterModel(Request $request): ManagedUsersFilter
     {
         /** @var Adherent $adherent */
-        $adherent = $this->getMainUser($request->getSession());
+        $adherent = $this->getUser();
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::SENATOR_EMAIL,

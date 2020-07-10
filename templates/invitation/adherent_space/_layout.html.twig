@@ -9,7 +9,7 @@
                 {% if type == 'supervisor' %}
                     {% set back_url = path('app_committee_manager_list_members', {slug: committee.slug}) %}
                 {% else %}
-                    {% set back_url = path("app_#{type}_managed_users_list") %}
+                    {% set back_url = get_path(type, 'managed_users', 'list', app.request) %}
                 {% endif %}
             {% endif %}
 

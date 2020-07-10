@@ -5,7 +5,7 @@
 {% block designation_content %}
     <section>
         <div class="b__nudge--bottom">
-            <a href="{{ path("app_#{space_type}_designations_list", route_params|default({})) }}" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
+            <a href="{{ get_path(space_type,'designations', 'list', app.request, route_params|default({})) }}" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
         </div>
 
         <div class="datagrid__pre-table b__nudge--bottom">
@@ -51,22 +51,22 @@
                     <div class="datagrid__table__tabs__items">
                         <h3>
                             <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_voters_list") ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_voters_list", link_params) }}">Liste d'émargement</a>
+                               href="{{ get_path(space_type, 'designations', 'voters_list', app.request, link_params) }}">Liste d'émargement</a>
                         </h3>
                         <span class="separator"></span>
                         <h3>
                             <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('femme') ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_results", {femme: true}|merge(link_params)) }}">Résultats Femme</a>
+                               href="{{ get_path(space_type, 'designations', 'results', app.request, {femme: true}|merge(link_params)) }}">Résultats Femme</a>
                         </h3>
                         <span class="separator"></span>
                         <h3>
                             <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('homme') ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_results", {homme: true}|merge(link_params)) }}">Résultats Homme</a>
+                               href="{{ get_path(space_type, 'designations', 'results', app.request, {homme: true}|merge(link_params)) }}">Résultats Homme</a>
                         </h3>
                         <span class="separator"></span>
                         <h3>
                             <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_votes") ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_votes", link_params) }}">Bulletins dépouillés</a>
+                               href="{{ get_path(space_type, 'designations', 'votes', app.request, link_params) }}">Bulletins dépouillés</a>
                         </h3>
                     </div>
                 </div>

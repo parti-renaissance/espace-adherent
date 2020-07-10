@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-senateur/messagerie", name="app_message_senator_")
  *
- * @Security("is_granted('ROLE_SENATOR') or (is_granted('ROLE_DELEGATED_SENATOR') and is_granted('HAS_DELEGATED_ACCESS_MESSAGES'))")
+ * @Security("is_granted('ROLE_SENATOR')")
  */
 class SenatorMessageController extends AbstractMessageController
 {

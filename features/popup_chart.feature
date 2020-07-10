@@ -13,7 +13,7 @@ Feature:
     Given I am logged as "deputy@en-marche-dev.fr"
     And I am on "parametres/mon-compte"
     When I follow "Espace député"
-    Then I should be on "espace-depute/utilisateurs"
+    Then I should be on "espace-depute/messagerie"
     And I should see "Charte de bonne utilisation des outils numériques - à l’usage des députés"
 
   Scenario: As deputy, I should be redirected if I close the popup when I'm in the deputy space
@@ -34,7 +34,7 @@ Feature:
     Given I am logged as "referent-75-77@en-marche-dev.fr"
     And I am on "parametres/mon-compte"
     When I follow "Espace référent"
-    Then I should be on "espace-referent/utilisateurs"
+    Then I should be on "espace-referent/evenements"
     And I should see "Charte de bonne utilisation des outils numériques - à l’usage des référents"
 
   Scenario: As referent, I should be redirected if I close the popup when I'm in the referent space

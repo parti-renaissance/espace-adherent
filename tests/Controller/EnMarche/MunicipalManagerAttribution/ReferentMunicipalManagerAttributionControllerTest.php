@@ -21,8 +21,7 @@ class ReferentMunicipalManagerAttributionControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->click($crawler->selectLink('Espace référent')->link());
-        $crawler = $this->client->followRedirect();
+        $crawler = $this->client->click($crawler->selectLink('Espace référent')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $crawler = $this->client->click($crawler->selectLink('Assesseurs')->link());

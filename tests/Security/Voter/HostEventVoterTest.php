@@ -9,13 +9,12 @@ use App\Event\EventPermissions;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\HostEventVoter;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class HostEventVoterTest extends AbstractAdherentVoterTest
 {
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new HostEventVoter($this->createMock(SessionInterface::class));
+        return new HostEventVoter();
     }
 
     public function provideAnonymousCases(): iterable

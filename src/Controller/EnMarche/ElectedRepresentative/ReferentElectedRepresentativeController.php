@@ -2,13 +2,13 @@
 
 namespace App\Controller\EnMarche\ElectedRepresentative;
 
-use App\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-referent", name="app_referent_elected_representatives_")
- * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES'))")
+ * @Security("is_granted('ROLE_REFERENT')")
  */
 class ReferentElectedRepresentativeController extends AbstractElectedRepresentativeController
 {
@@ -17,8 +17,8 @@ class ReferentElectedRepresentativeController extends AbstractElectedRepresentat
         return 'referent';
     }
 
-    protected function getManagedTags(Adherent $adherent): array
+    protected function getManagedTags(Request $request): array
     {
-        return $adherent->getManagedArea()->getTags()->toArray();
+        return $this->getUser()->getManagedArea()->getTags()->toArray();
     }
 }
