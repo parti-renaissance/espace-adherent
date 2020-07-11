@@ -604,7 +604,7 @@
         &:hover {
             background-color: $pink;
 
-            & > div > p,
+            & .committee__elections-box--text,
             & > div > .em-countdown-clock .text--dark {
                 color: $white;
             }
@@ -616,12 +616,6 @@
             .box-el.btn {
                 color: $white;
                 border-color: $white;
-
-                &:hover {
-                    &.btn--disabled {
-                        color: $gray--light;
-                    }
-                }
             }
 
             a.box-el:not(.btn) {
