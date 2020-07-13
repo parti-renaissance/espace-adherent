@@ -7,7 +7,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\ReferentTag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
@@ -15,12 +15,12 @@ class MyReferentTagChoiceType extends AbstractType
 {
     private $security;
 
-    private $requestStack;
+    private $session;
 
-    public function __construct(Security $security, RequestStack $requestStack)
+    public function __construct(Security $security, SessionInterface $session)
     {
         $this->security = $security;
-        $this->requestStack = $requestStack;
+        $this->session = $session;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -45,7 +45,9 @@ class MyReferentTagChoiceType extends AbstractType
             return [];
         }
 
-        if ($delegatedAccess = $user->getReceivedDelegatedAccessByUuid($this->requestStack->getMasterRequest()->attributes->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        $delegatedAccess = $user->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY));
+
+        if ($delegatedAccess) {
             $user = $delegatedAccess->getDelegator();
         }
 

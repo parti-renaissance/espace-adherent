@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route(path="/espace-referent", name="app_referent_managed_users_", methods={"GET"})
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @Security("is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_ADHERENTS'))")
  */
 class ReferentManagedUsersController extends AbstractManagedUsersController
 {
@@ -34,9 +34,13 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
 
     protected function createFilterModel(Request $request): ManagedUsersFilter
     {
+        $session = $request->getSession();
+
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::REFERENT_EMAIL,
-            $this->getUser()->getManagedArea()->getTags()->toArray(),
+            $this->getMainUser($session)->getManagedArea()->getTags()->toArray(),
+            $this->getRestrictedCommittees($session),
+            $this->getRestrictedCities($session)
         );
     }
 }

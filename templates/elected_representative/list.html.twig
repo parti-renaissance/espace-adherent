@@ -89,7 +89,7 @@
                         <button type="submit" class="btn btn--black b__nudge--bottom-medium">Appliquer</button>
 
                         {% if form.vars.submitted %}
-                            <a href="{{ get_path(space_name, 'elected_representatives', 'list', app.request) }}" class="btn btn--no-border b__nudge--bottom-medium">
+                            <a href="{{ path("app_#{space_name}_elected_representatives_list") }}" class="btn btn--no-border b__nudge--bottom-medium">
                                 Réinitialiser les filtres
                             </a>
                         {% endif %}
@@ -188,7 +188,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="{{ get_path(space_name, 'elected_representatives', 'show', app.request, { uuid: elected_representative.uuid }) }}" class="text--blue--dark link--no-decor">Afficher</a>
+                                        <a href="{{ path("app_#{space_name}_elected_representatives_show", { uuid: elected_representative.uuid }) }}" class="text--blue--dark link--no-decor">Afficher</a>
                                     </td>
                                 </tr>
                             {% else %}
@@ -208,7 +208,7 @@
                     {% include 'components/_modern_pagination.html.twig' with {
                         current_page: elected_representatives.currentPage,
                         total_pages: elected_representatives.lastPage,
-                        pagination_route_params: {f: filter.toArray()}|merge(app.request.attributes.has('delegated_access_uuid') ? {delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')} : {})
+                        pagination_route_params: {f: filter.toArray()},
                     } %}
                 {% endif %}
             </div>
@@ -261,7 +261,6 @@
                     '.user-list-definition-manager-wrapper',
                     'input[name="items[]"]',
                     '#items-check-all',
-                    '{{ app.request.attributes.get('delegated_access_uuid') }}',
                     function (labels) {
                         let cell = '';
                         labels.slice(0, 2).forEach((label) => {

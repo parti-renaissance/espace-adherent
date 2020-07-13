@@ -33,7 +33,7 @@
                         {% endif %}
                     </td>
                     <td class="text--center">
-                        <a href="{{ get_path('referent', 'designations', 'list', app.request, {committee_slug: committee.slug}) }}" class="link--no-decor">Désignations</a>
+                        <a href="{{ path("app_referent_designations_list", {committee_slug: committee.slug}) }}" class="link--no-decor">Désignations</a>
                     </td>
                 </tr>
             {% else %}

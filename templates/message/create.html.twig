@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block message_content %}
-    <a href="{{ get_path(message_type, 'message', 'list', app.request, route_params|default({})) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+    <a href="{{ path("app_message_#{message_type}_list", route_params|default({})) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
          ⟵ Retour
     </a>
     {% block message_form %}
