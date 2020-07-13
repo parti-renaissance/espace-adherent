@@ -6,10 +6,6 @@
             <a href="{{ path('app_user_profile') }}">Mon compte</a>
         </li>
 
-        <li class="{{ is_active_route(app.request, 'app_certification_request_*') ? 'active' }} }}">
-            <a href="{{ path('app_certification_request_home') }}">Certification du profil</a>
-        </li>
-
         <li class="{{ route == 'app_user_edit' ? 'active' }}">
             <a href="{{ path('app_user_edit') }}">Mes informations personnelles</a>
         </li>
