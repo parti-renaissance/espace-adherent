@@ -294,7 +294,7 @@ class ElectedRepresentative
         $this->uuid = $uuid;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -304,7 +304,7 @@ class ElectedRepresentative
         $this->lastName = $lastName;
     }
 
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -324,7 +324,7 @@ class ElectedRepresentative
         $this->gender = $gender;
     }
 
-    public function getBirthDate(): \DateTime
+    public function getBirthDate(): ?\DateTime
     {
         return $this->birthDate;
     }
