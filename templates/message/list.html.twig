@@ -17,7 +17,7 @@
     {% set message_limit = get_message_limit(message_type) %}
 
     {% if message_limit %}
-        <div class="alert alert--tips b__nudge--bottom-large b__nudge--top">Messages envoyés ce mois-ci : {{ get_sent_message_count(app.request, app.user, message_type) }} sur {{ message_limit }}</div>
+        <div class="alert alert--tips b__nudge--bottom-large b__nudge--top">Messages envoyés ce mois-ci : {{ get_sent_message_count(app.request, current_user(), message_type) }} sur {{ message_limit }}</div>
     {% endif %}
 
     <div class="manager__filters">
