@@ -66,6 +66,9 @@
                             <li class="{{ is_active_route(app.request, 'app_deputy_committees') ? 'active' }}">
                                 <a href="{{ path('app_deputy_committees') }}">Comités</a>
                             </li>
+                            {% endif %}
+
+                            {% if isDeputy %}
                             <li class="{{ is_active_route(app.request, 'app_deputy_elected_representatives_*') ? 'active' }}">
                                 <a href="{{ path('app_deputy_elected_representatives_list') }}">Élus</a>
                             </li>
