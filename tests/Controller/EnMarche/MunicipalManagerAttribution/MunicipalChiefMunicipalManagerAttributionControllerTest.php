@@ -16,6 +16,7 @@ class MunicipalChiefMunicipalManagerAttributionControllerTest extends WebTestCas
 
     public function testReferentCanReachMunicipalManagerAttributionForm()
     {
+        $this->client->followRedirects();
         $this->authenticateAsAdherent($this->client, 'municipal-chief@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/');
