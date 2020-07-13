@@ -16,6 +16,7 @@ class MunicipalManagerSupervisorMunicipalManagerAttributionControllerTest extend
 
     public function testReferentCanReachMunicipalManagerAttributionForm()
     {
+        $this->client->followRedirects();
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/');

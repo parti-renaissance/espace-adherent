@@ -1,11 +1,11 @@
 {% if app.user.isSupervisor or app.user.isHost %}
     <li>
-        <a href="{{ path('app_committee_space_dashboard') }}">Espace comité</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'committee'}) }}">Espace comité</a>
     </li>
 {% endif %}
 {% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
     <li>
-        <a href="{{ path('app_citizen_project_space_dashboard') }}">Espace porteur de projet</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'citizen_project'}) }}">Espace porteur de projet</a>
     </li>
 {% endif %}
 {% if app.user.isReferent %}
@@ -46,65 +46,65 @@
 {% endif %}
 {% if app.user.isCoordinatorCitizenProjectSector %}
     <li>
-        <a href="{{ path('app_coordinator_citizen_project', { s: constant('App\\Entity\\CitizenProject::PENDING')}) }}"> Espace responsable engagement citoyen
+        <a href="{{ path('app_access_delegation_unset', {type: 'coordinator_citizen_project', s: constant('App\\Entity\\CitizenProject::PENDING')}) }}"> Espace responsable engagement citoyen
         </a>
     </li>
 {% endif %}
 {% if app.user.isCoordinatorCommitteeSector %}
     <li>
-        <a href="{{ path('app_coordinator_committees', { s: constant('App\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'coordinator_committees', s: constant('App\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
     </li>
 {% endif %}
 {% if app.user.isProcurationManager %}
     <li>
-        <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'procuration_manager_requests'}) }}">Espace responsable procuration</a>
     </li>
 {% endif %}
 {% if app.user.isAssessorManager %}
     <li>
-        <a href="{{ path('app_assessor_manager_requests') }}">Espace responsable assesseur</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'assessor_manager_requests'}) }}">Espace responsable assesseur</a>
     </li>
 {% endif %}
 {% if app.user.isMunicipalChief %}
     <li>
-        <a href="{{ path('app_municipal_chief_home') }}">Espace Municipales 2020 🇫🇷</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'municipal_chief_home'}) }}">Espace Municipales 2020 🇫🇷</a>
     </li>
 {% endif %}
 {% if app.user.isSenatorialCandidate %}
     <li>
-        <a href="{{ path('app_senatorial_candidate_elected_representatives_list') }}">Espace Sénatoriales</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'senatorial_candidate_elected_representatives'}) }}">Espace Sénatoriales</a>
     </li>
 {% endif %}
 {% if app.user.isJecouteManager %}
     <li>
-        <a href="{{ path('app_jecoute_manager_local_surveys_list') }}">Espace responsable J'écoute</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'jecoute_manager_local_surveys'}) }}">Espace responsable J'écoute</a>
     </li>
 {% endif %}
 {% if app.user.isAssessor %}
     <li>
-        <a href="{{ path('app_vote_results_assessor_index') }}">Espace Assesseur</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'vote_results_assessor'}) }}">Espace Assesseur</a>
     </li>
 {% endif %}
 {% if app.user.isMunicipalManager %}
     <li>
-        <a href="{{ path('app_assessors_municipal_manager_attribution_form') }}">Espace Responsable communal</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'assessors_municipal_manager_attribution'}) }}">Espace Responsable communal</a>
     </li>
 {% endif %}
 {% if app.user.isElectionResultsReporter %}
     <li>
-        <a href="{{ path('app_election_results_reporter_space_cities_list') }}">Espace Rapporteur résultats</a>
+        <a href="{{ path('app_access_delegation_unset', {type: 'election_results_reporter_space_cities'}) }}">Espace Rapporteur résultats</a>
     </li>
 {% endif %}
 {% if app.user.isMunicipalManagerSupervisor %}
     <li>
-        <a href="{{ path('app_municipal_manager_municipal_manager_supervisor_attribution_form') }}">
+        <a href="{{ path('app_access_delegation_unset', {type: 'municipal_manager_municipal_manager_supervisor_attribution'}) }}">
             Espace Responsable attribution
         </a>
     </li>
 {% endif %}
 {% if app.user.isLre %}
     <li>
-        <a href="{{ path('app_lre_elected_representatives_list') }}">
+        <a href="{{ path('app_access_delegation_unset', {type: 'lre_elected_representatives'}) }}">
             Espace La République Ensemble
         </a>
     </li>

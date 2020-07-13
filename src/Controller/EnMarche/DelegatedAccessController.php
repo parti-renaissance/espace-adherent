@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,7 +22,7 @@ class DelegatedAccessController extends Controller
 
         $session->set(DelegatedAccess::ATTRIBUTE_KEY, $delegatedAccess->getUuid()->toString());
 
-        $routes = DelegatedAccessEnum::getFirstRoutesForType($delegatedAccess->getType());
+        $routes = DelegatedAccessEnum::getDelegatedAccessRoutes($delegatedAccess->getType());
 
         return $this->redirectToRoute($routes[$delegatedAccess->getAccesses()[0]]);
     }
@@ -29,10 +30,10 @@ class DelegatedAccessController extends Controller
     /**
      * @Route("/espace-standard/{type}", name="app_access_delegation_unset", methods={"GET"})
      */
-    public function standardSpace(string $type, SessionInterface $session)
+    public function standardSpace(Request $request, string $type, SessionInterface $session)
     {
         $session->remove(DelegatedAccess::ATTRIBUTE_KEY);
 
-        return $this->redirectToRoute("app_{$type}_managed_users_list");
+        return $this->redirectToRoute(DelegatedAccessEnum::getStandardRoute($type), $request->query->all());
     }
 }
