@@ -26,7 +26,7 @@ class CommitteeElectionCandidacyPeriodIsOverMessage extends Message
                 'vote_start_date' => static::formatDate($designation->getVoteStartDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'vote_end_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'committee_url' => $committeeUrl,
-            ],
+            ]
         );
     }
 }

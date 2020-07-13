@@ -22,7 +22,7 @@
         </h2>
     </div>
 
-    <div class="text--body text--dark text--small b__nudge--top">
+    <div class="text--body text--dark text--small b__nudge--top committee__elections-box--text">
         {% if committee_election.isCandidacyPeriodActive %}
             {% if member_is_candidate_in_committee %}
                 <p>Vous êtes candidat pour représenter les adhérents de votre comité.
@@ -103,7 +103,7 @@
                 <span class="clock-container"></span>
             </div>
 
-            <p class="text--dark text--small">et se clôturera le {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.</p>
+            <p class="text--dark text--small committee__elections-box--text">et se clôturera le {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.</p>
         {% else %}
             {% set voting_platform_election = get_voting_platform_election_for_committee(committee) %}
 
@@ -126,18 +126,20 @@
                         {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election) %}
 
                         {% if my_vote %}
-                            <p class="text--dark text--small">Votre choix a bien été enregistré.</p>
+                            <p class="text--dark text--small committee__elections-box--text">Votre choix a bien été enregistré.</p>
 
                             <div class="em-countdown-clock" data-event-timestamp="{{ voting_platform_election.voteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
                                 <span class="text--dark text--small">Les résultats seront publiés dans :</span>
                                 <span class="clock-container"></span>
                             </div>
 
-                            <p><a href="#" class="btn btn--disabled btn--no-wrap box-el">Je participe</a></p>
+                            <p>
+                                <a href="#" class="btn btn--disabled btn--no-wrap">Je participe</a>
+                            </p>
                         {% endif %}
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
-                    <p class="text--small text--dark">Consulter les
+                    <p class="text--small text--dark committee__elections-box--text">Consulter les
                         <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
                     </p>
                 {% endif %}

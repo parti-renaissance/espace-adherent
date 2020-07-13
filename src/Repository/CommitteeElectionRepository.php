@@ -39,6 +39,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('ce')
             ->addSelect('c')
             ->innerJoin('ce.committee', 'c')
+            ->innerJoin('ce.candidacies', 'candidacy')
             ->where('ce.designation = :designation')
             ->andWhere('ce.adherentNotified = :false')
             ->setParameters([
