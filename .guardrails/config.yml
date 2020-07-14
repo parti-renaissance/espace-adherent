@@ -1,0 +1,9 @@
+bundles: "auto"
+report:
+  pullRequest:
+    findings: "onAllFiles"
+    comment: true
+notifications:
+  slack:
+    enabled: false
+useGitClone: false
