@@ -334,11 +334,6 @@ class ElectedRepresentative
         $this->contactEmail = $contactEmail;
     }
 
-    public function getAdherentPhone(): ?PhoneNumber
-    {
-        return $this->adherent ? $this->adherent->getPhone() : null;
-    }
-
     public function getContactPhone(): ?PhoneNumber
     {
         return $this->contactPhone;

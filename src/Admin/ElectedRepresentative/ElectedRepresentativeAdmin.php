@@ -204,11 +204,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'label' => 'Autre e-mail de contact',
                     'required' => false,
                 ])
-                ->add('adherentPhone', PhoneNumberType::class, [
-                    'required' => false,
-                    'disabled' => true,
-                    'label' => 'Téléphone',
-                ])
                 ->add('contactPhone', PhoneNumberType::class, [
                     'required' => false,
                     'label' => 'Autre téléphone de contact',
