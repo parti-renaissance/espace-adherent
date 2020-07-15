@@ -86,8 +86,8 @@ class ElectedRepresentativeAdminTest extends WebTestCase
         yield [['birthDate' => '23 nov. 1972'], false, false];
         yield [['adherent' => 'jacques.picard@en-marche.fr'], true, false];
         yield [['adherent' => 'gisele-berthoux@caramail.com'], false, false];
-        yield [['adherent' => null, 'isAdherent' => '0'], false, true];
-        yield [['adherent' => null, 'isAdherent' => '0', 'contactEmail' => 'gisele-berthoux@caramail.com'], true, false];
+        yield [['adherent' => null], false, true];
+        yield [['adherent' => null, 'contactEmail' => 'gisele-berthoux@caramail.com'], true, false];
         yield [[], false, false];
     }
 

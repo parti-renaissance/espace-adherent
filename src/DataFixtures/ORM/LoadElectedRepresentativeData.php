@@ -44,7 +44,6 @@ class LoadElectedRepresentativeData extends Fixture
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_1_UUID)
         );
         $erAdherent92->setAdherent($this->getReference('adherent-5'));
-        $erAdherent92->setIsAdherent(true);
         $erAdherent92->addUserListDefinition($this->getReference('user-list-definition-instances_member'));
         foreach ($erAdherent92->getSponsorships() as $sponsorship) {
             if (2012 === $sponsorship->getPresidentialElectionYear()) {

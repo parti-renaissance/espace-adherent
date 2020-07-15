@@ -136,17 +136,6 @@ class ElectedRepresentative
     private $hasFollowedTraining = false;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     * @Assert\Expression(
-     *     "not (this.getAdherent() == null and value == true)",
-     *     message="elected_representative.is_adherent.no_adherent_email"
-     * )
-     */
-    private $isAdherent = false;
-
-    /**
      * Mailchimp unsubscribed date
      *
      * @var \DateTimeInterface|null
@@ -394,12 +383,7 @@ class ElectedRepresentative
      */
     public function isAdherent(): bool
     {
-        return $this->isAdherent;
-    }
-
-    public function setIsAdherent(bool $isAdherent): void
-    {
-        $this->isAdherent = $isAdherent;
+        return $this->adherent instanceof Adherent;
     }
 
     public function getAdherent(): ?Adherent
@@ -507,7 +491,7 @@ class ElectedRepresentative
 
     public function exportIsAdherent(): string
     {
-        return $this->isAdherent ? 'oui' : 'non';
+        return $this->isAdherent() ? 'oui' : 'non';
     }
 
     public function exportMandates(): string
