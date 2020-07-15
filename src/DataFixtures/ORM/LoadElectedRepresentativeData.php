@@ -40,11 +40,9 @@ class LoadElectedRepresentativeData extends Fixture
             'DUFOUR',
             new \DateTime('1972-11-23'),
             'female',
-            1203084,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_1_UUID)
         );
         $erAdherent92->setAdherent($this->getReference('adherent-5'));
-        $erAdherent92->setIsAdherent(true);
         $erAdherent92->addUserListDefinition($this->getReference('user-list-definition-instances_member'));
         foreach ($erAdherent92->getSponsorships() as $sponsorship) {
             if (2012 === $sponsorship->getPresidentialElectionYear()) {
@@ -100,7 +98,6 @@ class LoadElectedRepresentativeData extends Fixture
             'BOUILLOUX',
             new \DateTime('1977-08-02'),
             'female',
-            1203080,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
         );
         $this->setPhoneNumber($erCityCouncilWithFinishedFunction, '0999887766');
@@ -163,7 +160,6 @@ class LoadElectedRepresentativeData extends Fixture
             'BOULON',
             new \DateTime('1951-03-04'),
             null,
-            694516,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_3_UUID)
         );
         $er2Mandates->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem'));
@@ -232,7 +228,6 @@ class LoadElectedRepresentativeData extends Fixture
             'BUET',
             new \DateTime('1952-04-21'),
             'male',
-            873399,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_4_UUID)
         );
         $label = new ElectedRepresentativeLabel(
@@ -283,7 +278,6 @@ class LoadElectedRepresentativeData extends Fixture
             'OFFICIELID',
             new \DateTime('1951-11-03'),
             'male',
-            873404,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_5_UUID)
         );
         $label1 = new ElectedRepresentativeLabel(
@@ -322,7 +316,6 @@ class LoadElectedRepresentativeData extends Fixture
             'LOBELL',
             new \DateTime('1951-11-03'),
             'male',
-            873404,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_6_UUID)
         );
         $mandate1 = new Mandate(
@@ -384,7 +377,6 @@ class LoadElectedRepresentativeData extends Fixture
             'PASELU',
             new \DateTime('1981-01-03'),
             'male',
-            null,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_7_UUID)
         );
         $mandate = new Mandate(
@@ -449,7 +441,7 @@ class LoadElectedRepresentativeData extends Fixture
 
         $manager->persist($erParis3);
 
-        $erDepartment59 = ElectedRepresentative::create('Département', 'Nord', new \DateTime('1962-04-04'), 'male');
+        $erDepartment59 = $this->createElectedRepresentative('Département', 'Nord', new \DateTime('1962-04-04'), 'male');
         $mandate = new Mandate(
             MandateTypeEnum::SENATOR,
             true,
@@ -480,7 +472,6 @@ class LoadElectedRepresentativeData extends Fixture
         string $lastName,
         \DateTime $birthDate,
         string $gender = null,
-        int $officialId = null,
         string $uuid = null
     ): ElectedRepresentative {
         return ElectedRepresentative::create(
@@ -488,7 +479,6 @@ class LoadElectedRepresentativeData extends Fixture
             $lastName,
             $birthDate,
             $gender,
-            $officialId,
             $uuid ? Uuid::fromString($uuid) : null
         );
     }

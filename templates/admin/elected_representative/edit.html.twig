@@ -5,26 +5,17 @@
         <div class="box box-primary">
             <div class="box-header">
                 <h4 class="box-title">
-                    Identité
+                    Identité de l'élu
                 </h4>
+                <p class="no-margin">
+                    Ces informations proviennent du ministère de l'intérieur
+                </p>
             </div>
             <div class="box-body">
                 <div class="sonata-ba-collapsed-fields">
-                    <div class="inline-block">
-                        <div class="left row col-md-5">
-                            {{ form_row(form.officialId) }}
-                        </div>
-                        <div class="rigth row col-md-7">
-                            {{ form_row(form.gender) }}
-                        </div>
-                    </div>
+                    {{ form_row(form.gender) }}
                     {{ form_row(form.lastName) }}
                     {{ form_row(form.firstName) }}
-                    {{ form_row(form.adherent) }}
-                    {{ form_row(form.contactEmail) }}
-                    {{ form_row(form.isAdherent) }}
-                    {{ form_row(form.adherentPhone) }}
-                    {{ form_row(form.contactPhone) }}
                     <div class="inline-block">
                         <div class="left row col-md-5">
                             {{ form_row(form.birthDate) }}
@@ -38,8 +29,64 @@
                 </div>
             </div>
         </div>
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Contact
+                </h4>
+            </div>
+            <div class="box-body">
+                <div class="sonata-ba-collapsed-fields">
+                    {{ form_row(form.contactEmail) }}
+                    {{ form_row(form.contactPhone) }}
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Identité adhérent
+                </h4>
+                <p class="no-margin">
+                    Ces informations sont celles du profil de l'adhérent
+                </p>
+            </div>
+            <div class="box-body">
+                <div class="sonata-ba-collapsed-fields">
+                    {{ form_row(form.adherent) }}
+                    {% if object.isAdherent %}
+                        {% set adherent = object.adherent %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        ID
+                                    </label>
+                                    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                                        <input type="text" class="form-control" disabled value="{{ adherent.id }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Téléphone
+                                    </label>
+                                    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                                        <input type="text" class="form-control" disabled value="{{ adherent.phone|phone_number_format }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="btn" href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
+                            <i class="fa fa-external-link"></i> Voir le profil
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
         <div class="box box-primary">
             <div class="box-header">
                 <h4 class="box-title">

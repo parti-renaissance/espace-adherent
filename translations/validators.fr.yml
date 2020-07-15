@@ -440,7 +440,6 @@ city.municipal_manager_association.adherent_not_found: Aucun adhérent trouvé a
 # Elected Representatives
 #
 elected_representative.invalid_adherent: Cet e-mail correspond à un compte adhérent déjà associé à un autre élu.
-elected_representative.is_adherent.no_adherent_email: Pour déclarer un élu comme adhérent, vous devez d'abord renseigner son mail.
 
 #
 # CertificationRequest

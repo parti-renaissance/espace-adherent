@@ -8,7 +8,6 @@ use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
 use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Election\VoteListNuanceEnum;
-use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
@@ -137,9 +136,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         $showMapper
             ->with('Identité', ['class' => 'col-md-6'])
-                ->add('officialId', null, [
-                    'label' => 'ID élu officiel',
-                ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
                 ])
@@ -156,10 +152,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('contactEmail', null, [
                     'label' => 'Autre e-mail de contact',
-                ])
-                ->add('isAdherent', null, [
-                    'label' => 'Adhérent',
-                    'template' => 'admin/elected_representative/show_is_adherent.html.twig',
                 ])
                 ->add('phone', null, [
                     'mapped' => false,
@@ -187,10 +179,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Identité', ['class' => 'col-md-6'])
-                ->add('officialId', null, [
-                    'label' => 'ID élu officiel',
-                    'disabled' => true,
-                ])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                     'placeholder' => 'common.gender.unknown',
@@ -215,18 +203,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ->add('contactEmail', null, [
                     'label' => 'Autre e-mail de contact',
                     'required' => false,
-                ])
-                ->add('isAdherent', ChoiceType::class, [
-                    'label' => 'Est adhérent ?',
-                    'choices' => [
-                        'global.yes' => true,
-                        'global.no' => false,
-                    ],
-                ])
-                ->add('adherentPhone', PhoneNumberType::class, [
-                    'required' => false,
-                    'disabled' => true,
-                    'label' => 'Téléphone',
                 ])
                 ->add('contactPhone', PhoneNumberType::class, [
                     'required' => false,
@@ -322,25 +298,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->end()
         ;
 
-        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit']);
         $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
-    }
-
-    public function preSubmit(FormEvent $event): void
-    {
-        $form = $event->getForm();
-        $data = $event->getData();
-
-        /** @var Adherent $adherent */
-        $adherent = $form->getData()->getAdherent();
-        $adherentEmail = $adherent ? $adherent->getEmailAddress() : null;
-        $formAdherentEmail = $data['adherent'] ?: null;
-
-        // for any change of email, 'isAdherent' should be set to true ('oui' value)
-        if ($formAdherentEmail && $adherentEmail !== $formAdherentEmail) {
-            $data['isAdherent'] = true;
-            $event->setData($data);
-        }
     }
 
     public function submit(FormEvent $event): void
@@ -577,11 +535,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     switch ($value['value']) {
                         case 'yes':
-                            $qb->andWhere(sprintf('%s.isAdherent = 1', $alias));
+                            $qb->andWhere("$alias.adherent IS NOT NULL");
 
                             return true;
                         case 'no':
-                            $qb->andWhere(sprintf('%s.isAdherent = 0', $alias));
+                            $qb->andWhere("$alias.adherent IS NULL");
 
                             return true;
                         default:

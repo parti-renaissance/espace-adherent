@@ -103,13 +103,6 @@ class ElectedRepresentative
     private $birthPlace;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="bigint", nullable=true)
-     */
-    private $officialId;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(length=255, nullable=true)
@@ -134,17 +127,6 @@ class ElectedRepresentative
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $hasFollowedTraining = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     * @Assert\Expression(
-     *     "not (this.getAdherent() == null and value == true)",
-     *     message="elected_representative.is_adherent.no_adherent_email"
-     * )
-     */
-    private $isAdherent = false;
 
     /**
      * Mailchimp unsubscribed date
@@ -264,7 +246,6 @@ class ElectedRepresentative
         string $lastName,
         \DateTime $birthDate,
         string $gender = null,
-        int $officialId = null,
         UuidInterface $uuid = null
     ): self {
         $electedRepresentative = new self();
@@ -274,7 +255,6 @@ class ElectedRepresentative
         $electedRepresentative->lastName = $lastName;
         $electedRepresentative->gender = $gender;
         $electedRepresentative->birthDate = $birthDate;
-        $electedRepresentative->officialId = $officialId;
 
         return $electedRepresentative;
     }
@@ -344,16 +324,6 @@ class ElectedRepresentative
         $this->birthPlace = $birthPlace;
     }
 
-    public function getOfficialId(): ?int
-    {
-        return $this->officialId;
-    }
-
-    public function setOfficialId(int $officialId): void
-    {
-        $this->officialId = $officialId;
-    }
-
     public function getContactEmail(): ?string
     {
         return $this->contactEmail;
@@ -362,11 +332,6 @@ class ElectedRepresentative
     public function setContactEmail(?string $contactEmail = null): void
     {
         $this->contactEmail = $contactEmail;
-    }
-
-    public function getAdherentPhone(): ?PhoneNumber
-    {
-        return $this->adherent ? $this->adherent->getPhone() : null;
     }
 
     public function getContactPhone(): ?PhoneNumber
@@ -394,12 +359,7 @@ class ElectedRepresentative
      */
     public function isAdherent(): bool
     {
-        return $this->isAdherent;
-    }
-
-    public function setIsAdherent(bool $isAdherent): void
-    {
-        $this->isAdherent = $isAdherent;
+        return $this->adherent instanceof Adherent;
     }
 
     public function getAdherent(): ?Adherent
@@ -507,7 +467,7 @@ class ElectedRepresentative
 
     public function exportIsAdherent(): string
     {
-        return $this->isAdherent ? 'oui' : 'non';
+        return $this->isAdherent() ? 'oui' : 'non';
     }
 
     public function exportMandates(): string

@@ -1,9 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
-
-{% block field_value %}
-    {% if object.isAdherent %}
-        <span class="label label-success">oui</span>
-    {% else %}
-        <span class="label label-danger">non</span>
-    {% endif %}
-{% endblock %}
