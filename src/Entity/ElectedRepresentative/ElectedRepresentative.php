@@ -103,13 +103,6 @@ class ElectedRepresentative
     private $birthPlace;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="bigint", nullable=true)
-     */
-    private $officialId;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(length=255, nullable=true)
@@ -253,7 +246,6 @@ class ElectedRepresentative
         string $lastName,
         \DateTime $birthDate,
         string $gender = null,
-        int $officialId = null,
         UuidInterface $uuid = null
     ): self {
         $electedRepresentative = new self();
@@ -263,7 +255,6 @@ class ElectedRepresentative
         $electedRepresentative->lastName = $lastName;
         $electedRepresentative->gender = $gender;
         $electedRepresentative->birthDate = $birthDate;
-        $electedRepresentative->officialId = $officialId;
 
         return $electedRepresentative;
     }
@@ -331,16 +322,6 @@ class ElectedRepresentative
     public function setBirthPlace(string $birthPlace = null): void
     {
         $this->birthPlace = $birthPlace;
-    }
-
-    public function getOfficialId(): ?int
-    {
-        return $this->officialId;
-    }
-
-    public function setOfficialId(int $officialId): void
-    {
-        $this->officialId = $officialId;
     }
 
     public function getContactEmail(): ?string

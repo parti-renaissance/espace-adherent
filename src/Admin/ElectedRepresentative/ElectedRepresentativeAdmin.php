@@ -136,9 +136,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         $showMapper
             ->with('Identité', ['class' => 'col-md-6'])
-                ->add('officialId', null, [
-                    'label' => 'ID élu officiel',
-                ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
                 ])
@@ -182,10 +179,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Identité', ['class' => 'col-md-6'])
-                ->add('officialId', null, [
-                    'label' => 'ID élu officiel',
-                    'disabled' => true,
-                ])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                     'placeholder' => 'common.gender.unknown',
