@@ -10,6 +10,8 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CommitteeElectionVoteConfirmationMessage;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -29,6 +31,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
     private $electionRepository;
     private $candidateGroupRepository;
     private $storage;
+    private $mailer;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -36,7 +39,8 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         VoterRepository $voterRepository,
         ElectionRepository $electionRepository,
         CandidateGroupRepository $candidateGroupRepository,
-        VoteCommandStorage $storage
+        VoteCommandStorage $storage,
+        MailerService $transactionalMailer
     ) {
         $this->entityManager = $entityManager;
         $this->security = $security;
@@ -44,6 +48,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $this->electionRepository = $electionRepository;
         $this->candidateGroupRepository = $candidateGroupRepository;
         $this->storage = $storage;
+        $this->mailer = $transactionalMailer;
     }
 
     public static function getSubscribedEvents()
@@ -85,6 +90,8 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $this->entityManager->flush();
 
         $this->saveVoterKeyInSession($voterKey);
+
+        $this->sendVoteConfirmationEmail($vote, $voterKey);
     }
 
     private function generateVote(ElectionRound $electionRound): Vote
@@ -120,6 +127,11 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         }
 
         return $voteResult;
+    }
+
+    private function sendVoteConfirmationEmail(Vote $vote, string $voterKey): void
+    {
+        $this->mailer->sendMessage(CommitteeElectionVoteConfirmationMessage::create($vote, $voterKey));
     }
 
     private function saveVoterKeyInSession(string $voterKey): void
