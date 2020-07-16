@@ -4,7 +4,7 @@
 
 {% block voting_platform_content %}
     <div class="l__wrapper--slim election-vote b__nudge--bottom-60">
-        <h2 class="text--body text--black text--default-large b__nudge--bottom-larger">Étape {{ pool_index + 1 }} : Sélectionnez une candidate {{ pool.title }}</h2>
+        <h2 class="text--body text--black text--default-large b__nudge--bottom-larger">Étape {{ pool_index + 1 }} : Sélectionnez {{ pool.title|lower == 'homme' ? 'un candidat Homme' : 'une candidate Femme' }}</h2>
 
         {{ form_start(form) }}
 
