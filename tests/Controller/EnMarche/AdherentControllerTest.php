@@ -325,6 +325,21 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(0, $histories06Unsubscriptions);
     }
 
+    public function testCertifiedAdherentCanNotEditFields(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+
+        $disabledFields = $crawler->filter('form[name="adherent"] input[disabled="disabled"], form[name="adherent"] select[disabled="disabled"]');
+        self::assertCount(6, $disabledFields);
+        self::assertEquals('adherent[gender]', $disabledFields->eq(0)->attr('name'));
+        self::assertEquals('adherent[firstName]', $disabledFields->eq(1)->attr('name'));
+        self::assertEquals('adherent[lastName]', $disabledFields->eq(2)->attr('name'));
+        self::assertEquals('adherent[birthdate][day]', $disabledFields->eq(3)->attr('name'));
+        self::assertEquals('adherent[birthdate][month]', $disabledFields->eq(4)->attr('name'));
+        self::assertEquals('adherent[birthdate][year]', $disabledFields->eq(5)->attr('name'));
+    }
+
     public function testEditMandates(): void
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
