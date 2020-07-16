@@ -60,6 +60,11 @@ class Vote
         return $this->votedAt;
     }
 
+    public function getVoter(): Voter
+    {
+        return $this->voter;
+    }
+
     public function getElection(): Election
     {
         return $this->electionRound->getElection();
