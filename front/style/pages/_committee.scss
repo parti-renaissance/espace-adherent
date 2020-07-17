@@ -605,7 +605,10 @@
             background-color: $pink;
 
             & .committee__elections-box--text,
-            & > div > .em-countdown-clock .text--dark {
+            & > div > .em-countdown-clock,
+            & > div > .em-countdown-clock .text--dark,
+            & > div > .em-countdown-clock span:after,
+             {
                 color: $white;
             }
 
@@ -616,6 +619,11 @@
             .box-el.btn {
                 color: $white;
                 border-color: $white;
+
+                &.btn--disabled {
+                    background-color: transparent;
+                    opacity: 0.5;
+                }
             }
 
             a.box-el:not(.btn) {
