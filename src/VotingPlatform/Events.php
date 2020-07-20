@@ -11,4 +11,5 @@ final class Events
     public const CANDIDACY_PERIOD_CLOSE = 'candidacy.period.close';
 
     public const VOTE_OPEN = 'vote.open';
+    public const VOTE_REMIND = 'vote.remind';
 }

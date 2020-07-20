@@ -110,9 +110,9 @@ class ElectionRepository extends ServiceEntityRepository
     /**
      * @return Election[]
      */
-    public function getElectionsToClose(\DateTime $date, int $limit = 50): array
+    public function getElectionsToClose(\DateTime $date, int $limit = null): array
     {
-        return $this->createQueryBuilder('election')
+        $qb = $this->createQueryBuilder('election')
             ->addSelect('designation')
             ->innerJoin('election.designation', 'designation')
             ->where((new Orx())->addMultiple([
@@ -125,9 +125,13 @@ class ElectionRepository extends ServiceEntityRepository
                 'open' => ElectionStatusEnum::OPEN,
             ])
             ->getQuery()
-            ->setMaxResults($limit)
-            ->getResult()
         ;
+
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getResult();
     }
 
     private function getElectionStatsSelectParts(): array

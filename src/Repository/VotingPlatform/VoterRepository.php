@@ -8,6 +8,7 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 
 class VoterRepository extends ServiceEntityRepository
 {
@@ -60,6 +61,28 @@ class VoterRepository extends ServiceEntityRepository
             ->setParameter('election', $election)
             ->getQuery()
             ->getArrayResult()
+        ;
+    }
+
+    /**
+     * @return Voter[]|array
+     */
+    public function findVotersToRemindForElection(Election $election): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->innerJoin('voter.votersLists', 'list')
+            ->innerJoin('list.election', 'election')
+            ->innerJoin('election.electionRounds', 'election_round')
+            ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :current_round')
+            ->andWhere('list.election = :election')
+            ->andWhere('vote IS NULL')
+            ->andWhere('voter.adherent IS NOT NULL')
+            ->setParameters([
+                'election' => $election,
+                'current_round' => $election->getCurrentRound(),
+            ])
+            ->getQuery()
+            ->getResult()
         ;
     }
 }
