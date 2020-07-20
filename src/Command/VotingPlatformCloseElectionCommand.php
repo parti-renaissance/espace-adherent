@@ -64,7 +64,7 @@ class VotingPlatformCloseElectionCommand extends Command
 
         $this->io->progressStart();
 
-        while ($elections = $this->electionRepository->getElectionsToClose($date)) {
+        while ($elections = $this->electionRepository->getElectionsToClose($date, 50)) {
             foreach ($elections as $election) {
                 $this->doCloseElection($election);
 
