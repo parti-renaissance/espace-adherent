@@ -8,6 +8,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeElectionCandidacyPeriodIsOverMessage;
 use App\Mailer\Message\CommitteeElectionVoteIsOpenMessage;
+use App\Mailer\Message\CommitteeElectionVoteIsOverMessage;
 use App\Mailer\Message\CommitteeElectionVoteReminderMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -57,6 +58,15 @@ class ElectionNotifier
             $adherent,
             $committee,
             $designation,
+            $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+        ));
+    }
+
+    public function notifyCommitteeElectionVoteIsOver(Adherent $adherent, Committee $committee): void
+    {
+        $this->mailer->sendMessage(CommitteeElectionVoteIsOverMessage::create(
+            $adherent,
+            $committee,
             $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
     }

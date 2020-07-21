@@ -12,6 +12,7 @@ use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
+use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOverEvent;
 use App\VotingPlatform\VoteResult\VoteResultAggregator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -100,6 +101,8 @@ class VotingPlatformCloseElectionCommand extends Command
             $election->startSecondRound($secondRoundPools);
         }
 
+        $this->notifyEndOfElectionRound($election);
+
         $this->entityManager->flush();
     }
 
@@ -167,6 +170,21 @@ class VotingPlatformCloseElectionCommand extends Command
             }
 
             $this->entityManager->clear();
+        }
+    }
+
+    private function notifyEndOfElectionRound(Election $election): void
+    {
+        $committee = $election->getElectionEntity()->getCommittee();
+
+        $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
+
+        foreach ($memberships as $membership) {
+            $this->dispatcher->dispatch(Events::VOTE_CLOSE, new CommitteeElectionVoteIsOverEvent(
+                $membership->getAdherent(),
+                $election->getDesignation(),
+                $committee
+            ));
         }
     }
 
