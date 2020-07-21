@@ -14,7 +14,7 @@ class CommitteeElectionVoteIsOverMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            '[Désignations] Les résultats sont disponibes',
+            '[Désignations] Les résultats sont disponibles',
             [
                 'first_name' => $adherent->getFirstName(),
                 'committee_name' => static::escape($committee->getName()),
