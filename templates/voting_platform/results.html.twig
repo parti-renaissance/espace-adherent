@@ -72,14 +72,14 @@
                                                 <tr class="text--body text--dark">
                                                     <td>{{ vote_result.voterKey }}</td>
                                                     <td>
-                                                        {% if vote_result.voteChoices[0].isBlank %}
+                                                        {% if vote_result.voteChoices[0] is not defined or vote_result.voteChoices[0].isBlank %}
                                                             ~
                                                         {% else %}
                                                             {{ (vote_result.voteChoices[0].candidateGroup.candidates|first).fullName }}
                                                         {% endif %}
                                                     </td>
                                                     <td>
-                                                        {% if vote_result.voteChoices[1].isBlank %}
+                                                        {% if vote_result.voteChoices[1] is not defined or vote_result.voteChoices[1].isBlank %}
                                                             ~
                                                         {% else %}
                                                             {{ (vote_result.voteChoices[1].candidateGroup.candidates|first).fullName }}
