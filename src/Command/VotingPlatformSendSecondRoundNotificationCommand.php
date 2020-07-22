@@ -91,7 +91,8 @@ class VotingPlatformSendSecondRoundNotificationCommand extends Command
         $this->dispatcher->dispatch(Events::VOTE_SECOND_ROUND, new CommitteeElectionSecondRoundNotificationEvent(
             $voter->getAdherent(),
             $election->getDesignation(),
-            $election->getElectionEntity()->getCommittee()
+            $election->getElectionEntity()->getCommittee(),
+            $election
         ));
     }
 }

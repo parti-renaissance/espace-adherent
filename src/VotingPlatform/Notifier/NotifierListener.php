@@ -79,6 +79,7 @@ class NotifierListener implements EventSubscriberInterface
         if ($event instanceof CommitteeElectionSecondRoundNotificationEvent) {
             $this->notifier->notifyCommitteeElectionSecondRound(
                 $event->getAdherent(),
+                $event->getElection(),
                 $event->getCommittee()
             );
         }
