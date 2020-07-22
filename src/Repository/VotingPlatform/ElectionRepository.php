@@ -134,6 +134,23 @@ class ElectionRepository extends ServiceEntityRepository
         return $qb->getResult();
     }
 
+    /**
+     * @return Election[]
+     */
+    public function getElectionsWithIncomingSecondRounds(): array
+    {
+        return $this->createQueryBuilder('election')
+            ->addSelect('designation')
+            ->innerJoin('election.designation', 'designation')
+            ->andWhere('election.secondRoundEndDate IS NOT NULL')
+            ->andWhere('election.secondRoundEndDate >= CURRENT_DATE()')
+            ->andWhere('election.status = :open')
+            ->setParameter('open', ElectionStatusEnum::OPEN)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     private function getElectionStatsSelectParts(): array
     {
         return [

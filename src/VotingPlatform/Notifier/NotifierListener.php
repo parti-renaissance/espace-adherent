@@ -4,6 +4,7 @@ namespace App\VotingPlatform\Notifier;
 
 use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
+use App\VotingPlatform\Notifier\Event\CommitteeElectionSecondRoundNotificationEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOpenEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOverEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteReminderEvent;
@@ -26,6 +27,7 @@ class NotifierListener implements EventSubscriberInterface
             Events::CANDIDACY_PERIOD_CLOSE => 'onCandidacyPeriodClose',
             Events::VOTE_REMIND => 'onVoteRemind',
             Events::VOTE_CLOSE => 'onVoteClose',
+            Events::VOTE_SECOND_ROUND => 'onVoteSecondRound',
         ];
     }
 
@@ -66,6 +68,16 @@ class NotifierListener implements EventSubscriberInterface
     {
         if ($event instanceof CommitteeElectionVoteIsOverEvent) {
             $this->notifier->notifyCommitteeElectionVoteIsOver(
+                $event->getAdherent(),
+                $event->getCommittee()
+            );
+        }
+    }
+
+    public function onVoteSecondRound(ElectionNotifyEventInterface $event): void
+    {
+        if ($event instanceof CommitteeElectionSecondRoundNotificationEvent) {
+            $this->notifier->notifyCommitteeElectionSecondRound(
                 $event->getAdherent(),
                 $event->getCommittee()
             );
