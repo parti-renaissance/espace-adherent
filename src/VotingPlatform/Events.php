@@ -13,4 +13,5 @@ final class Events
     public const VOTE_OPEN = 'vote.open';
     public const VOTE_REMIND = 'vote.remind';
     public const VOTE_CLOSE = 'vote.close';
+    public const VOTE_SECOND_ROUND = 'vote.second_round';
 }

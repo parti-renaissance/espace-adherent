@@ -72,7 +72,6 @@ class VoterRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('voter')
             ->innerJoin('voter.votersLists', 'list')
             ->innerJoin('list.election', 'election')
-            ->innerJoin('election.electionRounds', 'election_round')
             ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :current_round')
             ->andWhere('list.election = :election')
             ->andWhere('vote IS NULL')
@@ -81,6 +80,22 @@ class VoterRepository extends ServiceEntityRepository
                 'election' => $election,
                 'current_round' => $election->getCurrentRound(),
             ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Voter[]|array
+     */
+    public function findVotersToNotifyForSecondRound(Election $election): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->innerJoin('voter.votersLists', 'list')
+            ->innerJoin('list.election', 'election')
+            ->andWhere('list.election = :election')
+            ->andWhere('voter.adherent IS NOT NULL')
+            ->setParameter('election', $election)
             ->getQuery()
             ->getResult()
         ;

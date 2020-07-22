@@ -5,8 +5,10 @@ namespace App\VotingPlatform\Notifier;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\Election;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeElectionCandidacyPeriodIsOverMessage;
+use App\Mailer\Message\CommitteeElectionSecondRoundNotificationMessage;
 use App\Mailer\Message\CommitteeElectionVoteIsOpenMessage;
 use App\Mailer\Message\CommitteeElectionVoteIsOverMessage;
 use App\Mailer\Message\CommitteeElectionVoteReminderMessage;
@@ -66,6 +68,19 @@ class ElectionNotifier
     {
         $this->mailer->sendMessage(CommitteeElectionVoteIsOverMessage::create(
             $adherent,
+            $committee,
+            $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+        ));
+    }
+
+    public function notifyCommitteeElectionSecondRound(
+        Adherent $adherent,
+        Election $election,
+        Committee $committee
+    ): void {
+        $this->mailer->sendMessage(CommitteeElectionSecondRoundNotificationMessage::create(
+            $adherent,
+            $election,
             $committee,
             $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
