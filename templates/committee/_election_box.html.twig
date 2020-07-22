@@ -109,8 +109,14 @@
 
             {% if voting_platform_election %}
                 {% if voting_platform_election.isVotePeriodActive %}
+                    {% if voting_platform_election.isSecondRoundVotePeriodActive %}
+                        <p class="text--dark text--small committee__elections-box--text">
+                            A la suite de cette première désignation il y a eu une égalité entre les candidats,
+                            nous vous invitions à voter de nouveau.
+                        </p>
+                    {% endif %}
                     {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
-                        <div class="em-countdown-clock" data-event-timestamp="{{ committee_election.voteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                        <div class="em-countdown-clock" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
                             <span class="text--dark text--small">Il vous reste</span>
                             <span class="clock-container"></span>
                             <span class="text--dark text--small">pour participer à la désignation.</span>
