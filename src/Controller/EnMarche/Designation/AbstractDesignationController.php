@@ -34,18 +34,6 @@ abstract class AbstractDesignationController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}", name="_dashboard", methods={"GET"})
-     */
-    public function dashboardAction(Request $request, Committee $committee, Election $election): Response
-    {
-        return $this->renderTemplate('designation/dashboard.html.twig', $request, [
-            'committee' => $committee,
-            'election' => $election,
-            'election_stats' => $this->electionRepository->getSingleAggregatedData($election),
-        ]);
-    }
-
-    /**
      * @Route("/{uuid}/liste-emargement", name="_voters_list", methods={"GET"})
      */
     public function listVotersAction(
@@ -55,7 +43,7 @@ abstract class AbstractDesignationController extends AbstractController
         VoterRepository $voterRepository
     ): Response {
         if ($election->isVotePeriodActive()) {
-            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+            return $this->redirectToSpaceRoute('voters_list', $committee, $election);
         }
 
         return $this->renderTemplate('designation/voters_list.html.twig', $request, [
@@ -77,7 +65,7 @@ abstract class AbstractDesignationController extends AbstractController
         VoteResultAggregator $aggregator
     ): Response {
         if ($election->isVotePeriodActive()) {
-            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+            return $this->redirectToSpaceRoute('voters_list', $committee, $election);
         }
 
         $candidateGroups = $candidateGroupRepository->findForElectionRound($election->getCurrentRound());
@@ -103,7 +91,7 @@ abstract class AbstractDesignationController extends AbstractController
         VoteResultAggregator $aggregator
     ): Response {
         if ($election->isVotePeriodActive()) {
-            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+            return $this->redirectToSpaceRoute('voters_list', $committee, $election);
         }
 
         return $this->renderTemplate('designation/votes_list.html.twig', $request, [

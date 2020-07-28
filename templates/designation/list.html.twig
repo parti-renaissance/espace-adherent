@@ -12,7 +12,7 @@
                     <th>Type</th>
                     <th>Date</th>
                     <th>Participation</th>
-                    <th>Résultats</th>
+                    <th>Candidats</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -29,7 +29,7 @@
                         <td>
                             {% if designation.voteStartDate > 'now'|date %}
                                 {% set items = [{
-                                    href: path("app_#{space_type}_designations_dashboard", {committee_slug: committee.slug, uuid: election.uuid}),
+                                    href: path("app_#{space_type}_designations_voters_list", {committee_slug: committee.slug, uuid: election.uuid}),
                                     label: 'Voir les détails',
                                     linkAttr: {class: 'row-action link--no-decor'}
                                 }] %}
