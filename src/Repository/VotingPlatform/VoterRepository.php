@@ -4,6 +4,7 @@ namespace App\Repository\VotingPlatform;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -54,11 +55,17 @@ class VoterRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('voter')
             ->select('adherent.firstName', 'adherent.lastName')
-            ->addSelect(sprintf('(SELECT v.votedAt FROM %s AS v WHERE v.voter = voter) as vote', Vote::class))
+            ->addSelect(sprintf('(
+                    SELECT v.votedAt
+                    FROM %s AS v
+                    WHERE v.voter = voter
+                    AND v.electionRound = :electionRound
+                ) as vote', Vote::class))
             ->innerJoin('voter.votersLists', 'list')
             ->leftJoin('voter.adherent', 'adherent')
             ->where('list.election = :election')
             ->setParameter('election', $election)
+            ->setParameter('electionRound', $election->getCurrentRound())
             ->getQuery()
             ->getArrayResult()
         ;
