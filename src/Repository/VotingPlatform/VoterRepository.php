@@ -51,7 +51,7 @@ class VoterRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findForElection(Election $election): array
+    public function findForElectionRound(ElectionRound $electionRound): array
     {
         return $this->createQueryBuilder('voter')
             ->select('adherent.firstName', 'adherent.lastName')
@@ -64,8 +64,8 @@ class VoterRepository extends ServiceEntityRepository
             ->innerJoin('voter.votersLists', 'list')
             ->leftJoin('voter.adherent', 'adherent')
             ->where('list.election = :election')
-            ->setParameter('election', $election)
-            ->setParameter('electionRound', $election->getCurrentRound())
+            ->setParameter('election', $electionRound->getElection())
+            ->setParameter('electionRound', $electionRound)
             ->getQuery()
             ->getArrayResult()
         ;

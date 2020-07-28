@@ -53,6 +53,11 @@ class ElectionRound
         $this->isActive = $isActive;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getElection(): Election
     {
         return $this->election;
@@ -97,5 +102,15 @@ class ElectionRound
         foreach ($electionPools as $pool) {
             $this->addElectionPool($pool);
         }
+    }
+
+    public function isRoundOf(Election $election): bool
+    {
+        return $election === $this->election;
+    }
+
+    public function equals(ElectionRound $round): bool
+    {
+        return $round->getId() === $this->id;
     }
 }

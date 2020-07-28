@@ -40,11 +40,11 @@
                                 {% include 'voting_platform/results/_candiates_list.html.twig' with {
                                     'candidate_groups': pool.candidateGroups,
                                     'candidates': results.aggregated.candidates,
-                                    'resume': results.aggregated.resume[pool.id],
+                                    'resume': results.aggregated.resume[pool.title],
                                 } %}
 
                                 {% include 'voting_platform/results/_stats_block.html.twig' with {
-                                    'resume': results.aggregated.resume[pool.id],
+                                    'resume': results.aggregated.resume[pool.title],
                                 } %}
                             </div>
                         </div>

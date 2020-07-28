@@ -174,4 +174,9 @@ class Election
     {
         return $this->secondRoundEndDate;
     }
+
+    public function getElectionRounds(): Collection
+    {
+        return $this->electionRounds;
+    }
 }

@@ -4,10 +4,12 @@ namespace App\Controller\EnMarche\Designation;
 
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\VoteResult\VoteResultAggregator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,71 +36,119 @@ abstract class AbstractDesignationController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/liste-emargement", name="_voters_list", methods={"GET"})
+     * @Route(
+     *     "/{uuid}/liste-emargement/{election_round_id}",
+     *     name="_voters_list",
+     *     methods={"GET"},
+     *     defaults={"election_round_id": null}
+     * )
+     *
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
      */
     public function listVotersAction(
         Request $request,
         Committee $committee,
         Election $election,
-        VoterRepository $voterRepository
+        VoterRepository $voterRepository,
+        ElectionRound $electionRound = null
     ): Response {
         if ($election->isVotePeriodActive()) {
             return $this->redirectToSpaceRoute('voters_list', $committee, $election);
         }
 
+        if ($electionRound instanceof ElectionRound && !$electionRound->isRoundOf($election)) {
+            return $this->redirectToSpaceRoute('voters_list', $committee, $election);
+        }
+
+        if (!$electionRound) {
+            $electionRound = $election->getCurrentRound();
+        }
+
         return $this->renderTemplate('designation/voters_list.html.twig', $request, [
             'committee' => $committee,
-            'election' => $election,
-            'election_stats' => $this->electionRepository->getSingleAggregatedData($election),
-            'voters' => $voterRepository->findForElection($election),
+            'election_round' => $electionRound,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
+            'voters' => $voterRepository->findForElectionRound($electionRound),
         ]);
     }
 
     /**
-     * @Route("/{uuid}/resultats", name="_results", methods={"GET"})
+     * @Route(
+     *     "/{uuid}/resultats/{election_round_id}",
+     *     name="_results",
+     *     methods={"GET"},
+     *     defaults={"election_round_id": null}
+     * )
+     *
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
      */
     public function showResultsAction(
         Request $request,
         Committee $committee,
         Election $election,
         CandidateGroupRepository $candidateGroupRepository,
-        VoteResultAggregator $aggregator
+        VoteResultAggregator $aggregator,
+        ElectionRound $electionRound = null
     ): Response {
         if ($election->isVotePeriodActive()) {
             return $this->redirectToSpaceRoute('voters_list', $committee, $election);
         }
 
-        $candidateGroups = $candidateGroupRepository->findForElectionRound($election->getCurrentRound());
+        if ($electionRound instanceof ElectionRound && !$electionRound->isRoundOf($election)) {
+            return $this->redirectToSpaceRoute('results', $committee, $election);
+        }
+
+        if (!$electionRound) {
+            $electionRound = $election->getCurrentRound();
+        }
+
+        $candidateGroups = $candidateGroupRepository->findForElectionRound($electionRound);
 
         return $this->renderTemplate('designation/results.html.twig', $request, [
             'committee' => $committee,
-            'election' => $election,
-            'election_stats' => $this->electionRepository->getSingleAggregatedData($election),
+            'election_round' => $electionRound,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
             'candidate_groups' => $request->query->has('femme') ?
                 $candidateGroups->getWomanCandidateGroups() :
                 $candidateGroups->getManCandidateGroups(),
-            'results' => $election->isResultPeriodActive() ? $aggregator->getResults($election)['aggregated']['candidates'] : [],
+            'results' => $election->isResultPeriodActive() ? $aggregator->getResultsForRound($electionRound)['aggregated']['candidates'] : [],
         ]);
     }
 
     /**
-     * @Route("/{uuid}/bulletins", name="_votes", methods={"GET"})
+     * @Route(
+     *     "/{uuid}/bulletins/{election_round_id}",
+     *     name="_votes",
+     *     methods={"GET"},
+     *     defaults={"election_round_id": null}
+     * )
+     *
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
      */
     public function listVotesAction(
         Request $request,
         Committee $committee,
         Election $election,
-        VoteResultAggregator $aggregator
+        VoteResultAggregator $aggregator,
+        ElectionRound $electionRound = null
     ): Response {
         if ($election->isVotePeriodActive()) {
             return $this->redirectToSpaceRoute('voters_list', $committee, $election);
         }
 
+        if ($electionRound instanceof ElectionRound && !$electionRound->isRoundOf($election)) {
+            return $this->redirectToSpaceRoute('votes', $committee, $election);
+        }
+
+        if (!$electionRound) {
+            $electionRound = $election->getCurrentRound();
+        }
+
         return $this->renderTemplate('designation/votes_list.html.twig', $request, [
             'committee' => $committee,
-            'election' => $election,
-            'election_stats' => $this->electionRepository->getSingleAggregatedData($election),
-            'votes' => $aggregator->getResults($election)['vote_results'],
+            'election_round' => $electionRound,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
+            'votes' => $aggregator->getResultsForRound($electionRound)['vote_results'],
         ]);
     }
 

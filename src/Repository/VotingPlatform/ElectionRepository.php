@@ -5,6 +5,7 @@ namespace App\Repository\VotingPlatform;
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\ValueObject\Genders;
@@ -86,7 +87,7 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getSingleAggregatedData(Election $election): array
+    public function getSingleAggregatedData(ElectionRound $electionRound): array
     {
         return $this->createQueryBuilder('election')
             ->addSelect(...$this->getElectionStatsSelectParts())
@@ -94,13 +95,11 @@ class ElectionRepository extends ServiceEntityRepository
             ->innerJoin('election.electionPools', 'pool')
             ->innerJoin('pool.candidateGroups', 'candidate_groups')
             ->innerJoin('candidate_groups.candidates', 'candidate')
-            ->where('election = :election')
-            ->andWhere('election_round.isActive = :true')
+            ->where('election_round = :election_round')
             ->setParameters([
-                'election' => $election,
+                'election_round' => $electionRound,
                 'male' => Genders::MALE,
                 'female' => Genders::FEMALE,
-                'true' => true,
             ])
             ->getQuery()
             ->getSingleResult(Query::HYDRATE_ARRAY)
