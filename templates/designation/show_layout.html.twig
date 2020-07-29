@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            {% if not election.isVotePeriodActive %}
+            {% if not election.isVotePeriodActive or not election_round.isActive %}
                 <div class="datagrid__table__tabs b__nudge--top-15">
                     <div class="datagrid__table__tabs__items">
                         <h3>
