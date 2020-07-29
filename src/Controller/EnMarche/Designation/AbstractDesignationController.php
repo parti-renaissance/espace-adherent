@@ -36,6 +36,31 @@ abstract class AbstractDesignationController extends AbstractController
     }
 
     /**
+     * @Route("/{uuid}/{election_round_id}", name="_dashboard", methods={"GET"}, defaults={"election_round_id": null})
+     *
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
+     */
+    public function dashboardAction(
+        Request $request,
+        Committee $committee,
+        Election $election,
+        ElectionRound $electionRound = null
+    ): Response {
+        if (!$electionRound) {
+            $electionRound = $election->isSecondRoundVotePeriodActive()
+                ? $election->getFirstRound()
+                : $election->getCurrentRound()
+            ;
+        }
+
+        return $this->renderTemplate('designation/dashboard.html.twig', $request, [
+            'committee' => $committee,
+            'election_round' => $electionRound,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
+        ]);
+    }
+
+    /**
      * @Route(
      *     "/{uuid}/liste-emargement/{election_round_id}",
      *     name="_voters_list",
@@ -52,16 +77,15 @@ abstract class AbstractDesignationController extends AbstractController
         VoterRepository $voterRepository,
         ElectionRound $electionRound = null
     ): Response {
-        if ($election->isVotePeriodActive()) {
-            return $this->redirectToSpaceRoute('voters_list', $committee, $election);
-        }
-
-        if ($electionRound instanceof ElectionRound && !$electionRound->isRoundOf($election)) {
-            return $this->redirectToSpaceRoute('voters_list', $committee, $election);
-        }
-
         if (!$electionRound) {
-            $electionRound = $election->getCurrentRound();
+            $electionRound = $election->isSecondRoundVotePeriodActive()
+                ? $election->getFirstRound()
+                : $election->getCurrentRound()
+            ;
+        }
+
+        if (!$this->hasAccess($election, $electionRound)) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
         }
 
         return $this->renderTemplate('designation/voters_list.html.twig', $request, [
@@ -90,16 +114,15 @@ abstract class AbstractDesignationController extends AbstractController
         VoteResultAggregator $aggregator,
         ElectionRound $electionRound = null
     ): Response {
-        if ($election->isVotePeriodActive()) {
-            return $this->redirectToSpaceRoute('voters_list', $committee, $election);
-        }
-
-        if ($electionRound instanceof ElectionRound && !$electionRound->isRoundOf($election)) {
-            return $this->redirectToSpaceRoute('results', $committee, $election);
-        }
-
         if (!$electionRound) {
-            $electionRound = $election->getCurrentRound();
+            $electionRound = $election->isSecondRoundVotePeriodActive()
+                ? $election->getFirstRound()
+                : $election->getCurrentRound()
+            ;
+        }
+
+        if (!$this->hasAccess($election, $electionRound)) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
         }
 
         $candidateGroups = $candidateGroupRepository->findForElectionRound($electionRound);
@@ -132,16 +155,15 @@ abstract class AbstractDesignationController extends AbstractController
         VoteResultAggregator $aggregator,
         ElectionRound $electionRound = null
     ): Response {
-        if ($election->isVotePeriodActive()) {
-            return $this->redirectToSpaceRoute('voters_list', $committee, $election);
-        }
-
-        if ($electionRound instanceof ElectionRound && !$electionRound->isRoundOf($election)) {
-            return $this->redirectToSpaceRoute('votes', $committee, $election);
-        }
-
         if (!$electionRound) {
-            $electionRound = $election->getCurrentRound();
+            $electionRound = $election->isSecondRoundVotePeriodActive()
+                ? $election->getFirstRound()
+                : $election->getCurrentRound()
+            ;
+        }
+
+        if (!$this->hasAccess($election, $electionRound)) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
         }
 
         return $this->renderTemplate('designation/votes_list.html.twig', $request, [
@@ -183,5 +205,22 @@ abstract class AbstractDesignationController extends AbstractController
         return [
             'committee_slug' => $request->attributes->get('committee_slug'),
         ];
+    }
+
+    protected function hasAccess(Election $election, ElectionRound $electionRound): bool
+    {
+        if (!$electionRound->isRoundOf($election)) {
+            return false;
+        }
+
+        if ($election->isVotePeriodActive() && !$election->isSecondRoundVotePeriodActive()) {
+            return false;
+        }
+
+        if ($election->isSecondRoundVotePeriodActive() && $electionRound->isActive()) {
+            return false;
+        }
+
+        return $election->isResultPeriodActive();
     }
 }

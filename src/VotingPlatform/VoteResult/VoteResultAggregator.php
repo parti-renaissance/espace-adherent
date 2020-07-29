@@ -2,8 +2,8 @@
 
 namespace App\VotingPlatform\VoteResult;
 
-use App\Command\VotingPlatformConfigureCommand;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPoolTitleEnum;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\VoteResultRepository;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -29,8 +29,8 @@ class VoteResultAggregator
         $aggregated = [
             'candidates' => [],
             'resume' => [
-                VotingPlatformConfigureCommand::POOL_WOMEN_TITLE => $blankPoolData,
-                VotingPlatformConfigureCommand::POOL_MEN_TITLE => $blankPoolData,
+                ElectionPoolTitleEnum::WOMAN => $blankPoolData,
+                ElectionPoolTitleEnum::MAN => $blankPoolData,
             ],
         ];
 

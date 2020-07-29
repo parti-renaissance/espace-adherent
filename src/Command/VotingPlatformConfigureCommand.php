@@ -10,6 +10,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
 use App\Entity\VotingPlatform\ElectionPool;
+use App\Entity\VotingPlatform\ElectionPoolTitleEnum;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
@@ -32,9 +33,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class VotingPlatformConfigureCommand extends Command
 {
-    public const POOL_WOMEN_TITLE = 'Femme';
-    public const POOL_MEN_TITLE = 'Homme';
-
     protected static $defaultName = 'app:voting-platform:configure';
 
     /** @var DesignationRepository */
@@ -134,8 +132,8 @@ class VotingPlatformConfigureCommand extends Command
         // Create candidates groups
         $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $election->getDesignation());
 
-        $womanPool = new ElectionPool(self::POOL_WOMEN_TITLE);
-        $manPool = new ElectionPool(self::POOL_MEN_TITLE);
+        $womanPool = new ElectionPool(ElectionPoolTitleEnum::WOMAN);
+        $manPool = new ElectionPool(ElectionPoolTitleEnum::MAN);
 
         foreach ($candidacies as $candidacy) {
             $adherent = $candidacy->getCommitteeMembership()->getAdherent();
