@@ -11,13 +11,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(
- *     "/resultats/{election_round_id}",
+ *     "/resultats/{election_round_uuid}",
  *     name="app_voting_platform_results",
  *     methods={"GET"},
- *     defaults={"election_round_id": null}
+ *     defaults={"election_round_uuid": null}
  * )
  *
- * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
+ * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
  */
 class ResultsController extends AbstractController
 {

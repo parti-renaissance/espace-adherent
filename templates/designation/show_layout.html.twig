@@ -3,7 +3,7 @@
 {% set election = election_round.election %}
 {% set electionRounds = election.electionRounds %}
 {% set designation = election.designation %}
-{% set link_params = {uuid: election.uuid, election_round_id: election_round.id}|merge(route_params|default({})) %}
+{% set link_params = {uuid: election.uuid, election_round_uuid: election_round.uuid}|merge(route_params|default({})) %}
 
 {% block designation_content %}
     <section>
@@ -27,7 +27,7 @@
                         {% for round in electionRounds %}
                             <h3>
                                 <a class="{{ round.equals(election_round) ? 'active' }}"
-                                   href="{{ path("app_#{space_type}_designations_dashboard", link_params|merge({election_round_id: round.id})) }}">
+                                   href="{{ path("app_#{space_type}_designations_dashboard", link_params|merge({election_round_uuid: round.uuid})) }}">
                                     Tour {{ (loop.index == electionRounds|length == 2) ? 'bis' : loop.index }}
                                 </a>
                             </h3>

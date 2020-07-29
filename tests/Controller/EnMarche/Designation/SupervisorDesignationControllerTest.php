@@ -62,7 +62,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Liste d\'émargement')->link());
 
         $this->assertContains('Liste des inscrits / émargements', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
-        $this->assertRegExp('#/liste-emargement/[\d]+#', $crawler->getUri());
+        $this->assertRegExp('#/liste-emargement/[\d\w-]{36}#', $crawler->getUri());
         $this->assertCount(11, $crawler->filter('.datagrid__table-manager tbody tr'));
         $this->assertContains('Bob Assesseur', $crawler->filter('.datagrid__table-manager tbody')->text());
     }
@@ -76,7 +76,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Résultats Femme')->link());
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertRegExp('#/resultats/[\d]+\?femme=1#', $crawler->getUri());
+        $this->assertRegExp('#/resultats/[\d\w-]{36}\?femme=1#', $crawler->getUri());
 
         $this->assertContains('Résultats par scrutin : Femme', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
 
@@ -85,7 +85,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Résultats Homme')->link());
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertRegExp('#/resultats/[\d]+\?homme=1#', $crawler->getUri());
+        $this->assertRegExp('#/resultats/[\d\w-]{36}\?homme=1#', $crawler->getUri());
 
         $this->assertContains('Résultats par scrutin : Homme', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
 
@@ -101,7 +101,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Bulletins dépouillés')->link());
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertRegExp('#/bulletins/[\d]+#', $crawler->getUri());
+        $this->assertRegExp('#/bulletins/[\d\w-]{36}#', $crawler->getUri());
 
         $this->assertContains('Liste des bulletins dépouillés', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
 
