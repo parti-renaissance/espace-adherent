@@ -114,6 +114,11 @@
                             A la suite de cette première désignation il y a eu une égalité entre les candidats,
                             nous vous invitions à voter de nouveau.
                         </p>
+                        <p class="text--small text--dark committee__elections-box--text">Consulter les
+                            <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">
+                                résultats incomplets
+                            </a>
+                        </p>
                     {% endif %}
                     {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
                         <div class="em-countdown-clock" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
