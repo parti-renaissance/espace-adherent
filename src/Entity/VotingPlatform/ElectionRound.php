@@ -6,9 +6,11 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\ElectionRoundRepository")
  *
  * @ORM\Table(name="voting_platform_election_round")
  *
@@ -25,6 +27,12 @@ class ElectionRound
      */
     private $id;
 
+    /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid")
+     */
+    protected $uuid;
     /**
      * @var Election
      *
@@ -51,11 +59,17 @@ class ElectionRound
     public function __construct(bool $isActive = true)
     {
         $this->isActive = $isActive;
+        $this->uuid = Uuid::uuid4();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getElection(): Election

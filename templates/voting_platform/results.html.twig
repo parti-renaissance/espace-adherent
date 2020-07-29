@@ -19,7 +19,7 @@
                         {% for round in electionRounds %}
                             <h3>
                                 <a class="{{ round.equals(election_round) ? 'active' }}"
-                                   href="{{ path('app_voting_platform_results', {uuid: election.uuid, election_round_id: round.id}) }}">
+                                   href="{{ path('app_voting_platform_results', {uuid: election.uuid, election_round_uuid: round.uuid}) }}">
                                     Tour {{ (loop.index == electionRounds|length == 2) ? 'bis' : loop.index }}
                                 </a>
                             </h3>

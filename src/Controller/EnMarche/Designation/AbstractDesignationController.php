@@ -36,9 +36,9 @@ abstract class AbstractDesignationController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/{election_round_id}", name="_dashboard", methods={"GET"}, defaults={"election_round_id": null})
+     * @Route("/{uuid}/{election_round_uuid}", name="_dashboard", methods={"GET"}, defaults={"election_round_uuid": null})
      *
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
      */
     public function dashboardAction(
         Request $request,
@@ -62,13 +62,13 @@ abstract class AbstractDesignationController extends AbstractController
 
     /**
      * @Route(
-     *     "/{uuid}/liste-emargement/{election_round_id}",
+     *     "/{uuid}/liste-emargement/{election_round_uuid}",
      *     name="_voters_list",
      *     methods={"GET"},
-     *     defaults={"election_round_id": null}
+     *     defaults={"election_round_uuid": null}
      * )
      *
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
      */
     public function listVotersAction(
         Request $request,
@@ -98,13 +98,13 @@ abstract class AbstractDesignationController extends AbstractController
 
     /**
      * @Route(
-     *     "/{uuid}/resultats/{election_round_id}",
+     *     "/{uuid}/resultats/{election_round_uuid}",
      *     name="_results",
      *     methods={"GET"},
-     *     defaults={"election_round_id": null}
+     *     defaults={"election_round_uuid": null}
      * )
      *
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
      */
     public function showResultsAction(
         Request $request,
@@ -140,13 +140,13 @@ abstract class AbstractDesignationController extends AbstractController
 
     /**
      * @Route(
-     *     "/{uuid}/bulletins/{election_round_id}",
+     *     "/{uuid}/bulletins/{election_round_uuid}",
      *     name="_votes",
      *     methods={"GET"},
-     *     defaults={"election_round_id": null}
+     *     defaults={"election_round_uuid": null}
      * )
      *
-     * @ParamConverter("electionRound", options={"mapping": {"election_round_id": "id"}})
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
      */
     public function listVotesAction(
         Request $request,
