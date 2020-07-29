@@ -24,24 +24,19 @@
 
                 <tr>
                     <td>{{ vote.voterKey }}</td>
-                    <td>
-                        {% if choices[0] is defined %}
-                            {% if choices[0].isBlank %}
-                                ~
-                            {% else %}
-                                {{ choices[0].candidateGroup.candidates|first.fullName }}
-                            {% endif %}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if choices[1] is defined %}
-                            {% if choices[1].isBlank %}
-                                ~
-                            {% else %}
-                                {{ choices[1].candidateGroup.candidates|first.fullName }}
-                            {% endif %}
-                        {% endif %}
-                    </td>
+                    {% for poolTitle in ['Femme', 'Homme'] %}
+                        <td>
+                            {% for choice in choices %}
+                                {% if poolTitle is same as(choice.electionPool.title) %}
+                                    {% if choice.isBlank %}
+                                        ~
+                                    {% else %}
+                                        {{ choice.candidateGroup.candidates|first.fullName }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
                 </tr>
             {% else %}
                 <tr>

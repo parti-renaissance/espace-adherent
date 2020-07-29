@@ -10,6 +10,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
 use App\Entity\VotingPlatform\ElectionPool;
+use App\Entity\VotingPlatform\ElectionPoolTitleEnum;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
@@ -131,8 +132,8 @@ class VotingPlatformConfigureCommand extends Command
         // Create candidates groups
         $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $election->getDesignation());
 
-        $womanPool = new ElectionPool('Femme');
-        $manPool = new ElectionPool('Homme');
+        $womanPool = new ElectionPool(ElectionPoolTitleEnum::WOMAN);
+        $manPool = new ElectionPool(ElectionPoolTitleEnum::MAN);
 
         foreach ($candidacies as $candidacy) {
             $adherent = $candidacy->getCommitteeMembership()->getAdherent();

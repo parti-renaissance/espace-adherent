@@ -55,6 +55,7 @@ class Election
      * @var ElectionRound[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionRound", mappedBy="election", cascade={"all"})
+     * @ORM\OrderBy({"id": "ASC"})
      */
     private $electionRounds;
 
@@ -173,5 +174,15 @@ class Election
     public function getSecondRoundEndDate(): ?\DateTime
     {
         return $this->secondRoundEndDate;
+    }
+
+    public function getElectionRounds(): Collection
+    {
+        return $this->electionRounds;
+    }
+
+    public function getFirstRound(): ?ElectionRound
+    {
+        return $this->electionRounds->first() ?? null;
     }
 }

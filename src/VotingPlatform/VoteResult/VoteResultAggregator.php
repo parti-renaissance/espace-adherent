@@ -3,6 +3,8 @@
 namespace App\VotingPlatform\VoteResult;
 
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPoolTitleEnum;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\VoteResultRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 
@@ -17,32 +19,31 @@ class VoteResultAggregator
         $this->voterRepository = $voterRepository;
     }
 
-    public function getResults(Election $election): array
+    public function getResultsForRound(ElectionRound $electionRound): array
     {
-        $voteResults = $this->voteResultRepository->getResults($election->getCurrentRound());
+        $voteResults = $this->voteResultRepository->getResults($electionRound);
+        $participants = $this->voterRepository->countForElection($electionRound->getElection());
+
+        $blankPoolData = $this->buildBlankPoolData($voteResults, $participants);
 
         $aggregated = [
             'candidates' => [],
-            'resume' => [],
+            'resume' => [
+                ElectionPoolTitleEnum::WOMAN => $blankPoolData,
+                ElectionPoolTitleEnum::MAN => $blankPoolData,
+            ],
         ];
-
-        $participants = $this->voterRepository->countForElection($election);
 
         foreach ($voteResults as $voteResult) {
             foreach ($voteResult->getVoteChoices() as $index => $voteChoice) {
-                if (!isset($aggregated['resume'][$poolId = $voteChoice->getElectionPool()->getId()])) {
-                    $aggregated['resume'][$poolId] = [
-                        'blank' => 0,
-                        'participated' => $participants,
-                        'expressed' => 0,
-                        'abstentions' => $participants - \count($voteResults),
-                    ];
+                if (!isset($aggregated['resume'][$poolTitle = $voteChoice->getElectionPool()->getTitle()])) {
+                    $aggregated['resume'][$poolTitle] = $this->buildBlankPoolData($voteResult, $participants);
                 }
 
                 if (true === $voteChoice->isBlank()) {
-                    ++$aggregated['resume'][$poolId]['blank'];
+                    ++$aggregated['resume'][$poolTitle]['blank'];
                 } else {
-                    ++$aggregated['resume'][$poolId]['expressed'];
+                    ++$aggregated['resume'][$poolTitle]['expressed'];
 
                     $candidateGroupUuid = $voteChoice->getCandidateGroup()->getUuid()->toString();
 
@@ -61,6 +62,21 @@ class VoteResultAggregator
         return [
             'vote_results' => $voteResults,
             'aggregated' => $aggregated,
+        ];
+    }
+
+    public function getResults(Election $election): array
+    {
+        return $this->getResultsForRound($election->getCurrentRound());
+    }
+
+    private function buildBlankPoolData(array $voteResults, int $participants): array
+    {
+        return [
+            'blank' => 0,
+            'participated' => $participants,
+            'expressed' => 0,
+            'abstentions' => $participants - \count($voteResults),
         ];
     }
 }

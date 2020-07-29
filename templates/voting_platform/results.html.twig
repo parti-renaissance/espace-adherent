@@ -1,5 +1,9 @@
 {% extends base_layout %}
 
+{% set election = election_round.election %}
+{% set electionRounds = election.electionRounds %}
+{% set pools = election_round.electionPools %}
+
 {% block page_title 'Résultats de la désignation' %}
 
 {% block voting_platform_header %}
@@ -7,6 +11,26 @@
         <div class="has-voted-header b__nudge--bottom-50">
             <h1 class="text--larger">Résultats de la désignation</h1>
         </div>
+
+        {% if electionRounds|length > 1 and not election.isSecondRoundVotePeriodActive %}
+            <section>
+                <div class="datagrid__table__tabs">
+                    <div class="datagrid__table__tabs__items">
+                        {% for round in electionRounds %}
+                            <h3>
+                                <a class="{{ round.equals(election_round) ? 'active' }}"
+                                   href="{{ path('app_voting_platform_results', {uuid: election.uuid, election_round_id: round.id}) }}">
+                                    Tour {{ (loop.index == electionRounds|length == 2) ? 'bis' : loop.index }}
+                                </a>
+                            </h3>
+                            {% if not loop.last %}
+                                <span class="separator"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
     </div>
 {% endblock %}
 
@@ -40,11 +64,11 @@
                                 {% include 'voting_platform/results/_candiates_list.html.twig' with {
                                     'candidate_groups': pool.candidateGroups,
                                     'candidates': results.aggregated.candidates,
-                                    'resume': results.aggregated.resume[pool.id],
+                                    'resume': results.aggregated.resume[pool.title],
                                 } %}
 
                                 {% include 'voting_platform/results/_stats_block.html.twig' with {
-                                    'resume': results.aggregated.resume[pool.id],
+                                    'resume': results.aggregated.resume[pool.title],
                                 } %}
                             </div>
                         </div>
@@ -69,22 +93,23 @@
                                         </thead>
                                         <tbody>
                                             {% for vote_result in results.vote_results %}
+                                                {% set choices = vote_result.voteChoices %}
+
                                                 <tr class="text--body text--dark">
                                                     <td>{{ vote_result.voterKey }}</td>
-                                                    <td>
-                                                        {% if vote_result.voteChoices[0] is not defined or vote_result.voteChoices[0].isBlank %}
-                                                            ~
-                                                        {% else %}
-                                                            {{ (vote_result.voteChoices[0].candidateGroup.candidates|first).fullName }}
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if vote_result.voteChoices[1] is not defined or vote_result.voteChoices[1].isBlank %}
-                                                            ~
-                                                        {% else %}
-                                                            {{ (vote_result.voteChoices[1].candidateGroup.candidates|first).fullName }}
-                                                        {% endif %}
-                                                    </td>
+                                                    {% for poolTitle in ['Femme', 'Homme'] %}
+                                                        <td>
+                                                            {% for choice in choices %}
+                                                                {% if poolTitle is same as(choice.electionPool.title) %}
+                                                                    {% if choice.isBlank %}
+                                                                        ~
+                                                                    {% else %}
+                                                                        {{ choice.candidateGroup.candidates|first.fullName }}
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </td>
+                                                    {% endfor %}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

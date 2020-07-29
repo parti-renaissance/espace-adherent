@@ -1,6 +1,9 @@
 {% extends 'designation/_layout.html.twig' %}
 
+{% set election = election_round.election %}
+{% set electionRounds = election.electionRounds %}
 {% set designation = election.designation %}
+{% set link_params = {uuid: election.uuid, election_round_id: election_round.id}|merge(route_params|default({})) %}
 
 {% block designation_content %}
     <section>
@@ -17,7 +20,31 @@
             </h3>
         </div>
 
-        <div class="manager-overview">
+        {% if electionRounds|length > 1 %}
+            <section>
+                <div class="datagrid__table__tabs">
+                    <div class="datagrid__table__tabs__items">
+                        {% for round in electionRounds %}
+                            <h3>
+                                <a class="{{ round.equals(election_round) ? 'active' }}"
+                                   href="{{ path("app_#{space_type}_designations_dashboard", link_params|merge({election_round_id: round.id})) }}">
+                                    Tour {{ (loop.index == electionRounds|length == 2) ? 'bis' : loop.index }}
+                                </a>
+                            </h3>
+                            {% if not loop.last %}
+                                <span class="separator"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="alert alert--tips b__nudge--bottom-small b__nudge--bottom">
+                    Suite à une égalité entre plusieurs candidats, la désignation a été relancée pour tenter de les départager.
+                    Les statistiques et les résultats sont donc séparés et vous sont affichés en tant que « tours ».
+                </div>
+            </section>
+        {% endif %}
+
+        <div class="manager-overview" style="padding-bottom: 30px">
             <div class="manager-overview__row">
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Inscrits</span>
@@ -46,8 +73,6 @@
 
             {% if not election.isVotePeriodActive %}
                 <div class="datagrid__table__tabs b__nudge--top-15">
-                    {% set link_params = {uuid: election.uuid}|merge(route_params|default({})) %}
-
                     <div class="datagrid__table__tabs__items">
                         <h3>
                             <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_voters_list") ? 'active' }}"
