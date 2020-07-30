@@ -108,6 +108,10 @@ class TerritorialCouncilMembership
         return $this->qualities;
     }
 
+    /**
+     * Add quality if it is not present yet.
+     * Check of quality presence made by quality's name.
+     */
     public function addQuality(TerritorialCouncilQuality $quality): void
     {
         if (!$this->hasQuality($quality->getName())) {
@@ -119,6 +123,20 @@ class TerritorialCouncilMembership
     public function removeQuality(TerritorialCouncilQuality $quality): void
     {
         $this->qualities->removeElement($quality);
+    }
+
+    public function removeQualityWithName(string $name): void
+    {
+        $key = null;
+        foreach ($this->getQualities() as $k => $quality) {
+            if ($quality->getName() === $name) {
+                $key = $k;
+
+                break;
+            }
+        }
+
+        $this->qualities->remove($key);
     }
 
     public function clearQualities(): void
@@ -174,5 +192,25 @@ class TerritorialCouncilMembership
         $candidacy = $this->getCandidacyForElection($election);
 
         return !$candidacy || $candidacy->isDraft();
+    }
+
+    public function getHighestQualityPriority(): int
+    {
+        $qualities = $this->getQualities();
+
+        $priorities = \array_filter(TerritorialCouncilQualityEnum::QUALITY_PRIORITIES, function (int $priority, string $name) use ($qualities) {
+            $isPresent = false;
+            foreach ($qualities as $quality) {
+                if ($name === $quality->getName()) {
+                    $isPresent = true;
+
+                    break;
+                }
+            }
+
+            return $isPresent;
+        }, \ARRAY_FILTER_USE_BOTH);
+
+        return \count($priorities) > 0 ? max($priorities) : 0;
     }
 }

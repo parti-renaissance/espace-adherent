@@ -17,7 +17,7 @@ class LoadTerritorialCouncilMembershipData extends Fixture
         $coTerrParis = $this->getReference('coTerr_75');
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-3'), new \DateTime('2020-06-06'));
-        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DESIGNATED_ADHERENT, 'Super comité de Paris'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, 'Super comité de Paris'));
         $manager->persist($membership);
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-4'), new \DateTime('2020-07-07'));
