@@ -14,6 +14,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\ReferentManagedArea;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
@@ -933,5 +934,29 @@ SQL;
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function findByTerritorialCouncilAndQuality(
+        TerritorialCouncil $territorialCouncil,
+        string $quality,
+        Adherent $exceptOf = null
+    ): ?Adherent {
+        $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.territorialCouncilMembership', 'tcm')
+            ->leftJoin('tcm.qualities', 'quality')
+            ->where('tcm.territorialCouncil = :tc')
+            ->andWhere('quality.name = :quality')
+            ->setParameter('tc', $territorialCouncil)
+            ->setParameter('quality', $quality)
+        ;
+
+        if ($exceptOf) {
+            $qb
+                ->andWhere('a.id != :adherent')
+                ->setParameter('adherent', $exceptOf)
+            ;
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

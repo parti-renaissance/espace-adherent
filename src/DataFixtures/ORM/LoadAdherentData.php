@@ -23,6 +23,7 @@ use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
 use App\Entity\SenatorialCandidateManagedArea;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Membership\ActivityPositions;
 use App\Membership\AdherentFactory;
@@ -153,7 +154,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
         $adherent3->addTag($this->getReference('adherent_tag_at007'));
         $terco75 = $this->getReference('terco_75');
-        $membershipTC = new TerritorialCouncilMembership($terco75, $adherent3, TerritorialCouncilQualityEnum::DESIGNATED_ADHERENT, new \DateTime('2020-06-06'));
+        $quality = new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DESIGNATED_ADHERENT, 'Paris 75');
+        $membershipTC = new TerritorialCouncilMembership($terco75, $adherent3, new \DateTime('2020-06-06'));
+        $membershipTC->addQuality($quality);
         $manager->persist($membershipTC);
         $this->addReference('adherent-3', $adherent3);
 
@@ -178,7 +181,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130, 91300');
         $adherent4->addReferentTag($this->getReference('referent_tag_75'));
         $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
-        $membershipTC = new TerritorialCouncilMembership($terco75, $adherent4, TerritorialCouncilQualityEnum::LRE_MANAGER, new \DateTime('2020-07-07'));
+        $quality = new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::LRE_MANAGER, 'Paris 75');
+        $membershipTC = new TerritorialCouncilMembership($terco75, $adherent4, new \DateTime('2020-07-07'));
+        $membershipTC->addQuality($quality);
         $manager->persist($membershipTC);
         $this->addReference('adherent-4', $adherent4);
 
@@ -512,7 +517,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent75and77->setPrintPrivilege(true);
         $referent75and77->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
-        $membershipTC = new TerritorialCouncilMembership($terco75, $referent75and77, TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, new \DateTime('2020-02-02'));
+        $quality = new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, 'Paris 75');
+        $membershipTC = new TerritorialCouncilMembership($terco75, $referent75and77, new \DateTime('2020-02-02'));
+        $membershipTC->addQuality($quality);
         $manager->persist($membershipTC);
         $this->addReference('adherent-19', $referent75and77);
 

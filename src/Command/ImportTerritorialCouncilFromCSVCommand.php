@@ -70,7 +70,7 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
             if ($territorialCouncil = $this->em->getRepository(TerritorialCouncil::class)->findOneBy(['name' => $row['name']])) {
                 $territorialCouncil->clearReferentTags();
             } else {
-                $territorialCouncil = new TerritorialCouncil($row['name'], $row['code']);
+                $territorialCouncil = new TerritorialCouncil(trim($row['name']), trim($row['code']));
             }
 
             $tags = explode(',', $row['referent_tag.code']);

@@ -117,6 +117,11 @@ class TerritorialCouncil
         $this->codes = $codes;
     }
 
+    public function getNameCodes(): string
+    {
+        return \sprintf('%s (%s)', $this->name, $this->getCodes());
+    }
+
     /**
      * @return Collection|TerritorialCouncilMembership[]
      */
@@ -155,6 +160,6 @@ class TerritorialCouncil
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->getNameCodes();
     }
 }

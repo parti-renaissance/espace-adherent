@@ -502,3 +502,34 @@
         <button onClick="return toggleCheckRefTags(false);" class="btn btn-xs btn-primary">Tout désélectionner <span class="glyphicon glyphicon-remove-circle"></span></button>
     </div>
 {% endblock %}
+
+{% block app_admin_adherent_referentTerritorialCouncil_entity_row %}
+    {{ block('form_row') }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("div.territorial-council-member-info").on('select2:unselecting change', "select[id$='TerritorialCouncil']", function() {
+                    var elementId = $(this).attr('id');
+                    var elementValue = $(this).val();
+
+                    $("select[id$='TerritorialCouncil']").each(function (i, element) {
+                        if (elementId != $(element).attr('id')) {
+                            $(element).prop('disabled', elementValue !== '');
+                        }
+                    });
+            });
+
+            $("select[id$='TerritorialCouncil']").each(function (i, element) {
+                if ($(element).val() !== '') {
+                    $("select[id$='TerritorialCouncil']").each(function (i, el) {
+                        if ($(element).attr('id') != $(el).attr('id')) {
+                            $(el).prop('disabled', $(element).val() !== '');
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

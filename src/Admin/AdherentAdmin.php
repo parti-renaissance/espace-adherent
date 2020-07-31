@@ -12,6 +12,7 @@ use App\Entity\BoardMember\Role;
 use App\Entity\CitizenProjectMembership;
 use App\Entity\CommitteeMembership;
 use App\Entity\SubscriptionType;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Form\ActivityPositionType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
 use App\Form\Admin\CoordinatorManagedAreaType;
@@ -22,6 +23,7 @@ use App\Form\Admin\SenatorAreaType;
 use App\Form\Admin\SenatorialCandidateManagedAreaType;
 use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
+use App\Form\EventListener\TerritorialCouncilMembershipListener;
 use App\Form\GenderType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Intl\UnitedNationsBundle;
@@ -44,6 +46,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -415,6 +418,46 @@ HELP
                     'help' => 'Laisser vide si l\'adhérent n\'est pas parlementaire.',
                 ])
             ->end()
+            ->with('Membre du Conseil Territorial et CoPol', [
+                'class' => 'col-md-6 territorial-council-member-info',
+                'description' => 'territorial_council.admin.description',
+            ])
+                ->add('referentTerritorialCouncil', EntityType::class, [
+                    'mapped' => false,
+                    'required' => false,
+                    'label' => 'territorial_council.referent',
+                    'translation_domain' => 'forms',
+                    'class' => TerritorialCouncil::class,
+                ], [
+                    'translation_domain' => 'forms',
+                ])
+                ->add('lreManagerTerritorialCouncil', EntityType::class, [
+                    'mapped' => false,
+                    'required' => false,
+                    'label' => 'territorial_council.lre_manager',
+                    'translation_domain' => 'forms',
+                    'class' => TerritorialCouncil::class,
+                ], [
+                    'translation_domain' => 'forms',
+                ])
+                ->add('referentJamTerritorialCouncil', EntityType::class, [
+                    'mapped' => false,
+                    'required' => false,
+                    'label' => 'territorial_council.referent_jam',
+                    'translation_domain' => 'forms',
+                    'class' => TerritorialCouncil::class,
+                ], [
+                    'translation_domain' => 'forms',
+                ])
+                ->add('governmentMemberTerritorialCouncil', EntityType::class, [
+                    'mapped' => false,
+                    'required' => false,
+                    'label' => 'territorial_council.government_member',
+                    'class' => TerritorialCouncil::class,
+                ], [
+                    'translation_domain' => 'forms',
+                ])
+            ->end()
             ->with('Membre du Conseil', ['class' => 'col-md-6'])
                 ->add('boardMemberArea', ChoiceType::class, [
                     'label' => 'Région',
@@ -442,6 +485,7 @@ HELP
 
         $formMapper->getFormBuilder()
             ->addEventSubscriber(new BoardMemberListener())
+            ->addEventSubscriber(new TerritorialCouncilMembershipListener($this->getSubject()))
             ->addEventSubscriber(new RevokeManagedAreaSubscriber())
         ;
     }

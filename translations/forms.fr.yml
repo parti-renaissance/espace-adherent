@@ -52,3 +52,11 @@ chez_vous.measure.type.cheque_energie: Chèque énergie
 chez_vous.measure.type.prime_conversion_automobile: Prime à la conversion automobile
 chez_vous.measure.type.conversion_surface_agricole_bio: Conversion de la surface agricole en Bio
 chez_vous.measure.type.mission_bern: Mission Bern
+
+#
+# TerritorialCouncil
+#
+territorial_council.referent: Président du Conseil territorial (unique)
+territorial_council.lre_manager: Responsalbe LRE membre du Conseil territorial (unique)
+territorial_council.referent_jam: Référent JAM membre du Conseil territorial (unique)
+territorial_council.government_member: Membre du gouvernement membre du Conseil territorial
