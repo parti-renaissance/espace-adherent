@@ -65,7 +65,7 @@ abstract class AbstractElectedRepresentativeController extends Controller
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
             'referent_tags' => $managedTags,
-            'user_list_definition_type' => UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
+            'user_list_definition_type' => [UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE],
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
         ]);

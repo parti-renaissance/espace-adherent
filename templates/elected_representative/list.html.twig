@@ -124,8 +124,8 @@
                                 <th style="width: 100px;">Fonctions actuelles</th>
                                 <th style="width: 100px;">Étiquettes</th>
                                 <th style="width: 100px;">Labels</th>
-                                <th style="width: 100px;">Réseaux sociaux</th>
-                                <th style="width: 100px;">Adhérent</th>
+                                <th style="width: 120px;">Téléphone</th>
+                                <th style="width: 80px;">Adhérent</th>
                                 <th style="width: 100px;">Action</th>
                             </tr>
                             </thead>
@@ -176,11 +176,13 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {% for link in elected_representative.socialNetworkLinks %}
-                                            <a target="_blank" rel="noopener" href="{{ link.url }}">
-                                                <i class="fa fa-{{ link.type|lower }}-square"></i>
-                                            </a>
-                                        {% endfor %}
+                                        {% if elected_representative.adherent %}
+                                            {% if elected_representative.adherent.hasSmsSubscriptionType %}
+                                                {{ elected_representative.adherent.phone ? elected_representative.adherent.phone|phone_number_format : 'Non renseigné' }}
+                                            {% else %}
+                                                Non-abonné(e)
+                                            {% endif %}
+                                        {% endif %}
                                     </td>
                                     <td>
                                         <span class="status status__{{ elected_representative.isAdherent ? '1' : '2' }}">

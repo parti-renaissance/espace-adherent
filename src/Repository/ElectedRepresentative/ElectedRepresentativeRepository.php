@@ -5,7 +5,6 @@ namespace App\Repository\ElectedRepresentative;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\UserListDefinitionEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -192,9 +191,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         if ($userListDefinitions = $filter->getUserListDefinitions()) {
             $qb
                 ->andWhere('userListDefinition.id in (:userListDefinitions)')
-                ->andWhere('userListDefinition.type = :erType')
                 ->setParameter('userListDefinitions', $userListDefinitions)
-                ->setParameter('erType', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
             ;
         }
 
