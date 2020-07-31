@@ -11,6 +11,7 @@ use App\Collection\CommitteeMembershipCollection;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -282,6 +283,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToOne(targetEntity="App\Entity\JecouteManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $jecouteManagedArea;
+
+    /**
+     * @var TerritorialCouncilMembership|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", mappedBy="adherent", cascade={"remove"}, orphanRemoval=true)
+     */
+    private $territorialCouncilMembership;
 
     /**
      * @var CommitteeMembership[]|Collection
@@ -1347,6 +1355,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function revokeJecouteManager(): void
     {
         $this->jecouteManagedArea = null;
+    }
+
+    public function getTerritorialCouncilMembership(): ?TerritorialCouncilMembership
+    {
+        return $this->territorialCouncilMembership;
+    }
+
+    public function hasTerritorialCouncilMembership(): bool
+    {
+        return $this->territorialCouncilMembership instanceof TerritorialCouncilMembership;
     }
 
     public function getManagedAreaMarkerLatitude(): ?string
