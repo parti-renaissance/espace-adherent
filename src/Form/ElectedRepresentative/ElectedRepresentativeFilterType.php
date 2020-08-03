@@ -96,8 +96,8 @@ class ElectedRepresentativeFilterType extends AbstractType
                     return $er
                         ->createQueryBuilder('uld')
                         ->orderBy('uld.label')
-                        ->where('uld.type = :type')
-                        ->setParameter('type', $options['user_list_definition_type'] ?? null)
+                        ->where('uld.type IN (:type)')
+                        ->setParameter('type', $options['user_list_definition_type'] ?? [])
                     ;
                 },
             ])
@@ -120,7 +120,7 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'referent_tags' => [],
                 'allow_extra_fields' => true,
             ])
-            ->setAllowedTypes('user_list_definition_type', 'string')
+            ->setAllowedTypes('user_list_definition_type', 'array')
             ->setAllowedTypes('referent_tags', 'array')
         ;
     }
