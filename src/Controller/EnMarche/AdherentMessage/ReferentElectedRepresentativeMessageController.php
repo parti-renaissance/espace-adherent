@@ -17,4 +17,9 @@ class ReferentElectedRepresentativeMessageController extends AbstractMessageCont
     {
         return AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE;
     }
+
+    protected function isCanary(): bool
+    {
+        return true;
+    }
 }
