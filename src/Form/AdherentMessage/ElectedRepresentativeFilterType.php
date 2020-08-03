@@ -25,30 +25,32 @@ class ElectedRepresentativeFilterType extends AbstractType
             ])
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
-            ->add('mandates', ChoiceType::class, [
+            ->add('mandate', ChoiceType::class, [
                 'required' => false,
-                'multiple' => true,
                 'choices' => MandateTypeEnum::CHOICES,
-            ])
-            ->add('politicalFunctions', ChoiceType::class, [
-                'required' => false,
-                'multiple' => true,
-                'choices' => PoliticalFunctionNameEnum::CHOICES,
-            ])
-            ->add('userListDefinitions', ChoiceType::class, [
-                'required' => false,
-                'multiple' => true,
-                'choices' => UserListDefinitionEnum::CODES_ELECTED_REPRESENTATIVE,
                 'choice_label' => function (string $choice) {
-                    return $choice;
+                    return "elected_representative.mailchimp_tag.$choice";
                 },
             ])
-            ->add('labels', ChoiceType::class, [
+            ->add('politicalFunction', ChoiceType::class, [
                 'required' => false,
-                'multiple' => true,
+                'choices' => PoliticalFunctionNameEnum::CHOICES,
+                'choice_label' => function (string $choice) {
+                    return "elected_representative.mailchimp_tag.$choice";
+                },
+            ])
+            ->add('userListDefinition', ChoiceType::class, [
+                'required' => false,
+                'choices' => UserListDefinitionEnum::CODES_ELECTED_REPRESENTATIVE,
+                'choice_label' => function (string $choice) {
+                    return "elected_representative.mailchimp_tag.$choice";
+                },
+            ])
+            ->add('label', ChoiceType::class, [
+                'required' => false,
                 'choices' => LabelNameEnum::ALL,
                 'choice_label' => function (string $choice) {
-                    return $choice;
+                    return "elected_representative.mailchimp_tag.$choice";
                 },
             ])
         ;

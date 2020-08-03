@@ -6,12 +6,13 @@ use App\Entity\MailchimpSegment;
 use App\Repository\MailchimpSegmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\ClientInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class MailchimpUpdateSegmentsFromListCommand extends AbstractMailchimpReferentTagSegmentCommand
+class MailchimpUpdateSegmentsFromListCommand extends Command
 {
     protected static $defaultName = 'mailchimp:sync:segments';
 
@@ -28,13 +29,13 @@ class MailchimpUpdateSegmentsFromListCommand extends AbstractMailchimpReferentTa
         EntityManagerInterface $entityManager,
         ClientInterface $mailchimpClient,
         MailchimpSegmentRepository $segmentRepository,
-        string $mailchimpMainListId,
+        string $mailchimpListId,
         string $mailchimpElectedRepresentativeListId
     ) {
         $this->entityManager = $entityManager;
         $this->client = $mailchimpClient;
         $this->segmentRepository = $segmentRepository;
-        $this->mailchimpMainListId = $mailchimpMainListId;
+        $this->mailchimpMainListId = $mailchimpListId;
         $this->mailchimpElectedRepresentativeListId = $mailchimpElectedRepresentativeListId;
 
         parent::__construct();
@@ -74,6 +75,8 @@ class MailchimpUpdateSegmentsFromListCommand extends AbstractMailchimpReferentTa
 
                 $offset += $limit;
             }
+
+            $this->entityManager->commit();
         } catch (\Exception $exception) {
             $this->entityManager->rollback();
 
@@ -109,7 +112,7 @@ class MailchimpUpdateSegmentsFromListCommand extends AbstractMailchimpReferentTa
 
     private function updateSegment(array $segment, string $list): void
     {
-        $label = $segment['label'];
+        $label = $segment['name'];
         $externalId = $segment['id'];
 
         if ($segment = $this->findSegment($list, $label)) {

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class MailchimpSegment
 {
     public const LIST_MAIN = 'main';
-    public const LIST_ELECTED_REPRESENTATIVE = 'eleted_representative';
+    public const LIST_ELECTED_REPRESENTATIVE = 'elected_representative';
 
     public const LISTS = [
         self::LIST_MAIN,
@@ -95,5 +95,10 @@ class MailchimpSegment
     public function setExternalId(?string $externalId): void
     {
         $this->externalId = $externalId;
+    }
+
+    public function __toString()
+    {
+        return sprintf('[%s] %s', $this->list, $this->label);
     }
 }

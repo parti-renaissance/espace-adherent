@@ -36,37 +36,37 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
     private $lastName;
 
     /**
-     * @var array|null
+     * @var string|null
      *
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(nullable=true)
      */
-    private $mandates = [];
-
-    /**
-     * @var array|null
-     *
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $politicalFunctions = [];
-
-    /**
-     * @var array|null
-     *
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $labels = [];
-
-    /**
-     * @var array|null
-     *
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $userListDefinitions = [];
+    private $mandate;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(nullable=true)
+     */
+    private $politicalFunction;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $label;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $userListDefinition;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
      */
     private $isAdherent;
 
@@ -100,44 +100,44 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
         $this->lastName = $lastName;
     }
 
-    public function getMandates(): ?array
+    public function getMandate(): ?string
     {
-        return $this->mandates;
+        return $this->mandate;
     }
 
-    public function setMandates(?array $mandates): void
+    public function setMandate(string $mandate = null): void
     {
-        $this->mandates = $mandates;
+        $this->mandate = $mandate;
     }
 
-    public function getPoliticalFunctions(): ?array
+    public function getPoliticalFunction(): ?string
     {
-        return $this->politicalFunctions;
+        return $this->politicalFunction;
     }
 
-    public function setPoliticalFunctions(?array $politicalFunctions): void
+    public function setPoliticalFunction(string $politicalFunction = null): void
     {
-        $this->politicalFunctions = $politicalFunctions;
+        $this->politicalFunction = $politicalFunction;
     }
 
-    public function getLabels(): ?array
+    public function getLabel(): ?string
     {
-        return $this->labels;
+        return $this->label;
     }
 
-    public function setLabels(?array $labels): void
+    public function setLabel(string $label = null): void
     {
-        $this->labels = $labels;
+        $this->label = $label;
     }
 
-    public function getUserListDefinitions(): ?array
+    public function getUserListDefinition(): ?string
     {
-        return $this->userListDefinitions;
+        return $this->userListDefinition;
     }
 
-    public function setUserListDefinitions(?array $userListDefinitions): void
+    public function setUserListDefinition(string $userListDefinition = null): void
     {
-        $this->userListDefinitions = $userListDefinitions;
+        $this->userListDefinition = $userListDefinition;
     }
 
     public function getIsAdherent(): ?string

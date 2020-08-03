@@ -3,8 +3,6 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use App\Entity\ReferentTag;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,40 +12,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ReferentElectedRepresentativeFilter extends AbstractElectedRepresentativeFilter
 {
     /**
-     * @var ReferentTag[]|Collection
+     * @var ReferentTag|null
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
      *
      * @Assert\NotNull
      */
-    private $referentTags;
+    private $referentTag;
 
-    public function __construct(array $referentTags)
+    public function getReferentTag(): ?ReferentTag
     {
-        $this->referentTags = new ArrayCollection();
-
-        foreach ($referentTags as $tag) {
-            $this->addReferentTag($tag);
-        }
+        return $this->referentTag;
     }
 
-    /**
-     * @return ReferentTag[]
-     */
-    public function getReferentTags(): array
+    public function setReferentTag(ReferentTag $referentTag = null): void
     {
-        return $this->referentTags->toArray();
-    }
-
-    public function addReferentTag(ReferentTag $referentTag): void
-    {
-        if (!$this->referentTags->contains($referentTag)) {
-            $this->referentTags->add($referentTag);
-        }
-    }
-
-    public function removeReferentTag(ReferentTag $referentTag): void
-    {
-        $this->referentTags->removeElement($referentTag);
+        $this->referentTag = $referentTag;
     }
 }

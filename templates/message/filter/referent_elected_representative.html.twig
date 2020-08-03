@@ -20,6 +20,14 @@
             <div class="manager__filters__row">
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
+                        {% if form.referentTag is defined %}
+                            <div class="filter__row">
+                                <label class="filter__label">Zone gérée</label>
+                                {{ form_widget(form.referentTag, {attr: {class: 'filter__field'}}) }}
+                                {{ form_errors(form.referentTag) }}
+                            </div>
+                        {% endif %}
+
                         <div class="filter__row">
                             <label class="filter__label">Genre</label>
                             {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
@@ -42,15 +50,15 @@
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
                         <div class="filter__row">
-                            <label class="filter__label">Mandats</label>
-                            {{ form_widget(form.mandates, {attr: {class: 'filter__field multi_select2', placeholder: 'Mandats'}}) }}
-                            {{ form_errors(form.mandates) }}
+                            <label class="filter__label">Mandat</label>
+                            {{ form_widget(form.mandate, {attr: {class: 'filter__field', placeholder: 'Mandat'}}) }}
+                            {{ form_errors(form.mandate) }}
                         </div>
 
                         <div class="filter__row">
-                            <label class="filter__label">Fonctions</label>
-                            {{ form_widget(form.politicalFunctions, {attr: {class: 'filter__field multi_select2', placeholder: 'Fonctions politiques'}}) }}
-                            {{ form_errors(form.politicalFunctions) }}
+                            <label class="filter__label">Fonction</label>
+                            {{ form_widget(form.politicalFunction, {attr: {class: 'filter__field', placeholder: 'Fonction politique'}}) }}
+                            {{ form_errors(form.politicalFunction) }}
                         </div>
                     </div>
                 </div>
@@ -58,15 +66,15 @@
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
                         <div class="filter__row">
-                            <label class="filter__label">Labels</label>
-                            {{ form_widget(form.userListDefinitions, {attr: {class: 'filter__field multi_select2', placeholder: 'Labels'}}) }}
-                            {{ form_errors(form.userListDefinitions) }}
+                            <label class="filter__label">Label</label>
+                            {{ form_widget(form.userListDefinition, {attr: {class: 'filter__field', placeholder: 'Label'}}) }}
+                            {{ form_errors(form.userListDefinition) }}
                         </div>
 
                         <div class="filter__row">
-                            <label class="filter__label">Étiquettes</label>
-                            {{ form_widget(form.labels, {attr: {class: 'filter__field multi_select2', placeholder: 'Étiquettes'}}) }}
-                            {{ form_errors(form.labels) }}
+                            <label class="filter__label">Étiquette</label>
+                            {{ form_widget(form.label, {attr: {class: 'filter__field', placeholder: 'Étiquette'}}) }}
+                            {{ form_errors(form.label) }}
                         </div>
                     </div>
                 </div>
@@ -84,50 +92,4 @@
             {{ form_end(form) }}
         </div>
     </div>
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
-{% endblock %}
-
-{% block final_javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            $('.multi_select2').each(function () {
-                $(this).select2({
-                    placeholder: this.dataset.placeholder || '',
-                    theme: 'default em-filters'
-                });
-            });
-
-            var candidateChangeHandler = function () {
-                var disable = !!$('#candidate-checkboxes-container input:checked').length;
-                $('.candidate-incompatible').prop('disabled', disable);
-            };
-
-            candidateChangeHandler();
-
-            $('#candidate-checkboxes-container input').on('change', candidateChangeHandler);
-
-            $('.js-role-select').on('change', function() {
-                var selectedRoles = $(this).val(),
-                    $oppositeOptions = $('#'+$(this).data('opposite')).find('option'),
-                    $oppositeOption
-                ;
-
-                for (var i = 0; i < $oppositeOptions.length; i++) {
-                    $oppositeOption = $($oppositeOptions[i]);
-                    // disable or re-enable options for the opposite select
-                    $oppositeOption.attr('disabled', $.inArray($oppositeOption.val(), selectedRoles) > -1);
-                }
-            });
-
-            $('.js-role-select').trigger('change');
-        });
-    </script>
 {% endblock %}
