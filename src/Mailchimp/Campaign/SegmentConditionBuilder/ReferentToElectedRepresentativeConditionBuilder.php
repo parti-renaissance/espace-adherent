@@ -6,6 +6,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\MailchimpSegment;
+use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class ReferentToElectedRepresentativeConditionBuilder extends AbstractConditionBuilder
 {
@@ -16,8 +17,22 @@ class ReferentToElectedRepresentativeConditionBuilder extends AbstractConditionB
 
     public function build(MailchimpCampaign $campaign): array
     {
-        return array_map(function (MailchimpSegment $mailchimpSegment) {
-            return $mailchimpSegment->getExternalId();
+        /** @var ReferentElectedRepresentativeFilter $filter */
+        $filter = $campaign->getMessage()->getFilter();
+
+        $conditions = array_map(function (MailchimpSegment $mailchimpSegment) {
+            return $this->buildStaticSegmentCondition($mailchimpSegment->getExternalId());
         }, $campaign->getMailchimpSegments()->toArray());
+
+        if (null !== $filter->getIsAdherent()) {
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'is',
+                'field' => MemberRequest::MERGE_FIELD_ADHERENT,
+                'value' => $filter->getIsAdherent() ? 'oui' : 'non',
+            ];
+        }
+
+        return $conditions;
     }
 }

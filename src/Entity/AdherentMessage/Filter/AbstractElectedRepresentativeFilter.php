@@ -64,9 +64,9 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
     private $userListDefinition;
 
     /**
-     * @var string|null
+     * @var bool|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isAdherent;
 
@@ -140,12 +140,12 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
         $this->userListDefinition = $userListDefinition;
     }
 
-    public function getIsAdherent(): ?string
+    public function getIsAdherent(): ?bool
     {
         return $this->isAdherent;
     }
 
-    public function setIsAdherent(?string $isAdherent): void
+    public function setIsAdherent(?bool $isAdherent = null): void
     {
         $this->isAdherent = $isAdherent;
     }

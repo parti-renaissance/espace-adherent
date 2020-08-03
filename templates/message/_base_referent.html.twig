@@ -1,5 +1,23 @@
 {% extends 'referent/_layout.html.twig' %}
 
 {% block referent_content %}
+    <section>
+        <div class="datagrid__table__tabs">
+            <div class="datagrid__table__tabs__items">
+                    <h3>
+                        <a class="{{ is_active_route(app.request, 'app_message_referent_*') and not is_active_route(app.request, 'app_message_referent_elected_representative_*') ? 'active' }}"
+                           href="{{ path('app_message_referent_list') }}">
+                            Messagerie adhérents
+                        </a>
+                    </h3>
+                    <span class="separator"></span>
+                <h3>
+                    <a class="{{ is_active_route(app.request, 'app_message_referent_elected_representative_*') ? 'active' }}" href="{{ path('app_message_referent_elected_representative_list') }}">
+                        Messagerie élus
+                    </a>
+                </h3>
+            </div>
+        </div>
+    </section>
     {% block messages_main_block %}{% endblock %}
 {% endblock %}

@@ -37,10 +37,6 @@ class ElectedRepresentativeTagsBuilder
             $tags[] = $label->getName();
         }
 
-        if ($electedRepresentative->isAdherent()) {
-            $tags[] = self::ADHERENT_TAG;
-        }
-
         $translatedTags = array_map(function (string $tag) {
             return $this->translateKey($tag);
         }, array_unique($tags));

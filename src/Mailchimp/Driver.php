@@ -177,6 +177,7 @@ class Driver implements LoggerAwareInterface
 
     private function send(string $method, string $uri, array $body = []): ?ResponseInterface
     {
+        dump($body);
         try {
             return $this->lastResponse = $this->client->request(
                 $method,

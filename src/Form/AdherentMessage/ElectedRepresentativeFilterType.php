@@ -53,6 +53,15 @@ class ElectedRepresentativeFilterType extends AbstractType
                     return "elected_representative.mailchimp_tag.$choice";
                 },
             ])
+            ->add('isAdherent', ChoiceType::class, [
+                'placeholder' => 'Tous',
+                'choices' => [
+                    'global.yes' => true,
+                    'global.no' => false,
+                ],
+                'expanded' => true,
+                'required' => false,
+            ])
         ;
     }
 

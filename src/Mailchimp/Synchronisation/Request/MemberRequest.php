@@ -20,6 +20,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_REFERENT_TAGS = 'REF_TAGS';
     public const MERGE_FIELD_INSEE_CODE = 'INSEE_CODE';
     public const MERGE_FIELD_DEPARTMENTAL_CODE = 'DPT_CODE';
+    public const MERGE_FIELD_ADHERENT = 'ISADHERENT';
 
     private $memberIdentifier;
 
