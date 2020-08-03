@@ -142,7 +142,8 @@ class VotingPlatformConfigureCommand extends Command
             $group->addCandidate($candidate = new Candidate(
                 $adherent->getFirstName(),
                 $adherent->getLastName(),
-                $candidacy->getGender()
+                $candidacy->getGender(),
+                $adherent
             ));
 
             $candidate->setImagePath($candidacy->getImagePath());

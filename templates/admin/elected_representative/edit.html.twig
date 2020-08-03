@@ -75,7 +75,7 @@
                                         Téléphone
                                     </label>
                                     <div class="sonata-ba-field sonata-ba-field-standard-natural">
-                                        <input type="text" class="form-control" disabled value="{{ adherent.phone|phone_number_format }}">
+                                        <input type="text" class="form-control" disabled value="{{ adherent.phone ? adherent.phone|phone_number_format }}">
                                     </div>
                                 </div>
                             </div>

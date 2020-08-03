@@ -3,6 +3,7 @@
 namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,11 +64,25 @@ class Candidate
      */
     private $candidateGroup;
 
-    public function __construct(string $firstName, string $lastName, string $gender, UuidInterface $uuid = null)
-    {
+    /**
+     * @var Adherent
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $adherent;
+
+    public function __construct(
+        string $firstName,
+        string $lastName,
+        string $gender,
+        Adherent $adherent = null,
+        UuidInterface $uuid = null
+    ) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->gender = $gender;
+        $this->adherent = $adherent;
 
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
