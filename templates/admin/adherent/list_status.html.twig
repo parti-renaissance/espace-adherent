@@ -70,6 +70,10 @@
             <span class="label label-primary" style="padding: 2px;">Sénateur délégué</span><br/>
         {% endif %}
 
+        {% if object.isSenatorialCandidate %}
+            <span class="label label-primary" style="padding: 2px;">Candidats Sénatoriales 2020</span><br/>
+        {% endif %}
+
         {% if object.isMunicipalManager %}
             <span class="label label-primary" style="padding: 2px;">Responsable communal</span><br/>
         {% endif %}

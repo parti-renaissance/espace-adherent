@@ -4,6 +4,7 @@ namespace App\Form\Admin;
 
 use App\Entity\ReferentTag;
 use App\Entity\SenatorialCandidateManagedArea;
+use App\Repository\ReferentTagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +22,9 @@ class SenatorialCandidateManagedAreaType extends AbstractType
                 'class' => ReferentTag::class,
                 'required' => false,
                 'multiple' => true,
+                'query_builder' => function (ReferentTagRepository $repository) {
+                    return $repository->createSelectSenatorAreaQueryBuilder();
+                },
             ])
         ;
 
