@@ -9,6 +9,7 @@ use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use Ramsey\Uuid\Uuid;
 
@@ -42,6 +43,10 @@ class AdherentMessageFactory
 
             case AdherentMessageTypeEnum::SENATOR:
                 $message = new SenatorAdherentMessage(Uuid::uuid4(), $adherent);
+                break;
+
+            case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
+                $message = new ReferentElectedRepresentativeMessage(Uuid::uuid4(), $adherent);
                 break;
 
             default:

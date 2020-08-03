@@ -4,6 +4,7 @@ namespace App\Mailchimp\Campaign;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface;
@@ -64,6 +65,10 @@ class SegmentConditionsBuilder
 
             if ($filter instanceof ReferentUserFilter && ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers())) {
                 return $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId();
+            }
+
+            if ($filter instanceof ReferentElectedRepresentativeFilter) {
+                return $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
             }
         }
 

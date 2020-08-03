@@ -3,6 +3,9 @@
 namespace App\Entity\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
+use App\Entity\MailchimpSegment;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -96,9 +99,17 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
      */
     private $city;
 
+    /**
+     * @var MailchimpSegment[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\MailchimpSegment")
+     */
+    private $mailchimpSegments;
+
     public function __construct(AdherentMessageInterface $message)
     {
         $this->message = $message;
+        $this->mailchimpSegments = new ArrayCollection();
     }
 
     public function getExternalId(): ?string
@@ -154,6 +165,23 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     public function setLabel(?string $label): void
     {
         $this->label = $label;
+    }
+
+    public function getMailchimpSegments(): Collection
+    {
+        return $this->mailchimpSegments;
+    }
+
+    public function addMailchimpSegment(MailchimpSegment $mailchimpSegment): void
+    {
+        if (!$this->mailchimpSegments->contains($mailchimpSegment)) {
+            $this->mailchimpSegments->add($mailchimpSegment);
+        }
+    }
+
+    public function removeMailchimpSegment(MailchimpSegment $mailchimpSegment): void
+    {
+        $this->mailchimpSegments->removeElement($mailchimpSegment);
     }
 
     public function markAsSent(): void
@@ -215,5 +243,6 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     public function resetFilter(): void
     {
         $this->staticSegmentId = $this->city = null;
+        $this->mailchimpSegments = new ArrayCollection();
     }
 }

@@ -40,6 +40,7 @@ services:
         bind:
             $mailchimpClient: '@csa_guzzle.client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
+            $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $transactionalMailer: '@app.mailer.transactional'
             $votingProcessWorkflow: '@state_machine.voting_process'
             $votingPlatformCache: !service

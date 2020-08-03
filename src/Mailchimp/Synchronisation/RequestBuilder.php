@@ -27,6 +27,8 @@ class RequestBuilder
     private $zipCode;
     private $countryName;
     private $adhesionDate;
+    /** @var bool|null */
+    private $isAdherent;
 
     private $interests;
 
@@ -75,6 +77,7 @@ class RequestBuilder
             ->setFirstName($electedRepresentative->getFirstName())
             ->setLastName($electedRepresentative->getLastName())
             ->setBirthDay($electedRepresentative->getBirthDate())
+            ->setIsAdherent($electedRepresentative->isAdherent())
             ->setActiveTags($this->electedRepresentativeTagsBuilder->buildTags($electedRepresentative))
             ->setIsSubscribeRequest(false === $electedRepresentative->isEmailUnsubscribed())
         ;
@@ -134,6 +137,13 @@ class RequestBuilder
     public function setBirthDay(?\DateTimeInterface $birthDay): self
     {
         $this->birthDay = $birthDay;
+
+        return $this;
+    }
+
+    public function setIsAdherent(bool $isAdherent = null): self
+    {
+        $this->isAdherent = $isAdherent;
 
         return $this;
     }
@@ -276,6 +286,10 @@ class RequestBuilder
 
         if ($this->birthDay) {
             $mergeFields[MemberRequest::MERGE_FIELD_BIRTHDATE] = $this->birthDay->format(MemberRequest::DATE_FORMAT);
+        }
+
+        if (null !== $this->isAdherent) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ADHERENT] = $this->isAdherent ? 'oui' : 'non';
         }
 
         if ($this->city) {

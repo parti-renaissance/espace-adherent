@@ -20,4 +20,9 @@ class MailchimpSegmentRepository extends ServiceEntityRepository
             'label' => $label,
         ]);
     }
+
+    public function findOneForElectedRepresentative(string $label): ?MailchimpSegment
+    {
+        return $this->findOneForListByLabel(MailchimpSegment::LIST_ELECTED_REPRESENTATIVE, $label);
+    }
 }

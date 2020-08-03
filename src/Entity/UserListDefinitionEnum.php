@@ -21,6 +21,11 @@ final class UserListDefinitionEnum extends Enum
         self::TYPE_LRE,
     ];
 
+    public const CODES_ELECTED_REPRESENTATIVE = [
+        self::CODE_ELECTED_REPRESENTATIVE_SUPPORTING_LA_REM,
+        self::CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER,
+    ];
+
     public const CHOICES = [
         'user_list_definition.type.elected_representative.label' => self::TYPE_ELECTED_REPRESENTATIVE,
         'user_list_definition.type.adherent.label' => self::TYPE_ADHERENT,

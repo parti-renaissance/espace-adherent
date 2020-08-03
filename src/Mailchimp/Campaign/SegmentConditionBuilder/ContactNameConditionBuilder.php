@@ -6,6 +6,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
@@ -18,12 +19,13 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
             || $filter instanceof AdherentZoneFilter
             || $filter instanceof CommitteeFilter
             || ($filter instanceof MunicipalChiefFilter && !$filter->getContactNewsletter())
+            || $filter instanceof ReferentElectedRepresentativeFilter
         ;
     }
 
     public function build(MailchimpCampaign $campaign): array
     {
-        /** @var MunicipalChiefFilter|ReferentUserFilter|AdherentZoneFilter $filter */
+        /** @var MunicipalChiefFilter|ReferentUserFilter|AdherentZoneFilter|ReferentElectedRepresentativeFilter $filter */
         $filter = $campaign->getMessage()->getFilter();
 
         $conditions = [];

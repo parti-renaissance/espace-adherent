@@ -8,7 +8,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class ElectedRepresentativeTagsBuilder
 {
     public const ADHERENT_TAG = 'adherent';
-    private const TRANSLATION_PREFIX = 'elected_representative.mailchimp_tag.';
+    public const TRANSLATION_PREFIX = 'elected_representative.mailchimp_tag.';
 
     private $translator;
 
@@ -35,10 +35,6 @@ class ElectedRepresentativeTagsBuilder
 
         foreach ($electedRepresentative->getCurrentLabels() as $label) {
             $tags[] = $label->getName();
-        }
-
-        if ($electedRepresentative->isAdherent()) {
-            $tags[] = self::ADHERENT_TAG;
         }
 
         $translatedTags = array_map(function (string $tag) {
