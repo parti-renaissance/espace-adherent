@@ -789,6 +789,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasAdvancedPrivileges(): bool
     {
         return $this->isReferent()
+            || $this->isDelegatedReferent()
             || $this->isCoordinator()
             || $this->isProcurationManager()
             || $this->isAssessorManager()
@@ -798,11 +799,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isCitizenProjectAdministrator()
             || $this->isBoardMember()
             || $this->isDeputy()
+            || $this->isDelegatedDeputy()
             || $this->isSenator()
+            || $this->isDelegatedSenator()
             || $this->isMunicipalChief()
             || $this->isMunicipalManager()
             || $this->isElectionResultsReporter()
             || $this->isMunicipalManagerSupervisor()
+            || $this->isSenatorialCandidate()
         ;
     }
 
