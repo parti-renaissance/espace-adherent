@@ -73,6 +73,8 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
 
                 $this->entityManager->flush();
 
+                $this->io->progressAdvance();
+
                 $offset += $limit;
             }
 

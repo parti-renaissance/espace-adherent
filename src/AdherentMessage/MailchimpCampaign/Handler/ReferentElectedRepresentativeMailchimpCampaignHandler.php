@@ -38,10 +38,10 @@ class ReferentElectedRepresentativeMailchimpCampaignHandler extends AbstractMail
 
         $segmentLabels = [
             $referentTag->getCode(),
-            $this->translateTag($filter->getMandate()),
-            $this->translateTag($filter->getPoliticalFunction()),
-            $this->translateTag($filter->getLabel()),
-            $this->translateTag($filter->getUserListDefinition()),
+            $filter->getMandate(),
+            $filter->getPoliticalFunction(),
+            $filter->getLabel(),
+            $filter->getUserListDefinition(),
         ];
 
         $filters = [];
@@ -50,10 +50,10 @@ class ReferentElectedRepresentativeMailchimpCampaignHandler extends AbstractMail
                 continue;
             }
 
-            $filters[] = $this->getSegment($segmentLabel);
+            $filters[] = $this->getSegment($this->translateTag($segmentLabel));
         }
 
-        return $this->buildConditions($filters);
+        return [$this->buildConditions($filters)];
     }
 
     /**
@@ -91,7 +91,9 @@ class ReferentElectedRepresentativeMailchimpCampaignHandler extends AbstractMail
 
     private function translateTag(string $key): string
     {
-        return $this->translator->trans(ElectedRepresentativeTagsBuilder::TRANSLATION_PREFIX.$key);
+        $translated = $this->translator->trans($transKey = ElectedRepresentativeTagsBuilder::TRANSLATION_PREFIX.$key);
+
+        return $translated !== $transKey ? $translated : $key;
     }
 
     private function getSegment(string $label): MailchimpSegment

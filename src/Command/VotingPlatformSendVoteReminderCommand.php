@@ -2,7 +2,11 @@
 
 namespace App\Command;
 
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -65,6 +69,13 @@ class VotingPlatformSendVoteReminderCommand extends Command
             $this->sendElectionVoteReminders($election);
 
             $this->io->progressAdvance();
+
+            $this->entityManager->detach($election);
+            $this->entityManager->clear(Adherent::class);
+            $this->entityManager->clear(Committee::class);
+            $this->entityManager->clear(CommitteeElection::class);
+            $this->entityManager->clear(ElectionRound::class);
+            $this->entityManager->clear(Voter::class);
         }
 
         $this->io->progressFinish();
