@@ -1,0 +1,101 @@
+{% extends 'message/filter.html.twig' %}
+
+{% block filter_content %}
+    <div class="form__title b__nudge--bottom-larger">
+        <h3 class="text--medium  text--center">Filtrer mon message</h3>
+        <div class="form__step">
+            <span class="active">2</span>
+            / 2
+        </div>
+    </div>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form) }}
+
+            <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+            {{ form_errors(form) }}
+
+            <div class="manager__filters__row">
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        {% if form.referentTag is defined %}
+                            <div class="filter__row">
+                                <label class="filter__label">Zone gérée</label>
+                                {{ form_widget(form.referentTag, {attr: {class: 'filter__field'}}) }}
+                                {{ form_errors(form.referentTag) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="filter__row">
+                            <label class="filter__label">Genre</label>
+                            {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Nom</label>
+                            {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                            {{ form_errors(form.lastName) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Prénom</label>
+                            {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                            {{ form_errors(form.firstName) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Mandat</label>
+                            {{ form_widget(form.mandate, {attr: {class: 'filter__field', placeholder: 'Mandat'}}) }}
+                            {{ form_errors(form.mandate) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Fonction</label>
+                            {{ form_widget(form.politicalFunction, {attr: {class: 'filter__field', placeholder: 'Fonction politique'}}) }}
+                            {{ form_errors(form.politicalFunction) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Label</label>
+                            {{ form_widget(form.userListDefinition, {attr: {class: 'filter__field', placeholder: 'Label'}}) }}
+                            {{ form_errors(form.userListDefinition) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Étiquette</label>
+                            {{ form_widget(form.label, {attr: {class: 'filter__field', placeholder: 'Étiquette'}}) }}
+                            {{ form_errors(form.label) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Adhérent</label>
+                            {{ form_widget(form.isAdherent, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                            {{ form_errors(form.isAdherent) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                {% if message.filter %}
+                    <a
+                        href="{{ path('app_message_referent_filter', {uuid: message.uuid, reset: true}) }}"
+                        class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset"
+                    >Réinitialiser le filtre</a>
+                {% endif %}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

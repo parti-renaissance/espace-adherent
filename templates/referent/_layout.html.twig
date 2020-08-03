@@ -82,7 +82,7 @@
 
                             {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
                                 <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'active' }}">
-                                    <a href="{{ path('app_message_referent_list', route_params|default({})) }}">Mes messages</a>
+                                    <a href="{{ path('app_message_referent_list', route_params|default({})) }}">Messagerie</a>
                                 </li>
                             {% endif %}
 

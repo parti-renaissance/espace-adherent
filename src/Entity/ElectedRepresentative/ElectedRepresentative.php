@@ -5,6 +5,7 @@ namespace App\Entity\ElectedRepresentative;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityUserListDefinitionTrait;
+use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -607,5 +608,38 @@ class ElectedRepresentative
     public function __toString(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);
+    }
+
+    /**
+     * @return ReferentTag[]|ArrayCollection
+     */
+    public function getActiveReferentTags(): ArrayCollection
+    {
+        $activeTags = new ArrayCollection();
+
+        foreach ($this->getCurrentMandates() as $mandate) {
+            if (!$zone = $mandate->getZone()) {
+                continue;
+            }
+
+            foreach ($zone->getReferentTags() as $referentTag) {
+                if (!$activeTags->contains($referentTag)) {
+                    $activeTags->add($referentTag);
+                }
+            }
+        }
+
+        return $activeTags;
+    }
+
+    public function getActiveReferentTagCodes(): array
+    {
+        $tags = [];
+
+        foreach ($this->getActiveReferentTags() as $referentTag) {
+            $tags[] = $referentTag->getCode();
+        }
+
+        return array_unique($tags);
     }
 }

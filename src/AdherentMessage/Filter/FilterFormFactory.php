@@ -8,6 +8,7 @@ use App\Exception\InvalidAdherentMessageType;
 use App\Form\AdherentMessage\AdherentZoneFilterType;
 use App\Form\AdherentMessage\CommitteeFilterType;
 use App\Form\AdherentMessage\MunicipalChiefFilterType;
+use App\Form\AdherentMessage\ReferentElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\ReferentFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -53,6 +54,11 @@ class FilterFormFactory
 
             case AdherentMessageTypeEnum::COMMITTEE:
                 return $this->formFactory->create(CommitteeFilterType::class, $data);
+
+            case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
+                return $this->formFactory->create(ReferentElectedRepresentativeFilterType::class, $data, [
+                    'referent_tags' => $adherent->getManagedArea()->getTags()->toArray(),
+                ]);
         }
 
         throw new InvalidAdherentMessageType(sprintf('Invalid message ("%s") type or data', $messageType));
