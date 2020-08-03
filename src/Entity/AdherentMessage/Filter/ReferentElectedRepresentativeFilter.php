@@ -2,12 +2,15 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\ReferentTag;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ReferentElectedRepresentativeFilter extends AbstractElectedRepresentativeFilter
 {
