@@ -8,6 +8,7 @@ use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\Filter\FilterFactory;
 use App\AdherentMessage\Filter\FilterFormFactory;
+use App\Controller\CanaryControllerTrait;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Form\AdherentMessage\AdherentMessageType;
@@ -24,12 +25,17 @@ use Symfony\Component\Routing\Annotation\Route;
 abstract class AbstractMessageController extends Controller
 {
     use AccessDelegatorTrait;
+    use CanaryControllerTrait;
 
     /**
      * @Route(name="list", methods={"GET"})
      */
     public function messageListAction(Request $request, AdherentMessageRepository $repository): Response
     {
+        if (!$this->isCanary()) {
+            $this->disableInProduction();
+        }
+
         $status = $request->query->get('status');
 
         if ($status && !AdherentMessageStatusEnum::isValid($status)) {
@@ -57,6 +63,10 @@ abstract class AbstractMessageController extends Controller
      */
     public function createMessageAction(Request $request, AdherentMessageManager $messageManager): Response
     {
+        if (!$this->isCanary()) {
+            $this->disableInProduction();
+        }
+
         $message = new AdherentMessageDataObject();
 
         if ($request->isMethod('POST') && $request->request->has('message_content')) {
@@ -95,6 +105,10 @@ abstract class AbstractMessageController extends Controller
         AbstractAdherentMessage $message,
         AdherentMessageManager $manager
     ): Response {
+        if (!$this->isCanary()) {
+            $this->disableInProduction();
+        }
+
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
         }
@@ -126,6 +140,10 @@ abstract class AbstractMessageController extends Controller
      */
     public function previewMessageAction(AbstractAdherentMessage $message): Response
     {
+        if (!$this->isCanary()) {
+            $this->disableInProduction();
+        }
+
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
@@ -140,6 +158,10 @@ abstract class AbstractMessageController extends Controller
      */
     public function deleteMessageAction(AbstractAdherentMessage $message, ObjectManager $manager): Response
     {
+        if (!$this->isCanary()) {
+            $this->disableInProduction();
+        }
+
         $manager->remove($message);
         $manager->flush();
 
@@ -159,6 +181,10 @@ abstract class AbstractMessageController extends Controller
         FilterFormFactory $formFactory,
         AdherentMessageManager $manager
     ): Response {
+        if (!$this->isCanary()) {
+            $this->disableInProduction();
+        }
+
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
         }
@@ -208,6 +234,10 @@ abstract class AbstractMessageController extends Controller
         Manager $manager,
         ObjectManager $entityManager
     ): Response {
+        if (!$this->isCanary()) {
+            $this->disableInProduction();
+        }
+
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to send.');
         }
@@ -239,6 +269,10 @@ abstract class AbstractMessageController extends Controller
      */
     public function sendTestMessageAction(AbstractAdherentMessage $message, Manager $manager): Response
     {
+        if (!$this->isCanary()) {
+            $this->disableInProduction();
+        }
+
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to test sending.');
         }
@@ -269,5 +303,10 @@ abstract class AbstractMessageController extends Controller
     protected function redirectToMessageRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_message_{$this->getMessageType()}_${subName}", $parameters);
+    }
+
+    protected function isCanary(): bool
+    {
+        return false;
     }
 }

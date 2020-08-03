@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20200803152503 extends AbstractMigration
+final class Version20200803182201 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -37,7 +37,7 @@ final class Version20200803152503 extends AbstractMigration
         ADD 
           user_list_definition VARCHAR(255) DEFAULT NULL, 
         ADD 
-          is_adherent VARCHAR(255) DEFAULT NULL');
+          is_adherent TINYINT(1) DEFAULT NULL');
         $this->addSql('ALTER TABLE mailchimp_segment CHANGE external_id external_id VARCHAR(255) DEFAULT NULL');
     }
 
