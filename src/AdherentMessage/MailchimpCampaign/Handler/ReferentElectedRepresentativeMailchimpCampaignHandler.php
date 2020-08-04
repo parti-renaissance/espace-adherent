@@ -77,18 +77,6 @@ class ReferentElectedRepresentativeMailchimpCampaignHandler extends AbstractMail
         ];
     }
 
-    /**
-     * @param string[]|array $tags
-     *
-     * @return MailchimpSegment[]|array
-     */
-    private function getTagSegments(array $tags): array
-    {
-        return array_map(function (string $tag) {
-            return $this->getSegment($this->translateTag($tag));
-        }, $tags);
-    }
-
     private function translateTag(string $key): string
     {
         $translated = $this->translator->trans($transKey = ElectedRepresentativeTagsBuilder::TRANSLATION_PREFIX.$key);

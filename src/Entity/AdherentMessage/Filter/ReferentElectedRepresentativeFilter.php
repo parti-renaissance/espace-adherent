@@ -23,6 +23,11 @@ class ReferentElectedRepresentativeFilter extends AbstractElectedRepresentativeF
      */
     private $referentTag;
 
+    public function __construct(ReferentTag $referentTag = null)
+    {
+        $this->referentTag = $referentTag;
+    }
+
     public function getReferentTag(): ?ReferentTag
     {
         return $this->referentTag;

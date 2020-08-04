@@ -74,6 +74,6 @@ abstract class FilterFactory
             throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a referent', $user->getEmailAddress()));
         }
 
-        return new ReferentElectedRepresentativeFilter($managedArea->getTags()->toArray());
+        return new ReferentElectedRepresentativeFilter($managedArea->getTags()->first());
     }
 }
