@@ -102,7 +102,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     /**
      * @var MailchimpSegment[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\MailchimpSegment")
+     * @ORM\ManyToMany(targetEntity="App\Entity\MailchimpSegment", cascade={"all"})
      */
     private $mailchimpSegments;
 

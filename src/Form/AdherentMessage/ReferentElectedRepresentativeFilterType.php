@@ -20,6 +20,8 @@ class ReferentElectedRepresentativeFilterType extends AbstractType
         if (false === $options['single_zone']) {
             $builder->add('referentTag', MyReferentTagChoiceType::class);
         }
+
+        $builder->remove('label');
     }
 
     public function configureOptions(OptionsResolver $resolver)

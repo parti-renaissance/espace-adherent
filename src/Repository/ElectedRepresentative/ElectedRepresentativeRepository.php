@@ -9,7 +9,6 @@ use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -46,17 +45,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
      */
     public function searchByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
     {
-        return $this->configurePaginator(
-            $this->createFilterQueryBuilder($filter),
-            $page,
-            $limit,
-            static function (Query $query) {
-                $query
-                    ->useResultCache(true)
-                    ->setResultCacheLifetime(1800)
-                ;
-            }
-        );
+        return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
     }
 
     public function countForReferentTags(array $referentTags): int
@@ -76,9 +65,8 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
     public function isInReferentManagedArea(ElectedRepresentative $electedRepresentative, array $referentTags): bool
     {
-        $qb = $this
-            ->createQueryBuilder('er')
-        ;
+        $qb = $this->createQueryBuilder('er');
+
         $this->withActiveMandatesCondition($qb);
 
         $res = $this

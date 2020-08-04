@@ -6,11 +6,10 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\MyTeam\DelegatedAccess;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 trait AccessDelegatorTrait
 {
-    protected function getMainUser(SessionInterface $session): UserInterface
+    protected function getMainUser(SessionInterface $session): Adherent
     {
         $user = $this->getUser();
 
