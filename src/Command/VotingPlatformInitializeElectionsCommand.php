@@ -4,8 +4,11 @@ namespace App\Command;
 
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
+use App\Entity\TerritorialCouncil\Election;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\CommitteeRepository;
+use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,9 +17,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class VotingPlatformInitializeCommitteeElectionCommand extends Command
+class VotingPlatformInitializeElectionsCommand extends Command
 {
-    protected static $defaultName = 'app:voting-platform:initialize-committee-election';
+    protected static $defaultName = 'app:voting-platform:step-1:initialize-elections';
 
     /** @var DesignationRepository */
     private $designationRepository;
@@ -26,10 +29,12 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
     private $entityManager;
     /** @var CommitteeRepository */
     private $committeeRepository;
+    /** @var TerritorialCouncilRepository */
+    private $territorialCouncilRepository;
 
     protected function configure()
     {
-        $this->setDescription('Configure Voting Platform: initialize committee elections');
+        $this->setDescription('Voting Platform: step 1: initialize elections for committees, territorial councils, etc...');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -48,6 +53,8 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
         foreach ($designations as $designation) {
             if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
                 $this->configureCommitteeElections($designation);
+            } elseif (DesignationTypeEnum::COPOL === $designation->getType()) {
+                $this->configureTerritorialCouncilElections($designation);
             } else {
                 $this->io->error(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
@@ -72,6 +79,22 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
         }
     }
 
+    private function configureTerritorialCouncilElections(Designation $designation): void
+    {
+        while ($councils = $this->territorialCouncilRepository->findAllWithoutStartedElection($designation)) {
+            foreach ($councils as $council) {
+                $council->setCurrentElection(new Election($designation));
+
+                $this->entityManager->flush();
+
+                $this->io->progressAdvance();
+            }
+
+            $this->entityManager->clear(TerritorialCouncil::class);
+            $this->entityManager->clear(Election::class);
+        }
+    }
+
     /** @required */
     public function setDesignationRepository(DesignationRepository $designationRepository): void
     {
@@ -88,5 +111,11 @@ class VotingPlatformInitializeCommitteeElectionCommand extends Command
     public function setCommitteeRepository(CommitteeRepository $committeeRepository): void
     {
         $this->committeeRepository = $committeeRepository;
+    }
+
+    /** @required */
+    public function setTerritorialCouncilRepository(TerritorialCouncilRepository $territorialCouncilRepository): void
+    {
+        $this->territorialCouncilRepository = $territorialCouncilRepository;
     }
 }
