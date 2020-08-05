@@ -161,14 +161,15 @@
                                         {% endfor %}
                                     </td>
                                     <td class="table-labels">
-                                        {% for label in elected_representative.userListDefinitions|slice(0, 2) %}
+                                        {% set userListDefinitions = elected_representative.userListDefinitions.forType(space_name) %}
+                                        {% for label in userListDefinitions|slice(0, 2) %}
                                             <span>{{ label }}</span><br />
                                         {% endfor %}
 
-                                        {% if elected_representative.userListDefinitions|length > 2 %}
-                                            <span id="show_more_labels_{{ key }}" class="text--body text--gray cursor--pointer">+{{ elected_representative.userListDefinitions|length - 2 }}</span>
+                                        {% if userListDefinitions|length > 2 %}
+                                            <span id="show_more_labels_{{ key }}" class="text--body text--gray cursor--pointer">+{{ userListDefinitions|length - 2 }}</span>
                                             <div id="other_labels_{{ key }}" class="visually-hidden">
-                                                {% for label in elected_representative.userListDefinitions|slice(2) %}
+                                                {% for label in userListDefinitions|slice(2) %}
                                                     <span class="label">{{ label }}</span><br />
                                                 {% endfor %}
                                             </div>
