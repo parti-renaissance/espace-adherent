@@ -62,10 +62,8 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $referentTags = $this->referentTagRepository->findBy(['externalId' => null]);
+        $referentTags = $this->referentTagRepository->findAll();
         $this->io->progressStart($countAllTags = \count($referentTags));
-
-        $countSyncTags = 0;
 
         /** @var ReferentTag $tag */
         foreach ($referentTags as $tag) {
