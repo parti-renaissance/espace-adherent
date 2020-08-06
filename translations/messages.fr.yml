@@ -842,6 +842,10 @@ lre.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_nume
 #
 # TerritorialCouncil
 #
+territorial_council.referent: Président du Conseil territorial (unique)
+territorial_council.lre_manager: Responsalbe LRE membre du Conseil territorial (unique)
+territorial_council.referent_jam: Référent JAM membre du Conseil territorial (unique)
+territorial_council.government_member: Membre du gouvernement membre du Conseil territorial
 territorial_council.admin.description: |
     Sélectionnez un Conseil Territorial pour donner le droit de vote à cet adhérent sur la qualité souhaitée.
     Un seul adhérent par Conseil Territorial et Comité Politique pourra être nommé Référent, Responsable LRE ou Référent JAM.

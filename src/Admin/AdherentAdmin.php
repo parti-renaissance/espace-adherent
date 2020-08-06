@@ -426,36 +426,25 @@ HELP
                     'mapped' => false,
                     'required' => false,
                     'label' => 'territorial_council.referent',
-                    'translation_domain' => 'forms',
                     'class' => TerritorialCouncil::class,
-                ], [
-                    'translation_domain' => 'forms',
                 ])
                 ->add('lreManagerTerritorialCouncil', EntityType::class, [
                     'mapped' => false,
                     'required' => false,
                     'label' => 'territorial_council.lre_manager',
-                    'translation_domain' => 'forms',
                     'class' => TerritorialCouncil::class,
-                ], [
-                    'translation_domain' => 'forms',
                 ])
                 ->add('referentJamTerritorialCouncil', EntityType::class, [
                     'mapped' => false,
                     'required' => false,
                     'label' => 'territorial_council.referent_jam',
-                    'translation_domain' => 'forms',
                     'class' => TerritorialCouncil::class,
-                ], [
-                    'translation_domain' => 'forms',
                 ])
                 ->add('governmentMemberTerritorialCouncil', EntityType::class, [
                     'mapped' => false,
                     'required' => false,
                     'label' => 'territorial_council.government_member',
                     'class' => TerritorialCouncil::class,
-                ], [
-                    'translation_domain' => 'forms',
                 ])
             ->end()
             ->with('Membre du Conseil', ['class' => 'col-md-6'])

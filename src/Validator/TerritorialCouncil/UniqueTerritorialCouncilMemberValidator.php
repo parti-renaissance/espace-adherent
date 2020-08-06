@@ -69,7 +69,7 @@ class UniqueTerritorialCouncilMemberValidator extends ConstraintValidator
                     ->setParameter(
                         '{{ quality }}',
                         $this->translator->trans(
-                            UniqueTerritorialCouncilMember::QUALITIES_LABELS[$quality], [], 'forms'
+                            UniqueTerritorialCouncilMember::QUALITIES_LABELS[$quality]
                         )
                     )
                     ->setParameter('{{ territorialCouncil }}', $territorialCouncil)

@@ -124,7 +124,7 @@ class UniqueTerritorialCouncilMemberValidatorTest extends ConstraintValidatorTes
         $translator
             ->expects($this->once())
             ->method('trans')
-            ->with(UniqueTerritorialCouncilMember::QUALITIES_LABELS[$quality], [], 'forms')
+            ->with(UniqueTerritorialCouncilMember::QUALITIES_LABELS[$quality])
             ->willReturn('Membre en qualité de référent')
         ;
 
