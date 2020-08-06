@@ -3,6 +3,7 @@
 namespace App\Entity\TerritorialCouncil;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Collection\TerritorialCouncilMembershipCollection;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityReferentTagTrait;
 use App\Entity\ReferentTag;
@@ -122,12 +123,13 @@ class TerritorialCouncil
         return \sprintf('%s (%s)', $this->name, $this->getCodes());
     }
 
-    /**
-     * @return Collection|TerritorialCouncilMembership[]
-     */
-    public function getMemberships(): Collection
+    public function getMemberships(): TerritorialCouncilMembershipCollection
     {
-        return $this->memberships;
+        if ($this->memberships instanceof TerritorialCouncilMembershipCollection) {
+            return $this->memberships;
+        }
+
+        return new TerritorialCouncilMembershipCollection($this->memberships->toArray());
     }
 
     public function addMembership(TerritorialCouncilMembership $memberships): void

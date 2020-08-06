@@ -245,6 +245,8 @@ class AdherentController extends Controller
                     $from = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($fromId);
                 } elseif ('citizen_project' === $fromType) {
                     $from = $this->getDoctrine()->getRepository(CitizenProject::class)->findOneByUuid($fromId);
+                } elseif ('territorial_council' === $fromType) {
+                    $from = true;
                 } else {
                     $from = $this->getDoctrine()->getRepository(Event::class)->findOneByUuid($fromId);
                 }
@@ -279,6 +281,10 @@ class AdherentController extends Controller
                     return $this->redirectToRoute('app_event_show', [
                         'slug' => $from->getSlug(),
                     ]);
+                }
+
+                if ('territorial_council' === $fromType) {
+                    return $this->redirectToRoute('app_territorial_council_index');
                 }
 
                 return $this->redirectToRoute('homepage');

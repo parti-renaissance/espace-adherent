@@ -849,3 +849,20 @@ territorial_council.government_member: Membre du gouvernement membre du Conseil 
 territorial_council.admin.description: |
     Sélectionnez un Conseil Territorial pour donner le droit de vote à cet adhérent sur la qualité souhaitée.
     Un seul adhérent par Conseil Territorial et Comité Politique pourra être nommé Référent, Responsable LRE ou Référent JAM.
+territorial_council.membership.quality.referent: Président du CT (Référent)
+territorial_council.membership.quality.government_member: Membre du Gouvernement
+territorial_council.membership.quality.referent_jam: Référent JAM
+territorial_council.membership.quality.lre_manager: Responsable LRE
+territorial_council.membership.quality.senator: Sénateur
+territorial_council.membership.quality.deputy: Député
+territorial_council.membership.quality.european_deputy: Député européen
+territorial_council.membership.quality.regional_council_president: Président conseil régional
+territorial_council.membership.quality.departmental_council_president: Président conseil départemental
+territorial_council.membership.quality.mayor: Maire
+territorial_council.membership.quality.regional_councilor: Conseiller régional
+territorial_council.membership.quality.department_councilor: Conseiller départemental
+territorial_council.membership.quality.city_councilor: Conseiller municipal
+territorial_council.membership.quality.consular_conselor: Conseiller consulaire
+territorial_council.membership.quality.committee_supervisor: Animateur local
+territorial_council.membership.quality.designated_adherent: Adhérent désigné
+territorial_council.members_count: '1 membre|%count% membres'
