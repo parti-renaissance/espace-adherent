@@ -118,18 +118,7 @@ class TerritorialCouncilMembership
 
     public function removeQuality(TerritorialCouncilQuality $quality): void
     {
-        $this->qualities->remove($quality);
-    }
-
-    public function removeQualityWithName(string $name): void
-    {
-        $quality = $this->getQualities()->filter(function (TerritorialCouncilQuality $quality) use ($name) {
-            return $quality->getName() === $name;
-        });
-
-        if ($quality) {
-            $this->qualities->removeElement($quality);
-        }
+        $this->qualities->removeElement($quality);
     }
 
     public function clearQualities(): void
