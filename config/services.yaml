@@ -78,3 +78,6 @@ services:
 
     App\VotingPlatform\:
         resource: ../src/VotingPlatform/
+
+    App\TerritorialCouncil\:
+        resource: ../src/TerritorialCouncil/

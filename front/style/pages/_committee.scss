@@ -4,7 +4,6 @@
 }
 
 .committee-follow--anonymous {
-
     &__link {
         font-size: 14px;
         font-family: $font-roboto;
@@ -549,126 +548,12 @@
 
     }
 
-    &__elections-box {
-        box-sizing: border-box;
-        background-color: $white;
-        box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.14);
-        border-radius: 4px;
-        padding: 40px;
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-
-        -webkit-transition: all 0.2s;
-        -o-transition: all 0.2s;
-        transition: all 0.2s;
-        -webkit-transition-timing-function: ease-out;
-        -o-transition-timing-function: ease-out;
-        transition-timing-function: ease-out;
-
-        @media (min-width: $tablet) {
-            margin-top: 70px;
-        }
-
-        h2 {
-            color: $pink;
-            max-width: 500px;
-        }
-
-        .elections-actions {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-
-            @media (min-width: $mobile) {
-                flex-direction: row;
-                align-items: center;
-            }
-
-            > .btn {
-                margin: 0 0 20px 0;
-
-                @media (min-width: $mobile) {
-                    margin: 0 20px 0 0;
-                }
-            }
-
-            .candidacy-remove {
-                flex-basis: 100%;
-            }
-        }
-
-        &:hover {
-            background-color: $pink;
-
-            & .committee__elections-box--text,
-            & > div > .em-countdown-clock .text--dark {
-                color: $white;
-            }
-
-            .box-el {
-                color: $white;
-            }
-
-            .box-el.btn {
-                color: $white;
-                border-color: $white;
-            }
-
-            a.box-el:not(.btn) {
-                font-weight: bold;
-            }
-        }
-    }
-
     .action-menu-oval {
         padding: 0;
 
         &> a .oval {
             background-color: $white;
         }
-    }
-
-    .image-cropper--container {
-        img {
-            max-width: 100%;
-        }
-    }
-
-    .image-uploader {
-        &--preview {
-            text-align: center;
-
-            label {
-                color: $blue;
-                font-size: 16px;
-                cursor: pointer;
-
-                &:hover {
-                    color: $blue--light;
-                }
-            }
-        }
-    }
-
-    .preview-image--container {
-        display: inline-block;
-        width: 100px;
-        height: 100px;
-        line-height: 100px;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center center;
-        border-radius: 50%;
-        font-size: 24px;
-        background-color: $gray--lighter;
-        font-weight: bold;
-        color: $blue;
-        font-style: italic;
-        text-align: center;
     }
 }
 

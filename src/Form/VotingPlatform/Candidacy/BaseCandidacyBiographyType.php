@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\VotingPlatform;
+namespace App\Form\VotingPlatform\Candidacy;
 
-use App\Entity\CommitteeCandidacy;
+use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CandidacyBiographyType extends AbstractType
+class BaseCandidacyBiographyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -60,7 +60,7 @@ class CandidacyBiographyType extends AbstractType
                     unset($data['croppedImage']);
                 } elseif (-1 == $data['croppedImage']) {
                     unset($data['croppedImage'], $data['image']);
-                    /** @var CommitteeCandidacy $model */
+                    /** @var BaseCandidacy $model */
                     $model = $event->getForm()->getData();
                     $model->setRemoveImage(true);
                 }
@@ -73,7 +73,7 @@ class CandidacyBiographyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CommitteeCandidacy::class,
+            'data_class' => BaseCandidacy::class,
         ]);
     }
 }

@@ -6,7 +6,7 @@
 {% set member_is_candidate_in_committee = able_to_candidate and candidacy_committee_membership == membership %}
 {% set member_voting_in_committee = membership.isVotingCommittee %}
 
-<section class="committee__elections-box b__nudge--bottom-larger">
+<section class="instance__elections-box b__nudge--bottom-larger">
     <div class="l__row">
         <h2 class="text--medium box-el">
             Désignation du binôme d'adhérents siégeant au Conseil territorial
@@ -22,7 +22,7 @@
         </h2>
     </div>
 
-    <div class="text--body text--dark text--small b__nudge--top committee__elections-box--text">
+    <div class="text--body text--dark text--small b__nudge--top instance__elections-box--text">
         {% if committee_election.isCandidacyPeriodActive %}
             {% if member_is_candidate_in_committee %}
                 <p>Vous êtes candidat pour représenter les adhérents de votre comité.
@@ -72,10 +72,10 @@
                         <a href="#"
                            class="btn btn--pink btn--no-wrap box-el em-modal--trigger"
                            id="committee-toggle-candidacy"
-                           data-confirm-content-element="#committee-candidacy-gender-choice-content"
+                           data-confirm-content-element="#candidacy-gender-choice-content"
                         >Je candidate</a>
 
-                        <div class="hidden" id="committee-candidacy-gender-choice-content">
+                        <div class="hidden" id="candidacy-gender-choice-content">
                             <div class="text--center font-roboto">
                                 <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
                                     Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
@@ -103,18 +103,18 @@
                 <span class="clock-container"></span>
             </div>
 
-            <p class="text--dark text--small committee__elections-box--text">et se clôturera le {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.</p>
+            <p class="text--dark text--small instance__elections-box--text">et se clôturera le {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.</p>
         {% else %}
             {% set voting_platform_election = get_voting_platform_election_for_committee(committee) %}
 
             {% if voting_platform_election %}
                 {% if voting_platform_election.isVotePeriodActive %}
                     {% if voting_platform_election.isSecondRoundVotePeriodActive %}
-                        <p class="text--dark text--small committee__elections-box--text">
+                        <p class="text--dark text--small instance__elections-box--text">
                             A la suite de cette première désignation il y a eu une égalité entre les candidats,
                             nous vous invitions à voter de nouveau.
                         </p>
-                        <p class="text--small text--dark committee__elections-box--text">Consulter les
+                        <p class="text--small text--dark instance__elections-box--text">Consulter les
                             <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">
                                 résultats incomplets
                             </a>
@@ -137,7 +137,7 @@
                         {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election) %}
 
                         {% if my_vote %}
-                            <p class="text--dark text--small committee__elections-box--text">Votre choix a bien été enregistré.</p>
+                            <p class="text--dark text--small instance__elections-box--text">Votre choix a bien été enregistré.</p>
 
                             <div class="em-countdown-clock" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
                                 <span class="text--dark text--small">Les résultats seront publiés dans :</span>
@@ -150,7 +150,7 @@
                         {% endif %}
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
-                    <p class="text--small text--dark committee__elections-box--text">Consulter les
+                    <p class="text--small text--dark instance__elections-box--text">Consulter les
                         <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
                     </p>
                 {% endif %}

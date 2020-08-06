@@ -1,0 +1,73 @@
+{% set election = territorial_council.currentElection %}
+{% set candidacy = app.user.territorialCouncilMembership.candidacyForElection(election) %}
+
+<section class="instance__elections-box b__nudge--bottom-larger">
+    <div class="l__row">
+        <h2 class="text--medium box-el">Désignation des binômes paritaires siégeant au Comité politique</h2>
+    </div>
+
+    <div class="text--body text--dark text--small b__nudge--top instance__elections-box--text">
+        Pour participer au Comité politique, les animateurs locaux, adhérents désignés, conseillers municipaux, conseillers départementaux et conseillers régionaux doivent être désignés en binôme par les membres du Conseil territorial.
+    </div>
+
+    {% if election.voteStartDate is null %}
+        <p class="text--body text--small text--bold">La date de la désignation n’a pas encore été fixée par votre Référent.</p>
+    {% endif %}
+
+    <div class="text--body l__row--wrap">
+        {# Candidate period #}
+        {% if election.isCandidacyPeriodActive %}
+            {% if candidacy %}
+                {% if candidacy.hasInvitation %}
+                    <hr/>
+                    <p class="text--body text--small text--bold">
+                        {{ 'X Y' }} doit accepter votre demande pour que votre candidature soit confirmée
+                    </p>
+
+                    <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Modifier ma demande de binôme</a>
+                {% else %}
+                    <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--pink btn--no-wrap box-el">Je choisis un binôme</a>
+                {% endif %}
+
+                <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Modifier ma candidature</a>
+            {% else %}
+                {% if app.user.isOtherGender() %}
+                    <a href="#" class="btn btn--pink btn--no-wrap box-el em-modal--trigger"
+                       data-confirm-content-element="#candidacy-gender-choice-content"
+                    >Je candidate en binôme</a>
+
+                    <div class="hidden" id="candidacy-gender-choice-content">
+                        <div class="text--center font-roboto">
+                            <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
+                                Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
+                            </p>
+
+                            <div>
+                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_territorial_council_candidature_edit', {gender: constant('App\\ValueObject\\Genders::FEMALE')}) }}">Femme</a>
+                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_territorial_council_candidature_edit', {gender: constant('App\\ValueObject\\Genders::MALE')}) }}">Homme</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--pink btn--no-wrap box-el">Je candidate en binôme</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        {% if not election.isVotePeriodStarted %}
+            <p class="candidacies-list text--body text--small text--gray box-el">
+                Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark box-el" data-uuid="{{ territorial_council.uuid }}">la liste des candidats</a>
+            </p>
+        {% endif %}
+
+        {% if candidacy and election.isCandidacyPeriodActive %}
+            <p class="candidacy-remove text--body text--small b__nudge--top">
+                <a href="{{ path('app_territorial_council_candidature_remove') }}"
+                      class="link--no-decor text--blue--dark em-confirm--trigger box-el"
+                      data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
+                      id="remove-candidacy-link">Retirer ma candidature
+                </a>
+            </p>
+        {% endif %}
+    </div>
+</section>

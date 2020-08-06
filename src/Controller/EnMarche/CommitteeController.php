@@ -9,7 +9,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeFeedItem;
 use App\Form\CommitteeFeedItemMessageType;
-use App\Form\VotingPlatform\CandidacyBiographyType;
+use App\Form\VotingPlatform\Candidacy\CommitteeCandidacyType;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -252,7 +252,7 @@ class CommitteeController extends Controller
         $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), $candidacyGender);
 
         $form = $this
-            ->createForm(CandidacyBiographyType::class, $candidacy)
+            ->createForm(CommitteeCandidacyType::class, $candidacy)
             ->add('skip', SubmitType::class)
             ->handleRequest($request)
         ;
@@ -294,7 +294,7 @@ class CommitteeController extends Controller
         }
 
         $form = $this
-            ->createForm(CandidacyBiographyType::class, $candidacy)
+            ->createForm(CommitteeCandidacyType::class, $candidacy)
             ->handleRequest($request)
         ;
 

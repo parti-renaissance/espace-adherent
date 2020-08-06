@@ -33,7 +33,7 @@ class TerritorialCouncilMembership
     /**
      * @var TerritorialCouncil|null
      *
-     * @ORM\ManyToOne(targetEntity=TerritorialCouncil::class, inversedBy="memberships", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil", inversedBy="memberships", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $territorialCouncil;
@@ -42,7 +42,7 @@ class TerritorialCouncilMembership
      * @var Collection|TerritorialCouncilQuality[]
      *
      * @ORM\OneToMany(
-     *     targetEntity=TerritorialCouncilQuality::class,
+     *     targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilQuality",
      *     cascade={"all"},
      *     mappedBy="territorialCouncilMembership",
      *     orphanRemoval=true
@@ -59,6 +59,13 @@ class TerritorialCouncilMembership
      */
     private $joinedAt;
 
+    /**
+     * @var Candidacy[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\Candidacy", mappedBy="membership")
+     */
+    private $candidacies;
+
     public function __construct(
         TerritorialCouncil $territorialCouncil = null,
         Adherent $adherent = null,
@@ -67,8 +74,10 @@ class TerritorialCouncilMembership
         $this->uuid = Uuid::uuid4();
         $this->territorialCouncil = $territorialCouncil;
         $this->adherent = $adherent;
-        $this->qualities = new ArrayCollection();
         $this->joinedAt = $joinedAt ?? new \DateTime('now');
+
+        $this->qualities = new ArrayCollection();
+        $this->candidacies = new ArrayCollection();
     }
 
     public function getTerritorialCouncil(): TerritorialCouncil
@@ -143,5 +152,16 @@ class TerritorialCouncilMembership
     public function revoke(): void
     {
         $this->adherent = null;
+    }
+
+    public function getCandidacyForElection(Election $election): ?Candidacy
+    {
+        foreach ($this->candidacies as $candidacy) {
+            if ($candidacy->getElection() === $election) {
+                return $candidacy;
+            }
+        }
+
+        return null;
     }
 }
