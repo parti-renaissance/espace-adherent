@@ -6,6 +6,8 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityReferentTagTrait;
 use App\Entity\ReferentTag;
+use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,14 +17,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(
- *     name="territorial_council",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="territorial_council_uuid_unique", columns="uuid"),
  *         @ORM\UniqueConstraint(name="territorial_council_name_unique", columns="name"),
  *         @ORM\UniqueConstraint(name="territorial_council_codes_unique", columns="codes")
  *     }
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilRepository")
  *
  * @UniqueEntity("name")
  *
@@ -32,6 +33,7 @@ class TerritorialCouncil
 {
     use EntityIdentityTrait;
     use EntityReferentTagTrait;
+    use EntityElectionHelperTrait;
 
     /**
      * @ORM\Column(length=255, unique=true)
@@ -69,7 +71,7 @@ class TerritorialCouncil
      * @var Collection|TerritorialCouncilMembership[]
      *
      * @ORM\OneToMany(
-     *     targetEntity=TerritorialCouncilMembership::class,
+     *     targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership",
      *     cascade={"persist", "remove"},
      *     mappedBy="territorialCouncil",
      *     orphanRemoval=true
@@ -77,13 +79,22 @@ class TerritorialCouncil
      */
     private $memberships;
 
+    /**
+     * @var Election[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\Election", mappedBy="territorialCouncil", cascade={"all"}, orphanRemoval=true)
+     */
+    private $elections;
+
     public function __construct(string $name = null, string $codes = null)
     {
         $this->uuid = Uuid::uuid4();
         $this->name = $name;
         $this->codes = $codes;
+
         $this->referentTags = new ArrayCollection();
         $this->memberships = new ArrayCollection();
+        $this->elections = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -124,6 +135,22 @@ class TerritorialCouncil
     public function removeMembership(TerritorialCouncilMembership $memberships): void
     {
         $this->memberships->remove($memberships);
+    }
+
+    public function addElection(ElectionEntityInterface $election): void
+    {
+        if (!$this->elections->contains($election)) {
+            $election->setTerritorialCouncil($this);
+            $this->elections->add($election);
+        }
+    }
+
+    /**
+     * @return ElectionEntityInterface[]
+     */
+    public function getElections(): array
+    {
+        return $this->elections->toArray();
     }
 
     public function __toString(): string

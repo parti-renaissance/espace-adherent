@@ -2,6 +2,7 @@
 
 namespace App\Admin\VotingPlatform;
 
+use App\Entity\ReferentTag;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Form\Admin\DesignationTypeType;
 use App\Form\Admin\DesignationZoneType;
@@ -9,6 +10,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
@@ -20,16 +22,30 @@ class DesignationAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $form
-            ->with('Général 📜', ['box_class' => 'box box-solid box-primary'])
+            ->with('Général 📜', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
                 ->add('label', null, [
                     'label' => 'Label',
                 ])
                 ->add('type', DesignationTypeType::class, [
                     'label' => 'Type d’élection',
                 ])
+            ->end()
+            ->with('Zone 🌍', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
                 ->add('zones', DesignationZoneType::class, [
+                    'required' => false,
                     'label' => 'Zone',
                     'multiple' => true,
+                    'help' => 'pour les élections de type "Comités-Adhérents"',
+                ])
+                ->add('referentTags', EntityType::class, [
+                    'class' => ReferentTag::class,
+                    'required' => false,
+                    'label' => 'Référent tags',
+                    'multiple' => true,
+                    'help' => 'pour les élections de type "Copol"',
+                    'attr' => [
+                        'data-sonata-select2' => 'false',
+                    ],
                 ])
             ->end()
             ->with('Candidature 🎎', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])
@@ -101,7 +117,7 @@ class DesignationAdmin extends AbstractAdmin
             ->add('id', null, ['label' => '#'])
             ->add('label')
             ->add('type', 'trans', ['format' => 'voting_platform.designation.type_%s'])
-            ->add('zones', 'array')
+            ->add('zones', 'array', ['template' => 'admin/designation/list_zone.html.twig'])
             ->add('candidacyStartDate', null, ['label' => 'Ouverture des candidatures'])
             ->add('candidacyEndDate', null, ['label' => 'Clôture des candidatures'])
             ->add('voteStartDate', null, ['label' => 'Ouverture du vote'])

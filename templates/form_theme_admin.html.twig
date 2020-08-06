@@ -478,3 +478,27 @@
         </td>
     </tr>
 {% endblock %}
+
+{% block app_admin_voting_platform_election_referentTags_entity_referentTags_widget %}
+    {{ form_widget(form) }}
+
+    <div>
+        <script type="application/javascript">
+            function toggleCheckRefTags(checked) {
+                var options = $('#{{ form.vars.id }} > option');
+
+                if (checked) {
+                    options.prop('selected', 'selected');
+                } else {
+                    options.removeAttr('selected');
+                }
+
+                return false;
+            }
+        </script>
+
+        <button onClick="return toggleCheckRefTags(true);" class="btn btn-xs btn-primary">Tout sélectionner <span class="glyphicon glyphicon-ok-circle"></span></button>
+
+        <button onClick="return toggleCheckRefTags(false);" class="btn btn-xs btn-primary">Tout désélectionner <span class="glyphicon glyphicon-remove-circle"></span></button>
+    </div>
+{% endblock %}

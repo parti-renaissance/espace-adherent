@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="territorial_council_membership")
+ * @ORM\Table
  * @ORM\Entity
  *
  * @UniqueEntity(fields={"adherent", "territorialCouncil"})
@@ -34,8 +34,6 @@ class TerritorialCouncilMembership
      *
      * @ORM\ManyToOne(targetEntity=TerritorialCouncil::class, inversedBy="memberships", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Algolia\Attribute
      */
     private $territorialCouncil;
 
@@ -64,8 +62,8 @@ class TerritorialCouncilMembership
         $this->uuid = Uuid::uuid4();
         $this->territorialCouncil = $territorialCouncil;
         $this->adherent = $adherent;
-        $this->qualities[] = $quality;
-        $this->joinedAt = $joinedAt ?? new \DateTime('now');
+        $this->qualities = [$quality];
+        $this->joinedAt = $joinedAt ?? new \DateTime();
     }
 
     public function getTerritorialCouncil(): TerritorialCouncil
@@ -109,7 +107,7 @@ class TerritorialCouncilMembership
 
     private static function checkQuality(string $quality): void
     {
-        if (!\in_array($quality, TerritorialCouncilQualityEnum::toArray(), true)) {
+        if (!TerritorialCouncilQualityEnum::isValid($quality)) {
             throw new TerritorialCouncilQualityException(sprintf('Invalid quality for TerritorialCouncil: "%s" given', $quality));
         }
     }

@@ -12,7 +12,7 @@ trait EntityDesignationTrait
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", fetch="EAGER")
      */
-    private $designation;
+    protected $designation;
 
     public function getDesignation(): Designation
     {

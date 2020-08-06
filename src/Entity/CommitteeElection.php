@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\VotingPlatform\Designation\AbstractElectionEntity;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,14 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeElectionRepository")
  */
-class CommitteeElection
+class CommitteeElection extends AbstractElectionEntity
 {
-    use EntityDesignationTrait;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      */
     private $id;
 
@@ -45,11 +44,12 @@ class CommitteeElection
 
     public function __construct(Designation $designation = null)
     {
-        $this->designation = $designation;
+        parent::__construct($designation);
+
         $this->candidacies = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

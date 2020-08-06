@@ -5,7 +5,10 @@ namespace App\Entity\VotingPlatform\Designation;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\ReferentTag;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -38,14 +41,18 @@ class Designation
     private $type;
 
     /**
-     * @var string[]
+     * @var string[]|null
      *
-     * @ORM\Column(type="simple_array")
-     *
-     * @Assert\NotBlank
-     * @Assert\Count(min=1)
+     * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $zones = [];
+    private $zones;
+
+    /**
+     * @var ReferentTag[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
+     */
+    private $referentTags;
 
     /**
      * @var \DateTime|null
@@ -119,6 +126,8 @@ class Designation
     {
         $this->label = $label;
         $this->uuid = $uuid ?? Uuid::uuid4();
+
+        $this->referentTags = new ArrayCollection();
     }
 
     public function getLabel(): ?string
@@ -141,14 +150,34 @@ class Designation
         $this->type = $type;
     }
 
-    public function getZones(): array
+    public function getZones(): ?array
     {
         return $this->zones;
     }
 
-    public function setZones(array $zones): void
+    public function setZones(?array $zones): void
     {
         $this->zones = $zones;
+    }
+
+    /**
+     * @return ReferentTag[]
+     */
+    public function getReferentTags(): array
+    {
+        return $this->referentTags->toArray();
+    }
+
+    public function addReferentTag(ReferentTag $tag): void
+    {
+        if (!$this->referentTags->contains($tag)) {
+            $this->referentTags->add($tag);
+        }
+    }
+
+    public function removeReferentTag(ReferentTag $tag): void
+    {
+        $this->referentTags->removeElement($tag);
     }
 
     public function getCandidacyStartDate(): ?\DateTime
@@ -234,13 +263,24 @@ class Designation
     /**
      * @Assert\IsTrue(message="La combinaison des dates est invalide.")
      */
-    public function isValid(): bool
+    public function hasValidDates(): bool
     {
         return !empty($this->candidacyStartDate)
             && (
                 (!empty($this->candidacyEndDate) && !empty($this->voteStartDate) && !empty($this->voteEndDate))
                 || (empty($this->candidacyEndDate) && empty($this->voteStartDate) && empty($this->voteEndDate))
             )
+        ;
+    }
+
+    /**
+     * @Assert\IsTrue(message="La configuration de la zone est invalide")
+     */
+    public function hasValidZone(): bool
+    {
+        return
+            (DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type && !empty($this->zones))
+            || (DesignationTypeEnum::COPOL === $this->type && !$this->referentTags->isEmpty())
         ;
     }
 
