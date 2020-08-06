@@ -91,6 +91,16 @@ class TerritorialCouncilQuality
         $this->name = $name;
     }
 
+    public function getZone(): string
+    {
+        return $this->zone;
+    }
+
+    public function setZone(string $zone): void
+    {
+        $this->zone = $zone;
+    }
+
     public function getJoinedAt(): \DateTime
     {
         return $this->joinedAt;

@@ -245,6 +245,12 @@
             </ul>
             <hr>
             {% if has_role_adherent %}
+                {% if is_canary_enabled() and app.user.territorialCouncilMembership %}
+                    <div class="text--small text--bold">Instances</div>
+                    <div>
+                        <a href="{{ path('app_territorial_council_index') }}">Conseil territorial</a>
+                    </div>
+                {% endif %}
                 <div>
                     <div class="text--body text--bold text--small">Comités</div>
                     {{ adherent_committees }}

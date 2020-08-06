@@ -18,6 +18,10 @@
                     <a href="{{ path('app_citizen_project_show', {'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}
                         Retour au projet citoyen</a>
+                {% elseif fromType == 'territorial_council' %}
+                    <a href="{{ path('app_territorial_council_index') }}" class="back-to-list icon--with-text text--summary">
+                        {{ include('components/caret--left.html.twig') }}
+                        Retour au Conseil territorial</a>
                 {% else %}
                     <a href="{{ path('app_event_show', {'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}

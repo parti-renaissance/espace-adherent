@@ -1,0 +1,155 @@
+.territorial-council {
+    &__header {
+        background-color: $green--territory;
+        padding: 60px 0;
+        margin-bottom: 70px;
+
+        &--slim {
+            padding: 30px 0;
+        }
+
+        @media (min-width: $tablet) {
+            padding: 80px 0;
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+            @media (min-width: $tablet) {
+                flex-direction: row;
+            }
+        }
+
+        &__titles {
+            margin: 0 0 20px 0;
+            text-align: center;
+
+            @media (min-width: $tablet) {
+                margin: 0 5% 0 0;
+                text-align: left;
+            }
+        }
+    }
+
+    &__infos {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        font-family: $font-roboto;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 20px;
+
+        @media (min-width: $tablet) {
+            align-items: flex-start;
+            font-size: 16px;
+            justify-content: flex-start;
+        }
+
+        li {
+            margin: 5px 15px 5px 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            svg {
+                margin-right: 10px;
+            }
+
+            @media (min-width: $tablet) {
+                //margin: 5px 30px 5px 0;
+            }
+
+            a {
+                color: $white;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__aside {
+        min-width: 285px;
+
+        img {
+            max-width: 100%;
+        }
+
+        @media (max-width: $tablet) {
+            background: $gray--lighter;
+            padding: 30px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+
+            .avatar-initials {
+                background-color: $white;
+            }
+        }
+
+        &--section {
+            margin-bottom: 50px;
+
+            &:last-child {
+                margin: 0;
+            }
+
+            h5 {
+                margin: 0 0 20px 0;
+                font-weight: bold;
+                font-size: 16px;
+                color: $black;
+                font-family: $font-roboto
+            }
+
+            @media (max-width: $tablet) {
+                img {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &__member {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        border: 1px solid $lines-grey;
+        margin-bottom: 20px;
+
+        .identity {
+            flex-basis: 100%;
+
+            @media (min-width: $mobile) {
+                flex-basis: 50%;
+            }
+        }
+
+        .roles {
+            flex-basis: 100%;
+            margin-top: 5px;
+
+            @media (min-width: $mobile) {
+                flex-basis: 50%;
+            }
+
+            .role {
+                list-style: disc;
+                list-style-position: inside;
+                font-size: 14px;
+            }
+        }
+    }
+}
