@@ -291,7 +291,7 @@ abstract class AbstractMessageController extends Controller
 
     protected function checkAccess(): void
     {
-        if (!$this->isCanary()) {
+        if ($this->isCanary()) {
             $this->disableInProduction();
         }
     }
