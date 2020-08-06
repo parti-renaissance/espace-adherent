@@ -51,7 +51,7 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
     {
         $url = sprintf('/3.0/lists/%s/segments', $this->mailchimpListId);
 
-        $referentTags = $this->referentTagRepository->findAll();
+        $referentTags = $this->referentTagRepository->findBy(['externalId' => null]);
         $this->io->progressStart($countAllTags = \count($referentTags));
 
         $countSyncTags = 0;
