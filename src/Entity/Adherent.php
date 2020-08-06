@@ -12,6 +12,7 @@ use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -21,6 +22,7 @@ use App\Membership\MembershipInterface;
 use App\Membership\MembershipRequest;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Subscription\SubscriptionTypeEnum;
+use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -71,6 +73,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener", "App\EntityListener\RevokeDelegatedAccessListener"})
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
+ *
+ * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -287,7 +291,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var TerritorialCouncilMembership|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", mappedBy="adherent", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     * @Assert\Expression(
+     *     expression="!this.isTerritorialCouncilReferentMember() or (this.isTerritorialCouncilReferentMember and this.isReferent())",
+     *     message="territorial_council.referent.invalid"
+     * )
+     * @Assert\Expression(
+     *     expression="!this.isTerritorialCouncilLreManagerMember() or (this.isTerritorialCouncilLreManagerMember and this.isLre())",
+     *     message="territorial_council.lre_manager.invalid"
+     * )
      */
     private $territorialCouncilMembership;
 
@@ -1366,9 +1378,57 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->territorialCouncilMembership;
     }
 
+    public function setTerritorialCouncilMembership(TerritorialCouncilMembership $territorialCouncilMembership): void
+    {
+        $this->territorialCouncilMembership = $territorialCouncilMembership;
+        $this->territorialCouncilMembership->setAdherent($this);
+    }
+
     public function hasTerritorialCouncilMembership(): bool
     {
         return $this->territorialCouncilMembership instanceof TerritorialCouncilMembership;
+    }
+
+    public function revokeTerritorialCouncilMembership(): void
+    {
+        if (!$this->territorialCouncilMembership) {
+            return;
+        }
+
+        $this->territorialCouncilMembership->revoke();
+        $this->territorialCouncilMembership = null;
+    }
+
+    public function isTerritorialCouncilReferentMember(): bool
+    {
+        return $this->hasTerritorialCouncilMembership()
+            ? $this->getTerritorialCouncilMembership()->hasQuality(TerritorialCouncilQualityEnum::REFERENT)
+            : false
+        ;
+    }
+
+    public function isTerritorialCouncilLreManagerMember(): bool
+    {
+        return $this->hasTerritorialCouncilMembership()
+            ? $this->getTerritorialCouncilMembership()->hasQuality(TerritorialCouncilQualityEnum::LRE_MANAGER)
+            : false
+        ;
+    }
+
+    public function isTerritorialCouncilReferentJamMember(): bool
+    {
+        return $this->hasTerritorialCouncilMembership()
+            ? $this->getTerritorialCouncilMembership()->hasQuality(TerritorialCouncilQualityEnum::REFERENT_JAM)
+            : false
+        ;
+    }
+
+    public function isTerritorialCouncilGovernmentMemberMember(): bool
+    {
+        return $this->hasTerritorialCouncilMembership()
+            ? $this->getTerritorialCouncilMembership()->hasQuality(TerritorialCouncilQualityEnum::GOVERNMENT_MEMBER)
+            : false
+        ;
     }
 
     public function getManagedAreaMarkerLatitude(): ?string

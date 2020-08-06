@@ -655,5 +655,8 @@
         <!-- Newsletter -->
         <service id="App\Form\NewsletterSubscriptionType" />
 
+        <!-- TerritorialCouncil -->
+        <service id="app.validator.unique_member_territorial_council" class="App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator" />
+
     </services>
 </container>

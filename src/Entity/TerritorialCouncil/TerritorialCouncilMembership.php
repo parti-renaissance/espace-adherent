@@ -5,7 +5,8 @@ namespace App\Entity\TerritorialCouncil;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
-use App\TerritorialCouncil\Exception\TerritorialCouncilQualityException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -38,9 +39,14 @@ class TerritorialCouncilMembership
     private $territorialCouncil;
 
     /**
-     * @var array
+     * @var Collection|TerritorialCouncilQuality[]
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\OneToMany(
+     *     targetEntity=TerritorialCouncilQuality::class,
+     *     cascade={"all"},
+     *     mappedBy="territorialCouncilMembership",
+     *     orphanRemoval=true
+     * )
      */
     private $qualities;
 
@@ -54,16 +60,15 @@ class TerritorialCouncilMembership
     private $joinedAt;
 
     public function __construct(
-        TerritorialCouncil $territorialCouncil,
-        Adherent $adherent,
-        string $quality,
+        TerritorialCouncil $territorialCouncil = null,
+        Adherent $adherent = null,
         \DateTime $joinedAt = null
     ) {
         $this->uuid = Uuid::uuid4();
         $this->territorialCouncil = $territorialCouncil;
         $this->adherent = $adherent;
-        $this->qualities = [$quality];
-        $this->joinedAt = $joinedAt ?? new \DateTime();
+        $this->qualities = new ArrayCollection();
+        $this->joinedAt = $joinedAt ?? new \DateTime('now');
     }
 
     public function getTerritorialCouncil(): TerritorialCouncil
@@ -71,33 +76,63 @@ class TerritorialCouncilMembership
         return $this->territorialCouncil;
     }
 
+    public function setTerritorialCouncil(TerritorialCouncil $territorialCouncil): void
+    {
+        $this->territorialCouncil = $territorialCouncil;
+    }
+
     public function getAdherent(): Adherent
     {
         return $this->adherent;
     }
 
-    public function getQualities(): array
+    public function setAdherent(Adherent $adherent): void
+    {
+        $this->adherent = $adherent;
+    }
+
+    /**
+     * @return Collection|TerritorialCouncilQuality[]
+     */
+    public function getQualities(): Collection
     {
         return $this->qualities;
     }
 
-    public function addQuality(string $quality): void
+    public function addQuality(TerritorialCouncilQuality $quality): void
     {
-        if (!\in_array($quality, $this->qualities, true)) {
-            self::checkQuality($quality);
-            $this->qualities[] = $quality;
+        if (!$this->hasQuality($quality->getName())) {
+            $quality->setTerritorialCouncilMembership($this);
+            $this->qualities->add($quality);
         }
     }
 
-    /**
-     * @param string[] $qualities
-     */
-    public function setQualities(array $qualities): void
+    public function removeQuality(TerritorialCouncilQuality $quality): void
     {
-        \array_walk($qualities, function (string $quality) {
-            self::checkQuality($quality);
+        $this->qualities->remove($quality);
+    }
+
+    public function removeQualityWithName(string $name): void
+    {
+        $quality = $this->getQualities()->filter(function (TerritorialCouncilQuality $quality) use ($name) {
+            return $quality->getName() === $name;
         });
-        $this->qualities = $qualities;
+
+        if ($quality) {
+            $this->qualities->removeElement($quality);
+        }
+    }
+
+    public function clearQualities(): void
+    {
+        $this->qualities->clear();
+    }
+
+    public function hasQuality(string $name): bool
+    {
+        return $this->getQualities()->filter(function (TerritorialCouncilQuality $quality) use ($name) {
+            return $quality->getName() === $name;
+        })->count() > 0;
     }
 
     public function getJoinedAt(): \DateTime
@@ -105,10 +140,8 @@ class TerritorialCouncilMembership
         return $this->joinedAt;
     }
 
-    private static function checkQuality(string $quality): void
+    public function revoke(): void
     {
-        if (!TerritorialCouncilQualityEnum::isValid($quality)) {
-            throw new TerritorialCouncilQualityException(sprintf('Invalid quality for TerritorialCouncil: "%s" given', $quality));
-        }
+        $this->adherent = null;
     }
 }

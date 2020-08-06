@@ -445,3 +445,10 @@ elected_representative.invalid_adherent: Cet e-mail correspond à un compte adh�
 # CertificationRequest
 #
 certification_request.document.mime_type: Seuls les fichiers jpg, png et pdf sont acceptés.
+
+#
+# TerritorialCouncil
+#
+territorial_council.member.unique: "{{ adherent }} est déjà nommé \"{{ quality }}\" au sein du conseil territorial \"{{ territorialCouncil }}\". Vous devez retirer l'affectation de cet adhérent à fin de nommer un nouveau."
+territorial_council.referent.invalid: Seul un référent peut être nommé "Président du Conseil territorial" dans un Conseil Territorial
+territorial_council.lre_manager.invalid: Seul un participant LRE peut être nommé "Responsable LRE" dans un Conseil Territorial
