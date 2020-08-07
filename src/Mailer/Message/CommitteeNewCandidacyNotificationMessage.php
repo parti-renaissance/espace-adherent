@@ -3,14 +3,14 @@
 namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
-use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use Ramsey\Uuid\Uuid;
 
 final class CommitteeNewCandidacyNotificationMessage extends Message
 {
     public static function create(
-        CommitteeCandidacy $committeeCandidacy,
+        CandidacyInterface $committeeCandidacy,
         CommitteeElection $election,
         Adherent $supervisor,
         Adherent $candidate,
@@ -26,7 +26,7 @@ final class CommitteeNewCandidacyNotificationMessage extends Message
     }
 
     private static function getTemplateVars(
-        CommitteeCandidacy $committeeCandidacy,
+        CandidacyInterface $committeeCandidacy,
         CommitteeElection $election,
         Adherent $supervisor,
         Adherent $candidate,

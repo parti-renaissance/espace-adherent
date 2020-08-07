@@ -308,9 +308,9 @@ class App {
         });
     }
 
-    runImageCropper(inputElement) {
+    runImageCropper(inputFileElement, inputCroppedImageElement) {
         System.import('services/utils/imageCropper').catch((error) => { throw error; }).then((module) => {
-            module.default(inputElement);
+            module.default(inputFileElement, inputCroppedImageElement);
         });
     }
 

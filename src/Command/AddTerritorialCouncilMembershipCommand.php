@@ -7,7 +7,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\AdherentRepository;
-use App\Repository\TerritorialCouncilRepository;
+use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;

@@ -1,6 +1,8 @@
 <aside class="territorial-council__aside l__wrapper--aside">
     {% set president = territorial_council.memberships.president %}
     {% if president %}
+        {% set president = president.adherent %}
+
         <div id="territorial-council-referent" class="territorial-council__aside--section">
             <h5>Président du Conseil Territorial</h5>
             <div class="territorial-council__host l__row l__row--top text--body b__nudge--bottom">
@@ -9,8 +11,8 @@
                     <div class="text--body text--bold">{{ president }}</div>
                     <span class="text--normal text--gray b__nudge--bottom">Référent(e)</span>
                 </div>
-                <a href="{{ path('app_adherent_contact', {uuid: president.uuid, from: 'territorial_council', id: territorial_council.uuid.toString}) }}"
-                class="link--no-decor text--blue--dark text--small m-auto--left">
+
+                <a href="{{ path('app_adherent_contact', {uuid: president.uuid, from: 'territorial_council', id: territorial_council.uuid.toString}) }}" class="link--no-decor text--blue--dark text--small m-auto--left">
                     Contacter
                 </a>
             </div>

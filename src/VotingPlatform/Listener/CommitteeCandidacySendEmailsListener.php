@@ -8,12 +8,13 @@ use App\Mailer\Message\CommitteeCandidacyRemovedConfirmationMessage;
 use App\Mailer\Message\CommitteeNewCandidacyNotificationMessage;
 use App\Mailer\Message\CommitteeRemovedCandidacyNotificationMessage;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CommitteeCandidacyEvent;
 use App\VotingPlatform\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SendCandidacyEmailsListener implements EventSubscriberInterface
+class CommitteeCandidacySendEmailsListener implements EventSubscriberInterface
 {
     private $mailer;
     private $urlGenerator;
@@ -32,8 +33,12 @@ class SendCandidacyEmailsListener implements EventSubscriberInterface
         ];
     }
 
-    public function onCandidacyCreated(CommitteeCandidacyEvent $event): void
+    public function onCandidacyCreated(BaseCandidacyEvent $event): void
     {
+        if (!$event instanceof CommitteeCandidacyEvent) {
+            return;
+        }
+
         $committee = $event->getCommittee();
 
         $this->mailer->sendMessage(CommitteeCandidacyCreatedConfirmationMessage::create(
@@ -45,8 +50,12 @@ class SendCandidacyEmailsListener implements EventSubscriberInterface
         $this->notifySupervisor($event, CommitteeNewCandidacyNotificationMessage::class);
     }
 
-    public function onCandidacyRemoved(CommitteeCandidacyEvent $event): void
+    public function onCandidacyRemoved(BaseCandidacyEvent $event): void
     {
+        if (!$event instanceof CommitteeCandidacyEvent) {
+            return;
+        }
+
         $committee = $event->getCommittee();
 
         $this->mailer->sendMessage(CommitteeCandidacyRemovedConfirmationMessage::create(
@@ -74,7 +83,7 @@ class SendCandidacyEmailsListener implements EventSubscriberInterface
         if ($supervisor = $event->getSupervisor()) {
             $this->mailer->sendMessage(
                 $messageClass::create(
-                    $event->getCommitteeCandidacy(),
+                    $event->getCandidacy(),
                     $event->getCommittee()->getCommitteeElection(),
                     $supervisor,
                     $event->getCandidate(),

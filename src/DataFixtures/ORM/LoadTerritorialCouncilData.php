@@ -55,6 +55,7 @@ class LoadTerritorialCouncilData extends Fixture
     private function createTerritorialCouncil(ObjectManager $manager, string $name, string $code): void
     {
         $territorialCouncil = new TerritorialCouncil($name, $code);
+
         if ('Corse' === $name) {
             $territorialCouncil->addReferentTag($this->getReference('referent_tag_20'));
             $territorialCouncil->addReferentTag($this->getReference('referent_tag_2a'));
@@ -65,6 +66,6 @@ class LoadTerritorialCouncilData extends Fixture
 
         $manager->persist($territorialCouncil);
 
-        $this->addReference('terco_'.\mb_strtolower($code), $territorialCouncil);
+        $this->addReference('coTerr_'.\mb_strtolower($code), $territorialCouncil);
     }
 }

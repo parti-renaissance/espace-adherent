@@ -2,6 +2,7 @@
 
 namespace App\Repository\TerritorialCouncil;
 
+use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -12,6 +13,17 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, TerritorialCouncil::class);
+    }
+
+    public function findOneByReferentTag(ReferentTag $referentTag): ?TerritorialCouncil
+    {
+        return $this->createQueryBuilder('tc')
+            ->innerJoin('tc.referentTags', 'tag')
+            ->where('tag.id = :tag')
+            ->setParameter('tag', $referentTag)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     /**

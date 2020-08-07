@@ -23,8 +23,8 @@ use App\Repository\AdherentRepository;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
+use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CommitteeCandidacyEvent;
-use App\VotingPlatform\Event\UpdateCommitteeCandidacyEvent;
 use App\VotingPlatform\Events as VotingPlatformEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -625,6 +625,6 @@ class CommitteeManager
     {
         $this->getManager()->flush();
 
-        $this->dispatcher->dispatch(VotingPlatformEvents::CANDIDACY_UPDATED, new UpdateCommitteeCandidacyEvent($candidacy));
+        $this->dispatcher->dispatch(VotingPlatformEvents::CANDIDACY_UPDATED, new BaseCandidacyEvent($candidacy));
     }
 }

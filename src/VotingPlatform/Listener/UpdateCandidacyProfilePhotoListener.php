@@ -2,10 +2,9 @@
 
 namespace App\VotingPlatform\Listener;
 
-use App\Entity\CommitteeCandidacy;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Image\ImageManager;
-use App\VotingPlatform\Event\CommitteeCandidacyEvent;
-use App\VotingPlatform\Event\UpdateCommitteeCandidacyEvent;
+use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,14 +29,14 @@ class UpdateCandidacyProfilePhotoListener implements EventSubscriberInterface
         ];
     }
 
-    public function onCandidacyCreated(CommitteeCandidacyEvent $event): void
+    public function onCandidacyCreated(BaseCandidacyEvent $event): void
     {
-        $this->updatePhoto($event->getCommitteeCandidacy());
+        $this->updatePhoto($event->getCandidacy());
     }
 
-    public function onCandidacyUpdated(UpdateCommitteeCandidacyEvent $event): void
+    public function onCandidacyUpdated(BaseCandidacyEvent $event): void
     {
-        $candidacy = $event->getCommitteeCandidacy();
+        $candidacy = $event->getCandidacy();
 
         if ($candidacy->isRemoveImage()) {
             if ($candidacy->hasImageName()) {
@@ -49,16 +48,16 @@ class UpdateCandidacyProfilePhotoListener implements EventSubscriberInterface
         }
     }
 
-    public function onCandidacyRemoved(CommitteeCandidacyEvent $event): void
+    public function onCandidacyRemoved(BaseCandidacyEvent $event): void
     {
-        $candidacy = $event->getCommitteeCandidacy();
+        $candidacy = $event->getCandidacy();
 
         if ($candidacy->hasImageName()) {
-            $this->imageManager->removeImage($event->getCommitteeCandidacy());
+            $this->imageManager->removeImage($event->getCandidacy());
         }
     }
 
-    private function updatePhoto(CommitteeCandidacy $candidacy): void
+    private function updatePhoto(CandidacyInterface $candidacy): void
     {
         if ($candidacy->getImage()) {
             $this->imageManager->saveImage($candidacy);

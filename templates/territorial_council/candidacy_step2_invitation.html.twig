@@ -1,0 +1,105 @@
+{% extends 'territorial_council/_layout.html.twig' %}
+
+{% block territorial_council_content %}
+    <div class="territorial-council__main l__wrapper--narrow b__nudge--bottom-huge">
+        <div>
+            <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
+        </div>
+
+        <div class="l__wrapper--600">
+            <h3>Choix de votre binôme</h3>
+
+            <p>Vous devez choisir la personne (du sexe opposé) qui constituera votre binôme. Celle-ci sera avertie de votre intention et acceptera ou déclinera l’invitation.</p>
+
+            <p class="text--gray text--small">Les membres non sélectionnables ne sont pas éligibles car ils sont soit déja membres du Copol, soit déja candidats.</p>
+
+            {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
+            {{ form_errors(form) }}
+
+            <div class="em-form__group">
+                {{ form_label(form.quality, 'Je candidate en tant que', {label_attr: {class: 'em-form__label'}}) }}
+
+                {{ form_errors(form.quality) }}
+
+                <div class="em-form__field--ctn">
+                    {{ form_widget(form.quality, {attr: {class: 'em-form__field'}}) }}
+                </div>
+            </div>
+
+            <div class="em-form__group">
+                {{ form_label(form.invitation, 'Sélectionnez un membre pour composer votre binôme', {label_attr: {class: 'em-form__label'}}) }}
+
+                <div>
+                    <div class="em-form__group">
+                        <div class="em-form__field--ctn">
+                            <input type="search" placeholder="Rechercher un membre..." id="member-search" class="em-form__field form form__field"/>
+                        </div>
+                    </div>
+
+                    <div class="text--center space--30-0" id="loader-container">
+                        <div class="spin-loader"></div>
+                    </div>
+
+                    <div class="em-form__row" id="membership-container" style="display: none">
+                        <div class="em-form__group em-form__radio--inline">
+                            {{ form_widget(form.invitation) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                {{ form_row(form.save, {label: 'Envoyer l\'invitation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+                <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                    Étape précedente
+                </a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            var qualitySelect = dom('#{{ form.quality.vars.id }}');
+            var membershipContainer = dom('#membership-container');
+            var loaderContainer = dom('#loader-container');
+            var searchElement = dom('#member-search');
+
+            var renderRadioCallback = function (radioBlock) {
+                if (
+                    radioBlock.dataset.qualities.split(',').indexOf(qualitySelect.value) === -1
+                    || (searchElement.value && !radioBlock.dataset.fullname.toLowerCase().includes(searchElement.value.toLowerCase()))
+                ) {
+                    find(radioBlock, 'input').checked = false;
+                    hide(radioBlock);
+                } else {
+                    radioBlock.style.display = 'inline-block';
+                }
+            };
+
+            var refreshAllRadio = function () {
+                findAll(membershipContainer, '.form__radio').forEach(renderRadioCallback);
+            };
+
+            on(qualitySelect, 'change', function () {
+                hide(membershipContainer);
+                show(loaderContainer);
+
+                refreshAllRadio();
+
+                show(membershipContainer)
+                hide(loaderContainer);
+            });
+
+            on(searchElement, 'input', function () {
+                refreshAllRadio();
+            });
+
+            qualitySelect.dispatchEvent(new Event('change'));
+        });
+    </script>
+{% endblock %}

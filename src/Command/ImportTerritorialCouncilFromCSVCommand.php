@@ -14,10 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
 {
-    private const CSV_DIRECTORY = 'import';
+    protected static $defaultName = 'app:territorial-council:import-from-csv';
 
     protected const BATCH_SIZE = 10;
-    protected static $defaultName = 'app:territorial-council:import-from-csv';
 
     /** @var ReferentTagRepository */
     private $referentTagRepository;
@@ -37,29 +36,28 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
     protected function configure()
     {
         $this
-            ->addArgument('filename', InputArgument::REQUIRED, 'Filename of the CSV file with territorial councils')
+            ->addArgument('path', InputArgument::REQUIRED, 'Filename of the CSV file with territorial councils')
         ;
     }
 
-    protected function execute(InputInterface $countnput, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filename = sprintf('%s/%s', self::CSV_DIRECTORY, $countnput->getArgument('filename'));
-        if (!$this->storage->has($filename)) {
-            $this->io->comment("No CSV found ($filename).");
+        $filePath = $input->getArgument('path');
+
+        if (!$this->storage->has($filePath)) {
+            $this->io->comment("No CSV found ($filePath).");
 
             return;
         }
 
         $this->io->text('Start importing territorial councils');
-        $this->io->text("Processing \"$filename\"");
+        $this->io->text("Processing \"$filePath\"");
 
-        $reader = $this->createReader($filename);
+        $reader = $this->createReader($filePath);
 
         $this->io->progressStart($reader->count());
 
-        $count = 0;
-        foreach ($reader as $row) {
-            ++$count;
+        foreach ($reader as $index => $row) {
             if (null == $row['name']) {
                 $this->io->warning('Territorial council without name cannot be added.');
 
@@ -74,6 +72,7 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
             }
 
             $tags = explode(',', $row['referent_tag.code']);
+
             foreach ($tags as $tag) {
                 $tag = trim($tag);
                 if (!($referentTag = $this->referentTagRepository->findOneByCode($tag))) {
@@ -82,9 +81,10 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
                     $territorialCouncil->addReferentTag($referentTag);
                 }
             }
+
             $this->em->persist($territorialCouncil);
 
-            if (0 === ($count % self::BATCH_SIZE)) {
+            if ($index > 0 && 0 === ($index % self::BATCH_SIZE)) {
                 $this->io->progressAdvance(self::BATCH_SIZE);
                 $this->em->flush();
                 $this->em->clear();
@@ -93,7 +93,6 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
 
         $this->io->progressFinish();
         $this->em->flush();
-        $this->em->clear();
 
         $this->io->writeln('');
         $this->io->success('Done');

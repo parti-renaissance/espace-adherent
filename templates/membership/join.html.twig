@@ -180,9 +180,9 @@
                         <div class="register__form--elected form__checkbox form__checkbox--large">
                             {{ form_widget(form.elected) }}
                             <label class="form form__label" for="{{ form.elected.vars.id }}">
-                                    <span class="text__checkbox">
-                                        {{ 'adherent.form.elected'|trans }}
-                                    </span>
+                                <span class="text__checkbox">
+                                    {{ 'adherent.form.elected'|trans }}
+                                </span>
                             </label>
                             {{ form_errors(form.elected) }}
                         </div>
@@ -197,9 +197,9 @@
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-conditions">
                         {{ form_widget(form.conditions) }}
                         <label class="form form__label" for="{{ form.conditions.vars.id }}">
-                                    <span class="text__checkbox">
-                                            Oui, j'adhère à la <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM_regles_de_fonctionnement.pdf" target="_blank">charte des valeurs, aux statuts et aux règles de fonctionnement</a> de La République En Marche, ainsi qu'aux <a href="{{ path('page_mentions_legales') }}" target="_blank">conditions générales d'utilisation</a> du site et à la <a href="https://en-marche.fr/politique-protection-donnees" target="_blank">politique de protection des données à caractère personnel</a> du site
-                                    </span>
+                            <span class="text__checkbox">
+                                Oui, j'adhère à la <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM_regles_de_fonctionnement.pdf" target="_blank">charte des valeurs, aux statuts et aux règles de fonctionnement</a> de La République En Marche, ainsi qu'aux <a href="{{ path('page_mentions_legales') }}" target="_blank">conditions générales d'utilisation</a> du site et à la <a href="https://en-marche.fr/politique-protection-donnees" target="_blank">politique de protection des données à caractère personnel</a> du site
+                            </span>
                         </label>
                         {{ form_errors(form.conditions) }}
                     </div>
@@ -207,20 +207,20 @@
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
                         {{ form_widget(form.allowEmailNotifications) }}
                         <label class="form form__label" for="{{ form.allowEmailNotifications.vars.id }}">
-                                <span class="text__checkbox">
-                                    Je souhaite être informé(e) de l'actualité de La République En Marche par e-mail
-                                    <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
-                                </span>
+                            <span class="text__checkbox">
+                                Je souhaite être informé(e) de l'actualité de La République En Marche par e-mail
+                                <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
+                            </span>
                         </label>
                     </div>
 
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
                         {{ form_widget(form.allowMobileNotifications) }}
                         <label class="form form__label" for="{{ form.allowMobileNotifications.vars.id }}">
-                                <span class="text__checkbox">
-                                    Je souhaite recevoir des informations sur les actions militantes du mouvement par SMS
-                                    <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
-                                </span>
+                            <span class="text__checkbox">
+                                Je souhaite recevoir des informations sur les actions militantes du mouvement par SMS
+                                <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
+                            </span>
                         </label>
                     </div>
 
