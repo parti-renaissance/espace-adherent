@@ -24,6 +24,10 @@ class LreElectedRepresentativeController extends AbstractElectedRepresentativeCo
 
     protected function getManagedTags(Adherent $adherent): array
     {
+        if ($adherent->getLreArea()->isAllTags()) {
+            return [];
+        }
+
         return [$adherent->getLreArea()->getReferentTag()];
     }
 
