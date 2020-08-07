@@ -19,7 +19,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="el manager-information">
-                            <p>Vous gérez : <span>{{ app.user.lreArea.referentTag }}</span></p>
+                            <p>Vous gérez : <span>{{ app.user.lreArea.allTags ? 'Toutes les zones' : app.user.lreArea.referentTag }}</span></p>
                         </div>
                     </div>
                     <div class="second-section">
