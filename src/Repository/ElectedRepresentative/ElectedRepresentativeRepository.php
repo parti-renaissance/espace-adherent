@@ -105,11 +105,10 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         if ($filter->getReferentTags()) {
             $this->withZoneCondition($qb, $filter->getReferentTags());
-            $qb->addSelect('zone');
         }
 
         $qb
-            ->addSelect('mandate', 'politicalFunction', 'userListDefinition', 'label')
+            ->addSelect('mandate', 'zone', 'politicalFunction', 'userListDefinition', 'label')
             ->addSelect('sponsorship', 'socialNetworkLink', 'userListDefinition')
             ->leftJoin('er.labels', 'label')
             ->leftJoin('er.sponsorships', 'sponsorship')
@@ -204,6 +203,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     {
         return $qb
             ->leftJoin($alias.'.mandates', 'mandate')
+            ->leftJoin('mandate.zone', 'zone')
             ->andWhere('mandate.finishAt IS NULL')
             ->andWhere('mandate.onGoing = 1')
             ->andWhere('mandate.isElected = 1')
@@ -246,7 +246,6 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         }
 
         $qb
-            ->leftJoin('mandate.zone', 'zone')
             ->leftJoin('zone.referentTags', 'tag')
             ->andWhere($zoneCondition)
         ;
