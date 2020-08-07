@@ -16,6 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Candidacy extends BaseCandidacy
 {
+    private const STATUS_DRAFT = 'draft';
+    private const STATUS_CONFIRMED = 'confirmed';
+
     /**
      * @var string|null
      *
@@ -35,7 +38,7 @@ class Candidacy extends BaseCandidacy
     /**
      * @var Election
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\Election", inversedBy="candidacies")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\Election")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $election;
@@ -43,10 +46,32 @@ class Candidacy extends BaseCandidacy
     /**
      * @var TerritorialCouncilMembership
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", inversedBy="candidacies")
+     * @ORM\ManyToOne(targetEntity="TerritorialCouncilMembership", inversedBy="candidacies")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $membership;
+
+    /**
+     * @var CandidacyInvitation|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\CandidacyInvitation", inversedBy="candidacy", cascade={"all"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $invitation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $quality;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $status = self::STATUS_DRAFT;
 
     public function __construct(
         TerritorialCouncilMembership $membership,
@@ -107,6 +132,31 @@ class Candidacy extends BaseCandidacy
 
     public function hasInvitation(): bool
     {
-        return false;
+        return null !== $this->invitation;
+    }
+
+    public function getInvitation(): ?CandidacyInvitation
+    {
+        return $this->invitation;
+    }
+
+    public function setInvitation(?CandidacyInvitation $invitation): void
+    {
+        $this->invitation = $invitation;
+    }
+
+    public function getQuality(): ?string
+    {
+        return $this->quality;
+    }
+
+    public function setQuality(string $quality): void
+    {
+        $this->quality = $quality;
+    }
+
+    public function isDraft(): bool
+    {
+        return self::STATUS_DRAFT === $this->status;
     }
 }

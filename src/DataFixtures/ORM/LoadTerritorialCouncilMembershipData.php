@@ -26,10 +26,22 @@ class LoadTerritorialCouncilMembershipData extends Fixture
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-8'), new \DateTime('2020-03-03'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REFERENT, '75'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::MAYOR, '75012'));
         $manager->persist($membership);
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-19'), new \DateTime('2020-02-02'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, 'Paris en marche!'));
+        $manager->persist($membership);
+
+        $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('deputy-75-1'), new \DateTime('2020-02-02'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DEPUTY, 'CIRCO 75010'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::MAYOR, '75010'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, '75010'));
+        $manager->persist($membership);
+
+        $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-12'), new \DateTime('2020-02-02'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::MAYOR, '75011'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, '75011'));
         $manager->persist($membership);
 
         $manager->flush();

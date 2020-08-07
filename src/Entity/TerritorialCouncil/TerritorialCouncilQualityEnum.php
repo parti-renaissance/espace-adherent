@@ -23,6 +23,28 @@ class TerritorialCouncilQualityEnum extends Enum
     public const COMMITTEE_SUPERVISOR = 'committee_supervisor';
     public const DESIGNATED_ADHERENT = 'designated_adherent';
 
+    public const SELECTABLE_QUALITIES = [
+        self::SENATOR,
+        self::DEPUTY,
+        self::EUROPEAN_DEPUTY,
+        self::REGIONAL_COUNCIL_PRESIDENT,
+        self::DEPARTMENTAL_COUNCIL_PRESIDENT,
+        self::MAYOR,
+        self::REGIONAL_COUNCILOR,
+        self::DEPARTMENT_COUNCILOR,
+        self::CITY_COUNCILOR,
+        self::CONSULAR_CONSELOR,
+        self::COMMITTEE_SUPERVISOR,
+        self::DESIGNATED_ADHERENT,
+    ];
+
+    public const HIGHEST_QUALITIES = [
+        self::REFERENT,
+        self::GOVERNMENT_MEMBER,
+        self::REFERENT_JAM,
+        self::LRE_MANAGER,
+    ];
+
     public const QUALITY_PRIORITIES = [
         self::REFERENT => 0,
         self::GOVERNMENT_MEMBER => 1,

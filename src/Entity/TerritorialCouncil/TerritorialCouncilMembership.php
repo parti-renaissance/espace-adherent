@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository")
  *
  * @UniqueEntity(fields={"adherent", "territorialCouncil"})
  *
@@ -163,5 +163,27 @@ class TerritorialCouncilMembership
         }
 
         return null;
+    }
+
+    public function getQualityNames(): array
+    {
+        return array_map(function (TerritorialCouncilQuality $quality) {
+            return $quality->getName();
+        }, $this->qualities->toArray());
+    }
+
+    public function isAvailableForCandidacy(Election $election = null): bool
+    {
+        if (!$election) {
+            $election = $this->getTerritorialCouncil()->getCurrentElection();
+        }
+
+        if (array_intersect(TerritorialCouncilQualityEnum::HIGHEST_QUALITIES, $this->getQualityNames())) {
+            return false;
+        }
+
+        $candidacy = $this->getCandidacyForElection($election);
+
+        return !$candidacy || $candidacy->isDraft();
     }
 }

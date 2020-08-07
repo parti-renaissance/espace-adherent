@@ -6,7 +6,9 @@ use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\Election;
+use App\Form\TerritorialCouncil\CandidacyQualityType;
 use App\Form\VotingPlatform\Candidacy\TerritorialCouncilCandidacyType;
+use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
 use App\TerritorialCouncil\CandidacyManager;
 use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -18,6 +20,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/conseil-territorial/candidature", name="app_territorial_council_candidature")
+ *
+ * @Security("is_granted('TERRITORIAL_COUNCIL_MEMBER')")
  */
 class CandidatureController extends Controller
 {
@@ -32,8 +36,6 @@ class CandidatureController extends Controller
 
     /**
      * @Route("", name="_edit", methods={"POST", "GET"})
-     *
-     * @Security("is_granted('TERRITORIAL_COUNCIL_MEMBER')")
      *
      * @param Adherent|UserInterface $adherent
      */
@@ -89,8 +91,6 @@ class CandidatureController extends Controller
     /**
      * @Route("/retirer", name="_remove", methods={"GET"})
      *
-     * @Security("is_granted('TERRITORIAL_COUNCIL_MEMBER')")
-     *
      * @param Adherent $adherent
      */
     public function removeCandidacyAction(UserInterface $adherent): Response
@@ -121,12 +121,13 @@ class CandidatureController extends Controller
     /**
      * @Route("/choix-de-binome", name="_select_pair_candidate", methods={"GET", "POST"})
      *
-     * @Security("is_granted('TERRITORIAL_COUNCIL_MEMBER')")
-     *
      * @param Adherent $adherent
      */
-    public function selectPairCandidateAction(UserInterface $adherent): Response
-    {
+    public function selectPairCandidateAction(
+        Request $request,
+        UserInterface $adherent,
+        TerritorialCouncilMembershipRepository $membershipRepository
+    ): Response {
         $this->disableInProduction();
 
         $membership = $adherent->getTerritorialCouncilMembership();
@@ -141,8 +142,21 @@ class CandidatureController extends Controller
             return $this->redirectToRoute('app_territorial_council_candidature_edit');
         }
 
+        $form = $this
+            ->createForm(
+                CandidacyQualityType::class,
+                $candidacy,
+                [
+                    'memberships' => $membershipRepository->findAvailableMemberships($membership),
+                    'qualities' => $membership->getQualityNames(),
+                ]
+            )
+            ->handleRequest($request)
+        ;
+
         return $this->render('territorial_council/select_pair_candidate.html.twig', [
             'membership' => $membership,
+            'form' => $form->createView(),
             'territorial_council' => $council,
         ]);
     }

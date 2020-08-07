@@ -424,3 +424,26 @@
         </div>
     </div>
 {% endblock %}
+
+{% block _candidacy_quality_invitation_membership_widget %}
+    {% for key, choice in form %}
+        {% set membership = form.vars.choices[key].data %}
+        {% set adherent = membership.adherent %}
+        {% set available = membership.isAvailableForCandidacy() %}
+
+        <div class="form__radio {{ not available ? 'disabled' }}" data-qualities="{{ membership.qualityNames|join(',')|e('js') }}" data-fullname="{{ adherent.fullName }}">
+            {{ form_widget(choice, {attr: {disabled: not available }}) }}
+
+            <label class="form form__label required" for="{{ choice.vars.id }}">
+                <div class="l__row identity">
+                    <div class="avatar-initials avatar--small avatar--style-02 b__nudge--right-small">
+                        {{ adherent.initials }}
+                    </div>
+                    <div>
+                        <div class="font-roboto text--bold">{{ adherent.fullName }}</div>
+                    </div>
+                </div>
+            </label>
+        </div>
+    {% endfor %}
+{% endblock %}

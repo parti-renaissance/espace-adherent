@@ -72,7 +72,7 @@ class TerritorialCouncil
      * @var Collection|TerritorialCouncilMembership[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership",
+     *     targetEntity="TerritorialCouncilMembership",
      *     cascade={"persist", "remove"},
      *     mappedBy="territorialCouncil",
      *     orphanRemoval=true
