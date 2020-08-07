@@ -179,7 +179,6 @@ class ElectedRepresentative
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
-     * @ORM\OrderBy({"number": "ASC"})
      *
      * @Assert\Valid
      */
