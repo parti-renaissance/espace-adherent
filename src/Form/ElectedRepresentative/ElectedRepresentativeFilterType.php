@@ -75,23 +75,18 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'query_builder' => function (ZoneRepository $zoneRepository) use ($options) {
-                    $queryBuilder = $zoneRepository
+                    return $zoneRepository
                         ->createQueryBuilder('zone')
                         ->leftJoin('zone.category', 'category')
                         ->leftJoin('zone.referentTags', 'referentTag')
-                        ->orderBy('zone.name')
                         ->where('category.name = :category')
-                        ->setParameter('category', ZoneCategory::CITY)
+                        ->andWhere('referentTag IN (:tags)')
+                        ->setParameters([
+                            'tags' => $options['referent_tags'],
+                            'category' => ZoneCategory::CITY,
+                        ])
+                        ->orderBy('zone.name')
                     ;
-
-                    if ($options['referent_tags']) {
-                        $queryBuilder
-                            ->andWhere('referentTag IN (:tags)')
-                            ->setParameter('tags', $options['referent_tags'])
-                        ;
-                    }
-
-                    return $queryBuilder;
                 },
             ])
             ->add('userListDefinitions', EntityType::class, [
