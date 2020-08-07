@@ -81,7 +81,7 @@ class CandidatureController extends Controller
             return $this->redirectToRoute('app_territorial_council_candidature_select_pair_candidate');
         }
 
-        return $this->render('territorial_council/edit_candidacy.html.twig', [
+        return $this->render('territorial_council/candidacy_step1_edit.html.twig', [
             'form' => $form->createView(),
             'territorial_council' => $council,
             'candidacy' => $candidacy,
@@ -147,17 +147,53 @@ class CandidatureController extends Controller
                 CandidacyQualityType::class,
                 $candidacy,
                 [
-                    'memberships' => $membershipRepository->findAvailableMemberships($membership),
+                    'memberships' => $membershipRepository->findAvailableMemberships($candidacy),
                     'qualities' => $membership->getQualityNames(),
                 ]
             )
             ->handleRequest($request)
         ;
 
-        return $this->render('territorial_council/select_pair_candidate.html.twig', [
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->updateCandidature($candidacy);
+
+            $this->addFlash('info', 'Votre invitation a bien été envoyée');
+
+            return $this->redirectToRoute('app_territorial_council_candidature_select_pair_candidate_finish');
+        }
+
+        return $this->render('territorial_council/candidacy_step2_invitation.html.twig', [
             'membership' => $membership,
             'form' => $form->createView(),
             'territorial_council' => $council,
+        ]);
+    }
+
+    /**
+     * @Route("/choix-de-binome/fini", name="_select_pair_candidate_finish", methods={"GET"})
+     *
+     * @param Adherent $adherent
+     */
+    public function finishInvitationStepAction(UserInterface $adherent): Response
+    {
+        $this->disableInProduction();
+
+        $membership = $adherent->getTerritorialCouncilMembership();
+        $council = $membership->getTerritorialCouncil();
+
+        /** @var Election $election */
+        if (!($election = $council->getCurrentElection()) || !$election->isCandidacyPeriodActive()) {
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        if (!($candidacy = $membership->getCandidacyForElection($election)) || !($invitation = $candidacy->getInvitation())) {
+            return $this->redirectToRoute('app_territorial_council_candidature_edit');
+        }
+
+        return $this->render('territorial_council/candidacy_step3_confirmation.html.twig', [
+            'territorial_council' => $council,
+            'candidacy' => $candidacy,
+            'invitation' => $invitation,
         ]);
     }
 }

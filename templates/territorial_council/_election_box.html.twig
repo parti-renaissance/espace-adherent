@@ -21,7 +21,7 @@
                 {% if candidacy.hasInvitation %}
                     <hr/>
                     <p class="text--body text--small text--bold">
-                        {{ 'X Y' }} doit accepter votre demande pour que votre candidature soit confirmée
+                        {{ candidacy.invitation.membership.adherent.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
                     </p>
 
                     <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Modifier ma demande de binôme</a>

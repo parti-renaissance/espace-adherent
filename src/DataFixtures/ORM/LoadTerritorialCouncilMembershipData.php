@@ -31,6 +31,7 @@ class LoadTerritorialCouncilMembershipData extends Fixture
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-19'), new \DateTime('2020-02-02'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, 'Paris en marche!'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, '75009'));
         $manager->persist($membership);
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('deputy-75-1'), new \DateTime('2020-02-02'));

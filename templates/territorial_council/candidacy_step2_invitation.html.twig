@@ -69,14 +69,15 @@
             var loaderContainer = dom('#loader-container');
             var searchElement = dom('#member-search');
 
-            var renderRadioCallback = function (radio) {
+            var renderRadioCallback = function (radioBlock) {
                 if (
-                    radio.dataset.qualities.split(',').indexOf(qualitySelect.value) === -1
-                    || (searchElement.value && !radio.dataset.fullname.toLowerCase().includes(searchElement.value.toLowerCase()))
+                    radioBlock.dataset.qualities.split(',').indexOf(qualitySelect.value) === -1
+                    || (searchElement.value && !radioBlock.dataset.fullname.toLowerCase().includes(searchElement.value.toLowerCase()))
                 ) {
-                    hide(radio);
+                    find(radioBlock, 'input').checked = false;
+                    hide(radioBlock);
                 } else {
-                    radio.style.display = 'inline-block';
+                    radioBlock.style.display = 'inline-block';
                 }
             };
 
