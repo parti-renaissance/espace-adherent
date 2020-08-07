@@ -468,6 +468,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var LreArea|null
      *
      * @ORM\OneToOne(targetEntity="LreArea", cascade={"all"}, orphanRemoval=true)
+     * @Assert\Valid
      */
     private $lreArea;
 

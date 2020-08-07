@@ -344,6 +344,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent13->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent13->addReferentTag($this->getReference('referent_tag_ch'));
         $adherent13->setMandates(['european_deputy']);
+        $lreArea = new LreArea();
+        $lreArea->setAllTags(true);
+        $adherent13->setLreArea($lreArea);
         $this->addReference('adherent-13', $adherent13);
 
         $adherent14 = $adherentFactory->createFromArray([

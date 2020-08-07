@@ -56,8 +56,11 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
         $this->withActiveMandatesCondition($qb);
 
-        return (int) $this
-            ->withZoneCondition($qb, $referentTags)
+        if ($referentTags) {
+            $this->withZoneCondition($qb, $referentTags);
+        }
+
+        return (int) $qb
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -99,10 +102,14 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
 
         $this->withActiveMandatesCondition($qb);
-        $this->withZoneCondition($qb, $filter->getReferentTags());
+
+        if ($filter->getReferentTags()) {
+            $this->withZoneCondition($qb, $filter->getReferentTags());
+            $qb->addSelect('zone');
+        }
 
         $qb
-            ->addSelect('mandate', 'zone', 'politicalFunction', 'userListDefinition', 'label')
+            ->addSelect('mandate', 'politicalFunction', 'userListDefinition', 'label')
             ->addSelect('sponsorship', 'socialNetworkLink', 'userListDefinition')
             ->leftJoin('er.labels', 'label')
             ->leftJoin('er.sponsorships', 'sponsorship')

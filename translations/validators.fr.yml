@@ -445,3 +445,8 @@ elected_representative.invalid_adherent: Cet e-mail correspond à un compte adh�
 # CertificationRequest
 #
 certification_request.document.mime_type: Seuls les fichiers jpg, png et pdf sont acceptés.
+
+#
+# LRE
+#
+lre_area.all_tags_and_one_selected: Vous ne pouvez pas cocher "La République Ensemble sans restriction de zone" et sélectionner une zone La République Ensemble en même temps
