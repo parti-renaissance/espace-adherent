@@ -98,13 +98,16 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('er')
-            ->orderBy('er.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
         $this->withActiveMandatesCondition($qb);
 
         if ($filter->getReferentTags()) {
             $this->withZoneCondition($qb, $filter->getReferentTags());
+            $qb
+                ->orderBy('er.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
+                ->addOrderBy('mandate.number', 'ASC')
+            ;
         }
 
         $qb
