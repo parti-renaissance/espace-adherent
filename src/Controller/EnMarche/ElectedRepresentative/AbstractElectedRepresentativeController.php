@@ -37,7 +37,7 @@ abstract class AbstractElectedRepresentativeController extends Controller
             $filter = new ListFilter($managedTags);
         }
 
-        $electedRepresentatives = $electedRepresentativeRepository->searchByFilter($filter, $request->query->getInt('page', 1));
+        $electedRepresentatives = $electedRepresentativeRepository->searchByFilter($filter, $request->query->getInt('page', 1), 50);
 
         return $this->renderTemplate('elected_representative/list.html.twig', [
             'elected_representatives' => $electedRepresentatives,
