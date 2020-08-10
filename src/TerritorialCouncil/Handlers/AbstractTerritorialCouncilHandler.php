@@ -56,7 +56,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
                     $adherent,
                     null,
                     $territorialCouncils,
-                    'Plusieurs conseil territorials ont été trouvés pour cette qualité'
+                    'Plusieurs conseils territorials ont été trouvés pour cette qualité'
                 );
 
                 return;
@@ -74,7 +74,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
                 $adherent,
                 $actualMembership,
                 $territorialCouncils,
-                'Plusieurs conseil territorials ont été trouvés pour cette qualité'
+                'Plusieurs conseils territorials ont été trouvés pour cette qualité'
             );
 
             return;
@@ -144,7 +144,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             $adherent,
             $actualMembership,
             [$territorialCouncil],
-            'Adhérent est déjà membre avec cette même qualité (de priorité majeure)'
+            'Adhérent est déjà membre avec cette qualité (de priorité majeure)'
         );
     }
 

@@ -6,17 +6,11 @@ use App\Repository\AdherentRepository;
 use App\TerritorialCouncil\Command\AdherentUpdateTerritorialCouncilMembershipsCommand;
 use App\TerritorialCouncil\Handlers\AbstractTerritorialCouncilHandler;
 use App\TerritorialCouncil\Handlers\TerritorialCouncilMembershipHandlerInterface;
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
+class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements MessageHandlerInterface
 {
-    use LoggerAwareTrait;
-
     /**
      * @var TerritorialCouncilMembershipHandlerInterface[]|iterable
      */
@@ -27,12 +21,10 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
     public function __construct(
         AdherentRepository $adherentRepository,
         EntityManagerInterface $entityManager,
-        iterable $handlers,
-        LoggerInterface $logger
+        iterable $handlers
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->entityManager = $entityManager;
-        $this->logger = $logger;
 
         $handlers = iterator_to_array($handlers);
         usort($handlers, function (AbstractTerritorialCouncilHandler $handlerA, AbstractTerritorialCouncilHandler $handlerB) {
@@ -55,24 +47,11 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
 
         foreach ($this->handlers as $handler) {
             if ($handler->supports($adherent)) {
-                try {
-                    $handler->handle($adherent);
-                } catch (DBALException $e) {
-                    $this->logger->error($e->getMessage(), ['e' => $e]);
-
-                    if (null === $firstException) {
-                        $firstException = $e;
-                    }
-                }
+                $handler->handle($adherent);
             }
         }
 
-        if ($firstException) {
-            throw $firstException;
-        }
-
         $this->entityManager->flush();
-
         $this->entityManager->clear();
     }
 }
