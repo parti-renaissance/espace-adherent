@@ -4,7 +4,6 @@
     box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.14);
     border-radius: 4px;
     padding: 40px;
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -17,10 +16,6 @@
     -webkit-transition-timing-function: ease-out;
     -o-transition-timing-function: ease-out;
     transition-timing-function: ease-out;
-
-    @media (min-width: $tablet) {
-        margin-top: 70px;
-    }
 
     h2 {
         color: $pink;

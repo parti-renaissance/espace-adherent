@@ -27,27 +27,27 @@ class LoadTerritorialCouncilData extends Fixture
                     foreach (\range(1, 20) as $district) {
                         $district = \str_pad($district, 2, '0', \STR_PAD_LEFT);
 
-                        $this->createTerritorialCouncil($manager, "Conseil Territorial de Paris 750$district", "750$district");
+                        $this->createTerritorialCouncil($manager, "Conseil territorial de Paris 750$district", "750$district");
                     }
 
-                    $this->createTerritorialCouncil($manager, 'Conseil Territorial de Paris', '75');
+                    $this->createTerritorialCouncil($manager, 'Conseil territorial de Paris', '75');
 
                     break;
                 // does not exist
                 case '96':
                     break;
                 default:
-                    $this->createTerritorialCouncil($manager, "Conseil Territorial du département $department", $department);
+                    $this->createTerritorialCouncil($manager, "Conseil territorial du département $department", $department);
 
                     break;
             }
         }
 
         foreach (UnitedNationsBundle::getCountries() as $countryCode => $countryName) {
-            $this->createTerritorialCouncil($manager, "Conseil Territorial de $countryName", $countryCode);
+            $this->createTerritorialCouncil($manager, "Conseil territorial de $countryName", $countryCode);
         }
 
-        $this->createTerritorialCouncil($manager, 'Conseil Territorial des Français de l\'Étranger', ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG);
+        $this->createTerritorialCouncil($manager, 'Conseil territorial des Français de l\'Étranger', ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG);
 
         $manager->flush();
     }

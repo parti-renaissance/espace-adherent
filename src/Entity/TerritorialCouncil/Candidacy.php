@@ -75,6 +75,13 @@ class Candidacy extends BaseCandidacy
      */
     private $status = self::STATUS_DRAFT;
 
+    /**
+     * @var Candidacy|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\Candidacy")
+     */
+    private $binome;
+
     public function __construct(
         TerritorialCouncilMembership $membership,
         Election $election,
@@ -137,6 +144,11 @@ class Candidacy extends BaseCandidacy
         return null !== $this->invitation;
     }
 
+    public function hasPendingInvitation(): bool
+    {
+        return null !== $this->invitation && $this->invitation->isPending();
+    }
+
     public function getInvitation(): ?CandidacyInvitation
     {
         return $this->invitation;
@@ -169,5 +181,36 @@ class Candidacy extends BaseCandidacy
     public function isConfirmed(): bool
     {
         return self::STATUS_CONFIRMED === $this->status;
+    }
+
+    public function updateFromBinome(): void
+    {
+        if ($this->binome) {
+            $this->faithStatement = $this->binome->getFaithStatement();
+            $this->isPublicFaithStatement = $this->binome->isPublicFaithStatement();
+        }
+    }
+
+    public function getBinome(): ?Candidacy
+    {
+        return $this->binome;
+    }
+
+    public function setBinome(Candidacy $candidacy): void
+    {
+        $this->binome = $candidacy;
+    }
+
+    public function confirm(): void
+    {
+        $this->status = self::STATUS_CONFIRMED;
+    }
+
+    /**
+     * @Assert\IsTrue(groups={"accept_invitation"})
+     */
+    public function isValidForConfirmation(): bool
+    {
+        return $this->binome && $this->binome->getInvitation() && $this->binome->isDraft();
     }
 }

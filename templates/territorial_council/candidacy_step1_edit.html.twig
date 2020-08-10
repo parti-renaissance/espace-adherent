@@ -111,7 +111,7 @@
             </div>
 
             <div>
-                {{ form_row(form.save, {label: 'Enregistrer et choisir mon binôme', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+                {{ form_row(form.save, {label: invitation is defined ? 'Accepter et enregistrer' : (candidacy is defined and (candidacy.hasInvitation() or candidacy.isConfirmed()) ? 'Enregistrer' : 'Enregistrer et choisir mon binôme'), attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
             </div>
 
             {{ form_end(form) }}

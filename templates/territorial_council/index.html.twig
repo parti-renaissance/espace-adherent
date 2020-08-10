@@ -1,7 +1,7 @@
 {% extends 'territorial_council/_layout.html.twig' %}
 
 {% block territorial_council_content %}
-    <div class="territorial-council__main l__wrapper--main l__wrapper--main-left b__nudge--bottom-huge">
+    <div class="territorial-council__main l__wrapper--main l__wrapper--main-left">
 
         {% if territorial_council.currentElection %}
             {% include 'territorial_council/_election_box.html.twig' %}
@@ -19,14 +19,10 @@
                     {% set adherent = membership.adherent %}
 
                     <div class="territorial-council__member">
-                        <div class="l__row identity">
-                            <div class="avatar-initials avatar--small avatar--style-02 b__nudge--right-small">
-                                {{ adherent.initials }}
-                            </div>
-                            <div>
-                                <div class="font-roboto text--bold">{{ adherent.fullName }}</div>
-                            </div>
-                        </div>
+                        {% include 'territorial_council/_member_identity_box.html.twig' with {
+                            initials: adherent.initials,
+                            full_name: adherent.fullName
+                        } %}
 
                         <div>
                             <ul class="roles">

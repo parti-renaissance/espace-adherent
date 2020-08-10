@@ -18,10 +18,20 @@
         {# Candidate period #}
         {% if election.isCandidacyPeriodActive %}
             {% if candidacy %}
-                {% if candidacy.hasInvitation %}
+                {% if candidacy.isConfirmed %}
                     <hr/>
+
                     <p class="text--body text--small text--bold">
-                        {{ candidacy.invitation.membership.adherent.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
+                        Vous êtes maintenant candidat en binôme avec {{ candidacy.binome.membership.fullName }}.
+                        Vous ne pouvez plus retirer votre candidature.
+                    </p>
+
+                    <a href="#" class="btn btn--ghosting--pink btn--no-wrap box-el btn--disabled">Modifier ma demande de binôme</a>
+                {% elseif candidacy.hasPendingInvitation %}
+                    <hr/>
+
+                    <p class="text--body text--small text--bold">
+                        {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
                     </p>
 
                     <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Modifier ma demande de binôme</a>
@@ -60,7 +70,7 @@
             </p>
         {% endif %}
 
-        {% if candidacy and election.isCandidacyPeriodActive %}
+        {% if candidacy and candidacy.isDraft and election.isCandidacyPeriodActive %}
             <p class="candidacy-remove text--body text--small b__nudge--top">
                 <a href="{{ path('app_territorial_council_candidature_remove') }}"
                       class="link--no-decor text--blue--dark em-confirm--trigger box-el"

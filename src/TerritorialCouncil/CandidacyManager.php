@@ -3,6 +3,7 @@
 namespace App\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\Candidacy;
+use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\TerritorialCouncilCandidacyEvent;
 use App\VotingPlatform\Events as VotingPlatformEvents;
@@ -29,6 +30,10 @@ class CandidacyManager
             $this->entityManager->persist($candidacy);
         }
 
+        if ($candidacy->isConfirmed()) {
+            $candidacy->getBinome()->updateFromBinome();
+        }
+
         $this->entityManager->flush();
 
         if ($isCreation) {
@@ -50,5 +55,23 @@ class CandidacyManager
         $this->entityManager->flush();
 
         $this->dispatcher->dispatch(VotingPlatformEvents::CANDIDACY_REMOVED, new BaseCandidacyEvent($candidacy));
+    }
+
+    public function acceptInvitation(CandidacyInvitation $invitation, Candidacy $acceptedBy): void
+    {
+        $invitation->accept();
+
+        $invitation->getCandidacy()->updateFromBinome();
+        $invitation->getCandidacy()->confirm();
+        $acceptedBy->confirm();
+
+        $this->updateCandidature($acceptedBy);
+    }
+
+    public function declineInvitation(CandidacyInvitation $invitation): void
+    {
+        $invitation->decline();
+
+        $this->entityManager->flush();
     }
 }

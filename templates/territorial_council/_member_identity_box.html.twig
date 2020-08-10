@@ -1,0 +1,11 @@
+<div class="l__row identity">
+    <div class="avatar-initials avatar--small avatar--style-02 b__nudge--right-small">
+        {{ initials }}
+    </div>
+    <div>
+        <div class="font-roboto text--bold">{{ full_name }}</div>
+        {% if label is defined %}
+            <span class="text--normal text--gray b__nudge--bottom">{{ label }}</span>
+        {% endif %}
+    </div>
+</div>

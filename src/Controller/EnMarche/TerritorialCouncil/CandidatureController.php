@@ -5,9 +5,11 @@ namespace App\Controller\EnMarche\TerritorialCouncil;
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Candidacy;
+use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\Entity\TerritorialCouncil\Election;
 use App\Form\TerritorialCouncil\CandidacyQualityType;
 use App\Form\VotingPlatform\Candidacy\TerritorialCouncilCandidacyType;
+use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
 use App\TerritorialCouncil\CandidacyManager;
 use App\ValueObject\Genders;
@@ -53,20 +55,24 @@ class CandidatureController extends Controller
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
-        /** @var Adherent $adherent */
-        $candidacyGender = $adherent->getGender();
+        $candidacy = $membership->getCandidacyForElection($election);
 
-        if ($adherent->isOtherGender()) {
-            $candidacyGender = $request->query->get('gender');
+        if (!$candidacy) {
+            /** @var Adherent $adherent */
+            $candidacyGender = $adherent->getGender();
 
-            if (!$candidacyGender || !\in_array($candidacyGender, Genders::CIVILITY_CHOICES, true)) {
-                $this->addFlash('error', 'Le genre de la candidature n\'a pas été sélectionné');
+            if ($adherent->isOtherGender()) {
+                $candidacyGender = $request->query->get('gender');
 
-                return $this->redirectToRoute('app_territorial_council_index');
+                if (!$candidacyGender || !\in_array($candidacyGender, Genders::CIVILITY_CHOICES, true)) {
+                    $this->addFlash('error', 'Le genre de la candidature n\'a pas été sélectionné');
+
+                    return $this->redirectToRoute('app_territorial_council_index');
+                }
             }
-        }
 
-        $candidacy = $membership->getCandidacyForElection($election) ?? new Candidacy($membership, $election, $candidacyGender);
+            $candidacy = new Candidacy($membership, $election, $candidacyGender);
+        }
 
         $form = $this
             ->createForm(TerritorialCouncilCandidacyType::class, $candidacy)
@@ -107,7 +113,7 @@ class CandidatureController extends Controller
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
-        if (!$candidacy = $membership->getCandidacyForElection($election)) {
+        if (!($candidacy = $membership->getCandidacyForElection($election)) || $candidacy->isConfirmed()) {
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
@@ -138,8 +144,12 @@ class CandidatureController extends Controller
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
-        if (!$candidacy = $membership->getCandidacyForElection($election)) {
+        if (!($candidacy = $membership->getCandidacyForElection($election)) || $candidacy->isConfirmed()) {
             return $this->redirectToRoute('app_territorial_council_candidature_edit');
+        }
+
+        if ($candidacy->hasInvitation() && $candidacy->getInvitation()->isAccepted()) {
+            return $this->redirectToRoute('app_territorial_council_index');
         }
 
         $form = $this
@@ -155,6 +165,8 @@ class CandidatureController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $candidacy->getInvitation()->resetStatus();
+
             $this->manager->updateCandidature($candidacy);
 
             $this->addFlash('info', 'Votre invitation a bien été envoyée');
@@ -195,5 +207,116 @@ class CandidatureController extends Controller
             'candidacy' => $candidacy,
             'invitation' => $invitation,
         ]);
+    }
+
+    /**
+     * @Route("/mes-invitations", name="_invitation_list", methods={"GET"})
+     *
+     * @param Adherent $adherent
+     */
+    public function invitationListAction(UserInterface $adherent, CandidacyInvitationRepository $repository): Response
+    {
+        $this->disableInProduction();
+
+        $membership = $adherent->getTerritorialCouncilMembership();
+        $council = $membership->getTerritorialCouncil();
+
+        /** @var Election $election */
+        if (!($election = $council->getCurrentElection()) || !$election->isCandidacyPeriodActive()) {
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        if (($candidacy = $membership->getCandidacyForElection($election)) && $candidacy->isConfirmed()) {
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        return $this->render('territorial_council/invitation_list.html.twig', [
+            'territorial_council' => $council,
+            'membership' => $membership,
+            'candidacy' => $membership->getCandidacyForElection($election),
+            'invitations' => $repository->findAllPendingForMembership($membership, $election),
+        ]);
+    }
+
+    /**
+     * @Route("/mes-invitations/{uuid}/accepter", name="_invitation_accept", methods={"GET", "POST"})
+     *
+     * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
+     *
+     * @param Adherent $adherent
+     */
+    public function acceptInvitationAction(
+        Request $request,
+        CandidacyInvitation $invitation,
+        UserInterface $adherent
+    ): Response {
+        $this->disableInProduction();
+
+        $membership = $adherent->getTerritorialCouncilMembership();
+        $council = $membership->getTerritorialCouncil();
+
+        /** @var Election $election */
+        if (!($election = $council->getCurrentElection()) || !$election->isCandidacyPeriodActive()) {
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        $acceptedBy = $membership->getCandidacyForElection($election) ?? new Candidacy($membership, $election, $adherent->getGender());
+
+        $acceptedBy->setBinome($invitedBy = $invitation->getCandidacy());
+        $invitedBy->setBinome($acceptedBy);
+
+        $acceptedBy->updateFromBinome();
+
+        $form = $this
+            ->createForm(TerritorialCouncilCandidacyType::class, $acceptedBy, ['validation_groups' => ['Default', 'accept_invitation']])
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->acceptInvitation($invitation, $acceptedBy);
+
+            $this->addFlash('info', 'Votre candidature a bien été enregistrée');
+
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        return $this->render('territorial_council/candidacy_step1_edit.html.twig', [
+            'form' => $form->createView(),
+            'territorial_council' => $council,
+            'candidacy' => $acceptedBy,
+            'invitation' => $invitation,
+        ]);
+    }
+
+    /**
+     * @Route("/mes-invitations/{uuid}/decliner", name="_invitation_decline", methods={"GET"})
+     *
+     * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
+     *
+     * @param Adherent $adherent
+     */
+    public function declineInvitationAction(CandidacyInvitation $invitation, UserInterface $adherent): Response
+    {
+        $this->disableInProduction();
+
+        $membership = $adherent->getTerritorialCouncilMembership();
+        $council = $membership->getTerritorialCouncil();
+
+        /** @var Election $election */
+        if (!($election = $council->getCurrentElection()) || !$election->isCandidacyPeriodActive()) {
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        if (!$invitation->isPending()) {
+            $this->addFlash('error', 'Vous ne pouvez pas décliner cette invitation');
+
+            return $this->redirectToRoute('app_territorial_council_candidature_invitation_list');
+        }
+
+        $this->manager->declineInvitation($invitation);
+
+        $this->addFlash('info', 'Invitation a bien été déclinée');
+
+        return $this->redirectToRoute('app_territorial_council_candidature_invitation_list');
     }
 }
