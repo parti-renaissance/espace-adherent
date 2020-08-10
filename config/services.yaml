@@ -52,6 +52,12 @@ services:
             tags: ['app.adherent.unregistration.handler']
         App\Adherent\Certification\Handlers\CertificationRequestHandlerInterface:
             tags: ['app.adherent.certification_request.handler']
+        App\TerritorialCouncil\Handlers\TerritorialCouncilMembershipHandlerInterface:
+            tags:
+                - { name: 'app.adherent.territorial_council_membership.handler' }
+                - { name: 'monolog.logger', channel: 'terrco_membership_update' }
+            calls:
+                - ['setLogger', ['@logger']]
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
 
@@ -81,3 +87,11 @@ services:
 
     App\TerritorialCouncil\:
         resource: ../src/TerritorialCouncil/
+
+    App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
+        arguments:
+            $handlers: !tagged 'app.adherent.territorial_council_membership.handler'
+        tags:
+            - { name: 'monolog.logger', channel: 'terrco_membership_update' }
+        calls:
+            - ['setLogger', ['@logger']]

@@ -21,7 +21,7 @@ class TerritorialCouncilQualityEnum extends Enum
     public const CITY_COUNCILOR = 'city_councilor';
     public const CONSULAR_CONSELOR = 'consular_conselor';
     public const COMMITTEE_SUPERVISOR = 'committee_supervisor';
-    public const DESIGNATED_ADHERENT = 'designated_adherent';
+    public const ELECTED_CANDIDATE_ADHERENT = 'elected_candidate_adherent';
 
     public const HIGHEST_QUALITIES = [
         self::REFERENT,
@@ -46,6 +46,6 @@ class TerritorialCouncilQualityEnum extends Enum
         self::CITY_COUNCILOR => 12,
         self::CONSULAR_CONSELOR => 13,
         self::COMMITTEE_SUPERVISOR => 14,
-        self::DESIGNATED_ADHERENT => 15,
+        self::ELECTED_CANDIDATE_ADHERENT => 15,
     ];
 }
