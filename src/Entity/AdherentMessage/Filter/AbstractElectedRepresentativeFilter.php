@@ -66,9 +66,9 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
     /**
      * @var bool|null
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, options={"default": true})
      */
-    private $isAdherent;
+    private $isAdherent = true;
 
     public function getGender(): ?string
     {
