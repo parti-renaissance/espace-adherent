@@ -55,7 +55,7 @@ services:
         App\TerritorialCouncil\Handlers\TerritorialCouncilMembershipHandlerInterface:
             tags:
                 - { name: 'app.adherent.territorial_council_membership.handler' }
-                - { name: 'monolog.logger', channel: 'terrco_membership_update' }
+                - { name: 'monolog.logger', channel: 'coterr_membership_update' }
             calls:
                 - ['setLogger', ['@logger']]
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
@@ -91,7 +91,3 @@ services:
     App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.territorial_council_membership.handler'
-        tags:
-            - { name: 'monolog.logger', channel: 'terrco_membership_update' }
-        calls:
-            - ['setLogger', ['@logger']]

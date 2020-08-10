@@ -80,4 +80,16 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByCommittees(array $committees): array
+    {
+        return $this->createQueryBuilder('tc')
+            ->leftJoin('tc.referentTags', 'tag')
+            ->leftJoin(Committee::class, 'committee', Join::WITH, 'tag MEMBER OF committee.referentTags')
+            ->where('committee IN (:committees)')
+            ->setParameter('committees', $committees)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

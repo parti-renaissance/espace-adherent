@@ -11,7 +11,9 @@ use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\Event;
+use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\ElectionEntity;
 use App\Geocoder\Coordinates;
 use App\Intl\FranceCitiesBundle;
 use App\Search\SearchParametersFilter;
@@ -657,5 +659,22 @@ class CommitteeRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findForElectedAdherent(Adherent $adherent): array
+    {
+        return $this->createQueryBuilder('committee')
+            ->innerJoin(ElectionEntity::class, 'electionEntity', Join::WITH, 'electionEntity.committee = committee')
+            ->innerJoin('electionEntity.election', 'election')
+            ->innerJoin('election.electionPools', 'electionPool')
+            ->innerJoin(CandidateGroup::class, 'candidateGroup', Join::WITH, 'electionPool = candidateGroup.electionPool')
+            ->innerJoin('candidateGroup.candidates', 'candidate')
+            ->where('candidate.adherent = :adherent')
+            ->andWhere('candidateGroup.elected = 1')
+            ->setParameter('adherent', $adherent)
+            ->orderBy('election.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

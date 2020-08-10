@@ -7,13 +7,12 @@ use App\Entity\ElectedRepresentative\Mandate;
 use App\Entity\UserListDefinitionEnum;
 use App\Repository\ElectedRepresentative\MandateRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractTerritorialCouncilElectedRepresentativeHandler extends AbstractTerritorialCouncilHandler
 {
-    /** @var Mandate[]|Collection */
-    protected $mandates;
+    /** @var Mandate[]|array */
+    protected $mandates = [];
     /** @var MandateRepository */
     protected $mandateRepository;
 
