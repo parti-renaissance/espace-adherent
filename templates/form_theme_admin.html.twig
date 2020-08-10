@@ -503,12 +503,11 @@
     </div>
 {% endblock %}
 
-{% block app_admin_adherent_referentTerritorialCouncil_entity_row %}
+{% block app_admin_adherent_adherent_territorial_council_membership_row %}
     {{ block('form_row') }}
 
     <script type="text/javascript">
         $(document).ready(function() {
-
             $("div.territorial-council-member-info").on('select2:unselecting change', "select[id$='TerritorialCouncil']", function() {
                     var elementId = $(this).attr('id');
                     var elementValue = $(this).val();
@@ -529,7 +528,6 @@
                     });
                 }
             });
-
         });
     </script>
 {% endblock %}
