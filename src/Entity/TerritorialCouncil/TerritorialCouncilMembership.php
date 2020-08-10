@@ -179,13 +179,18 @@ class TerritorialCouncilMembership
         }, $this->qualities->toArray());
     }
 
+    public function hasHighestQuality(): bool
+    {
+        return !empty(array_intersect(TerritorialCouncilQualityEnum::HIGHEST_QUALITIES, $this->getQualityNames()));
+    }
+
     public function isAvailableForCandidacy(Election $election = null): bool
     {
         if (!$election) {
             $election = $this->getTerritorialCouncil()->getCurrentElection();
         }
 
-        if (array_intersect(TerritorialCouncilQualityEnum::HIGHEST_QUALITIES, $this->getQualityNames())) {
+        if ($this->hasHighestQuality()) {
             return false;
         }
 

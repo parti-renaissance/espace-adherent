@@ -450,6 +450,9 @@ certification_request.document.mime_type: Seuls les fichiers jpg, png et pdf son
 # TerritorialCouncil
 #
 territorial_council.member.unique: "{{ adherent }} est déjà nommé \"{{ quality }}\" au sein du conseil territorial \"{{ territorialCouncil }}\". Vous devez retirer l'affectation de cet adhérent afin de nommer un nouveau."
+territorial_council.candidacy.invitation.invalid_gender: Votre binôme doit être du sexe opposé
+territorial_council.candidacy.invitation.membership_already_candidate: Vous ne pouvez pas inviter un membre avec une candidature validée
+territorial_council.candidacy.invitation.membership_not_available: Ce membre n'est pas disponible
 
 #
 # LRE

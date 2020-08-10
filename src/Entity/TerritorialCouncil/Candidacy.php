@@ -56,6 +56,8 @@ class Candidacy extends BaseCandidacy
      *
      * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\CandidacyInvitation", inversedBy="candidacy", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
+     *
+     * @Assert\Valid
      */
     private $invitation;
 
@@ -143,6 +145,10 @@ class Candidacy extends BaseCandidacy
     public function setInvitation(?CandidacyInvitation $invitation): void
     {
         $this->invitation = $invitation;
+
+        if ($invitation) {
+            $invitation->setCandidacy($this);
+        }
     }
 
     public function getQuality(): ?string
@@ -158,5 +164,10 @@ class Candidacy extends BaseCandidacy
     public function isDraft(): bool
     {
         return self::STATUS_DRAFT === $this->status;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return self::STATUS_CONFIRMED === $this->status;
     }
 }
