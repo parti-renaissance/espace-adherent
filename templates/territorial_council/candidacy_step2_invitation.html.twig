@@ -46,6 +46,8 @@
                             {{ form_widget(form.invitation) }}
                         </div>
                     </div>
+
+                    <p class="text--center membership-error" style="display: none">Impossible de constituer un binôme, aucun membre n'est disponible.</p>
                 </div>
             </div>
 
@@ -68,6 +70,7 @@
             var membershipContainer = dom('#membership-container');
             var loaderContainer = dom('#loader-container');
             var searchElement = dom('#member-search');
+            var errorContainer = dom('.membership-error');
 
             var renderRadioCallback = function (radioBlock) {
                 if (
@@ -75,14 +78,23 @@
                     || (searchElement.value && !radioBlock.dataset.fullname.toLowerCase().includes(searchElement.value.toLowerCase()))
                 ) {
                     find(radioBlock, 'input').checked = false;
-                    hide(radioBlock);
+                    addClass(radioBlock, 'hidden-membership')
                 } else {
-                    radioBlock.style.display = 'inline-block';
+                    removeClass(radioBlock, 'hidden-membership')
                 }
             };
 
             var refreshAllRadio = function () {
-                findAll(membershipContainer, '.form__radio').forEach(renderRadioCallback);
+                const memberships = findAll(membershipContainer, '.form__radio');
+                memberships.forEach(renderRadioCallback);
+
+                if (memberships.length === findAll(membershipContainer, '.form__radio.hidden-membership').length) {
+                    hide(searchElement);
+                    show(errorContainer)
+                } else {
+                    show(searchElement);
+                    hide(errorContainer);
+                }
             };
 
             on(qualitySelect, 'change', function () {
