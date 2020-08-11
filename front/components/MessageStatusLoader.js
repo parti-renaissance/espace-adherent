@@ -70,7 +70,8 @@ export default class MessageStatusLoader extends React.Component {
                        className={`btn btn--large-and-full b__nudge--top em-confirm--trigger ${
                         this.props.sendLocked ? ' btn--disabled' : ' btn--blue'}`}
                        data-confirm-title="Confirmation"
-                       data-confirm-content={`Êtes-vous sûr de vouloir envoyer le message à ${this.state.recipientCount} contact${1 < this.state.recipientCount ? 's' : ''} ?`}>
+                       data-confirm-content={`Êtes-vous sûr de vouloir envoyer le message à ${
+                           this.state.recipientCount} contact${1 < this.state.recipientCount ? 's' : ''} ?`}>
                         Envoyer
                     </a>
                     {this.renderActionButtons()}

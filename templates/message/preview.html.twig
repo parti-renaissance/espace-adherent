@@ -39,7 +39,7 @@
                             <p class="text--medium-small">Votre filtre ne correspond à aucun contact !</p>
                         {% else %}
                             {% set send_button_disabled = false %}
-                            <p class="text--medium-small">Vous allez envoyer un message à <span class="text--bold text--blue--dark">{{ message.recipientCount }}</span> contact{{ message.recipientCount > 1 ? 's' : '' }} !</p>
+                            <p class="text--medium-small">Vous allez envoyer un message à <span class="text--bold text--blue--dark">{{ message.recipientCount }}</span> contact{{ message.recipientCount > 1 ? 's' }} !</p>
                         {% endif %}
                     </div>
                 {% endif %}
@@ -50,7 +50,7 @@
                     <a href="{{ path("app_message_#{message_type}_send", message_route_params) }}"
                        class="btn btn--large-and-full b__nudge--top btn--blue em-confirm--trigger"
                        data-confirm-title="Confirmation"
-                       data-confirm-content="Êtes-vous sûr de vouloir envoyer le message à {{ message.recipientCount }} contact{{ message.recipientCount > 1 ? 's' : '' }} ?">
+                       data-confirm-content="Êtes-vous sûr de vouloir envoyer le message à {{ message.recipientCount }} contact{{ message.recipientCount > 1 ? 's' }} ?">
                         Envoyer
                     </a>
                 {% endif %}
