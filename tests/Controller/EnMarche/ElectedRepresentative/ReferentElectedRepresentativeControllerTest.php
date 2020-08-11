@@ -121,7 +121,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         // filter not adherents
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['f[gender]'] = '';
-        $form['f[isAdherent]'] = 0;
+        $form['f[contactType]'] = 'other';
 
         $crawler = $this->client->submit($form);
 
@@ -129,7 +129,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
 
         // filter by cities
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[isAdherent]'] = 0;
+        $form['f[contactType]'] = 'other';
         $form['f[cities]'] = [6];
 
         $crawler = $this->client->submit($form);
@@ -140,7 +140,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
 
         // filter by userListDefinitions
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[isAdherent]'] = 0;
+        $form['f[contactType]'] = 'other';
         $form['f[cities]'] = [6];
         $form['f[userListDefinitions]'] = [3];
 
