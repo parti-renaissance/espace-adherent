@@ -435,14 +435,10 @@
             {{ form_widget(choice, {attr: {disabled: not available }}) }}
 
             <label class="form form__label required" for="{{ choice.vars.id }}">
-                <div class="l__row identity">
-                    <div class="avatar-initials avatar--small avatar--style-02 b__nudge--right-small">
-                        {{ adherent.initials }}
-                    </div>
-                    <div>
-                        <div class="font-roboto text--bold">{{ adherent.fullName }}</div>
-                    </div>
-                </div>
+                {% include 'territorial_council/_member_identity_box.html.twig' with {
+                    initials: adherent.initials,
+                    full_name: adherent.fullName
+                } %}
             </label>
         </div>
     {% endfor %}

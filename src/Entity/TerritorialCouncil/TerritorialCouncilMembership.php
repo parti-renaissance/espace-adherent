@@ -218,4 +218,9 @@ class TerritorialCouncilMembership
 
         return \count($priorities) > 0 ? max($priorities) : 0;
     }
+
+    public function getFullName(): string
+    {
+        return $this->adherent->getFullName();
+    }
 }

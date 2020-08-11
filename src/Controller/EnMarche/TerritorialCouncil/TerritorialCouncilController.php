@@ -32,8 +32,12 @@ class TerritorialCouncilController extends Controller
             throw $this->createNotFoundException('This user is not member of a territorial council.');
         }
 
+        $council = $membership->getTerritorialCouncil();
+        $election = $council->getCurrentElection();
+
         return $this->render('territorial_council/index.html.twig', [
-            'territorial_council' => $membership->getTerritorialCouncil(),
+            'territorial_council' => $council,
+            'candidacy' => $election ? $membership->getCandidacyForElection($election) : null,
         ]);
     }
 }

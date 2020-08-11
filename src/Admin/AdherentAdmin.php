@@ -416,7 +416,7 @@ HELP
                     'help' => 'Laisser vide si l\'adhérent n\'est pas parlementaire.',
                 ])
             ->end()
-            ->with('Membre du Conseil Territorial et CoPol', [
+            ->with('Membre du Conseil territorial et CoPol', [
                 'class' => 'col-md-6 territorial-council-member-info',
                 'description' => 'territorial_council.admin.description',
             ])

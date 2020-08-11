@@ -39,7 +39,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
         self::assertContains('Lucie Olivera', $members->eq(1)->text());
         self::assertContains('Referent Referent', $members->eq(2)->text());
 
-        self::assertCount(1, $crawler->filter('.territorial-council__aside h5:contains("Président du Conseil Territorial")'));
+        self::assertCount(1, $crawler->filter('.territorial-council__aside h5:contains("Président du Conseil territorial")'));
     }
 
     protected function setUp()
