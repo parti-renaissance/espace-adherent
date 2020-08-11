@@ -10,12 +10,15 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Image\ImageManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadTerritorialCouncilCandidacyData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $faker = Factory::create('fr_FR');
+
         /** @var TerritorialCouncil $coTerrParis */
         $coTerrParis = $this->getReference('coTerr_75');
 
@@ -23,7 +26,12 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
         $adherent = $this->getReference('deputy-75-1');
 
         $candidacy = new Candidacy($adherent->getTerritorialCouncilMembership(), $coTerrParis->getCurrentElection(), $adherent->getGender());
+
         $candidacy->setQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR);
+        $candidacy->setBiography($faker->paragraph());
+        $candidacy->setFaithStatement($faker->paragraph());
+        $candidacy->setIsPublicFaithStatement(true);
+
         $candidacy->setImage(new UploadedFile(
             __DIR__.'/../../../app/data/dist/avatar_homme_02.jpg',
             'image.jpg',
