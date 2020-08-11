@@ -14,6 +14,7 @@ class AdherentExtension extends AbstractExtension
             new TwigFunction('get_user_level_label', [AdherentRuntime::class, 'getUserLevelLabel']),
             new TwigFunction('get_adherent_role_labels', [AdherentRuntime::class, 'getAdherentRoleLabels']),
             new TwigFunction('get_referent_previous_visit_date', [AdherentRuntime::class, 'getReferentPreviousVisitDate']),
+            new TwigFunction('get_elected_representative', [AdherentRuntime::class, 'getElectedRepresentative']),
         ];
     }
 }

@@ -144,6 +144,11 @@ class TerritorialCouncil
         $this->memberships->remove($memberships);
     }
 
+    public function getMembershipsCount(): int
+    {
+        return $this->memberships->count();
+    }
+
     public function addElection(ElectionEntityInterface $election): void
     {
         if (!$this->elections->contains($election)) {

@@ -1,0 +1,6 @@
+{% if object.memberships.count > 0 %}
+    <a href="{{ path('admin_app_territorialcouncil_territorialcouncilmembership_list', { filter: { territorialCouncil: { value: object.id } } }) }}" class="btn btn-sm btn-default view_link" title="Membres">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        Membres
+    </a>
+{% endif %}

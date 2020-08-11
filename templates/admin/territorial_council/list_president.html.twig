@@ -1,0 +1,16 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.memberships.president %}
+        {% set president = object.memberships.president.adherent %}
+        <a href="{{ path('admin_app_adherent_show', {id: president.id}) }}">
+            {{ president.fullName }}
+        </a>
+        <br />
+        {{ president.emailAddress }}
+        {% if president.phone %}
+            <br />
+            {{ president.phone|phone_number_format }}
+        {% endif %}
+    {% endif %}
+{% endblock %}

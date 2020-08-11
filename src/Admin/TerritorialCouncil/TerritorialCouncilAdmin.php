@@ -50,9 +50,19 @@ class TerritorialCouncilAdmin extends AbstractAdmin
             ->add('codes', null, [
                 'label' => 'Codes',
             ])
+            ->add('membershipsCount', null, [
+                'label' => 'Nb members',
+            ])
+            ->add('president', null, [
+                'label' => 'Président',
+                'template' => 'admin/territorial_council/list_president.html.twig',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
+                    'members' => [
+                        'template' => 'admin/territorial_council/list_action_members.html.twig',
+                    ],
                     'edit' => [],
                 ],
             ])

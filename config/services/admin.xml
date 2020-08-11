@@ -398,6 +398,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.territorial_council_membership" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembership</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Finances
