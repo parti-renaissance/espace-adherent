@@ -390,7 +390,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.territorial_council" class="App\Admin\TerritorialCouncilAdmin">
+        <service id="app.admin.territorial_council" class="App\Admin\TerritorialCouncil\TerritorialCouncilAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Conseils territoriaux" group="Territoire" />
 
             <argument />
@@ -505,6 +505,14 @@
             <call method="setClientManager">
                 <argument type="service" id="App\OAuth\ClientManager" />
             </call>
+        </service>
+
+        <service id="app.admin.territorial_council_membership_log" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipLogAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Log Coterr" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog</argument>
+            <argument />
         </service>
 
         <!--

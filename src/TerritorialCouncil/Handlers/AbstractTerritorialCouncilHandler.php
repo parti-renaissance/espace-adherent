@@ -5,17 +5,14 @@ namespace App\TerritorialCouncil\Handlers;
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
-abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMembershipHandlerInterface, LoggerAwareInterface
+abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMembershipHandlerInterface
 {
-    use LoggerAwareTrait;
-
     /** @var EntityManagerInterface */
     protected $em;
     /** @var TerritorialCouncilRepository */
@@ -74,7 +71,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
                 $adherent,
                 $actualMembership,
                 $territorialCouncils,
-                'Plusieurs conseils territorials ont été trouvés pour cette qualité'
+                'Plusieurs conseils territorials ont été trouvés pour cette qualité et l\'adhérent a déjà cette qualité'
             );
 
             return;
@@ -191,18 +188,20 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         array $territorialCouncils,
         string $message
     ): void {
-        $msg = \sprintf(
-            '%s | %s | %s | %s | %s | %s | %s | %s',
-            $adherent->getId(),
-            $adherent->getEmailAddress(),
+        $log = new TerritorialCouncilMembershipLog(
+            $level,
+            $message,
+            $adherent,
             $this->getQualityName(),
-            $membership ? $membership->getId() : '',
-            $membership ? (string) $membership->getTerritorialCouncil() : '',
-            $membership ? implode(', ', $membership->getQualities()->toArray()) : '',
-            implode(',', $territorialCouncils),
-            $message
+            $membership ? $membership->getTerritorialCouncil() : null,
+            $membership ? \array_map(function (TerritorialCouncilQuality $quality) {
+                return $quality->getName();
+            }, $membership->getQualities()->toArray()) : [],
+            $territorialCouncils ? \array_map(function (TerritorialCouncil $territorialCouncil) {
+                return $territorialCouncil->getNameCodes();
+            }, $territorialCouncils) : []
         );
-
-        $this->logger->$level($msg);
+        $this->em->persist($log);
+        $this->em->flush();
     }
 }
