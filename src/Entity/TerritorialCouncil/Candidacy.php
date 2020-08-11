@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="territorial_council_candidacy")
  *
  * @Algolia\Index(autoIndex=false)
+ *
+ * @Assert\Expression("(this.hasImageName() && !this.isRemoveImage()) || this.getImage()", message="Photo est obligatoire")
  */
 class Candidacy extends BaseCandidacy
 {

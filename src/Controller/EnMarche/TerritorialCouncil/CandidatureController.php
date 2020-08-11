@@ -84,6 +84,10 @@ class CandidatureController extends Controller
 
             $this->addFlash('info', 'Votre candidature a bien été enregistrée');
 
+            if ($candidacy->hasPendingInvitation()) {
+                return $this->redirectToRoute('app_territorial_council_candidature_edit');
+            }
+
             return $this->redirectToRoute('app_territorial_council_candidature_select_pair_candidate');
         }
 
