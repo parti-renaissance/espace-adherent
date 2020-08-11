@@ -231,10 +231,13 @@
                             {% if has_role_adherent %}
                                 <ul class="nav-dropdown__section">
                                     {% if is_canary_enabled() and app.user.territorialCouncilMembership %}
-                                    <li class="text--small text--bold">Instances</li>
-                                    <li>
-                                        <a href="{{ path('app_territorial_council_index') }}">Conseil territorial</a>
-                                    </li>
+                                        {% if not app.user.territorialCouncilMembership.territorialCouncil.isFof %}
+                                            <li class="text--small text--bold">Instances</li>
+
+                                            <li>
+                                                <a href="{{ path('app_territorial_council_index') }}">Conseil territorial</a>
+                                            </li>
+                                        {% endif %}
                                     {% endif %}
 
                                     <li class="text--small text--bold">Comités</li>

@@ -160,6 +160,20 @@ class TerritorialCouncil
         return $this->elections->toArray();
     }
 
+    /**
+     * Returns true if the council is located abroad
+     */
+    public function isFof(): bool
+    {
+        foreach ($this->referentTags as $tag) {
+            if ($tag->isDistrictTag() && false !== strpos($tag->getCode(), 'CIRCO_FDE')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function __toString(): string
     {
         return $this->getNameCodes();
