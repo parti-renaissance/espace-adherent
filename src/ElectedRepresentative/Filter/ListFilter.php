@@ -61,6 +61,11 @@ class ListFilter
     private $contactType;
 
     /**
+     * @var bool|null
+     */
+    private $emailSubscribed;
+
+    /**
      * @var ReferentTag[]
      *
      * @Assert\NotNull
@@ -178,6 +183,16 @@ class ListFilter
         $this->contactType = $contactType;
     }
 
+    public function isEmailSubscribed(): ?bool
+    {
+        return $this->emailSubscribed;
+    }
+
+    public function setEmailSubscribed(?bool $emailSubscribed = null): void
+    {
+        $this->emailSubscribed = $emailSubscribed;
+    }
+
     /**
      * @return ReferentTag[]
      */
@@ -240,6 +255,7 @@ class ListFilter
             ],
             array_filter([
                 'contactType' => $this->contactType,
+                'emailSubscribed' => $this->emailSubscribed,
             ]),
         );
     }

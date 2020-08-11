@@ -81,6 +81,11 @@
                                     <label class="filter__label">Type</label>
                                     {{ form_widget(form.contactType, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
                                 </div>
+
+                                <div class="filter__row">
+                                    <label class="filter__label">Statut Email</label>
+                                    {{ form_widget(form.emailSubscribed, {attr: {class: 'filter__field'}}) }}
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -691,6 +691,8 @@ elected_representative.filter.user_list_definitions: Choisissez des labels
 elected_representative.filter.contact_type.adherent: Adhérent
 elected_representative.filter.contact_type.contact: Contact
 elected_representative.filter.contact_type.other: Autre
+elected_representative.filter.email_subscribed.subscribed: Abonné(e)
+elected_representative.filter.email_subscribed.unsubscribed: Non-abonné(e)
 
 elected_representative:
     mailchimp_tag:
