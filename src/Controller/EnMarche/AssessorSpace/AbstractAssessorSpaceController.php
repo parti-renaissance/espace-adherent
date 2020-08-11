@@ -32,13 +32,16 @@ abstract class AbstractAssessorSpaceController extends Controller
 
     protected $votePlaceRepository;
     protected $voteResultRepository;
+    protected $enableAssessorSpace;
 
     public function __construct(
         VotePlaceRepository $votePlaceRepository,
-        VotePlaceResultRepository $voteResultRepository
+        VotePlaceResultRepository $voteResultRepository,
+        bool $enableAssessorSpace
     ) {
         $this->votePlaceRepository = $votePlaceRepository;
         $this->voteResultRepository = $voteResultRepository;
+        $this->enableAssessorSpace = $enableAssessorSpace;
     }
 
     /**
@@ -49,6 +52,8 @@ abstract class AbstractAssessorSpaceController extends Controller
         AssessorAssociationManager $manager,
         ElectionManager $electionManager
     ): Response {
+        $this->checkIfSpaceEnabled();
+
         // Transforms actual request (`POST`, ...) in `GET` request for passing it to $filterForm::handleRequest method
         $filterRequest = $request->duplicate(null, []);
         $filterRequest->setMethod(Request::METHOD_GET);
@@ -96,6 +101,8 @@ abstract class AbstractAssessorSpaceController extends Controller
      */
     public function exportAssessorsAction(string $_format, AssessorsExporter $exporter): Response
     {
+        $this->checkIfSpaceEnabled();
+
         return $exporter->getResponse($_format, $this->getAssessorRequestExportFilter());
     }
 
@@ -109,6 +116,8 @@ abstract class AbstractAssessorSpaceController extends Controller
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+        $this->checkIfSpaceEnabled();
+
         $this->denyAccessUnlessGranted(ManageVotePlaceVoter::MANAGE_VOTE_PLACE, $votePlace);
 
         if (false === $enabled && $entityManager->getRepository(AssessorRoleAssociation::class)->findOneBy(['votePlace' => $votePlace])) {
@@ -131,6 +140,8 @@ abstract class AbstractAssessorSpaceController extends Controller
      */
     public function createVotePlaceAction(Request $request, EntityManagerInterface $manager): Response
     {
+        $this->checkIfSpaceEnabled();
+
         $form = $this
             ->createForm(CreateVotePlaceType::class)
             ->handleRequest($request)
@@ -158,6 +169,8 @@ abstract class AbstractAssessorSpaceController extends Controller
         VoteResultsExporter $exporter,
         ElectionRepository $electionRepository
     ): Response {
+        $this->checkIfSpaceEnabled();
+
         $election = $electionRepository->findComingNextElection();
 
         return $exporter->getResponse($_format, $this->getVoteResultsExportQuery($election));
@@ -205,5 +218,12 @@ abstract class AbstractAssessorSpaceController extends Controller
         }
 
         return $params;
+    }
+
+    protected function checkIfSpaceEnabled(): void
+    {
+        if (false === $this->enableAssessorSpace) {
+            throw $this->createNotFoundException();
+        }
     }
 }

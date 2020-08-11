@@ -7,6 +7,7 @@ services:
             $mailchimpOrgId: '%env(MAILCHIMP_ORG_ID)%'
             $mailchimpCampagnUrl: '%env(MAILCHIMP_CAMPAIGN_URL)%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
+            $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
 
     App\Controller\:
         resource: ../../src/Controller/

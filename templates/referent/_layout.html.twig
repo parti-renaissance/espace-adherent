@@ -121,9 +121,11 @@
                                     </li>
                                 {% endif %}
 
-                                <li class="{{ is_active_route(app.request, ['app_assessors_referent_*', 'app_vote_results_referent_index', 'app_referent_vote_result_list_edit', 'app_municipal_manager_referent_attribution_form', 'app_referent_city_vote_results_edit']) ? 'active' }}">
-                                    <a href="{{ path('app_assessors_referent_attribution_form') }}">Assesseurs</a>
-                                </li>
+                                {% if enable_assessor_space %}
+                                    <li class="{{ is_active_route(app.request, ['app_assessors_referent_*', 'app_vote_results_referent_index', 'app_referent_vote_result_list_edit', 'app_municipal_manager_referent_attribution_form', 'app_referent_city_vote_results_edit']) ? 'active' }}">
+                                        <a href="{{ path('app_assessors_referent_attribution_form') }}">Assesseurs</a>
+                                    </li>
+                                {% endif %}
                             {% endif %}
 
                             {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES') %}
