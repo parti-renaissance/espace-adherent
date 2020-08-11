@@ -18,6 +18,8 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
 {
     protected static $defaultName = 'app:territorial-council:update-memberships';
 
+    private const BATCH_SIZE = 1000;
+
     /** @var AdherentRepository */
     private $adherentRepository;
     /** @var EntityManagerInterface */
@@ -62,7 +64,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
 
-        $paginator->getQuery()->setMaxResults($limit && $limit < 500 ? $limit : 500);
+        $paginator->getQuery()->setMaxResults($limit && $limit < self::BATCH_SIZE ? $limit : self::BATCH_SIZE);
 
         $this->io->progressStart($total);
         $offset = 0;

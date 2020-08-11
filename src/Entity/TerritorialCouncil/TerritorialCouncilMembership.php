@@ -172,6 +172,11 @@ class TerritorialCouncilMembership
         return null;
     }
 
+    public function hasCandidacies(): bool
+    {
+        return !$this->candidacies->isEmpty();
+    }
+
     public function getQualityNames(): array
     {
         return array_map(function (TerritorialCouncilQuality $quality) {
@@ -216,7 +221,7 @@ class TerritorialCouncilMembership
             return $isPresent;
         }, \ARRAY_FILTER_USE_BOTH);
 
-        return \count($priorities) > 0 ? max($priorities) : 0;
+        return \count($priorities) > 0 ? max($priorities) : 1000;
     }
 
     public function getFullName(): string
