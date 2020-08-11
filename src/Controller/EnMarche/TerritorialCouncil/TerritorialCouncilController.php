@@ -33,6 +33,11 @@ class TerritorialCouncilController extends Controller
         }
 
         $council = $membership->getTerritorialCouncil();
+
+        if ($council->isFof()) {
+            throw $this->createNotFoundException();
+        }
+
         $election = $council->getCurrentElection();
 
         return $this->render('territorial_council/index.html.twig', [
