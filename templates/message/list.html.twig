@@ -1,7 +1,7 @@
 {% extends 'message/_layout.html.twig' %}
 
 {% block messages_main_block %}
-    <div class="datagrid__pre-table b__nudge--bottom-small">
+    <div class="datagrid__pre-table b__nudge--bottom-large">
         <h3>{% block message_page_title %}Mes messages{% endblock %}</h3>
         <a href="{{ path("app_message_#{message_type}_create", route_params|default({})) }}" class="btn-secondary btn-secondary--blue">
             + Nouveau message
@@ -17,7 +17,7 @@
     {% set message_limit = get_message_limit(message_type) %}
 
     {% if message_limit %}
-        <div class="alert alert--tips b__nudge--bottom-large b__nudge--top">Messages envoyés ce mois-ci : {{ get_sent_message_count(app.request, current_user(), message_type) }} sur {{ message_limit }}</div>
+        <div class="alert alert--tips b__nudge--bottom-large">Messages envoyés ce mois-ci : {{ get_sent_message_count(app.request, current_user(), message_type) }} sur {{ message_limit }}</div>
     {% endif %}
 
     <div class="manager__filters">
