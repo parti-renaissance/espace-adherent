@@ -82,11 +82,25 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
 
         // if no territorial council found, we need to remove concerned membership quality if exist
         if (0 === $count) {
-            if (!$adherent->hasTerritorialCouncilMembership()) {
+            if (!($actualMembership = $adherent->getTerritorialCouncilMembership())) {
                 return;
             }
 
-            if (!$adherent->getTerritorialCouncilMembership()->hasQuality($qualityName)) {
+            if (!$actualMembership->hasQuality($qualityName)) {
+                return;
+            }
+
+            // if has candidacy, we should keep a quality dans le membership
+            if ($actualMembership->hasCandidacies()) {
+                // we need to log that adherent has no more quality in membership, but has a candidacy
+                $this->log(
+                    'warning',
+                    $adherent,
+                    $actualMembership,
+                    [],
+                    'Cette qualité doit être retirée, mais l\'adhérent a une candidature dans ce conseil territorial.'
+                );
+
                 return;
             }
 
@@ -123,6 +137,9 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
 
         // we need to remove actual membership and create a new one for actual quality
         if (TerritorialCouncilQualityEnum::QUALITY_PRIORITIES[$qualityName] < $highestPriority) {
+            $previousMembership = clone $actualMembership;
+            $adherent->setTerritorialCouncilMembership(null);
+            $this->em->flush();
             $this->addTerritorialCouncilMembership($adherent, $territorialCouncil, $quality);
             $this->em->flush();
 
@@ -130,7 +147,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             $this->log(
                 'info',
                 $adherent,
-                $actualMembership,
+                $previousMembership,
                 [$territorialCouncil],
                 'Adhérent a changé le conseil territorial'
             );
@@ -175,12 +192,13 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         string $message
     ): void {
         $msg = \sprintf(
-            '%s | %s | %s | %s | %s | %s | %s',
+            '%s | %s | %s | %s | %s | %s | %s | %s',
             $adherent->getId(),
             $adherent->getEmailAddress(),
             $this->getQualityName(),
             $membership ? $membership->getId() : '',
             $membership ? (string) $membership->getTerritorialCouncil() : '',
+            $membership ? implode(', ', $membership->getQualities()->toArray()) : '',
             implode(',', $territorialCouncils),
             $message
         );
