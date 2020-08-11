@@ -5,7 +5,6 @@ namespace App\Form\VotingPlatform\Candidacy;
 use App\Entity\TerritorialCouncil\Candidacy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -22,7 +21,6 @@ class TerritorialCouncilCandidacyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image', FileType::class)
             ->add('biography', TextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
