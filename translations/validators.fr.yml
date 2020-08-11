@@ -453,6 +453,7 @@ territorial_council.member.unique: "{{ adherent }} est déjà nommé \"{{ qualit
 territorial_council.candidacy.invitation.invalid_gender: Votre binôme doit être du sexe opposé
 territorial_council.candidacy.invitation.membership_already_candidate: Vous ne pouvez pas inviter un membre avec une candidature validée
 territorial_council.candidacy.invitation.membership_not_available: Ce membre n'est pas disponible
+territorial_council.candidacy.invitation.invalid_membership_quality: La qualité choisie n'est pas compatible avec votre choix de binôme
 
 #
 # LRE

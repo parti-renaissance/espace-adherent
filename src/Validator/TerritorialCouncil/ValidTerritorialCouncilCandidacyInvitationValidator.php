@@ -61,5 +61,15 @@ class ValidTerritorialCouncilCandidacyInvitationValidator extends ConstraintVali
 
             return;
         }
+
+        if (!\in_array($candidacy->getQuality(), $invitedMembership->getQualityNames(), true)) {
+            $this->context
+                ->buildViolation($constraint->messageInvalidQuality)
+                ->atPath('membership')
+                ->addViolation()
+            ;
+
+            return;
+        }
     }
 }
