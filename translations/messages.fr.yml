@@ -688,6 +688,9 @@ elected_representative.filter.mandates: Choisissez des mandates
 elected_representative.filter.political_functions: Choisissez des fonctions
 elected_representative.filter.cities: Choisissez des villes
 elected_representative.filter.user_list_definitions: Choisissez des labels
+elected_representative.filter.contact_type.adherent: Adhérent
+elected_representative.filter.contact_type.contact: Contact
+elected_representative.filter.contact_type.other: Autre
 
 elected_representative:
     mailchimp_tag:

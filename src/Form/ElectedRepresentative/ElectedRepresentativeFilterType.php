@@ -3,6 +3,7 @@
 namespace App\Form\ElectedRepresentative;
 
 use App\ElectedRepresentative\Filter\ListFilter;
+use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
@@ -38,12 +39,12 @@ class ElectedRepresentativeFilterType extends AbstractType
                     'common.gender.unknown' => Genders::UNKNOWN,
                 ],
             ])
-            ->add('isAdherent', ChoiceType::class, [
+            ->add('contactType', ChoiceType::class, [
                 'placeholder' => 'common.all',
-                'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
-                ],
+                'choices' => ElectedRepresentativeTypeEnum::ALL,
+                'choice_label' => function (string $choice) {
+                    return "elected_representative.filter.contact_type.$choice";
+                },
                 'expanded' => true,
                 'multiple' => false,
                 'required' => false,

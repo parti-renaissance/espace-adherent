@@ -2,6 +2,7 @@
 
 namespace App\ElectedRepresentative\Filter;
 
+use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ReferentTag;
 use App\Entity\UserListDefinition;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,9 +54,11 @@ class ListFilter
     private $userListDefinitions = [];
 
     /**
-     * @var bool|null
+     * @var string|null
+     *
+     * @Assert\Choice(choices=ElectedRepresentativeTypeEnum::ALL, strict=true)
      */
-    private $isAdherent;
+    private $contactType;
 
     /**
      * @var ReferentTag[]
@@ -165,14 +168,14 @@ class ListFilter
         $this->userListDefinitions = $userListDefinitions;
     }
 
-    public function isAdherent(): ?bool
+    public function getContactType(): ?string
     {
-        return $this->isAdherent;
+        return $this->contactType;
     }
 
-    public function setIsAdherent(?bool $isAdherent): void
+    public function setContactType(string $contactType = null): void
     {
-        $this->isAdherent = $isAdherent;
+        $this->contactType = $contactType;
     }
 
     /**
@@ -236,7 +239,7 @@ class ListFilter
                 'order' => $this->order,
             ],
             array_filter([
-                'isAdherent' => $this->isAdherent,
+                'contactType' => $this->contactType,
             ]),
         );
     }

@@ -5,6 +5,7 @@ namespace App\Repository\ElectedRepresentative;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -192,11 +193,29 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ;
         }
 
-        $isAdherent = $filter->isAdherent();
-        if ($isAdherent) {
-            $qb->andWhere('er.adherent IS NOT NULL');
-        } elseif (false === $isAdherent) {
-            $qb->andWhere('er.adherent IS NULL');
+        if ($contactType = $filter->getContactType()) {
+            switch ($contactType) {
+                case ElectedRepresentativeTypeEnum::ADHERENT:
+                    $qb->andWhere('er.adherent IS NOT NULL');
+
+                    break;
+                case ElectedRepresentativeTypeEnum::CONTACT:
+                    $qb
+                        ->andWhere('er.adherent IS NULL')
+                        ->andWhere('er.contactEmail IS NOT NULL')
+                    ;
+
+                    break;
+                case ElectedRepresentativeTypeEnum::OTHER:
+                    $qb
+                        ->andWhere('er.adherent IS NULL')
+                        ->andWhere('er.contactEmail IS NULL')
+                    ;
+
+                    break;
+                default:
+                    throw new \InvalidArgumentException("ElectedRepresentative contactType \"$contactType\" is undefined.");
+            }
         }
 
         return $qb;
