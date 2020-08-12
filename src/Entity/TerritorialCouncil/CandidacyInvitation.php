@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  *
- * @ValidTerritorialCouncilCandidacyInvitation
+ * @ValidTerritorialCouncilCandidacyInvitation(groups={"Default", "invitation_edit"})
  */
 class CandidacyInvitation
 {
@@ -41,7 +41,7 @@ class CandidacyInvitation
      * @ORM\ManyToOne(targetEntity="TerritorialCouncilMembership")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Default", "invitation_edit"})
      */
     private $membership;
 
@@ -86,7 +86,7 @@ class CandidacyInvitation
         return $this->membership;
     }
 
-    public function setMembership(TerritorialCouncilMembership $membership): void
+    public function setMembership(?TerritorialCouncilMembership $membership): void
     {
         $this->membership = $membership;
     }

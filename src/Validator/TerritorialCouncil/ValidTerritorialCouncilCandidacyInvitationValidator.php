@@ -40,7 +40,7 @@ class ValidTerritorialCouncilCandidacyInvitationValidator extends ConstraintVali
             return;
         }
 
-        if ($invitedMembership->hasHighestQuality()) {
+        if ($invitedMembership->hasForbiddenForCandidacyQuality()) {
             $this->context
                 ->buildViolation($constraint->messageMembershipNotAvailable)
                 ->atPath('membership')

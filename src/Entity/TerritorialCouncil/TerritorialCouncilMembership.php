@@ -186,24 +186,31 @@ class TerritorialCouncilMembership
         }, $this->qualities->toArray());
     }
 
-    public function hasHighestQuality(): bool
+    public function hasForbiddenForCandidacyQuality(): bool
     {
-        return !empty(array_intersect(TerritorialCouncilQualityEnum::HIGHEST_QUALITIES, $this->getQualityNames()));
+        return !empty(array_intersect(TerritorialCouncilQualityEnum::FORBIDDEN_TO_CANDIDATE, $this->getQualityNames()));
     }
 
-    public function isAvailableForCandidacy(Election $election = null): bool
+    public function getAvailableForCandidacyQualityNames(): array
     {
-        if (!$election) {
-            $election = $this->getTerritorialCouncil()->getCurrentElection();
+        $qualities = $this->getQualityNames();
+
+        $qualities = array_filter($qualities, function (string $quality) {
+            return !\in_array($quality, TerritorialCouncilQualityEnum::FORBIDDEN_TO_CANDIDATE, true);
+        });
+
+        if (false !== ($index = array_search(TerritorialCouncilQualityEnum::MAYOR, $qualities, true))) {
+            unset($qualities[$index]);
         }
 
-        if ($this->hasHighestQuality()) {
-            return false;
+        if (
+            false !== ($index = array_search(TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, $qualities, true))
+            && \count($qualities) > 1
+        ) {
+            unset($qualities[$index]);
         }
 
-        $candidacy = $this->getCandidacyForElection($election);
-
-        return !$candidacy || $candidacy->isDraft();
+        return $qualities;
     }
 
     public function getHighestQualityPriority(): int

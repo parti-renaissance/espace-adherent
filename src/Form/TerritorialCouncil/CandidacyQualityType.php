@@ -33,6 +33,7 @@ class CandidacyQualityType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => Candidacy::class,
+                'validation_groups' => ['Default', 'invitation_edit'],
             ])
             ->setRequired(['qualities', 'memberships'])
             ->setAllowedTypes('qualities', 'array')
