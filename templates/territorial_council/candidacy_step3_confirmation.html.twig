@@ -1,21 +1,18 @@
 {% extends 'territorial_council/_layout.html.twig' %}
 
 {% block territorial_council_content %}
-    <div class="territorial-council__main l__wrapper--narrow b__nudge--bottom-huge">
-        <div class="l__wrapper--600">
-            <h3>Choix de votre binôme</h3>
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Choix de votre binôme</h2>
+            <p class="text--body text--dark">
+                Nous vous confirmons que {{ invitation.membership.fullName }} a bien reçue votre demande de binôme. Vous recevrez un e-mail lorsqu’elle
+                aura répondu à votre invitation.<br/><br/>
 
-            <p>{{ invitation.membership.fullName }} a été avertie de votre demande de binôme.<br/>
-                Vous recevrez un email lorsqu’elle aura répondu à votre invitation.</p>
-
-            <p>Si sa réponse est positive ; votre candidature sera visible</p>
-
-            <p>Si sa réponse est négative ; vous serez amené à modifier votre candidature afin de sélectionner un nouveau binôme.</p>
-
-            <p>Vous pouvez à tout moement annuler votre invitation ou votre candidature en vous rendant sur la page de votre Conseil territorial</p>
-
+                Vous avez changé d'avis ? Vous pouvez à tout moment modifier vos demandes en vous rendant sur la page de votre
+                Conseil Territorial.
+            </p>
             <div>
-                <a href="{{ path('app_territorial_council_index') }}" class="btn btn--blue btn--large-and-full b__nudge--top-15">
+                <a href="{{ path('app_territorial_council_index') }}" class="btn btn--blue btn--large-and-full b__nudge--top-50">
                     Terminer
                 </a>
             </div>

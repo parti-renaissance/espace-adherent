@@ -1,4 +1,6 @@
 .territorial-council {
+    padding-bottom: 100px;
+
     &__header {
         background-color: $green--territory;
         padding: 60px 0;
@@ -31,6 +33,15 @@
                 margin: 0 5% 0 0;
                 text-align: left;
             }
+        }
+    }
+
+    &__main {
+        width: 100%;
+        margin-right: 0;
+
+        @media (min-width: $tablet) {
+            margin-right: 5%;
         }
     }
 
@@ -149,6 +160,39 @@
                 list-style: disc;
                 list-style-position: inside;
                 font-size: 14px;
+            }
+        }
+    }
+
+    #candidacy_quality_invitation > div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .form__radio {
+            flex-basis: 100%;
+            margin-right: 0;
+            margin-top: 20px;
+
+            @media (min-width: $mobile) {
+                flex-basis: 50%;
+            }
+
+            label:before {
+                top: 13px;
+            }
+        }
+    }
+
+    #membership-container {
+        .form__radio.disabled {
+            color: $neutral-grey;
+
+            label { cursor: not-allowed; }
+            label:before { display: none; }
+
+            .avatar-initials {
+                color: $neutral-grey !important;
             }
         }
     }

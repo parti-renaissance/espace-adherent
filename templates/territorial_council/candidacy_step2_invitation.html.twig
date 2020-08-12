@@ -1,17 +1,24 @@
 {% extends 'territorial_council/_layout.html.twig' %}
 
 {% block territorial_council_content %}
-    <div class="territorial-council__main l__wrapper--narrow b__nudge--bottom-huge">
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
         <div>
             <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
         </div>
 
-        <div class="l__wrapper--600">
-            <h3>Choix de votre binôme</h3>
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Choix de votre binôme</h2>
 
-            <p>Vous devez choisir la personne (du sexe opposé) qui constituera votre binôme. Celle-ci sera avertie de votre intention et acceptera ou déclinera l’invitation.</p>
+            <p class="text--body text--dark b__nudge--bottom">
+                Vous devez choisir la personne (du sexe oppposé) qui constituera votre binôme. Celle-ci sera averti de votre intention et acceptera ou déclinera l’invitation.
+                Vous devez choisir la personne qui constituera un binôme paritaire avec vous. Une fois votre invitation envoyée, vous pourrez suivre votre demande de candidature
+                en binôme dans l'espace "Gérer mes demandes".
+            </p>
 
-            <p class="text--gray text--small">Les membres non sélectionnables ne sont pas éligibles car ils sont soit déja membres du Copol, soit déja candidats.</p>
+            <p class="text--body text--gray text--small b__nudge--bottom-50">
+                Les membres non sélectionnables ne sont pas éligibles car ils sont soit déja membres du Copol,
+                soit déja candidats.
+            </p>
 
             {{ form_start(form, {attr: {class: 'em-form'}}) }}
 
@@ -41,13 +48,11 @@
                         <div class="spin-loader"></div>
                     </div>
 
-                    <div class="em-form__row" id="membership-container" style="display: none">
-                        <div class="em-form__group em-form__radio--inline">
-                            {{ form_widget(form.invitation) }}
-                        </div>
+                    <div id="membership-container" style="display: none">
+                        {{ form_widget(form.invitation) }}
                     </div>
 
-                    <p class="text--center membership-error" style="display: none">Impossible de constituer un binôme, aucun membre n'est disponible.</p>
+                    <p class="text--body text--gray text--small text--center membership-error" style="display: none">Impossible de constituer un binôme, aucun membre n'est disponible.</p>
                 </div>
             </div>
 

@@ -1,25 +1,27 @@
 {% extends 'territorial_council/_layout.html.twig' %}
 
 {% block territorial_council_content %}
-    <div class="territorial-council__main l__wrapper--narrow b__nudge--bottom-huge">
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
         <div>
             <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
         </div>
 
-        <div class="l__wrapper--600">
-            <h3>Votre candidature</h3>
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Votre candidature</h2>
 
             <div class="b__nudge--top-40 b__nudge--bottom-huge">
                 {% if candidacy %}
                     {% if candidacy.hasPendingInvitation %}
                         {% set adherent = candidacy.invitation.membership.adherent %}
 
-                        <p class="b__nudge--bottom-huge">{{ adherent.fullName }} a été avertie de votre demande de binôme.
-                            Vous recevrez un email lorsqu’elle celle-ci aura répondu à votre invitation.</p>
+                        <p class="text--body text--dark b__nudge--bottom-60">
+                            {{ adherent.fullName }} a bien reçu votre demande de binôme,
+                            vous recevrez un e-mail lorsqu’elle aura répondu à votre invitation.
+                        </p>
 
-                        <p class="text--bold">Invitation envoyée</p>
+                        <p class="font-roboto text--bold b__nudge--bottom-large">Invitation envoyée</p>
 
-                        <div class="b__nudge--bottom-large l__row">
+                        <div class="b__nudge--bottom-large l__row l__row--wrap l__row--h-stretch">
                             {% include 'territorial_council/_member_identity_box.html.twig' with {
                                 initials: adherent.initials,
                                 full_name: adherent.fullName
@@ -32,18 +34,18 @@
 
                         <hr/>
 
-                        <div class="b__nudge--top-large">
-                            <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--pink btn--no-wrap">Modifier ma candidature</a>
+                        <div class="l__row l__row--wrap b__nudge--top-large">
+                            <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--pink btn--no-wrap">Modifier mes informations</a>
 
                             <a href="{{ path('app_territorial_council_candidature_remove') }}"
-                               class="link--no-decor text--gray em-confirm--trigger b__nudge--left-large"
+                               class="link--no-decor font-roboto em-confirm--trigger b__nudge--left"
                                data-confirm-title="Candidature"
-                               data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?">Retirer ma candidature
+                               data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?">Retirer ma pré-candidature
                             </a>
                         </div>
                     {% else %}
                         <div class="text--center">
-                            <p class="text--gray">Vous n'avez pas encore choisi votre binôme</p>
+                            <p class="font-roboto text--gray">Vous n'avez pas encore choisi votre binôme</p>
 
                             <p>
                                 <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--pink btn--no-wrap box-el">Je choisis un binôme</a>
@@ -51,9 +53,11 @@
                         </div>
                     {% endif %}
                 {% else %}
-                    <p>Lancez votre propre candidature ! Vous pouvez candidater de vous même et alors choisir votre binôme.</p>
+                    <p class="text--body text--dark b__nudge--bottom-50">
+                        Proposez votre candidature ! Vous pouvez candidater et sélectionner le binôme paritaire de votre choix.
+                    </p>
 
-                    <p class="text--small text--gray text--center">Aucune candidature en cours</p>
+                    <p class="font-roboto text--small text--gray text--center">Aucune candidature en cours</p>
 
                     <div class="text--center b__nudge--top-15 b__nudge--bottom-larger">
                         {% if app.user.isOtherGender() %}
@@ -63,7 +67,7 @@
 
                             <div class="hidden" id="candidacy-gender-choice-content">
                                 <div class="text--center font-roboto">
-                                    <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
+                                    <p class="text--body text--dark b__nudge--top-15 b__nudge--bottom-large text--dark">
                                         Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
                                     </p>
 
@@ -80,36 +84,37 @@
                 {% endif %}
             </div>
 
-            <h3 class="b__nudge--bottom-large">Invitations reçues</h3>
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Mes invitations</h2>
+            <p class="text--body text--dark b__nudge--bottom-50">
+                Retrouvez ici les invitations pour constitution un binôme paritaire pour candidater au Comité politique.
+                Vous pouvez choisir d’accepter une invitation et devrez alors compléter les informations de votre candidature.
+            </p>
 
-            <div>
-                <p>Retrouvez ici les invitations à la constitution d’un binôme pour une candidature au Conseil territorial.
-                    Vous pouvez choisir d’accepter une invitation et devrez alors compléter votre candidature.</p>
-
-                {% for invitation in invitations %}
-                    {% set author_candidacy = invitation.candidacy %}
+            {% for invitation in invitations %}
+                {% set author_candidacy = invitation.candidacy %}
+                <div class="l__row l__row--wrap l__row--h-stretch b__nudge--bottom">
                     <div class="l__row">
                         <div class="candidate-photo avatar-initials avatar--medium b__nudge--right">
                             <img src="{{ path('asset_url', {path: author_candidacy.imagePath}) }}" alt="photo" />
                         </div>
 
-                        <div class="text--bold">
+                        <div class="font-roboto text--default-large text--bold">
                             {{ author_candidacy.membership.fullName }}
                         </div>
-
-                        <div>
-                            <a href="{{ path('app_territorial_council_candidature_invitation_accept', {uuid: invitation.uuid}) }}" class="btn btn--pink btn--no-wrap">Accepter</a>
-
-                            <a href="{{ path('app_territorial_council_candidature_invitation_decline', {uuid: invitation.uuid}) }}" class="btn btn--ghosting--pink btn--no-wrap em-confirm--trigger"
-                               data-confirm-title="Invitation"
-                               data-confirm-content="Êtes-vous sûr de vouloir décliner l'invitation ?"
-                            >Décliner</a>
-                        </div>
                     </div>
-                {% else %}
-                    <p class="text--small text--gray text--center">Aucune invitation</p>
-                {% endfor %}
-            </div>
+                    <div class="l__row">
+                        <a href="{{ path('app_territorial_council_candidature_invitation_accept', {uuid: invitation.uuid}) }}" class="btn btn--pink btn--no-wrap">Accepter</a>
+
+                        <a href="{{ path('app_territorial_council_candidature_invitation_decline', {uuid: invitation.uuid}) }}" class="btn btn--ghosting--pink btn--no-wrap em-confirm--trigger b__nudge--left-small"
+                           data-confirm-title="Invitation"
+                           data-confirm-content="Êtes-vous sûr de vouloir décliner l'invitation ?"
+                        >Décliner</a>
+                    </div>
+                </div>
+            {% else %}
+                <p class="font-roboto text--small text--gray text--center">Aucune invitation</p>
+            {% endfor %}
+
         </div>
     </div>
 {% endblock %}
