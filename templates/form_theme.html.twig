@@ -429,7 +429,7 @@
     {% for key, choice in form %}
         {% set membership = form.vars.choices[key].data %}
         {% set adherent = membership.adherent %}
-        {% set available = is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', membership.adherent) %}
+        {% set available = is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', membership.adherent) and not membership.hasConfirmedCandidacy %}
 
         <div class="form__radio {{ not available ? 'disabled' }}" data-qualities="{{ membership.qualityNames|join(',')|e('js') }}" data-fullname="{{ adherent.fullName }}">
             {{ form_widget(choice, {attr: {disabled: not available }}) }}

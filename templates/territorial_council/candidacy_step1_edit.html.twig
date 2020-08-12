@@ -11,7 +11,7 @@
 
     <div class="territorial-council l__wrapper b__nudge--bottom-huge">
         <div>
-            <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Annuler</a>
+            <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
         </div>
 
         <div class="l__wrapper--slim">
@@ -36,7 +36,7 @@
 
                 {{ form_errors(form.image) }}
 
-                {% if candidacy is defined and candidacy.imageName %}
+                {% if candidacy and candidacy.imageName %}
                     {% set image_url = path('asset_url', {path: candidacy.imagePath}) %}
                 {% endif %}
 
@@ -115,7 +115,7 @@
             </div>
 
             <div>
-                {{ form_row(form.save, {label: invitation is defined ? 'Accepter et enregistrer' : (candidacy is defined and (candidacy.hasInvitation() or candidacy.isConfirmed()) ? 'Enregistrer' : 'Enregistrer et choisir mon binôme'), attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+                {{ form_row(form.save, {label: invitation is defined ? 'Accepter et enregistrer' : (candidacy and (candidacy.hasInvitation or candidacy.isConfirmed) ? 'Enregistrer' : 'Enregistrer et choisir mon binôme'), attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
             </div>
 
             {{ form_end(form) }}
@@ -144,7 +144,7 @@
             on(dom('.delete-profile-image--trigger'), 'click', function (event) {
                 event.preventDefault();
 
-                {% if candidacy is defined %}
+                {% if candidacy %}
                     inputFile.value = '';
                     dom('#' + '{{ form.croppedImage.vars.id }}').value = -1;
                 {% else %}

@@ -237,4 +237,17 @@ class TerritorialCouncilMembership
     {
         return $this->adherent->getFullName();
     }
+
+    public function hasConfirmedCandidacy(Election $election = null): bool
+    {
+        if (!$election) {
+            $election = $this->getTerritorialCouncil()->getCurrentElection();
+        }
+
+        if (!$election) {
+            return false;
+        }
+
+        return ($candidacy = $this->getCandidacyForElection($election)) && $candidacy->isConfirmed();
+    }
 }

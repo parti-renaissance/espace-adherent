@@ -14,56 +14,64 @@
 
     {% if election.voteStartDate is null %}
         <p class="text--body text--bold b__nudge--bottom-large b__nudge--top-0">La date de la désignation n’a pas encore été fixée par votre référent.</p>
+    {% else %}
+        <p class="text--body text--dark b__nudge--bottom-large b__nudge--top-0">La désignation aura lieu du
+            {{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}
+            au {{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}.</p>
     {% endif %}
 
     <div class="text--body l__row l__row--wrap">
-        {% if able_to_candidate and election.isCandidacyPeriodActive %}
-            {% if candidacy %}
-                {% if candidacy.isConfirmed %}
-                    <hr/>
-                    <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
-                        <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
-                        Vous êtes maintenant candidat en binôme avec {{ candidacy.binome.membership.fullName }}.<br />
-                        Vous ne pouvez plus retirer votre candidature.
-                    </p>
+        {% if able_to_candidate %}
+            {% if election.isCandidacyPeriodActive %}
+                {% if candidacy %}
+                    {% if candidacy.isConfirmed %}
+                        <hr/>
+                        <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
+                            <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
+                            Vous êtes maintenant candidat en binôme avec {{ candidacy.binome.membership.fullName }}.<br />
+                            Vous ne pouvez plus retirer votre candidature.
+                        </p>
 
-                    <a href="#" class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Modifier ma demande de binôme</a>
-                {% elseif candidacy.hasPendingInvitation %}
-                    <hr/>
+                        <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Modifier ma demande de binôme</span>
+                    {% elseif candidacy.hasPendingInvitation %}
+                        <hr/>
 
-                    <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
-                        <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" />
-                        {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
-                    </p>
+                        <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
+                            <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" />
+                            {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
+                        </p>
 
-                    <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier ma demande de binôme</a>
+                        <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier ma demande de binôme</a>
+                    {% else %}
+                        <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--pink btn--no-wrap b__nudge--right box-el">Je choisis un binôme</a>
+                    {% endif %}
+
+                    <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier mes informations</a>
                 {% else %}
-                    <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--pink btn--no-wrap b__nudge--right box-el">Je choisis un binôme</a>
-                {% endif %}
+                    {% if app.user.isOtherGender() %}
+                        <a href="#" class="btn btn--pink b__nudge--right btn--no-wrap box-el em-modal--trigger"
+                           data-confirm-content-element="#candidacy-gender-choice-content"
+                        >Je candidate en binôme</a>
 
-                <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier mes informations</a>
-            {% else %}
-                {% if app.user.isOtherGender() %}
-                    <a href="#" class="btn btn--pink b__nudge--right btn--no-wrap box-el em-modal--trigger"
-                       data-confirm-content-element="#candidacy-gender-choice-content"
-                    >Je candidate en binôme</a>
+                        <div class="hidden" id="candidacy-gender-choice-content">
+                            <div class="text--center font-roboto">
+                                <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
+                                    Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
+                                </p>
 
-                    <div class="hidden" id="candidacy-gender-choice-content">
-                        <div class="text--center font-roboto">
-                            <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
-                                Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
-                            </p>
-
-                            <div>
-                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_territorial_council_candidature_edit', {gender: constant('App\\ValueObject\\Genders::FEMALE')}) }}">Femme</a>
-                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_territorial_council_candidature_edit', {gender: constant('App\\ValueObject\\Genders::MALE')}) }}">Homme</a>
+                                <div>
+                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_territorial_council_candidature_edit', {gender: constant('App\\ValueObject\\Genders::FEMALE')}) }}">Femme</a>
+                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_territorial_council_candidature_edit', {gender: constant('App\\ValueObject\\Genders::MALE')}) }}">Homme</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% else %}
-                    <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el">Je candidate en binôme</a>
+                    {% else %}
+                        <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el">Je candidate en binôme</a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
+        {% else %}
+            <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Je choisis un binôme</span>
         {% endif %}
 
         {% if not election.isVotePeriodStarted %}
@@ -72,7 +80,7 @@
             </p>
         {% endif %}
 
-        {% if able_to_candidate and election.isCandidacyPeriodActive %}
+        {% if able_to_candidate and candidacy and candidacy.isDraft and election.isCandidacyPeriodActive %}
             <p class="candidacy-remove text--body text--small b__nudge--top-large b__nudge--right">
                 <a href="{{ path('app_territorial_council_candidature_remove') }}"
                       class="link--no-decor text--blue--dark em-confirm--trigger box-el"

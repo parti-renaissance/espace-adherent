@@ -18,15 +18,8 @@ class CandidatureVoter extends Voter
         }
 
         $membership = $adherent->getTerritorialCouncilMembership();
-        $election = $membership->getTerritorialCouncil()->getCurrentElection();
 
-        if (!$election) {
-            return false;
-        }
-
-        $candidacy = $membership->getCandidacyForElection($election);
-
-        if ($candidacy && $candidacy->isConfirmed()) {
+        if (!$membership->getTerritorialCouncil()->getCurrentElection()) {
             return false;
         }
 

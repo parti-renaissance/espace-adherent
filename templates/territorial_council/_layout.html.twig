@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% set membership = app.user.territorialCouncilMembership %}
+{% set territorial_council = membership.territorialCouncil %}
+{% set candidacy = territorial_council.currentElection ? membership.candidacyForElection(territorial_council.currentElection) : null %}
+
+{% set able_to_candidate = is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', app.user) %}
+
 {% block content %}
     <main class="territorial-council">
         <header class="territorial-council__header">
