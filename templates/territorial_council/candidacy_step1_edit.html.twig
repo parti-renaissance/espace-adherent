@@ -9,13 +9,13 @@
 {% block territorial_council_content %}
     {% set election = territorial_council.currentElection %}
 
-    <div class="territorial-council__main l__wrapper--narrow b__nudge--bottom-huge">
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
         <div>
             <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Annuler</a>
         </div>
 
-        <div class="l__wrapper--600">
-            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Votre candidature</h2>
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Mes informations de candidature</h2>
 
             <p class="text--body text--dark b__nudge--bottom-50">
                 Ajoutez une photo de vous et un texte de présentation à votre candidature. Ces informations ne
@@ -78,15 +78,17 @@
                 </div>
             </div>
 
+            <hr class="separator b__nudge--top-50" />
+
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Notre projet</h2>
+
+            <p class="text--body text--dark b__nudge--bottom-50">
+                Rédigez votre projet avec votre binôme pour motiver votre candidature. Ce texte, éditable par les deux membres,
+                ne sera visible par l'ensemble des membres du Conseil territorial qu'une fois la case « Publier notre projet  »
+                cochée ou les candidatures closes.
+            </p>
+
             <div class="em-form__group">
-                {{ form_label(form.faithStatement, 'Profession de foi', {label_attr: {class: 'em-form__label'}}) }}
-
-                <div class="text--body text--dark b__nudge--bottom-small">
-                    Elle motive votre candidature. Ce texte est éditable par les deux membres de votre binôme.
-                    Il ne sera visible aux membres du Conseil territorial qu'une fois la case « publier la
-                    profession de foi » cochée ou les candidatures closes.
-                </div>
-
                 {{ form_errors(form.faithStatement) }}
 
                 <div class="em-form__field--ctn">
@@ -98,7 +100,7 @@
                 <div class="form__checkbox">
                     {{ form_widget(form.isPublicFaithStatement) }}
 
-                    <label class="form form__label" for="{{ form.isPublicFaithStatement.vars.id }}">Publier la profession de foi</label>
+                    <label class="form form__label" for="{{ form.isPublicFaithStatement.vars.id }}">Publier notre projet</label>
                 </div>
             </div>
 
@@ -156,4 +158,3 @@
         });
     </script>
 {% endblock %}
-

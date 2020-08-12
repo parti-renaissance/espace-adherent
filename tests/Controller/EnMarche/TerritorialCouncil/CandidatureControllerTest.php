@@ -46,14 +46,14 @@ class CandidatureControllerTest extends WebTestCase
         $this->getEntityManager(Designation::class)->flush();
 
         $this->client->request('GET', '/conseil-territorial');
-        $this->assertNotContains('Modifier ma candidature', $this->client->getResponse()->getContent());
+        $this->assertNotContains('Modifier mes informations', $this->client->getResponse()->getContent());
 
         $this->client->request('GET', '/conseil-territorial/candidature');
         $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
         $this->client->followRedirect();
 
         $this->assertContains('Vous ne pouvez pas candidater pour cette désignation.', $content = $this->client->getResponse()->getContent());
-        $this->assertNotContains('Retirer ma candidature', $content);
+        $this->assertNotContains('Retirer ma pré-candidature', $content);
 
         $this->client->request('GET', '/conseil-territorial/candidature/retirer');
 
@@ -70,7 +70,7 @@ class CandidatureControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
         $crawler = $this->client->request('GET', '/conseil-territorial');
-        $this->client->click($crawler->selectLink('Retirer ma candidature')->link());
+        $this->client->click($crawler->selectLink('Retirer ma pré-candidature')->link());
 
         $crawler = $this->client->followRedirect();
 
@@ -85,7 +85,7 @@ class CandidatureControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
         $crawler = $this->client->request('GET', '/conseil-territorial');
-        $crawler = $this->client->click($crawler->selectLink('Modifier ma candidature')->link());
+        $crawler = $this->client->click($crawler->selectLink('Modifier mes informations')->link());
 
         $this->assertStringEndsWith('/conseil-territorial/candidature', $crawler->getUri());
 
@@ -117,12 +117,12 @@ class CandidatureControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/conseil-territorial');
         $crawler = $this->client->click($crawler->filter('.territorial-council__aside--section')->selectLink('Gérer')->link());
 
-        $this->assertSame('Pierre Kiroule', $crawler->filter('.l__row.identity .font-roboto.text--bold')->text());
+        $this->assertSame('Pierre Kiroule', $crawler->filter('.l__row.identity .font-roboto')->text());
 
         $this->assertContains('Modifier ma demande de binôme', $content = $this->client->getResponse()->getContent());
-        $this->assertContains('Modifier ma candidature', $content);
+        $this->assertContains('Modifier mes informations', $content);
 
-        $this->client->click($crawler->selectLink('Retirer ma candidature')->link());
+        $this->client->click($crawler->selectLink('Retirer ma pré-candidature')->link());
         $crawler = $this->client->followRedirect();
         $crawler = $this->client->click($crawler->selectLink('Je candidate en binôme')->link());
 

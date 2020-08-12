@@ -1,7 +1,7 @@
 .instance__elections-box {
     box-sizing: border-box;
     background-color: $white;
-    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.14);
+    box-shadow: 0 15px 30px 0 rgba(255, 77, 137, 0.15);
     border-radius: 4px;
     padding: 40px;
     display: flex;
@@ -20,6 +20,15 @@
     h2 {
         color: $pink;
         max-width: 500px;
+    }
+
+    hr {
+        border: none;
+        width: 100%;
+        height: 1px;
+        display: block;
+        background-color: $lines-grey;
+        margin: 0;
     }
 
     .elections-actions {
@@ -44,27 +53,20 @@
             flex-basis: 100%;
         }
     }
+    
+    .elections-icon-container {
+        position: relative;
+        padding-left: 34px;
+    }
+
+    .elections-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
     &:hover {
-        background-color: $pink;
-
-        & .instance__elections-box--text,
-        & > div > .em-countdown-clock .text--dark {
-            color: $white;
-        }
-
-        .box-el {
-            color: $white;
-        }
-
-        .box-el.btn {
-            color: $white;
-            border-color: $white;
-        }
-
-        a.box-el:not(.btn) {
-            font-weight: bold;
-        }
+        box-shadow: 0 15px 45px 0 rgba(255, 77, 137, 0.30);
     }
 }
 
