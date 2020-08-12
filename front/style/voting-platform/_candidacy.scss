@@ -53,7 +53,7 @@
             flex-basis: 100%;
         }
     }
-    
+
     .elections-icon-container {
         position: relative;
         padding-left: 34px;
@@ -107,4 +107,13 @@
     color: $blue;
     font-style: italic;
     text-align: center;
+}
+
+.candidate-gender {
+    color: $neutral-grey;
+    font-size: 10px;
+    font-family: $font-roboto;
+    border: solid 1px $neutral-grey;
+    height: 16px;
+    width: 12px;
 }

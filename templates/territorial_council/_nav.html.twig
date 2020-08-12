@@ -1,7 +1,13 @@
 <nav class="tabs-nav border-on b__nudge--bottom-larger">
     <ul>
-        <li class="{{ is_active_route(app.request, 'app_territorial_council_index') ? 'active' }}">
-            <a href="{{ path('app_territorial_council_index') }}" class="tabs-nav__item">Membres</a>
+        <li class="{{ is_active_route(app.request, 'app_territorial_council_index') ? 'active' }}" id="tab-member-list">
+            <a href="{{ path('app_territorial_council_index', {'_fragment': 'tab-member-list'}) }}" class="tabs-nav__item">Membres</a>
         </li>
+
+        {% if territorial_council.activeElection %}
+            <li class="{{ is_active_route(app.request, 'app_territorial_council_candidacy_list') ? 'active' }}" id="tab-candidacy-list">
+                <a href="{{ path('app_territorial_council_candidacy_list', {'_fragment': 'tab-candidacy-list'}) }}" class="tabs-nav__item">Candidatures au Copol</a>
+            </li>
+        {% endif %}
     </ul>
 </nav>

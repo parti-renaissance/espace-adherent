@@ -1,11 +1,11 @@
-{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
-
-{% set source_committee = object.sourceCommittee %}
-{% set destination_committee = object.destinationCommittee %}
+{% extends 'admin/committee/merge/_layout.html.twig' %}
 
 {% block title %}
     Annulation de la fusion de comités
 {% endblock %}
+
+{% set source_committee = object.sourceCommittee %}
+{% set destination_committee = object.destinationCommittee %}
 
 {% block show %}
     <div class="row">
