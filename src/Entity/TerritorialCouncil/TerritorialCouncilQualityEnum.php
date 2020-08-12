@@ -23,11 +23,16 @@ class TerritorialCouncilQualityEnum extends Enum
     public const COMMITTEE_SUPERVISOR = 'committee_supervisor';
     public const ELECTED_CANDIDATE_ADHERENT = 'elected_candidate_adherent';
 
-    public const HIGHEST_QUALITIES = [
+    public const FORBIDDEN_TO_CANDIDATE = [
         self::REFERENT,
         self::GOVERNMENT_MEMBER,
         self::REFERENT_JAM,
         self::LRE_MANAGER,
+        self::SENATOR,
+        self::DEPUTY,
+        self::EUROPEAN_DEPUTY,
+        self::REGIONAL_COUNCIL_PRESIDENT,
+        self::DEPARTMENTAL_COUNCIL_PRESIDENT,
     ];
 
     public const QUALITY_PRIORITIES = [

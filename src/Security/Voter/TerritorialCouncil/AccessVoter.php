@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Security\Voter;
+namespace App\Security\Voter\TerritorialCouncil;
 
 use App\Entity\Adherent;
+use App\Security\Voter\AbstractAdherentVoter;
 
-class TerritorialCouncilAccessVoter extends AbstractAdherentVoter
+class AccessVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'TERRITORIAL_COUNCIL_MEMBER';
 

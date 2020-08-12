@@ -16,7 +16,7 @@
 
     <div class="text--body l__row--wrap">
         {# Candidate period #}
-        {% if election.isCandidacyPeriodActive %}
+        {% if able_to_candidate and election.isCandidacyPeriodActive %}
             {% if candidacy %}
                 {% if candidacy.isConfirmed %}
                     <hr/>
@@ -65,12 +65,12 @@
         {% endif %}
 
         {% if not election.isVotePeriodStarted %}
-            <p class="candidacies-list text--body text--small text--gray box-el">
-                Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark box-el" data-uuid="{{ territorial_council.uuid }}">la liste des candidats</a>
+            <p class="text--body text--small text--gray box-el">
+                Consulter <a href="#" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
             </p>
         {% endif %}
 
-        {% if candidacy and candidacy.isDraft and election.isCandidacyPeriodActive %}
+        {% if able_to_candidate and election.isCandidacyPeriodActive %}
             <p class="candidacy-remove text--body text--small b__nudge--top">
                 <a href="{{ path('app_territorial_council_candidature_remove') }}"
                       class="link--no-decor text--blue--dark em-confirm--trigger box-el"

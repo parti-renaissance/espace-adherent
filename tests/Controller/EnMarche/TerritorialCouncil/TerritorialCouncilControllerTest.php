@@ -34,10 +34,10 @@ class TerritorialCouncilControllerTest extends WebTestCase
         self::assertEquals('http://test.enmarche.code/conseil-territorial', $crawler->getUri());
 
         $members = $crawler->filter('#territorial-council-members .territorial-council__member');
-        self::assertCount(6, $members);
+        self::assertCount(7, $members);
         self::assertContains('Jacques Picard', $members->first()->text());
         self::assertContains('Lucie Olivera', $members->eq(1)->text());
-        self::assertContains('Referent Referent', $members->eq(2)->text());
+        self::assertContains('Gisele Berthoux', $members->eq(2)->text());
 
         self::assertCount(1, $crawler->filter('.territorial-council__aside h5:contains("Président du Conseil territorial")'));
     }

@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/conseil-territorial/candidature", name="app_territorial_council_candidature")
  *
- * @Security("is_granted('TERRITORIAL_COUNCIL_MEMBER')")
+ * @Security("is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', user)")
  */
 class CandidatureController extends Controller
 {
@@ -162,7 +162,7 @@ class CandidatureController extends Controller
                 $candidacy,
                 [
                     'memberships' => $membershipRepository->findAvailableMemberships($candidacy),
-                    'qualities' => $membership->getQualityNames(),
+                    'qualities' => $membership->getAvailableForCandidacyQualityNames(),
                 ]
             )
             ->handleRequest($request)

@@ -60,7 +60,7 @@ class Candidacy extends BaseCandidacy
      * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\CandidacyInvitation", inversedBy="candidacy", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      *
-     * @Assert\Valid
+     * @Assert\Valid(groups={"invitation_edit"})
      */
     private $invitation;
 

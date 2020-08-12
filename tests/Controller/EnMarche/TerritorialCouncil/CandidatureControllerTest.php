@@ -6,6 +6,7 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadTerritorialCouncilMembershipData;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -26,12 +27,12 @@ class CandidatureControllerTest extends WebTestCase
         $this->assertNotContains('Désignation des binômes paritaires siégeant au Comité politique', $response->getContent());
 
         $this->client->request('GET', '/conseil-territorial/candidature');
-        $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     public function testICannotModifyIfItIsNotCandidatePeriod(): void
     {
-        $adherent = $this->getAdherent(LoadAdherentData::DEPUTY_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_5_UUID);
 
         $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
@@ -64,7 +65,7 @@ class CandidatureControllerTest extends WebTestCase
 
     public function testICanRemoveMyCandidatureSuccessfully(): void
     {
-        $adherent = $this->getAdherent(LoadAdherentData::DEPUTY_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_5_UUID);
 
         $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
@@ -79,7 +80,7 @@ class CandidatureControllerTest extends WebTestCase
 
     public function testICanUpdateMyCandidatureSuccessfully(): void
     {
-        $adherent = $this->getAdherent(LoadAdherentData::DEPUTY_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_5_UUID);
 
         $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
@@ -109,14 +110,14 @@ class CandidatureControllerTest extends WebTestCase
 
     public function testICanCreateMyCandidatureAndInviteAnotherMembership(): void
     {
-        $adherent = $this->getAdherent(LoadAdherentData::DEPUTY_1_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_5_UUID);
 
         $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
         $crawler = $this->client->request('GET', '/conseil-territorial');
         $crawler = $this->client->click($crawler->filter('.territorial-council__aside--section')->selectLink('Gérer')->link());
 
-        $this->assertSame('Referent75and77 Referent75and77', $crawler->filter('.l__row.identity .font-roboto.text--bold')->text());
+        $this->assertSame('Pierre Kiroule', $crawler->filter('.l__row.identity .font-roboto.text--bold')->text());
 
         $this->assertContains('Modifier ma demande de binôme', $content = $this->client->getResponse()->getContent());
         $this->assertContains('Modifier ma candidature', $content);
@@ -155,7 +156,7 @@ class CandidatureControllerTest extends WebTestCase
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
 
         $crawler = $this->client->submit($form, [
-            'candidacy_quality[quality]' => 'deputy',
+            'candidacy_quality[quality]' => 'department_councilor',
             'candidacy_quality[invitation][membership]' => LoadTerritorialCouncilMembershipData::MEMBERSHIP_UUID1,
         ]);
 

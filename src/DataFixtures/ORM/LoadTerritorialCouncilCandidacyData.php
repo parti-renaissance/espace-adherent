@@ -20,7 +20,7 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
         $coTerrParis = $this->getReference('coTerr_75');
 
         /** @var Adherent $adherent */
-        $adherent = $this->getReference('deputy-75-1');
+        $adherent = $this->getReference('adherent-5');
 
         $candidacy = new Candidacy($adherent->getTerritorialCouncilMembership(), $coTerrParis->getCurrentElection(), $adherent->getGender());
 
@@ -39,7 +39,7 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
         ));
 
         $candidacy->setInvitation($invitation = new CandidacyInvitation());
-        $invitation->setMembership($this->getReference('adherent-19')->getTerritorialCouncilMembership());
+        $invitation->setMembership($this->getReference('adherent-12')->getTerritorialCouncilMembership());
 
         $manager->persist($candidacy);
         $this->getImageManager()->saveImage($candidacy);
