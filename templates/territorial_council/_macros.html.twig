@@ -1,0 +1,12 @@
+{% macro display_candidate_identity(candidacy, details) %}
+    <div class="l__row">
+        <div class="candidate-photo avatar-initials avatar--medium b__nudge--right">
+            <img src="{{ path('asset_url', {path: candidacy.imagePath}) }}" alt="photo" />
+        </div>
+
+        <div class="l__row font-roboto text--default-large text--bold">
+            {{ candidacy.membership.fullName }}
+            {% if details is not empty %}<span class="b__nudge--left-small">{{ details|raw }}</span>{% endif %}
+        </div>
+    </div>
+{% endmacro %}

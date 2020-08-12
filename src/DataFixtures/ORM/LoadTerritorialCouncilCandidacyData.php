@@ -44,6 +44,55 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
         $manager->persist($candidacy);
         $this->getImageManager()->saveImage($candidacy);
 
+        /** @var Adherent $adherent */
+        $adherent = $this->getReference('adherent-3');
+
+        $candidacy = new Candidacy($adherent->getTerritorialCouncilMembership(), $coTerrParis->getCurrentElection(), $adherent->getGender());
+
+        $candidacy->setQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR);
+        $candidacy->setBiography('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+        $candidacy->setFaithStatement('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+        $candidacy->setIsPublicFaithStatement(true);
+
+        $candidacy->setImage(new UploadedFile(
+            __DIR__.'/../../../app/data/dist/avatar_homme_01.jpg',
+            'image.jpg',
+            'image/jpeg',
+            null,
+            null,
+            true
+        ));
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getReference('adherent-19');
+        $candidacy->setInvitation($invitation = new CandidacyInvitation());
+        $invitation->setMembership($adherent->getTerritorialCouncilMembership());
+        $invitation->accept();
+
+        $invitedCandidate = new Candidacy($invitation->getMembership(), $coTerrParis->getCurrentElection(), $adherent->getGender());
+
+        $invitedCandidate->setQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR);
+        $invitedCandidate->setBiography('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+        $invitedCandidate->setImage(new UploadedFile(
+            __DIR__.'/../../../app/data/dist/avatar_femme_01.jpg',
+            'image.jpg',
+            'image/jpeg',
+            null,
+            null,
+            true
+        ));
+
+        $candidacy->setBinome($invitedCandidate);
+        $invitedCandidate->setBinome($candidacy);
+        $invitedCandidate->updateFromBinome();
+
+        $candidacy->confirm();
+        $invitedCandidate->confirm();
+
+        $manager->persist($candidacy);
+        $this->getImageManager()->saveImage($candidacy);
+        $this->getImageManager()->saveImage($invitedCandidate);
+
         $manager->flush();
     }
 

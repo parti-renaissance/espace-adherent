@@ -33,7 +33,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Conseil territorial')->link());
         self::assertEquals('http://test.enmarche.code/conseil-territorial', $crawler->getUri());
 
-        $members = $crawler->filter('#territorial-council-members .territorial-council__member');
+        $members = $crawler->filter('.territorial-council__members .territorial-council__member');
         self::assertCount(7, $members);
         self::assertContains('Jacques Picard', $members->first()->text());
         self::assertContains('Lucie Olivera', $members->eq(1)->text());

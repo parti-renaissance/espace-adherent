@@ -4,6 +4,7 @@ namespace App\Controller\EnMarche\TerritorialCouncil;
 
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
+use App\Repository\TerritorialCouncil\CandidacyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,10 +29,7 @@ class TerritorialCouncilController extends Controller
     {
         $this->disableInProduction();
 
-        if (!$membership = $adherent->getTerritorialCouncilMembership()) {
-            throw $this->createNotFoundException('This user is not member of a territorial council.');
-        }
-
+        $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
         if ($council->isFof()) {
@@ -43,6 +41,28 @@ class TerritorialCouncilController extends Controller
         return $this->render('territorial_council/index.html.twig', [
             'territorial_council' => $council,
             'candidacy' => $election ? $membership->getCandidacyForElection($election) : null,
+        ]);
+    }
+
+    /**
+     * @Route("/liste-candidature", name="candidacy_list", methods={"GET"})
+     *
+     * @param Adherent $adherent
+     */
+    public function candidacyListAction(UserInterface $adherent, CandidacyRepository $repository): Response
+    {
+        $this->disableInProduction();
+
+        $membership = $adherent->getTerritorialCouncilMembership();
+        $council = $membership->getTerritorialCouncil();
+
+        if (!$election = $council->getCurrentElection()) {
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        return $this->render('territorial_council/candidacy_list.html.twig', [
+            'territorial_council' => $council,
+            'candidacies' => dump($repository->findAllConfirmedForElection($election)),
         ]);
     }
 }

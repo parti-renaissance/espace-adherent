@@ -1,5 +1,7 @@
 {% extends 'territorial_council/_layout.html.twig' %}
 
+{% import 'territorial_council/_macros.html.twig' as helper %}
+
 {% block territorial_council_content %}
     <div class="territorial-council l__wrapper b__nudge--bottom-huge">
         <div>
@@ -93,15 +95,8 @@
             {% for invitation in invitations %}
                 {% set author_candidacy = invitation.candidacy %}
                 <div class="l__row l__row--wrap l__row--h-stretch b__nudge--bottom">
-                    <div class="l__row">
-                        <div class="candidate-photo avatar-initials avatar--medium b__nudge--right">
-                            <img src="{{ path('asset_url', {path: author_candidacy.imagePath}) }}" alt="photo" />
-                        </div>
+                    {{ helper.display_candidate_identity(author_candidacy) }}
 
-                        <div class="font-roboto text--default-large text--bold">
-                            {{ author_candidacy.membership.fullName }}
-                        </div>
-                    </div>
                     <div class="l__row">
                         <a href="{{ path('app_territorial_council_candidature_invitation_accept', {uuid: invitation.uuid}) }}" class="btn btn--pink btn--no-wrap">Accepter</a>
 
@@ -114,7 +109,6 @@
             {% else %}
                 <p class="font-roboto text--small text--gray text--center">Aucune invitation</p>
             {% endfor %}
-
         </div>
     </div>
 {% endblock %}

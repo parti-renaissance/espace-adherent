@@ -9,7 +9,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\CandidacyRepository")
  * @ORM\Table(name="territorial_council_candidacy")
  *
  * @Algolia\Index(autoIndex=false)
@@ -18,8 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Candidacy extends BaseCandidacy
 {
-    private const STATUS_DRAFT = 'draft';
-    private const STATUS_CONFIRMED = 'confirmed';
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_CONFIRMED = 'confirmed';
 
     /**
      * @var string|null
@@ -81,7 +81,8 @@ class Candidacy extends BaseCandidacy
     /**
      * @var Candidacy|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\Candidacy")
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\Candidacy", cascade={"all"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $binome;
 
@@ -169,6 +170,11 @@ class Candidacy extends BaseCandidacy
     public function getQuality(): ?string
     {
         return $this->quality;
+    }
+
+    public function getQualityPriority(): int
+    {
+        return TerritorialCouncilQualityEnum::QUALITY_PRIORITIES[$this->quality] ?? 0;
     }
 
     public function setQuality(string $quality): void

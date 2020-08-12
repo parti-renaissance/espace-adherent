@@ -17,13 +17,12 @@
     {% endif %}
 
     <div class="text--body l__row l__row--wrap">
-        {# Candidate period #}
         {% if able_to_candidate and election.isCandidacyPeriodActive %}
             {% if candidacy %}
                 {% if candidacy.isConfirmed %}
                     <hr/>
                     <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
-                        <img class="elections-icon" src="images/icons/election-box/icn_confirmed.svg" />
+                        <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
                         Vous êtes maintenant candidat en binôme avec {{ candidacy.binome.membership.fullName }}.<br />
                         Vous ne pouvez plus retirer votre candidature.
                     </p>
@@ -33,7 +32,7 @@
                     <hr/>
 
                     <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
-                        <img class="elections-icon" src="images/icons/election-box/icn_on-waiting.svg" />
+                        <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" />
                         {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
                     </p>
 
@@ -69,7 +68,7 @@
 
         {% if not election.isVotePeriodStarted %}
             <p class="text--body text--small b__nudge--top-large b__nudge--right text--gray box-el">
-                Consulter <a href="#" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
+                Consulter <a href="{{ path('app_territorial_council_candidacy_list', {'_fragment': 'tab-candidacy-list'}) }}" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
             </p>
         {% endif %}
 
