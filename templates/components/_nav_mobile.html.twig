@@ -245,7 +245,7 @@
             </ul>
             <hr>
             {% if has_role_adherent %}
-                {% if is_canary_enabled() and app.user.territorialCouncilMembership %}
+                {% if app.user.territorialCouncilMembership %}
                     {% if not app.user.territorialCouncilMembership.territorialCouncil.isFof %}
                         <div class="text--small text--bold">Instances</div>
 

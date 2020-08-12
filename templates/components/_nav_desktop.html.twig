@@ -230,7 +230,7 @@
                             </div>
                             {% if has_role_adherent %}
                                 <ul class="nav-dropdown__section">
-                                    {% if is_canary_enabled() and app.user.territorialCouncilMembership %}
+                                    {% if app.user.territorialCouncilMembership %}
                                         {% if not app.user.territorialCouncilMembership.territorialCouncil.isFof %}
                                             <li class="text--small text--bold">Instances</li>
 

@@ -2,7 +2,6 @@
 
 namespace App\Controller\EnMarche\TerritorialCouncil;
 
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Repository\TerritorialCouncil\CandidacyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -18,8 +17,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class TerritorialCouncilController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("", name="index", methods={"GET"})
      *
@@ -27,8 +24,6 @@ class TerritorialCouncilController extends Controller
      */
     public function indexAction(UserInterface $adherent): Response
     {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -51,8 +46,6 @@ class TerritorialCouncilController extends Controller
      */
     public function candidacyListAction(UserInterface $adherent, CandidacyRepository $repository): Response
     {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 

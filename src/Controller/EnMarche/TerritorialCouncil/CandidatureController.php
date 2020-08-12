@@ -2,7 +2,6 @@
 
 namespace App\Controller\EnMarche\TerritorialCouncil;
 
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\CandidacyInvitation;
@@ -27,8 +26,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class CandidatureController extends Controller
 {
-    use CanaryControllerTrait;
-
     private $manager;
 
     public function __construct(CandidacyManager $manager)
@@ -43,8 +40,6 @@ class CandidatureController extends Controller
      */
     public function editCandidatureAction(Request $request, UserInterface $adherent): Response
     {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -105,8 +100,6 @@ class CandidatureController extends Controller
      */
     public function removeCandidacyAction(UserInterface $adherent): Response
     {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -138,8 +131,6 @@ class CandidatureController extends Controller
         UserInterface $adherent,
         TerritorialCouncilMembershipRepository $membershipRepository
     ): Response {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -192,8 +183,6 @@ class CandidatureController extends Controller
      */
     public function finishInvitationStepAction(UserInterface $adherent): Response
     {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -220,8 +209,6 @@ class CandidatureController extends Controller
      */
     public function invitationListAction(UserInterface $adherent, CandidacyInvitationRepository $repository): Response
     {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -254,8 +241,6 @@ class CandidatureController extends Controller
         CandidacyInvitation $invitation,
         UserInterface $adherent
     ): Response {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -301,8 +286,6 @@ class CandidatureController extends Controller
      */
     public function declineInvitationAction(CandidacyInvitation $invitation, UserInterface $adherent): Response
     {
-        $this->disableInProduction();
-
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
