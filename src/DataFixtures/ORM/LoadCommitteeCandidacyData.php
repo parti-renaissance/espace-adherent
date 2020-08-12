@@ -74,6 +74,6 @@ class LoadCommitteeCandidacyData extends Fixture
 
     private function getImageManager(): ImageManager
     {
-        return $this->container->get('autowired.'.ImageManager::class);
+        return $this->container->get(ImageManager::class);
     }
 }

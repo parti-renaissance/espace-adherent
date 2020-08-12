@@ -72,6 +72,9 @@ services:
         arguments:
             $handlers: !tagged 'app.adherent.unregistration.handler'
 
+    App\Image\:
+        resource: '../src/Image/'
+
     App\Adherent\Unregistration\Handlers\:
         resource: ../src/Adherent/Unregistration/Handlers/
 

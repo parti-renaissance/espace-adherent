@@ -40,9 +40,17 @@ services:
     Tests\App\Test\Payment\PayboxProvider:
         arguments:
             - '%env(SSL_PRIVATE_KEY)%'
+
     test.App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
         alias: App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
         public: true
 
     Algolia\AlgoliaSearchBundle\Indexer\Indexer:
         alias: 'algolia.indexer'
+
+    App\Image\ImageManager:
+        public: true
+
+    Tests\App\Image\DummyImageManager: ~
+
+    App\Image\ImageManagerInterface: '@Tests\App\Image\DummyImageManager'

@@ -103,6 +103,8 @@
             </div>
 
             <div class="em-form__group">
+                {{ form_errors(form.accept) }}
+
                 <div class="form__checkbox">
                     {{ form_widget(form.accept) }}
 

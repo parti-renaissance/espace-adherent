@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Image\ImageManager;
+use App\Image\ImageManagerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -21,7 +22,7 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
     private $imageManager;
 
     /** @required */
-    public function setImageManager(ImageManager $imageManager): void
+    public function setImageManager(ImageManagerInterface $imageManager): void
     {
         $this->imageManager = $imageManager;
     }

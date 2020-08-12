@@ -3,7 +3,7 @@
 namespace App\VotingPlatform\Listener;
 
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
-use App\Image\ImageManager;
+use App\Image\ImageManagerInterface;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Events;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +14,7 @@ class UpdateCandidacyProfilePhotoListener implements EventSubscriberInterface
     private $imageManager;
     private $entityManager;
 
-    public function __construct(ImageManager $imageManager, EntityManagerInterface $entityManager)
+    public function __construct(ImageManagerInterface $imageManager, EntityManagerInterface $entityManager)
     {
         $this->imageManager = $imageManager;
         $this->entityManager = $entityManager;

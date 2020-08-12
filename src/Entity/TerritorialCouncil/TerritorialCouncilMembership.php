@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -69,9 +70,10 @@ class TerritorialCouncilMembership
     public function __construct(
         TerritorialCouncil $territorialCouncil = null,
         Adherent $adherent = null,
-        \DateTime $joinedAt = null
+        \DateTime $joinedAt = null,
+        UuidInterface $uuid = null
     ) {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->territorialCouncil = $territorialCouncil;
         $this->adherent = $adherent;
         $this->joinedAt = $joinedAt ?? new \DateTime('now');

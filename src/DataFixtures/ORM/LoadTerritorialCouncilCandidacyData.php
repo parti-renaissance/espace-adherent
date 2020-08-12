@@ -10,15 +10,12 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Image\ImageManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Faker\Factory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadTerritorialCouncilCandidacyData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr_FR');
-
         /** @var TerritorialCouncil $coTerrParis */
         $coTerrParis = $this->getReference('coTerr_75');
 
@@ -28,8 +25,8 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
         $candidacy = new Candidacy($adherent->getTerritorialCouncilMembership(), $coTerrParis->getCurrentElection(), $adherent->getGender());
 
         $candidacy->setQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR);
-        $candidacy->setBiography($faker->paragraph());
-        $candidacy->setFaithStatement($faker->paragraph());
+        $candidacy->setBiography('Voluptas ea rerum eligendi rerum ipsum optio iusto qui. Harum minima labore tempore odio doloribus sint nihil veniam. Sint voluptas et ea cum ipsa aut. Odio ut sequi at optio mollitia asperiores voluptas.');
+        $candidacy->setFaithStatement('Eum earum explicabo assumenda nesciunt hic ea. Veniam magni assumenda ab fugiat dolores consequatur voluptatem. Recusandae explicabo quia voluptatem magnam.');
         $candidacy->setIsPublicFaithStatement(true);
 
         $candidacy->setImage(new UploadedFile(
@@ -52,7 +49,7 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
 
     private function getImageManager(): ImageManager
     {
-        return $this->container->get('autowired.'.ImageManager::class);
+        return $this->container->get(ImageManager::class);
     }
 
     public function getDependencies()

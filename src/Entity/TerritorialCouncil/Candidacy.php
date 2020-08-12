@@ -26,6 +26,7 @@ class Candidacy extends BaseCandidacy
      *
      * @ORM\Column(type="text", nullable=true)
      *
+     * @Assert\NotBlank
      * @Assert\Length(max=2000)
      */
     private $faithStatement;
