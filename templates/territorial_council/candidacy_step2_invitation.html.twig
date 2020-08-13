@@ -58,9 +58,12 @@
 
             <div>
                 {{ form_row(form.save, {label: 'Envoyer l\'invitation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
-                <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
-                    Étape précedente
-                </a>
+
+                {% if not invitation %}
+                    <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                        Étape précedente
+                    </a>
+                {% endif %}
             </div>
 
             {{ form_end(form) }}
@@ -76,6 +79,7 @@
             var loaderContainer = dom('#loader-container');
             var searchElement = dom('#member-search');
             var errorContainer = dom('.membership-error');
+            var saveButton = dom('#{{ form.save.vars.id }}');
 
             var renderRadioCallback = function (radioBlock) {
                 if (
@@ -95,9 +99,11 @@
 
                 if (memberships.length === findAll(membershipContainer, '.form__radio.hidden-membership').length) {
                     hide(searchElement);
+                    hide(saveButton);
                     show(errorContainer)
                 } else {
                     show(searchElement);
+                    show(saveButton);
                     hide(errorContainer);
                 }
             };

@@ -19,7 +19,6 @@ class CandidacyQualityType extends AbstractType
                 'choice_label' => function (string $choice) {
                     return 'territorial_council.membership.quality.'.$choice;
                 },
-                'disabled' => 1 === \count($options['qualities']),
             ])
             ->add('invitation', CandidacyInvitationType::class, [
                 'memberships' => $options['memberships'],

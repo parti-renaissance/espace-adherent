@@ -24,6 +24,8 @@
         {% if able_to_candidate %}
             {% if election.isCandidacyPeriodActive %}
                 {% if candidacy %}
+                    {% set with_two_rows = true %}
+
                     {% if candidacy.isConfirmed %}
                         <hr/>
                         <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
@@ -75,7 +77,7 @@
         {% endif %}
 
         {% if not election.isVotePeriodStarted %}
-            <p class="text--body text--small b__nudge--top-large b__nudge--right text--gray box-el">
+            <p class="text--body text--small {{ with_two_rows is defined and with_two_rows ? 'b__nudge--top-large' }} b__nudge--right text--gray box-el">
                 Consulter <a href="{{ path('app_territorial_council_candidacy_list', {'_fragment': 'tab-candidacy-list'}) }}" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
             </p>
         {% endif %}
