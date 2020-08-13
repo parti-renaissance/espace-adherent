@@ -31,7 +31,10 @@ class ZoneCategory
         'CORSICA_ASSEMBLY_MEMBER' => [self::CORSICA],
         'DEPUTY' => [self::DISTRICT],
         'SENATOR' => [self::DEPARTMENT, self::FOF],
-        'EURO_DEPUTY' => [],
+        'EURO_DEPUTY' => [
+            self::DEPARTMENT,
+            self::DISTRICT,
+        ],
     ];
 
     public const ALL = [
