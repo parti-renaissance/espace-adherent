@@ -196,6 +196,13 @@ class Message
         );
     }
 
+    protected static function dateToString(
+        ?\DateTimeInterface $date,
+        string $format = 'EEEE d MMMM y, HH\'h\'mm'
+    ): string {
+        return $date ? self::formatDate($date, $format) : '';
+    }
+
     protected static function formatDate(\DateTimeInterface $date, string $format): string
     {
         return (new \IntlDateFormatter(

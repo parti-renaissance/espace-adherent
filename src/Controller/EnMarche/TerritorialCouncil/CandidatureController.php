@@ -150,8 +150,12 @@ class CandidatureController extends Controller
             return $this->redirectToRoute('app_territorial_council_candidature_edit');
         }
 
-        if ($candidacy->hasInvitation() && $candidacy->getInvitation()->isAccepted()) {
-            return $this->redirectToRoute('app_territorial_council_index');
+        if ($candidacy->hasInvitation()) {
+            if ($candidacy->getInvitation()->isAccepted()) {
+                return $this->redirectToRoute('app_territorial_council_index');
+            }
+
+            $previouslyInvitedMembership = $candidacy->getInvitation()->getMembership();
         }
 
         $form = $this
@@ -167,9 +171,7 @@ class CandidatureController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $candidacy->getInvitation()->resetStatus();
-
-            $this->manager->updateCandidature($candidacy);
+            $this->manager->updateInvitation($candidacy->getInvitation(), $candidacy, $previouslyInvitedMembership ?? null);
 
             $this->addFlash('info', 'Votre invitation a bien été envoyée');
 
