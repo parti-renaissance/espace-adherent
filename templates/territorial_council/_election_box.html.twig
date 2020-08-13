@@ -13,7 +13,7 @@
     </div>
 
     {% if election.voteStartDate is null %}
-        <p class="text--body text--bold b__nudge--bottom-large b__nudge--top-0">La date de la désignation n’a pas encore été fixée par votre référent.</p>
+        <p class="text--body text--bold b__nudge--bottom-large b__nudge--top-0">La date du Conseil territorial n'a pas encore été fixée par votre référent</p>
     {% else %}
         <p class="text--body text--dark b__nudge--bottom-large b__nudge--top-0">La désignation aura lieu du
             {{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}

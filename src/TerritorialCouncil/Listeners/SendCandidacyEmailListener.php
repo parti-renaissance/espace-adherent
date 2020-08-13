@@ -4,6 +4,7 @@ namespace App\TerritorialCouncil\Listeners;
 
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Mailer\MailerService;
+use App\Mailer\Message\TerritorialCouncilCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationCreatedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationDeclinedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationRemovedMessage;
@@ -34,6 +35,7 @@ class SendCandidacyEmailListener implements EventSubscriberInterface
         return [
             Events::CANDIDACY_INVITATION_UPDATE => 'onInvitationUpdate',
             Events::CANDIDACY_INVITATION_DECLINE => 'onInvitationDecline',
+            Events::CANDIDACY_INVITATION_ACCEPT => 'onInvitationAccept',
         ];
     }
 
@@ -75,6 +77,20 @@ class SendCandidacyEmailListener implements EventSubscriberInterface
             $candidacy->getMembership()->getAdherent(),
             $candidacy->getElection()->getDesignation(),
             $this->urlGenerator->generate('app_territorial_council_candidature_select_pair_candidate', [], UrlGeneratorInterface::ABSOLUTE_URL)
+        ));
+    }
+
+    public function onInvitationAccept(CandidacyInvitationEvent $event): void
+    {
+        /** @var Candidacy $candidacy */
+        $candidacy = $event->getCandidacy();
+        $invitation = $event->getInvitation();
+
+        $this->mailer->sendMessage(TerritorialCouncilCandidacyInvitationAcceptedMessage::create(
+            $invitation->getMembership()->getAdherent(),
+            $candidacy->getMembership()->getAdherent(),
+            $candidacy->getElection()->getDesignation(),
+            $this->urlGenerator->generate('app_territorial_council_candidacy_list', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
     }
 }

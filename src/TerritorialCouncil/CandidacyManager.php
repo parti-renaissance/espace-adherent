@@ -75,8 +75,18 @@ class CandidacyManager
 
         $this->updateCandidature($acceptedBy);
 
+        $this->dispatcher->dispatch(
+            Events::CANDIDACY_INVITATION_ACCEPT,
+            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation)
+        );
+
         foreach ($this->invitationRepository->findAllPendingForMembership($invitation->getMembership(), $acceptedBy->getElection()) as $invitation) {
             $invitation->decline();
+
+            $this->dispatcher->dispatch(
+                Events::CANDIDACY_INVITATION_DECLINE,
+                new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation)
+            );
         }
 
         $this->entityManager->flush();
