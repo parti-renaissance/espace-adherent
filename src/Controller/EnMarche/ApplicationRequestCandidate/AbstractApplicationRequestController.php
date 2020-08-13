@@ -16,6 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractApplicationRequestController extends Controller
 {
+    private $enableMunicipalSpace;
+
+    public function __construct(bool $enableMunicipalSpace)
+    {
+        $this->enableMunicipalSpace = $enableMunicipalSpace;
+    }
+
     /**
      * @Route("candidature-colistiers", name="_candidate_running_mate_list", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, methods={"GET", "POST"})
      * @Route("candidature-benevoles", name="_candidate_volunteer_list", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, methods={"GET", "POST"})
@@ -25,6 +32,8 @@ abstract class AbstractApplicationRequestController extends Controller
         ApplicationRequestRepository $repository,
         string $type
     ): Response {
+        $this->checkIfSpaceEnabled();
+
         $this->checkAccess($request);
 
         $form = $this
@@ -55,6 +64,8 @@ abstract class AbstractApplicationRequestController extends Controller
         string $uuid,
         string $type
     ): Response {
+        $this->checkIfSpaceEnabled();
+
         if (!$applicationRequest = $repository->findOneByUuid($uuid, $type)) {
             $this->createNotFoundException();
         }
@@ -78,6 +89,8 @@ abstract class AbstractApplicationRequestController extends Controller
         string $uuid,
         string $type
     ): Response {
+        $this->checkIfSpaceEnabled();
+
         if (!$applicationRequest = $repository->findOneByUuid($uuid, $type)) {
             $this->createNotFoundException();
         }
@@ -112,6 +125,13 @@ abstract class AbstractApplicationRequestController extends Controller
     abstract protected function getSpaceName(): string;
 
     abstract protected function checkAccess(Request $request, ApplicationRequest $applicationRequest = null): void;
+
+    protected function checkIfSpaceEnabled(): void
+    {
+        if (false === $this->enableMunicipalSpace) {
+            throw $this->createNotFoundException();
+        }
+    }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
