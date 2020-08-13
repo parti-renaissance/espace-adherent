@@ -237,26 +237,22 @@ class ListFilter
 
     public function toArray(): array
     {
-        return array_merge(
-            [
-                'gender' => $this->gender,
-                'firstName' => $this->firstName,
-                'lastName' => $this->lastName,
-                'cities' => array_values($this->cities),
-                'labels' => $this->labels,
-                'mandates' => $this->mandates,
-                'politicalFunctions' => $this->politicalFunctions,
-                'userListDefinitions' => array_map(function (UserListDefinition $label) {
-                    return $label->getId();
-                }, $this->userListDefinitions),
-                'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
-                'sort' => $this->sort,
-                'order' => $this->order,
-            ],
-            array_filter([
-                'contactType' => $this->contactType,
-                'emailSubscribed' => $this->emailSubscribed,
-            ]),
-        );
+        return [
+            'gender' => $this->gender,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'cities' => array_values($this->cities),
+            'labels' => $this->labels,
+            'mandates' => $this->mandates,
+            'politicalFunctions' => $this->politicalFunctions,
+            'userListDefinitions' => array_map(function (UserListDefinition $label) {
+                return $label->getId();
+            }, $this->userListDefinitions),
+            'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
+            'sort' => $this->sort,
+            'order' => $this->order,
+            'contactType' => $this->contactType,
+            'emailSubscribed' => $this->emailSubscribed,
+        ];
     }
 }
