@@ -4,6 +4,7 @@ namespace App\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\CandidacyInvitation;
+use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\TerritorialCouncilCandidacyEvent;
 use App\VotingPlatform\Events as VotingPlatformEvents;
@@ -14,11 +15,16 @@ class CandidacyManager
 {
     private $entityManager;
     private $dispatcher;
+    private $invitationRepository;
 
-    public function __construct(ObjectManager $entityManager, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        ObjectManager $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        CandidacyInvitationRepository $repository
+    ) {
         $this->entityManager = $entityManager;
         $this->dispatcher = $eventDispatcher;
+        $this->invitationRepository = $repository;
     }
 
     public function updateCandidature(Candidacy $candidacy): void
@@ -66,6 +72,12 @@ class CandidacyManager
         $acceptedBy->confirm();
 
         $this->updateCandidature($acceptedBy);
+
+        foreach ($this->invitationRepository->findAllPendingForMembership($invitation->getMembership(), $acceptedBy->getElection()) as $invitation) {
+            $invitation->decline();
+        }
+
+        $this->entityManager->flush();
     }
 
     public function declineInvitation(CandidacyInvitation $invitation): void

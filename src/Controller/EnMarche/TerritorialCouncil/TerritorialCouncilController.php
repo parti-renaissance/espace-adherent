@@ -36,12 +36,7 @@ class TerritorialCouncilController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $election = $council->getCurrentElection();
-
-        return $this->render('territorial_council/index.html.twig', [
-            'territorial_council' => $council,
-            'candidacy' => $election ? $membership->getCandidacyForElection($election) : null,
-        ]);
+        return $this->render('territorial_council/index.html.twig');
     }
 
     /**
@@ -61,8 +56,7 @@ class TerritorialCouncilController extends Controller
         }
 
         return $this->render('territorial_council/candidacy_list.html.twig', [
-            'territorial_council' => $council,
-            'candidacies' => dump($repository->findAllConfirmedForElection($election)),
+            'candidacies' => $repository->findAllConfirmedForElection($election),
         ]);
     }
 }

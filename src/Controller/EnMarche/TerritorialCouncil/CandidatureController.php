@@ -85,7 +85,7 @@ class CandidatureController extends Controller
             $this->addFlash('info', 'Votre candidature a bien été enregistrée');
 
             if ($candidacy->hasPendingInvitation()) {
-                return $this->redirectToRoute('app_territorial_council_candidature_edit');
+                return $this->redirectToRoute('app_territorial_council_index');
             }
 
             return $this->redirectToRoute('app_territorial_council_candidature_select_pair_candidate');
@@ -93,8 +93,6 @@ class CandidatureController extends Controller
 
         return $this->render('territorial_council/candidacy_step1_edit.html.twig', [
             'form' => $form->createView(),
-            'territorial_council' => $council,
-            'candidacy' => $candidacy,
         ]);
     }
 
@@ -179,9 +177,7 @@ class CandidatureController extends Controller
         }
 
         return $this->render('territorial_council/candidacy_step2_invitation.html.twig', [
-            'membership' => $membership,
             'form' => $form->createView(),
-            'territorial_council' => $council,
         ]);
     }
 
@@ -207,8 +203,6 @@ class CandidatureController extends Controller
         }
 
         return $this->render('territorial_council/candidacy_step3_confirmation.html.twig', [
-            'territorial_council' => $council,
-            'candidacy' => $candidacy,
             'invitation' => $invitation,
         ]);
     }
@@ -235,9 +229,6 @@ class CandidatureController extends Controller
         }
 
         return $this->render('territorial_council/invitation_list.html.twig', [
-            'territorial_council' => $council,
-            'membership' => $membership,
-            'candidacy' => $membership->getCandidacyForElection($election),
             'invitations' => $repository->findAllPendingForMembership($membership, $election),
         ]);
     }
@@ -266,6 +257,10 @@ class CandidatureController extends Controller
 
         $acceptedBy = $membership->getCandidacyForElection($election) ?? new Candidacy($membership, $election, $adherent->getGender());
 
+        if ($acceptedBy->isConfirmed()) {
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
         $acceptedBy->setBinome($invitedBy = $invitation->getCandidacy());
         $invitedBy->setBinome($acceptedBy);
 
@@ -286,7 +281,6 @@ class CandidatureController extends Controller
 
         return $this->render('territorial_council/candidacy_step1_edit.html.twig', [
             'form' => $form->createView(),
-            'territorial_council' => $council,
             'candidacy' => $acceptedBy,
             'invitation' => $invitation,
         ]);

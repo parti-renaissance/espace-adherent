@@ -2,8 +2,6 @@
 
 {% import 'territorial_council/_macros.html.twig' as helper %}
 
-{% set able_to_candidate = is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', app.user) %}
-
 {% block territorial_council_content %}
     <div class="territorial-council__main l__wrapper--main l__wrapper--main-left">
 
@@ -45,7 +43,7 @@
                             > > </a>
 
                             <div id="candidate-biography-content-{{ candidacy.uuid }}" class="hidden">
-                                <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentation</h3>
+                                <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentations</h3>
 
                                 <h2 class="text--medium-large b__nudge--bottom-larger">{{ candidacy.membership.fullName }}</h2>
                                 <p class="text--body text--dark">{{ candidacy.biography }}</p>
@@ -53,12 +51,12 @@
                                 <h2 class="text--medium-large b__nudge--bottom-larger">{{ candidacy.binome.membership.fullName }}</h2>
                                 <p class="text--body text--dark">{{ candidacy.binome.biography }}</p>
 
-                                <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Profession de foi</h3>
+                                <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                                {% if candidacy.isPublicFaithStatement and false %}
+                                {% if candidacy.isPublicFaithStatement %}
                                     <p class="text--body text--dark">{{ candidacy.faithStatement }}</p>
                                 {% else %}
-                                    <p class="text--body text--gray text--small">La profession de foi de ce binôme n'a pas encore été publiée</p>
+                                    <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
                                 {% endif %}
                             </div>
                         </div>

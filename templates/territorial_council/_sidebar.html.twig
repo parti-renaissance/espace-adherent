@@ -20,7 +20,7 @@
         </div>
     {% endif %}
 
-    {% if able_to_candidate %}
+    {% if able_to_candidate and (not candidacy or candidacy.isDraft) %}
         <div class="territorial-council__aside--section">
             <h5>Candidature & invitations</h5>
             <p class="text--body text--dark b__nudge--bottom">
