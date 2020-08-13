@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\TerritorialCouncil;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,7 +14,7 @@ class TerritorialCouncilAdmin extends AbstractAdmin
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
-        '_sort_order' => 'DESC',
+        '_sort_order' => 'ASC',
         '_sort_by' => 'id',
     ];
 
