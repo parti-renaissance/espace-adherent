@@ -17,21 +17,17 @@ class ReferentToElectedRepresentativeConditionBuilder extends AbstractConditionB
 
     public function build(MailchimpCampaign $campaign): array
     {
-        /** @var ReferentElectedRepresentativeFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
-
         $conditions = array_map(function (MailchimpSegment $mailchimpSegment) {
             return $this->buildStaticSegmentCondition($mailchimpSegment->getExternalId());
         }, $campaign->getMailchimpSegments()->toArray());
 
-        if (null !== $filter->getIsAdherent()) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'is',
-                'field' => MemberRequest::MERGE_FIELD_ADHERENT,
-                'value' => $filter->getIsAdherent() ? 'oui' : 'non',
-            ];
-        }
+        // Referents can send emails to adherents only
+        $conditions[] = [
+            'condition_type' => 'TextMerge',
+            'op' => 'is',
+            'field' => MemberRequest::MERGE_FIELD_ADHERENT,
+            'value' => 'oui',
+        ];
 
         return $conditions;
     }
