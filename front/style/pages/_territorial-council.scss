@@ -220,4 +220,49 @@
             }
         }
     }
+
+    &__candidacie {
+        margin-bottom: 20px;
+        border: 1px solid $lines-grey;
+        padding: 30px;
+        position: relative;
+        border-radius: 4px;
+    }
+
+    .quality-title {
+        &-11,
+        &-10 { color: $green--territory; }
+        &-12 { color: $red--nation; }
+        &-14 { color: $blue; }
+        &-15 { color: $blue--dark; }
+    }
+
+    &__candidate {
+        flex-basis: 100%;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+
+        @media (min-width: $tablet) {
+            flex-basis: 50%;
+            padding-right: 20px;
+            margin-bottom: 0;
+        }
+    }
+
+    &__biography {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: calc(50% - 20px);
+        right: 40px;
+        border: 1px solid $lines-grey;
+        border-radius: 2px;
+
+        img {
+            transform: rotate(-90deg);
+        }
+    }
 }
