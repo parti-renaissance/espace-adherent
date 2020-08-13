@@ -178,6 +178,7 @@ class CandidatureController extends Controller
 
         return $this->render('territorial_council/candidacy_step2_invitation.html.twig', [
             'form' => $form->createView(),
+            'invitation' => $candidacy->getInvitation(),
         ]);
     }
 

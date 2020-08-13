@@ -195,6 +195,7 @@ class Candidacy extends BaseCandidacy
     public function updateFromBinome(): void
     {
         if ($this->binome) {
+            $this->quality = $this->binome->getQuality();
             $this->faithStatement = $this->binome->getFaithStatement();
             $this->isPublicFaithStatement = $this->binome->isPublicFaithStatement();
         }
