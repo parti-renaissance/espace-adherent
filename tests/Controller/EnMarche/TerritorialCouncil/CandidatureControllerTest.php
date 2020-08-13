@@ -5,9 +5,11 @@ namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadTerritorialCouncilMembershipData;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Mailer\Message\TerritorialCouncilCandidacyInvitationCreatedMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Mandrill\MailAssertTrait;
 
 /**
  * @group functional
@@ -16,6 +18,7 @@ use Tests\App\Controller\ControllerTestTrait;
 class CandidatureControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailAssertTrait;
 
     public function testICannotCandidateIfTerritorialCouncilHasNotAttachedDesignation(): void
     {
@@ -169,6 +172,8 @@ class CandidatureControllerTest extends WebTestCase
         ]);
 
         $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/choix-de-binome/fini', $this->client);
+
+        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationCreatedMessage::class, 'kiroule.p@blabla.tld');
     }
 
     protected function setUp()

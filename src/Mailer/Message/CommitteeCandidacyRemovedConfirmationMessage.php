@@ -33,9 +33,4 @@ final class CommitteeCandidacyRemovedConfirmationMessage extends Message
             'committee_url' => $committeeUrl,
         ];
     }
-
-    private static function dateToString(?\DateTimeInterface $date): string
-    {
-        return $date ? parent::formatDate($date, 'EEEE d MMMM y, HH\'h\'mm') : '';
-    }
 }

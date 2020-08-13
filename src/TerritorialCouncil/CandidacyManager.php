@@ -4,7 +4,9 @@ namespace App\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\CandidacyInvitation;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
+use App\TerritorialCouncil\Event\CandidacyInvitationEvent;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\TerritorialCouncilCandidacyEvent;
 use App\VotingPlatform\Events as VotingPlatformEvents;
@@ -85,5 +87,25 @@ class CandidacyManager
         $invitation->decline();
 
         $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(
+            Events::CANDIDACY_INVITATION_DECLINE,
+            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation)
+        );
+    }
+
+    public function updateInvitation(
+        CandidacyInvitation $invitation,
+        Candidacy $candidacy,
+        TerritorialCouncilMembership $previouslyInvitedMembership = null
+    ): void {
+        $invitation->resetStatus();
+
+        $this->updateCandidature($candidacy);
+
+        $this->dispatcher->dispatch(
+            Events::CANDIDACY_INVITATION_UPDATE,
+            new CandidacyInvitationEvent($candidacy, $invitation, $previouslyInvitedMembership)
+        );
     }
 }
