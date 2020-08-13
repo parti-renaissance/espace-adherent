@@ -111,14 +111,16 @@
                             {% endif %}
 
                             {% if isReferent %}
-                                {% if 0 == app.user.managedAreaTagCodes|filter(code => code starts with '75')|length %}
-                                    <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
-                                        <a href="{{ path('app_referent_candidate_running_mate_list') }}">Municipales</a>
-                                    </li>
-                                {% else %}
-                                    <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
-                                        <a href="{{ path('app_referent_candidate_volunteer_list') }}">Municipales</a>
-                                    </li>
+                                {% if enable_municipal_space %}
+                                    {% if 0 == app.user.managedAreaTagCodes|filter(code => code starts with '75')|length %}
+                                        <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
+                                            <a href="{{ path('app_referent_candidate_running_mate_list') }}">Municipales</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
+                                            <a href="{{ path('app_referent_candidate_volunteer_list') }}">Municipales</a>
+                                        </li>
+                                    {% endif %}
                                 {% endif %}
 
                                 {% if enable_assessor_space %}

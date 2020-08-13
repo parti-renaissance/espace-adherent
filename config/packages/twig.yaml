@@ -22,6 +22,7 @@ twig:
         adherent_interests:     "%adherent_interests%"
         dpt_api_host:           "%env(DPT_API_HOST)%"
         enable_assessor_space:  "%env(bool:ENABLE_ASSESSOR_SPACE)%"
+        enable_municipal_space:  "%env(bool:ENABLE_MUNICIPAL_SPACE)%"
 
     form_themes:
         - 'form_theme.html.twig'
