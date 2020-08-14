@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% for quality in object.qualities %}
+        <li class="role text--body">{{ ('territorial_council.membership.quality.' ~ quality.name)|trans }} <span class="text--gray">({{ quality.zone }})</span></li>
+    {% endfor %}
+{% endblock %}

@@ -3,7 +3,9 @@
 namespace App\Twig;
 
 use App\Entity\Adherent;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentSpaceAccessInformation;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -11,9 +13,14 @@ class AdherentRuntime implements RuntimeExtensionInterface
 {
     private $memberInterests;
     private $accessInformationRepository;
+    private $electedRepresentativeRepository;
 
-    public function __construct(ReferentSpaceAccessInformationRepository $accessInformationRepository, array $interests)
-    {
+    public function __construct(
+        ElectedRepresentativeRepository $electedRepresentativeRepository,
+        ReferentSpaceAccessInformationRepository $accessInformationRepository,
+        array $interests
+    ) {
+        $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->accessInformationRepository = $accessInformationRepository;
         $this->memberInterests = $interests;
     }
@@ -116,5 +123,10 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         return null;
+    }
+
+    public function getElectedRepresentative(Adherent $adherent): ?ElectedRepresentative
+    {
+        return $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
     }
 }

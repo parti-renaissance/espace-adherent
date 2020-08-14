@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="width: 160px; margin-top: 5px;">
+        <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}" class="btn btn-xs btn-default" title="Fiche adhérent">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Fiche adhérent
+        </a>
+
+        {% set electedRepresentative = get_elected_representative(object.adherent) %}
+        {% if electedRepresentative %}
+            <a href="{{ path('admin_app_electedrepresentative_electedrepresentative_edit', { id: electedRepresentative.id }) }}" class="btn btn-xs btn-default" title="Fiche élu">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Fiche élu
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

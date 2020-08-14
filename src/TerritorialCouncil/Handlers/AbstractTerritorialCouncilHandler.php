@@ -87,7 +87,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
                 return;
             }
 
-            // if has candidacy, we should keep a quality dans le membership
+            // if has candidacy, we should keep a quality in the membership
             if ($actualMembership->hasCandidacies()) {
                 // we need to log that adherent has no more quality in membership, but has a candidacy
                 $this->log(
