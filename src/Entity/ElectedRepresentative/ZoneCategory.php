@@ -27,7 +27,10 @@ class ZoneCategory
         'CITY_COUNCIL' => [self::CITY],
         'EPCI_MEMBER' => [self::EPCI],
         'DEPARTMENTAL_COUNCIL' => [self::DEPARTMENT],
-        'REGIONAL_COUNCIL' => [self::REGION],
+        'REGIONAL_COUNCIL' => [
+            self::REGION,
+            self::DEPARTMENT,
+        ],
         'CORSICA_ASSEMBLY_MEMBER' => [self::CORSICA],
         'DEPUTY' => [self::DISTRICT],
         'SENATOR' => [
