@@ -5,7 +5,9 @@ namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadTerritorialCouncilMembershipData;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Mailer\Message\TerritorialCouncilCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationCreatedMessage;
+use App\Mailer\Message\TerritorialCouncilCandidacyInvitationDeclinedMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
@@ -174,6 +176,85 @@ class CandidatureControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/choix-de-binome/fini', $this->client);
 
         $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationCreatedMessage::class, 'kiroule.p@blabla.tld');
+    }
+
+    public function testICanDeclineAnInvitation(): void
+    {
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_12_UUID);
+
+        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
+
+        $crawler = $this->client->request('GET', '/conseil-territorial');
+        $crawler = $this->client->click($crawler->filter('.territorial-council__aside--section')->selectLink('Gérer')->link());
+
+        self::assertCount(1, $crawler->filter('.candidacy-invitation'));
+        self::assertSame('Gisele Berthoux', trim($crawler->filter('.candidacy-invitation .l__row .l__row')->text()));
+
+        $this->client->click($crawler->selectLink('Décliner')->link());
+        $this->client->followRedirect();
+
+        self::assertContains('Invitation a bien été déclinée', $this->client->getResponse()->getContent());
+
+        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationDeclinedMessage::class, 'gisele-berthoux@caramail.com');
+    }
+
+    public function testICanAcceptAnInvitation(): void
+    {
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_12_UUID);
+
+        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
+
+        $crawler = $this->client->request('GET', '/conseil-territorial');
+        $crawler = $this->client->click($crawler->filter('.territorial-council__aside--section')->selectLink('Gérer')->link());
+
+        $crawler = $this->client->click($crawler->selectLink('Accepter')->link());
+
+        $form = $crawler->selectButton('Accepter et enregistrer')->form();
+
+        $values = $form->getValues();
+
+        self::assertArraySubset([
+            'territorial_council_candidacy[faithStatement]' => 'Eum earum explicabo assumenda nesciunt hic ea. Veniam magni assumenda ab fugiat dolores consequatur voluptatem. Recusandae explicabo quia voluptatem magnam.',
+            'territorial_council_candidacy[isPublicFaithStatement]' => true,
+        ], $values);
+
+        $this->client->submit($form, [
+            'territorial_council_candidacy[croppedImage]' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+',
+            'territorial_council_candidacy[biography]' => 'ma bio',
+            'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
+            'territorial_council_candidacy[isPublicFaithStatement]' => false,
+            'territorial_council_candidacy[accept]' => true,
+        ]);
+
+        $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
+
+        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationAcceptedMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationAcceptedMessage::class, 'kiroule.p@blabla.tld');
+
+        $crawler = $this->client->followRedirect();
+
+        self::assertContains('Votre candidature a bien été enregistrée', $this->client->getResponse()->getContent());
+
+        $crawler = $this->client->click($crawler->selectLink('Modifier mes informations')->link());
+        $form = $crawler->selectButton('Enregistrer')->form();
+
+        self::assertArraySubset([
+            'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
+        ], $values = $form->getValues());
+        self::assertArrayNotHasKey('territorial_council_candidacy[isPublicFaithStatement]', $values);
+
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_5_UUID);
+
+        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
+
+        $crawler = $this->client->request('GET', '/conseil-territorial');
+        $crawler = $this->client->click($crawler->selectLink('Modifier mes informations')->link());
+        $form = $crawler->selectButton('Enregistrer')->form();
+
+        self::assertArraySubset([
+            'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
+        ], $values = $form->getValues());
+        self::assertArrayNotHasKey('territorial_council_candidacy[isPublicFaithStatement]', $values);
     }
 
     protected function setUp()

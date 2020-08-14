@@ -312,7 +312,16 @@ class Designation
 
         return $this->getVoteEndDate()
             && $this->getVoteEndDate() <= $now
-            && $now < (clone $this->getVoteEndDate())->modify(sprintf('+%d days', $this->getResultDisplayDelay()))
+            && $now < $this->getResultEndDate()
         ;
+    }
+
+    public function getResultEndDate(): ?\DateTime
+    {
+        if (!$this->getVoteEndDate()) {
+            return null;
+        }
+
+        return (clone $this->getVoteEndDate())->modify(sprintf('+%d days', $this->getResultDisplayDelay()));
     }
 }

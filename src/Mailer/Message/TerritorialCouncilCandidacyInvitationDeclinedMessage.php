@@ -16,8 +16,8 @@ class TerritorialCouncilCandidacyInvitationDeclinedMessage extends Message
     ): self {
         return new self(
             Uuid::uuid4(),
-            $invited->getEmailAddress(),
-            $invited->getFullName(),
+            $candidate->getEmailAddress(),
+            $candidate->getFullName(),
             sprintf('[Désignations] %s a décliné votre invitation', $invited->getFirstName()),
             [
                 'candidate_first_name' => $candidate->getFirstName(),
