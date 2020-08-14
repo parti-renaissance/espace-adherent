@@ -11,6 +11,7 @@ use App\Collection\CommitteeMembershipCollection;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
@@ -295,6 +296,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @JMS\Groups({"adherent_change_diff"})
      */
     private $territorialCouncilMembership;
+
+    /**
+     * @var PoliticalCommitteeMembership|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommitteeMembership", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     */
+    private $politicalCommitteeMembership;
 
     /**
      * @var CommitteeMembership[]|Collection
@@ -1394,6 +1402,35 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         $this->territorialCouncilMembership->revoke();
         $this->territorialCouncilMembership = null;
+    }
+
+    public function getPoliticalCommitteeMembership(): ?PoliticalCommitteeMembership
+    {
+        return $this->politicalCommitteeMembership;
+    }
+
+    public function setPoliticalCommitteeMembership(?PoliticalCommitteeMembership $politicalCommitteeMembership): void
+    {
+        $this->politicalCommitteeMembership = $politicalCommitteeMembership;
+
+        if ($politicalCommitteeMembership) {
+            $this->politicalCommitteeMembership->setAdherent($this);
+        }
+    }
+
+    public function hasPoliticalCommitteeMembership(): bool
+    {
+        return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership;
+    }
+
+    public function revokePoliticalCommitteeMembership(): void
+    {
+        if (!$this->politicalCommitteeMembership) {
+            return;
+        }
+
+        $this->politicalCommitteeMembership->revoke();
+        $this->politicalCommitteeMembership = null;
     }
 
     public function getManagedAreaMarkerLatitude(): ?string

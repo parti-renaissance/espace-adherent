@@ -88,6 +88,11 @@ class TerritorialCouncilMembership
         $this->candidacies = new ArrayCollection();
     }
 
+    public function __clone()
+    {
+        $this->qualities = new ArrayCollection($this->qualities->toArray());
+    }
+
     /**
      * @Groups({"api_candidacy_read"})
      */
@@ -197,6 +202,15 @@ class TerritorialCouncilMembership
     {
         return array_map(function (TerritorialCouncilQuality $quality) {
             return $quality->getName();
+        }, $this->qualities->toArray());
+    }
+
+    public function getManagedInAdminQualityNames(): array
+    {
+        return array_map(function (TerritorialCouncilQuality $quality) {
+            if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_MANAGED_IN_ADMIN_MEMBERS)) {
+                return $quality->getName();
+            }
         }, $this->qualities->toArray());
     }
 

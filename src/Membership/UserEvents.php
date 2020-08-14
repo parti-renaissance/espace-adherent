@@ -13,6 +13,7 @@ final class UserEvents
     public const USER_UPDATE_INTERESTS = 'user.update_interests';
     public const USER_UPDATE_COMMITTEE_PRIVILEGE = 'user.update_committee_privilege';
     public const USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE = 'user.update_citizen_project_privilege';
+    public const USER_UPDATE_TERRITORIAL_COUNCIL_MEMBERSHIP = 'user.update_territorial_council_membership';
 
     public const USER_DELETED = 'user.deleted';
     public const USER_SWITCH_TO_ADHERENT = 'user.switch_to_adherent';

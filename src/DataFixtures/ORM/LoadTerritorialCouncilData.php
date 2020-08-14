@@ -3,13 +3,14 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
-use App\Intl\UnitedNationsBundle;
 use App\Repository\ReferentTagRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadTerritorialCouncilData extends Fixture
 {
+    private const NAME_CORSE = 'Conseil territorial de la Corse';
+
     public function load(ObjectManager $manager)
     {
         // For french department tags
@@ -19,7 +20,7 @@ class LoadTerritorialCouncilData extends Fixture
             switch ($department) {
                 // for Corsica
                 case '20':
-                    $this->createTerritorialCouncil($manager, 'Corse', '20, 2A, 2B');
+                    $this->createTerritorialCouncil($manager, self::NAME_CORSE, '20, 2A, 2B');
 
                     break;
                 // for Paris
@@ -43,10 +44,6 @@ class LoadTerritorialCouncilData extends Fixture
             }
         }
 
-        foreach (UnitedNationsBundle::getCountries() as $countryCode => $countryName) {
-            $this->createTerritorialCouncil($manager, "Conseil territorial de $countryName", $countryCode);
-        }
-
         $this->createTerritorialCouncil($manager, 'Conseil territorial des Français de l\'Étranger', ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG);
 
         $manager->flush();
@@ -56,7 +53,7 @@ class LoadTerritorialCouncilData extends Fixture
     {
         $territorialCouncil = new TerritorialCouncil($name, $code);
 
-        if ('Corse' === $name) {
+        if (self::NAME_CORSE === $name) {
             $territorialCouncil->addReferentTag($this->getReference('referent_tag_20'));
             $territorialCouncil->addReferentTag($this->getReference('referent_tag_2a'));
             $territorialCouncil->addReferentTag($this->getReference('referent_tag_2b'));

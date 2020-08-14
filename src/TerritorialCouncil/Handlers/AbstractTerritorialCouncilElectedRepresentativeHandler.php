@@ -7,6 +7,7 @@ use App\Entity\ElectedRepresentative\Mandate;
 use App\Entity\UserListDefinitionEnum;
 use App\Repository\ElectedRepresentative\MandateRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
+use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -16,14 +17,17 @@ abstract class AbstractTerritorialCouncilElectedRepresentativeHandler extends Ab
     protected $mandates = [];
     /** @var MandateRepository */
     protected $mandateRepository;
+    /** @var PoliticalCommitteeManager */
+    protected $politicalCommitteeManager;
 
     public function __construct(
         EntityManagerInterface $em,
         TerritorialCouncilRepository $repository,
         EventDispatcherInterface $dispatcher,
+        PoliticalCommitteeManager $politicalCommitteeManager,
         MandateRepository $mandateRepository
     ) {
-        parent::__construct($em, $repository, $dispatcher);
+        parent::__construct($em, $repository, $dispatcher, $politicalCommitteeManager);
 
         $this->mandateRepository = $mandateRepository;
     }

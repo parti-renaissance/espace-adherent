@@ -7,6 +7,7 @@ use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\CommitteeRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
+use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -16,14 +17,17 @@ class TerritorialCouncilElectedCandidateAdherentHandler extends AbstractTerritor
     protected $committees = [];
     /** @var CommitteeRepository */
     protected $committeeRepository;
+    /** @var PoliticalCommitteeManager */
+    protected $politicalCommitteeManager;
 
     public function __construct(
         EntityManagerInterface $em,
         TerritorialCouncilRepository $repository,
         EventDispatcherInterface $dispatcher,
+        PoliticalCommitteeManager $politicalCommitteeManager,
         CommitteeRepository $committeeRepository
     ) {
-        parent::__construct($em, $repository, $dispatcher);
+        parent::__construct($em, $repository, $dispatcher, $politicalCommitteeManager);
 
         $this->committeeRepository = $committeeRepository;
     }

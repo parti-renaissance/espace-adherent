@@ -11,6 +11,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\TerritorialCouncil\Event\MembershipEvent;
 use App\TerritorialCouncil\Events;
+use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -19,15 +20,19 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     private $em;
     private $dispatcher;
     protected $repository;
+    /** @var PoliticalCommitteeManager */
+    protected $politicalCommitteeManager;
 
     public function __construct(
         EntityManagerInterface $em,
         TerritorialCouncilRepository $repository,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        PoliticalCommitteeManager $politicalCommitteeManager
     ) {
         $this->em = $em;
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
+        $this->politicalCommitteeManager = $politicalCommitteeManager;
     }
 
     /**
@@ -108,6 +113,8 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             }
 
             $adherent->getTerritorialCouncilMembership()->removeQualityWithName($qualityName);
+            $this->politicalCommitteeManager->removePoliticalCommitteeQuality($adherent, $qualityName);
+
             $this->em->flush();
 
             return;
@@ -126,6 +133,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         // if the adherent has a membership in the same territorial council, just add quality if it doesn't exist
         if ($territorialCouncil->getId() === $actualMembership->getTerritorialCouncil()->getId()) {
             $actualMembership->addQuality($quality);
+            $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName, true);
             $this->em->flush();
 
             return;
@@ -153,7 +161,6 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             }
 
             $this->removeMembership($adherent, $actualMembership->getTerritorialCouncil());
-
             $this->addMembership($adherent, $territorialCouncil, $quality);
 
             // we need to log a change of a territorial council membership
@@ -189,11 +196,28 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         TerritorialCouncil $territorialCouncil,
         TerritorialCouncilQuality $quality
     ): void {
+        dump('addMembertrship');
         $membership = new TerritorialCouncilMembership($territorialCouncil, $adherent);
         $membership->addQuality($quality);
         $adherent->setTerritorialCouncilMembership($membership);
 
         $this->em->persist($membership);
+
+        // add Political committee member
+        dump($quality);
+        dump($adherent->getId());
+        dump(\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS));
+        if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)) {
+            $pcMembership = $this->politicalCommitteeManager->createMembership(
+                $adherent,
+                $territorialCouncil->getPoliticalCommittee(),
+                $this->getQualityName()
+            );
+            $adherent->setPoliticalCommitteeMembership($pcMembership);
+
+            $this->em->persist($pcMembership);
+        }
+
         $this->em->flush();
 
         $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE, new MembershipEvent($adherent, $territorialCouncil));
@@ -202,6 +226,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     protected function removeMembership(Adherent $adherent, TerritorialCouncil $council): void
     {
         $adherent->setTerritorialCouncilMembership(null);
+        $adherent->revokePoliticalCommitteeMembership();
         $this->em->flush();
 
         $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE, new MembershipEvent($adherent, $council));

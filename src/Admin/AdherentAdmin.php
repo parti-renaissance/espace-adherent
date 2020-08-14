@@ -29,6 +29,7 @@ use App\Intl\UnitedNationsBundle;
 use App\Membership\Mandates;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
+use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -69,6 +70,8 @@ class AdherentAdmin extends AbstractAdmin
 
     private $dispatcher;
     private $emailSubscriptionHistoryManager;
+    /** @var PoliticalCommitteeManager */
+    private $politicalCommitteeManager;
 
     /**
      * State of adherent data before update
@@ -82,12 +85,14 @@ class AdherentAdmin extends AbstractAdmin
         $class,
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
-        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager
+        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
+        PoliticalCommitteeManager $politicalCommitteeManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
+        $this->politicalCommitteeManager = $politicalCommitteeManager;
     }
 
     protected function configureRoutes(RouteCollection $collection)
@@ -829,6 +834,7 @@ HELP
     {
         // No need to handle referent tags update as they are not update-able from admin
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $subscriptionTypes = $this->beforeUpdate->getSubscriptionTypes());
+        $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 
         $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($object, null, null, $subscriptionTypes));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));
