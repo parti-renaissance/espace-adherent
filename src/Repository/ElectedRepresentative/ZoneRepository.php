@@ -27,6 +27,23 @@ class ZoneRepository extends ServiceEntityRepository
             return [];
         }
 
+        if (MandateTypeEnum::SENATOR === $type) {
+            return $this->createQueryBuilder('zone')
+                ->innerJoin('zone.category', 'category')
+                ->where('zone.name LIKE :name')
+                ->andWhere('category.name IN (:categories) OR (category.name = :cityCategory AND zone.name LIKE :paris)')
+                ->setParameters([
+                    'name' => $zone.'%',
+                    'categories' => $categories,
+                    'cityCategory' => ZoneCategory::CITY,
+                    'paris' => '%Paris%75%',
+                ])
+                ->setMaxResults($limit)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
         return $this->createQueryBuilder('zone')
             ->innerJoin('zone.category', 'category')
             ->where('zone.name LIKE :name')

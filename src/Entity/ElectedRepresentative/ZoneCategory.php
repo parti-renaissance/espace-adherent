@@ -30,7 +30,11 @@ class ZoneCategory
         'REGIONAL_COUNCIL' => [self::REGION],
         'CORSICA_ASSEMBLY_MEMBER' => [self::CORSICA],
         'DEPUTY' => [self::DISTRICT],
-        'SENATOR' => [self::DEPARTMENT, self::FOF],
+        'SENATOR' => [
+            self::DISTRICT,
+            self::DEPARTMENT,
+            self::FOF,
+        ],
         'EURO_DEPUTY' => [
             self::DEPARTMENT,
             self::DISTRICT,
