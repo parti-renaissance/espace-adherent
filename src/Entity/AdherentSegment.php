@@ -32,6 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AdherentSegment implements AuthorInterface, StaticSegmentInterface
 {
     use EntityIdentityTrait;
+    use StaticSegmentTrait;
 
     /**
      * @var string
@@ -79,13 +80,6 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
     private $author;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(nullable=true)
-     */
-    private $mailchimpId;
-
-    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
@@ -125,16 +119,6 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
     public function setAuthor(?Adherent $author): void
     {
         $this->author = $author;
-    }
-
-    public function getMailchimpId(): ?int
-    {
-        return $this->mailchimpId;
-    }
-
-    public function setMailchimpId(int $mailchimpId): void
-    {
-        $this->mailchimpId = $mailchimpId;
     }
 
     public function isSynchronized(): bool

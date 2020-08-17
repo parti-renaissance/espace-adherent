@@ -8,6 +8,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\CommitteeRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TerritorialCouncilElectedCandidateAdherentHandler extends AbstractTerritorialCouncilHandler
 {
@@ -19,9 +20,10 @@ class TerritorialCouncilElectedCandidateAdherentHandler extends AbstractTerritor
     public function __construct(
         EntityManagerInterface $em,
         TerritorialCouncilRepository $repository,
+        EventDispatcherInterface $dispatcher,
         CommitteeRepository $committeeRepository
     ) {
-        parent::__construct($em, $repository);
+        parent::__construct($em, $repository, $dispatcher);
 
         $this->committeeRepository = $committeeRepository;
     }

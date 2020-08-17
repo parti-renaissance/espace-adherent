@@ -93,6 +93,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     use EntityPostAddressTrait;
     use EntityReferentTagTrait;
     use EntityElectionHelperTrait;
+    use StaticSegmentTrait;
 
     public const STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER = [
         self::PRE_REFUSED,
@@ -164,13 +165,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $photoUploaded = false;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $mailchimpId;
-
-    /**
      * @var CommitteeElection[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
@@ -232,9 +226,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $this->coordinatorComment;
     }
 
-    /**
-     * @param string $coordinatorComment
-     */
     public function setCoordinatorComment(?string $coordinatorComment): void
     {
         $this->coordinatorComment = $coordinatorComment;
@@ -470,15 +461,5 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     public function getReportType(): string
     {
         return ReportType::COMMITTEE;
-    }
-
-    public function getMailchimpId(): ?int
-    {
-        return $this->mailchimpId;
-    }
-
-    public function setMailchimpId(int $mailchimpId): void
-    {
-        $this->mailchimpId = $mailchimpId;
     }
 }

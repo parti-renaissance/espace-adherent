@@ -8,6 +8,7 @@ use App\Entity\UserListDefinitionEnum;
 use App\Repository\ElectedRepresentative\MandateRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractTerritorialCouncilElectedRepresentativeHandler extends AbstractTerritorialCouncilHandler
 {
@@ -19,9 +20,10 @@ abstract class AbstractTerritorialCouncilElectedRepresentativeHandler extends Ab
     public function __construct(
         EntityManagerInterface $em,
         TerritorialCouncilRepository $repository,
+        EventDispatcherInterface $dispatcher,
         MandateRepository $mandateRepository
     ) {
-        parent::__construct($em, $repository);
+        parent::__construct($em, $repository, $dispatcher);
 
         $this->mandateRepository = $mandateRepository;
     }

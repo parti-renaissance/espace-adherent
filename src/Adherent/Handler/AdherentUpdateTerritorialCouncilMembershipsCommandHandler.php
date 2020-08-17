@@ -43,8 +43,6 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
 
         $this->entityManager->refresh($adherent);
 
-        $firstException = null;
-
         foreach ($this->handlers as $handler) {
             if ($handler->supports($adherent)) {
                 $handler->handle($adherent);

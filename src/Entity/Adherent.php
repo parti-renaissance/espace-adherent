@@ -291,6 +291,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var TerritorialCouncilMembership|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     *
+     * @JMS\Groups({"adherent_change_diff"})
      */
     private $territorialCouncilMembership;
 
@@ -1948,6 +1950,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function __clone()
     {
         $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
+        $this->territorialCouncilMembership = $this->territorialCouncilMembership ? clone $this->territorialCouncilMembership : null;
     }
 
     /**
