@@ -21,7 +21,6 @@ use App\Membership\MembershipRequestHandler;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\DonationRepository;
-use App\Repository\SubscriptionTypeRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -137,7 +136,6 @@ class UserController extends Controller
     public function setEmailNotificationsAction(
         Request $request,
         EmailSubscriptionHistoryHandler $historyManager,
-        SubscriptionTypeRepository $subscriptionTypeRepository,
         EventDispatcher $dispatcher,
         SignUpHandler $signUpHandler
     ): Response {

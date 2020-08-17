@@ -39,6 +39,7 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
     use EntityNullablePostAddressTrait;
     use EntityReferentTagTrait;
     use SkillTrait;
+    use StaticSegmentTrait;
 
     public const STATUSES_NOT_ALLOWED_TO_CREATE = [
         self::PENDING,
@@ -201,13 +202,6 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $turnkeyProject;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $mailchimpId;
 
     /**
      * @var CitizenAction|null
@@ -737,15 +731,5 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
         }
 
         return self::TYPES[self::SIMPLE_TYPE];
-    }
-
-    public function getMailchimpId(): ?int
-    {
-        return $this->mailchimpId;
-    }
-
-    public function setMailchimpId(?int $mailchimpId): void
-    {
-        $this->mailchimpId = $mailchimpId;
     }
 }

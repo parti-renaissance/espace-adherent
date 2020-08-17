@@ -3,15 +3,18 @@
 namespace App\Entity\TerritorialCouncil;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\AdherentMessage\StaticSegmentInterface;
 use App\Collection\TerritorialCouncilMembershipCollection;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityReferentTagTrait;
 use App\Entity\ReferentTag;
+use App\Entity\StaticSegmentTrait;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,11 +33,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class TerritorialCouncil
+class TerritorialCouncil implements StaticSegmentInterface
 {
     use EntityIdentityTrait;
     use EntityReferentTagTrait;
     use EntityElectionHelperTrait;
+    use StaticSegmentTrait;
 
     /**
      * @ORM\Column(length=255, unique=true)
@@ -96,6 +100,16 @@ class TerritorialCouncil
         $this->referentTags = new ArrayCollection();
         $this->memberships = new ArrayCollection();
         $this->elections = new ArrayCollection();
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("uuid")
+     * @JMS\Groups({"adherent_change_diff"})
+     */
+    public function getUuidToString(): string
+    {
+        return $this->uuid->toString();
     }
 
     public function getName(): ?string
