@@ -2,6 +2,7 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ReferentUserFilter extends AbstractUserFilter
 {

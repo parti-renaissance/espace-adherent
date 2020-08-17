@@ -3,7 +3,7 @@
 {% block referent_content %}
     <nav class="tabs-nav b__nudge--bottom-larger">
         <ul>
-            <li class="{{ is_active_route(app.request, 'app_message_referent_*') and not is_active_route(app.request, 'app_message_referent_elected_representative_*') ? 'active' }}">
+            <li class="{{ is_active_route(app.request, 'app_message_referent_*') and not is_active_route(app.request, ['app_message_referent_elected_representative_*', 'app_message_referent_territorial_council_*']) ? 'active' }}">
                 <a class="tabs-nav__item" href="{{ path('app_message_referent_list') }}">
                     Messagerie adhérents
                 </a>
@@ -13,6 +13,13 @@
                     Messagerie élus
                 </a>
             </li>
+            {% if is_canary_enabled() %}
+                <li class="{{ is_active_route(app.request, 'app_message_referent_territorial_council_*') ? 'active' }}">
+                    <a class="tabs-nav__item" href="{{ path('app_message_referent_territorial_council_list') }}">
+                        Messagerie Conseil territorial
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </nav>
 

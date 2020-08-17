@@ -555,6 +555,7 @@
                 <argument key="App\Entity\AdherentMessage\CommitteeAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder" />
                 <argument key="App\Entity\AdherentMessage\DeputyAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder" />
                 <argument key="App\Entity\AdherentMessage\ReferentAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
+                <argument key="App\Entity\AdherentMessage\ReferentTerritorialCouncilMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
                 <argument key="App\Entity\AdherentMessage\MunicipalChiefAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder" />
                 <argument key="App\Entity\AdherentMessage\SenatorAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\SenatorMessageSectionBuilder" />
                 <argument key="App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ElectedRepresentativeMessageSectionBuilder" />

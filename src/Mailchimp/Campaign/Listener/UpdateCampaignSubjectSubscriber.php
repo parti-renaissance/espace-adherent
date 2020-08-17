@@ -43,6 +43,9 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
                 $prefix = 'Élus';
                 break;
+            case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
+                $prefix = 'Conseil territorial';
+                break;
             default:
                 $prefix = '';
         }

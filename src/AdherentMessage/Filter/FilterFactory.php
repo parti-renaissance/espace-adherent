@@ -8,6 +8,7 @@ use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
+use App\Entity\AdherentMessage\Filter\ReferentTerritorialCouncilFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 
 abstract class FilterFactory
@@ -27,6 +28,8 @@ abstract class FilterFactory
                 return static::createMunicipalChiefFilter($user);
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
                 return static::createReferentElectedRepresentativeFilter($user);
+            case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
+                return static::createReferentTerritorialCouncilFilter($user);
         }
     }
 
@@ -75,5 +78,16 @@ abstract class FilterFactory
         }
 
         return new ReferentElectedRepresentativeFilter($managedArea->getTags()->first());
+    }
+
+    private static function createReferentTerritorialCouncilFilter(Adherent $user): ReferentTerritorialCouncilFilter
+    {
+        $managedArea = $user->getManagedArea();
+
+        if (!$managedArea) {
+            throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a referent', $user->getEmailAddress()));
+        }
+
+        return new ReferentTerritorialCouncilFilter($managedArea->getTags()->first());
     }
 }

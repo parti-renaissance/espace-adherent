@@ -11,7 +11,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElectedRepresentativeFilterType extends AbstractType
 {
@@ -53,17 +52,6 @@ class ElectedRepresentativeFilterType extends AbstractType
                     return "elected_representative.mailchimp_tag.$choice";
                 },
             ])
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver
-            ->setDefaults([
-                'referent_tags' => null,
-            ])
-            ->setAllowedTypes('referent_tags', ['array'])
-            ->setRequired(['referent_tags'])
         ;
     }
 }

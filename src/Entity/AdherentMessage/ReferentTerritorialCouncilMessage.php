@@ -11,10 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class SenatorAdherentMessage extends AbstractAdherentMessage
+class ReferentTerritorialCouncilMessage extends AbstractAdherentMessage
 {
     public function getType(): string
     {
-        return AdherentMessageTypeEnum::SENATOR;
+        return AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL;
     }
 }
