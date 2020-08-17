@@ -56,7 +56,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             Events::CITIZEN_PROJECT_FOLLOWER_ADDED => 'onCitizenProjectMembershipCreation',
             Events::CITIZEN_PROJECT_FOLLOWER_REMOVED => 'onCitizenProjectMembershipDeletion',
 
-            TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_CREAT => 'onTerritorialCouncilMembershipCreation',
+            TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE => 'onTerritorialCouncilMembershipCreation',
             TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE => 'onTerritorialCouncilMembershipDeletion',
         ];
     }

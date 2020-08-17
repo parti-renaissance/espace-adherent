@@ -196,7 +196,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $this->em->persist($membership);
         $this->em->flush();
 
-        $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_CREAT, new MembershipEvent($adherent, $territorialCouncil));
+        $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE, new MembershipEvent($adherent, $territorialCouncil));
     }
 
     protected function removeMembership(Adherent $adherent, TerritorialCouncil $council): void
