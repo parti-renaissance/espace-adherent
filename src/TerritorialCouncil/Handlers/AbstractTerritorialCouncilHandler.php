@@ -227,6 +227,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
                 return $territorialCouncil->getNameCodes();
             }, $territorialCouncils) : []
         );
+
         $this->em->persist($log);
         $this->em->flush();
     }

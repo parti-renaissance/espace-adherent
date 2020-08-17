@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)

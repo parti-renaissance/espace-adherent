@@ -12,16 +12,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class AdherentZoneFilter extends AbstractUserFilter
+class ReferentTerritorialCouncilFilter extends AbstractAdherentMessageFilter
 {
-    use BasicUserFiltersTrait;
-
     /**
-     * @var ReferentTag
+     * @var ReferentTag|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
      *
-     * @Assert\NotBlank
+     * @Assert\NotNull
      */
     private $referentTag;
 
@@ -35,7 +33,7 @@ class AdherentZoneFilter extends AbstractUserFilter
         return $this->referentTag;
     }
 
-    public function setReferentTag(ReferentTag $referentTag): void
+    public function setReferentTag(ReferentTag $referentTag = null): void
     {
         $this->referentTag = $referentTag;
     }
