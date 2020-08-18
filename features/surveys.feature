@@ -16,7 +16,7 @@ Feature:
     Then I should see "Mon espace J'écoute"
     And I should see "Vous gérez : CH, ES, 92, 76, 77, 13, 59"
 
-    # Create
+    # Create
     Given I am on "/espace-responsable-jecoute/questionnaire/creer"
     And I press "OK"
     When I wait 10 seconds until I see "⟵ Retour"
@@ -26,6 +26,7 @@ Feature:
     And I wait 10 seconds until I see "Champ libre"
     And I click the "#survey_form_questions_0_question_type .form__checkbox:nth-child(3) > label" selector
     And I press "Enregistrer le questionnaire local"
+    And I wait 10 seconds until I see "NOM DU QUESTIONNAIRE"
     Then I should see "Le questionnaire a bien été enregistré."
 
     # Edit
