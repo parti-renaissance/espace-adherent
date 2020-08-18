@@ -592,6 +592,7 @@
         <service id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" shared="false"/>
         <service id="App\Mailchimp\Campaign\CampaignRequestBuilder" />
         <service id="App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber" />
+        <service id="App\Mailchimp\Campaign\Listener\SynchroniseCampaignSegmentsSubscriber" />
         <service id="App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber" />
 
         <service id="App\AdherentMessage\Listener\CreateStaticSegmentListener" />
