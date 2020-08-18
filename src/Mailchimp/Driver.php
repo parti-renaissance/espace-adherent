@@ -19,7 +19,7 @@ class Driver implements LoggerAwareInterface
 
     private $client;
     private $listId;
-    private $electedRepresentativeListId
+    private $electedRepresentativeListId;
     /** @var ResponseInterface|null */
     private $lastResponse;
 

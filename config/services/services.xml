@@ -523,7 +523,7 @@
         <service id="App\Mailchimp\Driver">
             <argument type="service" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
-            <argument type="string">%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%)%</argument>
+            <argument type="string">%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%</argument>
             <tag name="monolog.logger" channel="mailchimp_sync"/>
             <call method="setLogger">
                 <argument type="service" id="logger" />
