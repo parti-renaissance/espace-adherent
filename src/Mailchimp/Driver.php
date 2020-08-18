@@ -82,10 +82,10 @@ class Driver implements LoggerAwareInterface
             : $this->electedRepresentativeListId
         ;
 
-        $response = $this->send('POST', sprintf('/lists/%s/segments', $listId), ['json' => [
+        $response = $this->send('POST', sprintf('/lists/%s/segments', $listId), [
             'name' => $mailchimpSegment->getLabel(),
             'static_segment' => [],
-        ]]);
+        ]);
 
         return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
     }
