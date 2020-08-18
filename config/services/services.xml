@@ -51,9 +51,7 @@
         </service>
 
         <!-- Committee -->
-        <service id="App\Form\CommitteeUuidType"/>
         <service id="App\Committee\CommitteeMergeCommandHandler" public="true" />
-        <service id="App\Form\Admin\CommitteeIdType"/>
 
         <!-- TurnkeyProject -->
         <service id="App\TurnkeyProject\TurnkeyProjectManager">
@@ -69,7 +67,6 @@
         <service id="App\Validator\UniqueExecutiveOfficeMemberRoleValidator" />
 
         <!-- Donation -->
-        <service id="App\Form\Admin\DonatorIdentifierType"/>
         <service id="App\Validator\PayboxSubscriptionValidator" />
         <service id="App\Validator\UniqueDonationSubscriptionValidator" />
         <service id="App\Validator\MaxFiscalYearDonationValidator" />
@@ -133,11 +130,6 @@
         <service id="App\Assessor\AssessorRequestNotifier">
             <argument type="service" id="app.mailer.transactional"/>
         </service>
-        <service id="App\Form\AssessorRequestType" />
-        <service id="App\Form\AssociationVotePlaceType" />
-        <service id="App\Form\DataTransformer\EmailToAdherentTransformer" />
-        <service id="App\Form\MunicipalManagerCityAssociationType" />
-        <service id="App\Form\Election\ListTotalResultType" />
 
         <!-- ApplicationRequest -->
         <service id="App\ApplicationRequest\ApplicationRequestHandler" />
@@ -188,33 +180,6 @@
         <!-- Exporter -->
         <prototype namespace="App\Exporter\" resource="../../src/Exporter/" />
 
-        <!-- Form -->
-        <service id="App\Form\MyReferentTagChoiceType"/>
-        <service id="App\Form\MyReferentCommitteeChoiceType"/>
-        <service id="App\Form\MyCommitteeChoiceType"/>
-        <service id="App\Form\CitizenProjectCommandType"/>
-        <service id="App\Form\EventListener\AmpSynchronisedListener"/>
-        <service id="App\Form\EventRegistrationType"/>
-        <service id="App\Form\ColorChoiceType"/>
-        <service id="App\Form\AdherentEmailType"/>
-        <service id="App\Form\CreateVotePlaceType"/>
-        <service id="App\Form\DonationRequestType"/>
-        <service id="App\Form\AdherentMessage\MunicipalChiefFilterType"/>
-        <service id="App\Form\AdherentMessage\AdherentSegmentFilterType"/>
-        <service id="App\Form\PurifiedTextareaType">
-            <argument type="collection">
-                <argument key="default" type="service" id="app.html_purifier.default"/>
-                <argument key="enrich_content" type="service" id="app.html_purifier.enrich_content"/>
-            </argument>
-        </service>
-        <service id="App\Form\CommitteeAroundAdherentType"/>
-        <service id="App\Form\Jecoute\SurveyQuestionFormType"/>
-        <service id="App\Form\ElectedRepresentative\ZoneType"/>
-        <service id="App\Form\AdherentMessage\AdherentZoneFilterType"/>
-        <service id="App\Form\ManagedUsers\ManagedUsersFilterType"/>
-        <service id="App\Form\ManagedUsers\ReferentManagedUsersFilterType"/>
-        <service id="App\Form\MyTeam\DelegateAccessType"/>
-
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">
             <argument>%env(MAXMIND_USER_ID)%</argument>
@@ -233,12 +198,8 @@
         <service id="App\Referent\ReferentTagManager" />
         <service id="App\Referent\ManagedCommitteesExporter" />
         <service id="App\Referent\ManagedCitizenProjectsExporter" />
-        <service id="App\Form\ReferentPersonLinkType" />
-        <service id="App\Form\ReferentPersonLinkForCoReferentType" />
 
         <!-- J'écoute -->
-        <service id="App\Form\Jecoute\DataSurveyFormType" />
-        <service id="App\Form\Jecoute\SurveyFormType" />
         <service id="App\Validator\SurveyQuestionTypeChoiceValidator" />
         <service id="App\Validator\DataSurveyAnswerTypeChoiceValidator" />
         <service id="App\Jecoute\DataSurveyNotifier">
@@ -637,7 +598,6 @@
         </service>
 
         <!-- ChezVous -->
-        <prototype namespace="App\Form\Admin\ChezVous\" resource="../../src/Form/Admin/ChezVous/*" />
         <prototype namespace="App\ChezVous\" resource="../../src/ChezVous/*" />
         <service id="App\ChezVous\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
@@ -653,13 +613,7 @@
             </call>
         </service>
 
-        <service id="App\Form\Admin\DonatorKinshipType" />
-
-        <!-- Newsletter -->
-        <service id="App\Form\NewsletterSubscriptionType" />
-
         <!-- TerritorialCouncil -->
-        <service id="app.validator.unique_member_territorial_council" class="App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator" />
-
+        <service class="App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator" />
     </services>
 </container>

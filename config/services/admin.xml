@@ -268,7 +268,7 @@
             <argument />
             <argument>App\Entity\Referent</argument>
             <argument>App\Controller\Admin\AdminReferentController</argument>
-            <argument type="service" id="app.form.data_transformer.referent_area_transformer" />
+            <argument type="service" id="App\Form\DataTransformer\ReferentAreaTransformer" />
             <call method="setTemplate">
                 <argument>list</argument>
                 <argument>admin/referent/admin_list.html.twig</argument>
@@ -797,18 +797,6 @@
                 </argument>
             </call>
         </service>
-
-        <!--
-        ######################################################
-        # Data Transformer
-        ######################################################
-        -->
-
-        <service id="app.form.data_transformer.referent_area_transformer" class="App\Form\DataTransformer\ReferentAreaTransformer">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-        </service>
-
-        <service autowire="true" public="false" id="App\Form\DataTransformer\CommitteeTransformer"/>
 
         <!--
         ######################################################
