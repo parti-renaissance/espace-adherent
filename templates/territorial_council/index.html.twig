@@ -11,28 +11,30 @@
 
         {{ include('territorial_council/_nav.html.twig') }}
 
-        <section class="territorial-council__members">
-            <h2 class="b__nudge--bottom-larger">Les membres du conseil territorial</h2>
+        {% if is_canary_enabled() %}
+            <section class="territorial-council__members">
+                <h2 class="b__nudge--bottom-larger">Les membres du conseil territorial</h2>
 
-            <div>
-                {% for membership in territorial_council.memberships %}
-                    {% set adherent = membership.adherent %}
+                <div>
+                    {% for membership in territorial_council.memberships %}
+                        {% set adherent = membership.adherent %}
 
-                    <div class="territorial-council__member">
-                        {% include 'territorial_council/_member_identity_box.html.twig' with {
-                            initials: adherent.initials,
-                            full_name: adherent.fullName
-                        } %}
+                        <div class="territorial-council__member">
+                            {% include 'territorial_council/_member_identity_box.html.twig' with {
+                                initials: adherent.initials,
+                                full_name: adherent.fullName
+                            } %}
 
-                        <ul class="roles">
-                            {% for quality in membership.qualities %}
-                                <li class="role text--body">{{ ('territorial_council.membership.quality.' ~ quality.name)|trans }} <span class="text--gray">- {{ quality.zone }}</span></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endfor %}
-            </div>
-        </section>
+                            <ul class="roles">
+                                {% for quality in membership.qualities %}
+                                    <li class="role text--body">{{ ('territorial_council.membership.quality.' ~ quality.name)|trans }} <span class="text--gray">- {{ quality.zone }}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
     </div>
 
     {{ include('territorial_council/_sidebar.html.twig') }}
