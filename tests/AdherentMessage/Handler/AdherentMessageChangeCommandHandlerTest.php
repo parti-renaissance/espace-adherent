@@ -957,7 +957,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         return new AdherentMessageChangeCommandHandler(
             $this->createRepositoryMock($message),
             new Manager(
-                new Driver($this->clientMock, 'test'),
+                new Driver($this->clientMock, 'test_main', 'test_elected_representative'),
                 $this->creatRequestBuildersLocator(),
                 $this->createEventDispatcher(),
                 $this->mailchimpMapping
