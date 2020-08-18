@@ -99,11 +99,6 @@
             <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>
         </service>
 
-        <service id="App\Form\MemberInterestsChoiceType">
-            <argument type="string">%adherent_interests%</argument>
-            <tag name="form.type" />
-        </service>
-
         <service id="app.adherent.contact_message_handler" class="App\Contact\ContactMessageHandler">
             <argument type="service" id="app.mailer.campaign" />
         </service>

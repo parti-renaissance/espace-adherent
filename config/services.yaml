@@ -58,9 +58,23 @@ services:
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
 
+    # Imports
+    App\Adherent\Unregistration\Handlers\:
+        resource: '../src/Adherent/Unregistration/Handlers/'
+    App\Adherent\Certification\:
+        resource: '../src/Adherent/Certification'
     App\Command\:
         resource: '../src/Command/*'
+    App\Form\:
+        resource: '../src/Form/'
+    App\Image\:
+        resource: '../src/Image/'
+    App\TerritorialCouncil\:
+        resource: '../src/TerritorialCouncil/'
+    App\VotingPlatform\:
+        resource: '../src/VotingPlatform/'
 
+    # Services
     Algolia\AlgoliaSearchBundle\Indexer\Indexer: '@algolia.indexer'
 
     App\Map\StaticMapProviderInterface: '@app.map.google_maps_static_provider'
@@ -69,25 +83,21 @@ services:
         arguments:
             $handlers: !tagged 'app.adherent.unregistration.handler'
 
-    App\Image\:
-        resource: '../src/Image/'
-
-    App\Adherent\Unregistration\Handlers\:
-        resource: ../src/Adherent/Unregistration/Handlers/
-
-    App\Adherent\Certification\:
-        resource: ../src/Adherent/Certification
-
     App\Adherent\Certification\CertificationRequestProcessCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.certification_request.handler'
 
-    App\VotingPlatform\:
-        resource: ../src/VotingPlatform/
-
-    App\TerritorialCouncil\:
-        resource: ../src/TerritorialCouncil/
-
     App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.territorial_council_membership.handler'
+
+    # Form
+    App\Form\PurifiedTextareaType:
+        arguments:
+            -
+                default: '@app.html_purifier.default'
+                enrich_content: '@app.html_purifier.enrich_content'
+
+    App\Form\MemberInterestsChoiceType:
+        arguments:
+            - '%adherent_interests%'
