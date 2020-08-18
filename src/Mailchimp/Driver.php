@@ -77,8 +77,7 @@ class Driver implements LoggerAwareInterface
 
     public function createSegment(MailchimpSegment $mailchimpSegment): array
     {
-
-        $listId = $mailchimpSegment->getList() === MailchimpSegment::LIST_MAIN
+        $listId = MailchimpSegment::LIST_MAIN === $mailchimpSegment->getList()
             ? $this->listId
             : $this->electedRepresentativeListId
         ;
