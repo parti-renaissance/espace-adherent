@@ -2,6 +2,7 @@
 
 namespace App\Mailchimp;
 
+use App\Entity\MailchimpSegment;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Mailchimp\Campaign\Request\EditCampaignRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
@@ -18,13 +19,15 @@ class Driver implements LoggerAwareInterface
 
     private $client;
     private $listId;
+    private $electedRepresentativeListId
     /** @var ResponseInterface|null */
     private $lastResponse;
 
-    public function __construct(ClientInterface $client, string $listId)
+    public function __construct(ClientInterface $client, string $listId, string $mailchimpElectedRepresentativeListId)
     {
         $this->client = $client;
         $this->listId = $listId;
+        $this->electedRepresentativeListId = $mailchimpElectedRepresentativeListId;
     }
 
     /**
@@ -70,6 +73,22 @@ class Driver implements LoggerAwareInterface
         $this->logger->error(sprintf('[API] Error: %s', $response->getBody()), ['campaignId' => $campaignId]);
 
         return '';
+    }
+
+    public function createSegment(MailchimpSegment $mailchimpSegment): array
+    {
+
+        $listId = $mailchimpSegment->getList() === MailchimpSegment::LIST_MAIN
+            ? $this->listId
+            : $this->electedRepresentativeListId
+        ;
+
+        $response = $this->send('POST', sprintf('/lists/%s/segments', $listId), ['json' => [
+            'name' => $mailchimpSegment->getLabel(),
+            'static_segment' => [],
+        ]]);
+
+        return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
     }
 
     public function createCampaign(EditCampaignRequest $request): array
