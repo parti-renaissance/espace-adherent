@@ -23,11 +23,16 @@ class MailchimpSegmentHandler
     ) {
         $this->client = $mailchimpClient;
         $this->entityManager = $entityManager;
-        $this->mailchimpElectedRepresentativeListId;
+        $this->mailchimpElectedRepresentativeListId = $mailchimpElectedRepresentativeListId;
         $this->logger = $logger;
     }
 
-    public function post(MailchimpSegment $mailchimpSegment): void
+    public function synchronize(MailchimpSegment $mailchimpSegment): void
+    {
+        $this->post($mailchimpSegment);
+    }
+
+    private function post(MailchimpSegment $mailchimpSegment): void
     {
         $url = sprintf('/3.0/lists/%s/segments', $this->mailchimpElectedRepresentativeListId);
 

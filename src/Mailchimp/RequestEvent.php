@@ -11,7 +11,7 @@ class RequestEvent extends Event
     private $message;
     private $request;
 
-    public function __construct(AdherentMessageInterface $message, EditCampaignRequest $request)
+    public function __construct(AdherentMessageInterface $message, EditCampaignRequest $request = null)
     {
         $this->message = $message;
         $this->request = $request;

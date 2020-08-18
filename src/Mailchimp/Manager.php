@@ -158,6 +158,9 @@ class Manager implements LoggerAwareInterface
     public function editCampaign(MailchimpCampaign $campaign): bool
     {
         $message = $campaign->getMessage();
+
+        $this->eventDispatcher->dispatch(Events::CAMPAIGN_FILTERS_PRE_BUILD, new CampaignEvent($campaign));
+
         $requestBuilder = $this->requestBuildersLocator->get(CampaignRequestBuilder::class);
 
         $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($campaign);
