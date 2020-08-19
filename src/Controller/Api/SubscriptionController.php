@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use App\Subscription\SubscriptionHandler;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -31,23 +31,9 @@
             <div class="em-form__group">
                 {{ form_label(form.invitation, 'Sélectionnez un membre pour composer votre binôme', {label_attr: {class: 'em-form__label'}}) }}
 
-                <div>
-                    <div class="em-form__group">
-                        <div class="em-form__field--ctn">
-                            <input type="search" placeholder="Rechercher un membre..." id="member-search" class="em-form__field form form__field"/>
-                        </div>
-                    </div>
+                {{ form_widget(form.invitation) }}
 
-                    <div class="text--center space--30-0" id="loader-container">
-                        <div class="spin-loader"></div>
-                    </div>
-
-                    <div id="membership-container" style="display: none">
-                        {{ form_widget(form.invitation) }}
-                    </div>
-
-                    <p class="text--body text--gray text--small text--center membership-error" style="display: none">Impossible de constituer un binôme, aucun membre n'est disponible.</p>
-                </div>
+                <div class="membership-widget-wrapper"></div>
             </div>
 
             <div>
@@ -68,55 +54,12 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            var qualitySelect = dom('#{{ form.quality.vars.id }}');
-            var membershipContainer = dom('#membership-container');
-            var loaderContainer = dom('#loader-container');
-            var searchElement = dom('#member-search');
-            var errorContainer = dom('.membership-error');
-            var saveButton = dom('#{{ form.save.vars.id }}');
-
-            var renderRadioCallback = function (radioBlock) {
-                if (
-                    radioBlock.dataset.qualities.split(',').indexOf(qualitySelect.value) === -1
-                    || (searchElement.value && !radioBlock.dataset.fullname.toLowerCase().includes(searchElement.value.toLowerCase()))
-                ) {
-                    find(radioBlock, 'input').checked = false;
-                    addClass(radioBlock, 'hidden-membership')
-                } else {
-                    removeClass(radioBlock, 'hidden-membership')
-                }
-            };
-
-            var refreshAllRadio = function () {
-                const memberships = findAll(membershipContainer, '.form__radio');
-                memberships.forEach(renderRadioCallback);
-
-                if (memberships.length === findAll(membershipContainer, '.form__radio.hidden-membership').length) {
-                    hide(searchElement);
-                    hide(saveButton);
-                    show(errorContainer)
-                } else {
-                    show(searchElement);
-                    show(saveButton);
-                    hide(errorContainer);
-                }
-            };
-
-            on(qualitySelect, 'change', function () {
-                hide(membershipContainer);
-                show(loaderContainer);
-
-                refreshAllRadio();
-
-                show(membershipContainer)
-                hide(loaderContainer);
-            });
-
-            on(searchElement, 'input', function () {
-                refreshAllRadio();
-            });
-
-            qualitySelect.dispatchEvent(new Event('change'));
+            App.runTerritorialCouncilCandidacy(
+                '#{{ form.quality.vars.id }}',
+                '#{{ form.invitation.membership.vars.id }}',
+                '#{{ form.save.vars.id }}',
+                '.membership-widget-wrapper'
+            );
         });
     </script>
 {% endblock %}

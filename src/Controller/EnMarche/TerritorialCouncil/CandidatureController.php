@@ -9,7 +9,6 @@ use App\Entity\TerritorialCouncil\Election;
 use App\Form\TerritorialCouncil\CandidacyQualityType;
 use App\Form\VotingPlatform\Candidacy\TerritorialCouncilCandidacyType;
 use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
-use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
 use App\TerritorialCouncil\CandidacyManager;
 use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -124,11 +123,8 @@ class CandidatureController extends Controller
      *
      * @param Adherent $adherent
      */
-    public function selectPairCandidateAction(
-        Request $request,
-        UserInterface $adherent,
-        TerritorialCouncilMembershipRepository $membershipRepository
-    ): Response {
+    public function selectPairCandidateAction(Request $request, UserInterface $adherent): Response
+    {
         $membership = $adherent->getTerritorialCouncilMembership();
         $council = $membership->getTerritorialCouncil();
 
@@ -153,10 +149,7 @@ class CandidatureController extends Controller
             ->createForm(
                 CandidacyQualityType::class,
                 $candidacy,
-                [
-                    'memberships' => $membershipRepository->findAvailableMemberships($candidacy),
-                    'qualities' => $membership->getAvailableForCandidacyQualityNames(),
-                ]
+                ['qualities' => $membership->getAvailableForCandidacyQualityNames()]
             )
             ->handleRequest($request)
         ;

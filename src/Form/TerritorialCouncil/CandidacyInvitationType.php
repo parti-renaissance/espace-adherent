@@ -11,21 +11,13 @@ class CandidacyInvitationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('membership', AvailableForInvitationCandidateType::class, [
-                'choices' => $options['memberships'],
-            ])
-        ;
+        $builder->add('membership', CandidacyInvitedMembershipType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                'data_class' => CandidacyInvitation::class,
-            ])
-            ->setRequired('memberships')
-            ->setAllowedTypes('memberships', 'array')
-        ;
+        $resolver->setDefaults([
+            'data_class' => CandidacyInvitation::class,
+        ]);
     }
 }

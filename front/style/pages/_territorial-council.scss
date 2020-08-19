@@ -164,7 +164,7 @@
         }
     }
 
-    #candidacy_quality_invitation > div {
+    #membership-container {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -180,19 +180,6 @@
 
             label:before {
                 top: 13px;
-            }
-        }
-    }
-
-    #membership-container {
-        .form__radio.disabled {
-            color: $neutral-grey;
-
-            label { cursor: not-allowed; }
-            label:before { display: none; }
-
-            .avatar-initials {
-                color: $neutral-grey !important;
             }
         }
     }
