@@ -12,6 +12,7 @@ use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -29,6 +30,8 @@ class TerritorialCouncilMembership
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent", inversedBy="territorialCouncilMembership")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE", unique=true)
+     *
+     * @Groups({"api_candidacy_read"})
      */
     private $adherent;
 
@@ -83,6 +86,14 @@ class TerritorialCouncilMembership
 
         $this->qualities = new ArrayCollection();
         $this->candidacies = new ArrayCollection();
+    }
+
+    /**
+     * @Groups({"api_candidacy_read"})
+     */
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getTerritorialCouncil(): TerritorialCouncil

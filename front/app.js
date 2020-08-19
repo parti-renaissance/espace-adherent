@@ -319,6 +319,12 @@ class App {
             module.default(clockSelector, refreshPage);
         });
     }
+
+    runTerritorialCouncilCandidacy(qualityFieldSelector, membershipFieldSelector, submitButtonSelector, wrapperSelector) {
+        System.import('pages/territorial_council_candidacy').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'), qualityFieldSelector, membershipFieldSelector, submitButtonSelector, wrapperSelector);
+        });
+    }
 }
 
 window.App = new App();
