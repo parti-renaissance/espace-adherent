@@ -1185,7 +1185,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->managedArea;
     }
 
-    public function setManagedArea(ReferentManagedArea $managedArea): void
+    public function setManagedArea(?ReferentManagedArea $managedArea): void
     {
         $this->managedArea = $managedArea;
     }

@@ -15,6 +15,7 @@ class LoadDelegatedAccessData extends Fixture
     private const ACCESS_UUID_4 = '411faa64-202d-4ff2-91ce-c98b29af28ef';
     private const ACCESS_UUID_5 = 'd2315289-a3fd-419c-a3dd-3e1ff71b754d';
     private const ACCESS_UUID_6 = '7fdf8fb0-1628-4500-b0b2-34c40cc27a2c';
+    private const ACCESS_UUID_7 = '08f40730-d807-4975-8773-69d8fae1da74';
 
     public function load(ObjectManager $manager)
     {
@@ -77,6 +78,15 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess6->setType('senator');
 
         $manager->persist($delegatedAccess6);
+
+        // access from referent
+        $delegatedAccess7 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_7));
+        $delegatedAccess7->setDelegated($this->getReference('senator-59')); // senateur@en-marche-dev.fr
+        $delegatedAccess7->setDelegator($this->getReference('adherent-8')); // referent@en-marche-dev.fr
+        $delegatedAccess7->setRole('Collaborateur parlementaire');
+        $delegatedAccess7->setType('referent');
+
+        $manager->persist($delegatedAccess7);
 
         $manager->flush();
     }
