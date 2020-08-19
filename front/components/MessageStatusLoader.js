@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Loader from './Loader';
 import numberFormat from '../utils/number';
+import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
 const MAX_API_CALLS = 50;
 
@@ -139,8 +140,8 @@ MessageStatusLoader.defaultProps = {
     sendLocked: false,
 };
 
-MessageStatusLoader.propsType = {
-    api: PropTypes.object.isRequired,
+MessageStatusLoader.propTypes = {
+    api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
     messageId: PropTypes.string.isRequired,
     synchronized: PropTypes.bool,
     recipientCount: PropTypes.integer,

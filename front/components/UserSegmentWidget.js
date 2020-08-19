@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import Modal from './Modal';
 import Loader from './Loader';
 import successImage from './../../public/images/icons/icn_success.svg';
+import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
 const STORAGE_KEY = 'su';
 
@@ -288,9 +289,9 @@ export default class UserSegmentManager extends React.Component {
     }
 }
 
-UserSegmentManager.propsType = {
+UserSegmentManager.propTypes = {
     segmentType: PropTypes.string.isRequired,
-    api: PropTypes.object.isRequired,
+    api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
     checkboxSelector: PropTypes.string.isRequired,
     mainCheckbox: PropTypes.element,
     countMembers: PropTypes.number,

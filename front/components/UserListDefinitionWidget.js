@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Loader from './Loader';
+import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
 const STORAGE_KEY = 'suld';
 const STATUS_ALL = 'all';
@@ -431,10 +432,10 @@ export default class UserListDefinitionWidget extends React.Component {
     }
 }
 
-UserListDefinitionWidget.propsType = {
+UserListDefinitionWidget.propTypes = {
     memberType: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    api: PropTypes.object.isRequired,
+    api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
     checkboxSelector: PropTypes.string.isRequired,
     mainCheckboxSelector: PropTypes.string.isRequired,
     mainCheckbox: PropTypes.element,

@@ -67,7 +67,7 @@ export default class SearchResults extends React.Component {
     }
 }
 
-SearchResults.propsType = {
+SearchResults.propTypes = {
     measures: PropTypes.arrayOf(PropTypes.object).isRequired,
     projects: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

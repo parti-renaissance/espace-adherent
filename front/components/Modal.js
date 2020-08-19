@@ -55,7 +55,7 @@ Modal.defaultProps = {
     withClose: true,
 };
 
-Modal.propsType = {
+Modal.propTypes = {
     content: PropTypes.string,
     display: PropTypes.bool,
     closeCallback: PropTypes.func,
