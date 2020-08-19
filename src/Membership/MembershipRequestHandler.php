@@ -32,6 +32,7 @@ class MembershipRequestHandler
     private $membershipRegistrationProcess;
     private $emailSubscriptionHistoryHandler;
     private $unregistrationHandler;
+    private $urlGenerator;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -43,7 +44,8 @@ class MembershipRequestHandler
         ReferentTagManager $referentTagManager,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
-        UnregistrationHandler $unregistrationHandler
+        UnregistrationHandler $unregistrationHandler,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -55,6 +57,7 @@ class MembershipRequestHandler
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
         $this->unregistrationHandler = $unregistrationHandler;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function registerAsUser(MembershipRequest $membershipRequest): Adherent
@@ -97,7 +100,9 @@ class MembershipRequestHandler
 
     public function sendEmailReminder(Adherent $adherent): bool
     {
-        return $this->mailer->sendMessage(AdherentMembershipReminderMessage::create($adherent));
+        $donationUrl = $this->urlGenerator->generate('donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return $this->mailer->sendMessage(AdherentMembershipReminderMessage::create($adherent, $donationUrl));
     }
 
     public function registerAsAdherent(MembershipRequest $membershipRequest): void
