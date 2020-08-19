@@ -139,6 +139,6 @@ export default class AdherentCommitteeList extends React.Component {
     }
 }
 
-AdherentCommitteeList.propsType = {
+AdherentCommitteeList.propTypes = {
     api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
 };

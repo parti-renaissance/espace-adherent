@@ -19,7 +19,7 @@ export default class ToggleLeadingMeasures extends React.Component {
     }
 }
 
-ToggleLeadingMeasures.propsType = {
+ToggleLeadingMeasures.propTypes = {
     onToggleChange: PropTypes.func.isRequired,
     value: PropTypes.bool,
 };

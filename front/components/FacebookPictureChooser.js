@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import React, { PropTypes } from 'react';
+import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
 export default class FacebookPictureChooser extends React.Component {
     constructor(props) {
@@ -127,6 +128,6 @@ export default class FacebookPictureChooser extends React.Component {
 }
 
 FacebookPictureChooser.propTypes = {
-    api: PropTypes.object.isRequired,
+    api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
     urls: PropTypes.array.isRequired,
 };
