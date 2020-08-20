@@ -167,6 +167,17 @@ class TerritorialCouncilMembership
         })->count() > 0;
     }
 
+    public function containsQualities(array $names): bool
+    {
+        foreach ($this->qualities as $quality) {
+            if (\in_array($quality->getName(), $names, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getJoinedAt(): \DateTime
     {
         return $this->joinedAt;

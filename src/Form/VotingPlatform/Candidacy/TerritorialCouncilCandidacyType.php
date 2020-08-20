@@ -37,25 +37,35 @@ class TerritorialCouncilCandidacyType extends AbstractType
             ->add('isPublicFaithStatement', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('accept', CheckboxType::class, [
-                'constraints' => [new IsTrue(['message' => 'Vous devez cocher la case pour continuer'])],
-                'mapped' => false,
-                'required' => true,
-            ])
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                $candidacy = $event->getData();
-                // Pre check `Accept` checkbox if update of candidature
-                if ($candidacy instanceof Candidacy && $candidacy->getId()) {
-                    $event->getForm()->get('accept')->setData(true);
-                }
-            })
         ;
+
+        if ($options['with_accept']) {
+            $builder
+                ->add('accept', CheckboxType::class, [
+                    'constraints' => [new IsTrue(['message' => 'Vous devez cocher la case pour continuer'])],
+                    'mapped' => false,
+                    'required' => true,
+                ])
+                ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+                    $candidacy = $event->getData();
+                    // Pre check `Accept` checkbox if update of candidature
+                    if ($candidacy instanceof Candidacy && $candidacy->getId()) {
+                        $event->getForm()->get('accept')->setData(true);
+                    }
+                })
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Candidacy::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => Candidacy::class,
+                'with_accept' => true,
+            ])
+            ->setDefined('with_accept')
+            ->setAllowedTypes('with_accept', ['bool'])
+        ;
     }
 }

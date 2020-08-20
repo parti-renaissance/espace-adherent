@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\Entity\TerritorialCouncil\Election;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\TerritorialCouncil\CandidacyQualityType;
 use App\Form\VotingPlatform\Candidacy\TerritorialCouncilCandidacyType;
 use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
@@ -69,7 +70,15 @@ class CandidatureController extends Controller
         }
 
         $form = $this
-            ->createForm(TerritorialCouncilCandidacyType::class, $candidacy)
+            ->createForm(
+                TerritorialCouncilCandidacyType::class,
+                $candidacy,
+                [
+                    'with_accept' => !$membership->containsQualities(
+                        [TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, TerritorialCouncilQualityEnum::CITY_COUNCILOR]
+                    ),
+                ]
+            )
             ->handleRequest($request)
         ;
 
@@ -248,7 +257,16 @@ class CandidatureController extends Controller
         $acceptedBy->updateFromBinome();
 
         $form = $this
-            ->createForm(TerritorialCouncilCandidacyType::class, $acceptedBy, ['validation_groups' => ['Default', 'accept_invitation']])
+            ->createForm(
+                TerritorialCouncilCandidacyType::class,
+                $acceptedBy,
+                [
+                    'validation_groups' => ['Default', 'accept_invitation'],
+                    'with_accept' => !$membership->containsQualities(
+                        [TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, TerritorialCouncilQualityEnum::CITY_COUNCILOR]
+                    ),
+                ]
+            )
             ->handleRequest($request)
         ;
 
