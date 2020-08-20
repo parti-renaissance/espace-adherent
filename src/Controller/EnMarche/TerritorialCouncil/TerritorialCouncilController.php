@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\TerritorialCouncil;
 
+use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Repository\TerritorialCouncil\CandidacyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -17,6 +18,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class TerritorialCouncilController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("", name="index", methods={"GET"})
      *
@@ -32,6 +35,24 @@ class TerritorialCouncilController extends Controller
         }
 
         return $this->render('territorial_council/index.html.twig');
+    }
+
+    /**
+     * @Route("/faq", name="faq", methods={"GET"})
+     */
+    public function faqAction(): Response
+    {
+        return $this->render('territorial_council/faq.html.twig');
+    }
+
+    /**
+     * @Route("/membres", name="members", methods={"GET"})
+     */
+    public function listMembersAction(): Response
+    {
+        $this->disableInProduction();
+
+        return $this->render('territorial_council/members.html.twig');
     }
 
     /**

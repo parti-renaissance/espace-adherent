@@ -1,0 +1,86 @@
+{% extends 'territorial_council/_slim_header_layout.html.twig' %}
+
+{% block territorial_council_content %}
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
+        <div>
+            <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
+        </div>
+        <div class="l__wrapper--slim content">
+            <h2 class="font-roboto text--medium b__nudge--top-50 b__nudge--bottom-60">Comment va se dérouler la désignation des binômes paritaires qui siègeront au comité politique territorial ?</h2>
+            <article>
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Qui peut candidater ?</p>
+                <p class="text--body b__nudge--bottom-50">
+                     Tous les membres du Conseil territorial qui ne sont pas membre de droit peuvent candidater.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Comment candidater ?</p>
+                <p class="text--body b__nudge--bottom-50">
+                    Depuis le page d'accueil du Conseil territorial, rendez-vous dans l'espace "JE CANDIDATE EN BINÔME", vous serez invité à choisir un binôme paritaire qui siège au Conseil territorial avec la même qualité que vous (adhérents désignés, animateurs, élus municipaux, départementaux ou régionaux).
+                    <br /><br />
+                    À noter que si vous êtes animateurs et élus, vous pouvez choisir votre binôme parmi ces deux qualités.
+                    <br /><br />
+                    Il n’est possible de déposer qu'une seule candidature, tous types de binômes confondus.
+                    <br /><br />
+                    Une fois sur la page “Je candidate en binôme", vous devrez d'abord compléter une pré-candidature :
+                <p>
+
+                <ul class="text--body b__nudge--bottom-50">
+                    <li>Importer une photo de profil,</li>
+                    <li>Rédiger une présentation,</li>
+                    <li>Pré-rédiger le projet de votre binôme,</li>
+                    <li>Inviter un membre du Conseil territorial à rejoindre votre candidature en binôme paritaire.</li>
+                </ul>
+
+                <p class="text--body b__nudge--bottom-50">
+                    <br /><br />
+                    À la fin de cette première étape, la personne que vous avez invitée recevra un e-mail la notifiant de votre demande.
+                    <br /><br />
+                    Votre candidature n'étant pas encore complète, elle ne sera pas visible sur la page du Conseil territorial. Vous pourrez ainsi modifier vos informations, votre demande de binôme ou annuler votre pré-candidature.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Si votre demande est acceptée : </p>
+                <p class="text--body b__nudge--bottom-50">
+                    Votre binôme devra compléter sa propre candidature (photo et présentation) et pourra modifier le texte de votre projet commun.
+                    <br /><br />
+                    Une fois le binôme validé, vous serez alors candidats et votre candidature sera visible sur la page du Conseil territorial. Vous ne pourrez plus l'annuler.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Si votre demande est déclinée : </p>
+                <p class="text--body b__nudge--bottom-50">
+                    Vous en serez notifié par e-mail et aurez la possibilité de faire une autre demande.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Que se passe-t-il si aucun membre n'est disponible pour former un binôme avec moi ? </p>
+                <p class="text--body b__nudge--bottom-50">
+                    Pour les conseillers départementaux et régionaux, à titre dérogatoire et provisoire jusqu'aux prochaines élections, vous pouvez candidater seul si vous n'avez pas la possibilité de constituer un binôme paritaire.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Comment se déroule le vote ?</p>
+                <p class="text--body b__nudge--bottom-50">
+                    Lors de la convocation au Conseil territorial, vous recevrez la période de vote de votre département. Tous les membres du Conseil territorial sont invités à voter lors de la désignation des binômes.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Modalité des votes et affichage des résultats : </p>
+                <p class="text--body b__nudge--bottom-50">
+                    Les votes se font à la majorité simple à un tour. L’affichage des résultats sera disponible dans votre espace du Conseil territorial dès la fin de la période de vote.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Que se passe-t-il en cas d'égalité ? </p>
+                <p class="text--body b__nudge--bottom-50">
+                    En cas d’égalité entre plusieurs binômes de candidats il est procédé à un nouveau vote des membres du Conseil territorial pour les départager.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">Règle de parité au sein du Comité politique : </p>
+                <p class="text--body b__nudge--bottom-50">
+                    Afin de répondre à l'un des objectifs de notre mouvement, avoir plus de parité dans nos instances, le Conseil territorial peut désigner des membres supplémentaires au Comité politique pour rééquilibrer sa composition entre les membres de droit et les membres désignés.
+                    <br /><br />
+                    <b>Première étape :</b> Le référent avec le comité politique propose un nombre de femmes ou d'hommes supplémentaires pour siéger au Comité politique.
+                    <br /><br />
+                    <b>Deuxième étape :</b> Le conseil territorial vote dans son espace "sondage" pour le nombre de membres supplémentaires proposé par le référent.
+                    <br /><br />
+                    <b>Troisième étape :</b> Lors du vote des 5 binômes paritaires pour le Comité politique, il y aura une règle automatique intégrée au système de vote qui fera que seront élus individuellement (le(s) femme(s) ou le(es)’hommes(s)) figurant dans les binômes ayant obtenu le plus de voix en valeur absolue, tous types de binômes confondus, à la suite des binômes paritaires élus.
+                </p>
+            </article>
+        </div>
+    </div>
+{% endblock %}

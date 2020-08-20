@@ -1,76 +1,63 @@
-{% extends 'territorial_council/_layout.html.twig' %}
+{% extends 'territorial_council/_main_layout.html.twig' %}
 
 {% import 'territorial_council/_macros.html.twig' as helper %}
 
-{% block territorial_council_content %}
-    <div class="territorial-council__main l__wrapper--main l__wrapper--main-left">
+{% block territorial_council_sub_content %}
+    <section class="territorial-council__candidacies">
+        <h2 class="b__nudge--bottom-larger">Candidats aux élections</h2>
 
-        {% if territorial_council.currentElection %}
-            {% include 'territorial_council/_election_box.html.twig' %}
+        <div class="b__nudge--bottom-larger">
+            {% set current_quality = null %}
 
-            <div id="modal-wrapper"></div>
-        {% endif %}
+            {% for candidacy in candidacies|filter(candidacy => candidacy.isFemale)|sort((a, b) => a.qualityPriority <=> b.qualityPriority) %}
+                {% if current_quality is null or current_quality != candidacy.quality %}
+                    {% set current_quality = candidacy.quality %}
 
-        {{ include('territorial_council/_nav.html.twig') }}
+                    <h4 class="text--muted text--normal text--uppercase b__nudge--top-large b__nudge--bottom-large quality-title-{{ candidacy.qualityPriority }}">
+                        {{ ('territorial_council.membership.quality.' ~ current_quality)|trans }}
+                    </h4>
 
-        <section class="territorial-council__candidacies">
-            <h2 class="b__nudge--bottom-larger">Candidats aux élections</h2>
+                {% endif %}
 
-            <div class="b__nudge--bottom-larger">
-                {% set current_quality = null %}
+                <div class="territorial-council__candidacie l__row l__row--wrap">
+                    <div class="territorial-council__candidate">
+                        {{ helper.display_candidate_identity(candidacy, '<span class="candidate-gender l__col l__col--center">F</span>') }}
+                    </div>
 
-                {% for candidacy in candidacies|filter(candidacy => candidacy.isFemale)|sort((a, b) => a.qualityPriority <=> b.qualityPriority) %}
-                    {% if current_quality is null or current_quality != candidacy.quality %}
-                        {% set current_quality = candidacy.quality %}
+                    <div class="territorial-council__candidate">
+                        {{ helper.display_candidate_identity(candidacy.binome, '<span class="candidate-gender l__col l__col--center">H</span>') }}
+                    </div>
 
-                        <h4 class="text--muted text--normal text--uppercase b__nudge--top-large b__nudge--bottom-large quality-title-{{ candidacy.qualityPriority }}">
-                            {{ ('territorial_council.membership.quality.' ~ current_quality)|trans }}
-                        </h4>
+                    <div>
+                        <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
+                           data-confirm-content-element="#candidate-biography-content-{{ candidacy.uuid }}"
+                        > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>
 
-                    {% endif %}
+                        <div id="candidate-biography-content-{{ candidacy.uuid }}" class="hidden">
+                            <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentations</h3>
 
-                    <div class="territorial-council__candidacie l__row l__row--wrap">
-                        <div class="territorial-council__candidate">
-                            {{ helper.display_candidate_identity(candidacy, '<span class="candidate-gender l__col l__col--center">F</span>') }}
-                        </div>
+                            <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ candidacy.membership.fullName }}</h2>
+                            <p class="text--body text--dark">{{ candidacy.biography }}</p>
 
-                        <div class="territorial-council__candidate">
-                            {{ helper.display_candidate_identity(candidacy.binome, '<span class="candidate-gender l__col l__col--center">H</span>') }}
-                        </div>
+                            <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ candidacy.binome.membership.fullName }}</h2>
+                            <p class="text--body text--dark">{{ candidacy.binome.biography }}</p>
 
-                        <div>
-                            <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
-                               data-confirm-content-element="#candidate-biography-content-{{ candidacy.uuid }}"
-                            > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>
+                            <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                            <div id="candidate-biography-content-{{ candidacy.uuid }}" class="hidden">
-                                <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentations</h3>
-
-                                <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ candidacy.membership.fullName }}</h2>
-                                <p class="text--body text--dark">{{ candidacy.biography }}</p>
-
-                                <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ candidacy.binome.membership.fullName }}</h2>
-                                <p class="text--body text--dark">{{ candidacy.binome.biography }}</p>
-
-                                <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
-
-                                {% if candidacy.isPublicFaithStatement %}
-                                    <p class="text--body text--dark">{{ candidacy.faithStatement }}</p>
-                                {% else %}
-                                    <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
-                                {% endif %}
-                            </div>
+                            {% if candidacy.isPublicFaithStatement %}
+                                <p class="text--body text--dark">{{ candidacy.faithStatement }}</p>
+                            {% else %}
+                                <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
+                            {% endif %}
                         </div>
                     </div>
-                {% else %}
-                    <p class="text--center">
-                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" /><br/>
-                        Aucune candidature
-                    </p>
-                {% endfor %}
-            </div>
-        </section>
-    </div>
-
-    {{ include('territorial_council/_sidebar.html.twig') }}
+                </div>
+            {% else %}
+                <p class="text--center">
+                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" /><br/>
+                    Aucune candidature
+                </p>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}

@@ -6,12 +6,12 @@
         padding: 60px 0;
         margin-bottom: 70px;
 
-        &--slim {
-            padding: 30px 0;
-        }
-
         @media (min-width: $tablet) {
             padding: 80px 0;
+        }
+
+        &--slim {
+            padding: 25px 0;
         }
 
         &__content {

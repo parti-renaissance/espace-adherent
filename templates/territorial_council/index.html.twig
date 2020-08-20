@@ -1,41 +1,66 @@
-{% extends 'territorial_council/_layout.html.twig' %}
+{% extends 'territorial_council/_main_layout.html.twig' %}
 
-{% block territorial_council_content %}
-    <div class="territorial-council__main l__wrapper--main l__wrapper--main-left">
+{% block territorial_council_sub_content %}
+    <section class="territorial-council__home">
+        <h2 class="b__nudge--bottom-larger">Bonjour à toutes et à tous</h2>
+        <div class="content">
+            <article>
+                <p class="text--body b__nudge--bottom-50">
+                    Nous vous souhaitons la bienvenue dans le Conseil territorial de votre territoire !
+                    <br /><br />
+                    Le Conseil territorial est le parlement de La République En Marche à l’échelle des territoires, il permet de rassembler les adhérents désignés au sein des comités, les animateurs locaux et tous les élus dans un espace commun pour se retrouver et échanger sur la stratégie locale du mouvement.
+                    <br /><br />
+                    Tous les membres doivent également désigner, lors de la tenue du premier Conseil territorial, des binômes paritaires qui les représenteront au Comité politique territorial.
+                    <br /><br />
+                    La désignation de ces 5 binômes paritaires pour siéger au Comité politique est en effet une nouvelle étape de la structuration territoriale pour notre Mouvement. Elle fait suite à la réforme des statuts votée en décembre dernier et permet une meilleure représentativité des adhérents, animateurs et élus locaux au sein de cette instance. Ils rejoindront ainsi les membres de droit du Comité politique.
+                </p>
 
-        {% if territorial_council.currentElection %}
-            {% include 'territorial_council/_election_box.html.twig' %}
-
-            <div id="modal-wrapper"></div>
-        {% endif %}
-
-        {{ include('territorial_council/_nav.html.twig') }}
-
-        {% if is_canary_enabled() %}
-            <section class="territorial-council__members">
-                <h2 class="b__nudge--bottom-larger">Les membres du conseil territorial</h2>
-
-                <div>
-                    {% for membership in territorial_council.memberships %}
-                        {% set adherent = membership.adherent %}
-
-                        <div class="territorial-council__member">
-                            {% include 'territorial_council/_member_identity_box.html.twig' with {
-                                initials: adherent.initials,
-                                full_name: adherent.fullName
-                            } %}
-
-                            <ul class="roles">
-                                {% for quality in membership.qualities %}
-                                    <li class="role text--body">{{ ('territorial_council.membership.quality.' ~ quality.name)|trans }} <span class="text--gray">- {{ quality.zone }}</span></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endfor %}
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">
+                    La composition des membres de droit au Comité politique est la suivante :
+                </p>
+                <div class="text--body b__nudge--bottom-50">
+                    <ul class="text--body b__nudge--bottom-50">
+                        <li>Le référent (Préside le Comité politique)</li>
+                        <li>Les membres du gouvernement issus du territoire</li>
+                        <li>Les parlementaires nationaux et européens issus du territoire</li>
+                        <li>Le président du conseil régional ou le président du groupe d'opposition LaREM</li>
+                        <li>Le président du conseil départemental ou le président du groupe d'opposition LaREM</li>
+                        <li>Les maires des 3 villes les plus peuplées du territoire ou le président du groupe d'opposition LaREM</li>
+                        <li>Le référent JAM</li>
+                        <li>Le responsable LRE</li>
+                    </ul>
                 </div>
-            </section>
-        {% endif %}
-    </div>
 
-    {{ include('territorial_council/_sidebar.html.twig') }}
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">
+                    La composition des 5 binômes paritaires désignés pour siéger au Comité politique est la suivante :
+                </p>
+                <div class="text--body b__nudge--bottom-large">
+                    <ul>
+                        <li>Un binôme paritaire d'animateurs locaux,</li>
+                        <li>Un binôme paritaire d'adhérents désignés au sein des comités locaux,</li>
+                        <li>Un binôme paritaire d'élus municipaux,</li>
+                        <li>Un binôme paritaire d'élus départementaux,</li>
+                        <li>Un binôme paritaire d'élus régionaux.</li>
+                    </ul>
+                </div>
+                <p class="text--body b__nudge--bottom-50">
+                    Afin de répondre à l'un des objectifs de notre mouvement, avoir plus de parité dans nos instances, le Conseil territorial peut désigner des membres supplémentaires au Comité politique pour rééquilibrer sa composition entre les membres de droit et les membres désignés. Si c’est le cas dans votre territoire, vous recevrez ainsi lors de la convocation au Conseil territorial une proposition soumis au vote d’un nombre de femmes ou d'hommes supplémentaires pour siéger au Comité politique.
+                    <br /><br />
+                    Retrouvez toutes les informations <a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}" class="link--no-decor text--blue--dark">ici</a> pour en savoir plus sur le fonctionnement du mouvement et le Conseil territorial.
+                </p>
+
+                <p class="text--bold font-roboto text--default-large b__nudge--bottom-large">
+                    Vous souhaitez candidater pour le Comité politiques ?
+                </p>
+                <p class="text--body b__nudge--bottom-50">
+                    Tous les membres du Conseil territorial qui ne sont pas membre de droit peuvent candidater. Depuis la page d'accueil du
+                    Conseil territorial, rendez-vous dans l'espace "<span class="text--pink text--bold">JE CANDIDATE EN BINÔME</span>", vous serez invité à choisir un binôme paritaire
+                    qui siège au Conseil territorial avec la même qualité que vous (adhérents désignés, animateurs, élus municipaux, départementaux
+                    ou régionaux).
+                    <br /><br />
+                    Pour en savoir plus sur les modalités de candidatures, <a href="{{ path('app_territorial_council_faq') }}" class="link--no-decor text--blue--dark">rendez-vous sur cette page</a>.
+                </p>
+            </article>
+        </div>
+    </section>
 {% endblock %}
