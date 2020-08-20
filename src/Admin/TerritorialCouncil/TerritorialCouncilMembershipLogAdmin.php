@@ -133,9 +133,7 @@ class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'edit' => [],
-                ],
+                'template' => 'admin/territorial_council/membership_log_list_actions.html.twig',
             ])
         ;
     }
