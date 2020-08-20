@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mailchimp;
+namespace App\Mailchimp\Event;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Mailchimp\Campaign\Request\EditCampaignRequest;

@@ -2,7 +2,6 @@
 
 namespace App\Mailchimp;
 
-use App\Entity\MailchimpSegment;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Mailchimp\Campaign\Request\EditCampaignRequest;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
@@ -19,15 +18,13 @@ class Driver implements LoggerAwareInterface
 
     private $client;
     private $listId;
-    private $electedRepresentativeListId;
     /** @var ResponseInterface|null */
     private $lastResponse;
 
-    public function __construct(ClientInterface $client, string $listId, string $mailchimpElectedRepresentativeListId)
+    public function __construct(ClientInterface $client, string $listId)
     {
         $this->client = $client;
         $this->listId = $listId;
-        $this->electedRepresentativeListId = $mailchimpElectedRepresentativeListId;
     }
 
     /**
@@ -75,21 +72,6 @@ class Driver implements LoggerAwareInterface
         return '';
     }
 
-    public function createSegment(MailchimpSegment $mailchimpSegment): array
-    {
-        $listId = MailchimpSegment::LIST_MAIN === $mailchimpSegment->getList()
-            ? $this->listId
-            : $this->electedRepresentativeListId
-        ;
-
-        $response = $this->send('POST', sprintf('/lists/%s/segments', $listId), [
-            'name' => $mailchimpSegment->getLabel(),
-            'static_segment' => [],
-        ]);
-
-        return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
-    }
-
     public function createCampaign(EditCampaignRequest $request): array
     {
         $response = $this->send('POST', '/campaigns', $request->toArray());
@@ -127,9 +109,9 @@ class Driver implements LoggerAwareInterface
         ]);
     }
 
-    public function createStaticSegment(string $name, array $emails = []): array
+    public function createStaticSegment(string $name, string $listId, array $emails = []): array
     {
-        $response = $this->send('POST', sprintf('/lists/%s/segments', $this->listId), [
+        $response = $this->send('POST', sprintf('/lists/%s/segments', $listId), [
             'name' => $name,
             'static_segment' => $emails,
         ]);
