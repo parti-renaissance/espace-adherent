@@ -13,13 +13,11 @@
                     Messagerie élus
                 </a>
             </li>
-            {% if is_canary_enabled() %}
-                <li class="{{ is_active_route(app.request, 'app_message_referent_territorial_council_*') ? 'active' }}">
-                    <a class="tabs-nav__item" href="{{ path('app_message_referent_territorial_council_list') }}">
-                        Messagerie Conseil territorial
-                    </a>
-                </li>
-            {% endif %}
+            <li class="{{ is_active_route(app.request, 'app_message_referent_territorial_council_*') ? 'active' }}">
+                <a class="tabs-nav__item" href="{{ path('app_message_referent_territorial_council_list') }}">
+                    Messagerie Conseil territorial
+                </a>
+            </li>
         </ul>
     </nav>
 
