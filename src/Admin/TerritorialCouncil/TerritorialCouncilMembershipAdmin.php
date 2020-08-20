@@ -27,6 +27,15 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
         $collection->clearExcept(['list']);
     }
 
+    public function getTemplate($name)
+    {
+        if ('list' === $name) {
+            return 'admin/territorial_council/list.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
+
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter

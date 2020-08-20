@@ -396,6 +396,10 @@
             <argument />
             <argument>App\Entity\TerritorialCouncil\TerritorialCouncil</argument>
             <argument />
+
+            <call method="addChild">
+                <argument type="service" id="app.admin.territorial_council_membership" />
+            </call>
         </service>
 
         <service id="app.admin.territorial_council_membership" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipAdmin">
