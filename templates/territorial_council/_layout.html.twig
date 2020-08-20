@@ -8,29 +8,9 @@
 
 {% block content %}
     <main class="territorial-council">
-        <header class="territorial-council__header">
-            <div class="l__wrapper territorial-council__header__content">
-                <div class="text--white territorial-council__header__titles">
-                    <div class="text--uppercase text--small b__nudge--bottom">
-                        Instance
-                    </div>
-                    <div class="territorial-council__name">
-                        <h1 id="territorial-council-name" class="text--large">Conseil territorial</h1>
-                    </div>
-                    <ul class="territorial-council__infos">
-                        <li>
-                            {{ include('components/location.html.twig') }}
-                            {{ territorial_council.name }}
-                            {% if territorial_council.codes %}({{ territorial_council.codes }}){% endif %}
-                        </li>
-                        <li>
-                            {{ include('components/users.html.twig') }}
-                            {{ 'territorial_council.members_count'|transchoice(territorial_council.memberships.count) }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </header>
+        {% block council_header %}
+            {% include 'territorial_council/partials/_header.html.twig' %}
+        {% endblock %}
 
         <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
             {% block territorial_council_content %}{% endblock %}

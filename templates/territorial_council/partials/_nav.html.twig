@@ -1,8 +1,12 @@
 <nav class="tabs-nav border-on b__nudge--bottom-larger">
     <ul>
+        <li class="{{ is_active_route(app.request, 'app_territorial_council_index') ? 'active' }}" id="tab-home">
+            <a href="{{ path('app_territorial_council_index') }}" class="tabs-nav__item">Accueil</a>
+        </li>
+
         {% if is_canary_enabled() %}
-            <li class="{{ is_active_route(app.request, 'app_territorial_council_index') ? 'active' }}" id="tab-member-list">
-                <a href="{{ path('app_territorial_council_index', {'_fragment': 'tab-member-list'}) }}" class="tabs-nav__item">Membres</a>
+            <li class="{{ is_active_route(app.request, 'app_territorial_council_members') ? 'active' }}" id="tab-member-list">
+                <a href="{{ path('app_territorial_council_members', {'_fragment': 'tab-member-list'}) }}" class="tabs-nav__item">Membres</a>
             </li>
         {% endif %}
 

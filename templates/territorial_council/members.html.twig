@@ -1,0 +1,27 @@
+{% extends 'territorial_council/_main_layout.html.twig' %}
+
+{% block territorial_council_sub_content %}
+    <section class="territorial-council__members">
+        <h2 class="b__nudge--bottom-larger">Les membres du conseil territorial</h2>
+
+        <div>
+            {% for membership in territorial_council.memberships %}
+                {% set adherent = membership.adherent %}
+
+                <div class="territorial-council__member">
+                    {% include 'territorial_council/partials/_member_identity_box.html.twig' with {
+                        initials: adherent.initials,
+                        full_name: adherent.fullName
+                    } %}
+
+                    <ul class="roles">
+                        {% for quality in membership.qualities %}
+                            <li class="role text--body">{{ ('territorial_council.membership.quality.' ~ quality.name)|trans }} <span class="text--gray">- {{ quality.zone }}</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
+

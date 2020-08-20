@@ -7,7 +7,7 @@
             <h5>Président du Conseil territorial</h5>
 
             <div class="territorial-council__host l__row l__row--top text--body b__nudge--bottom">
-                {% include 'territorial_council/_member_identity_box.html.twig' with {
+                {% include 'territorial_council/partials/_member_identity_box.html.twig' with {
                     initials: president.initials,
                     full_name: president.fullName,
                     label: 'Référent(e)'
@@ -33,4 +33,11 @@
             </div>
         </div>
     {% endif %}
+
+    <div class="territorial-council__aside--section">
+        <h5>FAQ des désignations</h5>
+        <p class="text--body text--dark b__nudge--bottom">
+            Pour en savoir plus sur les modalités de candidatures, <a href="{{ path('app_territorial_council_faq') }}" class="link--no-decor text--blue--dark">rendez-vous sur cette page</a>.
+        </p>
+    </div>
 </aside>
