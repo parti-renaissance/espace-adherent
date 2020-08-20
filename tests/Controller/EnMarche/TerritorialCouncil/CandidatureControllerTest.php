@@ -135,18 +135,16 @@ class CandidatureControllerTest extends WebTestCase
 
         $crawler = $this->client->submit($form);
 
-        self::assertCount(4, $errors = $crawler->filter('.form__error'));
+        self::assertCount(3, $errors = $crawler->filter('.form__error'));
 
         self::assertSame('Photo est obligatoire', $errors->eq(0)->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(2)->text());
-        self::assertSame('Vous devez cocher la case pour continuer', $errors->eq(3)->text());
 
         $this->client->submit($form, [
             'territorial_council_candidacy[croppedImage]' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+',
             'territorial_council_candidacy[biography]' => 'ma bio',
             'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
-            'territorial_council_candidacy[accept]' => true,
         ]);
 
         $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/choix-de-binome', $this->client);
@@ -223,7 +221,6 @@ class CandidatureControllerTest extends WebTestCase
             'territorial_council_candidacy[biography]' => 'ma bio',
             'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
             'territorial_council_candidacy[isPublicFaithStatement]' => false,
-            'territorial_council_candidacy[accept]' => true,
         ]);
 
         $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
