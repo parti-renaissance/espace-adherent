@@ -17,9 +17,4 @@ class ReferentTerritorialCouncilMessageController extends AbstractMessageControl
     {
         return AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL;
     }
-
-    protected function isCanary(): bool
-    {
-        return true;
-    }
 }
