@@ -19,7 +19,6 @@ use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
-use App\Repository\ElectedRepresentative\MandateRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
@@ -52,7 +51,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     ];
 
     private $dispatcher;
-    private $mandateRepository;
     private $userListDefinitionHistoryManager;
 
     /**
@@ -65,13 +63,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         $class,
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
-        MandateRepository $mandateRepository,
         UserListDefinitionHistoryManager $userListDefinitionHistoryManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
-        $this->mandateRepository = $mandateRepository;
         $this->userListDefinitionHistoryManager = $userListDefinitionHistoryManager;
     }
 
@@ -224,8 +220,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'query_builder' => function (EntityRepository $er) {
                         return $er
                             ->createQueryBuilder('uld')
-                            ->andWhere('uld.type = :type')
-                            ->setParameter('type', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+                            ->andWhere('uld.type IN (:type)')
+                            ->setParameter('type', [
+                                UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
+                                UserListDefinitionEnum::TYPE_LRE,
+                            ])
                             ->orderBy('uld.label', 'ASC')
                         ;
                     },
@@ -560,8 +559,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         $qb = $datagrid->getQuery();
                         $alias = $qb->getRootAlias();
                         $qb
-                            ->andWhere($alias.'.type = :type')
-                            ->setParameter('type', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+                            ->andWhere($alias.'.type IN (:type)')
+                            ->setParameter('type', [
+                                UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
+                                UserListDefinitionEnum::TYPE_LRE,
+                            ])
                             ->orderBy($alias.'.label', 'ASC')
                         ;
                         $datagrid->setValue($property, null, $value);
