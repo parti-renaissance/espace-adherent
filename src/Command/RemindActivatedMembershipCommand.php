@@ -47,10 +47,11 @@ class RemindUnconfirmedMembershipCommand extends Command
             foreach ($adherents as $adherent) {
                 if ($this->membershipRequestHandler->sendEmailReminder($adherent)) {
                     $adherent->setMembershipReminded();
+
+                    $this->em->flush();
                 }
             }
 
-            $this->em->flush();
             $this->em->clear();
         }
     }
