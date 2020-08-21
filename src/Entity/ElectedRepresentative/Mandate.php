@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Exception\BadMandateTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -292,6 +293,22 @@ class Mandate
     public function getPoliticalFunctions(): Collection
     {
         return $this->politicalFunctions;
+    }
+
+    public function getLastPoliticalFunction(): ?PoliticalFunction
+    {
+        if (0 === $this->politicalFunctions->count()) {
+            return null;
+        }
+
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('onGoing', true))
+            ->orderBy(['beginAt' => 'DESC'])
+        ;
+
+        $functions = $this->politicalFunctions->matching($criteria);
+
+        return $functions->count() > 0 ? $functions->first() : null;
     }
 
     public function __toString(): string

@@ -127,6 +127,8 @@ adherent.mandate.consular_conselor: Conseiller consulaire
 adherent.form.elected: Je suis élu(e)
 adherent.form.mandate.placeholder: Choisissez un ou plusieurs mandats
 
+adherent.admin.elected_representative.description: Ces informations sont celles de la fiche élu.
+
 #
 # Dashboard
 #

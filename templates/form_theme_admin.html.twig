@@ -531,3 +531,75 @@
         });
     </script>
 {% endblock %}
+
+{% block app_admin_adherent_electedRepresentative_text_row %}
+    {% set adherent = form.parent.vars.value %}
+    {% set elected_representative = get_elected_representative(adherent) %}
+    {% if not elected_representative %}
+        Adhérent n'est pas un élu.
+    {% else %}
+        <div class="form-group">
+            <label class="control-label">
+                ID élu
+            </label>
+
+            <div class="inline-block">
+                <div class="left row col-md-5">
+                    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                        <input type="text" disabled="disabled" required="required" class=" form-control" value="{{ elected_representative.id }}">
+                    </div>
+                </div>
+                <div class="rigth row col-md-7">
+                    <a class="btn elected-representative-link" title="Fiche élu"
+                       target="_blank" rel="noopener noreferrer"
+                       href="{{ path('admin_app_electedrepresentative_electedrepresentative_edit', { id: elected_representative.id }) }}">
+                        Voir <i class="fa fa-external-link"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">
+                Labels
+            </label>
+            <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                <div class="select2-container select2-container-multi" style="width: 100%;">
+                    <ul class="select2-choices">
+                        {% if adherent.hasTerritorialCouncilMembership %}
+                            <li class="elected-representative-label label-danger">
+                                <div>Conseil Territorial</div>
+                            </li>
+                        {% endif %}
+                        {% if adherent.isLre %}
+                            <li class="elected-representative-label label-default">
+                                <div>LRE</div>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {% if elected_representative.currentMandates|length > 0 %}
+            {% set mandates = elected_representative.currentMandates %}
+            {% set label = 'Mandats en cours' %}
+        {% else %}
+            {% set mandates = elected_representative.finishedMandates %}
+            {% set label = 'Mandats passés' %}
+        {% endif %}
+
+        {% if mandates|length > 0 %}
+            <div class="form-group">
+                <label class="control-label">
+                    {{ label }}
+                </label>
+                <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                {% for mandate in mandates %}
+                    <div>{{ mandate.name }} {{ mandate.lastPoliticalFunction ? '- '~mandate.lastPoliticalFunction : '' }} ({{ mandate.zone }})</div>
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
