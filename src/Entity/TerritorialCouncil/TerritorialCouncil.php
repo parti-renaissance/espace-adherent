@@ -91,6 +91,13 @@ class TerritorialCouncil implements StaticSegmentInterface
      */
     private $elections;
 
+    /**
+     * @var PoliticalCommittee|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommittee", mappedBy="territorialCouncil", cascade={"all"}, orphanRemoval=true)
+     */
+    private $politicalCommittee;
+
     public function __construct(string $name = null, string $codes = null)
     {
         $this->uuid = Uuid::uuid4();
@@ -155,7 +162,7 @@ class TerritorialCouncil implements StaticSegmentInterface
 
     public function removeMembership(TerritorialCouncilMembership $memberships): void
     {
-        $this->memberships->remove($memberships);
+        $this->memberships->removeElement($memberships);
     }
 
     public function getMembershipsCount(): int
@@ -177,6 +184,16 @@ class TerritorialCouncil implements StaticSegmentInterface
     public function getElections(): array
     {
         return $this->elections->toArray();
+    }
+
+    public function getPoliticalCommittee(): ?PoliticalCommittee
+    {
+        return $this->politicalCommittee;
+    }
+
+    public function setPoliticalCommittee(PoliticalCommittee $politicalCommittee): void
+    {
+        $this->politicalCommittee = $politicalCommittee;
     }
 
     /**
