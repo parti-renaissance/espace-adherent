@@ -822,6 +822,9 @@ voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
 voting_platform.designation.zone_outre_mer: Outre-Mer
 designation.label.type_committee_adherent: Désignation des binômes d'adhérents
+designation.label.type_copol: Désignation des binômes au Copol
+designation.vote_mode.online: 100% en ligne
+designation.vote_mode.meeting: Avec réunion présentielle
 
 #
 # Delegated access

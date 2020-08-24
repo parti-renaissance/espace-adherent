@@ -305,13 +305,6 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
         $this->participantsCount = max($this->participantsCount - $increment, 0);
     }
 
-    public function updatePostAddress(PostAddress $postAddress): void
-    {
-        if (!$this->postAddress->equals($postAddress)) {
-            $this->postAddress = $postAddress;
-        }
-    }
-
     public function setName(string $name): void
     {
         $this->name = ucfirst($name);

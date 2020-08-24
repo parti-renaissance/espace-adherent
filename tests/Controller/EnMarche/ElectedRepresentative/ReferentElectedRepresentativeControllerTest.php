@@ -156,9 +156,13 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus');
 
-        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
-        $this->assertContains('PARIS Arrondissement', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertContains('PARISS Circonscription', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $text = $crawler->filter('tbody')->text();
+
+        $this->assertCount(3, $crawler->filter('tr.referent__item'));
+
+        $this->assertContains('PARIS Département', $text);
+        $this->assertContains('PARIS Arrondissement', $text);
+        $this->assertContains('PARISS Circonscription', $text);
     }
 
     public function testShowElectedRepresentative()

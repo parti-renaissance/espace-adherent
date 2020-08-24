@@ -1,0 +1,41 @@
+{% extends 'territorial_council_designation/_layout.html.twig' %}
+
+{% block designation_content %}
+    <section>
+        <div class="datagrid__pre-table b__nudge--bottom">
+            <h3>Désignations</h3>
+        </div>
+
+        <table class="datagrid__table-manager">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for election in elections %}
+                    {% set designation = election.designation %}
+                    <tr>
+                        <td>{{ "designation.label.type_#{designation.type}"|trans }}</td>
+                        <td>{{ designation.voteEndDate ? designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}</td>
+                        <td>
+                            {% if designation.voteStartDate is empty %}
+                                <a href="{{ path('app_territorial_council_referent_election_send_convocation', {uuid: election.uuid}) }}">Envoyer la convocation</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text--center">
+                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" alt="aucun résultat" class="icn--no-result" width="30" />
+                            La liste est vide
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

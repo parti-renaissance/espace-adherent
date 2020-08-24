@@ -74,9 +74,6 @@ class LoadDesignationData extends Fixture
         $designation->setType(DesignationTypeEnum::COPOL);
         $designation->addReferentTag($this->getReference('referent_tag_92'));
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
-        $designation->setCandidacyEndDate(new \DateTime('+1 week'));
-        $designation->setVoteStartDate(new \DateTime('+1 week'));
-        $designation->setVoteEndDate(new \DateTime('+4 week'));
 
         $this->setReference('designation-6', $designation);
         $manager->persist($designation);
