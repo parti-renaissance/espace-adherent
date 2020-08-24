@@ -80,9 +80,15 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="btn" href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
-                            <i class="fa fa-external-link"></i> Voir le profil
-                        </a>
+                        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+                            <a class="btn" href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
+                                <i class="fa fa-external-link"></i> Voir le profil
+                            </a>
+                        {% elseif is_granted('ROLE_APP_ADMIN_ADHERENT_VIEW') %}
+                            <a class="btn" href="{{ path('admin_app_adherent_show', { id: adherent.id }) }}">
+                                <i class="fa fa-external-link"></i> Voir le profil
+                            </a>
+                        {% endif %}
                     {% else %}
                         <a class="btn btn-block btn-primary" href="{{ path('admin_app_electedrepresentative_adherent_similar_profiles', { id: object.id }) }}">
                             <i class="fa fa-external-link"></i> Profils similaires

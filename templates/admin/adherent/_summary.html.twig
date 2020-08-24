@@ -2,6 +2,10 @@
     <a href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
         {{ adherent.fullName }}
     </a>
+{% elseif is_granted('ROLE_APP_ADMIN_ADHERENT_VIEW') %}
+    <a href="{{ path('admin_app_adherent_show', { id: adherent.id }) }}">
+        {{ adherent.fullName }}
+    </a>
 {% else %}
     {{ adherent.fullName }}
 {% endif %}

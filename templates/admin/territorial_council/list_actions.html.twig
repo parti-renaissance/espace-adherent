@@ -2,10 +2,17 @@
 
 {% block field %}
     <div style="width: 160px; margin-top: 5px;">
-        <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}" class="btn btn-xs btn-default" title="Fiche adhérent">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            Fiche adhérent
-        </a>
+        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+            <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}" class="btn btn-xs btn-default" title="Fiche adhérent">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Fiche adhérent
+            </a>
+        {% elseif is_granted('ROLE_APP_ADMIN_ADHERENT_VIEW') %}
+            <a href="{{ path('admin_app_adherent_show', { id: object.adherent.id }) }}" class="btn btn-xs btn-default" title="Fiche adhérent">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Fiche adhérent
+            </a>
+        {% endif %}
 
         {% set electedRepresentative = get_elected_representative(object.adherent) %}
         {% if electedRepresentative %}
