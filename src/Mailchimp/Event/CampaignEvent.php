@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mailchimp;
+namespace App\Mailchimp\Event;
 
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use Symfony\Component\EventDispatcher\Event;

@@ -2,7 +2,7 @@
 
 namespace App\Mailchimp\Campaign\Listener;
 
-use App\Mailchimp\CampaignEvent;
+use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Events;
 use App\Mailchimp\Synchronisation\MailchimpSegmentHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
