@@ -2,23 +2,41 @@
 
 namespace App\Controller\Admin;
 
+use App\Committee\CommitteeAdherentMandateManager;
+use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Committee\MultipleReferentsFoundException;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Exception\BaseGroupException;
 use App\Exception\CommitteeMembershipException;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/committee")
  */
 class AdminCommitteeController extends Controller
 {
+    private $mandateManager;
+    private $mandateRepository;
+    private $translator;
+
+    public function __construct(
+        CommitteeAdherentMandateManager $mandateManager,
+        CommitteeAdherentMandateRepository $mandateRepository,
+        TranslatorInterface $translator
+    ) {
+        $this->mandateManager = $mandateManager;
+        $this->mandateRepository = $mandateRepository;
+        $this->translator = $translator;
+    }
+
     /**
      * Approves the committee.
      *
@@ -80,6 +98,7 @@ class AdminCommitteeController extends Controller
             'committee' => $committee,
             'memberships' => $memberships = $manager->getCommitteeMemberships($committee),
             'supervisors_count' => $memberships->countCommitteeSupervisorMemberships(),
+            'active_mandates_adherent_ids' => $this->mandateRepository->findActiveMandateAdherentIds($committee),
         ]);
     }
 
@@ -104,6 +123,43 @@ class AdminCommitteeController extends Controller
         try {
             $this->get('app.committee.manager')->changePrivilege($adherent, $committee, $privilege);
         } catch (CommitteeMembershipException $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
+
+        return $this->redirectToRoute('app_admin_committee_members', [
+            'id' => $committee->getId(),
+        ]);
+    }
+
+    /**
+     * @Route("/{committee}/members/{adherent}/{action}-mandate", name="app_admin_committee_change_mandate", methods={"GET"})
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     */
+    public function changeMandateAction(
+        Request $request,
+        Committee $committee,
+        Adherent $adherent,
+        string $action
+    ): Response {
+        if (!\in_array($action, CommitteeAdherentMandateManager::ACTIONS)) {
+            throw new BadRequestHttpException(\sprintf('Action "%s" is not authorized.', $action));
+        }
+
+        if (!$committee->isApproved()) {
+            throw new BadRequestHttpException($this->translator->trans('adherent_mandate.committee.committee_not_approved'));
+        }
+
+        if (!$this->isCsrfTokenValid(\sprintf('committee.change_mandate.%s', $adherent->getId()), $request->query->get('token'))) {
+            throw new BadRequestHttpException('Invalid Csrf token provided.');
+        }
+
+        try {
+            if (CommitteeAdherentMandateManager::CREATE_ACTION === $action) {
+                $this->mandateManager->createMandate($adherent, $committee);
+            } elseif (CommitteeAdherentMandateManager::FINISH_ACTION === $action) {
+                $this->mandateManager->endMandate($adherent, $committee);
+            }
+        } catch (CommitteeAdherentMandateException $e) {
             $this->addFlash('error', $e->getMessage());
         }
 

@@ -15,6 +15,8 @@
 {% endblock %}
 
 {% block sonata_admin_content %}
+    {% set committeeHasFemaleMandate = committee.hasFemaleMandate %}
+    {% set committeeHasMaleMandate = committee.hasMaleMandate %}
     {% block notice %}
         {{ parent() }}
     {% endblock %}
@@ -49,9 +51,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for membership in memberships if membership.canHostCommittee %}
+                        {% for membership in memberships|sort((a, b) => (b.isSupervisor ? 2 : (b.adherent.id in active_mandates_adherent_ids ? 1 : 0)) <=> (a.isSupervisor ? 2 : (a.adherent.id in active_mandates_adherent_ids ? 1 : 0))) if membership.canHostCommittee %}
                             {% set host = membership.adherent %}
                             {% set token = csrf_token('committee.change_privilege.' ~ host.id) %}
+                            {% set mandateToken = csrf_token('committee.change_mandate.' ~ host.id) %}
 
                             <tr>
                                 <td>
@@ -67,6 +70,9 @@
                                     {% elseif membership.isHostMember %}
                                         <span class="label label-primary">Co-animateur</span>
                                     {% endif %}
+                                    {% if host.id in active_mandates_adherent_ids %}
+                                        <span class="label label-warning">Adhérent désigné</span>
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {% if committee.isApproved %}
@@ -81,13 +87,27 @@
                                                 Transformer en animateur principal
                                             </a>
                                         {% endif %}
+
+                                        {% if host.id in active_mandates_adherent_ids %}
+                                            <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
+                                            class="btn btn-default btn-sm">
+                                                Transformer en simple adhérent
+                                            </a>
+                                        {% elseif (host.gender is constant('App\\ValueObject\\Genders::MALE') and not committeeHasMaleMandate)
+                                            or (host.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeeHasFemaleMandate) %}
+                                            <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
+                                               class="btn btn-default btn-sm">
+                                                Transformer en adhérent désigné
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
-                        {% for membership in memberships if membership.isFollower %}
+                        {% for membership in memberships|sort((a, b) => (b.adherent.id in active_mandates_adherent_ids ? 1 : 0) <=> (a.adherent.id in active_mandates_adherent_ids ? 1 : 0)) if membership.isFollower %}
                             {% set member = membership.adherent %}
                             {% set token = csrf_token('committee.change_privilege.' ~ member.id) %}
+                            {% set mandateToken = csrf_token('committee.change_mandate.' ~ member.id) %}
 
                             <tr>
                                 <td>
@@ -98,7 +118,11 @@
                                     {{ member.emailAddress }}
                                 </td>
                                 <td>
-                                    <span class="label label-default">Membre</span>
+                                    {% if member.id in active_mandates_adherent_ids %}
+                                        <span class="label label-warning">Adhérent désigné</span>
+                                    {% else %}
+                                        <span class="label label-default">Membre</span>
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {% if committee.isApproved %}
@@ -111,6 +135,19 @@
                                             <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_SUPERVISOR', membership), token: token }) }}"
                                                class="btn btn-default btn-sm">
                                                 Transformer en animateur principal
+                                            </a>
+                                        {% endif %}
+
+                                        {% if member.id in active_mandates_adherent_ids %}
+                                            <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
+                                               class="btn btn-default btn-sm">
+                                                Transformer en simple adhérent
+                                            </a>
+                                        {% elseif (member.gender is constant('App\\ValueObject\\Genders::MALE') and not committeeHasMaleMandate)
+                                            or (member.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeeHasFemaleMandate) %}
+                                            <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
+                                               class="btn btn-default btn-sm">
+                                                Transformer en adhérent désigné
                                             </a>
                                         {% endif %}
                                     {% endif %}

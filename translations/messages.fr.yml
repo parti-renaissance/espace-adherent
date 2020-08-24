@@ -920,3 +920,12 @@ adherent_commitment.availability.more_5h_a_month: Plus de 5h par mois
 adherent_commitment.availability.more_5h_a_week: Plus de 20h par mois (+ 5h par semaine)
 
 adherent_commitment.update_success: Votre engagement à bien été enregistré.
+
+#
+# AdherentMandate
+#
+adherent_mandate.committee.committee_not_approved: Comité doit être approuvé pour gérer les adhérents désignés.
+adherent_mandate.committee.not_valid_gender: Le genre "{{ gender }}" de l'adhérent ({{ email }}) n'est pas valide.
+adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({{ email }}) est déjà un adhérent désigné dans un comité "{{ committee }}".
+adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{{ committee }}" a déjà un adhérent désigné ({{ gender }}).
+adherent_mandate.adherent_has_territorial_council_membership: L'adhérent ({{ email }}) est déjà membre du Conseil territorial "{{ territorialCouncil }}".

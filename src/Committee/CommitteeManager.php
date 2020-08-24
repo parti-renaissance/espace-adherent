@@ -8,6 +8,7 @@ use App\Committee\Event\FollowCommitteeEvent;
 use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeFeedItem;
@@ -283,6 +284,7 @@ class CommitteeManager
 
     /**
      * Refuses one committee and transforms supervisor and host to members.
+     * Also add end date to committee adherent mandates.
      */
     public function refuseCommittee(Committee $committee, bool $flush = true): void
     {
@@ -293,6 +295,13 @@ class CommitteeManager
             if ($membership->isSupervisor() || $membership->isHostMember()) {
                 $committee = $this->getCommitteeRepository()->findOneByUuid($membership->getCommittee()->getUuidAsString());
                 $this->changePrivilege($membership->getAdherent(), $committee, CommitteeMembership::COMMITTEE_FOLLOWER, false);
+            }
+        }
+
+        /** @var CommitteeAdherentMandate $mandate */
+        foreach ($committee->getAdherentMandates() as $mandate) {
+            if (!$mandate->isEnded()) {
+                $mandate->setFinishAt(new \DateTime());
             }
         }
 

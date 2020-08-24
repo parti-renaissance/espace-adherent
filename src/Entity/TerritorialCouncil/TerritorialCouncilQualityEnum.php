@@ -91,4 +91,13 @@ class TerritorialCouncilQualityEnum extends Enum
         self::REFERENT_JAM,
         self::LRE_MANAGER,
     ];
+
+    public const ELECTED_MEMBERS = [
+        self::REGIONAL_COUNCILOR,
+        self::DEPARTMENT_COUNCILOR,
+        self::CITY_COUNCILOR,
+        self::CONSULAR_CONSELOR,
+        self::COMMITTEE_SUPERVISOR,
+        self::ELECTED_CANDIDATE_ADHERENT,
+    ];
 }
