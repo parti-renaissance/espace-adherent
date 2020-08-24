@@ -410,6 +410,16 @@ class ElectedRepresentative
         });
     }
 
+    /**
+     * @return Mandate[]|Collection
+     */
+    public function getFinishedMandates(): Collection
+    {
+        return $this->mandates->filter(function (Mandate $mandate) {
+            return $mandate->isElected() && !$mandate->isOnGoing();
+        });
+    }
+
     public function getElectedMandates(): Collection
     {
         return $this->mandates->filter(function (Mandate $mandate) {
