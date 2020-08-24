@@ -208,6 +208,14 @@
     </div>
 {%- endblock -%}
 
+{%- block radio_row -%}
+    <div class="form__radio">
+        {{ form_widget(form) }}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+    </div>
+{%- endblock -%}
+
 {# Bug Fix for waiting this PR: https://github.com/misd-service-development/phone-number-bundle/pull/175 #}
 {% block misd_tel_widget %}
     <div {{ block('widget_container_attributes') }}>

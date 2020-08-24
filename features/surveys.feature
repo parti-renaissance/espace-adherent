@@ -24,7 +24,7 @@ Feature:
       | survey_form[name]                            | Un questionnaire jecoute manager |
       | survey_form[questions][0][question][content] | Une question ?                   |
     And I wait 10 seconds until I see "Champ libre"
-    And I click the "#survey_form_questions_0_question_type .form__checkbox:nth-child(3) > label" selector
+    And I click the "#survey_form_questions_0_question_type .form__radio:nth-child(3) > label" selector
     And I press "Enregistrer le questionnaire local"
     And I wait 10 seconds until I see "NOM DU QUESTIONNAIRE"
     Then I should see "Le questionnaire a bien été enregistré."

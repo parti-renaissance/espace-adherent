@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\EnMarche\Designation;
+namespace App\Controller\EnMarche\CommitteeDesignation;
 
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Election;
@@ -29,7 +29,7 @@ abstract class AbstractDesignationController extends AbstractController
      */
     public function listDesignationsAction(Request $request, Committee $committee): Response
     {
-        return $this->renderTemplate('designation/list.html.twig', $request, [
+        return $this->renderTemplate('committee_designation/list.html.twig', $request, [
             'committee' => $committee,
             'elections' => $this->electionRepository->getAllAggregatedDataForCommittee($committee),
         ]);
@@ -53,7 +53,7 @@ abstract class AbstractDesignationController extends AbstractController
             ;
         }
 
-        return $this->renderTemplate('designation/dashboard.html.twig', $request, [
+        return $this->renderTemplate('committee_designation/dashboard.html.twig', $request, [
             'committee' => $committee,
             'election_round' => $electionRound,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
@@ -88,7 +88,7 @@ abstract class AbstractDesignationController extends AbstractController
             return $this->redirectToSpaceRoute('dashboard', $committee, $election);
         }
 
-        return $this->renderTemplate('designation/voters_list.html.twig', $request, [
+        return $this->renderTemplate('committee_designation/voters_list.html.twig', $request, [
             'committee' => $committee,
             'election_round' => $electionRound,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
@@ -127,7 +127,7 @@ abstract class AbstractDesignationController extends AbstractController
 
         $candidateGroups = $candidateGroupRepository->findForElectionRound($electionRound);
 
-        return $this->renderTemplate('designation/results.html.twig', $request, [
+        return $this->renderTemplate('committee_designation/results.html.twig', $request, [
             'committee' => $committee,
             'election_round' => $electionRound,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
@@ -166,7 +166,7 @@ abstract class AbstractDesignationController extends AbstractController
             return $this->redirectToSpaceRoute('dashboard', $committee, $election);
         }
 
-        return $this->renderTemplate('designation/votes_list.html.twig', $request, [
+        return $this->renderTemplate('committee_designation/votes_list.html.twig', $request, [
             'committee' => $committee,
             'election_round' => $electionRound,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
@@ -181,7 +181,7 @@ abstract class AbstractDesignationController extends AbstractController
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('designation/_base_%s.html.twig', $messageType = $this->getSpaceType()),
+                'base_template' => sprintf('committee_designation/_base_%s.html.twig', $messageType = $this->getSpaceType()),
                 'space_type' => $messageType,
                 'route_params' => $this->getRouteParameters($request),
             ]
@@ -221,6 +221,6 @@ abstract class AbstractDesignationController extends AbstractController
             return false;
         }
 
-        return $election->isResultPeriodActive();
+        return true;
     }
 }

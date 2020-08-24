@@ -13,6 +13,8 @@ import noJsRecaptcha from './listeners/no-js-recaptcha';
 import alogliaSearch from './listeners/algolia-search';
 import confirmModal from './listeners/confirm-modal';
 import emModal from './listeners/em-modal';
+import AutocompletedAddressForm from './services/address/AutocompletedAddressForm';
+import AddressObject from './services/address/AddressObject';
 
 class App {
     constructor() {
@@ -61,6 +63,34 @@ class App {
         form.prepare();
         form.refresh();
         form.attachEvents();
+    }
+
+    createAutocompleteAddress(
+        addressFieldSelector,
+        zipCodeFieldSelector,
+        cityNameFieldSelector,
+        regionFieldSelector,
+        countryFieldSelector,
+        autocompleteWrapperSelector = '.address-autocomplete',
+        addressBlockWrapperSelector = '.address-block',
+        helpMessageContainer = '#address-autocomplete-help-message'
+    ) {
+        const addressObject = new AddressObject(
+            dom(addressFieldSelector),
+            dom(zipCodeFieldSelector),
+            dom(cityNameFieldSelector),
+            dom(regionFieldSelector),
+            dom(countryFieldSelector)
+        );
+
+        const autocompleteAddressForm = new AutocompletedAddressForm(
+            dom(autocompleteWrapperSelector),
+            dom(addressBlockWrapperSelector),
+            addressObject,
+            dom(helpMessageContainer)
+        );
+
+        autocompleteAddressForm.buildWidget();
     }
 
     createVoteLocationSelector(country, postalCode, city, cityName, office) {
@@ -280,7 +310,7 @@ class App {
 
     createCKEditor(elementSelector, uploadUrl) {
         System.import('services/form/CKEditor').catch((error) => { throw error; }).then((module) => {
-            module.default(elementSelector, uploadUrl, {removePlugins: ['MediaEmbed']});
+            module.default(elementSelector, uploadUrl, { removePlugins: ['MediaEmbed'] });
         });
     }
 

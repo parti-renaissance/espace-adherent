@@ -14,13 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 class CommitteeElection extends AbstractElectionEntity
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    /**
      * @var Committee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee", inversedBy="committeeElections")

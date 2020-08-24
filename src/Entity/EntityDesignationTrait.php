@@ -19,6 +19,11 @@ trait EntityDesignationTrait
         return $this->designation;
     }
 
+    public function setDesignation(Designation $designation): void
+    {
+        $this->designation = $designation;
+    }
+
     public function getCandidacyPeriodStartDate(): \DateTime
     {
         return $this->designation->getCandidacyStartDate();

@@ -14,6 +14,16 @@ App.createAddressSelector(
 );
 {% endmacro %}
 
+{% macro autocomlete_address(addressForm) %}
+    App.createAutocompleteAddress(
+        '#{{ addressForm.address.vars.id }}',
+        '#{{ addressForm.postalCode.vars.id }}',
+        '#{{ addressForm.cityName.vars.id }}',
+        {{ addressForm.region is defined ? '#'~addressForm.region.vars.id : 'null' }},
+        '#{{ addressForm.country.vars.id }}',
+    );
+{% endmacro %}
+
 {% macro ckeditor(element, height, uploadType = false, maxLength = false, removeFormat = false) %}
 CKEDITOR.replace('{{ element }}', {
     extraPlugins : 'confighelper',

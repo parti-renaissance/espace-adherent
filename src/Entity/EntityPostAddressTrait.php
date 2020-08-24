@@ -156,4 +156,11 @@ trait EntityPostAddressTrait
     {
         $this->postAddress->setGeocodableHash($hash);
     }
+
+    public function updatePostAddress(PostAddress $postAddress): void
+    {
+        if (!$this->postAddress->equals($postAddress)) {
+            $this->postAddress = $postAddress;
+        }
+    }
 }

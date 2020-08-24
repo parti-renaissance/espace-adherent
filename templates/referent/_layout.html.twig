@@ -111,6 +111,10 @@
                             {% endif %}
 
                             {% if isReferent %}
+                                <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_*') ? 'active' }}">
+                                    <a href="{{ path('app_territorial_council_referent_designations_list') }}">Instances</a>
+                                </li>
+
                                 {% if enable_municipal_space %}
                                     {% if 0 == app.user.managedAreaTagCodes|filter(code => code starts with '75')|length %}
                                         <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
@@ -150,7 +154,6 @@
                         </ul>
                     </nav>
                     {% endif %}
-
                 </div>
             </header>
 
