@@ -47,14 +47,14 @@ class AdherentSecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(1, $crawler->selectLink('Carl Mirabeau')->count());
+        $this->assertSame(1, $crawler->selectLink('Carl')->count());
 
         $this->client->click($crawler->selectLink('Déconnexion')->link());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/', $this->client, true);
 
         $crawler = $this->client->followRedirect();
-        $this->assertSame(0, $crawler->selectLink('Carl Mirabeau')->count());
+        $this->assertSame(0, $crawler->selectLink('Carl')->count());
     }
 
     /**

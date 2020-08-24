@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <!-- Accordeon nav -->
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+          findAll(document, '.accordion--title').forEach(function(section) {
+            section.addEventListener('click', function(e) {
+              var accordion = e.target.closest('.accordion');
+              var visible = accordion.classList.contains('opened');
+
+              var contents = findAll(accordion.closest('.accordion-container'), '.accordion');
+              contents.forEach(function(content) {
+                content.classList.remove('opened');
+              });
+
+              if (!visible) {
+                accordion.classList.add('opened');
+              }
+            });
+          });
+
+          findAll(document, '.js--tabs').forEach(function(tab) {
+            tab.addEventListener('click', function(e) {
+              e.preventDefault();
+
+              var target = dom(tab.dataset.target);
+
+              findAll(tab.closest('ul'), '.js--tabs').forEach(function(t) {
+                t.parentNode.classList.remove('active');
+              });
+              tab.parentNode.classList.add('active');
+
+              findAll(target.closest('section'), '.js--tabs-content').forEach(function (content) {
+                content.style.display = 'none';
+              });
+              target.style.display = 'block';
+            });
+          });
+        });
+    </script>
+{% endblock %}
+
+{% block flash_message %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash flash--{{ label }}">
+                <div class="flash__inner">{{ message|trans|raw }}</div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <main id="adherent-profile">
+        <div class="l__wrapper">
+            <div class="adherent-profile l__row l__row--v-stretch">
+                <aside class="adherent-profile__aside">
+                    <div class="adherent-profile__status b__nudge--top">
+                        <div class="l__row b__nudge--bottom-large">
+                            <div class="avatar-initials avatar--medium avatar--style-02">
+                                {{ app.user.initials }}
+                            </div>
+                            <div class="adherent-profile__id">
+                                <div class="name l__row">
+                                    {{ app.user }}
+                                    {% if app.user.certified %}
+                                        {% include('components/_certification_logo.html.twig') %}
+                                    {% endif %}
+                                </div>
+                                <div class="adhesion-date">Inscrit{{ app.user.female ? "e" }} en {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}</div>
+                            </div>
+                        </div>
+                        <ul class="adherent-profile__roles b__nudge--bottom-large">
+                            {% for role in get_adherent_role_labels(app.user) %}
+                                <li>{{ role }}</li>
+                            {% endfor %}
+                        </ul>
+{#                        <div class="adherent-profile__completion b__nudge--bottom-50">#}
+{#                            <div class="text--body text--small b__nudge--bottom-small">#}
+{#                                <!-- If is not completed -->#}
+{#                                Complétion du profil : 50%#}
+{#                                <!-- If is completed TODO#}
+{#                                👏 Profil complété ! -->#}
+{#                            </div>#}
+{#                            <div class="gauge">#}
+{#                                <span></span>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                    <nav class="adherent-profile__menu adherent-profile__menu--desktop accordion-container">
+                        {% set isInformationRoute = is_active_route(app.request, [
+                            'app_user_edit',
+                            'app_certification_request_home',
+                            'app_user_change_password',
+                            'app_adherent_pin_interests',
+                            'app_user_set_email_notifications',
+                            'app_adherent_commitment',
+                        ] ) %}
+                        {% set isActivityRoute = is_active_route(app.request, 'app_adherent_profile_activity' ) %}
+
+                        <div class="menu-section accordion{{ isInformationRoute ? ' opened' }}">
+                            <div class="menu-section__heading menu-section-informations accordion--title {{ isInformationRoute ? 'active' }}">
+                                <span>Informations</span>
+                                <span class="trigger-container"></span>
+                            </div>
+                            <ul class="menu-section__items"{% if isInformationRoute %} style="display: block;"{% endif %}>
+                                <li class="{{ is_active_route(app.request, 'app_user_edit') ? 'active' }}">
+                                    <a href="{{ path('app_user_edit') }}">Général</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_certification_request_home') ? 'active' }}">
+                                    <a href="{{ path('app_certification_request_home') }}">Certification du profil</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_user_change_password') ? 'active' }}">
+                                    <a href="{{ path('app_user_change_password') }}">Mot de passe</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_pin_interests') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_pin_interests') }}">Centres d'intérêt</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_commitment') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_commitment') }}">Engagement</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_user_set_email_notifications') ? 'active' }}">
+                                    <a href="{{ path('app_user_set_email_notifications') }}">Communication</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="menu-section accordion{{ isActivityRoute ? ' opened' }}">
+                            <div class="menu-section__heading menu-section-activity accordion--title {{ isActivityRoute ? 'active' }}">
+                                <span href="">Activités</span>
+                                <span class="trigger-container"></span>
+                            </div>
+                            <ul class="menu-section__items"{% if isActivityRoute %} style="display: block;"{% endif %}>
+                                <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'citizen-projects'}) }}">Mes projets citoyens</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'adi'}) }}">Mon atelier des idées</a></li>
+                                <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>
+                            </ul>
+                        </div>
+                        <div class="menu-section">
+                            <a href="{{ path('app_documents_index') }}" class="menu-section__heading menu-section-documents {{ is_active_route(app.request, 'app_adherent_profile_documents') ? 'active' }}">
+                                <span>Documents</span>
+                            </a>
+                        </div>
+                    </nav>
+                    <ul class="">
+                        {% if is_granted('ROLE_FORMATION_SPACE') %}
+                            <li class="space--10-0">
+                                <a href="{{ path('app_formation_home') }}" class="text--body text--small link--no-decor">Formation</a>
+                            </li>
+                        {% endif %}
+                        <li class="space--10-0"><a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank" class="text--body text--small link--no-decor">Aide</a></li>
+                        <li class="space--10-0"><a href="{{ path('logout') }}" class="text--body text--small link--no-decor">Déconnexion</a></li>
+                    </ul>
+                </aside>
+                <div class="adherent-profile__content">
+                    {% block adherent_profile_content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

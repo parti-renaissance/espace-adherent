@@ -184,6 +184,12 @@
                     {{ algolia_api_key ? ('\''~algolia_api_key|e('js')~'\'')|raw : 'null' }},
                     '{{ algolia_blacklist|base64_encode }}'
                 );
+
+                document.querySelector('.nav-dropdown__name').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var nav = document.querySelector('.em-nav-dropdown');
+                    nav.style.display = nav.style.display == 'block' ? 'none' : 'block';
+                });
             });
         </script>
 

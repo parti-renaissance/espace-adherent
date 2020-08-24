@@ -1,48 +1,47 @@
-{% extends 'base.html.twig' %}
+{% extends 'adherent_profile/_layout.html.twig' %}
 
 {% block page_title 'Documents' %}
 {% block canonical_url url('app_documents_index') %}
 
-{% block content %}
-    <main>
-        <section class="l__wrapper--slim documents">
-            <header>
-                <h1 class="text--center text--large">
-                    Documents
-                </h1>
-            </header>
+{% block adherent_profile_content %}
+    <section class="adherent-profile__section accordion-container">
+        <h1 class="text--medium-large">Documents</h1>
+        {% set first = true %}
 
-            {% if documents.adherent is defined %}
-                <div class="documents__category">
-                    <h2>Documents adhérents</h2>
+        {% if documents.adherent is defined %}
+            <div class="documents__category cursor--pointer accordion{{ first ? ' opened' }}">
+                <h2 class="section-subtitle accordion--title">Adhérents</h2>
 
-                    {{ include('documents/tree.html.twig', { treeType: 'adherents', documents: documents.adherent }) }}
-                </div>
-            {% endif %}
+                {{ include('documents/tree.html.twig', { treeType: 'adherents', documents: documents.adherent }) }}
+            </div>
+            {% set first = false %}
+        {% endif %}
 
-            {% if documents.host is defined %}
-                <div class="documents__category">
-                    <h2>Documents animateurs</h2>
+        {% if documents.host is defined %}
+            <div class="documents__category cursor--pointer accordion{{ first ? ' opened' }}">
+                <h2 class="section-subtitle accordion--title">Animateurs</h2>
 
-                    {{ include('documents/tree.html.twig', { treeType: 'animateurs', documents: documents.host }) }}
-                </div>
-            {% endif %}
+                {{ include('documents/tree.html.twig', { treeType: 'animateurs', documents: documents.host }) }}
+            </div>
+            {% set first = false %}
+        {% endif %}
 
-            {% if documents.foreign_host is defined %}
-                <div class="documents__category">
-                    <h2>Documents animateurs à l'étranger</h2>
+        {% if documents.foreign_host is defined %}
+            <div class="documents__category cursor--pointer accordion{{ first ? ' opened' }}">
+                <h2 class="section-subtitle accordion--title">Animateurs à l'étranger</h2>
 
-                    {{ include('documents/tree.html.twig', { treeType: 'animateurs-etrangers', documents: documents.foreign_host }) }}
-                </div>
-            {% endif %}
+                {{ include('documents/tree.html.twig', { treeType: 'animateurs-etrangers', documents: documents.foreign_host }) }}
+            </div>
+            {% set first = false %}
+        {% endif %}
 
-            {% if documents.referent is defined %}
-                <div class="documents__category">
-                    <h2>Documents référents</h2>
+        {% if documents.referent is defined %}
+            <div class="documents__category cursor--pointer accordion{{ first ? ' opened' }}">
+                <h2 class="section-subtitle accordion--title">Référents</h2>
 
-                    {{ include('documents/tree.html.twig', { treeType: 'referents', documents: documents.referent }) }}
-                </div>
-            {% endif %}
-        </section>
-    </main>
+                {{ include('documents/tree.html.twig', { treeType: 'referents', documents: documents.referent }) }}
+            </div>
+            {% set first = false %}
+        {% endif %}
+    </section>
 {% endblock %}

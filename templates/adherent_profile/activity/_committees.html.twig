@@ -1,0 +1,82 @@
+{% set is_adherent_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
+{% set last_vote = get_election_last_vote(app.user) %}
+
+<h1 class="text--medium-large">Mes comités</h1>
+
+<div class="alert alert--tips b__nudge--bottom-large">
+    Comment participer pour voter et candidater ? Nous vous invitons à sélectionner un comité principal, que vous soyez membre de plusieurs comités ou d'un seul, pour participer à la désignation du binôme paritaire d'adhérents siégeant au Conseil territorial.
+    <br /><br />
+    Pour candidater, rendez-vous sur la page de votre comité principal en cliquant sur le bouton « VOIR » puis suivez les instructions.
+
+    {% if last_vote %}
+        {% set vote_committee = last_vote.election.electionEntity.committee %}
+
+        <br /><br />
+        Vous avez voté dans le comité <b>{{ vote_committee.name }}</b>, le {{ last_vote.votedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}.
+        Vous ne pouvez plus changer de comité principal jusqu'au <b>{{ last_vote.votedAt|date_modify('+3 months')|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}</b> car des désignations sont en cours dans d'autres zones.
+    {% endif %}
+</div>
+
+<div class="l__col">
+    {% if committee_memberships.totalItems < 1 %}
+        <div class="space--40-0 text--center">
+            <p class="font-roboto text--default-large text--bold b__nudge--bottom">Rejoignez un comité proche de chez vous</p>
+            <a class="btn btn--blue" href="{{ path('app_search_committees') }}">Rejoindre un comité</a>
+        </div>
+    {% else %}
+        {% for membership in committee_memberships %}
+            {% set committee = membership.committee %}
+            {% set committee_is_locked = not is_granted('COMMITTEE_IS_NOT_LOCKED', committee) %}
+
+            <article class="activity-card b__nudge--bottom">
+                <div class="activity-card__type activity-card__type--committee">Comité</div>
+                <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold l__row">{{ committee.name }}</h2>
+                <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+                    <div class="l__row b__nudge--right-small">
+                        <img src="{{ asset('/images/icons/activity/place.svg') }}" alt="Ville" class="b__nudge--right-nano">
+                        <span>{{ committee.getCityName }}</span>
+                    </div>
+                    <div class="l__row">
+                        <img src="{{ asset('/images/icons/activity/members.svg') }}" alt="Adhérents" class="b__nudge--right-nano">
+                        <span>{{ committee.membersCount }} adhérents</span>
+                    </div>
+                </div>
+
+                <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
+                    <div class="l__row">
+                        <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" title="{{ committee.name }}" class="btn btn--blue b__nudge--right-small">
+                            Voir
+                        </a>
+                    </div>
+
+                    <div class="b__nudge--top">
+                        <div class="em-switch__wrapper">
+                            <label class="switch">
+                                <input
+                                        type="checkbox"
+                                        class="vote-switcher{{ is_adherent_able_to_change_vote and not committee_is_locked ? ' vote-switcher-enabled'}}"
+                                        data-committee-title="{{ committee.name }}"
+                                        data-committee-slug="{{ committee.slug }}"
+                                        data-token="{{ csrf_token('committee.vote') }}"
+                                        {{ not is_adherent_able_to_change_vote or committee_is_locked ? 'disabled="disabled"' }}
+                                        {{ membership.votingCommittee ? 'checked="checked"' }}
+                                >
+                                <span class="slider"></span>
+                            </label>
+                            <span class="em-switch__label">Comité de désignation</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+
+        {% if committee_memberships.lastPage > 1 %}
+            {% include 'adherent_profile/activity/_pagination.html.twig' with {
+                current_page: committee_memberships.currentPage,
+                total_pages: committee_memberships.lastPage,
+                pagination_type: 'committees',
+                section: 'committees'
+            } %}
+        {% endif %}
+    {% endif %}
+</div>

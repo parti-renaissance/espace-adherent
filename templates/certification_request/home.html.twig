@@ -1,54 +1,61 @@
-{% extends 'certification_request/_layout.html.twig' %}
+{% extends funnel|default(false) ? 'adherent_profile/_funnel_layout.html.twig' : 'adherent_profile/_layout.html.twig' %}
 
-{% block certification_content %}
+{% block page_title 'Certification' %}
 
-    <p class="b__nudge--top text--bold">Votre profil certifié</p>
+{% block adherent_profile_content %}
+    <section class="adherent-profile__section" id="certification">
+        <h1 class="text--medium-large">Certification du profil</h1>
 
-    <div class="certification-status b__border text--center b__nudge--bottom-large {{ app.user.isCertified ? 'certified' : '' }}">
-        {% if app.user.isCertified %}
-            <img src="{{ asset('/images/icons/certification/certified-lg.svg') }}" alt="certif-img"/>
-            <div class="title">Votre profil est certifié</div>
+        <h2 class="section-subtitle">Votre profil certifié</h2>
+        <p class="text--body">Cela vous permet notamment de voter pour vos futurs animateurs et animatrices de comités locaux. C’est simple, rapide et sécurisé !</p>
+        <div class="certification-status font-roboto b__border text--center b__nudge--bottom-large {{ app.user.isCertified ? 'certified' : '' }}">
+            {% if app.user.isCertified %}
+                <img src="{{ asset('/images/icons/certification/certified-lg.svg') }}" alt="certif-img"/>
+                <div class="title">Votre profil est certifié</div>
 
-        {% elseif app.user.certificationRequests.hasBlockedCertificationRequest %}
-            <img src="{{ asset('images/icons/certification/blocked.svg') }}" alt="certif-img"/>
-            <div class="title b__nudge--bottom">Demande de certification bloquée</div>
-            <p>Vous ne pouvez pas refaire de nouvelle demande pour l'instant.</p>
+            {% elseif app.user.certificationRequests.hasBlockedCertificationRequest %}
+                <img src="{{ asset('images/icons/certification/blocked.svg') }}" alt="certif-img"/>
+                <div class="title b__nudge--bottom">Demande de certification bloquée</div>
+                <p>Vous ne pouvez pas refaire de nouvelle demande pour l'instant.</p>
 
-        {% elseif app.user.certificationRequests.hasPendingCertificationRequest %}
-            <img src="{{ asset('/images/icons/certification/on-waiting.svg') }}" alt="certif-img"/>
-            <div class="title b__nudge--bottom">Demande de certification en attente</div>
-            <p>Votre demande est en attente d'approbation par nos équipes.</p>
+            {% elseif app.user.certificationRequests.hasPendingCertificationRequest %}
+                <img src="{{ asset('/images/icons/certification/on-waiting.svg') }}" alt="certif-img"/>
+                <div class="title b__nudge--bottom">Demande de certification en attente</div>
+                <p>Votre demande est en attente d'approbation par nos équipes.</p>
 
-        {% elseif app.user.certificationRequests.hasRefusedCertificationRequest %}
-            {% set refusedCertificationRequest = app.user.certificationRequests.getRefusedCertificationRequests.first %}
+            {% elseif app.user.certificationRequests.hasRefusedCertificationRequest %}
+                {% set refusedCertificationRequest = app.user.certificationRequests.getRefusedCertificationRequests.first %}
 
-            <img src="{{ asset('/images/icons/certification/blocked.svg') }}" alt="certif-img"/>
-            <div class="title b__nudge--bottom">Demande de certification refusée</div>
-            <p>Votre demande de certification a été refusée.<br />
-            {% if refusedCertificationRequest.refusalReason %}
-                <p>
-                    Raison:
-                    {% if refusedCertificationRequest.isRefusedWithOtherReason %}
-                        {{ refusedCertificationRequest.customRefusalReason }}
-                    {% else %}
-                        {{ refusedCertificationRequest.refusalReasonKey|trans }}
-                    {% endif %}
-                </p>
-            {% endif %}
-            Vous pouvez <a class="link--blue--dark link--no-decor" href="{{ path('app_certification_request_form') }}">réessayer</a>.</p>
+                <img src="{{ asset('/images/icons/certification/blocked.svg') }}" alt="certif-img"/>
+                <div class="title b__nudge--bottom">Demande de certification refusée</div>
+                <p>Votre demande de certification a été refusée.<br />
+                {% if refusedCertificationRequest.refusalReason %}
+                    <p>
+                        Raison:
+                        {% if refusedCertificationRequest.isRefusedWithOtherReason %}
+                            {{ refusedCertificationRequest.customRefusalReason }}
+                        {% else %}
+                            {{ refusedCertificationRequest.refusalReasonKey|trans }}
+                        {% endif %}
+                    </p>
+                {% endif %}
+                Vous pouvez <a class="link--blue--dark link--no-decor" href="{{ path('app_certification_request_form') }}">réessayer</a>.</p>
 
-        {% else %}
-            <img src="{{ asset('/images/icons/certification/not-certified.svg') }}" alt="certif-img"/>
-            <div class="title b__nudge--bottom">Votre profil n'est pas encore certifié.</div>
-            <p>Certifiez le avec une pièce d'identité, ça ne prend qu'une minute.</p>
-
-            {% if app.user.birthdate %}
-                <a href="{{ path('app_certification_request_form') }}" class="btn btn--blue b__nudge--top">Certifier mon profil</a>
             {% else %}
-                <div class="b__nudge--top-40 alert alert--error">Malheureusement, nous ne connaissons pas votre date de naissance et nous en avons besoin pour certifier votre identité. Mettez à jour votre profil avant de continuer.</div>
-                <p><a href="{{ path('app_user_edit') }}" class="btn btn--blue b__nudge--top">METTRE À JOUR MON PROFIL</a></p>
-            {% endif %}
-        {% endif %}
-    </div>
+                <img src="{{ asset('/images/icons/certification/not-certified.svg') }}" alt="certif-img"/>
+                <div class="title b__nudge--bottom">Votre profil n'est pas encore certifié.</div>
+                <p>Certifiez-le avec une pièce d'identité, ça ne prend qu'une minute.</p>
 
+                {% if app.user.birthdate %}
+                    <a href="{{ path('app_certification_request_form') }}" class="btn btn--blue b__nudge--top">Certifier mon profil</a>
+                {% else %}
+                    <div class="b__nudge--top-40 alert alert--error">Malheureusement, nous ne connaissons pas votre date de naissance et nous en avons besoin pour certifier votre identité. Mettez à jour votre profil avant de continuer.</div>
+                    <p><a href="{{ path('app_user_edit') }}" class="btn btn--blue b__nudge--top">METTRE À JOUR MON PROFIL</a></p>
+                {% endif %}
+            {% endif %}
+        </div>
+        {% if funnel|default(false) %}
+            passer cette étape
+        {% endif %}
+    </section>
 {% endblock %}

@@ -89,9 +89,9 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     {
         // Login as supervisor
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
 
-        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
 
         self::assertNotContains('Quitter ce comité', $response->getContent());
@@ -102,7 +102,10 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         // Login as host
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mes comités')->link());
+        $this->assertEquals('http://test.enmarche.code/parametres/mes-activites#committees', $crawler->getUri());
+
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -130,9 +133,9 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
         // Login again as supervisor
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
 
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         // Unfollow link must not exist because there is no other host
@@ -298,8 +301,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     public function testAuthenticatedCommitteeFollowerCanShowCommitteePage()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The follower should not see the "register link"');
@@ -316,8 +319,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     public function testAuthenticatedCommitteeHostCanShowCommitteePage()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The host should not see the "register link"');
@@ -466,7 +469,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $contact = $isConnected ? '\s+(Contacter)' : '';
 
         foreach ($hosts as $position => $host) {
-            list($initials, $name, $role) = $host;
+            [$initials, $name, $role] = $host;
             $this->assertRegExp(
                 '/^'.preg_quote($initials).'\s+'.preg_quote($name).'\s+'.$role.$contact.'?$/',
                 trim($nodes->eq($position)->text())
@@ -531,7 +534,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     private function assertSeeTimelineMessages(Crawler $crawler, array $messages)
     {
         foreach ($messages as $position => $message) {
-            list($author, $role, $text) = $message;
+            [$author, $role, $text] = $message;
             $this->assertSeeCommitteeTimelineMessage($crawler, $position, $author, $role, $text);
         }
     }

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <main id="adherent-profile">
+        <div class="l__wrapper">
+            <div class="adherent-profile l__row l__row--v-stretch">
+                <aside class="adherent-profile__aside">
+                    <div class="adherent-profile__status b__nudge--top">
+                        <div class="l__row b__nudge--bottom-large">
+                            <div class="avatar-initials avatar--medium avatar--style-02">
+                                {{ app.user.initials }}
+                            </div>
+                            <div class="adherent-profile__id">
+                                <div class="name l__row">
+                                    {{ app.user.partialName }}
+                                    {% if app.user.certified %}
+                                        {% include('components/_certification_logo.html.twig') %}
+                                    {% endif %}
+                                </div>
+                                <div class="adhesion-date">Inscrit{{ app.user.female ? "e" }} en {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}</div>
+                            </div>
+                        </div>
+                        <ul class="adherent-profile__roles b__nudge--bottom-large">
+                            {% for role in get_adherent_role_labels(app.user) %}
+                                <li>{{ role }}</li>
+                            {% endfor %}
+                        </ul>
+                        <div class="adherent-profile__completion b__nudge--bottom-50">
+                            <div class="text--body text--small b__nudge--bottom-small">
+                                <!-- If is not completed -->
+                                Complétion du profil : 50%
+                                <!-- If is completed TODO
+                                👏 Profil complété ! -->
+                            </div>
+                            <div class="gauge">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <nav class="adherent-profile__menu adherent-profile__menu--desktop">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, 'app_user_edit') ? 'active' }}">
+                                <a href="{{ path('app_funnel_general') }}">Informations générales</a>
+                            </li>
+                            <li class="{{ is_active_route(app.request, 'app_certification_request_home') ? 'active' }}">
+                                <a href="{{ path('app_funnel_certification') }}">Certification du profil</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <ul class="">
+                        {% if is_granted('ROLE_FORMATION_SPACE') %}
+                            <li class="space--10-0">
+                                <a href="{{ path('app_formation_home') }}" class="text--body text--small link--no-decor">Formation</a>
+                            </li>
+                        {% endif %}
+                        <li class="space--10-0"><a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank" class="text--body text--small link--no-decor">Aide</a></li>
+                        <li class="space--10-0"><a href="{{ path('logout') }}" class="text--body text--small link--no-decor">Déconnexion</a></li>
+                    </ul>
+                </aside>
+                <div class="adherent-profile__content">
+                    {% block adherent_profile_content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

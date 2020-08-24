@@ -2,6 +2,7 @@
 
 namespace App\Repository\IdeasWorkshop;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\IdeasWorkshop\Answer;
 use App\Entity\IdeasWorkshop\AuthorCategoryEnum;
@@ -10,6 +11,7 @@ use App\Entity\IdeasWorkshop\IdeaStatusEnum;
 use App\Entity\IdeasWorkshop\Thread;
 use App\Entity\IdeasWorkshop\ThreadComment;
 use App\Entity\IdeasWorkshop\VoteTypeEnum;
+use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -20,6 +22,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class IdeaRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
+    use PaginatorTrait;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -258,5 +261,33 @@ SQL;
         if ($isFilterEnabled) {
             $this->_em->getFilters()->enable('enabled');
         }
+    }
+
+    public function getIdeasProposalsFromAdherent(Adherent $adherent, int $page = 1, int $limit = 5): PaginatorInterface
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('idea')
+            ->where('idea.author = :author')
+            ->setParameter('author', $adherent)
+        ;
+
+        return $this->configurePaginator($queryBuilder, $page, $limit);
+    }
+
+    public function getIdeaContributionsFromAdherent(
+        Adherent $adherent,
+        int $page = null,
+        int $limit = null
+    ): PaginatorInterface {
+        $queryBuilder = $this->createQueryBuilder('idea')
+            ->innerJoin('idea.answers', 'answer')
+            ->innerJoin('answer.threads', 'thread')
+            ->leftJoin('thread.comments', 'comment')
+            ->where('thread.author = :author')
+            ->orWhere('comment.author = :author')
+            ->setParameter('author', $adherent)
+        ;
+
+        return $this->configurePaginator($queryBuilder, $page, $limit);
     }
 }

@@ -43,8 +43,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testCommitteeFollowerIsNotAllowedToEditCommitteeInformation()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -56,8 +56,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testCommitteeHostCanEditCommitteeInformation()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -126,8 +126,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testCommitteeHostCannotEditNoneditableCommitteeName()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Dammarie-les-Lys')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Dammarie-les-Lys"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -165,11 +165,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->client->followRedirects();
 
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Submit the committee form with new address
@@ -195,8 +191,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -208,8 +204,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testCommitteeHostCanPublishNewEvent()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -336,8 +332,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testCommitteeHostCanPublishNewEventWithTimeZone()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -419,8 +415,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->markTestSkipped('Skipped temporary, need to implement this feature with a new Message form');
 
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
         $committeeUrl = $this->client->getRequest()->getPathInfo();
 
@@ -487,8 +483,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     {
         // Authenticate as a committee follower
         $this->authenticateAsAdherent($this->client, $username);
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $this->client->request(Request::METHOD_GET, sprintf('%s/membres', $this->client->getRequest()->getPathInfo()));
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
@@ -509,8 +505,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     {
         // Authenticate as the committee supervisor
         $this->authenticateAsAdherent($this->client, $username);
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
 
@@ -533,8 +529,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     {
         // Authenticate as the committee supervisor
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
 
@@ -552,8 +548,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     {
         // Authenticate as the committee supervisor
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
 
@@ -564,8 +560,8 @@ class CommitteeManagerControllerTest extends WebTestCase
     {
         // Authenticate as the committee supervisor
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $this->client->click($crawler->selectLink('Adhérents')->link());
 
