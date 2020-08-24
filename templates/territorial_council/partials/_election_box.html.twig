@@ -15,9 +15,16 @@
     {% if election.voteStartDate is null %}
         <p class="text--body text--bold b__nudge--bottom-large b__nudge--top-0">La date du Conseil territorial n'a pas encore été fixée par votre référent</p>
     {% else %}
-        <p class="text--body text--dark b__nudge--bottom-large b__nudge--top-0">La désignation aura lieu du
-            {{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}
-            au {{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}.</p>
+        <p class="text--body text--dark b__nudge--bottom-large b__nudge--top-0">
+            {% if election.isOnlineMode %}
+                Le Conseil territorial se tiendra en ligne
+            {% else %}
+                Le Conseil territorial se tiendra le {{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }} au
+                <a href="https://www.google.fr/maps/place/'{{ election.address }},+{{ election.postalCode }}+{{ election.cityName }}'" class="link--no-decor text--blue--dark text--normal">{{ election.inlineFormattedAddress }}</a>. Le vote sera ouvert
+            {% endif %}
+
+            du {{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}
+                au {{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}.</p>
     {% endif %}
 
     <div class="text--body l__row l__row--wrap">

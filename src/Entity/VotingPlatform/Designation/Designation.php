@@ -122,6 +122,13 @@ class Designation
      */
     private $lockPeriodThreshold = 3;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $limited = false;
+
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
         $this->label = $label;
@@ -178,6 +185,15 @@ class Designation
     public function removeReferentTag(ReferentTag $tag): void
     {
         $this->referentTags->removeElement($tag);
+    }
+
+    public function setReferentTags(array $referentTags): void
+    {
+        $this->referentTags->clear();
+
+        foreach ($referentTags as $tag) {
+            $this->addReferentTag($tag);
+        }
     }
 
     public function getCandidacyStartDate(): ?\DateTime
@@ -323,5 +339,10 @@ class Designation
         }
 
         return (clone $this->getVoteEndDate())->modify(sprintf('+%d days', $this->getResultDisplayDelay()));
+    }
+
+    public function markAsLimited(): void
+    {
+        $this->limited = true;
     }
 }

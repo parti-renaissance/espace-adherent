@@ -1,0 +1,160 @@
+{% extends 'territorial_council_designation/_layout.html.twig' %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+{% endblock %}
+
+{% import 'javascript.js.twig' as js %}
+
+{% block designation_content %}
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
+        <div>
+            <a href="{{ path('app_territorial_council_referent_designations_list') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
+        </div>
+
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Le Conseil territorial aura lieu :</h2>
+
+            {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
+            {{ form_errors(form) }}
+
+            <div class="em-form__group">
+                <p class="text--body text--dark b__nudge--bottom">
+                    L'option avec réunion en présentielle vous permet de fixer un lieu de rendez-vous aux membres de votre Conseil territorial.
+                    Dans ce cas, la tenue du scrutin se fera tout de même via le vote en ligne.
+                </p>
+
+                {{ form_errors(form.voteMode) }}
+                {{ form_widget(form.voteMode) }}
+            </div>
+
+            <div class="meeting-form-fields space--20-30" style="{{ form.voteMode.vars.value != constant('App\\TerritorialCouncil\\Designation\\DesignationVoteModeEnum::VOTE_MODE_MEETING') ? 'display: none' }}">
+                <div>
+                    {{ form_errors(form.address) }}
+
+                    <div>
+                        <div class="address-autocomplete em-form__group">
+                            <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
+                        </div>
+                        <p class="text--error visually-hidden" id="address-autocomplete-help-message">
+                            Nous n'avons pas reconnu votre adresse, veuillez <a href="#">cliquer ici</a> pour pouvoir la renseigner librement.
+                        </p>
+                    </div>
+
+                    <div class="address-block">
+                        <div class="em-form__group">
+                            <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
+                            {{ form_errors(form.address.address) }}
+                            {{ form_widget(form.address.address, { attr: { class: 'em-form__field', placeholder: 'Adresse postale' } }) }}
+                        </div>
+
+                        <div class="em-form__group">
+                            <label class="em-form__label">Pays <span class="em-form__required">*</span></label>
+                            {{ form_errors(form.address.country) }}
+                            {{ form_widget(form.address.country, { attr: { class: 'em-form__field' } }) }}
+                        </div>
+
+                        <div class="em-form__row">
+                            <div class="em-form__group">
+                                <label class="em-form__label">Code postal <span class="em-form__required">*</span></label>
+                                {{ form_errors(form.address.postalCode) }}
+                                {{ form_widget(form.address.postalCode, { attr: { class: 'em-form__field', placeholder: 'Code postal' } }) }}
+                            </div>
+                            <div class="em-form__group">
+                                <label class="em-form__label">Ville <span class="em-form__required">*</span></label>
+                                {{ form_errors(form.address.cityName) }}
+                                {{ form_widget(form.address.cityName, { attr: { class: 'em-form__field', placeholder: 'Ville' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="separator b__nudge--top-50" />
+
+                <div class="em-form__row b__nudge--top-large">
+                    <div class="em-form__group em-form__width--1">
+                        <label class="em-form__label">Début de la réunion <span class="em-form__required">*</span></label>
+                        {{ form_errors(form.meetingStartDate) }}
+                        {{ form_widget(form.meetingStartDate) }}
+                    </div>
+                    <div class="em-form__group em-form__width--1">
+                        <label class="em-form__label">Fin de la réunion <span class="em-form__required">*</span></label>
+                        {{ form_errors(form.meetingEndDate) }}
+                        {{ form_widget(form.meetingEndDate) }}
+                    </div>
+                </div>
+
+                <p class="text--silver-gray text--small">La durée maximale : 12 heures</p>
+            </div>
+
+            <div class="em-form__group em-form__width--1 b__nudge--top-large">
+                {{ form_label(form.voteStartDate, 'Début du vote', {label_attr: {class: 'em-form__label'}}) }}
+                {{ form_errors(form.voteStartDate) }}
+                <p class="em-form__legend">
+                    La convocation doit avoir lieu au minimum 7 jours avant la tenue du vote. Les candidatures seront closes automatiquement 48h avant son ouverture.
+                </p>
+                {{ form_widget(form.voteStartDate) }}
+            </div>
+
+            <div class="em-form__group em-form__width--1">
+                {{ form_label(form.voteEndDate, 'Fin du vote', {label_attr: {class: 'em-form__label'}}) }}
+                {{ form_errors(form.voteEndDate) }}
+                <p class="em-form__legend">La durée du vote doit être comprise entre 5h et 7 jours.</p>
+                {{ form_widget(form.voteEndDate) }}
+            </div>
+
+            <div class="em-form__group">
+                {{ form_label(form.description, 'Ordre du jour', {label_attr: {class: 'em-form__label'}}) }}
+                {{ form_errors(form.description) }}
+                <div class="em-form__field--ctn">
+                    {{ form_widget(form.description, { attr: { class: 'form--full form__field--textarea-300', rows: 20, cols: 70 } }) }}
+                </div>
+            </div>
+
+            <div class="em-form__group">
+                {{ form_label(form.questions, 'Questions diverses', {label_attr: {class: 'em-form__label'}}) }}
+                {{ form_errors(form.questions) }}
+                <div class="em-form__field--ctn">
+                    {{ form_widget(form.questions, { attr: { class: 'form--full form__field--textarea-300', rows: 20, cols: 70 } }) }}
+                </div>
+            </div>
+
+            <p class="text--body text--dark b__nudge--bottom-50">
+                Une fois ce formulaire validé, les membres du Conseil territorial seront informés des dates du Conseil territorial et celles-ci ne pourront plus être modifiées.
+            </p>
+
+            <div>
+                {{ form_row(form.save, {label: 'Envoyer la convocation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.autocomlete_address(form.address) }}
+
+            var meetingFieldContainer = dom('.meeting-form-fields');
+
+            findAll(document, 'input[name="{{ form.voteMode.vars.full_name }}"').forEach(function(radio) {
+                on(radio, 'change', function (event) {
+                    if (event.target.value === '{{ constant('App\\TerritorialCouncil\\Designation\\DesignationVoteModeEnum::VOTE_MODE_MEETING') }}') {
+                        show(meetingFieldContainer);
+                    } else {
+                        hide(meetingFieldContainer);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -349,7 +349,8 @@
         }
 
         &.em-form__checkbox--inline {
-            .form__checkbox {
+            .form__checkbox,
+            .form__radio {
                 display: inline-block;
                 margin-bottom: 0;
                 margin-right: 20px;

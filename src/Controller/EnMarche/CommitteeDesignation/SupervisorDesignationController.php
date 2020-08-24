@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\EnMarche\Designation;
+namespace App\Controller\EnMarche\CommitteeDesignation;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
