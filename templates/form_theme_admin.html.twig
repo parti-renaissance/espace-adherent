@@ -536,7 +536,7 @@
     {% set adherent = form.parent.vars.value %}
     {% set elected_representative = get_elected_representative(adherent) %}
     {% if not elected_representative %}
-        Adhérent n'est pas un élu.
+        L'adhérent n'est pas un élu.
     {% else %}
         <div class="form-group">
             <label class="control-label">
