@@ -1,0 +1,78 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block sonata_page_content_nav %}
+    <a href="{{ path('admin_app_electedrepresentative_electedrepresentative_list') }}">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        Retour
+    </a>
+
+    <h1>Profils adhérents similaires à l'élu(e) {{ elected_representative }}</h1>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped sonata-ba-list">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Date de naissance</th>
+                                <th>Adresse email</th>
+                                <th>Téléphone</th>
+                                <th>Code postal</th>
+                                <th>Ville</th>
+                                <th>Certifié(e)</th>
+                                <th>Date d'adhésion</th>
+                                <th>Dernière connexion</th>
+                                <th>Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for adherent in similar_profiles %}
+                            <tr>
+                                <td>{{ adherent.id }}</td>
+                                <td>{{ adherent.lastName }}</td>
+                                <td>{{ adherent.firstName }}</td>
+                                <td>{{ adherent.birthdate|date('d/m/Y') }}</td>
+                                <td>{{ adherent.emailAddress }}</td>
+                                <td>{{ adherent.phone ? adherent.phone|phone_number_format }}</td>
+                                <td>{{ adherent.postalCode }}</td>
+                                <td>{{ adherent.cityName }}</td>
+                                <td>{{ adherent.certified ? include('components/_certification_logo.html.twig') }}</td>
+                                <td>{{ adherent.registeredAt|date('d/m/Y H:i:s') }}</td>
+                                <td>{{ adherent.lastLoggedAt|date('d/m/Y H:i:s') }}</td>
+                                <td>{{ include('admin/adherent/statuses.html.twig', {object: adherent}) }}</td>
+                                <td>
+                                    <a href="{{ path('admin_app_adherent_edit', {id: adherent.id}) }}" class="btn btn-xs btn-default" title="Éditer" target="_blank">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        Éditer
+                                    </a>
+
+                                    <a href="{{ path('admin_app_adherent_show', {id: adherent.id}) }}" class="btn btn-xs btn-default" title="Afficher" target="_blank">
+                                        <i class="fa fa-search-plus" aria-hidden="true"></i>
+                                        Afficher
+                                    </a>
+
+                                    <a href="{{ path('admin_app_electedrepresentative_adherent_similar_profiles_link', {id: elected_representative.id, adherent_id: adherent.id}) }}" class="btn btn-xs btn-success" title="Lier">
+                                        <i class="fa fa-link" aria-hidden="true"></i>
+                                        Lier
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="13" class="text-center">Aucun adhérent similaire</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

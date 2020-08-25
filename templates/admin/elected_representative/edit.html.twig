@@ -83,6 +83,10 @@
                         <a class="btn" href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
                             <i class="fa fa-external-link"></i> Voir le profil
                         </a>
+                    {% else %}
+                        <a class="btn btn-block btn-primary" href="{{ path('admin_app_electedrepresentative_adherent_similar_profiles', { id: object.id }) }}">
+                            <i class="fa fa-external-link"></i> Profils similaires
+                        </a>
                     {% endif %}
                 </div>
             </div>

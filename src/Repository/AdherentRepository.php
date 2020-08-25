@@ -13,6 +13,7 @@ use App\Entity\City;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentManagedArea;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Statistics\StatisticsParametersFilter;
@@ -958,5 +959,20 @@ SQL;
         }
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findSimilarProfilesForElectedRepresentative(ElectedRepresentative $electedRepresentative)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('LOWER(a.firstName) = :firstName AND LOWER(a.lastName) = :lastName')
+            ->orWhere('a.birthdate = :birthDate')
+            ->setParameters([
+                'firstName' => $electedRepresentative->getFirstName(),
+                'lastName' => $electedRepresentative->getLastName(),
+                'birthDate' => $electedRepresentative->getBirthDate(),
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }
