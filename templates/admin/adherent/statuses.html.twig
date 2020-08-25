@@ -1,0 +1,111 @@
+{% if object.hasAdvancedPrivileges %}
+    {% if object.isReferent %}
+        <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
+    {% endif %}
+
+    {% if object.isCoReferent %}
+        <span class="label label-primary" style="padding: 2px;">Co-Référent</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedReferent %}
+        <span class="label label-primary" style="padding: 2px;">Référent délégué</span><br/>
+    {% endif %}
+
+    {% if object.isCoordinatorCitizenProjectSector %}
+        <span class="label label-primary" style="padding: 2px;">REC</span><br/>
+    {% endif %}
+
+    {% if object.isCoordinatorCommitteeSector %}
+        <span class="label label-primary" style="padding: 2px;">Coordinateur</span><br/>
+    {% endif %}
+
+    {% if object.isProcurationManager %}
+        <span class="label label-primary" style="padding: 2px;">Procuration</span><br/>
+    {% endif %}
+
+    {% if object.isAssessorManager %}
+        <span class="label label-primary" style="padding: 2px;">Responsable assesseurs</span><br/>
+    {% endif %}
+
+    {% if object.isAssessor %}
+        <span class="label label-primary" style="padding: 2px;">Assesseur</span><br/>
+    {% endif %}
+
+    {% if object.isJecouteManager %}
+        <span class="label label-primary" style="padding: 2px;">J'écoute</span><br/>
+    {% endif %}
+
+    {% if object.isHostOnly %}
+        <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Co-Animateur</span><br/>
+    {% endif %}
+
+    {% if object.isSupervisor %}
+        <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur</span><br/>
+    {% endif %}
+
+    {% if object.isCitizenProjectAdministrator %}
+        <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Porteur de projet ({{ object.citizenProjectMemberships.countCitizenProjectAdministratorMemberships }})</span><br/>
+    {% endif %}
+
+    {% if object.isBoardMember %}
+        <span class="label label-primary" style="padding: 2px;">Membre du Conseil</span><br/>
+    {% endif %}
+
+    {% if object.isDeputy %}
+        <span class="label label-primary" style="padding: 2px;">Député</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedDeputy %}
+        <span class="label label-primary" style="padding: 2px;">Député délégué</span><br/>
+    {% endif %}
+
+    {% if object.isSenator %}
+        <span class="label label-primary" style="padding: 2px;">Sénateur</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedSenator %}
+        <span class="label label-primary" style="padding: 2px;">Sénateur délégué</span><br/>
+    {% endif %}
+
+    {% if object.isSenatorialCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Candidats Sénatoriales 2020</span><br/>
+    {% endif %}
+
+    {% if object.isMunicipalManager %}
+        <span class="label label-primary" style="padding: 2px;">Responsable communal</span><br/>
+    {% endif %}
+
+    {% if object.isElectionResultsReporter %}
+        <span class="label label-primary" style="padding: 2px;">Rapporteur résultats</span><br/>
+    {% endif %}
+
+    {% if object.isMunicipalChief %}
+        <span class="label label-primary" style="padding: 2px;">
+                Candidat Municipales 2020 🇫🇷
+                {% if object.getMunicipalChiefManagedArea.hasJecouteAccess %}
+                    <span title="Accès J'écoute">&nbsp;☎️&nbsp;</span>
+                {% endif %}
+
+            {% if municipal_site_is_enabled(object) %}
+                <span title="Site municipal actif">&nbsp;🖋&nbsp;</span>
+            {% endif %}
+            </span>
+        <br/>
+    {% endif %}
+
+    {% if object.isMunicipalManagerSupervisor %}
+        <span class="label label-primary" style="padding: 2px;">Responsable attribution</span>
+    {% endif %}
+{% elseif object.isAdherent %}
+    <span class="label label-primary">Adhérent</span>
+{% else %}
+    <span class="label label-default">Utilisateur</span>
+{% endif %}
+
+{% if object.hasPrintPrivilege %}
+    <span title="Accès LMI">&nbsp;🖨</span>
+{% endif %}
+
+{% if object.isLre %}
+    <span title="La République Ensemble" class="label label-primary">LRE</span>
+{% endif %}

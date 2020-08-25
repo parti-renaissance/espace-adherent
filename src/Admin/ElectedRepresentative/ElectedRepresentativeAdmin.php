@@ -121,9 +121,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'edit' => [],
-                ],
+                'template' => 'admin/elected_representative/list_actions.html.twig',
             ])
         ;
     }
