@@ -1,5 +1,35 @@
-.meeting-form-fields {
-    border-radius: 3px;
-    border: 1px solid $gray;
-    background-color: $gray--white;
+.manager-space.referent {
+    counter-reset: poll-choice-counter;
+
+    .meeting-form-fields {
+        border-radius: 3px;
+        border: 1px solid $gray;
+        background-color: $gray--white;
+    }
+
+    .election-poll-container {
+        .poll-collection {
+            & > div {
+                &:before {
+                    counter-increment: poll-choice-counter;
+                    content: "#" counter(poll-choice-counter) ;
+                    margin-right: 10px;
+                    display: flex;
+                    padding: 5px 13px;
+                }
+
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+
+                input {
+                    flex-grow: 1;
+                }
+            }
+
+            & > a {
+                margin-top: 40px;
+            }
+        }
+    }
 }

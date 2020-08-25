@@ -4,6 +4,8 @@ namespace App\TerritorialCouncil\Designation;
 
 use App\Address\PostAddressFactory;
 use App\Entity\TerritorialCouncil\Election;
+use App\Entity\TerritorialCouncil\ElectionPoll\Poll;
+use App\Entity\TerritorialCouncil\ElectionPoll\PollChoice;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\TerritorialCouncil\Event\TerritorialCouncilEvent;
 use App\TerritorialCouncil\Events;
@@ -38,7 +40,20 @@ class UpdateDesignationHandler
         $election->setDescription($request->getDescription());
         $election->setQuestions($request->getQuestions());
         $election->setElectionMode($request->getVoteMode());
-        $election->updatePostAddress($this->postAddressFactory->createFromAddress($request->getAddress()));
+
+        if ($election->isOnlineMode()) {
+            $election->setMeetingUrl($request->getMeetingUrl());
+        } else {
+            $election->updatePostAddress($this->postAddressFactory->createFromAddress($request->getAddress()));
+        }
+
+        if ($request->isWithPoll()) {
+            $poll = new Poll();
+            foreach ($request->getElectionPollChoices() as $choice) {
+                $poll->addChoice(new PollChoice($poll, $choice));
+            }
+            $election->setElectionPoll($poll);
+        }
 
         $this->entityManager->flush();
 
