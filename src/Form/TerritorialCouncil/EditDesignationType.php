@@ -86,11 +86,13 @@ class EditDesignationType extends AbstractType
             ->add('electionPollChoices', CollectionType::class, [
                 'required' => false,
                 'entry_type' => IntegerType::class,
+                'error_bubbling' => false,
                 'entry_options' => [
                     'label' => false,
                     'scale' => 0,
                     'attr' => [
                         'min' => 0,
+                        'max' => 10,
                     ],
                 ],
                 'allow_add' => true,
