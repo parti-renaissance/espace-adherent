@@ -3,13 +3,18 @@
 namespace App\Form\TerritorialCouncil;
 
 use App\Form\AddressType;
+use App\Form\GenderType;
 use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
 use App\TerritorialCouncil\Designation\UpdateDesignationRequest;
+use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,6 +29,9 @@ class EditDesignationType extends AbstractType
                 'choice_label' => function (string $choice) {
                     return 'designation.vote_mode.'.$choice;
                 },
+            ])
+            ->add('meetingUrl', UrlType::class, [
+                'required' => false,
             ])
             ->add('address', AddressType::class, [
                 'label' => false,
@@ -57,6 +65,39 @@ class EditDesignationType extends AbstractType
                 'attr' => ['maxlength' => 2000],
                 'filter_emojis' => true,
                 'with_character_count' => true,
+            ])
+            ->add('withPoll', ChoiceType::class, [
+                'choices' => [
+                    'Je ne souhaite pas rééquilibrer la composition du Comité politique' => false,
+                    'Je souhaite rééquilibrer la composition du Comité politique' => true,
+                ],
+                'placeholder' => false,
+                'expanded' => true,
+                'required' => false,
+            ])
+            ->add('electionPollGender', GenderType::class, [
+                'choices' => [
+                    'common.gender.woman' => Genders::FEMALE,
+                    'common.gender.man' => Genders::MALE,
+                ],
+                'placeholder' => false,
+                'required' => false,
+            ])
+            ->add('electionPollChoices', CollectionType::class, [
+                'required' => false,
+                'entry_type' => IntegerType::class,
+                'entry_options' => [
+                    'label' => false,
+                    'scale' => 0,
+                    'attr' => [
+                        'min' => 0,
+                    ],
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'attr' => [
+                    'class' => 'poll-collection',
+                ],
             ])
             ->add('save', SubmitType::class)
         ;

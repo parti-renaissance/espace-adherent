@@ -4,6 +4,7 @@ namespace App\Entity\TerritorialCouncil;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityPostAddressTrait;
+use App\Entity\TerritorialCouncil\ElectionPoll\Poll;
 use App\Entity\VotingPlatform\Designation\AbstractElectionEntity;
 use App\Geocoder\GeoPointInterface;
 use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
@@ -60,6 +61,21 @@ class Election extends AbstractElectionEntity implements GeoPointInterface
      * @ORM\Column(nullable=true)
      */
     private $electionMode;
+
+    /**
+     * @var Poll|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\Poll", inversedBy="election", cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $electionPoll;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $meetingUrl;
 
     public function getId(): ?int
     {
@@ -129,5 +145,15 @@ class Election extends AbstractElectionEntity implements GeoPointInterface
     public function isOnlineMode(): bool
     {
         return DesignationVoteModeEnum::VOTE_MODE_ONLINE === $this->electionMode;
+    }
+
+    public function setElectionPoll(?Poll $electionPoll): void
+    {
+        $this->electionPoll = $electionPoll;
+    }
+
+    public function setMeetingUrl(?string $meetingUrl): void
+    {
+        $this->meetingUrl = $meetingUrl;
     }
 }

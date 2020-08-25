@@ -27,6 +27,13 @@ class UpdateDesignationRequest
     private $address;
 
     /**
+     * @var string|null
+     *
+     * @Assert\Url
+     */
+    private $meetingUrl;
+
+    /**
      * @var \DateTime|null
      *
      * @Assert\DateTime
@@ -70,6 +77,21 @@ class UpdateDesignationRequest
      * @Assert\Length(max=2000)
      */
     private $questions;
+
+    /**
+     * @var bool
+     */
+    private $withPoll = false;
+
+    /**
+     * @var string|null
+     */
+    private $electionPollGender;
+
+    /**
+     * @var array|null
+     */
+    private $electionPollChoices;
 
     public function getVoteMode(): ?string
     {
@@ -154,5 +176,45 @@ class UpdateDesignationRequest
     public function isMeetingMode(): bool
     {
         return DesignationVoteModeEnum::VOTE_MODE_MEETING === $this->voteMode;
+    }
+
+    public function isWithPoll(): bool
+    {
+        return $this->withPoll;
+    }
+
+    public function setWithPoll(bool $withPoll): void
+    {
+        $this->withPoll = $withPoll;
+    }
+
+    public function getElectionPollGender(): ?string
+    {
+        return $this->electionPollGender;
+    }
+
+    public function setElectionPollGender(?string $electionPollGender): void
+    {
+        $this->electionPollGender = $electionPollGender;
+    }
+
+    public function getElectionPollChoices(): ?array
+    {
+        return $this->electionPollChoices;
+    }
+
+    public function setElectionPollChoices(?array $electionPollChoices): void
+    {
+        $this->electionPollChoices = $electionPollChoices;
+    }
+
+    public function getMeetingUrl(): ?string
+    {
+        return $this->meetingUrl;
+    }
+
+    public function setMeetingUrl(?string $meetingUrl): void
+    {
+        $this->meetingUrl = $meetingUrl;
     }
 }
