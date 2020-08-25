@@ -152,15 +152,15 @@
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.electionPollChoices, 'Ajoutez entre 1 et 5 choix au sondage. Ces choix seront présentés aux membres du comité jusqu\'au début du vote.', {label_attr: {class: 'em-form__label'}}) }}
+                    {{ form_label(form.electionPollChoices, 'Ajoutez entre 1 et 5 choix au sondage. Ces choix seront soumis aux membres du Conseil territorial jusqu\'à l\'ouverture du vote.', {label_attr: {class: 'em-form__label'}}) }}
                     {{ form_errors(form.electionPollChoices) }}
                     {{ form_widget(form.electionPollChoices) }}
                 </div>
             </div>
 
-            <p class="text--body text--dark b__nudge--bottom-50 b__nudge--top-60">
-                Une fois ce formulaire validé, les membres du Conseil territorial seront informés des dates du Conseil territorial et celles-ci ne pourront plus être modifiées.
-            </p>
+            <div class="alert alert--error b__nudge--top-60 b__nudge--bottom-60">
+                Une fois ce formulaire validé, vous ne pourrez plus le modifier. Les membres du Conseil territorial seront informés des dates du Conseil territorial par un e-mail automatique.
+            </div>
 
             <div>
                 {{ form_row(form.save, {label: 'Envoyer la convocation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
