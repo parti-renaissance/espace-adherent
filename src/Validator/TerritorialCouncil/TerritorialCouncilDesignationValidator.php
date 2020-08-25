@@ -59,7 +59,7 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
         } else {
             if (!$value->getMeetingUrl()) {
                 $this->context
-                    ->buildViolation($constraint->messageAddressEmpty)
+                    ->buildViolation($constraint->messageUrlEmpty)
                     ->atPath('meetingUrl')
                     ->addViolation()
                 ;
@@ -125,7 +125,7 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
             }
 
             foreach ($value->getElectionPollChoices() as $choice) {
-                if ($choice < 0 || $choice > 100) {
+                if (!\is_integer($choice) || $choice > 10) {
                     $this->context
                         ->buildViolation($constraint->messageElectionPollChoiceInvalid)
                         ->atPath('electionPollChoices')
