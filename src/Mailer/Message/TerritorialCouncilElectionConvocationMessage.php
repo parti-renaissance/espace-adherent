@@ -12,7 +12,7 @@ class TerritorialCouncilElectionConvocationMessage extends Message
         TerritorialCouncil $territorialCouncil,
         array $memberships,
         string $territorialCouncilUrl,
-        ?TerritorialCouncilMembership $president
+        TerritorialCouncilMembership $president
     ): self {
         $election = $territorialCouncil->getCurrentElection();
         $designation = $election->getDesignation();
@@ -35,9 +35,10 @@ class TerritorialCouncilElectionConvocationMessage extends Message
                 'meeting_start_date' => self::dateToString($election->getMeetingStartDate()),
                 'description' => $election->getDescription(),
                 'questions' => $election->getQuestions() ?? 'null',
-                'referent_first_name' => $president ? $president->getAdherent()->getFirstName() : '',
-                'referent_last_name' => $president ? $president->getAdherent()->getLastName() : '',
+                'referent_first_name' => $president->getAdherent()->getFirstName(),
+                'referent_last_name' => $president->getAdherent()->getLastName(),
                 'online_mode' => $election->isOnlineMode(),
+                'president_email' => $president->getAdherent()->getEmailAddress(),
             ],
             [
                 'first_name' => $adherent->getFirstName(),

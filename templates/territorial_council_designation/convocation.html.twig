@@ -6,6 +6,8 @@
 
 {% import 'javascript.js.twig' as js %}
 
+{% form_theme form 'jquery.collection.html.twig' %}
+
 {% block designation_content %}
     <div class="territorial-council l__wrapper b__nudge--bottom-huge">
         <div>
@@ -13,7 +15,7 @@
         </div>
 
         <div class="l__wrapper--slim">
-            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Le Conseil territorial aura lieu :</h2>
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Le Conseil territorial</h2>
 
             {{ form_start(form, {attr: {class: 'em-form'}}) }}
 
@@ -29,42 +31,50 @@
                 {{ form_widget(form.voteMode) }}
             </div>
 
-            <div class="meeting-form-fields space--20-30" style="{{ form.voteMode.vars.value != constant('App\\TerritorialCouncil\\Designation\\DesignationVoteModeEnum::VOTE_MODE_MEETING') ? 'display: none' }}">
+            <div class="meeting-form-fields space--20-30">
                 <div>
-                    {{ form_errors(form.address) }}
-
-                    <div>
-                        <div class="address-autocomplete em-form__group">
-                            <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
-                        </div>
-                        <p class="text--error visually-hidden" id="address-autocomplete-help-message">
-                            Nous n'avons pas reconnu votre adresse, veuillez <a href="#">cliquer ici</a> pour pouvoir la renseigner librement.
-                        </p>
+                    <div class="em-form__group" style="{{ form.voteMode.vars.value != constant('App\\TerritorialCouncil\\Designation\\DesignationVoteModeEnum::VOTE_MODE_ONLINE') ? 'display: none' }}">
+                        <label class="em-form__label">Le lien de la réunion <span class="em-form__required">*</span></label>
+                        {{ form_errors(form.meetingUrl) }}
+                        {{ form_widget(form.meetingUrl, { attr: { class: 'em-form__field', placeholder: 'https://' } }) }}
                     </div>
 
-                    <div class="address-block">
-                        <div class="em-form__group">
-                            <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
-                            {{ form_errors(form.address.address) }}
-                            {{ form_widget(form.address.address, { attr: { class: 'em-form__field', placeholder: 'Adresse postale' } }) }}
-                        </div>
+                    <div style="{{ form.voteMode.vars.value != constant('App\\TerritorialCouncil\\Designation\\DesignationVoteModeEnum::VOTE_MODE_MEETING') ? 'display: none' }}">
+                        {{ form_errors(form.address) }}
 
-                        <div class="em-form__group">
-                            <label class="em-form__label">Pays <span class="em-form__required">*</span></label>
-                            {{ form_errors(form.address.country) }}
-                            {{ form_widget(form.address.country, { attr: { class: 'em-form__field' } }) }}
-                        </div>
-
-                        <div class="em-form__row">
-                            <div class="em-form__group">
-                                <label class="em-form__label">Code postal <span class="em-form__required">*</span></label>
-                                {{ form_errors(form.address.postalCode) }}
-                                {{ form_widget(form.address.postalCode, { attr: { class: 'em-form__field', placeholder: 'Code postal' } }) }}
+                        <div>
+                            <div class="address-autocomplete em-form__group">
+                                <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
                             </div>
+                            <p class="text--error visually-hidden" id="address-autocomplete-help-message">
+                                Nous n'avons pas reconnu votre adresse, veuillez <a href="#">cliquer ici</a> pour pouvoir la renseigner librement.
+                            </p>
+                        </div>
+
+                        <div class="address-block">
                             <div class="em-form__group">
-                                <label class="em-form__label">Ville <span class="em-form__required">*</span></label>
-                                {{ form_errors(form.address.cityName) }}
-                                {{ form_widget(form.address.cityName, { attr: { class: 'em-form__field', placeholder: 'Ville' } }) }}
+                                <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
+                                {{ form_errors(form.address.address) }}
+                                {{ form_widget(form.address.address, { attr: { class: 'em-form__field', placeholder: 'Adresse postale' } }) }}
+                            </div>
+
+                            <div class="em-form__group">
+                                <label class="em-form__label">Pays <span class="em-form__required">*</span></label>
+                                {{ form_errors(form.address.country) }}
+                                {{ form_widget(form.address.country, { attr: { class: 'em-form__field' } }) }}
+                            </div>
+
+                            <div class="em-form__row">
+                                <div class="em-form__group">
+                                    <label class="em-form__label">Code postal <span class="em-form__required">*</span></label>
+                                    {{ form_errors(form.address.postalCode) }}
+                                    {{ form_widget(form.address.postalCode, { attr: { class: 'em-form__field', placeholder: 'Code postal' } }) }}
+                                </div>
+                                <div class="em-form__group">
+                                    <label class="em-form__label">Ville <span class="em-form__required">*</span></label>
+                                    {{ form_errors(form.address.cityName) }}
+                                    {{ form_widget(form.address.cityName, { attr: { class: 'em-form__field', placeholder: 'Ville' } }) }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -88,23 +98,7 @@
                 <p class="text--silver-gray text--small">La durée maximale : 12 heures</p>
             </div>
 
-            <div class="em-form__group em-form__width--1 b__nudge--top-large">
-                {{ form_label(form.voteStartDate, 'Début du vote', {label_attr: {class: 'em-form__label'}}) }}
-                {{ form_errors(form.voteStartDate) }}
-                <p class="em-form__legend">
-                    La convocation doit avoir lieu au minimum 7 jours avant la tenue du vote. Les candidatures seront closes automatiquement 48h avant son ouverture.
-                </p>
-                {{ form_widget(form.voteStartDate) }}
-            </div>
-
-            <div class="em-form__group em-form__width--1">
-                {{ form_label(form.voteEndDate, 'Fin du vote', {label_attr: {class: 'em-form__label'}}) }}
-                {{ form_errors(form.voteEndDate) }}
-                <p class="em-form__legend">La durée du vote doit être comprise entre 5h et 7 jours.</p>
-                {{ form_widget(form.voteEndDate) }}
-            </div>
-
-            <div class="em-form__group">
+            <div class="em-form__group b__nudge--top">
                 {{ form_label(form.description, 'Ordre du jour', {label_attr: {class: 'em-form__label'}}) }}
                 {{ form_errors(form.description) }}
                 <div class="em-form__field--ctn">
@@ -120,7 +114,51 @@
                 </div>
             </div>
 
-            <p class="text--body text--dark b__nudge--bottom-50">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">La tenue du vote</h2>
+
+            <div class="em-form__group b__nudge--top-large">
+                {{ form_label(form.voteStartDate, 'Début du vote', {label_attr: {class: 'em-form__label'}}) }}
+                {{ form_errors(form.voteStartDate) }}
+                <p class="em-form__legend">
+                    La convocation doit avoir lieu au minimum 7 jours avant la tenue du vote. Les candidatures seront closes automatiquement 48h avant son ouverture.
+                </p>
+                {{ form_widget(form.voteStartDate) }}
+            </div>
+
+            <div class="em-form__group">
+                {{ form_label(form.voteEndDate, 'Fin du vote', {label_attr: {class: 'em-form__label'}}) }}
+                {{ form_errors(form.voteEndDate) }}
+                <p class="em-form__legend">La durée du vote doit être comprise entre 5h et 7 jours.</p>
+                {{ form_widget(form.voteEndDate) }}
+            </div>
+
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Equilibrage des membres au Comité politique</h2>
+
+            <p>Afin de répondre à l'un des objectifs de notre mouvement, avoir plus de parité dans nos instances, le Conseil
+                territorial peut désigner des membres supplémentaires au Comité politique pour rééquilibrer sa composition
+                entre les membres de droit et les membres désignés (<a href="{{ path('app_territorial_council_faq', {_fragment: 'rules'}) }}">en savoir plus</a>).
+            </p>
+
+            <div class="em-form__group">
+                {{ form_errors(form.withPoll) }}
+                {{ form_widget(form.withPoll) }}
+            </div>
+
+            <div class="em-form__group election-poll-container" style="display: {{ form.withPoll.vars.value ? 'block' : 'none' }}">
+                <div class="em-form__group">
+                    {{ form_label(form.electionPollGender, 'Ajouter des sièges pour le genre :', {label_attr: {class: 'em-form__label'}}) }}
+                    {{ form_errors(form.electionPollGender) }}
+                    {{ form_widget(form.electionPollGender) }}
+                </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.electionPollChoices, 'Ajoutez entre 1 et 5 choix au sondage. Ces choix seront présentés aux membres du comité jusqu\'au début du vote.', {label_attr: {class: 'em-form__label'}}) }}
+                    {{ form_errors(form.electionPollChoices) }}
+                    {{ form_widget(form.electionPollChoices) }}
+                </div>
+            </div>
+
+            <p class="text--body text--dark b__nudge--bottom-50 b__nudge--top-60">
                 Une fois ce formulaire validé, les membres du Conseil territorial seront informés des dates du Conseil territorial et celles-ci ne pourront plus être modifiées.
             </p>
 
@@ -140,20 +178,47 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
 
+    <script src="{{ asset('js/jquery.collection.js') }}"></script>
+
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.autocomlete_address(form.address) }}
 
-            var meetingFieldContainer = dom('.meeting-form-fields');
+            var meetingUrlContainer = dom('.meeting-form-fields > div > div:first-child');
+            var meetingAddressContainer = dom('.meeting-form-fields > div > div:last-child');
 
             findAll(document, 'input[name="{{ form.voteMode.vars.full_name }}"').forEach(function(radio) {
                 on(radio, 'change', function (event) {
                     if (event.target.value === '{{ constant('App\\TerritorialCouncil\\Designation\\DesignationVoteModeEnum::VOTE_MODE_MEETING') }}') {
-                        show(meetingFieldContainer);
+                        hide(meetingUrlContainer);
+                        show(meetingAddressContainer);
                     } else {
-                        hide(meetingFieldContainer);
+                        hide(meetingAddressContainer);
+                        show(meetingUrlContainer);
                     }
                 });
+            });
+
+            var pollContainer = dom('.election-poll-container');
+
+            findAll(document, 'input[name="{{ form.withPoll.vars.full_name }}"').forEach(function(radio) {
+                on(radio, 'change', function (event) {
+                    if (event.target.value == 1) {
+                        show(pollContainer);
+                    } else {
+                        hide(pollContainer);
+                    }
+                });
+            });
+
+            $('.poll-collection').collection({
+                init_with_n_elements: 1,
+                add: '<a href="#" class="btn-secondary btn-secondary--blue">Ajouter un nouvel élément</a>',
+                remove: '<a href="#" class="btn-secondary btn-secondary--blue">-</a>',
+                allow_up: false,
+                allow_down: false,
+                add_at_the_end: true,
+                drag_drop: false,
             });
         });
     </script>

@@ -9,6 +9,7 @@
         <table class="datagrid__table-manager">
             <thead>
                 <tr>
+                    <th>Conseil territorial</th>
                     <th>Type</th>
                     <th>Date</th>
                     <th>Action</th>
@@ -19,6 +20,7 @@
                 {% for election in elections %}
                     {% set designation = election.designation %}
                     <tr>
+                        <td>{{ election.territorialCouncil.name }}</td>
                         <td>{{ "designation.label.type_#{designation.type}"|trans }}</td>
                         <td>{{ designation.voteEndDate ? designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}</td>
                         <td>

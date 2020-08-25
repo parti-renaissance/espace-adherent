@@ -56,52 +56,84 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
                     ->addViolation()
                 ;
             }
-
-            $meetingStartDate = $value->getMeetingStartDate();
-            $meetingEndDate = $value->getMeetingEndDate();
-
-            if (!$meetingStartDate) {
+        } else {
+            if (!$value->getMeetingUrl()) {
                 $this->context
-                    ->buildViolation($constraint->messageDateEmpty)
-                    ->atPath('meetingStartDate')
+                    ->buildViolation($constraint->messageAddressEmpty)
+                    ->atPath('meetingUrl')
+                    ->addViolation()
+                ;
+            }
+        }
+
+        $meetingStartDate = $value->getMeetingStartDate();
+        $meetingEndDate = $value->getMeetingEndDate();
+
+        if (!$meetingStartDate) {
+            $this->context
+                ->buildViolation($constraint->messageDateEmpty)
+                ->atPath('meetingStartDate')
+                ->addViolation()
+            ;
+
+            return;
+        }
+
+        if (!$meetingEndDate) {
+            $this->context
+                ->buildViolation($constraint->messageDateEmpty)
+                ->atPath('meetingEndDate')
+                ->addViolation()
+            ;
+
+            return;
+        }
+
+        if ($meetingStartDate < $voteStartDate || $meetingStartDate > $voteEndDate) {
+            $this->context
+                ->buildViolation($constraint->messageMeetingDateInvalid)
+                ->atPath('meetingStartDate')
+                ->addViolation()
+            ;
+        }
+
+        if ($meetingEndDate < $voteStartDate || $meetingEndDate > $voteEndDate) {
+            $this->context
+                ->buildViolation($constraint->messageMeetingDateInvalid)
+                ->atPath('meetingEndDate')
+                ->addViolation()
+            ;
+        }
+
+        if ($meetingStartDate >= $meetingEndDate || $meetingEndDate > (clone $meetingStartDate)->modify('+12 hours')) {
+            $this->context
+                ->buildViolation($constraint->messageMeetingEndDateInvalid)
+                ->atPath('meetingEndDate')
+                ->addViolation()
+            ;
+        }
+
+        if ($value->isWithPoll()) {
+            if (empty(array_filter($value->getElectionPollChoices()))) {
+                $this->context
+                    ->buildViolation($constraint->messageElectionPollChoiceInvalid)
+                    ->atPath('electionPollChoices')
                     ->addViolation()
                 ;
 
                 return;
             }
 
-            if (!$meetingEndDate) {
-                $this->context
-                    ->buildViolation($constraint->messageDateEmpty)
-                    ->atPath('meetingEndDate')
-                    ->addViolation()
-                ;
+            foreach ($value->getElectionPollChoices() as $choice) {
+                if ($choice < 0 || $choice > 100) {
+                    $this->context
+                        ->buildViolation($constraint->messageElectionPollChoiceInvalid)
+                        ->atPath('electionPollChoices')
+                        ->addViolation()
+                    ;
 
-                return;
-            }
-
-            if ($meetingStartDate < $voteStartDate || $meetingStartDate > $voteEndDate) {
-                $this->context
-                    ->buildViolation($constraint->messageMeetingDateInvalid)
-                    ->atPath('meetingStartDate')
-                    ->addViolation()
-                ;
-            }
-
-            if ($meetingEndDate < $voteStartDate || $meetingEndDate > $voteEndDate) {
-                $this->context
-                    ->buildViolation($constraint->messageMeetingDateInvalid)
-                    ->atPath('meetingEndDate')
-                    ->addViolation()
-                ;
-            }
-
-            if ($meetingStartDate >= $meetingEndDate || $meetingEndDate > (clone $meetingStartDate)->modify('+12 hours')) {
-                $this->context
-                    ->buildViolation($constraint->messageMeetingEndDateInvalid)
-                    ->atPath('meetingEndDate')
-                    ->addViolation()
-                ;
+                    return;
+                }
             }
         }
     }
