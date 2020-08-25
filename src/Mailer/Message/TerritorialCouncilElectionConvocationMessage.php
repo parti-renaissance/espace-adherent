@@ -27,7 +27,7 @@ class TerritorialCouncilElectionConvocationMessage extends Message
             sprintf('[Désignations] Convocation au Conseil territorial du %s', self::dateToString($designation->getVoteStartDate())),
             [
                 'territorial_council_name' => $territorialCouncil->getName(),
-                'now' => self::dateToString(new \DateTime()),
+                'now' => self::formatDate(new \DateTime(), 'EEEE d MMMM y'),
                 'url' => $territorialCouncilUrl,
                 'vote_start_date' => self::dateToString($designation->getVoteStartDate()),
                 'vote_end_date' => self::dateToString($designation->getVoteEndDate()),

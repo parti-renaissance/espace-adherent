@@ -90,6 +90,8 @@ class UpdateDesignationRequest
 
     /**
      * @var array|null
+     *
+     * @Assert\Count(max=5)
      */
     private $electionPollChoices;
 
