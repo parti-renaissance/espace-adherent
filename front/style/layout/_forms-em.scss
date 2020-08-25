@@ -6,14 +6,6 @@
     line-height: normal;
     color: $black;
     margin-bottom: 10px;
-    min-height: 19px;
-
-    &.required {
-        &:after {
-            content: ' *';
-            color: $red--nation;
-        }
-    }
 
     .em-form__required {
         color: $red--nation;
@@ -31,7 +23,7 @@
     padding: 0 12px;
     color: $black;
     margin: 0;
-    height: 54px;
+    height: 60px;
     border-radius: 3px;
     border: solid 1px $lines-grey;
     background-color: $white;
@@ -214,21 +206,15 @@
 .em-form {
 
     .em-form__section {
-        padding-bottom: 40px;
+        padding-bottom: 30px;
     }
 
     .em-form__group {
-        margin-bottom: 20px;
+        margin-bottom: 35px;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         color: $dark;
-
-        &.half {
-            @media (min-width: $mobile) {
-                width: calc((100% - 15px) / 2);
-            }
-        }
 
         .em-form__field--ctn { position: relative; }
 
@@ -237,7 +223,7 @@
         select.em-form__field { @include em-form-select; }
         .em-form__search { @include em-form-search; }
 
-        & > .em-form__label { @include em-form-label; }
+        .em-form__label { @include em-form-label; }
         .em-form__legend { @include em-form-legend; }
         .em-form--error { @include em-form-error; }
 
@@ -281,31 +267,6 @@
                 font-size: 12px;
                 line-height: normal;
                 color: $neutral-grey;
-            }
-        }
-
-        .em-form__social {
-            position: relative;
-
-            span.social {
-                position: absolute;
-                width: 54px;
-                min-width: 54px;
-                height: 52px;
-                top: 1px;
-                border-right: 1px solid $lines-grey;
-                background-repeat: no-repeat;
-                background-position: center center;
-
-                &--fb { background-image: url('/images/icons/socials/facebook.svg'); }
-                &--tw { background-image: url('/images/icons/socials/twitter.svg'); }
-                &--lk { background-image: url('/images/icons/socials/linkedin.svg'); }
-                &--tl { background-image: url('/images/icons/socials/telegram.svg'); }
-
-            }
-
-            .em-form__field {
-                padding-left: 62px;
             }
         }
 
@@ -424,7 +385,6 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        align-items: flex-start;
 
         @media (min-width: $mobile) {
             flex-direction: row;

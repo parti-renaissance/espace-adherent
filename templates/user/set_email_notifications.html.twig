@@ -1,12 +1,9 @@
-{% extends 'adherent_profile/_layout.html.twig' %}
+{% extends 'adherent/layout.twig' %}
 
-{% block page_title 'Communication' %}
+{% block adherent_profile_form %}
+    {{ form_start(form, { attr: { class: 'form' } }) }}
+        <h2 class="b__nudge--bottom-large">Mes communications via e-mail et mobile</h2>
 
-{% block adherent_profile_content %}
-<section class="adherent-profile__section" id="subscriptions">
-    <h1 class="text--medium-large">Communications</h1>
-
-    {{ form_start(form, { attr: { class: 'em-form' } }) }}
         {{ form_errors(form) }}
 
         {% set help_messages = {
@@ -14,28 +11,37 @@
         } %}
 
         {% for group_choices in form.subscriptionTypes.vars.choices %}
-            <section class="em-form__section">
             {% if group_choices.choices is defined %}
                 {% if group_choices.label %}
-                    <h2 class="section-subtitle">{{ group_choices.label|trans }}</h2>
+                    <h3 class="b__nudge--top-40 b__nudge--bottom-medium">{{ group_choices.label|trans }}</h3>
                 {% endif %}
 
-                <div class="em-form__group">
-                    {% for key, choice_view in group_choices %}
-                        {{ form_row(form.subscriptionTypes.children[key]) }}
+                {% for key, choice_view in group_choices %}
+                    {{ form_row(form.subscriptionTypes.children[key]) }}
 
-                        {% if help_messages[choice_view.data.code] is defined %}
-                            <p class="text--small text--muted">{{ help_messages[choice_view.data.code]|raw }}</p>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                    {% if help_messages[choice_view.data.code] is defined %}
+                        <p class="text--small text--muted">{{ help_messages[choice_view.data.code]|raw }}</p>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
-            </section>
         {% endfor %}
 
         <div class="b__nudge--top">
             {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
         </div>
+
+        {% if app.user.isAdherent %}
+            <div class="b__nudge--top-50">
+                <p class="text--small">
+                    ☝️ Pour ne plus recevoir les e-mails de <strong>certains animateurs ou porteurs de projets citoyens</strong>, rendez-vous sur leur page respective de comité ou projet citoyen pour cesser de les suivre.
+                </p>
+
+                <h3 class="b__nudge--bottom">Les comités que je suis</h3>
+                <div>{{ render(controller('App\\Controller\\EnMarche\\AdherentController:listMyCommitteesAction', { noResultMessage: 'Aucun comité pour l\'instant' })) }}</div>
+
+                <h3 class="b__nudge--bottom b__nudge--top">Les projets citoyens que je suis</h3>
+                <div>{{ render(controller('App\\Controller\\EnMarche\\AdherentController:listMyCitizenProjectsAction', { noResultMessage: 'Aucun projet pour l\'instant' })) }}</div>
+            </div>
+        {% endif %}
     {{ form_end(form) }}
-</section>
 {% endblock %}

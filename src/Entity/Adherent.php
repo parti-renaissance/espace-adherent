@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CitizenProjectMembershipCollection;
@@ -433,37 +432,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $twitterPageUrl;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="legislative_candidate.linkedin_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
-    private $linkedinPageUrl;
-
-    /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url(groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
-    private $telegramPageUrl;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(nullable=true)
-     */
-    private $job;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(nullable=true)
-     */
-    private $activityArea;
-
-    /**
      * @ORM\Column(length=2, nullable=true)
      */
     private $nationality;
@@ -575,13 +543,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToMany(targetEntity="App\Entity\MyTeam\DelegatedAccess", mappedBy="delegated", cascade={"all"})
      */
     private $receivedDelegatedAccesses;
-
-    /**
-     * @var AdherentCommitment
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\AdherentCommitment", mappedBy="adherent", cascade={"all"})
-     */
-    private $commitment;
 
     public function __construct()
     {
@@ -1103,28 +1064,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setInterests(array $interests): void
     {
         $this->interests = $interests;
-    }
-
-    public function updateProfile(AdherentProfile $adherentProfile, PostAddress $postAddress): void
-    {
-        $this->customGender = $adherentProfile->getCustomGender();
-        $this->gender = $adherentProfile->getGender();
-        $this->firstName = $adherentProfile->getFirstName();
-        $this->lastName = $adherentProfile->getLastName();
-        $this->birthdate = $adherentProfile->getBirthdate();
-        $this->position = $adherentProfile->getPosition();
-        $this->phone = $adherentProfile->getPhone();
-        $this->nationality = $adherentProfile->getNationality();
-        $this->facebookPageUrl = $adherentProfile->getFacebookPageUrl();
-        $this->twitterPageUrl = $adherentProfile->getTwitterPageUrl();
-        $this->telegramPageUrl = $adherentProfile->getTelegramPageUrl();
-        $this->linkedinPageUrl = $adherentProfile->getLinkedinPageUrl();
-        $this->job = $adherentProfile->getJob();
-        $this->activityArea = $adherentProfile->getActivityArea();
-
-        if (!$this->postAddress->equals($postAddress)) {
-            $this->postAddress = $postAddress;
-        }
     }
 
     public function updateMembership(MembershipRequest $membership, PostAddress $postAddress): void
@@ -2293,73 +2232,45 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->lreArea instanceof LreArea;
     }
 
-    public function getFacebookPageUrl(): ?string
+    public function getAllReferentManagedTagsCodes()
     {
-        return $this->facebookPageUrl;
+        $tags = [];
+        if ($this->isReferent()) {
+            $tags = $this->getManagedArea()->getReferentTagCodes();
+        }
+
+        foreach ($this->getReceivedDelegatedAccessOfType('referent') as $delegatedAccess) {
+            $tags = \array_merge($tags, $delegatedAccess->getDelegator()->getManagedArea()->getReferentTagCodes());
+        }
+
+        return array_unique($tags);
     }
 
-    public function setFacebookPageUrl(?string $facebookPageUrl): void
+    public function getAllDeputyManagedTagsCodes()
     {
-        $this->facebookPageUrl = $facebookPageUrl;
+        $tags = [];
+        if ($this->isDeputy()) {
+            $tags = [$this->getManagedDistrict()->getReferentTag()->getCode()];
+        }
+
+        foreach ($this->getReceivedDelegatedAccessOfType('deputy') as $delegatedAccess) {
+            $tags[] = $delegatedAccess->getDelegator()->getManagedDistrict()->getReferentTag()->getCode();
+        }
+
+        return \array_unique($tags);
     }
 
-    public function getTwitterPageUrl(): ?string
+    public function getAllSenatorManagedTagsCodes()
     {
-        return $this->twitterPageUrl;
-    }
+        $tags = [];
+        if ($this->isSenator()) {
+            $tags = [$this->getSenatorArea()->getDepartmentTag()->getCode()];
+        }
 
-    public function setTwitterPageUrl(?string $twitterPageUrl): void
-    {
-        $this->twitterPageUrl = $twitterPageUrl;
-    }
+        foreach ($this->getReceivedDelegatedAccessOfType('senator') as $delegatedAccess) {
+            $tags[] = $delegatedAccess->getDelegator()->getSenatorArea()->getDepartmentTag()->getCode();
+        }
 
-    public function getLinkedinPageUrl(): ?string
-    {
-        return $this->linkedinPageUrl;
-    }
-
-    public function setLinkedinPageUrl(?string $linkedinPageUrl): void
-    {
-        $this->linkedinPageUrl = $linkedinPageUrl;
-    }
-
-    public function getTelegramPageUrl(): ?string
-    {
-        return $this->telegramPageUrl;
-    }
-
-    public function setTelegramPageUrl(?string $telegramPageUrl): void
-    {
-        $this->telegramPageUrl = $telegramPageUrl;
-    }
-
-    public function getJob(): ?string
-    {
-        return $this->job;
-    }
-
-    public function setJob(string $job): void
-    {
-        $this->job = $job;
-    }
-
-    public function getActivityArea(): ?string
-    {
-        return $this->activityArea;
-    }
-
-    public function setActivityArea(string $activityArea): void
-    {
-        $this->activityArea = $activityArea;
-    }
-
-    public function getCommitment(): ?AdherentCommitment
-    {
-        return $this->commitment;
-    }
-
-    public function setCommitment(AdherentCommitment $commitment): void
-    {
-        $this->commitment = $commitment;
+        return \array_unique($tags);
     }
 }

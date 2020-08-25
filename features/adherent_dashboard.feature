@@ -112,13 +112,13 @@ Feature:
 
     # As an animator, I should have a committee section
     Then I should see "Les comités dont je fais partie"
-    And I should see "En Marche Paris 8"
-    And I should see "En Marche Dammarie-les-Lys"
+    And I should see "En Marche - Comité de Singapour"
+    And I should see "En Marche - Comité de New York City"
 
     # As an animator, I should have a citizen project section
     Then I should see "Mes projets citoyens"
-    And I should see "Le projet citoyen à Paris 8"
-    And I should see "Le projet citoyen à Dammarie-les-Lys"
+    And I should see "En Marche - Projet citoyen"
+    And I should see "Projet citoyen à New York City"
 
     # As an animator, I should have an activity section
     Then I should see "Activité récente"

@@ -143,7 +143,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         self::assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
-        $this->client->click($crawler->selectLink('Mes événements')->link());
+        $this->client->click($crawler->selectLink('Mes activités')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());

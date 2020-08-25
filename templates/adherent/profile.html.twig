@@ -1,15 +1,10 @@
-{% extends 'adherent_profile/_layout.html.twig' %}
-
-{% form_theme form with ['form_theme_profile.html.twig', 'socials_theme.html.twig'] %}
-
-{% block page_title 'Informations générales' %}
+{% extends 'adherent/layout.twig' %}
 
 {% block stylesheets %}
     <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
@@ -20,22 +15,30 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
 
+    {% include 'membership/_mandates_script.html.twig' %}
     {% include 'membership/_profile_script.html.twig' %}
 
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runProfileUpdatePage();
-
             {{ js.address(form.address, { cityAutocomplete: true }) }}
+            $('.multi_mandate').select2({placeholder: '{{ 'adherent.form.mandate.placeholder'|trans }}'});
+            {{ js.toggleMandatesSelect('#'~form.elected.vars.id, '#'~form.mandates.vars.id) }}
         });
     </script>
 {% endblock %}
 
-{% block adherent_profile_content %}
-<section class="adherent-profile__section">
-    <h1 class="text--medium-large">Général</h1>
+{% block adherent_profile_form %}
+    <h2>Mes informations personnelles</h2>
 
-    {{ form_start(form, {attr: {class: 'em-form'}}) }}
+    <div class="l__row l__row--top l__row--h-stretch b__border b__nudge--top space--30">
+        E-mail: <span>{{ app.user.emailAddress }}</span>
+        <a href="{{ path('app_user_change_email') }}" class="btn btn--green">Modifier mon adresse e-mail</a>
+    </div>
+
+    <p>Modifiez vos informations personnelles.</p>
+
+    {{ form_start(form) }}
         {% if app.user.certified %}
         <div class="alert alert--tips b__nudge--bottom-large">
             Votre profil est certifié, vous ne pouvez donc plus modifier votre genre, nom, prénom et date de naissance.
@@ -44,86 +47,116 @@
 
         {{ form_errors(form) }}
 
-        <div class="em-form__section">
-            <h2 class="section-subtitle">Votre identité</h2>
-            <div class="em-form__row">
-                {{ form_row(form.firstName) }}
-                {{ form_row(form.lastName) }}
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--third">
+                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                {{ form_errors(form.gender) }}
             </div>
-            <div class="em-form__row">
-                {{ form_row(form.gender) }}
-                {{ form_row(form.customGender, {label: false, attr: {placeholder: 'Entrez votre genre'}}) }}
-            </div>
-            <div class="em-form__row">
-                {{ form_row(form.birthdate, {label: 'Date de naissance'}) }}
-                {{ form_row(form.nationality, {label: 'Nationalité'}) }}
+
+            <div class="register__form--mid">
+                {{ form_widget(form.customGender, { attr: { placeholder: 'Personnaliser mon genre' } }) }}
+                {{ form_errors(form.customGender) }}
             </div>
         </div>
 
-        <div class="em-form__section">
-            <h2 class="section-subtitle">Vos coordonnées</h2>
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                {{ form_widget(form.firstName, { attr: { placeholder: 'Prénom' } }) }}
+                {{ form_errors(form.firstName) }}
+            </div>
+            <div class="register__form--mid">
+                {{ form_widget(form.lastName, { attr: { placeholder: 'Nom' } }) }}
+                {{ form_errors(form.lastName) }}
+            </div>
+        </div>
 
-            <p class="text--body text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
+        <p class="b__nudge--bottom-tiny text--bold">Adresse</p>
+
+        <div class="form__row">
+            <div class="address-autocomplete"></div>
+            <p class="text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
                 Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
             </p>
+        </div>
 
-            <div class="em-form__row">
-                <div class="em-form__group">
-                    {{ form_label(form.address.address, 'Adresse') }}
-                    <div class="em-form__group b__nudge--none" style="margin: 0;">
-                    {{ form_widget(form.address.address) }}
-                    </div>
-                    {{ form_errors(form.address.address) }}
-                    <div class="address-autocomplete"></div>
+        <div class="address-block" id="membership-address">
+            {{ form_errors(form.address) }}
+            {{ form_errors(form.address.cityName) }}
+            <div class="l__row l__row--h-stretch register__form--full">
+                {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
+                {{ form_errors(form.address.address) }}
+            </div>
+
+            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                <div class="register__form__country register__form--third">
+                    {{ form_widget(form.address.country) }}
+                    {{ form_errors(form.address.country) }}
                 </div>
 
-                {{ form_row(form.address.postalCode, {label: 'Code postal'}) }}
+                <div class="register__form__zip_code register__form--third">
+                    {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+                </div>
+
+                <div class="register__form__city register__form--third">
+                    {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
+                    {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
+                </div>
             </div>
-            <div class="em-form__row">
-                {{ form_row(form.address.cityName, {label: 'Ville'}) }}
-                {{ form_row(form.address.city) }}
-                {{ form_row(form.address.country, {label: 'Pays'}) }}
+        </div>
+
+        <div class="space--10-0"></div>
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="l__row l__row--h-stretch b__nudge--bottom-tiny">
+                {{ form_widget(form.nationality, { attr: { class: 'register__form__nationality' } }) }}
+                {{ form_errors(form.nationality) }}
             </div>
-            <div class="em-form__group">
-                {{ form_errors(form.address) }}
-            </div>
-            {{ form_row(form.emailAddress, {half: true, label: 'Adresse e-mail'}) }}
-            <div class="em-form__row">
-                {{ form_row(form.phone.country, {label: 'Numéro de téléphone'}) }}
-                {{ form_row(form.phone.number, {label: ' ', attr: {placeholder: 'Numéro de téléphone'}}) }}
-            </div>
-            <div class="em-form__group">
+        </div>
+    <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="l__col l__col--top register__form__phone register__form--third">
+                {{ form_label(form.phone, 'Téléphone', { 'label_attr': {'class': 'text--gray'} }) }}
+                <div class="l__row l__row--top l__row--h-stretch">
+                    {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone'} }) }}
+                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                </div>
                 {{ form_errors(form.phone) }}
             </div>
-        </div>
 
-        <div class="em-form__section">
-            <h2 class="section-subtitle">Vos identifiants réseaux sociaux</h2>
-            <p class="text--body text--muted text--small">
-                Vous pourrez être contactés par vos responsables locaux ou recevoir des informations susceptibles de vous intéresser.
-            </p>
-            <div class="em-form__row">
-                {{ form_row(form.facebookPageUrl, {label: 'Facebook'}) }}
+            <div class="l__col l__col--top register__form--third">
+                {{ form_label(form.position, 'Profession', { 'label_attr': {'class': 'text--gray'} }) }}
+                {{ form_widget(form.position, { attr: { class: 'register__form__profession' } }) }}
+                {{ form_errors(form.position) }}
             </div>
-            <div class="em-form__row">
-                {{ form_row(form.linkedinPageUrl, {label: 'LinkedIn'}) }}
-            </div>
-            <div class="em-form__row">
-                {{ form_row(form.twitterPageUrl, {label: 'Twitter'}) }}
-            </div>
-            <div class="em-form__row">
-                {{ form_row(form.telegramPageUrl, {label: 'Télégram'}) }}
+
+            <div class="l__col l__col--top register__form--third" id="field-birthdate">
+                {{ form_label(form.birthdate, 'Date de naissance', { 'label_attr': {'class': 'text--gray'} }) }}
+                <div class="l__row l__row--h-stretch">
+                    {% for field in form.birthdate|reverse %}
+                        {{ form_widget(field, { attr: {style: 'width: 32%;' }}) }}
+                    {% endfor %}
+                </div>
+                {{ form_errors(form.birthdate) }}
             </div>
         </div>
 
-        <div class="em-form__section">
-            <h2 class="section-subtitle">Votre situation professionnelle</h2>
-            <div class="em-form__row">
-                {{ form_row(form.position, {label: 'Statut professionnel'}) }}
-                {{ form_row(form.job, {label: 'Métier'}) }}
-            </div>
-            {{ form_row(form.activityArea, {half: true, label: 'Secteur d\'activité'}) }}
+        <div class="space--10-0"></div>
+
+        <div class="register__form--line">
+            <label class="b__nudge--bottom-tiny text--gray text--italic">{{ 'common.optional'|trans|capitalize }}</label>
+            <hr id="hr_profile" />
         </div>
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col register__form--flex">
+             <div class="register__form--mid">
+                 {{ form_row(form.elected) }}
+            </div>
+            <div class="register__form--mid" id="form__mandates">
+                {{ form_widget(form.mandates, { attr: { class: 'multi_mandate' } }) }}
+                {{ form_errors(form.mandates) }}
+            </div>
+        </div>
+        <hr>
+        <div class="space--10-0"></div>
 
         <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
         {% if recaptcha_public_key is not empty %}
@@ -135,29 +168,8 @@
             <input type="hidden" name="g-recaptcha-response" value="fake" />
         {% endif %}
 
-
-        <div class="b__nudge--bottom-60">
-            <h2 class="section-subtitle">Suppression du compte</h2>
-            <div class="space--30 b__border">
-                {% if is_granted('UNREGISTER') and (app.user.isBasicAdherent or app.user.isUser) %}
-                    <p class="text--body b__nudge--top-0">
-                        La suppression de votre compte adhérent engendrera... need wording
-                    </p>
-                    <a href="{{ path('app_user_terminate_membership') }}" class="btn btn--as-link">Désadhérer</a>
-                {% endif %}
-
-                {% if not is_granted('UNREGISTER') %}
-                    <p class="text--body b__nudge--top-0">
-                        Si vous êtes animateur local, référent, parlementaire, porteur de projet, membre du conseil ou désigné lors d'une élection interne, vous ne pouvez pas supprimer votre compte directement : il vous faut d'abord quitter vos responsabilités. <br><br>
-                        Pour ce faire, vous pouvez écrire votre demande par e-mail à l'adresse suivante : <a href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>. <br><br>
-                        Si vous êtes co-animateur local, votre animateur peut retirer votre rôle depuis son espace comité. <br><br>
-                        Si vous êtes candidat à une désignation interne, vous ne pouvez pas désadhérer du mouvement directement, il vous faut attendre la fin de la désignation.
-                    </p>
-                {% endif %}
-            </div>
+        <div class="register__form">
+            {{ form_widget(form.submit, { attr: { class: 'btn btn--blue btn--medium b__nudge--top' }}) }}
         </div>
-
-        <button class="btn btn--blue">Enregistrer</button>
     {{ form_end(form) }}
-</section>
 {% endblock %}

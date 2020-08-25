@@ -2,11 +2,9 @@
 
 namespace App\Repository;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\AdherentCollection;
 use App\Collection\CitizenProjectMembershipCollection;
 use App\Entity\Adherent;
-use App\Entity\BaseGroup;
 use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectMembership;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -17,8 +15,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CitizenProjectMembershipRepository extends ServiceEntityRepository
 {
-    use PaginatorTrait;
-
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, CitizenProjectMembership::class);
@@ -288,48 +284,6 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         ;
 
         return new CitizenProjectMembershipCollection($query->getResult());
-    }
-
-    public function findActivityCitizenProjectMemberships(
-        Adherent $adherent,
-        int $page = 1,
-        int $limit = 5
-    ): PaginatorInterface {
-        $queryBuilder = $this
-            ->createQueryBuilder('cpm')
-            ->innerJoin('cpm.citizenProject', 'cp')
-            ->where('cpm.adherent = :adherent')
-            ->andWhere('cp.status != :refused')
-            ->andWhere('cpm.privilege = :host')
-            ->setParameters([
-                'adherent' => $adherent,
-                'refused' => BaseGroup::REFUSED,
-                'host' => CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR,
-            ])
-        ;
-
-        return $this->configurePaginator($queryBuilder, $page, $limit);
-    }
-
-    public function findActivityCitizenProjectMembershipsJoined(
-        Adherent $adherent,
-        int $page = 1,
-        int $limit = 5
-    ): PaginatorInterface {
-        $queryBuilder = $this
-            ->createQueryBuilder('cpm')
-            ->innerJoin('cpm.citizenProject', 'cp')
-            ->where('cpm.privilege != :host')
-            ->andWhere('cp.status = :approved')
-            ->andWhere('cpm.adherent = :adherent')
-            ->setParameters([
-                'approved' => BaseGroup::APPROVED,
-                'host' => CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR,
-                'adherent' => $adherent,
-            ])
-        ;
-
-        return $this->configurePaginator($queryBuilder, $page, $limit);
     }
 
     /**

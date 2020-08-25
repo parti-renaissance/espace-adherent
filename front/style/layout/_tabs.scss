@@ -1,9 +1,14 @@
 .tabs-nav {
 
+    &.border-on {
+        border-bottom: 1px solid $lines-grey;
+    }
+
     ul {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        margin-bottom: -1px;
 
         li {
             display: inline-block;

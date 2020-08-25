@@ -35,6 +35,7 @@ Feature:
     Then the response status code should be 200
     And I should be on "/comites"
     And I should see "Carl Mirabeau"
+    And I should see "Mes activités"
 
     Given I am on "/deconnexion"
     And I am on "/atelier-des-idees/contribuer"
@@ -46,3 +47,4 @@ Feature:
     Then the response status code should be 200
     And I should be on "/atelier-des-idees/contribuer"
     And I should see "Carl Mirabeau"
+    And I should see "Mes activités"

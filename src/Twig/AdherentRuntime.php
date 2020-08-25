@@ -69,21 +69,21 @@ class AdherentRuntime implements RuntimeExtensionInterface
         $labels = [];
 
         if ($adherent->isAdherent()) {
-            $labels[] = $adherent->isFemale() ? 'Adhérente' : 'Adhérent';
+            $labels[] = $adherent->isFemale() ? 'Adhérente 😍' : 'Adhérent 😍';
         } else {
             $labels[] = 'Non-adhérent(e)';
         }
 
         if ($adherent->isReferent()) {
-            $labels[] = $adherent->isFemale() ? 'Référente' : 'Référent';
+            $labels[] = $adherent->isFemale() ? 'Référente 🥇' : 'Référent 🥇';
         }
 
         if ($adherent->isCoReferent() || $adherent->isDelegatedReferent()) {
-            $labels[] = 'Équipe du référent';
+            $labels[] = 'Équipe du référent 🥈';
         }
 
         if ($adherent->isDeputy()) {
-            $labels[] = $adherent->isFemale() ? 'Députée' : 'Député';
+            $labels[] = $adherent->isFemale() ? 'Députée 🏛' : 'Député 🏛';
         }
 
         if ($adherent->isDelegatedDeputy()) {
@@ -91,7 +91,7 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         if ($adherent->isSenator()) {
-            $labels[] = $adherent->isFemale() ? 'Sénatrice' : 'Sénateur';
+            $labels[] = $adherent->isFemale() ? 'Sénatrice 🏛' : 'Sénateur 🏛';
         }
 
         if ($adherent->isDelegatedSenator()) {
@@ -99,15 +99,15 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         if ($adherent->isSupervisor()) {
-            $labels[] = $adherent->isFemale() ? 'Animatrice' : 'Animateur';
+            $labels[] = $adherent->isFemale() ? 'Animatrice 🏅' : 'Animateur 🏅';
         }
 
         if ($adherent->isHost()) {
-            $labels[] = $adherent->isFemale() ? 'Co-animatrice' : 'Co-animateur';
+            $labels[] = $adherent->isFemale() ? 'Co-animatrice 🏅' : 'Co-animateur 🏅';
         }
 
         if ($adherent->isMunicipalChief()) {
-            $labels[] = 'Candidat Municipales 2020';
+            $labels[] = 'Candidat Municipales 2020 🇫🇷';
         }
 
         return $labels;

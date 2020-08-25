@@ -29,9 +29,9 @@ class DocumentsControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('h1:contains("Documents")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Adhérents")'));
-        $this->assertCount(0, $crawler->filter('h2:contains("Animateurs")'));
-        $this->assertCount(0, $crawler->filter('h2:contains("Référents")'));
+        $this->assertCount(1, $crawler->filter('h2:contains("Documents adhérents")'));
+        $this->assertCount(0, $crawler->filter('h2:contains("Documents animateurs")'));
+        $this->assertCount(0, $crawler->filter('h2:contains("Documents référents")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir1")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir2")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-adherent-c.pdf")'));
@@ -50,9 +50,9 @@ class DocumentsControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('h1:contains("Documents")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Adhérents")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Animateurs")'));
-        $this->assertCount(0, $crawler->filter('h2:contains("Référents")'));
+        $this->assertCount(1, $crawler->filter('h2:contains("Documents adhérents")'));
+        $this->assertCount(1, $crawler->filter('h2:contains("Documents animateurs")'));
+        $this->assertCount(0, $crawler->filter('h2:contains("Documents référents")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir1")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir2")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-adherent-c.pdf")'));
@@ -71,9 +71,9 @@ class DocumentsControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('h1:contains("Documents")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Adhérents")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Animateurs")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Référents")'));
+        $this->assertCount(1, $crawler->filter('h2:contains("Documents adhérents")'));
+        $this->assertCount(1, $crawler->filter('h2:contains("Documents animateurs")'));
+        $this->assertCount(1, $crawler->filter('h2:contains("Documents référents")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir1")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir2")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-adherent-c.pdf")'));
@@ -98,9 +98,9 @@ class DocumentsControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('h1:contains("Documents")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Adhérents")'));
-        $this->assertCount(0, $crawler->filter('h2:contains("Animateurs")'));
-        $this->assertCount(0, $crawler->filter('h2:contains("Référents")'));
+        $this->assertCount(1, $crawler->filter('h2:contains("Documents adhérents")'));
+        $this->assertCount(0, $crawler->filter('h2:contains("Documents animateurs")'));
+        $this->assertCount(0, $crawler->filter('h2:contains("Documents référents")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("subdir")'));
         $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-adherent-b.pdf")'));
         $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("dir1")'));

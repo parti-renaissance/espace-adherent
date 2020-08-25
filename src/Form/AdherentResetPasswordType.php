@@ -21,7 +21,6 @@ class AdherentResetPasswordType extends AbstractType
                     new NotBlank(),
                     new Length(['min' => 8, 'minMessage' => 'adherent.plain_password.min_length']),
                 ],
-                'invalid_message' => 'Les deux mots de passe doivent correspondre.',
                 'first_options' => ['attr' => ['placeholder' => 'Nouveau mot de passe']],
                 'second_options' => ['attr' => ['placeholder' => 'Confirmation']],
             ])

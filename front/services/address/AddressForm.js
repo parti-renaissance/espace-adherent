@@ -123,7 +123,7 @@ export default class AddressForm {
         addClass(select, 'form__field');
         addClass(select, 'em-form__field');
 
-        insertAfter(this._cityName, select);
+        insertAfter(this._city, select);
         remove(this._city);
 
         this._city = select;

@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
 use App\Entity\BaseEvent;
@@ -20,7 +19,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
 {
     use ReferentTrait;
     use UuidEntityRepositoryTrait;
-    use PaginatorTrait;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -106,20 +104,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findActivityUpcomingAdherentRegistrations(
-        Adherent $adherent,
-        int $page = 1,
-        int $limit = 5
-    ): PaginatorInterface {
-        $queryBuilder = $this->createAdherentEventRegistrationQueryBuilder($adherent->getUuidAsString())
-            ->andWhere('e.published = true')
-            ->andWhere('e.beginAt >= CONVERT_TZ(NOW(), \'Europe/Paris\', e.timeZone)')
-            ->orderBy('e.beginAt', 'ASC')
-        ;
-
-        return $this->configurePaginator($queryBuilder, $page, $limit);
-    }
-
     /**
      * @return EventRegistration[]
      */
@@ -144,21 +128,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->getPastRegistrations()
             ->toArray()
         ;
-    }
-
-    public function findActivityPastAdherentRegistrations(
-        Adherent $adherent,
-        int $page = 1,
-        int $limit = 5
-    ): PaginatorInterface {
-        $queryBuilder = $this
-            ->createAdherentEventRegistrationQueryBuilder($adherent->getUuidAsString())
-            ->andWhere('e.published = true')
-            ->andWhere('e.finishAt < CONVERT_TZ(NOW(), \'Europe/Paris\', e.timeZone)')
-            ->orderBy('e.finishAt', 'DESC')
-        ;
-
-        return $this->configurePaginator($queryBuilder, $page, $limit);
     }
 
     public function anonymizeAdherentRegistrations(Adherent $adherent): void

@@ -4,10 +4,10 @@ import AddressObject from '../services/address/AddressObject';
 export default () => {
     const autocompleteWrapper = dom('.address-autocomplete');
 
-    const countryField = dom('#adherent_profile_address_country');
-    const postalCodeField = dom('#adherent_profile_address_postalCode');
-    const cityNameField = dom('#adherent_profile_address_cityName');
-    const addressField = dom('#adherent_profile_address_address');
+    const countryField = dom('#adherent_address_country');
+    const postalCodeField = dom('#adherent_address_postalCode');
+    const cityNameField = dom('#adherent_address_cityName');
+    const addressField = dom('#adherent_address_address');
 
     if ('undefined' !== typeof google) {
         hide(addressField.parentNode);

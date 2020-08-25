@@ -260,13 +260,15 @@ Feature:
 
     Given I follow "Mes informations personnelles"
     Then I should be on "/parametres/mon-compte/modifier"
-    And the "adherent_profile[address][address]" field should contain "1 rue de l'egalite"
-    And the "adherent_profile[address][country]" field should contain "FR"
-    And the "adherent_profile[phone][country]" field should contain "FR"
-    And the "adherent_profile[phone][number]" field should contain "06 00 00 00 00"
-    And the "adherent_profile[birthdate]" field should contain "1980-01-01"
+    And the "adherent[address][address]" field should contain "1 rue de l'egalite"
+    And the "adherent[address][country]" field should contain "FR"
+    And the "adherent[phone][country]" field should contain "FR"
+    And the "adherent[phone][number]" field should contain "06 00 00 00 00"
+    And the "adherent[birthdate][day]" field should contain "1"
+    And the "adherent[birthdate][month]" field should contain "1"
+    And the "adherent[birthdate][year]" field should contain "1980"
 
-    Given I follow "Communication"
+    Given I follow "communications"
     Then I should be on "/parametres/mon-compte/preferences-des-emails"
     And the "Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS" checkbox should be unchecked
     And the "Recevoir les e-mails nationaux" checkbox should be unchecked

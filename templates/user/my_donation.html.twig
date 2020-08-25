@@ -1,61 +1,93 @@
-<div class="l__row l__row--h-stretch l__row--wrap">
-    <h1 class="text--medium-large">Mes dons</h1>
-    <a href="{{ path('donation_index') }}" class="btn btn--red b__nudge--bottom-larger">Faire un don</a>
-</div>
+{% extends 'adherent/layout.twig' %}
 
-{% if donations_history is not empty %}
-    <p class="text--body">Merci pour votre engagement à nos côtés !</p>
-    <p class="text--body text--bold">Votre dernier don remonte à {{ donations_history|first.date|ago }}.</p>
-    {% if subscribed_donations %}
-        <a href="{{ path('donation_subscription_cancel') }}">
-            {{ 'adherent.stop_donation'|transchoice(subscribed_donations|length) }}
-        </a>. <br />
-        {% for subscribed_donation in subscribed_donations %}
-            Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros }}€ le {{ subscribed_donation.nextDonationAt|localizeddate('medium', 'none') }}
-            {% if not loop.last %}
-                <br />
-            {% endif %}
+{% block flash_message %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash" id="{{ label }}-flashes">
+                <div class="flash__inner">{{ message|trans|raw }}</div>
+            </div>
         {% endfor %}
-    {% elseif last_subscription_ended %}
-        Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|localizeddate('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('donation_index') }}">en cliquant ici</a>.
-    {% else %}
-        <a href="{{ path('donation_index') }}">Faire un nouveau don</a>.
-    {% endif %}
-    <p class="text--body text--small text--gray">
-        Veuillez noter que :<br />
-        - Les dons effectués par chèque ne sont pas encore visibles sur cette page. <br />
-        - Votre reçu fiscal sera envoyé entre avril et juin, il n'est pas nécessaire de le joindre à la déclaration de revenus de mai. Une fois obtenu, conservez-le pour pouvoir le présenter en cas de contrôle de l'administration fiscale.
-    </p>
+    {% endfor %}
+{% endblock %}
 
-    <div class="b__nudge--top-large">
-        <table class="em-table">
+{% block adherent_profile_form %}
+    <h2>Mes dons</h2>
+
+    {% if donations_history is not empty %}
+        <div class="b__nudge--top b__nudge--bottom">
+            Merci pour votre engagement à nos côtés ! <br/><br/>
+            Votre dernier don a été fait {{ donations_history|first.date|ago }}.
+            {% if subscribed_donations %}
+                <a href="{{ path('donation_subscription_cancel') }}">
+                    {{ 'adherent.stop_donation'|transchoice(subscribed_donations|length) }}
+                </a>. <br />
+                {% for subscribed_donation in subscribed_donations %}
+                    Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros }}€ le {{ subscribed_donation.nextDonationAt|localizeddate('medium', 'none') }}
+                    {% if not loop.last %}
+                        <br />
+                    {% endif %}
+                {% endfor %}
+            {% elseif last_subscription_ended %}
+                Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|localizeddate('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('donation_index') }}">en cliquant ici</a>.
+            {% else %}
+                <a href="{{ path('donation_index') }}">Faire un nouveau don</a>.
+            {% endif %}
+            <div class="b__nudge--top text--small text--gray">
+                Veuillez noter que :
+                <ol>
+                    <li>Vous recevrez votre reçu fiscal entre avril et juin. Il n'est pas nécessaire de le joindre à la déclaration de revenus de mai. Quand vous l'aurez obtenu, conservez-le pour pouvoir le présenter en cas de contrôle de l'administration fiscale.</li>
+                </ol>
+            </div>
+        </div>
+
+        <table class="settings__donations">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Montant</th>
-                    <th>Type</th>
-                    <th>Moyen de paiement</th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Montant
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Moyen de paiement
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 {% for donation in donations_history %}
                     <tr>
-                        <td>{{ donation.date|localizeddate('medium', 'none') }}</td>
-                        <td>{{ donation.amountInEuros }} €</td>
-                        <td>{{ donation.isSubscription ? 'Don mensuel' : 'Don ponctuel' }}</td>
-                        <td>{{ ('donation.type.' ~ donation.type)|trans }}</td>
+                        <td>
+                            {{ donation.date|localizeddate('medium', 'none') }}
+                        </td>
+                        <td>
+                            {{ donation.amountInEuros }} €
+                        </td>
+                        <td>
+                            {% if donation.isSubscription %}
+                                Don mensuel
+                            {% else %}
+                                Don ponctuel
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ ('donation.type.' ~ donation.type)|trans }}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </div>
-{% else %}
-    <div class="b__nudge--top b__nudge--bottom">
-        Vos dons sont essentiels pour la réussite de notre mouvement.<br/>
-        Ils nous donnent de la force pour transformer le pays.
+    {% else %}
+        <div class="b__nudge--top b__nudge--bottom">
+            Vos dons sont essentiels pour la réussite de notre mouvement.<br/>
+            Ils nous donnent de la force pour transformer le pays.
 
-        <div class="b__nudge--top">
-            <a href="{{ path('donation_index') }}" class="btn btn--primary">Je donne à La République En Marche</a>
+            <div class="b__nudge--top">
+                <a href="{{ path('donation_index') }}" class="btn btn--primary">Je donne à La République En Marche</a>
+            </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
+{% endblock %}

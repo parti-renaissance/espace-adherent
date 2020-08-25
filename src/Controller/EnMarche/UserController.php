@@ -5,25 +5,27 @@ namespace App\Controller\EnMarche;
 use App\Adherent\Unregistration\UnregistrationCommand;
 use App\AdherentCharter\AdherentCharterFactory;
 use App\AdherentCharter\AdherentCharterTypeEnum;
-use App\AdherentProfile\AdherentProfile;
-use App\AdherentProfile\AdherentProfileHandler;
+use App\Donation\DonationManager;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
 use App\Form\AdherentChangeEmailType;
 use App\Form\AdherentChangePasswordType;
 use App\Form\AdherentEmailSubscriptionType;
-use App\Form\AdherentProfileType;
+use App\Form\AdherentType;
 use App\Form\UnregistrationType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Mailchimp\SignUp\SignUpHandler;
 use App\Membership\AdherentChangeEmailHandler;
+use App\Membership\MembershipRequest;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
+use App\Repository\DonationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,20 +49,40 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/mes-dons", name="app_user_profile_donation", methods={"GET"})
+     */
+    public function profileDonationAction(
+        DonationRepository $donationRepository,
+        DonationManager $donationManager
+    ): Response {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+        $userEmail = $adherent->getEmailAddress();
+
+        return $this->render('user/my_donation.html.twig', [
+            'donations_history' => $donationManager->getHistory($adherent),
+            'subscribed_donations' => $donationRepository->findAllSubscribedDonationByEmail($userEmail),
+            'last_subscription_ended' => $donationRepository->findLastSubscriptionEndedDonationByEmail($userEmail),
+        ]);
+    }
+
+    /**
      * @Route("/modifier", name="app_user_edit", methods={"GET", "POST"})
      */
-    public function profileAction(Request $request, AdherentProfileHandler $handler): Response
+    public function profileAction(Request $request): Response
     {
         $adherent = $this->getUser();
-        $adherentProfile = AdherentProfile::createFromAdherent($adherent);
-
-        $form = $this->createForm(AdherentProfileType::class, $adherentProfile, ['disabled_form' => $adherent->isCertified()]);
+        $membership = MembershipRequest::createFromAdherent($adherent);
+        $form = $this->createForm(AdherentType::class, $membership)
+            ->remove('emailAddress')
+            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
+        ;
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $handler->update($adherent, $adherentProfile);
+            $this->get(MembershipRequestHandler::class)->update($adherent, $membership);
             $this->addFlash('info', 'adherent.update_profile.success');
 
-            return $this->redirectToRoute('app_user_edit');
+            return $this->redirectToRoute('app_user_profile');
         }
 
         return $this->render('adherent/profile.html.twig', ['form' => $form->createView()]);

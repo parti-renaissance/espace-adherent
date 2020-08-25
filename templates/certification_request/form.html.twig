@@ -1,8 +1,6 @@
-{% extends 'adherent_profile/_layout.html.twig' %}
+{% extends 'certification_request/_layout.html.twig' %}
 
-{% block adherent_profile_content %}
-<section class="adherent-profile__section" id="certification">
-    <h1 class="text--medium-large">Certification du profil</h1>
+{% block certification_content %}
 
     {{ form_start(form, { attr: { class: 'em-form', id: 'app_certification_request' } }) }}
 
@@ -11,16 +9,15 @@
         <div class="em-form__group">
             <div class="em-form__label">1. Mettez à jour vos informations personnelles</div>
 
-            <p class="text--body">
-                Les informations suivantes (Nom, Prénom, Date de naissance) doivent être renseignées dans vos paramètres et correspondre à celles présentes sur votre pièce d’idendité.
-                Sans cette correspodance, votre compte ne pourra pas être certifié.
+            <p>
+                Votre prénom, nom et date de naissance doivent être renseignés dans vos paramètres et concorder avec celles présente sur votre pièce d’identé.
             </p>
-            <p class="text--body">
+            <p>
                 <strong>Nom :</strong> {{ app.user.lastName }}<br />
                 <strong>Prénom :</strong> {{ app.user.firstName }}<br />
                 <strong>Date de naissance :</strong> {{ app.user.birthDate|date('d/m/Y') }}
             </p>
-            <a class="link--blue--dark link--no-decor text--body" href="{{ path('app_user_edit') }}">
+            <a class="link--blue--dark link--no-decor" href="{{ path('app_user_edit') }}">
                 Éditer les informations
             </a>
         </div>
@@ -90,7 +87,7 @@
         </button>
 
     {{ form_end(form) }}
-</section>
+
 {% endblock %}
 
 {% block head_javascripts %}

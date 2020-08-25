@@ -3,7 +3,7 @@
 {% set has_role_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
 {% set is_certified = is_granted(constant('App\\Adherent\\Certification\\CertificationPermissions::CERTIFIED')) %}
 
-<header class="pst--relative">
+<header>
     {% set adherent_committees = '' %}
     {# Prerendering this block and saving it in a variable prevents extra SQL queries #}
     {% if has_role_adherent %}

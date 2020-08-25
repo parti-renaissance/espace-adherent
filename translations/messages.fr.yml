@@ -630,9 +630,6 @@ vote_place.availability:none: 'Aucune'
 vote_place.results.completed: Complété
 vote_place.results.partial: Partiel
 vote_place.results.empty: Vide
-vote.type.feasible: 'Réalisable'
-vote.type.important: 'Essentielle'
-vote.type.innovative: 'Innovante'
 
 #
 # Application request
@@ -879,47 +876,3 @@ territorial_council.membership.quality.consular_conselor: Conseiller consulaire
 territorial_council.membership.quality.committee_supervisor: Animateur local
 territorial_council.membership.quality.elected_candidate_adherent: Adhérent désigné
 territorial_council.members_count: '1 membre|%count% membres'
-
-#
-# Adherent commitment
-#
-adherent_commitment.commitmentActions.support_majority: Soutenir les réformes et l’action de la majorité
-adherent_commitment.commitmentActions.inform_me: M'informer sur les réformes et l'action publique
-adherent_commitment.commitmentActions.participate_militant_action: 'Participer à une action militante de terrain (ex : distribuer des tracts, faire un collage ou boitage)'
-adherent_commitment.commitmentActions.relay_social_content: Relayer des contenus sur les réseaux sociaux
-adherent_commitment.commitmentActions.fight_fake_news: Lutter contre la désinformation sur les réseaux sociaux
-
-adherent_commitment.mdebateAndProposeIdeasActions.making_known_french_concerns: Contribuer à faire connaitre les préoccupations des Français
-adherent_commitment.mdebateAndProposeIdeasActions.be_consulted_on_reforms: Etre consulté(e) sur des réformes
-adherent_commitment.mdebateAndProposeIdeasActions.share_knowledge: Proposer des idées ou intervenir sur la base de mon expérience ou expertise
-adherent_commitment.mdebateAndProposeIdeasActions.write_background_content: 'Rédiger des contenus de fond (ex : note, argumentaire)'
-
-adherent_commitment.actForTerritoryActions.engage_in_citizen_projects: M'engager dans des projets citoyens concrets
-adherent_commitment.actForTerritoryActions.reinforce_politic_commitment_neighborhoods: Renforcer l'engagement politique dans les quartiers
-adherent_commitment.actForTerritoryActions.reinforce_politic_commitment_rural_areas: Renforcer l'engagement politique dans les territoires ruraux
-adherent_commitment.actForTerritoryActions.favor_women_politic_commitment: Favoriser l’engagement politique des femmes
-adherent_commitment.actForTerritoryActions.train_me_to_act: Me former pour agir
-
-adherent_commitment.progressivismActions.understand_next_elections: Mieux comprendre les enjeux des élections à venir
-adherent_commitment.progressivismActions.participate_election_campaign: Participer à une campagne électorale
-adherent_commitment.progressivismActions.make_programs: Contribuer à l'élaboration des programmes
-adherent_commitment.progressivismActions.vote_by_proxy: Voter par procuration pour quelqu'un qui ne peut se rendre au scrutin
-adherent_commitment.progressivismActions.be_assessor: Etre assesseur(e) dans un bureau de vote
-adherent_commitment.progressivismActions.present_myself_to_election: Présenter ma candidature à une élection à court ou moyen terme
-
-adherent_commitment.skill.write_article: Réaliser une veille presse ou rédiger des articles
-adherent_commitment.skill.manage_workgroup: Gérer et animer des groupes de travail os
-adherent_commitment.skill.manage_community: Animer une communauté sur les réseaux sociaux
-adherent_commitment.skill.make_videos: Réaliser des videos
-adherent_commitment.skill.animate_collective_moments: Animer des réunions, faciliter des moments collectifs
-adherent_commitment.skill.write_meeting_reports: Rédiger des compte-rendus de réunions
-adherent_commitment.skill.make_communication_supports: 'Réaliser des supports de communication (ex : affiche)'
-adherent_commitment.skill.prepare_events: Préparer des événements
-adherent_commitment.skill.animate_training: Produire et animer une formation
-adherent_commitment.skill.work_with_elected_representatives: Apporter des conseils politiques, travailler avec des élus
-
-adherent_commitment.availability.punctual: Disponibilité ponctuelle
-adherent_commitment.availability.more_5h_a_month: Plus de 5h par mois
-adherent_commitment.availability.more_5h_a_week: Plus de 20h par mois (+ 5h par semaine)
-
-adherent_commitment.update_success: Votre engagement à bien été enregistré.

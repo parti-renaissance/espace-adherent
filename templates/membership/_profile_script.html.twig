@@ -1,13 +1,13 @@
 <script type="text/javascript">
-    const genderField = dom(`#adherent_profile_gender`);
-    const customGenderField = dom(`#adherent_profile_customGender`);
+    const genderField = dom(`#adherent_gender`);
+    const customGenderField = dom(`#adherent_customGender`);
 
     const checkGender = () => {
         if ('other' === genderField.value) {
             customGenderField.required = true;
-            removeClass(customGenderField.parentElement, 'invisible');
+            removeClass(customGenderField.parentElement, 'visually-hidden');
         } else {
-            addClass(customGenderField.parentElement, 'invisible');
+            addClass(customGenderField.parentElement, 'visually-hidden');
             customGenderField.required = false;
             customGenderField.value = '';
         }
