@@ -28,8 +28,8 @@ class TerritorialCouncilElectionConvocationMessage extends Message
             [
                 'territorial_council_name' => $territorialCouncil->getName(),
                 'now' => self::formatDate(new \DateTime(), 'EEEE d MMMM y'),
-                'url' => $territorialCouncilUrl,
-                'vote_start_date' => self::dateToString($designation->getVoteStartDate()),
+                'territorial_council_url' => $territorialCouncilUrl,
+                'vote_start_date' => self::formatDate($designation->getVoteStartDate(), 'EEEE d MMMM y à HH\'h\'mm'),
                 'vote_end_date' => self::dateToString($designation->getVoteEndDate()),
                 'address' => $election->getInlineFormattedAddress(),
                 'meeting_start_date' => self::dateToString($election->getMeetingStartDate()),
@@ -39,6 +39,7 @@ class TerritorialCouncilElectionConvocationMessage extends Message
                 'referent_last_name' => $president->getAdherent()->getLastName(),
                 'online_mode' => $election->isOnlineMode(),
                 'president_email' => $president->getAdherent()->getEmailAddress(),
+                'meeting_url' => $election->getMeetingUrl(),
             ],
             [
                 'first_name' => $adherent->getFirstName(),
