@@ -47,4 +47,12 @@ class Poll
             $this->choices->add($choice);
         }
     }
+
+    /**
+     * @return PollChoice[]
+     */
+    public function getChoices(): array
+    {
+        return $this->choices->toArray();
+    }
 }

@@ -3,24 +3,20 @@
 namespace App\Entity\TerritorialCouncil\ElectionPoll;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\ElectionPoll\PollChoiceRepository")
  * @ORM\Table(name="territorial_council_election_poll_choice")
  *
  * @Algolia\Index(autoIndex=false)
  */
 class PollChoice
 {
-    /**
-     * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
-    protected $id;
+    use EntityIdentityTrait;
 
     /**
      * @var Poll
@@ -37,9 +33,15 @@ class PollChoice
      */
     private $value;
 
-    public function __construct(Poll $electionPoll, string $value)
+    public function __construct(Poll $electionPoll, string $value, UuidInterface $uuid = null)
     {
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->electionPoll = $electionPoll;
         $this->value = $value;
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
     }
 }
