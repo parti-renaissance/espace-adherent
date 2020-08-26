@@ -40,12 +40,10 @@ class EditDesignationType extends AbstractType
             ->add('meetingStartDate', DateTimeType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
-                'required' => false,
             ])
             ->add('meetingEndDate', DateTimeType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
-                'required' => false,
             ])
             ->add('voteStartDate', DateTimeType::class, [
                 'html5' => true,
@@ -111,7 +109,6 @@ class EditDesignationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UpdateDesignationRequest::class,
-            'attr' => ['novalidate' => 'novalidate'],
         ]);
     }
 }

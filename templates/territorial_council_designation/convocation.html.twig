@@ -82,14 +82,15 @@
 
                 <hr class="separator b__nudge--top-50" />
 
+                <p class="text-small font-roboto">La convocation doit avoir lieu au minimum 7 jours avant le Conseil territorial. Les candidatures seront closes automatiquement 48h avant cette date.</p>
                 <div class="em-form__row b__nudge--top-large">
                     <div class="em-form__group em-form__width--1">
-                        <label class="em-form__label">Début de la réunion <span class="em-form__required">*</span></label>
+                        {{ form_label(form.meetingStartDate, 'Début de la réunion', {label_attr: {class: 'em-form__label'}}) }}
                         {{ form_errors(form.meetingStartDate) }}
                         {{ form_widget(form.meetingStartDate) }}
                     </div>
                     <div class="em-form__group em-form__width--1">
-                        <label class="em-form__label">Fin de la réunion <span class="em-form__required">*</span></label>
+                        {{ form_label(form.meetingEndDate, 'Fin de la réunion', {label_attr: {class: 'em-form__label'}}) }}
                         {{ form_errors(form.meetingEndDate) }}
                         {{ form_widget(form.meetingEndDate) }}
                     </div>
@@ -120,7 +121,7 @@
                 {{ form_label(form.voteStartDate, 'Début du vote', {label_attr: {class: 'em-form__label'}}) }}
                 {{ form_errors(form.voteStartDate) }}
                 <p class="em-form__legend">
-                    La convocation doit avoir lieu au minimum 7 jours avant la tenue du vote. Les candidatures seront closes automatiquement 48h avant son ouverture.
+                    La date de début du vote est celle de début de votre Conseil territorial.
                 </p>
                 {{ form_widget(form.voteStartDate) }}
             </div>
@@ -219,6 +220,10 @@
                 allow_down: false,
                 add_at_the_end: true,
                 drag_drop: false,
+            });
+
+            on(dom('#{{ form.meetingStartDate.vars.id }}'), 'change', function(event) {
+                dom('#{{ form.voteStartDate.vars.id }}').value = event.target.value;
             });
         });
     </script>
