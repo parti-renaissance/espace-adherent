@@ -49,7 +49,7 @@ CONTENT;
 
         $this->assertRegExp(sprintf('#%s#', preg_quote($regex)), $responseContent);
 
-        // Ensure adherents without subscription type 'municipal_email' isn't exported
+        // Ensure adherents without subscription type 'candidate_email' isn't exported
         $this->assertNotContains('gisele-berthoux@caramail.com', $responseContent);
     }
 

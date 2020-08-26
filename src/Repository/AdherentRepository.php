@@ -847,7 +847,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 INNER JOIN subscription_type st
                     ON ast.subscription_type_id = st.id
                 WHERE ast.adherent_id = a.id
-                AND st.code = :municipal_email_subscription_code
+                AND st.code = :candidate_email_subscription_code
                 LIMIT 1
             )
             ;
@@ -856,7 +856,7 @@ SQL;
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->bindValue('country_code_france', AreaUtils::CODE_FRANCE);
         $stmt->bindValue('prefix_postalcode_paris', AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS.'%');
-        $stmt->bindValue('municipal_email_subscription_code', SubscriptionTypeEnum::MUNICIPAL_EMAIL);
+        $stmt->bindValue('candidate_email_subscription_code', SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $stmt->bindValue('sms_mms_subscription_code', SubscriptionTypeEnum::MILITANT_ACTION_SMS);
         $stmt->execute();
 
