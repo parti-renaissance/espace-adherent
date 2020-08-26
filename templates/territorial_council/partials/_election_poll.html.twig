@@ -1,0 +1,29 @@
+{% set election_poll = election.electionPoll %}
+{% set vote = get_election_poll_vote(election_poll, membership) %}
+
+<section class="election-poll-box b__nudge--top-60 b__nudge--bottom-larger">
+    <h4 class="text--muted text--normal text--uppercase b__nudge--bottom">Sondage</h4>
+
+    <form class="em-form" action="{{ not vote ? path('app_territorial_council_election_poll_save_vote', {uuid: election_poll.uuid}) }}" method="POST">
+        <div class="em-form__group em-form__checkbox--inline">
+            <label class="em-form__label">Combien de membres supplémentaires au Comité politique  souhaitez-vous pour respecter le principe de parité ?</label>
+            <div class="b__nudge--top-10">
+                {% for index, choice in election_poll.choices %}
+                    <div class="form__radio">
+                        <input type="radio" id="poll-choice-{{ index }}" name="poll-choice" value="{{ choice.uuid }}" required="required"
+                            {{ vote ? 'disabled="disabled"' }}
+                            {{ vote and vote.choice == choice ? 'checked="checked"' }}
+                        />
+                        <label class="form form__label" for="poll-choice-{{ index }}">{{ choice.value }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if vote %}
+            <p class="text--small text--muted">Vous avez déjà répondu à ce sondage</p>
+        {% else %}
+            <button type="submit" class="btn btn--blue btn--no-wrap">Enregistrer</button>
+        {% endif %}
+    </form>
+</section>

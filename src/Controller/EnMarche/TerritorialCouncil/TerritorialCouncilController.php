@@ -4,9 +4,13 @@ namespace App\Controller\EnMarche\TerritorialCouncil;
 
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
+use App\Entity\TerritorialCouncil\ElectionPoll\Poll;
 use App\Repository\TerritorialCouncil\CandidacyRepository;
+use App\TerritorialCouncil\ElectionPoll\Manager;
+use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -72,5 +76,35 @@ class TerritorialCouncilController extends Controller
         return $this->render('territorial_council/candidacy_list.html.twig', [
             'candidacies' => $repository->findAllConfirmedForElection($election),
         ]);
+    }
+
+    /**
+     * @Route("/{uuid}/sondage", name="election_poll_save_vote", methods={"POST"})
+     *
+     * @param Adherent $adherent
+     */
+    public function electionPollAction(
+        Request $request,
+        Poll $electionPoll,
+        UserInterface $adherent,
+        Manager $voteManager
+    ): Response {
+        if ($voteManager->hasVoted($electionPoll, $membership = $adherent->getTerritorialCouncilMembership())) {
+            $this->addFlash('error', 'Vous avez déjà participé à ce sondage.');
+
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        if (!($choiceUuid = $request->request->get('poll-choice')) || !Uuid::isValid($choiceUuid) || !($choice = $voteManager->findChoice($choiceUuid))) {
+            $this->addFlash('error', 'Choix est invalide.');
+
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
+        $voteManager->vote($choice, $membership);
+
+        $this->addFlash('info', 'Votre participation au sondage a bien été enregistrée.');
+
+        return $this->redirectToRoute('app_territorial_council_index');
     }
 }

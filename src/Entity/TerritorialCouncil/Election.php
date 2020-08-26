@@ -161,4 +161,9 @@ class Election extends AbstractElectionEntity implements GeoPointInterface
     {
         $this->meetingUrl = $meetingUrl;
     }
+
+    public function getElectionPoll(): ?Poll
+    {
+        return $this->electionPoll;
+    }
 }

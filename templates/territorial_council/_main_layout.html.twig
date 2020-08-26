@@ -3,10 +3,15 @@
 {% block territorial_council_content %}
     <div class="territorial-council__main l__wrapper--main l__wrapper--main-left">
 
-        {% if territorial_council.currentElection %}
+        {% set election = territorial_council.currentElection %}
+        {% if election %}
             {% include 'territorial_council/partials/_election_box.html.twig' %}
 
             <div id="modal-wrapper"></div>
+
+            {% if election.electionPoll %}
+                {% include 'territorial_council/partials/_election_poll.html.twig' %}
+            {% endif %}
         {% endif %}
 
         {{ include('territorial_council/partials/_nav.html.twig') }}
