@@ -22,6 +22,13 @@ class Poll
     use EntityIdentityTrait;
 
     /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $gender;
+
+    /**
      * @var PollChoice[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\PollChoice", mappedBy="electionPoll", cascade={"all"})
@@ -35,10 +42,16 @@ class Poll
      */
     private $election;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(string $gender, UuidInterface $uuid = null)
     {
+        $this->gender = $gender;
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->choices = new ArrayCollection();
+    }
+
+    public function getGender(): string
+    {
+        return $this->gender;
     }
 
     public function addChoice(PollChoice $choice): void

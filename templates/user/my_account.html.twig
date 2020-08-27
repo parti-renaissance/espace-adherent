@@ -20,13 +20,6 @@
         </div>
     </div>
 
-    {# This will be enable by the PR on branch auth2 #}
-    {#{% if has_role_adherent and not is_granted('ROLE_REFERENT') and not is_granted('ROLE_ADMINISTRATOR') %}#}
-        {#<p>#}
-            {#<a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Annuler mon adhésion</a>#}
-        {#</p>#}
-    {#{% endif %}#}
-
     {% if is_granted('UNREGISTER') and app.user.isBasicAdherent %}
         <p>
             <a href="{{ path('app_user_terminate_membership') }}" class="settings__delete_account">Supprimer définitivement ce compte</a>

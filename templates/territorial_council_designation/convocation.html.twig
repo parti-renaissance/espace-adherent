@@ -223,9 +223,12 @@
                 max: 5,
             });
 
-            on(dom('#{{ form.meetingStartDate.vars.id }}'), 'change', function(event) {
+            var dateElement = dom('#{{ form.meetingStartDate.vars.id }}');
+            on(dateElement, 'change', function(event) {
                 dom('#{{ form.voteStartDate.vars.id }}').value = event.target.value;
             });
+
+            dateElement.dispatchEvent(new Event('change'));
         });
     </script>
 {% endblock %}

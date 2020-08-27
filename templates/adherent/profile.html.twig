@@ -140,9 +140,6 @@
             <h2 class="section-subtitle">Suppression du compte</h2>
             <div class="space--30 b__border">
                 {% if is_granted('UNREGISTER') and (app.user.isBasicAdherent or app.user.isUser) %}
-                    <p class="text--body b__nudge--top-0">
-                        La suppression de votre compte adhérent engendrera... need wording
-                    </p>
                     <a href="{{ path('app_user_terminate_membership') }}" class="btn btn--as-link">Désadhérer</a>
                 {% endif %}
 

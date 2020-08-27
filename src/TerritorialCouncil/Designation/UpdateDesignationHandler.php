@@ -48,7 +48,7 @@ class UpdateDesignationHandler
         }
 
         if ($request->isWithPoll()) {
-            $poll = new Poll();
+            $poll = new Poll($request->getElectionPollGender());
             foreach ($request->getElectionPollChoices() as $choice) {
                 $poll->addChoice(new PollChoice($poll, $choice));
             }

@@ -6,13 +6,13 @@
 
     <form class="em-form" action="{{ not vote ? path('app_territorial_council_election_poll_save_vote', {uuid: election_poll.uuid}) }}" method="POST">
         <div class="em-form__group em-form__checkbox--inline">
-            <label class="em-form__label">Combien de membres supplémentaires au Comité politique  souhaitez-vous pour respecter le principe de parité ?</label>
+            <label class="em-form__label">Combien de {{ ('interactive.form.'~election_poll.gender)|trans|lower }}s supplémentaires au Comité politique souhaitez-vous pour respecter la règle de parité ?</label>
             <div class="b__nudge--top-10">
                 {% for index, choice in election_poll.choices %}
                     <div class="form__radio">
                         <input type="radio" id="poll-choice-{{ index }}" name="poll-choice" value="{{ choice.uuid }}" required="required"
                             {{ vote ? 'disabled="disabled"' }}
-                            {{ vote and vote.choice == choice ? 'checked="checked"' }}
+                            {{ (vote and vote.choice == choice) or (not vote and choice.value == 0) ? 'checked="checked"' }}
                         />
                         <label class="form form__label" for="poll-choice-{{ index }}">{{ choice.value }}</label>
                     </div>
