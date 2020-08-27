@@ -196,7 +196,6 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         TerritorialCouncil $territorialCouncil,
         TerritorialCouncilQuality $quality
     ): void {
-        dump('addMembertrship');
         $membership = new TerritorialCouncilMembership($territorialCouncil, $adherent);
         $membership->addQuality($quality);
         $adherent->setTerritorialCouncilMembership($membership);
@@ -204,9 +203,6 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $this->em->persist($membership);
 
         // add Political committee member
-        dump($quality);
-        dump($adherent->getId());
-        dump(\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS));
         if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)) {
             $pcMembership = $this->politicalCommitteeManager->createMembership(
                 $adherent,
