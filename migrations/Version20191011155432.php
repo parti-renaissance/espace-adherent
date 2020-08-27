@@ -25,7 +25,7 @@ final class Version20191011155432 extends AbstractMigration
         $this->addSql(sprintf(
             "UPDATE subscription_type SET label = '%s' WHERE code = '%s'",
             'Recevoir les e-mails de mon/ma candidat(e) aux municipales 2020',
-            SubscriptionTypeEnum::MUNICIPAL_EMAIL
+            'municipal_email'
         ));
 
         $this->addSql(sprintf(
@@ -70,7 +70,7 @@ final class Version20191011155432 extends AbstractMigration
         $this->addSql(sprintf(
             "UPDATE subscription_type SET label = '%s' WHERE code = '%s'",
             'Recevoir les e-mails de votre candidat aux municipales 2020',
-            SubscriptionTypeEnum::MUNICIPAL_EMAIL
+            'municipal_email'
         ));
 
         $this->addSql(sprintf(

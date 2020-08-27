@@ -66,7 +66,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             case MunicipalChiefAdherentMessage::class:
                 /** @var MunicipalChiefFilter $filter */
                 if (($filter = $campaign->getMessage()->getFilter()) && $filter->getContactAdherents()) {
-                    $interestKeys[] = SubscriptionTypeEnum::MUNICIPAL_EMAIL;
+                    $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
                     break;
                 }
 

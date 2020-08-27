@@ -190,7 +190,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-01-08 05:55:43',
         ]);
         $adherent5->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::MUNICIPAL_EMAIL);
+        $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $adherent5->addReferentTag($this->getReference('referent_tag_92'));
         $this->addReference('adherent-5', $adherent5);
 

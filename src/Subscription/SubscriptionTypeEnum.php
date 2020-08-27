@@ -13,7 +13,7 @@ final class SubscriptionTypeEnum extends Enum
 
     public const DEPUTY_EMAIL = 'deputy_email';
     public const REFERENT_EMAIL = 'subscribed_emails_referents';
-    public const MUNICIPAL_EMAIL = 'municipal_email';
+    public const CANDIDATE_EMAIL = 'candidate_email';
     public const SENATOR_EMAIL = 'senator_email';
     public const CITIZEN_PROJECT_HOST_EMAIL = 'citizen_project_host_email';
     public const CITIZEN_PROJECT_CREATION_EMAIL = 'subscribed_emails_citizen_project_creation';
@@ -27,7 +27,7 @@ final class SubscriptionTypeEnum extends Enum
         self::DEPUTY_EMAIL,
         self::SENATOR_EMAIL,
         self::REFERENT_EMAIL,
-        self::MUNICIPAL_EMAIL,
+        self::CANDIDATE_EMAIL,
         self::CITIZEN_PROJECT_HOST_EMAIL,
     ];
 
@@ -48,7 +48,7 @@ final class SubscriptionTypeEnum extends Enum
         self::WEEKLY_LETTER_EMAIL,
         self::DEPUTY_EMAIL,
         self::REFERENT_EMAIL,
-        self::MUNICIPAL_EMAIL,
+        self::CANDIDATE_EMAIL,
         self::SENATOR_EMAIL,
         self::CITIZEN_PROJECT_HOST_EMAIL,
     ];
