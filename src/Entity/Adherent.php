@@ -14,6 +14,7 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -1495,6 +1496,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         $this->politicalCommitteeMembership->revoke();
         $this->politicalCommitteeMembership = null;
+    }
+
+    public function isMayorOrLeader(): bool
+    {
+        return $this->politicalCommitteeMembership
+            && ($this->politicalCommitteeMembership->hasOneOfQualities([TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::LEADER]));
     }
 
     public function getManagedAreaMarkerLatitude(): ?string

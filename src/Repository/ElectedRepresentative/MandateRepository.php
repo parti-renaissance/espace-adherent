@@ -4,6 +4,7 @@ namespace App\Repository\ElectedRepresentative;
 
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\Mandate;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -72,6 +73,24 @@ class MandateRepository extends ServiceEntityRepository
             ->setParameter('adherent', $adherent)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function hasMayorMandate(Adherent $adherent): bool
+    {
+        return $this->createQueryBuilder('mandate')
+            ->select('COUNT(1)')
+            ->innerJoin('mandate.electedRepresentative', 'electedRepresentative')
+            ->innerJoin('mandate.politicalFunctions', 'politicalFunction')
+            ->andWhere('electedRepresentative.adherent = :adherent')
+            ->andWhere('politicalFunction.name = :mayor')
+            ->andWhere('mandate.isElected = 1')
+            ->andWhere('mandate.onGoing = 1')
+            ->andWhere('politicalFunction.onGoing = 1')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('mayor', TerritorialCouncilQualityEnum::MAYOR)
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 }

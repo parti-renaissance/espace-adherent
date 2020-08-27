@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository")
  *
  * @UniqueEntity(fields={"adherent", "politicalCommittee"})
  *
@@ -140,9 +141,20 @@ class PoliticalCommitteeMembership
 
     public function hasQuality(string $name): bool
     {
-        return $this->getQualities()->filter(function (PoliticalCommitteeQuality $quality) use ($name) {
-            return $quality->getName() === $name;
-        })->count() > 0;
+        return $this->hasOneOfQualities([$name]);
+    }
+
+    public function hasOneOfQualities(array $names): bool
+    {
+        if (0 === $this->qualities->count()) {
+            return false;
+        }
+
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->in('name', $names))
+        ;
+
+        return $this->qualities->matching($criteria)->count() > 0;
     }
 
     public function getJoinedAt(): \DateTime
