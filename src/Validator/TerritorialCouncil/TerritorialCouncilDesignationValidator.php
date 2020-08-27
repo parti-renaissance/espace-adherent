@@ -53,7 +53,7 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
             }
 
             foreach ($value->getElectionPollChoices() as $choice) {
-                if (!\is_integer($choice) || $choice > 10) {
+                if (!\is_integer($choice) || $choice > 10 || $choice < 0) {
                     $this->context
                         ->buildViolation($constraint->messageElectionPollChoiceInvalid)
                         ->atPath('electionPollChoices')
@@ -62,6 +62,14 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
 
                     return;
                 }
+            }
+
+            if (!\in_array(0, $value->getElectionPollChoices(), true)) {
+                $this->context
+                    ->buildViolation($constraint->messageElectionPollChoiceZeroMissing)
+                    ->atPath('electionPollChoices')
+                    ->addViolation()
+                ;
             }
         }
 
@@ -100,18 +108,19 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
             ;
         }
 
-        if ($meetingEndDate < $voteStartDate || $meetingEndDate > $voteEndDate) {
+        if ($meetingStartDate >= $meetingEndDate || $meetingEndDate > (clone $meetingStartDate)->modify('+12 hours')) {
             $this->context
-                ->buildViolation($constraint->messageMeetingDateInvalid)
+                ->buildViolation($constraint->messageMeetingEndDateInvalid)
                 ->atPath('meetingEndDate')
                 ->addViolation()
             ;
         }
 
-        if ($meetingStartDate >= $meetingEndDate || $meetingEndDate > (clone $meetingStartDate)->modify('+12 hours')) {
+        if ($meetingStartDate > $date = \DateTime::createFromFormat('d/m/Y', '30/09/2020')) {
             $this->context
-                ->buildViolation($constraint->messageMeetingEndDateInvalid)
-                ->atPath('meetingEndDate')
+                ->buildViolation($constraint->messageMeetingStartDateTooFarAway)
+                ->atPath('meetingStartDate')
+                ->setParameter('{{date}}', $date->format('d/m/Y'))
                 ->addViolation()
             ;
         }

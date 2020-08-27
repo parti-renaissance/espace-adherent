@@ -209,6 +209,10 @@ class UpdateDesignationRequest
 
     public function setElectionPollChoices(?array $electionPollChoices): void
     {
+        if ($electionPollChoices) {
+            sort($electionPollChoices);
+        }
+
         $this->electionPollChoices = $electionPollChoices;
     }
 
