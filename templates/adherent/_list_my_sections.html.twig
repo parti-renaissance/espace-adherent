@@ -109,3 +109,10 @@
         </a>
     </li>
 {% endif %}
+{% if app.user.isLegislativeCandidate %}
+    <li>
+        <a href="{{ path('app_access_delegation_unset', {type: 'legislative_candidate'}) }}">
+            Espace Candidat aux législatives
+        </a>
+    </li>
+{% endif %}

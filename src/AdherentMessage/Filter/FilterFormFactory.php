@@ -61,6 +61,11 @@ class FilterFormFactory
 
             case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
                 return $this->formFactory->create(ReferentTerritorialCouncilFilterType::class, $data);
+
+            case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
+                return $this->formFactory->create(AdherentZoneFilterType::class, $data, [
+                    'referent_tags' => [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()],
+                ]);
         }
 
         throw new InvalidAdherentMessageType(sprintf('Invalid message ("%s") type or data', $messageType));

@@ -248,7 +248,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 234823644',
             'registered_at' => '2017-02-16 17:12:08',
         ]);
-        $adherent9->setLegislativeCandidate(true);
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent9->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
@@ -320,7 +319,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent12->getBoardMember()->addSavedBoardMember($adherent9->getBoardMember());
         $adherent12->getBoardMember()->addSavedBoardMember($adherent2->getBoardMember());
         $adherent12->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent12->setLegislativeCandidate(true);
         $adherent12->addReferentTag($this->getReference('referent_tag_us'));
         $this->addReference('adherent-12', $adherent12);
 
@@ -741,8 +739,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'senatorial-candidate@en-marche-dev.fr',
             'gender' => 'male',
-            'first_name' => 'Senatorial',
-            'last_name' => 'Candidate 1',
+            'first_name' => 'Jean-Baptiste',
+            'last_name' => 'Fortin',
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',

@@ -520,6 +520,7 @@
                 <argument key="App\Entity\AdherentMessage\MunicipalChiefAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder" />
                 <argument key="App\Entity\AdherentMessage\SenatorAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\SenatorMessageSectionBuilder" />
                 <argument key="App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ElectedRepresentativeMessageSectionBuilder" />
+                <argument key="App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\LegislativeCandidateMessageSectionBuilder" />
             </argument>
             <tag name="container.service_locator" />
         </service>

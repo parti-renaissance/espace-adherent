@@ -30,6 +30,8 @@ abstract class FilterFactory
                 return static::createReferentElectedRepresentativeFilter($user);
             case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
                 return static::createReferentTerritorialCouncilFilter($user);
+            case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
+                return static::createLegislativeCandidateFilter($user);
         }
     }
 
@@ -89,5 +91,14 @@ abstract class FilterFactory
         }
 
         return new ReferentTerritorialCouncilFilter($managedArea->getTags()->first());
+    }
+
+    private static function createLegislativeCandidateFilter(Adherent $user): AdherentZoneFilter
+    {
+        if (!$user->isLegislativeCandidate()) {
+            throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a legislative candidate');
+        }
+
+        return new AdherentZoneFilter($user->getLegislativeCandidateManagedDistrict()->getReferentTag());
     }
 }

@@ -5,6 +5,7 @@ namespace App\Collection;
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentCharter\DeputyCharter;
+use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\LreCharter;
 use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
@@ -56,6 +57,13 @@ class AdherentCharterCollection extends ArrayCollection
         });
     }
 
+    public function hasLegislativeCandidateCharterAccepted(): bool
+    {
+        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
+            return $charter instanceof LegislativeCandidateCharter;
+        });
+    }
+
     public function hasCharterAcceptedForType(string $type): bool
     {
         switch ($type) {
@@ -76,6 +84,9 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_LRE:
                 return $this->hasLreCharterAccepted();
+
+            case AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE:
+                return $this->hasLegislativeCandidateCharterAccepted();
         }
 
         return false;

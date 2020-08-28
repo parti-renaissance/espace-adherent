@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% set currentUserOrDelegator = current_user() %}
+{% set delegated_access = get_delegated_access() %}
+
+{% block page_title %}
+    {% if app.user is same as(currentUserOrDelegator) %}
+        Espace candidat aux législatives
+    {% else %}
+        Espace candidat aux législatives partagé
+    {% endif %}
+{% endblock %}
+
+{% set hasCharterAccepted = app.user.charters.hasLegislativeCandidateCharterAccepted %}
+
+{% block stylesheets %}
+    {% if not hasCharterAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="manager-space deputy procuration-manager b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="manager-information">
+                            <p>Vous gérez : <span>{{ currentUserOrDelegator.legislativeCandidateManagedDistrict }}</span></p>
+                        </div>
+                    </div>
+                    <div class="second-section">
+                        <div>
+                            <h1 class="page-title text--large b__nudge--bottom">
+                                {{ block('page_title') }}
+                            </h1>
+                            {% if app.user is not same as(currentUserOrDelegator) %}
+                                <p class="text--body text--dark b__nudge--top-0">Vous êtes {{ delegated_access.role|lower }} du candidat aux législative {{ currentUserOrDelegator }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <nav class="manager-header__menu">
+                        {% set isLegislativeCandidate = is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
+                        <ul>
+                            {% if isLegislativeCandidate or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
+                                <li class="{{ is_active_route(app.request, 'app_message_legislative_candidate_*') ? 'active' }}">
+                                    <a href="{{ path("app_message_legislative_candidate_list", route_params|default({})) }}">Mes messages</a>
+                                </li>
+                            {% endif %}
+
+                            {% if isLegislativeCandidate or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
+                                <li class="{{ is_active_route(app.request, ['app_legislative_candidate_managed_users_list', 'app_legislative_candidate_adherent_invitation']) ? 'active' }}">
+                                    <a href="{{ path('app_legislative_candidate_managed_users_list') }}">Adhérents</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="l__wrapper procuration-manager__content text--body">
+                {% block legislative_candidate_content %}{% endblock %}
+            </div>
+        </section>
+
+        {% if not hasCharterAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'legislative_candidate.popup.title'|trans,
+                'subtitle': 'legislative_candidate.popup.subtitle'|trans,
+                'fileUrl': 'legislative_candidate.popup.file_url'|trans
+            } %}
+        {% endif %}
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if not hasCharterAccepted %}
+        {% if js is not defined %}
+            {% import 'javascript.js.twig' as js %}
+        {% endif %}
+
+
+        <script type="text/javascript">
+          Kernel.onLoad(function() {
+              {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE')) }}
+          } );
+        </script>
+    {% endif %}
+{% endblock %}
