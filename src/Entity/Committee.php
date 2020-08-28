@@ -5,13 +5,16 @@ namespace App\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\StaticSegmentInterface;
+use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use App\Exception\CommitteeAlreadyApprovedException;
 use App\Report\ReportType;
+use App\ValueObject\Genders;
 use App\ValueObject\Link;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -176,6 +179,13 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
      */
     public $hosts = [];
 
+    /**
+     * @var CommitteeAdherentMandate|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\CommitteeAdherentMandate", mappedBy="committee", fetch="EXTRA_LAZY")
+     */
+    private $adherentMandates;
+
     public function __construct(
         UuidInterface $uuid,
         UuidInterface $creator,
@@ -206,6 +216,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->description = $description;
         $this->postAddress = $address;
         $this->citizenProjectSupports = new ArrayCollection();
+        $this->adherentMandates = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
         $this->committeeElections = new ArrayCollection();
 
@@ -461,5 +472,51 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     public function getReportType(): string
     {
         return ReportType::COMMITTEE;
+    }
+
+    public function getAdherentMandates(): Collection
+    {
+        return $this->adherentMandates;
+    }
+
+    public function setAdherentMandates(Collection $adherentMandates): void
+    {
+        $this->adherentMandates = $adherentMandates;
+    }
+
+    public function addAdherentMandate(CommitteeAdherentMandate $adherentMandate): void
+    {
+        if (!$this->adherentMandates->contains($adherentMandate)) {
+            $this->adherentMandates->add($adherentMandate);
+        }
+    }
+
+    public function removeAdherentMandate(CommitteeAdherentMandate $adherentMandate): void
+    {
+        $this->adherentMandates->removeElement($adherentMandate);
+    }
+
+    public function hasMaleMandate(): bool
+    {
+        return $this->hasMandateWithGender(Genders::MALE);
+    }
+
+    public function hasFemaleMandate(): bool
+    {
+        return $this->hasMandateWithGender(Genders::FEMALE);
+    }
+
+    public function hasMandateWithGender(string $gender): bool
+    {
+        if (0 === $this->adherentMandates->count()) {
+            return false;
+        }
+
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->andWhere(Criteria::expr()->eq('gender', $gender))
+        ;
+
+        return $this->adherentMandates->matching($criteria)->count() > 0;
     }
 }

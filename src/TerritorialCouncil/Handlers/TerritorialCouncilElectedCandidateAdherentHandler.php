@@ -34,7 +34,7 @@ class TerritorialCouncilElectedCandidateAdherentHandler extends AbstractTerritor
 
     public function supports(Adherent $adherent): bool
     {
-        $this->committees = $this->committeeRepository->findForElectedAdherent($adherent);
+        $this->committees = $this->committeeRepository->findForAdherentWithCommitteeMandates($adherent);
 
         return true;
     }
