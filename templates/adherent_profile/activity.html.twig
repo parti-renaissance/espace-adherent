@@ -2,6 +2,8 @@
 
 {% block page_title 'Activités' %}
 
+{% set is_adherent_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
+
 {% block adherent_profile_content %}
     <section class="adherent-profile__section b__nudge--bottom-50" id="committees">
         {% include('adherent_profile/activity/_committees.html.twig') %}
@@ -22,4 +24,18 @@
     <section class="adherent-profile__section b__nudge--bottom-50" id="donations">
         {% include('adherent_profile/activity/_donations.html.twig') %}
     </section>
+
+    <div id="modal-wrapper"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if is_adherent_able_to_change_vote %}
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                App.runMyActivityCommitteeList('.vote-switcher-enabled');
+            });
+        </script>
+    {% endif %}
 {% endblock %}
