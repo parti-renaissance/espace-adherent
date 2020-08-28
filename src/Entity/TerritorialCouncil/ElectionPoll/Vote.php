@@ -34,6 +34,7 @@ class Vote
      * @var TerritorialCouncilMembership
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $membership;
 
