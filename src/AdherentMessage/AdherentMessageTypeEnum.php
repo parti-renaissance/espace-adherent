@@ -14,4 +14,5 @@ class AdherentMessageTypeEnum extends Enum
     public const SENATOR = 'senator';
     public const REFERENT_ELECTED_REPRESENTATIVE = 'referent_elected_representative';
     public const REFERENT_TERRITORIAL_COUNCIL = 'referent_territorial_council';
+    public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
 }

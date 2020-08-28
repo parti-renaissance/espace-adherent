@@ -7,6 +7,7 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
@@ -52,6 +53,10 @@ class AdherentMessageFactory
 
             case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
                 $message = new ReferentTerritorialCouncilMessage(Uuid::uuid4(), $adherent);
+                break;
+
+            case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
+                $message = new LegislativeCandidateAdherentMessage(Uuid::uuid4(), $adherent);
                 break;
 
             default:

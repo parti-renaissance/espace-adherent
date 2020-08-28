@@ -203,9 +203,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $subscriptionTypes;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": 0})
+     * @var District|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\District", cascade={"persist"})
      */
-    private $legislativeCandidate;
+    private $legislativeCandidateManagedDistrict;
 
     /**
      * @var ReferentManagedArea|null
@@ -631,7 +633,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->postAddress = $postAddress;
         $adherent->phone = $phone;
         $adherent->status = $status;
-        $adherent->legislativeCandidate = false;
         $adherent->registeredAt = new \DateTime($registeredAt);
         $adherent->tags = new ArrayCollection($tags);
         $adherent->referentTags = new ArrayCollection($referentTags);
@@ -776,7 +777,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_JECOUTE_MANAGER';
         }
 
-        if ($this->legislativeCandidate) {
+        if ($this->isLegislativeCandidate()) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
 
@@ -860,6 +861,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isElectionResultsReporter()
             || $this->isMunicipalManagerSupervisor()
             || $this->isSenatorialCandidate()
+            || $this->isLre()
+            || $this->isLegislativeCandidate()
         ;
     }
 
@@ -1741,12 +1744,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isLegislativeCandidate(): bool
     {
-        return $this->legislativeCandidate;
+        return $this->legislativeCandidateManagedDistrict instanceof District;
     }
 
-    public function setLegislativeCandidate(bool $candidate): void
+    public function getLegislativeCandidateManagedDistrict(): ?District
     {
-        $this->legislativeCandidate = $candidate;
+        return $this->legislativeCandidateManagedDistrict;
+    }
+
+    public function setLegislativeCandidateManagedDistrict(?District $legislativeCandidateManagedDistrict): void
+    {
+        $this->legislativeCandidateManagedDistrict = $legislativeCandidateManagedDistrict;
     }
 
     public function isNicknameUsed(): bool
@@ -2026,6 +2034,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isMunicipalChief()
             || $this->isSenator()
             || $this->isDelegatedSenator()
+            || $this->isLegislativeCandidate()
         ;
     }
 

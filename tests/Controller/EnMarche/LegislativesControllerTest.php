@@ -54,7 +54,7 @@ class LegislativesControllerTest extends WebTestCase
         string $expectedRecipient,
         string $selectedRecipient
     ) {
-        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
+        $this->authenticateAsAdherent($this->client, 'senatorial-candidate@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat-legislatives/contact');
 

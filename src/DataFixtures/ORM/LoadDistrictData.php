@@ -31,6 +31,7 @@ class LoadDistrictData extends AbstractFixture implements ContainerAwareInterfac
 
         $this->getReference('deputy-75-1')->setManagedDistrict($districtRepository->findOneBy(['code' => '75001']));
         $this->getReference('deputy-75-2')->setManagedDistrict($districtRepository->findOneBy(['code' => '75002']));
+        $this->getReference('senatorial-candidate')->setLegislativeCandidateManagedDistrict($districtRepository->findOneBy(['code' => '75002']));
 
         $this->getReference('deputy-ch-li')->setManagedDistrict($districtRepository->findOneBy(['code' => 'FDE-06']));
 

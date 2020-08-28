@@ -401,6 +401,13 @@ HELP
                     'label' => 'Accès à "La maison des impressions"',
                     'required' => false,
                 ])
+                ->add('legislativeCandidateManagedDistrict', AvailableDistrictAutocompleteType::class, [
+                    'label' => 'Candidat aux législatives',
+                    'by_reference' => false,
+                    'required' => false,
+                    'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
+                    'callback' => [DistrictAdmin::class, 'prepareLegislativeCandidateAutocompleteFilterCallback'],
+                ])
             ->end()
             ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
                 ->add('electionResultsReporter', null, [
@@ -777,6 +784,12 @@ HELP
                     if (\in_array(AdherentRoleEnum::LRE, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.lreArea', $alias), 'lre');
                         $where->add('lre IS NOT NULL');
+                    }
+
+                    // Legislative candidate
+                    if (\in_array(AdherentRoleEnum::LEGISLATIVE_CANDIDATE, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.legislativeCandidateManagedDistrict', $alias), 'lcmd');
+                        $where->add('lcmd IS NOT NULL');
                     }
 
                     if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value['value'], true)) {
