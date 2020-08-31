@@ -38,7 +38,7 @@ class CandidacyManager
             $this->entityManager->persist($candidacy);
         }
 
-        if ($candidacy->isConfirmed()) {
+        if ($candidacy->isConfirmed() && $candidacy->getBinome()) {
             $candidacy->getBinome()->updateFromBinome();
         }
 
@@ -116,6 +116,24 @@ class CandidacyManager
         $this->dispatcher->dispatch(
             Events::CANDIDACY_INVITATION_UPDATE,
             new CandidacyInvitationEvent($candidacy, $invitation, $previouslyInvitedMembership)
+        );
+    }
+
+    public function saveSingleCandidature(
+        Candidacy $candidacy,
+        TerritorialCouncilMembership $previouslyInvitedMembership = null
+    ): void {
+        if (!$candidacy->isCouncilor()) {
+            throw new \RuntimeException(sprintf('Candidacy "%s" is not allowed to candidate without another member.', $candidacy->getUuid()));
+        }
+
+        $candidacy->confirm();
+
+        $this->updateCandidature($candidacy);
+
+        $this->dispatcher->dispatch(
+            Events::CANDIDACY_INVITATION_UPDATE,
+            new CandidacyInvitationEvent($candidacy, null, $previouslyInvitedMembership)
         );
     }
 }

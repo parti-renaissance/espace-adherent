@@ -14,7 +14,7 @@ class CandidacyInvitationEvent extends TerritorialCouncilCandidacyEvent
 
     public function __construct(
         CandidacyInterface $candidacy,
-        CandidacyInvitation $invitation,
+        CandidacyInvitation $invitation = null,
         TerritorialCouncilMembership $previouslyInvitedMembership = null
     ) {
         parent::__construct($candidacy);
@@ -23,7 +23,7 @@ class CandidacyInvitationEvent extends TerritorialCouncilCandidacyEvent
         $this->previouslyInvitedMembership = $previouslyInvitedMembership;
     }
 
-    public function getInvitation(): CandidacyInvitation
+    public function getInvitation(): ?CandidacyInvitation
     {
         return $this->invitation;
     }
