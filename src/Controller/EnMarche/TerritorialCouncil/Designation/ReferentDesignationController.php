@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @Route(path="/espace-referent/instances", name="app_territorial_council_referent", methods={"GET"})
+ * @Route(path="/espace-referent/instances", name="app_territorial_council_referent_designations", methods={"GET"})
  *
  * @Security("is_granted('ROLE_REFERENT')")
  */
@@ -30,7 +30,7 @@ class ReferentDesignationController extends AbstractController
     }
 
     /**
-     * @Route("/designations", name="_designations_list", methods={"GET"})
+     * @Route("/designations", name="_list", methods={"GET"})
      *
      * @param Adherent $adherent
      */

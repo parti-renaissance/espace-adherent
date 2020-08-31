@@ -25,7 +25,7 @@
                         <td>{{ designation.voteEndDate ? designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}</td>
                         <td>
                             {% if designation.voteStartDate is empty %}
-                                <a href="{{ path('app_territorial_council_referent_election_send_convocation', {uuid: election.uuid}) }}">Envoyer la convocation</a>
+                                <a href="{{ path('app_territorial_council_referent_designations_election_send_convocation', {uuid: election.uuid}) }}">Envoyer la convocation</a>
                             {% endif %}
                         </td>
                     </tr>

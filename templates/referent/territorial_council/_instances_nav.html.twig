@@ -1,11 +1,11 @@
 <nav class="tabs-nav b__nudge--bottom-larger">
     <ul>
-        <li class="{{ is_active_route(app.request, 'app_referent_territorial_council_*') ? 'active' }}">
-            <a class="tabs-nav__item" href="{{ path('app_referent_territorial_council_members_list') }}">
+        <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_members*') ? 'active' }}">
+            <a class="tabs-nav__item" href="{{ path('app_territorial_council_referent_members_list') }}">
                 Membres
             </a>
         </li>
-        <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_*') ? 'active' }}">
+        <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_designations*') ? 'active' }}">
             <a class="tabs-nav__item" href="{{ path('app_territorial_council_referent_designations_list') }}">
                 Désignations
             </a>
