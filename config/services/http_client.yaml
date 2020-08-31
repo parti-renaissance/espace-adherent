@@ -1,3 +1,6 @@
+parameters:
+    env(GEO_GOUV_API_HOST): 'https://geo.api.gouv.fr'
+
 services:
     _defaults:
         autowire: true
@@ -10,3 +13,16 @@ services:
             - Symfony\Component\HttpClient\HttpClient
             - create
         arguments: [base_uri: '%env(MAILCHIMP_SIGNUP_HOST)%']
+
+    app.http_client.geo_gouv:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory:
+            - Symfony\Component\HttpClient\HttpClient
+            - create
+        arguments: [base_uri: '%env(GEO_GOUV_API_HOST)%']
+
+    Symfony\Contracts\HttpClient\HttpClientInterface:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory:
+            - Symfony\Component\HttpClient\HttpClient
+            - create

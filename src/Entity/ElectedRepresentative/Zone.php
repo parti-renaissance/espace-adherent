@@ -75,11 +75,32 @@ class Zone
      */
     private $code;
 
+    /**
+     * @var Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\ElectedRepresentative\Zone", inversedBy="children")
+     * @ORM\JoinTable(
+     *     name="elected_representative_zone_parent",
+     *     joinColumns={@ORM\JoinColumn(name="child_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")}
+     * )
+     */
+    private $parents;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\ElectedRepresentative\Zone", mappedBy="parents")
+     */
+    private $children;
+
     public function __construct(ZoneCategory $category = null, string $name = null)
     {
         $this->category = $category;
         $this->name = $name;
         $this->referentTags = new ArrayCollection();
+        $this->parents = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,5 +131,32 @@ class Zone
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
+    }
+
+    public function getParents(): Collection
+    {
+        return $this->parents;
+    }
+
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChildren(self $zone): void
+    {
+        if (!$this->children->contains($zone)) {
+            $this->children->add($zone);
+        }
     }
 }
