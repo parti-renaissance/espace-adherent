@@ -2,8 +2,17 @@
 
 {% block field %}
     {% for adherent in object.getContributors %}
-        <a href="{{ path('admin_app_adherent_edit', {id: adherent.id }) }}">
-            {{ adherent }}{% if not loop.last %},{% endif %}
-        </a>
+        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+            <a href="{{ path('admin_app_adherent_edit', {id: adherent.id }) }}">
+                {{ adherent }}
+            </a>
+        {% elseif is_granted('ROLE_APP_ADMIN_ADHERENT_VIEW') %}
+            <a href="{{ path('admin_app_adherent_show', {id: adherent.id }) }}">
+                {{ adherent }}
+            </a>
+        {% else %}
+            {{ adherent }}
+        {% endif %}
+        {% if not loop.last %},{% endif %}
     {% endfor %}
 {% endblock %}
