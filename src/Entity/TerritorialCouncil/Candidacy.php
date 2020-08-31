@@ -86,6 +86,13 @@ class Candidacy extends BaseCandidacy
      */
     private $binome;
 
+    /**
+     * Helps to render two or single candidate
+     *
+     * @var bool
+     */
+    private $isRendered = false;
+
     public function __construct(
         TerritorialCouncilMembership $membership,
         Election $election,
@@ -222,5 +229,20 @@ class Candidacy extends BaseCandidacy
     public function isValidForConfirmation(): bool
     {
         return $this->binome && $this->binome->getInvitation() && $this->binome->isDraft();
+    }
+
+    public function isCouncilor(): bool
+    {
+        return \in_array($this->quality, [TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR], true);
+    }
+
+    public function isRendered(): bool
+    {
+        return $this->isRendered;
+    }
+
+    public function render(): void
+    {
+        $this->isRendered = true;
     }
 }

@@ -14,6 +14,7 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
             isLoading: true,
             quality: this.qualitySelect.value,
             searchQuery: null,
+            error: null,
             memberships: [],
         };
 
@@ -30,6 +31,8 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
     render() {
         let content;
 
+        this.submitButton.innerText = 'Envoyer l\'invitation';
+
         if (this.state.isLoading) {
             content = <Loader wrapperClassName={'text--center space--30-0'} />;
             hide(this.submitButton);
@@ -37,9 +40,19 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
             content = <p className={'text--body text--gray text--small text--center'}>
                 {this.state.error}
             </p>;
-            hide(this.submitButton);
+            if (
+                this.state.success
+                && 0 === this.state.memberships.length
+                && -1 !== ['department_councilor', 'regional_councilor'].indexOf(this.state.quality)
+            ) {
+                this.submitButton.innerText = 'Candidater seul à titre dérogatoire';
+                show(this.submitButton);
+            } else {
+                hide(this.submitButton);
+            }
         } else {
             show(this.submitButton);
+
             content = (
                 <div id="membership-container">
                     {this.state.memberships.map((membership, key) => (
@@ -99,12 +112,15 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
                     this.setState({
                         isLoading: false,
                         error: 'Impossible de constituer un binôme, aucun membre n\'est disponible.',
+                        memberships: [],
+                        success: true,
                     });
                 } else {
                     this.setState({
                         isLoading: false,
                         error: null,
                         memberships: data,
+                        success: true,
                     });
                 }
             },
@@ -116,6 +132,7 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
                 this.setState({
                     isLoading: false,
                     error: response.message || 'Une erreur est survenue',
+                    success: false,
                 });
             }
         );

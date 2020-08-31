@@ -153,7 +153,7 @@ class CandidatureControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         $form = $crawler->selectButton('Envoyer l\'invitation')->form();
 
-        $crawler = $this->client->submit($form);
+        $crawler = $this->client->submit($form, ['candidacy_quality[quality]' => 'consular_conselor']);
 
         self::assertCount(1, $errors = $crawler->filter('.form__error'));
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());

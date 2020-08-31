@@ -39,7 +39,7 @@
             <div>
                 {{ form_row(form.save, {label: 'Envoyer l\'invitation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
 
-                {% if not invitation %}
+                {% if not invitation or not invitation.id %}
                     <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
                         Étape précedente
                     </a>

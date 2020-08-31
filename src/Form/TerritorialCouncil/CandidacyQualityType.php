@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CandidacyQualityType extends AbstractType
@@ -22,6 +24,14 @@ class CandidacyQualityType extends AbstractType
             ])
             ->add('invitation', CandidacyInvitationType::class)
             ->add('save', SubmitType::class)
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                /** @var Candidacy $model */
+                $model = $event->getData();
+
+                if (!$model->getInvitation()->getMembership() && $model->isCouncilor()) {
+                    $model->setInvitation(null);
+                }
+            })
         ;
     }
 

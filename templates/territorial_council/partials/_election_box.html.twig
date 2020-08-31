@@ -33,11 +33,18 @@
 
                     {% if candidacy.isConfirmed %}
                         <hr/>
-                        <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
-                            <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
-                            Vous êtes maintenant candidat en binôme avec {{ candidacy.binome.membership.fullName }}.<br />
-                            Vous ne pouvez plus retirer votre candidature.
-                        </p>
+                        {% if candidacy.binome %}
+                            <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
+                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
+                                Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.binome.membership.fullName }}.<br />
+                                Vous ne pouvez plus retirer votre candidature.
+                            </p>
+                        {% else %}
+                            <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container l__col--half">
+                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
+                                Vous êtes candidat{{ candidacy.isFemale ? 'e' }} seul{{ candidacy.isFemale ? 'e' }} à titre dérogatoire.
+                            </p>
+                        {% endif %}
 
                         <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Modifier ma demande de binôme</span>
                     {% elseif candidacy.hasPendingInvitation %}

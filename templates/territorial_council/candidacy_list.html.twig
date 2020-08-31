@@ -9,43 +9,51 @@
         <div class="b__nudge--bottom-larger">
             {% set current_quality = null %}
 
-            {% for candidacy in candidacies|filter(candidacy => candidacy.isFemale)|sort((a, b) => a.qualityPriority <=> b.qualityPriority) %}
+            {% for candidacy in candidacies|sort((a, b) => a.qualityPriority <=> b.qualityPriority) if not candidacy.isRendered %}
                 {% if current_quality is null or current_quality != candidacy.quality %}
                     {% set current_quality = candidacy.quality %}
 
                     <h4 class="text--muted text--normal text--uppercase b__nudge--top-large b__nudge--bottom-large quality-title-{{ candidacy.qualityPriority }}">
                         {{ ('territorial_council.membership.quality.' ~ current_quality)|trans }}
                     </h4>
-
                 {% endif %}
 
                 <div class="territorial-council__candidacie l__row l__row--wrap">
+                    {% set first_candidacy = candidacy.isFemale ? candidacy : (candidacy.binome ? candidacy.binome : candidacy) %}
+
+                    {{ first_candidacy.render() }}
                     <div class="territorial-council__candidate">
-                        {{ helper.display_candidate_identity(candidacy, '<span class="candidate-gender l__col l__col--center">F</span>') }}
+                        {{ helper.display_candidate_identity(first_candidacy, '<span class="candidate-gender l__col l__col--center">F</span>') }}
                     </div>
 
-                    <div class="territorial-council__candidate">
-                        {{ helper.display_candidate_identity(candidacy.binome, '<span class="candidate-gender l__col l__col--center">H</span>') }}
-                    </div>
+                    {% if first_candidacy.binome %}
+                        {{ first_candidacy.binome.render() }}
+
+                        <div class="territorial-council__candidate">
+                            {{ helper.display_candidate_identity(first_candidacy.binome, '<span class="candidate-gender l__col l__col--center">H</span>') }}
+                        </div>
+                    {% endif %}
 
                     <div>
                         <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
-                           data-confirm-content-element="#candidate-biography-content-{{ candidacy.uuid }}"
+                           data-confirm-content-element="#candidate-biography-content-{{ first_candidacy.uuid }}"
                         > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>
 
-                        <div id="candidate-biography-content-{{ candidacy.uuid }}" class="hidden">
+                        <div id="candidate-biography-content-{{ first_candidacy.uuid }}" class="hidden">
                             <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentations</h3>
 
-                            <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ candidacy.membership.fullName }}</h2>
-                            <p class="text--body text--dark">{{ candidacy.biography }}</p>
+                            <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.membership.fullName }}</h2>
+                            <p class="text--body text--dark">{{ first_candidacy.biography }}</p>
 
-                            <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ candidacy.binome.membership.fullName }}</h2>
-                            <p class="text--body text--dark">{{ candidacy.binome.biography }}</p>
+                            {% if first_candidacy.binome %}
+                                <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.binome.membership.fullName }}</h2>
+                                <p class="text--body text--dark">{{ first_candidacy.binome.biography }}</p>
+                            {% endif %}
 
                             <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                            {% if candidacy.isPublicFaithStatement %}
-                                <p class="text--body text--dark">{{ candidacy.faithStatement }}</p>
+                            {% if first_candidacy.isPublicFaithStatement %}
+                                <p class="text--body text--dark">{{ first_candidacy.faithStatement }}</p>
                             {% else %}
                                 <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
                             {% endif %}

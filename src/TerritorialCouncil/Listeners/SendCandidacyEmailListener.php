@@ -46,7 +46,7 @@ class SendCandidacyEmailListener implements EventSubscriberInterface
         $invitation = $event->getInvitation();
         $previouslyInvitedMembership = $event->getPreviouslyInvitedMembership();
 
-        if (!$previouslyInvitedMembership || $previouslyInvitedMembership !== $invitation->getMembership()) {
+        if ($invitation && (!$previouslyInvitedMembership || $previouslyInvitedMembership !== $invitation->getMembership())) {
             $this->mailer->sendMessage(TerritorialCouncilCandidacyInvitationCreatedMessage::create(
                 $invitation->getMembership()->getAdherent(),
                 $candidacy->getMembership()->getAdherent(),
@@ -54,15 +54,15 @@ class SendCandidacyEmailListener implements EventSubscriberInterface
                 $this->translator->trans('territorial_council.membership.quality.'.$candidacy->getQuality()),
                 $this->urlGenerator->generate('app_territorial_council_candidature_invitation_list', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ));
+        }
 
-            if ($previouslyInvitedMembership && $previouslyInvitedMembership !== $invitation->getMembership()) {
-                $this->mailer->sendMessage(TerritorialCouncilCandidacyInvitationRemovedMessage::create(
-                    $previouslyInvitedMembership->getAdherent(),
-                    $candidacy->getMembership()->getAdherent(),
-                    $candidacy->getElection()->getDesignation(),
-                    $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
-                ));
-            }
+        if ($previouslyInvitedMembership && (!$invitation || $previouslyInvitedMembership !== $invitation->getMembership())) {
+            $this->mailer->sendMessage(TerritorialCouncilCandidacyInvitationRemovedMessage::create(
+                $previouslyInvitedMembership->getAdherent(),
+                $candidacy->getMembership()->getAdherent(),
+                $candidacy->getElection()->getDesignation(),
+                $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
+            ));
         }
     }
 

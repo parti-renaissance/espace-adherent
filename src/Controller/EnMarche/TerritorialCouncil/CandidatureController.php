@@ -164,11 +164,19 @@ class CandidatureController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->updateInvitation($candidacy->getInvitation(), $candidacy, $previouslyInvitedMembership ?? null);
+            if ($invitation = $candidacy->getInvitation()) {
+                $this->manager->updateInvitation($invitation, $candidacy, $previouslyInvitedMembership ?? null);
 
-            $this->addFlash('info', 'Votre invitation a bien été envoyée');
+                $this->addFlash('info', 'Votre invitation a bien été envoyée');
 
-            return $this->redirectToRoute('app_territorial_council_candidature_select_pair_candidate_finish');
+                return $this->redirectToRoute('app_territorial_council_candidature_select_pair_candidate_finish');
+            }
+
+            $this->manager->saveSingleCandidature($candidacy, $previouslyInvitedMembership ?? null);
+
+            $this->addFlash('info', 'Votre candidature a bien été enregistrée');
+
+            return $this->redirectToRoute('app_territorial_council_index');
         }
 
         return $this->render('territorial_council/candidacy_step2_invitation.html.twig', [
