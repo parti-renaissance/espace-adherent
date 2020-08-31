@@ -58,7 +58,7 @@
                 <aside class="adherent-profile__aside">
                     <div class="adherent-profile__status b__nudge--top">
                         <div class="l__row b__nudge--bottom-large">
-                            <div class="avatar-initials avatar--medium avatar--style-02">
+                            <div class="avatar-initials avatar--medium avatar--style-03">
                                 {{ app.user.initials }}
                             </div>
                             <div class="adherent-profile__id">
@@ -136,7 +136,7 @@
                             </ul>
                         </div>
                         <div class="menu-section">
-                            <a href="{{ path('app_documents_index') }}" class="menu-section__heading menu-section-documents {{ is_active_route(app.request, 'app_adherent_profile_documents') ? 'active' }}">
+                            <a href="{{ path('app_documents_index') }}" class="menu-section__heading menu-section-documents {{ is_active_route(app.request, 'app_documents_index') ? 'active' }}">
                                 <span>Documents</span>
                             </a>
                         </div>

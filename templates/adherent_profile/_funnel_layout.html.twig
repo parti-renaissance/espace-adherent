@@ -7,7 +7,7 @@
                 <aside class="adherent-profile__aside">
                     <div class="adherent-profile__status b__nudge--top">
                         <div class="l__row b__nudge--bottom-large">
-                            <div class="avatar-initials avatar--medium avatar--style-02">
+                            <div class="avatar-initials avatar--medium avatar--style-03">
                                 {{ app.user.initials }}
                             </div>
                             <div class="adherent-profile__id">
@@ -37,8 +37,8 @@
                             </div>
                         </div>
                     </div>
-                    <nav class="adherent-profile__menu adherent-profile__menu--desktop">
-                        <ul>
+                    <nav class="adherent-profile__funnel">
+                        <ul class="funnel__items">
                             <li class="{{ is_active_route(app.request, 'app_user_edit') ? 'active' }}">
                                 <a href="{{ path('app_funnel_general') }}">Informations générales</a>
                             </li>

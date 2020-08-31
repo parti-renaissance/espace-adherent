@@ -87,7 +87,7 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         if ($adherent->isDelegatedDeputy()) {
-            $labels[] = 'Équipe du député 🏛';
+            $labels[] = 'Équipe du député';
         }
 
         if ($adherent->isSenator()) {
@@ -95,7 +95,7 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         if ($adherent->isDelegatedSenator()) {
-            $labels[] = 'Équipe du sénateur 🏛';
+            $labels[] = 'Équipe du sénateur';
         }
 
         if ($adherent->isSupervisor()) {
