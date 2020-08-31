@@ -2,7 +2,10 @@
 
 namespace App\TerritorialCouncil\Filter;
 
+use App\Entity\Committee;
+use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ReferentTag;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MembersListFilter
@@ -15,9 +18,14 @@ class MembersListFilter
     private $referentTags = [];
 
     /**
-     * @var bool|null
+     * @var string|null
      */
-    private $emailSubscription;
+    private $subscriptionType;
+
+    /**
+     * @var array
+     */
+    private $territorialCouncils = [];
 
     /**
      * @var string|null
@@ -39,10 +47,39 @@ class MembersListFilter
     private $gender;
 
     /**
+     * @var int|null
+     */
+    private $ageMin;
+
+    /**
+     * @var int|null
+     */
+    private $ageMax;
+
+    /**
+     * @var array
+     */
+    private $qualities = [];
+
+    /**
+     * @var array
+     */
+    private $cities = [];
+
+    /**
+     * @var array
+     */
+    private $committees = [];
+
+    /**
+     * @var bool|null
+     */
+    private $emailSubscription;
+
+    /**
      * @var string
      *
      * @Assert\NotBlank
-     * @Assert\Choice(choices={"lastName"})
      */
     private $sort = 'adherent.lastName';
 
@@ -71,6 +108,16 @@ class MembersListFilter
     public function getSubscriptionType(): ?string
     {
         return $this->subscriptionType;
+    }
+
+    public function getTerritorialCouncils(): ?array
+    {
+        return $this->territorialCouncils;
+    }
+
+    public function setTerritorialCouncils(?array $territorialCouncils): void
+    {
+        $this->territorialCouncils = $territorialCouncils;
     }
 
     public function getGender(): ?string
@@ -103,6 +150,66 @@ class MembersListFilter
         $this->lastName = $lastName;
     }
 
+    public function getAgeMin(): ?int
+    {
+        return $this->ageMin;
+    }
+
+    public function setAgeMin(?int $ageMin): void
+    {
+        $this->ageMin = $ageMin;
+    }
+
+    public function getAgeMax(): ?int
+    {
+        return $this->ageMax;
+    }
+
+    public function setAgeMax(?int $ageMax): void
+    {
+        $this->ageMax = $ageMax;
+    }
+
+    public function getQualities(): ?array
+    {
+        return $this->qualities;
+    }
+
+    public function setQualities(?array $qualities): void
+    {
+        $this->qualities = $qualities;
+    }
+
+    public function getCities(): ?array
+    {
+        return $this->cities;
+    }
+
+    public function setCities(?array $cities): void
+    {
+        $this->cities = $cities;
+    }
+
+    public function getCommittees(): ?array
+    {
+        return $this->committees;
+    }
+
+    public function setCommittees(?array $committees): void
+    {
+        $this->committees = $committees;
+    }
+
+    public function getEmailSubscription(): ?bool
+    {
+        return $this->emailSubscription;
+    }
+
+    public function setEmailSubscription(?bool $emailSubscription): void
+    {
+        $this->emailSubscription = $emailSubscription;
+    }
+
     public function getSort(): string
     {
         return $this->sort;
@@ -129,6 +236,19 @@ class MembersListFilter
             'gender' => $this->gender,
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
+            'ageMin' => $this->ageMin,
+            'ageMax' => $this->ageMax,
+            'qualities' => $this->qualities,
+            'cities' => array_map(function (Zone $zone) {
+                return $zone->getId();
+            }, $this->cities),
+            'committees' => array_map(function (Committee $committee) {
+                return $committee->getId();
+            }, $this->committees),
+            'territorialCouncils' => array_map(function (TerritorialCouncil $territorialCouncil) {
+                return $territorialCouncil->getId();
+            }, $this->territorialCouncils),
+            'emailSubscription' => $this->emailSubscription,
             'sort' => $this->sort,
             'order' => $this->order,
         ];

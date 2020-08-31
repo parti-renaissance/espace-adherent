@@ -670,4 +670,14 @@ class CommitteeRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function createSelectByReferentTagsQueryBuilder(array $referentTags): QueryBuilder
+    {
+        return $this->createQueryBuilder('committee')
+            ->innerJoin('committee.referentTags', 'tag')
+            ->andWhere('tag IN (:tags)')
+            ->setParameter('tags', $referentTags)
+            ->orderBy('committee.name')
+        ;
+    }
 }

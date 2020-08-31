@@ -3,6 +3,8 @@
 namespace App\Repository\TerritorialCouncil;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use App\Entity\Committee;
+use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
@@ -104,7 +106,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilderWithReferentTagsCondition($filter->getReferentTags())
-            ->addSelect('tcm', 'adherent', 'quality')
+            ->addSelect('tcm', 'adherent')
             ->leftJoin('tcm.adherent', 'adherent')
             ->leftJoin('tcm.qualities', 'quality')
         ;
@@ -116,6 +118,13 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         }
 
         $qb->orderBy($sort, 'd' === $filter->getOrder() ? 'DESC' : 'ASC');
+
+        if ($territorialCouncils = $filter->getTerritorialCouncils()) {
+            $qb
+                ->andWhere('tcm.territorialCouncil in (:territorialCouncils)')
+                ->setParameter('territorialCouncils', $territorialCouncils)
+            ;
+        }
 
         if ($lastName = $filter->getLastName()) {
             $qb
@@ -148,6 +157,67 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
                 default:
                     break;
             }
+        }
+
+        if ($ageMin = $filter->getAgeMin()) {
+            $now = new \DateTimeImmutable();
+            $qb
+                ->andWhere('adherent.birthdate <= :min_age_birth_date')
+                ->setParameter('min_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMin))))
+            ;
+        }
+
+        if ($ageMax = $filter->getAgeMax()) {
+            $now = new \DateTimeImmutable();
+            $qb
+                ->andWhere('adherent.birthdate >= :max_age_birth_date')
+                ->setParameter('max_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMax))))
+            ;
+        }
+
+        if ($qualities = $filter->getQualities()) {
+            $qb
+                ->andWhere('quality.name in (:qualities)')
+                ->setParameter('qualities', $qualities)
+            ;
+        }
+
+        if ($cities = $filter->getCities()) {
+            $cities = \array_map(function (Zone $city) {
+                return $city->getName();
+            }, $cities);
+            $qb
+                ->andWhere('quality.zone in (:cities)')
+                ->setParameter('cities', $cities)
+            ;
+        }
+
+        if ($committees = $filter->getCommittees()) {
+            $committees = \array_map(function (Committee $committee) {
+                return $committee->getName();
+            }, $committees);
+            $qb
+                ->andWhere('quality.zone in (:committees)')
+                ->setParameter('committees', $committees)
+            ;
+        }
+
+        if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {
+            $qb
+                ->leftJoin('adherent.subscriptionTypes', 'subscriptionType')
+                ->addSelect('GROUP_CONCAT(subscriptionType.code) AS HIDDEN st_codes')
+                ->groupBy('adherent.id')
+            ;
+
+            $subscriptionCondition = 'st_codes LIKE :subscription_code';
+            if (false === $filter->getEmailSubscription()) {
+                $subscriptionCondition = 'st_codes IS NULL OR st_codes NOT LIKE :subscription_code';
+            }
+
+            $qb
+                ->having($subscriptionCondition)
+                ->setParameter('subscription_code', '%'.$filter->getSubscriptionType().'%')
+            ;
         }
 
         return $qb;

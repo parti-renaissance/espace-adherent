@@ -8,7 +8,6 @@ use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\Zone;
-use App\Entity\ElectedRepresentative\ZoneCategory;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
 use App\Repository\ElectedRepresentative\ZoneRepository;
@@ -85,18 +84,7 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'query_builder' => function (ZoneRepository $zoneRepository) use ($options) {
-                    return $zoneRepository
-                        ->createQueryBuilder('zone')
-                        ->leftJoin('zone.category', 'category')
-                        ->leftJoin('zone.referentTags', 'referentTag')
-                        ->where('category.name = :category')
-                        ->andWhere('referentTag IN (:tags)')
-                        ->setParameters([
-                            'tags' => $options['referent_tags'],
-                            'category' => ZoneCategory::CITY,
-                        ])
-                        ->orderBy('zone.name')
-                    ;
+                    return $zoneRepository->createSelectByReferentTagsQueryBuilder($options['referent_tags']);
                 },
             ])
             ->add('userListDefinitions', EntityType::class, [
