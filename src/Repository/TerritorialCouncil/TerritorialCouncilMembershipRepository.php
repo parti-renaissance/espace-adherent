@@ -2,19 +2,24 @@
 
 namespace App\Repository\TerritorialCouncil;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\TerritorialCouncil\Candidacy\SearchAvailableMembershipFilter;
+use App\TerritorialCouncil\Filter\MembersListFilter;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
+    use PaginatorTrait;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -68,5 +73,83 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function searchByFilter(MembersListFilter $filter, int $page = 1, int $limit = 50): PaginatorInterface
+    {
+        return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
+    }
+
+    public function countForReferentTags(array $referentTags): int
+    {
+        return (int) $this
+            ->createQueryBuilderWithReferentTagsCondition($referentTags)
+            ->select('COUNT(1)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    private function createQueryBuilderWithReferentTagsCondition(array $referentTags): QueryBuilder
+    {
+        return $this->createQueryBuilder('tcm')
+            ->innerJoin('tcm.territorialCouncil', 'territorialCouncil')
+            ->innerJoin('territorialCouncil.referentTags', 'referentTag')
+            ->andWhere('referentTag IN (:tags)')
+            ->setParameter('tags', $referentTags)
+        ;
+    }
+
+    private function createFilterQueryBuilder(MembersListFilter $filter): QueryBuilder
+    {
+        $qb = $this
+            ->createQueryBuilderWithReferentTagsCondition($filter->getReferentTags())
+            ->addSelect('tcm', 'adherent', 'quality')
+            ->leftJoin('tcm.adherent', 'adherent')
+            ->leftJoin('tcm.qualities', 'quality')
+        ;
+
+        if (false !== \strpos($filter->getSort(), '.')) {
+            $sort = $filter->getSort();
+        } else {
+            $sort = 'tcm.'.$filter->getSort();
+        }
+
+        $qb->orderBy($sort, 'd' === $filter->getOrder() ? 'DESC' : 'ASC');
+
+        if ($lastName = $filter->getLastName()) {
+            $qb
+                ->andWhere('adherent.lastName LIKE :last_name')
+                ->setParameter('last_name', '%'.$lastName.'%')
+            ;
+        }
+
+        if ($firstName = $filter->getFirstName()) {
+            $qb
+                ->andWhere('adherent.firstName LIKE :first_name')
+                ->setParameter('first_name', '%'.$firstName.'%')
+            ;
+        }
+
+        if ($gender = $filter->getGender()) {
+            switch ($gender) {
+                case Genders::FEMALE:
+                case Genders::MALE:
+                    $qb
+                        ->andWhere('adherent.gender = :gender')
+                        ->setParameter('gender', $gender)
+                    ;
+
+                    break;
+                case Genders::UNKNOWN:
+                    $qb->andWhere('adherent.gender IS NULL');
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $qb;
     }
 }
