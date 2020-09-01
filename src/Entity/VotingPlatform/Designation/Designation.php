@@ -345,4 +345,10 @@ class Designation
     {
         $this->limited = true;
     }
+
+    public function __clone()
+    {
+        $this->id = null;
+        $this->uuid = Uuid::uuid4();
+    }
 }
