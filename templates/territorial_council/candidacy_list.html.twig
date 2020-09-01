@@ -14,7 +14,7 @@
                     {% set current_quality = candidacy.quality %}
 
                     <h4 class="text--muted text--normal text--uppercase b__nudge--top-large b__nudge--bottom-large quality-title-{{ candidacy.qualityPriority }}">
-                        {{ ('territorial_council.membership.quality.' ~ current_quality)|trans }}
+                        {{ ('territorial_council.membership.qualities.' ~ current_quality)|trans }}
                     </h4>
                 {% endif %}
 
