@@ -10,7 +10,10 @@
 
         {% if documents.adherent is defined %}
             <div class="documents__category cursor--pointer accordion{{ first ? ' opened' }}">
-                <h2 class="section-subtitle accordion--title">Adhérents</h2>
+                <h2 class="section-subtitle accordion--title">
+                    Adhérents
+                    <span class="trigger-document"></span>
+                </h2>
 
                 {{ include('documents/tree.html.twig', { treeType: 'adherents', documents: documents.adherent }) }}
             </div>
@@ -19,7 +22,10 @@
 
         {% if documents.host is defined %}
             <div class="documents__category cursor--pointer accordion{{ first ? ' opened' }}">
-                <h2 class="section-subtitle accordion--title">Animateurs</h2>
+                <h2 class="section-subtitle accordion--title">
+                    Animateurs
+                    <span class="trigger-document"></span>
+                </h2>
 
                 {{ include('documents/tree.html.twig', { treeType: 'animateurs', documents: documents.host }) }}
             </div>
@@ -28,7 +34,10 @@
 
         {% if documents.foreign_host is defined %}
             <div class="documents__category cursor--pointer accordion{{ first ? ' opened' }}">
-                <h2 class="section-subtitle accordion--title">Animateurs à l'étranger</h2>
+                <h2 class="section-subtitle accordion--title">
+                    Animateurs à l'étranger
+                    <span class="trigger-document"></span>
+                </h2>
 
                 {{ include('documents/tree.html.twig', { treeType: 'animateurs-etrangers', documents: documents.foreign_host }) }}
             </div>
@@ -37,7 +46,10 @@
 
         {% if documents.referent is defined %}
             <div class="documents__category cursor--pointer accordion{{ first ? ' opened' }}">
-                <h2 class="section-subtitle accordion--title">Référents</h2>
+                <h2 class="section-subtitle accordion--title">
+                    Référents
+                    <span class="trigger-document"></span>
+                </h2>
 
                 {{ include('documents/tree.html.twig', { treeType: 'referents', documents: documents.referent }) }}
             </div>

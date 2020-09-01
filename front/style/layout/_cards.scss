@@ -683,6 +683,11 @@
     border: 1px solid $lines-grey;
     padding: 30px;
 
+    &.main-committee {
+        border-color: $pink;
+        background-color: $pink--extra-light;
+    }
+
     &__type {
         font-size: 12px;
         letter-spacing: 1.5px;
