@@ -15,6 +15,7 @@ use App\Mailer\Message\CommitteeElectionVoteConfirmationMessage;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
 use App\VotingPlatform\Election\VoteCommandStorage;
@@ -91,7 +92,9 @@ class FinishVoteCommandListener implements EventSubscriberInterface
 
         $this->saveVoterKeyInSession($voterKey);
 
-        $this->sendVoteConfirmationEmail($vote, $voterKey);
+        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
+            $this->sendVoteConfirmationEmail($vote, $voterKey);
+        }
     }
 
     private function generateVote(ElectionRound $electionRound): Vote

@@ -23,8 +23,10 @@ class RedirectManager
                     'app_committee_show',
                     ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()]
                 );
+            case DesignationTypeEnum::COPOL:
+                return $this->urlGenerator->generate('app_territorial_council_index');
         }
 
-        return $this->urlGenerator->generate('app_homepage');
+        return $this->urlGenerator->generate('homepage');
     }
 }

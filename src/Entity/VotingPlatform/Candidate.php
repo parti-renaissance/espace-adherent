@@ -52,6 +52,13 @@ class Candidate
     /**
      * @var string|null
      *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $faithStatement;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      */
     private $imagePath;
@@ -115,6 +122,16 @@ class Candidate
     public function setBiography(?string $biography): void
     {
         $this->biography = $biography;
+    }
+
+    public function getFaithStatement(): ?string
+    {
+        return $this->faithStatement;
+    }
+
+    public function setFaithStatement(?string $faithStatement): void
+    {
+        $this->faithStatement = $faithStatement;
     }
 
     public function getImagePath(): ?string

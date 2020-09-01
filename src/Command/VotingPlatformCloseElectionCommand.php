@@ -175,16 +175,16 @@ class VotingPlatformCloseElectionCommand extends Command
 
     private function notifyEndOfElectionRound(Election $election): void
     {
-        $committee = $election->getElectionEntity()->getCommittee();
+        if ($committee = $election->getElectionEntity()->getCommittee()) {
+            $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
 
-        $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
-
-        foreach ($memberships as $membership) {
-            $this->dispatcher->dispatch(Events::VOTE_CLOSE, new CommitteeElectionVoteIsOverEvent(
-                $membership->getAdherent(),
-                $election->getDesignation(),
-                $committee
-            ));
+            foreach ($memberships as $membership) {
+                $this->dispatcher->dispatch(Events::VOTE_CLOSE, new CommitteeElectionVoteIsOverEvent(
+                    $membership->getAdherent(),
+                    $election->getDesignation(),
+                    $committee
+                ));
+            }
         }
     }
 

@@ -3,14 +3,14 @@
 {% block banner %}
     <div class="space--10-0 background--blue">
         <div class="l__wrapper--wide">
-            <a href="{{ path('app_committee_show', {slug: election.electionEntity.committee.slug}) }}"
+            <a href="{{ path('app_territorial_council_index') }}"
                class="text--body text--small text--white link--no-decor">
-                Retourner au comité <span class="text--bold">{{ election.electionEntity.committee.name }}</span> →
+                Retourner au Conseil territorial <span class="text--bold">{{ election.electionEntity.territorialCouncil.name }}</span> →
             </a>
         </div>
     </div>
 {% endblock %}
 
 {% block vote_step_pool_title %}
-    Sélectionnez {{ pool.title|lower == 'homme' ? 'un candidat Homme' : 'une candidate Femme' }}
+    Sélectionnez un bimôme {{ pool.title }}
 {% endblock %}

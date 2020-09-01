@@ -9,7 +9,7 @@
         <div class="b__nudge--bottom-larger">
             {% set current_quality = null %}
 
-            {% for candidacy in candidacies|sort((a, b) => a.qualityPriority <=> b.qualityPriority) if not candidacy.isRendered %}
+            {% for candidacy in candidacies|sort((a, b) => a.qualityPriority <=> b.qualityPriority) if not candidacy.isTaken %}
                 {% if current_quality is null or current_quality != candidacy.quality %}
                     {% set current_quality = candidacy.quality %}
 
@@ -21,13 +21,13 @@
                 <div class="territorial-council__candidacie l__row l__row--wrap">
                     {% set first_candidacy = candidacy.isFemale ? candidacy : (candidacy.binome ? candidacy.binome : candidacy) %}
 
-                    {{ first_candidacy.render() }}
+                    {{ first_candidacy.take() }}
                     <div class="territorial-council__candidate">
                         {{ helper.display_candidate_identity(first_candidacy, '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.isFemale ? 'F' : 'H') ~ '</span>') }}
                     </div>
 
                     {% if first_candidacy.binome %}
-                        {{ first_candidacy.binome.render() }}
+                        {{ first_candidacy.binome.take() }}
 
                         <div class="territorial-council__candidate">
                             {{ helper.display_candidate_identity(first_candidacy.binome, '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.binome.isFemale ? 'F' : 'H') ~ '</span>') }}
