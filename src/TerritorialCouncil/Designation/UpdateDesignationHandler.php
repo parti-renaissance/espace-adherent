@@ -77,6 +77,8 @@ class UpdateDesignationHandler
         $designation->setCandidacyEndDate((clone $request->getVoteStartDate())->modify('-48 hours'));
         $designation->setVoteStartDate($request->getVoteStartDate());
         $designation->setVoteEndDate($request->getVoteEndDate());
+        $designation->setCreatedAt($now = new \DateTime());
+        $designation->setUpdatedAt($now);
         $designation->markAsLimited();
 
         return $designation;
