@@ -882,6 +882,22 @@ territorial_council.membership.quality.city_councilor: Conseiller(ère) municipa
 territorial_council.membership.quality.consular_conselor: Conseiller(ère) consulaire
 territorial_council.membership.quality.committee_supervisor: Animateur(trice) local(e)
 territorial_council.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e)
+territorial_council.membership.qualities.referent: Présidents du Conseil territorial
+territorial_council.membership.qualities.government_member: Membres du Gouvernement
+territorial_council.membership.qualities.referent_jam: Référents JAM
+territorial_council.membership.qualities.lre_manager: Responsables LRE
+territorial_council.membership.qualities.senator: Sénateurs
+territorial_council.membership.qualities.deputy: Députés
+territorial_council.membership.qualities.european_deputy: Députés européens
+territorial_council.membership.qualities.regional_council_president: Présidents conseil régional
+territorial_council.membership.qualities.departmental_council_president: Présidents conseil départemental
+territorial_council.membership.qualities.mayor: Maires
+territorial_council.membership.qualities.regional_councilor: Conseillers régionaux
+territorial_council.membership.qualities.department_councilor: Conseillers départementaux
+territorial_council.membership.qualities.city_councilor: Conseillers municipaux
+territorial_council.membership.qualities.consular_conselor: Conseillers consulaires
+territorial_council.membership.qualities.committee_supervisor: Animateurs locaux
+territorial_council.membership.qualities.elected_candidate_adherent: Adhérents désignés
 territorial_council.members_count: '1 membre|%count% membres'
 
 #
