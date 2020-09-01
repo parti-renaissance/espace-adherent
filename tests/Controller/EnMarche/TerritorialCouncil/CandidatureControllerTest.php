@@ -48,6 +48,8 @@ class CandidatureControllerTest extends WebTestCase
         /** @var Designation $designation */
         $designation = $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil()->getCurrentDesignation();
         $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
+        $designation->setVoteStartDate(new \DateTime('+2 hours'));
+        $designation->setVoteEndDate(new \DateTime('+4 hours'));
         $this->getEntityManager(Designation::class)->flush();
 
         $this->client->request('GET', '/conseil-territorial');

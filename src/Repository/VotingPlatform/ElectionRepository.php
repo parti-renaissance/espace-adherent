@@ -3,6 +3,7 @@
 namespace App\Repository\VotingPlatform;
 
 use App\Entity\Committee;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
@@ -42,6 +43,23 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
+    public function hasElectionForTerritorialCouncil(
+        TerritorialCouncil $territorialCouncil,
+        Designation $designation
+    ): bool {
+        return (bool) $this->createQueryBuilder('e')
+            ->select('COUNT(1)')
+            ->innerJoin('e.electionEntity', 'ee')
+            ->where('ee.territorialCouncil = :council AND e.designation = :designation')
+            ->setParameters([
+                'council' => $territorialCouncil,
+                'designation' => $designation,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     public function findOneForCommittee(Committee $committee, Designation $designation): ?Election
     {
         return $this->createQueryBuilder('e')
@@ -52,6 +70,27 @@ class ElectionRepository extends ServiceEntityRepository
             ->andWhere('d = :designation')
             ->setParameters([
                 'committee' => $committee,
+                'designation' => $designation,
+            ])
+            ->orderBy('d.voteStartDate', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findOneForTerritorialCouncil(
+        TerritorialCouncil $territorialCouncil,
+        Designation $designation
+    ): ?Election {
+        return $this->createQueryBuilder('e')
+            ->addSelect('d', 'ee')
+            ->innerJoin('e.designation', 'd')
+            ->innerJoin('e.electionEntity', 'ee')
+            ->where('ee.territorialCouncil = :council')
+            ->andWhere('d = :designation')
+            ->setParameters([
+                'council' => $territorialCouncil,
                 'designation' => $designation,
             ])
             ->orderBy('d.voteStartDate', 'DESC')

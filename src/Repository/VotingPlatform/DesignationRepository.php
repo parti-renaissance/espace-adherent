@@ -19,7 +19,8 @@ class DesignationRepository extends ServiceEntityRepository
     public function getIncomingDesignations(\DateTime $voteStartDate): array
     {
         return $this->createQueryBuilder('d')
-            ->where('d.voteStartDate <= :date AND d.voteEndDate > :date')
+            ->where('d.voteStartDate IS NOT NULL AND d.voteEndDate IS NOT NULL')
+            ->andWhere('d.voteStartDate <= :date AND d.voteEndDate > :date')
             ->setParameter('date', $voteStartDate)
             ->getQuery()
             ->getResult()

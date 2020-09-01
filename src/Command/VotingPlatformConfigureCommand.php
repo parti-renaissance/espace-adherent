@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Adherent;
 use App\Entity\CommitteeElection;
+use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -17,6 +18,8 @@ use App\Entity\VotingPlatform\VotersList;
 use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeElectionRepository;
 use App\Repository\CommitteeMembershipRepository;
+use App\Repository\TerritorialCouncil\CandidacyRepository as TerritorialCouncilCandidacyRepository;
+use App\Repository\TerritorialCouncil\ElectionRepository as TerritorialCouncilElectionRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -30,6 +33,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class VotingPlatformConfigureCommand extends Command
 {
@@ -53,6 +57,12 @@ class VotingPlatformConfigureCommand extends Command
     private $voterRepository;
     /** @var EventDispatcherInterface */
     private $dispatcher;
+    /** @var TerritorialCouncilElectionRepository */
+    private $territorialCouncilElectionRepository;
+    /** @var TerritorialCouncilCandidacyRepository */
+    private $territorialCouncilCandidacyRepository;
+    /** @var TranslatorInterface */
+    private $translator;
 
     protected function configure()
     {
@@ -80,6 +90,8 @@ class VotingPlatformConfigureCommand extends Command
         foreach ($designations as $designation) {
             if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
                 $this->configureCommitteeElections($designation);
+            } elseif (DesignationTypeEnum::COPOL === $designation->getType()) {
+                $this->configureCopolElections($designation);
             } else {
                 $this->io->error(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
@@ -113,7 +125,7 @@ class VotingPlatformConfigureCommand extends Command
                 );
                 $election->setElectionEntity(new ElectionEntity($committee));
 
-                $this->configureNewElection($election, $designation);
+                $this->configureNewElectionForCommittee($election, $designation);
             }
 
             $this->entityManager->clear();
@@ -124,7 +136,121 @@ class VotingPlatformConfigureCommand extends Command
         }
     }
 
-    private function configureNewElection(Election $election, Designation $designation): void
+    private function configureCopolElections(Designation $designation): void
+    {
+        $offset = 0;
+
+        while ($territorialCouncilElections = $this->territorialCouncilElectionRepository->findAllByDesignation($designation, $offset)) {
+            foreach ($territorialCouncilElections as $coTerrElection) {
+                $coTerr = $coTerrElection->getTerritorialCouncil();
+
+                if ($this->electionRepository->hasElectionForTerritorialCouncil($coTerr, $designation)) {
+                    continue;
+                }
+
+                if (!$this->isValidTerritorialCouncilElection($coTerrElection)) {
+                    continue;
+                }
+
+                $this->io->progressAdvance();
+
+                $election = new Election(
+                    $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
+                    null,
+                    [new ElectionRound()]
+                );
+                $election->setElectionEntity(new ElectionEntity(null, $coTerr));
+
+                $this->configureNewElectionForTerritorialCouncil($election, $designation, $coTerrElection);
+            }
+
+            $this->entityManager->clear();
+
+            $designation = $this->entityManager->merge($designation);
+
+            $offset += \count($territorialCouncilElections);
+        }
+    }
+
+    private function configureNewElectionForTerritorialCouncil(
+        Election $election,
+        Designation $designation,
+        TerritorialCouncilElection $coTerrElection
+    ): void {
+        $electionRound = $election->getCurrentRound();
+        $coTerr = $coTerrElection->getTerritorialCouncil();
+
+        // Create candidates groups
+        $candidacies = $this->territorialCouncilCandidacyRepository->findAllConfirmedForElection($coTerrElection);
+
+        $pools = [];
+
+        foreach ($candidacies as $candidacy) {
+            if ($candidacy->isTaken()) {
+                continue;
+            }
+
+            $adherent = $candidacy->getMembership()->getAdherent();
+
+            $group = new CandidateGroup();
+            $group->addCandidate($candidate = new Candidate(
+                $adherent->getFirstName(),
+                $adherent->getLastName(),
+                $candidacy->getGender(),
+                $adherent
+            ));
+
+            $candidate->setImagePath($candidacy->getImagePath());
+            $candidate->setBiography($candidacy->getBiography());
+            $candidate->setFaithStatement($candidacy->getFaithStatement());
+            $candidacy->take();
+
+            if ($binome = $candidacy->getBinome()) {
+                $adherent = $binome->getMembership()->getAdherent();
+
+                $group->addCandidate($candidate = new Candidate(
+                    $adherent->getFirstName(),
+                    $adherent->getLastName(),
+                    $binome->getGender(),
+                    $adherent
+                ));
+
+                $candidate->setImagePath($binome->getImagePath());
+                $candidate->setBiography($binome->getBiography());
+                $candidate->setFaithStatement($binome->getFaithStatement());
+                $binome->take();
+            }
+
+            if (!isset($pools[$candidacy->getQuality()])) {
+                $pools[$candidacy->getQuality()] = new ElectionPool($this->translator->trans('territorial_council.membership.quality.'.$candidacy->getQuality()));
+            }
+
+            $pools[$candidacy->getQuality()]->addCandidateGroup($group);
+        }
+
+        foreach ($pools as $pool) {
+            if ($pool->getCandidateGroups()) {
+                $electionRound->addElectionPool($pool);
+                $election->addElectionPool($pool);
+            }
+        }
+
+        $list = new VotersList($election);
+
+        $adherents = [];
+
+        foreach ($coTerr->getMemberships() as $membership) {
+            $adherents[] = $adherent = $membership->getAdherent();
+
+            $list->addVoter($this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent));
+        }
+
+        $this->entityManager->persist($list);
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+    }
+
+    private function configureNewElectionForCommittee(Election $election, Designation $designation): void
     {
         $electionRound = $election->getCurrentRound();
         $committee = $election->getElectionEntity()->getCommittee();
@@ -214,6 +340,33 @@ class VotingPlatformConfigureCommand extends Command
         return true;
     }
 
+    private function isValidTerritorialCouncilElection(TerritorialCouncilElection $coTerrElection): bool
+    {
+        $coTerr = $coTerrElection->getTerritorialCouncil();
+
+        // validate voters
+        if ($coTerr->getMemberships()->isEmpty()) {
+            if ($this->io->isDebug()) {
+                $this->io->warning(sprintf('CoTerr "%s" does not have any voters', $coTerr->getUuid()->toString()));
+            }
+
+            return false;
+        }
+
+        // validate candidatures
+        $candidacies = $this->territorialCouncilCandidacyRepository->findAllConfirmedForElection($coTerrElection);
+
+        if (0 === \count($candidacies)) {
+            if ($this->io->isDebug()) {
+                $this->io->warning(sprintf('CoTerr "%s" does not have at least 1 candidate', $coTerr->getUuid()->toString()));
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
     private function notifyVoters(array $adherents, Designation $designation, \Closure $eventFactoryCallback): void
     {
         foreach ($adherents as $adherent) {
@@ -267,5 +420,25 @@ class VotingPlatformConfigureCommand extends Command
     public function setDispatcher(EventDispatcherInterface $dispatcher): void
     {
         $this->dispatcher = $dispatcher;
+    }
+
+    /** @required */
+    public function setTerritorialCouncilElectionRepository(
+        TerritorialCouncilElectionRepository $territorialCouncilElectionRepository
+    ): void {
+        $this->territorialCouncilElectionRepository = $territorialCouncilElectionRepository;
+    }
+
+    /** @required */
+    public function setTerritorialCouncilCandidacyRepository(
+        TerritorialCouncilCandidacyRepository $territorialCouncilCandidacyRepository
+    ): void {
+        $this->territorialCouncilCandidacyRepository = $territorialCouncilCandidacyRepository;
+    }
+
+    /** @required */
+    public function setTranslator(TranslatorInterface $translator): void
+    {
+        $this->translator = $translator;
     }
 }

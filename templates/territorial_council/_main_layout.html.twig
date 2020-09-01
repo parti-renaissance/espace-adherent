@@ -21,3 +21,13 @@
 
     {{ include('territorial_council/partials/_sidebar.html.twig') }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runCountdownClock('.em-countdown-clock', true);
+        });
+    </script>
+{% endblock %}

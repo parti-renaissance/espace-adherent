@@ -91,7 +91,7 @@ class Candidacy extends BaseCandidacy
      *
      * @var bool
      */
-    private $isRendered = false;
+    private $taken = false;
 
     public function __construct(
         TerritorialCouncilMembership $membership,
@@ -236,13 +236,13 @@ class Candidacy extends BaseCandidacy
         return \in_array($this->quality, [TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR], true);
     }
 
-    public function isRendered(): bool
+    public function isTaken(): bool
     {
-        return $this->isRendered;
+        return $this->taken;
     }
 
-    public function render(): void
+    public function take(): void
     {
-        $this->isRendered = true;
+        $this->taken = true;
     }
 }

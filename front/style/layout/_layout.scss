@@ -184,6 +184,10 @@
         &--half {
             flex-basis: 50%;
         }
+
+        &--full {
+            flex-basis: 100%;
+        }
     }
 
     &__tablet {

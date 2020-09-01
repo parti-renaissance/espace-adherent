@@ -24,7 +24,7 @@ class VoteResultAggregator
         $voteResults = $this->voteResultRepository->getResults($electionRound);
         $participants = $this->voterRepository->countForElection($electionRound->getElection());
 
-        $blankPoolData = $this->buildBlankPoolData($voteResults, $participants);
+        $blankPoolData = $this->buildBlankPoolData(\count($voteResults), $participants);
 
         $aggregated = [
             'candidates' => [],
@@ -37,7 +37,7 @@ class VoteResultAggregator
         foreach ($voteResults as $voteResult) {
             foreach ($voteResult->getVoteChoices() as $index => $voteChoice) {
                 if (!isset($aggregated['resume'][$poolTitle = $voteChoice->getElectionPool()->getTitle()])) {
-                    $aggregated['resume'][$poolTitle] = $this->buildBlankPoolData($voteResult, $participants);
+                    $aggregated['resume'][$poolTitle] = $this->buildBlankPoolData(\count($voteResults), $participants);
                 }
 
                 if (true === $voteChoice->isBlank()) {
@@ -70,13 +70,13 @@ class VoteResultAggregator
         return $this->getResultsForRound($election->getCurrentRound());
     }
 
-    private function buildBlankPoolData(array $voteResults, int $participants): array
+    private function buildBlankPoolData(int $totalVotes, int $totalParticipants): array
     {
         return [
             'blank' => 0,
-            'participated' => $participants,
+            'participated' => $totalParticipants,
             'expressed' => 0,
-            'abstentions' => $participants - \count($voteResults),
+            'abstentions' => $totalParticipants - $totalVotes,
         ];
     }
 }
