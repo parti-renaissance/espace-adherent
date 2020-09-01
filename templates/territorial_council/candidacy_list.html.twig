@@ -23,14 +23,14 @@
 
                     {{ first_candidacy.render() }}
                     <div class="territorial-council__candidate">
-                        {{ helper.display_candidate_identity(first_candidacy, '<span class="candidate-gender l__col l__col--center">F</span>') }}
+                        {{ helper.display_candidate_identity(first_candidacy, '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.isFemale ? 'F' : 'H') ~ '</span>') }}
                     </div>
 
                     {% if first_candidacy.binome %}
                         {{ first_candidacy.binome.render() }}
 
                         <div class="territorial-council__candidate">
-                            {{ helper.display_candidate_identity(first_candidacy.binome, '<span class="candidate-gender l__col l__col--center">H</span>') }}
+                            {{ helper.display_candidate_identity(first_candidacy.binome, '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.binome.isFemale ? 'F' : 'H') ~ '</span>') }}
                         </div>
                     {% endif %}
 
