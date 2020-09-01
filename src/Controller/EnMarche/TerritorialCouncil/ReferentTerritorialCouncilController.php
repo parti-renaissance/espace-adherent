@@ -32,6 +32,7 @@ class ReferentTerritorialCouncilController extends AbstractController
         $referentTags = $this->getMainUser($request->getSession())->getManagedArea()->getTags()->toArray();
         $filter = new MembersListFilter($referentTags, SubscriptionTypeEnum::REFERENT_EMAIL);
         $form = $this->createForm(MemberFilterType::class, $filter, [
+            'referent_tags' => $referentTags,
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
         ]);

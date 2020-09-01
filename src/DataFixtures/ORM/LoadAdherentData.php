@@ -191,6 +191,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $adherent5->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
+        $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
+        $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms'));
         $adherent5->addReferentTag($this->getReference('referent_tag_92'));
         $this->addReference('adherent-5', $adherent5);
 

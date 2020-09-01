@@ -6,6 +6,7 @@ use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ElectedRepresentative\ZoneCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ZoneRepository extends ServiceEntityRepository
@@ -55,6 +56,21 @@ class ZoneRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function createSelectByReferentTagsQueryBuilder(array $referentTags): QueryBuilder
+    {
+        return $this->createQueryBuilder('zone')
+            ->leftJoin('zone.category', 'category')
+            ->leftJoin('zone.referentTags', 'referentTag')
+            ->where('category.name = :category')
+            ->andWhere('referentTag IN (:tags)')
+            ->setParameters([
+                'tags' => $referentTags,
+                'category' => ZoneCategory::CITY,
+            ])
+            ->orderBy('zone.name')
         ;
     }
 }
