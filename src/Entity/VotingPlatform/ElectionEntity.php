@@ -5,6 +5,7 @@ namespace App\Entity\VotingPlatform;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -68,5 +69,14 @@ class ElectionEntity
     public function getTerritorialCouncil(): ?TerritorialCouncil
     {
         return $this->territorialCouncil;
+    }
+
+    public function getName(): string
+    {
+        if (DesignationTypeEnum::COPOL === $this->election->getDesignationType()) {
+            return $this->territorialCouncil->getName();
+        }
+
+        return $this->committee->getName();
     }
 }

@@ -14,19 +14,6 @@ class VotingPlatformElectionVoteIsOpenMessage extends Message
      */
     public static function create(Election $election, array $adherents, string $url): self
     {
-        $designation = $election->getDesignation();
-
-        $isCopol = true;
-
-        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
-            $isCopol = false;
-            $committee = $election->getElectionEntity()->getCommittee();
-            $name = $committee->getName();
-        } else {
-            $coTerr = $election->getElectionEntity()->getTerritorialCouncil();
-            $name = $coTerr->getName();
-        }
-
         $first = current($adherents);
 
         $message = new self(
@@ -35,10 +22,10 @@ class VotingPlatformElectionVoteIsOpenMessage extends Message
             $first->getFullName(),
             '[Désignations] Désignez votre binôme d\'adhérents !',
             [
-                'vote_end_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
-                'name' => $name,
-                'is_copol' => $isCopol,
-                'url' => $url,
+                'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
+                'name' => $election->getElectionEntity()->getName(),
+                'is_copol' => DesignationTypeEnum::COPOL === $election->getDesignationType(),
+                'page_url' => $url,
             ],
             [
                 'first_name' => $first->getFirstName(),
