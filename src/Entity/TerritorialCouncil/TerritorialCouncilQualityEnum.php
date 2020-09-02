@@ -16,6 +16,7 @@ class TerritorialCouncilQualityEnum extends Enum
     public const REGIONAL_COUNCIL_PRESIDENT = 'regional_council_president';
     public const DEPARTMENTAL_COUNCIL_PRESIDENT = 'departmental_council_president';
     public const MAYOR = 'mayor';
+    public const LEADER = 'leader';
     public const REGIONAL_COUNCILOR = 'regional_councilor';
     public const DEPARTMENT_COUNCILOR = 'department_councilor';
     public const CITY_COUNCILOR = 'city_councilor';

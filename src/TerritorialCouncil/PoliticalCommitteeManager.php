@@ -6,19 +6,45 @@ use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeQuality;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Repository\ElectedRepresentative\MandateRepository;
+use App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository;
+use App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class PoliticalCommitteeManager
 {
+    public const CREATE_ACTION = 'create';
+    public const REMOVE_ACTION = 'remove';
+    public const ACTIONS = [
+        self::CREATE_ACTION,
+        self::REMOVE_ACTION,
+    ];
+    public const MAX_MAYOR_AND_LEADER = 3;
+
     /** @var EntityManagerInterface */
     private $entityManager;
+    /** @var MandateRepository */
+    private $mandateRepository;
+    /** @var PoliticalCommitteeMembershipRepository */
+    private $membershipRepository;
+    /** @var TranslatorInterface */
+    private $translator;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        MandateRepository $mandateRepository,
+        PoliticalCommitteeMembershipRepository $membershipRepository,
+        TranslatorInterface $translator
+    ) {
         $this->entityManager = $entityManager;
+        $this->mandateRepository = $mandateRepository;
+        $this->membershipRepository = $membershipRepository;
+        $this->translator = $translator;
     }
 
     public function createMembership(
@@ -76,7 +102,7 @@ class PoliticalCommitteeManager
     public function removePoliticalCommitteeQuality(Adherent $adherent, string $qualityName): void
     {
         if ($pcMembership = $adherent->getPoliticalCommitteeMembership()) {
-            $pcMembership->removeQualityWithName($qualityName);
+            $this->removeQualityByName($pcMembership, $qualityName);
         }
     }
 
@@ -133,6 +159,70 @@ class PoliticalCommitteeManager
         $this->updateManagedInAdminQualitiesInMembership($adherent, $tcMembership, $pcMembership);
     }
 
+    public function createMayorOrLeaderMembership(TerritorialCouncil $territorialCouncil, Adherent $adherent): void
+    {
+        $this->checkTerritorialCouncil($adherent, $territorialCouncil);
+
+        if ($adherent->hasPoliticalCommitteeMembership()) {
+            $this->throwException(
+                'political_committee.membership.adherent_has_already',
+                [
+                    '{{ email }}' => $adherent->getEmailAddress(),
+                    '{{ politicalCommittee }}' => $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee()->getName(),
+                ]
+            );
+        }
+
+        $politicalCommittee = $territorialCouncil->getPoliticalCommittee();
+        $nbMembers = $this->membershipRepository->countLeaderAndMayorMembersFor($politicalCommittee);
+        if ($nbMembers >= self::MAX_MAYOR_AND_LEADER) {
+            $this->throwException(
+                'political_committee.membership.has_max_number_of_mayor_and_leader',
+                [
+                    '{{ max }}' => self::MAX_MAYOR_AND_LEADER,
+                    '{{ politicalCommittee }}' => $territorialCouncil->getPoliticalCommittee()->getName(),
+                ]
+            );
+        }
+
+        $isMayor = $this->mandateRepository->hasMayorMandate($adherent);
+        $quality = TerritorialCouncilQualityEnum::LEADER;
+        if ($isMayor) {
+            $quality = TerritorialCouncilQualityEnum::MAYOR;
+        }
+
+        $membership = $this->createMembership($adherent, $politicalCommittee, $quality);
+        $adherent->setPoliticalCommitteeMembership($membership);
+
+        $this->entityManager->persist($membership);
+        $this->entityManager->flush();
+    }
+
+    public function removeMayorOrLeaderMembership(TerritorialCouncil $territorialCouncil, Adherent $adherent): void
+    {
+        $this->checkTerritorialCouncil($adherent, $territorialCouncil);
+
+        if (!$adherent->hasPoliticalCommitteeMembership()) {
+            $this->throwException(
+                'political_committee.membership.adherent_has_no_membership',
+                [
+                    '{{ email }}' => $adherent->getEmailAddress(),
+                    '{{ territorialCouncil }}' => $territorialCouncil->getNameCodes(),
+                ]
+            );
+        }
+
+        $isMayor = $this->mandateRepository->hasMayorMandate($adherent);
+        $quality = TerritorialCouncilQualityEnum::LEADER;
+        if ($isMayor) {
+            $quality = TerritorialCouncilQualityEnum::MAYOR;
+        }
+        $politicalCommitteeMembership = $adherent->getPoliticalCommitteeMembership();
+        $this->removeQualityByName($politicalCommitteeMembership, $quality);
+
+        $this->entityManager->flush();
+    }
+
     private function updateManagedInAdminQualitiesInMembership(
         Adherent $adherent,
         TerritorialCouncilMembership $tcMembership,
@@ -159,10 +249,37 @@ class PoliticalCommitteeManager
             }
 
             if (!\in_array($quality, $tcQualities) && \in_array($quality, $pcQualities)) {
-                $pcMembership->removeQualityWithName($quality);
+                $this->removeQualityByName($pcMembership, $quality);
             }
         }
 
         $this->entityManager->flush();
+    }
+
+    private function removeQualityByName(PoliticalCommitteeMembership $pcMembership, string $qualityName): void
+    {
+        $pcMembership->removeQualityWithName($qualityName);
+        if (0 === $pcMembership->getQualities()->count()) {
+            $this->entityManager->remove($pcMembership);
+        }
+    }
+
+    private function checkTerritorialCouncil(Adherent $adherent, TerritorialCouncil $territorialCouncil): void
+    {
+        if (!$adherent->hasTerritorialCouncilMembership()
+            || $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil()->getId() !== $territorialCouncil->getId()) {
+            $this->throwException(
+                'territorial_council.adherent_has_no_membership',
+                [
+                    '{{ email }}' => $adherent->getEmailAddress(),
+                    '{{ territorialCouncil }}' => $territorialCouncil->getNameCodes(),
+                ]
+            );
+        }
+    }
+
+    private function throwException(string $msgId, array $variables): void
+    {
+        throw new PoliticalCommitteeMembershipException($this->translator->trans($msgId, $variables));
     }
 }
