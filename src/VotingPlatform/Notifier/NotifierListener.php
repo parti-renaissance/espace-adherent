@@ -5,10 +5,10 @@ namespace App\VotingPlatform\Notifier;
 use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionSecondRoundNotificationEvent;
-use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOpenEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOverEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteReminderEvent;
 use App\VotingPlatform\Notifier\Event\ElectionNotifyEventInterface;
+use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NotifierListener implements EventSubscriberInterface
@@ -31,15 +31,9 @@ class NotifierListener implements EventSubscriberInterface
         ];
     }
 
-    public function onVoteOpen(ElectionNotifyEventInterface $event): void
+    public function onVoteOpen(VotingPlatformElectionVoteIsOpenEvent $event): void
     {
-        if ($event instanceof CommitteeElectionVoteIsOpenEvent) {
-            $this->notifier->notifyCommitteeElectionVoteIsOpen(
-                $event->getAdherent(),
-                $event->getDesignation(),
-                $event->getCommittee()
-            );
-        }
+        $this->notifier->notifyElectionVoteIsOpen($event->getElection(), $event->getAdherents());
     }
 
     public function onCandidacyPeriodClose(ElectionNotifyEventInterface $event): void
