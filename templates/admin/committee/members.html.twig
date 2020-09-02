@@ -88,17 +88,19 @@
                                             </a>
                                         {% endif %}
 
-                                        {% if host.id in active_mandates_adherent_ids %}
-                                            <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
-                                            class="btn btn-default btn-sm">
-                                                Transformer en simple adhérent
-                                            </a>
-                                        {% elseif (host.gender is constant('App\\ValueObject\\Genders::MALE') and not committeeHasMaleMandate)
-                                            or (host.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeeHasFemaleMandate) %}
-                                            <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
-                                               class="btn btn-default btn-sm">
-                                                Transformer en adhérent désigné
-                                            </a>
+                                        {% if is_granted('ROLE_ADMIN_COMMITTEE_DESIGNATION') %}
+                                            {% if host.id in active_mandates_adherent_ids %}
+                                                <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
+                                                class="btn btn-default btn-sm">
+                                                    Transformer en simple adhérent
+                                                </a>
+                                            {% elseif (host.gender is constant('App\\ValueObject\\Genders::MALE') and not committeeHasMaleMandate)
+                                                or (host.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeeHasFemaleMandate) %}
+                                                <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
+                                                   class="btn btn-default btn-sm">
+                                                    Transformer en adhérent désigné
+                                                </a>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 </td>
@@ -138,17 +140,19 @@
                                             </a>
                                         {% endif %}
 
-                                        {% if member.id in active_mandates_adherent_ids %}
-                                            <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
-                                               class="btn btn-default btn-sm">
-                                                Transformer en simple adhérent
-                                            </a>
-                                        {% elseif (member.gender is constant('App\\ValueObject\\Genders::MALE') and not committeeHasMaleMandate)
-                                            or (member.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeeHasFemaleMandate) %}
-                                            <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
-                                               class="btn btn-default btn-sm">
-                                                Transformer en adhérent désigné
-                                            </a>
+                                        {% if is_granted('ROLE_ADMIN_COMMITTEE_DESIGNATION') %}
+                                            {% if member.id in active_mandates_adherent_ids %}
+                                                <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
+                                                   class="btn btn-default btn-sm">
+                                                    Transformer en simple adhérent
+                                                </a>
+                                            {% elseif (member.gender is constant('App\\ValueObject\\Genders::MALE') and not committeeHasMaleMandate)
+                                                or (member.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeeHasFemaleMandate) %}
+                                                <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
+                                                   class="btn btn-default btn-sm">
+                                                    Transformer en adhérent désigné
+                                                </a>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 </td>

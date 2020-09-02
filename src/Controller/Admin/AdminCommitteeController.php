@@ -133,7 +133,7 @@ class AdminCommitteeController extends Controller
 
     /**
      * @Route("/{committee}/members/{adherent}/{action}-mandate", name="app_admin_committee_change_mandate", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEE_DESIGNATION')")
      */
     public function changeMandateAction(
         Request $request,
