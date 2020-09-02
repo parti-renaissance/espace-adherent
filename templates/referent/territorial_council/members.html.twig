@@ -104,6 +104,12 @@
                 </div>
             </div>
 
+            <div class="b__nudge--bottom datagrid__action--wrapper">
+                <a href="{{ path('app_territorial_council_referent_members_list', {f: filter.toArray(), '_format': 'csv'}) }}" class="btn-secondary btn-secondary--blue">Exporter en CSV</a>
+
+                <a href="{{ path("app_territorial_council_referent_members_list", {f: filter.toArray(), '_format': 'xls'}) }}" class="btn-secondary btn-secondary--blue">Exporter en XLS</a>
+            </div>
+
             <div class="datagrid">
                 <div class="b__nudge--bottom-larger">
                     <div class="datagrid__table-container">

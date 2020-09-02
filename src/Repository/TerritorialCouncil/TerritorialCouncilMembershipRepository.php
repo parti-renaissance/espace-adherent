@@ -92,6 +92,11 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getForExport(MembersListFilter $filter): array
+    {
+        return $this->createFilterQueryBuilder($filter)->getQuery()->getResult();
+    }
+
     private function createQueryBuilderWithReferentTagsCondition(array $referentTags): QueryBuilder
     {
         $tagCondition = 'referentTag IN (:tags)';
