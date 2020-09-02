@@ -20,7 +20,7 @@ class VotingPlatformElectionVoteIsOpenMessage extends Message
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            '[Désignations] Désignez votre binôme d\'adhérents !',
+            '[Désignations] La désignation est ouverte !',
             [
                 'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'name' => $election->getElectionEntity()->getName(),

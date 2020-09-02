@@ -17,7 +17,7 @@ class VotingPlatformElectionVoteConfirmationMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            '[Désignations] Félicitations, vos bulletins sont dans l\'urne !',
+            '[Désignations] A voté !',
             [
                 'first_name' => $adherent->getFirstName(),
                 'voter_key' => static::escape($voterKey),
