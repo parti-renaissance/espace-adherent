@@ -122,7 +122,7 @@
                             >Je participe</a>
                         </p>
                     {% else %}
-                        {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election) %}
+                        {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election.currentRound) %}
 
                         {% if my_vote %}
                             <p class="text--dark text--small instance__elections-box--text l__col--full">Votre choix a bien été enregistré.</p>
@@ -133,7 +133,7 @@
                             </div>
 
                             <p>
-                                <a href="#" class="btn btn--disabled btn--no-wrap">Je participe</a>
+                                <span class="btn btn--disabled btn--no-wrap">Je participe</span>
                             </p>
                         {% endif %}
                     {% endif %}

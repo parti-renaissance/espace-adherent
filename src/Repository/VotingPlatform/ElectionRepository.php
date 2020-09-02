@@ -175,6 +175,34 @@ class ElectionRepository extends ServiceEntityRepository
     /**
      * @return Election[]
      */
+    public function getElectionsToCloseOrWithoutResults(\DateTime $date, int $limit = null): array
+    {
+        $qb = $this->createQueryBuilder('election')
+            ->addSelect('designation')
+            ->innerJoin('election.designation', 'designation')
+            ->leftJoin('election.electionResult', 'election_result')
+            ->where((new Orx())->addMultiple([
+                'election.status = :open AND election.secondRoundEndDate IS NULL AND designation.voteEndDate IS NOT NULL AND designation.voteEndDate < :date',
+                'election.status = :open AND election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate < :date',
+                'election.status != :open AND election_result IS NULL',
+            ]))
+            ->setParameters([
+                'date' => $date,
+                'open' => ElectionStatusEnum::OPEN,
+            ])
+            ->getQuery()
+        ;
+
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getResult();
+    }
+
+    /**
+     * @return Election[]
+     */
     public function getElectionsWithIncomingSecondRounds(): array
     {
         return $this->createQueryBuilder('election')

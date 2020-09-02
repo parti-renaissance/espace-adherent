@@ -1,11 +1,19 @@
 {% extends 'committee_designation/show_layout.html.twig' %}
 
 {% block designation_show_content %}
+    {% set candidate_group_results = [] %}
+    {% set candidate_group_count = 0 %}
+
+    {% if election_pool_result %}
+        {% set candidate_group_results = election_pool_result.candidateGroupResultsSorted %}
+        {% set candidate_group_count = candidate_group_results|length %}
+    {% endif %}
+
     <div class="datagrid__pre-table b__nudge--bottom-50">
         <h3>Résultats par scrutin : <span class="text--pink">{{ app.request.query.has('femme') ? 'Femme' : 'Homme' }}</span></h3>
 
         <span class="datagrid__count">
-            <span>{{ candidate_groups|length|number_format(0, ',', ' ') }}</span> candidat{{ app.request.query.has('femme') ? 'e' }}{{ candidate_groups|length > 1 ? 's' }}
+            <span>{{ candidate_group_count|number_format(0, ',', ' ') }}</span> candidat{{ app.request.query.has('femme') ? 'e' }}{{ candidate_group_count > 1 ? 's' }}
         </span>
     </div>
 
@@ -18,15 +26,16 @@
         </thead>
 
         <tbody>
-            {% for group in candidate_groups %}
+            {% for result in candidate_group_results %}
                 <tr>
-                    <td>{{ group.candidates|first.fullName }}</td>
-                    <td>
-                        {% if election.isResultPeriodActive() %}
-                            {{ results[group.uuid.toString] ?? 0 }}
-                        {% else %}
-                            ~
-                        {% endif %}
+                    <td>{{ result.candidateGroup.candidates|first.fullName }}</td>
+                    <td>{{ result.total }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2" class="text--center">
+                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                        Aucun élément
                     </td>
                 </tr>
             {% endfor %}

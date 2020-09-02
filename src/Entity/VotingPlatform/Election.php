@@ -7,6 +7,7 @@ use App\Entity\EntityDesignationTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\ElectionResult\ElectionResult;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -73,6 +74,13 @@ class Election
      */
     private $secondRoundEndDate;
 
+    /**
+     * @var ElectionResult|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionResult", mappedBy="election", cascade={"persist"})
+     */
+    private $electionResult;
+
     public function __construct(Designation $designation, UuidInterface $uuid = null, array $rounds = [])
     {
         $this->designation = $designation;
@@ -114,8 +122,17 @@ class Election
 
     public function isVotePeriodActive(): bool
     {
-        return ElectionStatusEnum::OPEN === $this->status
-            && ($this->isDesignationVotePeriodActive() || $this->isSecondRoundVotePeriodActive());
+        return $this->isOpen() && ($this->isDesignationVotePeriodActive() || $this->isSecondRoundVotePeriodActive());
+    }
+
+    public function isOpen(): bool
+    {
+        return ElectionStatusEnum::OPEN === $this->status;
+    }
+
+    public function isClosed(): bool
+    {
+        return ElectionStatusEnum::CLOSED === $this->status;
     }
 
     public function close(): void
@@ -184,5 +201,41 @@ class Election
     public function getFirstRound(): ?ElectionRound
     {
         return $this->electionRounds->first() ?? null;
+    }
+
+    public function getElectionResult(): ?ElectionResult
+    {
+        return $this->electionResult;
+    }
+
+    public function setElectionResult(?ElectionResult $electionResult): void
+    {
+        $this->electionResult = $electionResult;
+    }
+
+    public function hasResult(): bool
+    {
+        return null !== $this->electionResult;
+    }
+
+    public function canClose(): bool
+    {
+        if ($this->isClosed()) {
+            return false;
+        }
+
+        $now = new \DateTime();
+
+        if ($secondDate = $this->getSecondRoundEndDate()) {
+            return $secondDate < $now;
+        }
+
+        if (!$this->electionResult) {
+            return false;
+        }
+
+        $roundResult = $this->electionResult->getElectionRoundResult($this->getCurrentRound());
+
+        return $roundResult && $roundResult->hasOnlyElectedPool();
     }
 }

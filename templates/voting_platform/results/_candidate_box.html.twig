@@ -1,5 +1,7 @@
 {% import 'voting_platform/_macros.html.twig' as helper %}
 
+{% set candidate_group = candidate_group_result.candidateGroup %}
+
 <div class="candidate__box {{ candidate_group.elected ? 'elected' }} l__row  b__nudge--bottom-medium">
     <div class="box__content l__row">
         <div class="candidate-photo avatar-initials avatar--medium avatar--style-01">
@@ -14,16 +16,17 @@
                     <h3 class="candidate-name text--medium b__nudge--bottom-tiny">
                         {{ candidate.fullName }}
 
-                        {% if candidate_group.elected %}
-                            <span class="elected-tag text--body text--on-yellow text--bold">Adhérent désigné</span>
+                        {% if pool_result.isElected and candidate_group.elected %}
+                            <span class="elected-tag text--body text--on-yellow text--bold">Désigné{{ candidate.isWoman ? 'e' }}</span>
                         {% endif %}
                     </h3>
-                    <div class="text--body text--right text--dark">{{ votes }} bulletin{{ votes > 1 ? 's' }}</div>
                 </div>
             {% endfor %}
 
+            <div class="text--body text--right text--dark">{{ candidate_group_result.total }} bulletin{{ candidate_group_result.total > 1 ? 's' }}</div>
+
             <div class="l__row progress-bar">
-                {% set votes_rate = resume.expressed == 0 ? 0 : votes * 100 / resume.expressed %}
+                {% set votes_rate = candidate_group_result.rate %}
                 <div class="progress-bar__gauge">
                     <div class="slider" style="width: {{ votes_rate }}%"></div>
                 </div>

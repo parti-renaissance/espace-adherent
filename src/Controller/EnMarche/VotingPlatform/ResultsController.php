@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche\VotingPlatform;
 
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
-use App\VotingPlatform\VoteResult\VoteResultAggregator;
+use App\Repository\VotingPlatform\VoteResultRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ResultsController extends AbstractController
 {
     public function __invoke(
-        VoteResultAggregator $resultAggregator,
+        VoteResultRepository $voteResultRepository,
         Election $election,
         ElectionRound $electionRound = null
     ): Response {
@@ -48,8 +48,7 @@ class ResultsController extends AbstractController
         }
 
         return $this->renderElectionTemplate('voting_platform/results.html.twig', $election, [
-            'candidate_groups' => $this->candidateGroupRepository->findForElectionRound($electionRound),
-            'results' => $resultAggregator->getResultsForRound($electionRound),
+            'vote_results' => $voteResultRepository->getResultsForRound($electionRound),
             'election_round' => $electionRound,
         ]);
     }

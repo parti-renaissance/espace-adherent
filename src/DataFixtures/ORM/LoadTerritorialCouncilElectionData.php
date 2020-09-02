@@ -17,6 +17,11 @@ class LoadTerritorialCouncilElectionData extends Fixture
         $coTerrParis->setCurrentElection($election = new Election($this->getReference('designation-6')));
         $election->setElectionMode(DesignationVoteModeEnum::VOTE_MODE_ONLINE);
 
+        /** @var TerritorialCouncil $coTerr */
+        $coTerr = $this->getReference('coTerr_92');
+        $coTerr->setCurrentElection($election = new Election($this->getReference('designation-7')));
+        $election->setElectionMode(DesignationVoteModeEnum::VOTE_MODE_ONLINE);
+
         $manager->flush();
     }
 

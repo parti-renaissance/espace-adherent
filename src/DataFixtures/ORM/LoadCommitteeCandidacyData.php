@@ -16,6 +16,7 @@ class LoadCommitteeCandidacyData extends Fixture
 {
     private const CANDIDACY_UUID_1 = '9780b1ca-79c1-4f53-babd-643ebb2ca3cc';
     private const CANDIDACY_UUID_2 = '5417fda6-6aeb-47ab-9da3-46d60046a3d5';
+    private const CANDIDACY_UUID_3 = 'c1921620-4101-1c66-967e-86b08a720aad';
 
     public function load(ObjectManager $manager)
     {
@@ -57,6 +58,20 @@ class LoadCommitteeCandidacyData extends Fixture
                 $committee->getCommitteeElection(),
                 Genders::FEMALE,
                 Uuid::fromString(self::CANDIDACY_UUID_2)
+            )
+        );
+
+        $manager->persist($candidacy);
+
+        $adherent = $this->getReference('adherent-3');
+        $committee = $this->getReference('committee-4');
+
+        $voteCommitteeMembership = $adherent->getMembershipFor($committee);
+        $voteCommitteeMembership->addCommitteeCandidacy(
+            $candidacy = new CommitteeCandidacy(
+                $committee->getCommitteeElection(),
+                Genders::MALE,
+                Uuid::fromString(self::CANDIDACY_UUID_3)
             )
         );
 

@@ -3,6 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\CommitteeCandidacy;
+use App\Entity\TerritorialCouncil\Candidacy;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Election;
@@ -15,13 +18,15 @@ use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Entity\VotingPlatform\VotersList;
 use App\ValueObject\Genders;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use App\VotingPlatform\Election\ResultCalculator;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class LoadVotingPlatformElectionData extends AbstractFixture implements DependentFixtureInterface
+class LoadVotingPlatformElectionData extends Fixture implements DependentFixtureInterface
 {
     public const ELECTION_UUID1 = 'd678c30a-a94b-4ecf-8cfc-0e06d1fb16df';
     public const ELECTION_UUID2 = '278ec098-e5f2-45e3-9faf-a9b2cb9305fd';
@@ -30,6 +35,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
     public const ELECTION_UUID5 = '13dd81bf-df09-487b-813d-8cbec95189aa';
     public const ELECTION_UUID6 = '071a3abc-fb4c-43c0-91b9-7cbeb1e02b92';
     public const ELECTION_UUID7 = 'b58e5538-c6e7-10a4-88c3-de59305e61a8';
+    public const ELECTION_UUID8 = '138140c6-1dd2-11b2-b23f-2b71345a2be1';
 
     /**
      * @var \Faker\Generator
@@ -41,6 +47,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
      */
     private $manager;
     private $voters = [];
+    private $translator;
 
     public function load(ObjectManager $manager)
     {
@@ -61,13 +68,11 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             Uuid::fromString(self::ELECTION_UUID1),
             [new ElectionRound()]
         );
-
+        $this->manager->persist($election);
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-6')));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $this->loadVoters($election);
-
-        $this->manager->persist($election);
 
         // -------------------------------------------
 
@@ -76,14 +81,12 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             Uuid::fromString(self::ELECTION_UUID2),
             [$round = new ElectionRound()]
         );
-
+        $this->manager->persist($election);
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-5')));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
-
-        $this->manager->persist($election);
 
         // -------------------------------------------
 
@@ -92,14 +95,12 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             Uuid::fromString(self::ELECTION_UUID3),
             [$round = new ElectionRound()]
         );
-
+        $this->manager->persist($election);
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-4')));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
-
-        $this->manager->persist($election);
 
         // -------------------------------------------
 
@@ -109,14 +110,12 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             Uuid::fromString(self::ELECTION_UUID6),
             [$round = new ElectionRound()]
         );
-
+        $this->manager->persist($election);
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
-
-        $this->manager->persist($election);
 
         // -------------------------------------------
 
@@ -125,15 +124,13 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             Uuid::fromString(self::ELECTION_UUID4),
             [$round = new ElectionRound()]
         );
-
+        $this->manager->persist($election);
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
         $election->close();
-
-        $this->manager->persist($election);
 
         // -------------------------------------------
 
@@ -142,15 +139,13 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             Uuid::fromString(self::ELECTION_UUID7),
             [$round = new ElectionRound()]
         );
-
+        $this->manager->persist($election);
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
         $election->close();
-
-        $this->manager->persist($election);
 
         // -------------------------------------------
 
@@ -159,7 +154,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             Uuid::fromString(self::ELECTION_UUID5),
             [$round = new ElectionRound()]
         );
-
+        $this->manager->persist($election);
         $election->setElectionEntity(new ElectionEntity($this->getReference('committee-3')));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
@@ -167,7 +162,18 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $this->loadResults($round, $votersList);
         $election->startSecondRound($round->getElectionPools());
 
+        // -------------------------------------------
+
+        $election = new Election(
+            $this->getReference('designation-7'),
+            Uuid::fromString(self::ELECTION_UUID8),
+            [new ElectionRound()]
+        );
         $this->manager->persist($election);
+        $election->setElectionEntity(new ElectionEntity(null, $coTerr = $this->getReference('coTerr_92')));
+        $this->loadTerritorialCouncilElectionCandidates($election, $coTerr);
+
+        $this->manager->flush();
     }
 
     private function loadCommitteeAdherentElectionCandidates(Election $election): void
@@ -275,15 +281,78 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             $this->manager->persist($result);
         }
 
-        // Mark elected groups
-        foreach ($pools as $y => $pool) {
-            $candidateGroups = $pool->getCandidateGroups();
+        $this->manager->flush();
 
-            arsort($counters[$pool->getId()]);
+        $this->getResultCalculator()->computeElectionResult($electionRound->getElection());
+    }
 
-            $key = array_search(max($counters[$pool->getId()]), $counters[$pool->getId()]);
-            $candidateGroups[$key]->setElected(true);
+    private function loadTerritorialCouncilElectionCandidates(
+        Election $election,
+        TerritorialCouncil $territorialCouncil
+    ): void {
+        $currentElection = $territorialCouncil->getCurrentElection();
+        /** @var TerritorialCouncilMembership[] $memberships */
+        $memberships = $territorialCouncil->getMemberships()->toArray();
+        $voterList = new VotersList($election);
+        $this->manager->persist($voterList);
+        $pools = [];
+
+        foreach ($memberships as $membership) {
+            $voterList->addVoter(new Voter($membership->getAdherent()));
+
+            if ($candidacy = $membership->getCandidacyForElection($currentElection)) {
+                if ($candidacy->isConfirmed()) {
+                    $pools[$candidacy->getQuality()][] = $candidacy;
+                }
+            }
         }
+
+        $currentRound = $election->getCurrentRound();
+
+        foreach ($pools as $key => $candidacies) {
+            $pool = new ElectionPool($this->getTranslator()->trans('territorial_council.membership.qualities.'.$key));
+
+            foreach ($candidacies as $candidacy) {
+                /** @var Candidacy $candidacy */
+                if ($candidacy->isTaken()) {
+                    continue;
+                }
+
+                $group = new CandidateGroup();
+                $adherent = $candidacy->getMembership()->getAdherent();
+                $candidate = new Candidate($adherent->getFirstName(), $adherent->getLastName(), $candidacy->getGender(), $adherent);
+                $candidate->setImagePath($candidacy->getImagePath());
+                $candidate->setFaithStatement($candidacy->getFaithStatement());
+                $candidate->setBiography($candidacy->getBiography());
+                $group->addCandidate($candidate);
+                $candidacy->take();
+
+                if ($binome = $candidacy->getBinome()) {
+                    $adherent = $binome->getMembership()->getAdherent();
+                    $candidate = new Candidate($adherent->getFirstName(), $adherent->getLastName(), $binome->getGender(), $adherent);
+                    $candidate->setImagePath($binome->getImagePath());
+                    $candidate->setFaithStatement($binome->getFaithStatement());
+                    $candidate->setBiography($binome->getBiography());
+                    $group->addCandidate($candidate);
+                    $binome->take();
+                }
+
+                $pool->addCandidateGroup($group);
+            }
+
+            $currentRound->addElectionPool($pool);
+            $election->addElectionPool($pool);
+        }
+    }
+
+    private function getTranslator(): TranslatorInterface
+    {
+        return $this->translator ? $this->translator : $this->translator = $this->container->get('translator');
+    }
+
+    private function getResultCalculator(): ResultCalculator
+    {
+        return $this->container->get(ResultCalculator::class);
     }
 
     public function getDependencies()
@@ -292,6 +361,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
             LoadAdherentData::class,
             LoadCommitteeCandidacyData::class,
             LoadDesignationData::class,
+            LoadTerritorialCouncilCandidacyData::class,
         ];
     }
 }

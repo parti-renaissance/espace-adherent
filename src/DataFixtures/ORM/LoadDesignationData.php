@@ -69,13 +69,26 @@ class LoadDesignationData extends Fixture
         $this->setReference('designation-5', $designation);
         $manager->persist($designation);
 
-        // COPOL designation with started CANDIDATURE period in 01
+        // COPOL designation with started CANDIDATURE period
         $designation = new Designation('Désignation COPOL avec les candidatures ouvertes');
         $designation->setType(DesignationTypeEnum::COPOL);
-        $designation->addReferentTag($this->getReference('referent_tag_92'));
+        $designation->addReferentTag($this->getReference('referent_tag_75'));
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
 
         $this->setReference('designation-6', $designation);
+        $manager->persist($designation);
+
+        // COPOL designation with started VOTE period
+        $designation = new Designation('Désignation COPOL les votes');
+        $designation->setType(DesignationTypeEnum::COPOL);
+        $designation->addReferentTag($this->getReference('referent_tag_92'));
+        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
+        $designation->setVoteStartDate(new \DateTime('-1 hour'));
+        $designation->setVoteEndDate(new \DateTime('+4 week'));
+        $designation->markAsLimited();
+
+        $this->setReference('designation-7', $designation);
         $manager->persist($designation);
 
         $manager->flush();

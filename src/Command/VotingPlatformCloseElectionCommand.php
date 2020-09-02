@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Repository\CommitteeElectionRepository;
@@ -10,10 +9,10 @@ use App\Repository\CommitteeMembershipRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Election\ResultCalculator;
 use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOverEvent;
-use App\VotingPlatform\VoteResult\VoteResultAggregator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,8 +28,6 @@ class VotingPlatformCloseElectionCommand extends Command
     private $io;
     /** @var ElectionRepository */
     private $electionRepository;
-    /** @var VoteResultAggregator */
-    private $resultAggregator;
     /** @var EntityManagerInterface */
     private $entityManager;
     /** @var DesignationRepository */
@@ -41,6 +38,8 @@ class VotingPlatformCloseElectionCommand extends Command
     private $committeeMembershipRepository;
     /** @var EventDispatcherInterface */
     private $dispatcher;
+    /** @var ResultCalculator */
+    private $resultManager;
 
     protected function configure()
     {
@@ -65,7 +64,7 @@ class VotingPlatformCloseElectionCommand extends Command
 
         $this->io->progressStart();
 
-        while ($elections = $this->electionRepository->getElectionsToClose($date, 50)) {
+        while ($elections = $this->electionRepository->getElectionsToCloseOrWithoutResults($date, 50)) {
             foreach ($elections as $election) {
                 $this->doCloseElection($election);
 
@@ -80,55 +79,23 @@ class VotingPlatformCloseElectionCommand extends Command
 
     private function doCloseElection(Election $election): void
     {
-        $candidatesGroupResults = $this->resultAggregator->getResults($election)['aggregated']['candidates'];
-        $currentRound = $election->getCurrentRound();
+        // 1. compute election result
+        $electionResult = $this->resultManager->computeElectionResult($election);
 
-        $secondRoundPools = [];
-
-        foreach ($currentRound->getElectionPools() as $pool) {
-            $winners = $this->findElected($pool->getCandidateGroups(), $candidatesGroupResults);
-
-            if (1 === \count($winners)) {
-                current($winners)->setElected(true);
+        // 2. close election or start the second round
+        if ($election->isOpen()) {
+            if ($election->canClose()) {
+                $election->close();
             } else {
-                $secondRoundPools[] = $pool;
+                $election->startSecondRound($electionResult->getNotElectedPools($election->getCurrentRound()));
             }
-        }
 
-        if (empty($secondRoundPools) || $election->getSecondRoundEndDate()) {
-            $election->close();
-        } else {
-            $election->startSecondRound($secondRoundPools);
-        }
+            $this->entityManager->flush();
 
-        $this->notifyEndOfElectionRound($election);
+            $this->notifyEndOfElectionRound($election);
+        }
 
         $this->entityManager->flush();
-    }
-
-    /**
-     * @return CandidateGroup[]
-     */
-    private function findElected(array $candidateGroups, array $results): array
-    {
-        if (empty($results)) {
-            return [];
-        }
-
-        $uuids = array_map(function (CandidateGroup $group) {
-            return $group->getUuid()->toString();
-        }, $candidateGroups);
-
-        $resultsForCurrentGroups = array_intersect_key($results, array_flip($uuids));
-
-        $maxScore = max($resultsForCurrentGroups);
-        $winnerUuids = array_keys(array_filter($resultsForCurrentGroups, function (int $score) use ($maxScore) {
-            return $score === $maxScore;
-        }));
-
-        return array_filter($candidateGroups, function (CandidateGroup $group) use ($winnerUuids) {
-            return \in_array($group->getUuid()->toString(), $winnerUuids);
-        });
     }
 
     private function notifyForEndForCandidacy(): void
@@ -189,12 +156,6 @@ class VotingPlatformCloseElectionCommand extends Command
     }
 
     /** @required */
-    public function setResultAggregator(VoteResultAggregator $resultAggregator): void
-    {
-        $this->resultAggregator = $resultAggregator;
-    }
-
-    /** @required */
     public function setElectionRepository(ElectionRepository $electionRepository): void
     {
         $this->electionRepository = $electionRepository;
@@ -228,5 +189,11 @@ class VotingPlatformCloseElectionCommand extends Command
     public function setDispatcher(EventDispatcherInterface $dispatcher): void
     {
         $this->dispatcher = $dispatcher;
+    }
+
+    /** @required */
+    public function setResultManager(ResultCalculator $resultManager): void
+    {
+        $this->resultManager = $resultManager;
     }
 }
