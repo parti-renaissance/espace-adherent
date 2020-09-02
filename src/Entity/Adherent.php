@@ -914,6 +914,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->gender;
     }
 
+    public function getGenderName(): ?string
+    {
+        return array_search($this->gender, Genders::CHOICES);
+    }
+
     public function getCustomGender(): ?string
     {
         return $this->customGender;

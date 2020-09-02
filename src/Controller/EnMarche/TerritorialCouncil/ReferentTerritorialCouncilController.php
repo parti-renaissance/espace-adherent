@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\TerritorialCouncil;
 
 use App\Controller\EnMarche\AccessDelegatorTrait;
+use App\Exporter\TerritorialCouncilMembersExporter;
 use App\Form\TerritorialCouncil\MemberFilterType;
 use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
 use App\Subscription\SubscriptionTypeEnum;
@@ -23,11 +24,16 @@ class ReferentTerritorialCouncilController extends AbstractController
     use AccessDelegatorTrait;
 
     /**
-     * @Route("/membres", name="members_list", methods={"GET"})
+     * @Route("/membres.{_format}",
+     *     name="members_list", methods={"GET"},
+     *     defaults={"_format": "html"}, requirements={"_format": "html|csv|xls"}
+     * )
      */
     public function membersListAction(
         Request $request,
-        TerritorialCouncilMembershipRepository $membershipRepository
+        string $_format,
+        TerritorialCouncilMembershipRepository $membershipRepository,
+        TerritorialCouncilMembersExporter $exporter
     ): Response {
         $referentTags = $this->getMainUser($request->getSession())->getManagedArea()->getTags()->toArray();
         $filter = new MembersListFilter($referentTags, SubscriptionTypeEnum::REFERENT_EMAIL);
@@ -40,6 +46,10 @@ class ReferentTerritorialCouncilController extends AbstractController
 
         if ($form->isSubmitted() && !$form->isValid()) {
             $filter = new MembersListFilter($referentTags, SubscriptionTypeEnum::REFERENT_EMAIL);
+        }
+
+        if ('html' !== $_format) {
+            return $exporter->getResponse($_format, $filter);
         }
 
         $memberships = $membershipRepository->searchByFilter($filter, $request->query->getInt('page', 1));
