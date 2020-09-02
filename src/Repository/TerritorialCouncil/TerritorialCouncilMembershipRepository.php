@@ -94,10 +94,19 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
 
     private function createQueryBuilderWithReferentTagsCondition(array $referentTags): QueryBuilder
     {
+        $tagCondition = 'referentTag IN (:tags)';
+        foreach ($referentTags as $referentTag) {
+            if ('75' === $referentTag->getCode()) {
+                $tagCondition = "(referentTag IN (:tags) OR referentTag.name LIKE '%Paris%')";
+
+                break;
+            }
+        }
+
         return $this->createQueryBuilder('tcm')
             ->innerJoin('tcm.territorialCouncil', 'territorialCouncil')
             ->innerJoin('territorialCouncil.referentTags', 'referentTag')
-            ->andWhere('referentTag IN (:tags)')
+            ->andWhere($tagCondition)
             ->setParameter('tags', $referentTags)
         ;
     }
@@ -118,13 +127,6 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         }
 
         $qb->orderBy($sort, 'd' === $filter->getOrder() ? 'DESC' : 'ASC');
-
-        if ($territorialCouncils = $filter->getTerritorialCouncils()) {
-            $qb
-                ->andWhere('tcm.territorialCouncil in (:territorialCouncils)')
-                ->setParameter('territorialCouncils', $territorialCouncils)
-            ;
-        }
 
         if ($lastName = $filter->getLastName()) {
             $qb

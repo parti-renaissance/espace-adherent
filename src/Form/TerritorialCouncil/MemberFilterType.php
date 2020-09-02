@@ -4,12 +4,11 @@ namespace App\Form\TerritorialCouncil;
 
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\GenderType;
 use App\Repository\CommitteeRepository;
 use App\Repository\ElectedRepresentative\ZoneRepository;
-use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\TerritorialCouncil\Filter\MembersListFilter;
 use App\ValueObject\Genders;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -26,14 +25,12 @@ class MemberFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('territorialCouncils', EntityType::class, [
-                'label' => 'referent.territorial_councils',
-                'class' => TerritorialCouncil::class,
+            ->add('referentTags', EntityType::class, [
+                'label' => 'referent.zones',
+                'class' => ReferentTag::class,
                 'required' => false,
                 'multiple' => true,
-                'query_builder' => function (TerritorialCouncilRepository $tcRepository) use ($options) {
-                    return $tcRepository->createSelectByReferentTagsQueryBuilder($options['referent_tags']);
-                },
+                'choices' => $options['referent_tags'],
             ])
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
@@ -44,7 +41,6 @@ class MemberFilterType extends AbstractType
                 'choices' => [
                     'common.gender.woman' => Genders::FEMALE,
                     'common.gender.man' => Genders::MALE,
-                    'common.gender.unknown' => Genders::UNKNOWN,
                 ],
             ])
             ->add('ageMin', IntegerType::class, ['required' => false])
