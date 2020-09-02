@@ -312,7 +312,7 @@ referent.save: Enregistrer
 referent.territorial_council.committee: Comité
 referent.territorial_council.city: Ville
 referent.territorial_council.quality: Qualité
-referent.territorial_councils: Zones gérées
+referent.zones: Zones gérées
 referent.territorial_council.filter.territorial_councils: Choisissez des zones gérées
 referent.territorial_council.filter.committees: Choisissez des comités
 referent.territorial_council.filter.cities: Choisissez des villes

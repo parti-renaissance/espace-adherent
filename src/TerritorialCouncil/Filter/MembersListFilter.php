@@ -5,7 +5,6 @@ namespace App\TerritorialCouncil\Filter;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ReferentTag;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MembersListFilter
@@ -21,11 +20,6 @@ class MembersListFilter
      * @var string|null
      */
     private $subscriptionType;
-
-    /**
-     * @var array
-     */
-    private $territorialCouncils = [];
 
     /**
      * @var string|null
@@ -105,19 +99,14 @@ class MembersListFilter
         return $this->referentTags;
     }
 
+    public function setReferentTags(array $referentTags): void
+    {
+        $this->referentTags = $referentTags;
+    }
+
     public function getSubscriptionType(): ?string
     {
         return $this->subscriptionType;
-    }
-
-    public function getTerritorialCouncils(): ?array
-    {
-        return $this->territorialCouncils;
-    }
-
-    public function setTerritorialCouncils(?array $territorialCouncils): void
-    {
-        $this->territorialCouncils = $territorialCouncils;
     }
 
     public function getGender(): ?string
@@ -245,9 +234,9 @@ class MembersListFilter
             'committees' => array_map(function (Committee $committee) {
                 return $committee->getId();
             }, $this->committees),
-            'territorialCouncils' => array_map(function (TerritorialCouncil $territorialCouncil) {
-                return $territorialCouncil->getId();
-            }, $this->territorialCouncils),
+            'referentTags' => array_map(function (ReferentTag $referentTag) {
+                return $referentTag->getId();
+            }, $this->referentTags),
             'emailSubscription' => $this->emailSubscription,
             'sort' => $this->sort,
             'order' => $this->order,

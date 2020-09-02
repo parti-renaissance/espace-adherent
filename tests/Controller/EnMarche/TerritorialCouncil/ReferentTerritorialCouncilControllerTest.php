@@ -97,20 +97,20 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         // by territorial council
         $form['f[ageMin]'] = '';
         $form['f[ageMax]'] = '';
-        $form['f[territorialCouncils]'] = [95];
+        $form['f[referentTags]'] = [98];
 
         $crawler = $this->client->submit($form);
 
         $this->assertCount(7, $crawler->filter('tbody tr.referent__item'));
 
-        $form['f[territorialCouncils]'] = [97];
+        $form['f[referentTags]'] = [100];
 
         $crawler = $this->client->submit($form);
 
         $this->assertCount(0, $crawler->filter('tbody tr.referent__item'));
 
         // filter by qualities
-        $form['f[territorialCouncils]'] = [];
+        $form['f[referentTags]'] = [98, 100];
         $form['f[qualities]'] = ['mayor', 'committee_supervisor'];
 
         $crawler = $this->client->submit($form);
