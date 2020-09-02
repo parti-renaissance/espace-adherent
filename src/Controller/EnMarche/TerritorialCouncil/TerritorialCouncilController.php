@@ -89,6 +89,10 @@ class TerritorialCouncilController extends Controller
         UserInterface $adherent,
         Manager $voteManager
     ): Response {
+        if (!$electionPoll->getElection()->isCandidacyPeriodActive()) {
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
         if ($voteManager->hasVoted($electionPoll, $membership = $adherent->getTerritorialCouncilMembership())) {
             $this->addFlash('error', 'Vous avez déjà participé à ce sondage.');
 

@@ -11,11 +11,10 @@ use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Mailer\MailerService;
-use App\Mailer\Message\CommitteeElectionVoteConfirmationMessage;
+use App\Mailer\Message\VotingPlatformElectionVoteConfirmationMessage;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
 use App\VotingPlatform\Election\VoteCommandStorage;
@@ -92,9 +91,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
 
         $this->saveVoterKeyInSession($voterKey);
 
-        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
-            $this->sendVoteConfirmationEmail($vote, $voterKey);
-        }
+        $this->sendVoteConfirmationEmail($vote, $voterKey);
     }
 
     private function generateVote(ElectionRound $electionRound): Vote
@@ -134,7 +131,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
 
     private function sendVoteConfirmationEmail(Vote $vote, string $voterKey): void
     {
-        $this->mailer->sendMessage(CommitteeElectionVoteConfirmationMessage::create($vote, $voterKey));
+        $this->mailer->sendMessage(VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey));
     }
 
     private function saveVoterKeyInSession(string $voterKey): void

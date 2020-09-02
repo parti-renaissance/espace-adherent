@@ -68,4 +68,9 @@ class Poll
     {
         return $this->choices->toArray();
     }
+
+    public function getElection(): Election
+    {
+        return $this->election;
+    }
 }

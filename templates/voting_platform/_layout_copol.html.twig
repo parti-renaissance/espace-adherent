@@ -14,3 +14,11 @@
 {% block vote_step_pool_title %}
     Sélectionnez un bimôme {{ pool.title }}
 {% endblock %}
+
+{% block vote_finish_action_block %}
+    <div class="b__nudge--bottom-large b__nudge--top-large">
+        <a href="{{ path('app_territorial_council_index') }}" class="btn btn--blue">
+            Retour au Conseil territorial
+        </a>
+    </div>
+{% endblock %}

@@ -221,7 +221,7 @@ class VotingPlatformConfigureCommand extends Command
             }
 
             if (!isset($pools[$candidacy->getQuality()])) {
-                $pools[$candidacy->getQuality()] = new ElectionPool($this->translator->trans('territorial_council.membership.quality.'.$candidacy->getQuality()));
+                $pools[$candidacy->getQuality()] = new ElectionPool($this->translator->trans('territorial_council.membership.qualities.'.$candidacy->getQuality()));
             }
 
             $pools[$candidacy->getQuality()]->addCandidateGroup($group);
