@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\Adherent;
 use App\Entity\CommitteeElection;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\VotingPlatform\Candidate;
@@ -25,7 +24,7 @@ use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Events;
-use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOpenEvent;
+use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -248,6 +247,8 @@ class VotingPlatformConfigureCommand extends Command
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
         $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election, $adherents));
     }
 
     private function configureNewElectionForCommittee(Election $election, Designation $designation): void
@@ -308,9 +309,7 @@ class VotingPlatformConfigureCommand extends Command
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
-        $this->notifyVoters($adherents, $designation, function (Adherent $adherent, Designation $designation) use ($committee) {
-            return new CommitteeElectionVoteIsOpenEvent($adherent, $designation, $committee);
-        });
+        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election, $adherents));
     }
 
     private function isValidCommitteeElection(CommitteeElection $committeeElection, Designation $designation): bool
@@ -369,9 +368,7 @@ class VotingPlatformConfigureCommand extends Command
 
     private function notifyVoters(array $adherents, Designation $designation, \Closure $eventFactoryCallback): void
     {
-        foreach ($adherents as $adherent) {
-            $this->dispatcher->dispatch(Events::VOTE_OPEN, $eventFactoryCallback($adherent, $designation));
-        }
+        $this->dispatcher->dispatch(Events::VOTE_OPEN, $eventFactoryCallback($adherents, $designation));
     }
 
     /** @required */
