@@ -17,7 +17,7 @@
             {% elseif 0 > (current_page + nearbyPagesLimit) - loop.index %}
             {% else %}
                 {% if current_page == loop.index  %}
-                    <li class="active"><a href="{{ path(pagination_route_name, {page: i, type: pagination_type, '_fragment': section}) }}" class="active">{{ i }}</a></li>
+                    <li class="active"><span>{{ i }}</span></li>
                 {% else %}
                     {% if loop.index == 1 %}
                         <li><a href="{{ path(pagination_route_name, {page: 1, type: pagination_type, '_fragment': section}) }}" class="link--no-decor">1</a></li>

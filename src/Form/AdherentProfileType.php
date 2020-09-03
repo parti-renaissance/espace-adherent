@@ -70,15 +70,19 @@ class AdherentProfileType extends AbstractType
             ])
             ->add('facebookPageUrl', UrlType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'https://www.facebook.com/EmmanuelMacron'],
             ])
             ->add('twitterPageUrl', UrlType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'https://twitter.com/EmmanuelMacron'],
             ])
             ->add('linkedinPageUrl', UrlType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'https://fr.linkedin.com/in/EmmanuelMacron'],
             ])
             ->add('telegramPageUrl', UrlType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'https://t.me/EmmanuelMacron'],
             ])
             ->add('job', ChoiceType::class, [
                 'choices' => JobEnum::JOBS,

@@ -52,7 +52,7 @@
             </div>
             <div class="em-form__row">
                 {{ form_row(form.gender) }}
-                {{ form_row(form.customGender, {label: false, attr: {placeholder: 'Entrez votre genre'}}) }}
+                {{ form_row(form.customGender, {label: ' ', attr: {placeholder: 'Précisez votre genre'}}) }}
             </div>
             <div class="em-form__row">
                 {{ form_row(form.birthdate, {label: 'Date de naissance'}) }}
@@ -100,7 +100,7 @@
         <div class="em-form__section">
             <h2 class="section-subtitle">Vos identifiants réseaux sociaux</h2>
             <p class="text--body text--muted text--small">
-                Vous pourrez être contactés par vos responsables locaux ou recevoir des informations susceptibles de vous intéresser.
+                Vous pourrez être contacté(e) par vos responsables locaux ou recevoir des informations susceptibles de vous intéresser.
             </p>
             <div class="em-form__row">
                 {{ form_row(form.facebookPageUrl, {label: 'Facebook'}) }}
