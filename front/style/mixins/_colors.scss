@@ -277,6 +277,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
     background-color: $blue;
 }
 
+.background--green-territory {
+    background-color: $green--territory;
+}
+
 .background--blue-light {
     background-color: rgba($blue--dark, 0.1);
 }

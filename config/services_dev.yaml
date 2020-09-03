@@ -29,3 +29,6 @@ services:
     data_collector.messenger:
         class: Symfony\Component\Messenger\DataCollector\MessengerDataCollector
         tags: [{ name: 'data_collector', id: messenger, template: profiler/messenger.html.twig }]
+
+    App\VotingPlatform\Election\ResultCalculator:
+        public: true

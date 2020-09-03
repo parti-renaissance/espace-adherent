@@ -4,11 +4,11 @@ namespace App\Controller\EnMarche\CommitteeDesignation;
 
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionResult\ElectionPoolResult;
 use App\Entity\VotingPlatform\ElectionRound;
-use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
+use App\Repository\VotingPlatform\VoteResultRepository;
 use App\Repository\VotingPlatform\VoterRepository;
-use App\VotingPlatform\VoteResult\VoteResultAggregator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,8 +110,6 @@ abstract class AbstractDesignationController extends AbstractController
         Request $request,
         Committee $committee,
         Election $election,
-        CandidateGroupRepository $candidateGroupRepository,
-        VoteResultAggregator $aggregator,
         ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
@@ -125,16 +123,16 @@ abstract class AbstractDesignationController extends AbstractController
             return $this->redirectToSpaceRoute('dashboard', $committee, $election);
         }
 
-        $candidateGroups = $candidateGroupRepository->findForElectionRound($electionRound);
-
         return $this->renderTemplate('committee_designation/results.html.twig', $request, [
             'committee' => $committee,
             'election_round' => $electionRound,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
-            'candidate_groups' => $request->query->has('femme') ?
-                $candidateGroups->getWomanCandidateGroups() :
-                $candidateGroups->getManCandidateGroups(),
-            'results' => $election->isResultPeriodActive() ? $aggregator->getResultsForRound($electionRound)['aggregated']['candidates'] : [],
+            'election_pool_result' => current(array_filter(
+                $election->getElectionResult()->getElectionRoundResult($electionRound)->getElectionPoolResults(),
+                function (ElectionPoolResult $poolResult) use ($request) {
+                    return $poolResult->getElectionPool()->getTitle() === ($request->query->has('femme') ? 'Femme' : 'Homme');
+                }
+            )),
         ]);
     }
 
@@ -152,7 +150,7 @@ abstract class AbstractDesignationController extends AbstractController
         Request $request,
         Committee $committee,
         Election $election,
-        VoteResultAggregator $aggregator,
+        VoteResultRepository $voteResultRepository,
         ElectionRound $electionRound = null
     ): Response {
         if (!$electionRound) {
@@ -170,7 +168,7 @@ abstract class AbstractDesignationController extends AbstractController
             'committee' => $committee,
             'election_round' => $electionRound,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
-            'votes' => $aggregator->getResultsForRound($electionRound)['vote_results'],
+            'votes' => $voteResultRepository->getResultsForRound($electionRound),
         ]);
     }
 

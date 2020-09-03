@@ -1,8 +1,12 @@
 {% extends base_layout %}
 
 {% set election = election_round.election %}
-{% set electionRounds = election.electionRounds %}
-{% set pools = election_round.electionPools %}
+
+{% set election_result = election.electionResult %}
+{% set election_round_result = election_result.getElectionRoundResult(election_round) %}
+
+{% set election_rounds = election.electionRounds %}
+{% set my_vote = get_my_vote_for_election(app.user, election_round) %}
 
 {% block page_title 'Résultats de la désignation' %}
 
@@ -12,15 +16,15 @@
             <h1 class="text--larger">Résultats de la désignation</h1>
         </div>
 
-        {% if electionRounds|length > 1 and not election.isSecondRoundVotePeriodActive %}
+        {% if election_rounds|length > 1 and not election.isSecondRoundVotePeriodActive %}
             <section>
                 <div class="datagrid__table__tabs">
                     <div class="datagrid__table__tabs__items">
-                        {% for round in electionRounds %}
+                        {% for round in election_rounds %}
                             <h3>
                                 <a class="{{ round.equals(election_round) ? 'active' }}"
                                    href="{{ path('app_voting_platform_results', {uuid: election.uuid, election_round_uuid: round.uuid}) }}">
-                                    Tour {{ (loop.index == electionRounds|length == 2) ? 'bis' : loop.index }}
+                                    Tour {{ (loop.index == election_rounds|length == 2) ? 'bis' : loop.index }}
                                 </a>
                             </h3>
                             {% if not loop.last %}
@@ -37,17 +41,15 @@
 {% block header_actions '' %}
 {% block voting_platform_ornametns '' %}
 
-{% set my_vote = get_my_vote_for_election(app.user, election) %}
-
 {% block voting_platform_content %}
     <div class="voting-platform__results election-results">
         <div>
             <div class="l__wrapper--medium">
                 <nav class="tabs-nav border-on results__menu b__nudge--bottom-larger">
                     <ul>
-                        {% for pool in pools %}
+                        {% for pool_result in election_round_result.getElectionPoolResults() %}
                             <li {{ loop.index == 1 ? 'class="active"' }}>
-                                <a href="#" class="tabs-nav__item results-tab--toggle">Résultats {{ pool.title }}</a>
+                                <a href="#" class="tabs-nav__item results-tab--toggle">Résultats {{ pool_result.electionPool.title }}</a>
                             </li>
                         {% endfor %}
 
@@ -58,28 +60,24 @@
 
             <div class="l__wrapper--medium">
                 <div class="candidate-tabs--container">
-                    {% for pool in pools %}
+                    {% for pool_result in election_round_result.getElectionPoolResults %}
                         <div class="candidate-tab candidate-tab--{{ loop.index }}" {{ loop.index > 1 ? 'style="display: none;"' }}>
                             <div class="tab--container">
-                                {% include 'voting_platform/results/_candiates_list.html.twig' with {
-                                    'candidate_groups': pool.candidateGroups,
-                                    'candidates': results.aggregated.candidates,
-                                    'resume': results.aggregated.resume[pool.title],
-                                } %}
+                                {% include 'voting_platform/results/_candiates_list.html.twig' %}
 
-                                {% include 'voting_platform/results/_stats_block.html.twig' with {
-                                    'resume': results.aggregated.resume[pool.title],
-                                } %}
+                                {% include 'voting_platform/results/_stats_block.html.twig' %}
                             </div>
                         </div>
                     {% endfor %}
 
-                    <div class="candidate-tab candidate-tab--{{ pools|length + 1 }}" style="display: none;">
+                    <div class="candidate-tab candidate-tab--{{ election_round_result.getElectionPoolResults|length + 1 }}" style="display: none;">
                         <div class="tab--container">
                             <div class="l__col--wrap election__ballots-detail">
                                 <h3 class="text--default-large text--bold font-roboto b__nudge--bottom-small">Bulletins dépouillés</h3>
                                 <p class="text--body text--dark b__nudge--bottom">
-                                    Cette page recense la totalité des {{ results.aggregated.resume|first.participated - results.aggregated.resume|first.abstentions }} bulletins dépouillés lors de cette désignations.<br /><br />
+                                    {% set bulletin_count = vote_results|length %}
+
+                                    Cette page recense la totalité de{{ bulletin_count > 1 ? 's'}} {{ bulletin_count }} bulletin{{ bulletin_count > 1 ? 's'}} dépouillé{{ bulletin_count > 1 ? 's'}} lors de cette désignations.<br /><br />
                                     Retrouvez vos bulletins avec le N° anonyme qui vous a été transmis lors du versement de vos bulletins dans l'urne.
                                 </p>
                                 <div class="table--container">
@@ -87,25 +85,32 @@
                                         <thead class="b__nudge--bottom">
                                             <tr class="text--body">
                                                 <th class="space--10-0">N° anonyme</th>
-                                                <th class="space--10-0">Bulletin <span class="candidate-gender l__col l__col--center">F</span></th>
-                                                <th class="space--10-0">Bulletin <span class="candidate-gender l__col l__col--center">H</span></th>
+
+                                                {% for pool_result in election_round_result.getElectionPoolResults %}
+                                                    <th class="space--10-0">
+                                                        Bulletin
+                                                        {% if pool_result.electionPool.title in ['Femme', 'Homme'] %}
+                                                            <span class="candidate-gender l__col l__col--center">{{ pool_result.electionPool.title == 'Femme' ? 'F' : 'H' }}</span>
+                                                        {% else %}
+                                                            {{ pool_result.electionPool.title }}
+                                                        {% endif %}
+                                                    </th>
+                                                {% endfor %}
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {% for vote_result in results.vote_results %}
-                                                {% set choices = vote_result.voteChoices %}
 
+                                        <tbody>
+                                            {% for vote_result in vote_results %}
                                                 <tr class="text--body text--dark">
                                                     <td>{{ vote_result.voterKey }}</td>
-                                                    {% for poolTitle in ['Femme', 'Homme'] %}
+
+                                                    {% for pool_result in election_round_result.getElectionPoolResults %}
                                                         <td>
-                                                            {% for choice in choices %}
-                                                                {% if poolTitle is same as(choice.electionPool.title) %}
-                                                                    {% if choice.isBlank %}
-                                                                        ~
-                                                                    {% else %}
-                                                                        {{ choice.candidateGroup.candidates|first.fullName }}
-                                                                    {% endif %}
+                                                            {% for vote_choice in vote_result.voteChoices if vote_choice.electionPool == pool_result.electionPool %}
+                                                                {% if vote_choice.isBlank %}
+                                                                    ~
+                                                                {% else %}
+                                                                    {{ (vote_choice.candidateGroup.candidates|first).fullName }}
                                                                 {% endif %}
                                                             {% endfor %}
                                                         </td>

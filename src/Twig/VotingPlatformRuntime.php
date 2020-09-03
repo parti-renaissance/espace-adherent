@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteRepository;
@@ -40,9 +41,9 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
         return null;
     }
 
-    public function findMyVoteForElection(Adherent $adherent, Election $election): ?Vote
+    public function findMyVoteForElection(Adherent $adherent, ElectionRound $electionRound): ?Vote
     {
-        return $this->voteRepository->findVote($adherent, $election->getCurrentRound());
+        return $this->voteRepository->findVote($adherent, $electionRound);
     }
 
     public function findMyLastVote(Adherent $adherent): ?Vote

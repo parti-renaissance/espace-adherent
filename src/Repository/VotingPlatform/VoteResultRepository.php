@@ -17,7 +17,7 @@ class VoteResultRepository extends ServiceEntityRepository
     /**
      * @return VoteResult[]
      */
-    public function getResults(ElectionRound $electionRound): array
+    public function getResultsForRound(ElectionRound $electionRound): array
     {
         return $this->createQueryBuilder('vr')
             ->addSelect('vc', 'cg', 'c')

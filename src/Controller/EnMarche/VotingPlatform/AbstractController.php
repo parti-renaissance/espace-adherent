@@ -37,7 +37,8 @@ abstract class AbstractController extends BaseAbstractController
     protected function renderElectionTemplate(string $template, Election $election, array $params = []): Response
     {
         return $this->render($template, array_merge($params, [
-            'base_layout' => sprintf('voting_platform/_layout_%s.html.twig', $election->getDesignationType()),
+            'base_layout' => sprintf('voting_platform/_layout_%s.html.twig', $designationType = $election->getDesignationType()),
+            'designation_type' => $designationType,
             'election' => $election,
         ]));
     }

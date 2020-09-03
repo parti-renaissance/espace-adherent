@@ -28,11 +28,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if election.isResultPeriodActive() %}
-                            {{ row.vote ? row.vote|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}
-                        {% else %}
-                            ~
-                        {% endif %}
+                        {{ row.vote ? row.vote|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}
                     </td>
                 </tr>
             {% else %}

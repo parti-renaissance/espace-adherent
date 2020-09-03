@@ -9,7 +9,6 @@ use App\Mailer\Message\TerritorialCouncilCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationCreatedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationDeclinedMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Mandrill\MailAssertTrait;
 
@@ -29,10 +28,6 @@ class CandidatureControllerTest extends WebTestCase
         $this->client->request('GET', '/conseil-territorial');
         $this->assertResponseStatusCode(200, $response = $this->client->getResponse());
         $this->assertContains('Conseil territorial du département 92', $response->getContent());
-        $this->assertNotContains('Désignation des binômes paritaires siégeant au Comité politique', $response->getContent());
-
-        $this->client->request('GET', '/conseil-territorial/candidature');
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     public function testICannotModifyIfItIsNotCandidatePeriod(): void
