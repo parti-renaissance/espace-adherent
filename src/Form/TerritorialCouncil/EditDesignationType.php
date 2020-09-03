@@ -16,8 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditDesignationType extends AbstractType
@@ -50,8 +48,7 @@ class EditDesignationType extends AbstractType
             ->add('voteStartDate', DateTimeType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
-                'disabled' => true,
-                'required' => false,
+                'required' => true,
             ])
             ->add('voteEndDate', DateTimeType::class, [
                 'html5' => true,
@@ -105,11 +102,6 @@ class EditDesignationType extends AbstractType
                 ],
             ])
             ->add('save', SubmitType::class)
-            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-                /** @var UpdateDesignationRequest $request */
-                $request = $event->getData();
-                $request->setVoteStartDate($request->getMeetingStartDate());
-            })
         ;
 
         $builder->get('address')->remove('city');

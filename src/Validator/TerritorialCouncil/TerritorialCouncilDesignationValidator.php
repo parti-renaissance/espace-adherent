@@ -100,10 +100,10 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
             ;
         }
 
-        if ($meetingStartDate != $voteStartDate) {
+        if ($meetingStartDate->format('d/m/Y') !== $voteStartDate->format('d/m/Y')) {
             $this->context
-                ->buildViolation($constraint->messageMeetingStartDateInvalid)
-                ->atPath('meetingStartDate')
+                ->buildViolation($constraint->messageVoteStartDateInvalid)
+                ->atPath('voteStartDate')
                 ->addViolation()
             ;
         }
