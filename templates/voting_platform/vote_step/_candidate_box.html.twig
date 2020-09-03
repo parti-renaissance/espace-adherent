@@ -6,13 +6,17 @@
 
     <div class="box__content">
         {% if candidate_group %}
-            {% for candidate in candidate_group.candidates %}
-                <div class="candidate-photo avatar-initials avatar--large avatar--style-01">
-                    {{ helper.display_candidate_photo(candidate) }}
-                </div>
-
-                <div class="candidate-infos">
-                    <h3 class="candidate-name text--medium b__nudge--bottom-tiny">{{ candidate.fullName }}</h3>
+            <h3 class="candidate-pool text--medium b__nudge--bottom-tiny">{{ pool.title }}</h3>
+            <ul class="candidate-names text--body">
+                {% for candidate in candidate_group.candidates %}
+                    <li>{{ candidate.fullName }}</li>
+                {% endfor %}
+            </ul>
+            <div class="candidate-footer">
+                {% for candidate in candidate_group.candidates %}
+                    <div class="candidate-photo avatar-initials avatar--large avatar--style-01">
+                        {{ helper.display_candidate_photo(candidate) }}
+                    </div>
                     <div class="candidate-biography">
                         {% if candidate.hasBiography %}
                             <a href="#" class="text--body link--no-decor text--blue--dark b__nudge--none em-modal--trigger"
@@ -36,8 +40,8 @@
                             <span class="text--body text--muted b__nudge--none">Présentation indisponible</span>
                         {% endif %}
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         {% else %}
             <div class="candidate-infos">
                 <h3 class="candidate-name text--medium b__nudge--bottom-tiny">Bulletin blanc</h3>

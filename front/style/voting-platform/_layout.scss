@@ -64,6 +64,8 @@
 
     .election-vote {
         .candidate__box {
+            box-sizing: border-box;
+            flex-basis: calc(50% - 12px);
             padding: 30px 30px 60px;
             margin: 24px 0;
 
@@ -142,8 +144,8 @@
                     @media (min-width: $mobile) {
                         left: auto;
                         bottom: auto;
-                        top: calc(50% - 11px);
-                        right: 8%;
+                        top: 30px;
+                        right: 30px;
                     }
                 }
             }
@@ -151,24 +153,24 @@
             .box__content {
                 position: relative;
                 pointer-events: none;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+                // display: flex;
+                // flex-direction: column;
+                // align-items: center;
 
-                @media (min-width: $mobile) {
-                    flex-direction: row;
-                }
+                // @media (min-width: $mobile) {
+                //     flex-direction: row;
+                // }
 
-                .candidate-infos {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-
-                    @media (min-width: $mobile) {
-                        align-items: flex-start;
-                        margin-left: 20px;
-                    }
-                }
+                // .candidate-infos {
+                //     display: flex;
+                //     flex-direction: column;
+                //     align-items: center;
+                //
+                //     @media (min-width: $mobile) {
+                //         align-items: flex-start;
+                //         margin-left: 20px;
+                //     }
+                // }
 
                 .candidate-photo {
                     margin-bottom: 10px;
@@ -393,7 +395,7 @@
     .box__content {
         width: 100%;
 
-        .candidate-name {
+        .candidate-pool {
             font-weight: normal;
         }
     }
