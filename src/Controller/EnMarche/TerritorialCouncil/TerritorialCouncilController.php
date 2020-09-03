@@ -75,6 +75,7 @@ class TerritorialCouncilController extends Controller
 
         return $this->render('territorial_council/candidacy_list.html.twig', [
             'candidacies' => $repository->findAllConfirmedForElection($election),
+            'election' => $election,
         ]);
     }
 
