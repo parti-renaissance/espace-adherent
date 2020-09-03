@@ -29,7 +29,7 @@ class AdherentCommitmentType extends AbstractType
                 'label' => false,
                 'choices' => AdherentCommitmentEnum::IDEAS_ACTIONS,
                 'choice_label' => function ($choice) {
-                    return 'adherent_commitment.mdebateAndProposeIdeasActions.'.$choice;
+                    return 'adherent_commitment.debateAndProposeIdeasActions.'.$choice;
                 },
             ])
             ->add('actForTerritoryActions', ChoiceType::class, [
@@ -63,6 +63,8 @@ class AdherentCommitmentType extends AbstractType
                 'multiple' => false,
                 'expanded' => true,
                 'label' => false,
+                'required' => false,
+                'placeholder' => null,
                 'choices' => AdherentCommitmentEnum::AVAILABILITIES,
                 'choice_label' => function ($choice) {
                     return 'adherent_commitment.availability.'.$choice;
