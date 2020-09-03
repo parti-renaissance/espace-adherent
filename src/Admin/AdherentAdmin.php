@@ -352,6 +352,17 @@ class AdherentAdmin extends AbstractAdmin
                     ],
                 ])
             ->end()
+            ->with('Identité de l\'élu', [
+                'class' => 'col-md-6',
+                'description' => 'adherent.admin.elected_representative.description',
+                'box_class' => 'box box-success',
+            ])
+                ->add('electedRepresentative', TextType::class, [
+                    'label' => false,
+                    'required' => false,
+                    'mapped' => false,
+                ])
+            ->end()
             ->with('Responsabilités locales', ['class' => 'col-md-6'])
                 ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
                     'label' => 'coordinator.label.codes.committee',
@@ -452,17 +463,6 @@ HELP
                     'class' => Role::class,
                     'mapped' => false,
                     'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
-                ])
-            ->end()
-            ->with('Identité de l\'élu', [
-                'class' => 'col-md-6',
-                'description' => 'adherent.admin.elected_representative.description',
-                'box_class' => 'box box-success',
-            ])
-                ->add('electedRepresentative', TextType::class, [
-                    'label' => false,
-                    'required' => false,
-                    'mapped' => false,
                 ])
             ->end()
             ->with('Zone expérimentale 🚧', [

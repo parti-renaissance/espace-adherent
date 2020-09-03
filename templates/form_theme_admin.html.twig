@@ -564,19 +564,14 @@
                 Labels
             </label>
             <div class="sonata-ba-field sonata-ba-field-standard-natural">
-                <div class="select2-container select2-container-multi" style="width: 100%;">
-                    <ul class="select2-choices">
-                        {% if adherent.hasTerritorialCouncilMembership %}
-                            <li class="elected-representative-label label-danger">
-                                <div>Conseil Territorial</div>
-                            </li>
-                        {% endif %}
-                        {% if adherent.isLre %}
-                            <li class="elected-representative-label label-default">
-                                <div>LRE</div>
-                            </li>
-                        {% endif %}
-                    </ul>
+                <div style="width: 100%;">
+                    {% for listDefinition in elected_representative.userListDefinitions %}
+                        <span class="elected-representative-label" style="{{ listDefinition.color ? 'background-color: '~listDefinition.color  : 'color: #333;' }}">
+                            {{ listDefinition.label }}
+                        </span>
+                    {% else %}
+                        <span>Aucun label</span>
+                    {% endfor %}
                 </div>
             </div>
         </div>
