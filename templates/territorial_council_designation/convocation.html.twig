@@ -121,7 +121,7 @@
                 {{ form_label(form.voteStartDate, 'Début du vote', {label_attr: {class: 'em-form__label'}}) }}
                 {{ form_errors(form.voteStartDate) }}
                 <p class="em-form__legend">
-                    La date de début du vote est celle de début de votre Conseil territorial.
+                    Le vote doit débuter le même jour que le Conseil territorial
                 </p>
                 {{ form_widget(form.voteStartDate) }}
             </div>
@@ -222,13 +222,6 @@
                 drag_drop: false,
                 max: 5,
             });
-
-            var dateElement = dom('#{{ form.meetingStartDate.vars.id }}');
-            on(dateElement, 'change', function(event) {
-                dom('#{{ form.voteStartDate.vars.id }}').value = event.target.value;
-            });
-
-            dateElement.dispatchEvent(new Event('change'));
         });
     </script>
 {% endblock %}
