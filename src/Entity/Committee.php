@@ -522,10 +522,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function getActiveAdherentMandates(): Collection
     {
-        if (0 === $this->adherentMandates->count()) {
-            return $this->adherentMandates;
-        }
-
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('finishAt', null))
         ;

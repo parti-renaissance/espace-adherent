@@ -2,11 +2,11 @@
 
 {% import _self as list_host %}
 
-{% macro dislay_host_line(host) %}
+{% macro dislay_host_line(host, displayGender = false) %}
     <li>
         <a href="{{ path('admin_app_adherent_show', { id: host.id }) }}">
             {{ host.fullName }}
-        </a>
+        </a> {% if displayGender %} ({{ host.genderName|trans|lower }}) {% endif %}
         <br />
         {{ host.emailAddress }}
         {% if host.phone %}
@@ -22,6 +22,14 @@
         <ul>
             {{ list_host.dislay_host_line(object.hosts.get(0)) }}
         </ul>
+        {% if object.activeAdherentMandates|length > 0 %}
+            <p>Adhérent(s) désigné(s) :</p>
+            <ul>
+                {% for mandate in object.activeAdherentMandates %}
+                    {{ list_host.dislay_host_line(mandate.adherent, true) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% if object.hosts|length > 1 %}
             <p>Co-Animateur{{ object.hosts|length > 2 ? 's' }}:</p>
             <ul>
