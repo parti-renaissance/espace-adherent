@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @Route("/territorialcouncil")
@@ -20,12 +19,10 @@ use Symfony\Component\Translation\TranslatorInterface;
 class AdminTerritorialCouncilController extends Controller
 {
     private $politicalCommitteeManager;
-    private $translator;
 
-    public function __construct(PoliticalCommitteeManager $politicalCommitteeManager, TranslatorInterface $translator)
+    public function __construct(PoliticalCommitteeManager $politicalCommitteeManager)
     {
         $this->politicalCommitteeManager = $politicalCommitteeManager;
-        $this->translator = $translator;
     }
 
     /**
