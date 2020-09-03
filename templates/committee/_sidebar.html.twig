@@ -14,7 +14,7 @@
             {% for host in committee_hosts %}
                 <li class="committee-host text--body b__nudge--bottom">
                     <div class="avatar-initials avatar--small avatar--style-01">
-                        {{host.initials}}
+                        {{ host.initials }}
                     </div>
                     <div class="b__nudge--left-medium">
                         <div class="text--body text--bold">{{ has_role_adherent ? host.fullName : host.partialName }}</div>
@@ -31,6 +31,26 @@
                 </li>
             {% endfor %}
         </ul>
+
+        {% if committee.activeAdherentMandates|length > 0 %}
+            <h5>
+                Représentation
+            </h5>
+            <ul class="committee__hosts">
+                {% for mandate in committee.activeAdherentMandates %}
+                    {% set adherent = mandate.adherent %}
+                    <li class="committee-designed-adherents text--body b__nudge--bottom">
+                        <div class="avatar-initials avatar--small avatar--style-01">
+                            {{ adherent.initials }}
+                        </div>
+                        <div class="b__nudge--left-medium">
+                            <div class="text--body text--bold">{{ has_role_adherent ? adherent.fullName : adherent.partialName }}</div>
+                            <span class="text--normal text--gray b__nudge--bottom">{{ adherent.isFemale ? 'Adhérente désignée' : 'Adhérent désigné' }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 
     {% if committee.socialNetworksLinks|length > 0 %}

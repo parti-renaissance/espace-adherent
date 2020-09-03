@@ -208,6 +208,10 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
             ['FB', 'Francis B.', 'animateur'],
             ['JP', 'Jacques P.', 'co-animateur'],
         ], false);
+        $this->assertSeeDesignedAdherents($crawler, [
+            ['LO', 'Lucie O.', 'Adhérente désignée'],
+            ['JP', 'Jacques P.', 'Adhérent désigné'],
+        ]);
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
             ['Jacques P.', 'co-animateur', 'Connectez-vous'],
@@ -287,6 +291,11 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
             ['JP', 'Jacques Picard', 'animateur'],
             ['GB', 'Gisele Berthoux', 'co-animateur'],
         ]);
+        $this->assertSeeDesignedAdherents($crawler, [
+            ['GB', 'Gisele Berthoux', 'Adhérente désignée'],
+            ['CM', 'Carl Mirabeau', 'Adhérent désigné'],
+        ]);
+
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The adherent should not see the "register link"');
         $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
         $this->assertTrue($this->seeFollowLink($crawler), 'The adherent should see the "follow link"');
@@ -472,6 +481,19 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
             [$initials, $name, $role] = $host;
             $this->assertRegExp(
                 '/^'.preg_quote($initials).'\s+'.preg_quote($name).'\s+'.$role.$contact.'?$/',
+                trim($nodes->eq($position)->text())
+            );
+        }
+    }
+
+    private function assertSeeDesignedAdherents(Crawler $crawler, array $adherents): void
+    {
+        $this->assertCount(\count($adherents), $nodes = $crawler->filter('.committee-designed-adherents'));
+
+        foreach ($adherents as $position => $adherent) {
+            [$initials, $name, $role] = $adherent;
+            $this->assertRegExp(
+                '/^'.preg_quote($initials).'\s+'.preg_quote($name).'\s+'.$role.'?$/',
                 trim($nodes->eq($position)->text())
             );
         }
