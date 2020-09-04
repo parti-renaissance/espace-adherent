@@ -208,13 +208,39 @@
             }
 
             .box__content {
-                .candidate-infos {
-                    width: 100%;
+                .pool-name {
+                    font-weight: normal;
+                }
+
+                .candidate-names {
+                    margin: 30px 0;
+
+                    li {
+                        position: relative;
+                        padding-left: 18px;
+                        font-size: 18px;
+                        margin: 10px 0;
+
+                        &::before {
+                            content: '';
+                            display: block;
+                            width: 8px;
+                            height: 8px;
+                            border-radius: 50%;
+                            position: absolute;
+                            left: 0;
+                            top: 10px;
+                        }
+                    }
                 }
 
                 .candidate-photo {
-                    margin-right: 20px;
-                    min-width: 66px;
+                    border: 3px solid $white;
+                    box-sizing: border-box;
+
+                    &:not(:first-child) {
+                        margin-left: -10px;
+                    }
                 }
             }
         }
@@ -401,10 +427,14 @@
     &.voting-platform-theme {
         &__copol {
             .candidate-names li::before { background-color: $green--territory; }
+            .election-results .candidate__box.elected { border: solid 3px $green--territory; }
+            .election-results .progress-bar__gauge .slider { background: $green--territory; }
         }
 
-        &__committee {
+        &__committee_adherent {
             .candidate-names li::before { background-color: $blue; }
+            .election-results .candidate__box.elected { border: solid 3px $blue; }
+            .election-results .progress-bar__gauge .slider { background: $blue; }
         }
     }
 }
