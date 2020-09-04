@@ -91,10 +91,15 @@ class VoteCommand
         return $this->choicesByPools;
     }
 
+    public function getChoiceForPool(ElectionPool $pool): ?string
+    {
+        return $this->choicesByPools[$pool->getId()] ?? null;
+    }
+
     /**
      * @param ElectionPool[] $pools
      */
-    public function updateForCurrentPool(array $pools): ?ElectionPool
+    public function updateForCurrentPool(array $pools, ElectionPool $selectedPool = null): ?ElectionPool
     {
         if (0 === \count($this->choicesByPools)) {
             return current($pools);
@@ -104,6 +109,10 @@ class VoteCommand
             if (!isset($this->choicesByPools[$pool->getId()])) {
                 return $pool;
             }
+        }
+
+        if ($selectedPool) {
+            $pool = $selectedPool;
         }
 
         // update selected candidate for current pool

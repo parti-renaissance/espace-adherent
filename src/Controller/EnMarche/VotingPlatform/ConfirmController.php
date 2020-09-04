@@ -36,6 +36,7 @@ class ConfirmController extends AbstractController
         return $this->renderElectionTemplate('voting_platform/confirmation.html.twig', $election, [
             'form' => $form->createView(),
             'vote_command' => $voteCommand,
+            'pools' => $election->getCurrentRound()->getElectionPools(),
             'candidate_groups' => $this->candidateGroupRepository->findByUuids($voteCommand->getCandidateGroupUuids()),
         ]);
     }
