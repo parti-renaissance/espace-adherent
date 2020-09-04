@@ -94,6 +94,11 @@ class Election
         $this->electionPools = new ArrayCollection();
         $this->electionEntity = $entity;
 
+        if ($entity) {
+            $entity->setElection($this);
+        }
+
+
         foreach ($rounds as $round) {
             $this->addElectionRound($round);
         }
