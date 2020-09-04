@@ -25,7 +25,13 @@ class VoteController extends AbstractController
         $this->processor->doVote($voteCommand);
 
         $pools = $election->getCurrentRound()->getElectionPools();
-        $currentPool = $voteCommand->updateForCurrentPool($pools);
+
+        $currentPool = null;
+        if (($step = $request->query->getInt('s')) && isset($pools[$step - 1])) {
+            $currentPool = $pools[$step - 1];
+        }
+
+        $currentPool = $voteCommand->updateForCurrentPool($pools, $currentPool);
 
         $form = $this
             ->createForm(
@@ -39,7 +45,7 @@ class VoteController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->get('back')->isClicked()) {
                 // If `back` button was clicked, then need to redirect on the index page if 0 or 1 pool was already voted
-                if (\count($voteCommand->getChoicesByPools()) < 1) {
+                if (0 === array_search($currentPool, $pools)) {
                     return $this->redirectToElectionRoute('app_voting_platform_index', $election);
                 }
 

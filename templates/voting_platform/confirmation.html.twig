@@ -13,7 +13,9 @@
 
 {% block voting_platform_content %}
     <div class="l__wrapper--narrow">
-        {% for vote_choice in vote_command.choicesByPools %}
+        {% for pool in pools %}
+            {% set vote_choice = vote_command.getChoiceForPool(pool) %}
+
             <div class="ballot-paper-container">
                 <div class="ballot-paper">
                     <div class="ballot-paper__area">
@@ -30,7 +32,8 @@
                                     <h3 class="text--medium">Bulletin blanc</h3>
                                 {% endif %}
                             </div>
-                            <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="text--body text--center link--no-decor link--blue--dark">
+
+                            <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="text--body text--center link--no-decor link--blue--dark">
                                 Modifier mon choix
                             </a>
                         </div>
