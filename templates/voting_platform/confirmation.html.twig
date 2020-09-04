@@ -13,34 +13,30 @@
 
 {% block voting_platform_content %}
     <div class="l__wrapper--narrow">
-        {% for pool in pools %}
-            {% set vote_choice = vote_command.getChoiceForPool(pool) %}
-
-            <div class="ballot-paper-container">
+        <div class="ballot-paper-container">
+            {% for pool in pools %}
+                {% set vote_choice = vote_command.getChoiceForPool(pool) %}
                 <div class="ballot-paper">
-                    <div class="ballot-paper__area">
-                        <div class="ballot-paper__content l__col">
-                            <div class="l__row l__row--center b__nudge--bottom-small">
-                                {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
-
-                                {% if candidate_group %}
-                                    {% for candidate in candidate_group.candidates %}
-                                        <h3 class="text--medium">{{ candidate.fullName }}</h3>
-                                        <span class="candidate-gender l__col l__col--center">{{ candidate.isMan ? 'H' : 'F' }}</span>
-                                    {% endfor %}
-                                {% else %}
-                                    <h3 class="text--medium">Bulletin blanc</h3>
-                                {% endif %}
-                            </div>
-
-                            <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="text--body text--center link--no-decor link--blue--dark">
-                                Modifier mon choix
-                            </a>
+                    <div class="ballot-paper__content text--center">
+                        <div class="b__nudge--bottom-small">
+                            {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
+                            {% if candidate_group %}
+                                {% for candidate in candidate_group.candidates %}
+                                <div class="b__nudge--bottom-small">
+                                    <h3 class="text--medium">{{ candidate.fullName }}<span class="candidate-gender l__col l__col--center">{{ candidate.isMan ? 'H' : 'F' }}</span></h3>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <h3 class="text--medium">Bulletin blanc</h3>
+                            {% endif %}
                         </div>
+                        <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="text--body text--center link--no-decor link--blue--dark">
+                            Modifier mon choix
+                        </a>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 
     {{ form_start(form) }}

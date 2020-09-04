@@ -1,47 +1,56 @@
 {% import 'voting_platform/_macros.html.twig' as helper %}
 
-<div class="candidate__box l__row b__nudge--bottom-medium">
+<div class="candidate__box l__row l__row--v-stretch b__nudge--bottom-medium">
     {{ form_widget(form) }}
     {{ form_label(form, ' ') }}
 
     <div class="box__content">
         {% if candidate_group %}
-            {% for candidate in candidate_group.candidates %}
-                <div class="candidate-photo avatar-initials avatar--large avatar--style-01">
-                    {{ helper.display_candidate_photo(candidate) }}
+            <ul class="candidate-names">
+                {% for candidate in candidate_group.candidates %}
+                    <li class="text--body">{{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isMan ? 'H' : 'F' }}</span></li>
+                {% endfor %}
+            </ul>
+            <div class="candidate-footer l__row l__row--h-stretch">
+                <div class="left l__row">
+                    {% for candidate in candidate_group.candidates %}
+                        <div class="candidate-photo avatar-initials avatar--small avatar--style-01">
+                            {{ helper.display_candidate_photo(candidate) }}
+                        </div>
+                    {% endfor %}
                 </div>
+                <div class="right">
+                    {% set candidacies_with_bio = candidate_group.candidates|filter(candidacy => candidacy.hasBiography) %}
 
-                <div class="candidate-infos">
-                    <h3 class="candidate-name text--medium b__nudge--bottom-tiny">{{ candidate.fullName }}</h3>
-                    <div class="candidate-biography">
-                        {% if candidate.hasBiography %}
+                    {% if candidacies_with_bio|length > 0 %}
+                        <div class="candidate-biography">
                             <a href="#" class="text--body link--no-decor text--blue--dark b__nudge--none em-modal--trigger"
-                              data-confirm-content-element="#candidate-biography-content-{{ candidate.uuid.toString|slice(0, 8) }}"
-                            >Lire la présentation</a>
+                               data-confirm-content-element="#candidate-biography-content-{{ candidate_group.uuid }}"
+                            >Voir la candidature</a>
 
-                            <div id="candidate-biography-content-{{ candidate.uuid.toString|slice(0, 8) }}" class="hidden">
-                                <h3 class="text--muted text--uppercase b__nudge--bottom">Présentation</h3>
+                            <div id="candidate-biography-content-{{ candidate_group.uuid }}" class="hidden">
+                                {% for candidate in candidacies_with_bio %}
+                                    <h3 class="text--muted text--uppercase b__nudge--bottom">Présentation</h3>
 
-                                <h2 class="text--medium-large b__nudge--bottom-larger">{{ candidate.fullName }}</h2>
+                                    <h2 class="text--medium-large b__nudge--bottom-larger">{{ candidate.fullName }}</h2>
 
-                                <p class="text--body text--dark">{{ candidate.biography }}</p>
+                                    <p class="text--body text--dark">{{ candidate.biography }}</p>
 
-                                {% if candidate.faithStatement %}
-                                    <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
+                                    {% if loop.last and candidate.faithStatement %}
+                                        <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                                    <p class="text--body text--dark">{{ candidate.faithStatement }}</p>
-                                {% endif %}
+                                        <p class="text--body text--dark">{{ candidate.faithStatement }}</p>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
-                        {% else %}
-                            <span class="text--body text--muted b__nudge--none">Présentation indisponible</span>
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% else %}
+                        <span class="text--body text--muted b__nudge--none">Présentation indisponible</span>
+                    {% endif %}
                 </div>
-            {% endfor %}
-        {% else %}
-            <div class="candidate-infos">
-                <h3 class="candidate-name text--medium b__nudge--bottom-tiny">Bulletin blanc</h3>
             </div>
+        {% else %}
+            <h3 class="candidate-pool text--medium b__nudge--bottom-tiny">Bulletin blanc</h3>
         {% endif %}
     </div>
 </div>
