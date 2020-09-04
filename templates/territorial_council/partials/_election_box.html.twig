@@ -25,6 +25,8 @@
         {% endif %}
     </p>
 
+    <hr/>
+
     <div class="text--body l__row l__row--wrap">
         {% if election.isCandidacyPeriodActive %}
             {% if able_to_candidate %}
@@ -32,7 +34,6 @@
                     {% set with_two_rows = true %}
 
                     {% if candidacy.isConfirmed %}
-                        <hr/>
                         {% if candidacy.binome %}
                             <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
                                 <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
@@ -48,8 +49,6 @@
 
                         <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Modifier ma demande de binôme</span>
                     {% elseif candidacy.hasPendingInvitation %}
-                        <hr/>
-
                         <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
                             <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" />
                             {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
@@ -84,7 +83,7 @@
                     {% endif %}
                 {% endif %}
             {% else %}
-                <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Je choisis un binôme</span>
+                <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Je candidate en binôme</span>
             {% endif %}
         {% elseif not election.isVotePeriodStarted %}
             <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ election.voteStartDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
@@ -138,8 +137,12 @@
                         {% endif %}
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
-                    <p class="text--small text--dark instance__elections-box--text">Consulter les
-                        <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
+                    <p class="text--small text--dark instance__elections-box--text">
+                        {% if voting_platform_election.getElectionResult %}
+                            Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
+                        {% else %}
+                            Le dépouillement est en cours, encore quelques secondes !
+                        {% endif %}
                     </p>
                 {% endif %}
             {% endif %}

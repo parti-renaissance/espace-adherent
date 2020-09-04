@@ -150,8 +150,12 @@
                         {% endif %}
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
-                    <p class="text--small text--dark instance__elections-box--text">Consulter les
-                        <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
+                    <p class="text--small text--dark instance__elections-box--text">
+                        {% if voting_platform_election.getElectionResult %}
+                            Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
+                        {% else %}
+                            Le dépouillement est en cours, encore quelques secondes !
+                        {% endif %}
                     </p>
                 {% endif %}
             {% endif %}
