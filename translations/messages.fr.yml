@@ -910,6 +910,12 @@ territorial_council.members_count: '1 membre|%count% membres'
 territorial_council.adherent_has_no_membership: L'adhérent ({{ email }}) n'est pas un membre du Conseil territorial "{{ territorialCouncil }}"
 
 #
+# TerritorialCouncilMembershipLog
+#
+territorial_council_membership_log.is_resolved: Ce log est déjà résolu.
+territorial_council_membership_log.is_not_resolved: Ce log n'est pas encore résolu.
+
+#
 # Political committee
 #
 political_committee.membership.adherent_has_already: L'adhérent ({{ email }}) est déjà un membre du Comité politique "{{ politicalCommittee }}"

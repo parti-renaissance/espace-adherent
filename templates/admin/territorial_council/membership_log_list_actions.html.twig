@@ -15,5 +15,15 @@
                 Fiche élu
             </a>
         {% endif %}
+
+        {% set token = csrf_token('territorial_council_membership_log.resolve.' ~ object.id) %}
+        {% set status = object.isResolved
+            ? constant('App\\Controller\\Admin\\AdminTerritorialCouncilMembershipLogController::STATUS_UNRESOLVED')
+            : constant('App\\Controller\\Admin\\AdminTerritorialCouncilMembershipLogController::STATUS_RESOLVED')
+        %}
+        <a href="{{ path('app_admin_territorial_council_membership_log_resolve', { membershipLog: object.id, status: status, token: token }) }}" class="btn btn-xs btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            {{ object.isResolved ? 'Mettre en non résolu' : 'Mettre en résolu' }}
+        </a>
     </div>
 {% endblock %}
