@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\CommitteeElection;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -117,14 +118,10 @@ class VotingPlatformConfigureCommand extends Command
 
                 $this->io->progressAdvance();
 
-                $election = new Election(
-                    $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
-                    null,
-                    [new ElectionRound()]
-                );
-                $election->setElectionEntity(new ElectionEntity($committee));
+                $election = $this->createNewElection($designation);
+                $election->getElectionEntity()->setCommittee($committee);
 
-                $this->configureNewElectionForCommittee($election, $designation);
+                $this->configureNewElectionForCommittee($election);
             }
 
             $this->entityManager->clear();
@@ -153,14 +150,10 @@ class VotingPlatformConfigureCommand extends Command
 
                 $this->io->progressAdvance();
 
-                $election = new Election(
-                    $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
-                    null,
-                    [new ElectionRound()]
-                );
-                $election->setElectionEntity(new ElectionEntity(null, $coTerr));
+                $election = $election = $this->createNewElection($designation);
+                $election->getElectionEntity()->setTerritorialCouncil($coTerr);
 
-                $this->configureNewElectionForTerritorialCouncil($election, $designation, $coTerrElection);
+                $this->configureNewElectionForTerritorialCouncil($election, $coTerrElection);
             }
 
             $this->entityManager->clear();
@@ -173,7 +166,6 @@ class VotingPlatformConfigureCommand extends Command
 
     private function configureNewElectionForTerritorialCouncil(
         Election $election,
-        Designation $designation,
         TerritorialCouncilElection $coTerrElection
     ): void {
         $electionRound = $election->getCurrentRound();
@@ -234,24 +226,19 @@ class VotingPlatformConfigureCommand extends Command
             }
         }
 
-        $list = new VotersList($election);
-
-        $adherents = [];
-
-        foreach ($coTerr->getMemberships() as $membership) {
-            $adherents[] = $adherent = $membership->getAdherent();
-
-            $list->addVoter($this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent));
-        }
+        $list = $this->createVoterList(
+            $election,
+            array_map(function (TerritorialCouncilMembership $membership) { return $membership->getAdherent(); }, $coTerr->getMemberships()->toArray())
+        );
 
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election, $adherents));
+        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election));
     }
 
-    private function configureNewElectionForCommittee(Election $election, Designation $designation): void
+    private function configureNewElectionForCommittee(Election $election): void
     {
         $electionRound = $election->getCurrentRound();
         $committee = $election->getElectionEntity()->getCommittee();
@@ -295,21 +282,16 @@ class VotingPlatformConfigureCommand extends Command
 
         $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
 
-        $list = new VotersList($election);
-
-        $adherents = [];
-
-        foreach ($memberships as $membership) {
-            $adherents[] = $adherent = $membership->getAdherent();
-
-            $list->addVoter($this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent));
-        }
+        $list = $this->createVoterList(
+            $election,
+            array_map(function (TerritorialCouncilMembership $membership) { return $membership->getAdherent(); }, $memberships)
+        );
 
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election, $adherents));
+        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election));
     }
 
     private function isValidCommitteeElection(CommitteeElection $committeeElection, Designation $designation): bool
@@ -337,6 +319,27 @@ class VotingPlatformConfigureCommand extends Command
         }
 
         return true;
+    }
+
+    private function createNewElection(Designation $designation): Election
+    {
+        return new Election(
+            $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
+            null,
+            [new ElectionRound()],
+            new ElectionEntity()
+        );
+    }
+
+    private function createVoterList(Election $election, array $adherents): VotersList
+    {
+        $list = new VotersList($election);
+
+        foreach ($adherents as $adherent) {
+            $list->addVoter($this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent));
+        }
+
+        return $list;
     }
 
     private function isValidTerritorialCouncilElection(TerritorialCouncilElection $coTerrElection): bool

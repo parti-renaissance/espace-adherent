@@ -72,6 +72,22 @@ class VoterRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Voter[]
+     */
+    public function findForElection(Election $election, bool $partial = false): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->addSelect($partial ? 'PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}' : 'adherent')
+            ->innerJoin('voter.votersLists', 'list')
+            ->innerJoin('voter.adherent', 'adherent')
+            ->where('list.election = :election')
+            ->setParameter('election', $election)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @return Voter[]|array
      */
     public function findVotersToRemindForElection(Election $election): array
