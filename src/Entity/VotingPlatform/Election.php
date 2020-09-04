@@ -98,7 +98,6 @@ class Election
             $entity->setElection($this);
         }
 
-
         foreach ($rounds as $round) {
             $this->addElectionRound($round);
         }
