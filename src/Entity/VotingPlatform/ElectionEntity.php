@@ -66,9 +66,19 @@ class ElectionEntity
         return $this->committee;
     }
 
+    public function setCommittee(Committee $committee): void
+    {
+        $this->committee = $committee;
+    }
+
     public function getTerritorialCouncil(): ?TerritorialCouncil
     {
         return $this->territorialCouncil;
+    }
+
+    public function setTerritorialCouncil(TerritorialCouncil $coTerr): void
+    {
+        $this->territorialCouncil = $coTerr;
     }
 
     public function getName(): string

@@ -7,7 +7,7 @@ use App\Entity\VotingPlatform\Election;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-class VotingPlatformElectionVoteIsOpenMessage extends Message
+class VotingPlatformElectionSecondRoundNotificationMessage extends Message
 {
     /**
      * @param Adherent[] $adherents
@@ -16,15 +16,18 @@ class VotingPlatformElectionVoteIsOpenMessage extends Message
     {
         $first = array_shift($adherents);
 
+        $daysLeft = (int) $election->getDesignation()->getAdditionalRoundDuration();
+
         $message = new self(
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            '[Désignations] La désignation est ouverte !',
+            "[Désignations] Vous avez ${daysLeft} jours pour voter à nouveau.",
             [
-                'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
-                'name' => $election->getElectionEntity()->getName(),
+                'name' => static::escape($election->getElectionEntity()->getName()),
+                'days_left' => $daysLeft,
                 'is_copol' => DesignationTypeEnum::COPOL === $election->getDesignationType(),
+                'second_round_end_date' => static::formatDate($election->getSecondRoundEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'page_url' => $url,
             ],
             [

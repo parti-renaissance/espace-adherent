@@ -4,11 +4,11 @@ namespace App\VotingPlatform\Notifier;
 
 use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
-use App\VotingPlatform\Notifier\Event\CommitteeElectionSecondRoundNotificationEvent;
-use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOverEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteReminderEvent;
 use App\VotingPlatform\Notifier\Event\ElectionNotifyEventInterface;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
+use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOverEvent;
+use App\VotingPlatform\Notifier\Event\VotingPlatformSecondRoundNotificationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NotifierListener implements EventSubscriberInterface
@@ -33,7 +33,7 @@ class NotifierListener implements EventSubscriberInterface
 
     public function onVoteOpen(VotingPlatformElectionVoteIsOpenEvent $event): void
     {
-        $this->notifier->notifyElectionVoteIsOpen($event->getElection(), $event->getAdherents());
+        $this->notifier->notifyElectionVoteIsOpen($event->getElection());
     }
 
     public function onCandidacyPeriodClose(ElectionNotifyEventInterface $event): void
@@ -58,24 +58,13 @@ class NotifierListener implements EventSubscriberInterface
         }
     }
 
-    public function onVoteClose(ElectionNotifyEventInterface $event): void
+    public function onVoteClose(VotingPlatformElectionVoteIsOverEvent $event): void
     {
-        if ($event instanceof CommitteeElectionVoteIsOverEvent) {
-            $this->notifier->notifyCommitteeElectionVoteIsOver(
-                $event->getAdherent(),
-                $event->getCommittee()
-            );
-        }
+        $this->notifier->notifyElectionVoteIsOver($event->getElection());
     }
 
-    public function onVoteSecondRound(ElectionNotifyEventInterface $event): void
+    public function onVoteSecondRound(VotingPlatformSecondRoundNotificationEvent $event): void
     {
-        if ($event instanceof CommitteeElectionSecondRoundNotificationEvent) {
-            $this->notifier->notifyCommitteeElectionSecondRound(
-                $event->getAdherent(),
-                $event->getElection(),
-                $event->getCommittee()
-            );
-        }
+        $this->notifier->notifyElectionSecondRound($event->getElection());
     }
 }

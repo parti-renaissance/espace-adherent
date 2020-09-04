@@ -81,13 +81,18 @@ class Election
      */
     private $electionResult;
 
-    public function __construct(Designation $designation, UuidInterface $uuid = null, array $rounds = [])
-    {
+    public function __construct(
+        Designation $designation,
+        UuidInterface $uuid = null,
+        array $rounds = [],
+        ElectionEntity $entity = null
+    ) {
         $this->designation = $designation;
         $this->uuid = $uuid ?? Uuid::uuid4();
 
         $this->electionRounds = new ArrayCollection();
         $this->electionPools = new ArrayCollection();
+        $this->electionEntity = $entity;
 
         foreach ($rounds as $round) {
             $this->addElectionRound($round);

@@ -7,7 +7,7 @@ use App\Entity\VotingPlatform\Election;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-class VotingPlatformElectionVoteIsOpenMessage extends Message
+class VotingPlatformElectionVoteIsOverMessage extends Message
 {
     /**
      * @param Adherent[] $adherents
@@ -20,10 +20,9 @@ class VotingPlatformElectionVoteIsOpenMessage extends Message
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            '[Désignations] La désignation est ouverte !',
+            '[Désignations] Les résultats sont disponibles',
             [
-                'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
-                'name' => $election->getElectionEntity()->getName(),
+                'name' => static::escape($election->getElectionEntity()->getName()),
                 'is_copol' => DesignationTypeEnum::COPOL === $election->getDesignationType(),
                 'page_url' => $url,
             ],

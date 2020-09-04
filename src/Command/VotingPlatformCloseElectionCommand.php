@@ -12,7 +12,8 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\ResultCalculator;
 use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
-use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteIsOverEvent;
+use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOverEvent;
+use App\VotingPlatform\Notifier\Event\VotingPlatformSecondRoundNotificationEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,6 +41,8 @@ class VotingPlatformCloseElectionCommand extends Command
     private $dispatcher;
     /** @var ResultCalculator */
     private $resultManager;
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
 
     protected function configure()
     {
@@ -86,15 +89,20 @@ class VotingPlatformCloseElectionCommand extends Command
         if ($election->isOpen()) {
             if ($election->canClose()) {
                 $election->close();
+
+                $this->entityManager->flush();
+
+                $this->eventDispatcher->dispatch(Events::VOTE_CLOSE, new VotingPlatformElectionVoteIsOverEvent($election));
             } else {
                 $election->startSecondRound($electionResult->getNotElectedPools($election->getCurrentRound()));
+
+                $this->entityManager->flush();
+
+                $this->eventDispatcher->dispatch(Events::VOTE_SECOND_ROUND, new VotingPlatformSecondRoundNotificationEvent($election));
             }
-
-            $this->entityManager->flush();
-
-            $this->notifyEndOfElectionRound($election);
         }
 
+        // Persist results
         $this->entityManager->flush();
     }
 
@@ -140,21 +148,6 @@ class VotingPlatformCloseElectionCommand extends Command
         }
     }
 
-    private function notifyEndOfElectionRound(Election $election): void
-    {
-        if ($committee = $election->getElectionEntity()->getCommittee()) {
-            $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
-
-            foreach ($memberships as $membership) {
-                $this->dispatcher->dispatch(Events::VOTE_CLOSE, new CommitteeElectionVoteIsOverEvent(
-                    $membership->getAdherent(),
-                    $election->getDesignation(),
-                    $committee
-                ));
-            }
-        }
-    }
-
     /** @required */
     public function setElectionRepository(ElectionRepository $electionRepository): void
     {
@@ -195,5 +188,11 @@ class VotingPlatformCloseElectionCommand extends Command
     public function setResultManager(ResultCalculator $resultManager): void
     {
         $this->resultManager = $resultManager;
+    }
+
+    /** @required */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }
