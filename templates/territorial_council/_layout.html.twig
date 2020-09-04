@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block page_title 'Conseil territorial' %}
+
 {% set membership = app.user.territorialCouncilMembership %}
 {% set territorial_council = membership.territorialCouncil %}
 {% set candidacy = territorial_council.currentElection ? membership.candidacyForElection(territorial_council.currentElection) : null %}

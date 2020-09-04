@@ -87,14 +87,7 @@
                                                 <th class="space--10-0">N° anonyme</th>
 
                                                 {% for pool_result in election_round_result.getElectionPoolResults %}
-                                                    <th class="space--10-0">
-                                                        Bulletin
-                                                        {% if pool_result.electionPool.title in ['Femme', 'Homme'] %}
-                                                            <span class="candidate-gender l__col l__col--center">{{ pool_result.electionPool.title == 'Femme' ? 'F' : 'H' }}</span>
-                                                        {% else %}
-                                                            {{ pool_result.electionPool.title }}
-                                                        {% endif %}
-                                                    </th>
+                                                    <th class="space--10-0">{{ pool_result.electionPool.title }}</th>
                                                 {% endfor %}
                                             </tr>
                                         </thead>
@@ -110,7 +103,12 @@
                                                                 {% if vote_choice.isBlank %}
                                                                     ~
                                                                 {% else %}
-                                                                    {{ (vote_choice.candidateGroup.candidates|first).fullName }}
+                                                                    {% for candidate in vote_choice.candidateGroup.candidates|sort((a, b) => a.isMan <=> b.isMan) %}
+                                                                        {{ candidate.fullName }}
+                                                                        {% if loop.length > 1 %}
+                                                                            <br/>
+                                                                        {% endif %}
+                                                                    {% endfor %}
                                                                 {% endif %}
                                                             {% endfor %}
                                                         </td>

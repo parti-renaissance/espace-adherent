@@ -26,6 +26,25 @@
 
                     <h2>Que se passe-t-il lors d’une égalité parfaite ?</h2>
                     <p>Dans le cas où deux candidats ont exactement le même nombre de suffrages, la désignation est relancée pour 5 jours avec les mêmes candidats et les adhérents inscrits sont invités à voter de nouveau.</p>
+                {% elseif election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COPOL') %}
+                    <p>Vous allez participer à la désignation des binômes paritaires pour le Comité politique. C’est un grand temps fort de démocratie interne pour notre mouvement et une étape importante pour la représentativité des adhérents, animateurs et élus au sein du Comité politique.</p>
+
+                    <h2>Comment se déroule le vote ?</h2>
+                    <p>La désignation des 5 binômes est paritaire, vous allez choisir un binôme paritaire qui siège au Conseil territorial par qualité : les adhérents désignés, les animateurs, les élus municipaux, les élus départementaux et élus régionaux.</p>
+                    <p>Pour les conseillers départementaux et régionaux, s’il n’y a qu’une candidature (un homme ou une femme), vous n’aurez à vous prononcer que sur celle-ci. Pour rappel, à titre dérogatoire et provisoire jusqu'aux prochaines élections, s’il n’y avait qu’un homme ou une femme, ils pouvaient se présenter de façon individuelle.</p>
+                    <p>La désignation se fait par scrutin majoritaire à un tour. Le binôme par qualité ayant obtenu le plus de suffrages est automatiquement désigné à l’annonce des résultats. Il n’y a pas de second tour.</p>
+
+                    <h2>Mon choix est-il anonyme ?</h2>
+                    <p>Ici, vous êtes comme dans l’isoloir. Votre choix ne sera connu que de vous seul. Lors de votre vote, vous recevrez un numéro anonymisé qui vous permettra de retrouver votre choix lors de l’affichage des résultats dans l’espace de Conseil territorial.</p>
+
+                    <h2>Quand et comment seront affichés les résultats ?</h2>
+                    <p>A la fin de la période de vote de votre territoire, vous recevrez un mail avec l’annonce des résultats. Ces informations seront également disponibles dans l’espace de votre Conseil territorial.</p>
+
+                    <h2>Que se passe-t-il en cas d'égalité ?</h2>
+                    <p>En cas d’égalité entre plusieurs binômes de candidats qui ont la même qualité, les membres du Conseil territorial sont invités à voter de nouveau pour une période de 3 jours avec les mêmes candidatures de binômes paritaires.</p>
+
+                    <h2>Pour les territoires avec un nombre de membres supplémentaires voté par le Conseil territorial pour respecter la règle de parité au sein du Comité politique :</h2>
+                    <p>A l’issue du vote des 5 binômes paritaires pour le Comité politique, seront élus individuellement (le(s) femme(s) ou le(es)’hommes(s)) figurant dans les binômes ayant obtenu le plus de voix en valeur absolue, tous types de binômes confondus, à la suite des binômes paritaires élus.</p>
                 {% endif %}
             </div>
 
