@@ -175,11 +175,6 @@
                             top: 10px;
                         }
                     }
-
-                    .candidate-gender {
-                        display: inline-flex;
-                        vertical-align: middle;
-                    }
                 }
 
                 .candidate-footer {
@@ -266,6 +261,15 @@
         position: relative;
         width: 100%;
         max-width: 420px;
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 70px;
+        box-sizing: border-box;
+
+        background-color: $white;
+        box-shadow: 0 30px 40px 0 rgba(0, 0, 0, 0.12);
 
         &:first-child {
             margin: 0 auto 30px;
@@ -278,7 +282,7 @@
             }
         }
 
-        &:nth-child(2) {
+        &:nth-child(even) {
             margin: 0 auto;
             z-index: 3;
 
@@ -286,29 +290,17 @@
                 margin-left: auto;
                 margin-right: initial;
                 margin-top: -200px;
+                margin-bottom: 50px;
             }
-        }
-
-        &__area {
-            padding-bottom: 66.67%;
-            position: relative;
-            background-color: $white;
-            box-shadow: 0 30px 40px 0 rgba(0, 0, 0, 0.12);
-        }
-
-        &__content {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            margin: auto;
         }
 
         h3 {
             display: inline-block;
             font-weight: normal;
-            margin-right: 8px;
+        }
+
+        .candidate-gender {
+            margin-left: 4px;
         }
     }
 

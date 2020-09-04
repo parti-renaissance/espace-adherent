@@ -110,6 +110,8 @@
 }
 
 .candidate-gender {
+    display: inline-flex;
+    vertical-align: middle;
     color: $neutral-grey;
     font-size: 10px;
     font-family: $font-roboto;
