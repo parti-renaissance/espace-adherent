@@ -19,6 +19,9 @@
                 <div class="ballot-paper">
                     <div class="ballot-paper__content text--center">
                         <div class="b__nudge--bottom-small">
+                            <div class="text--uppercase text--gray b__nudge--bottom">
+                                {{ pool.title }}
+                            </div>
                             {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
                             {% if candidate_group %}
                                 {% for candidate in candidate_group.candidates %}
