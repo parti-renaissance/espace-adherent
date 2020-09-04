@@ -48,7 +48,7 @@ class AbstractMessageControllerTest extends WebTestCase
 
         self::assertEquals('http://test.enmarche.code/espace-depute/messagerie', $crawler->getUri());
         self::assertEquals(0, $crawler->filter('.datagrid__table-manager tbody tr td span.status__2')->count());
-        self::assertContains('Vous êtes collaborateur parlementaire du député Député CHLI FDESIX', $crawler->filter('main .second-section p')->text());
+        self::assertContains('Vous êtes responsable communication du député Député CHLI FDESIX', $crawler->filter('main .second-section p')->text());
 
         $crawler = $this->client->request('GET', '/espace-depute/messagerie/creer');
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer le brouillon')->form(['adherent_message' => [
@@ -67,7 +67,7 @@ class AbstractMessageControllerTest extends WebTestCase
         self::assertEquals('http://test.enmarche.code/espace-depute/utilisateurs', $crawler->getUri());
 
         $crawler = $this->client->request('GET', '/espace-depute/messagerie');
-        self::assertNotContains('Vous êtes collaborateur parlementaire du député Député CHLI FDESIX', $crawler->filter('main')->text());
+        self::assertNotContains('Vous êtes responsable communication du député Député CHLI FDESIX', $crawler->filter('main')->text());
         self::assertEquals(1, $crawler->filter('.datagrid__table-manager tbody tr td span.status__2')->count());
         self::assertContains('test by delegated adherent', $crawler->filter('table.datagrid__table-manager')->text());
     }

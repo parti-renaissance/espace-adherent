@@ -23,7 +23,7 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess1 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_1));
         $delegatedAccess1->setDelegated($this->getReference('adherent-8')); // referent@en-marche-dev.fr
         $delegatedAccess1->setDelegator($this->getReference('deputy-ch-li')); // deputy-ch-li@en-marche-dev.fr
-        $delegatedAccess1->setRole('Collaborateur parlementaire');
+        $delegatedAccess1->setRole($this->getReference('deputy-responsable-communication'));
         $delegatedAccess1->setType('deputy');
         $delegatedAccess1->setAccesses(DelegatedAccess::ACCESSES);
 
@@ -33,7 +33,7 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess2 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_2));
         $delegatedAccess2->setDelegated($this->getReference('adherent-4')); // luciole1989@spambox.fr
         $delegatedAccess2->setDelegator($this->getReference('deputy-ch-li')); // deputy-ch-li@en-marche-dev.fr
-        $delegatedAccess2->setRole('Collaborateur parlementaire');
+        $delegatedAccess2->setRole($this->getReference('deputy-responsable-communication'));
         $delegatedAccess2->setType('deputy');
         $delegatedAccess2->setAccesses([DelegatedAccess::ACCESS_EVENTS, DelegatedAccess::ACCESS_ADHERENTS]);
 
@@ -43,7 +43,7 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess3 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_3));
         $delegatedAccess3->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
         $delegatedAccess3->setDelegator($this->getReference('deputy-ch-li')); // deputy-ch-li@en-marche-dev.fr
-        $delegatedAccess3->setRole('Collaborateur parlementaire');
+        $delegatedAccess3->setRole($this->getReference('deputy-responsable-communication'));
         $delegatedAccess3->setType('deputy');
         $delegatedAccess3->setAccesses([DelegatedAccess::ACCESS_MESSAGES, DelegatedAccess::ACCESS_EVENTS]);
         $delegatedAccess3->setRestrictedCities(['59360', '59350', '59044', '59002']);
@@ -54,7 +54,7 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess4 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_4));
         $delegatedAccess4->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
         $delegatedAccess4->setDelegator($this->getReference('senator-59')); // senateur@en-marche-dev.fr
-        $delegatedAccess4->setRole('Collaborateur parlementaire');
+        $delegatedAccess4->setRole($this->getReference('senator-responsable-phoning'));
         $delegatedAccess4->setType('senator');
         $delegatedAccess4->setAccesses([DelegatedAccess::ACCESS_MESSAGES, DelegatedAccess::ACCESS_ADHERENTS]);
 
@@ -64,7 +64,7 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess5 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_5));
         $delegatedAccess5->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
         $delegatedAccess5->setDelegator($this->getReference('deputy-75-2')); // deputy-75-2@en-marche-dev.fr
-        $delegatedAccess5->setRole('Collaborateur parlementaire');
+        $delegatedAccess5->setRole($this->getReference('deputy-responsable-communication'));
         $delegatedAccess5->setType('deputy');
         $delegatedAccess5->setAccesses([DelegatedAccess::ACCESS_ADHERENTS]);
 
@@ -74,7 +74,7 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess6 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_6));
         $delegatedAccess6->setDelegated($this->getReference('adherent-8')); // referent@en-marche-dev.fr
         $delegatedAccess6->setDelegator($this->getReference('senator-59')); // senateur@en-marche-dev.fr
-        $delegatedAccess6->setRole('Collaborateur parlementaire');
+        $delegatedAccess6->setRole($this->getReference('senator-responsable-phoning'));
         $delegatedAccess6->setType('senator');
 
         $manager->persist($delegatedAccess6);
@@ -83,7 +83,7 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess7 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_7));
         $delegatedAccess7->setDelegated($this->getReference('senator-59')); // senateur@en-marche-dev.fr
         $delegatedAccess7->setDelegator($this->getReference('adherent-8')); // referent@en-marche-dev.fr
-        $delegatedAccess7->setRole('Collaborateur parlementaire');
+        $delegatedAccess7->setRole($this->getReference('referent-responsable-mobilisation'));
         $delegatedAccess7->setType('referent');
 
         $manager->persist($delegatedAccess7);
@@ -95,6 +95,7 @@ class LoadDelegatedAccessData extends Fixture
     {
         return [
             LoadAdherentData::class,
+            LoadDelegatedAccessRoleData::class,
         ];
     }
 }

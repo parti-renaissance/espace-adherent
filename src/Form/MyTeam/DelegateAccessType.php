@@ -4,8 +4,11 @@ namespace App\Form\MyTeam;
 
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
+use App\Entity\MyTeam\DelegatedAccessRole;
 use App\Form\CommitteeUuidType;
 use App\Form\DataTransformer\AdherentToEmailTransformer;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -106,26 +109,22 @@ class DelegateAccessType extends AbstractType
 
     protected function addRoleField($builder, string $type, ?string $role): void
     {
-        if ('referent' === $type) {
-            $roles = DelegatedAccess::DEFAULT_REFERENT_ROLES;
-        } else {
-            $roles = DelegatedAccess::DEFAULT_ROLES;
-            if ($role && !\in_array($role, $roles, true)) {
-                $roles[] = $role;
-            }
-        }
-
         $builder
-            ->add('role', ChoiceType::class, [
-                'expanded' => false,
-                'multiple' => false,
-                'attr' => ['class' => 'referent' === $type ? 'select2-standard' : 'select2-allow-add'],
-                'placeholder' => '',
-                'choices' => $roles,
-                'choice_label' => static function ($choice) {
-                    return $choice;
+            ->add('role', EntityType::class, [
+                'class' => DelegatedAccessRole::class,
+                'query_builder' => function (EntityRepository $er) use ($type) {
+                    return $er->createQueryBuilder('dar')
+                        ->where('dar.type = :type')
+                        ->setParameter('type', $type)
+                    ;
                 },
+                'attr' => ['class' => 'referent' === $type ? 'select2-standard' : 'select2-allow-add'],
+                'placeholder' => '-- Sélectionner un rôle --',
+                'choice_label' => 'name',
                 'choice_translation_domain' => false,
+                'group_by' => function ($choice) {
+                    return $choice->getGroup();
+                },
             ])
         ;
     }

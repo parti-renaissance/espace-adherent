@@ -26,44 +26,6 @@ class DelegatedAccess
 
     public const ATTRIBUTE_KEY = 'delegated_access_uuid';
 
-    public const DEFAULT_ROLES = [
-        'Responsable communication',
-        'Responsable mobilisation',
-        'Responsable phoning',
-    ];
-
-    public const DEFAULT_REFERENT_ROLES = [
-        'Responsables territoriaux' => [
-            'Responsable des Comités',
-            'Responsable Logistique',
-            'Responsable Mobilisation',
-            'Responsable Talents / Formation',
-        ],
-        'Responsables communications et digitaux' => [
-            'Responsable Communication',
-            'Responsable Réseaux Sociaux',
-            'Responsable Digital',
-            'Responsable Contenu',
-        ],
-        'Responsables thématiques' => [
-            'Responsable Engagement Citoyen',
-            'Responsable Europe',
-            'Responsable Société Civile',
-            'Responsable Idée',
-        ],
-        'Responsables administratifs' => [
-            'Responsable Financier',
-            'Secrétaire Général',
-            'Responsable Élus',
-            'Responsable des Elections',
-            'Responsable procurations',
-            'Responsable bureaux de vote / assesseurs',
-        ],
-        'Opération #AVosCotes' => [
-            'Appelant',
-        ],
-    ];
-
     public const ACCESS_MESSAGES = 'messages';
     public const ACCESS_EVENTS = 'events';
     public const ACCESS_ADHERENTS = 'adherents';
@@ -78,12 +40,9 @@ class DelegatedAccess
     ];
 
     /**
-     * @var string
+     * @var DelegatedAccessRole
      *
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank(message="Veuillez renseigner un rôle.")
-     * @Assert\Length(max=50)
+     * @ORM\ManyToOne(targetEntity="App\Entity\MyTeam\DelegatedAccessRole")
      */
     private $role;
 
@@ -138,12 +97,12 @@ class DelegatedAccess
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
-    public function getRole(): ?string
+    public function getRole(): ?DelegatedAccessRole
     {
         return $this->role;
     }
 
-    public function setRole(string $role): void
+    public function setRole(DelegatedAccessRole $role): void
     {
         $this->role = $role;
     }
