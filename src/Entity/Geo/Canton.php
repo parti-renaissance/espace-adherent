@@ -4,6 +4,8 @@ namespace App\Entity\Geo;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\ZoneInterface;
+use App\Entity\ZoneTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,9 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Canton implements CollectivityInterface
+class Canton implements ZoneInterface
 {
-    use GeoTrait;
+    use ZoneTrait;
+    use ActivableTrait;
     use EntityTimestampableTrait;
 
     /**

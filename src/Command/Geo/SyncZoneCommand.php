@@ -4,14 +4,16 @@ namespace App\Command\Geo;
 
 use App\Command\Geo\Helper\Persister;
 use App\Command\Geo\Helper\Summary;
+use App\Entity\ConsularDistrict;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ElectedRepresentative\ZoneCategory;
+use App\Entity\ForeignDistrict;
 use App\Entity\Geo\Canton;
 use App\Entity\Geo\City;
-use App\Entity\Geo\CollectivityInterface;
 use App\Entity\Geo\Country;
 use App\Entity\Geo\Department;
 use App\Entity\Geo\Region;
+use App\Entity\ZoneInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +28,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class SyncZoneCommand extends Command
 {
     private const TYPES = [
+        'country' => [
+            'category_name' => ZoneCategory::COUNTRY,
+            'entity_class' => Country::class,
+        ],
         'region' => [
             'category_name' => ZoneCategory::REGION,
             'entity_class' => Region::class,
@@ -37,6 +43,14 @@ final class SyncZoneCommand extends Command
         'city' => [
             'category_name' => ZoneCategory::CITY,
             'entity_class' => City::class,
+        ],
+        'foreign-district' => [
+            'category_name' => ZoneCategory::FOREIGN_DISTRICT,
+            'entity_class' => ForeignDistrict::class,
+        ],
+        'consular-district' => [
+            'category_name' => ZoneCategory::CONSULAR_DISTRICT,
+            'entity_class' => ConsularDistrict::class,
         ],
     ];
 
@@ -146,7 +160,7 @@ final class SyncZoneCommand extends Command
     }
 
     /**
-     * @return array|CollectivityInterface[]
+     * @return array|ZoneInterface[]
      */
     private function findCollectivities(bool $all, ?string $type, ?string $code): iterable
     {
@@ -171,16 +185,24 @@ final class SyncZoneCommand extends Command
 
             $this->io->comment(sprintf('Fetching all "%s" from database', $subType));
 
-            $grouped[] = $this->em
+            $entities = $this->em
                 ->createQueryBuilder()
                 ->select(['x'])
                 ->from(self::TYPES[$subType]['entity_class'], 'x')
                 ->getQuery()
                 ->getResult()
             ;
+
+            $this->io->comment(sprintf('Found %d "%s"', \count($entities), $subType));
+
+            $grouped[] = $entities;
         }
 
-        return array_merge(...$grouped);
+        $entities = array_merge(...$grouped);
+
+        $this->io->comment(sprintf('Total %d', \count($entities)));
+
+        return $entities;
     }
 
     /**
@@ -255,7 +277,7 @@ final class SyncZoneCommand extends Command
      * "<name> (<insee>)"
      * "<name> (<postal code>)" // n-times, if $collectivity is a cities
      */
-    private function guessZoneByCollectivityName(CollectivityInterface $collectivity): ?Zone
+    private function guessZoneByCollectivityName(ZoneInterface $collectivity): ?Zone
     {
         $category = $this->retrieveCategoryByCollectivity($collectivity);
 
@@ -295,7 +317,7 @@ final class SyncZoneCommand extends Command
     }
 
     /**
-     * @param CollectivityInterface $collectivity
+     * @param ZoneInterface $collectivity
      */
     private function retrieveCategoryByCollectivity(object $collectivity): ZoneCategory
     {

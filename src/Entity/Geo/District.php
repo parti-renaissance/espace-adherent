@@ -4,6 +4,8 @@ namespace App\Entity\Geo;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\ZoneInterface;
+use App\Entity\ZoneTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,9 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class District implements CollectivityInterface
+class District implements ZoneInterface
 {
-    use GeoTrait;
+    use ZoneTrait;
+    use ActivableTrait;
     use EntityTimestampableTrait;
 
     /**

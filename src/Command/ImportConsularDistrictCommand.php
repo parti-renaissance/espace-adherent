@@ -3,8 +3,11 @@
 namespace App\Command;
 
 use App\Entity\ConsularDistrict;
+use App\Entity\Geo\Country;
 use App\Geocoder\GeocoderInterface;
 use App\Repository\ConsularDistrictRepository;
+use App\Repository\ForeignDistrictRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
@@ -29,17 +32,20 @@ class ImportConsularDistrictCommand extends Command
     private $repository;
     private $countries;
     private $geocoder;
+    private $foreignDistrictRepository;
 
     public function __construct(
         FilesystemInterface $storage,
         EntityManagerInterface $em,
         ConsularDistrictRepository $repository,
-        GeocoderInterface $geocoder
+        GeocoderInterface $geocoder,
+        ForeignDistrictRepository $foreignDistrictRepository
     ) {
         $this->storage = $storage;
         $this->manager = $em;
         $this->repository = $repository;
         $this->geocoder = $geocoder;
+        $this->foreignDistrictRepository = $foreignDistrictRepository;
 
         parent::__construct();
     }
@@ -93,10 +99,19 @@ class ImportConsularDistrictCommand extends Command
             return $code;
         }, array_map('trim', explode(',', $row['Circonscription'])))));
 
+        $countries = new ArrayCollection($this->manager->getRepository(Country::class)->findBy([
+            'code' => $codes,
+        ]));
+
+        $foreignDistrict = $this->foreignDistrictRepository->findOneBy([
+            'name' => $row['Circonscription'],
+        ]);
+
         $cities = array_map('trim', explode(',', $row['Consulat']));
 
         $district = new ConsularDistrict(
-            $codes,
+            $countries,
+            $foreignDistrict,
             $cities,
             implode('_', array_merge($codes, [str_pad($row['N. circo'], 2, '0', \STR_PAD_LEFT)])),
             $row['N. circo']

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Entity\Geo\Country;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,21 +15,14 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ConsularDistrict
+class ConsularDistrict implements ZoneInterface
 {
-    /**
-     * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
-    private $id;
+    use ZoneTrait;
 
     /**
-     * @var array
+     * @var Collection|Country[]
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\OneToMany(targetEntity="App\Entity\Geo\Country", mappedBy="consularDistricts")
      */
     private $countries;
 
@@ -37,13 +32,6 @@ class ConsularDistrict
      * @ORM\Column(type="simple_array")
      */
     private $cities;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column
-     */
-    private $code;
 
     /**
      * @var int
@@ -59,27 +47,30 @@ class ConsularDistrict
      */
     private $points;
 
-    public function __construct(array $countries, array $cities, string $code, int $number)
-    {
+    /**
+     * @var ForeignDistrict
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\ForeignDistrict", inversedBy="consularDistricts")
+     */
+    private $foreignDistrict;
+
+    public function __construct(
+        Collection $countries,
+        ForeignDistrict $foreignDistrict,
+        array $cities,
+        string $code,
+        int $number
+    ) {
         $this->countries = $countries;
+        $this->foreignDistrict = $foreignDistrict;
         $this->cities = $cities;
         $this->code = $code;
         $this->number = $number;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getCountries(): array
+    public function getCountries(): Collection
     {
         return $this->countries;
-    }
-
-    public function setCountries(array $countries): void
-    {
-        $this->countries = $countries;
     }
 
     public function getCities(): array
@@ -92,11 +83,6 @@ class ConsularDistrict
         $this->cities = $cities;
     }
 
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
     public function getPoints(): ?array
     {
         return $this->points;
@@ -105,6 +91,7 @@ class ConsularDistrict
     public function update(self $district): void
     {
         $this->countries = $district->getCountries();
+        $this->foreignDistrict = $district->getForeignDistrict();
         $this->cities = $district->getCities();
         $this->code = $district->getCode();
         $this->points = $district->getPoints();
@@ -122,5 +109,37 @@ class ConsularDistrict
             $longitude,
             $label,
         ];
+    }
+
+    public function getNumber(): int
+    {
+        return $this->number;
+    }
+
+    public function setNumber(int $number): void
+    {
+        $this->number = $number;
+    }
+
+    public function getForeignDistrict(): ForeignDistrict
+    {
+        return $this->foreignDistrict;
+    }
+
+    public function setForeignDistrict(ForeignDistrict $foreignDistrict): void
+    {
+        $this->foreignDistrict = $foreignDistrict;
+    }
+
+    public function getParents(): array
+    {
+        $parents = [];
+
+        $parents[] = $foreignDistrict = $this->getForeignDistrict();
+        if ($foreignDistrict) {
+            $parents = array_merge($parents, $foreignDistrict->getParents());
+        }
+
+        return $this->sanitizeEntityList($parents);
     }
 }

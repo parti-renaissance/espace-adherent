@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Entity\Geo;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-trait GeoTrait
+trait ZoneTrait
 {
     /**
      * @var int|null
@@ -29,13 +29,6 @@ trait GeoTrait
      */
     private $name;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $active = true;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -59,16 +52,6 @@ trait GeoTrait
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    public function activate(bool $active = true): void
-    {
-        $this->active = $active;
     }
 
     private function sanitizeEntityList(array $entities): array
