@@ -16,14 +16,14 @@ trait GeoTrait
     private $id;
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(unique=true)
      */
     private $code;
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column
      */
@@ -36,22 +36,22 @@ trait GeoTrait
      */
     private $active = true;
 
+    public function __toString(): string
+    {
+        return sprintf('%s (%s)', $this->name, $this->code);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    public function setCode(string $code): void
-    {
-        $this->code = $code;
-    }
-
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -69,17 +69,5 @@ trait GeoTrait
     public function activate(bool $active = true): void
     {
         $this->active = $active;
-    }
-
-    private function sanitizeEntityList(array $entities): array
-    {
-        $unique = [];
-        foreach (array_filter($entities) as $entity) {
-            if (!\in_array($entity, $unique, true)) {
-                $unique[] = $entity;
-            }
-        }
-
-        return $unique;
     }
 }

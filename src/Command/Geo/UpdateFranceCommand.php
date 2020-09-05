@@ -5,9 +5,9 @@ namespace App\Command\Geo;
 use App\Command\Geo\Helper\Persister;
 use App\Command\Geo\Helper\Summary;
 use App\Entity\Geo\City;
-use App\Entity\Geo\CollectivityInterface;
 use App\Entity\Geo\Country;
 use App\Entity\Geo\Department;
+use App\Entity\Geo\GeoInterface;
 use App\Entity\Geo\Region;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,8 +21,27 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class UpdateFranceCommand extends Command
 {
-    private const FRANCE_CODE = 'FR';
     private const API_PATH = '/communes?fields=code,nom,codesPostaux,population,departement,region';
+
+    private const FRANCE_CODE = 'FR';
+    private const FRANCE_NAME = 'France';
+
+    private const OVERSEA_REGION_CODE = 'ROM';
+    private const OVERSEA_REGION_NAME = 'Outre-Mer';
+
+    /**
+     * @see https://www.insee.fr/fr/information/2028040
+     */
+    private const OVERSEAS_DEPARTMENTS = [
+        '975' => 'Saint-Pierre-et-Miquelon',
+        '977' => 'Saint-Barthélemy',
+        '978' => 'Saint-Martin',
+        '984' => 'Terres australes et antarctiques françaises',
+        '986' => 'Wallis et Futuna',
+        '987' => 'Polynésie française',
+        '988' => 'Nouvelle-Calédonie',
+        '989' => 'Île de Clipperton',
+    ];
 
     protected static $defaultName = 'app:geo:update-france';
 
@@ -57,8 +76,8 @@ final class UpdateFranceCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Update french administrative divisions according to geo.api.gouv.fr')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm without persisting any data.')
+            ->setDescription('Update french administrative divisions (region, department and cities) according to geo.api.gouv.fr')
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
 
@@ -125,9 +144,7 @@ final class UpdateFranceCommand extends Command
     private function processEntry(array $entry): void
     {
         /* @var Country|null $region */
-        $france = $this->retrieveEntity(Country::class, self::FRANCE_CODE, static function () {
-            return new Country(self::FRANCE_CODE, 'France');
-        });
+        $france = $this->retrieveEntity(Country::class, self::FRANCE_CODE);
 
         /* @var Region|null $region */
         $region = null;
@@ -183,7 +200,7 @@ final class UpdateFranceCommand extends Command
 
     private function populateEntities(): void
     {
-        /* @var CollectivityInterface[] $entities */
+        /* @var GeoInterface[] $entities */
         $entities = array_merge(
             $this->em->getRepository(Region::class)->findAll(),
             $this->em->getRepository(Department::class)->findAll(),
@@ -197,10 +214,33 @@ final class UpdateFranceCommand extends Command
             // Mark it as inactive, if it's present in the API, it becomes back active
             $entity->activate(false);
         }
+
+        //
+        // Overseas (data not present in the API)
+        //
+
+        /* @var Country|null $france */
+        $france = $this->retrieveEntity(Country::class, self::FRANCE_CODE, static function () {
+            return new Country(self::FRANCE_CODE, self::FRANCE_NAME);
+        });
+        $france->activate();
+
+        /* @var Region|null $regionOutreMer */
+        $regionOutreMer = $this->retrieveEntity(Region::class, self::OVERSEA_REGION_CODE, static function () use ($france) {
+            return new Region(self::OVERSEA_REGION_CODE, self::OVERSEA_REGION_NAME, $france);
+        });
+        $regionOutreMer->activate();
+
+        foreach (self::OVERSEAS_DEPARTMENTS as $code => $name) {
+            $department = $this->retrieveEntity(Department::class, $code, static function () use ($code, $name, $regionOutreMer) {
+                return new Department($code, $name, $regionOutreMer);
+            });
+            $department->activate();
+        }
     }
 
     /**
-     * @return CollectivityInterface
+     * @return GeoInterface
      *
      * @throws \RuntimeException When entity doesn't exist in database and $factory argument isn't given
      */
@@ -211,7 +251,7 @@ final class UpdateFranceCommand extends Command
         if (!$this->entities->containsKey($key)) {
             $repository = $this->em->getRepository($class);
 
-            /* @var CollectivityInterface $entity */
+            /* @var GeoInterface $entity */
             $entity = $repository->findOneBy(['code' => $code]);
             if (!$entity) {
                 if (!$factory) {

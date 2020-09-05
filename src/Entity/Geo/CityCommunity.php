@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="geo_city_community")
  */
-class CityCommunity implements CollectivityInterface
+class CityCommunity implements ZoneableInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
@@ -41,13 +41,14 @@ class CityCommunity implements CollectivityInterface
 
     public function getParents(): array
     {
-        $parents = [];
+        return array_merge(
+            [$this->department],
+            $this->department->getParents(),
+        );
+    }
 
-        $parents[] = $department = $this->getDepartment();
-        if ($department) {
-            $parents = array_merge($parents, $department->getParents());
-        }
-
-        return $this->sanitizeEntityList($parents);
+    public function getZoneType(): string
+    {
+        return Zone::CITY_COMMUNITY;
     }
 }

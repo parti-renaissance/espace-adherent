@@ -9,10 +9,17 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="geo_country")
  */
-class Country implements CollectivityInterface
+class Country implements ZoneableInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
+
+    /**
+     * @var ForeignDistrict|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\ForeignDistrict", inversedBy="countries")
+     */
+    private $foreignDistrict;
 
     public function __construct(string $code, string $name)
     {
@@ -20,8 +27,23 @@ class Country implements CollectivityInterface
         $this->name = $name;
     }
 
+    public function getForeignDistrict(): ?ForeignDistrict
+    {
+        return $this->foreignDistrict;
+    }
+
+    public function setForeignDistrict(?ForeignDistrict $foreignDistrict): void
+    {
+        $this->foreignDistrict = $foreignDistrict;
+    }
+
     public function getParents(): array
     {
-        return [];
+        return $this->foreignDistrict ? [$this->foreignDistrict] : [];
+    }
+
+    public function getZoneType(): string
+    {
+        return Zone::COUNTRY;
     }
 }
