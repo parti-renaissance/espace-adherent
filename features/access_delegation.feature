@@ -21,9 +21,9 @@ Feature:
         Then I should see 3 ".team-organization__member-container" element
         And I should not see "Michelle Dufour"
 
-        When I follow "Déléguer un accès à mon espace"
+        When I follow "Ajouter un adhérent à mon équipe"
         Then I should be on "/espace-depute/mon-equipe/deleguer-acces"
-        And I should see "Déléguer un accès à mon espace"
+        And I should see "Ajouter un adhérent à mon équipe"
 
         When I fill in "f_name" with "michelle"
         And I press "Rechercher"
