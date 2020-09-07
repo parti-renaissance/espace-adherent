@@ -13,7 +13,7 @@ final class AdherentMembershipReminderMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            'Confirmez votre compte En-Marche.fr',
+            '[Adhérent] Zéro cotisation, donnez si vous le pouvez !',
             [],
             [
                 'first_name' => self::escape($adherent->getFirstName()),
