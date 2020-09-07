@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.adherent.hasPoliticalCommitteeMembership %}
+        {% for quality in object.adherent.politicalCommitteeMembership.qualities %}
+            <li class="role text--body">{{ ('political_committee.membership.quality.' ~ quality.name)|trans }}</li>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

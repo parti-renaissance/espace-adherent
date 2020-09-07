@@ -196,6 +196,11 @@ class TerritorialCouncil implements StaticSegmentInterface
         $this->politicalCommittee = $politicalCommittee;
     }
 
+    public function getPoliticalCommitteeMembershipsCount(): int
+    {
+        return $this->politicalCommittee->getMembershipsCount();
+    }
+
     /**
      * Returns true if the council is located abroad
      */

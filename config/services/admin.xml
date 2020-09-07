@@ -390,8 +390,13 @@
             <argument />
         </service>
 
+        <!--
+        ######################################################
+        # Instances
+        ######################################################
+        -->
         <service id="app.admin.territorial_council" class="App\Admin\TerritorialCouncil\TerritorialCouncilAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Conseils territoriaux" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="CoTerr et CoPol" group="Instances" />
 
             <argument />
             <argument>App\Entity\TerritorialCouncil\TerritorialCouncil</argument>
@@ -403,10 +408,26 @@
         </service>
 
         <service id="app.admin.territorial_council_membership" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipAdmin">
-            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+            <tag name="sonata.admin" manager-type="orm" label="Membres" group="Instances" />
 
             <argument />
             <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembership</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.voting_platform.election" class="App\Admin\VotingPlatform\DesignationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Désignations statutaires" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Designation\Designation</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.territorial_council_membership_log" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipLogAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Logs" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog</argument>
             <argument />
         </service>
 
@@ -517,14 +538,6 @@
             <call method="setClientManager">
                 <argument type="service" id="App\OAuth\ClientManager" />
             </call>
-        </service>
-
-        <service id="app.admin.territorial_council_membership_log" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipLogAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Log Coterr" group="Tech" />
-
-            <argument />
-            <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog</argument>
-            <argument />
         </service>
 
         <!--
@@ -1196,14 +1209,6 @@
 
             <argument />
             <argument>App\Entity\JeMarcheReport</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.voting_platform.election" class="App\Admin\VotingPlatform\DesignationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Désignations statutaires" group="Désignations" />
-
-            <argument />
-            <argument>App\Entity\VotingPlatform\Designation\Designation</argument>
             <argument />
         </service>
 
