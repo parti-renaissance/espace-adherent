@@ -31,22 +31,28 @@ class ResultCalculator
             $election->setElectionResult($electionResult);
         }
 
-        $currentRound = $election->getCurrentRound();
-
-        if ($electionResult->alreadyFilledForRound($currentRound)) {
-            return $electionResult;
+        if ($election->isClosed()) {
+            $rounds = $election->getElectionRounds();
+        } else {
+            $rounds = [$election->getCurrentRound()];
         }
 
-        $electionRoundResult = $this->createElectionRoundResultObject($currentRound);
-        $electionResult->addElectionRoundResult($electionRoundResult);
+        foreach ($rounds as $currentRound) {
+            if ($electionResult->alreadyFilledForRound($currentRound)) {
+                continue;
+            }
 
-        $voteResults = $this->voteResultRepository->getResultsForRound($currentRound);
+            $electionRoundResult = $this->createElectionRoundResultObject($currentRound);
+            $electionResult->addElectionRoundResult($electionRoundResult);
 
-        foreach ($voteResults as $voteResult) {
-            $electionRoundResult->updateFromNewVoteResult($voteResult);
+            $voteResults = $this->voteResultRepository->getResultsForRound($currentRound);
+
+            foreach ($voteResults as $voteResult) {
+                $electionRoundResult->updateFromNewVoteResult($voteResult);
+            }
+
+            $electionRoundResult->sync();
         }
-
-        $electionRoundResult->sync();
 
         return $electionResult;
     }
