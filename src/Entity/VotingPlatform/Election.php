@@ -202,9 +202,12 @@ class Election
         return $this->secondRoundEndDate;
     }
 
-    public function getElectionRounds(): Collection
+    /**
+     * @return ElectionRound[]
+     */
+    public function getElectionRounds(): array
     {
-        return $this->electionRounds;
+        return $this->electionRounds->toArray();
     }
 
     public function getFirstRound(): ?ElectionRound
