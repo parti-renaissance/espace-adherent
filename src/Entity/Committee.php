@@ -524,6 +524,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('finishAt', null))
+            ->orderBy(['gender' => 'ASC'])
         ;
 
         return $this->adherentMandates->matching($criteria);
