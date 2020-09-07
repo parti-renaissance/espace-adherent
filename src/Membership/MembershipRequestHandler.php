@@ -12,6 +12,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentAccountActivationMessage;
 use App\Mailer\Message\AdherentAccountActivationReminderMessage;
 use App\Mailer\Message\AdherentAccountConfirmationMessage;
+use App\Mailer\Message\AdherentMembershipReminderMessage;
 use App\Mailer\Message\AdherentTerminateMembershipMessage;
 use App\OAuth\CallbackManager;
 use App\Referent\ReferentTagManager;
@@ -92,6 +93,13 @@ class MembershipRequestHandler
         }
 
         return $this->mailer->sendMessage(AdherentAccountActivationMessage::create($adherent, $activationUrl));
+    }
+
+    public function sendEmailReminder(Adherent $adherent): bool
+    {
+        $donationUrl = $this->callbackManager->generateUrl('donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return $this->mailer->sendMessage(AdherentMembershipReminderMessage::create($adherent, $donationUrl));
     }
 
     public function registerAsAdherent(MembershipRequest $membershipRequest): void
