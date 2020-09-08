@@ -73,4 +73,31 @@ class Poll
     {
         return $this->election;
     }
+
+    public function getResult(): array
+    {
+        $votes = [
+            'total' => 0,
+            'choices' => [],
+        ];
+
+        if ($this->choices->count() > 0) {
+            $choosen = null;
+            $max = 0;
+            foreach ($this->choices as $choice) {
+                $count = $choice->getVotes()->count();
+                $votes['total'] += $count;
+                $votes['choices'][$choice->getValue()] = [
+                    'count' => $count,
+                ];
+                if ($count >= $max) {
+                    $max = $count;
+                    $choosen = $choice->getValue() > $choosen ? $choice->getValue() : $choosen;
+                }
+            }
+            $votes['choices'][$choosen]['choosen'] = true;
+        }
+
+        return $votes;
+    }
 }

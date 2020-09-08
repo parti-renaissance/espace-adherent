@@ -4,6 +4,7 @@ namespace App\Entity\TerritorialCouncil\ElectionPoll;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -33,6 +34,13 @@ class PollChoice
      */
     private $value;
 
+    /**
+     * @var Vote|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\Vote", mappedBy="choice", fetch="EXTRA_LAZY")
+     */
+    private $votes;
+
     public function __construct(Poll $electionPoll, string $value, UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -43,5 +51,10 @@ class PollChoice
     public function getValue(): string
     {
         return $this->value;
+    }
+
+    public function getVotes(): Collection
+    {
+        return $this->votes;
     }
 }
