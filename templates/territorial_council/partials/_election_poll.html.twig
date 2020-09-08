@@ -28,23 +28,27 @@
             {% endif %}
         </form>
     {% else %}
-        <p class="text--body text--bold b__nudge--bottom-large b__nudge--top-0">
+        <p class="text--body text--bold b__nudge--bottom b__nudge--top-0">
             Combien d'élus au Comité politique devons-nous ajouter pour l'équilibre femme-homme ?
         </p>
 
-        <div class="voting-platform__results election-results">
+        <div class="election-poll-box__result font-roboto">
             {% set result = election_poll.getResult %}
             {% set total = result.total %}
             {% for choice, votesCount in result.choices %}
                 {% set rate = (votesCount.count * 100 / result.total)|round %}
 
                 <div class="l__row progress-bar">
-                    <div>{{ choice }}</div>
+                    <div class="progress-bar__choice text--body text--default-large">{{ choice }}</div>
                     <div class="progress-bar__gauge">
-                        <div class="slider" style="width: {{ rate }}%"></div>
+                        <div class="slider {{ votesCount.choosen is defined ? 'choosen' }}" style="width: {{ rate }}%"></div>
                     </div>
-                    <div class="progress-bar__value text--right text--body">{{ rate }}%</div>
-                    <div>{{ votesCount.choosen is defined ? 'icone' }}</div>
+                    <div class="progress-bar__value text--right text--body">
+                        {{ rate }}%
+                        {% if votesCount.choosen is defined %}
+                            <img src="{{ asset('/images/icons/icn-choosen.svg') }}" />
+                        {% endif %}
+                    </div>
                 </div>
             {% endfor %}
         </div>

@@ -258,5 +258,51 @@
         box-shadow: 0 15px 30px 0 rgba(131, 131, 131, 0.15);
         border-radius: 4px;
         padding: 40px;
+
+        &__result {
+            padding-right: 34px;
+
+            .progress-bar {
+                flex-grow: 1;
+                max-width: 400px;
+                margin: 5px 0;
+
+                &__choice{
+                    min-width: 40px;
+                    margin-right: 10px;
+                }
+
+                &__gauge {
+                    flex-basis: 100%;
+                    height: 12px;
+                    border-radius: 6px;
+                    background: $gray--lighter;
+
+                    .slider {
+                        height: 100%;
+                        border-radius: 6px;
+                        background-color: #92c5b9;
+
+                        &.choosen {
+                            background-color: $green--territory;
+                        }
+                    }
+                }
+
+                &__value {
+                    position: relative;
+                    flex: 0 0 54px;
+                    font-size: 18px;
+                    color: $black;
+                    font-weight: bold;
+
+                    img {
+                        position: absolute;
+                        left: calc(100% + 8px);
+                        top: 5px;
+                    }
+                }
+            }
+        }
     }
 }
