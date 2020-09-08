@@ -40,12 +40,8 @@
             }
 
             &.opened {
-                .trigger-document {
+                max-height: none;
 
-                }
-            }
-
-            &.opened {
                 .trigger-document {
                     transform: rotate(180deg);
                 }
