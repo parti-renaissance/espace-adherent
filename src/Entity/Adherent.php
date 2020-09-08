@@ -180,6 +180,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $membershipRemindedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
@@ -984,6 +989,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getActivatedAt(): ?\DateTime
     {
         return $this->activatedAt;
+    }
+
+    public function setMembershipReminded(): void
+    {
+        $this->membershipRemindedAt = new \DateTime();
+    }
+
+    public function isMembershipReminded(): bool
+    {
+        return null !== $this->membershipRemindedAt;
     }
 
     public function changePassword(string $newPassword): void
