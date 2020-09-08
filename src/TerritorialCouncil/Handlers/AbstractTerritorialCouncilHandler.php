@@ -8,6 +8,8 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
+use App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\TerritorialCouncil\Event\MembershipEvent;
 use App\TerritorialCouncil\Events;
@@ -22,17 +24,25 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     protected $repository;
     /** @var PoliticalCommitteeManager */
     protected $politicalCommitteeManager;
+    /** @var CommitteeAdherentMandateRepository */
+    protected $committeeMandateRepository;
+    /** @var TerritorialCouncilAdherentMandateRepository */
+    protected $tcMandateRepository;
 
     public function __construct(
         EntityManagerInterface $em,
         TerritorialCouncilRepository $repository,
         EventDispatcherInterface $dispatcher,
-        PoliticalCommitteeManager $politicalCommitteeManager
+        PoliticalCommitteeManager $politicalCommitteeManager,
+        CommitteeAdherentMandateRepository $committeeMandateRepository,
+        TerritorialCouncilAdherentMandateRepository $tcMandateRepository
     ) {
         $this->em = $em;
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
         $this->politicalCommitteeManager = $politicalCommitteeManager;
+        $this->committeeMandateRepository = $committeeMandateRepository;
+        $this->tcMandateRepository = $tcMandateRepository;
     }
 
     /**
@@ -98,15 +108,13 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
                 return;
             }
 
-            // if has candidacy, we should keep a quality in the membership
-            if ($actualMembership->hasCandidacies()) {
-                // we need to log that adherent has no more quality in membership, but has a candidacy
+            if ('' !== $msq = $this->getRemovingConstraintsMsg($qualityName, $adherent, $actualMembership)) {
                 $this->log(
                     'warning',
                     $adherent,
                     $actualMembership,
-                    [],
-                    'Cette qualité doit être retirée, mais l\'adhérent a une candidature dans ce conseil territorial.'
+                    $territorialCouncils,
+                    'Cette qualité doit être retirée, mais '.$msq
                 );
 
                 return;
@@ -133,7 +141,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         // if the adherent has a membership in the same territorial council, just add quality if it doesn't exist
         if ($territorialCouncil->getId() === $actualMembership->getTerritorialCouncil()->getId()) {
             $actualMembership->addQuality($quality);
-            $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName, true);
+            $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
             $this->em->flush();
 
             return;
@@ -145,43 +153,35 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             return;
         }
 
-        // we need to remove actual membership and create a new one for actual quality
-        if (TerritorialCouncilQualityEnum::QUALITY_PRIORITIES[$qualityName] < $highestPriority) {
-            if ($actualMembership->hasCandidacies()) {
-                // we need to log that adherent has no more quality in membership, but has a candidacy
-                $this->log(
-                    'warning',
-                    $adherent,
-                    $actualMembership,
-                    [$actualMembership->getTerritorialCouncil(), $territorialCouncil],
-                    'Cette qualité doit être retirée, mais l\'adhérent a une candidature dans ce conseil territorial.'
-                );
+        // we check if no quality with removing constraints
+        $msg = '';
+        foreach ($actualMembership->getQualities() as $quality) {
+            $msg .= $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+        }
 
-                return;
-            }
-
-            $this->removeMembership($adherent, $actualMembership->getTerritorialCouncil());
-            $this->addMembership($adherent, $territorialCouncil, $quality);
-
-            // we need to log a change of a territorial council membership
+        if ('' !== $msg) {
             $this->log(
-                'info',
+                'warning',
                 $adherent,
                 $actualMembership,
                 [$territorialCouncil],
-                'Adhérent a changé le conseil territorial'
+                'Le changement du conseil territorial n\'est pas possible : '.$msg
             );
 
             return;
         }
 
-        // if the same quality priority, we need to log about a problem
+        // we need to remove actual membership and create a new one for actual quality
+        $this->removeMembership($adherent, $actualMembership->getTerritorialCouncil());
+        $this->addMembership($adherent, $territorialCouncil, $quality);
+
+        // we need to log a change of a territorial council membership
         $this->log(
-            'warning',
+            'info',
             $adherent,
             $actualMembership,
             [$territorialCouncil],
-            'Adhérent est déjà membre avec cette qualité (de priorité majeure)'
+            'Adhérent a changé le conseil territorial'
         );
     }
 
@@ -196,6 +196,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         TerritorialCouncil $territorialCouncil,
         TerritorialCouncilQuality $quality
     ): void {
+        $qualityName = $quality->getName();
         $membership = new TerritorialCouncilMembership($territorialCouncil, $adherent);
         $membership->addQuality($quality);
         $adherent->setTerritorialCouncilMembership($membership);
@@ -203,11 +204,14 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $this->em->persist($membership);
 
         // add Political committee member
-        if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)) {
+        if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)
+            || (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
+                && $tcMandate = $this->tcMandateRepository->findActiveMandateWithQuality($adherent, $territorialCouncil, $qualityName))
+        ) {
             $pcMembership = $this->politicalCommitteeManager->createMembership(
                 $adherent,
                 $territorialCouncil->getPoliticalCommittee(),
-                $this->getQualityName()
+               $qualityName
             );
             $adherent->setPoliticalCommitteeMembership($pcMembership);
 
@@ -226,6 +230,41 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $this->em->flush();
 
         $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE, new MembershipEvent($adherent, $council));
+    }
+
+    private function getRemovingConstraintsMsg(
+        string $qualityName,
+        Adherent $adherent,
+        TerritorialCouncilMembership $actualMembership
+    ): string {
+        // if has a candidacy
+        if (\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
+            && ($election = $actualMembership->getTerritorialCouncil()->getCurrentElection())
+            && $actualMembership->getCandidacyForElection($election)) {
+            return 'l\'adhérent a une candidature dans ce conseil territorial.';
+        }
+
+        // if has a committee mandate
+        if (TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT === $qualityName
+            && $adherent->hasTerritorialCouncilMembership()
+            && $committeeMandate = $this->committeeMandateRepository->findActiveMandateInTerritorialCouncil(
+                $adherent,
+                $actualMembership->getTerritorialCouncil())
+        ) {
+            return \sprintf(
+                'l\'adhérent a un mandat dans ce conseil territorial, dans le comité "%s".',
+                $committeeMandate->getCommittee()->getName()
+            );
+        }
+
+        // if has a mayor or leader Political committee quality
+        if (\in_array($qualityName, [TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::CITY_COUNCILOR])
+            && $adherent->hasPoliticalCommitteeMembership()
+            && $adherent->getPoliticalCommitteeMembership()->hasOneOfQualities([TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::LEADER])) {
+            return 'l\'adhérent a une qualité "Maire" ou "Chef de file" dans le comité politique';
+        }
+
+        return '';
     }
 
     private function log(

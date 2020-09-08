@@ -3,6 +3,7 @@
 namespace Tests\App\Consumer;
 
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\PostAddress;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
@@ -11,6 +12,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\MandateRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
@@ -29,6 +31,8 @@ class PoliticalCommitteeManagerTest extends TestCase
     private $mandateRepository;
     /** @var \PHPUnit_Framework_MockObject_MockObject|PoliticalCommitteeMembershipRepository */
     private $membershipRepository;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|TerritorialCouncilAdherentMandateRepository */
+    private $tcMandateRepository;
     /** @var \PHPUnit_Framework_MockObject_MockObject|TranslatorInterface */
     private $translator;
     /** @var PoliticalCommitteeManager */
@@ -46,12 +50,14 @@ class PoliticalCommitteeManagerTest extends TestCase
 
         $this->mandateRepository = $this->createMock(MandateRepository::class);
         $this->membershipRepository = $this->createMock(PoliticalCommitteeMembershipRepository::class);
+        $this->tcMandateRepository = $this->createMock(TerritorialCouncilAdherentMandateRepository::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
 
         $this->politicalCommitteeManager = new PoliticalCommitteeManager(
             $this->entityManager,
             $this->mandateRepository,
             $this->membershipRepository,
+            $this->tcMandateRepository,
             $this->translator
         );
     }
@@ -94,7 +100,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         $adherent = new Adherent();
         $qualityName = TerritorialCouncilQualityEnum::SENATOR;
 
-        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName, false);
 
         $this->assertSame(null, $adherent->getPoliticalCommitteeMembership());
     }
@@ -106,7 +112,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         $adherent->setPoliticalCommitteeMembership($pcMembership);
         $qualityName = TerritorialCouncilQualityEnum::SENATOR;
 
-        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName, false);
 
         $this->assertSame([$qualityName], $adherent->getPoliticalCommitteeMembership()->getQualityNames());
     }
@@ -120,23 +126,76 @@ class PoliticalCommitteeManagerTest extends TestCase
         $adherent = new Adherent();
         $adherent->setPoliticalCommitteeMembership($pcMembership);
 
-        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName, true);
+        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
 
         $this->assertSame([$qualityName], $adherent->getPoliticalCommitteeMembership()->getQualityNames());
     }
 
     /**
-     * @dataProvider provideNotOfficioQualities
+     * @dataProvider provideNotPassingQualities
      */
-    public function testCannotAddPoliticalCommitteeQualityWithCheckWhenNotOfficioQualities(string $qualityName): void
+    public function testCannotAddPoliticalCommitteeQualityWithCheckWhenNotPassingQuality(string $qualityName): void
     {
         $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
         $adherent = new Adherent();
         $adherent->setPoliticalCommitteeMembership($pcMembership);
 
-        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName, true);
+        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
 
         $this->assertSame([], $adherent->getPoliticalCommitteeMembership()->getQualityNames());
+    }
+
+    /**
+     * @dataProvider provideElectedMemberQualities
+     */
+    public function testCannotAddPoliticalCommitteeQualityWithCheckWhenElectedMemberQualityButNoTcMembership(
+        string $qualityName
+    ): void {
+        $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
+        $adherent = new Adherent();
+        $adherent->setPoliticalCommitteeMembership($pcMembership);
+
+        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+
+        $this->assertSame([], $adherent->getPoliticalCommitteeMembership()->getQualityNames());
+    }
+
+    /**
+     * @dataProvider provideElectedMemberQualities
+     */
+    public function testCannotAddPoliticalCommitteeQualityWithCheckWhenElectedMemberQualityButNoTcMandate(
+        string $qualityName
+    ): void {
+        $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
+        $adherent = new Adherent();
+        $adherent->setPoliticalCommitteeMembership($pcMembership);
+        $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership(new TerritorialCouncil()));
+
+        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+
+        $this->assertSame([], $adherent->getPoliticalCommitteeMembership()->getQualityNames());
+    }
+
+    /**
+     * @dataProvider provideElectedMemberQualities
+     */
+    public function testAddPoliticalCommitteeQualityWithCheckWhenElectedMemberQuality(string $qualityName): void
+    {
+        $pcMembership = new PoliticalCommitteeMembership(new PoliticalCommittee('PC name', new TerritorialCouncil()));
+        $territorialCouncil = new TerritorialCouncil();
+        $adherent = new Adherent();
+        $adherent->setPoliticalCommitteeMembership($pcMembership);
+        $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));
+
+        $this->tcMandateRepository
+            ->expects($this->once())
+            ->method('findActiveMandateWithQuality')
+            ->with($adherent, $territorialCouncil, $qualityName)
+            ->willReturn(new TerritorialCouncilAdherentMandate($adherent, Genders::MALE, new \DateTime()))
+        ;
+        $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+
+        $this->assertSame([$qualityName], $adherent->getPoliticalCommitteeMembership()->getQualityNames());
     }
 
     public function testRemovePoliticalCommitteeQualitySuccessfully(): void
@@ -487,9 +546,14 @@ class PoliticalCommitteeManagerTest extends TestCase
         yield [TerritorialCouncilQualityEnum::DEPARTMENTAL_COUNCIL_PRESIDENT];
     }
 
-    public function provideNotOfficioQualities(): iterable
+    public function provideNotPassingQualities(): iterable
     {
         yield [TerritorialCouncilQualityEnum::MAYOR];
+        yield [TerritorialCouncilQualityEnum::LEADER];
+    }
+
+    public function provideElectedMemberQualities(): iterable
+    {
         yield [TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR];
         yield [TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR];
         yield [TerritorialCouncilQualityEnum::CITY_COUNCILOR];

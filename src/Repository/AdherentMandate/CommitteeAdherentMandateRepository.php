@@ -5,6 +5,7 @@ namespace App\Repository\AdherentMandate;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -33,6 +34,23 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findActiveMandateInTerritorialCouncil(
+        Adherent $adherent,
+        TerritorialCouncil $territorialCouncil
+    ): ?CommitteeAdherentMandate {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.committee', 'committee')
+            ->leftJoin('committee.referentTags', 'tag')
+            ->where('m.adherent = :adherent')
+            ->andWhere('tag.id IN (:tags)')
+            ->setParameter('tags', $territorialCouncil->getReferentTags())
+            ->andWhere('m.finishAt IS NULL')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
             ->getOneOrNullResult()
         ;
     }
