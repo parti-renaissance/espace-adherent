@@ -17,8 +17,6 @@ interface CandidacyInterface extends ImageOwnerInterface
 
     public function getCivility(): string;
 
-    public function isMale(): bool;
-
     public function isFemale(): bool;
 
     public function getBiography(): ?string;

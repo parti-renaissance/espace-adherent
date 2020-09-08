@@ -35,18 +35,18 @@
         <div class="election-poll-box__result font-roboto">
             {% set result = election_poll.getResult %}
             {% set total = result.total %}
-            {% for choice, votesCount in result.choices %}
-                {% set rate = (votesCount.count * 100 / result.total)|round %}
+            {% for row in result.choices %}
+                {% set rate = (row.count * 100 / result.total)|round %}
 
                 <div class="l__row progress-bar">
-                    <div class="progress-bar__choice text--body text--default-large">{{ choice }}</div>
+                    <div class="progress-bar__choice text--body text--default-large">{{ row.choice.value }}</div>
                     <div class="progress-bar__gauge">
-                        <div class="slider {{ votesCount.choosen is defined ? 'choosen' }}" style="width: {{ rate }}%"></div>
+                        <div class="slider {{ row.chosen is defined ? 'chosen' }}" style="width: {{ rate }}%"></div>
                     </div>
                     <div class="progress-bar__value text--right text--body">
                         {{ rate }}%
-                        {% if votesCount.choosen is defined %}
-                            <img src="{{ asset('/images/icons/icn-choosen.svg') }}" />
+                        {% if row.chosen is defined %}
+                            <img src="{{ asset('/images/icons/icn-chosen.svg') }}" />
                         {% endif %}
                     </div>
                 </div>

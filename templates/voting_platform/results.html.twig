@@ -103,11 +103,9 @@
                                                                 {% if vote_choice.isBlank %}
                                                                     ~
                                                                 {% else %}
-                                                                    {% for candidate in vote_choice.candidateGroup.candidates|sort((a, b) => a.isMan <=> b.isMan) %}
+                                                                    {% for candidate in vote_choice.candidateGroup.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
                                                                         {{ candidate.fullName }}
-                                                                        {% if loop.length > 1 %}
-                                                                            <br/>
-                                                                        {% endif %}
+                                                                        {% if loop.length > 1 %}<br/>{% endif %}
                                                                     {% endfor %}
                                                                 {% endif %}
                                                             {% endfor %}

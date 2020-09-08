@@ -107,7 +107,7 @@ class CommitteeRuntime implements RuntimeExtensionInterface
         }
 
         return \count(array_filter($candidacies, static function (CommitteeCandidacy $candidacy) use ($countMaleOnly) {
-            return $countMaleOnly ? $candidacy->isMale() : $candidacy->isFemale();
+            return $countMaleOnly ? !$candidacy->isFemale() : $candidacy->isFemale();
         }));
     }
 }

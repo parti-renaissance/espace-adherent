@@ -75,6 +75,16 @@ class ElectionRoundResult
     }
 
     /**
+     * @return CandidateGroupResult[]
+     */
+    public function getCandidateGroupResults(): array
+    {
+        return array_merge(...$this->electionPoolResults->map(function (ElectionPoolResult $poolResult) {
+            return $poolResult->getCandidateGroupResults();
+        })->toArray());
+    }
+
+    /**
      * @return ElectionPoolResult[]
      */
     public function getElectionPoolResults(): array

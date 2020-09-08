@@ -43,7 +43,7 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
         $invitedCandidate = $this->createCandidacy(
             $manager,
             $coTerrParis,
-            $this->getReference('adherent-3'),
+            $this->getReference('adherent-19'),
             null,
             TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
             __DIR__.'/../../../app/data/dist/avatar_femme_01.jpg'
@@ -73,7 +73,7 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
 
         $invitedCandidate = $this->createCandidacy(
             $manager,
-            $coTerrParis,
+            $coTerr,
             $this->getReference('senatorial-candidate'),
             null,
             TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,

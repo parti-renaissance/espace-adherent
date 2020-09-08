@@ -79,6 +79,13 @@ class Candidate
      */
     private $adherent;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $additionallyElected = false;
+
     public function __construct(
         string $firstName,
         string $lastName,
@@ -104,14 +111,14 @@ class Candidate
         return sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
-    public function isWoman(): bool
+    public function isFemale(): bool
     {
         return Genders::FEMALE === $this->gender;
     }
 
-    public function isMan(): bool
+    public function getGender(): string
     {
-        return Genders::MALE === $this->gender;
+        return $this->gender;
     }
 
     public function getBiography(): ?string
@@ -157,5 +164,15 @@ class Candidate
     public function getInitials(): string
     {
         return mb_strtoupper(mb_substr($this->firstName, 0, 1).mb_substr($this->lastName, 0, 1));
+    }
+
+    public function isAdditionallyElected(): bool
+    {
+        return $this->additionallyElected;
+    }
+
+    public function setAdditionallyElected(bool $elected): void
+    {
+        $this->additionallyElected = $elected;
     }
 }

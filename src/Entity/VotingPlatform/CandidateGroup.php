@@ -83,4 +83,22 @@ class CandidateGroup
     {
         $this->elected = $elected;
     }
+
+    public function getGenders(): array
+    {
+        return array_map(function (Candidate $candidate) {
+            return $candidate->getGender();
+        }, $this->candidates->toArray());
+    }
+
+    public function getCandidateByGender(string $gender): ?Candidate
+    {
+        foreach ($this->candidates as $candidate) {
+            if ($candidate->getGender() === $gender) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
 }
