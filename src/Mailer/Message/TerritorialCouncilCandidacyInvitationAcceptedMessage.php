@@ -22,7 +22,7 @@ class TerritorialCouncilCandidacyInvitationAcceptedMessage extends Message
             [
                 'candidacy_end_date' => self::dateToString($designation->getCandidacyEndDate()),
                 'vote_start_date' => self::dateToString($designation->getVoteStartDate()),
-                'result_end_date' => self::dateToString($designation->getResultEndDate()),
+                'vote_end_date' => self::dateToString($designation->getVoteEndDate()),
                 'candidacies_list_url' => $candidaciesListUrl,
             ],
             [
