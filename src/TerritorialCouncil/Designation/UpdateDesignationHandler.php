@@ -70,10 +70,18 @@ class UpdateDesignationHandler
     {
         $coTerr = $election->getTerritorialCouncil();
 
-        $designation = clone $election->getDesignation();
+        $coTerrRefTags = $coTerr->getReferentTags()->toArray();
+        $designationRefTags = $election->getDesignation()->getReferentTags();
+
+        // Clone designation if it has more referent tags that the current territorial council, otherwise use the same designation
+        if (\count(array_intersect($designationRefTags, $coTerrRefTags)) !== \count($designationRefTags)) {
+            $designation = clone $election->getDesignation();
+        } else {
+            $designation = $election->getDesignation();
+        }
 
         $designation->setLabel($coTerr->getName());
-        $designation->setReferentTags($coTerr->getReferentTags()->toArray());
+        $designation->setReferentTags($coTerrRefTags);
         $designation->setCandidacyEndDate((clone $request->getVoteStartDate())->modify('-48 hours'));
         $designation->setVoteStartDate($request->getVoteStartDate());
         $designation->setVoteEndDate($request->getVoteEndDate());
