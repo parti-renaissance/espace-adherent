@@ -4,26 +4,53 @@
 <section class="election-poll-box b__nudge--top-60 b__nudge--bottom-larger">
     <h4 class="text--muted text--normal text--uppercase b__nudge--bottom">Sondage</h4>
 
-    <form class="em-form" action="{{ not vote ? path('app_territorial_council_election_poll_save_vote', {uuid: election_poll.uuid}) }}" method="POST">
-        <div class="em-form__group em-form__checkbox--inline">
-            <label class="em-form__label">Combien de {{ ('interactive.form.'~election_poll.gender)|trans|lower }}s supplémentaires au Comité politique souhaitez-vous pour respecter la règle de parité ?</label>
-            <div class="b__nudge--top-10">
-                {% for index, choice in election_poll.choices %}
-                    <div class="form__radio">
-                        <input type="radio" id="poll-choice-{{ index }}" name="poll-choice" value="{{ choice.uuid }}" required="required"
-                            {{ vote ? 'disabled="disabled"' }}
-                            {{ (vote and vote.choice == choice) or (not vote and choice.value == 0) ? 'checked="checked"' }}
-                        />
-                        <label class="form form__label" for="poll-choice-{{ index }}">{{ choice.value }}</label>
-                    </div>
-                {% endfor %}
+    {% if election.isCandidacyPeriodActive %}
+        <form class="em-form" action="{{ not vote ? path('app_territorial_council_election_poll_save_vote', {uuid: election_poll.uuid}) }}" method="POST">
+            <div class="em-form__group em-form__checkbox--inline">
+                <label class="em-form__label">Combien de {{ ('interactive.form.'~election_poll.gender)|trans|lower }}s supplémentaires au Comité politique souhaitez-vous pour respecter la règle de parité ?</label>
+                <div class="b__nudge--top-10">
+                    {% for index, choice in election_poll.choices %}
+                        <div class="form__radio">
+                            <input type="radio" id="poll-choice-{{ index }}" name="poll-choice" value="{{ choice.uuid }}" required="required"
+                                {{ vote ? 'disabled="disabled"' }}
+                                {{ (vote and vote.choice == choice) or (not vote and choice.value == 0) ? 'checked="checked"' }}
+                            />
+                            <label class="form form__label" for="poll-choice-{{ index }}">{{ choice.value }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
 
-        {% if vote %}
-            <p class="text--small text--muted">Vous avez déjà répondu à ce sondage</p>
-        {% else %}
-            <button type="submit" class="btn btn--blue btn--no-wrap">Enregistrer</button>
-        {% endif %}
-    </form>
+            {% if vote %}
+                <p class="text--small text--muted">Vous avez déjà répondu à ce sondage</p>
+            {% else %}
+                <button type="submit" class="btn btn--blue btn--no-wrap">Enregistrer</button>
+            {% endif %}
+        </form>
+    {% else %}
+        <p class="text--body text--bold b__nudge--bottom b__nudge--top-0">
+            Combien d'élus au Comité politique devons-nous ajouter pour l'équilibre femme-homme ?
+        </p>
+
+        <div class="election-poll-box__result font-roboto">
+            {% set result = election_poll.getResult %}
+            {% set total = result.total %}
+            {% for choice, votesCount in result.choices %}
+                {% set rate = (votesCount.count * 100 / result.total)|round %}
+
+                <div class="l__row progress-bar">
+                    <div class="progress-bar__choice text--body text--default-large">{{ choice }}</div>
+                    <div class="progress-bar__gauge">
+                        <div class="slider {{ votesCount.choosen is defined ? 'choosen' }}" style="width: {{ rate }}%"></div>
+                    </div>
+                    <div class="progress-bar__value text--right text--body">
+                        {{ rate }}%
+                        {% if votesCount.choosen is defined %}
+                            <img src="{{ asset('/images/icons/icn-choosen.svg') }}" />
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </section>

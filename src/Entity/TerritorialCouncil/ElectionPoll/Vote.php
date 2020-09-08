@@ -26,7 +26,7 @@ class Vote
     /**
      * @var PollChoice
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\PollChoice")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\PollChoice", inversedBy="votes")
      */
     private $choice;
 

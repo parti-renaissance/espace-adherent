@@ -16,6 +16,7 @@ class LoadTerritorialCouncilElectionData extends Fixture
         $coTerrParis = $this->getReference('coTerr_75');
         $coTerrParis->setCurrentElection($election = new Election($this->getReference('designation-6')));
         $election->setElectionMode(DesignationVoteModeEnum::VOTE_MODE_ONLINE);
+        $this->setReference('election_coTerr_75', $election);
 
         /** @var TerritorialCouncil $coTerr */
         $coTerr = $this->getReference('coTerr_92');

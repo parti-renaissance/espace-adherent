@@ -9,7 +9,7 @@
 
             <div id="modal-wrapper"></div>
 
-            {% if election.isCandidacyPeriodActive and election.electionPoll %}
+            {% if election.electionPoll %}
                 {% include 'territorial_council/partials/_election_poll.html.twig' %}
             {% endif %}
         {% endif %}
