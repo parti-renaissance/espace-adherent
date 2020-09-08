@@ -40,6 +40,7 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
     {
         $filter
             ->add('territorialCouncil', null, [
+                'show_filter' => true,
                 'label' => 'Conseil territorial',
             ])
             ->add('qualities', CallbackFilter::class, [
@@ -67,6 +68,37 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('pcQualities', CallbackFilter::class, [
+                'show_filter' => true,
+                'label' => 'Qualité au CoPol',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => TerritorialCouncilQualityEnum::ALL_POLITICAL_COMMITTEE_QUALITIES,
+                    'choice_label' => function (string $choice) {
+                        return "political_committee.membership.quality.$choice";
+                    },
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    if (!\in_array('adherent', $qb->getAllAliases())) {
+                        $qb
+                            ->leftJoin("$alias.adherent", 'adherent')
+                            ->leftJoin('adherent.politicalCommitteeMembership', 'pcMembership')
+                        ;
+                    }
+                    $qb
+                        ->leftJoin('pcMembership.qualities', 'pcQuality')
+                        ->andWhere('pcQuality.name IN (:names)')
+                        ->setParameter('names', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
             ->add('adherent.firstName', null, [
                 'show_filter' => true,
                 'label' => 'Prénom',
@@ -79,6 +111,35 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'label' => 'Date',
                 'field_type' => DateRangePickerType::class,
+            ])
+            ->add('isInPoliticalCommittee', CallbackFilter::class, [
+                'show_filter' => true,
+                'label' => 'Est dans le CoPol ?',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'common.all' => null,
+                        'global.yes' => true,
+                        'global.no' => false,
+                    ],
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (null === $value['value']) {
+                        return false;
+                    }
+
+                    if (!\in_array('adherent', $qb->getAllAliases())) {
+                        $qb
+                            ->leftJoin("$alias.adherent", 'adherent')
+                            ->leftJoin('adherent.politicalCommitteeMembership', 'pcMembership')
+                        ;
+                    }
+
+                    $condition = true === $value['value'] ? 'NOT' : '';
+                    $qb->andWhere("pcMembership.id IS $condition NULL");
+
+                    return true;
+                },
             ])
         ;
     }
@@ -93,6 +154,11 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
             ->add('qualities', null, [
                 'label' => 'Qualités',
                 'template' => 'admin/territorial_council/list_membership_qualities.html.twig',
+            ])
+            ->add('pcqualities', null, [
+                'mapped' => false,
+                'label' => 'Qualités au CoPol',
+                'template' => 'admin/territorial_council/list_membership_political_committee_qualities.html.twig',
             ])
             ->add('joinedAt', null, [
                 'label' => 'Date',

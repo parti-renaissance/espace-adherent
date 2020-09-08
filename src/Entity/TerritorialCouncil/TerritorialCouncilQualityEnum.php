@@ -74,6 +74,26 @@ class TerritorialCouncilQualityEnum extends Enum
         self::ELECTED_CANDIDATE_ADHERENT,
     ];
 
+    public const ALL_POLITICAL_COMMITTEE_QUALITIES = [
+        self::REFERENT,
+        self::GOVERNMENT_MEMBER,
+        self::REFERENT_JAM,
+        self::LRE_MANAGER,
+        self::SENATOR,
+        self::DEPUTY,
+        self::EUROPEAN_DEPUTY,
+        self::REGIONAL_COUNCIL_PRESIDENT,
+        self::DEPARTMENTAL_COUNCIL_PRESIDENT,
+        self::MAYOR,
+        self::LEADER,
+        self::REGIONAL_COUNCILOR,
+        self::DEPARTMENT_COUNCILOR,
+        self::CITY_COUNCILOR,
+        self::CONSULAR_CONSELOR,
+        self::COMMITTEE_SUPERVISOR,
+        self::ELECTED_CANDIDATE_ADHERENT,
+    ];
+
     public const POLITICAL_COMMITTEE_OFFICIO_MEMBERS = [
         self::REFERENT,
         self::GOVERNMENT_MEMBER,

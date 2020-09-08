@@ -918,6 +918,23 @@ territorial_council_membership_log.is_not_resolved: Ce log n'est pas encore rés
 #
 # Political committee
 #
+political_committee.membership.quality.referent: Président(e) du Conseil territorial
+political_committee.membership.quality.government_member: Membre du Gouvernement
+political_committee.membership.quality.referent_jam: Référent(e) JAM
+political_committee.membership.quality.lre_manager: Responsable LRE
+political_committee.membership.quality.senator: Sénateur(trice)
+political_committee.membership.quality.deputy: Député(e)
+political_committee.membership.quality.european_deputy: Député(e) européen(ne)
+political_committee.membership.quality.regional_council_president: Président(e) conseil régional
+political_committee.membership.quality.departmental_council_president: Président(e) conseil départemental
+political_committee.membership.quality.mayor: Maire
+political_committee.membership.quality.leader: Chef de file
+political_committee.membership.quality.regional_councilor: Conseiller(ère) régional(e) désigné(e)
+political_committee.membership.quality.department_councilor: Conseiller(ère) départemental(e) désigné(e)
+political_committee.membership.quality.city_councilor: Conseiller(ère) municipal(e) désigné(e)
+political_committee.membership.quality.consular_conselor: Conseiller(ère) consulaire désigné(e)
+political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e)
+political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e)
 political_committee.membership.adherent_has_already: L'adhérent ({{ email }}) est déjà un membre du Comité politique "{{ politicalCommittee }}"
 political_committee.membership.adherent_has_no_membership: L'adhérent ({{ email }}) en'est pas un membre du Comité politique du Conseil territorial "{{ territorialCouncil }}"
 political_committee.membership.has_max_number_of_mayor_and_leader: Vous ne pouvez nommer que {{ max }} maire ou chef de file dans le Comité politique "{{ politicalCommittee }}".

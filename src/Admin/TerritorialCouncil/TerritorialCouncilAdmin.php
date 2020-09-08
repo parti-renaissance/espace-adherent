@@ -60,7 +60,10 @@ class TerritorialCouncilAdmin extends AbstractAdmin
                 'label' => 'Codes',
             ])
             ->add('membershipsCount', null, [
-                'label' => 'Nb members',
+                'label' => 'Nb membres',
+            ])
+            ->add('politicalCommitteeMembershipsCount', null, [
+                'label' => 'Nb membres au CoPol',
             ])
             ->add('president', null, [
                 'label' => 'Président',
