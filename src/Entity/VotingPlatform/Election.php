@@ -81,6 +81,20 @@ class Election
      */
     private $electionResult;
 
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
+     */
+    private $additionalPlaces;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $additionalPlacesGender;
+
     public function __construct(
         Designation $designation,
         UuidInterface $uuid = null,
@@ -249,5 +263,25 @@ class Election
         $roundResult = $this->electionResult->getElectionRoundResult($this->getCurrentRound());
 
         return $roundResult && $roundResult->hasOnlyElectedPool();
+    }
+
+    public function getAdditionalPlaces(): ?int
+    {
+        return $this->additionalPlaces;
+    }
+
+    public function setAdditionalPlaces(?int $additionalPlaces): void
+    {
+        $this->additionalPlaces = $additionalPlaces;
+    }
+
+    public function getAdditionalPlacesGender(): ?string
+    {
+        return $this->additionalPlacesGender;
+    }
+
+    public function setAdditionalPlacesGender(string $gender): void
+    {
+        $this->additionalPlacesGender = $gender;
     }
 }

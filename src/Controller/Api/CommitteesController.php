@@ -94,7 +94,7 @@ class CommitteesController extends Controller
             'metadata' => [
                 'total' => \count($memberships),
                 'males' => \count(array_filter($memberships, static function (CommitteeMembership $membership) {
-                    return $membership->getCommitteeCandidacy($membership->getCommittee()->getCommitteeElection())->isMale();
+                    return !$membership->getCommitteeCandidacy($membership->getCommittee()->getCommitteeElection())->isFemale();
                 })),
                 'females' => \count(array_filter($memberships, static function (CommitteeMembership $membership) {
                     return $membership->getCommitteeCandidacy($membership->getCommittee()->getCommitteeElection())->isFemale();

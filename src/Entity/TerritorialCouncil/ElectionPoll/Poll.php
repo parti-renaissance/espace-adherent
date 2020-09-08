@@ -82,22 +82,38 @@ class Poll
         ];
 
         if ($this->choices->count() > 0) {
-            $choosen = null;
+            $chosen = null;
             $max = 0;
+
             foreach ($this->choices as $choice) {
                 $count = $choice->getVotes()->count();
                 $votes['total'] += $count;
-                $votes['choices'][$choice->getValue()] = [
+
+                $votes['choices'][$choice->getId()] = [
+                    'choice' => $choice,
                     'count' => $count,
                 ];
+
                 if ($count >= $max) {
                     $max = $count;
-                    $choosen = $choice->getValue() > $choosen ? $choice->getValue() : $choosen;
+                    $chosen = $chosen && $chosen->getValue() > $choice->getValue() ? $chosen : $choice;
                 }
             }
-            $votes['choices'][$choosen]['choosen'] = true;
+
+            $votes['choices'][$chosen->getId()]['chosen'] = true;
         }
 
         return $votes;
+    }
+
+    public function getTopChoice(): ?PollChoice
+    {
+        foreach ($this->getResult()['choices'] as $choice) {
+            if (!empty($choice['chosen'])) {
+                return $choice['choice'];
+            }
+        }
+
+        return null;
     }
 }

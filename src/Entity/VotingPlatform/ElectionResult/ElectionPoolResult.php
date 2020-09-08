@@ -182,4 +182,12 @@ class ElectionPoolResult
     {
         return $this->candidateGroupResults->matching(Criteria::create()->orderBy(['total' => 'DESC']))->toArray();
     }
+
+    /**
+     * @return CandidateGroupResult[]
+     */
+    public function getCandidateGroupResults(): array
+    {
+        return $this->candidateGroupResults->toArray();
+    }
 }

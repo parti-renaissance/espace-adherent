@@ -32,6 +32,13 @@ class ElectionPool
     private $title;
 
     /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $code;
+
+    /**
      * @var Election
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="electionPools")
@@ -63,9 +70,10 @@ class ElectionPool
      */
     private $electionRounds;
 
-    public function __construct(string $title)
+    public function __construct(string $title, string $code)
     {
         $this->title = $title;
+        $this->code = $code;
         $this->candidateGroups = new ArrayCollection();
         $this->electionRounds = new ArrayCollection();
     }

@@ -60,7 +60,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
                 'council' => $membership->getTerritorialCouncil(),
                 'quality' => $filter->getQuality(),
                 'membership_id' => $membership->getId(),
-                'gender' => $candidacy->isMale() ? Genders::FEMALE : Genders::MALE,
+                'gender' => $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE,
                 'qualities' => TerritorialCouncilQualityEnum::FORBIDDEN_TO_CANDIDATE,
             ])
             ->orderBy('adherent.lastName')

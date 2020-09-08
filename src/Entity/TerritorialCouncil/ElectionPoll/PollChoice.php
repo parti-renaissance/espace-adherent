@@ -4,6 +4,7 @@ namespace App\Entity\TerritorialCouncil\ElectionPoll;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -46,6 +47,8 @@ class PollChoice
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->electionPoll = $electionPoll;
         $this->value = $value;
+
+        $this->votes = new ArrayCollection();
     }
 
     public function getValue(): string

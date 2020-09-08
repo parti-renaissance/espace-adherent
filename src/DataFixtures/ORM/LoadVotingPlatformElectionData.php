@@ -180,23 +180,23 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     {
         $currentRound = $election->getCurrentRound();
 
-        $womanPool = new ElectionPool('Femme');
-        $manPool = new ElectionPool('Homme');
+        $femalePool = new ElectionPool('Femme', Genders::FEMALE);
+        $malePool = new ElectionPool('Homme', Genders::MALE);
 
-        $currentRound->addElectionPool($womanPool);
-        $currentRound->addElectionPool($manPool);
+        $currentRound->addElectionPool($femalePool);
+        $currentRound->addElectionPool($malePool);
 
-        $election->addElectionPool($womanPool);
-        $election->addElectionPool($manPool);
+        $election->addElectionPool($femalePool);
+        $election->addElectionPool($malePool);
 
         foreach ($this->getCandidates() as $candidate) {
             $group = new CandidateGroup();
             $group->addCandidate(clone $candidate);
 
-            if ($candidate->isWoman()) {
-                $womanPool->addCandidateGroup($group);
+            if ($candidate->isFemale()) {
+                $femalePool->addCandidateGroup($group);
             } else {
-                $manPool->addCandidateGroup($group);
+                $malePool->addCandidateGroup($group);
             }
         }
     }
@@ -310,7 +310,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $currentRound = $election->getCurrentRound();
 
         foreach ($pools as $key => $candidacies) {
-            $pool = new ElectionPool($this->getTranslator()->trans('territorial_council.membership.qualities.'.$key));
+            $pool = new ElectionPool($this->getTranslator()->trans('territorial_council.membership.qualities.'.$key), $key);
 
             foreach ($candidacies as $candidacy) {
                 /** @var Candidacy $candidacy */

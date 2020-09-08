@@ -89,12 +89,7 @@ class BaseCandidacy implements CandidacyInterface
 
     public function getCivility(): string
     {
-        return $this->isMale() ? 'M.' : 'Mme.';
-    }
-
-    public function isMale(): bool
-    {
-        return Genders::MALE === $this->gender;
+        return $this->isFemale() ? 'Mme.' : 'M.';
     }
 
     public function isFemale(): bool

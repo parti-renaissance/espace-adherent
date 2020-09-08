@@ -91,6 +91,16 @@ class ElectionResult
     }
 
     /**
+     * @return CandidateGroupResult[]
+     */
+    public function getCandidateGroupResults(): array
+    {
+        return array_merge(...$this->electionRoundResults->map(function (ElectionRoundResult $result) {
+            return $result->getCandidateGroupResults();
+        })->toArray());
+    }
+
+    /**
      * @return ElectionPool[]
      */
     public function getNotElectedPools(ElectionRound $currentRound): array

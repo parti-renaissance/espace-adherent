@@ -23,6 +23,7 @@ use App\Repository\TerritorialCouncil\ElectionRepository as TerritorialCouncilEl
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
+use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
@@ -153,6 +154,11 @@ class VotingPlatformConfigureCommand extends Command
                 $election = $election = $this->createNewElection($designation);
                 $election->getElectionEntity()->setTerritorialCouncil($coTerr);
 
+                if (($poll = $coTerrElection->getElectionPoll()) && $choice = $poll->getTopChoice()) {
+                    $election->setAdditionalPlaces($choice->getValue());
+                    $election->setAdditionalPlacesGender($poll->getGender());
+                }
+
                 $this->configureNewElectionForTerritorialCouncil($election, $coTerrElection);
             }
 
@@ -213,7 +219,10 @@ class VotingPlatformConfigureCommand extends Command
             }
 
             if (!isset($pools[$candidacy->getQuality()])) {
-                $pools[$candidacy->getQuality()] = new ElectionPool($this->translator->trans('territorial_council.membership.qualities.'.$candidacy->getQuality()));
+                $pools[$candidacy->getQuality()] = new ElectionPool(
+                    $this->translator->trans('territorial_council.membership.qualities.'.$quality = $candidacy->getQuality()),
+                    $quality
+                );
             }
 
             $pools[$candidacy->getQuality()]->addCandidateGroup($group);
@@ -246,8 +255,8 @@ class VotingPlatformConfigureCommand extends Command
         // Create candidates groups
         $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $election->getDesignation());
 
-        $womanPool = new ElectionPool(ElectionPoolTitleEnum::WOMAN);
-        $manPool = new ElectionPool(ElectionPoolTitleEnum::MAN);
+        $femalePool = new ElectionPool(ElectionPoolTitleEnum::WOMAN, Genders::FEMALE);
+        $malePool = new ElectionPool(ElectionPoolTitleEnum::MAN, Genders::MALE);
 
         foreach ($candidacies as $candidacy) {
             $adherent = $candidacy->getCommitteeMembership()->getAdherent();
@@ -263,21 +272,21 @@ class VotingPlatformConfigureCommand extends Command
             $candidate->setImagePath($candidacy->getImagePath());
             $candidate->setBiography($candidacy->getBiography());
 
-            if ($candidate->isWoman()) {
-                $womanPool->addCandidateGroup($group);
+            if ($candidate->isFemale()) {
+                $femalePool->addCandidateGroup($group);
             } else {
-                $manPool->addCandidateGroup($group);
+                $malePool->addCandidateGroup($group);
             }
         }
 
-        if ($womanPool->getCandidateGroups()) {
-            $electionRound->addElectionPool($womanPool);
-            $election->addElectionPool($womanPool);
+        if ($femalePool->getCandidateGroups()) {
+            $electionRound->addElectionPool($femalePool);
+            $election->addElectionPool($femalePool);
         }
 
-        if ($manPool->getCandidateGroups()) {
-            $electionRound->addElectionPool($manPool);
-            $election->addElectionPool($manPool);
+        if ($malePool->getCandidateGroups()) {
+            $electionRound->addElectionPool($malePool);
+            $election->addElectionPool($malePool);
         }
 
         $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
@@ -367,11 +376,6 @@ class VotingPlatformConfigureCommand extends Command
         }
 
         return true;
-    }
-
-    private function notifyVoters(array $adherents, Designation $designation, \Closure $eventFactoryCallback): void
-    {
-        $this->dispatcher->dispatch(Events::VOTE_OPEN, $eventFactoryCallback($adherents, $designation));
     }
 
     /** @required */

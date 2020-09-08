@@ -24,9 +24,11 @@
                             </div>
                             {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
                             {% if candidate_group %}
-                                {% for candidate in candidate_group.candidates %}
+                                {% set candidates = candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+
+                                {% for candidate in candidates %}
                                 <div class="b__nudge--bottom-small">
-                                    <h3 class="text--medium">{{ candidate.fullName }}<span class="candidate-gender l__col l__col--center">{{ candidate.isMan ? 'H' : 'F' }}</span></h3>
+                                    <h3 class="text--medium">{{ candidate.fullName }}<span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span></h3>
                                 </div>
                                 {% endfor %}
                             {% else %}
