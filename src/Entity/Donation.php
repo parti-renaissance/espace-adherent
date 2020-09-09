@@ -175,6 +175,13 @@ class Donation implements GeoPointInterface
     private $comment;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $beneficiary;
+
+    /**
      * @var Donator|null
      *
      * @ORM\ManyToOne(targetEntity="Donator", inversedBy="donations")
@@ -599,5 +606,15 @@ class Donation implements GeoPointInterface
     public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
+    }
+
+    public function setBeneficiary(string $beneficiary = null): void
+    {
+        $this->beneficiary = $beneficiary;
+    }
+
+    public function getBeneficiary(): ?string
+    {
+        return $this->beneficiary;
     }
 }
