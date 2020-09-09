@@ -185,14 +185,29 @@
                     '{{ algolia_blacklist|base64_encode }}'
                 );
 
-                var navDropdown = dom('.nav-dropdown__name');
-                if (navDropdown) {
-                    on(navDropdown, 'click', function (e) {
-                        e.preventDefault();
-                        var nav = dom('.em-nav-dropdown');
-                        nav.style.display = nav.style.display == 'block' ? 'none' : 'block';
+                Kernel.onLoad(function() {
+                    findAll(document, '.em-dropdown--trigger').forEach(function(wrapper) {
+                        on(wrapper, 'click', function(event) {
+                            event.stopPropagation();
+
+                            var element = find(wrapper.parentNode, '.em-dropdown--container');
+
+                            if (element) {
+                                if (hasClass(element, 'em-dropdown__displayed')) {
+                                    removeClass(element, 'em-dropdown__displayed');
+                                } else {
+                                    addClass(element, 'em-dropdown__displayed');
+                                }
+                            }
+                        });
                     });
-                }
+
+                    on(document, 'click', function () {
+                        findAll(document, '.em-dropdown--container.em-dropdown__displayed').forEach(function (element) {
+                            removeClass(element, 'em-dropdown__displayed');
+                        });
+                    });
+                });
             });
         </script>
 

@@ -211,7 +211,6 @@
         }
     }
 
-
     &__content {
         display: flex;
         flex-direction: row;
@@ -238,6 +237,276 @@
             .btn {
                 margin-left: 10px;
             }
+        }
+    }
+}
+
+.manager-body {
+    position: relative;
+
+    @media (min-width: $tablet) {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+.manager-topbar {
+    position: relative;
+    z-index: 15;
+    box-sizing: border-box;
+    background-color: $white;
+    width: 100%;
+    height: 70px;
+    border-bottom: 1px solid $lines-grey;
+    font-family: $font-roboto;
+
+    &__container {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        max-width: calc(100% - 20px);
+        margin: 0 auto;
+
+        @media (min-width: $tablet) {
+            max-width: calc(100% - 60px);
+        }
+    }
+
+    .text--logo {
+        display: none;
+
+        @media (min-width: 1100px) {
+            display: block;
+        }
+    }
+
+    &__menu-mobile {
+        display: block;
+        position: relative;
+        box-sizing: border-box;
+        border-radius: 3px;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        border: 1px solid $lines-grey;
+        margin-right: 10px;
+
+        .burger {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 10px;
+            top: 13px;
+            span {
+                display: inline-block;
+                width: 20px;
+                height: 1px;
+                background-color: #a2a2a2;
+
+                &:nth-child(2) {
+                    margin: 5px 0;
+                }
+            }
+        }
+
+        @media (min-width: 1100px) {
+            display: none;
+        }
+    }
+
+    &__spaces {
+        width: 100%;
+        margin-right: 20px;
+
+        @media (min-width: $mobile) {
+            max-width: 290px;
+        }
+
+        &--content {
+            box-sizing: border-box;
+            height: 40px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            min-width: auto;
+            width: 100%;
+            padding: 0 35px 0 15px;
+            border: 1px solid $lines-grey;
+            cursor: pointer;
+            background: $white url('/images/icons/icn-form-switch.svg') no-repeat right 15px center;
+            transition: border-color 0.2s ease-in;
+            flex-shrink: 1;
+
+            &:hover,
+            &:active {
+                border-color: $neutral-grey;
+            }
+
+            ul {
+                width: 100%;
+
+                li a {
+                    border: none;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    display: block;
+                }
+            }
+
+            .current-space {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                display: block;
+                pointer-events: none;
+                width: 100%;
+
+                &:hover {
+                    color: $black;
+                }
+            }
+        }
+
+        .em-dropdown--container {
+            min-width: none;
+        }
+    }
+
+    &__area {
+        flex-grow: 1;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        color: $neutral-grey;
+        margin: 0 15px 0 0;
+        display: none;
+
+        @media (min-width: $mobile) {
+            display: block;
+        }
+    }
+
+    &__user {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+}
+
+.manager-sidebar {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    right: 0;
+    align-self: flex-start;
+    flex: 0 0 280px;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: $gray--lighter;
+    z-index: 10;
+
+    @media (min-width: 1100px) {
+        display: block !important;
+        position: sticky;
+        left: auto;
+        right: auto;
+    }
+
+    &__text {
+        padding: 0 30px;
+        font-size: 12px;
+        margin: 0 0 20px 0;
+        color: $neutral-grey;
+    }
+
+    &__menu {
+        padding: 30px 0;
+
+        ul {
+            font-family: $font-roboto;
+            margin-bottom: 25px;
+
+            li {
+                line-height: 28px;
+                margin: 6px 0;
+
+                &.menu-section {
+                    text-transform: uppercase;
+                    color: $neutral-grey;
+                    padding-left: 30px;
+                    font-size: 13px;
+                }
+
+                a {
+                    display: block;
+                    color: $silver-grey;
+                    text-decoration: none;
+                    border: none;
+                    padding-left: 30px;
+                    box-sizing: border-box;
+                    position: relative;
+                    font-weight: 500;
+
+                    &:hover {
+                        color: $black;
+                    }
+
+                    &.messaging {
+
+                        svg {
+                            vertical-align: text-top;
+                            margin-right: 8px;
+                        }
+
+                        &.adherent svg { fill: $blue--dark; }
+                        &.elected svg { fill: $orange; }
+                        &.council svg { fill: $green--territory; }
+                    }
+                }
+
+                &.active {
+                    a {
+                        color: $black;
+
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            width: 4px;
+                            top: 0;
+                            left: 0;
+                            bottom: 0;
+                            background-color: $turquoise;
+                        }
+
+                        &.messaging {
+                            &.adherent { color: $blue--dark; &:before { background-color: $blue--dark; } }
+                            &.elected { color: $orange; &:before { background-color: $orange; } }
+                            &.council { color: $green--territory; &:before { background-color: $green--territory; } }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.manager-content {
+    flex-grow: 1;
+    padding: 50px 0;
+
+    &__container {
+        width: calc(100% - 40px);
+        margin: 0 auto;
+
+        @media (min-width: $tablet) {
+            width: calc(100% - 100px);
         }
     }
 }

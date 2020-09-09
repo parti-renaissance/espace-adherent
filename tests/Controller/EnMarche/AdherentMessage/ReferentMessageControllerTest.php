@@ -22,7 +22,8 @@ class ReferentMessageControllerTest extends WebTestCase
         );
         $crawler = $this->client->followRedirect();
 
-        $crawler = $this->client->click($crawler->filter('div.direct-actions')->children()->eq(0)->link());
+        $crawler = $this->client->click($crawler->selectLink('Aux adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('+ Nouveau message')->link());
 
         $this->client->submit($crawler->selectButton('Suivant →')->form(['adherent_message' => [
             'label' => 'test',
