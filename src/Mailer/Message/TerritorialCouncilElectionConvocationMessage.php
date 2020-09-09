@@ -24,7 +24,7 @@ class TerritorialCouncilElectionConvocationMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            sprintf('[Désignations] Convocation au Conseil territorial du %s', self::dateToString($designation->getVoteStartDate())),
+            sprintf('[Désignations] Convocation au Conseil territorial du %s', self::dateToString($election->getMeetingStartDate())),
             [
                 'territorial_council_name' => $territorialCouncil->getName(),
                 'now' => self::formatDate(new \DateTime(), 'EEEE d MMMM y'),
