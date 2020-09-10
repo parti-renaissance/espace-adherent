@@ -12,8 +12,8 @@ class TerritorialCouncilDeputyHandler extends AbstractTerritorialCouncilElectedR
         return TerritorialCouncilQualityEnum::DEPUTY;
     }
 
-    protected function getMandateType(): string
+    protected function getMandateTypes(): array
     {
-        return MandateTypeEnum::DEPUTY;
+        return [MandateTypeEnum::DEPUTY];
     }
 }

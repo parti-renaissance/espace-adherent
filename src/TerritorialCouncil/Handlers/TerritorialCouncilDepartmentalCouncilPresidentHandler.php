@@ -25,8 +25,8 @@ class TerritorialCouncilDepartmentalCouncilPresidentHandler extends AbstractTerr
         return TerritorialCouncilQualityEnum::DEPARTMENTAL_COUNCIL_PRESIDENT;
     }
 
-    protected function getMandateType(): string
+    protected function getMandateTypes(): array
     {
-        return '';
+        return [];
     }
 }

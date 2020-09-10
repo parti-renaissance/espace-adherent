@@ -25,8 +25,8 @@ class TerritorialCouncilRegionalCouncilPresidentHandler extends AbstractTerritor
         return TerritorialCouncilQualityEnum::REGIONAL_COUNCIL_PRESIDENT;
     }
 
-    protected function getMandateType(): string
+    protected function getMandateTypes(): array
     {
-        return '';
+        return [];
     }
 }

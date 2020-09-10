@@ -43,8 +43,8 @@ abstract class AbstractTerritorialCouncilElectedRepresentativeHandler extends Ab
 
     public function supports(Adherent $adherent): bool
     {
-        $this->mandates = $this->mandateRepository->findByTypeAndUserListDefinitionForAdherent(
-            $this->getMandateType(),
+        $this->mandates = $this->mandateRepository->findByTypesAndUserListDefinitionForAdherent(
+            $this->getMandateTypes(),
             UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER,
             $adherent
         );
@@ -62,5 +62,5 @@ abstract class AbstractTerritorialCouncilElectedRepresentativeHandler extends Ab
         return $this->mandates[0]->getZone()->getName();
     }
 
-    abstract protected function getMandateType(): string;
+    abstract protected function getMandateTypes(): array;
 }

@@ -12,8 +12,8 @@ class TerritorialCouncilEuropeanDeputyHandler extends AbstractTerritorialCouncil
         return TerritorialCouncilQualityEnum::EUROPEAN_DEPUTY;
     }
 
-    protected function getMandateType(): string
+    protected function getMandateTypes(): array
     {
-        return MandateTypeEnum::EURO_DEPUTY;
+        return [MandateTypeEnum::EURO_DEPUTY];
     }
 }

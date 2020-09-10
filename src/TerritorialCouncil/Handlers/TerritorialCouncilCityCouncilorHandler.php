@@ -12,8 +12,8 @@ class TerritorialCouncilCityCouncilorHandler extends AbstractTerritorialCouncilE
         return TerritorialCouncilQualityEnum::CITY_COUNCILOR;
     }
 
-    protected function getMandateType(): string
+    protected function getMandateTypes(): array
     {
-        return MandateTypeEnum::CITY_COUNCIL;
+        return [MandateTypeEnum::CITY_COUNCIL, MandateTypeEnum::BOROUGH_COUNCIL];
     }
 }

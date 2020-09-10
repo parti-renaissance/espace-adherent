@@ -25,8 +25,8 @@ class TerritorialCouncilMayorHandler extends AbstractTerritorialCouncilElectedRe
         return TerritorialCouncilQualityEnum::MAYOR;
     }
 
-    protected function getMandateType(): string
+    protected function getMandateTypes(): array
     {
-        return '';
+        return [];
     }
 }
