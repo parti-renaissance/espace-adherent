@@ -6,7 +6,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use Ramsey\Uuid\Uuid;
 
-class TerritorialCouncilElectionConvocationMessage extends Message
+final class TerritorialCouncilElectionConvocationMessage extends Message
 {
     public static function create(
         TerritorialCouncil $territorialCouncil,

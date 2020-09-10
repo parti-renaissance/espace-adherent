@@ -11,10 +11,15 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ReferentTerritorialCouncilMessage extends AbstractAdherentMessage
+class ReferentTerritorialCouncilMessage extends AbstractAdherentMessage implements TransactionalMessageInterface
 {
     public function getType(): string
     {
         return AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL;
+    }
+
+    public function isSynchronized(): bool
+    {
+        return true;
     }
 }

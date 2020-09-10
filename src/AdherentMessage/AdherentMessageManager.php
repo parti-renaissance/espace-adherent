@@ -3,6 +3,8 @@
 namespace App\AdherentMessage;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\AdherentMessage\Sender\SenderInterface;
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -11,11 +13,14 @@ class AdherentMessageManager
 {
     private $em;
     private $eventDispatcher;
+    /** @var SenderInterface[] */
+    private $senders;
 
-    public function __construct(ObjectManager $em, EventDispatcherInterface $eventDispatcher)
+    public function __construct(ObjectManager $em, EventDispatcherInterface $eventDispatcher, iterable $senders)
     {
         $this->em = $em;
         $this->eventDispatcher = $eventDispatcher;
+        $this->senders = $senders;
     }
 
     public function saveMessage(AdherentMessageInterface $message): void
@@ -54,5 +59,31 @@ class AdherentMessageManager
         $message->updateFromDataObject($dataObject);
 
         $this->em->flush();
+    }
+
+    public function send(AdherentMessageInterface $message, array $recipients = []): bool
+    {
+        return ($sender = $this->getSender($message)) ? $sender->send($message, $recipients) : false;
+    }
+
+    public function sendTest(AdherentMessageInterface $message, Adherent $user): bool
+    {
+        return ($sender = $this->getSender($message)) ? $sender->sendTest($message, [$user]) : false;
+    }
+
+    public function getMessageContent(AdherentMessageInterface $message): string
+    {
+        return ($sender = $this->getSender($message)) ? $sender->renderMessage($message, [$message->getAuthor()]) : '';
+    }
+
+    private function getSender(AdherentMessageInterface $message): ?SenderInterface
+    {
+        foreach ($this->senders as $sender) {
+            if ($sender->supports($message)) {
+                return $sender;
+            }
+        }
+
+        return null;
     }
 }

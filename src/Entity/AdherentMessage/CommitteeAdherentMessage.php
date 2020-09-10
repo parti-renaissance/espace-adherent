@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class CommitteeAdherentMessage extends AbstractAdherentMessage
+class CommitteeAdherentMessage extends AbstractAdherentMessage implements CampaignAdherentMessageInterface
 {
     /**
      * @var bool

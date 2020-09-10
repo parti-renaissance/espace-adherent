@@ -6,7 +6,7 @@ use App\Entity\VotingPlatform\Vote;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-class VotingPlatformElectionVoteConfirmationMessage extends Message
+final class VotingPlatformElectionVoteConfirmationMessage extends Message
 {
     public static function create(Vote $vote, string $voterKey): self
     {

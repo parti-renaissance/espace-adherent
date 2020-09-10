@@ -24,6 +24,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailer.transport.rabbitmq_transactional"/>
             <argument type="service" id="app.mailer.message_factory.transactional"/>
+            <argument type="service" id="app.mailer.transactional_client"/>
         </service>
 
         <service id="app.mailer.transactional_client" class="App\Mandrill\EmailClient" public="false">
@@ -45,6 +46,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailer.transport.rabbitmq_campaign"/>
             <argument type="service" id="app.mailer.message_factory.campaign"/>
+            <argument type="service" id="app.mailer.campaign_client"/>
         </service>
 
         <service id="app.mailer.campaign_client" class="App\Mandrill\EmailClient" public="false">

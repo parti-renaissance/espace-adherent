@@ -144,7 +144,7 @@ MessageStatusLoader.propTypes = {
     api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
     messageId: PropTypes.string.isRequired,
     synchronized: PropTypes.bool,
-    recipientCount: PropTypes.integer,
+    recipientCount: PropTypes.number,
     withResetButton: PropTypes.bool,
     sendLocked: PropTypes.bool,
 };

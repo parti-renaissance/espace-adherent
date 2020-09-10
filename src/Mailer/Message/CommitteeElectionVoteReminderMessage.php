@@ -7,7 +7,7 @@ use App\Entity\Committee;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeElectionVoteReminderMessage extends Message
+final class CommitteeElectionVoteReminderMessage extends Message
 {
     public static function create(
         Adherent $adherent,

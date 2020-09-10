@@ -7,7 +7,7 @@ use App\Entity\VotingPlatform\Election;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-class VotingPlatformElectionVoteIsOpenMessage extends Message
+final class VotingPlatformElectionVoteIsOpenMessage extends Message
 {
     /**
      * @param Adherent[] $adherents

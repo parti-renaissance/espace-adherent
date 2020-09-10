@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ReferentElectedRepresentativeFilter extends AbstractElectedRepresentativeFilter
+class ReferentElectedRepresentativeFilter extends AbstractElectedRepresentativeFilter implements CampaignAdherentMessageFilterInterface
 {
     /**
      * @var ReferentTag|null

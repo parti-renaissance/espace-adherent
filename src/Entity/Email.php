@@ -88,9 +88,11 @@ class Email
             $recipients[] = $recipient->getFullName().' <'.$recipient->getEmailAddress().'>';
         }
 
+        $parts = explode('\\', \get_class($message));
+
         return new static(
             $message->getUuid(),
-            str_replace('App\\Mailer\\Message\\', '', \get_class($message)),
+            end($parts),
             $message->getReplyTo() ?? 'EnMarche',
             $recipients,
             $requestPayload

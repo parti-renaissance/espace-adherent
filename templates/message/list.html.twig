@@ -84,15 +84,17 @@
                             {% endif %}
 
                             {% if message.isSent %}
-                                {% set items = items|merge([{
-                                    href: 'javascript:void(0);',
-                                    label: 'Statistiques',
-                                    linkAttr: {
-                                        class: 'row-action text--blue--dark link--no-decor adherent-message-statistics-button',
-                                        'data-uuid': message.uuid,
-                                        'data-subject': message.subject
-                                    }
-                                }]) %}
+                                {% if message.isMailchimp %}
+                                    {% set items = items|merge([{
+                                        href: 'javascript:void(0);',
+                                        label: 'Statistiques',
+                                        linkAttr: {
+                                            class: 'row-action text--blue--dark link--no-decor adherent-message-statistics-button',
+                                            'data-uuid': message.uuid,
+                                            'data-subject': message.subject
+                                        }
+                                    }]) %}
+                                {% endif %}
                             {% else %}
                                 {% set items = items|merge([{
                                     href: path("app_message_#{message_type}_filter", message_route_params|merge({l: true})),
@@ -111,16 +113,21 @@
                                         linkAttr: {
                                             class: 'row-action text--blue--dark link--no-decor',
                                         }
-                                    },
-                                    {
-                                        href: path("app_message_common_preview-on-mailchimp", message_route_params),
-                                        label: 'Obtenir le lien du message',
-                                        linkAttr: {
-                                            class: 'row-action text--blue--dark link--no-decor',
-                                            target: '_blank'
-                                        }
                                     }
                                 ]) %}
+
+                                {% if message.isMailchimp %}
+                                    {% set items = items|merge([
+                                        {
+                                            href: path("app_message_common_preview-on-mailchimp", message_route_params),
+                                            label: 'Obtenir le lien du message',
+                                            linkAttr: {
+                                                class: 'row-action text--blue--dark link--no-decor',
+                                                target: '_blank'
+                                            }
+                                        }
+                                    ]) %}
+                                {% endif %}
                             {% else %}
                                 {% set items = items|merge([{
                                     href: 'javascript:void(0);',

@@ -3,6 +3,7 @@
 namespace Tests\App\Test\Mailer;
 
 use App\Mailer\EmailClientInterface;
+use App\Mailer\EmailTemplateInterface;
 use Psr\Log\LoggerInterface;
 
 class NullEmailClient implements EmailClientInterface
@@ -21,5 +22,24 @@ class NullEmailClient implements EmailClientInterface
         }
 
         return 'Delivered using NULL client';
+    }
+
+    public function renderEmail(EmailTemplateInterface $email): string
+    {
+        return '
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Email template</title>
+            </head>
+            <body bgcolor="#fff" style="text-align: center">
+                <div>
+                    <h1>Email content</h1>
+                    <small>With ❤️ from NULL client</small>
+                </div>            
+            </body>
+            </html>
+        ';
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class MunicipalChiefFilter extends AbstractAdherentMessageFilter
+class MunicipalChiefFilter extends AbstractAdherentMessageFilter implements CampaignAdherentMessageFilterInterface
 {
     /**
      * @var string|null
