@@ -2,16 +2,24 @@
 
 namespace Tests\App\Test\Mailer;
 
-use App\Mailer\AbstractEmailClient;
 use App\Mailer\EmailClientInterface;
+use App\Mailer\EmailTemplateInterface;
 use App\Mailer\Exception\MailerException;
+use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class DummyEmailClient extends AbstractEmailClient implements EmailClientInterface
+class DummyEmailClient implements EmailClientInterface
 {
+    private $httpClient;
+
+    public function __construct(HttpClientInterface $httpClient)
+    {
+        $this->httpClient = $httpClient;
+    }
+
     public function sendEmail(string $email): string
     {
-        $response = $this->request('POST', 'send', [
+        $response = $this->httpClient->request('POST', 'send', [
             'body' => $email,
         ]);
 
@@ -20,5 +28,10 @@ class DummyEmailClient extends AbstractEmailClient implements EmailClientInterfa
         }
 
         return (string) $response->getBody();
+    }
+
+    public function renderEmail(EmailTemplateInterface $email): string
+    {
+        return '<h1>Email content</h1>';
     }
 }

@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Ramsey\Uuid\Uuid;
 
-class TerritorialCouncilCandidacyInvitationDeclinedMessage extends Message
+final class TerritorialCouncilCandidacyInvitationDeclinedMessage extends Message
 {
     public static function create(
         Adherent $invited,

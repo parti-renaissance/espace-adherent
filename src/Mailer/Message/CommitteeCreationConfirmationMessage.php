@@ -5,7 +5,7 @@ namespace App\Mailer\Message;
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeCreationConfirmationMessage extends Message
+final class CommitteeCreationConfirmationMessage extends Message
 {
     public static function create(Adherent $adherent, string $city): self
     {

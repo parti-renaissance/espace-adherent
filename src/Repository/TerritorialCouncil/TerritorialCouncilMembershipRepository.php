@@ -2,7 +2,6 @@
 
 namespace App\Repository\TerritorialCouncil;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\TerritorialCouncil\Candidacy;
@@ -77,9 +76,13 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function searchByFilter(MembersListFilter $filter, int $page = 1, int $limit = 50): PaginatorInterface
+    public function searchByFilter(MembersListFilter $filter, int $page = 1, ?int $limit = 50): iterable
     {
-        return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
+        if ($limit) {
+            return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
+        }
+
+        return $this->createFilterQueryBuilder($filter)->getQuery()->getResult();
     }
 
     public function countForReferentTags(array $referentTags): int

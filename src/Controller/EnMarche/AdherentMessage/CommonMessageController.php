@@ -2,9 +2,9 @@
 
 namespace App\Controller\EnMarche\AdherentMessage;
 
+use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\StatisticsAggregator;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
-use App\Mailchimp\Manager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +33,10 @@ class CommonMessageController extends AbstractController
      */
     public function getStatisticsAction(AbstractAdherentMessage $message, StatisticsAggregator $aggregator): Response
     {
+        if (!$message->isMailchimp()) {
+            throw $this->createNotFoundException();
+        }
+
         return $this->json($aggregator->aggregateData($message));
     }
 
@@ -41,9 +45,11 @@ class CommonMessageController extends AbstractController
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
-    public function getMessageTemplateAction(AbstractAdherentMessage $message, Manager $manager): Response
-    {
-        return new Response($manager->getCampaignContent(current($message->getMailchimpCampaigns())));
+    public function getMessageTemplateAction(
+        AbstractAdherentMessage $message,
+        AdherentMessageManager $manager
+    ): Response {
+        return new Response($manager->getMessageContent($message));
     }
 
     /**
@@ -53,6 +59,10 @@ class CommonMessageController extends AbstractController
      */
     public function previewOnMailchimpAction(AbstractAdherentMessage $message): Response
     {
+        if (!$message->isMailchimp()) {
+            throw $this->createNotFoundException();
+        }
+
         if (!$message->isSynchronized()) {
             throw $this->createNotFoundException();
         }

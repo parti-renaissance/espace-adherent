@@ -7,7 +7,7 @@ use App\Entity\Committee;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Ramsey\Uuid\Uuid;
 
-class CommitteeElectionCandidacyPeriodIsOverMessage extends Message
+final class CommitteeElectionCandidacyPeriodIsOverMessage extends Message
 {
     public static function create(
         Adherent $adherent,

@@ -26,6 +26,7 @@ class LoadAdherentMessageData extends Fixture
         foreach ($this->getMessageClasses() as $class) {
             for ($i = 1; $i <= 100; ++$i) {
                 /** @var AdherentMessageInterface $message */
+                /** @var AdherentMessageInterface $class */
                 $message = $class::createFromAdherent($this->getAuthor($class));
 
                 $message->setContent($faker->randomHtml());

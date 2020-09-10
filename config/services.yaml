@@ -53,9 +53,14 @@ services:
             tags: ['app.adherent.unregistration.handler']
         App\Adherent\Certification\Handlers\CertificationRequestHandlerInterface:
             tags: ['app.adherent.certification_request.handler']
+        App\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
+            tags: [ 'app.adherent_message.mailchimp.campaign.handler' ]
+        App\AdherentMessage\TransactionalMessage\MessageModifier\MessageModifierInterface:
+            tags: [ 'app.adherent_message.transaction.message_modifier' ]
+        App\AdherentMessage\Sender\SenderInterface:
+            tags: [ 'app.adherent_message.sender' ]
         App\TerritorialCouncil\Handlers\TerritorialCouncilMembershipHandlerInterface:
-            tags:
-                - { name: 'app.adherent.territorial_council_membership.handler' }
+            tags: ['app.adherent.territorial_council_membership.handler']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
 
@@ -64,6 +69,8 @@ services:
         resource: '../src/Adherent/Unregistration/Handlers/'
     App\Adherent\Certification\:
         resource: '../src/Adherent/Certification'
+    App\AdherentMessage\:
+        resource: '../src/AdherentMessage'
     App\Command\:
         resource: '../src/Command/*'
     App\Form\:
@@ -91,6 +98,27 @@ services:
     App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.territorial_council_membership.handler'
+
+    App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
+        arguments: [ !tagged 'app.adherent_message.mailchimp.campaign.handler' ]
+
+    App\AdherentMessage\Listener\UpdateTransactionalAdherentMessageDataListener:
+        arguments: [ !tagged 'app.adherent_message.transaction.message_modifier' ]
+
+    App\AdherentMessage\AdherentMessageManager:
+        arguments:
+            $senders: !tagged 'app.adherent_message.sender'
+
+    App\AdherentMessage\MessageLimiter:
+        arguments:
+            -
+                referent: '%adherent_message_referent_limit%'
+                committee: '%adherent_message_committee_limit%'
+                deputy: '%adherent_message_deputy_limit%'
+                senator: '%adherent_message_senator_limit%'
+
+    App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
+        tags: ['doctrine.event_subscriber']
 
     # Form
     App\Form\PurifiedTextareaType:

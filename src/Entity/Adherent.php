@@ -2298,6 +2298,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         });
     }
 
+    public function hasDelegatedFromUser(self $delegator, string $access = null): bool
+    {
+        /** @var DelegatedAccess $delegatedAccess */
+        foreach ($this->getReceivedDelegatedAccesses() as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator() === $delegator && (!$access || \in_array($access, $delegatedAccess->getAccesses(), true))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function isSenatorialCandidate(): bool
     {
         return $this->senatorialCandidateManagedArea instanceof SenatorialCandidateManagedArea;

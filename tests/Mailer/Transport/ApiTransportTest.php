@@ -21,7 +21,7 @@ class ApiTransportTest extends TestCase
         $httpClient = $this->getMockBuilder(HttpClientInterface::class)->getMock();
         $httpClient->expects($this->once())->method('request')->willReturn(new HttpResponse(400));
 
-        $client = new DummyEmailClient($httpClient, 'public-key', 'private-key');
+        $client = new DummyEmailClient($httpClient);
         $transport = new ApiTransport($client);
         $transport->sendTemplateEmail($this->createDummyEmail());
     }
@@ -46,13 +46,12 @@ EOF;
             ->expects($this->once())
             ->method('request')
             ->with('POST', 'send', [
-                'auth' => ['public-key', 'private-key'],
                 'body' => json_encode($email->getBody()),
             ])
             ->willReturn(new HttpResponse(200, [], $body))
         ;
 
-        $client = new DummyEmailClient($httpClient, 'public-key', 'private-key');
+        $client = new DummyEmailClient($httpClient);
         $transport = new ApiTransport($client);
         $transport->sendTemplateEmail($email);
 

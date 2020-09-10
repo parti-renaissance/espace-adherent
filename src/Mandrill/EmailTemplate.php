@@ -16,7 +16,7 @@ final class EmailTemplate extends AbstractEmailTemplate
 
         $body = [
             'template_name' => $this->template,
-            'template_content' => [],
+            'template_content' => array_map([$this, 'makeMergeFieldStructure'], array_keys($this->templateContent), $this->templateContent),
             'message' => [
                 'subject' => $this->subject,
                 'from_email' => $this->senderEmail,

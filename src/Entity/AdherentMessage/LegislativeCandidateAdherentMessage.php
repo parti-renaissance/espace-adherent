@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class LegislativeCandidateAdherentMessage extends AbstractAdherentMessage
+class LegislativeCandidateAdherentMessage extends AbstractAdherentMessage implements CampaignAdherentMessageInterface
 {
     public function getType(): string
     {

@@ -10,9 +10,10 @@ use App\AdherentMessage\Filter\FilterFactory;
 use App\AdherentMessage\Filter\FilterFormFactory;
 use App\Controller\CanaryControllerTrait;
 use App\Controller\EnMarche\AccessDelegatorTrait;
+use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Form\AdherentMessage\AdherentMessageType;
-use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractMessageController extends Controller
 {
@@ -217,9 +219,8 @@ abstract class AbstractMessageController extends Controller
      * @Security("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)")
      */
     public function sendMessageAction(
-        Request $request,
         AbstractAdherentMessage $message,
-        Manager $manager,
+        AdherentMessageManager $manager,
         ObjectManager $entityManager
     ): Response {
         $this->checkAccess();
@@ -236,7 +237,7 @@ abstract class AbstractMessageController extends Controller
             throw new BadRequestHttpException('This message has been already sent.');
         }
 
-        if ($manager->sendCampaign($message)) {
+        if ($manager->send($message, $this->getMessageRecipients($message))) {
             $message->markAsSent();
             $entityManager->flush();
 
@@ -252,9 +253,14 @@ abstract class AbstractMessageController extends Controller
      * @Route("/{uuid}/tester", name="test", methods={"GET"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
+     *
+     * @param Adherent $user
      */
-    public function sendTestMessageAction(AbstractAdherentMessage $message, Manager $manager): Response
-    {
+    public function sendTestMessageAction(
+        UserInterface $user,
+        AbstractAdherentMessage $message,
+        AdherentMessageManager $manager
+    ): Response {
         $this->checkAccess();
 
         if (!$message->isSynchronized()) {
@@ -262,7 +268,7 @@ abstract class AbstractMessageController extends Controller
         }
 
         // we send test message to the current user, not the delegator if present
-        if ($manager->sendTestCampaign($message, [$this->getUser()->getEmailAddress()])) {
+        if ($manager->sendTest($message, $user)) {
             $this->addFlash('info', 'adherent_message.test_campaign_sent_successfully');
         } else {
             $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
@@ -299,5 +305,10 @@ abstract class AbstractMessageController extends Controller
     protected function isCanary(): bool
     {
         return false;
+    }
+
+    protected function getMessageRecipients(AdherentMessageInterface $message): array
+    {
+        return [];
     }
 }

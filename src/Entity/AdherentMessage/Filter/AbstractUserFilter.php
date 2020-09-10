@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface
+abstract class AbstractUserFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface, CampaignAdherentMessageFilterInterface
 {
     use AdherentSegmentAwareFilterTrait;
 

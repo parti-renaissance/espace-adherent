@@ -16,15 +16,18 @@ class MailerService
     private $dispatcher;
     private $transport;
     private $factory;
+    private $emailClient;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         TransportInterface $transport,
-        EmailTemplateFactory $factory
+        EmailTemplateFactory $factory,
+        EmailClientInterface $emailClient
     ) {
         $this->dispatcher = $dispatcher;
         $this->transport = $transport;
         $this->factory = $factory;
+        $this->emailClient = $emailClient;
     }
 
     public function sendMessage(Message $message): bool
@@ -42,5 +45,10 @@ class MailerService
         }
 
         return $delivered;
+    }
+
+    public function renderMessage(Message $message): string
+    {
+        return $this->emailClient->renderEmail($this->factory->createFromMessage($message));
     }
 }

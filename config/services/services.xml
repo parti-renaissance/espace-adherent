@@ -231,15 +231,6 @@
         <service id="App\Security\QrCodeResponseFactory"/>
         <service id="App\Security\Voter\AdherentMessageLimitVoter" />
 
-        <service id="App\AdherentMessage\MessageLimiter">
-            <argument type="collection">
-                <argument key="referent">%adherent_message_referent_limit%</argument>
-                <argument key="committee">%adherent_message_committee_limit%</argument>
-                <argument key="deputy">%adherent_message_deputy_limit%</argument>
-                <argument key="senator">%adherent_message_senator_limit%</argument>
-            </argument>
-        </service>
-
         <!-- Serializer -->
         <service id="App\Serializer\CitizenProjectSerializerSubscriber">
             <tag name="jms_serializer.event_subscriber" />
@@ -529,11 +520,6 @@
             <argument type="service" key="$sectionBuildersLocator" id="app.mailchimp.content_section_builders_locator" />
         </service>
 
-        <service id="App\AdherentMessage\Listener\CreateDefaultMessageFilterSubscriber" />
-        <service id="App\AdherentMessage\AdherentMessageManager" />
-
-        <service id="App\AdherentMessage\Filter\FilterFormFactory" />
-
         <service id="App\Mailchimp\Campaign\MailchimpObjectIdMapping">
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_NEWSLETTER_LIST_ID)%</argument>
@@ -555,12 +541,6 @@
         <service id="App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber" />
         <service id="App\Mailchimp\Campaign\Listener\SynchroniseCampaignSegmentsSubscriber" />
         <service id="App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber" />
-
-        <service id="App\AdherentMessage\Listener\CreateStaticSegmentListener" />
-
-        <service id="App\AdherentMessage\Listener\AdherentMessageChangeSubscriber">
-            <tag name="doctrine.event_subscriber"/>
-        </service>
 
         <service id="App\Normalizer\UuidNormalizer" />
 

@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class CitizenProjectFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface
+class CitizenProjectFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface, CampaignAdherentMessageFilterInterface
 {
     use AdherentSegmentAwareFilterTrait;
 

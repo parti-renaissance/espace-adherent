@@ -7,7 +7,7 @@ use App\Entity\VotingPlatform\Election;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-class VotingPlatformElectionSecondRoundNotificationMessage extends Message
+final class VotingPlatformElectionSecondRoundNotificationMessage extends Message
 {
     /**
      * @param Adherent[] $adherents

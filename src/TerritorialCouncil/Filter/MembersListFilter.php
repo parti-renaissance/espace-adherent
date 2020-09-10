@@ -14,7 +14,7 @@ class MembersListFilter
      *
      * @Assert\NotNull
      */
-    private $referentTags = [];
+    private $referentTags;
 
     /**
      * @var string|null
