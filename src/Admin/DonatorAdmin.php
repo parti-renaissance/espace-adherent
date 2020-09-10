@@ -508,6 +508,6 @@ class DonatorAdmin extends AbstractAdmin
     {
         parent::prePersist($donator);
 
-        $donator->setIdentifier($this->donatorManager->incrementeIdentifier(false));
+        $donator->setIdentifier($this->donatorManager->incrementIdentifier(false));
     }
 }

@@ -132,7 +132,7 @@ class DonatorSynchronizeCommand extends Command
             $donation->getEmailAddress()
         );
 
-        $donator->setIdentifier($this->donatorManager->incrementeIdentifier());
+        $donator->setIdentifier($this->donatorManager->incrementIdentifier());
 
         return $donator;
     }
