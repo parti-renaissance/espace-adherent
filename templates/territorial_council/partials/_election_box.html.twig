@@ -16,18 +16,20 @@
             La date du Conseil territorial n'a pas encore été fixée par votre référent
         {% else %}
             {% if election.isOnlineMode %}
-                Le Conseil territorial se tiendra en ligne
+                Le Conseil territorial se tiendra en ligne du {{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }} au
+                {{ election.meetingEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}. <a href="{{ election.meetingUrl }}" class="link--no-decor text--blue--dark text--normal" target="_blank">Rejoindre la réunion</a>.
             {% else %}
                 Le Conseil territorial se tiendra le {{ election.meetingStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }} au
-                <a href="https://www.google.fr/maps/place/'{{ election.address }},+{{ election.postalCode }}+{{ election.cityName }}'" class="link--no-decor text--blue--dark text--normal">{{ election.inlineFormattedAddress }}</a>. Le vote sera ouvert
+                <a href="https://www.google.fr/maps/place/'{{ election.address }},+{{ election.postalCode }}+{{ election.cityName }}'" class="link--no-decor text--blue--dark text--normal">{{ election.inlineFormattedAddress }}</a>.
             {% endif %}
-                du {{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }} au {{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}.
+
+            Le vote sera ouvert du {{ election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }} au {{ election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}.
         {% endif %}
     </p>
 
     <hr/>
 
-    <div class="text--body l__row l__row--wrap">
+    <div class="text--body l__row l__row--wrap b__nudge--top">
         {% if election.isCandidacyPeriodActive %}
             {% if able_to_candidate %}
                 {% if candidacy %}
