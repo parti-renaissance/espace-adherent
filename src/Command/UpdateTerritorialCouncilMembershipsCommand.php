@@ -71,9 +71,15 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
 
         do {
             foreach ($paginator->getIterator() as $adherent) {
-                $this->bus->dispatch(new AdherentUpdateTerritorialCouncilMembershipsCommand(
-                    $adherent->getUuid()
-                ));
+                try {
+                    $this->bus->dispatch(new AdherentUpdateTerritorialCouncilMembershipsCommand(
+                        $adherent->getUuid()
+                    ));
+                } catch (\AMQPException $exception) {
+                    $this->bus->dispatch(new AdherentUpdateTerritorialCouncilMembershipsCommand(
+                        $adherent->getUuid()
+                    ));
+                }
                 $this->io->progressAdvance();
                 ++$offset;
 
