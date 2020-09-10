@@ -1,19 +1,14 @@
-<script type="text/javascript" src="https://chat-assets.frontapp.com/v1/chat.bundle.js"></script>
-<script type="text/javascript">
-   window.FrontChat('init', {
-       chatId: '5948bc2257782fa73315504156448cac',
-       useDefaultLauncher: true
-   });
-</script>
 <script>
     var botmindWidget;
 
     function initBotmindChat() {
-        botmindWidget.init({
-            token: '0f805b22-3f7f-42f3-945e-c2904c8b1c9e',
-            host: 'https://api.widget.botmind.io',
-            language: 'fr',
-        })
+        if (botmindWidget !== undefined) {
+            botmindWidget.init({
+                token: '0f805b22-3f7f-42f3-945e-c2904c8b1c9e',
+                host: 'https://api.widget.botmind.io',
+                language: 'fr',
+            }).catch(function(error) {});
+        }
     }
 
     function initialize(i,t) {
