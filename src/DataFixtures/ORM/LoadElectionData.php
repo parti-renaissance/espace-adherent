@@ -156,7 +156,7 @@ REQUESTCONTENT
             'round-2-legislatives',
         );
 
-        $nextTime = new \DateTime('+2 hours');
+        $nextTime = new \DateTime();
         $municipalElections = $this->createElection(
             'Élections municipales',
             <<<INTRODUCTION

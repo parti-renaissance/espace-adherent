@@ -150,13 +150,49 @@
                         {% endif %}
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
-                    <p class="text--small text--dark instance__elections-box--text">
-                        {% if voting_platform_election.getElectionResult %}
+                    {% if voting_platform_election.getElectionResult %}
+                        <p class="text--small text--dark instance__elections-box--text">
                             Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
-                        {% else %}
+                        </p>
+
+                        {% set election_result = voting_platform_election.electionResult %}
+                        {% set elected_pool_results = election_result.electedPoolResults %}
+
+                        {% import 'voting_platform/_macros.html.twig' as helper %}
+
+                        <div class="l__row b__nudge--top">
+                            {% for pool_result in elected_pool_results|sort((a, b) => a.electionPool.code <=> b.electionPool.code) %}
+                                {% set candidate_group_result = pool_result.electedCandidateGroupResult %}
+                                {% set candidate_group = candidate_group_result.candidateGroup %}
+                                {% set candidate = candidate_group.candidates|first %}
+
+                                <div class="l__col l__col--half">
+                                    <div class="l__row">
+                                        <div class="candidate-photo avatar-initials avatar--large avatar--style-01">
+                                            {{ helper.display_candidate_photo(candidate) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="l__row">
+                                        {{ candidate.fullName }}
+                                        <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
+                                    </div>
+
+                                    <div>
+                                        <strong>{{ candidate_group_result.rate }}% des voix</strong> <span class="text--muted">({{ candidate_group_result.total }} bulltin{{ candidate_group_result.total > 1 ? 's' }})</span>
+                                    </div>
+
+                                    <div class="elected-tag text--body text--on-yellow text--bold b__nudge--left-small">
+                                        Adhérent{{ candidate.isFemale ? 'e' }} désigné{{ candidate.isFemale ? 'e' }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text--small text--dark instance__elections-box--text">
                             Le dépouillement est en cours, encore quelques secondes !
-                        {% endif %}
-                    </p>
+                        </p>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         {% endif %}
