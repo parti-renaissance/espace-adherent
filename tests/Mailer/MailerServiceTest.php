@@ -36,9 +36,9 @@ class MailerServiceTest extends TestCase
             new EmailTemplateFactory(
                 'contact@en-marche.fr',
                 'En Marche',
-                DummyEmailTemplate::class,
-                $this->createPartialMock(EmailClientInterface::class)
-            )
+                DummyEmailTemplate::class
+            ),
+            $this->createMock(EmailClientInterface::class)
         );
 
         $this->assertTrue($service->sendMessage(DummyMessage::create()));
@@ -65,7 +65,8 @@ class MailerServiceTest extends TestCase
                 'contact@en-marche.fr',
                 'En Marche',
                 DummyEmailTemplate::class
-            )
+            ),
+            $this->createMock(EmailClientInterface::class)
         );
 
         $this->assertFalse($service->sendMessage(DummyMessage::create()));
