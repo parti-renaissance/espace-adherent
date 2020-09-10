@@ -64,7 +64,7 @@ class DonationRequestHandler
     private function createDonator(DonationRequest $donationRequest): Donator
     {
         $donator = $this->donatorFactory->createFromDonationRequest($donationRequest);
-        $donator->setIdentifier($this->donatorManager->incrementeIdentifier());
+        $donator->setIdentifier($this->donatorManager->incrementIdentifier());
 
         return $donator;
     }

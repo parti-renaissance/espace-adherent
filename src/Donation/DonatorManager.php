@@ -17,7 +17,7 @@ class DonatorManager
         $this->donatorIdentifierRepository = $donatorIdentifierRepository;
     }
 
-    public function incrementeIdentifier(bool $flush = true): ?string
+    public function incrementIdentifier(bool $flush = true): ?string
     {
         $identifier = $this->findLastIdentifier();
         $identifier->setIdentifier($this->getNextAccountId($identifier->getIdentifier()));
