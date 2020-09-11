@@ -11,7 +11,7 @@ use Symfony\Component\Intl\Intl;
 trait EntityNullablePostAddressTrait
 {
     /**
-     * @ORM\Embedded(class="NullablePostAddress", columnPrefix="address_")
+     * @ORM\Embedded(class="App\Entity\NullablePostAddress", columnPrefix="address_")
      *
      * @var NullablePostAddress
      */
