@@ -12,6 +12,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class TerritorialCouncilRepository extends ServiceEntityRepository
@@ -90,6 +91,25 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
             ->setParameter('committees', $committees)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function createQueryBuilderWithReferentTagsCondition(array $referentTags): QueryBuilder
+    {
+        $tagCondition = 'tag IN (:tags)';
+
+        foreach ($referentTags as $referentTag) {
+            if ('75' === $referentTag->getCode()) {
+                $tagCondition = "(tag IN (:tags) OR tag.name LIKE '%Paris%')";
+
+                break;
+            }
+        }
+
+        return $this->createQueryBuilder('tc')
+            ->innerJoin('tc.referentTags', 'tag')
+            ->where($tagCondition)
+            ->setParameter('tags', $referentTags)
         ;
     }
 }

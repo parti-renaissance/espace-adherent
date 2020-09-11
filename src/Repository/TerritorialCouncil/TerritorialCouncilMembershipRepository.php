@@ -87,9 +87,14 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
 
     public function countForReferentTags(array $referentTags): int
     {
-        return (int) $this
-            ->createQueryBuilderWithReferentTagsCondition($referentTags)
+        $qb = $this
+            ->createQueryBuilder('tcm')
             ->select('COUNT(1)')
+            ->innerJoin('tcm.territorialCouncil', 'territorial_council')
+        ;
+
+        return (int) $this
+            ->bindReferentTagsCondition($qb, $referentTags)
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -100,7 +105,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         return $this->createFilterQueryBuilder($filter)->getQuery()->getResult();
     }
 
-    private function createQueryBuilderWithReferentTagsCondition(array $referentTags): QueryBuilder
+    private function bindReferentTagsCondition(QueryBuilder $qb, array $referentTags): QueryBuilder
     {
         $tagCondition = 'referentTag IN (:tags)';
         foreach ($referentTags as $referentTag) {
@@ -111,9 +116,8 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
             }
         }
 
-        return $this->createQueryBuilder('tcm')
-            ->innerJoin('tcm.territorialCouncil', 'territorialCouncil')
-            ->innerJoin('territorialCouncil.referentTags', 'referentTag')
+        return $qb
+            ->innerJoin('territorial_council.referentTags', 'referentTag')
             ->andWhere($tagCondition)
             ->setParameter('tags', $referentTags)
         ;
@@ -122,11 +126,16 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
     private function createFilterQueryBuilder(MembersListFilter $filter): QueryBuilder
     {
         $qb = $this
-            ->createQueryBuilderWithReferentTagsCondition($filter->getReferentTags())
-            ->addSelect('tcm', 'adherent')
-            ->leftJoin('tcm.adherent', 'adherent')
+            ->createQueryBuilder('tcm')
+            ->addSelect('territorial_council')
+            ->innerJoin('tcm.adherent', 'adherent')
+            ->innerJoin('tcm.territorialCouncil', 'territorial_council')
             ->leftJoin('tcm.qualities', 'quality')
         ;
+
+        if ($filter->getReferentTags()) {
+            $this->bindReferentTagsCondition($qb, $filter->getReferentTags());
+        }
 
         if (false !== \strpos($filter->getSort(), '.')) {
             $sort = $filter->getSort();
@@ -135,6 +144,13 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         }
 
         $qb->orderBy($sort, 'd' === $filter->getOrder() ? 'DESC' : 'ASC');
+
+        if ($filter->getTerritorialCouncil()) {
+            $qb
+                ->andWhere('territorial_council = :territorial_council')
+                ->setParameter('territorial_council', $filter->getTerritorialCouncil())
+            ;
+        }
 
         if ($lastName = $filter->getLastName()) {
             $qb

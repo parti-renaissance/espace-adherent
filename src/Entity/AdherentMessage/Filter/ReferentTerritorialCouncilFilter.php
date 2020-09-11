@@ -3,7 +3,7 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use App\Entity\ReferentTag;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,26 +15,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ReferentTerritorialCouncilFilter extends AbstractAdherentMessageFilter
 {
     /**
-     * @var ReferentTag|null
+     * @var TerritorialCouncil|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil")
      *
      * @Assert\NotNull
      */
-    private $referentTag;
+    private $territorialCouncil;
 
-    public function __construct(ReferentTag $referentTag = null)
+    public function getTerritorialCouncil(): ?TerritorialCouncil
     {
-        $this->referentTag = $referentTag;
+        return $this->territorialCouncil;
     }
 
-    public function getReferentTag(): ?ReferentTag
+    public function setTerritorialCouncil(?TerritorialCouncil $territorialCouncil): void
     {
-        return $this->referentTag;
-    }
-
-    public function setReferentTag(ReferentTag $referentTag = null): void
-    {
-        $this->referentTag = $referentTag;
+        $this->territorialCouncil = $territorialCouncil;
     }
 }

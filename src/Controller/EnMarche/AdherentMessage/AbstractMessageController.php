@@ -237,7 +237,15 @@ abstract class AbstractMessageController extends Controller
             throw new BadRequestHttpException('This message has been already sent.');
         }
 
-        if ($manager->send($message, $this->getMessageRecipients($message))) {
+        $recipients = $this->getMessageRecipients($message);
+
+        if (null !== $recipients && 0 === \count($recipients)) {
+            $this->addFlash('error', 'Aucun destinataire du mail n\'a été trouvé.');
+
+            return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
+        }
+
+        if ($manager->send($message, $recipients)) {
             $message->markAsSent();
             $entityManager->flush();
 
@@ -307,8 +315,8 @@ abstract class AbstractMessageController extends Controller
         return false;
     }
 
-    protected function getMessageRecipients(AdherentMessageInterface $message): array
+    protected function getMessageRecipients(AdherentMessageInterface $message): ?array
     {
-        return [];
+        return null;
     }
 }
