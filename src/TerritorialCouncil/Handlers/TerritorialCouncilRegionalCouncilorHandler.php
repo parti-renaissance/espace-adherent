@@ -12,8 +12,8 @@ class TerritorialCouncilRegionalCouncilorHandler extends AbstractTerritorialCoun
         return TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR;
     }
 
-    protected function getMandateType(): string
+    protected function getMandateTypes(): array
     {
-        return MandateTypeEnum::REGIONAL_COUNCIL;
+        return [MandateTypeEnum::REGIONAL_COUNCIL];
     }
 }

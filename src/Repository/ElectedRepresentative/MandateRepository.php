@@ -27,8 +27,8 @@ class MandateRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByTypeAndUserListDefinitionForAdherent(
-        string $mandateType,
+    public function findByTypesAndUserListDefinitionForAdherent(
+        array $mandateTypes,
         string $userListDefinitionCode,
         Adherent $adherent
     ): array {
@@ -38,12 +38,12 @@ class MandateRepository extends ServiceEntityRepository
             ->leftJoin('mandate.electedRepresentative', 'electedRepresentative')
             ->leftJoin('mandate.zone', 'zone')
             ->leftJoin('electedRepresentative.userListDefinitions', 'userListDefinition')
-            ->where('mandate.type = :type')
+            ->where('mandate.type IN (:types)')
             ->andWhere('mandate.isElected = 1')
             ->andWhere('mandate.onGoing = 1')
             ->andWhere('userListDefinition.code = :uldCode')
             ->andWhere('electedRepresentative.adherent = :adherent')
-            ->setParameter('type', $mandateType)
+            ->setParameter('types', $mandateTypes)
             ->setParameter('uldCode', $userListDefinitionCode)
             ->setParameter('adherent', $adherent)
             ->getQuery()

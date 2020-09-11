@@ -12,8 +12,8 @@ class TerritorialCouncilSenatorHandler extends AbstractTerritorialCouncilElected
         return TerritorialCouncilQualityEnum::SENATOR;
     }
 
-    protected function getMandateType(): string
+    protected function getMandateTypes(): array
     {
-        return MandateTypeEnum::SENATOR;
+        return [MandateTypeEnum::SENATOR];
     }
 }
