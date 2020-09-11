@@ -224,8 +224,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         /** @var CommitteeCandidacy $committeeCandidacy */
         $committeeCandidacy = $this->getReference('committee-candidacy-1');
-        $candidate1->setImagePath($committeeCandidacy->getImagePath());
-        $candidate2->setImagePath($committeeCandidacy->getImagePath());
+
+        array_map(function (Candidate $candidate) use ($committeeCandidacy) {
+            if (rand(0, 1)) {
+                $candidate->setImagePath($committeeCandidacy->getImagePath());
+            }
+        }, $candidates);
 
         shuffle($candidates);
 
@@ -265,12 +269,14 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
             foreach ($pools as $y => $pool) {
                 $candidateGroups = $pool->getCandidateGroups();
+                $totalGroups = \count($candidateGroups);
+
                 $choice = new VoteChoice($pool);
 
-                if (0 === $i % rand(1, 10)) {
+                if (0 === $i % 10) {
                     $choice->setIsBlank(true);
                 } else {
-                    $choice->setCandidateGroup($candidateGroups[$index = array_rand($candidateGroups, 1)]);
+                    $choice->setCandidateGroup($candidateGroups[$index = rand(1, rand(1, $totalGroups) - 1)]);
                     !isset($counters[$pool->getId()][$index]) ? $counters[$pool->getId()][$index] = 1 : ++$counters[$pool->getId()][$index];
                 }
 
