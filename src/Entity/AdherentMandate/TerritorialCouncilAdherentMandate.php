@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -28,7 +28,7 @@ class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
      * @ORM\Column(length=255)
      *
      * @Assert\NotBlank(message="common.quality.invalid_choice")
-     * @Assert\Choice(choices=App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum::ELECTED_MEMBERS, strict=true)
+     * @Assert\Choice(choices=App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS, strict=true)
      */
     private $quality;
 

@@ -5,6 +5,8 @@ namespace App\TerritorialCouncil\Handlers;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
+use App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
@@ -17,17 +19,24 @@ class TerritorialCouncilElectedCandidateAdherentHandler extends AbstractTerritor
     protected $committees = [];
     /** @var CommitteeRepository */
     protected $committeeRepository;
-    /** @var PoliticalCommitteeManager */
-    protected $politicalCommitteeManager;
 
     public function __construct(
         EntityManagerInterface $em,
         TerritorialCouncilRepository $repository,
         EventDispatcherInterface $dispatcher,
         PoliticalCommitteeManager $politicalCommitteeManager,
+        CommitteeAdherentMandateRepository $committeeMandateRepository,
+        TerritorialCouncilAdherentMandateRepository $tcMandateRepository,
         CommitteeRepository $committeeRepository
     ) {
-        parent::__construct($em, $repository, $dispatcher, $politicalCommitteeManager);
+        parent::__construct(
+            $em,
+            $repository,
+            $dispatcher,
+            $politicalCommitteeManager,
+            $committeeMandateRepository,
+            $tcMandateRepository
+        );
 
         $this->committeeRepository = $committeeRepository;
     }

@@ -113,7 +113,7 @@ class TerritorialCouncilQualityEnum extends Enum
         self::LRE_MANAGER,
     ];
 
-    public const ELECTED_MEMBERS = [
+    public const POLITICAL_COMMITTEE_ELECTED_MEMBERS = [
         self::REGIONAL_COUNCILOR,
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
