@@ -5,6 +5,7 @@ namespace App\TerritorialCouncil\Filter;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ReferentTag;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MembersListFilter
@@ -69,6 +70,11 @@ class MembersListFilter
      * @var bool|null
      */
     private $emailSubscription;
+
+    /**
+     * @var TerritorialCouncil|null
+     */
+    private $territorialCouncil;
 
     /**
      * @var string
@@ -207,6 +213,16 @@ class MembersListFilter
     public function setSort(string $sort): void
     {
         $this->sort = $sort;
+    }
+
+    public function getTerritorialCouncil(): ?TerritorialCouncil
+    {
+        return $this->territorialCouncil;
+    }
+
+    public function setTerritorialCouncil(?TerritorialCouncil $territorialCouncil): void
+    {
+        $this->territorialCouncil = $territorialCouncil;
     }
 
     public function getOrder(): string

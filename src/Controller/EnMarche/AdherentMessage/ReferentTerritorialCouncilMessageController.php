@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche\AdherentMessage;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\Filter\ReferentTerritorialCouncilFilter;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
 use App\Subscription\SubscriptionTypeEnum;
@@ -34,19 +35,19 @@ class ReferentTerritorialCouncilMessageController extends AbstractMessageControl
     /**
      * @return Adherent[]
      */
-    protected function getMessageRecipients(AdherentMessageInterface $message): array
+    protected function getMessageRecipients(AdherentMessageInterface $message): ?array
     {
+        /** @var ReferentTerritorialCouncilFilter $filter */
         $filter = $message->getFilter();
 
         if (!$filter) {
             throw new \InvalidArgumentException('Message does not have a filter');
         }
 
-        $memberships = $this->territorialCouncilMembershipRepository->searchByFilter(
-            new MembersListFilter([$filter->getReferentTag()], SubscriptionTypeEnum::REFERENT_EMAIL),
-            1,
-            null
-        );
+        $memberFilter = new MembersListFilter([], SubscriptionTypeEnum::REFERENT_EMAIL);
+        $memberFilter->setTerritorialCouncil($filter->getTerritorialCouncil());
+
+        $memberships = $this->territorialCouncilMembershipRepository->searchByFilter($memberFilter, 1, null);
 
         return array_map(function (TerritorialCouncilMembership $membership): Adherent {
             return $membership->getAdherent();
