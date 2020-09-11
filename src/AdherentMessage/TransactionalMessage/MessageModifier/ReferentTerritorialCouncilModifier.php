@@ -26,6 +26,6 @@ class ReferentTerritorialCouncilModifier implements MessageModifierInterface
         /** @var ReferentTerritorialCouncilFilter $filter */
         $filter = $message->getFilter();
 
-        $message->setRecipientCount($this->membershipRepository->countForReferentTags([$filter->getReferentTag()]));
+        $message->setRecipientCount($this->membershipRepository->count(['territorialCouncil' => $filter->getTerritorialCouncil()]));
     }
 }

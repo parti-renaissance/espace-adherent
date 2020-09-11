@@ -26,7 +26,7 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     public function findElectionForCommittee(Committee $committee): ?Election
     {
         if ($committeeElection = $committee->getCommitteeElection()) {
-            return $this->electionRepository->findOneForCommittee($committee, $committeeElection->getDesignation());
+            return $this->electionRepository->findOneForCommittee($committee, $committeeElection->getDesignation(), true);
         }
 
         return null;

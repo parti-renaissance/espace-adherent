@@ -60,9 +60,12 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOneForCommittee(Committee $committee, Designation $designation): ?Election
-    {
-        return $this->createQueryBuilder('e')
+    public function findOneForCommittee(
+        Committee $committee,
+        Designation $designation,
+        bool $withResult = false
+    ): ?Election {
+        $qb = $this->createQueryBuilder('e')
             ->addSelect('d', 'ee')
             ->innerJoin('e.designation', 'd')
             ->innerJoin('e.electionEntity', 'ee')
@@ -73,10 +76,21 @@ class ElectionRepository extends ServiceEntityRepository
                 'designation' => $designation,
             ])
             ->orderBy('d.voteStartDate', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        if ($withResult) {
+            $qb
+                ->addSelect('result', 'round_result', 'pool_result', 'group_result', 'candidate_group', 'candidate')
+                ->leftJoin('e.electionResult', 'result')
+                ->leftJoin('result.electionRoundResults', 'round_result')
+                ->leftJoin('round_result.electionPoolResults', 'pool_result')
+                ->leftJoin('pool_result.candidateGroupResults', 'group_result')
+                ->leftJoin('group_result.candidateGroup', 'candidate_group')
+                ->leftJoin('candidate_group.candidates', 'candidate')
+            ;
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     public function findOneForTerritorialCouncil(

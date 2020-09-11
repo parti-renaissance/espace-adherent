@@ -88,6 +88,11 @@ class ElectionPool
         return $this->title;
     }
 
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
     public function setElection(Election $election): void
     {
         $this->election = $election;

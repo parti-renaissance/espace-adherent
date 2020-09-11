@@ -90,7 +90,7 @@ abstract class FilterFactory
             throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a referent', $user->getEmailAddress()));
         }
 
-        return new ReferentTerritorialCouncilFilter($managedArea->getTags()->first());
+        return new ReferentTerritorialCouncilFilter();
     }
 
     private static function createLegislativeCandidateFilter(Adherent $user): AdherentZoneFilter
