@@ -350,5 +350,6 @@ class Designation
     {
         $this->id = null;
         $this->uuid = Uuid::uuid4();
+        $this->referentTags = new ArrayCollection();
     }
 }
