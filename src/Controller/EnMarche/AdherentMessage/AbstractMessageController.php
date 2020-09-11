@@ -245,7 +245,7 @@ abstract class AbstractMessageController extends Controller
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
-        if ($manager->send($message, $recipients)) {
+        if ($manager->send($message, (array) $recipients)) {
             $message->markAsSent();
             $entityManager->flush();
 
