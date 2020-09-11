@@ -31,6 +31,31 @@
         margin: 0;
     }
 
+    &--content {
+        width: 100%;
+    }
+
+    &--result {
+        flex-basis: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid $lines-grey;
+        padding: 40px;
+        box-sizing: border-box;
+
+        @media (min-width: $mobile) {
+            flex-basis: calc(50% - 12px);
+        }
+
+        &.elected {
+            background-image: url('/images/icons/certification/certification_confettis.svg');
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-size: auto 100px;
+        }
+    }
+
     .elections-actions {
         display: flex;
         flex-direction: column;
