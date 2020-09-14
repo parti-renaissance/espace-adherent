@@ -49,7 +49,7 @@
                     <ul>
                         {% for pool_result in election_round_result.getElectionPoolResults() %}
                             <li {{ loop.index == 1 ? 'class="active"' }}>
-                                <a href="#" class="tabs-nav__item results-tab--toggle">Résultats {{ pool_result.electionPool.title }}</a>
+                                <a href="#" class="tabs-nav__item results-tab--toggle">Résultats {{ get_election_pool_title_key(pool_result.electionPool)|trans }}</a>
                             </li>
                         {% endfor %}
 
@@ -87,7 +87,7 @@
                                                 <th class="space--10-0">N° anonyme</th>
 
                                                 {% for pool_result in election_round_result.getElectionPoolResults %}
-                                                    <th class="space--10-0">{{ pool_result.electionPool.title }}</th>
+                                                    <th class="space--10-0">{{ get_election_pool_title_key(pool_result.electionPool)|trans }}</th>
                                                 {% endfor %}
                                             </tr>
                                         </thead>

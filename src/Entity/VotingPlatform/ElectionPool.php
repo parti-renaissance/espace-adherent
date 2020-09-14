@@ -29,13 +29,6 @@ class ElectionPool
      *
      * @ORM\Column
      */
-    private $title;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column
-     */
     private $code;
 
     /**
@@ -70,9 +63,8 @@ class ElectionPool
      */
     private $electionRounds;
 
-    public function __construct(string $title, string $code)
+    public function __construct(string $code)
     {
-        $this->title = $title;
         $this->code = $code;
         $this->candidateGroups = new ArrayCollection();
         $this->electionRounds = new ArrayCollection();
@@ -83,14 +75,14 @@ class ElectionPool
         return $this->id;
     }
 
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    public function getElection(): Election
+    {
+        return $this->election;
     }
 
     public function setElection(Election $election): void

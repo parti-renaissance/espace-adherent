@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block vote_step_pool_title %}
-    Sélectionnez un binôme {{ pool.title }}
+    Sélectionnez un binôme {{ get_election_pool_title_key(pool)|trans }}
 {% endblock %}
 
 {% block vote_finish_action_block %}
