@@ -28,10 +28,12 @@ class TerritorialCouncilControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request('GET', '/');
 
-        self::assertCount(1, $crawler->filter('header .em-nav-dropdown a:contains("Conseil territorial")'));
+        self::assertCount(1, $crawler->filter('header .em-nav-dropdown a:contains("Mes instances")'));
 
-        $crawler = $this->client->click($crawler->selectLink('Conseil territorial')->link());
-        self::assertEquals('http://test.enmarche.code/conseil-territorial', $crawler->getUri());
+        $crawler = $this->client->click($crawler->selectLink('Mes instances')->link());
+        self::assertEquals('http://test.enmarche.code/parametres/mes-activites#instances', $crawler->getUri());
+
+        $crawler = $this->client->click($crawler->selectLink('Voir')->link());
 
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
         $members = $crawler->filter('.territorial-council__members .territorial-council__member');

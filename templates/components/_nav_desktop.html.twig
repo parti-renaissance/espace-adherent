@@ -226,7 +226,7 @@
                             {% if app.user.territorialCouncilMembership %}
                                 {% if not app.user.territorialCouncilMembership.territorialCouncil.isFof %}
                                     <li>
-                                        <a href="{{ path('app_territorial_council_index') }}">Conseil territorial</a>
+                                        <a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a>
                                     </li>
                                 {% endif %}
                             {% endif %}

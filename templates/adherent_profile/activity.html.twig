@@ -5,6 +5,12 @@
 {% set is_adherent_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
 
 {% block adherent_profile_content %}
+    {% if app.user.territorialCouncilMembership %}
+    <section class="adherent-profile__section b__nudge--bottom-50" id="instances">
+        {% include('adherent_profile/activity/_instances.html.twig') %}
+    </section>
+    {% endif %}
+
     <section class="adherent-profile__section b__nudge--bottom-50" id="committees">
         {% include('adherent_profile/activity/_committees.html.twig') %}
     </section>
