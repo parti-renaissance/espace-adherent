@@ -27,6 +27,7 @@ class ElectionResult
      * @var Election
      *
      * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="electionResult")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $election;
 
