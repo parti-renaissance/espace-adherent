@@ -801,7 +801,6 @@
 
 .donation-box {
     pointer-events: all;
-    -moz-transform: perspective(1500px);
     -webkit-perspective: 1500px;
     perspective: 1500px;
 
@@ -812,6 +811,8 @@
         -moz-transform-style: preserve-3d;
         transform-style: preserve-3d;
         border-radius: 3px;
+        -webkit-perspective: 1500px;
+        perspective: 1500px;
 
         &.with-shadow {
             box-shadow: 10px 10px 36px 0 rgba(18, 48, 100, 0.15);
@@ -843,11 +844,6 @@
         h1 {
             font-weight: 400;
             font-style: italic;
-
-            span {
-                // font-weight: 700;
-                // color: $red--nation;
-            }
         }
 
         h2 {
