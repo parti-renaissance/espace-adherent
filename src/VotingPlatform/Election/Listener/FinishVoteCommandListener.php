@@ -67,7 +67,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
             return;
         }
 
-        $election = $this->electionRepository->findByUuid($command->getElectionUuid());
+        $election = $this->electionRepository->findOneByUuid($command->getElectionUuid());
 
         if (!$election instanceof Election) {
             return;

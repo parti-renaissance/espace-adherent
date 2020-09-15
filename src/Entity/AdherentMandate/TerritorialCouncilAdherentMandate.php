@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMandate;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -31,6 +32,20 @@ class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
      * @Assert\Choice(choices=App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS, strict=true)
      */
     private $quality;
+
+    public function __construct(
+        Adherent $adherent,
+        TerritorialCouncil $territorialCouncil,
+        string $quality,
+        string $gender,
+        \DateTime $beginAt,
+        \DateTime $finishAt = null
+    ) {
+        parent::__construct($adherent, $gender, $beginAt, $finishAt);
+
+        $this->territorialCouncil = $territorialCouncil;
+        $this->quality = $quality;
+    }
 
     public function getTerritorialCouncil(): TerritorialCouncil
     {

@@ -4,6 +4,7 @@ namespace App\Entity\VotingPlatform\ElectionResult;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\VoteChoice;
@@ -167,15 +168,20 @@ class ElectionPoolResult
         return $this->expressed + $this->blank;
     }
 
-    public function getElectedCandidateGroupResult(): ?CandidateGroupResult
+    /**
+     * @return CandidateGroup[]
+     */
+    public function getElectedCandidateGroups(): array
     {
-        foreach ($this->candidateGroupResults as $groupResult) {
-            if ($groupResult->getCandidateGroup()->isElected()) {
-                return $groupResult;
-            }
-        }
-
-        return null;
+        return $this->candidateGroupResults
+            ->map(function (CandidateGroupResult $result) {
+                return $result->getCandidateGroup();
+            })
+            ->filter(function (CandidateGroup $candidateGroup) {
+                return $candidateGroup->isElected();
+            })
+            ->toArray()
+        ;
     }
 
     public function getCandidateGroupResultsSorted(): array
@@ -189,5 +195,27 @@ class ElectionPoolResult
     public function getCandidateGroupResults(): array
     {
         return $this->candidateGroupResults->toArray();
+    }
+
+    /**
+     * @return Candidate[]
+     */
+    public function getAdditionallyElectedCandidates(): array
+    {
+        $candidates = [];
+
+        foreach ($this->candidateGroupResults as $candidateGroupResult) {
+            if ($candidateGroupResult->getCandidateGroup()->isElected()) {
+                continue;
+            }
+
+            foreach ($candidateGroupResult->getCandidateGroup()->getCandidates() as $candidate) {
+                if ($candidate->isAdditionallyElected()) {
+                    $candidates[] = $candidate;
+                }
+            }
+        }
+
+        return $candidates;
     }
 }

@@ -32,4 +32,25 @@ class TerritorialCouncilAdherentMandateRepository extends ServiceEntityRepositor
             ->getOneOrNullResult()
         ;
     }
+
+    public function closeTerritorialCouncilMandate(
+        TerritorialCouncil $territorialCouncil,
+        \DateTime $finishAt,
+        array $qualities
+    ): void {
+        $this->createQueryBuilder('m')
+            ->update()
+            ->where('m.territorialCouncil = :territorial_council')
+            ->andWhere('m.quality IN (:qualities)')
+            ->andWhere('m.finishAt IS NULL')
+            ->set('m.finishAt', ':finish_at')
+            ->setParameters([
+                'territorial_council' => $territorialCouncil,
+                'qualities' => $qualities,
+                'finish_at' => $finishAt,
+            ])
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }

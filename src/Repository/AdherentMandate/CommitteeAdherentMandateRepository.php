@@ -84,4 +84,20 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
             return $mandate['id'];
         }, $activeMandates);
     }
+
+    public function closeCommitteeMandate(Committee $committee, \DateTime $finishAt): void
+    {
+        $this->createQueryBuilder('m')
+            ->update()
+            ->where('m.committee = :committee')
+            ->andWhere('m.finishAt IS NULL')
+            ->set('m.finishAt', ':finish_at')
+            ->setParameters([
+                'committee' => $committee,
+                'finish_at' => $finishAt,
+            ])
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }

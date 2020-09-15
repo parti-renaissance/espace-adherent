@@ -46,7 +46,7 @@ class Election
     private $status = ElectionStatusEnum::OPEN;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -263,6 +263,11 @@ class Election
         $roundResult = $this->electionResult->getElectionRoundResult($this->getCurrentRound());
 
         return $roundResult && $roundResult->hasOnlyElectedPool();
+    }
+
+    public function getClosedAt(): ?\DateTime
+    {
+        return $this->closedAt;
     }
 
     public function getAdditionalPlaces(): ?int

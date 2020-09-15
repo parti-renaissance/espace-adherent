@@ -206,16 +206,16 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     private function getCandidates(): array
     {
         $candidates = [
-            $candidate1 = new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE),
-            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE),
-            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE),
-            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE),
-            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE),
-            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE),
-            $candidate2 = new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE),
-            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE),
-            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE),
-            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE),
+            $candidate1 = new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-1')),
+            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-2')),
+            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-3')),
+            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-4')),
+            new Candidate($this->faker->firstNameFemale, $this->faker->lastName, Genders::FEMALE, $this->getReference('adherent-5')),
+            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-6')),
+            $candidate2 = new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-7')),
+            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-8')),
+            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-9')),
+            new Candidate($this->faker->firstNameMale, $this->faker->lastName, Genders::MALE, $this->getReference('adherent-10')),
         ];
 
         $candidate1->setBiography($this->faker->paragraph(10));
@@ -224,11 +224,11 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         /** @var CommitteeCandidacy $committeeCandidacy */
         $committeeCandidacy = $this->getReference('committee-candidacy-1');
 
-        array_map(function (Candidate $candidate) use ($committeeCandidacy) {
-            if (rand(0, 1)) {
+        foreach ($candidates as $index => $candidate) {
+            if (0 === $index % 2) {
                 $candidate->setImagePath($committeeCandidacy->getImagePath());
             }
-        }, $candidates);
+        }
 
         shuffle($candidates);
 

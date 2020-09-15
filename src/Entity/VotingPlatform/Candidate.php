@@ -175,4 +175,9 @@ class Candidate
     {
         $this->additionallyElected = $elected;
     }
+
+    public function getAdherent(): Adherent
+    {
+        return $this->adherent;
+    }
 }
