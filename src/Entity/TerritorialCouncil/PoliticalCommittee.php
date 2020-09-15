@@ -36,6 +36,13 @@ class PoliticalCommittee
     private $name;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isActive;
+
+    /**
      * @var Collection|PoliticalCommitteeMembership[]
      *
      * @ORM\OneToMany(
@@ -47,11 +54,12 @@ class PoliticalCommittee
      */
     private $memberships;
 
-    public function __construct(string $name, TerritorialCouncil $territorialCouncil)
+    public function __construct(string $name, TerritorialCouncil $territorialCouncil, bool $isActive = false)
     {
         $this->uuid = Uuid::uuid4();
         $this->name = $name;
         $this->territorialCouncil = $territorialCouncil;
+        $this->isActive = $isActive;
 
         $this->memberships = new ArrayCollection();
     }
@@ -74,6 +82,16 @@ class PoliticalCommittee
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
     }
 
     public function getMemberships(): Collection

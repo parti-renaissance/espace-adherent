@@ -26,18 +26,9 @@ class TerritorialCouncilController extends Controller
 
     /**
      * @Route("", name="index", methods={"GET"})
-     *
-     * @param Adherent $adherent
      */
-    public function indexAction(UserInterface $adherent): Response
+    public function indexAction(): Response
     {
-        $membership = $adherent->getTerritorialCouncilMembership();
-        $council = $membership->getTerritorialCouncil();
-
-        if ($council->isFof()) {
-            throw $this->createNotFoundException();
-        }
-
         return $this->render('territorial_council/index.html.twig');
     }
 
