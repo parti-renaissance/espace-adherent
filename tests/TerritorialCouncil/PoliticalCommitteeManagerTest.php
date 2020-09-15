@@ -191,7 +191,7 @@ class PoliticalCommitteeManagerTest extends TestCase
             ->expects($this->once())
             ->method('findActiveMandateWithQuality')
             ->with($adherent, $territorialCouncil, $qualityName)
-            ->willReturn(new TerritorialCouncilAdherentMandate($adherent, Genders::MALE, new \DateTime()))
+            ->willReturn(new TerritorialCouncilAdherentMandate($adherent, $territorialCouncil, $qualityName, Genders::MALE, new \DateTime()))
         ;
         $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
 

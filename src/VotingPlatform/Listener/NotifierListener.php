@@ -1,8 +1,9 @@
 <?php
 
-namespace App\VotingPlatform\Notifier;
+namespace App\VotingPlatform\Listener;
 
 use App\VotingPlatform\Events;
+use App\VotingPlatform\Notifier\ElectionNotifier;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteReminderEvent;
 use App\VotingPlatform\Notifier\Event\ElectionNotifyEventInterface;

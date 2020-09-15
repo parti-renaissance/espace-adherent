@@ -9,6 +9,7 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
+use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -18,14 +19,11 @@ use Doctrine\ORM\Query\Expr\Orx;
 
 class ElectionRepository extends ServiceEntityRepository
 {
+    use UuidEntityRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Election::class);
-    }
-
-    public function findByUuid(string $uuid): ?Election
-    {
-        return $this->findOneBy(['uuid' => $uuid]);
     }
 
     public function hasElectionForCommittee(Committee $committee, Designation $designation): bool

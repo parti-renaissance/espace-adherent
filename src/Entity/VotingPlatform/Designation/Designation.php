@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ReferentTag;
+use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -351,5 +352,17 @@ class Designation
         $this->id = null;
         $this->uuid = Uuid::uuid4();
         $this->referentTags = new ArrayCollection();
+    }
+
+    public function getPoolTypes(): array
+    {
+        switch ($this->getType()) {
+            case DesignationTypeEnum::COMMITTEE_ADHERENT:
+                return ElectionPoolCodeEnum::COMMITTEE_ADHERENT;
+            case DesignationTypeEnum::COPOL:
+                return ElectionPoolCodeEnum::COPOL;
+        }
+
+        return [];
     }
 }
