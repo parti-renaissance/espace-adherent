@@ -11,7 +11,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
 use App\Entity\VotingPlatform\ElectionPool;
-use App\Entity\VotingPlatform\ElectionPoolTitleEnum;
+use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
@@ -23,7 +23,6 @@ use App\Repository\TerritorialCouncil\ElectionRepository as TerritorialCouncilEl
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
-use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
@@ -34,7 +33,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class VotingPlatformConfigureCommand extends Command
 {
@@ -62,8 +60,6 @@ class VotingPlatformConfigureCommand extends Command
     private $territorialCouncilElectionRepository;
     /** @var TerritorialCouncilCandidacyRepository */
     private $territorialCouncilCandidacyRepository;
-    /** @var TranslatorInterface */
-    private $translator;
 
     protected function configure()
     {
@@ -219,10 +215,7 @@ class VotingPlatformConfigureCommand extends Command
             }
 
             if (!isset($pools[$candidacy->getQuality()])) {
-                $pools[$candidacy->getQuality()] = new ElectionPool(
-                    $this->translator->trans('territorial_council.membership.qualities.'.$quality = $candidacy->getQuality()),
-                    $quality
-                );
+                $pools[$candidacy->getQuality()] = new ElectionPool($candidacy->getQuality());
             }
 
             $pools[$candidacy->getQuality()]->addCandidateGroup($group);
@@ -255,8 +248,8 @@ class VotingPlatformConfigureCommand extends Command
         // Create candidates groups
         $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $election->getDesignation());
 
-        $femalePool = new ElectionPool(ElectionPoolTitleEnum::WOMAN, Genders::FEMALE);
-        $malePool = new ElectionPool(ElectionPoolTitleEnum::MAN, Genders::MALE);
+        $femalePool = new ElectionPool(ElectionPoolCodeEnum::FEMALE);
+        $malePool = new ElectionPool(ElectionPoolCodeEnum::MALE);
 
         foreach ($candidacies as $candidacy) {
             $adherent = $candidacy->getCommitteeMembership()->getAdherent();
@@ -438,11 +431,5 @@ class VotingPlatformConfigureCommand extends Command
         TerritorialCouncilCandidacyRepository $territorialCouncilCandidacyRepository
     ): void {
         $this->territorialCouncilCandidacyRepository = $territorialCouncilCandidacyRepository;
-    }
-
-    /** @required */
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
     }
 }

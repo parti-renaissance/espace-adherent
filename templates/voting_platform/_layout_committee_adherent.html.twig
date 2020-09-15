@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block vote_step_pool_title %}
-    Sélectionnez {{ pool.title|lower == 'homme' ? 'un candidat Homme' : 'une candidate Femme' }}
+    Sélectionnez {{ pool.code|lower == 'female' ? 'une candidate Femme' : 'un candidat Homme' }}
 {% endblock %}
 
 {% block vote_finish_action_block %}

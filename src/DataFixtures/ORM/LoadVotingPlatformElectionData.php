@@ -11,6 +11,7 @@ use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
 use App\Entity\VotingPlatform\ElectionPool;
+use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
@@ -24,7 +25,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class LoadVotingPlatformElectionData extends Fixture implements DependentFixtureInterface
 {
@@ -47,7 +47,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
      */
     private $manager;
     private $voters = [];
-    private $translator;
 
     public function load(ObjectManager $manager)
     {
@@ -180,8 +179,8 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     {
         $currentRound = $election->getCurrentRound();
 
-        $femalePool = new ElectionPool('Femme', Genders::FEMALE);
-        $malePool = new ElectionPool('Homme', Genders::MALE);
+        $femalePool = new ElectionPool(ElectionPoolCodeEnum::FEMALE);
+        $malePool = new ElectionPool(ElectionPoolCodeEnum::MALE);
 
         $currentRound->addElectionPool($femalePool);
         $currentRound->addElectionPool($malePool);
@@ -316,7 +315,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $currentRound = $election->getCurrentRound();
 
         foreach ($pools as $key => $candidacies) {
-            $pool = new ElectionPool($this->getTranslator()->trans('territorial_council.membership.qualities.'.$key), $key);
+            $pool = new ElectionPool($key);
 
             foreach ($candidacies as $candidacy) {
                 /** @var Candidacy $candidacy */
@@ -349,11 +348,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
             $currentRound->addElectionPool($pool);
             $election->addElectionPool($pool);
         }
-    }
-
-    private function getTranslator(): TranslatorInterface
-    {
-        return $this->translator ? $this->translator : $this->translator = $this->container->get('translator');
     }
 
     private function getResultCalculator(): ResultCalculator

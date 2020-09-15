@@ -4,6 +4,7 @@ namespace App\Controller\EnMarche\CommitteeDesignation;
 
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\VotingPlatform\ElectionResult\ElectionPoolResult;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\ElectionRepository;
@@ -130,7 +131,7 @@ abstract class AbstractDesignationController extends AbstractController
             'election_pool_result' => current(array_filter(
                 $election->getElectionResult()->getElectionRoundResult($electionRound)->getElectionPoolResults(),
                 function (ElectionPoolResult $poolResult) use ($request) {
-                    return $poolResult->getElectionPool()->getTitle() === ($request->query->has('femme') ? 'Femme' : 'Homme');
+                    return $poolResult->getElectionPool()->getCode() === ($request->query->has('femme') ? ElectionPoolCodeEnum::FEMALE : ElectionPoolCodeEnum::MALE);
                 }
             )),
         ]);

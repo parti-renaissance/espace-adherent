@@ -5,6 +5,8 @@ common.gender.man: Homme
 common.gender.male: Masculin
 common.gender.woman: Femme
 common.gender.female: Féminin
+common.male: Homme
+common.female: Femme
 common.gender.other: Autre
 common.gender.unknown: N/A
 common.civility.mr: Monsieur

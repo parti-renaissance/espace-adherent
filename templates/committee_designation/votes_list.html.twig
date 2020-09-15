@@ -24,9 +24,9 @@
 
                 <tr>
                     <td>{{ vote.voterKey }}</td>
-                    {% for pool_title in ['Femme', 'Homme'] %}
+                    {% for pool_code in constant('App\\ValueObject\\Genders::MALE_FEMALE') %}
                         <td>
-                            {% for choice in choices if pool_title == choice.electionPool.title %}
+                            {% for choice in choices if pool_code == choice.electionPool.code %}
                                 {% if choice.isBlank %}
                                     ~
                                 {% else %}
