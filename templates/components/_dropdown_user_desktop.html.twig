@@ -63,12 +63,8 @@
                 <div class="em-nav__menu em-nav__menu--dropdown">
                     <span class="head">Activités</span>
                     <ul class="items">
-                        {% if app.user.territorialCouncilMembership %}
-                            {% if not app.user.territorialCouncilMembership.territorialCouncil.isFof %}
-                                <li>
-                                    <a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a>
-                                </li>
-                            {% endif %}
+                        {% if is_granted('TERRITORIAL_COUNCIL_MEMBER') %}
+                            <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a></li>
                         {% endif %}
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
                         <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>

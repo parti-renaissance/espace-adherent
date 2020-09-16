@@ -128,6 +128,9 @@
                                 <span class="trigger-container"></span>
                             </div>
                             <ul class="menu-section__items"{% if isActivityRoute %} style="display: block;"{% endif %}>
+                                {% if is_granted('TERRITORIAL_COUNCIL_MEMBER') %}
+                                    <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a></li>
+                                {% endif %}
                                 <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
                                 <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
                                 <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'citizen-projects'}) }}">Mes projets citoyens</a></li>

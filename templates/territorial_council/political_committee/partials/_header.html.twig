@@ -5,17 +5,16 @@
                 Instance
             </div>
             <div class="territorial-council__name">
-                <h1 id="territorial-council-name" class="text--large">Conseil territorial</h1>
+                <h1 id="territorial-council-name" class="text--large">Comité politique</h1>
             </div>
             <ul class="territorial-council__infos">
                 <li>
                     {{ include('components/location.html.twig') }}
-                    {{ territorial_council.name }}
-                    {% if territorial_council.codes %}({{ territorial_council.codes }}){% endif %}
+                    {{ political_committee.name }}
                 </li>
                 <li>
                     {{ include('components/users.html.twig') }}
-                    {{ 'common.members_count'|transchoice(territorial_council.memberships.count) }}
+                    {{ 'common.members_count'|transchoice(political_committee.memberships.count) }}
                 </li>
             </ul>
         </div>

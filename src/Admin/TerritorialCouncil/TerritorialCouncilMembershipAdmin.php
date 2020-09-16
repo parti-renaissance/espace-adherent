@@ -166,7 +166,7 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/territorial_council/list_actions.html.twig',
+                'template' => 'admin/territorial_council/list_membership_actions.html.twig',
             ])
         ;
     }

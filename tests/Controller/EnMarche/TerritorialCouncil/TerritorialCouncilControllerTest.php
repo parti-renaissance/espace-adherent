@@ -17,7 +17,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
         $crawler = $this->client->request('GET', '/');
-        self::assertCount(0, $crawler->filter('header .em-nav-dropdown a:contains("Conseil territorial")'));
+        self::assertCount(0, $crawler->filter('header .em-nav-dropdown a:contains("Mes instances")'));
 
         $this->client->request('GET', '/conseil-territorial');
         self::assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());

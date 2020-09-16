@@ -28,7 +28,7 @@ class LoadPoliticalCommitteeData extends Fixture
                         $this->createPoliticalCommittee($manager, "CoPol de Paris 750$district", "750$district");
                     }
 
-                    $this->createPoliticalCommittee($manager, 'CoPol de Paris', '75');
+                    $this->createPoliticalCommittee($manager, 'CoPol de Paris', '75', true);
 
                     break;
                 // does not exist
@@ -46,10 +46,15 @@ class LoadPoliticalCommitteeData extends Fixture
         $manager->flush();
     }
 
-    private function createPoliticalCommittee(ObjectManager $manager, string $name, string $code): void
-    {
+    private function createPoliticalCommittee(
+        ObjectManager $manager,
+        string $name,
+        string $code,
+        bool $isActive = false
+    ): void {
         $territorialCouncil = $this->getReference('coTerr_'.\mb_strtolower($code));
         $politicalCommittee = new PoliticalCommittee(\sprintf('%s (%s)', $name, $code), $territorialCouncil);
+        $politicalCommittee->setIsActive($isActive);
 
         $manager->persist($politicalCommittee);
 

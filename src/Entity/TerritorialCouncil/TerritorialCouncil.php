@@ -57,6 +57,13 @@ class TerritorialCouncil implements StaticSegmentInterface
     private $codes;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $isActive;
+
+    /**
      * @var Collection|ReferentTag[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag", cascade={"persist"})
@@ -98,11 +105,12 @@ class TerritorialCouncil implements StaticSegmentInterface
      */
     private $politicalCommittee;
 
-    public function __construct(string $name = null, string $codes = null)
+    public function __construct(string $name = null, string $codes = null, bool $isActive = true)
     {
         $this->uuid = Uuid::uuid4();
         $this->name = $name;
         $this->codes = $codes;
+        $this->isActive = $isActive;
 
         $this->referentTags = new ArrayCollection();
         $this->memberships = new ArrayCollection();
@@ -142,6 +150,16 @@ class TerritorialCouncil implements StaticSegmentInterface
     public function getNameCodes(): string
     {
         return \sprintf('%s (%s)', $this->name, $this->getCodes());
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
     }
 
     public function getMemberships(): TerritorialCouncilMembershipCollection
@@ -194,6 +212,18 @@ class TerritorialCouncil implements StaticSegmentInterface
     public function setPoliticalCommittee(PoliticalCommittee $politicalCommittee): void
     {
         $this->politicalCommittee = $politicalCommittee;
+    }
+
+    public function isPoliticalCommitteeActive(): bool
+    {
+        return $this->politicalCommittee ? $this->politicalCommittee->isActive() : false;
+    }
+
+    public function setIsPoliticalCommitteeActive(bool $isActive): void
+    {
+        if ($this->politicalCommittee) {
+            $this->politicalCommittee->setIsActive($isActive);
+        }
     }
 
     public function getPoliticalCommitteeMembershipsCount(): int

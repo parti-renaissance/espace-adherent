@@ -1,0 +1,22 @@
+<aside class="territorial-council__aside l__wrapper--aside">
+    {% set president = political_committee.territorialCouncil.memberships.president %}
+    {% if president %}
+        {% set president = president.adherent %}
+
+        <div id="territorial-council-referent" class="territorial-council__aside--section">
+            <h5>Président du Comité politique</h5>
+
+            <div class="territorial-council__host l__row l__row--top text--body b__nudge--bottom">
+                {% include 'territorial_council/partials/_member_identity_box.html.twig' with {
+                    initials: president.initials,
+                    full_name: president.fullName,
+                    label: 'Référent(e)'
+                } %}
+
+                <a href="{{ path('app_adherent_contact', {uuid: president.uuid, from: 'political_committee', id: political_committee.uuid.toString}) }}" class="link--no-decor text--blue--dark text--small m-auto--left">
+                    Contacter
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</aside>

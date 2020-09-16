@@ -3,23 +3,23 @@
 namespace App\Security\Voter\TerritorialCouncil;
 
 use App\Entity\Adherent;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Security\Voter\AbstractAdherentVoter;
 
-class AccessVoter extends AbstractAdherentVoter
+class PoliticalCommitteeAccessVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'TERRITORIAL_COUNCIL_MEMBER';
+    public const PERMISSION = 'POLITICAL_COMMITTEE_MEMBER';
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $membership = $adherent->getTerritorialCouncilMembership();
+        $membership = $adherent->getPoliticalCommitteeMembership();
 
-        if (!$membership instanceof TerritorialCouncilMembership) {
+        if (!$membership instanceof PoliticalCommitteeMembership) {
             return false;
         }
 
-        $territorialCouncil = $membership->getTerritorialCouncil();
-        if (!$territorialCouncil->isActive()) {
+        $politicalCommittee = $membership->getPoliticalCommittee();
+        if (!$politicalCommittee->isActive()) {
             return false;
         }
 

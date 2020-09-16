@@ -908,7 +908,6 @@ territorial_council.membership.qualities.city_councilor: Conseillers municipaux
 territorial_council.membership.qualities.consular_conselor: Conseillers consulaires
 territorial_council.membership.qualities.committee_supervisor: Animateurs locaux
 territorial_council.membership.qualities.elected_candidate_adherent: Adhérents désignés
-territorial_council.members_count: '1 membre|%count% membres'
 territorial_council.adherent_has_no_membership: L'adhérent ({{ email }}) n'est pas un membre du Conseil territorial "{{ territorialCouncil }}"
 
 #

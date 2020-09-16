@@ -19,6 +19,20 @@ class TerritorialCouncilAdmin extends AbstractAdmin
         '_sort_by' => 'id',
     ];
 
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $query
+            ->leftJoin('o.politicalCommittee', 'politicalCommittee')
+            ->leftJoin('politicalCommittee.memberships', 'pcMemberships')
+            ->leftJoin('o.memberships', 'membership')
+            ->addSelect('politicalCommittee', 'pcMemberships', 'membership')
+        ;
+
+        return $query;
+    }
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection
@@ -69,14 +83,20 @@ class TerritorialCouncilAdmin extends AbstractAdmin
                 'label' => 'Président',
                 'template' => 'admin/territorial_council/list_president.html.twig',
             ])
+            ->add('isActive', null, [
+                'label' => 'Actif',
+                'editable' => true,
+            ])
+            ->add('isPoliticalCommitteeActive', 'boolean', [
+                'label' => 'CoPol actif',
+                'editable' => true,
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
-                    'members' => [
-                        'template' => 'admin/territorial_council/list_action_members.html.twig',
-                    ],
                     'edit' => [],
                 ],
+                'template' => 'admin/territorial_council/list_actions.html.twig',
             ])
         ;
     }
