@@ -195,6 +195,10 @@
     font-size: $text--size-small;
     margin-bottom: 15px;
 
+    @media (min-width: $tablet) {
+        min-width: 820px;
+    }
+
     thead {
         @include manager-table-thead;
 

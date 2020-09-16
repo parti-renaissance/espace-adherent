@@ -1,8 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'adherent_space/_layout.html.twig' %}
 
 {% block page_title 'Espace animateur' %}
 
-{% block banner '' %}
+{% block adherent_space_header_title %}
+    {{ committee is defined ? committee.name }}
+{% endblock %}
 
 {% block content %}
     <main>

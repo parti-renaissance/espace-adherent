@@ -332,15 +332,41 @@
 
 // ADHERENT DROPDOWN NAV LAYOUT
 .em-nav-dropdown {
-    display: none;
-    border-top: 1px solid $lines-grey;
-    background-color: $white;
-    position: absolute;
-    z-index: 50;
-    left: 0;
-    right: 0;
-    top: 64px;
-    padding: 40px 0;
+    position: initial!important;
+
+    .em-dropdown--container {
+        background-color: $white;
+        position: absolute;
+        z-index: 50;
+        left: 0;
+        right: 0;
+        top: 64px;
+        padding: 40px 0;
+        border-radius: 0;
+        border: none;
+        border-top: 1px solid $lines-grey;
+        box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
+
+        ul {
+            padding: 0;
+            li {
+                a {
+                    padding: 0;
+                    &:hover {
+                        background: transparent;
+                    }
+                }
+            }
+
+            &.items {
+                li {
+                    a {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
 
     &__col {
         flex-basis: 0;

@@ -1,8 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'adherent_space/_layout.html.twig' %}
 
 {% block canonical_url url('app_referent_managed_users_list') %}
-
-{% block banner '' %}
 
 {% set currentUserOrDelegator = current_user() %}
 {% set delegated_access = get_delegated_access() %}
@@ -25,140 +23,16 @@
 
 {% block content %}
     {% set isReferent = is_granted('ROLE_REFERENT') %}
-    <main>
-        <section class="manager-space referent procuration-manager b__nudge--bottom-huge">
-            <header class="manager-header">
-                <div class="l__wrapper">
-                    <div class="first-section">
-                        <div class="manager-information">
-                            <p>Vous gérez : <span>{{ currentUserOrDelegator.managedArea.tags|join(', ') }}</span></p>
+    <main class="manager-space manager-body">
+        <aside class="manager-sidebar">
+            {{ include('referent/_sidebar.html.twig') }}
+        </aside>
 
-                            {% set last_visit_date = get_referent_previous_visit_date(app.user) %}
-                            {% if last_visit_date is not null %}
-                                <p>
-                                    Dernière visite le <span>{{ last_visit_date|date('d/m/Y') }}</span>
-                                    à <span>{{ last_visit_date|date('H\\hi') }}</span>
-                                </p>
-                            {% endif %}
-                        </div>
-                        {% if isReferent %}
-                        <p class="report">🐛 Bug ? Nouveau besoin ?
-                            <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
-                        </p>
-                        {% endif %}
-                    </div>
-                    <div class="second-section">
-                        <div>
-                            <h1 class="page-title text--large b__nudge--bottom">
-                                {{ block('page_title') }}
-                            </h1>
-                            {% if app.user is not same as(currentUserOrDelegator) %}
-                                <p class="text--body text--dark b__nudge--top-0">Vous êtes {{ delegated_access.role|lower }} du réferent {{ currentUserOrDelegator }}</p>
-                            {% endif %}
-                        </div>
-                        {% if isReferent or is_granted('ROLE_DELEGATED_REFERENT')  %}
-                            <div class="direct-actions">
-                                {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
-                                <a href="{{ path("app_message_referent_create") }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-                                {% endif %}
-                                {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
-                                <a href="{{ path("app_referent_event_manager_events_create") }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ANY') %}
-                    {% set delegated_access_uuid = app.request.attributes.get('delegated_access_uuid') %}
-                    <nav class="manager-header__menu">
-                        <ul>
-                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_event_manager_event*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_managed_users_list', 'app_jecoute_referent_*']) %}
-
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
-                                <li class="{{ is_active_route(app.request, 'app_referent_event_manager_event*') ? 'active' }}">
-                                    <a href="{{ path('app_referent_event_manager_events') }}">Événements</a>
-                                </li>
-                            {% endif %}
-
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
-                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'active' }}">
-                                    <a href="{{ path('app_message_referent_list', route_params|default({})) }}">Messagerie</a>
-                                </li>
-                            {% endif %}
-
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_COMMITTEE') %}
-                                <li class="{{ is_active_route(app.request, ['app_referent_committees', 'app_referent_designations_*']) ? 'active' }}">
-                                    <a href="{{ path('app_referent_committees') }}">Comités</a>
-                                </li>
-                            {% endif %}
-
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS') %}
-                                <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects_list') ? 'active' }}">
-                                    <a href="{{ path('app_referent_citizen_projects_list') }}">Projets citoyens</a>
-                                </li>
-                            {% endif %}
-
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
-                            <li class="{{ is_active_route(app.request, ['app_referent_managed_users_list', 'app_referent_adherent_invitation']) ? 'active' }}">
-                                <a href="{{ path('app_referent_managed_users_list') }}">Adhérents</a>
-                            </li>
-                            {% endif %}
-
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_JECOUTE') %}
-                            <li class="{{ is_active_route(app.request, 'app_jecoute_referent_*') ? 'active' }}">
-                                <a href="{{ path('app_jecoute_referent_local_surveys_list') }}">J'écoute</a>
-                            </li>
-                            {% endif %}
-
-                            {% if isReferent %}
-                                <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_*') ? 'active' }}">
-                                    <a href="{{ path('app_territorial_council_referent_members_list') }}">Instances</a>
-                                </li>
-
-                                {% if enable_municipal_space %}
-                                    {% if 0 == app.user.managedAreaTagCodes|filter(code => code starts with '75')|length %}
-                                        <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
-                                            <a href="{{ path('app_referent_candidate_running_mate_list') }}">Municipales</a>
-                                        </li>
-                                    {% else %}
-                                        <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
-                                            <a href="{{ path('app_referent_candidate_volunteer_list') }}">Municipales</a>
-                                        </li>
-                                    {% endif %}
-                                {% endif %}
-
-                                {% if enable_assessor_space %}
-                                    <li class="{{ is_active_route(app.request, ['app_assessors_referent_*', 'app_vote_results_referent_index', 'app_referent_vote_result_list_edit', 'app_municipal_manager_referent_attribution_form', 'app_referent_city_vote_results_edit']) ? 'active' }}">
-                                        <a href="{{ path('app_assessors_referent_attribution_form') }}">Assesseurs</a>
-                                    </li>
-                                {% endif %}
-                            {% endif %}
-
-                            {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES') %}
-                                <li class="{{ is_active_route(app.request, 'app_referent_elected_representatives_*') ? 'active' }}">
-                                    <a href="{{ path('app_referent_elected_representatives_list') }}">Élus</a>
-                                </li>
-                            {% endif %}
-
-                            {% if isReferent %}
-                                <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' }}">
-                                    <a href="{{ path('app_referent_institutional_events') }}">Mes réunions privées</a>
-                                </li>
-                            {% endif %}
-
-                            {% if is_granted('ROLE_REFERENT') %}
-                                <li class="{{ is_active_route(app.request, ['app_referent_my_team_list', 'app_referent_my_team_delegate_access']) ? 'active' }}">
-                                    <a href="{{ path('app_referent_my_team_list') }}">Mon équipe</a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                    {% endif %}
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    {% block referent_content %}{% endblock %}
                 </div>
-            </header>
-
-            <div class="l__wrapper procuration-manager__content text--body">
-                {% block referent_content %}{% endblock %}
             </div>
         </section>
 
@@ -172,7 +46,20 @@
     </main>
 {% endblock %}
 
+{% block adherent_space_header_title %}
+    Vous gérez : <span class="text--black text--bold">{{ currentUserOrDelegator.managedArea.tags|join(', ') }} </span>
+
+    {% set last_visit_date = get_referent_previous_visit_date(app.user) %}
+
+    {% if last_visit_date is not null %}
+        • Dernière visite le <span class="text--black text--bold">{{ last_visit_date|date('d/m/Y') }}</span>
+        à <span class="text--black text--bold">{{ last_visit_date|date('H\\hi') }}</span>
+    {% endif %}
+{% endblock %}
+
 {% block final_javascripts %}
+    {{ parent() }}
+
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
 
