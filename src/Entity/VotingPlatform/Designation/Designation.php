@@ -286,8 +286,7 @@ class Designation
             && (
                 (!empty($this->candidacyEndDate) && !empty($this->voteStartDate) && !empty($this->voteEndDate))
                 || (empty($this->candidacyEndDate) && empty($this->voteStartDate) && empty($this->voteEndDate))
-            )
-        ;
+            );
     }
 
     /**
@@ -297,8 +296,7 @@ class Designation
     {
         return
             (DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type && !empty($this->zones))
-            || (DesignationTypeEnum::COPOL === $this->type && !$this->referentTags->isEmpty())
-        ;
+            || (DesignationTypeEnum::COPOL === $this->type && !$this->referentTags->isEmpty());
     }
 
     public function isOngoing(): bool
@@ -306,8 +304,7 @@ class Designation
         $now = new \DateTime();
 
         return $this->getCandidacyStartDate() <= $now
-            && (null === $this->getVoteEndDate() || $now < $this->getVoteEndDate())
-        ;
+            && (null === $this->getVoteEndDate() || $now < $this->getVoteEndDate());
     }
 
     public function isActive(): bool
@@ -319,8 +316,7 @@ class Designation
                 null === $this->getVoteEndDate()
                 || $now < $this->getVoteEndDate()
                 || $this->isResultPeriodActive()
-            )
-        ;
+            );
     }
 
     public function isResultPeriodActive(): bool
@@ -329,8 +325,7 @@ class Designation
 
         return $this->getVoteEndDate()
             && $this->getVoteEndDate() <= $now
-            && $now < $this->getResultEndDate()
-        ;
+            && $now < $this->getResultEndDate();
     }
 
     public function getResultEndDate(): ?\DateTime

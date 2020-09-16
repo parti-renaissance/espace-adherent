@@ -10,9 +10,12 @@
             <table class="datagrid__table-manager">
                 <thead>
                     <tr>
-                        <th>Conseil territorial</th>
                         <th>Type</th>
+                        <th>Conseil territorial</th>
+                        <th>Statut</th>
+                        <th>Mode</th>
                         <th>Date</th>
+                        <th>Informations</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -20,13 +23,58 @@
                 <tbody>
                     {% for election in elections %}
                         {% set designation = election.designation %}
+                        {% set status = election.status %}
+
                         <tr>
+                            <td>
+                                {{ "designation.label.type_#{designation.type}"|trans }}
+                            </td>
                             <td>{{ election.territorialCouncil.name }}</td>
-                            <td>{{ "designation.label.type_#{designation.type}"|trans }}</td>
+                            <td>
+                                <span class="cursor--pointer status {{ status in ['opened', 'in_progress', 'scheduled'] ? 'status__1' : 'status__2' }}">{{ ('designation.status.'~status)|trans|lower }}</span>
+                            </td>
+                            <td>
+                                {% if election.electionMode %}
+                                    {{ ('designation.vote_mode.' ~ election.electionMode)|trans }}
+                                {% endif %}
+                            </td>
                             <td>{{ designation.voteEndDate ? designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}</td>
                             <td>
+                                {% if status in ['opened', 'scheduled'] %}
+                                    {% for row in get_territorial_council_candidates_stats(election) %}
+                                        <span class="quality-title-{{ constant('App\\Entity\\TerritorialCouncil\\TerritorialCouncilQualityEnum::QUALITY_PRIORITIES')[row.quality] }}"
+                                              title="{{ ('territorial_council.membership.qualities.' ~ row.quality)|trans }}">
+                                            {{ row.total }}
+                                            {% if not loop.last %}<span> - </span>{% endif %}
+                                        </span>
+                                    {% endfor %}
+                                {% elseif status in ['in_progress', 'closed'] %}
+                                    {% set votes_stats = get_votes_stats(election) %}
+                                    <span>Participation</span><br/>
+                                    {{ votes_stats.voters_count ? (votes_stats.votes_count * 100 / votes_stats.voters_count)|round(2) : 0 }} %
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% set items = [] %}
+
                                 {% if designation.voteStartDate is empty %}
-                                    <a href="{{ path('app_territorial_council_referent_designations_election_send_convocation', {uuid: election.uuid}) }}">Envoyer la convocation</a>
+                                    {% set items = items|merge([{
+                                        href: path('app_territorial_council_referent_designations_election_send_convocation', {uuid: election.uuid}),
+                                        label: 'Envoyer la convocation',
+                                        linkAttr: {class: 'row-action link--no-decor'}
+                                    }]) %}
+                                {% elseif status in ['scheduled', 'in_progress'] %}
+                                    {% set items = items|merge([{
+                                        href: '#',
+                                        label: 'Voir les candidatures',
+                                        linkAttr: {class: 'row-action link--no-decor'}
+                                    }]) %}
+                                {% endif %}
+
+                                {% if items|length > 1 %}
+                                    {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                                {% else %}
+                                    <a href="{{ items|first.href }}">{{ items|first.label }}</a>
                                 {% endif %}
                             </td>
                         </tr>

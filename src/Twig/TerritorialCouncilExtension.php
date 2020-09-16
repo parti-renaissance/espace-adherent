@@ -11,6 +11,8 @@ class TerritorialCouncilExtension extends AbstractExtension
     {
         return [
             new TwigFunction('get_election_poll_vote', [TerritorialCouncilRuntime::class, 'getElectionPollVote']),
+            new TwigFunction('get_territorial_council_candidates_stats', [TerritorialCouncilRuntime::class, 'getCandidatesStats']),
+            new TwigFunction('get_votes_stats', [TerritorialCouncilRuntime::class, 'getVotesStats']),
         ];
     }
 }

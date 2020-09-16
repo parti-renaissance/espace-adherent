@@ -138,6 +138,41 @@ class ElectionRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getAllAggregatedDataForTerritorialCouncil(
+        TerritorialCouncil $territorialCouncil,
+        Designation $designation
+    ): array {
+        return $this->createQueryBuilder('election')
+            ->select(
+                sprintf(
+                    '(SELECT COUNT(1) FROM %s AS voter
+                    INNER JOIN voter.votersLists AS voters_list
+                    WHERE voters_list.election = election) AS voters_count',
+                    Voter::class
+                ),
+                sprintf(
+                    '(SELECT COUNT(vote.id) FROM %s AS vote WHERE vote.electionRound = election_round) AS votes_count',
+                    Vote::class
+                )
+            )
+            ->innerJoin('election.designation', 'designation')
+            ->innerJoin('election.electionEntity', 'election_entity')
+            ->innerJoin('election.electionRounds', 'election_round')
+            ->where('election_entity.territorialCouncil = :council')
+            ->andWhere('election_round.isActive = :true')
+            ->andWhere('election.designation = :designation')
+            ->setParameters([
+                'council' => $territorialCouncil,
+                'designation' => $designation,
+                'true' => true,
+            ])
+            ->orderBy('designation.voteEndDate', 'DESC')
+            ->groupBy('election.id')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function getSingleAggregatedData(ElectionRound $electionRound): array
     {
         return $this->createQueryBuilder('election')

@@ -128,4 +128,25 @@ trait EntityDesignationTrait
     {
         return $this->getVoteEndDate();
     }
+
+    public function getStatus(): string
+    {
+        if (!$this->isCandidacyPeriodStarted()) {
+            return 'not_started';
+        }
+
+        if (!$this->isVotePeriodStarted()) {
+            if ($this->getVoteStartDate()) {
+                return 'scheduled';
+            }
+
+            return 'opened';
+        }
+
+        if (!$this->isVotePeriodActive()) {
+            return 'in_progress';
+        }
+
+        return 'closed';
+    }
 }
