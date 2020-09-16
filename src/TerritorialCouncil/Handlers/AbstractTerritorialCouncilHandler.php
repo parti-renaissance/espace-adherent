@@ -261,7 +261,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         if (\in_array($qualityName, [TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::CITY_COUNCILOR])
             && $adherent->hasPoliticalCommitteeMembership()
             && $adherent->getPoliticalCommitteeMembership()->hasOneOfQualities([TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::LEADER])) {
-            return 'l\'adhérent a une qualité "Maire" ou "Chef de file" dans le comité politique';
+            return 'l\'adhérent a une qualité "Maire" ou "Président(e) du groupe d\'opposition LaREM" dans le comité politique';
         }
 
         return '';
