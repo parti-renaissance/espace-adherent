@@ -47,7 +47,7 @@
 {% endblock %}
 
 {% block adherent_space_header_title %}
-    Vous gérez : <span class="text--black text--bold">{{ currentUserOrDelegator.managedArea.tags|join(', ') }}</span>
+    Vous gérez : <span class="text--black text--bold">{{ currentUserOrDelegator.managedArea.tags|join(', ') }} </span>
 
     {% set last_visit_date = get_referent_previous_visit_date(app.user) %}
 

@@ -4,6 +4,7 @@
 {% block footer '' %}
 
 {% block header %}
+    {% set is_certified = is_granted(constant('App\\Adherent\\Certification\\CertificationPermissions::CERTIFIED')) %}
     <nav class="manager-topbar">
         <div class="manager-topbar__container">
             <a href="{{ path('homepage') }}" class="text--logo b__nudge--right-large">EM!</a>
@@ -82,28 +83,20 @@
                 {% block adherent_space_header_title %}{% endblock %}
             </p>
 
-            <div class="em-dropdown manager-topbar__user">
+            <div class="em-dropdown em-nav-dropdown manager-topbar__user desktop">
                 <span class="em-dropdown--trigger icon--with-text">
                     {{ include('components/user.html.twig') }}
                     {{ app.user.firstName }}
                 </span>
+                {{ include('components/_dropdown_user_desktop.html.twig') }}
+            </div>
 
-                <div class="em-dropdown--container container-align-right">
-                    <ul>
-                        {% if is_granted('ROLE_REFERENT') or is_granted('ROLE_COREFERENT') %}
-                            <li>
-                                <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg">Bug ? Besoin ? Écrivez-nous !</a>
-                            </li>
-                        {% endif %}
-                        <li>
-                            <a href="{{ path('logout') }}">Déconnexion</a>
-                        </li>
-                        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                            <li>
-                                <a href="{{ path('app_admin_impersonation_exit') }}">Quitter l'impersonnification</a>
-                            </li>
-                        {% endif %}
-                    </ul>
+            <div class="em-dropdown em-nav-dropdown manager-topbar__user mobile">
+                <span class="em-dropdown--trigger icon--with-text">
+                    {{ include('components/user.html.twig') }}
+                </span>
+                <div class="em-dropdown--container em-nav">
+                    {{ include('components/_dropdown_user_mobile.html.twig') }}
                 </div>
             </div>
         </div>
@@ -119,11 +112,14 @@
                 event.preventDefault();
 
                 var sidebar = dom('.manager-sidebar');
+                var body = dom('body');
 
                 if (!sidebar.style.display || sidebar.style.display === 'none') {
                     show(sidebar);
+                    addClass(body, 'o-hidden');
                 } else {
                     hide(sidebar);
+                    removeClass(body, 'o-hidden');
                 }
             });
         });
