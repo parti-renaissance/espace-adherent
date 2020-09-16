@@ -35,12 +35,12 @@
 
                                     <h2 class="text--medium-large b__nudge--bottom-larger">{{ candidate.fullName }}</h2>
 
-                                    <p class="text--body text--dark">{{ candidate.biography }}</p>
+                                    <p class="text--body text--dark">{{ candidate.biography|nl2br }}</p>
 
                                     {% if loop.last and candidate.faithStatement %}
                                         <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                                        <p class="text--body text--dark">{{ candidate.faithStatement }}</p>
+                                        <p class="text--body text--dark">{{ candidate.faithStatement|nl2br }}</p>
                                     {% endif %}
                                 {% endfor %}
                             </div>

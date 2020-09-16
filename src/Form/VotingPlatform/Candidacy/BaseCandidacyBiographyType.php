@@ -3,12 +3,12 @@
 namespace App\Form\VotingPlatform\Candidacy;
 
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
+use App\Form\DoubleNewlineTextareaType;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -27,11 +27,11 @@ class BaseCandidacyBiographyType extends AbstractType
                 'mapped' => false,
                 'required' => false,
             ])
-            ->add('biography', TextareaType::class, [
+            ->add('biography', DoubleNewlineTextareaType::class, [
+                'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
                 'filter_emojis' => true,
-                'required' => false,
             ])
             ->add('save', SubmitType::class)
         ;

@@ -45,17 +45,17 @@
                             <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentations</h3>
 
                             <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.membership.fullName }}</h2>
-                            <p class="text--body text--dark">{{ first_candidacy.biography }}</p>
+                            <p class="text--body text--dark">{{ first_candidacy.biography|nl2br }}</p>
 
                             {% if first_candidacy.binome %}
                                 <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.binome.membership.fullName }}</h2>
-                                <p class="text--body text--dark">{{ first_candidacy.binome.biography }}</p>
+                                <p class="text--body text--dark">{{ first_candidacy.binome.biography|nl2br }}</p>
                             {% endif %}
 
                             <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
                             {% if election.isVotePeriodStarted or first_candidacy.isPublicFaithStatement %}
-                                <p class="text--body text--dark">{{ first_candidacy.faithStatement }}</p>
+                                <p class="text--body text--dark">{{ first_candidacy.faithStatement|nl2br }}</p>
                             {% else %}
                                 <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
                             {% endif %}
