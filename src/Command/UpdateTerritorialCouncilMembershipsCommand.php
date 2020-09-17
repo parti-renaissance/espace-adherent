@@ -7,6 +7,7 @@ use App\Repository\AdherentRepository;
 use App\TerritorialCouncil\Command\AdherentUpdateTerritorialCouncilMembershipsCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use PhpAmqpLib\Exception\AMQPException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -75,7 +76,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
                     $this->bus->dispatch(new AdherentUpdateTerritorialCouncilMembershipsCommand(
                         $adherent->getUuid()
                     ));
-                } catch (\AMQPException $exception) {
+                } catch (AMQPException $exception) {
                     $this->bus->dispatch(new AdherentUpdateTerritorialCouncilMembershipsCommand(
                         $adherent->getUuid()
                     ));
