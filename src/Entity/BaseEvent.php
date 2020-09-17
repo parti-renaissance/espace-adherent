@@ -89,7 +89,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @SymfonySerializer\Groups({"event_read"})
      *
-     * @Assert\Length(100)
+     * @Assert\Length(max=100)
      */
     protected $name;
 
