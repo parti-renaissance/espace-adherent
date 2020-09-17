@@ -31,7 +31,7 @@
                             </td>
                             <td>{{ election.territorialCouncil.name }}</td>
                             <td>
-                                <span class="cursor--pointer status {{ status in ['opened', 'in_progress', 'scheduled'] ? 'status__1' : 'status__2' }}">{{ ('designation.status.'~status)|trans|lower }}</span>
+                                <span class="cursor--pointer status {{ status in constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::ACTIVE_STATUSES') ? 'status__1' : 'status__2' }}">{{ ('designation.status.'~status)|trans|lower }}</span>
                             </td>
                             <td>
                                 {% if election.electionMode %}
@@ -40,7 +40,7 @@
                             </td>
                             <td>{{ designation.voteEndDate ? designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") : '~' }}</td>
                             <td>
-                                {% if status in ['opened', 'scheduled'] %}
+                                {% if status in [constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::OPENED'), constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::SCHEDULED')] %}
                                     {% for row in get_territorial_council_candidates_stats(election) %}
                                         <span class="quality-title-{{ constant('App\\Entity\\TerritorialCouncil\\TerritorialCouncilQualityEnum::QUALITY_PRIORITIES')[row.quality] }}"
                                               title="{{ ('territorial_council.membership.qualities.' ~ row.quality)|trans }}">
@@ -48,7 +48,7 @@
                                             {% if not loop.last %}<span> - </span>{% endif %}
                                         </span>
                                     {% endfor %}
-                                {% elseif status in ['in_progress', 'closed'] %}
+                                {% elseif status in [constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::IN_PROGRESS'), constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::CLOSED')] %}
                                     {% set votes_stats = get_votes_stats(election) %}
                                     <span>Participation</span><br/>
                                     {{ votes_stats.voters_count ? (votes_stats.votes_count * 100 / votes_stats.voters_count)|round(2) : 0 }} %
@@ -63,7 +63,7 @@
                                         label: 'Envoyer la convocation',
                                         linkAttr: {class: 'row-action link--no-decor'}
                                     }]) %}
-                                {% elseif status in ['scheduled', 'in_progress'] %}
+                                {% elseif status in [constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::SCHEDULED'), constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::IN_PROGRESS')] %}
                                     {% set items = items|merge([{
                                         href: path('app_territorial_council_selected_candidacy_list', {uuid: election.territorialCouncil.uuid}),
                                         label: 'Voir les candidatures',
@@ -71,10 +71,12 @@
                                     }]) %}
                                 {% endif %}
 
-                                {% if items|length > 1 %}
-                                    {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
-                                {% else %}
-                                    <a href="{{ items|first.href }}">{{ items|first.label }}</a>
+                                {% if items|length %}
+                                    {% if items|length > 1 %}
+                                        {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                                    {% else %}
+                                        <a href="{{ items|first.href }}">{{ items|first.label }}</a>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>

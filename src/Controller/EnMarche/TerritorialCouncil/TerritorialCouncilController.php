@@ -68,7 +68,7 @@ class TerritorialCouncilController extends Controller
 
     /**
      * @Route("/liste-candidature", name="candidacy_list", methods={"GET"})
-     * @Route("/{uuid}/liste-candidature", name="selected_candidacy_list", methods={"GET", requirements={"uuid": "%pattern_uuid%"}})
+     * @Route("/{uuid}/liste-candidature", name="selected_candidacy_list", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      *
      * @param Adherent $adherent
      */

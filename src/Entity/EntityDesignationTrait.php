@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\VotingPlatform\Designation\DesignationStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 trait EntityDesignationTrait
@@ -132,21 +133,21 @@ trait EntityDesignationTrait
     public function getStatus(): string
     {
         if (!$this->isCandidacyPeriodStarted()) {
-            return 'not_started';
+            return DesignationStatusEnum::NOT_STARTED;
         }
 
         if (!$this->isVotePeriodStarted()) {
             if ($this->getVoteStartDate()) {
-                return 'scheduled';
+                return DesignationStatusEnum::SCHEDULED;
             }
 
-            return 'opened';
+            return DesignationStatusEnum::OPENED;
         }
 
         if (!$this->isVotePeriodActive()) {
-            return 'in_progress';
+            return DesignationStatusEnum::IN_PROGRESS;
         }
 
-        return 'closed';
+        return DesignationStatusEnum::CLOSED;
     }
 }
