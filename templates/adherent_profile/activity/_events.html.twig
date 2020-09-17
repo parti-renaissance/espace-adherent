@@ -32,7 +32,7 @@
                     {% elseif event.organizer %}
                         <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
                     {% endif %}
-                    <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+                    <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
                         <div class="l__row b__nudge--bottom-small">
                             <img src="{{ asset('/images/icons/activity/date.svg') }}" alt="Ville" class="b__nudge--right-nano">
                             <span>{{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "E d MMM") }} {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'H'mm") }} </span>
@@ -89,7 +89,7 @@
                     {% elseif event.organizer %}
                         <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
                     {% endif %}
-                    <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+                    <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
                         <div class="l__row b__nudge--bottom-small">
                             <img src="{{ asset('/images/icons/activity/date.svg') }}" alt="Ville" class="b__nudge--right-nano">
                             <span>{{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "E d MMM") }} {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'H'mm") }} </span>

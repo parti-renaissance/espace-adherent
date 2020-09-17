@@ -30,7 +30,7 @@
             <article class="activity-card b__nudge--bottom {{ membership.votingCommittee ? 'main-committee' }}">
                 <div class="activity-card__type activity-card__type--committee">Comité</div>
                 <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold l__row">{{ committee.name }}</h2>
-                <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+                <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
                     <div class="l__row b__nudge--right-small">
                         <img src="{{ asset('/images/icons/activity/place.svg') }}" alt="Ville" class="b__nudge--right-nano">
                         <span>{{ committee.getCityName }}</span>

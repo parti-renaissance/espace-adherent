@@ -3,9 +3,10 @@
 <div class="l__col">
     {% set territorial_council = app.user.territorialCouncilMembership.territorialCouncil %}
 
-    <article class="em-card b__nudge--bottom" id="territorial_council">
-        <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">Conseil territorial</h2>
-        <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+    <article class="activity-card b__nudge--bottom" id="territorial_council">
+        <div class="activity-card__type activity-card__type--instance">Instance</div>
+        <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">Conseil territorial</h2>
+        <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
             <div class="l__row b__nudge--right-small">
                 <img src="{{ asset('/images/icons/activity/place.svg') }}" alt="Ville" class="b__nudge--right-nano">
                 <span>
@@ -19,7 +20,7 @@
             </div>
         </div>
 
-        <div class="em-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
+        <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
             <div class="l__row">
                 <a href="{{ path('app_territorial_council_index') }}" title="{{ territorial_council.name }}" class="btn btn--blue b__nudge--right-small">
                     Voir
@@ -32,22 +33,23 @@
     <div class="l__col">
         {% set political_committee = app.user.politicalCommitteeMembership.politicalCommittee %}
 
-        <article class="em-card b__nudge--bottom" id="political_committee">
-            <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">Comité politique</h2>
-            <div class="l__row font-roboto text--gray b__nudge--bottom-small">
-                <div class="l__row b__nudge--right-small">
+        <article class="activity-card b__nudge--bottom" id="political_committee">
+            <div class="activity-card__type activity-card__type--instance">Instance</div>
+            <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">Comité politique</h2>
+            <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
+                <div class="l__row b__nudge--bottom-small b__nudge--right-small">
                     <img src="{{ asset('/images/icons/activity/place.svg') }}" alt="Ville" class="b__nudge--right-nano">
                     <span>
                         {{ political_committee.name }}
                     </span>
                 </div>
-                <div class="l__row">
+                <div class="l__row b__nudge--bottom-small">
                     <img src="{{ asset('/images/icons/activity/members.svg') }}" alt="Adhérents" class="b__nudge--right-nano">
                     <span>{{ political_committee.memberships.count }} membres</span>
                 </div>
             </div>
 
-            <div class="em-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
+            <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
                 <div class="l__row">
                     <a href="{{ path('app_political_committee_index') }}" title="{{ political_committee.name }}" class="btn btn--blue b__nudge--right-small">
                         Voir
