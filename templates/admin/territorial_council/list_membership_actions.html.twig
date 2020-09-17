@@ -27,12 +27,12 @@
         {% if adherent.isMayorOrLeader %}
             <a href="{{ path('app_admin_territorial_council_change_political_committee_membership', { territorialCouncil: object.territorialCouncil.id, adherent: adherent.id, action: constant('App\\TerritorialCouncil\\PoliticalCommitteeManager::REMOVE_ACTION'), token: membershipToken }) }}"
                class="btn btn-default btn-sm">
-                Retirer du Copol
+                Retirer du CoPol
             </a>
         {% elseif not adherent.hasPoliticalCommitteeMembership %}
             <a href="{{ path('app_admin_territorial_council_change_political_committee_membership', { territorialCouncil: object.territorialCouncil.id, adherent: adherent.id, action: constant('App\\TerritorialCouncil\\PoliticalCommitteeManager::CREATE_ACTION'), token: membershipToken }) }}"
                class="btn btn-default btn-sm">
-                Transformer en maire au Copol
+                Faire monter au CoPol
             </a>
         {% endif %}
     </div>
