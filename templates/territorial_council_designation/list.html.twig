@@ -65,7 +65,7 @@
                                     }]) %}
                                 {% elseif status in ['scheduled', 'in_progress'] %}
                                     {% set items = items|merge([{
-                                        href: '#',
+                                        href: path('app_territorial_council_selected_candidacy_list', {uuid: election.territorialCouncil.uuid}),
                                         label: 'Voir les candidatures',
                                         linkAttr: {class: 'row-action link--no-decor'}
                                     }]) %}
