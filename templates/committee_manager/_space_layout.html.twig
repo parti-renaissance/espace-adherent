@@ -3,29 +3,17 @@
 {% block banner '' %}
 
 {% block content %}
-    {{ parent() }}
-{% endblock %}
+    <main class="manager-space manager-body">
+        <aside class="manager-sidebar">
+            {{ include('committee_manager/_sidebar.html.twig') }}
+        </aside>
 
-{% block final_javascripts %}
-    {{ parent() }}
-
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
-    {% if js is not defined %}
-        {% import 'javascript.js.twig' as js %}
-    {% endif %}
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.manager_sticky_header('#managerOnScroll') }}
-        });
-    </script>
-{% endblock %}
-
-{% block direct_actions %}
-    {% if committee.isApproved %}
-        <div class="direct-actions">
-            <a href="{{ path('app_message_committee_create', {committee_slug: committee.slug}) }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-            <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer&nbsp;un&nbsp;</span>événement</a>
-        </div>
-    {% endif %}
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    {{ parent() }}
+                </div>
+            </div>
+        </section>
+    </main>
 {% endblock %}

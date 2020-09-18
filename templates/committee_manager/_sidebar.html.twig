@@ -26,7 +26,11 @@
         {% endif %}
 
         <li>
-            <a href="{{ path('app_formation_home') }}">Je me forme</a>
+            <a href="{{ path('app_formation_home') }}">Je me forme<br /><br /></a>
+        </li>
+
+        <li class="{{ is_active_route(app.request, 'app_committee_manager_add_event') ? 'active' }}">
+            <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}">+&nbsp;<span>Créer&nbsp;un&nbsp;</span>événement</a>
         </li>
     </ul>
 </nav>
