@@ -101,6 +101,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id, uuid}')
             ->where('adherent.status = :status')
             ->andWhere('adherent.adherent = true')
             ->setParameter('status', Adherent::ENABLED)
