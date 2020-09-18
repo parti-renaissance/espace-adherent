@@ -628,6 +628,9 @@
     "querypath/querypath": {
         "version": "3.0.5"
     },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
+    },
     "ramsey/uuid": {
         "version": "3.8.0"
     },
@@ -953,6 +956,12 @@
             "phpunit.xml.dist",
             "tests/bootstrap.php"
         ]
+    },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.18.1"
+    },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.18.1"
     },
     "symfony/polyfill-php80": {
         "version": "v1.17.0"
