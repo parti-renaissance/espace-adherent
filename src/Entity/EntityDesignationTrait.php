@@ -144,7 +144,7 @@ trait EntityDesignationTrait
             return DesignationStatusEnum::OPENED;
         }
 
-        if (!$this->isVotePeriodActive()) {
+        if ($this->isVotePeriodActive()) {
             return DesignationStatusEnum::IN_PROGRESS;
         }
 

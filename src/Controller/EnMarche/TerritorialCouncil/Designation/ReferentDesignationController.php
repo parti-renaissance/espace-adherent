@@ -42,7 +42,7 @@ class ReferentDesignationController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/convocation", name="_election_send_convocation", methods={"GET", "POST"})
+     * @Route("/{uuid}/convocation", name="_election_send_convocation", methods={"GET", "POST"}, requirements={"uuid": "%pattern_uuid%"})
      *
      * @Security("is_granted('CAN_MANAGE_TERRITORIAL_COUNCIL', election.getTerritorialCouncil())")
      */

@@ -6,6 +6,7 @@ use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
@@ -14,7 +15,6 @@ use App\ValueObject\Genders;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
 
 class ElectionRepository extends ServiceEntityRepository
@@ -176,19 +176,34 @@ class ElectionRepository extends ServiceEntityRepository
     public function getSingleAggregatedData(ElectionRound $electionRound): array
     {
         return $this->createQueryBuilder('election')
-            ->addSelect(...$this->getElectionStatsSelectParts())
+            ->addSelect('pool.code AS pool_code')
+            ->addSelect(
+                sprintf(
+                    '(SELECT COUNT(1)
+                FROM %s AS pool2
+                INNER JOIN pool2.candidateGroups AS candidate_groups
+                WHERE pool2.id = pool.id) AS candidate_group_count',
+                    ElectionPool::class
+                ),
+                sprintf(
+                    '(SELECT COUNT(1) FROM %s AS voter
+                INNER JOIN voter.votersLists AS voters_list
+                WHERE voters_list.election = election) AS voters_count',
+                    Voter::class
+                ),
+                sprintf(
+                    '(SELECT COUNT(vote.id) FROM %s AS vote WHERE vote.electionRound = election_round) AS votes_count',
+                    Vote::class
+                ),
+            )
             ->innerJoin('election.electionRounds', 'election_round')
             ->innerJoin('election.electionPools', 'pool')
-            ->innerJoin('pool.candidateGroups', 'candidate_groups')
-            ->innerJoin('candidate_groups.candidates', 'candidate')
             ->where('election_round = :election_round')
             ->setParameters([
                 'election_round' => $electionRound,
-                'male' => Genders::MALE,
-                'female' => Genders::FEMALE,
             ])
             ->getQuery()
-            ->getSingleResult(Query::HYDRATE_ARRAY)
+            ->getArrayResult()
         ;
     }
 

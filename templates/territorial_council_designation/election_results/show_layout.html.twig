@@ -1,4 +1,4 @@
-{% extends 'committee_designation/_layout.html.twig' %}
+{% extends 'territorial_council_designation/election_results/_layout.html.twig' %}
 
 {% set election = election_round.election %}
 {% set electionRounds = election.electionRounds %}
@@ -8,7 +8,7 @@
 {% block designation_content %}
     <section>
         <div class="b__nudge--bottom">
-            <a href="{{ path("app_#{space_type}_designations_list", route_params|default({})) }}" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
+            <a href="{{ path("app_territorial_council_referent_designations_list") }}" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
         </div>
 
         <div class="datagrid__pre-table b__nudge--bottom">
@@ -27,7 +27,7 @@
                         {% for round in electionRounds %}
                             <h3>
                                 <a class="{{ round.equals(election_round) ? 'active' }}"
-                                   href="{{ path("app_#{space_type}_designations_dashboard", link_params|merge({election_round_uuid: round.uuid})) }}">
+                                   href="{{ path("app_territorial_council_referent_designation_results_dashboard", link_params) }}">
                                     Tour {{ (loop.index == electionRounds|length == 2) ? 'bis' : loop.index }}
                                 </a>
                             </h3>
@@ -37,6 +37,7 @@
                         {% endfor %}
                     </div>
                 </div>
+
                 <div class="alert alert--tips b__nudge--bottom-small b__nudge--bottom">
                     Suite à une égalité entre plusieurs candidats, la désignation a été relancée pour tenter de les départager.
                     Les statistiques et les résultats sont donc séparés et vous sont affichés en tant que « tours ».
@@ -64,7 +65,7 @@
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Candidatures</span>
                     <span class="manager-overview__case--value">
-                        {{ election_stats|map(stats_row => '<span class="text--pink">'~stats_row.candidate_group_count~'</span><span class="text--small text--uppercase">'~('common.'~stats_row.pool_code)|trans~'</span>')|join(' / ')|raw }}
+                        {{ election_stats|map(stats_row => '<span class="text--pink">'~stats_row.candidate_group_count~'</span><span class="text--small text--uppercase">'~('territorial_council.membership.qualities.'~stats_row.pool_code)|trans~'</span>')|join(' / ')|raw }}
                     </span>
                     <h1 class="manager-overview__case--title">Candidatures</h1>
                 </div>
@@ -74,24 +75,19 @@
                 <div class="datagrid__table__tabs b__nudge--top-15">
                     <div class="datagrid__table__tabs__items">
                         <h3>
-                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_voters_list") ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_voters_list", link_params) }}">Liste d'émargement</a>
+                            <a class="{{ is_active_route(app.request, 'app_territorial_council_referent_designation_results_voters_list') ? 'active' }}"
+                               href="{{ path("app_territorial_council_referent_designation_results_voters_list", link_params) }}">Liste d'émargement</a>
                         </h3>
                         <span class="separator"></span>
-                        <h3>
-                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('femme') ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_results", {femme: true}|merge(link_params)) }}">Résultats Femme</a>
-                        </h3>
-                        <span class="separator"></span>
-                        <h3>
-                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('homme') ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_results", {homme: true}|merge(link_params)) }}">Résultats Homme</a>
-                        </h3>
-                        <span class="separator"></span>
-                        <h3>
-                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_votes") ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_votes", link_params) }}">Bulletins dépouillés</a>
-                        </h3>
+
+                        {% for pool_stat_row in election_stats %}
+                            <h3>
+                                <a class="{{ is_active_route(app.request, 'app_territorial_council_referent_designation_results_by_pool') and app.request.query.get('pool_code') == pool_stat_row.pool_code ? 'active' }}"
+                                   href="{{ path('app_territorial_council_referent_designation_results_by_pool', {pool_code: pool_stat_row.pool_code}|merge(link_params)) }}">Résultats {{ ('territorial_council.membership.qualities.'~pool_stat_row.pool_code)|trans }}</a>
+                            </h3>
+
+                            <span class="separator"></span>
+                        {% endfor %}
                     </div>
                 </div>
             {% endif %}

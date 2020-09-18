@@ -91,7 +91,7 @@
                 <span class="clock-container"></span>
             </div>
         {% else %}
-            {% set voting_platform_election = get_voting_platform_election_for_territorial_council(territorial_council) %}
+            {% set voting_platform_election = get_voting_platform_election_for_territorial_council_election(election) %}
 
             {% if voting_platform_election %}
                 {% if voting_platform_election.isVotePeriodActive %}

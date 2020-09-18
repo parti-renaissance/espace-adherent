@@ -71,6 +71,16 @@
                                     }]) %}
                                 {% endif %}
 
+                                {% if status in [constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::IN_PROGRESS'), constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::CLOSED')] %}
+                                    {% set voting_platform_election = get_voting_platform_election_for_territorial_council_election(election) %}
+
+                                    {% set items = items|merge([{
+                                        href: path('app_territorial_council_referent_designation_results_dashboard', {uuid: voting_platform_election.uuid}),
+                                        label: 'Voir les détails',
+                                        linkAttr: {class: 'row-action link--no-decor'}
+                                    }]) %}
+                                {% endif %}
+
                                 {% if items|length %}
                                     {% if items|length > 1 %}
                                         {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
