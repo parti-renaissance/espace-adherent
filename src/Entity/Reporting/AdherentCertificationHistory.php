@@ -66,7 +66,7 @@ class AdherentCertificationHistory
      */
     private $date;
 
-    private function __construct(Adherent $adherent, Administrator $administrator, string $action)
+    private function __construct(Adherent $adherent, ?Administrator $administrator = null, string $action)
     {
         $this->adherent = $adherent;
         $this->administrator = $administrator;
@@ -109,7 +109,7 @@ class AdherentCertificationHistory
         return self::ACTION_UNCERTIFY === $this->action;
     }
 
-    public static function createCertify(Adherent $adherent, Administrator $administrator): self
+    public static function createCertify(Adherent $adherent, ?Administrator $administrator = null): self
     {
         return new static($adherent, $administrator, self::ACTION_CERTIFY);
     }
