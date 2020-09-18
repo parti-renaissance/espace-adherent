@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title page.title %}
+{% block canonical_url url('app_static_page', { slug: page.slug }) %}
+
+{% block content %}
+    <main>
+        <section class="content">
+            {% if page.headerMedia %}
+            <header class="space--60-0 l__wrapper--slim">
+                <img src="{{ media_asset(page.headerMedia) }}" />
+            </header>
+            {% endif %}
+
+            <article class="l__wrapper--slim b__nudge--bottom-huge">
+                {{ page.content|markdown }}
+            </article>
+        </section>
+    </main>
+{% endblock %}
