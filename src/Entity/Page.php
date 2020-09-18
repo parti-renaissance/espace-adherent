@@ -17,10 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface
 {
     public const LAYOUT_DEFAULT = 'default';
+    public const LAYOUT_DEFAULT_WITH_HEADER_IMAGE = 'default_with_header_image';
     public const LAYOUT_MUNICIPALES = 'municipales';
 
     public const LAYOUTS = [
         self::LAYOUT_DEFAULT,
+        self::LAYOUT_DEFAULT_WITH_HEADER_IMAGE,
         self::LAYOUT_MUNICIPALES,
     ];
 
@@ -48,6 +50,13 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
     private $layout = self::LAYOUT_DEFAULT;
 
     /**
+     * @var Media|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
+     */
+    private $headerMedia;
+
+    /**
      * @return int
      */
     public function getId(): ?int
@@ -63,5 +72,15 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
     public function setLayout(?string $layout): void
     {
         $this->layout = $layout;
+    }
+
+    public function getHeaderMedia(): ?Media
+    {
+        return $this->headerMedia;
+    }
+
+    public function setHeaderMedia(?Media $headerMedia = null): void
+    {
+        $this->headerMedia = $headerMedia;
     }
 }

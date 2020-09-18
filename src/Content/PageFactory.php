@@ -14,6 +14,7 @@ class PageFactory
         $page->setDescription($data['description']);
         $page->setContent($data['content']);
         $page->setMedia($data['media'] ?? null);
+        $page->setHeaderMedia($data['headerMedia'] ?? null);
         $page->setDisplayMedia(false);
         $page->setKeywords($data['keywords'] ?? '');
         $page->setLayout($data['layout'] ?? Page::LAYOUT_DEFAULT);
