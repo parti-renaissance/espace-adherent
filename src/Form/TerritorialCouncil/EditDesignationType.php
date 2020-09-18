@@ -58,14 +58,14 @@ class EditDesignationType extends AbstractType
                 'attr' => ['maxlength' => 2000],
                 'filter_emojis' => true,
                 'with_character_count' => true,
-                'purifier_type' => 'enrich_content',
+                'purifier_type' => 'basic_content',
             ])
             ->add('questions', PurifiedTextareaType::class, [
                 'required' => false,
                 'attr' => ['maxlength' => 2000],
                 'filter_emojis' => true,
                 'with_character_count' => true,
-                'purifier_type' => 'enrich_content',
+                'purifier_type' => 'basic_content',
             ])
             ->add('withPoll', ChoiceType::class, [
                 'choices' => [

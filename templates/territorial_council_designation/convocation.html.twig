@@ -178,8 +178,8 @@
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.ckeditor('edit_designation_description', null, false, 2000) }}
-            {{ js.ckeditor('edit_designation_questions', null, false, 2000) }}
+            {{ js.microCkeditor('edit_designation_description', null, 2000) }}
+            {{ js.microCkeditor('edit_designation_questions', null, 2000) }}
         });
     </script>
 

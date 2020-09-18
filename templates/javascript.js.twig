@@ -25,6 +25,7 @@ App.createAddressSelector(
 {% endmacro %}
 
 {% macro ckeditor(element, height, uploadType = false, maxLength = false, removeFormat = false) %}
+{% import _self as js %}
 CKEDITOR.replace('{{ element }}', {
     extraPlugins : 'confighelper',
     removePlugins: 'elementspath',
@@ -72,22 +73,44 @@ CKEDITOR.on('dialogDefinition', function(ev) {
 });
 
 {% if maxLength is not same as(false) %}
-    var maxlength_{{ element }} = $('#{{ element }}').attr("maxlength");
-    var text_length_{{ element }} = decodeHtml(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
-    $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
-
-    CKEDITOR.instances['{{ element }}'].on("instanceReady", function(){
-        this.document.on("keyup", function() {
-            text_length_{{ element }} = decodeHtml(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
-            $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
-            if (text_length_{{ element }} > maxlength_{{ element }}) {
-                $('#{{ element }}_counter').addClass('form__error');
-            } else {
-                $('#{{ element }}_counter').removeClass('form__error');
-            }
-        });
-    });
+{{ js.ckeditorMaxlength(element, maxLength) }}
 {% endif %}
+{% endmacro %}
+
+{% macro microCkeditor(element, height, maxLength = false) %}
+{% import _self as js %}
+CKEDITOR.replace('{{ element }}', {
+    removePlugins: 'elementspath',
+    height: {{ height|default(200) }},
+    resize_enabled: false,
+    toolbar: [
+        { name: 'paragraph', items: [ 'BulletedList' ] },
+    ],
+    linkShowAdvancedTab: false,
+    linkShowTargetTab: false,
+});
+
+{% if maxLength is not same as(false) %}
+{{ js.ckeditorMaxlength(element, maxLength) }}
+{% endif %}
+{% endmacro %}
+
+{% macro ckeditorMaxlength(element, maxLength) %}
+var maxlength_{{ element }} = $('#{{ element }}').attr("maxlength");
+var text_length_{{ element }} = decodeHtml(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
+$('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
+
+CKEDITOR.instances['{{ element }}'].on("instanceReady", function(){
+    this.document.on("keyup", function() {
+        text_length_{{ element }} = decodeHtml(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
+        $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
+        if (text_length_{{ element }} > maxlength_{{ element }}) {
+            $('#{{ element }}_counter').addClass('form__error');
+        } else {
+            $('#{{ element }}_counter').removeClass('form__error');
+        }
+    });
+});
 {% endmacro %}
 
 {% macro simpleCkeditor(element, height) %}
