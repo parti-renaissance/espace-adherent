@@ -3,9 +3,9 @@
 namespace App\Form\VotingPlatform\Candidacy;
 
 use App\Entity\TerritorialCouncil\Candidacy;
+use App\Form\DoubleNewlineTextareaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -23,13 +23,13 @@ class TerritorialCouncilCandidacyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('biography', TextareaType::class, [
+            ->add('biography', DoubleNewlineTextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
                 'filter_emojis' => true,
                 'constraints' => [new NotBlank()],
             ])
-            ->add('faithStatement', TextareaType::class, [
+            ->add('faithStatement', DoubleNewlineTextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 2000],
                 'filter_emojis' => true,

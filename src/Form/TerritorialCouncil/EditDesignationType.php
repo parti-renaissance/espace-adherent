@@ -4,6 +4,7 @@ namespace App\Form\TerritorialCouncil;
 
 use App\Form\AddressType;
 use App\Form\GenderType;
+use App\Form\PurifiedTextareaType;
 use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
 use App\TerritorialCouncil\Designation\UpdateDesignationRequest;
 use App\ValueObject\Genders;
@@ -13,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -54,16 +54,18 @@ class EditDesignationType extends AbstractType
                 'html5' => true,
                 'widget' => 'single_text',
             ])
-            ->add('description', TextareaType::class, [
+            ->add('description', PurifiedTextareaType::class, [
                 'attr' => ['maxlength' => 2000],
                 'filter_emojis' => true,
                 'with_character_count' => true,
+                'purifier_type' => 'enrich_content',
             ])
-            ->add('questions', TextareaType::class, [
+            ->add('questions', PurifiedTextareaType::class, [
                 'required' => false,
                 'attr' => ['maxlength' => 2000],
                 'filter_emojis' => true,
                 'with_character_count' => true,
+                'purifier_type' => 'enrich_content',
             ])
             ->add('withPoll', ChoiceType::class, [
                 'choices' => [
