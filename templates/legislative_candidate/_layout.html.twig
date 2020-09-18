@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'adherent_space/_layout.html.twig' %}
 
 {% set currentUserOrDelegator = current_user() %}
 {% set delegated_access = get_delegated_access() %}
@@ -20,46 +20,16 @@
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="manager-space deputy procuration-manager b__nudge--bottom-huge">
-            <header class="manager-header">
-                <div class="l__wrapper">
-                    <div class="first-section">
-                        <div class="manager-information">
-                            <p>Vous gérez : <span>{{ currentUserOrDelegator.legislativeCandidateManagedDistrict }}</span></p>
-                        </div>
-                    </div>
-                    <div class="second-section">
-                        <div>
-                            <h1 class="page-title text--large b__nudge--bottom">
-                                {{ block('page_title') }}
-                            </h1>
-                            {% if app.user is not same as(currentUserOrDelegator) %}
-                                <p class="text--body text--dark b__nudge--top-0">Vous êtes {{ delegated_access.role|lower }} du candidat aux législative {{ currentUserOrDelegator }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <nav class="manager-header__menu">
-                        {% set isLegislativeCandidate = is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
-                        <ul>
-                            {% if isLegislativeCandidate or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
-                                <li class="{{ is_active_route(app.request, 'app_message_legislative_candidate_*') ? 'active' }}">
-                                    <a href="{{ path("app_message_legislative_candidate_list", route_params|default({})) }}">Mes messages</a>
-                                </li>
-                            {% endif %}
+    <main class="manager-space manager-body">
+        <aside class="manager-sidebar">
+            {{ include('legislative_candidate/_sidebar.html.twig') }}
+        </aside>
 
-                            {% if isLegislativeCandidate or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
-                                <li class="{{ is_active_route(app.request, ['app_legislative_candidate_managed_users_list', 'app_legislative_candidate_adherent_invitation']) ? 'active' }}">
-                                    <a href="{{ path('app_legislative_candidate_managed_users_list') }}">Adhérents</a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    {% block legislative_candidate_content %}{% endblock %}
                 </div>
-            </header>
-
-            <div class="l__wrapper procuration-manager__content text--body">
-                {% block legislative_candidate_content %}{% endblock %}
             </div>
         </section>
 
@@ -73,7 +43,15 @@
     </main>
 {% endblock %}
 
+{% block adherent_space_header_title %}
+    {% if app.user is not same as(currentUserOrDelegator) %}
+        Vous êtes <span class="text--black text--bold">{{ delegated_access.role|lower }}</span> du candidat aux législatives <span class="text--black text--bold">{{ currentUserOrDelegator }}</span>
+    {% endif %}
+{% endblock %}
+
 {% block final_javascripts %}
+    {{ parent() }}
+
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
 

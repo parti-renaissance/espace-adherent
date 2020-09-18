@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'adherent_space/_layout.html.twig' %}
 
 {% block page_title 'Espace La République Ensemble' %}
 
@@ -13,32 +13,16 @@
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="manager-space b__nudge--bottom-huge">
-            <header class="manager-header">
-                <div class="l__wrapper">
-                    <div class="first-section">
-                        <div class="el manager-information">
-                            <p>Vous gérez : <span>{{ app.user.lreArea.allTags ? 'Toutes les zones' : app.user.lreArea.referentTag }}</span></p>
-                        </div>
-                    </div>
-                    <div class="second-section">
-                        <h1 class="page-title text--large b__nudge--bottom">
-                            {{ block('page_title') }}
-                        </h1>
-                    </div>
-                    <nav class="manager-header__menu">
-                        <ul>
-                            <li class="{{ is_active_route(app.request, 'app_lre_elected_representatives_*') ? 'active' }}">
-                                <a href="{{ path('app_lre_elected_representatives_list') }}">Élus</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </header>
+    <main class="manager-space manager-body">
+        <aside class="manager-sidebar">
+            {{ include('lre/_sidebar.html.twig') }}
+        </aside>
 
-            <div class="l__wrapper text--body">
-                {% block lre_content %}{% endblock %}
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    {% block lre_content %}{% endblock %}
+                </div>
             </div>
         </section>
 
@@ -51,7 +35,13 @@
     </main>
 {% endblock %}
 
+{% block adherent_space_header_title %}
+    Vous gérez : <span class="text--black text--bold">{{ app.user.lreArea.allTags ? 'Toutes les zones' : app.user.lreArea.referentTag }}</span>
+{% endblock %}
+
 {% block final_javascripts %}
+    {{ parent() }}
+
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
 

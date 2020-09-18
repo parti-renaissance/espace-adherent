@@ -7,15 +7,5 @@
 {% endblock %}
 
 {% block content %}
-    <main>
-        <section class="manager-space b__nudge--bottom-huge adherent-space">
-            <header class="manager-header b__nudge--bottom-large adherent-space-header">
-                {% block committee_space_header '' %}
-            </header>
-
-            <div class="l__wrapper text--body">
-                {% block committee_content %}{% endblock %}
-            </div>
-        </section>
-    </main>
+    {% block committee_content %}{% endblock %}
 {% endblock %}

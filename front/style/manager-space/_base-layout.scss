@@ -451,7 +451,7 @@
     z-index: 10;
 
     @media (min-width: 1100px) {
-        height: calc(100vh - 71px);
+        height: 100vh;
         display: block !important;
         position: sticky;
         left: auto;

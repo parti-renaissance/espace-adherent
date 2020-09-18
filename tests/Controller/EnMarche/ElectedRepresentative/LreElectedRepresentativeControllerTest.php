@@ -34,7 +34,7 @@ class LreElectedRepresentativeControllerTest extends WebTestCase
 
         $this->client->click($crawler->selectLink('Espace La République Ensemble')->link());
         $crawler = $this->client->followRedirect();
-        self::assertEquals('Toutes les zones', $crawler->filter('.first-section .manager-information p > span')->text());
+        self::assertEquals('Toutes les zones', $crawler->filter('p.manager-topbar__area > span')->text());
         self::assertCount(10, $crawler->filter('table tbody .referent__item'));
     }
 

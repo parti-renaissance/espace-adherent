@@ -48,7 +48,7 @@ class AbstractMessageControllerTest extends WebTestCase
 
         self::assertEquals('http://test.enmarche.code/espace-depute/messagerie', $crawler->getUri());
         self::assertEquals(0, $crawler->filter('.datagrid__table-manager tbody tr td span.status__2')->count());
-        self::assertContains('Vous êtes collaborateur parlementaire du député Député CHLI FDESIX', $crawler->filter('main .second-section p')->text());
+        self::assertContains('Vous êtes collaborateur parlementaire du député Député CHLI FDESIX', $crawler->filter('main .manager-sidebar__menu p')->text());
 
         $crawler = $this->client->request('GET', '/espace-depute/messagerie/creer');
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer le brouillon')->form(['adherent_message' => [
@@ -77,11 +77,11 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request('GET', '/espace-partage/f4ce89da-1272-4a01-a47e-4ce5248ce018');
-        self::assertCount(2, $crawler->filter('nav.manager-header__menu li'));
-        self::assertCount(0, $crawler->filter('nav.manager-header__menu li a:contains("Mes messages")'));
-        self::assertCount(0, $crawler->filter('nav.manager-header__menu li a:contains("Comités")'));
-        self::assertCount(1, $crawler->filter('nav.manager-header__menu li a:contains("Adhérents")'));
-        self::assertCount(1, $crawler->filter('nav.manager-header__menu li a:contains("Événements")'));
+        self::assertCount(2, $crawler->filter('nav.manager-sidebar__menu li'));
+        self::assertCount(0, $crawler->filter('nav.manager-sidebar__menu li a:contains("Mes messages")'));
+        self::assertCount(0, $crawler->filter('nav.manager-sidebar__menu li a:contains("Comités")'));
+        self::assertCount(1, $crawler->filter('nav.manager-sidebar__menu li a:contains("Adhérents")'));
+        self::assertCount(1, $crawler->filter('nav.manager-sidebar__menu li a:contains("Événements")'));
     }
 
     /**
