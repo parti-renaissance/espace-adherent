@@ -40,7 +40,7 @@ class CertificationAuthorityManager
         $this->em->flush();
     }
 
-    public function approve(CertificationRequest $certificationRequest, Administrator $administrator): void
+    public function approve(CertificationRequest $certificationRequest, Administrator $administrator = null): void
     {
         $certificationRequest->approve();
         $certificationRequest->process($administrator);
@@ -90,7 +90,7 @@ class CertificationAuthorityManager
         $this->messageNotifier->sendBlockMessage($certificationRequest);
     }
 
-    private function certifyAdherent(Adherent $adherent, Administrator $administrator): void
+    private function certifyAdherent(Adherent $adherent, Administrator $administrator = null): void
     {
         $adherent->certify();
 
