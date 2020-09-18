@@ -4,7 +4,7 @@
     <h4 class="text--muted text--normal text--uppercase b__nudge--bottom">Sondage</h4>
 
     {% if election.isCandidacyPeriodStarted and not election.isVotePeriodActive %}
-        {% set vote = membership is defined ? get_election_poll_vote(election_poll, membership) : null %}
+        {% set vote = membership is defined and membership ? get_election_poll_vote(election_poll, membership) : null %}
 
         <form class="em-form" action="{{ not vote ? path('app_territorial_council_election_poll_save_vote', {uuid: election_poll.uuid}) }}" method="POST">
             <div class="em-form__group em-form__checkbox--inline">
