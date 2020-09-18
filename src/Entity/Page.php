@@ -48,6 +48,13 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
     private $layout = self::LAYOUT_DEFAULT;
 
     /**
+     * @var Media|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
+     */
+    private $headerMedia;
+
+    /**
      * @return int
      */
     public function getId(): ?int
@@ -63,5 +70,15 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
     public function setLayout(?string $layout): void
     {
         $this->layout = $layout;
+    }
+
+    public function getHeaderMedia(): ?Media
+    {
+        return $this->headerMedia;
+    }
+
+    public function setHeaderMedia(?Media $headerMedia = null): void
+    {
+        $this->headerMedia = $headerMedia;
     }
 }

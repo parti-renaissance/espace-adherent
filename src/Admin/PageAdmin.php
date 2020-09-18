@@ -71,6 +71,10 @@ class PageAdmin extends AbstractAdmin
                     'label' => 'Image principale',
                     'required' => false,
                 ])
+            ->add('headerMedia', null, [
+                'label' => 'Image d\'en-tête',
+                'required' => false,
+            ])
             ->end()
         ;
     }
