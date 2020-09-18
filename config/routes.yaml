@@ -189,9 +189,10 @@ app_voting_platform:
     prefix:   "/elections/{uuid}"
 
 app_nous_reussirons:
-    host: "%nous_reussirons_host%"
-    resource: "../src/Controller/EnMarche/NousReussironsController.php"
-    type:     "annotation"
+    host:     "%nous_reussirons_host%"
+    path:     /
+    methods:  GET
+    defaults: { _controller: App\Controller\EnMarche\PageController:showPageAction, slug: 'nousreussirons' }
 
 # This route must be loaded the last to prevent an override
 app_static_page:
