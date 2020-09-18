@@ -1,0 +1,15 @@
+#default-with-header {
+
+    .content header {
+        position: relative;
+        width: 100%;
+        height: 180px;
+        background-size: cover;
+        background-position: center center;
+        margin-bottom: 50px;
+
+        @media (min-width: $mobile) {
+            height: 320px;
+        }
+    }
+}

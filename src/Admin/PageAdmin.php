@@ -77,7 +77,7 @@ class PageAdmin extends AbstractAdmin
             ->add('headerMedia', null, [
                 'label' => 'Image d\'en-tête',
                 'required' => false,
-                'help' => 'Cette image ne sera visible que sur les layouts qui affichent l\'image d\'en-tête',
+                'help' => 'Cette image ne sera visible que sur les layouts qui affichent l\'image d\'en-tête. Largeur min. recommandée: 1920px',
             ])
             ->end()
         ;

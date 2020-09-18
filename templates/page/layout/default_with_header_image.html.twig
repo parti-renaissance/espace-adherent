@@ -4,12 +4,10 @@
 {% block canonical_url url('app_static_page', { slug: page.slug }) %}
 
 {% block content %}
-    <main>
+    <main id="default-with-header">
         <section class="content">
             {% if page.headerMedia %}
-            <header class="space--60-0 l__wrapper--slim">
-                <img src="{{ media_asset(page.headerMedia) }}" />
-            </header>
+                <header style="background-image:url('{{ media_asset(page.headerMedia, { w: 1920, fit: 'max' }) }}');"></header>
             {% endif %}
 
             <article class="l__wrapper--slim b__nudge--bottom-huge">
