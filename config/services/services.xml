@@ -283,6 +283,9 @@
         <service id="app.html_purifier.enrich_content" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
             <argument type="service" id="exercise_html_purifier.enrich_content"/>
         </service>
+        <service id="app.html_purifier.basic_content" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
+            <argument type="service" id="exercise_html_purifier.basic_content"/>
+        </service>
         <service id="App\HTMLPurifier\Injector\ImageDimension">
             <argument>%image_max_length%</argument>
         </service>

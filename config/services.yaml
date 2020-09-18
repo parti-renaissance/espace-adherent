@@ -127,6 +127,7 @@ services:
             -
                 default: '@app.html_purifier.default'
                 enrich_content: '@app.html_purifier.enrich_content'
+                basic_content: '@app.html_purifier.basic_content'
 
     App\Form\MemberInterestsChoiceType:
         arguments:
