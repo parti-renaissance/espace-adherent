@@ -5,6 +5,7 @@ namespace App\Twig;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentSpaceAccessInformation;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -14,14 +15,17 @@ class AdherentRuntime implements RuntimeExtensionInterface
     private $memberInterests;
     private $accessInformationRepository;
     private $electedRepresentativeRepository;
+    private $committeeMandateRepository;
 
     public function __construct(
         ElectedRepresentativeRepository $electedRepresentativeRepository,
         ReferentSpaceAccessInformationRepository $accessInformationRepository,
+        CommitteeAdherentMandateRepository $committeeMandateRepository,
         array $interests
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->accessInformationRepository = $accessInformationRepository;
+        $this->committeeMandateRepository = $committeeMandateRepository;
         $this->memberInterests = $interests;
     }
 
@@ -108,6 +112,14 @@ class AdherentRuntime implements RuntimeExtensionInterface
 
         if ($adherent->isMunicipalChief()) {
             $labels[] = 'Candidat Municipales 2020';
+        }
+
+        if ($adherent->isTerritorialCouncilMember()) {
+            $labels[] = 'Membre des instances';
+        }
+
+        if ($this->committeeMandateRepository->hasActiveMandate($adherent)) {
+            $labels[] = $adherent->isFemale() ? 'Adhérente désignée' : 'Adhérent désigné';
         }
 
         return $labels;

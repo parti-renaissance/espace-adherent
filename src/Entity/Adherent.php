@@ -1479,6 +1479,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->territorialCouncilMembership instanceof TerritorialCouncilMembership;
     }
 
+    public function isTerritorialCouncilMember(): bool
+    {
+        return $this->territorialCouncilMembership instanceof TerritorialCouncilMembership
+            && $this->territorialCouncilMembership->getTerritorialCouncil()->isActive();
+    }
+
     public function revokeTerritorialCouncilMembership(): void
     {
         if (!$this->territorialCouncilMembership) {
