@@ -529,4 +529,20 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
         return $this->adherentMandates->matching($criteria);
     }
+
+    public function getActiveAdherentMandateAdherentIds(): array
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('finishAt', null))
+            ->orderBy(['gender' => 'ASC'])
+        ;
+
+        return $this->adherentMandates
+            ->matching($criteria)
+            ->map(function (CommitteeAdherentMandate $adherentMandate) {
+                return $adherentMandate->getAdherent()->getId();
+            })
+            ->toArray()
+        ;
+    }
 }

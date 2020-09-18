@@ -144,6 +144,7 @@
                 </tr>
             </thead>
             <tbody>
+                {% set adherentIds = committee.activeAdherentMandateAdherentIds %}
                 {% for membership in members %}
                     {% set member = membership.adherent %}
                     {% set is_promotable_host = membership.promotableHost %}
@@ -168,6 +169,9 @@
                                 {% endif %}
                             {% else %}
                                 Membre
+                            {% endif %}
+                            {% if member.id in adherentIds %}
+                                {{ "committee.elected_candidate_adherent.#{member.gender}"|trans }}
                             {% endif %}
                         </td>
 

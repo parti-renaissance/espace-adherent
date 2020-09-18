@@ -32,7 +32,7 @@
             {% endfor %}
         </ul>
 
-        {% if committee.activeAdherentMandates|length > 0 %}
+        {% if is_canary_enabled() and committee.activeAdherentMandates|length > 0 %}
             <h5>
                 Représentation
             </h5>
