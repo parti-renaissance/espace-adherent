@@ -38,6 +38,7 @@ class PageAdmin extends AbstractAdmin
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
                     'filter_emojis' => true,
+                    'help' => 'Le titre ne sera visible que sur les layouts qui affichent le titre',
                 ])
             ->end()
             ->with('Contenu', ['class' => 'col-md-8'])
@@ -53,7 +54,9 @@ class PageAdmin extends AbstractAdmin
                 ->add('layout', ChoiceType::class, [
                     'label' => 'Layout',
                     'choices' => Page::LAYOUTS,
-                    'choice_label' => function (?string $choice) { return $choice; },
+                    'choice_label' => function (?string $choice) {
+                        return "page.layout.$choice";
+                    },
                 ])
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
@@ -74,6 +77,7 @@ class PageAdmin extends AbstractAdmin
             ->add('headerMedia', null, [
                 'label' => 'Image d\'en-tête',
                 'required' => false,
+                'help' => 'Cette image ne sera visible que sur les layouts qui affichent l\'image d\'en-tête',
             ])
             ->end()
         ;

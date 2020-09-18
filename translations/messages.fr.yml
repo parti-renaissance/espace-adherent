@@ -996,3 +996,10 @@ adherent_mandate.committee.not_valid_gender: Le genre "{{ gender }}" de l'adhér
 adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({{ email }}) est déjà un adhérent désigné dans un comité "{{ committee }}".
 adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{{ committee }}" a déjà un adhérent désigné ({{ gender }}).
 adherent_mandate.adherent_has_territorial_council_membership: L'adhérent ({{ email }}) est déjà membre du Conseil territorial "{{ territorialCouncil }}".
+
+#
+# Page
+#
+page.layout.default: Défaut avec titre (sans image d'en-tête)
+page.layout.default_with_header_image: Défaut avec image d'en tête (sans titre)
+page.layout.municipales: Municipales
