@@ -39,7 +39,7 @@ version: "3.2"
 #        environment:
 #            - BLACKFIRE_CLIENT_ID
 #            - BLACKFIRE_CLIENT_TOKEN
-#            - VIRTUAL_HOST=enmarche.code,test.enmarche.code,legislatives.enmarche.code,m.enmarche.code
+#            - VIRTUAL_HOST=enmarche.code,test.enmarche.code,legislatives.enmarche.code,m.enmarche.code,nous-reussirons.enmarche.code
 #            - VIRTUAL_PORT=80
 
 #    rabbitmq:

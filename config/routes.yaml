@@ -188,6 +188,11 @@ app_voting_platform:
     type:     "annotation"
     prefix:   "/elections/{uuid}"
 
+app_nous_reussirons:
+    host: "%nous_reussirons_host%"
+    resource: "../src/Controller/EnMarche/NousReussironsController.php"
+    type:     "annotation"
+
 # This route must be loaded the last to prevent an override
 app_static_page:
     host:    "%app_host%"

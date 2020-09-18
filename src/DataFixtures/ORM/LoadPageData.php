@@ -235,6 +235,16 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'layout' => Page::LAYOUT_DEFAULT_WITH_HEADER_IMAGE,
         ]));
 
+        $manager->persist($factory->createFromArray([
+            'keywords' => 'nous reussirons',
+            'title' => 'Nous reussirons (titre non affiché)',
+            'slug' => 'nous-reussirons',
+            'description' => 'Cette page s`affiche avec une image d\'en tête',
+            'content' => 'Cette page s`affiche avec une image d\'en tête',
+            'headerMedia' => $media,
+            'layout' => Page::LAYOUT_DEFAULT_WITH_HEADER_IMAGE,
+        ]));
+
         $manager->flush();
     }
 

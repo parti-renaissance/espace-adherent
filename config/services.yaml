@@ -20,6 +20,7 @@ parameters:
     app_host:                             "%env(APP_HOST)%"
     amp_host:                             "%env(AMP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
+    nous_reussirons_host:                 "%env(NOUS_REUSSIRONS_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"
     api_path_prefix:                      "%env(API_PATH_PREFIX)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
