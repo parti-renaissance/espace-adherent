@@ -1,0 +1,19 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if constant('App\\Entity\\ThematicCommunity\\ThematicCommunityMembership::TYPE_ADHERENT') == object.type %}
+        {{ include('admin/adherent/statuses.html.twig', {object: object.adherent}) }}
+
+        {% set electedRepresentative = get_elected_representative(object.adherent) %}
+
+        {% if electedRepresentative %}
+            {% for mandate in electedRepresentative.currentMandates %}
+                <span class="label label-success">{{ ('adherent_mandate.'~mandate.type)|trans }}</span>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+
+    {% if constant('App\\Entity\\ThematicCommunity\\ThematicCommunityMembership::TYPE_CONTACT') == object.type %}
+        <span class="label label-warning">Contact</span>
+    {% endif %}
+{% endblock %}

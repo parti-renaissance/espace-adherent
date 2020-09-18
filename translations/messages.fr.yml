@@ -692,6 +692,12 @@ user_list_definition.type.elected_representative.label: Élu
 user_list_definition.type.adherent.label: Adhérent
 user_list_definition.type.thematic_community.label: Communauté thématique
 user_list_definition.type.lre.label: La République Ensemble (LRE)
+user_list_definition.type.thematic_community_health.label: "[Communauté thématique] Santé"
+user_list_definition.type.thematic_community_education.label: "[Communauté thématique] Éducation"
+user_list_definition.type.thematic_community_ecology.label: "[Communauté thématique] Écologie"
+user_list_definition.type.thematic_community_europe.label: "[Communauté thématique] Europe"
+user_list_definition.type.thematic_community_tpe_pme.label: "[Communauté thématique] TPE-PME"
+user_list_definition.type.thematic_community_agriculture.label: "[Communauté thématique] Agriculture"
 
 #
 # ElectedRepresentative
@@ -1002,6 +1008,24 @@ adherent_mandate.committee.not_valid_gender: Le genre "{{ gender }}" de l'adhér
 adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({{ email }}) est déjà un adhérent désigné dans un comité "{{ committee }}".
 adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{{ committee }}" a déjà un adhérent désigné ({{ gender }}).
 adherent_mandate.adherent_has_territorial_council_membership: L'adhérent ({{ email }}) est déjà membre du Conseil territorial "{{ territorialCouncil }}".
+adherent_mandate.conseiller_municipal: "Conseiller(e) municipal(e)"
+adherent_mandate.membre_EPCI: "Membre d'EPCI"
+adherent_mandate.conseiller_departemental: "Conseiller(e) départemental(e)"
+adherent_mandate.conseiller_regional: "Conseiller(e) régional(e)"
+adherent_mandate.membre_assemblee_corse: "Membre de l'Assemblée de Corse"
+adherent_mandate.depute: "Député(e)"
+adherent_mandate.senateur: "Sénateur(rice)"
+adherent_mandate.euro_depute: "Député(e) européen(ne)"
+
+#
+# Thematic community
+#
+admin.thematic_community.membership.motivations.thinking: Réflexion
+admin.thematic_community.membership.motivations.information: Information
+admin.thematic_community.membership.motivations.on_spot: Terrain
+admin.thematic_community_membership.type.adherent: Adhérent
+admin.thematic_community_membership.type.electedRepresentative: Élu
+admin.thematic_community_membership.type.contact: Contact
 
 #
 # Page

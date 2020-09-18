@@ -1,0 +1,27 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block sonata_tab_content %}
+    {% if admin.otherMemberships|length %}
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h4 class="box-title">Autres communautés thématiques</h4>
+                </div>
+                <div class="box-body">
+                    <p>Ce membre fait aussi partie des communautés thématiques suivantes :</p>
+                    <ul>
+                        {% for membership in admin.otherMemberships %}
+                            <li>
+                                <a href="{{ path('admin_app_thematiccommunity_thematiccommunitymembership_edit', {id: membership.id}) }}">
+                                    {{ membership.community.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

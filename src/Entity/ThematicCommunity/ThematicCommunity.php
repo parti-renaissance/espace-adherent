@@ -81,4 +81,9 @@ class ThematicCommunity
     {
         $this->enabled = $enabled;
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }

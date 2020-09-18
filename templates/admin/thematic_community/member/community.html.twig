@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <span class="label label-default">
+        {{ object.community.name }}
+    </span>
+    &nbsp;
+    <span class="label label-default">
+        {{ ('admin.thematic_community.membership.motivations.'~object.motivation)|trans }}
+    </span>
+
+    {% if object.expert %}
+        <br>
+        <span class="label label-danger">
+        Expert
+    </span>
+    {% endif %}
+{% endblock %}
