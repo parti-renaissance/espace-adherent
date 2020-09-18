@@ -32,4 +32,21 @@ class CandidacyRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function getCandidatesStats(Election $election): array
+    {
+        return $this->createQueryBuilder('candidacy')
+            ->select('candidacy.quality')
+            ->addSelect('COUNT(1) as total')
+            ->where('candidacy.election = :election')
+            ->andWhere('candidacy.status = :confirmed')
+            ->groupBy('candidacy.quality')
+            ->setParameters([
+                'election' => $election,
+                'confirmed' => Candidacy::STATUS_CONFIRMED,
+            ])
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
 }

@@ -216,14 +216,6 @@
         border-radius: 4px;
     }
 
-    .quality-title {
-        &-11,
-        &-10 { color: $green--territory; }
-        &-12 { color: $red--nation; }
-        &-14 { color: $blue; }
-        &-15 { color: $blue--dark; }
-    }
-
     &__candidate {
         flex-basis: 100%;
         box-sizing: border-box;
@@ -305,4 +297,12 @@
             }
         }
     }
+}
+
+.quality-title {
+    &-11,
+    &-10 { color: $green--territory; }
+    &-12 { color: $red--nation; }
+    &-14 { color: $blue; }
+    &-15 { color: $blue--dark; }
 }

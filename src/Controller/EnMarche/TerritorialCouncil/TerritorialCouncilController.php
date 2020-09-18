@@ -5,10 +5,12 @@ namespace App\Controller\EnMarche\TerritorialCouncil;
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\ElectionPoll\Poll;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Repository\TerritorialCouncil\CandidacyRepository;
+use App\Security\Voter\TerritorialCouncil\AccessVoter;
+use App\Security\Voter\TerritorialCouncil\ManageTerritorialCouncilVoter;
 use App\TerritorialCouncil\ElectionPoll\Manager;
 use Ramsey\Uuid\Uuid;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,61 +19,88 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/conseil-territorial", name="app_territorial_council_")
- *
- * @Security("is_granted('TERRITORIAL_COUNCIL_MEMBER')")
  */
 class TerritorialCouncilController extends Controller
 {
     use CanaryControllerTrait;
 
     /**
-     * @Route("", name="index", methods={"GET"})
-     */
-    public function indexAction(): Response
-    {
-        return $this->render('territorial_council/index.html.twig');
-    }
-
-    /**
      * @Route("/faq", name="faq", methods={"GET"})
+     * @Route("/{uuid}/faq", name="selected_faq", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      */
-    public function faqAction(): Response
+    public function faqAction(UserInterface $adherent, TerritorialCouncil $territorialCouncil = null): Response
     {
-        return $this->render('territorial_council/faq.html.twig');
+        $this->checkAccess($territorialCouncil);
+
+        if (!$withSelectedCouncil = null !== $territorialCouncil) {
+            $membership = $adherent->getTerritorialCouncilMembership();
+            $territorialCouncil = $membership->getTerritorialCouncil();
+        }
+
+        return $this->render('territorial_council/faq.html.twig', [
+            'membership' => $membership ?? null,
+            'territorial_council' => $territorialCouncil,
+            'with_selected_council' => $withSelectedCouncil,
+        ]);
     }
 
     /**
      * @Route("/membres", name="members", methods={"GET"})
+     * @Route("/{uuid}/membres", name="selected_members", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      */
-    public function listMembersAction(): Response
+    public function listMembersAction(UserInterface $adherent, TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->disableInProduction();
 
-        return $this->render('territorial_council/members.html.twig');
+        $this->checkAccess($territorialCouncil);
+
+        if (!$withSelectedCouncil = null !== $territorialCouncil) {
+            $membership = $adherent->getTerritorialCouncilMembership();
+            $territorialCouncil = $membership->getTerritorialCouncil();
+        }
+
+        return $this->render('territorial_council/members.html.twig', [
+            'membership' => $membership ?? null,
+            'territorial_council' => $territorialCouncil,
+            'with_selected_council' => $withSelectedCouncil,
+        ]);
     }
 
     /**
      * @Route("/liste-candidature", name="candidacy_list", methods={"GET"})
+     * @Route("/{uuid}/liste-candidature", name="selected_candidacy_list", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      *
      * @param Adherent $adherent
      */
-    public function candidacyListAction(UserInterface $adherent, CandidacyRepository $repository): Response
-    {
-        $membership = $adherent->getTerritorialCouncilMembership();
-        $council = $membership->getTerritorialCouncil();
+    public function candidacyListAction(
+        UserInterface $adherent,
+        CandidacyRepository $repository,
+        TerritorialCouncil $territorialCouncil = null
+    ): Response {
+        $this->checkAccess($territorialCouncil);
 
-        if (!$election = $council->getCurrentElection()) {
-            return $this->redirectToRoute('app_territorial_council_index');
+        if (!$withSelectedCouncil = null !== $territorialCouncil) {
+            $membership = $adherent->getTerritorialCouncilMembership();
+            $territorialCouncil = $membership->getTerritorialCouncil();
+        }
+
+        if (!$election = $territorialCouncil->getCurrentElection()) {
+            return $withSelectedCouncil ?
+                $this->redirectToRoute('app_territorial_council_selected_index', ['uuid' => $territorialCouncil->getUuid()])
+                : $this->redirectToRoute('app_territorial_council_index');
         }
 
         return $this->render('territorial_council/candidacy_list.html.twig', [
             'candidacies' => $repository->findAllConfirmedForElection($election),
             'election' => $election,
+            'membership' => $membership ?? null,
+            'territorial_council' => $territorialCouncil,
+            'with_selected_council' => $withSelectedCouncil,
         ]);
     }
 
     /**
-     * @Route("/{uuid}/sondage", name="election_poll_save_vote", methods={"POST"})
+     * @Route("/{uuid}/sondage", name="election_poll_save_vote", methods={"POST"}, requirements={"uuid": "%pattern_uuid%"})
      *
      * @param Adherent $adherent
      */
@@ -81,6 +110,8 @@ class TerritorialCouncilController extends Controller
         UserInterface $adherent,
         Manager $voteManager
     ): Response {
+        $this->checkAccess();
+
         if (!$electionPoll->getElection()->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_territorial_council_index');
         }
@@ -102,5 +133,36 @@ class TerritorialCouncilController extends Controller
         $this->addFlash('info', 'Votre participation au sondage a bien été enregistrée.');
 
         return $this->redirectToRoute('app_territorial_council_index');
+    }
+
+    /**
+     * @Route("", name="index", methods={"GET"})
+     * @Route("/{uuid}", name="selected_index", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
+     *
+     * @param Adherent $adherent
+     */
+    public function indexAction(UserInterface $adherent, TerritorialCouncil $territorialCouncil = null): Response
+    {
+        $this->checkAccess($territorialCouncil);
+
+        if (!$withSelectedCouncil = null !== $territorialCouncil) {
+            $membership = $adherent->getTerritorialCouncilMembership();
+            $territorialCouncil = $membership->getTerritorialCouncil();
+        }
+
+        return $this->render('territorial_council/index.html.twig', [
+            'membership' => $membership ?? null,
+            'territorial_council' => $territorialCouncil,
+            'with_selected_council' => $withSelectedCouncil,
+        ]);
+    }
+
+    private function checkAccess(TerritorialCouncil $territorialCouncil = null): void
+    {
+        if ($territorialCouncil) {
+            $this->denyAccessUnlessGranted(ManageTerritorialCouncilVoter::PERMISSION, $territorialCouncil);
+        } else {
+            $this->denyAccessUnlessGranted(AccessVoter::PERMISSION);
+        }
     }
 }

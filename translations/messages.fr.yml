@@ -839,6 +839,11 @@ designation.label.type_committee_adherent: Désignation des binômes d'adhérent
 designation.label.type_copol: Désignation des binômes au Copol
 designation.vote_mode.online: 100% en ligne
 designation.vote_mode.meeting: Avec réunion présentielle
+designation.status.not_started: Non lancée
+designation.status.opened: Ouverte
+designation.status.in_progress: En cours
+designation.status.closed: Terminée
+designation.status.scheduled: Programmée
 
 #
 # Delegated access
