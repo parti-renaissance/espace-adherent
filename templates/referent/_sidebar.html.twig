@@ -84,7 +84,7 @@
                 <a href="{{ path('app_territorial_council_referent_members_list') }}">Membres</a>
             </li>
 
-            <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_designations_list*') ? 'active' }}">
+            <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_designation*') ? 'active' }}">
                 <a href="{{ path('app_territorial_council_referent_designations_list') }}">Désignations</a>
             </li>
         {% endif %}

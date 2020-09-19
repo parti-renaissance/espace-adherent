@@ -142,7 +142,7 @@ class ElectionRepository extends ServiceEntityRepository
         TerritorialCouncil $territorialCouncil,
         Designation $designation
     ): array {
-        $election = $this->createQueryBuilder('election')
+        return $this->createQueryBuilder('election')
             ->select(
                 sprintf(
                     '(SELECT COUNT(1) FROM %s AS voter
@@ -169,10 +169,8 @@ class ElectionRepository extends ServiceEntityRepository
             ->orderBy('designation.voteEndDate', 'DESC')
             ->groupBy('election.id')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getOneOrNullResult() ?? []
         ;
-
-        return $election ?? [];
     }
 
     public function getSingleAggregatedData(ElectionRound $electionRound): array
