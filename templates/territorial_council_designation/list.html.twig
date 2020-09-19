@@ -50,8 +50,10 @@
                                     {% endfor %}
                                 {% elseif status in [constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::IN_PROGRESS'), constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::CLOSED')] %}
                                     {% set votes_stats = get_votes_stats(election) %}
-                                    <span>Participation</span><br/>
-                                    {{ votes_stats.voters_count ? (votes_stats.votes_count * 100 / votes_stats.voters_count)|round(2) : 0 }} %
+                                    {% if votes_stats %}
+                                        <span>Participation</span><br/>
+                                        {{ votes_stats.voters_count ? (votes_stats.votes_count * 100 / votes_stats.voters_count)|round(2) : 0 }} %
+                                    {% endif %}
                                 {% endif %}
                             </td>
                             <td>

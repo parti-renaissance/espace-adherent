@@ -11,6 +11,7 @@ use App\Security\Voter\TerritorialCouncil\AccessVoter;
 use App\Security\Voter\TerritorialCouncil\ManageTerritorialCouncilVoter;
 use App\TerritorialCouncil\ElectionPoll\Manager;
 use Ramsey\Uuid\Uuid;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/conseil-territorial", name="app_territorial_council_")
+ *
+ * @Security("is_granted('ROLE_ADHERENT')")
  */
 class TerritorialCouncilController extends Controller
 {
