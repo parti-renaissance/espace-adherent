@@ -20,6 +20,7 @@ class TerritorialCouncilQualityEnum extends Enum
     public const REGIONAL_COUNCILOR = 'regional_councilor';
     public const DEPARTMENT_COUNCILOR = 'department_councilor';
     public const CITY_COUNCILOR = 'city_councilor';
+    public const BOROUGH_COUNCILOR = 'borough_councilor';
     public const CONSULAR_CONSELOR = 'consular_conselor';
     public const COMMITTEE_SUPERVISOR = 'committee_supervisor';
     public const ELECTED_CANDIDATE_ADHERENT = 'elected_candidate_adherent';
@@ -51,8 +52,9 @@ class TerritorialCouncilQualityEnum extends Enum
         self::DEPARTMENT_COUNCILOR => 11,
         self::CITY_COUNCILOR => 12,
         self::CONSULAR_CONSELOR => 13,
-        self::COMMITTEE_SUPERVISOR => 14,
-        self::ELECTED_CANDIDATE_ADHERENT => 15,
+        self::BOROUGH_COUNCILOR => 14,
+        self::COMMITTEE_SUPERVISOR => 15,
+        self::ELECTED_CANDIDATE_ADHERENT => 16,
     ];
 
     public const ALL = [

@@ -216,6 +216,13 @@ class TerritorialCouncilMembership
         }, $this->qualities->toArray());
     }
 
+    public function getQualitiesWithZones(): array
+    {
+        return array_merge(...array_map(function (TerritorialCouncilQuality $quality) {
+            return [$quality->getName() => $quality->getZone()];
+        }, $this->qualities->toArray()));
+    }
+
     public function getQualityZonesAsString(): string
     {
         return implode(', ', \array_map(function (TerritorialCouncilQuality $quality) {

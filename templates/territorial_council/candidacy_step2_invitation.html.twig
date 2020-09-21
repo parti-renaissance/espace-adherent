@@ -26,7 +26,7 @@
                 {{ form_errors(form.quality) }}
 
                 <div class="em-form__field--ctn">
-                    {{ form_widget(form.quality, {attr: {class: 'em-form__field'}}) }}
+                    {{ form_widget(form.quality, {attr: {class: 'em-form__field', 'data-qualities': app.user.territorialCouncilMembership.getQualitiesWithZones|json_encode}}) }}
                 </div>
             </div>
 

@@ -233,7 +233,13 @@ class Candidacy extends BaseCandidacy
 
     public function isCouncilor(): bool
     {
-        return \in_array($this->quality, [TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR], true);
+        return
+            \in_array($this->quality, [TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR], true)
+            || (
+                TerritorialCouncilQualityEnum::CITY_COUNCILOR === $this->quality
+                && 0 === strpos($this->membership->getQualitiesWithZones()[$this->quality], 'Paris ')
+            )
+        ;
     }
 
     public function isTaken(): bool

@@ -25,11 +25,6 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->entityManager = $entityManager;
-
-        $handlers = iterator_to_array($handlers);
-        usort($handlers, function (AbstractTerritorialCouncilHandler $handlerA, AbstractTerritorialCouncilHandler $handlerB) {
-            return $handlerA->getPriority() <=> $handlerB->getPriority();
-        });
         $this->handlers = $handlers;
     }
 
@@ -43,7 +38,7 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
 
         $this->entityManager->refresh($adherent);
 
-        foreach ($this->handlers as $handler) {
+        foreach ($this->getHandlers() as $handler) {
             if ($handler->supports($adherent)) {
                 $handler->handle($adherent);
             }
@@ -51,5 +46,16 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
 
         $this->entityManager->flush();
         $this->entityManager->clear();
+    }
+
+    private function getHandlers(): array
+    {
+        $handlers = iterator_to_array($this->handlers);
+
+        usort($handlers, function (AbstractTerritorialCouncilHandler $handlerA, AbstractTerritorialCouncilHandler $handlerB) {
+            return $handlerA->getPriority() <=> $handlerB->getPriority();
+        });
+
+        return $handlers;
     }
 }
