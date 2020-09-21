@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\ElectionPoll\Poll;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Repository\TerritorialCouncil\CandidacyRepository;
+use App\Repository\TerritorialCouncil\TerritorialCouncilFeedItemRepository;
 use App\Security\Voter\TerritorialCouncil\AccessVoter;
 use App\Security\Voter\TerritorialCouncil\ManageTerritorialCouncilVoter;
 use App\TerritorialCouncil\ElectionPoll\Manager;
@@ -157,6 +158,46 @@ class TerritorialCouncilController extends Controller
             'membership' => $membership ?? null,
             'territorial_council' => $territorialCouncil,
             'with_selected_council' => $withSelectedCouncil,
+        ]);
+    }
+
+    /**
+     * @Route("/messages", name="messages", methods={"GET"})
+     * @Route("/{uuid}/messages", name="selected_messages", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
+     */
+    public function feedItemsAction(
+        Request $request,
+        UserInterface $adherent,
+        TerritorialCouncilFeedItemRepository $feedItemRepository,
+        TerritorialCouncil $territorialCouncil = null
+    ): Response {
+        $this->checkAccess($territorialCouncil);
+
+        if (!$withSelectedCouncil = null !== $territorialCouncil) {
+            $membership = $adherent->getTerritorialCouncilMembership();
+            $territorialCouncil = $membership->getTerritorialCouncil();
+        }
+
+        $offset = $request->query->getInt('offset', 0);
+        $feedItems = $feedItemRepository->getFeedItems(
+            $territorialCouncil,
+            $this->getParameter('timeline_max_messages'),
+            $offset
+        );
+
+        if (0 !== $offset) {
+            return $this->render('territorial_council/partials/_feed_items.html.twig', [
+                'feed_items' => $feedItems,
+                'max_feed_items' => $this->getParameter('timeline_max_messages'),
+            ]);
+        }
+
+        return $this->render('territorial_council/messages.html.twig', [
+            'membership' => $membership ?? null,
+            'territorial_council' => $territorialCouncil,
+            'with_selected_council' => $withSelectedCouncil,
+            'feed_items' => $feedItems,
+            'max_feed_items' => $this->getParameter('timeline_max_messages'),
         ]);
     }
 

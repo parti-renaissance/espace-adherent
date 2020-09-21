@@ -305,4 +305,18 @@ export default class ReqwestApiClient {
             type: 'json',
         }).then(response => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
     }
+
+    getTerritorialCouncilFeed(territorialCouncilUuid, offset, callback) {
+        this._createRequest(callback, {
+            url: '/conseil-territorial/'+territorialCouncilUuid+'/messages?offset='+offset,
+            type: 'html'
+        });
+    }
+
+    getPoliticalCommitteeFeed(politicalCommitteeUuid, offset, callback) {
+        this._createRequest(callback, {
+            url: '/comite-politique/'+politicalCommitteeUuid+'/messages?offset='+offset,
+            type: 'html'
+        });
+    }
 }
