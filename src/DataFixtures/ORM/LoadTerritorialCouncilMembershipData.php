@@ -33,7 +33,8 @@ class LoadTerritorialCouncilMembershipData extends Fixture
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-5'), new \DateTime('2020-02-02'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, '75'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CONSULAR_CONSELOR, '75'));
-        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, '75010'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, 'Paris 75010'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::BOROUGH_COUNCILOR, '75010'));
         $this->setReference('member_3_coTerr_75', $membership);
         $manager->persist($membership);
 
@@ -59,7 +60,8 @@ class LoadTerritorialCouncilMembershipData extends Fixture
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-12'), new \DateTime('2020-02-02'), Uuid::fromString(self::MEMBERSHIP_UUID1));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::MAYOR, '75011'));
-        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, '75011'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, 'Paris 75011'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::BOROUGH_COUNCILOR, '75011'));
         $this->setReference('member_7_coTerr_75', $membership);
         $manager->persist($membership);
 

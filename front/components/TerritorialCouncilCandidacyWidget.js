@@ -13,6 +13,7 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
         this.state = {
             isLoading: true,
             quality: this.qualitySelect.value,
+            quality_zones: JSON.parse(this.qualitySelect.dataset.qualities),
             searchQuery: null,
             error: null,
             memberships: [],
@@ -43,7 +44,11 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
             if (
                 this.state.success
                 && 0 === this.state.memberships.length
-                && -1 !== ['department_councilor', 'regional_councilor'].indexOf(this.state.quality)
+                && (
+                    -1 !== ['department_councilor', 'regional_councilor'].indexOf(this.state.quality)
+                    || ('city_councilor' === this.state.quality
+                        && 0 === this.state.quality_zones[this.state.quality].indexOf('Paris '))
+                )
             ) {
                 this.submitButton.innerText = 'Candidater seul à titre dérogatoire';
                 show(this.submitButton);

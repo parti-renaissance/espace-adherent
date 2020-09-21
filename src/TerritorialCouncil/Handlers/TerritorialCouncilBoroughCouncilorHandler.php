@@ -5,15 +5,15 @@ namespace App\TerritorialCouncil\Handlers;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 
-class TerritorialCouncilCityCouncilorHandler extends AbstractTerritorialCouncilElectedRepresentativeHandler
+class TerritorialCouncilBoroughCouncilorHandler extends AbstractTerritorialCouncilElectedRepresentativeHandler
 {
     protected function getQualityName(): string
     {
-        return TerritorialCouncilQualityEnum::CITY_COUNCILOR;
+        return TerritorialCouncilQualityEnum::BOROUGH_COUNCILOR;
     }
 
     protected function getMandateTypes(): array
     {
-        return [MandateTypeEnum::CITY_COUNCIL];
+        return [MandateTypeEnum::BOROUGH_COUNCIL];
     }
 }
