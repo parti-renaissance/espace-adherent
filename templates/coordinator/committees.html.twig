@@ -21,37 +21,37 @@
 ] %}
 
 {% block coordinator_area_header_description %}
-    <p class="text--center">
+    <div class="alert alert--tips b__nudge--bottom">
         L’espace coordinateur vous permet d'apprécier les comités des
         zones que vous gérez. Seule l’équipe du QG sera en mesure de
         voir vos appréciations.
-    </p>
-    <p class="text--center">
-        Zones gérées : {{ app.user.coordinatorCommitteeArea }}.
-    </p>
+    </div>
 {% endblock %}
 
-{% block coordinator_content %}
+{% block adherent_space_header_title %}
+    Zones gérées : <span class="text--black text--bold">{{ app.user.coordinatorCommitteeArea }}</span>
+{% endblock %}
 
+{% block coordinator_nav %}Comités{% endblock %}
+
+{% block coordinator_content %}
     {% if results|length %}
-        <div class="datagrid text--summary">
-            <div class="b__nudge--bottom-larger">
-                <table class="datagrid__table" style="border-spacing: 0 1em;">
-                    <thead>
-                    <tr>
-                        <th>Créateur</th>
-                        <th>Comité</th>
-                        <th>Ville</th>
-                        <th>Code postal</th>
-                        <th>Date de création</th>
-                        <th>Statut</th>
-                    </tr>
-                    </thead>
-                    <tbody id="committee-list">
-                        {{ include('coordinator/_committee_list.html.twig') }}
-                    </tbody>
-                </table>
-            </div>
+        <div class="datagrid__table-container">
+            <table class="datagrid__table-manager" style="border-spacing: 0 1em;">
+                <thead>
+                <tr>
+                    <th>Créateur</th>
+                    <th>Comité</th>
+                    <th>Ville</th>
+                    <th>Code postal</th>
+                    <th>Date de création</th>
+                    <th>Statut</th>
+                </tr>
+                </thead>
+                <tbody id="committee-list">
+                    {{ include('coordinator/_committee_list.html.twig') }}
+                </tbody>
+            </table>
         </div>
     {% else %}
         <div class="text--body text--center">
