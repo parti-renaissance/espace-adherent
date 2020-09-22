@@ -15,11 +15,13 @@ final class Version20200921110741 extends AbstractMigration
         $this->addSql('ALTER TABLE territorial_council_feed_item ADD CONSTRAINT FK_45241D62F675F31B FOREIGN KEY (author_id) REFERENCES adherents (id)');
         $this->addSql('ALTER TABLE political_committee_feed_item ADD CONSTRAINT FK_54369E83C7A72 FOREIGN KEY (political_committee_id) REFERENCES political_committee (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE political_committee_feed_item ADD CONSTRAINT FK_54369E83F675F31B FOREIGN KEY (author_id) REFERENCES adherents (id)');
+        $this->addSql('ALTER TABLE user_documents CHANGE type type VARCHAR(25) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         $this->addSql('DROP TABLE territorial_council_feed_item');
         $this->addSql('DROP TABLE political_committee_feed_item');
+        $this->addSql('ALTER TABLE user_documents CHANGE type type VARCHAR(20) NOT NULL COLLATE utf8_unicode_ci');
     }
 }

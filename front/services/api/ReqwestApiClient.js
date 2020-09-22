@@ -306,16 +306,16 @@ export default class ReqwestApiClient {
         }).then(response => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
     }
 
-    getTerritorialCouncilFeed(territorialCouncilUuid, offset, callback) {
+    getTerritorialCouncilFeed(territorialCouncilUuid, page, callback) {
         this._createRequest(callback, {
-            url: '/conseil-territorial/'+territorialCouncilUuid+'/messages?offset='+offset,
+            url: '/conseil-territorial/messages?page='+page,
             type: 'html'
         });
     }
 
-    getPoliticalCommitteeFeed(politicalCommitteeUuid, offset, callback) {
+    getPoliticalCommitteeFeed(politicalCommitteeUuid, page, callback) {
         this._createRequest(callback, {
-            url: '/comite-politique/'+politicalCommitteeUuid+'/messages?offset='+offset,
+            url: '/comite-politique/messages?page='+page,
             type: 'html'
         });
     }

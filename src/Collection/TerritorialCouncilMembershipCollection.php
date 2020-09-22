@@ -3,7 +3,6 @@
 namespace App\Collection;
 
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
-use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class TerritorialCouncilMembershipCollection extends ArrayCollection
@@ -12,7 +11,7 @@ class TerritorialCouncilMembershipCollection extends ArrayCollection
     {
         /** @var TerritorialCouncilMembership $membership */
         foreach ($this as $membership) {
-            if ($membership->hasQuality(TerritorialCouncilQualityEnum::REFERENT)) {
+            if ($membership->isPresident()) {
                 return $membership;
             }
         }

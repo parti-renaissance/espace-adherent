@@ -164,6 +164,26 @@
         }
     }
 
+    &__message {
+        background: $gray--lighter;
+        padding: 25px;
+
+        &__publish {
+            margin-top: 12px;
+            margin-right: 32px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+        }
+
+        button {
+            margin-top: 14px;
+        }
+    }
+
     #membership-container {
         display: flex;
         flex-direction: row;

@@ -19,11 +19,6 @@ class LoadTerritorialCouncilMembershipData extends Fixture
         /** @var TerritorialCouncil $coTerrParis */
         $coTerrParis = $this->getReference('coTerr_75');
 
-        $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-19'), new \DateTime('2020-01-01'));
-        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REFERENT, '75'));
-        $this->setReference('referent_coTerr_75', $membership);
-        $manager->persist($membership);
-
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-3'), new \DateTime('2020-06-06'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, 'Super comité de Paris'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, '75'));
@@ -53,6 +48,7 @@ class LoadTerritorialCouncilMembershipData extends Fixture
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, 'En Marche Paris 8'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CONSULAR_CONSELOR, '75009'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, '75'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REFERENT, '75'));
         $this->setReference('member_5_coTerr_75', $membership);
         $manager->persist($membership);
 

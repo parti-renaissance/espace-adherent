@@ -23,8 +23,8 @@ class CommitteeMessage
      * @AssertWysiwygLength(
      *     min=10,
      *     max=6000,
-     *     minMessage="committee.message.min_length",
-     *     maxMessage="committee.message.max_length"
+     *     minMessage="common.message.min_length",
+     *     maxMessage="common.message.max_length"
      * )
      */
     private $content;

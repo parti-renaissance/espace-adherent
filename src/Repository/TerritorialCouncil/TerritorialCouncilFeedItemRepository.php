@@ -2,14 +2,19 @@
 
 namespace App\Repository\TerritorialCouncil;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilFeedItem;
+use App\Repository\AuthorTrait;
+use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class TerritorialCouncilFeedItemRepository extends ServiceEntityRepository
 {
+    use AuthorTrait;
+    use PaginatorTrait;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, TerritorialCouncilFeedItem::class);
@@ -17,20 +22,17 @@ class TerritorialCouncilFeedItemRepository extends ServiceEntityRepository
 
     public function getFeedItems(
         TerritorialCouncil $territorialCouncil,
-        int $limit = 30,
-        int $firstResultIndex = 0
-    ): Paginator {
+        int $page = 1,
+        int $limit = 30
+    ): PaginatorInterface {
         $qb = $this->createQueryBuilder('feedItem')
-            ->select('feedItem')
             ->addSelect('adherent')
             ->leftJoin('feedItem.author', 'adherent')
             ->where('feedItem.territorialCouncil = :territorialCouncil')
             ->orderBy('feedItem.createdAt', 'DESC')
             ->setParameter('territorialCouncil', $territorialCouncil)
-            ->setFirstResult($firstResultIndex)
-            ->setMaxResults($limit)
         ;
 
-        return new Paginator($qb);
+        return $this->configurePaginator($qb, $page, $limit);
     }
 }

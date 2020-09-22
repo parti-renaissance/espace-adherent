@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -11,12 +11,12 @@ class LoadPoliticalCommitteeFeedItemData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        /** @var TerritorialCouncil $coTerrParis */
-        $coTerrParis = $this->getReference('coTerr_75');
+        /** @var PoliticalCommittee $coPolParis */
+        $coPolParis = $this->getReference('coPol_75');
         $referent = $this->getReference('adherent-19');
 
         $feedItem = new PoliticalCommitteeFeedItem(
-            $coTerrParis,
+            $coPolParis,
             $referent,
             <<<EOD
 <p> Lorem <strong>Ipsum</strong></p>
@@ -33,7 +33,7 @@ EOD
 
         for ($day = 1; $day < 12; ++$day) {
             $feedItem = new PoliticalCommitteeFeedItem(
-                $coTerrParis,
+                $coPolParis,
                 $referent,
                 "<p>Message du référent $day dans le CoPol</p>",
                 "-$day days"

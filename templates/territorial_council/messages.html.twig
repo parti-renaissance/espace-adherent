@@ -1,6 +1,6 @@
 {% extends 'territorial_council/_main_layout.html.twig' %}
 
-{% block territorial_council_sub_content %}
+{% block sub_content %}
     <section class="territorial-council__feed-items" id="territorial-council-feed-items">
         {% include 'territorial_council/partials/_feed.html.twig' %}
     </section>
@@ -9,22 +9,17 @@
 {% block javascripts %}
     {{ parent() }}
 
-    {% if js is not defined %}
-        {% import 'javascript.js.twig' as js %}
-    {% endif %}
-
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
             {% if feed_items is defined %}
             var page = 1;
-            var limit = {{ max_feed_items }};
             var moreButton = dom('#territorial-council-feed-items-more');
 
             moreButton && on(moreButton, 'click', function() {
                 page++;
                 di.get('api').getTerritorialCouncilFeed(
                     '{{ territorial_council.uuid }}',
-                    ((page - 1) * limit),
+                    page,
                     function (response) {
                         if (response instanceof XMLHttpRequest) {
                             hide(moreButton);

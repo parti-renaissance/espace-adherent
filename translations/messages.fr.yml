@@ -32,6 +32,8 @@ common.jecoute_manager: Accès J'écoute
 common.adherent.subscribed: Abonné(e)
 common.adherent.unsubscribed: Non-abonné(e)
 common.adherent.status_email: Statut (e-mail)
+common.message_edited: Votre message a bien été édité.
+common.message_deleted: Votre message a bien été supprimé.
 
 pending: En attente
 approved: Approuvé
@@ -190,11 +192,6 @@ dashboard.picture.update: Modifier ma photo
 committee.creation.success: Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.
 
 committee.update.success: Les informations du comité ont été mises à jour avec succès.
-
-committee.message_created: Votre message a bien été envoyé.
-committee.message_edited: Votre message a bien été édité.
-committee.message_deleted: Votre message a bien été supprimé.
-committee.message_published: Votre message a bien été publié.
 
 committee.members_count: '1 adhérent|%count% adhérents'
 event.participants_count: '1 inscrit|%count% inscrits'

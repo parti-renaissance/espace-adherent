@@ -11,20 +11,20 @@
         <div class="text--body text--with-bullet space--10-0">{{ item.content|raw }}</div>
         <div class="feed__options">
             <span class="time-ago text--small text--muted font-roboto">{{ item.createdAt|ago|capitalize }}</span>
-{#            {% if committee_timeline_forms[item.id] is defined %}#}
-{#                <ul class="list__links--row">#}
-{#                    <li>#}
-{#                        <a class="link--newblue text--small font-roboto" href="{{ path('app_committee_timeline_edit', { slug: committee.slug, id: item.id }) }}">#}
-{#                            Modifier le message#}
-{#                        </a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        {{ form_start(committee_timeline_forms[item.id]) }}#}
-{#                        {{ form_widget(committee_timeline_forms[item.id].delete, { attr: { class: 'btn--as-link btn--as-link--error text--small font-roboto'}, defaultClass: false}) }}#}
-{#                        {{ form_end(committee_timeline_forms[item.id]) }}#}
-{#                    </li>#}
-{#                </ul>#}
-{#            {% endif %}#}
+            {% if feed_items_forms[item.id] is defined %}
+                <ul class="list__links--row">
+                    <li>
+                        <a class="link--newblue text--small font-roboto" href="{{ path("app_#{feed_item_type}_edit_feed_item", { id: item.id }) }}">
+                            Modifier le message
+                        </a>
+                    </li>
+                    <li>
+                        {{ form_start(feed_items_forms[item.id]) }}
+                        {{ form_widget(feed_items_forms[item.id].delete, { attr: { class: 'btn--as-link btn--as-link--error text--small font-roboto'}, defaultClass: false}) }}
+                        {{ form_end(feed_items_forms[item.id]) }}
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     </div>
 {% endfor %}

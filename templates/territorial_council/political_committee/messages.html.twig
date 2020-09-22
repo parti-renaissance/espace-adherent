@@ -1,6 +1,6 @@
 {% extends 'territorial_council/political_committee/_layout.html.twig' %}
 
-{% block political_committee_content %}
+{% block sub_content %}
     <section class="political-committee__messages" id="political-committee-messages">
         {% include 'territorial_council/partials/_feed.html.twig' %}
     </section>
@@ -13,14 +13,13 @@
         Kernel.onLoad(function(di) {
             {% if feed_items is defined %}
             var page = 1;
-            var limit = {{ max_feed_items }};
             var moreButton = dom('#territorial-council-feed-items-more');
 
             moreButton && on(moreButton, 'click', function() {
                 page++;
                 di.get('api').getPoliticalCommitteeFeed(
                     '{{ political_committee.uuid }}',
-                    ((page - 1) * limit),
+                    page,
                     function (response) {
                         if (response instanceof XMLHttpRequest) {
                             hide(moreButton);

@@ -3,7 +3,11 @@
 namespace App\Controller\EnMarche\TerritorialCouncil;
 
 use App\Controller\CanaryControllerTrait;
-use App\Entity\TerritorialCouncil\PoliticalCommittee;
+use App\Controller\EnMarche\FeedItemControllerTrait;
+use App\Controller\EntityControllerTrait;
+use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
+use App\FeedItem\FeedItemTypeEnum;
+use App\Form\FeedItemType;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,42 +24,74 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class PoliticalCommitteeController extends Controller
 {
     use CanaryControllerTrait;
+    use FeedItemControllerTrait;
+    use EntityControllerTrait;
 
     /**
-     * @Route("", name="index", methods={"GET"})
+     * @Route("/messages", name="messages", methods={"GET"})
      */
-    public function indexAction(
+    public function feedItemsAction(
+        Request $request,
         UserInterface $adherent,
         PoliticalCommitteeFeedItemRepository $feedItemRepository
     ): Response {
+        $page = $request->query->getInt('page', 1);
+
+        $membership = $adherent->getPoliticalCommitteeMembership();
+        $politicalCommittee = $membership->getPoliticalCommittee();
         $feedItems = $feedItemRepository->getFeedItems(
-            $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee(),
+            $politicalCommittee,
+            $page,
             $this->getParameter('timeline_max_messages')
         );
 
-        return $this->render('territorial_council/political_committee/index.html.twig', [
+        if (1 < $page) {
+            return $this->render('territorial_council/partials/_feed_items.html.twig', [
+                'feed_items' => $feedItems,
+                'feed_items_forms' => $this->createFeedItemDeleteForms($feedItems, FeedItemTypeEnum::POLITICAL_COMMITTEE),
+                'feed_item_type' => FeedItemTypeEnum::POLITICAL_COMMITTEE,
+            ]);
+        }
+
+        return $this->render('territorial_council/political_committee/messages.html.twig', [
             'feed_items' => $feedItems,
-            'max_feed_items' => $this->getParameter('timeline_max_messages'),
+            'feed_items_forms' => $this->createFeedItemDeleteForms($feedItems, FeedItemTypeEnum::POLITICAL_COMMITTEE),
+            'feed_item_type' => FeedItemTypeEnum::POLITICAL_COMMITTEE,
         ]);
     }
 
     /**
-     * @Route("/{uuid}/messages", name="messages", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
+     * @Route("/messages/{id}/modifier", name="edit_feed_item", methods={"GET", "POST"})
+     * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
      */
-    public function messagesAction(
-        Request $request,
-        PoliticalCommittee $politicalCommittee,
-        PoliticalCommitteeFeedItemRepository $feedItemRepository
-    ): Response {
-        $feedItems = $feedItemRepository->getFeedItems(
-            $politicalCommittee,
-            $this->getParameter('timeline_max_messages'),
-            $request->query->getInt('offset', 0)
-        );
+    public function feedItemEditAction(Request $request, PoliticalCommitteeFeedItem $feedItem): Response
+    {
+        $form = $this
+            ->createForm(FeedItemType::class, $feedItem)
+            ->handleRequest($request)
+        ;
 
-        return $this->render('territorial_council/partials/_feed_items.html.twig', [
-            'feed_items' => $feedItems,
-            'max_feed_items' => $this->getParameter('timeline_max_messages'),
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('info', 'common.message_edited');
+
+            return $this->redirectToRoute('app_political_committee_messages');
+        }
+
+        return $this->render('territorial_council/edit_feed_item.html.twig', [
+            'base_layout' => 'territorial_council/political_committee/_layout.html.twig',
+            'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/messages/{id}/supprimer", name="delete_feed_item", methods={"DELETE"})
+     * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
+     */
+    public function deleteFeedItemAction(Request $request, PoliticalCommitteeFeedItem $feedItem): Response
+    {
+        $this->deleteFeedItem($request, $feedItem, FeedItemTypeEnum::POLITICAL_COMMITTEE);
+
+        return $this->redirectToRoute('app_political_committee_messages');
     }
 }

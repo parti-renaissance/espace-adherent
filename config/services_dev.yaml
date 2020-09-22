@@ -1,5 +1,5 @@
 parameters:
-    timeline_max_messages: 2
+    timeline_max_messages: 10
 
 services:
     _defaults:

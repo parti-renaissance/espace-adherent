@@ -16,6 +16,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         yield [false, true, DocumentPermissions::FILE_UPLOAD, 'committee_feed'];
         yield [false, true, DocumentPermissions::FILE_UPLOAD, 'event'];
         yield [false, true, DocumentPermissions::FILE_UPLOAD, 'referent'];
+        yield [false, true, DocumentPermissions::FILE_UPLOAD, 'territorial_council_feed'];
     }
 
     public function provideDocumentTypes(): iterable
@@ -24,6 +25,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         yield ['committee_feed'];
         yield ['event'];
         yield ['referent'];
+        yield ['territorial_council_feed'];
     }
 
     public function provideReferentRights(): iterable
@@ -32,6 +34,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         yield ['committee_feed', false];
         yield ['event', true];
         yield ['referent', true];
+        yield ['territorial_council_feed', false];
     }
 
     public function provideHostRights(): iterable
@@ -39,6 +42,7 @@ class FileUploadVoterTest extends AbstractAdherentVoterTest
         yield ['committee_contact', true];
         yield ['committee_feed', true];
         yield ['event', true];
+        yield ['referent', false];
         yield ['referent', false];
     }
 

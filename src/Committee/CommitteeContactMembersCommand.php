@@ -21,7 +21,7 @@ class CommitteeContactMembersCommand
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(min=10, minMessage="committee.message.min_length")
+     * @Assert\Length(min=10, minMessage="common.message.min_length")
      */
     private $message;
 
