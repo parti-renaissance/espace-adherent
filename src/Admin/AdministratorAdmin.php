@@ -127,6 +127,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_ELECTED_REPRESENTATIVE',
                     'ROLE_ADMIN_TERRITORIAL_COUNCIL',
                     'ROLE_ADMIN_TERRITORIAL_COUNCIL_MEMBERSHIP_LOG',
+                    'ROLE_ADMIN_THEMATIC_COMMUNITY',
                 ],
             ])
             ->add(

@@ -4,7 +4,7 @@ namespace App\Entity\ThematicCommunity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntityNullablePostAddressTrait;
+use App\Entity\EntityPostAddressTrait;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Contact
 {
     use EntityIdentityTrait;
-    use EntityNullablePostAddressTrait;
+    use EntityPostAddressTrait;
 
     /**
      * @var string
@@ -50,9 +50,23 @@ class Contact
     private $email;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $gender;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $customGender;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\NotBlank
      * @Assert\Date
@@ -60,7 +74,7 @@ class Contact
     private $birthDate;
 
     /**
-     * @ORM\Column(type="phone_number")
+     * @ORM\Column(type="phone_number", nullable=true)
      * @Assert\NotBlank
      */
     private $phone;
@@ -68,7 +82,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -77,7 +91,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -86,7 +100,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -125,6 +139,26 @@ class Contact
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    public function getCustomGender(): ?string
+    {
+        return $this->customGender;
+    }
+
+    public function setCustomGender(?string $customGender): void
+    {
+        $this->customGender = $customGender;
     }
 
     public function getBirthDate(): ?\DateTime

@@ -3,7 +3,7 @@
 namespace App\Entity\ThematicCommunity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use App\Entity\Adherent;
+use App\Entity\PostAddress;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 
@@ -15,24 +15,6 @@ use libphonenumber\PhoneNumber;
  */
 class AdherentMembership extends ThematicCommunityMembership
 {
-    /**
-     * @var Adherent
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    private $adherent;
-
-    public function getAdherent(): ?Adherent
-    {
-        return $this->adherent;
-    }
-
-    public function setAdherent(?Adherent $adherent): void
-    {
-        $this->adherent = $adherent;
-    }
-
     public function getFirstName(): ?string
     {
         return $this->adherent ? $this->adherent->getFirstName() : null;
@@ -48,6 +30,16 @@ class AdherentMembership extends ThematicCommunityMembership
         return $this->adherent ? $this->adherent->getEmailAddress() : null;
     }
 
+    public function getGender(): ?string
+    {
+        return $this->adherent ? $this->adherent->getGender() : null;
+    }
+
+    public function getCustomGender(): ?string
+    {
+        return $this->adherent ? $this->adherent->getCustomGender() : null;
+    }
+
     public function getBirthDate(): ?\DateTime
     {
         return $this->adherent ? $this->adherent->getBirthDate() : null;
@@ -56,5 +48,25 @@ class AdherentMembership extends ThematicCommunityMembership
     public function getPhone(): ?PhoneNumber
     {
         return $this->adherent ? $this->adherent->getPhone() : null;
+    }
+
+    public function getPostAddress(): ?PostAddress
+    {
+        return $this->adherent->getPostAddressModel();
+    }
+
+    public function getJob(): ?string
+    {
+        return $this->adherent ? $this->adherent->getJob() : null;
+    }
+
+    public function getCityName(): ?string
+    {
+        return $this->adherent ? $this->adherent->getCityName() : null;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->adherent ? $this->adherent->getPostalCode() : null;
     }
 }
