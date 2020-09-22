@@ -107,6 +107,13 @@ trait EntityDesignationTrait
         ;
     }
 
+    public function isResultPeriodStarted(): bool
+    {
+        $now = new \DateTime();
+
+        return $this->designation && $this->getVoteEndDate() && $this->getVoteEndDate() <= $now;
+    }
+
     public function getAdditionalRoundDuration(): int
     {
         return $this->designation->getAdditionalRoundDuration();
