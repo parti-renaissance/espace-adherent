@@ -15,6 +15,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -591,6 +592,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $commitment;
 
+    /**
+     * @var ThematicCommunity[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\ThematicCommunity\ThematicCommunity")
+     */
+    private $handledThematicCommunities;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -601,6 +609,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
         $this->receivedDelegatedAccesses = new ArrayCollection();
+        $this->handledThematicCommunities = new ArrayCollection();
     }
 
     public static function create(
@@ -823,6 +832,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_LRE';
         }
 
+        if ($this->isThematicCommunityChief()) {
+            $roles[] = 'ROLE_THEMATIC_COMMUNITY_CHIEF';
+        }
+
         return array_merge(\array_unique($roles), $this->roles);
     }
 
@@ -869,6 +882,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isSenatorialCandidate()
             || $this->isLre()
             || $this->isLegislativeCandidate()
+            || $this->isThematicCommunityChief()
         ;
     }
 
@@ -2415,5 +2429,32 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setCommitment(AdherentCommitment $commitment): void
     {
         $this->commitment = $commitment;
+    }
+
+    public function getHandledThematicCommunities(): Collection
+    {
+        return $this->handledThematicCommunities;
+    }
+
+    public function setHandledThematicCommunities(Collection $handledThematicCommunities): void
+    {
+        $this->handledThematicCommunities = $handledThematicCommunities;
+    }
+
+    public function addHandledThematicCommunity(ThematicCommunity $thematicCommunity): void
+    {
+        if (!$this->handledThematicCommunities->contains($thematicCommunity)) {
+            $this->handledThematicCommunities->add($thematicCommunity);
+        }
+    }
+
+    public function removeHandledThematicCommunity(ThematicCommunity $thematicCommunity): void
+    {
+        $this->handledThematicCommunities->removeElement($thematicCommunity);
+    }
+
+    public function isThematicCommunityChief()
+    {
+        return $this->handledThematicCommunities->count() > 0;
     }
 }

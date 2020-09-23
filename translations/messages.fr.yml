@@ -89,6 +89,7 @@ print_privilege: Accès LMI
 senatorial_candidate: Candidat Sénatoriales 2020
 lre: La République Ensemble (LRE)
 legislative_candidate: Candidat aux législatives
+thematic_community_chief: Responsable Communauté Thématiques
 
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !
