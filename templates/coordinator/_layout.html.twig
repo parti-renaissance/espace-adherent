@@ -1,57 +1,68 @@
-{% extends 'base.html.twig' %}
+{% extends 'adherent_space/_layout.html.twig' %}
 
 {% block page_title 'Espace coordinateur régional' %}
 {% block canonical_url url(coordinator_path) %}
 
 {% block content %}
-    <main>
-        <section class="coordinator coordinator-area b__nudge--bottom-huge">
-            <header class="hero">
-                <h1 class="">
-                    {{ block('page_title') }}
-                </h1>
-                {% block coordinator_area_header_description %}{% endblock %}
-            </header>
-
-            <div class="l__wrapper coordinator-area__content">
-                <ul class="list__links list__links--row coordinator-area__tabs b__nudge--top b__nudge--bottom">
-                    {% for page in pages %}
-                        <li>
-                            <a class="btn btn--small {{ app.request.query.has('s') and app.request.query.get('s') == page.status ? 'btn--black' : '' }}"
-                               href="{{ path(page.route, { 's': page.status }) }}">
-                                {{ page.label }}
-                            </a>
-                        </li>
-                    {% endfor %}
+    <main class="manager-space manager-body">
+        <aside class="manager-sidebar">
+            <nav class="manager-sidebar__menu">
+                <ul>
+                    <li class="active">
+                        <a href="#">
+                            {% block coordinator_nav %}{% endblock %}
+                        </a>
+                    </li>
                 </ul>
+            </nav>
+        </aside>
 
-                {% block coordinator_content %}{% endblock %}
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    <section class="b__nudge--bottom-huge">
+                        <div class="b__nudge--bottom">
+                            {% block coordinator_area_header_description %}{% endblock %}
+                        </div>
+                        <nav class="tabs-nav b__nudge--bottom-larger">
+                            <ul>
+                                {% for page in pages %}
+                                    <li class="{{ app.request.query.has('s') and app.request.query.get('s') == page.status ? 'active' : '' }}">
+                                        <a class="tabs-nav__item" href="{{ path(page.route, { 's': page.status }) }}">
+                                            {{ page.label }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </nav>
+                        {% block coordinator_content %}{% endblock %}
+                        <div class="datagrid__pager">
+                            {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
+                            {% set last_page = (filter.count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
 
-                <div class="text--center text--gray">
-                    {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
-                    {% set last_page = (filter.count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
+                            {% if filter.offset > 0 %}
+                                <a href="{{ path(coordinator_path) ~ filter.queryStringForOffset(0) }}" class="btn btn--small">
+                                    Première
+                                </a>
+                                <a href="{{ path(coordinator_path) ~ filter.previousPageQueryString }}" class="btn btn--small">
+                                    Précédente
+                                </a>
+                            {% endif %}
 
-                    {% if filter.offset > 0 %}
-                        <a href="{{ path(coordinator_path) ~ filter.queryStringForOffset(0) }}" class="btn btn--small">
-                            Première
-                        </a>
-                        <a href="{{ path(coordinator_path) ~ filter.previousPageQueryString }}" class="btn btn--small">
-                            Précédente
-                        </a>
-                    {% endif %}
+                            {% if last_page != 0 %}
+                                <span class="text--summary">Page {{ current_page }} / {{ last_page }}</span>
+                            {% endif %}
 
-                    {% if last_page != 0 %}
-                        <span class="text--summary">Page {{ current_page }} / {{ last_page }}</span>
-                    {% endif %}
-
-                    {% if filter.offset + constant('PER_PAGE', filter) < filter.count %}
-                        <a href="{{ path(coordinator_path) ~ filter.nextPageQueryString }}" class="btn btn--small">
-                            Suivante
-                        </a>
-                        <a href="{{ path(coordinator_path) ~ filter.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filter)) }}" class="btn btn--small">
-                            Dernière
-                        </a>
-                    {% endif %}
+                            {% if filter.offset + constant('PER_PAGE', filter) < filter.count %}
+                                <a href="{{ path(coordinator_path) ~ filter.nextPageQueryString }}" class="btn btn--small">
+                                    Suivante
+                                </a>
+                                <a href="{{ path(coordinator_path) ~ filter.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filter)) }}" class="btn btn--small">
+                                    Dernière
+                                </a>
+                            {% endif %}
+                        </div>
+                    </section>
                 </div>
             </div>
         </section>
