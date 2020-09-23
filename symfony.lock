@@ -11,9 +11,6 @@
             "ref": "b6d98595a857947b5d05b79eb3a5fbf53b0a18d2"
         }
     },
-    "algolia/algoliasearch-client-php": {
-        "version": "1.25.1"
-    },
     "api-platform/api-pack": {
         "version": "1.1.0"
     },
