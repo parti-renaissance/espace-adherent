@@ -1,0 +1,4 @@
+# All available configuration can be found here:
+# https://www.algolia.com/doc/api-client/symfony/configuration/
+algolia_search:
+    prefix: '%env(APP_ENV)%_'
