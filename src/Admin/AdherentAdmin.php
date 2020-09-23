@@ -12,6 +12,7 @@ use App\Entity\BoardMember\Role;
 use App\Entity\CitizenProjectMembership;
 use App\Entity\CommitteeMembership;
 use App\Entity\SubscriptionType;
+use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
@@ -30,6 +31,7 @@ use App\Membership\Mandates;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -46,6 +48,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -465,6 +468,20 @@ HELP
                     'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                 ])
             ->end()
+            ->with('Responsable communauté thématique', ['class' => 'col-md-6'])
+                ->add('handledThematicCommunities', EntityType::class, [
+                    'label' => 'Communautés thématiques',
+                    'class' => ThematicCommunity::class,
+                    'required' => false,
+                    'multiple' => true,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er
+                            ->createQueryBuilder('tc')
+                            ->andWhere('tc.enabled = 1')
+                        ;
+                    },
+                ])
+            ->end()
             ->with('Zone expérimentale 🚧', [
                 'class' => 'col-md-6',
                 'box_class' => 'box box-warning',
@@ -795,6 +812,12 @@ HELP
                     if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.senatorialCandidateManagedArea', $alias), 'senatorialCandidateManagedArea');
                         $where->add('senatorialCandidateManagedArea IS NOT NULL');
+                    }
+
+                    // thematic community chief
+                    if (\in_array(AdherentRoleEnum::THEMATIC_COMMUNITY_CHIEF, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.thematicCommunities', $alias), 'tc');
+                        $where->add('tc IS NOT NULL');
                     }
 
                     if ($where->count()) {

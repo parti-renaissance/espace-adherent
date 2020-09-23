@@ -104,6 +104,10 @@
     {% if object.isMunicipalManagerSupervisor %}
         <span class="label label-primary" style="padding: 2px;">Responsable attribution</span>
     {% endif %}
+
+    {% if object.isThematicCommunityChief %}
+        <span class="label label-primary">Responsable CT</span>
+    {% endif %}
 {% elseif object.isAdherent %}
     <span class="label label-primary">Adhérent</span>
 {% else %}
