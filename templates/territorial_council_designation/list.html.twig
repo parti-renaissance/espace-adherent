@@ -67,7 +67,7 @@
                                     }]) %}
                                 {% elseif status in [constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::SCHEDULED'), constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::IN_PROGRESS')] %}
                                     {% set items = items|merge([{
-                                        href: path('app_territorial_council_selected_candidacy_list', {uuid: election.territorialCouncil.uuid}),
+                                        href: path('app_territorial_council_selected_candidacy_list', {uuid: election.territorialCouncil.uuid, '_fragment': 'tab-candidacy-list'}),
                                         label: 'Voir les candidatures',
                                         linkAttr: {class: 'row-action link--no-decor'}
                                     }]) %}
