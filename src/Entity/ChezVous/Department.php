@@ -2,7 +2,6 @@
 
 namespace App\Entity\ChezVous;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,8 +32,6 @@ class Department
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Algolia\Attribute
      */
     private $name;
 
@@ -45,8 +42,6 @@ class Department
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Algolia\Attribute
      */
     private $label;
 
@@ -57,8 +52,6 @@ class Department
      *
      * @Assert\NotBlank
      * @Assert\Length(max="10")
-     *
-     * @Algolia\Attribute
      */
     private $code;
 
@@ -67,8 +60,6 @@ class Department
      *
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="departments", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Algolia\Attribute
      */
     private $region;
 

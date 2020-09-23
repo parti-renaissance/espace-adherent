@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Report\ReportableInterface;
 use App\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -71,8 +70,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @Algolia\Attribute
-     *
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      * @JMS\SerializedName("membersCount")
      */
@@ -134,9 +131,6 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
         return self::PENDING === $this->status && !$this->approvedAt;
     }
 
-    /**
-     * @Algolia\IndexIf
-     */
     public function isApproved(): bool
     {
         return self::APPROVED === $this->status && $this->approvedAt;

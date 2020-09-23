@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,8 +38,6 @@ class ArticleCategory
      *
      * @Assert\NotBlank
      * @Assert\Length(max=50)
-     *
-     * @Algolia\Attribute
      */
     private $name;
 
@@ -50,8 +47,6 @@ class ArticleCategory
      * @ORM\Column(length=100, unique=true)
      *
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $slug;
 

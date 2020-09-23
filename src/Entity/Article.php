@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Article implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface
+class Article implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
@@ -42,8 +41,6 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
      *
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $category;
 
@@ -130,5 +127,10 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
     public function getThemes()
     {
         return $this->themes;
+    }
+
+    public function isIndexable(): bool
+    {
+        return $this->isPublished() && $this->isNotDeleted();
     }
 }

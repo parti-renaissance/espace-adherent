@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,8 +26,6 @@ abstract class BaseEventCategory
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Algolia\Attribute
      */
     protected $name = '';
 
@@ -40,14 +37,11 @@ abstract class BaseEventCategory
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
      */
     protected $slug;
 
     /**
      * @ORM\Column(length=10, options={"default": "ENABLED"})
-     * @Algolia\Attribute
      */
     protected $status;
 

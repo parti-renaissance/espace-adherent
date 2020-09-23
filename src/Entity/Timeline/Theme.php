@@ -2,7 +2,6 @@
 
 namespace App\Entity\Timeline;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use App\Entity\EntityMediaInterface;
@@ -15,17 +14,6 @@ use Knp\DoctrineBehaviors\Model\Translatable\Translatable;
 /**
  * @ORM\Table(name="timeline_themes")
  * @ORM\Entity(repositoryClass="App\Repository\Timeline\ThemeRepository")
- *
- * @Algolia\Index(
- *     autoIndex=false,
- *     hitsPerPage=100,
- *     attributesForFaceting={
- *         "titles.fr",
- *         "titles.en",
- *         "profileIds",
- *         "manifestoIds"
- *     }
- * )
  */
 class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, AlgoliaIndexedEntityInterface
 {
@@ -38,8 +26,6 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
      * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue
-     *
-     * @Algolia\Attribute
      */
     private $id;
 
@@ -47,8 +33,6 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Algolia\Attribute
      */
     private $featured;
 
@@ -90,6 +74,9 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
         $this->featured = $featured;
     }
 
+    /**
+     * @return Measure[]|Collection
+     */
     public function getMeasures(): Collection
     {
         return $this->measures;
@@ -107,27 +94,11 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
         $this->measures->removeElement($measure);
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="image")
-     */
     public function getImage(): ?string
     {
         return $this->media ? $this->media->getPathWithDirectory() : null;
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="measureIds")
-     */
-    public function getMeasureIds(): array
-    {
-        return array_map(function (Measure $measure) {
-            return $measure->getId();
-        }, $this->measures->toArray());
-    }
-
-    /**
-     * @Algolia\Attribute(algoliaName="measureTitles")
-     */
     public function getMeasureTitles(): array
     {
         $titles = [];
@@ -141,9 +112,6 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
         return array_unique($titles);
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="profileIds")
-     */
     public function getProfileIds(): array
     {
         $profiles = new ArrayCollection();
@@ -161,9 +129,6 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
         }, $profiles->toArray());
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="manifestoIds")
-     */
     public function getManifestoIds(): array
     {
         return array_values(array_unique(
@@ -173,25 +138,16 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
         ));
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="titles")
-     */
     public function getTitles(): array
     {
         return $this->getFieldTranslations('title');
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="slugs")
-     */
     public function getSlugs(): array
     {
         return $this->getFieldTranslations('slug');
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="descriptions")
-     */
     public function getDescriptions(): array
     {
         return $this->getFieldTranslations('description');

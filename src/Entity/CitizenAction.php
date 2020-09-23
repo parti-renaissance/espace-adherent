@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Address\GeoCoder;
 use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,15 +16,11 @@ class CitizenAction extends BaseEvent
 {
     /**
      * @ORM\ManyToOne(targetEntity="CitizenActionCategory")
-     *
-     * @Algolia\Attribute
      */
     protected $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="CitizenProject")
-     *
-     * @Algolia\Attribute
      */
     private $citizenProject;
 

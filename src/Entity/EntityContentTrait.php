@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,8 +14,6 @@ trait EntityContentTrait
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
      */
     private $title;
 
@@ -27,8 +24,6 @@ trait EntityContentTrait
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
      */
     private $slug;
 
@@ -39,8 +34,6 @@ trait EntityContentTrait
      *
      * @Assert\Length(min=10, max=255)
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $description;
 
@@ -59,8 +52,6 @@ trait EntityContentTrait
      * @ORM\Column(length=255, nullable=true)
      *
      * @Assert\Length(max=255)
-     *
-     * @Algolia\Attribute
      */
     private $keywords;
 

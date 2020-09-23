@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="proposals")
  * @ORM\Entity(repositoryClass="App\Repository\ProposalRepository")
  */
-class Proposal implements EntityContentInterface, EntitySoftDeletedInterface
+class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
@@ -113,9 +112,6 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface
         return $this->themes;
     }
 
-    /**
-     * @Algolia\IndexIf
-     */
     public function isPublished(): bool
     {
         return $this->published;
@@ -156,5 +152,10 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface
         $this->displayMedia = $displayMedia;
 
         return $this;
+    }
+
+    public function isIndexable(): bool
+    {
+        return $this->isPublished() && $this->isNotDeleted();
     }
 }

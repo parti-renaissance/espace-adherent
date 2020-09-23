@@ -2,7 +2,6 @@
 
 namespace App\Entity\ChezVous;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,8 +32,6 @@ class Region
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Algolia\Attribute
      */
     private $name;
 
@@ -45,8 +42,6 @@ class Region
      *
      * @Assert\NotBlank
      * @Assert\Length(max="10")
-     *
-     * @Algolia\Attribute
      */
     private $code;
 

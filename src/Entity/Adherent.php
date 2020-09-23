@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
@@ -2040,8 +2039,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @Algolia\Attribute(algoliaName="address_city")
-     *
      * @JMS\Groups({"adherent_change_diff", "public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")

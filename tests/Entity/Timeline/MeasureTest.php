@@ -4,23 +4,11 @@ namespace Tests\App\Entity\Timeline;
 
 use App\Entity\Timeline\Measure;
 use App\Entity\Timeline\MeasureTranslation;
-use App\Entity\Timeline\Profile;
 use App\Entity\Timeline\Theme;
 use PHPUnit\Framework\TestCase;
 
 class MeasureTest extends TestCase
 {
-    public function testProfileIds()
-    {
-        $measure = new Measure();
-
-        $measure->addProfile($this->createProfile(1));
-        $measure->addProfile($this->createProfile(2));
-        $measure->addProfile($this->createProfile(3));
-
-        $this->assertEquals([1, 2, 3], $measure->getProfileIds());
-    }
-
     public function testTitles()
     {
         $measure = new Measure();
@@ -73,19 +61,6 @@ class MeasureTest extends TestCase
         ;
 
         return $translation;
-    }
-
-    private function createProfile(int $id): Profile
-    {
-        $profile = $this->createMock(Profile::class);
-
-        $profile
-            ->expects($this->any())
-            ->method('getId')
-            ->willReturn($id)
-        ;
-
-        return $profile;
     }
 
     private function createTheme(): Theme

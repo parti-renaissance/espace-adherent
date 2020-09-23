@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -118,9 +117,6 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
         return $this->sections;
     }
 
-    /**
-     * @Algolia\IndexIf
-     */
     public function isPublished(): bool
     {
         return $this->published;

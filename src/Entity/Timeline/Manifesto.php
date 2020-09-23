@@ -2,7 +2,6 @@
 
 namespace App\Entity\Timeline;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use App\Entity\EntityMediaTrait;
@@ -24,8 +23,6 @@ class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEnti
      * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue
-     *
-     * @Algolia\Attribute
      */
     private $id;
 
@@ -44,33 +41,21 @@ class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEnti
         return $this->id;
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="image")
-     */
     public function getImage(): ?string
     {
         return $this->media ? $this->media->getPathWithDirectory() : null;
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="titles")
-     */
     public function getTitles(): array
     {
         return $this->getFieldTranslations('title');
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="slugs")
-     */
     public function getSlugs(): array
     {
         return $this->getFieldTranslations('slug');
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="descriptions")
-     */
     public function getDescriptions(): array
     {
         return $this->getFieldTranslations('description');

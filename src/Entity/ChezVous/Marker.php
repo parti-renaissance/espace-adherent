@@ -2,7 +2,6 @@
 
 namespace App\Entity\ChezVous;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,8 +27,6 @@ class Marker
      *
      * @Assert\NotBlank
      * @Assert\Length(max="255")
-     *
-     * @Algolia\Attribute
      */
     private $type;
 
@@ -119,9 +116,6 @@ class Marker
         $this->city = $city;
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="coordinates")
-     */
     public function getCoordinates(): array
     {
         return [(float) $this->latitude, (float) $this->longitude];

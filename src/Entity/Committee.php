@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -120,8 +119,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
      * The group description.
      *
      * @ORM\Column(type="text")
-     *
-     * @Algolia\Attribute
      */
     protected $description;
 

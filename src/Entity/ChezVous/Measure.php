@@ -2,7 +2,6 @@
 
 namespace App\Entity\ChezVous;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Validator\ChezVous\MeasurePayload;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -33,8 +32,6 @@ class Measure
      * @var array
      *
      * @ORM\Column(type="json_array", nullable=true)
-     *
-     * @Algolia\Attribute
      */
     private $payload;
 
@@ -55,8 +52,6 @@ class Measure
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $type;
 

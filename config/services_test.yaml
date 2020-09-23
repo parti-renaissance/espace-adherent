@@ -45,9 +45,6 @@ services:
         alias: App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
         public: true
 
-    Algolia\AlgoliaSearchBundle\Indexer\Indexer:
-        alias: 'algolia.indexer'
-
     App\Image\ImageManager:
         public: true
 
