@@ -2,7 +2,6 @@
 
 namespace App\Entity\Election;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -11,8 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="election_city_manager")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CityManager
 {

@@ -11,8 +11,6 @@ use Knp\DoctrineBehaviors\Model\Translatable\Translatable;
 /**
  * @ORM\Table(name="timeline_profiles")
  * @ORM\Entity(repositoryClass="App\Repository\Timeline\ProfileRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {

@@ -2,7 +2,6 @@
 
 namespace App\Entity\Formation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\PositionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Formation\PathRepository")
  * @ORM\Table(name="formation_paths")
- *
- * @Algolia\Index(autoIndex=false)
  *
  * @UniqueEntity(fields={"title"}, message="path.title.unique_entity")
  */

@@ -31,8 +31,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CitizenProjectRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface
 {

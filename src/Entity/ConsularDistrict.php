@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *     uniqueConstraints={@ORM\UniqueConstraint(name="consular_district_code_unique", columns="code")}
  * )
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ConsularDistrict
 {

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMSSerializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -21,8 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity("name")
  * @UniqueEntity("code")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ReferentTag
 {

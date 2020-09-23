@@ -2,7 +2,6 @@
 
 namespace App\Entity\MemberSummary;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntitySpanTrait;
 use App\Entity\Summary;
 use App\Summary\Contract;
@@ -13,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="member_summary_job_experiences")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class JobExperience implements SummaryItemPositionableInterface
 {

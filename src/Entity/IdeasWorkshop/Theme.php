@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EnabledInterface;
 use App\Entity\ImageOwnerInterface;
@@ -35,8 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @UniqueEntity("name")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Theme implements EnabledInterface, ImageOwnerInterface
 {

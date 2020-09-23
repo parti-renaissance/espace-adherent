@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\MediaRepository")
  *
  * @UniqueEntity(fields={"path"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Media
 {

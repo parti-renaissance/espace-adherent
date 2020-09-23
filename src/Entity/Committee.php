@@ -88,8 +88,6 @@ use Ramsey\Uuid\UuidInterface;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface
 {

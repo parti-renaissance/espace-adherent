@@ -2,15 +2,12 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CommitteeCandidacy extends BaseCandidacy
 {

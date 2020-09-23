@@ -2,7 +2,6 @@
 
 namespace App\Entity\Mooc;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="mooc_attachment_link")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AttachmentLink
 {

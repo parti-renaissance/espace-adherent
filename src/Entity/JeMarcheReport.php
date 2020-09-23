@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,8 +10,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * @ORM\Table(name="je_marche_reports")
  * @ORM\Entity(repositoryClass="App\Repository\JeMarcheReportRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class JeMarcheReport
 {

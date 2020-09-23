@@ -2,7 +2,6 @@
 
 namespace App\Entity\OAuth;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -13,8 +12,6 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\UniqueConstraint(name="oauth_auth_codes_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="oauth_auth_codes_identifier_unique", columns="identifier")
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AuthorizationCode extends AbstractGrantToken
 {

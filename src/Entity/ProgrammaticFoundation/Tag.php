@@ -2,7 +2,6 @@
 
 namespace App\Entity\ProgrammaticFoundation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -13,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="programmatic_foundation_tag")
  *
  * @UniqueEntity("label")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Tag
 {

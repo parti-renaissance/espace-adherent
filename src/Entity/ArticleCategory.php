@@ -9,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="articles_categories")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleCategoryRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ArticleCategory
 {

@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="timeline_measures")
  * @ORM\Entity(repositoryClass="App\Repository\Timeline\MeasureRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {

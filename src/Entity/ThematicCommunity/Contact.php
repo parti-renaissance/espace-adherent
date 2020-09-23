@@ -2,7 +2,6 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="thematic_community_contact")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Contact
 {

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -12,8 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CertificationRequestRepository")
  * @ORM\Table(name="certification_request")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CertificationRequest
 {

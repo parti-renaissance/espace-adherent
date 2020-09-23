@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
@@ -151,8 +150,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"App\EntityListener\IdeaThreadListener"})
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Thread extends BaseComment implements AuthorInterface, ReportableInterface
 {

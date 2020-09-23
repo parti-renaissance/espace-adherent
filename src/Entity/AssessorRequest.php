@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
@@ -17,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="assessor_requests")
  * @ORM\Entity(repositoryClass="App\Repository\AssessorRequestRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AssessorRequest
 {

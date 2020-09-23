@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMandate;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\ValueObject\Genders;
@@ -19,8 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "committee": "App\Entity\AdherentMandate\CommitteeAdherentMandate",
  *     "territorial_council": "App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate",
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 abstract class AbstractAdherentMandate
 {

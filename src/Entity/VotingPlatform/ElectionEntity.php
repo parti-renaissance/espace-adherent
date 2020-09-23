@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
@@ -12,8 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  *
  * @ORM\Table(name="voting_platform_election_entity")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ElectionEntity
 {

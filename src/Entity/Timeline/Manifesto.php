@@ -12,8 +12,6 @@ use Knp\DoctrineBehaviors\Model\Translatable\Translatable;
 /**
  * @ORM\Table(name="timeline_manifestos")
  * @ORM\Entity(repositoryClass="App\Repository\Timeline\ManifestoRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {

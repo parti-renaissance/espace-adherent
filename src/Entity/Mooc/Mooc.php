@@ -2,7 +2,6 @@
 
 namespace App\Entity\Mooc;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Image;
 use App\Validator\ImageObject as AssertImageObject;
@@ -28,8 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     expression="(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())",
  *     message="mooc.two_media"
  * )
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Mooc
 {

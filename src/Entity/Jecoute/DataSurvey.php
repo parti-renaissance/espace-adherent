@@ -2,7 +2,6 @@
 
 namespace App\Entity\Jecoute;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Validator\DataSurveyConstraint;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,8 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  *
  * @DataSurveyConstraint
- *
- * @Algolia\Index(autoIndex=false)
  */
 class DataSurvey
 {

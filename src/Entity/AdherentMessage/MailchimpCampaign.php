@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMessage;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use App\Entity\MailchimpSegment;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,8 +11,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
 {

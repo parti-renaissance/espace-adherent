@@ -2,7 +2,6 @@
 
 namespace App\Entity\ElectedRepresentative\Reporting;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -13,8 +12,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Table(name="elected_representative_user_list_definition_history")
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class UserListDefinitionHistory
 {

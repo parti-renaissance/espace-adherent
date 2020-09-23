@@ -2,7 +2,6 @@
 
 namespace App\Entity\Jecoute;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\EntityIdentityTrait;
@@ -16,8 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="jecoute_survey_question")
  * @ORM\Entity
-
- * @Algolia\Index(autoIndex=false)
  */
 class SurveyQuestion implements AuthoredInterface
 {

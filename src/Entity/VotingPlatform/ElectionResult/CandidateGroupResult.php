@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform\ElectionResult;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\VotingPlatform\CandidateGroup;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,8 +11,6 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity
  * @ORM\Table(name="voting_platform_candidate_group_result")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CandidateGroupResult
 {

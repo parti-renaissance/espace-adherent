@@ -2,15 +2,12 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class MunicipalChiefFilter extends AbstractAdherentMessageFilter implements CampaignAdherentMessageFilterInterface
 {

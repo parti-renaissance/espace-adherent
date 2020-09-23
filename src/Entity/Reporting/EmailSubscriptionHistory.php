@@ -2,7 +2,6 @@
 
 namespace App\Entity\Reporting;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\ReferentTag;
 use App\Entity\SubscriptionType;
@@ -23,8 +22,6 @@ use Webmozart\Assert\Assert;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\EmailSubscriptionHistoryRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class EmailSubscriptionHistory
 {

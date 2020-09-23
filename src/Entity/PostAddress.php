@@ -14,8 +14,6 @@ use Symfony\Component\Intl\Intl;
 
 /**
  * @ORM\Embeddable
- *
- * @Algolia\Index(autoIndex=false)
  */
 class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInterface
 {

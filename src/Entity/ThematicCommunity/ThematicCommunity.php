@@ -2,7 +2,6 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -10,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ThematicCommunity
 {

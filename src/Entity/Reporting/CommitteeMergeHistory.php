@@ -2,7 +2,6 @@
 
 namespace App\Entity\Reporting;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Administrator;
 use App\Entity\Committee;
@@ -22,8 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CommitteeMergeHistory
 {

@@ -78,8 +78,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface, EquatableInterface
 {

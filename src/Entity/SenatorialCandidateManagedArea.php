@@ -2,15 +2,12 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="senatorial_candidate_areas")
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class SenatorialCandidateManagedArea
 {

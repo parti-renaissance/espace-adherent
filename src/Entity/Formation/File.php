@@ -2,7 +2,6 @@
 
 namespace App\Entity\Formation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\BaseFile;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -14,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     name="formation_files",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="formation_file_slug_extension", columns={"slug", "extension"})}
  * )
- *
- * @Algolia\Index(autoIndex=false)
  */
 class File extends BaseFile
 {

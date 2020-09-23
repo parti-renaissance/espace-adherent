@@ -2,7 +2,6 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\PostAddress;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -10,8 +9,6 @@ use libphonenumber\PhoneNumber;
 /**
  * @ORM\Entity
  * @ORM\Table(name="thematic_community_membership_contact")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ContactMembership extends ThematicCommunityMembership
 {

@@ -2,7 +2,6 @@
 
 namespace App\Entity\OAuth;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="oauth_access_tokens_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="oauth_access_tokens_identifier_unique", columns="identifier")
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AccessToken extends AbstractGrantToken
 {

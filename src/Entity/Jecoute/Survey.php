@@ -2,7 +2,6 @@
 
 namespace App\Entity\Jecoute;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Jecoute\SurveyTypeEnum;
@@ -22,8 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     SurveyTypeEnum::LOCAL: "LocalSurvey",
  *     SurveyTypeEnum::NATIONAL: "NationalSurvey"
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 abstract class Survey
 {

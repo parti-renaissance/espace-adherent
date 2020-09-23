@@ -2,7 +2,6 @@
 
 namespace App\Entity\TerritorialCouncil;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\TerritorialCouncil\ElectionPoll\Poll;
 use App\Entity\VotingPlatform\Designation\AbstractElectionEntity;
@@ -13,8 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\ElectionRepository")
  * @ORM\Table(name="territorial_council_election")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Election extends AbstractElectionEntity implements GeoPointInterface
 {

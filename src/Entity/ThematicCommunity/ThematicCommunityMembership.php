@@ -2,7 +2,6 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityUserListDefinitionTrait;
@@ -18,8 +17,6 @@ use Ramsey\Uuid\Uuid;
  *     "contact": "App\Entity\ThematicCommunity\ContactMembership",
  *     "adherent": "App\Entity\ThematicCommunity\AdherentMembership",
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 abstract class ThematicCommunityMembership
 {

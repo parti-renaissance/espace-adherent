@@ -2,7 +2,6 @@
 
 namespace App\Entity\MyTeam;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\EntityIdentityTrait;
@@ -18,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\MyTeam\DelegatedAccessRepository")
  * @ORM\Table(name="my_team_delegated_access")
  * @UniqueEntity(fields={"delegator", "delegated"}, message="Vous avez déjà délégué des accès à cet adhérent.")
- * @Algolia\Index(autoIndex=false)
  */
 class DelegatedAccess
 {

@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMessage;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\CommitteeAdherentMessageDataObject;
@@ -10,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CommitteeAdherentMessage extends AbstractAdherentMessage implements CampaignAdherentMessageInterface
 {

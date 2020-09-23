@@ -9,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="chez_vous_markers")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Marker
 {

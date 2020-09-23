@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoterRepository")
  *
  * @ORM\Table(name="voting_platform_voter")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Voter
 {

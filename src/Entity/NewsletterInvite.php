@@ -2,15 +2,12 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Table(name="newsletter_invitations")
  * @ORM\Entity(repositoryClass="App\Repository\NewsletterInviteRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class NewsletterInvite
 {

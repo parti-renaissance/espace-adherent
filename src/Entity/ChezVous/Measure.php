@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="chez_vous_measures_city_type_unique", columns={"city_id", "type_id"}),
  * })
  *
- * @Algolia\Index(autoIndex=false)
- *
  * @MeasurePayload
  *
  * @UniqueEntity(fields={"city", "type"}, errorPath="type")

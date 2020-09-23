@@ -11,8 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ChezVous\MeasureTypeRepository")
  * @ORM\Table(name="chez_vous_measure_types")
  *
- * @Algolia\Index(autoIndex=false)
- *
  * @UniqueEntity("code")
  */
 class MeasureType

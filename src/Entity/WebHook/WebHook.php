@@ -2,7 +2,6 @@
 
 namespace App\Entity\WebHook;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\OAuth\Client;
 use App\WebHook\Event;
@@ -19,8 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="web_hook_event_client_id_unique", columns={"event", "client_id"})
  * })
  * @UniqueEntity(fields={"event", "client"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class WebHook
 {

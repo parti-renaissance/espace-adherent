@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMandate;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
 {

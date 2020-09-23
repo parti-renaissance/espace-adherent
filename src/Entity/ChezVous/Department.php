@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="chez_vous_departments")
  *
  * @UniqueEntity("code")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Department
 {

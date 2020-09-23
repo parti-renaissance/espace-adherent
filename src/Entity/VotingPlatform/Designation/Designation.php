@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ReferentTag;
@@ -17,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\DesignationRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Designation
 {

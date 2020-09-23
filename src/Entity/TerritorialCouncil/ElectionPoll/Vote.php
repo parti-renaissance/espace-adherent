@@ -2,15 +2,12 @@
 
 namespace App\Entity\TerritorialCouncil\ElectionPoll;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\ElectionPoll\VoteRepository")
  * @ORM\Table(name="territorial_council_election_poll_vote")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Vote
 {

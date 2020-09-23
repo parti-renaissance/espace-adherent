@@ -2,15 +2,12 @@
 
 namespace App\Entity\AdherentMandate;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\CommitteeAdherentMandateRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CommitteeAdherentMandate extends AbstractAdherentMandate
 {
