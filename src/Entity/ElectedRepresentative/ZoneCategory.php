@@ -43,10 +43,13 @@ class ZoneCategory
             self::FOF,
         ],
         'EURO_DEPUTY' => [
+            self::CITY,
+            self::BOROUGH,
             self::DEPARTMENT,
             self::DISTRICT,
         ],
         'BOROUGH_COUNCIL' => [
+            self::CITY,
             self::BOROUGH,
         ],
     ];
