@@ -319,4 +319,9 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     {
         return $this->manifesto->exportTitles();
     }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
 }

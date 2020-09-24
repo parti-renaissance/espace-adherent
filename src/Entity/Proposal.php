@@ -158,4 +158,9 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, In
     {
         return $this->isPublished() && $this->isNotDeleted();
     }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
 }

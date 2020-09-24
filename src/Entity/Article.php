@@ -133,4 +133,9 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
     {
         return $this->isPublished() && $this->isNotDeleted();
     }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
 }

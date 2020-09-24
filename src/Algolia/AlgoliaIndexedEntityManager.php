@@ -4,9 +4,7 @@ namespace App\Algolia;
 
 use Algolia\SearchBundle\SearchService;
 use App\Entity\AlgoliaIndexedEntityInterface;
-use App\Entity\ChezVous\City;
 use App\Entity\Timeline\Measure;
-use App\Entity\Timeline\Theme;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AlgoliaIndexedEntityManager
@@ -42,7 +40,7 @@ class AlgoliaIndexedEntityManager
 
     private function index(AlgoliaIndexedEntityInterface $entity): void
     {
-        $this->algolia->index($this->entityManager, $entity, $this->getOptions($entity));
+        $this->algolia->index($this->entityManager, $entity, $entity->getIndexOptions());
 
         if ($entity instanceof Measure) {
             $this->algolia->index($this->entityManager, $entity->getThemesToIndex()->toArray());
@@ -56,31 +54,5 @@ class AlgoliaIndexedEntityManager
         if ($entity instanceof Measure) {
             $this->algolia->index($this->entityManager, $entity->getThemesToIndex()->toArray());
         }
-    }
-
-    private function getOptions(AlgoliaIndexedEntityInterface $entity): array
-    {
-        switch (\get_class($entity)) {
-            case Theme::class:
-                return [
-                    'hitsPerPage' => 100,
-                    'attributesForFaceting' => [
-                        'titles.fr',
-                        'titles.en',
-                        'profileIds',
-                        'manifestoIds',
-                    ],
-                ];
-            case City::class:
-                return [
-                    'searchableAttributes' => [
-                        'name',
-                        'postalCodes',
-                        'inseeCode',
-                    ],
-                ];
-        }
-
-        return [];
     }
 }

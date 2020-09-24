@@ -42,4 +42,9 @@ class Clarification implements EntityMediaInterface, EntityContentInterface, Ent
     {
         return $this->isPublished() && $this->isNotDeleted();
     }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
 }

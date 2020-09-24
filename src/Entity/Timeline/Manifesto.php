@@ -75,4 +75,9 @@ class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEnti
     {
         return implode(', ', $this->getDescriptions());
     }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
 }

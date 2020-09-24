@@ -199,6 +199,11 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
 
     public function isIndexable(): bool
     {
-        return $this->isGeocoded();
+        return $this->isActive() && $this->isPublished() && $this->isGeocoded();
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
     }
 }

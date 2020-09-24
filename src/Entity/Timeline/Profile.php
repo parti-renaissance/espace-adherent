@@ -68,4 +68,9 @@ class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     {
         return implode(', ', $this->getDescriptions());
     }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
 }

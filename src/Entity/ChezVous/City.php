@@ -291,4 +291,15 @@ class City implements AlgoliaIndexedEntityInterface
     {
         return str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
     }
+
+    public function getIndexOptions(): array
+    {
+        return [
+            'searchableAttributes' => [
+                'name',
+                'postalCodes',
+                'inseeCode',
+            ],
+        ];
+    }
 }

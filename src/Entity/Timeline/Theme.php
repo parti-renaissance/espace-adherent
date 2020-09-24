@@ -167,4 +167,17 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     {
         return implode(', ', $this->getDescriptions());
     }
+
+    public function getIndexOptions(): array
+    {
+        return [
+            'hitsPerPage' => 100,
+            'attributesForFaceting' => [
+                'titles.fr',
+                'titles.en',
+                'profileIds',
+                'manifestoIds',
+            ],
+        ];
+    }
 }
