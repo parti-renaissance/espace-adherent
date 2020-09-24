@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Exception\CitizenProjectMembershipException;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -26,8 +25,6 @@ use Ramsey\Uuid\UuidInterface;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CitizenProjectMembershipRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CitizenProjectMembership
 {

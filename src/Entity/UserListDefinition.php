@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,8 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="user_list_definition_type_code_unique", columns={"type", "code"})
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class UserListDefinition
 {

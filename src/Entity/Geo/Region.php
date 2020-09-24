@@ -2,15 +2,12 @@
 
 namespace App\Entity\Geo;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="geo_region")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Region implements CollectivityInterface
 {

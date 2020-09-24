@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -12,8 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="redirections")
  * @ORM\Entity(repositoryClass="App\Repository\RedirectionRepository")
  * @ORM\EntityListeners({"App\EntityListener\RedirectionListener"})
- *
- * @Algolia\Index(autoIndex=false)
  *
  * @Serializer\ExclusionPolicy("all")
  */

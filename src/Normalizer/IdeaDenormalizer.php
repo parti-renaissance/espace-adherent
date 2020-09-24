@@ -45,11 +45,6 @@ class IdeaDenormalizer implements DenormalizerInterface, DenormalizerAwareInterf
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
-        // Make sure we're not called twice
-        if (isset($context[self::ALREADY_CALLED])) {
-            return false;
-        }
-
-        return Idea::class === $type;
+        return !isset($context[self::ALREADY_CALLED]) && Idea::class === $type;
     }
 }

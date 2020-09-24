@@ -829,6 +829,10 @@
             <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
             <tag name="sonata.admin.extension" target="app.admin.chez_vous_city" />
+            <tag name="sonata.admin.extension" target="app.admin.custom_search_result" />
+            <tag name="sonata.admin.extension" target="app.admin.proposal" />
+            <tag name="sonata.admin.extension" target="app.admin.clarification" />
+            <tag name="sonata.admin.extension" target="app.admin.article" />
         </service>
 
         <service id="app.admin.empty_translation_remover_extension" class="App\Admin\Extension\EmptyTranslationRemoverAdminExtension">

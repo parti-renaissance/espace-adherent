@@ -2,7 +2,6 @@
 
 namespace App\Entity\Timeline;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,8 +10,6 @@ use Knp\DoctrineBehaviors\Model\Translatable\Translatable;
 /**
  * @ORM\Table(name="timeline_profiles")
  * @ORM\Entity(repositoryClass="App\Repository\Timeline\ProfileRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
@@ -24,8 +21,6 @@ class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue
-     *
-     * @Algolia\Attribute
      */
     private $id;
 
@@ -44,25 +39,16 @@ class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         return $this->id;
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="titles")
-     */
     public function getTitles(): array
     {
         return $this->getFieldTranslations('title');
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="slugs")
-     */
     public function getSlugs(): array
     {
         return $this->getFieldTranslations('slug');
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="descriptions")
-     */
     public function getDescriptions(): array
     {
         return $this->getFieldTranslations('description');
@@ -81,5 +67,10 @@ class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     public function exportDescriptions(): string
     {
         return implode(', ', $this->getDescriptions());
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
     }
 }

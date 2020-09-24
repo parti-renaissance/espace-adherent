@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\Admin;
 
-use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
+use Algolia\SearchBundle\SearchService;
 use App\Entity\ChezVous\City;
 use App\Repository\ChezVous\CityRepository;
 use Doctrine\ORM\EntityRepository;
@@ -10,7 +10,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
-use Tests\App\Test\Algolia\DummyIndexer;
+use Tests\App\Test\Algolia\DummySearchService;
 
 /**
  * @group functional
@@ -40,11 +40,8 @@ class AdminChezVousCityControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         $entitiesToIndex = $this->getIndexer()->getEntitiesToIndex();
-        $entitiesToUnIndex = $this->getIndexer()->getEntitiesToUnIndex();
 
-        $this->assertCount(1, $entitiesToUnIndex);
-        $this->assertArrayHasKey('City_test', $entitiesToUnIndex);
-        $this->assertCount(1, $entitiesToUnIndex['City_test']);
+        $this->assertSame(1, $this->getIndexer()->countForUnIndexByType(City::class));
         $this->assertEmpty($entitiesToIndex);
     }
 
@@ -71,88 +68,7 @@ class AdminChezVousCityControllerTest extends WebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $indexedEntities = $this->getIndexer()->getEntitiesToIndex();
-
-        $this->assertCount(1, $indexedEntities);
-        $this->assertArrayHasKey('City_test', $indexedEntities);
-        $this->assertCount(1, $indexedEntities['City_test']);
-
-        $cityPayload = $indexedEntities['City_test'][0];
-
-        $this->assertArraySubset([
-            'name' => 'Nissa',
-            'postalCodes' => [
-                '06000',
-                '06100',
-                '06200',
-                '06300',
-            ],
-            'inseeCode' => '06088',
-            'slug' => '06088-nice',
-            'department' => [
-                'name' => 'Alpes-Maritimes',
-                'label' => 'Dans les Alpes-Maritimes',
-                'code' => '06',
-                'region' => [
-                    'name' => 'Provence-Alpes-Côte d\'Azur',
-                    'code' => '93',
-                ],
-            ],
-            'measures' => [
-                [
-                    'type' => [
-                        'code' => 'quartier_reconquete_republicaine',
-                        'label' => "Création d'un quartier de reconquête républicaine",
-                        'sourceLink' => 'https://www.interieur.gouv.fr/Espace-presse/Dossiers-de-presse/Un-an-de-la-police-de-securite-du-quotidien',
-                        'sourceLabel' => 'interieur.gouv.fr',
-                        'updatedAt' => (new \DateTime('now'))->format('Y/m/d'),
-                        'oldolfLink' => 'https://transformer.en-marche.fr/fr/results?theme=securite',
-                        'eligibilityLink' => null,
-                        'citizenProjectsLink' => 'https://en-marche.fr/projets-citoyens',
-                        'ideasWorkshopLink' => 'https://en-marche.fr/atelier-des-idees/proposer',
-                    ],
-                    'payload' => null,
-                ],
-                [
-                    'type' => [
-                        'code' => 'baisse_nombre_chomeurs',
-                        'label' => 'Baisse du nombre de chômeurs',
-                        'sourceLink' => 'https://statistiques.pole-emploi.org/stmt/trsl?fa=M&lb=0',
-                        'sourceLabel' => 'pole-emploi.org',
-                        'updatedAt' => (new \DateTime('now'))->format('Y/m/d'),
-                        'oldolfLink' => 'https://transformer.en-marche.fr/fr/results?theme=fiscalite,travail,entreprises,industrie,apprentissage,dialogue-social',
-                        'eligibilityLink' => null,
-                        'citizenProjectsLink' => 'https://en-marche.fr/projets-citoyens',
-                        'ideasWorkshopLink' => 'https://en-marche.fr/atelier-des-idees/proposer',
-                    ],
-                    'payload' => [
-                        'baisse_ville' => 300,
-                        'baisse_departement' => 4000,
-                    ],
-                ],
-            ],
-            'markers' => [
-                [
-                    'type' => 'maison_service_accueil_public',
-                    'coordinates' => [
-                        43.701,
-                        7.254,
-                    ],
-                ],
-                [
-                    'type' => 'maison_service_accueil_public',
-                    'coordinates' => [
-                        43.676,
-                        7.207,
-                    ],
-                ],
-            ],
-            '_geoloc' => [
-                'lat' => 43.7,
-                'lng' => 7.25,
-            ],
-        ], $cityPayload);
-        $this->assertArrayHasKey('objectID', $cityPayload);
+        $this->assertSame(1, $this->getIndexer()->countForIndexByType(City::class));
     }
 
     protected function setUp()
@@ -173,8 +89,8 @@ class AdminChezVousCityControllerTest extends WebTestCase
         parent::tearDown();
     }
 
-    private function getIndexer(): DummyIndexer
+    private function getIndexer(): DummySearchService
     {
-        return $this->client->getContainer()->get(Indexer::class);
+        return $this->client->getContainer()->get(SearchService::class);
     }
 }

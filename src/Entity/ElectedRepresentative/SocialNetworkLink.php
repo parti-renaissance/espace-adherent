@@ -2,7 +2,6 @@
 
 namespace App\Entity\ElectedRepresentative;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Exception\BadSocialLinkTypeException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -22,8 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     errorPath="type",
  *     message="Il existe déjà un lien vers ce réseau social pour cet(te) élu(e)"
  * )
- *
- * @Algolia\Index(autoIndex=false)
  */
 class SocialNetworkLink
 {

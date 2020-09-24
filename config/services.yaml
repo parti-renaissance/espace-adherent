@@ -15,8 +15,6 @@ parameters:
     feed_ttl:                             60 # in minutes
     legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
     legislatives_standard_hotline_email:  'campagne.legislatives@en-marche.fr'
-    algolia.application_id:               "%env(ALGOLIA_APP_ID)%"
-    algolia.api_key:                      "%env(ALGOLIA_BACK_API_KEY)%"
     app_host:                             "%env(APP_HOST)%"
     amp_host:                             "%env(AMP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
@@ -82,9 +80,10 @@ services:
         resource: '../src/TerritorialCouncil/'
     App\VotingPlatform\:
         resource: '../src/VotingPlatform/'
+    App\Normalizer\:
+        resource: '../src/Normalizer/'
 
     # Services
-    Algolia\AlgoliaSearchBundle\Indexer\Indexer: '@algolia.indexer'
 
     App\Map\StaticMapProviderInterface: '@app.map.google_maps_static_provider'
 
@@ -120,6 +119,29 @@ services:
 
     App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
         tags: ['doctrine.event_subscriber']
+
+    App\Normalizer\IdeaAnswerNormalizer:
+        arguments:
+            - '@api_platform.serializer.normalizer.item'
+            - '@api_platform.metadata.resource.metadata_factory'
+
+    App\Normalizer\IdeaThreadNormalizer:
+        arguments:
+            - '@api_platform.serializer.normalizer.item'
+            - '@api_platform.metadata.resource.metadata_factory'
+
+    App\Normalizer\IdeaAuthorNicknameNormalizer:
+        arguments: ['@api_platform.serializer.normalizer.item']
+
+    App\Normalizer\IdeaThemeNormalizer:
+        arguments: ['@api_platform.serializer.normalizer.item']
+
+    App\Normalizer\ItemNormalizerDecorator:
+        decorates: 'api_platform.serializer.normalizer.item'
+        arguments: ['@App\Normalizer\ItemNormalizerDecorator.inner']
+
+    App\Normalizer\Indexer\ThrowExceptionNormalizer:
+        tags: [{name: 'serializer.normalizer', priority: -500}]
 
     # Form
     App\Form\PurifiedTextareaType:

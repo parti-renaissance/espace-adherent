@@ -12,7 +12,19 @@
         }
     },
     "algolia/algoliasearch-client-php": {
-        "version": "1.25.1"
+        "version": "2.7.0"
+    },
+    "algolia/search-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "e4763dc0b1cb323ae78d414ded0cd1ae914fe205"
+        },
+        "files": [
+            "config/packages/algolia_search.yaml"
+        ]
     },
     "api-platform/api-pack": {
         "version": "1.1.0"

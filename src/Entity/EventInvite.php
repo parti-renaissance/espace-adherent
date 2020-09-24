@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Event\EventInvitation;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -10,8 +9,6 @@ use Ramsey\Uuid\Uuid;
 /**
  * @ORM\Table(name="events_invitations")
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class EventInvite
 {

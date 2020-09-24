@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Intl\FranceCitiesBundle;
 use App\Utils\AreaUtils;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -18,8 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="procuration_requests")
  * @ORM\Entity(repositoryClass="App\Repository\ProcurationRequestRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ProcurationRequest
 {

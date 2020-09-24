@@ -2,7 +2,6 @@
 
 namespace App\Entity\ProgrammaticFoundation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,8 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="programmatic_foundation_approach")
  *
  * @UniqueEntity("position", message="programmatic_foundation.unique_position.approach")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Approach
 {

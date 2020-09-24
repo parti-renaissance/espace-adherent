@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  *
  * @ORM\Table(name="voting_platform_election_pool")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ElectionPool
 {

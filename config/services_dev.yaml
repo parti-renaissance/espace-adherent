@@ -23,8 +23,9 @@ services:
         class: 'Tests\App\Test\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
-    algolia.indexer:
-        class: 'Tests\App\Test\Algolia\DummyIndexer'
+    Tests\App\Test\Algolia\DummySearchService:
+        decorates: 'search.service'
+        arguments: ['@Tests\App\Test\Algolia\DummySearchService.inner']
 
     data_collector.messenger:
         class: Symfony\Component\Messenger\DataCollector\MessengerDataCollector

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -18,7 +17,6 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\DiscriminatorMap({
  *     "my_europe": "App\Entity\MyEuropeChoice",
  * })
- * @Algolia\Index(autoIndex=false)
  */
 abstract class InteractiveChoice
 {

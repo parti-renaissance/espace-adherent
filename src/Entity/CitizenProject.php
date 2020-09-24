@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Collection\AdherentCollection;
 use App\Exception\CitizenProjectAlreadyApprovedException;
@@ -31,8 +30,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CitizenProjectRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface
 {
@@ -66,23 +63,17 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
      *
      * @Gedmo\Slug(fields={"postAddress.postalCode", "canonicalName"})
      *
-     * @Algolia\Attribute
-     *
      * @JMS\Groups({"public", "citizen_project_read"})
      */
     protected $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CitizenProjectCategory")
-     *
-     * @Algolia\Attribute
      */
     private $category;
 
     /**
      * @ORM\Column
-     *
-     * @Algolia\Attribute
      *
      * @JMS\Groups({"public", "citizen_project_read"})
      */

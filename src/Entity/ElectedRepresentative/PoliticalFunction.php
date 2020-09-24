@@ -2,7 +2,6 @@
 
 namespace App\Entity\ElectedRepresentative;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Exception\BadPoliticalFunctionNameException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="elected_representative_political_function")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class PoliticalFunction
 {

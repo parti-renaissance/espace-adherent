@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Address\GeoCoder;
 use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,24 +12,19 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
- *
- * @Algolia\Index
+ * @ORM\EntityListeners({"App\EntityListener\EventIndexedListener"})
  */
-class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEntity
+class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface
 {
     use UserDocumentTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\EventCategory")
-     *
-     * @Algolia\Attribute
      */
     protected $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     *
-     * @Algolia\Attribute
      */
     private $committee;
 
@@ -42,7 +36,7 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isForLegislatives = false;
+    private $isForLegislatives;
 
     /**
      * @var UserDocument[]|Collection
@@ -201,5 +195,15 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         }
 
         return $organizer->getUuidAsString();
+    }
+
+    public function isIndexable(): bool
+    {
+        return $this->isActive() && $this->isPublished() && $this->isGeocoded();
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Entity\Jecoute;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Validator\DataSurveyAnswerTypeChoice;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  *
  * @DataSurveyAnswerTypeChoice
- *
- * @Algolia\Index(autoIndex=false)
  */
 class DataAnswer
 {

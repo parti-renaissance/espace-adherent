@@ -108,6 +108,6 @@ class MeasureTypeAdmin extends AbstractAdmin
 
     public function postRemove($object)
     {
-        $this->dispatcher->dispatch(Events::CHEZVOUS_MEASURE_TYPE_UPDATED, new MeasureTypeEvent($object));
+        $this->dispatcher->dispatch(Events::CHEZVOUS_MEASURE_TYPE_DELETED, new MeasureTypeEvent($object));
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Entity\TerritorialCouncil;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Validator\TerritorialCouncil\ValidTerritorialCouncilCandidacyInvitation;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="territorial_council_candidacy_invitation")
- *
- * @Algolia\Index(autoIndex=false)
  *
  * @ValidTerritorialCouncilCandidacyInvitation(groups={"Default", "invitation_edit"})
  */

@@ -31,7 +31,7 @@ class AdherentSegmentDenormalizer implements DenormalizerInterface, Denormalizer
         return $this->denormalizer->denormalize($data, $class, $format, $context);
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
         // Make sure we're not called twice
         if (isset($context[self::ALREADY_CALLED])) {

@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\ValueObject\Genders;
@@ -14,8 +13,6 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity
  *
  * @ORM\Table(name="voting_platform_candidate")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Candidate
 {

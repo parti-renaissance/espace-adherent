@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Election\VotePlaceResult;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\VotePlaceRepository")
  *
  * @UniqueEntity(fields={"code"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class VotePlace
 {

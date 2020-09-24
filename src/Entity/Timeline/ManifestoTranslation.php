@@ -2,7 +2,6 @@
 
 namespace App\Entity\Timeline;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model\Translatable\Translation;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -14,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
  * @UniqueEntity(fields={"locale", "slug"}, errorPath="slug")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ManifestoTranslation
 {
@@ -37,8 +34,6 @@ class ManifestoTranslation
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
      */
     private $title;
 
@@ -49,8 +44,6 @@ class ManifestoTranslation
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @Algolia\Attribute
      */
     private $slug;
 
@@ -60,8 +53,6 @@ class ManifestoTranslation
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $description;
 

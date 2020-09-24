@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Facebook\GraphNodes\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="order_sections")
  * @ORM\Entity(repositoryClass="App\Repository\OrderSectionRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class OrderSection
 {

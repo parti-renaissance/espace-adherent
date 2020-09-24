@@ -2,7 +2,6 @@
 
 namespace App\Entity\Reporting;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,8 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AdherentCertificationHistory
 {

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\TonMacron\InvitationProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +13,6 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\UniqueConstraint(name="ton_macron_friend_invitations_uuid_unique", columns="uuid")
  * })
  * @ORM\Entity(repositoryClass="App\Repository\TonMacronFriendInvitationRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class TonMacronFriendInvitation
 {

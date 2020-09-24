@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -11,9 +10,9 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 trait EntityNameSlugTrait
 {
     /**
-     * @ORM\Column
+     * @var string
      *
-     * @Algolia\Attribute
+     * @ORM\Column
      *
      * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "idea_vote_read", "adherent_committees_modal"})
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
@@ -21,18 +20,18 @@ trait EntityNameSlugTrait
     protected $name;
 
     /**
-     * @ORM\Column
+     * @var string
      *
-     * @Algolia\Attribute
+     * @ORM\Column
      */
     protected $canonicalName;
 
     /**
+     * @var string
+     *
      * @ORM\Column
      *
      * @Gedmo\Slug(fields={"canonicalName"})
-     *
-     * @Algolia\Attribute
      *
      * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "adherent_committees_modal"})
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
@@ -63,5 +62,10 @@ trait EntityNameSlugTrait
     public function updateSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    public function getCanonicalName(): string
+    {
+        return $this->canonicalName;
     }
 }

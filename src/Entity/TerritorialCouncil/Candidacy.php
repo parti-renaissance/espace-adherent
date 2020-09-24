@@ -2,7 +2,6 @@
 
 namespace App\Entity\TerritorialCouncil;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -11,8 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\CandidacyRepository")
  * @ORM\Table(name="territorial_council_candidacy")
- *
- * @Algolia\Index(autoIndex=false)
  *
  * @Assert\Expression("(this.hasImageName() && !this.isRemoveImage()) || this.getImage()", message="Photo est obligatoire")
  */

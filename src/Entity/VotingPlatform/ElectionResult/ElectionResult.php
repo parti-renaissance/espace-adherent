@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform\ElectionResult;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionPool;
@@ -16,8 +15,6 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity
  * @ORM\Table(name="voting_platform_election_result")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ElectionResult
 {

@@ -2,7 +2,6 @@
 
 namespace App\Entity\ChezVous;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Validator\ChezVous\MeasurePayload;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="chez_vous_measures", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="chez_vous_measures_city_type_unique", columns={"city_id", "type_id"}),
  * })
- *
- * @Algolia\Index(autoIndex=false)
  *
  * @MeasurePayload
  *
@@ -35,8 +32,6 @@ class Measure
      * @var array
      *
      * @ORM\Column(type="json_array", nullable=true)
-     *
-     * @Algolia\Attribute
      */
     private $payload;
 
@@ -57,8 +52,6 @@ class Measure
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $type;
 

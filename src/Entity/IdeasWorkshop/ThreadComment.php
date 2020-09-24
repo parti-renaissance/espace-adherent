@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
@@ -134,8 +133,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ThreadCommentRepository")
  * @ORM\EntityListeners({"App\EntityListener\IdeaThreadCommentListener"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ThreadComment extends BaseComment implements AuthorInterface, ReportableInterface
 {

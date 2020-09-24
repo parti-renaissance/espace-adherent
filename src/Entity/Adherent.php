@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
@@ -78,8 +77,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface, EquatableInterface
 {
@@ -2042,8 +2039,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @Algolia\Attribute(algoliaName="address_city")
-     *
      * @JMS\Groups({"adherent_change_diff", "public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")

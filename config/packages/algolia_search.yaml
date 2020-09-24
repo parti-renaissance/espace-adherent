@@ -1,0 +1,37 @@
+algolia_search:
+    doctrineSubscribedEvents: []
+    prefix: 'app_%env(ALGOLIA_INDEX_PREFIX)%_'
+    indices:
+        -   name: event
+            class: App\Entity\Event
+            index_if: isIndexable
+
+        -   name: article
+            class: App\Entity\Article
+            index_if: isIndexable
+
+        -   name: custom_search_result
+            class: App\Entity\CustomSearchResult
+
+        -   name: proposal
+            class: App\Entity\Proposal
+            index_if: isIndexable
+
+        -   name: clarification
+            class: App\Entity\Clarification
+            index_if: isIndexable
+
+        -   name: timeline_measure
+            class: App\Entity\Timeline\Measure
+
+        -   name: timeline_theme
+            class: App\Entity\Timeline\Theme
+
+        -   name: timeline_profile
+            class: App\Entity\Timeline\Profile
+
+        -   name: timeline_manifesto
+            class: App\Entity\Timeline\Manifesto
+
+        -   name: chezvous_city
+            class: App\Entity\ChezVous\City

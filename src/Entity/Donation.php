@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Donation\PayboxPaymentSubscription;
 use App\Geocoder\GeoPointInterface;
 use Cake\Chronos\Chronos;
@@ -25,8 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\DonationRepository")
  * @ORM\EntityListeners({"App\EntityListener\DonationListener"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Donation implements GeoPointInterface
 {

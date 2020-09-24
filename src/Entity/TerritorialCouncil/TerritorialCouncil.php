@@ -2,7 +2,6 @@
 
 namespace App\Entity\TerritorialCouncil;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Collection\TerritorialCouncilMembershipCollection;
 use App\Entity\EntityIdentityTrait;
@@ -30,8 +29,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilRepository")
  *
  * @UniqueEntity("name")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class TerritorialCouncil implements StaticSegmentInterface
 {

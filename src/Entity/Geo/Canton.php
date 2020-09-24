@@ -2,7 +2,6 @@
 
 namespace App\Entity\Geo;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="geo_canton")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Canton implements CollectivityInterface
 {

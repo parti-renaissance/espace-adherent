@@ -2,15 +2,12 @@
 
 namespace App\Entity\ApplicationRequest;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="application_request_technical_skill")
  * @ORM\Entity(repositoryClass="App\Repository\ApplicationRequest\TechnicalSkillRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class TechnicalSkill
 {
