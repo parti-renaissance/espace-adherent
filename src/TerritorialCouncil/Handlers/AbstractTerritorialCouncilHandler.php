@@ -141,7 +141,9 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         // if the adherent has a membership in the same territorial council, just add quality if it doesn't exist
         if ($territorialCouncil->getId() === $actualMembership->getTerritorialCouncil()->getId()) {
             $actualMembership->addQuality($quality);
-            $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+            if ($this->politicalCommitteeManager->canAddQuality($qualityName, $adherent)) {
+                $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+            }
             $this->em->flush();
 
             return;
@@ -202,23 +204,19 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $adherent->setTerritorialCouncilMembership($membership);
 
         $this->em->persist($membership);
+        $this->em->flush();
 
         // add Political committee member
-        if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)
-            || (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
-                && $tcMandate = $this->tcMandateRepository->findActiveMandateWithQuality($adherent, $territorialCouncil, $qualityName))
-        ) {
+        if ($this->politicalCommitteeManager->canAddQuality($qualityName, $adherent)) {
             $pcMembership = $this->politicalCommitteeManager->createMembership(
                 $adherent,
                 $territorialCouncil->getPoliticalCommittee(),
                $qualityName
             );
-            $adherent->setPoliticalCommitteeMembership($pcMembership);
 
             $this->em->persist($pcMembership);
+            $this->em->flush();
         }
-
-        $this->em->flush();
 
         $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE, new MembershipEvent($adherent, $territorialCouncil));
     }

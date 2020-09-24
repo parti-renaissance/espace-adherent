@@ -955,8 +955,8 @@ political_committee.membership.quality.department_councilor: Conseiller(ère) d�
 political_committee.membership.quality.city_councilor: Conseiller(ère) municipal(e) désigné(e)
 political_committee.membership.quality.borough_councilor: Conseiller(ère) d'arrondissement désigné(e)
 political_committee.membership.quality.consular_conselor: Conseiller(ère) consulaire désigné(e)
-political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e)
-political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e)
+political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e) au CoPol
+political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e) au CoPol
 political_committee.membership.adherent_has_already: L'adhérent ({{ email }}) est déjà un membre du Comité politique "{{ politicalCommittee }}"
 political_committee.membership.adherent_has_no_membership: L'adhérent ({{ email }}) en'est pas un membre du Comité politique du Conseil territorial "{{ territorialCouncil }}"
 political_committee.membership.has_max_number_of_mayor_and_leader: Vous ne pouvez nommer que {{ max }} maire ou président du groupe d'opposition LaREM dans le Comité politique "{{ politicalCommittee }}".
