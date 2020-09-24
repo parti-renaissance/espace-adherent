@@ -35,3 +35,6 @@ algolia_search:
 
         -   name: chezvous_city
             class: App\Entity\ChezVous\City
+
+        -   name: designation_candidate
+            class: App\Entity\Algolia\AlgoliaCandidature
