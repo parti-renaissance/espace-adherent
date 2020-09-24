@@ -8,7 +8,7 @@ use App\Entity\Referent;
 use App\Repository\MediaRepository;
 use App\Repository\ReferentRepository;
 use Doctrine\ORM\EntityManager;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -67,7 +67,7 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
         $this->referentRepository = $this->em->getRepository(Referent::class);
         $this->mediaRepository = $this->em->getRepository(Media::class);
         $this->mediaFactory = $this->getContainer()->get(MediaFactory::class);
-        $this->storage = $this->getContainer()->get('app.storage');
+        $this->storage = $this->getContainer()->get(FilesystemInterface::class);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

@@ -6,6 +6,7 @@ use App\Content\CustomSearchResultFactory;
 use App\Content\MediaFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
@@ -18,7 +19,7 @@ class LoadCustomSearchData implements FixtureInterface, ContainerAwareInterface
     {
         $factory = $this->container->get(CustomSearchResultFactory::class);
         $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get('app.storage');
+        $storage = $this->container->get(FilesystemInterface::class);
 
         $description = 'Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, '.
             'du risque, qui vivent pour la liberté, l\'égalité, et l\'Europe.';

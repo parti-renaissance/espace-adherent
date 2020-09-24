@@ -27,7 +27,7 @@
 
         <!-- Documents -->
         <service id="App\Documents\DocumentRepository" public="false">
-            <argument type="service" id="app.storage" />
+            <argument type="service" id="League\Flysystem\FilesystemInterface" />
         </service>
 
         <service id="app.document_manager" class="App\Documents\DocumentManager">
@@ -36,7 +36,7 @@
         </service>
 
         <!-- Filesystem -->
-        <service id="app.storage" class="League\Flysystem\Filesystem">
+        <service id="League\Flysystem\Filesystem">
             <argument type="service">
                 <service class="League\Flysystem\Adapter\AdapterInterface">
                     <factory class="App\Storage\FilesystemAdapterFactory" method="createAdapter" />
@@ -48,7 +48,7 @@
                 </service>
             </argument>
         </service>
-        <service id="League\Flysystem\Filesystem" alias="app.storage" />
+        <service id="League\Flysystem\FilesystemInterface" alias="League\Flysystem\Filesystem" />
 
         <!-- Medias -->
         <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false" lazy="true">
@@ -59,7 +59,7 @@
             <factory class="League\Glide\ServerFactory" method="create" />
 
             <argument type="collection">
-                <argument key="source" type="service" id="app.storage" />
+                <argument key="source" type="service" id="League\Flysystem\FilesystemInterface" />
                 <argument key="cache" type="service">
                     <service class="League\Flysystem\Filesystem">
                         <argument type="service" id="app.glide.cache_adapter" />

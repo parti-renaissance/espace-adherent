@@ -201,7 +201,7 @@
         </service>
 
         <service id="app.committee.photo.manager" class="App\Committee\PhotoManager">
-            <argument type="service" id="app.storage"/>
+            <argument type="service" id="League\Flysystem\FilesystemInterface"/>
             <argument type="service" id="app.glide"/>
         </service>
 

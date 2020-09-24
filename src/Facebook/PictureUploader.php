@@ -4,7 +4,7 @@ namespace App\Facebook;
 
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
-use Symfony\Component\Filesystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 
 class PictureUploader
 {
@@ -12,10 +12,10 @@ class PictureUploader
     private $filesystem;
     private $cacheDir;
 
-    public function __construct(Facebook $facebook, Filesystem $filesystem, string $cacheDir)
+    public function __construct(Facebook $facebook, FilesystemInterface $storage, string $cacheDir)
     {
         $this->facebook = $facebook;
-        $this->filesystem = $filesystem;
+        $this->filesystem = $storage;
         $this->cacheDir = $cacheDir;
     }
 

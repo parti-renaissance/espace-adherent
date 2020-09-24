@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79e24403542cf766fce9a75228bf3f18",
+    "content-hash": "a098e426c5cb50f14d18aac483552832",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -4810,57 +4810,6 @@
             ],
             "description": "An adapter decorator to enable meta-data caching.",
             "time": "2017-03-20T09:59:34+00:00"
-        },
-        {
-            "name": "league/flysystem-memory",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/flysystem-memory.git",
-                "reference": "1cabecd08a8caec92a96a953c0d93b5ce83b07a2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/1cabecd08a8caec92a96a953c0d93b5ce83b07a2",
-                "reference": "1cabecd08a8caec92a96a953c0d93b5ce83b07a2",
-                "shasum": ""
-            },
-            "require": {
-                "league/flysystem": "~1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Flysystem\\Memory\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Chris Leppanen",
-                    "email": "chris.leppanen@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "An in-memory adapter for Flysystem.",
-            "homepage": "https://github.com/thephpleague/flysystem-memory",
-            "keywords": [
-                "Flysystem",
-                "adapter",
-                "memory"
-            ],
-            "time": "2016-06-04T03:57:11+00:00"
         },
         {
             "name": "league/glide",
@@ -15256,6 +15205,57 @@
                 "schema"
             ],
             "time": "2018-02-14T22:26:30+00:00"
+        },
+        {
+            "name": "league/flysystem-memory",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-memory.git",
+                "reference": "d0e87477c32e29f999b4de05e64c1adcddb51757"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/d0e87477c32e29f999b4de05e64c1adcddb51757",
+                "reference": "d0e87477c32e29f999b4de05e64c1adcddb51757",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7.10"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\Memory\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Leppanen",
+                    "email": "chris.leppanen@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An in-memory adapter for Flysystem.",
+            "homepage": "https://github.com/thephpleague/flysystem-memory",
+            "keywords": [
+                "Flysystem",
+                "adapter",
+                "memory"
+            ],
+            "time": "2019-05-30T21:34:13+00:00"
         },
         {
             "name": "liip/functional-test-bundle",

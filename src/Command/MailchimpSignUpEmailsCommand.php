@@ -8,7 +8,7 @@ use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Csv\Reader;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +32,7 @@ class MailchimpSignUpEmailsCommand extends Command
         AdherentRepository $repository,
         MessageBusInterface $bus,
         SignUpHandler $signUpHandler,
-        Filesystem $storage,
+        FilesystemInterface $storage,
         ObjectManager $em
     ) {
         $this->repository = $repository;

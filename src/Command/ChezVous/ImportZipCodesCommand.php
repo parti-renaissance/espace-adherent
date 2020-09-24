@@ -10,7 +10,7 @@ use App\Repository\ChezVous\DepartmentRepository;
 use App\Repository\ChezVous\RegionRepository;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -30,7 +30,7 @@ class ImportZipCodesCommand extends AbstractImportCommand
     public function __construct(
         EntityManagerInterface $em,
         CityRepository $cityRepository,
-        Filesystem $storage,
+        FilesystemInterface $storage,
         SlugifyInterface $slugify,
         RegionRepository $regionRepository,
         DepartmentRepository $departmentRepository

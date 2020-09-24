@@ -7,6 +7,7 @@ use App\Content\ProposalFactory;
 use App\Entity\ProposalTheme;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
@@ -19,7 +20,7 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
     {
         $factory = $this->container->get(ProposalFactory::class);
         $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get('app.storage');
+        $storage = $this->container->get(FilesystemInterface::class);
         $em = $this->container->get('doctrine.orm.entity_manager');
 
         // Media

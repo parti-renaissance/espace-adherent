@@ -8,6 +8,7 @@ use App\Entity\NullablePostAddress;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -34,7 +35,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         AutoIncrementResetter::resetAutoIncrement($manager, 'citizen_projects');
 
         // Add CitizenProject default image
-        $storage = $this->container->get('app.storage');
+        $storage = $this->container->get(FilesystemInterface::class);
         $storage->put('images/citizen_projects/default.png', file_get_contents(__DIR__.'/../citizen-projects/default.png'));
 
         // Create some default citizen projects and make people join them

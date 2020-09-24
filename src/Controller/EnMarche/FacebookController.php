@@ -7,6 +7,7 @@ use App\Exception\BadUuidRequestException;
 use App\Exception\InvalidUuidException;
 use App\Repository\FacebookProfileRepository;
 use Facebook\Exceptions\FacebookSDKException;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,7 +74,7 @@ class FacebookController extends Controller
     /**
      * @Route("/choisir-une-image", name="app_facebook_picture_choose", methods={"GET"})
      */
-    public function choosePictureAction(Request $request): Response
+    public function choosePictureAction(Request $request, FilesystemInterface $storage): Response
     {
         try {
             if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
@@ -89,7 +90,7 @@ class FacebookController extends Controller
         $uuid = $fbProfile->getUuid()->toString();
 
         $urls = [];
-        foreach ($this->get('app.storage')->listContents('static/watermarks') as $filter) {
+        foreach ($storage->listContents('static/watermarks') as $filter) {
             $parameters = [
                 'uuid' => $uuid,
                 'filter' => $filter['filename'],
@@ -194,13 +195,15 @@ class FacebookController extends Controller
         return str_replace('http://', 'https://', $url);
     }
 
-    private function buildFilteredPicture(FacebookProfile $fbProfile, Request $request): string
-    {
+    private function buildFilteredPicture(
+        FacebookProfile $fbProfile,
+        FilesystemInterface $storage,
+        Request $request
+    ): string {
         if (!$filterNumber = (int) $request->query->get('filter')) {
             throw $this->createNotFoundException();
         }
 
-        $storage = $this->get('app.storage');
         if (!$storage->has('static/watermarks/'.$filterNumber.'.png')) {
             throw $this->createNotFoundException();
         }

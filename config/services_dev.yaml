@@ -33,3 +33,9 @@ services:
 
     App\VotingPlatform\Election\ResultCalculator:
         public: true
+
+    App\Content\MediaFactory:
+        public: true
+
+    App\Content\ClarificationFactory:
+        public: true

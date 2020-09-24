@@ -4,7 +4,7 @@ namespace App\TurnkeyProject;
 
 use App\Entity\TurnkeyProject;
 use App\Repository\TurnkeyProjectRepository;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -22,7 +22,7 @@ class TurnkeyProjectManager
      */
     private $turnkeyProjectRepository;
 
-    public function __construct(TurnkeyProjectRepository $turnkeyProjectRepository, Filesystem $storage)
+    public function __construct(TurnkeyProjectRepository $turnkeyProjectRepository, FilesystemInterface $storage)
     {
         $this->storage = $storage;
         $this->turnkeyProjectRepository = $turnkeyProjectRepository;
