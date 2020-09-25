@@ -141,7 +141,7 @@ services:
         arguments: ['@App\Normalizer\ItemNormalizerDecorator.inner']
 
     App\Normalizer\Indexer\ThrowExceptionNormalizer:
-        tags: [{name: 'serializer.normalizer', priority: -801}] # to be juste after CustomNormalizer
+        tags: [{name: 'serializer.normalizer', priority: -801}] # to be just after CustomNormalizer
 
     # Form
     App\Form\PurifiedTextareaType:
