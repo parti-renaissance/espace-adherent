@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
- * @ORM\EntityListeners({"App\EntityListener\EventIndexedListener"})
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  */
 class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface
 {

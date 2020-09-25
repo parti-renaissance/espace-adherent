@@ -2,10 +2,11 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
+use App\Entity\AlgoliaIndexedEntityInterface;
+use App\Entity\EntityTimestampableTrait;
 use App\Entity\ImageTrait;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -14,9 +15,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass
  */
-class BaseCandidacy implements CandidacyInterface
+abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntityInterface
 {
-    use TimestampableEntity;
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_CONFIRMED = 'confirmed';
+
+    use EntityTimestampableTrait;
     use ImageTrait;
 
     /**
@@ -123,5 +127,25 @@ class BaseCandidacy implements CandidacyInterface
     public function setRemoveImage(bool $value): void
     {
         $this->removeImage = $value;
+    }
+
+    public function getFirstName(): string
+    {
+        return $this->getAdherent()->getFirstName();
+    }
+
+    public function getLastName(): string
+    {
+        return $this->getAdherent()->getLastName();
+    }
+
+    public function getQuality(): ?string
+    {
+        return null;
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
     }
 }

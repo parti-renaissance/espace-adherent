@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
+use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
+ *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  */
 class CommitteeCandidacy extends BaseCandidacy
 {
@@ -44,6 +47,11 @@ class CommitteeCandidacy extends BaseCandidacy
         $this->committeeElection = $committeeElection;
     }
 
+    public function getElection(): ElectionEntityInterface
+    {
+        return $this->committeeElection;
+    }
+
     public function getCommitteeMembership(): ?CommitteeMembership
     {
         return $this->committeeMembership;
@@ -57,5 +65,20 @@ class CommitteeCandidacy extends BaseCandidacy
     public function isOngoing(): bool
     {
         return $this->committeeElection->isOngoing();
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE_COMMITTEE;
+    }
+
+    public function getAdherent(): Adherent
+    {
+        return $this->committeeMembership->getAdherent();
+    }
+
+    public function getStatus(): string
+    {
+        return self::STATUS_CONFIRMED;
     }
 }

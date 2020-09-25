@@ -355,15 +355,6 @@ class CommitteeManagerTest extends WebTestCase
         );
     }
 
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->committeeManager = null;
-
-        parent::tearDown();
-    }
-
     private function findCommitteeMembershipHistoryByAdherent(Adherent $adherent): array
     {
         $membershipEvent = $this->getCommitteeMembershipHistoryRepository()->findBy(

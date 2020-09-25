@@ -2,7 +2,9 @@
 
 namespace App\Entity\TerritorialCouncil;
 
+use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
+use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,13 +13,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\CandidacyRepository")
  * @ORM\Table(name="territorial_council_candidacy")
  *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
+ *
  * @Assert\Expression("(this.hasImageName() && !this.isRemoveImage()) || this.getImage()", message="Photo est obligatoire")
  */
 class Candidacy extends BaseCandidacy
 {
-    public const STATUS_DRAFT = 'draft';
-    public const STATUS_CONFIRMED = 'confirmed';
-
     /**
      * @var string|null
      *
@@ -102,7 +103,7 @@ class Candidacy extends BaseCandidacy
         $this->election = $election;
     }
 
-    public function getElection(): Election
+    public function getElection(): ElectionEntityInterface
     {
         return $this->election;
     }
@@ -196,6 +197,11 @@ class Candidacy extends BaseCandidacy
         return self::STATUS_CONFIRMED === $this->status;
     }
 
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
     public function updateFromBinome(): void
     {
         if ($this->binome) {
@@ -247,5 +253,15 @@ class Candidacy extends BaseCandidacy
     public function take(): void
     {
         $this->taken = true;
+    }
+
+    public function getType(): string
+    {
+        return self::TYPE_TERRITORIAL_COUNCIL;
+    }
+
+    public function getAdherent(): Adherent
+    {
+        return $this->membership->getAdherent();
     }
 }
