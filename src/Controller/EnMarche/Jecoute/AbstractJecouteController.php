@@ -218,7 +218,7 @@ abstract class AbstractJecouteController extends Controller
      *     condition="request.isXmlHttpRequest()",
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', surveyQuestion) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey())")
+     * @Security("is_granted('IS_AUTHOR_OF', surveyQuestion.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey()) or surveyQuestion.getSurvey().isNational()")
      */
     public function jecouteSurveyAnswersListAction(
         SurveyQuestion $surveyQuestion,
