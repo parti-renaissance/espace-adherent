@@ -48,6 +48,7 @@ class LoadTerritorialCouncilMembershipData extends Fixture
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, 'En Marche Paris 8'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CONSULAR_CONSELOR, '75009'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, '75'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REFERENT, '75'));
         $this->setReference('member_5_coTerr_75', $membership);
         $manager->persist($membership);
 

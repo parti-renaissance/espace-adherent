@@ -1496,6 +1496,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             && $this->territorialCouncilMembership->getTerritorialCouncil()->isActive();
     }
 
+    public function isTerritorialCouncilPresident(): bool
+    {
+        return $this->isTerritorialCouncilMember()
+            && $this->territorialCouncilMembership->isPresident();
+    }
+
     public function revokeTerritorialCouncilMembership(): void
     {
         if (!$this->territorialCouncilMembership) {
@@ -1523,6 +1529,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasPoliticalCommitteeMembership(): bool
     {
         return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership;
+    }
+
+    public function isPoliticalCommitteeMember(): bool
+    {
+        return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership
+            && $this->politicalCommitteeMembership->getPoliticalCommittee()->isActive();
     }
 
     public function revokePoliticalCommitteeMembership(): void

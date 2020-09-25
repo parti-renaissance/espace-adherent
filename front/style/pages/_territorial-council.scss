@@ -164,6 +164,26 @@
         }
     }
 
+    &__message {
+        background: $gray--lighter;
+        padding: 25px;
+
+        &__publish {
+            margin-top: 12px;
+            margin-right: 32px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+        }
+
+        button {
+            margin-top: 14px;
+        }
+    }
+
     #membership-container {
         display: flex;
         flex-direction: row;
@@ -292,6 +312,36 @@
                         position: absolute;
                         left: calc(100% + 8px);
                         top: 5px;
+                    }
+                }
+            }
+        }
+    }
+
+    &__feed {
+        margin-top: 30px;
+
+        @media (min-width: $tablet) {
+            margin-top: 70px;
+        }
+
+        &__item {
+            padding: 30px 0;
+            border-bottom: 1px solid $gray--light;
+
+            @media (min-width: $tablet) {
+                padding: 30px 0 30px 68px;
+            }
+
+            &--head {
+                position: relative;
+
+                div {
+                    position: relative;
+
+                    @media (min-width: $tablet) {
+                        position: absolute;
+                        left: -68px;
                     }
                 }
             }

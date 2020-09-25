@@ -16,6 +16,10 @@ class LoadPoliticalCommitteeMembershipData extends Fixture
         /** @var PoliticalCommittee $coPolParis */
         $coPolParis = $this->getReference('coPol_75');
 
+        $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-19'), new \DateTime('2020-01-01'));
+        $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::REFERENT));
+        $manager->persist($membership);
+
         $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-3'), new \DateTime('2020-06-06'));
         $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR));
         $manager->persist($membership);

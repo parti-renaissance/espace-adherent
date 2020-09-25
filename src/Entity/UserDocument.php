@@ -28,6 +28,7 @@ class UserDocument
     public const TYPE_REFERENT = 'referent';
     public const TYPE_IDEA_ANSWER = 'idea_answer';
     public const TYPE_ADHERENT_MESSAGE = 'adherent_message';
+    public const TYPE_TERRITORIAL_COUNCIL_FEED = 'territorial_council_feed';
 
     public const ALL_TYPES = [
         self::TYPE_COMMITTEE_CONTACT,
@@ -36,6 +37,7 @@ class UserDocument
         self::TYPE_REFERENT,
         self::TYPE_IDEA_ANSWER,
         self::TYPE_ADHERENT_MESSAGE,
+        self::TYPE_TERRITORIAL_COUNCIL_FEED,
     ];
 
     /**
@@ -78,7 +80,7 @@ class UserDocument
     /**
      * @var string
      *
-     * @ORM\Column(length=20)
+     * @ORM\Column(length=25)
      *
      * @Assert\Choice(callback="allTypes")
      */

@@ -169,6 +169,11 @@ class TerritorialCouncilMembership
         })->count() > 0;
     }
 
+    public function isPresident(): bool
+    {
+        return $this->hasQuality(TerritorialCouncilQualityEnum::REFERENT);
+    }
+
     public function containsQualities(array $names): bool
     {
         foreach ($this->qualities as $quality) {

@@ -62,6 +62,9 @@ common.personal_data_collection.required: L'acceptation des mentions d'informati
 
 common.checkbox.is_true: Veuillez cocher cette case pour continuer
 
+common.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
+common.message.max_length: Le message ne doit pas contenir plus de {{ limit }} caractères.
+
 #
 # Adherent
 #
@@ -111,9 +114,6 @@ committee.event.invalid_capacity: La capacité doit être un nombre entier valid
 
 committee.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
 committee.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
-
-committee.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
-committee.message.max_length: Le message ne doit pas contenir plus de {{ limit }} caractères.
 
 #
 # CitizenProject

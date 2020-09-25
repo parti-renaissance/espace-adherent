@@ -78,7 +78,7 @@ class CommitteeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('info', 'committee.message_edited');
+            $this->addFlash('info', 'common.message_edited');
 
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
@@ -111,7 +111,7 @@ class CommitteeController extends Controller
         $em->remove($committeeFeedItem);
         $em->flush();
 
-        $this->addFlash('info', 'committee.message_deleted');
+        $this->addFlash('info', 'common.message_deleted');
 
         return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
     }
