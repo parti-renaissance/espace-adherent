@@ -1,11 +1,9 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% set canEdit = admin.hasAccess('edit') %}
-
     <div style="width: 160px; margin-top: 5px;">
         {% if object.enabled %}
-            {% if canEdit %}
+            {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
                 <a href="{{ path('homepage', {'_switch_user': object.emailAddress}) }}" class="btn btn-xs btn-default" title="Impersonnifier">
                     <i class="fa fa-user-secret" aria-hidden="true"></i>
                     Impersonnifier
@@ -17,7 +15,7 @@
     </div>
 
     <div style="width: 160px; margin-top: 5px;">
-        {% if canEdit %}
+        {% if admin.hasAccess('edit') %}
         <a href="{{ path('admin_app_adherent_edit', { id: object.id }) }}" class="btn btn-xs btn-default" title="Éditer">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             Éditer
