@@ -1,0 +1,6 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {{ object.presentation is defined and object.presentation ? 'Oui' : 'Non' }} /
+    {{ object.project is defined and object.project ? 'Oui' : 'Non' }}
+{% endblock %}

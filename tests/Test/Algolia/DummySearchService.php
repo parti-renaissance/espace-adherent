@@ -92,10 +92,18 @@ class DummySearchService implements SearchService
 
     public function search(ObjectManager $objectManager, $className, $query = '', $requestOptions = [])
     {
+        return [];
     }
 
     public function rawSearch($className, $query = '', $requestOptions = [])
     {
+        return [
+            'hits' => [],
+            'nbHits' => 0,
+            'page' => 1,
+            'nbPages' => 0,
+            'hitsPerPage' => 20,
+        ];
     }
 
     public function count($className, $query = '', $requestOptions = [])

@@ -82,6 +82,9 @@ services:
         resource: '../src/VotingPlatform/'
     App\Normalizer\:
         resource: '../src/Normalizer/'
+    App\Algolia\:
+        resource: '../src/Algolia/'
+        exclude: '../src/Algolia/Sonata/{Pager,ProxyQuery}'
 
     # Services
 
@@ -154,3 +157,9 @@ services:
     App\Form\MemberInterestsChoiceType:
         arguments:
             - '%adherent_interests%'
+
+    App\Algolia\SearchService:
+        decorates: 'search.service'
+        arguments:
+            - '@App\Algolia\SearchService.inner'
+            - '%kernel.debug%'

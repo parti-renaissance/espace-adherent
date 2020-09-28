@@ -1,0 +1,30 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div class="row row-no-gutters">
+        {% if object.image is defined and object.image %}
+            <div class="col-md-5">
+                <a href="{{ path('asset_url', {path: object.image}) }}">
+                    <img class="img-circle" style="max-height:40px;max-width:40px;vertical-align:middle;" src="{{ path('asset_url', {path: object.image}) }}" alt="photo" />
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="col-md-6 col-md-offset-1">
+            {% if object.adherent_id is defined %}
+                <a href="{{ path('admin_app_adherent_edit', {id: object.adherent_id}) }}">
+            {% endif %}
+
+            <strong>{{ object.first_name }} {{ object.last_name }}</strong></a>
+
+            {% if object.gender is defined %}
+                <br/>
+                ({{ ('common.'~object.gender)|trans|lower }})
+            {% endif %}
+
+            {% if object.adherent_id is defined %}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Entity\Algolia;
 
 use Algolia\SearchBundle\Entity\Aggregator;
+use App\Entity\AlgoliaIndexedEntityInterface;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\TerritorialCouncil\Candidacy;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @internal
  */
-class AlgoliaCandidature extends Aggregator
+class AlgoliaCandidature extends Aggregator implements AlgoliaIndexedEntityInterface
 {
     /**
      * @var UuidInterface|null
@@ -40,5 +41,10 @@ class AlgoliaCandidature extends Aggregator
             CommitteeCandidacy::class,
             Candidacy::class,
         ];
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
     }
 }

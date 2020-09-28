@@ -13,13 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DonatorKinshipType extends AbstractType
 {
-    private $modelManager;
-
-    public function __construct(ModelManagerInterface $modelManager)
-    {
-        $this->modelManager = $modelManager;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -33,7 +26,7 @@ class DonatorKinshipType extends AbstractType
                     'lastName',
                     'emailAddress',
                 ],
-                'model_manager' => $this->modelManager,
+                'model_manager' => $options['model_manager'],
                 'class' => Donator::class,
                 'template' => 'admin/donator/donator_type_model_autocomplete.html.twig',
                 'admin_code' => 'app.admin.donation',
@@ -49,8 +42,12 @@ class DonatorKinshipType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => DonatorKinship::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => DonatorKinship::class,
+            ])
+            ->setDefined('model_manager')
+            ->setAllowedTypes('model_manager', ModelManagerInterface::class)
+        ;
     }
 }

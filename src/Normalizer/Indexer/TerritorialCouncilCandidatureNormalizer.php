@@ -21,6 +21,7 @@ class TerritorialCouncilCandidatureNormalizer extends AbstractDesignationCandida
 
         return [
             'id' => $coTerr->getId(),
+            'territorial_council_id' => $coTerr->getId(),
             'name' => $coTerr->getName(),
         ];
     }

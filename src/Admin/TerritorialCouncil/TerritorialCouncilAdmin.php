@@ -44,6 +44,10 @@ class TerritorialCouncilAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
+            ->add('id', null, [
+                'label' => 'Id',
+                'show_filter' => true,
+            ])
             ->add('name', null, [
                 'label' => 'Nom',
                 'show_filter' => true,

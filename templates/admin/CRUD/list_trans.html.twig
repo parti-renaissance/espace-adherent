@@ -1,0 +1,5 @@
+{% extends '@SonataAdmin/CRUD/list_trans.html.twig' %}
+
+{% block field %}
+    {{ value ? parent() }}
+{% endblock %}
