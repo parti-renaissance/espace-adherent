@@ -106,4 +106,21 @@ class ContactMembership extends ThematicCommunityMembership
     {
         return $this->contact ? $this->contact->getPostalCode() : null;
     }
+
+    public function hasSmsSubscriptionType(): bool
+    {
+        // contact does not have sms or email notifications yet
+        return false;
+    }
+
+    public function hasEmailSubscriptionType(): bool
+    {
+        // contact does not have sms or email notifications yet
+        return false;
+    }
+
+    public function isCertified(): bool
+    {
+        return false;
+    }
 }

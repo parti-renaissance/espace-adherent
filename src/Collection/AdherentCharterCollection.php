@@ -11,6 +11,7 @@ use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
 use App\Entity\AdherentCharter\SenatorialCandidateCharter;
+use App\Entity\AdherentCharter\ThematicCommunityChiefCharter;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AdherentCharterCollection extends ArrayCollection
@@ -64,6 +65,13 @@ class AdherentCharterCollection extends ArrayCollection
         });
     }
 
+    public function hasThematicCommunityChiefCharterAccepted(): bool
+    {
+        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
+            return $charter instanceof ThematicCommunityChiefCharter;
+        });
+    }
+
     public function hasCharterAcceptedForType(string $type): bool
     {
         switch ($type) {
@@ -87,6 +95,9 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE:
                 return $this->hasLegislativeCandidateCharterAccepted();
+
+            case AdherentCharterTypeEnum::TYPE_THEMATIC_COMMUNITY_CHIEF:
+                return $this->hasThematicCommunityChiefCharterAccepted();
         }
 
         return false;

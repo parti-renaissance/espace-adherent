@@ -10,6 +10,7 @@ use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
 use App\Entity\AdherentCharter\SenatorialCandidateCharter;
+use App\Entity\AdherentCharter\ThematicCommunityChiefCharter;
 
 abstract class AdherentCharterFactory
 {
@@ -30,6 +31,8 @@ abstract class AdherentCharterFactory
                 return new LreCharter();
             case AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE:
                 return new LegislativeCandidateCharter();
+            case AdherentCharterTypeEnum::TYPE_THEMATIC_COMMUNITY_CHIEF:
+                return new ThematicCommunityChiefCharter();
         }
 
         return null;

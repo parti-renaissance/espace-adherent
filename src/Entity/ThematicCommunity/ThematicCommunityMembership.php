@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ThematicCommunity\ThematicCommunityMembershipRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
@@ -211,5 +211,32 @@ abstract class ThematicCommunityMembership
         }
 
         return sprintf('%s (%s)', $city, $zipcode);
+    }
+
+    public function getRoles(): string
+    {
+        if ($this->contact) {
+            return 'Contact';
+        }
+
+        $roles = [];
+
+        if ($this->adherent->isReferent()) {
+            $roles[] = 'Référent';
+        }
+
+        if ($this->adherent->isSupervisor()) {
+            $roles[] = 'Animateur local';
+        }
+
+        if ($this->adherent->isCitizenProjectAdministrator()) {
+            $roles[] = 'Porteur de projets citoyens';
+        }
+
+        if (!empty($roles)) {
+            return \implode(' / ', $roles);
+        }
+
+        return 'Adhérent';
     }
 }
