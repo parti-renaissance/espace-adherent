@@ -2,15 +2,6 @@
     "a2lix/translation-form-bundle": {
         "version": "2.4.1"
     },
-    "algolia/algolia-search-bundle": {
-        "version": "2.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.2",
-            "ref": "b6d98595a857947b5d05b79eb3a5fbf53b0a18d2"
-        }
-    },
     "algolia/algoliasearch-client-php": {
         "version": "2.7.0"
     },

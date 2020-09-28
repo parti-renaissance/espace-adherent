@@ -337,6 +337,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent13->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent13->addReferentTag($this->getReference('referent_tag_ch'));
         $adherent13->setMandates(['european_deputy']);
+        $adherent13->addHandledThematicCommunity($this->getReference('tc-sante'));
+        $adherent13->addHandledThematicCommunity($this->getReference('tc-education'));
         $lreArea = new LreArea();
         $lreArea->setAllTags(true);
         $adherent13->setLreArea($lreArea);
@@ -1136,6 +1138,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             LoadCityData::class,
             LoadDesignationData::class,
             LoadTerritorialCouncilData::class,
+            LoadThematicCommunityData::class,
         ];
     }
 }

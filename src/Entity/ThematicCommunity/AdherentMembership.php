@@ -3,6 +3,7 @@
 namespace App\Entity\ThematicCommunity;
 
 use App\Entity\PostAddress;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 
@@ -65,5 +66,20 @@ class AdherentMembership extends ThematicCommunityMembership
     public function getPostalCode(): ?string
     {
         return $this->adherent ? $this->adherent->getPostalCode() : null;
+    }
+
+    public function hasSmsSubscriptionType(): bool
+    {
+        return $this->adherent ? $this->adherent->hasSmsSubscriptionType() : false;
+    }
+
+    public function hasEmailSubscriptionType(): bool
+    {
+        return $this->adherent ? $this->adherent->hasSubscriptionType(SubscriptionTypeEnum::THEMATIC_COMMUNITY_EMAIL) : false;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->adherent ? $this->adherent->isCertified() : false;
     }
 }

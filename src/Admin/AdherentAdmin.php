@@ -816,7 +816,7 @@ HELP
 
                     // thematic community chief
                     if (\in_array(AdherentRoleEnum::THEMATIC_COMMUNITY_CHIEF, $value['value'], true)) {
-                        $qb->leftJoin(sprintf('%s.thematicCommunities', $alias), 'tc');
+                        $qb->leftJoin(sprintf('%s.handledThematicCommunities', $alias), 'tc');
                         $where->add('tc IS NOT NULL');
                     }
 

@@ -116,3 +116,10 @@
         </a>
     </li>
 {% endif %}
+{% if app.user.isThematicCommunityChief %}
+    <li>
+        <a href="{{ path('app_access_delegation_unset', {type: 'thematic_community'}) }}">
+            Espace Responsable Communautés
+        </a>
+    </li>
+{% endif %}

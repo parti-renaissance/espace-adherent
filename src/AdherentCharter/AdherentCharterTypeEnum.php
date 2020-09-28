@@ -13,4 +13,5 @@ class AdherentCharterTypeEnum extends Enum
     public const TYPE_SENATORIAL_CANDIDATE = 'senatorial_candidate';
     public const TYPE_LRE = 'la_republique_ensemble';
     public const TYPE_LEGISLATIVE_CANDIDATE = 'legislative_candidate';
+    public const TYPE_THEMATIC_COMMUNITY_CHIEF = 'thematic_community_chief';
 }
