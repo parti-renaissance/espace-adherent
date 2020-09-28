@@ -6,7 +6,6 @@ use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\Election;
-use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Command\UpdateMandateForElectedAdherentCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
@@ -52,9 +51,6 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
 
                 $qualities = $election->getDesignation()->getPoolTypes();
 
-                // close the mandates of additionally elected too
-                $qualities[] = ElectionPoolCodeEnum::ADDITIONALLY_ELECTED;
-
                 $repository->closeTerritorialCouncilMandate(
                     $election->getElectionEntity()->getTerritorialCouncil(),
                     $election->getVoteEndDate(),
@@ -72,13 +68,15 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
         $electedPoolResults = $result->getElectedPoolResults();
 
         $mandateFactory = DesignationTypeEnum::COPOL === $election->getDesignationType() ?
-            function (Candidate $candidate, Election $election, string $quality): TerritorialCouncilAdherentMandate {
+            function (Candidate $candidate, Election $election, string $quality, bool $additionallyElected): TerritorialCouncilAdherentMandate {
                 return new TerritorialCouncilAdherentMandate(
                     $candidate->getAdherent(),
                     $election->getElectionEntity()->getTerritorialCouncil(),
                     $quality,
                     $candidate->getGender(),
-                    $election->getVoteEndDate()
+                    $election->getVoteEndDate(),
+                    null,
+                    $additionallyElected
                 );
             }
         :
@@ -110,14 +108,15 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
                 foreach ($poolResult->getAdditionallyElectedCandidates() as $candidate) {
                     array_push($candidates, [
                         'candidate' => $candidate,
-                        'quality' => ElectionPoolCodeEnum::ADDITIONALLY_ELECTED,
+                        'quality' => $poolResult->getElectionPool()->getCode(),
+                        'additionally_elected' => true,
                     ]);
                 }
             }
         }
 
         array_map(function (array $row) use ($mandateFactory, $election) {
-            $mandate = $mandateFactory($row['candidate'], $election, $row['quality']);
+            $mandate = $mandateFactory($row['candidate'], $election, $row['quality'], isset($row['additionally_elected']) ? $row['additionally_elected'] : false);
             $this->entityManager->persist($mandate);
         }, $candidates);
 

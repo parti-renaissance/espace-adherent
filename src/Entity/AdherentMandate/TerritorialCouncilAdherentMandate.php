@@ -30,18 +30,27 @@ class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
      */
     private $quality;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isAdditionallyElected = false;
+
     public function __construct(
         Adherent $adherent,
         TerritorialCouncil $territorialCouncil,
         string $quality,
         string $gender,
         \DateTime $beginAt,
-        \DateTime $finishAt = null
+        \DateTime $finishAt = null,
+        bool $isAdditionallyElected = false
     ) {
         parent::__construct($adherent, $gender, $beginAt, $finishAt);
 
         $this->territorialCouncil = $territorialCouncil;
         $this->quality = $quality;
+        $this->isAdditionallyElected = $isAdditionallyElected;
     }
 
     public function getTerritorialCouncil(): TerritorialCouncil
@@ -62,5 +71,15 @@ class TerritorialCouncilAdherentMandate extends AbstractAdherentMandate
     public function setQuality(string $quality): void
     {
         $this->quality = $quality;
+    }
+
+    public function isAdditionallyElected(): bool
+    {
+        return $this->isAdditionallyElected;
+    }
+
+    public function setIsAdditionallyElected(bool $isAdditionallyElected): void
+    {
+        $this->isAdditionallyElected = $isAdditionallyElected;
     }
 }
