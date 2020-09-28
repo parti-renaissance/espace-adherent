@@ -19,8 +19,8 @@
         <service id="App\Algolia\AlgoliaIndexedEntityManager" />
 
         <!-- Content -->
-        <service class="App\Content\ClarificationFactory" />
-        <service class="App\Content\MediaFactory" />
+        <service id="App\Content\ClarificationFactory" />
+        <service id="App\Content\MediaFactory" />
 
         <!-- CitizenProject -->
         <service id="App\CitizenProject\CitizenProjectAuthority" />
@@ -568,6 +568,6 @@
         </service>
 
         <!-- TerritorialCouncil -->
-        <service class="App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator" />
+        <service id="App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator" />
     </services>
 </container>

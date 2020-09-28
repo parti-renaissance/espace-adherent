@@ -14,7 +14,7 @@ use App\Form\UnitedNationsCountryType;
 use App\Utils\PhoneNumberFormatter;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -53,7 +53,7 @@ class DonationAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        Filesystem $storage,
+        FilesystemInterface $storage,
         EventDispatcher $dispatcher
     ) {
         parent::__construct($code, $class, $baseControllerName);

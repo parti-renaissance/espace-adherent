@@ -2,14 +2,14 @@
 
 namespace App\Storage;
 
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageStorage
 {
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $storage;
 
@@ -18,7 +18,7 @@ class ImageStorage
      */
     private $glide;
 
-    public function __construct(Filesystem $storage, Server $glide)
+    public function __construct(FilesystemInterface $storage, Server $glide)
     {
         $this->storage = $storage;
         $this->glide = $glide;

@@ -20,7 +20,7 @@ use App\Entity\ChezVous\MeasureType;
 use App\Repository\ChezVous\CityRepository;
 use App\Repository\ChezVous\MeasureRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,7 +45,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
     public function __construct(
         EntityManagerInterface $em,
         CityRepository $cityRepository,
-        Filesystem $storage,
+        FilesystemInterface $storage,
         MeasureRepository $measureRepository,
         MeasureChoiceLoader $measureFactory
     ) {

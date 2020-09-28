@@ -22,7 +22,7 @@ use App\Repository\CitizenProjectCommitteeSupportRepository;
 use App\Repository\CitizenProjectMembershipRepository;
 use App\Repository\CitizenProjectRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -44,7 +44,7 @@ class CitizenProjectManager
 
     public function __construct(
         RegistryInterface $registry,
-        Filesystem $storage,
+        FilesystemInterface $storage,
         CitizenProjectAuthority $projectAuthority,
         EventDispatcherInterface $eventDispatcher
     ) {

@@ -8,6 +8,7 @@ use App\Entity\ArticleCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadArticleData extends Fixture
@@ -18,7 +19,7 @@ class LoadArticleData extends Fixture
 
         $factory = $this->container->get(ArticleFactory::class);
         $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get('app.storage');
+        $storage = $this->container->get(FilesystemInterface::class);
 
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');

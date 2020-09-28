@@ -108,7 +108,7 @@
             <argument type="service" id="App\Repository\SummaryRepository" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="router" />
-            <argument type="service" id="app.storage" />
+            <argument type="service" id="League\Flysystem\FilesystemInterface" />
             <argument type="service" id="app.glide" />
             <argument>%kernel.secret%</argument>
         </service>

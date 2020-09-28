@@ -7,6 +7,7 @@ use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
@@ -18,7 +19,7 @@ class LoadSocialShareData implements FixtureInterface, ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get('app.storage');
+        $storage = $this->container->get(FilesystemInterface::class);
 
         // Medias
         $medias = [];

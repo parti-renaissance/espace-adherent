@@ -92,6 +92,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -138,7 +139,7 @@ trait TestHelperTrait
 
     public function getStorage(): Filesystem
     {
-        return $this->container->get('app.storage');
+        return $this->container->get(FilesystemInterface::class);
     }
 
     public function getGlide(): Server

@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Donation;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ class AdminDonationController extends Controller
     /**
      * @Route("/file/{id}", name="app_admin_donation_file", methods="GET")
      */
-    public function fileAction(Donation $donation, Filesystem $storage): Response
+    public function fileAction(Donation $donation, FilesystemInterface $storage): Response
     {
         $filePath = $donation->getFilePathWithDirectory();
 

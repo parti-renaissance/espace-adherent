@@ -7,6 +7,7 @@ use App\Content\MediaFactory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
@@ -21,7 +22,7 @@ class LoadClarificationData implements FixtureInterface, ContainerAwareInterface
 
         $factory = $this->container->get(ClarificationFactory::class);
         $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get('app.storage');
+        $storage = $this->container->get(FilesystemInterface::class);
 
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');

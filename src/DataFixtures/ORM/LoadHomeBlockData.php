@@ -9,7 +9,7 @@ use App\Entity\Media;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
@@ -48,7 +48,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
         $this->em = $this->container->get('doctrine.orm.entity_manager');
         $this->mediaFactory = $this->container->get(MediaFactory::class);
         $this->homeBlockFactory = $this->container->get(HomeBlockFactory::class);
-        $this->storage = $this->container->get('app.storage');
+        $this->storage = $this->container->get(FilesystemInterface::class);
 
         $this->loadMedias();
         $this->loadHomeBlocks();

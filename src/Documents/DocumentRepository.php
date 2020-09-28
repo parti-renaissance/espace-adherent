@@ -2,7 +2,7 @@
 
 namespace App\Documents;
 
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 
 class DocumentRepository
 {
@@ -14,7 +14,7 @@ class DocumentRepository
 
     private $storage;
 
-    public function __construct(Filesystem $storage)
+    public function __construct(FilesystemInterface $storage)
     {
         $this->storage = $storage;
     }
