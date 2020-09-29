@@ -1744,6 +1744,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->isAdherent()
             && !$this->isHost()
+            && !$this->isCitizenProjectAdministrator()
             && !$this->isReferent()
             && !$this->isBoardMember()
             && !$this->isDeputy()

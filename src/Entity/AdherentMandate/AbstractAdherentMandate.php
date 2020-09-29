@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\AdherentMandateRepository")
  * @ORM\Table(name="adherent_mandate")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
