@@ -58,16 +58,25 @@ class PoliticalCommitteeMembership
      */
     private $joinedAt;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isAdditional = false;
+
     public function __construct(
         PoliticalCommittee $politicalCommittee,
         Adherent $adherent = null,
         \DateTime $joinedAt = null,
-        UuidInterface $uuid = null
+        UuidInterface $uuid = null,
+        bool $isAdditional = false
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->politicalCommittee = $politicalCommittee;
         $this->adherent = $adherent;
         $this->joinedAt = $joinedAt ?? new \DateTime('now');
+        $this->isAdditional = $isAdditional;
 
         $this->qualities = new ArrayCollection();
     }
@@ -157,6 +166,16 @@ class PoliticalCommitteeMembership
     public function getJoinedAt(): \DateTime
     {
         return $this->joinedAt;
+    }
+
+    public function isAdditional(): bool
+    {
+        return $this->isAdditional;
+    }
+
+    public function setIsAdditional(bool $isAdditional): void
+    {
+        $this->isAdditional = $isAdditional;
     }
 
     public function revoke(): void

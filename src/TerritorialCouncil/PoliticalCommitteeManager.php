@@ -60,6 +60,7 @@ class PoliticalCommitteeManager
         $pcMembership = new PoliticalCommitteeMembership($politicalCommittee, $adherent);
         $pcQuality = new PoliticalCommitteeQuality($qualityName);
         $pcMembership->addQuality($pcQuality);
+        $pcMembership->setIsAdditional($this->checkIsAdditional($qualityName, $adherent));
         $adherent->setPoliticalCommitteeMembership($pcMembership);
 
         return $pcMembership;
@@ -237,6 +238,18 @@ class PoliticalCommitteeManager
         $this->removeQualityByName($politicalCommitteeMembership, $quality);
 
         $this->entityManager->flush();
+    }
+
+    private function checkIsAdditional(string $qualityName, Adherent $adherent): bool
+    {
+        if (!\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
+            || !($tcMembership = $adherent->getTerritorialCouncilMembership())) {
+            return false;
+        }
+
+        $mandate = $this->tcMandateRepository->findActiveMandateWithQuality($adherent, $tcMembership->getTerritorialCouncil(), $qualityName);
+
+        return $mandate->isAdditionallyElected();
     }
 
     private function updateManagedInAdminQualitiesInMembership(

@@ -11,8 +11,6 @@ class ElectionPoolCodeEnum extends Enum
     public const FEMALE = Genders::FEMALE;
     public const MALE = Genders::MALE;
 
-    public const ADDITIONALLY_ELECTED = 'additionally_elected';
-
     public const COMMITTEE_ADHERENT = [
         self::FEMALE,
         self::MALE,
