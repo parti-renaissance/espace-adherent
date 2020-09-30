@@ -3,6 +3,7 @@
 namespace App\Algolia\Query;
 
 use App\Algolia\Query\Expr\AbstractExpr;
+use App\Algolia\Query\Expr\Eq;
 use App\Algolia\Query\Expr\ExprInterface;
 use App\Algolia\Query\Expr\Like;
 
@@ -32,6 +33,10 @@ class QueryBuilder
             if (\is_string($value)) {
                 if (false !== strpos($value, ' LIKE ')) {
                     return new Like([$value]);
+                }
+
+                if (false !== strpos($value, ' = ')) {
+                    return new Eq([$value]);
                 }
             }
 

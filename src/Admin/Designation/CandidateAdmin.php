@@ -5,14 +5,18 @@ namespace App\Admin\Designation;
 use App\Admin\AbstractAlgoliaAdmin;
 use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\CommitteeRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\StringFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CandidateAdmin extends AbstractAlgoliaAdmin
 {
@@ -78,6 +82,31 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
             ->add('last_name', StringFilter::class, [
                 'show_filter' => true,
                 'label' => 'Nom',
+            ])
+            ->add('status', ChoiceFilter::class, [
+                'show_filter' => true,
+                'label' => 'Statut',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        CandidacyInterface::STATUS_CONFIRMED,
+                        CandidacyInterface::STATUS_DRAFT,
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return 'designation.candidate.status.'.$choice;
+                    },
+                ],
+            ])
+            ->add('quality', ChoiceFilter::class, [
+                'show_filter' => true,
+                'label' => 'Qualité',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE,
+                    'choice_label' => function (string $choice) {
+                        return 'territorial_council.membership.quality.'.$choice;
+                    },
+                ],
             ])
         ;
     }

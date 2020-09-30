@@ -32,7 +32,7 @@ class TerritorialCouncilCandidatureNormalizer extends AbstractDesignationCandida
     protected function normalizeCustomFields(CandidacyInterface $object): array
     {
         return [
-            'project' => !empty($object->getFaithStatement()),
+            'project' => $object->getFaithStatement(),
             'binome_ids' => $object->getBinome() ? [$object->getBinome()->getId()] : null,
         ];
     }

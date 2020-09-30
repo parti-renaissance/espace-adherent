@@ -14,7 +14,9 @@
         "filterOnly(election_entity.committee_id)",
         "filterOnly(election_entity.territorial_council_id)",
         "filterOnly(first_name)",
-        "filterOnly(last_name)"
+        "filterOnly(last_name)",
+        "filterOnly(status)",
+        "filterOnly(quality)"
     ],
     "attributesToSnippet": null,
     "attributesToHighlight": null,

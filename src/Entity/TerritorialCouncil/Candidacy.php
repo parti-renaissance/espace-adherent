@@ -4,6 +4,7 @@ namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -74,7 +75,7 @@ class Candidacy extends BaseCandidacy
      *
      * @ORM\Column
      */
-    private $status = self::STATUS_DRAFT;
+    private $status = CandidacyInterface::STATUS_DRAFT;
 
     /**
      * @var Candidacy|null
@@ -189,12 +190,12 @@ class Candidacy extends BaseCandidacy
 
     public function isDraft(): bool
     {
-        return self::STATUS_DRAFT === $this->status;
+        return CandidacyInterface::STATUS_DRAFT === $this->status;
     }
 
     public function isConfirmed(): bool
     {
-        return self::STATUS_CONFIRMED === $this->status;
+        return CandidacyInterface::STATUS_CONFIRMED === $this->status;
     }
 
     public function getStatus(): string
@@ -223,7 +224,7 @@ class Candidacy extends BaseCandidacy
 
     public function confirm(): void
     {
-        $this->status = self::STATUS_CONFIRMED;
+        $this->status = CandidacyInterface::STATUS_CONFIRMED;
     }
 
     /**

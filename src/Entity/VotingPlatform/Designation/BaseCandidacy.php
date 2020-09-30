@@ -17,9 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntityInterface
 {
-    public const STATUS_DRAFT = 'draft';
-    public const STATUS_CONFIRMED = 'confirmed';
-
     use EntityTimestampableTrait;
     use ImageTrait;
 

@@ -11,6 +11,9 @@ interface CandidacyInterface extends ImageOwnerInterface
     public const TYPE_COMMITTEE = 'committee';
     public const TYPE_TERRITORIAL_COUNCIL = 'territorial_council';
 
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_CONFIRMED = 'confirmed';
+
     public function getId(): ?int;
 
     public function getUuid(): UuidInterface;

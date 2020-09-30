@@ -2,20 +2,12 @@
 
 {% block field %}
     <div class="row row-no-gutters">
-        {% if object.image is defined and object.image %}
-            <div class="col-md-5">
-                <a href="{{ path('asset_url', {path: object.image}) }}">
-                    <img class="img-circle" style="max-height:40px;max-width:40px;vertical-align:middle;" src="{{ path('asset_url', {path: object.image}) }}" alt="photo" />
-                </a>
-            </div>
-        {% endif %}
-
-        <div class="col-md-6 col-md-offset-1">
+        <div class="col-md-8">
             {% if object.adherent_id is defined %}
-                <a href="{{ path('admin_app_adherent_edit', {id: object.adherent_id}) }}">
-            {% endif %}
+            <a href="{{ path('admin_app_adherent_edit', {id: object.adherent_id}) }}">
+                {% endif %}
 
-            <strong>{{ object.first_name }} {{ object.last_name }}</strong></a>
+                <strong>{{ object.first_name }} {{ object.last_name }}</strong></a>
 
             {% if object.gender is defined %}
                 <br/>
@@ -26,5 +18,30 @@
                 </a>
             {% endif %}
         </div>
+
+        {% if object.image is defined and object.image %}
+            {% set image_url = path('asset_url', {path: object.image}) %}
+            <div class="col-md-3 col-md-offset-1">
+                <a href="#" data-toggle="modal" data-target="#candidate-photo-{{ object.type }}-{{ object.id }}">
+                    <span style="display:inline-block;height:40px;width:40px;border-radius:50%;background-position:center;background-size:cover;background-image: url({{ image_url }});"></span>
+                </a>
+            </div>
+
+            <div class="modal fade" id="candidate-photo-{{ object.type }}-{{ object.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{{ object.first_name }} {{ object.last_name }}</h4>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="{{ image_url }}" alt="photo">
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

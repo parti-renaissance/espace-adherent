@@ -30,7 +30,7 @@ abstract class AbstractDesignationCandidatureNormalizer extends AbstractIndexerN
                 ],
                 'election_entity' => $this->normalizeElectionEntity($object),
                 'second_round' => false,
-                'presentation' => !empty($object->getBiography()),
+                'presentation' => $object->getBiography(),
                 'status' => $object->getStatus(),
             ],
             $this->normalizeCustomFields($object),

@@ -37,6 +37,16 @@ class TerritorialCouncilQualityEnum extends Enum
         self::DEPARTMENTAL_COUNCIL_PRESIDENT,
     ];
 
+    public const ABLE_TO_CANDIDATE = [
+        self::REGIONAL_COUNCILOR,
+        self::DEPARTMENT_COUNCILOR,
+        self::CITY_COUNCILOR,
+        self::BOROUGH_COUNCILOR,
+        self::CONSULAR_CONSELOR,
+        self::COMMITTEE_SUPERVISOR,
+        self::ELECTED_CANDIDATE_ADHERENT,
+    ];
+
     public const QUALITY_PRIORITIES = [
         self::REFERENT => 0,
         self::GOVERNMENT_MEMBER => 1,
