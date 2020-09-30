@@ -28,6 +28,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     protected $committeeMandateRepository;
     /** @var TerritorialCouncilAdherentMandateRepository */
     protected $tcMandateRepository;
+    private $eventDispatchingEnabled = true;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -52,6 +53,11 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     public function supports(Adherent $adherent): bool
     {
         return true;
+    }
+
+    public function disableEventDispatching(): void
+    {
+        $this->eventDispatchingEnabled = false;
     }
 
     public function getPriority(): int
@@ -218,7 +224,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             $this->em->flush();
         }
 
-        $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE, new MembershipEvent($adherent, $territorialCouncil));
+        $this->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE, new MembershipEvent($adherent, $territorialCouncil));
     }
 
     protected function removeMembership(Adherent $adherent, TerritorialCouncil $council): void
@@ -227,7 +233,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $adherent->revokePoliticalCommitteeMembership();
         $this->em->flush();
 
-        $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE, new MembershipEvent($adherent, $council));
+        $this->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE, new MembershipEvent($adherent, $council));
     }
 
     private function getRemovingConstraintsMsg(
@@ -288,5 +294,12 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
 
         $this->em->persist($log);
         $this->em->flush();
+    }
+
+    private function dispatch(string $eventName, MembershipEvent $event): void
+    {
+        if ($this->eventDispatchingEnabled) {
+            $this->dispatcher->dispatch($eventName, $event);
+        }
     }
 }
