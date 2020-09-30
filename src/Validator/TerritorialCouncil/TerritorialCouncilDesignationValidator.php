@@ -116,7 +116,7 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
             ;
         }
 
-        if ($meetingStartDate > $date = \DateTime::createFromFormat('d/m/Y', '11/10/2020')) {
+        if ($meetingStartDate > $date = \DateTime::createFromFormat('d/m/Y', '31/10/2020')) {
             $this->context
                 ->buildViolation($constraint->messageMeetingStartDateTooFarAway)
                 ->atPath('meetingStartDate')
