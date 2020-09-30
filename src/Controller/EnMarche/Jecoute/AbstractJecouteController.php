@@ -8,8 +8,8 @@ use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
+use App\Exporter\SurveyExporter;
 use App\Form\Jecoute\SurveyFormType;
-use App\Jecoute\StatisticsExporter;
 use App\Jecoute\StatisticsProvider;
 use App\Jecoute\SurveyTypeEnum;
 use App\Repository\Jecoute\DataAnswerRepository;
@@ -17,7 +17,6 @@ use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
 use App\Repository\Jecoute\SuggestedQuestionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -164,22 +163,13 @@ abstract class AbstractJecouteController extends Controller
         Request $request,
         Survey $survey,
         StatisticsProvider $provider,
-        StatisticsExporter $exporter
+        SurveyExporter $exporter
     ): Response {
-        $data = $provider->getStatsBySurvey($survey);
-
-        if ($request->query->has('export')) {
-            return new Response(
-                $exporter->export($data),
-                Response::HTTP_OK,
-                [
-                    'Content-Type' => 'text/csv',
-                    'Content-Disposition' => 'attachment;filename="'.Urlizer::urlize($survey->getName()).'-'.date('Y-m-d_H-i').'.csv"',
-                ]
-            );
+        if ($format = $request->query->get('export')) {
+            return $exporter->export($survey, $format, true);
         }
 
-        return $this->renderTemplate('jecoute/stats.html.twig', ['data' => $data]);
+        return $this->renderTemplate('jecoute/stats.html.twig', ['data' => $provider->getStatsBySurvey($survey)]);
     }
 
     /**
