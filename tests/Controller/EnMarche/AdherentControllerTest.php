@@ -1110,7 +1110,7 @@ class AdherentControllerTest extends WebTestCase
             new RemoveAdherentAndRelatedDataCommand(Uuid::fromString($uuid))
         );
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
         --$nbFollowers;
 
         $this->assertContains("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
@@ -1154,7 +1154,7 @@ class AdherentControllerTest extends WebTestCase
     {
         return [
             'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 'en-marche-suisse', 3],
-            'adherent 2' => ['luciole1989@spambox.fr', LoadAdherentData::ADHERENT_4_UUID, 'en-marche-paris-8', 4],
+            'adherent 2' => ['cedric.lebon@en-marche-dev.fr', LoadAdherentData::ADHERENT_19_UUID, 'en-marche-comite-de-evry', 5],
         ];
     }
 

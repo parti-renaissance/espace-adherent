@@ -3,10 +3,19 @@
 namespace App\Security\Voter;
 
 use App\Entity\Adherent;
+use App\Repository\AdherentMandate\AdherentMandateRepository;
 
 class MembershipVoter extends AbstractAdherentVoter
 {
     public const PERMISSION_UNREGISTER = 'UNREGISTER';
+
+    /** @var AdherentMandateRepository */
+    private $adherentMandateRepository;
+
+    public function __construct(AdherentMandateRepository $adherentMandateRepository)
+    {
+        $this->adherentMandateRepository = $adherentMandateRepository;
+    }
 
     protected function supports($attribute, $subject)
     {
@@ -15,7 +24,7 @@ class MembershipVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($adherent->isBasicAdherent()) {
+        if ($adherent->isBasicAdherent() && !$this->adherentMandateRepository->hasActiveMandate($adherent)) {
             return true;
         }
 
