@@ -2,7 +2,7 @@
 
 namespace App\Algolia;
 
-use Algolia\SearchBundle\SearchService;
+use Algolia\SearchBundle\SearchService as SearchServiceInterface;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use App\Entity\Timeline\Measure;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +12,7 @@ class AlgoliaIndexedEntityManager
     private $algolia;
     private $entityManager;
 
-    public function __construct(SearchService $algolia, EntityManagerInterface $manager)
+    public function __construct(SearchServiceInterface $algolia, EntityManagerInterface $manager)
     {
         $this->algolia = $algolia;
         $this->entityManager = $manager;

@@ -251,7 +251,7 @@ class TerritorialCouncilMembership
         $qualities = $this->getQualityNames();
 
         $qualities = array_filter($qualities, function (string $quality) {
-            return !\in_array($quality, TerritorialCouncilQualityEnum::FORBIDDEN_TO_CANDIDATE, true);
+            return \in_array($quality, TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE, true);
         });
 
         if (false !== ($index = array_search(TerritorialCouncilQualityEnum::MAYOR, $qualities, true))) {

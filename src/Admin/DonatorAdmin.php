@@ -140,6 +140,9 @@ class DonatorAdmin extends AbstractAdmin
             ->with('Liens', ['class' => 'col-md-6'])
                 ->add('kinships', CollectionType::class, [
                     'entry_type' => DonatorKinshipType::class,
+                    'entry_options' => [
+                        'model_manager' => $this->getModelManager(),
+                    ],
                     'required' => false,
                     'label' => false,
                     'allow_add' => true,

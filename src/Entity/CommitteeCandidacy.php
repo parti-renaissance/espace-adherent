@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -79,6 +80,6 @@ class CommitteeCandidacy extends BaseCandidacy
 
     public function getStatus(): string
     {
-        return self::STATUS_CONFIRMED;
+        return CandidacyInterface::STATUS_CONFIRMED;
     }
 }

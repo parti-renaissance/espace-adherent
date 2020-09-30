@@ -21,6 +21,7 @@ class CommitteeCandidatureNormalizer extends AbstractDesignationCandidatureNorma
 
         return [
             'id' => $committee->getId(),
+            'committee_id' => $committee->getId(),
             'name' => $committee->getName(),
         ];
     }
