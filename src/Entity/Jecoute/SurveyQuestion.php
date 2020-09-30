@@ -7,6 +7,7 @@ use App\Entity\AuthoredInterface;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -136,6 +137,15 @@ class SurveyQuestion implements AuthoredInterface
     public function getDataAnswers(): Collection
     {
         return $this->dataAnswers;
+    }
+
+    public function getDataAnswersForDataSurvey(DataSurvey $dataSurvey): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('dataSurvey', $dataSurvey))
+        ;
+
+        return $this->dataAnswers->matching($criteria);
     }
 
     public function addDataAnswer(DataAnswer $dataAnswer): void

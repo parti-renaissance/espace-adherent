@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <a href="{{ path('admin_app_jecoute_surveys_export', {id: object.id, format: 'csv'}) }}" class="btn btn-default">
+        <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+        CSV
+    </a>
+    <a href="{{ path('admin_app_jecoute_surveys_export', {id: object.id, format: 'xls'}) }}" class="btn btn-default">
+        <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+        XLS
+    </a>
+{% endblock %}

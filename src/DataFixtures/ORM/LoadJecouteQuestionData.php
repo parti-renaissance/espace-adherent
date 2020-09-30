@@ -50,6 +50,15 @@ class LoadJecouteQuestionData extends Fixture
                 'Réponse nationale D',
             ],
         ],
+        'national-question-3' => [
+            'content' => 'La question du 2eme questionnaire national ?',
+            'type' => SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE,
+            'choices' => [
+                'Réponse nationale E',
+                'Réponse nationale F',
+                'Réponse nationale G',
+            ],
+        ],
     ];
 
     public function load(ObjectManager $manager)

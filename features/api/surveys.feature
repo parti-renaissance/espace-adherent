@@ -23,7 +23,7 @@ Feature:
     """
     [
       {
-        "id":2,
+        "id":3,
         "type": "local",
         "questions":[
           {
@@ -109,6 +109,32 @@ Feature:
           }
         ],
         "name":"Questionnaire national numéro 1"
+      },
+      {
+        "id":2,
+        "type":"national",
+        "questions":[
+          {
+            "id":8,
+            "type":"unique_choice",
+            "content":"La question du 2eme questionnaire national ?",
+            "choices":[
+              {
+                "id":9,
+                "content":"Réponse nationale E"
+              },
+              {
+                "id":10,
+                "content":"Réponse nationale F"
+              },
+              {
+                "id":11,
+                "content":"Réponse nationale G"
+              }
+            ]
+          }
+        ],
+        "name":"Le deuxième questionnaire national"
       }
     ]
     """
@@ -187,7 +213,7 @@ Feature:
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
-      "survey":2,
+      "survey":3,
       "type": "local",
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
@@ -260,7 +286,7 @@ Feature:
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
-      "survey":3,
+      "survey":1,
       "type": "local",
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
@@ -367,7 +393,7 @@ Feature:
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
-      "survey":2,
+      "survey":3,
       "type": "local",
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",

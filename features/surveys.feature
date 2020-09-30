@@ -57,4 +57,7 @@ Feature:
     And I follow "Statistiques"
     Then I should see "Statistiques : Questionnaire national numéro 1"
     And I should see "Une première question du 1er questionnaire national ?"
-    And I should see "Aucune donnée n'est disponible pour le moment."
+    And I should see "Voir les 2 réponses"
+    And I should see "Une première question du 1er questionnaire national ?"
+    And I should see "4 réponses"
+    And I should see "25 %"
