@@ -19,7 +19,7 @@ class VoteResultRepository extends ServiceEntityRepository
      */
     public function getResultsForRound(ElectionRound $electionRound): array
     {
-        return $this->createQueryBuilder('vr')
+        $result = $this->createQueryBuilder('vr')
             ->addSelect('vc', 'cg', 'c')
             ->innerJoin('vr.voteChoices', 'vc')
             ->leftJoin('vc.candidateGroup', 'cg')
@@ -29,5 +29,11 @@ class VoteResultRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+
+        usort($result, function (VoteResult $a, VoteResult $b) {
+            return strrev($a->getVoterKey()) <=> strrev($b->getVoterKey());
+        });
+
+        return $result;
     }
 }
