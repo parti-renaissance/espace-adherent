@@ -42,9 +42,13 @@ class CertificationRequestProcessTimeoutCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $interval = sprintf('-%s day', $input->getOption('interval'));
+        $interval = sprintf('-%d day', (int) $input->getOption('interval'));
+
+        $createdBefore = new \DateTime('now');
+        $createdBefore->add(\DateInterval::createFromDateString($interval));
+
         /** @var CertificationRequest[]|iterable $certificationRequests */
-        $certificationRequests = $this->certificationRequestRepository->findPending($interval);
+        $certificationRequests = $this->certificationRequestRepository->findPending($createdBefore);
 
         foreach ($certificationRequests as $certificationRequest) {
             $this->processTimeout($certificationRequest);

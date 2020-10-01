@@ -28,6 +28,9 @@ class CertificationRequest
         self::STATUS_BLOCKED,
     ];
 
+    public const OCR_STATUS_PRE_REFUSED = 'pre_refused';
+    public const OCR_STATUS_PRE_APPROVED = 'pre_approved';
+
     /**
      * @var \DateTime
      *
@@ -136,6 +139,27 @@ class CertificationRequest
      * @ORM\Column(type="text", nullable=true)
      */
     private $refusalComment;
+
+    /**
+     * @var array|null
+     *
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $ocrPayload;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $ocrStatus;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $ocrResult;
 
     /**
      * @var Adherent|null
@@ -368,5 +392,45 @@ class CertificationRequest
     public function getRefusalReasonKey(): string
     {
         return 'certification_request.refusal_reason.'.$this->refusalReason;
+    }
+
+    public function getOcrPayload(): ?array
+    {
+        return $this->ocrPayload;
+    }
+
+    public function setOcrPayload(?array $ocrPayload): void
+    {
+        $this->ocrPayload = $ocrPayload;
+    }
+
+    public function getOcrStatus(): ?string
+    {
+        return $this->ocrStatus;
+    }
+
+    public function setOcrStatus(?string $ocrStatus): void
+    {
+        $this->ocrStatus = $ocrStatus;
+    }
+
+    public function getOcrResult(): ?string
+    {
+        return $this->ocrResult;
+    }
+
+    public function setOcrResult(?string $ocrResult): void
+    {
+        $this->ocrResult = $ocrResult;
+    }
+
+    public function isPreApproved(): bool
+    {
+        return self::OCR_STATUS_PRE_APPROVED === $this->ocrStatus;
+    }
+
+    public function isPreRefused(): bool
+    {
+        return self::OCR_STATUS_PRE_REFUSED === $this->ocrStatus;
     }
 }

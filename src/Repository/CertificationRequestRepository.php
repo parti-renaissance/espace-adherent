@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CertificationRequest;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CertificationRequestRepository extends ServiceEntityRepository
@@ -15,7 +16,38 @@ class CertificationRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, CertificationRequest::class);
     }
 
-    public function findPending(string $interval): iterable
+    public function findPending(\DateTimeInterface $createdBefore): iterable
+    {
+        return $this
+            ->createPendingQueryBuilder($createdBefore)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findPreRefused(\DateTimeInterface $createdBefore): iterable
+    {
+        return $this
+            ->createPendingQueryBuilder($createdBefore)
+            ->andWhere('cr.ocrStatus = :status_pre_refused')
+            ->setParameter('status_pre_refused', CertificationRequest::OCR_STATUS_PRE_REFUSED)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findPreApproved(\DateTimeInterface $createdBefore): iterable
+    {
+        return $this
+            ->createPendingQueryBuilder($createdBefore)
+            ->andWhere('cr.ocrStatus = :status_pre_approved')
+            ->setParameter('status_pre_approved', CertificationRequest::OCR_STATUS_PRE_APPROVED)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    private function createPendingQueryBuilder(\DateTimeInterface $createdBefore): QueryBuilder
     {
         return $this
             ->createQueryBuilder('cr')
@@ -23,18 +55,8 @@ class CertificationRequestRepository extends ServiceEntityRepository
             ->andWhere('cr.createdAt <= :created_at')
             ->setParameters([
                 'status_pending' => CertificationRequest::STATUS_PENDING,
-                'created_at' => $this->createDateTimeForInterval($interval),
+                'created_at' => $createdBefore,
             ])
-            ->getQuery()
-            ->getResult()
         ;
-    }
-
-    private function createDateTimeForInterval(string $interval): \DateTime
-    {
-        $date = new \DateTime('now');
-        $date->add(\DateInterval::createFromDateString($interval));
-
-        return $date;
     }
 }

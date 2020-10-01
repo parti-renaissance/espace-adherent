@@ -1,5 +1,17 @@
 {% macro get_certification_request_status_badge(certification_request) %}
     {% spaceless %}
+        {% if certification_request.ocrStatus %}
+            <span class="badge
+                {% if certification_request.isPreApproved %}
+                    bg-green
+                {% elseif certification_request.isPreRefused %}
+                    bg-red
+                {% endif %}
+                ">
+                {{ ('certification_request.status.'~certification_request.ocrStatus)|trans }}
+            </span>
+        {% endif %}
+
         <span class="badge
             {% if certification_request.isApproved %}
                 bg-green
