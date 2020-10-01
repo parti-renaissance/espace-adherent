@@ -1,4 +1,4 @@
-{% if object.enabled %}
+{% if object.enabled and is_granted('ROLE_ALLOWED_TO_SWITCH') %}
     <li>
         <a href="{{ path('homepage', {'_switch_user': object.emailAddress}) }}" class="sonata-action-element" title="Impersonnifier">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
