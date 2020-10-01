@@ -74,11 +74,13 @@ class ImageAnnotations
         return $this->isIdentityDocument() && \in_array(self::FRENCH_IDENTITY_CARD_LABEL, $this->labels, true);
     }
 
-    public function getFirstName(): ?string
+    public function getFirstNames(): array
     {
         preg_match('/\\nPrénom( )?\(s\):( )?(?<first_names>.+)\\n/', $this->text, $matches);
 
-        return $matches['first_names'] ?? null;
+        return array_map(function (string $firstName) {
+            return trim(mb_strtoupper($firstName));
+        }, explode(',', $matches['first_names'] ?? null));
     }
 
     public function getLastName(): ?string
