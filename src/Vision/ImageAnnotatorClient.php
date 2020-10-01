@@ -6,7 +6,7 @@ use Google\Cloud\Vision\V1\ImageAnnotatorClient as GoogleImageAnnotatorClient;
 use Google\Cloud\Vision\V1\TextAnnotation;
 use Google\Cloud\Vision\V1\WebDetection;
 use Google\Protobuf\Internal\RepeatedField;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 
 class ImageAnnotatorClient
 {
@@ -16,7 +16,7 @@ class ImageAnnotatorClient
     private $textAnnotations = [];
     private $webDetections = [];
 
-    public function __construct(string $keyFilePath, Filesystem $storage)
+    public function __construct(string $keyFilePath, FilesystemInterface $storage)
     {
         $this->client = new GoogleImageAnnotatorClient([
             'credentials' => $keyFilePath,

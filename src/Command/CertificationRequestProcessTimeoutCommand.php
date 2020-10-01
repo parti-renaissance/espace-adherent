@@ -42,7 +42,7 @@ class CertificationRequestProcessTimeoutCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $interval = sprintf('-%s day', $input->getOption('interval'));
+        $interval = sprintf('-%d day', (int) $input->getOption('interval'));
 
         $createdBefore = new \DateTime('now');
         $createdBefore->add(\DateInterval::createFromDateString($interval));
