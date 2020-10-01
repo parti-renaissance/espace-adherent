@@ -2,10 +2,9 @@
 
 namespace App\Command;
 
-use App\Adherent\Certification\CertificationRequestDocumentManager;
+use App\Adherent\Certification\CertificationAuthorityManager;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,16 +14,15 @@ class CertificationRequestProcessPreApprovedCommand extends Command
 {
     protected static $defaultName = 'app:certification-request:process-pre-approved';
 
-    private $em;
     private $certificationRequestRepository;
+    private $certificationAuthorityManager;
 
     public function __construct(
-        EntityManagerInterface $em,
         CertificationRequestRepository $certificationRequestRepository,
-        CertificationRequestDocumentManager $documentManager
+        CertificationAuthorityManager $certificationAuthorityManager
     ) {
-        $this->em = $em;
         $this->certificationRequestRepository = $certificationRequestRepository;
+        $this->certificationAuthorityManager = $certificationAuthorityManager;
 
         parent::__construct();
     }
@@ -40,19 +38,20 @@ class CertificationRequestProcessPreApprovedCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $interval = sprintf('-%s hour', $input->getOption('interval'));
+
+        $createdBefore = new \DateTime('now');
+        $createdBefore->add(\DateInterval::createFromDateString($interval));
+
         /** @var CertificationRequest[]|iterable $certificationRequests */
-        $certificationRequests = $this->certificationRequestRepository->findPreApproved($interval);
+        $certificationRequests = $this->certificationRequestRepository->findPreApproved($createdBefore);
 
         foreach ($certificationRequests as $certificationRequest) {
             $this->processPreApproved($certificationRequest);
-
-            $this->em->flush();
         }
     }
 
     private function processPreApproved(CertificationRequest $certificationRequest): void
     {
-        $certificationRequest->approve();
-        $certificationRequest->process();
+        $this->certificationAuthorityManager->approve($certificationRequest);
     }
 }

@@ -163,3 +163,7 @@ services:
         arguments:
             - '@App\Algolia\SearchService.inner'
             - '%kernel.debug%'
+
+    App\Vision\ImageAnnotatorClient:
+        arguments:
+            $keyFilePath: '%kernel.project_dir%/gcloud-service-key.json'

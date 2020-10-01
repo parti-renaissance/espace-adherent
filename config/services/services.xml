@@ -569,10 +569,5 @@
 
         <!-- TerritorialCouncil -->
         <service id="App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator" />
-
-        <!-- Vision -->
-        <service id="App\Vision\ImageAnnotatorClient">
-            <argument>%kernel.project_dir%/gcloud-service-key.json</argument>
-        </service>
     </services>
 </container>

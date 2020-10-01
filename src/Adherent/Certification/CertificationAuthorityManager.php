@@ -40,21 +40,26 @@ class CertificationAuthorityManager
         $this->em->flush();
     }
 
-    public function approve(CertificationRequest $certificationRequest, Administrator $administrator = null): void
-    {
+    public function approve(
+        CertificationRequest $certificationRequest,
+        Administrator $administrator = null,
+        bool $removeDocument = false
+    ): void {
         $certificationRequest->approve();
         $certificationRequest->process($administrator);
 
         $this->certifyAdherent($certificationRequest->getAdherent(), $administrator);
 
-        $this->removeDocument($certificationRequest);
+        if ($removeDocument) {
+            $this->removeDocument($certificationRequest);
+        }
 
         $this->em->flush();
 
         $this->messageNotifier->sendApprovalMessage($certificationRequest);
     }
 
-    public function refuse(CertificationRequestRefuseCommand $refuseCommand): void
+    public function refuse(CertificationRequestRefuseCommand $refuseCommand, bool $removeDocument = false): void
     {
         $certificationRequest = $refuseCommand->getCertificationRequest();
 
@@ -65,7 +70,9 @@ class CertificationAuthorityManager
         );
         $certificationRequest->process($refuseCommand->getAdministrator());
 
-        $this->removeDocument($certificationRequest);
+        if ($removeDocument) {
+            $this->removeDocument($certificationRequest);
+        }
 
         $this->em->flush();
 

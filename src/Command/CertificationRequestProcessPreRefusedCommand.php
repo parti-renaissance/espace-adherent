@@ -2,10 +2,10 @@
 
 namespace App\Command;
 
-use App\Adherent\Certification\CertificationRequestDocumentManager;
+use App\Adherent\Certification\CertificationAuthorityManager;
+use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,16 +15,15 @@ class CertificationRequestProcessPreRefusedCommand extends Command
 {
     protected static $defaultName = 'app:certification-request:process-pre-refused';
 
-    private $em;
     private $certificationRequestRepository;
+    private $certificationAuthorityManager;
 
     public function __construct(
-        EntityManagerInterface $em,
         CertificationRequestRepository $certificationRequestRepository,
-        CertificationRequestDocumentManager $documentManager
+        CertificationAuthorityManager $certificationAuthorityManager
     ) {
-        $this->em = $em;
         $this->certificationRequestRepository = $certificationRequestRepository;
+        $this->certificationAuthorityManager = $certificationAuthorityManager;
 
         parent::__construct();
     }
@@ -40,19 +39,23 @@ class CertificationRequestProcessPreRefusedCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $interval = sprintf('-%s hour', $input->getOption('interval'));
+
+        $createdBefore = new \DateTime('now');
+        $createdBefore->add(\DateInterval::createFromDateString($interval));
+
         /** @var CertificationRequest[]|iterable $certificationRequests */
-        $certificationRequests = $this->certificationRequestRepository->findPreRefused($interval);
+        $certificationRequests = $this->certificationRequestRepository->findPreRefused($createdBefore);
 
         foreach ($certificationRequests as $certificationRequest) {
             $this->processPreRefused($certificationRequest);
-
-            $this->em->flush();
         }
     }
 
     private function processPreRefused(CertificationRequest $certificationRequest): void
     {
-        $certificationRequest->refuse($certificationRequest->getOcrResult());
-        $certificationRequest->process();
+        $certificationRequestRefuseCommand = new CertificationRequestRefuseCommand($certificationRequest);
+        $certificationRequestRefuseCommand->setReason($certificationRequest->getOcrResult())
+;
+        $this->certificationAuthorityManager->refuse($certificationRequestRefuseCommand);
     }
 }

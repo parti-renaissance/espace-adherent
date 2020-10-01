@@ -16,19 +16,19 @@ class CertificationRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, CertificationRequest::class);
     }
 
-    public function findPending(string $interval): iterable
+    public function findPending(\DateTimeInterface $createdBefore): iterable
     {
         return $this
-            ->createPendingQueryBuilder($interval)
+            ->createPendingQueryBuilder($createdBefore)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function findPreRefused(string $interval): iterable
+    public function findPreRefused(\DateTimeInterface $createdBefore): iterable
     {
         return $this
-            ->createPendingQueryBuilder($interval)
+            ->createPendingQueryBuilder($createdBefore)
             ->andWhere('cr.ocrStatus = :status_pre_refused')
             ->setParameter('status_pre_refused', CertificationRequest::OCR_STATUS_PRE_REFUSED)
             ->getQuery()
@@ -36,10 +36,10 @@ class CertificationRequestRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findPreApproved(string $interval): iterable
+    public function findPreApproved(\DateTimeInterface $createdBefore): iterable
     {
         return $this
-            ->createPendingQueryBuilder($interval)
+            ->createPendingQueryBuilder($createdBefore)
             ->andWhere('cr.ocrStatus = :status_pre_approved')
             ->setParameter('status_pre_approved', CertificationRequest::OCR_STATUS_PRE_APPROVED)
             ->getQuery()
@@ -47,7 +47,7 @@ class CertificationRequestRepository extends ServiceEntityRepository
         ;
     }
 
-    private function createPendingQueryBuilder(string $interval): QueryBuilder
+    private function createPendingQueryBuilder(\DateTimeInterface $createdBefore): QueryBuilder
     {
         return $this
             ->createQueryBuilder('cr')
@@ -55,16 +55,8 @@ class CertificationRequestRepository extends ServiceEntityRepository
             ->andWhere('cr.createdAt <= :created_at')
             ->setParameters([
                 'status_pending' => CertificationRequest::STATUS_PENDING,
-                'created_at' => $this->createDateTimeForInterval($interval),
+                'created_at' => $createdBefore,
             ])
         ;
-    }
-
-    private function createDateTimeForInterval(string $interval): \DateTime
-    {
-        $date = new \DateTime('now');
-        $date->add(\DateInterval::createFromDateString($interval));
-
-        return $date;
     }
 }

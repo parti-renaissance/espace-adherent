@@ -2,43 +2,24 @@
 
 namespace App\Adherent\Certification\Handlers;
 
-use App\Adherent\Certification\CertificationAuthorityManager;
-use App\Adherent\Certification\CertificationRequestDocumentManager;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
-use App\Repository\AdherentRepository;
 use App\Vision\ImageAnnotations;
 use App\Vision\VisionHandler;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\Filesystem;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CertificationRequestOcrHandler implements CertificationRequestHandlerInterface
 {
     private $em;
-    private $adherentRepository;
-    private $documentManager;
-    private $storage;
     private $visionHandler;
     private $serializer;
-    private $certificationAuthorityManager;
 
-    public function __construct(
-        EntityManagerInterface $em,
-        AdherentRepository $adherentRepository,
-        CertificationRequestDocumentManager $documentManager,
-        Filesystem $storage,
-        VisionHandler $visionHandler,
-        ObjectNormalizer $normalizer,
-        CertificationAuthorityManager $certificationAuthorityManager
-    ) {
+    public function __construct(EntityManagerInterface $em, VisionHandler $visionHandler, ObjectNormalizer $normalizer)
+    {
         $this->em = $em;
-        $this->adherentRepository = $adherentRepository;
-        $this->documentManager = $documentManager;
-        $this->storage = $storage;
         $this->visionHandler = $visionHandler;
         $this->serializer = $normalizer;
-        $this->certificationAuthorityManager = $certificationAuthorityManager;
     }
 
     public function supports(CertificationRequest $certificationRequest): bool
