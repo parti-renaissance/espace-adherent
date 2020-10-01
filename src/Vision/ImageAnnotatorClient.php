@@ -37,7 +37,7 @@ class ImageAnnotatorClient
 
     public function getWebDetection(string $filePath): WebDetection
     {
-        if (!array_key_exists($filePath, $this->webDetections)) {
+        if (!\array_key_exists($filePath, $this->webDetections)) {
             $response = $this->client->webDetection($this->storage->read($filePath));
 
             $this->webDetections[$filePath] = $response->getWebDetection();
@@ -48,7 +48,7 @@ class ImageAnnotatorClient
 
     public function getFullTextAnnotation(string $filePath): TextAnnotation
     {
-        if (!array_key_exists($filePath, $this->textAnnotations)) {
+        if (!\array_key_exists($filePath, $this->textAnnotations)) {
             $response = $this->client->documentTextDetection($this->storage->read($filePath));
 
             $this->textAnnotations[$filePath] = $response->getFullTextAnnotation();

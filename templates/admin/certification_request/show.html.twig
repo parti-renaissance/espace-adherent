@@ -139,6 +139,20 @@
                                                       >
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <th class="sonata-ba-list-field-header-text">Logs OCR</th>
+                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                <pre style="max-height: 700px; overflow: scroll;">
+                                                    {{- object.ocrPayload|json_encode(128)|replace({'\\n': '\n'}) -}}
+                                                </pre>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="sonata-ba-list-field-header-text">Résultat OCR</th>
+                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                {{ object.ocrResult }}
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

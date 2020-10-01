@@ -822,6 +822,8 @@ certification_request.status.pending: En attente
 certification_request.status.approved: Approuvée
 certification_request.status.refused: Refusée
 certification_request.status.blocked: Bloquée
+certification_request.status.pre_approved: Pré-approuvée
+certification_request.status.pre_refused: Pré-refusée
 
 certification_request.block_reason.identity_theft: Tentative d'usurpation d'identité
 certification_request.block_reason.false_document: Tentative de création de faux
