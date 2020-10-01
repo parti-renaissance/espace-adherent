@@ -151,6 +151,11 @@ class ReferentTag
         return self::TYPE_BOROUGH === $this->type;
     }
 
+    public function isMetropolisTag(): bool
+    {
+        return self::TYPE_METROPOLIS === $this->type;
+    }
+
     public function getDepartmentCodeFromCirconscriptionName(): ?string
     {
         return $this->isDistrictTag() ? \substr($this->code, 6, 2) : null;
