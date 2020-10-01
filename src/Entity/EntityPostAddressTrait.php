@@ -83,7 +83,7 @@ trait EntityPostAddressTrait
         return $this->postAddress->getCity();
     }
 
-    public function getInseeCode()
+    public function getInseeCode(): ?string
     {
         return $this->postAddress->getInseeCode();
     }

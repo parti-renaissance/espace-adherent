@@ -332,7 +332,7 @@ class ReferentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
             'f' => [
-                'referentTags' => 100,
+                'referentTags' => 102,
             ],
         ];
 
@@ -481,7 +481,7 @@ class ReferentControllerTest extends WebTestCase
         $crawler = $this->client->submit(
             $crawler->selectButton('Filtrer')->form([
                 'referent_filter' => [
-                    'referentTags' => 14,
+                    'referentTags' => 16,
                 ],
             ])
         );

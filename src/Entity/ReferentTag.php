@@ -27,6 +27,7 @@ class ReferentTag
     public const TYPE_COUNTRY = 'country';
     public const TYPE_DISTRICT = 'district';
     public const TYPE_BOROUGH = 'borough';
+    public const TYPE_METROPOLIS = 'metropolis';
 
     /**
      * @ORM\Id

@@ -11,11 +11,16 @@ class ManagedAreaUtilsTest extends TestCase
     /**
      * @dataProvider provideLocationsAndTags
      */
-    public function testGetLocalCodes(string $country, ?string $postalCode, array $expectedCodes): void
-    {
+    public function testGetLocalCodes(
+        string $country,
+        ?string $postalCode,
+        array $expectedCodes,
+        string $inseeCode = null
+    ): void {
         $adherent = $this->createMock(Adherent::class);
         $adherent->expects(self::any())->method('getCountry')->willReturn($country);
         $adherent->expects(self::any())->method('getPostalCode')->willReturn($postalCode);
+        $adherent->expects(self::any())->method('getInseeCode')->willReturn($inseeCode);
 
         $this->assertSame($expectedCodes, ManagedAreaUtils::getLocalCodes($adherent));
     }
@@ -36,5 +41,7 @@ class ManagedAreaUtilsTest extends TestCase
         yield ['FR', '97240', ['972']];
         yield ['FR', '98820', ['988']];
         yield ['MC', '98000', ['MC']];
+        yield ['FR', '34570', ['34', '34M'], '34295'];
+        yield ['FR', '69110', ['69', '69M'], '69202'];
     }
 }

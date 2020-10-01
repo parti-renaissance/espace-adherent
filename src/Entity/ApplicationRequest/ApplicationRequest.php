@@ -455,5 +455,10 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
         $this->displayed = $displayed;
     }
 
+    public function getInseeCode(): ?string
+    {
+        return false !== strpos($this->getCity(), '-') ? substr($this->getCity(), strpos($this->getCity(), '-') + 1) : null;
+    }
+
     abstract public function getType(): string;
 }
