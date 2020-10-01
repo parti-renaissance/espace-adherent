@@ -13,6 +13,7 @@ use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class SurveyExporter
 {
@@ -22,13 +23,20 @@ class SurveyExporter
     /** @var Exporter */
     private $exporter;
 
+    /** @var TranslatorInterface */
+    private $translator;
+
     /** @var int */
     private $i = 0;
 
-    public function __construct(DataSurveyRepository $dataSurveyRepository, SonataExporter $exporter)
-    {
+    public function __construct(
+        DataSurveyRepository $dataSurveyRepository,
+        SonataExporter $exporter,
+        TranslatorInterface $translator
+    ) {
         $this->dataSurveyRepository = $dataSurveyRepository;
         $this->exporter = $exporter;
+        $this->translator = $translator;
     }
 
     public function export(Survey $survey, string $format, bool $allowedOnly = true): StreamedResponse
@@ -59,10 +67,10 @@ class SurveyExporter
                     'Accepte d\'être contacté' => (int) $dataSurvey->getAgreedToStayInContact(),
                     'Accepte d\'être invité à adhérer' => (int) $dataSurvey->getAgreedToContactForJoin(),
                     'Code postal' => $allowPersonalData ? $dataSurvey->getPostalCode() : null,
-                    'Tranche d\'age' => $dataSurvey->getAgeRange(),
-                    'Genre' => $allowPersonalData ? (GenderEnum::OTHER === $dataSurvey->getGender() ? $dataSurvey->getGenderOther() : $dataSurvey->getGender()) : null,
+                    'Tranche d\'age' => $allowPersonalData && $dataSurvey->getAgeRange() ? $this->translator->trans('survey.age_range.'.$dataSurvey->getAgeRange()) : null,
+                    'Genre' => $allowPersonalData && $dataSurvey->getGender() ? (GenderEnum::OTHER === $dataSurvey->getGender() ? $dataSurvey->getGenderOther() : $this->translator->trans('common.'.$dataSurvey->getGender())) : null,
                     'Accepte que ses données soient traitées' => (int) $dataSurvey->getAgreedToTreatPersonalData(),
-                    'Profession' => $allowPersonalData ? $dataSurvey->getProfession() : null,
+                    'Profession' => $allowPersonalData && $dataSurvey->getProfession() ? $dataSurvey->getProfession() : null,
                 ];
 
                 /** @var SurveyQuestion $surveyQuestion */

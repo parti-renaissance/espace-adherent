@@ -334,6 +334,13 @@ survey.create.success: Le questionnaire a bien été enregistré.
 survey.edit.success: Le questionnaire a bien été mis à jour.
 survey.duplicate.success: Le questionnaire a bien été dupliqué.
 survey.city.required: Vous devez spécifier une ville ou choisir "Département" comme zone concernée.
+survey.age_range.less_than_20: Moins de 20 ans
+survey.age_range.between_20_24: Entre 20 et 24 ans
+survey.age_range.between_25_39: Entre 25 et 39 ans
+survey.age_range.between_40_54: Entre 40 et 54 ans
+survey.age_range.between_55_64: Entre 55 et 64 ans
+survey.age_range.between_65_80: Entre 65 et 80 ans
+survey.age_range.greater_than_80: Plus de 80 ans
 
 #
 # Procuration
