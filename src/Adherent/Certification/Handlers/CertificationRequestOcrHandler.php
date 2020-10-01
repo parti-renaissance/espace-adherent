@@ -22,6 +22,11 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
         $this->serializer = $normalizer;
     }
 
+    public function getPriority(): int
+    {
+        return -255;
+    }
+
     public function supports(CertificationRequest $certificationRequest): bool
     {
         return $certificationRequest->isPending();

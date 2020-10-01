@@ -6,6 +6,8 @@ use App\Entity\CertificationRequest;
 
 interface CertificationRequestHandlerInterface
 {
+    public function getPriority(): int;
+
     public function supports(CertificationRequest $certificationRequest): bool;
 
     public function handle(CertificationRequest $certificationRequest): void;

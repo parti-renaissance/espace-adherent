@@ -49,7 +49,7 @@ class CertificationRequestProcessCommandHandler implements MessageHandlerInterfa
 
         $firstException = null;
 
-        foreach ($this->handlers as $handler) {
+        foreach ($this->getHandlers() as $handler) {
             if ($handler->supports($certificationRequest)) {
                 try {
                     $handler->handle($certificationRequest);
@@ -69,5 +69,19 @@ class CertificationRequestProcessCommandHandler implements MessageHandlerInterfa
 
         $this->em->flush();
         $this->em->clear();
+    }
+
+    /**
+     * @return CertificationRequestHandlerInterface[]
+     */
+    private function getHandlers(): array
+    {
+        $handlers = iterator_to_array($this->handlers);
+
+        usort($handlers, function (CertificationRequestHandlerInterface $handlerA, CertificationRequestHandlerInterface $handlerB) {
+            return $handlerA->getPriority() <=> $handlerB->getPriority();
+        });
+
+        return $handlers;
     }
 }
