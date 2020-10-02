@@ -116,6 +116,8 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
         $list
             ->add('designation.label', 'text', [
                 'label' => 'Désignation',
+                'header_style' => 'max-width: 150px',
+                'template' => 'admin/instances/candidate_list_designation_column.html.twig',
             ])
             ->add('entity', 'text', [
                 'label' => 'Entité',
@@ -126,6 +128,7 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
                 'label' => 'Identité',
                 'virtual_field' => true,
                 'template' => 'admin/instances/candidate_list_identity_column.html.twig',
+                'header_style' => 'min-width: 150px',
             ])
             ->add('quality', 'trans', [
                 'label' => 'Qualité',

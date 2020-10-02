@@ -109,4 +109,9 @@ class ElectionPool
             $this->electionRounds->add($round);
         }
     }
+
+    public function countCandidateGroups(): int
+    {
+        return $this->candidateGroups->count();
+    }
 }

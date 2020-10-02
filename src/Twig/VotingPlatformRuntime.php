@@ -46,4 +46,9 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     {
         return $this->voteRepository->findLastForAdherent($adherent, new \DateTime('-3 months'));
     }
+
+    public function getElectionParticipationDetails(ElectionRound $electionRound): array
+    {
+        return $this->electionRepository->getSingleAggregatedData($electionRound);
+    }
 }

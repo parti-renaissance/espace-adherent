@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% for round in object.electionRounds %}
+        {% set details_by_pool = get_election_participation_details(round) %}
+
+        tour {{ loop.index }} : {{ (details_by_pool|first.votes_count * 100 / details_by_pool|first.voters_count)|round(1) }} %<br/>
+    {% endfor %}
+{% endblock %}
