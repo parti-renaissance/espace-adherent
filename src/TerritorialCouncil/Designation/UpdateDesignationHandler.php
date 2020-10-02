@@ -80,7 +80,7 @@ class UpdateDesignationHandler
             $designation = $election->getDesignation();
         }
 
-        $designation->setLabel($coTerr->getName());
+        $designation->setLabel($coTerr->getName().' '.$request->getVoteStartDate()->format('d-m-Y'));
         $designation->setReferentTags($coTerrRefTags);
         $designation->setCandidacyEndDate((clone $request->getVoteStartDate())->modify('-48 hours'));
         $designation->setVoteStartDate($request->getVoteStartDate());

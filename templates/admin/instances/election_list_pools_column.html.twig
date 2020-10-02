@@ -1,0 +1,7 @@
+{% extends 'admin/CRUD/list_array.html.twig' %}
+
+{% block field %}
+    {% set value = object.electionPools|map(pool => get_election_pool_title_key(pool)|trans ~ ' : ' ~ pool.countCandidateGroups) %}
+
+    {{ parent() }}
+{% endblock %}

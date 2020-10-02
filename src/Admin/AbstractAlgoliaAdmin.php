@@ -9,6 +9,15 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class AbstractAlgoliaAdmin extends AbstractAdmin
 {
+    public function getFilterParameters()
+    {
+        $parameters = parent::getFilterParameters();
+
+        unset($parameters['_sort_by'], $parameters['_sort_order']);
+
+        return $parameters;
+    }
+
     public function getBatchActions()
     {
         return [];

@@ -177,6 +177,14 @@ class Election
         }
     }
 
+    /**
+     * @return ElectionPool[]
+     */
+    public function getElectionPools(): array
+    {
+        return $this->electionPools->toArray();
+    }
+
     public function getCurrentRound(): ?ElectionRound
     {
         foreach ($this->electionRounds as $round) {

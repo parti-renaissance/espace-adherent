@@ -1308,5 +1308,13 @@
             <argument>App\Entity\Algolia\AlgoliaCandidature</argument>
             <argument />
         </service>
+
+        <service id="app.admin.designation.election" class="App\Admin\Designation\VotingPlatformElectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Elections" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Election</argument>
+            <argument />
+        </service>
     </services>
 </container>
