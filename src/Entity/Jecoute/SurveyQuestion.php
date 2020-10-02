@@ -139,13 +139,14 @@ class SurveyQuestion implements AuthoredInterface
         return $this->dataAnswers;
     }
 
-    public function getDataAnswersForDataSurvey(DataSurvey $dataSurvey): Collection
+    public function getDataAnswersFor(SurveyQuestion $surveyQuestion, DataSurvey $dataSurvey)
     {
         $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('surveyQuestion', $surveyQuestion))
             ->andWhere(Criteria::expr()->eq('dataSurvey', $dataSurvey))
         ;
 
-        return $this->dataAnswers->matching($criteria);
+        return $this->dataAnswers->matching($criteria)->first();
     }
 
     public function addDataAnswer(DataAnswer $dataAnswer): void

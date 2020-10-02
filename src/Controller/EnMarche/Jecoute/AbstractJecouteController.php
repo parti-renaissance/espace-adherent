@@ -166,7 +166,7 @@ abstract class AbstractJecouteController extends Controller
         SurveyExporter $exporter
     ): Response {
         if ($format = $request->query->get('export')) {
-            return $exporter->export($survey, $format, true);
+            return $exporter->export($survey, $format, false);
         }
 
         return $this->renderTemplate('jecoute/stats.html.twig', ['data' => $provider->getStatsBySurvey($survey)]);
