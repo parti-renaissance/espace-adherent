@@ -142,15 +142,37 @@
                                         <tr>
                                             <th class="sonata-ba-list-field-header-text">Logs OCR</th>
                                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                <pre style="max-height: 700px; overflow: scroll;">
-                                                    {{- object.ocrPayload|json_encode(128)|replace({'\\n': '\n'}) -}}
-                                                </pre>
+                                                {% set payload = object.ocrPayload %}
+                                                {% if payload.labels is defined and payload.labels is not empty %}
+                                                    Labels:
+                                                    <ul>
+                                                        {% for label in payload.labels %}
+                                                            <li>{{ label }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                                {% if payload.webEntities is defined and payload.webEntities is not empty %}
+                                                    Détections:
+                                                    <ul>
+                                                        {% for webEntity in payload.webEntities %}
+                                                            <li>{{ webEntity }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                                {% if payload.text is defined %}
+                                                    Texte:
+                                                    <pre style="max-height: 700px; overflow: scroll;">
+                                                        {{- payload.text|replace({'\\n': '\n'}) -}}
+                                                    </pre>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th class="sonata-ba-list-field-header-text">Résultat OCR</th>
                                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                {{ object.ocrResult }}
+                                                {% if object.isPreRefused %}
+                                                    {{ ('certification_request.refusal_reason.' ~ object.ocrResult)|trans }}
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     </tbody>

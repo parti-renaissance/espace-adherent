@@ -65,7 +65,7 @@ class ImageAnnotations
     public function isIdentityDocument(): bool
     {
         return \in_array(self::IDENTITY_DOCUMENT_LABEL, $this->webEntities, true)
-            && \in_array(self::NATIONAL_IDENTITY_CARD_LABEL, $this->webEntities, true)
+            || \in_array(self::NATIONAL_IDENTITY_CARD_LABEL, $this->webEntities, true)
         ;
     }
 
@@ -98,6 +98,6 @@ class ImageAnnotations
             return null;
         }
 
-        return \DateTime::createFromFormat('m.d.Y', $matches['birth_date']);
+        return \DateTime::createFromFormat('d.m.Y', $matches['birth_date']);
     }
 }
