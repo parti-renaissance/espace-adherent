@@ -433,4 +433,11 @@ class CertificationRequest
     {
         return self::OCR_STATUS_PRE_REFUSED === $this->ocrStatus;
     }
+
+    public function resetOcr(): void
+    {
+        $this->ocrStatus = null;
+        $this->ocrResult = null;
+        $this->ocrPayload = null;
+    }
 }

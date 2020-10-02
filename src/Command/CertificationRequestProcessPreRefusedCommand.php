@@ -54,8 +54,8 @@ class CertificationRequestProcessPreRefusedCommand extends Command
     private function processPreRefused(CertificationRequest $certificationRequest): void
     {
         $certificationRequestRefuseCommand = new CertificationRequestRefuseCommand($certificationRequest);
-        $certificationRequestRefuseCommand->setReason($certificationRequest->getOcrResult())
-;
+        $certificationRequestRefuseCommand->setReason($certificationRequest->getOcrResult());
+
         $this->certificationAuthorityManager->refuse($certificationRequestRefuseCommand);
     }
 }
