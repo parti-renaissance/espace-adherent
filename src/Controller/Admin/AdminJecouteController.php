@@ -24,6 +24,6 @@ class AdminJecouteController
         Survey $survey,
         SurveyExporter $exporter
     ): StreamedResponse {
-        return $exporter->export($survey, $request->query->get('format', 'csv'), false);
+        return $exporter->export($survey, $request->query->get('format', 'csv'), true);
     }
 }

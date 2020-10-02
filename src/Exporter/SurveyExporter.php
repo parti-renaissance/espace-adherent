@@ -39,7 +39,7 @@ class SurveyExporter
         $this->translator = $translator;
     }
 
-    public function export(Survey $survey, string $format, bool $allowedOnly = true): StreamedResponse
+    public function export(Survey $survey, string $format, bool $fromAdmin = false): StreamedResponse
     {
         return $this->exporter->getResponse(
             $format,
@@ -50,42 +50,60 @@ class SurveyExporter
                 (new \DateTime())->format('YmdHis'),
                 $format
             ),
-            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey), function (array $data) use ($survey, $allowedOnly) {
+            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey), function (array $data) use ($survey, $fromAdmin) {
                 /** @var DataSurvey $dataSurvey */
                 $dataSurvey = $data[0];
 
-                $allowPersonalData = !$allowedOnly || $dataSurvey->getAgreedToTreatPersonalData();
+                $allowPersonalData = $fromAdmin || $dataSurvey->getAgreedToTreatPersonalData();
 
-                $row = [
-                    'ID' => ++$this->i,
-                    'Adherent ID' => $dataSurvey->getAuthor()->getId(),
-                    'Nom Prénom de l\'auteur' => $dataSurvey->getAuthor(),
-                    'Posté le' => $dataSurvey->getPostedAt()->format('d/m/Y H:i:s'),
-                    'Nom' => $allowPersonalData ? $dataSurvey->getFirstName() : null,
-                    'Prénom' => $allowPersonalData ? $dataSurvey->getLastName() : null,
-                    'Email' => $allowPersonalData ? $dataSurvey->getEmailAddress() : null,
-                    'Accepte d\'être contacté' => (int) $dataSurvey->getAgreedToStayInContact(),
-                    'Accepte d\'être invité à adhérer' => (int) $dataSurvey->getAgreedToContactForJoin(),
-                    'Code postal' => $allowPersonalData ? $dataSurvey->getPostalCode() : null,
-                    'Tranche d\'age' => $allowPersonalData && $dataSurvey->getAgeRange() ? $this->translator->trans('survey.age_range.'.$dataSurvey->getAgeRange()) : null,
-                    'Genre' => $allowPersonalData && $dataSurvey->getGender() ? (GenderEnum::OTHER === $dataSurvey->getGender() ? $dataSurvey->getGenderOther() : $this->translator->trans('common.'.$dataSurvey->getGender())) : null,
-                    'Accepte que ses données soient traitées' => (int) $dataSurvey->getAgreedToTreatPersonalData(),
-                    'Profession' => $allowPersonalData && $dataSurvey->getProfession() ? $dataSurvey->getProfession() : null,
-                ];
+                $row = [];
+                $row['ID'] = ++$this->i;
+
+                if ($fromAdmin) {
+                    $row['Adherent ID'] = $dataSurvey->getAuthor()->getId();
+                }
+
+                $row['Nom Prénom de l\'auteur'] = $dataSurvey->getAuthor();
+                $row['Posté le'] = $dataSurvey->getPostedAt()->format('d/m/Y H:i:s');
+                $row['Nom'] = $allowPersonalData ? $dataSurvey->getFirstName() : null;
+                $row['Prénom'] = $allowPersonalData ? $dataSurvey->getLastName() : null;
+
+                if ($fromAdmin) {
+                    $row['Email'] = $dataSurvey->getEmailAddress();
+                    $row['Accepte d\'être contacté'] = (int) $dataSurvey->getAgreedToStayInContact();
+                    $row['Accepte d\'être invité à adhérer'] = (int) $dataSurvey->getAgreedToContactForJoin();
+                }
+
+                $row['Code postal'] = $allowPersonalData ? $dataSurvey->getPostalCode() : null;
+                $row['Tranche d\'age'] = $allowPersonalData && $dataSurvey->getAgeRange() ? $this->translator->trans('survey.age_range.'.$dataSurvey->getAgeRange()) : null;
+                $row['Genre'] = $allowPersonalData && $dataSurvey->getGender() ? (GenderEnum::OTHER === $dataSurvey->getGender() ? $dataSurvey->getGenderOther() : $this->translator->trans('common.'.$dataSurvey->getGender())) : null;
+
+                if ($fromAdmin) {
+                    $row['Accepte que ses données soient traitées'] = (int) $dataSurvey->getAgreedToTreatPersonalData();
+                }
+
+                $row['Profession'] = $allowPersonalData && $dataSurvey->getProfession() ? $dataSurvey->getProfession() : null;
 
                 /** @var SurveyQuestion $surveyQuestion */
                 foreach ($survey->getQuestions() as $surveyQuestion) {
-                    foreach ($surveyQuestion->getDataAnswersForDataSurvey($dataSurvey) as $dataAnswer) {
-                        if ($surveyQuestion->getQuestion()->isChoiceType()) {
-                            $row[$surveyQuestion->getQuestion()->getContent()] = implode(', ', $dataAnswer->getSelectedChoices()->map(static function (Choice $choice) {
-                                return $choice->getContent();
-                            })->toArray());
+                    $questionName = $surveyQuestion->getQuestion()->getContent();
+                    $row[$questionName] = '';
 
-                            continue;
-                        }
+                    $dataAnswer = $surveyQuestion->getDataAnswersFor($surveyQuestion, $dataSurvey);
 
-                        $row[$surveyQuestion->getQuestion()->getContent()] = $dataAnswer->getTextField();
+                    if (!$dataAnswer) {
+                        continue;
                     }
+
+                    if ($surveyQuestion->getQuestion()->isChoiceType()) {
+                        $row[$questionName] = implode(', ', $dataAnswer->getSelectedChoices()->map(static function (Choice $choice) {
+                            return $choice->getContent();
+                        })->toArray());
+
+                        continue;
+                    }
+
+                    $row[$questionName] = $dataAnswer->getTextField();
                 }
 
                 return $row;
