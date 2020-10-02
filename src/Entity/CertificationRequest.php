@@ -65,10 +65,8 @@ class CertificationRequest
      * @Assert\File(
      *     maxSize="5M",
      *     mimeTypes={
-     *         "application/pdf",
-     *         "application/x-pdf",
      *         "image/jpeg",
-     *         "image/png"
+     *         "image/png",
      *     },
      *     mimeTypesMessage="certification_request.document.mime_type"
      * )

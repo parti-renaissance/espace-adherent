@@ -29,10 +29,10 @@
             <div class="em-form__label">2. Téléchargez une pièce d'identité</div>
             <div class="em-form__file">
                 {{ form_widget(form.document, { attr: { class: 'em-form__file--area' } }) }}
-                {{ form_label(form.document, 'Télécharger votre CNI recto ou votre passeport', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
+                {{ form_label(form.document, '[Bêta] Téléchargez votre Carte nationale d\'identité en .jpg ou .png.', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
                 <span class="em-form__file--name">Aucun fichier sélectionné</span>
             </div>
-            <div class="em-form__legend">Formats acceptés : jpg, png, pdf • Taille max. : 5Mo.</div>
+            <div class="em-form__legend">Formats acceptés : jpg ou png • Taille max. : 5Mo.</div>
             {{ form_errors(form.document) }}
         </div>
 
