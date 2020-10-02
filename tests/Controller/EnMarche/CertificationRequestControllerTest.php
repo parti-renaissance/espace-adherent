@@ -103,7 +103,7 @@ class CertificationRequestControllerTest extends WebTestCase
         ], [
             'certification_request' => [
                 'document' => new UploadedFile(
-                    __DIR__.'/../../../app/data/files/application_requests/curriculum/cv.pdf',
+                    __DIR__.'/../../../app/data/static/application-request-sharer.jpg',
                     'cv.pdf',
                     'application/pdf',
                     1234
