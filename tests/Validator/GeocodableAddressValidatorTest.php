@@ -5,6 +5,7 @@ namespace Tests\App\Validator;
 use App\Address\Address;
 use App\Entity\PostAddress;
 use App\Geocoder\GeocodableInterface;
+use App\Geocoder\Geocoder;
 use App\Validator\GeocodableAddress;
 use App\Validator\GeocodableAddressValidator;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -84,6 +85,6 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
 
     protected function createValidator()
     {
-        return new GeocodableAddressValidator(new DummyGeocoder());
+        return new GeocodableAddressValidator(new Geocoder(new DummyGeocoder()));
     }
 }

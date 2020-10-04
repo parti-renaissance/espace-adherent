@@ -7,11 +7,11 @@ use App\OAuth\Model\ApiUser;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Nyholm\Psr7\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Zend\Diactoros\Response;
 
 class UserController extends Controller
 {

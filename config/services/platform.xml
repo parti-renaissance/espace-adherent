@@ -32,24 +32,8 @@
         <service id="app.address.post_address_factory" class="App\Address\PostAddressFactory" public="false" />
 
         <!-- Geocoder -->
-        <service id="app.geocoder" class="App\Geocoder\Geocoder" public="false">
-            <argument type="service" id="geocoder"/>
-        </service>
-
-        <service id="App\Geocoder\GeocodableInterface" alias="app.geocoder" />
-
-        <service id="app.geocoder.cache_adapter" alias="cache.redis_doctrine_provider" />
-
-        <service id="app.geocoder.coordinates_factory" class="App\Geocoder\CoordinatesFactory" />
-
-        <service id="app.geocoder.entity_address_geocoding_subscriber" class="App\Geocoder\Subscriber\EntityAddressGeocodingSubscriber">
-            <argument type="service" id="app.geocoder"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
         <service id="app.validator.geocodable_address" class="App\Validator\GeocodableAddressValidator">
-            <argument type="service" id="app.geocoder"/>
+            <argument type="service" id="App\Geocoder\Geocoder"/>
             <tag name="validator.constraint_validator" alias="app.validator.geocodable_address"/>
         </service>
 
@@ -273,7 +257,7 @@
 
         <!-- Search -->
         <service id="App\Search\SearchParametersFilter" shared="false">
-            <argument type="service" id="app.geocoder"/>
+            <argument type="service" id="App\Geocoder\Geocoder"/>
             <argument type="service" id="cache.app"/>
 
             <call method="setMaxResults">

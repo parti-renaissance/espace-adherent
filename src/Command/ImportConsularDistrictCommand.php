@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\ConsularDistrict;
-use App\Geocoder\GeocoderInterface;
+use App\Geocoder\Geocoder;
 use App\Repository\ConsularDistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
@@ -34,7 +34,7 @@ class ImportConsularDistrictCommand extends Command
         FilesystemInterface $storage,
         EntityManagerInterface $em,
         ConsularDistrictRepository $repository,
-        GeocoderInterface $geocoder
+        Geocoder $geocoder
     ) {
         $this->storage = $storage;
         $this->manager = $em;
