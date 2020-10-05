@@ -47,6 +47,21 @@ class CertificationRequestRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllForDate(\DateTimeInterface $date): iterable
+    {
+        return $this
+            ->createQueryBuilder('cr')
+            ->andWhere('cr.status = :status_pending')
+            ->andWhere('cr.createdAt LIKE :created_at')
+            ->setParameters([
+                'status_pending' => CertificationRequest::STATUS_PENDING,
+                'created_at' => $date->format('Y-m-d').'%',
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     private function createPendingQueryBuilder(\DateTimeInterface $createdBefore): QueryBuilder
     {
         return $this

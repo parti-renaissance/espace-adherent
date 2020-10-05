@@ -65,7 +65,7 @@ class ImageAnnotations
     public function isIdentityDocument(): bool
     {
         return \in_array(self::IDENTITY_DOCUMENT_LABEL, $this->webEntities, true)
-            && \in_array(self::NATIONAL_IDENTITY_CARD_LABEL, $this->webEntities, true)
+            || \in_array(self::NATIONAL_IDENTITY_CARD_LABEL, $this->webEntities, true)
         ;
     }
 
@@ -74,11 +74,13 @@ class ImageAnnotations
         return $this->isIdentityDocument() && \in_array(self::FRENCH_IDENTITY_CARD_LABEL, $this->labels, true);
     }
 
-    public function getFirstName(): ?string
+    public function getFirstNames(): array
     {
         preg_match('/\\nPrénom( )?\(s\):( )?(?<first_names>.+)\\n/', $this->text, $matches);
 
-        return $matches['first_names'] ?? null;
+        return array_map(function (string $firstName) {
+            return trim($firstName);
+        }, preg_split('/[\s,]+/', $matches['first_names'] ?? null));
     }
 
     public function getLastName(): ?string
@@ -88,10 +90,14 @@ class ImageAnnotations
         return $matches['last_name'] ?? null;
     }
 
-    public function getBirthDate(): ?string
+    public function getBirthDate(): ?\DateTime
     {
-        preg_match('/\\n(?<birth_date>.{2}\..{2}\..{4})\\n/', $this->text, $matches);
+        preg_match('/\\n(?<birth_date>[\d]{2}\.[\d]{2}\.[\d]{4})\\n/', $this->text, $matches);
 
-        return $matches['birth_date'] ?? null;
+        if (!isset($matches['birth_date']) || !$matches['birth_date']) {
+            return null;
+        }
+
+        return \DateTime::createFromFormat('d.m.Y', $matches['birth_date']);
     }
 }

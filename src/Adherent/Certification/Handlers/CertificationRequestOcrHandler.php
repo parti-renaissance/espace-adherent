@@ -11,6 +11,11 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CertificationRequestOcrHandler implements CertificationRequestHandlerInterface
 {
+    private const READABLE_DOCUMENT_MIME_TYPES = [
+        'image/jpeg',
+        'image/png',
+    ];
+
     private $em;
     private $visionHandler;
     private $serializer;
@@ -22,9 +27,16 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
         $this->serializer = $normalizer;
     }
 
+    public function getPriority(): int
+    {
+        return -255;
+    }
+
     public function supports(CertificationRequest $certificationRequest): bool
     {
-        return $certificationRequest->isPending();
+        return $certificationRequest->isPending()
+            && $this->isDocumentReadableByOcr($certificationRequest)
+        ;
     }
 
     public function handle(CertificationRequest $certificationRequest): void
@@ -67,13 +79,18 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     {
         $adherent = $certificationRequest->getAdherent();
 
-        $firstNames = array_map(function (string $firstName) {
-            return trim($firstName);
-        }, explode(',', $imageAnnotations->getFirstName()));
+        $firstNames = array_map('trim', $imageAnnotations->getFirstNames());
+        $birthDate = $imageAnnotations->getBirthDate();
 
         return \in_array(mb_strtoupper($adherent->getFirstName()), $firstNames, true)
-            && mb_strtoupper($adherent->getLastName()) === $imageAnnotations->getLastName()
-            && $adherent->getBirthDate()->format('d.m.Y') === $imageAnnotations->getBirthDate()
+            && mb_strtoupper($adherent->getLastName()) === mb_strtoupper($imageAnnotations->getLastName())
+            && $birthDate
+            && $adherent->getBirthDate()->format('Y-m-d') === $birthDate->format('Y-m-d')
         ;
+    }
+
+    private function isDocumentReadableByOcr(CertificationRequest $certificationRequest): bool
+    {
+        return \in_array($certificationRequest->getDocumentMimeType(), self::READABLE_DOCUMENT_MIME_TYPES, true);
     }
 }

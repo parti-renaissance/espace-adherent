@@ -40,8 +40,10 @@ class VisionHandler
         return $webEntities;
     }
 
-    private function getFullTextAnnotation(string $filePath): string
+    private function getFullTextAnnotation(string $filePath): ?string
     {
-        return $this->imageAnnotatorClient->getFullTextAnnotation($filePath)->getText();
+        $annotations = $this->imageAnnotatorClient->getFullTextAnnotation($filePath);
+
+        return $annotations ? $annotations->getText() : null;
     }
 }
