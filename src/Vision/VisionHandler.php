@@ -38,14 +38,14 @@ class VisionHandler
 
     private function getWebEntities(string $filePath): array
     {
-        $webEntities = $this->imageAnnotatorClient->getWebEntities($filePath);
+        $guessedWebEntities = $this->imageAnnotatorClient->getWebEntities($filePath);
 
-        if (!$webEntities) {
+        if (!$guessedWebEntities) {
             return [];
         }
 
         $webEntities = [];
-        foreach ($webEntities as $webEntity) {
+        foreach ($guessedWebEntities as $webEntity) {
             $webEntities[] = $webEntity->getDescription();
         }
 
