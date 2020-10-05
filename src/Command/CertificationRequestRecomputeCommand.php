@@ -38,7 +38,7 @@ class CertificationRequestRecomputeCommand extends Command
     protected function configure()
     {
         $this
-            ->addOption('date', null, InputOption::VALUE_REQUIRED, 'Interval in hours (format: YYYY-MM-DD)', 'now')
+            ->addOption('date', null, InputOption::VALUE_REQUIRED, 'Certification request creation date (format: YYYY-MM-DD, default: now)', 'now')
             ->setDescription('Recompute certification requests for a given date.')
         ;
     }
@@ -50,7 +50,7 @@ class CertificationRequestRecomputeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $date = new \DateTime($input->getOption('date'));
+        $date = \DateTime::createFromFormat('Y-m-d', $input->getOption('date'));
 
         /** @var CertificationRequest[]|iterable $certificationRequests */
         $certificationRequests = $this->certificationRequestRepository->findAllForDate($date);
