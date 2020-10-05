@@ -25,7 +25,7 @@ class ImageAnnotations
      */
     private $text;
 
-    public function __construct(array $labels, array $webEntities, string $text)
+    public function __construct(array $labels, array $webEntities, ?string $text)
     {
         $this->labels = $labels;
         $this->webEntities = $webEntities;
@@ -52,12 +52,12 @@ class ImageAnnotations
         $this->webEntities = $webEntities;
     }
 
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
 
-    public function setText(string $text): void
+    public function setText(?string $text): void
     {
         $this->text = $text;
     }
