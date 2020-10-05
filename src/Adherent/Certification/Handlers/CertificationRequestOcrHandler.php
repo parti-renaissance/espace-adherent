@@ -72,10 +72,7 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     {
         $adherent = $certificationRequest->getAdherent();
 
-        $firstNames = array_map(function (string $firstName) {
-            return mb_strtoupper($firstName);
-        }, $imageAnnotations->getFirstNames());
-
+        $firstNames = array_map('trim', $imageAnnotations->getFirstNames());
         $birthDate = $imageAnnotations->getBirthDate();
 
         return \in_array(mb_strtoupper($adherent->getFirstName()), $firstNames, true)
