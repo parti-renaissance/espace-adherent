@@ -6,6 +6,7 @@ use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
 use App\Vision\ImageAnnotations;
 use App\Vision\VisionHandler;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -19,12 +20,18 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     private $em;
     private $visionHandler;
     private $serializer;
+    private $slugify;
 
-    public function __construct(EntityManagerInterface $em, VisionHandler $visionHandler, ObjectNormalizer $normalizer)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        VisionHandler $visionHandler,
+        ObjectNormalizer $normalizer,
+        Slugify $slugify
+    ) {
         $this->em = $em;
         $this->visionHandler = $visionHandler;
         $this->serializer = $normalizer;
+        $this->slugify = $slugify;
     }
 
     public function getPriority(): int
@@ -79,11 +86,14 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     {
         $adherent = $certificationRequest->getAdherent();
 
-        $firstNames = array_map('trim', $imageAnnotations->getFirstNames());
+        $firstNames = array_map(function (string $firstName) {
+            return $this->normalize($firstName);
+        }, $imageAnnotations->getFirstNames());
+
         $birthDate = $imageAnnotations->getBirthDate();
 
-        return \in_array(mb_strtoupper($adherent->getFirstName()), $firstNames, true)
-            && mb_strtoupper($adherent->getLastName()) === mb_strtoupper($imageAnnotations->getLastName())
+        return \in_array($this->normalize($adherent->getFirstName()), $firstNames, true)
+            && $this->normalize($adherent->getLastName()) === $this->normalize($imageAnnotations->getLastName())
             && $birthDate
             && $adherent->getBirthDate()->format('Y-m-d') === $birthDate->format('Y-m-d')
         ;
@@ -92,5 +102,10 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     private function isDocumentReadableByOcr(CertificationRequest $certificationRequest): bool
     {
         return \in_array($certificationRequest->getDocumentMimeType(), self::READABLE_DOCUMENT_MIME_TYPES, true);
+    }
+
+    private function normalize(?string $str): string
+    {
+        return $this->slugify->slugify(trim($str));
     }
 }
