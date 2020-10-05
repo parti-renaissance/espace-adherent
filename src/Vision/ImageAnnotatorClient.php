@@ -46,7 +46,7 @@ class ImageAnnotatorClient
         return $this->webDetections[$filePath];
     }
 
-    public function getFullTextAnnotation(string $filePath): TextAnnotation
+    public function getFullTextAnnotation(string $filePath): ?TextAnnotation
     {
         if (!\array_key_exists($filePath, $this->textAnnotations)) {
             $response = $this->client->documentTextDetection($this->storage->read($filePath));
