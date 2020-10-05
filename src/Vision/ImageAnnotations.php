@@ -98,6 +98,6 @@ class ImageAnnotations
             return null;
         }
 
-        return \DateTime::createFromFormat('d.m.Y', $matches['birth_date']);
+        return \DateTime::createFromFormat('d.m.Y', str_replace(' ', '.', $matches['birth_date']));
     }
 }
