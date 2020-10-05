@@ -76,7 +76,7 @@ class ImageAnnotations
 
     public function getFirstNames(): array
     {
-        preg_match('/\\nPrénom( )?\(s\):( )?(?<first_names>.+)\\n/', $this->text, $matches);
+        preg_match('/Prénom( )?\(s\)( )?:( )?(?<first_names>.+)\\n/', $this->text, $matches);
 
         return array_map(function (string $firstName) {
             return trim($firstName);
@@ -85,14 +85,14 @@ class ImageAnnotations
 
     public function getLastName(): ?string
     {
-        preg_match('/\\nNom( )?:( )?(?<last_name>.+)\\n/', $this->text, $matches);
+        preg_match('/Nom( )?:( )?(?<last_name>.+)\\n/', $this->text, $matches);
 
         return $matches['last_name'] ?? null;
     }
 
     public function getBirthDate(): ?\DateTime
     {
-        preg_match('/\\n(?<birth_date>[\d]{2}\.[\d]{2}\.[\d]{4})\\n/', $this->text, $matches);
+        preg_match('/(?<birth_date>[\d]{2}[\. ][\d]{2}[\. ][\d]{4})/', $this->text, $matches);
 
         if (!isset($matches['birth_date']) || !$matches['birth_date']) {
             return null;
