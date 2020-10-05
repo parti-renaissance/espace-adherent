@@ -38,6 +38,19 @@
         -webkit-transition: opacity .125s ease-in-out;
         font-family: $font-roboto;
 
+        &-small {
+            top: -35px;
+            left: -60px;
+            width: 150px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        &-reversed {
+            background: $dark;
+            color: $white;
+        }
+
         div {
             font-size: 18px;
             color: #000;

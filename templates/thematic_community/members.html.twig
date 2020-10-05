@@ -83,8 +83,19 @@
                                 {{ member.joinedAt|date('d/m/Y H:i') }}
                             </td>
                             <td>
-                                {{ include('components/_sms_icon.svg.twig', {enabled: member.hasSmsSubscriptionType}) }}
-                                {{ include('components/_email_icon.svg.twig', {enabled: member.hasEmailSubscriptionType}) }}
+                                <div class="em-tooltip">
+                                    {{ include('components/_sms_icon.svg.twig', {enabled: member.hasSmsSubscriptionType}) }}
+                                    <div class="em-tooltip--content em-tooltip--content-small em-tooltip--content-reversed">
+                                        <p>{{ member.hasSmsSubscriptionType ? 'Abonné' : 'Non abonné' }} SMS</p>
+                                    </div>
+                                </div>
+
+                                <div class="em-tooltip">
+                                    {{ include('components/_email_icon.svg.twig', {enabled: member.hasEmailSubscriptionType}) }}
+                                    <div class="em-tooltip--content em-tooltip--content-small em-tooltip--content-reversed">
+                                        <p>{{ member.hasEmailSubscriptionType ? 'Abonné' : 'Non abonné' }} Email</p>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     {% else %}
