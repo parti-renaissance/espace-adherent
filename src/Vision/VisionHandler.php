@@ -22,8 +22,14 @@ class VisionHandler
 
     private function getBestGuessLabels(string $filePath): array
     {
+        $bestGuessLabels = $this->imageAnnotatorClient->getBestGuessLabels($filePath);
+
+        if (!$bestGuessLabels) {
+            return [];
+        }
+
         $labels = [];
-        foreach ($this->imageAnnotatorClient->getBestGuessLabels($filePath) as $label) {
+        foreach ($bestGuessLabels as $label) {
             $labels[] = $label->getLabel();
         }
 
@@ -32,8 +38,14 @@ class VisionHandler
 
     private function getWebEntities(string $filePath): array
     {
+        $webEntities = $this->imageAnnotatorClient->getWebEntities($filePath);
+
+        if (!$webEntities) {
+            return [];
+        }
+
         $webEntities = [];
-        foreach ($this->imageAnnotatorClient->getWebEntities($filePath) as $webEntity) {
+        foreach ($webEntities as $webEntity) {
             $webEntities[] = $webEntity->getDescription();
         }
 

@@ -25,17 +25,21 @@ class ImageAnnotatorClient
         $this->storage = $storage;
     }
 
-    public function getBestGuessLabels(string $filePath): RepeatedField
+    public function getBestGuessLabels(string $filePath): ?RepeatedField
     {
-        return $this->getWebDetection($filePath)->getBestGuessLabels();
+        $webDetection = $this->getWebDetection($filePath);
+
+        return $webDetection ? $webDetection->getBestGuessLabels() : null;
     }
 
-    public function getWebEntities(string $filePath): RepeatedField
+    public function getWebEntities(string $filePath): ?RepeatedField
     {
-        return $this->getWebDetection($filePath)->getWebEntities();
+        $webDetection = $this->getWebDetection($filePath);
+
+        return $webDetection ? $webDetection->getWebEntities() : null;
     }
 
-    public function getWebDetection(string $filePath): WebDetection
+    public function getWebDetection(string $filePath): ?WebDetection
     {
         if (!\array_key_exists($filePath, $this->webDetections)) {
             $response = $this->client->webDetection($this->storage->read($filePath));
