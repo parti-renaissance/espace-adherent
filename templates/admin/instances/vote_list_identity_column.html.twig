@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if value is null %}
+        <small><i>adhérent supprimé</i></small>
+    {% else %}
+        <a href="{{ path('admin_app_adherent_edit', {id: value.id}) }}">{{ value.fullName }}</a>
+    {% endif %}
+{% endblock %}
