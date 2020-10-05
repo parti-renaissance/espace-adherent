@@ -11,6 +11,11 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CertificationRequestOcrHandler implements CertificationRequestHandlerInterface
 {
+    private const READABLE_DOCUMENT_MIME_TYPES = [
+        'image/jpeg',
+        'image/png',
+    ];
+
     private $em;
     private $visionHandler;
     private $serializer;
@@ -29,7 +34,9 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
 
     public function supports(CertificationRequest $certificationRequest): bool
     {
-        return $certificationRequest->isPending();
+        return $certificationRequest->isPending()
+            && $this->isDocumentReadableByOcr($certificationRequest)
+        ;
     }
 
     public function handle(CertificationRequest $certificationRequest): void
@@ -80,5 +87,10 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
             && $birthDate
             && $adherent->getBirthDate()->format('Y-m-d') === $birthDate->format('Y-m-d')
         ;
+    }
+
+    private function isDocumentReadableByOcr(CertificationRequest $certificationRequest): bool
+    {
+        return \in_array($certificationRequest->getDocumentMimeType(), self::READABLE_DOCUMENT_MIME_TYPES, true);
     }
 }
