@@ -57,12 +57,14 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
             ])
             ->add('designation', null, [
                 'label' => 'Désignation',
+                'show_filter' => true,
                 'field_options' => [
                     'choice_label' => 'label',
                 ],
             ])
             ->add('electionEntity.committee', ModelAutocompleteFilter::class, [
                 'label' => 'Comité',
+                'show_filter' => true,
                 'field_options' => [
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
@@ -71,6 +73,7 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
             ])
             ->add('electionEntity.territorialCouncil', ModelAutocompleteFilter::class, [
                 'label' => 'CoTerr',
+                'show_filter' => true,
                 'field_options' => [
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
@@ -184,5 +187,13 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                 'template' => 'admin/instances/election_list_details_column.html.twig',
             ])
         ;
+    }
+
+    protected function configureDefaultFilterValues(array &$filterValues)
+    {
+        $filterValues = array_merge($filterValues, [
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'designation.voteStartDate',
+        ]);
     }
 }

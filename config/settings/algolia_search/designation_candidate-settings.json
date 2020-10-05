@@ -10,6 +10,7 @@
     "unretrievableAttributes": null,
     "optionalWords": null,
     "attributesForFaceting": [
+        "filterOnly(id)",
         "filterOnly(designation.id)",
         "filterOnly(election_entity.committee_id)",
         "filterOnly(election_entity.territorial_council_id)",

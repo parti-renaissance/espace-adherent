@@ -1,5 +1,23 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    ~
+    {% set results = get_election_candidate_result(object.adherent_id, object.designation.id, object.election_entity.committee_id ?? null, object.election_entity.territorial_council_id ?? null) %}
+
+    {% if results|length %}
+        <a href="#">
+    {% endif %}
+
+    {% for index in [0, 1] %}
+        {% if results[index] is defined %}
+            {{ results[index].total }}
+        {% else %}
+            ~
+        {% endif %}
+
+        {{ index != 1 ? ' / ' }}
+    {% endfor %}
+
+    {% if results|length %}
+        </a>
+    {% endif %}
 {% endblock %}
