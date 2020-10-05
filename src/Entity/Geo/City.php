@@ -8,10 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Geo\CityRepository")
  * @ORM\Table(name="geo_city")
  */
-class City implements CollectivityInterface
+class City implements ZoneableInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
@@ -39,6 +39,14 @@ class City implements CollectivityInterface
     private $department;
 
     /**
+     * @var District|null
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\District", inversedBy="cities", cascade={"persist"})
+     * @ORM\JoinTable(name="geo_city_district")
+     */
+    private $districts;
+
+    /**
      * @var Canton[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Canton", inversedBy="cities")
@@ -50,22 +58,14 @@ class City implements CollectivityInterface
      * @var CityCommunity|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\CityCommunity")
-     * @ORM\JoinColumn(nullable=true)
      */
     private $cityCommunity;
-
-    /**
-     * @var District|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\District")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $district;
 
     public function __construct(string $code, string $name)
     {
         $this->code = $code;
         $this->name = $name;
+        $this->districts = new ArrayCollection();
         $this->cantons = new ArrayCollection();
     }
 
@@ -105,12 +105,37 @@ class City implements CollectivityInterface
         $this->department = $department;
     }
 
-    /**
-     * @return Canton[]|Collection
-     */
-    public function getCantons(): Collection
+    public function getDistricts(): array
     {
-        return $this->cantons;
+        return $this->districts->toArray();
+    }
+
+    public function addDistrict(?District $district): void
+    {
+        $this->districts->contains($district) || $this->districts->add($district);
+    }
+
+    public function clearDistricts(): void
+    {
+        $this->districts->clear();
+    }
+
+    /**
+     * @return Canton[]
+     */
+    public function getCantons(): array
+    {
+        return $this->cantons->toArray();
+    }
+
+    public function addCanton(Canton $canton): void
+    {
+        $this->cantons->contains($canton) || $this->cantons->add($canton);
+    }
+
+    public function clearCantons(): void
+    {
+        $this->cantons->clear();
     }
 
     public function getCityCommunity(): ?CityCommunity
@@ -123,31 +148,35 @@ class City implements CollectivityInterface
         $this->cityCommunity = $cityCommunity;
     }
 
-    public function getDistrict(): ?District
-    {
-        return $this->district;
-    }
-
-    public function setDistrict(?District $district): void
-    {
-        $this->district = $district;
-    }
-
     public function getParents(): array
     {
-        $parents = [];
+        $toMerge = [];
 
-        $parents[] = $department = $this->getDepartment();
-        if ($department) {
-            $parents = array_merge($parents, $department->getParents());
+        if ($this->department) {
+            $toMerge[] = [$this->department];
+            $toMerge[] = $this->department->getParents();
         }
 
-        $cantons = $this->getCantons();
-        foreach ($cantons as $canton) {
-            $parents[] = $canton;
-            $parents = array_merge($parents, $canton->getParents());
+        foreach ($this->districts as $district) {
+            $toMerge[] = [$district];
+            $toMerge[] = $district->getParents();
         }
 
-        return $this->sanitizeEntityList($parents);
+        foreach ($this->cantons as $canton) {
+            $toMerge[] = [$canton];
+            $toMerge[] = $canton->getParents();
+        }
+
+        if ($this->cityCommunity) {
+            $toMerge[] = [$this->cityCommunity];
+            $toMerge[] = $this->cityCommunity->getParents();
+        }
+
+        return $toMerge ? array_values(array_unique(array_merge(...$toMerge))) : [];
+    }
+
+    public function getZoneType(): string
+    {
+        return Zone::CITY;
     }
 }

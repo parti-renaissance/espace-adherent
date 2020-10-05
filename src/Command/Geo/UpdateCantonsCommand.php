@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ZipArchive;
 
-final class UpdateCantonCommand extends Command
+final class UpdateCantonsCommand extends Command
 {
     private const CANTONS_SOURCE = 'https://www.insee.fr/fr/statistiques/fichier/4316069/canton2020-csv.zip';
     private const CANTONS_FILENAME = 'canton2020.csv';
@@ -29,7 +29,7 @@ final class UpdateCantonCommand extends Command
     private const CANTON_TYPES = ['C', 'V'];
     private const CITY_TYPES = ['COM'];
 
-    protected static $defaultName = 'app:geo:update-canton';
+    protected static $defaultName = 'app:geo:update-cantons';
 
     /**
      * @var HttpClientInterface
@@ -63,7 +63,7 @@ final class UpdateCantonCommand extends Command
     {
         $this
             ->setDescription('Update french cantons according to INSEE data')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm without persisting any data.')
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
         ;
     }
 
@@ -99,12 +99,12 @@ final class UpdateCantonCommand extends Command
             "It erases links to cities because we'll rebuild them in the following steps",
         ]);
 
-        $entities = $this->em->getRepository(Canton::class)->findAll();
-        foreach ($entities as $entity) {
-            $key = Canton::class.'#'.$entity->getCode();
-            $this->entities->set($key, $entity);
-            $entity->getCities()->clear();
-            $entity->activate(false);
+        $cantons = $this->em->getRepository(Canton::class)->findAll();
+        foreach ($cantons as $canton) {
+            $key = Canton::class.'#'.$canton->getCode();
+            $this->entities->set($key, $canton);
+            $canton->clearCities();
+            $canton->activate(false);
         }
     }
 
@@ -113,11 +113,11 @@ final class UpdateCantonCommand extends Command
         $this->io->section('Fetching cities from database');
         $this->io->comment("It erases links to cantons because we'll rebuild them in the following steps");
 
-        $entities = $this->em->getRepository(City::class)->findAll();
-        foreach ($entities as $entity) {
-            $key = City::class.'#'.$entity->getCode();
-            $this->entities->set($key, $entity);
-            $entity->getCantons()->clear();
+        $cities = $this->em->getRepository(City::class)->findAll();
+        foreach ($cities as $city) {
+            $key = City::class.'#'.$city->getCode();
+            $this->entities->set($key, $city);
+            $city->clearCantons();
         }
     }
 
@@ -158,7 +158,7 @@ final class UpdateCantonCommand extends Command
             // Links canton to its main city
             $city = $row['burcentral'] ? $this->retrieveCity($row['burcentral']) : null;
             if ($city) {
-                $this->linkCityToCanton($city, $canton);
+                $canton->addCity($city);
             }
         }
 
@@ -189,27 +189,17 @@ final class UpdateCantonCommand extends Command
 
             // Skips non-existing canton
             // That's not the place to create it
+            /* @var Canton $canton */
             $canton = $this->entities->get(Canton::class.'#'.$row['can']);
             if (!$canton) {
                 continue;
             }
 
             // Links them
-            $this->linkCityToCanton($city, $canton);
+            $canton->addCity($city);
         }
 
         fclose($file);
-    }
-
-    private function linkCityToCanton(City $city, Canton $canton): void
-    {
-        if (!$city->getCantons()->contains($canton)) {
-            $city->getCantons()->add($canton);
-        }
-
-        if (!$canton->getCities()->contains($city)) {
-            $canton->getCities()->add($city);
-        }
     }
 
     private function retrieveCity(string $code): ?City

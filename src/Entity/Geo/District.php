@@ -3,16 +3,25 @@
 namespace App\Entity\Geo;
 
 use App\Entity\EntityTimestampableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="geo_district")
  */
-class District implements CollectivityInterface
+class District implements ZoneableInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="smallint")
+     */
+    private $number;
 
     /**
      * @var Department
@@ -22,11 +31,25 @@ class District implements CollectivityInterface
      */
     private $department;
 
-    public function __construct(string $code, string $name, Department $department)
+    /**
+     * @var Collection|City[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\City", mappedBy="districts")
+     */
+    private $cities;
+
+    public function __construct(string $code, string $name, int $number, Department $department)
     {
         $this->code = $code;
         $this->name = $name;
+        $this->number = $number;
         $this->department = $department;
+        $this->cities = new ArrayCollection();
+    }
+
+    public function getNumber(): int
+    {
+        return $this->number;
     }
 
     public function getDepartment(): Department
@@ -34,9 +57,25 @@ class District implements CollectivityInterface
         return $this->department;
     }
 
-    public function setDepartment(Department $department): void
+    /**
+     * @return City[]
+     */
+    public function getCities(): array
     {
-        $this->department = $department;
+        return $this->cities->toArray();
+    }
+
+    public function addCity(City $city): void
+    {
+        if (!$this->cities->contains($city)) {
+            $this->cities->add($city);
+            $city->addDistrict($this);
+        }
+    }
+
+    public function clearCities(): void
+    {
+        $this->cities->clear();
     }
 
     public function getParents(): array
@@ -48,6 +87,11 @@ class District implements CollectivityInterface
             $parents = array_merge($parents, $department->getParents());
         }
 
-        return $this->sanitizeEntityList($parents);
+        return array_values(array_unique(array_filter($parents)));
+    }
+
+    public function getZoneType(): string
+    {
+        return Zone::DISTRICT;
     }
 }
