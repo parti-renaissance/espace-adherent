@@ -28,7 +28,7 @@ class NewsletterSubscriptionRepositoryTest extends WebTestCase
         $this->assertSame('ghi@en-marche-dev.fr', $managedByReferent[2]->getEmail());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class NewsletterSubscriptionRepositoryTest extends WebTestCase
         $this->repository = $this->getNewsletterSubscriptionRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

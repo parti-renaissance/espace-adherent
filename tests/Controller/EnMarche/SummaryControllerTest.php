@@ -75,14 +75,14 @@ class SummaryControllerTest extends WebTestCase
         $this->assertSame(0, $crawler->filter('.cv__skills--modify:contains("Modifier")')->count());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

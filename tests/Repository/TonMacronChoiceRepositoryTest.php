@@ -32,7 +32,7 @@ class TonMacronChoiceRepositoryTest extends WebTestCase
         $this->assertSame('31276b63-a4f3-4994-aca8-ed4ca78c173e', $conclusion->getUuid()->toString());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +40,7 @@ class TonMacronChoiceRepositoryTest extends WebTestCase
         $this->repository = $this->getTonMacronChoiceRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

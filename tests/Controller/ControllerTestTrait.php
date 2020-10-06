@@ -141,9 +141,9 @@ trait ControllerTestTrait
     ) {
         $message = $crawler->filter('.committee__timeline__message')->eq($position);
 
-        $this->assertContains($author, $message->filter('h3')->text());
+        $this->assertStringContainsString($author, $message->filter('h3')->text());
         $this->assertSame($role, $message->filter('h3 span')->text());
-        $this->assertContains($text, $message->filter('div')->first()->text());
+        $this->assertStringContainsString($text, $message->filter('div')->first()->text());
     }
 
     protected function assertHavePublishedMessage(string $queue, string $msgBody): void
@@ -222,7 +222,7 @@ trait ControllerTestTrait
             'legislatives' => $this->container->getParameter('legislatives_host'),
         ];
 
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts[$host]]);
+        $this->client = $this->makeClient(['HTTP_HOST' => $this->hosts[$host]]);
     }
 
     protected function kill()
@@ -233,13 +233,13 @@ trait ControllerTestTrait
         $this->hosts = [];
 
         if ($this->container) {
-            $this->cleanupContainer($this->container);
+//            $this->cleanupContainer($this->container);
             $this->container = null;
         }
 
-        foreach ($this->containers as $container) {
-            $this->cleanupContainer($container);
-        }
+//        foreach ($this->containers as $container) {
+//            $this->cleanupContainer($container);
+//        }
     }
 
     protected function getMessageRecorder(): MessageRecorderInterface

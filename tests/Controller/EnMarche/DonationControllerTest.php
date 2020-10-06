@@ -140,7 +140,7 @@ class DonationControllerTest extends WebTestCase
         $formNode = $crawler->filter('input[name=PBX_CMD]');
 
         if ($suffix = PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration())) {
-            $this->assertContains($suffix, $formNode->attr('value'));
+            $this->assertStringContainsString($suffix, $formNode->attr('value'));
         }
 
         /*
@@ -294,7 +294,7 @@ class DonationControllerTest extends WebTestCase
         $formNode = $crawler->filter('input[name=PBX_CMD]');
 
         if ($suffix = PayboxPaymentSubscription::getCommandSuffix($donation->getAmount(), $donation->getDuration())) {
-            $this->assertContains($suffix, $formNode->attr('value'));
+            $this->assertStringContainsString($suffix, $formNode->attr('value'));
         }
 
         /*
@@ -363,7 +363,7 @@ class DonationControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $retryUrl);
 
         $this->assertStatusCode(Response::HTTP_OK, $appClient);
-        $this->assertContains('Doe', $crawler->filter('input[name="app_donation[lastName]"]')->attr('value'), 'Retry should be prefilled.');
+        $this->assertStringContainsString('Doe', $crawler->filter('input[name="app_donation[lastName]"]')->attr('value'), 'Retry should be prefilled.');
     }
 
     /**
@@ -407,13 +407,13 @@ class DonationControllerTest extends WebTestCase
         $this->assertCount(1, $errors = $crawler->filter('.form__error'));
 
         $error = $errors->first()->text();
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Nous sommes désolés mais votre don ne peut pas être finalisé, '
             .'nous ne pouvons accepter que les dons des personnes ayant la nationalité française '
             .'ou le foyer fiscal en France.',
             $error
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'L’article 11-4 de la loi N° 88-227 du 11 mars 1988 '
             .'relative à la transparence financière de la vie politique énonce qu’ '
             .'« Une personne physique peut verser un don à un parti ou groupement politique '
@@ -480,7 +480,7 @@ class DonationControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -498,7 +498,7 @@ class DonationControllerTest extends WebTestCase
         $this->payboxProvider = $this->get(PayboxProvider::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

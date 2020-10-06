@@ -98,7 +98,7 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
         $this->assertSame(2, $this->getIndexer()->countForIndexByType(Theme::class));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -110,7 +110,7 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
         $this->manifestoRepository = $this->getRepository(Manifesto::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

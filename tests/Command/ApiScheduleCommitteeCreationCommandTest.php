@@ -13,8 +13,10 @@ class ApiScheduleCommitteeCreationCommandTest extends WebTestCase
     {
         $output = $this->runCommand('app:sync:committees');
 
-        $this->assertContains('Starting synchronization.', $output);
-        $this->assertContains('11/11', $output);
-        $this->assertContains('Successfully scheduled for synchronization!', $output);
+        $output = $output->getDisplay();
+
+        $this->assertStringContainsString('Starting synchronization.', $output);
+        $this->assertStringContainsString('11/11', $output);
+        $this->assertStringContainsString('Successfully scheduled for synchronization!', $output);
     }
 }

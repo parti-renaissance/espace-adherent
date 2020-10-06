@@ -223,7 +223,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         static::assertNull($volunteerRequest->getAssociativeCommitmentDetails());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -235,7 +235,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         $this->technicalSkillRepository = $this->getRepository(TechnicalSkill::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->runningMateRequestRepository = null;
         $this->volunteerRequestRepository = null;

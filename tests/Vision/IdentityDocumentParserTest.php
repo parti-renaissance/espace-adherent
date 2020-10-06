@@ -146,7 +146,7 @@ Date de dellvrang
 TXT, 'Rémi', 'Gardien', '1988-11-27'];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -155,7 +155,7 @@ TXT, 'Rémi', 'Gardien', '1988-11-27'];
         $this->parser = $this->get(IdentityDocumentParser::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

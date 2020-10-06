@@ -200,14 +200,14 @@ class CitizenProjectMessageNotifierTest extends TestCase
         return $manager;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->adherentRepository = $this->createMock(AdherentRepository::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->adherentRepository = null;
 

@@ -15,6 +15,8 @@ use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\MandateRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository;
+use App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException;
+use App\TerritorialCouncil\Exception\TerritorialCouncilQualityException;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\ValueObject\Genders;
 use Doctrine\DBAL\Connection;
@@ -38,7 +40,7 @@ class PoliticalCommitteeManagerTest extends TestCase
     /** @var PoliticalCommitteeManager */
     private $politicalCommitteeManager;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this
@@ -62,7 +64,7 @@ class PoliticalCommitteeManagerTest extends TestCase
         );
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->entityManager = null;
         $this->mandateRepository = null;
@@ -83,11 +85,9 @@ class PoliticalCommitteeManagerTest extends TestCase
         $this->assertSame($politicalCommittee, $membership->getPoliticalCommittee());
     }
 
-    /**
-     * @expectedException \App\TerritorialCouncil\Exception\TerritorialCouncilQualityException
-     */
     public function testCannotCreateMembershipWithInvalidQualityName(): void
     {
+        $this->expectException(TerritorialCouncilQualityException::class);
         $adherent = new Adherent();
         $politicalCommittee = new PoliticalCommittee('PC name', new TerritorialCouncil());
         $qualityName = 'invalid';
@@ -329,11 +329,9 @@ class PoliticalCommitteeManagerTest extends TestCase
         $this->assertSame(null, $adherent->getPoliticalCommitteeMembership());
     }
 
-    /**
-     * @expectedException \App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException
-     */
     public function testCannotCreateMayorOrLeaderMembershipIfNoTerritorialCouncilMembership(): void
     {
+        $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
         $adherent = $this->createAdherent();
 
@@ -345,11 +343,9 @@ class PoliticalCommitteeManagerTest extends TestCase
         $this->politicalCommitteeManager->createMayorOrLeaderMembership($territorialCouncil, $adherent);
     }
 
-    /**
-     * @expectedException \App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException
-     */
     public function testCannotCreateMayorOrLeaderMembershipIfAdherentHasAlreadyPoliticalCommitteeMembership(): void
     {
+        $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
         $adherent = $this->createAdherent();
         $adherent->setPoliticalCommitteeMembership(new PoliticalCommitteeMembership(new PoliticalCommittee('Test CoPol', new TerritorialCouncil())));
@@ -363,11 +359,9 @@ class PoliticalCommitteeManagerTest extends TestCase
         $this->politicalCommitteeManager->createMayorOrLeaderMembership($territorialCouncil, $adherent);
     }
 
-    /**
-     * @expectedException \App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException
-     */
     public function testCannotCreateMayorOrLeaderMembershipIfMaxNumberExceeded(): void
     {
+        $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
         $politicalCommittee = new PoliticalCommittee('Test CoPol', $territorialCouncil);
         $territorialCouncil->setPoliticalCommittee($politicalCommittee);
@@ -460,11 +454,9 @@ class PoliticalCommitteeManagerTest extends TestCase
         $this->assertFalse($adherent->getPoliticalCommitteeMembership()->hasQuality(TerritorialCouncilQualityEnum::MAYOR));
     }
 
-    /**
-     * @expectedException \App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException
-     */
     public function testCannotRemoveMayorOrLeaderMembershipIfNoTerritorialCouncil(): void
     {
+        $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
         $adherent = $this->createAdherent();
 
@@ -476,11 +468,9 @@ class PoliticalCommitteeManagerTest extends TestCase
         $this->politicalCommitteeManager->removeMayorOrLeaderMembership($territorialCouncil, $adherent);
     }
 
-    /**
-     * @expectedException \App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException
-     */
     public function testCannotRemoveMayorOrLeaderMembershipIfNoPoliticalCommitteeMembership(): void
     {
+        $this->expectException(PoliticalCommitteeMembershipException::class);
         $territorialCouncil = new TerritorialCouncil('Test TC', '999');
         $adherent = $this->createAdherent();
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership($territorialCouncil));

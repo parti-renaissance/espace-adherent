@@ -26,7 +26,7 @@ class ArticleFeedGeneratorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $this->markdownParser = $this->createMock(CommonMarkConverter::class);

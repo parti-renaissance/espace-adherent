@@ -42,7 +42,7 @@ class DeputyControllerTest extends WebTestCase
         $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('http://'.$this->hosts['app'].'/espace-depute/utilisateurs/message', $this->client->getRequest()->getUri());
+        $this->assertStringContainsString('http://'.$this->hosts['app'].'/espace-depute/utilisateurs/message', $this->client->getRequest()->getUri());
 
         $deputyMessages = $this
             ->deputyMessageRepository
@@ -89,7 +89,7 @@ class DeputyControllerTest extends WebTestCase
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -98,7 +98,7 @@ class DeputyControllerTest extends WebTestCase
         $this->deputyMessageRepository = $this->manager->getRepository(DeputyManagedUsersMessage::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -27,7 +27,7 @@ class ReferentTagManagerTest extends WebTestCase
      */
     private $referentTagRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->init();
 
@@ -35,7 +35,7 @@ class ReferentTagManagerTest extends WebTestCase
         $this->referentTagRepository = $this->getRepository(ReferentTag::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->referentTagManager = null;
 

@@ -106,7 +106,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         ];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -116,7 +116,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         $this->subscriber = new BindAdherentDistrictSubscriber($this->manager);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->manager = null;
         $this->districtRepository = null;

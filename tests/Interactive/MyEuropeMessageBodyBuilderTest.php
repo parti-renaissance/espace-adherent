@@ -113,14 +113,14 @@ EOF;
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->repository = $this->createMock(MyEuropeChoiceRepository::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->repository = null;
 

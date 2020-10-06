@@ -19,7 +19,7 @@ class AdminTerritorialCouncilControllerTest extends WebTestCase
 
     private $territorialCouncilRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class AdminTerritorialCouncilControllerTest extends WebTestCase
         $this->territorialCouncilRepository = $this->getTerritorialCouncilRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
@@ -49,7 +49,7 @@ class AdminTerritorialCouncilControllerTest extends WebTestCase
             \sprintf('/admin/territorialcouncil/%s/members/%s/%s-membership', $territorialCouncil->getId(), $adherent->getId(), 'invalid_action')
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
-        $this->assertContains('Action &quot;invalid_action&quot; is not authorized', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Action &quot;invalid_action&quot; is not authorized', $this->client->getResponse()->getContent());
     }
 
     /**
@@ -67,7 +67,7 @@ class AdminTerritorialCouncilControllerTest extends WebTestCase
             \sprintf('/admin/territorialcouncil/%s/members/%s/%s-membership', $territorialCouncil->getId(), $adherent->getId(), $action)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
-        $this->assertContains('Invalid Csrf token provided.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Invalid Csrf token provided.', $this->client->getResponse()->getContent());
     }
 
     public function provideActions(): iterable

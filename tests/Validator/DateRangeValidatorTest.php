@@ -5,15 +5,14 @@ namespace Tests\App\Validator;
 use App\Validator\DateRange;
 use App\Validator\DateRangeValidator;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class DateRangeValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     */
     public function testStartDateFieldIsNotReadableThrowsException(): void
     {
+        $this->expectException(ConstraintDefinitionException::class);
         $this->validator->validate(new \stdClass(), new DateRange([
             'startDateField' => 'foo',
             'endDateField' => 'bar',
@@ -21,11 +20,9 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         ]));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     */
     public function testInvalidStartDateThrowsException(): void
     {
+        $this->expectException(ConstraintDefinitionException::class);
         $object = new \stdClass();
 
         $object->foo = true;
@@ -38,11 +35,9 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         ]));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     */
     public function testEndDateFieldIsNotReadableThrowsException(): void
     {
+        $this->expectException(ConstraintDefinitionException::class);
         $object = new \stdClass();
         $object->foo = true;
 
@@ -53,11 +48,9 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         ]));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     */
     public function testInvalidEndDateThrowsException(): void
     {
+        $this->expectException(ConstraintDefinitionException::class);
         $object = new \stdClass();
 
         $object->foo = new \DateTime();

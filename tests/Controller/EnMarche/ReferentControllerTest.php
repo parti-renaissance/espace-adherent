@@ -167,7 +167,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Le nouvel événement institutionnel a bien été créé.',
             $this->client->getCrawler()->filter('div.flash--info')->html()
         );
@@ -344,8 +344,8 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
-        $this->assertContains('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
 
         // filter supervisors
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -359,7 +359,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(0, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertContains('Brioul Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Brioul Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
 
         // filter newsletter subscriptions
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -372,8 +372,8 @@ class ReferentControllerTest extends WebTestCase
 
         $this->assertCount(5, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
 
         // exclude
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -386,8 +386,8 @@ class ReferentControllerTest extends WebTestCase
 
         $this->assertCount(3, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('8057', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('8057', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
 
         // filter adherents in no committee
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -402,11 +402,11 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
-        $this->assertContains('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('Brioul', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertContains('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertContains('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertStringContainsString('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('Brioul', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
 
         // filter adherents in committees
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -420,7 +420,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
-        $this->assertContains('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
 
         // filter adherents in CP
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -507,7 +507,7 @@ class ReferentControllerTest extends WebTestCase
         return ucfirst(strtolower($formatter->format($date).'h00'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -518,7 +518,7 @@ class ReferentControllerTest extends WebTestCase
         $this->disableRepublicanSilence();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

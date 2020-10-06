@@ -87,7 +87,7 @@ class ProcurationManagerTest extends WebTestCase
         yield ['aurelie.baume@example.gb ', []];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -97,7 +97,7 @@ class ProcurationManagerTest extends WebTestCase
         $this->procurationManager = $this->get(ProcurationManager::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

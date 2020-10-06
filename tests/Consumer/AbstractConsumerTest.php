@@ -28,7 +28,7 @@ class AbstractConsumerTest extends TestCase
      */
     private $entityManager;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $this->validator = $this->createMock(ValidatorInterface::class);

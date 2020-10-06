@@ -95,7 +95,7 @@ class GroupUtilsTest extends WebTestCase
         $this->assertCount(\count($adherents), $uuids);
 
         foreach ($uuids as $uuid) {
-            $this->assertInternalType('string', $uuid);
+            $this->assertIsString($uuid);
             $this->assertTrue(Uuid::isValid($uuid));
         }
     }
@@ -114,14 +114,14 @@ class GroupUtilsTest extends WebTestCase
         GroupUtils::getUuidsFromAdherents('this is not an iterable value');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->container = $this->getContainer();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

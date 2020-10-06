@@ -19,7 +19,7 @@ class MailerConsumerTest extends TestCase
     private $validator;
     private $entityManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entityManager = $this->createConfiguredMock(EntityManagerInterface::class, [
             'getConnection' => $this->createMock(Connection::class),

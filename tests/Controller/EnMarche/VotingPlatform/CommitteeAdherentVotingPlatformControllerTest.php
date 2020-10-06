@@ -53,7 +53,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
-        $this->assertContains('Désignation du binôme d’adhérents siégeant au Conseil territorial', $crawler->filter('.introduction-header h1')->text());
+        $this->assertStringContainsString('Désignation du binôme d’adhérents siégeant au Conseil territorial', $crawler->filter('.introduction-header h1')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Soumettre mon vote')->link());
 
@@ -68,7 +68,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
 
         $this->client->submit($form);
 
-        $this->assertContains('Cette valeur ne doit pas être vide.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Cette valeur ne doit pas être vide.', $this->client->getResponse()->getContent());
 
         $crawler = $this->client->submit($form, ['election_candidates' => [
             'poolChoice' => $candidates[0],
@@ -82,11 +82,11 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
             'poolChoice' => '-1',
         ]]);
 
-        self::assertContains('Confirmez-vous votre bulletin ?', $this->client->getResponse()->getContent());
+        self::assertStringContainsString('Confirmez-vous votre bulletin ?', $this->client->getResponse()->getContent());
 
         $this->client->submit($crawler->selectButton('Confirmer mon vote')->form());
 
-        self::assertContains('Félicitations, vos bulletins sont dans l\'urne !', $this->client->getResponse()->getContent());
+        self::assertStringContainsString('Félicitations, vos bulletins sont dans l\'urne !', $this->client->getResponse()->getContent());
 
         $crawler = $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
@@ -96,7 +96,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
         $this->assertStringEndsWith('/comites/en-marche-comite-de-evry', $crawler->getUri());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

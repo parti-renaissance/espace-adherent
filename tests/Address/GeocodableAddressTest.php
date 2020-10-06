@@ -25,10 +25,10 @@ class GeocodableAddressTest extends TestCase
 
         $geocodableAddress = GeocodableAddress::createFromAddress($address);
 
-        $this->assertContains($addressStr, (string) $geocodableAddress);
-        $this->assertContains('Arcueil', (string) $geocodableAddress);
-        $this->assertContains($postalCode, (string) $geocodableAddress);
-        $this->assertContains($country, (string) $geocodableAddress);
+        $this->assertStringContainsString($addressStr, (string) $geocodableAddress);
+        $this->assertStringContainsString('Arcueil', (string) $geocodableAddress);
+        $this->assertStringContainsString($postalCode, (string) $geocodableAddress);
+        $this->assertStringContainsString($country, (string) $geocodableAddress);
         $this->assertSame('23 rue Ernest Renan, 94110 Arcueil, FR', (string) $geocodableAddress);
     }
 }

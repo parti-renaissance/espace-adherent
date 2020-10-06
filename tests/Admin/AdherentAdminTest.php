@@ -133,10 +133,10 @@ class AdherentAdminTest extends WebTestCase
 
         $this->client->submit($crawler->selectButton('Confirmer')->form());
 
-        $this->assertContains(sprintf('L\'adhérent <b>%s</b> a bien été exclu', $adherent->getFullName()), $this->client->getResponse()->getContent());
+        $this->assertStringContainsString(sprintf('L\'adhérent <b>%s</b> a bien été exclu', $adherent->getFullName()), $this->client->getResponse()->getContent());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -145,7 +145,7 @@ class AdherentAdminTest extends WebTestCase
         $this->adherentRepository = $this->getAdherentRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

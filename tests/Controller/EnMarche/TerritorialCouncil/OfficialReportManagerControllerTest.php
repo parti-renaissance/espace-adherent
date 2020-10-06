@@ -37,12 +37,12 @@ class OfficialReportManagerControllerTest extends WebTestCase
         self::assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         self::assertCount(2, $crawler->filter('tbody tr.official-report'));
-        self::assertContains('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(0)->text());
-        self::assertContains('Deuxième PV 75', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(1)->text());
-        self::assertContains('15/10/2020 15:15', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(2)->text());
-        self::assertContains('20/10/2020 10:20', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(3)->text());
-        self::assertContains('2', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(4)->text());
-        self::assertContains('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(5)->text());
+        self::assertStringContainsString('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(0)->text());
+        self::assertStringContainsString('Deuxième PV 75', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(1)->text());
+        self::assertStringContainsString('15/10/2020 15:15', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(2)->text());
+        self::assertStringContainsString('20/10/2020 10:20', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(3)->text());
+        self::assertStringContainsString('2', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(4)->text());
+        self::assertStringContainsString('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(5)->text());
     }
 
     /**
@@ -173,11 +173,11 @@ class OfficialReportManagerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/instances/proces-verbaux');
 
         self::assertCount(2, $crawler->filter('tbody tr.official-report'));
-        self::assertContains('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(0)->text());
-        self::assertContains('10/10/2020 10:10', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(2)->text());
-        self::assertContains('', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(3)->text());
-        self::assertContains('1', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(4)->text());
-        self::assertContains('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(5)->text());
+        self::assertStringContainsString('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(0)->text());
+        self::assertStringContainsString('10/10/2020 10:10', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(2)->text());
+        self::assertStringContainsString('', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(3)->text());
+        self::assertStringContainsString('1', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(4)->text());
+        self::assertStringContainsString('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(5)->text());
 
         $creationLink = $crawler->selectLink('Modifier');
 
@@ -194,7 +194,6 @@ class OfficialReportManagerControllerTest extends WebTestCase
         );
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $politicalCommittee = $this->getPoliticalCommitteeRepository()->findOneBy(['name' => 'CoPol de Paris (75)']);
         $files = [
             'official_report' => [
                 'error' => ['file' => \UPLOAD_ERR_OK],
@@ -214,10 +213,10 @@ class OfficialReportManagerControllerTest extends WebTestCase
 
         self::assertStatusCode(Response::HTTP_OK, $this->client);
         self::assertCount(2, $crawler->filter('tbody tr.official-report'));
-        self::assertContains('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(0)->text());
-        self::assertContains('10/10/2020 10:10', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(2)->text());
-        self::assertContains('2', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(4)->text());
-        self::assertContains('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(5)->text());
+        self::assertStringContainsString('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(0)->text());
+        self::assertStringContainsString('10/10/2020 10:10', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(2)->text());
+        self::assertStringContainsString('2', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(4)->text());
+        self::assertStringContainsString('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(5)->text());
     }
 
     public function provideAdherentsWithNoAccess(): iterable
@@ -233,14 +232,14 @@ class OfficialReportManagerControllerTest extends WebTestCase
         yield ['referent-child@en-marche-dev.fr'];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -80,14 +80,14 @@ class ReferentMessageControllerTest extends WebTestCase
         self::assertSame(sprintf('/espace-referent/messagerie/%s/filtrer', $uuid), $buttons->eq(1)->attr('href'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -19,7 +19,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
 
     private $tcMembershipLogRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
         $this->tcMembershipLogRepository = $this->getRepository(TerritorialCouncilMembershipLog::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
@@ -48,7 +48,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
             \sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), 'incorrect_status')
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
-        $this->assertContains('Status &quot;incorrect_status&quot; is not authorized', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Status &quot;incorrect_status&quot; is not authorized', $this->client->getResponse()->getContent());
     }
 
     /**
@@ -65,7 +65,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
             \sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), $status)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
-        $this->assertContains($isResolved ? 'Ce log n&#039;est pas encore résolu.' : 'Ce log est déjà résolu.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString($isResolved ? 'Ce log n&#039;est pas encore résolu.' : 'Ce log est déjà résolu.', $this->client->getResponse()->getContent());
     }
 
     /**
@@ -82,7 +82,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
             \sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), $status)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
-        $this->assertContains('Invalid Csrf token provided.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Invalid Csrf token provided.', $this->client->getResponse()->getContent());
     }
 
     public function provideStatus(): iterable

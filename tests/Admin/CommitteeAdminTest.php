@@ -37,7 +37,7 @@ class CommitteeAdminTest extends WebTestCase
         $this->assertMessageIsDispatched(CreateStaticSegmentCommand::class);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -46,7 +46,7 @@ class CommitteeAdminTest extends WebTestCase
         $this->committeeRepository = $this->getCommitteeRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

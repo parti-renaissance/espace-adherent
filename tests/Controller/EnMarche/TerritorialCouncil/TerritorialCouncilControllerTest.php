@@ -39,9 +39,9 @@ class TerritorialCouncilControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
         $members = $crawler->filter('.territorial-council__members .territorial-council__member');
         self::assertCount(8, $members);
-        self::assertContains('Jacques Picard', $members->first()->text());
-        self::assertContains('Lucie Olivera', $members->eq(1)->text());
-        self::assertContains('Gisele Berthoux', $members->eq(2)->text());
+        self::assertStringContainsString('Jacques Picard', $members->first()->text());
+        self::assertStringContainsString('Lucie Olivera', $members->eq(1)->text());
+        self::assertStringContainsString('Gisele Berthoux', $members->eq(2)->text());
 
         self::assertCount(1, $crawler->filter('.territorial-council__aside h5:contains("Président du Conseil territorial")'));
     }
@@ -108,7 +108,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
         $this->client->followRedirect();
 
-        self::assertContains($message->getContent().' test', $this->client->getResponse()->getContent());
+        self::assertStringContainsString($message->getContent().' test', $this->client->getResponse()->getContent());
     }
 
     public function testDeleteMessage()
@@ -120,14 +120,14 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        self::assertContains($message->getContent(), $this->client->getResponse()->getContent());
+        self::assertStringContainsString($message->getContent(), $this->client->getResponse()->getContent());
 
         $form = $crawler->selectButton('delete_entity_delete')->form();
         $this->client->submit($form);
         $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
 
         $this->client->followRedirect();
-        self::assertNotContains($message->getContent(), $this->client->getResponse()->getContent());
+        self::assertStringNotContainsString($message->getContent(), $this->client->getResponse()->getContent());
     }
 
     public function testCanApply()
@@ -154,14 +154,14 @@ class TerritorialCouncilControllerTest extends WebTestCase
         self::assertCount(1, $crawler->filter('.btn--disabled:contains("Je candidate en binôme")'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

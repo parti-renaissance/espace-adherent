@@ -128,7 +128,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
 
         $this->client->followRedirect();
 
-        self::assertContains($message->getContent().' test', $this->client->getResponse()->getContent());
+        self::assertStringContainsString($message->getContent().' test', $this->client->getResponse()->getContent());
     }
 
     public function testDeleteMessage()
@@ -140,14 +140,14 @@ class PoliticalCommitteeControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        self::assertContains($message->getContent(), $this->client->getResponse()->getContent());
+        self::assertStringContainsString($message->getContent(), $this->client->getResponse()->getContent());
 
         $form = $crawler->selectButton('delete_entity_delete')->form();
         $this->client->submit($form);
         $this->assertClientIsRedirectedTo('/comite-politique', $this->client);
 
         $this->client->followRedirect();
-        self::assertNotContains($message->getContent(), $this->client->getResponse()->getContent());
+        self::assertStringNotContainsString($message->getContent(), $this->client->getResponse()->getContent());
     }
 
     public function testSeeOfficialReports()
@@ -161,14 +161,14 @@ class PoliticalCommitteeControllerTest extends WebTestCase
         $reports = $crawler->filter('.official-reports article');
 
         self::assertCount(2, $reports);
-        self::assertContains('Deuxième PV 75', $reports->eq(0)->text());
-        self::assertContains('Ajouté par Referent Referent', $reports->eq(0)->text());
-        self::assertContains('le 15 octobre 2020', $reports->eq(0)->text());
-        self::assertContains('version 2', $reports->eq(0)->text());
-        self::assertContains('Modifié le 20 octobre 2020', $reports->eq(0)->text());
-        self::assertContains('Test PV 75 1', $reports->eq(1)->text());
-        self::assertContains('Ajouté par Referent Referent', $reports->eq(1)->text());
-        self::assertContains('le 10 octobre 2020', $reports->eq(1)->text());
+        self::assertStringContainsString('Deuxième PV 75', $reports->eq(0)->text());
+        self::assertStringContainsString('Ajouté par Referent Referent', $reports->eq(0)->text());
+        self::assertStringContainsString('le 15 octobre 2020', $reports->eq(0)->text());
+        self::assertStringContainsString('version 2', $reports->eq(0)->text());
+        self::assertStringContainsString('Modifié le 20 octobre 2020', $reports->eq(0)->text());
+        self::assertStringContainsString('Test PV 75 1', $reports->eq(1)->text());
+        self::assertStringContainsString('Ajouté par Referent Referent', $reports->eq(1)->text());
+        self::assertStringContainsString('le 10 octobre 2020', $reports->eq(1)->text());
     }
 
     public function testCannotDownloadOfficialReport()
@@ -186,14 +186,14 @@ class PoliticalCommitteeControllerTest extends WebTestCase
         static::assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

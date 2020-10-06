@@ -119,14 +119,14 @@ class SearchControllerTest extends WebTestCase
         $this->assertSame('1', trim($crawler->filter('.listing__paginator li a')->text()));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

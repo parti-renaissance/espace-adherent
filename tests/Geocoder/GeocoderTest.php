@@ -3,6 +3,7 @@
 namespace Tests\App\Geocoder;
 
 use App\Geocoder\Coordinates;
+use App\Geocoder\Exception\GeocodingException;
 use App\Geocoder\Geocoder;
 use Geocoder\Geocoder as BazingaGeocoder;
 use Geocoder\Model\Address;
@@ -39,11 +40,9 @@ class GeocoderTest extends TestCase
         $this->assertSame(2.318325, $coordinates->getLongitude());
     }
 
-    /**
-     * @expectedException \App\Geocoder\Exception\GeocodingException
-     */
     public function testGeocodeAddressFails()
     {
+        $this->expectException(GeocodingException::class);
         $this
             ->adapter
             ->expects($this->once())
@@ -55,11 +54,9 @@ class GeocoderTest extends TestCase
         $this->geocoder->geocode(self::ADDRESS);
     }
 
-    /**
-     * @expectedException \App\Geocoder\Exception\GeocodingException
-     */
     public function testCannotGeocodeAddress()
     {
+        $this->expectException(GeocodingException::class);
         $this
             ->adapter
             ->expects($this->once())
@@ -71,7 +68,7 @@ class GeocoderTest extends TestCase
         $this->geocoder->geocode(self::ADDRESS);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -79,7 +76,7 @@ class GeocoderTest extends TestCase
         $this->geocoder = new Geocoder($this->adapter);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->adapter = null;
         $this->geocoder = null;

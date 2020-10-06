@@ -28,7 +28,7 @@ class CommitteeRepositoryTest extends WebTestCase
         $this->assertCount(9, $this->repository->findApprovedCommittees());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class CommitteeRepositoryTest extends WebTestCase
         $this->repository = $this->getCommitteeRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -66,7 +66,7 @@ class AdminCommitteeControllerTest extends WebTestCase
         yield [CommitteeAdherentMandateManager::FINISH_ACTION];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -75,7 +75,7 @@ class AdminCommitteeControllerTest extends WebTestCase
         $this->committeeRepository = $this->getCommitteeRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

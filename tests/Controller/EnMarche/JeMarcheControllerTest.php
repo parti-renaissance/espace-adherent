@@ -95,7 +95,7 @@ class JeMarcheControllerTest extends WebTestCase
         $this->assertSame('Emmanuel Macron va gagner !', $report->getReaction());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -104,7 +104,7 @@ class JeMarcheControllerTest extends WebTestCase
         $this->jeMarcheReportRepostitory = $this->getJeMarcheReportRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

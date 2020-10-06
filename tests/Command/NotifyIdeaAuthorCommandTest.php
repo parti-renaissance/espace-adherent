@@ -34,14 +34,14 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
         $this->assertCountMails(1, IdeaFinalizePreNotificationMessage::class, 'jacques.picard@en-marche.fr');
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->init();
 
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -834,7 +834,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->adherentDummy = $this->createConfiguredMock(Adherent::class, [
             '__toString' => 'Full Name',

@@ -70,7 +70,7 @@ class CommitteeMembershipRepositoryTest extends WebTestCase
         $this->assertFalse($this->repository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID)));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -78,7 +78,7 @@ class CommitteeMembershipRepositoryTest extends WebTestCase
         $this->repository = $this->getCommitteeMembershipRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

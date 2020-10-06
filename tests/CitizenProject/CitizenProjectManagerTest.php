@@ -91,7 +91,7 @@ class CitizenProjectManagerTest extends WebTestCase
         $citizenProjectManager->followCitizenProject($adherent, $citizenProject);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -105,7 +105,7 @@ class CitizenProjectManagerTest extends WebTestCase
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->citizenProjectManager = null;
 

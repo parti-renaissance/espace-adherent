@@ -45,41 +45,41 @@ class ReportTest extends TestCase
 
     /**
      * @dataProvider provideSubjectClass
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage At least one reason must be provided
      */
     public function testItShouldContainAtLeastOneReason(string $subjectClass): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('At least one reason must be provided');
         $this->createReport($subjectClass, []);
     }
 
     /**
      * @dataProvider provideSubjectClass
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Some reasons are not valid "toto", they are defined in App\Entity\Report\ReportReasonEnum::REASONS_LIST
      */
     public function testItShouldValidateReasons(string $subjectClass): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Some reasons are not valid "toto", they are defined in App\Entity\Report\ReportReasonEnum::REASONS_LIST');
         $this->createReport($subjectClass, ['toto']);
     }
 
     /**
      * @dataProvider provideSubjectClass
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $comment is filed but App\Entity\Report\ReportReasonEnum::REASON_OTHER is not provided in $reasons
      */
     public function testItShouldRequireOtherReasonWhenCommentIsProvided(string $subjectClass): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$comment is filed but App\Entity\Report\ReportReasonEnum::REASON_OTHER is not provided in $reasons');
         $this->createReport($subjectClass, ['illicit_content'], 'comment');
     }
 
     /**
      * @dataProvider provideSubjectClass
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Report already resolved
      */
     public function testItShouldNotBeResolvedTwice(string $subjectClass): void
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Report already resolved');
         $report = $this->createReport($subjectClass, ['illicit_content']);
 
         $report->resolve();

@@ -3,6 +3,7 @@
 namespace Tests\App\Committee;
 
 use App\Committee\CommitteeAdherentMandateManager;
+use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\BaseGroup;
@@ -29,25 +30,24 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|TranslatorInterface */
     private $translator;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->mandateRepository = $this->createMock(CommitteeAdherentMandateRepository::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->entityManager = null;
         $this->mandateRepository = null;
         $this->translator = null;
     }
 
-    /**
-     * @expectedException \App\Committee\Exception\CommitteeAdherentMandateException
-     */
     public function testCannotCreateMandateIfIncorrectGender()
     {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
         $adherent = $this->createAdherent(Genders::OTHER);
         $committee = $this->createCommittee();
 
@@ -61,11 +61,10 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $politicalCommitteeManager->createMandate($adherent, $committee);
     }
 
-    /**
-     * @expectedException \App\Committee\Exception\CommitteeAdherentMandateException
-     */
     public function testCannotCreateMandateIfAdherentHasActiveMandate()
     {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
         $activeMandate = new CommitteeAdherentMandate(
             $this->createAdherent(),
             Genders::FEMALE,
@@ -100,11 +99,10 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $politicalCommitteeManager->createMandate($adherent, $committee);
     }
 
-    /**
-     * @expectedException \App\Committee\Exception\CommitteeAdherentMandateException
-     */
     public function testCannotCreateMandateIfAdherentIsMemberOfTerritorialCouncil()
     {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
         $adherent = $this->createAdherent(Genders::FEMALE);
         $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership());
         $committee = $this->createCommittee();
@@ -128,11 +126,11 @@ class CommitteeAdherentMandateManagerTest extends TestCase
 
     /**
      * @dataProvider provideGenders
-     *
-     * @expectedException \App\Committee\Exception\CommitteeAdherentMandateException
      */
     public function testCannotCreateMandateIfCommitteeHasActiveMandate(string $gender)
     {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
         $adherent = $this->createAdherent($gender);
         $committee = $this->createCommittee();
         $mandate = new CommitteeAdherentMandate(new Adherent(), $gender, $committee, new \DateTime());
@@ -174,11 +172,10 @@ class CommitteeAdherentMandateManagerTest extends TestCase
 
     /**
      * @dataProvider provideGenders
-     *
-     * @expectedException \App\Committee\Exception\CommitteeAdherentMandateException
      */
     public function testCannotEndMandateBecauseMandateNotFound(string $gender)
     {
+        $this->expectException(CommitteeAdherentMandateException::class);
         $adherent = $this->createAdherent($gender);
         $committee = $this->createCommittee();
 

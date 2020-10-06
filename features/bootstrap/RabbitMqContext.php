@@ -2,7 +2,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Coduo\PHPMatcher\PHPMatcher;
+use Coduo\PHPMatcher\PHPUnit\PHPMatcherAssertions;
 use OldSound\RabbitMqBundle\RabbitMq\Consumer;
 use OldSound\RabbitMqBundle\RabbitMq\Producer;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class RabbitMqContext implements Context
 {
+    use PHPMatcherAssertions;
+
     const QUEUES = [
         'api_sync',
         'mailer-delayed-campaign',
@@ -163,8 +165,8 @@ class RabbitMqContext implements Context
     private function assertMessage(AMQPMessage $message, array $hash): bool
     {
         foreach ($hash as $key => $expected) {
-            if (!PHPMatcher::match($this->getMessageValue($message, $key), $expected, $error)) {
-                return false;
+            if (self::matchesPattern($expected)->evaluate($this->getMessageValue($message, $key), '', true)) {
+                return true;
             }
         }
 

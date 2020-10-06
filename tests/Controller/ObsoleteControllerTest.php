@@ -31,14 +31,14 @@ class ObsoleteControllerTest extends WebTestCase
         yield ['/emmanuel-macron/desintox/heritier-hollande-traite-quiquennat'];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
