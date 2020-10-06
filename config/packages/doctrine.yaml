@@ -45,6 +45,7 @@ doctrine:
                 timestampdiff: DoctrineExtensions\Query\Mysql\TimestampDiff
                 convert_tz: DoctrineExtensions\Query\Mysql\ConvertTz
                 now: DoctrineExtensions\Query\Mysql\Now
+                date: DoctrineExtensions\Query\Mysql\Date
             numeric_functions:
                 acos: DoctrineExtensions\Query\Mysql\Acos
                 cos: DoctrineExtensions\Query\Mysql\Cos

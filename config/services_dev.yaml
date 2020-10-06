@@ -7,9 +7,9 @@ services:
         autoconfigure: true
         public: false
 
-    app.geocoder:
-        class: 'Tests\App\Test\Geocoder\DummyGeocoder'
-        public: false
+    Tests\App\Test\Geocoder\DummyGeocoder: ~
+
+    Geocoder\Geocoder: '@Tests\App\Test\Geocoder\DummyGeocoder'
 
     app.mailer.transactional_client:
         class: 'Tests\App\Test\Mailer\NullEmailClient'

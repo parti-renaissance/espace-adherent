@@ -3,6 +3,8 @@
 namespace App\Entity\Geo;
 
 use App\Entity\EntityTimestampableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,36 +17,45 @@ class CityCommunity implements ZoneableInterface
     use EntityTimestampableTrait;
 
     /**
-     * @var Department
+     * @var Collection|Department[]
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Department")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Department")
+     * @ORM\JoinTable(name="geo_city_community_department")
      */
-    private $department;
+    private $departments;
 
-    public function __construct(string $code, string $name, Department $department)
+    public function __construct(string $code, string $name)
     {
         $this->code = $code;
         $this->name = $name;
-        $this->department = $department;
+        $this->departments = new ArrayCollection();
     }
 
-    public function getDepartment(): Department
+    public function getDepartments(): Collection
     {
-        return $this->department;
+        return $this->departments;
     }
 
-    public function setDepartment(Department $department): void
+    public function addDepartment(Department $department): void
     {
-        $this->department = $department;
+        $this->departments->contains($department) || $this->departments->add($department);
+    }
+
+    public function clearDepartments(): void
+    {
+        $this->departments->clear();
     }
 
     public function getParents(): array
     {
-        return array_merge(
-            [$this->department],
-            $this->department->getParents(),
-        );
+        $toMerge = [];
+
+        foreach ($this->departments as $department) {
+            $toMerge[] = [$department];
+            $toMerge[] = $department->getParents();
+        }
+
+        return $toMerge ? array_values(array_unique(array_merge(...$toMerge))) : [];
     }
 
     public function getZoneType(): string

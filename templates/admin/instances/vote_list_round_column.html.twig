@@ -1,0 +1,10 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set rounds = value.election.electionRounds %}
+
+    {% for round in rounds %}
+        {{ round.id == value.id ? loop.index }}
+    {% endfor %}
+    / {{ rounds|length }}
+{% endblock %}

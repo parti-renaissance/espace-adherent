@@ -13,6 +13,7 @@ import noJsRecaptcha from './listeners/no-js-recaptcha';
 import alogliaSearch from './listeners/algolia-search';
 import confirmModal from './listeners/confirm-modal';
 import emModal from './listeners/em-modal';
+import emDateTimePicker from './listeners/em-datetime-picker';
 import AutocompletedAddressForm from './services/address/AutocompletedAddressForm';
 import AddressObject from './services/address/AddressObject';
 
@@ -29,6 +30,7 @@ class App {
             alogliaSearch,
             confirmModal,
             emModal,
+            emDateTimePicker,
         ];
     }
 

@@ -52,6 +52,11 @@ class Vote
         $this->votedAt = new \DateTime();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getVotedAt(): \DateTime
     {
         return $this->votedAt;
@@ -60,6 +65,11 @@ class Vote
     public function getVoter(): Voter
     {
         return $this->voter;
+    }
+
+    public function getElectionRound(): ElectionRound
+    {
+        return $this->electionRound;
     }
 
     public function getElection(): Election

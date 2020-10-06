@@ -85,6 +85,8 @@ services:
     App\Algolia\:
         resource: '../src/Algolia/'
         exclude: '../src/Algolia/Sonata/{Pager,ProxyQuery}'
+    App\Geocoder\:
+        resource: '../src/Geocoder/'
 
     # Services
 
@@ -167,3 +169,5 @@ services:
     App\Vision\ImageAnnotatorClient:
         arguments:
             $keyFilePath: '%kernel.project_dir%/gcloud-service-key.json'
+
+    Geocoder\Geocoder: '@bazinga_geocoder.geocoder'

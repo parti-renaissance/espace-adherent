@@ -18,11 +18,6 @@ final class DepartmentRepository extends ServiceEntityRepository
      */
     public function findAllGroupedByCode(): array
     {
-        $all = [];
-        foreach ($this->findAll() as $department) {
-            $all[$department->getCode()] = $department;
-        }
-
-        return $all;
+        return $this->createQueryBuilder('d', 'd.code')->getQuery()->getResult();
     }
 }

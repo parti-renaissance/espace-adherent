@@ -230,9 +230,6 @@
     "doctrine/orm": {
         "version": "v2.6.6"
     },
-    "egeloen/http-adapter": {
-        "version": "0.8.0"
-    },
     "egulias/email-validator": {
         "version": "2.1.7"
     },
@@ -283,6 +280,15 @@
     },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.35"
+    },
+    "geocoder-php/common-http": {
+        "version": "4.3.0"
+    },
+    "geocoder-php/google-maps-provider": {
+        "version": "4.5.0"
+    },
+    "geocoder-php/plugin": {
+        "version": "1.2.0"
     },
     "geoip2/geoip2": {
         "version": "v2.9.0"
@@ -337,12 +343,6 @@
     },
     "h4cc/wkhtmltopdf-amd64": {
         "version": "0.12.4"
-    },
-    "http-interop/http-factory": {
-        "version": "0.3.0"
-    },
-    "igorw/get-in": {
-        "version": "v1.0.3"
     },
     "imagine/imagine": {
         "version": "v0.6.3"
@@ -522,7 +522,16 @@
         "version": "2.1.30"
     },
     "nyholm/psr7": {
-        "version": "0.3.0"
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "7c0a9352a57376f04f5444e74565102c3a23d0c7"
+        },
+        "files": [
+            "config/packages/nyholm_psr7.yaml"
+        ]
     },
     "ocramius/proxy-manager": {
         "version": "2.2.3"
@@ -562,6 +571,9 @@
     },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
+    },
+    "php-http/discovery": {
+        "version": "1.12.0"
     },
     "php-http/httplug": {
         "version": "v1.1.0"
@@ -639,6 +651,9 @@
     },
     "psr/http-client": {
         "version": "0.1.0"
+    },
+    "psr/http-factory": {
+        "version": "1.0.1"
     },
     "psr/http-message": {
         "version": "1.0.1"

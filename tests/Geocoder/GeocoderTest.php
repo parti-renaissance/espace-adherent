@@ -7,7 +7,6 @@ use App\Geocoder\Geocoder;
 use Geocoder\Geocoder as BazingaGeocoder;
 use Geocoder\Model\Address;
 use Geocoder\Model\AddressCollection;
-use Geocoder\Model\Coordinates as BazingaCoordinates;
 use PHPUnit\Framework\TestCase;
 
 class GeocoderTest extends TestCase
@@ -20,9 +19,9 @@ class GeocoderTest extends TestCase
     public function testGeocodeAddressSucceeds()
     {
         $addresses = new AddressCollection([
-            new Address(new BazingaCoordinates(48.901058, 2.318325)),
+            Address::createFromArray(['latitude' => 48.901058, 'longitude' => 2.318325]),
             // the second one will be ignored
-            new Address(new BazingaCoordinates(48.901053, 2.318321)),
+            Address::createFromArray(['latitude' => 48.901053, 'longitude' => 2.318321]),
         ]);
 
         $this
