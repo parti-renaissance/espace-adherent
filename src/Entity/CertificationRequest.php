@@ -31,6 +31,16 @@ class CertificationRequest
     public const OCR_STATUS_PRE_REFUSED = 'pre_refused';
     public const OCR_STATUS_PRE_APPROVED = 'pre_approved';
 
+    public const MIME_TYPE_JPG = 'image/jpeg';
+    public const MIME_TYPE_PNG = 'image/png';
+    public const MIME_TYPE_PDF = 'application/pdf';
+
+    public const MIME_TYPES = [
+        self::MIME_TYPE_PDF,
+        self::MIME_TYPE_JPG,
+        self::MIME_TYPE_PNG,
+    ];
+
     /**
      * @var \DateTime
      *
@@ -64,10 +74,7 @@ class CertificationRequest
      *
      * @Assert\File(
      *     maxSize="5M",
-     *     mimeTypes={
-     *         "image/jpeg",
-     *         "image/png",
-     *     },
+     *     mimeTypes=CertificationRequest::MIME_TYPES,
      *     mimeTypesMessage="certification_request.document.mime_type"
      * )
      */
@@ -198,6 +205,11 @@ class CertificationRequest
     public function getDocumentMimeType(): ?string
     {
         return $this->documentMimeType;
+    }
+
+    public function isPdfDocument(): bool
+    {
+        return self::MIME_TYPE_PDF === $this->documentMimeType;
     }
 
     public function getDocumentExtension(): ?string

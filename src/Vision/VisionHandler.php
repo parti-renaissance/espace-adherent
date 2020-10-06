@@ -11,18 +11,18 @@ class VisionHandler
         $this->imageAnnotatorClient = $imageAnnotatorClient;
     }
 
-    public function annotate(string $filePath): ImageAnnotations
+    public function annotate(string $content): ImageAnnotations
     {
         return new ImageAnnotations(
-            $this->getBestGuessLabels($filePath),
-            $this->getWebEntities($filePath),
-            $this->getFullTextAnnotation($filePath)
+            $this->getBestGuessLabels($content),
+            $this->getWebEntities($content),
+            $this->getFullTextAnnotation($content)
         );
     }
 
-    private function getBestGuessLabels(string $filePath): array
+    private function getBestGuessLabels(string $content): array
     {
-        $bestGuessLabels = $this->imageAnnotatorClient->getBestGuessLabels($filePath);
+        $bestGuessLabels = $this->imageAnnotatorClient->getBestGuessLabels($content);
 
         if (!$bestGuessLabels) {
             return [];
@@ -36,9 +36,9 @@ class VisionHandler
         return $labels;
     }
 
-    private function getWebEntities(string $filePath): array
+    private function getWebEntities(string $content): array
     {
-        $guessedWebEntities = $this->imageAnnotatorClient->getWebEntities($filePath);
+        $guessedWebEntities = $this->imageAnnotatorClient->getWebEntities($content);
 
         if (!$guessedWebEntities) {
             return [];
@@ -52,9 +52,9 @@ class VisionHandler
         return $webEntities;
     }
 
-    private function getFullTextAnnotation(string $filePath): ?string
+    private function getFullTextAnnotation(string $content): ?string
     {
-        $annotations = $this->imageAnnotatorClient->getFullTextAnnotation($filePath);
+        $annotations = $this->imageAnnotatorClient->getFullTextAnnotation($content);
 
         return $annotations ? $annotations->getText() : null;
     }

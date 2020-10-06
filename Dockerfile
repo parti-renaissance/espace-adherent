@@ -44,12 +44,16 @@ RUN apt-get update -q && \
         php7.3-amqp \
         php-apcu \
         php-uuid \
+        php-imagick \
+        ghostscript \
         supervisor \
         tzdata \
         wget \
         wkhtmltopdf && \
 
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+
+    sed -i -e "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<policy domain=\"coder\" rights=\"read|write\" pattern=\"PDF\" \/>/g" /etc/ImageMagick-6/policy.xml && \
 
     cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \
 

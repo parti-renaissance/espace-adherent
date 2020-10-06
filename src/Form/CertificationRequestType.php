@@ -15,7 +15,7 @@ class CertificationRequestType extends AbstractType
         $builder
             ->add('document', FileType::class, [
                 'attr' => [
-                    'accept' => 'image/png,image/jpeg',
+                    'accept' => implode(',', CertificationRequest::MIME_TYPES),
                 ],
             ])
             ->add('cgu', RequiredCheckboxType::class)

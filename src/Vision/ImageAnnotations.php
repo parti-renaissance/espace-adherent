@@ -76,7 +76,7 @@ class ImageAnnotations
 
     public function getFirstNames(): array
     {
-        preg_match('/Prénom( )?\(s\)( )?:( )?(?<first_names>.+)\\n/', $this->text, $matches);
+        preg_match('/Prénom\s?((\(s\))?|s)\s?:\s?(?<first_names>.+)\\n/', $this->text, $matches);
 
         return array_map(function (string $firstName) {
             return trim($firstName);

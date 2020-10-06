@@ -4,34 +4,37 @@ namespace App\Adherent\Certification\Handlers;
 
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
+use App\Image\PdfToImageConverter;
 use App\Vision\ImageAnnotations;
 use App\Vision\VisionHandler;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CertificationRequestOcrHandler implements CertificationRequestHandlerInterface
 {
-    private const READABLE_DOCUMENT_MIME_TYPES = [
-        'image/jpeg',
-        'image/png',
-    ];
-
     private $em;
     private $visionHandler;
     private $serializer;
     private $slugify;
+    private $pdfToImageConverter;
+    private $filesystem;
 
     public function __construct(
         EntityManagerInterface $em,
         VisionHandler $visionHandler,
         ObjectNormalizer $normalizer,
-        Slugify $slugify
+        Slugify $slugify,
+        PdfToImageConverter $pdfToImageConverter,
+        FilesystemInterface $filesystem
     ) {
         $this->em = $em;
         $this->visionHandler = $visionHandler;
         $this->serializer = $normalizer;
         $this->slugify = $slugify;
+        $this->pdfToImageConverter = $pdfToImageConverter;
+        $this->filesystem = $filesystem;
     }
 
     public function getPriority(): int
@@ -48,7 +51,13 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
 
     public function handle(CertificationRequest $certificationRequest): void
     {
-        $imageAnnotations = $this->visionHandler->annotate($certificationRequest->getPathWithDirectory());
+        if ($certificationRequest->isPdfDocument()) {
+            $content = $this->pdfToImageConverter->getRawImageFromPdf($this->filesystem->read($certificationRequest->getPathWithDirectory()));
+        } else {
+            $content = $this->filesystem->read($certificationRequest->getPathWithDirectory());
+        }
+
+        $imageAnnotations = $this->visionHandler->annotate($content);
 
         $certificationRequest->setOcrPayload($this->normalizeImageAnnotations($imageAnnotations));
 
@@ -101,7 +110,7 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
 
     private function isDocumentReadableByOcr(CertificationRequest $certificationRequest): bool
     {
-        return \in_array($certificationRequest->getDocumentMimeType(), self::READABLE_DOCUMENT_MIME_TYPES, true);
+        return \in_array($certificationRequest->getDocumentMimeType(), CertificationRequest::MIME_TYPES, true);
     }
 
     private function normalize(?string $str): string
