@@ -170,12 +170,19 @@ class ElectionPoolResult
      */
     public function getElectedCandidateGroups(): array
     {
+        return array_map(function (CandidateGroupResult $result) {
+            return $result->getCandidateGroup();
+        }, $this->getElectedCandidateGroupResults());
+    }
+
+    /**
+     * @return CandidateGroupResult[]
+     */
+    public function getElectedCandidateGroupResults(): array
+    {
         return $this->candidateGroupResults
-            ->map(function (CandidateGroupResult $result) {
-                return $result->getCandidateGroup();
-            })
-            ->filter(function (CandidateGroup $candidateGroup) {
-                return $candidateGroup->isElected();
+            ->filter(function (CandidateGroupResult $candidateGroupResult) {
+                return $candidateGroupResult->getCandidateGroup()->isElected();
             })
             ->toArray()
         ;

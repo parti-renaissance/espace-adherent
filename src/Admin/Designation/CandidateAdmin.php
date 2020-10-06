@@ -3,6 +3,7 @@
 namespace App\Admin\Designation;
 
 use App\Admin\AbstractAlgoliaAdmin;
+use App\Algolia\Sonata\ProxyQuery\ProxyQuery;
 use App\Entity\Committee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
@@ -13,16 +14,34 @@ use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\StringFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CandidateAdmin extends AbstractAlgoliaAdmin
 {
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
+            ->add('id', CallbackFilter::class, [
+                'label' => 'Candidature id',
+                'field_type' => TextType::class,
+                'field_options' => [
+                ],
+                'callback' => function (ProxyQuery $qb, ?string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $qb
+                        ->andWhere($qb->expr()->in($field, ':ids'))
+                        ->setParameter('ids', explode(',', $value['value']))
+                    ;
+                },
+            ])
             ->add('designation', ModelFilter::class, [
                 'show_filter' => true,
                 'label' => 'Désignation',
