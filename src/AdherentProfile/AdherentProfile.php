@@ -274,7 +274,7 @@ class AdherentProfile
         return $this->facebookPageUrl;
     }
 
-    public function setFacebookPageUrl(string $facebookPageUrl): void
+    public function setFacebookPageUrl(?string $facebookPageUrl): void
     {
         $this->facebookPageUrl = $facebookPageUrl;
     }
@@ -284,7 +284,7 @@ class AdherentProfile
         return $this->twitterPageUrl;
     }
 
-    public function setTwitterPageUrl(string $twitterPageUrl): void
+    public function setTwitterPageUrl(?string $twitterPageUrl): void
     {
         $this->twitterPageUrl = $twitterPageUrl;
     }
@@ -294,7 +294,7 @@ class AdherentProfile
         return $this->linkedinPageUrl;
     }
 
-    public function setLinkedinPageUrl(string $linkedinPageUrl): void
+    public function setLinkedinPageUrl(?string $linkedinPageUrl): void
     {
         $this->linkedinPageUrl = $linkedinPageUrl;
     }
@@ -304,7 +304,7 @@ class AdherentProfile
         return $this->telegramPageUrl;
     }
 
-    public function setTelegramPageUrl(string $telegramPageUrl): void
+    public function setTelegramPageUrl(?string $telegramPageUrl): void
     {
         $this->telegramPageUrl = $telegramPageUrl;
     }
@@ -314,7 +314,7 @@ class AdherentProfile
         return $this->job;
     }
 
-    public function setJob(string $job): void
+    public function setJob(?string $job): void
     {
         $this->job = $job;
     }
@@ -324,7 +324,7 @@ class AdherentProfile
         return $this->activityArea;
     }
 
-    public function setActivityArea(string $activityArea): void
+    public function setActivityArea(?string $activityArea): void
     {
         $this->activityArea = $activityArea;
     }
