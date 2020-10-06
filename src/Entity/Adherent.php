@@ -416,11 +416,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $displayMedia = true;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -430,6 +434,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $facebookPageUrl;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -439,6 +445,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $twitterPageUrl;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -448,6 +456,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $linkedinPageUrl;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -456,20 +466,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $telegramPageUrl;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(nullable=true)
      */
     private $job;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(nullable=true)
      */
     private $activityArea;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(length=2, nullable=true)
      */
     private $nationality;
@@ -2414,7 +2426,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->job;
     }
 
-    public function setJob(string $job): void
+    public function setJob(?string $job): void
     {
         $this->job = $job;
     }
@@ -2424,7 +2436,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->activityArea;
     }
 
-    public function setActivityArea(string $activityArea): void
+    public function setActivityArea(?string $activityArea): void
     {
         $this->activityArea = $activityArea;
     }
