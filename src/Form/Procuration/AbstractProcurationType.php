@@ -2,12 +2,12 @@
 
 namespace App\Form\Procuration;
 
+use App\Form\DatePickerType;
 use App\Form\GenderType;
 use App\Form\UnitedNationsCountryType;
 use App\Procuration\ElectionContext;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,12 +18,9 @@ abstract class AbstractProcurationType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
-        $years = range(date('Y') - 17, date('Y') - 120);
-
         $resolver
             ->setDefaults([
                 'translation_domain' => false,
-                'years' => array_combine($years, $years),
             ])
             ->setRequired('election_context')
             ->setAllowedTypes('election_context', ElectionContext::class)
@@ -64,14 +61,9 @@ abstract class AbstractProcurationType extends AbstractType
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
             ->add('emailAddress', EmailType::class)
-            ->add('birthdate', BirthdayType::class, [
-                'widget' => 'choice',
-                'years' => $options['years'],
-                'placeholder' => [
-                    'year' => 'AAAA',
-                    'month' => 'MM',
-                    'day' => 'JJ',
-                ],
+            ->add('birthdate', DatePickerType::class, [
+                'max_date' => new \DateTime('-17 years'),
+                'min_date' => new \DateTime('-120 years'),
             ])
         ;
     }

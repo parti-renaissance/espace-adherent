@@ -8,7 +8,6 @@ use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -50,14 +49,10 @@ class AdherentProfileType extends AbstractType
                 'required' => false,
                 'disabled' => $options['disabled_form'],
             ])
-            ->add('birthdate', BirthdayType::class, [
-                'widget' => 'single_text',
+            ->add('birthdate', DatePickerType::class, [
                 'disabled' => $options['disabled_form'],
-                'placeholder' => [
-                    'year' => 'AAAA',
-                    'month' => 'MM',
-                    'day' => 'JJ',
-                ],
+                'max_date' => new \DateTime('-15 years'),
+                'min_date' => new \DateTime('-120 years'),
             ])
             ->add('address', AddressType::class, [
                 'label' => false,

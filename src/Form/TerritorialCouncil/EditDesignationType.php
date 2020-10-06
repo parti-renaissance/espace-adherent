@@ -38,24 +38,15 @@ class EditDesignationType extends AbstractType
                 'required' => false,
             ])
             ->add('meetingStartDate', DateTimePickerType::class, [
-                'html5' => true,
-                'widget' => 'single_text',
                 'min_date' => new \DateTime('+7 days'),
             ])
             ->add('meetingEndDate', DateTimePickerType::class, [
-                'html5' => true,
-                'widget' => 'single_text',
                 'min_date' => new \DateTime('+7 days'),
             ])
             ->add('voteStartDate', DateTimePickerType::class, [
-                'html5' => true,
-                'widget' => 'single_text',
-                'required' => true,
                 'min_date' => new \DateTime('+7 days'),
             ])
             ->add('voteEndDate', DateTimePickerType::class, [
-                'html5' => true,
-                'widget' => 'single_text',
                 'min_date' => new \DateTime('+7 days'),
             ])
             ->add('description', PurifiedTextareaType::class, [

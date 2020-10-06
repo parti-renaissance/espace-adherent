@@ -84,12 +84,12 @@
 
                 <p class="text-small font-roboto">La convocation doit avoir lieu au minimum 7 jours avant le Conseil territorial. Les candidatures seront closes automatiquement 48h avant cette date.</p>
                 <div class="em-form__row b__nudge--top-large">
-                    <div class="em-form__group em-form__width--1">
+                    <div class="em-form__group em-form__width--1 em-form__width--100">
                         {{ form_label(form.meetingStartDate, 'Début de la réunion', {label_attr: {class: 'em-form__label'}}) }}
                         {{ form_errors(form.meetingStartDate) }}
                         {{ form_widget(form.meetingStartDate) }}
                     </div>
-                    <div class="em-form__group em-form__width--1">
+                    <div class="em-form__group em-form__width--1 em-form__width--100">
                         {{ form_label(form.meetingEndDate, 'Fin de la réunion', {label_attr: {class: 'em-form__label'}}) }}
                         {{ form_errors(form.meetingEndDate) }}
                         {{ form_widget(form.meetingEndDate) }}

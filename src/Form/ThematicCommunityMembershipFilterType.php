@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -68,8 +67,8 @@ class ThematicCommunityMembershipFilterType extends AbstractType
                     return false === $choice ? '0' : (string) $choice;
                 },
             ])
-            ->add('joinedSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
-            ->add('joinedUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
+            ->add('joinedSince', DatePickerType::class, ['required' => false])
+            ->add('joinedUntil', DatePickerType::class, ['required' => false])
             ->add('motivation', ChoiceType::class, [
                 'required' => false,
                 'choices' => ThematicCommunityMembership::MOTIVATIONS,

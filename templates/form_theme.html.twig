@@ -432,3 +432,17 @@
         </div>
     </div>
 {% endblock %}
+
+{% block date_time_picker_widget %}
+    {% if attr.class is defined and 'em-datetime-picker' not in attr.class %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' em-datetime-picker')|trim}) -%}
+    {% endif %}
+    {{ block('datetime_widget') }}
+{%- endblock date_time_picker_widget %}
+
+{% block date_picker_widget %}
+    {% if attr.class is defined and 'em-datetime-picker' not in attr.class %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' em-datetime-picker')|trim}) -%}
+    {% endif %}
+    {{ block('date_widget') }}
+{%- endblock date_picker_widget %}

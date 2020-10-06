@@ -42,11 +42,7 @@ class AssessorControllerTest extends WebTestCase
                 'officeNumber' => '001',
                 'birthCity' => 'Lille',
                 'emailAddress' => 'ernestino@bonsoirini.fr',
-                'birthdate' => [
-                    'year' => '1985',
-                    'month' => '10',
-                    'day' => '27',
-                ],
+                'birthdate' => '1985-10-27',
                 'phone' => [
                     'country' => 'FR',
                     'number' => '0620202020',

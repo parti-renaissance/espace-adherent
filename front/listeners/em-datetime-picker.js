@@ -6,8 +6,10 @@ export default function () {
     // set french by default
     flatpickr.localize(French);
 
-    findAll(document, '.em-datetime-picker').forEach((element) => {
+    findAll(document, 'input.em-datetime-picker').forEach((element) => {
         const options = JSON.parse(element.dataset.datetimepicker);
-        flatpickr(element, options);
+        const mobileOptions = { disableMobile: true };
+
+        flatpickr(element, { ...options, ...mobileOptions });
     });
 }

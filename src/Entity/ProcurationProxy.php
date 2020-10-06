@@ -207,7 +207,13 @@ class ProcurationProxy
      * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"front"})
-     * @Assert\Range(max="-17 years", maxMessage="procuration.birthdate.minimum_required_age", groups={"front"})
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="-17 years",
+     *     minMessage="procuration.birthdate.maximum_required_age",
+     *     maxMessage="procuration.birthdate.minimum_required_age",
+     *     groups={"front"}
+     * )
      */
     private $birthdate;
 
