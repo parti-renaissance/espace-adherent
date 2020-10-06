@@ -34,6 +34,7 @@ common.adherent.unsubscribed: Non-abonné(e)
 common.adherent.status_email: Statut (e-mail)
 common.message_edited: Votre message a bien été édité.
 common.message_deleted: Votre message a bien été supprimé.
+common.select_date: Choisissez une date
 
 pending: En attente
 approved: Approuvé

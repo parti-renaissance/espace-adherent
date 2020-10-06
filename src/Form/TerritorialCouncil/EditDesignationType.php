@@ -3,6 +3,7 @@
 namespace App\Form\TerritorialCouncil;
 
 use App\Form\AddressType;
+use App\Form\DateTimePickerType;
 use App\Form\GenderType;
 use App\Form\PurifiedTextareaType;
 use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
@@ -11,7 +12,6 @@ use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -37,22 +37,26 @@ class EditDesignationType extends AbstractType
                 'label' => false,
                 'required' => false,
             ])
-            ->add('meetingStartDate', DateTimeType::class, [
+            ->add('meetingStartDate', DateTimePickerType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
+                'min_date' => new \DateTime('+7 days'),
             ])
-            ->add('meetingEndDate', DateTimeType::class, [
+            ->add('meetingEndDate', DateTimePickerType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
+                'min_date' => new \DateTime('+7 days'),
             ])
-            ->add('voteStartDate', DateTimeType::class, [
+            ->add('voteStartDate', DateTimePickerType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
                 'required' => true,
+                'min_date' => new \DateTime('+7 days'),
             ])
-            ->add('voteEndDate', DateTimeType::class, [
+            ->add('voteEndDate', DateTimePickerType::class, [
                 'html5' => true,
                 'widget' => 'single_text',
+                'min_date' => new \DateTime('+7 days'),
             ])
             ->add('description', PurifiedTextareaType::class, [
                 'attr' => ['maxlength' => 2000],
