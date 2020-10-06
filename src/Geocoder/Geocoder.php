@@ -5,7 +5,7 @@ namespace App\Geocoder;
 use App\Geocoder\Exception\GeocodingException;
 use Geocoder\Geocoder as BazingaGeocoder;
 
-class Geocoder implements GeocoderInterface
+class Geocoder
 {
     private $geocoder;
 
@@ -26,8 +26,8 @@ class Geocoder implements GeocoderInterface
             throw GeocodingException::create($address);
         }
 
-        $geocoded = $addresses->first();
+        [$longitude, $latitude] = $addresses->first()->getCoordinates()->toArray();
 
-        return new Coordinates($geocoded->getLatitude(), $geocoded->getLongitude());
+        return new Coordinates($latitude, $longitude);
     }
 }

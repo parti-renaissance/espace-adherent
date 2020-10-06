@@ -4,7 +4,7 @@ namespace App\Validator;
 
 use App\Geocoder\Exception\GeocodingException;
 use App\Geocoder\GeocodableInterface;
-use App\Geocoder\GeocoderInterface;
+use App\Geocoder\Geocoder;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -13,7 +13,7 @@ class GeocodableAddressValidator extends ConstraintValidator
 {
     private $geocoder;
 
-    public function __construct(GeocoderInterface $geocoder)
+    public function __construct(Geocoder $geocoder)
     {
         $this->geocoder = $geocoder;
     }

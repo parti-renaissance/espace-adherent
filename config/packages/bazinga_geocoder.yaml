@@ -1,9 +1,15 @@
 bazinga_geocoder:
     providers:
-        cache:
-            adapter:  app.geocoder.cache_adapter
-            provider: google_maps
         google_maps:
-            locale:  "%locale%"
-            use_ssl: true
-            api_key: "%env(GMAPS_API_KEY)%"
+            factory: Bazinga\GeocoderBundle\ProviderFactory\GoogleMapsFactory
+            cache: 'app.bazinga.geocoder_cache'
+            cache_lifetime: 5356800 # 3 months
+            cache_precision: ~
+            options:
+                api_key: "%env(GMAPS_API_KEY)%"
+
+services:
+    app.bazinga.geocoder_cache:
+        class: Symfony\Component\Cache\Simple\DoctrineCache
+        arguments:
+            $provider: '@cache.redis_doctrine_provider'

@@ -7,7 +7,7 @@ use App\Events;
 use App\Geocoder\Coordinates;
 use App\Geocoder\Exception\GeocodingException;
 use App\Geocoder\GeocodableEntityEventInterface;
-use App\Geocoder\GeocoderInterface;
+use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Membership\AdherentEvents;
 use App\Membership\AdherentProfileWasUpdatedEvent;
@@ -19,7 +19,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     private $geocoder;
     private $manager;
 
-    public function __construct(GeocoderInterface $geocoder, ObjectManager $manager)
+    public function __construct(Geocoder $geocoder, ObjectManager $manager)
     {
         $this->geocoder = $geocoder;
         $this->manager = $manager;
