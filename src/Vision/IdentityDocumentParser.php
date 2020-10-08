@@ -25,7 +25,7 @@ class IdentityDocumentParser
     public function hasFirstName(ImageAnnotations $imageAnnotations, string $firstName): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/Prénom( )?\(s\)( )?:( )?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
+            preg_match('/Prénom\s?((\(s\))?|s)\s?:\s?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
 
             $firstNames = array_map(function (string $firstName) {
                 return $this->normalize($firstName);
@@ -59,7 +59,7 @@ class IdentityDocumentParser
     public function hasDateOfBirth(ImageAnnotations $imageAnnotations, \DateTimeInterface $dateOfBirth): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/(?<birth_date>[\d]{2}[\. ][\d]{2}[\. ][\d]{4})/', $this->text, $matches);
+            preg_match('/(?<birth_date>\d{2}[\. ]\d{2}[\. ]\d{4})/', $this->text, $matches);
 
             if (!isset($matches['birth_date']) || !$matches['birth_date']) {
                 return false;
@@ -71,7 +71,7 @@ class IdentityDocumentParser
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
-            $pattern = sprintf('/(?<birth_date>%s(\-)?%s(\-)?%s)/',
+            $pattern = sprintf('/(?<birth_date>%s-?%s-?%s)/',
                 $dateOfBirth->format('d'),
                 $dateOfBirth->format('m'),
                 $dateOfBirth->format('Y')
