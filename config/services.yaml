@@ -30,6 +30,7 @@ parameters:
     adherent_message_committee_limit: 1000
     adherent_message_deputy_limit: 1000
     adherent_message_senator_limit: 1000
+    coterr_meeting_max_start_date: 2020-10-31 23:59:59
 
 services:
     _defaults:
@@ -159,6 +160,15 @@ services:
     App\Form\MemberInterestsChoiceType:
         arguments:
             - '%adherent_interests%'
+
+    App\Form\TerritorialCouncil\EditDesignationType:
+        arguments:
+            - '%coterr_meeting_max_start_date%'
+
+    # Validators
+    App\Validator\TerritorialCouncil\TerritorialCouncilDesignationValidator:
+        arguments:
+            - '%coterr_meeting_max_start_date%'
 
     App\Algolia\SearchService:
         decorates: 'search.service'
