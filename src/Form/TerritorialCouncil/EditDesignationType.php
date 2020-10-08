@@ -20,6 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditDesignationType extends AbstractType
 {
+    private $meetingMaxStartDate;
+
+    public function __construct(int $meetingMaxStartDate)
+    {
+        $this->meetingMaxStartDate = $meetingMaxStartDate;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -39,12 +46,14 @@ class EditDesignationType extends AbstractType
             ])
             ->add('meetingStartDate', DateTimePickerType::class, [
                 'min_date' => new \DateTime('+7 days'),
+                'max_date' => (new \DateTime())->setTimestamp($this->meetingMaxStartDate),
             ])
             ->add('meetingEndDate', DateTimePickerType::class, [
                 'min_date' => new \DateTime('+7 days'),
             ])
             ->add('voteStartDate', DateTimePickerType::class, [
                 'min_date' => new \DateTime('+7 days'),
+                'max_date' => (new \DateTime())->setTimestamp($this->meetingMaxStartDate),
             ])
             ->add('voteEndDate', DateTimePickerType::class, [
                 'min_date' => new \DateTime('+7 days'),
