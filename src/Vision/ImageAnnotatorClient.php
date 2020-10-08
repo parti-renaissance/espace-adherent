@@ -6,58 +6,58 @@ use Google\Cloud\Vision\V1\ImageAnnotatorClient as GoogleImageAnnotatorClient;
 use Google\Cloud\Vision\V1\TextAnnotation;
 use Google\Cloud\Vision\V1\WebDetection;
 use Google\Protobuf\Internal\RepeatedField;
-use League\Flysystem\FilesystemInterface;
 
 class ImageAnnotatorClient
 {
     private $client;
-    private $storage;
 
     private $textAnnotations = [];
     private $webDetections = [];
 
-    public function __construct(string $keyFilePath, FilesystemInterface $storage)
+    public function __construct(string $keyFilePath)
     {
         $this->client = new GoogleImageAnnotatorClient([
             'credentials' => $keyFilePath,
         ]);
-
-        $this->storage = $storage;
     }
 
-    public function getBestGuessLabels(string $filePath): ?RepeatedField
+    public function getBestGuessLabels(string $content): ?RepeatedField
     {
-        $webDetection = $this->getWebDetection($filePath);
+        $webDetection = $this->getWebDetection($content);
 
         return $webDetection ? $webDetection->getBestGuessLabels() : null;
     }
 
-    public function getWebEntities(string $filePath): ?RepeatedField
+    public function getWebEntities(string $content): ?RepeatedField
     {
-        $webDetection = $this->getWebDetection($filePath);
+        $webDetection = $this->getWebDetection($content);
 
         return $webDetection ? $webDetection->getWebEntities() : null;
     }
 
-    public function getWebDetection(string $filePath): ?WebDetection
+    public function getWebDetection(string $content): ?WebDetection
     {
-        if (!\array_key_exists($filePath, $this->webDetections)) {
-            $response = $this->client->webDetection($this->storage->read($filePath));
+        $key = \md5($content);
 
-            $this->webDetections[$filePath] = $response->getWebDetection();
+        if (!\array_key_exists($key, $this->webDetections)) {
+            $response = $this->client->webDetection($content);
+
+            $this->webDetections[$key] = $response->getWebDetection();
         }
 
-        return $this->webDetections[$filePath];
+        return $this->webDetections[$key];
     }
 
-    public function getFullTextAnnotation(string $filePath): ?TextAnnotation
+    public function getFullTextAnnotation(string $content): ?TextAnnotation
     {
-        if (!\array_key_exists($filePath, $this->textAnnotations)) {
-            $response = $this->client->documentTextDetection($this->storage->read($filePath));
+        $key = \md5($content);
 
-            $this->textAnnotations[$filePath] = $response->getFullTextAnnotation();
+        if (!\array_key_exists($key, $this->textAnnotations)) {
+            $response = $this->client->documentTextDetection($content);
+
+            $this->textAnnotations[$key] = $response->getFullTextAnnotation();
         }
 
-        return $this->textAnnotations[$filePath];
+        return $this->textAnnotations[$key];
     }
 }
