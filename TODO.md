@@ -1,0 +1,2 @@
+- update type in message table
+- update type in message filter table

@@ -11,7 +11,7 @@ use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
-use App\Entity\AdherentMessage\ReferentTerritorialCouncilMessage;
+use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use Ramsey\Uuid\Uuid;
 
@@ -51,8 +51,8 @@ class AdherentMessageFactory
                 $message = new ReferentElectedRepresentativeMessage(Uuid::uuid4(), $adherent);
                 break;
 
-            case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
-                $message = new ReferentTerritorialCouncilMessage(Uuid::uuid4(), $adherent);
+            case AdherentMessageTypeEnum::REFERENT_INSTANCES:
+                $message = new ReferentInstancesMessage(Uuid::uuid4(), $adherent);
                 break;
 
             case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:

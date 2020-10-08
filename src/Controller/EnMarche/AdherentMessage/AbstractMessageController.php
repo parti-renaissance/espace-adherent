@@ -29,6 +29,10 @@ abstract class AbstractMessageController extends Controller
     use AccessDelegatorTrait;
     use CanaryControllerTrait;
 
+    private $templates = [
+        'list' => 'message/list.html.twig',
+    ];
+
     /**
      * @Route(name="list", methods={"GET"})
      */
@@ -44,7 +48,7 @@ abstract class AbstractMessageController extends Controller
 
         $adherent = $this->getMainUser($request->getSession());
 
-        return $this->renderTemplate('message/list.html.twig', [
+        return $this->renderTemplate($this->getTemplate('list'), [
             'messages' => $paginator = $repository->findAllByAuthor(
                 $adherent,
                 $this->getMessageType(),
@@ -318,5 +322,15 @@ abstract class AbstractMessageController extends Controller
     protected function getMessageRecipients(AdherentMessageInterface $message): ?array
     {
         return null;
+    }
+
+    private function getTemplate(string $action): ?string
+    {
+        return $this->templates[$action] ?? null;
+    }
+
+    protected function setTemplate(string $action, string $template): void
+    {
+        $this->templates[$action] = $template;
     }
 }

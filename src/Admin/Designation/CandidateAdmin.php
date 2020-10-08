@@ -119,12 +119,9 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
             ->add('quality', ChoiceFilter::class, [
                 'show_filter' => true,
                 'label' => 'Qualité',
-                'field_type' => ChoiceType::class,
+                'field_type' => TerritorialCouncilQualityEnum::class,
                 'field_options' => [
                     'choices' => TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE,
-                    'choice_label' => function (string $choice) {
-                        return 'territorial_council.membership.quality.'.$choice;
-                    },
                 ],
             ])
         ;

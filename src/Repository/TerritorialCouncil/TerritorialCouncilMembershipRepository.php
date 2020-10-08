@@ -5,6 +5,7 @@ namespace App\Repository\TerritorialCouncil;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\TerritorialCouncil\Candidacy;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\PaginatorTrait;
@@ -247,5 +248,24 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         }
 
         return $qb;
+    }
+
+    public function countForTerritorialCouncil(TerritorialCouncil $territorialCouncil, array $qualities = []): int
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->select('COUNT(1)')
+            ->where('m.territorialCouncil = :territorial_council')
+            ->setParameter('territorial_council', $territorialCouncil)
+        ;
+
+        if ($qualities) {
+            $qb
+                ->innerJoin('m.qualities', 'quality')
+                ->andWhere('quality.name IN (:qualities)')
+                ->setParameter('qualities', $qualities)
+            ;
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 }

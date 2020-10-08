@@ -11,7 +11,7 @@ use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
-use App\Entity\AdherentMessage\ReferentTerritorialCouncilMessage;
+use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Subscription\SubscriptionTypeEnum;
 
@@ -21,7 +21,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     {
         return \in_array(\get_class($filter->getMessage()), [
             ReferentAdherentMessage::class,
-            ReferentTerritorialCouncilMessage::class,
+            ReferentInstancesMessage::class,
             DeputyAdherentMessage::class,
             CommitteeAdherentMessage::class,
             CitizenProjectAdherentMessage::class,
@@ -46,7 +46,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
-            case ReferentTerritorialCouncilMessage::class:
+            case ReferentInstancesMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
             case DeputyAdherentMessage::class:

@@ -2,7 +2,8 @@
 
 namespace App\Admin\TerritorialCouncil;
 
-use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Form\TerritorialCouncil\PoliticalCommitteeQualityChoiceType;
+use App\Form\TerritorialCouncil\TerritorialCouncilQualityChoiceType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -46,12 +47,8 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
             ->add('qualities', CallbackFilter::class, [
                 'show_filter' => true,
                 'label' => 'Qualité',
-                'field_type' => ChoiceType::class,
+                'field_type' => TerritorialCouncilQualityChoiceType::class,
                 'field_options' => [
-                    'choices' => TerritorialCouncilQualityEnum::ALL,
-                    'choice_label' => function (string $choice) {
-                        return "territorial_council.membership.quality.$choice";
-                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
@@ -71,12 +68,8 @@ class TerritorialCouncilMembershipAdmin extends AbstractAdmin
             ->add('pcQualities', CallbackFilter::class, [
                 'show_filter' => true,
                 'label' => 'Qualité au CoPol',
-                'field_type' => ChoiceType::class,
+                'field_type' => PoliticalCommitteeQualityChoiceType::class,
                 'field_options' => [
-                    'choices' => TerritorialCouncilQualityEnum::ALL_POLITICAL_COMMITTEE_QUALITIES,
-                    'choice_label' => function (string $choice) {
-                        return "political_committee.membership.quality.$choice";
-                    },
                     'multiple' => true,
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {

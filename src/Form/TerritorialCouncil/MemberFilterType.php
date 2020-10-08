@@ -5,7 +5,6 @@ namespace App\Form\TerritorialCouncil;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ReferentTag;
-use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\GenderType;
 use App\Repository\CommitteeRepository;
 use App\Repository\ElectedRepresentative\ZoneRepository;
@@ -45,12 +44,8 @@ class MemberFilterType extends AbstractType
             ])
             ->add('ageMin', IntegerType::class, ['required' => false])
             ->add('ageMax', IntegerType::class, ['required' => false])
-            ->add('qualities', ChoiceType::class, [
+            ->add('qualities', TerritorialCouncilQualityChoiceType::class, [
                 'label' => 'referent.territorial_council.quality',
-                'choices' => TerritorialCouncilQualityEnum::ALL,
-                'choice_label' => function (string $choice) {
-                    return "territorial_council.membership.quality.$choice";
-                },
                 'required' => false,
                 'multiple' => true,
             ])

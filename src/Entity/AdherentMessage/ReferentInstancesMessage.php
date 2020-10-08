@@ -8,11 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
-class ReferentTerritorialCouncilMessage extends AbstractAdherentMessage implements TransactionalMessageInterface
+class ReferentInstancesMessage extends AbstractAdherentMessage implements TransactionalMessageInterface
 {
     public function getType(): string
     {
-        return AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL;
+        return AdherentMessageTypeEnum::REFERENT_INSTANCES;
     }
 
     public function isSynchronized(): bool

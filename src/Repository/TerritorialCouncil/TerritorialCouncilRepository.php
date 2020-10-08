@@ -109,7 +109,11 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('tc')
             ->innerJoin('tc.referentTags', 'tag')
             ->where($tagCondition)
-            ->setParameter('tags', $referentTags)
+            ->andWhere('tc.isActive = :true')
+            ->setParameters([
+                'tags' => $referentTags,
+                'true' => true,
+            ])
         ;
     }
 }

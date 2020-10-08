@@ -10,7 +10,7 @@ use App\Form\AdherentMessage\CommitteeFilterType;
 use App\Form\AdherentMessage\MunicipalChiefFilterType;
 use App\Form\AdherentMessage\ReferentElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\ReferentFilterType;
-use App\Form\AdherentMessage\ReferentTerritorialCouncilFilterType;
+use App\Form\AdherentMessage\ReferentInstancesFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -59,8 +59,8 @@ class FilterFormFactory
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
                 return $this->formFactory->create(ReferentElectedRepresentativeFilterType::class, $data);
 
-            case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
-                return $this->formFactory->create(ReferentTerritorialCouncilFilterType::class, $data);
+            case AdherentMessageTypeEnum::REFERENT_INSTANCES:
+                return $this->formFactory->create(ReferentInstancesFilterType::class, $data);
 
             case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
                 return $this->formFactory->create(AdherentZoneFilterType::class, $data, [

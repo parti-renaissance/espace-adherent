@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\PoliticalCommitteeRepository")
  */
 class PoliticalCommittee
 {
