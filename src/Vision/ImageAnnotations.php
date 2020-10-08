@@ -8,7 +8,11 @@ class ImageAnnotations
 {
     private const IDENTITY_DOCUMENT_LABEL = 'Identity document';
     private const NATIONAL_IDENTITY_CARD_LABEL = 'National identity card';
+    private const PASSPORT_LABEL = 'Passport';
+    private const FRENCH_PASSPORT_ENTITY_LABEL = 'French passport';
+
     private const FRENCH_IDENTITY_CARD_LABEL = 'carte d identité française';
+    private const FRENCH_PASSPORT_LABEL = 'french passport';
 
     /**
      * @Groups({"ocr"})
@@ -64,40 +68,32 @@ class ImageAnnotations
 
     public function isIdentityDocument(): bool
     {
-        return \in_array(self::IDENTITY_DOCUMENT_LABEL, $this->webEntities, true)
-            || \in_array(self::NATIONAL_IDENTITY_CARD_LABEL, $this->webEntities, true)
-        ;
+        return 0 < array_intersect($this->labels, [
+            self::IDENTITY_DOCUMENT_LABEL,
+            self::NATIONAL_IDENTITY_CARD_LABEL,
+            self::PASSPORT_LABEL,
+            self::FRENCH_PASSPORT_ENTITY_LABEL,
+        ]);
     }
 
     public function isFrenchNationalIdentityCard(): bool
     {
-        return $this->isIdentityDocument() && \in_array(self::FRENCH_IDENTITY_CARD_LABEL, $this->labels, true);
+        return $this->isIdentityDocument()
+            && \in_array(self::FRENCH_IDENTITY_CARD_LABEL, $this->labels, true)
+        ;
     }
 
-    public function getFirstNames(): array
+    public function isFrenchPassport(): bool
     {
-        preg_match('/Prénom\s?((\(s\))?|s)\s?:\s?(?<first_names>.+)\\n/', $this->text, $matches);
-
-        return array_map(function (string $firstName) {
-            return trim($firstName);
-        }, preg_split('/[\s,]+/', $matches['first_names'] ?? null));
+        return $this->isIdentityDocument()
+            && \in_array(self::FRENCH_PASSPORT_LABEL, $this->labels, true)
+        ;
     }
 
-    public function getLastName(): ?string
+    public function isSupportedIdentityDocument(): bool
     {
-        preg_match('/Nom( )?:( )?(?<last_name>.+)\\n/', $this->text, $matches);
-
-        return $matches['last_name'] ?? null;
-    }
-
-    public function getBirthDate(): ?\DateTime
-    {
-        preg_match('/(?<birth_date>[\d]{2}[\. ][\d]{2}[\. ][\d]{4})/', $this->text, $matches);
-
-        if (!isset($matches['birth_date']) || !$matches['birth_date']) {
-            return null;
-        }
-
-        return \DateTime::createFromFormat('d.m.Y', str_replace(' ', '.', $matches['birth_date']));
+        return $this->isIdentityDocument()
+            && ($this->isFrenchNationalIdentityCard() || $this->isFrenchPassport())
+        ;
     }
 }
