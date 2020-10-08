@@ -5,9 +5,9 @@ namespace App\Adherent\Certification\Handlers;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
 use App\Image\PdfToImageConverter;
+use App\Vision\IdentityDocumentParser;
 use App\Vision\ImageAnnotations;
 use App\Vision\VisionHandler;
-use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -17,24 +17,24 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     private $em;
     private $visionHandler;
     private $serializer;
-    private $slugify;
     private $pdfToImageConverter;
     private $filesystem;
+    private $identityDocumentParser;
 
     public function __construct(
         EntityManagerInterface $em,
         VisionHandler $visionHandler,
         ObjectNormalizer $normalizer,
-        Slugify $slugify,
         PdfToImageConverter $pdfToImageConverter,
-        FilesystemInterface $filesystem
+        FilesystemInterface $filesystem,
+        IdentityDocumentParser $identityDocumentParser
     ) {
         $this->em = $em;
         $this->visionHandler = $visionHandler;
         $this->serializer = $normalizer;
-        $this->slugify = $slugify;
         $this->pdfToImageConverter = $pdfToImageConverter;
         $this->filesystem = $filesystem;
+        $this->identityDocumentParser = $identityDocumentParser;
     }
 
     public function getPriority(): int
@@ -63,7 +63,7 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
 
         $this->em->flush();
 
-        if (!$imageAnnotations->isFrenchNationalIdentityCard()) {
+        if (!$imageAnnotations->isSupportedIdentityDocument()) {
             $certificationRequest->setOcrStatus(CertificationRequest::OCR_STATUS_PRE_REFUSED);
             $certificationRequest->setOcrResult(CertificationRequestRefuseCommand::REFUSAL_REASON_DOCUMENT_NOT_IN_CONFORMITY);
 
@@ -93,28 +93,11 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
 
     private function match(CertificationRequest $certificationRequest, ImageAnnotations $imageAnnotations): bool
     {
-        $adherent = $certificationRequest->getAdherent();
-
-        $firstNames = array_map(function (string $firstName) {
-            return $this->normalize($firstName);
-        }, $imageAnnotations->getFirstNames());
-
-        $birthDate = $imageAnnotations->getBirthDate();
-
-        return \in_array($this->normalize($adherent->getFirstName()), $firstNames, true)
-            && $this->normalize($adherent->getLastName()) === $this->normalize($imageAnnotations->getLastName())
-            && $birthDate
-            && $adherent->getBirthDate()->format('Y-m-d') === $birthDate->format('Y-m-d')
-        ;
+        return $this->identityDocumentParser->match($certificationRequest->getAdherent(), $imageAnnotations);
     }
 
     private function isDocumentReadableByOcr(CertificationRequest $certificationRequest): bool
     {
         return \in_array($certificationRequest->getDocumentMimeType(), CertificationRequest::MIME_TYPES, true);
-    }
-
-    private function normalize(?string $str): string
-    {
-        return $this->slugify->slugify(trim($str));
     }
 }
