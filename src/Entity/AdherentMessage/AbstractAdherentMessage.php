@@ -129,6 +129,13 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     private $recipientCount;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $sendToTimeline = false;
+
     public function __construct(UuidInterface $uuid, Adherent $author)
     {
         $this->uuid = $uuid;
@@ -320,5 +327,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function isMailchimp(): bool
     {
         return $this instanceof CampaignAdherentMessageInterface;
+    }
+
+    public function isSendToTimeline(): bool
+    {
+        return $this->sendToTimeline;
+    }
+
+    public function setSendToTimeline(bool $value): void
+    {
+        $this->sendToTimeline = $value;
     }
 }

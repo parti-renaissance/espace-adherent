@@ -75,16 +75,16 @@
                             <td>
                                 {% block message_table_action %}
                                     {% set message_route_params = route_params|default({})|merge({uuid: message.uuid}) %}
-                                    {% set items = [] %}
+                                    {% set items = items ?? [] %}
 
                                     {% if not message.isSent %}
-                                        {% set items = [{
+                                        {% set items = items|merge([{
                                             href: path("app_message_#{message_type}_update", message_route_params),
                                             label: 'Modifier',
                                             linkAttr: {
                                                 class: 'row-action text--blue--dark link--no-decor',
                                             }
-                                        }] %}
+                                        }]) %}
                                     {% endif %}
 
                                     {% if message.isSent %}

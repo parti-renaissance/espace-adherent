@@ -33,7 +33,19 @@
             {% endif %}
         </td>
         <td>
-            {% block message_table_action parent() %}
+            {% block message_table_action %}
+                {% if not message.isSendToTimeline and message.filter and message.filter.instanceType %}
+                    {% set items = [{
+                        href: path('app_message_referent_instances_publish_message', {uuid: message.uuid}|merge(message.filter.instanceType == constant('App\\Entity\\AdherentMessage\\Filter\\ReferentInstancesFilter::INSTANCE_TYPE_COTERR') ? {coterr: true} : {})),
+                        label: 'Publier sur la page',
+                        linkAttr: {
+                            class: 'row-action text--blue--dark link--no-decor',
+                        }
+                    }] %}
+                {% endif %}
+
+                {{ parent() }}
+            {% endblock %}
         </td>
     </tr>
 {% endblock %}

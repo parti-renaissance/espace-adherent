@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ReferentInstancesFilter extends AbstractAdherentMessageFilter
 {
-    private const INSTANCE_TYPE_COTERR = 'territorial_council';
-    private const INSTANCE_TYPE_COPOL = 'political_committee';
+    public const INSTANCE_TYPE_COTERR = 'territorial_council';
+    public const INSTANCE_TYPE_COPOL = 'political_committee';
 
     /**
      * @var TerritorialCouncil|null

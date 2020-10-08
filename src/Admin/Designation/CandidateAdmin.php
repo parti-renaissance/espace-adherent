@@ -9,6 +9,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Form\TerritorialCouncil\TerritorialCouncilQualityChoiceType;
 use App\Repository\CommitteeRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -119,7 +120,7 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
             ->add('quality', ChoiceFilter::class, [
                 'show_filter' => true,
                 'label' => 'Qualité',
-                'field_type' => TerritorialCouncilQualityEnum::class,
+                'field_type' => TerritorialCouncilQualityChoiceType::class,
                 'field_options' => [
                     'choices' => TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE,
                 ],

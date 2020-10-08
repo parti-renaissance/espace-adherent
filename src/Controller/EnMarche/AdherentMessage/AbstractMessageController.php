@@ -31,6 +31,7 @@ abstract class AbstractMessageController extends Controller
 
     private $templates = [
         'list' => 'message/list.html.twig',
+        'send_success' => 'message/send_success/default.html.twig',
     ];
 
     /**
@@ -254,11 +255,25 @@ abstract class AbstractMessageController extends Controller
             $entityManager->flush();
 
             $this->addFlash('info', 'adherent_message.campaign_sent_successfully');
+
+            return $this->redirectToMessageRoute('send_success', ['uuid' => $message->getUuid()->toString()]);
         } else {
-            $this->addFlash('info', 'adherent_message.campaign_sent_failure');
+            $this->addFlash('error', 'adherent_message.campaign_sent_failure');
         }
 
         return $this->redirectToMessageRoute('list');
+    }
+
+    /**
+     * @Route("/{uuid}/confirmation", name="send_success", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")
+     */
+    public function sendSuccessAction(AbstractAdherentMessage $message): Response
+    {
+        $this->checkAccess();
+
+        return $this->renderTemplate($this->getTemplate('send_success'), ['message' => $message]);
     }
 
     /**
