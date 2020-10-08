@@ -8,11 +8,12 @@ class ImageAnnotations
 {
     private const IDENTITY_DOCUMENT_LABEL = 'Identity document';
     private const NATIONAL_IDENTITY_CARD_LABEL = 'National identity card';
-    private const PASSPORT_LABEL = 'Passport';
+    private const PASSPORT_ENTITY_LABEL = 'Passport';
     private const FRENCH_PASSPORT_ENTITY_LABEL = 'French passport';
 
     private const FRENCH_IDENTITY_CARD_LABEL = 'carte d identité française';
     private const FRENCH_PASSPORT_LABEL = 'french passport';
+    private const PASSPORT_LABEL = 'passport';
 
     /**
      * @Groups({"ocr"})
@@ -71,7 +72,7 @@ class ImageAnnotations
         return 0 < array_intersect($this->labels, [
             self::IDENTITY_DOCUMENT_LABEL,
             self::NATIONAL_IDENTITY_CARD_LABEL,
-            self::PASSPORT_LABEL,
+            self::PASSPORT_ENTITY_LABEL,
             self::FRENCH_PASSPORT_ENTITY_LABEL,
         ]);
     }
@@ -86,7 +87,10 @@ class ImageAnnotations
     public function isFrenchPassport(): bool
     {
         return $this->isIdentityDocument()
-            && \in_array(self::FRENCH_PASSPORT_LABEL, $this->labels, true)
+            && 0 < array_intersect($this->labels, [
+                self::FRENCH_PASSPORT_LABEL,
+                self::PASSPORT_LABEL,
+            ])
         ;
     }
 
