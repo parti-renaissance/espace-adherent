@@ -239,11 +239,7 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '',
                 ],
-                'birthdate' => [
-                    'year' => '1950',
-                    'month' => '1',
-                    'day' => '20',
-                ],
+                'birthdate' => '1950-01-20',
             ],
         ]));
 
@@ -268,11 +264,7 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0140998080',
                 ],
-                'birthdate' => [
-                    'year' => '1950',
-                    'month' => '1',
-                    'day' => '20',
-                ],
+                'birthdate' => '1950-01-20',
             ],
         ]));
 
@@ -446,11 +438,7 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '',
                 ],
-                'birthdate' => [
-                    'year' => '1950',
-                    'month' => '1',
-                    'day' => '20',
-                ],
+                'birthdate' => '1950-01-20',
                 'voteCountry' => 'FR',
                 'votePostalCode' => '',
                 'voteCity' => '92110-92024',
@@ -486,11 +474,7 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0140998080',
                 ],
-                'birthdate' => [
-                    'year' => '1950',
-                    'month' => '1',
-                    'day' => '20',
-                ],
+                'birthdate' => '1950-01-20',
                 'voteCountry' => 'FR',
                 'votePostalCode' => '92110',
                 'voteCity' => '92110-92024',
@@ -576,11 +560,7 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0600010203',
                 ],
-                'birthdate' => [
-                    'year' => '1968',
-                    'month' => '10',
-                    'day' => '9',
-                ],
+                'birthdate' => '1968-10-09',
             ],
         ]));
 
@@ -638,11 +618,7 @@ class ProcurationControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '0140998080',
                 ],
-                'birthdate' => [
-                    'year' => '1989',
-                    'month' => '2',
-                    'day' => '17',
-                ],
+                'birthdate' => '1989-02-17',
                 'voteCountry' => 'FR',
                 'votePostalCode' => '75018',
                 'voteCity' => '75018-75120',

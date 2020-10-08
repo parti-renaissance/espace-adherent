@@ -70,6 +70,7 @@ common.message.max_length: Le message ne doit pas contenir plus de {{ limit }} c
 #
 adherent.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 adherent.birthdate.minimum_required_age: Vous devez être âgé d'au moins 15 ans pour adhérer.
+adherent.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour adhérer.
 
 adherent.email_address.not_unique: Cette adresse e-mail existe déjà.
 
@@ -228,6 +229,7 @@ procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser 100 ca
 
 procuration.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17 ans pour demander une procuration.
+procuration.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour demander une procuration.
 
 procuration.reason.not_blank: Vous devez spécifier une raison.
 procuration.reason.invalid: Cette raison n'est pas valide.
@@ -358,6 +360,7 @@ assessor.last_name.min_length: Votre nom doit comporter au moins 2 caractères.
 assessor.last_name.max_length: Vos nom ne peuvent pas dépasser 100 caractères.
 
 assessor.birthdate.minimum_required_age: Vous devez être âgé d'au moins 18 ans pour être assesseur.
+assessor.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour être assesseur.
 
 assessor.office.invalid_choice: Vous devez choisir l'une des fonctions proposées.
 

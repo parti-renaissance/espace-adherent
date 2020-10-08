@@ -99,7 +99,12 @@ class AdherentProfile
      * @var \DateTime|null
      *
      * @Assert\NotBlank(message="adherent.birthdate.not_blank")
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age")
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="-15 years",
+     *     minMessage="adherent.birthdate.maximum_required_age",
+     *     maxMessage="adherent.birthdate.minimum_required_age"
+     * )
      */
     private $birthdate;
 

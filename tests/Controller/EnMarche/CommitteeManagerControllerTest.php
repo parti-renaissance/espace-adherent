@@ -227,28 +227,8 @@ class CommitteeManagerControllerTest extends WebTestCase
                     'postalCode' => '99999',
                     'city' => '10102-45029',
                 ],
-                'beginAt' => [
-                    'date' => [
-                        'year' => date('Y'),
-                        'month' => '3',
-                        'day' => '2',
-                    ],
-                    'time' => [
-                        'hour' => '14',
-                        'minute' => '30',
-                    ],
-                ],
-                'finishAt' => [
-                    'date' => [
-                        'year' => date('Y'),
-                        'month' => '3',
-                        'day' => '1',
-                    ],
-                    'time' => [
-                        'hour' => '19',
-                        'minute' => '0',
-                    ],
-                ],
+                'beginAt' => '2022-03-02 14:30',
+                'finishAt' => '2022-03-01 19:00',
                 'capacity' => 'zero',
             ],
         ]));
@@ -275,28 +255,8 @@ class CommitteeManagerControllerTest extends WebTestCase
                     'postalCode' => '69001',
                     'city' => '69001-69381',
                 ],
-                'beginAt' => [
-                    'date' => [
-                        'year' => '2022',
-                        'month' => '3',
-                        'day' => '2',
-                    ],
-                    'time' => [
-                        'hour' => '9',
-                        'minute' => '30',
-                    ],
-                ],
-                'finishAt' => [
-                    'date' => [
-                        'year' => '2022',
-                        'month' => '3',
-                        'day' => '2',
-                    ],
-                    'time' => [
-                        'hour' => '19',
-                        'minute' => '0',
-                    ],
-                ],
+                'beginAt' => '2022-03-02 09:30',
+                'finishAt' => '2022-03-02 19:00',
                 'capacity' => '1500',
             ],
         ]));
@@ -355,28 +315,8 @@ class CommitteeManagerControllerTest extends WebTestCase
                     'postalCode' => '69001',
                     'city' => '69001-69381',
                 ],
-                'beginAt' => [
-                    'date' => [
-                        'year' => '2022',
-                        'month' => '3',
-                        'day' => '2',
-                    ],
-                    'time' => [
-                        'hour' => '9',
-                        'minute' => '30',
-                    ],
-                ],
-                'finishAt' => [
-                    'date' => [
-                        'year' => '2022',
-                        'month' => '3',
-                        'day' => '2',
-                    ],
-                    'time' => [
-                        'hour' => '19',
-                        'minute' => '0',
-                    ],
-                ],
+                'beginAt' => '2022-03-02 09:30',
+                'finishAt' => '2022-03-02 19:00',
                 'capacity' => '1500',
                 'timeZone' => 'Asia/Singapore',
             ],

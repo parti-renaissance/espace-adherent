@@ -10,7 +10,6 @@ use App\VotePlace\VotePlaceManager;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -50,14 +49,9 @@ class AssessorRequestType extends AbstractType
                         'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                     ])
                     ->add('emailAddress', EmailType::class)
-                    ->add('birthdate', BirthdayType::class, [
-                        'widget' => 'choice',
-                        'years' => $options['years'],
-                        'placeholder' => [
-                            'year' => 'AAAA',
-                            'month' => 'MM',
-                            'day' => 'JJ',
-                        ],
+                    ->add('birthdate', DatePickerType::class, [
+                        'max_date' => new \DateTime('-18 years'),
+                        'min_date' => new \DateTime('-120 years'),
                     ])
                     ->add('birthCity', TextType::class)
                 ;
@@ -110,15 +104,12 @@ class AssessorRequestType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $years = range((int) date('Y') - 15, (int) date('Y') - 120);
-
         $resolver
             ->setDefaults([
                 'data_class' => AssessorRequestCommand::class,
                 'validation_groups' => function (Options $options) {
                     return $options['transition'];
                 },
-                'years' => array_combine($years, $years),
             ])
             ->setRequired('transition')
             ->setAllowedValues('transition', AssessorRequestEnum::TRANSITIONS)

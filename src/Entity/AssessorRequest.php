@@ -87,7 +87,12 @@ class AssessorRequest
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank(message="common.birthdate.not_blank")
-     * @Assert\Range(max="-18 years", maxMessage="assessor.birthdate.minimum_required_age")
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="-18 years",
+     *     minMessage="assessor.birthdate.maximum_required_age",
+     *     maxMessage="assessor.birthdate.minimum_required_age"
+     * )
      */
     private $birthdate;
 

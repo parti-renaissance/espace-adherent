@@ -3,6 +3,7 @@
 namespace App\Form\ManagedUsers;
 
 use App\Entity\ReferentTag;
+use App\Form\DatePickerType;
 use App\Form\EventListener\IncludeExcludeFilterRoleListener;
 use App\Form\FilterRoleType;
 use App\Form\GenderType;
@@ -13,7 +14,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -48,8 +48,8 @@ class ManagedUsersFilterType extends AbstractType
             ->add('lastName', TextType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
-            ->add('registeredSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
-            ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
+            ->add('registeredSince', DatePickerType::class, ['required' => false])
+            ->add('registeredUntil', DatePickerType::class, ['required' => false])
             ->add('emailSubscription', ChoiceType::class, [
                 'required' => false,
                 'choices' => [
