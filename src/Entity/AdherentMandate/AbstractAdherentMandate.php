@@ -29,7 +29,7 @@ abstract class AbstractAdherentMandate
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="adherentMandates")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     protected $adherent;

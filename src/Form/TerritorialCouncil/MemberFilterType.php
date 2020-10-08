@@ -5,6 +5,7 @@ namespace App\Form\TerritorialCouncil;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ReferentTag;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\GenderType;
 use App\Repository\CommitteeRepository;
 use App\Repository\ElectedRepresentative\ZoneRepository;
@@ -44,8 +45,9 @@ class MemberFilterType extends AbstractType
             ])
             ->add('ageMin', IntegerType::class, ['required' => false])
             ->add('ageMax', IntegerType::class, ['required' => false])
-            ->add('qualities', TerritorialCouncilQualityChoiceType::class, [
+            ->add('qualities', ChoiceType::class, [
                 'label' => 'referent.territorial_council.quality',
+                'choices' => TerritorialCouncilQualityEnum::ALL_TC_PC_CHOICES,
                 'required' => false,
                 'multiple' => true,
             ])
@@ -73,6 +75,17 @@ class MemberFilterType extends AbstractType
                     'common.all' => null,
                     'common.adherent.subscribed' => true,
                     'common.adherent.unsubscribed' => false,
+                ],
+                'choice_value' => function ($choice) {
+                    return false === $choice ? '0' : (string) $choice;
+                },
+            ])
+            ->add('isPoliticalCommitteeMember', ChoiceType::class, [
+                'required' => false,
+                'choices' => [
+                    'common.all' => null,
+                    'global.yes' => true,
+                    'global.no' => false,
                 ],
                 'choice_value' => function ($choice) {
                     return false === $choice ? '0' : (string) $choice;
