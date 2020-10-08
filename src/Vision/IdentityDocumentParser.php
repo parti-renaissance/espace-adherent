@@ -28,7 +28,7 @@ class IdentityDocumentParser
             preg_match('/Prénom( )?\(s\)( )?:( )?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
 
             $firstNames = array_map(function (string $firstName) {
-                return $this->normalize(trim($firstName));
+                return $this->normalize($firstName);
             }, preg_split('/[\s,]+/', $matches['first_names'] ?? null));
 
             return \in_array($this->normalize($firstName), $firstNames, true);
@@ -45,9 +45,6 @@ class IdentityDocumentParser
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
             preg_match('/Nom( )?:( )?(?<last_name>.+)\\n/', $this->text, $matches);
-
-            dump($this->normalize($lastName));
-            dump($matches['last_name'] ?? null);
 
             return $this->normalize($matches['last_name'] ?? null) === $this->normalize($lastName);
         } elseif ($imageAnnotations->isFrenchPassport()) {
