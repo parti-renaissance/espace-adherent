@@ -18,7 +18,7 @@
             <p class="text--body">
                 <strong>Nom :</strong> {{ app.user.lastName }}<br />
                 <strong>Prénom :</strong> {{ app.user.firstName }}<br />
-                <strong>Date de naissance :</strong> {{ app.user.birthDate|date('d/m/Y') }}
+                <strong>Date de naissance :</strong> {{ app.user.birthDate|date('d/m/Y') }} ({{ app.user.birthdate|localizeddate('none', 'none', 'fr_FR', false, 'd MMMM YYYY') }} - {{ app.user.age }} ans)
             </p>
             <a class="link--blue--dark link--no-decor text--body" href="{{ path('app_user_edit') }}">
                 Éditer les informations
@@ -27,13 +27,31 @@
 
         <div class="em-form__group">
             <div class="em-form__label">2. Téléchargez une pièce d'identité</div>
-            <div class="em-form__file">
-                {{ form_widget(form.document, { attr: { class: 'em-form__file--area' } }) }}
-                {{ form_label(form.document, '[Bêta] Téléchargez votre Carte nationale d\'identité en .jpg ou .png.', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
-                <span class="em-form__file--name">Aucun fichier sélectionné</span>
+            <div class="alert alert--error b__nudge--bottom">
+                <strong>Attention</strong> <br>
+                Votre scan doit être de <strong>bonne qualité</strong> et <strong>dépourvu de reflets</strong> (les écritures restant bien lisibles). <br>
+                Si votre pièce n'est pas lisible, est tronquée ou n'est pas un scan original, elle sera refusée.
             </div>
-            <div class="em-form__legend">Formats acceptés : jpg ou png • Taille max. : 5Mo.</div>
-            {{ form_errors(form.document) }}
+
+            <div id="form-file">
+                <div class="em-form__file">
+                    {{ form_widget(form.document, { attr: { class: 'em-form__file--area' } }) }}
+                    {{ form_label(form.document, '[Bêta] Téléchargez votre Carte nationale d\'identité recto ou votre passeport en .jpg, .png ou .pdf.', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
+                    <span class="em-form__file--name">Aucun fichier sélectionné</span>
+                    <span id="bad-file-selected" class="em-form__legend em-form--error visually-hidden">Le fichier séléctionné n'est pas autorisé</span>
+                </div>
+                <div class="em-form__legend">Formats acceptés : jpg, png ou pdf • Taille max. : 5Mo.</div>
+                {{ form_errors(form.document) }}
+            </div>
+
+            <div id="preview-container" class="visually-hidden">
+                <p class="text--body b__nudge--top-0">Prévisualisation :</p>
+                <div id="preview"></div>
+                <div class="l__row l__row--h-stretch">
+                    <p id="preview-file-name" class="text--body"></p>
+                    <a href="#" id="document-remover" class="btn btn--as-link right">Supprimer la pièce d'identité</a>
+                </div>
+            </div>
         </div>
 
         <div class="em-form__group">
@@ -104,13 +122,38 @@
         $('.em-form__file--area').bind('change', (event) => {
             const $input = $(event.currentTarget);
             const selectedFileName = $input.val();
-            const $fileName = $input.siblings('.em-form__file--name');
-            const $label = $input.siblings('.em-form__file--label');
 
             if (0 < $input.length && 0 < selectedFileName.length) {
-                $fileName.html(selectedFileName.split('\\').pop());
-                $label.html('Modifier la pièce jointe');
+                const file = $input[0].files[0];
+                $('#bad-file-selected').hide();
+
+                if (!file || !$input.attr('accept').split(',').includes(file.type)) {
+                    $('#bad-file-selected').show();
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    var embed = `<embed type="${file.type}"
+                        src="${e.target.result}"
+                        width="100%"
+                        style="height: 400px">`;
+
+                    $('#form-file').hide();
+                    $('#preview').html(embed);
+                    $('#preview-file-name').text(selectedFileName.split('\\').pop());
+                    $('#preview-container').show();
+                };
             }
+        });
+
+        $('#document-remover').on('click', function(e) {
+            e.preventDefault();
+            $('#preview-container').hide();
+            $('#preview').html('');
+            $('#form-file').show().find('input[type=file]').val('');
+            $('#preview-file-name').text('');
         });
     </script>
 {% endblock %}
