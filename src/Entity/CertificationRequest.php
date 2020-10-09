@@ -36,7 +36,6 @@ class CertificationRequest
     public const MIME_TYPE_PDF = 'application/pdf';
 
     public const MIME_TYPES = [
-        self::MIME_TYPE_PDF,
         self::MIME_TYPE_JPG,
         self::MIME_TYPE_PNG,
     ];
