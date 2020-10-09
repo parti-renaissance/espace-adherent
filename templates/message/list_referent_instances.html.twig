@@ -1,0 +1,52 @@
+{% extends 'message/list.html.twig' %}
+
+{% block message_table_header %}
+    <th width="75">Statut</th>
+    <th width="100">Instance</th>
+    <th width="100">Label</th>
+    <th width="200">Objet</th>
+    <th width="100">Date de création</th>
+    <th width="50">Action</th>
+{% endblock %}
+
+{% block message_table_row %}
+    <tr>
+        <td>
+            <span class="{{ message.status == constant('App\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
+                {{ message.status|trans }}
+            </span>
+        </td>
+        <td width="100">
+            {% if message.filter is not null %}
+                {{ ('common.' ~ message.filter.instanceType)|trans }}
+            {% else %}
+                ~
+            {% endif %}
+        </td>
+        <td width="100">{{ message.label }}</td>
+        <td>{{ message.subject }}</td>
+        <td>
+            {% if message.isSent %}
+                {{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") : '~' }}
+            {% else %}
+                {{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") }}
+            {% endif %}
+        </td>
+        <td>
+            {% block message_table_action %}
+                {% if not message.isSendToTimeline and message.filter and message.filter.instanceType %}
+                    {% set items = [{
+                        href: path('app_message_referent_instances_publish_message', {uuid: message.uuid}|merge(message.filter.instanceType == constant('App\\Entity\\AdherentMessage\\Filter\\ReferentInstancesFilter::INSTANCE_TYPE_COTERR') ? {coterr: true} : {})),
+                        label: 'Publier sur la page',
+                        linkAttr: {
+                            class: 'row-action text--blue--dark link--no-decor',
+                        }
+                    }] %}
+                {% endif %}
+
+                {{ parent() }}
+            {% endblock %}
+        </td>
+    </tr>
+{% endblock %}
+

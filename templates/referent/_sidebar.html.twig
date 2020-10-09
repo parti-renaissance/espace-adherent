@@ -8,7 +8,7 @@
     {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
         <ul>
             <li class="menu-section">Messagerie</li>
-            <li class="{{ is_active_route(app.request, 'app_message_referent_*') and not is_active_route(app.request, ['app_message_referent_elected_representative_*', 'app_message_referent_territorial_council_*']) ? 'active' }}">
+            <li class="{{ is_active_route(app.request, 'app_message_referent_*') and not is_active_route(app.request, ['app_message_referent_elected_representative_*', 'app_message_referent_instances_*']) ? 'active' }}">
                 <a href="{{ path('app_message_referent_list') }}" class="messaging adherent">
                     <svg width="16" height="16" viewBox="0 0 16 16">
                         <use xlink:href="/images/icons/icons.svg#messaging"></use>
@@ -24,12 +24,12 @@
                     Aux élus
                 </a>
             </li>
-            <li class="{{ is_active_route(app.request, 'app_message_referent_territorial_council_*') ? 'active' }}">
-                <a href="{{ path('app_message_referent_territorial_council_list') }}" class="messaging council">
+            <li class="{{ is_active_route(app.request, 'app_message_referent_instances_*') ? 'active' }}">
+                <a href="{{ path('app_message_referent_instances_list') }}" class="messaging council">
                     <svg width="16" height="16" viewBox="0 0 16 16">
                         <use xlink:href="/images/icons/icons.svg#messaging"></use>
                     </svg>
-                    Au Conseil territorial
+                    Aux instances
                 </a>
             </li>
         </ul>
