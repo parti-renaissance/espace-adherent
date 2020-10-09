@@ -18,8 +18,10 @@ class BaseEventCommandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $beginDate = $builder->getData() ? $builder->getData()->getBeginAt() : null;
+        $now = new \DateTime('now');
         $dateTimeOptions = [
-            'min_date' => new \DateTime('now'),
+            'min_date' => $beginDate && $beginDate < $now ? $beginDate : $now,
             'max_date' => new \DateTime('+5 years'),
             'minute_increment' => 15,
         ];
