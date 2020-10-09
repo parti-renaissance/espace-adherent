@@ -14,7 +14,7 @@ use App\Event\Filter\ListFilterObject;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -315,41 +315,24 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      *
      * NOTE: this returns poorly hydrated instances of Adherent, but is optimized for merging of committees
      *
-     * @return Adherent[]|AdherentCollection
+     * @return CommitteeMembership[]
      */
-    public function findMembersToMerge(Committee $sourceCommittee, Committee $destinationCommittee): AdherentCollection
+    public function findMembersToMerge(Committee $sourceCommittee, Committee $destinationCommittee): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm
-            ->addEntityResult(Adherent::class, 'a')
-            ->addFieldResult('a', 'id', 'id')
-            ->addFieldResult('a', 'uuid', 'uuid')
-            ->addFieldResult('a', 'email_address', 'emailAddress')
+        return $this
+            ->createQueryBuilder('cm_src')
+            ->select('PARTIAL adherent.{id, uuid, emailAddress}')
+            ->addSelect('PARTIAL cm_src.{id, joinedAt}')
+            ->innerJoin('cm_src.adherent', 'adherent')
+            ->leftJoin(CommitteeMembership::class, 'cm_dest', Join::WITH, 'cm_dest.adherent = adherent AND cm_dest.committee = :dest_committee')
+            ->where('cm_dest.id IS NULL AND cm_src.committee = :src_committee')
+            ->setParameters([
+                'src_committee' => $sourceCommittee,
+                'dest_committee' => $destinationCommittee,
+            ])
+            ->getQuery()
+            ->getResult()
         ;
-
-        $sql = <<<'SQL'
-            SELECT
-                a.id,
-                a.uuid,
-                a.email_address
-            FROM adherents AS a
-            INNER JOIN committees_memberships AS cm_src
-                ON cm_src.committee_id = :source_committee
-                AND cm_src.adherent_id = a.id
-            LEFT JOIN committees_memberships AS cm_dest
-                ON cm_dest.committee_id = :destination_committee
-                AND cm_dest.adherent_id = a.id
-            WHERE cm_dest.id IS NULL
-SQL
-        ;
-
-        return new AdherentCollection(
-            $this->_em
-                ->createNativeQuery($sql, $rsm)
-                ->setParameter('source_committee', $sourceCommittee)
-                ->setParameter('destination_committee', $destinationCommittee)
-                ->getResult()
-        );
     }
 
     /**

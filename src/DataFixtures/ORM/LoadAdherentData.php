@@ -1063,7 +1063,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($committee11);
 
         // Make adherents join committees
-        $manager->persist($membership = $adherent7->superviseCommittee($committee3, '2017-01-26 16:08:24'));
+        $manager->persist($membership = $adherent7->superviseCommittee($committee3, \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-26 16:08:24')));
         $membership->enableVote();
         $manager->persist($adherent7->superviseCommittee($committee4));
         $manager->persist($adherent7->superviseCommittee($committee5));
@@ -1074,7 +1074,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $membership->enableVote();
         $manager->persist($adherent6->followCommittee($committee2));
         $manager->persist($adherent4->followCommittee($committee2));
-        $manager->persist($membership = $adherent3->superviseCommittee($committee1, '2017-01-12 13:25:54'));
+        $manager->persist($membership = $adherent3->superviseCommittee($committee1, \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-12 13:25:54')));
         $membership->enableVote();
         $manager->persist($adherent3->hostCommittee($committee3));
         $manager->persist($adherent3->followCommittee($committee4));
