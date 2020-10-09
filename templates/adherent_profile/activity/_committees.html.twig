@@ -2,20 +2,6 @@
 
 <h1 class="text--medium-large">Mes comités</h1>
 
-<div class="alert alert--tips b__nudge--bottom-large">
-    Comment participer pour voter et candidater ? Nous vous invitons à sélectionner un comité principal, que vous soyez membre de plusieurs comités ou d'un seul, pour participer à la désignation du binôme paritaire d'adhérents siégeant au Conseil territorial.
-    <br /><br />
-    Pour candidater, rendez-vous sur la page de votre comité principal en cliquant sur le bouton « VOIR » puis suivez les instructions.
-
-    {% if last_vote %}
-        {% set vote_committee = last_vote.election.electionEntity.committee %}
-
-        <br /><br />
-        Vous avez voté dans le comité <b>{{ vote_committee.name }}</b>, le {{ last_vote.votedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}.
-        Vous ne pouvez plus changer de comité principal jusqu'au <b>{{ last_vote.votedAt|date_modify('+3 months')|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}</b> car des désignations sont en cours dans d'autres zones.
-    {% endif %}
-</div>
-
 <div class="l__col">
     {% if committee_memberships.totalItems < 1 %}
         <div class="space--40-0 text--center">
