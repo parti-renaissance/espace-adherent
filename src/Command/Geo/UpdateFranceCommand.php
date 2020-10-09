@@ -183,6 +183,14 @@ final class UpdateFranceCommand extends Command
             $department->setRegion($region);
         }
 
+        // Guess department from city code
+        if (!$department) {
+            $depCodeFromCode = substr($entry['code'], 0, 3);
+            if (isset(self::OVERSEAS_DEPARTMENTS[$depCodeFromCode])) {
+                $department = $this->retrieveEntity(Department::class, $depCodeFromCode);
+            }
+        }
+
         /* @var City $city */
         $city = $this->retrieveEntity(
             City::class,
