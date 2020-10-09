@@ -73,6 +73,11 @@ class MembersListFilter
     private $emailSubscription;
 
     /**
+     * @var bool|null
+     */
+    private $isPoliticalCommitteeMember;
+
+    /**
      * @var TerritorialCouncil|null
      */
     private $territorialCouncil;
@@ -211,6 +216,16 @@ class MembersListFilter
         $this->emailSubscription = $emailSubscription;
     }
 
+    public function isPoliticalCommitteeMember(): ?bool
+    {
+        return $this->isPoliticalCommitteeMember;
+    }
+
+    public function setIsPoliticalCommitteeMember(?bool $isPoliticalCommitteeMember): void
+    {
+        $this->isPoliticalCommitteeMember = $isPoliticalCommitteeMember;
+    }
+
     public function getSort(): string
     {
         return $this->sort;
@@ -270,6 +285,7 @@ class MembersListFilter
                 return $referentTag->getId();
             }, $this->referentTags),
             'emailSubscription' => $this->emailSubscription,
+            'isPoliticalCommitteeMember' => $this->isPoliticalCommitteeMember,
             'sort' => $this->sort,
             'order' => $this->order,
         ];

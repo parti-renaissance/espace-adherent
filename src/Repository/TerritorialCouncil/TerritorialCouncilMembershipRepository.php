@@ -128,10 +128,12 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('tcm')
-            ->addSelect('territorial_council')
+            ->addSelect('territorial_council', 'mandate', 'quality', 'subscription_type', 'adherent')
             ->innerJoin('tcm.adherent', 'adherent')
             ->innerJoin('tcm.territorialCouncil', 'territorial_council')
             ->leftJoin('tcm.qualities', 'quality')
+            ->leftJoin('adherent.subscriptionTypes', 'subscription_type')
+            ->leftJoin('adherent.adherentMandates', 'mandate')
         ;
 
         if ($filter->getReferentTags()) {
@@ -203,10 +205,30 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         }
 
         if ($qualities = $filter->getQualities()) {
-            $qb
-                ->andWhere('quality.name in (:qualities)')
-                ->setParameter('qualities', $qualities)
-            ;
+            $pcQualities = [];
+            $tcQualities = [];
+            array_walk($qualities, function (string $quality, $key) use (&$pcQualities, &$tcQualities) {
+                if (0 === mb_strpos($quality, 'PC_')) {
+                    $pcQualities[] = str_replace('PC_', '', $quality);
+                } else {
+                    $tcQualities[] = $quality;
+                }
+            });
+
+            if ($pcQualities) {
+                $qb
+                    ->leftJoin('adherent.politicalCommitteeMembership', 'pcm')
+                    ->leftJoin('pcm.qualities', 'pcQuality')
+                    ->andWhere('(quality.name in (:qualities) OR pcQuality.name IN (:pcQualities))')
+                    ->setParameter('qualities', $tcQualities)
+                    ->setParameter('pcQualities', $pcQualities)
+                ;
+            } else {
+                $qb
+                    ->andWhere('quality.name in (:qualities)')
+                    ->setParameter('qualities', $tcQualities)
+                ;
+            }
         }
 
         if ($cities = $filter->getCities()) {
@@ -244,6 +266,16 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
             $qb
                 ->having($subscriptionCondition)
                 ->setParameter('subscription_code', '%'.$filter->getSubscriptionType().'%')
+            ;
+        }
+
+        if (null !== $filter->isPoliticalCommitteeMember()) {
+            $qb
+                ->leftJoin('adherent.politicalCommitteeMembership', 'pcMembership')
+                ->andWhere(\sprintf(
+                    'pcMembership.id %s',
+                    $filter->isPoliticalCommitteeMember() ? 'IS NOT NULL' : 'IS NULL')
+                )
             ;
         }
 

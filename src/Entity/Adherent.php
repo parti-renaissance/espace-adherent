@@ -9,6 +9,8 @@ use App\Collection\CertificationRequestCollection;
 use App\Collection\CitizenProjectMembershipCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
@@ -608,6 +610,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $handledThematicCommunities;
 
+    /**
+     * @var AbstractAdherentMandate[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\AbstractAdherentMandate", mappedBy="adherent", fetch="EXTRA_LAZY")
+     */
+    private $adherentMandates;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -619,6 +628,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->certificationRequests = new ArrayCollection();
         $this->receivedDelegatedAccesses = new ArrayCollection();
         $this->handledThematicCommunities = new ArrayCollection();
+        $this->adherentMandates = new ArrayCollection();
     }
 
     public static function create(
@@ -2482,5 +2492,20 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isThematicCommunityChief()
     {
         return $this->handledThematicCommunities->count() > 0;
+    }
+
+    public function getAdherentMandates(): Collection
+    {
+        return $this->adherentMandates;
+    }
+
+    public function findMandatesForQuality(string $quality, bool $active = false): array
+    {
+        return $this->adherentMandates->filter(function (AbstractAdherentMandate $mandate) use ($quality, $active) {
+            return $mandate instanceof TerritorialCouncilAdherentMandate
+                && $mandate->getQuality() === $quality
+                && (false === $active || null === $mandate->getFinishAt())
+            ;
+        })->toArray();
     }
 }

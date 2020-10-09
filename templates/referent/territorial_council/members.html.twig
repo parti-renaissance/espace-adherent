@@ -84,6 +84,11 @@
                                     <label class="filter__label">{{ 'referent.territorial_council.committee'|trans }}</label>
                                     {{ form_widget(form.committees, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'referent.territorial_council.filter.committees'|trans}}) }}
                                 </div>
+
+                                <div class="filter__row">
+                                    <label class="filter__label">{{ 'referent.territorial_council.political_committee_member'|trans }}</label>
+                                    {{ form_widget(form.isPoliticalCommitteeMember, {attr: {class: 'filter__field'}}) }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -146,7 +151,12 @@
                                     </td>
                                     <td>
                                         {% for quality in membership.qualities %}
-                                            <b>{{ ('territorial_council.membership.quality.' ~ quality.name)|trans }}</b> {{ quality.zone }}<br />
+                                            <b>{{ ('territorial_council.membership.quality.' ~ quality.name)|trans }}</b> {{ quality.zone }}
+
+                                            {% if adherent.findMandatesForQuality(quality.name, true)|length %}
+                                                <span class="elected-tag elected-tag--small text--on-yellow text--bold b__nudge--left-nano">désigné{{ adherent.isFemale ? 'e' }}</span>
+                                            {% endif %}
+                                            <br />
                                         {% endfor %}
                                     </td>
                                     <td>

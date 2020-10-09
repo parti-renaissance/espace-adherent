@@ -28,6 +28,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertContains('Conseiller(ère) départemental(e) 75', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Conseiller(ère) consulaire 75', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Conseiller(ère) municipal(e) Paris 75010', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('désignée', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('02/02/2020', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('+33 1 38 76 43 34', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Non', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
@@ -121,7 +122,16 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertContains('Referent Referent', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
         $this->assertContains('Referent75and77', $crawler->filter('tbody tr.referent__item')->eq(3)->text());
 
+        // filter by qualities PC
+        $form['f[qualities]'] = ['PC_department_councilor'];
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
+        $this->assertContains('Picard Jacques', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+
         // filter by cities
+        $form['f[qualities]'] = [];
         $form['f[cities]'] = [5];
 
         $crawler = $this->client->submit($form);
