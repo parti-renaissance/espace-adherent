@@ -18,7 +18,7 @@
         </td>
         <td width="100">
             {% if message.filter is not null %}
-                {{ ('common.' ~ message.filter.instanceType)|trans }}
+                {{ message.filter.instanceType ? ('common.' ~ message.filter.instanceType)|trans }}
             {% else %}
                 ~
             {% endif %}
