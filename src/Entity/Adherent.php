@@ -1195,31 +1195,37 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * Joins a committee as a SUPERVISOR privileged person.
      */
-    public function superviseCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR, $subscriptionDate);
+    public function superviseCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR, $subscriptionDate ?? new \DateTime());
     }
 
     /**
      * Joins a committee as a HOST privileged person.
      */
-    public function hostCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate);
+    public function hostCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate ?? new \DateTime());
     }
 
     /**
      * Joins a committee as a simple FOLLOWER privileged person.
      */
-    public function followCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate);
+    public function followCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate ?? new \DateTime());
     }
 
     private function joinCommittee(
         Committee $committee,
         string $privilege,
-        string $subscriptionDate
+        \DateTimeInterface $subscriptionDate
     ): CommitteeMembership {
         $committee->incrementMembersCount();
 

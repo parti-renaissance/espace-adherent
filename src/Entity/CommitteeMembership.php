@@ -113,13 +113,13 @@ class CommitteeMembership
         Committee $committee,
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
-        string $subscriptionDate = 'now'
+        \DateTimeInterface $subscriptionDate = null
     ) {
         $this->uuid = $uuid;
         $this->committee = $committee;
         $this->adherent = $adherent;
         $this->privilege = $privilege;
-        $this->joinedAt = new \DateTime($subscriptionDate);
+        $this->joinedAt = $subscriptionDate ?? new \DateTime();
 
         $this->committeeCandidacies = new ArrayCollection();
     }
@@ -132,13 +132,16 @@ class CommitteeMembership
     public static function createForSupervisor(
         Committee $committee,
         Adherent $supervisor,
-        string $subscriptionDate = 'now'
+        \DateTimeInterface $subscriptionDate
     ): self {
         return static::createForAdherent($committee, $supervisor, self::COMMITTEE_SUPERVISOR, $subscriptionDate);
     }
 
-    public static function createForHost(Committee $committee, Adherent $host, string $subscriptionDate = 'now'): self
-    {
+    public static function createForHost(
+        Committee $committee,
+        Adherent $host,
+        \DateTimeInterface $subscriptionDate
+    ): self {
         return static::createForAdherent($committee, $host, self::COMMITTEE_HOST, $subscriptionDate);
     }
 
@@ -148,8 +151,8 @@ class CommitteeMembership
     public static function createForAdherent(
         Committee $committee,
         Adherent $adherent,
-        string $privilege = self::COMMITTEE_FOLLOWER,
-        string $subscriptionDate = 'now'
+        string $privilege,
+        \DateTimeInterface $subscriptionDate
     ): self {
         return new self(
             self::createUuid($adherent->getUuid(), $committee->getUuid()),

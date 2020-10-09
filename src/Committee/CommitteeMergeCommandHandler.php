@@ -5,7 +5,6 @@ namespace App\Committee;
 use App\Collection\CommitteeMembershipCollection;
 use App\Committee\Event\FollowCommitteeEvent;
 use App\Committee\Event\UnfollowCommitteeEvent;
-use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -39,11 +38,10 @@ class CommitteeMergeCommandHandler
         $sourceCommittee = $committeeMergeCommand->getSourceCommittee();
         $destinationCommittee = $committeeMergeCommand->getDestinationCommittee();
 
-        return $this
+        return \count($this
             ->committeeMembershipRepository
             ->findMembersToMerge($sourceCommittee, $destinationCommittee)
-            ->count()
-        ;
+        );
     }
 
     public function handle(CommitteeMergeCommand $committeeMergeCommand): void
@@ -59,7 +57,8 @@ class CommitteeMergeCommandHandler
 
             $mergedMemberships = [];
             foreach ($newFollowers as $newFollower) {
-                $this->em->persist($membership = $newFollower->followCommittee($destinationCommittee));
+                $adherent = $newFollower->getAdherent();
+                $this->em->persist($membership = $adherent->followCommittee($destinationCommittee, $newFollower->getSubscriptionDate()));
 
                 $this->em->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
 
@@ -100,12 +99,12 @@ class CommitteeMergeCommandHandler
             throw $exception;
         }
 
-        $newFollowers->map(function (Adherent $adherent) use ($destinationCommittee) {
+        foreach ($newFollowers as $follower) {
             $this->dispatcher->dispatch(
                 UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
-                new FollowCommitteeEvent($adherent, $destinationCommittee)
+                new FollowCommitteeEvent($follower->getAdherent(), $destinationCommittee)
             );
-        });
+        }
 
         $this->dispatchCommitteeUpdate($sourceCommittee);
         $this->dispatchCommitteeUpdate($destinationCommittee);
