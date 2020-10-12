@@ -3,6 +3,7 @@
 namespace App\Entity\ThematicCommunity;
 
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityNameSlugTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ThematicCommunity
 {
     use EntityIdentityTrait;
+    use EntityNameSlugTrait;
 
     /**
      * @var string
@@ -21,7 +23,7 @@ class ThematicCommunity
      *
      * @Assert\NotBlank
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
@@ -47,16 +49,6 @@ class ThematicCommunity
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
     }
 
     public function getDescription(): ?string
