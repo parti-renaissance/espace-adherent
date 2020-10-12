@@ -18,7 +18,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/conseil-territorial/membres');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/instances/membres');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -40,7 +40,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/conseil-territorial/membres');
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/instances/membres');
 
         $this->assertCount(8, $crawler->filter('tbody tr.referent__item'));
 
