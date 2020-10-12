@@ -2,7 +2,6 @@
 
 namespace App\Entity\Reporting;
 
-use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -152,7 +151,7 @@ class CommitteeMergeHistory
 
         $this->revertedBy = $administrator;
         $this->revertedAt = new \DateTimeImmutable();
-        $this->mergedMemberships = new CommitteeMembershipCollection();
+        $this->mergedMemberships = new ArrayCollection();
     }
 
     public function isReverted(): bool
@@ -161,14 +160,10 @@ class CommitteeMergeHistory
     }
 
     /**
-     * @return CommitteeMembership[]|CommitteeMembershipCollection
+     * @return CommitteeMembership[]
      */
-    public function getMergedMemberships(): Collection
+    public function getMergedMemberships(): array
     {
-        if (!$this->mergedMemberships instanceof CommitteeMembershipCollection) {
-            $this->mergedMemberships = new CommitteeMembershipCollection($this->mergedMemberships->toArray());
-        }
-
-        return $this->mergedMemberships;
+        return $this->mergedMemberships->toArray();
     }
 }
