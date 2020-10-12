@@ -83,11 +83,12 @@ class CandidatureController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $isCreation = null === $candidacy->getId();
             $this->manager->updateCandidature($candidacy);
 
             $this->addFlash('info', 'Votre candidature a bien été enregistrée');
 
-            if ($candidacy->hasPendingInvitation()) {
+            if ($candidacy->hasPendingInvitation() || !$isCreation) {
                 return $this->redirectToRoute('app_territorial_council_index');
             }
 
