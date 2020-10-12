@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\UserDocument;
 use App\UserDocument\UserDocumentManager;
+use Gedmo\Sluggable\Util\Urlizer;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use League\Flysystem\FileNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -88,6 +89,10 @@ class UploadDocumentController extends Controller
             throw $this->createNotFoundException('Document not found', $e);
         }
 
-        return new SnappyResponse($documentContent, iconv('UTF-8', 'ASCII//TRANSLIT', $filename), $document->getMimeType());
+        return new SnappyResponse(
+            $documentContent,
+            Urlizer::urlize($filename),
+            $document->getMimeType()
+        );
     }
 }
