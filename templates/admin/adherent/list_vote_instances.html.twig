@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% for mandate in object.activeAdherentMandates %}
+        {% if mandate is instanceof('App\\Entity\\AdherentMandate\\TerritorialCouncilAdherentMandate') %}
+            Coterr & Copol : <a href="{{ path('admin_app_territorialcouncil_territorialcouncil_list', {filter: {id: {value: mandate.territorialCouncil.id}}}) }}">
+                {{ mandate.territorialCouncil }}
+            </a><br />
+        {% elseif mandate is instanceof('App\\Entity\\AdherentMandate\\CommitteeAdherentMandate') %}
+            Comité : <a href="{{ path('admin_app_committee_list', {filter: {id: {value: mandate.committee.id }}}) }}">
+                {{ mandate.committee }}
+            </a><br />
+        {% endif %}
+    {% endfor %}
+{% endblock %}
