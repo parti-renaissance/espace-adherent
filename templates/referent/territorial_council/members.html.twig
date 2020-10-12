@@ -158,6 +158,10 @@
                                             {% endif %}
                                             <br />
                                         {% endfor %}
+                                        {% set pcQualities = adherent.politicalCommitteeMembership ? adherent.politicalCommitteeMembership.qualityNames : [] %}
+                                        {% for pcQuality in pcQualities|filter(quality => quality not in membership.qualityNames) %}
+                                            <b>{{ ('political_committee.membership.quality.'~pcQuality)|trans }}</b>
+                                        {% endfor %}
                                     </td>
                                     <td>
                                         {{ membership.joinedAt|date('d/m/Y') }}

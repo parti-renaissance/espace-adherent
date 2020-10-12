@@ -128,7 +128,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('tcm')
-            ->addSelect('territorial_council', 'mandate', 'quality', 'subscription_type', 'adherent')
+            ->addSelect('territorial_council', 'mandate', 'subscription_type', 'adherent')
             ->innerJoin('tcm.adherent', 'adherent')
             ->innerJoin('tcm.territorialCouncil', 'territorial_council')
             ->leftJoin('tcm.qualities', 'quality')

@@ -66,6 +66,11 @@ class LoadTerritorialCouncilMembershipData extends Fixture
         $this->setReference('member_7_coTerr_75', $membership);
         $manager->persist($membership);
 
+        $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-6'), new \DateTime('2020-04-04'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, 'Paris 75016'));
+        $this->setReference('member_8_coTerr_75', $membership);
+        $manager->persist($membership);
+
         /** @var TerritorialCouncil $coTerr92 */
         $coTerr92 = $this->getReference('coTerr_92');
 

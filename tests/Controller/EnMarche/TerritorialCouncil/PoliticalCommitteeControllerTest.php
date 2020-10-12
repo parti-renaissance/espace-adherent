@@ -16,7 +16,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
 
     public function testTerritorialCouncilMemberButNotMemberOfAPoliticalCommittee()
     {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $crawler = $this->client->request('GET', '/');
         self::assertCount(1, $crawler->filter('header .em-nav-dropdown a:contains("Mes instances")'));
 
