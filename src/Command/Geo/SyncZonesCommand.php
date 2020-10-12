@@ -4,6 +4,7 @@ namespace App\Command\Geo;
 
 use App\Command\Geo\Helper\Persister;
 use App\Command\Geo\Helper\Summary;
+use App\Entity\Geo\Borough;
 use App\Entity\Geo\Canton;
 use App\Entity\Geo\City;
 use App\Entity\Geo\CityCommunity;
@@ -35,6 +36,7 @@ final class SyncZonesCommand extends Command
         Canton::class,
         CityCommunity::class,
         City::class,
+        Borough::class,
         ForeignDistrict::class,
         ConsularDistrict::class,
     ];

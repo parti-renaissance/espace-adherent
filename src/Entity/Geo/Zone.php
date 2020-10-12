@@ -29,6 +29,7 @@ class Zone implements GeoInterface
     public const DEPARTMENT = 'department';
     public const DISTRICT = 'district';
     public const CITY = 'city';
+    public const BOROUGH = 'borough';
     public const CITY_COMMUNITY = 'city_community';
     public const CANTON = 'canton';
     public const FOREIGN_DISTRICT = 'foreign_district';
