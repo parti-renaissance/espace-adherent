@@ -894,14 +894,8 @@ HELP
                 'label' => 'ID',
             ])
             ->addIdentifier('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-            ])
-            ->add('certifiedAt', null, [
-                'label' => 'Certifié',
-                'template' => 'admin/adherent/list_certified.html.twig',
+                'label' => 'Nom Prénom',
+                'template' => 'admin/adherent/list_fullname_certified.html.twig',
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
@@ -910,21 +904,20 @@ HELP
                 'label' => 'Téléphone',
                 'template' => 'admin/adherent/list_phone.html.twig',
             ])
-            ->add('postAddress.postalCode', null, [
-                'label' => 'Code postal',
-            ])
-            ->add('postAddress.cityName', null, [
-                'label' => 'Ville',
-            ])
-            ->add('postAddress.country', null, [
-                'label' => 'Pays',
+            ->add('postAddress', null, [
+                'label' => 'Ville (CP) Pays',
+                'template' => 'admin/adherent/list_postaddress.html.twig',
             ])
             ->add('registeredAt', null, [
                 'label' => 'Date d\'adhésion',
             ])
-            ->add('type', null, [
-                'label' => 'Type',
-                'template' => 'admin/adherent/list_status.html.twig',
+            ->add('lastLoggedAt', null, [
+                'label' => 'Dernière connexion',
+            ])
+            ->add('instances', null, [
+                'label' => 'Instances de vote',
+                'virtual_field' => true,
+                'template' => 'admin/adherent/list_vote_instances.html.twig',
             ])
             ->add('referentTags', null, [
                 'label' => 'Tags souscrits',
@@ -934,8 +927,13 @@ HELP
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_managed_area_tags.html.twig',
             ])
-            ->add('mandates', null, [
-                'label' => 'adherent.mandate.admin.label',
+            ->add('type', null, [
+                'label' => 'Rôles',
+                'template' => 'admin/adherent/list_status.html.twig',
+            ])
+            ->add('allMandates', null, [
+                'label' => 'Mandats',
+                'virtual_field' => true,
                 'template' => 'admin/adherent/list_mandates.html.twig',
             ])
             ->add('_action', null, [

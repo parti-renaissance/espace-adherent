@@ -30,6 +30,7 @@ use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -2497,6 +2498,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getAdherentMandates(): Collection
     {
         return $this->adherentMandates;
+    }
+
+    public function getActiveAdherentMandates(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->orderBy(['beginAt' => 'DESC'])
+        ;
+
+        return $this->adherentMandates->matching($criteria);
     }
 
     public function findMandatesForQuality(string $quality, bool $active = false): array
