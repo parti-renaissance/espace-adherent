@@ -38,7 +38,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
         $members = $crawler->filter('.territorial-council__members .territorial-council__member');
-        self::assertCount(7, $members);
+        self::assertCount(8, $members);
         self::assertContains('Jacques Picard', $members->first()->text());
         self::assertContains('Lucie Olivera', $members->eq(1)->text());
         self::assertContains('Gisele Berthoux', $members->eq(2)->text());
