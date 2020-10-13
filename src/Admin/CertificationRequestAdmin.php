@@ -3,16 +3,21 @@
 namespace App\Admin;
 
 use App\Entity\CertificationRequest;
+use App\Entity\Geo\Region;
 use App\Utils\PhoneNumberFormatter;
 use App\Utils\PhpConfigurator;
+use Doctrine\ORM\Query\Expr;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CertificationRequestAdmin extends AbstractAdmin
@@ -85,12 +90,52 @@ class CertificationRequestAdmin extends AbstractAdmin
                 'label' => 'Email',
                 'show_filter' => true,
             ])
+            ->add('region', CallbackFilter::class, [
+                'label' => 'Région',
+                'mapped' => false,
+                'show_filter' => true,
+                'field_type' => EntityType::class,
+                'field_options' => [
+                    'class' => Region::class,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!isset($value['value']) || null === $value['value']) {
+                        return;
+                    }
+
+                    /** @var Region $region */
+                    $region = $value['value'];
+                    $qb->innerJoin("$alias.adherent", 'adherent');
+
+                    $postalCodeCondition = new Expr\Orx();
+                    foreach ($region->getDepartments() as $key => $department) {
+                        $postalCodeCondition->add("adherent.postAddress.postalCode LIKE :postal_code_$key");
+                        $qb->setParameter("postal_code_$key", $department->getCode().'%');
+                    }
+
+                    $qb->andWhere($postalCodeCondition);
+
+                    return true;
+                },
+            ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => CertificationRequest::STATUS_CHOICES,
+                    'choice_label' => function (string $choice) {
+                        return "certification_request.status.$choice";
+                    },
+                    'multiple' => true,
+                ],
+            ])
+            ->add('ocrStatus', ChoiceFilter::class, [
+                'label' => 'Statut OCR',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => CertificationRequest::OCR_STATUS_CHOICES,
                     'choice_label' => function (string $choice) {
                         return "certification_request.status.$choice";
                     },
@@ -104,6 +149,42 @@ class CertificationRequestAdmin extends AbstractAdmin
             ])
             ->add('processedBy', null, [
                 'label' => 'Traitée par',
+            ])
+            ->add('automaticallyProcessed', CallbackFilter::class, [
+                'label' => 'Traité automatiquement',
+                'mapped' => false,
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Tous' => null,
+                        'global.yes' => true,
+                        'global.no' => false,
+                    ],
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!isset($value['value']) || null === $value['value']) {
+                        return;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.status != :pending_status")
+                        ->setParameter('pending_status', CertificationRequest::STATUS_PENDING)
+                    ;
+
+                    switch ($value['value']) {
+                        case true:
+                            $qb->andWhere("$alias.processedBy IS NULL");
+
+                            break;
+                        case false:
+                            $qb->andWhere("$alias.processedBy IS NOT NULL");
+
+                            break;
+                    }
+
+                    return true;
+                },
             ])
             ->add('processedAt', DateRangeFilter::class, [
                 'label' => 'Date de traitement',
@@ -131,6 +212,7 @@ class CertificationRequestAdmin extends AbstractAdmin
             ])
             ->add('processedBy', null, [
                 'label' => 'Traitée par',
+                'template' => 'admin/certification_request/list_processed_by.html.twig',
             ])
             ->add('processedAt', null, [
                 'label' => 'Date de traitement',

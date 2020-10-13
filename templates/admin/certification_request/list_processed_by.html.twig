@@ -1,0 +1,17 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% import 'admin/certification_request/_macros.html.twig' as macros %}
+
+{% block field %}
+    {% if object.processedBy %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <a href="{{ path('admin_app_administrator_edit', { id: object.processedBy.id }) }}">
+                {{ object.processedBy }}
+            </a>
+        {% else %}
+            {{ object.processedBy }}
+        {% endif %}
+    {% elseif not object.isPending %}
+        <span class="badge">Automatique</span>
+    {% endif %}
+{% endblock %}
