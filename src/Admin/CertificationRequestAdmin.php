@@ -122,6 +122,7 @@ class CertificationRequestAdmin extends AbstractAdmin
             ->add('automaticallyProcessed', CallbackFilter::class, [
                 'label' => 'Traité automatiquement',
                 'mapped' => false,
+                'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
@@ -180,6 +181,7 @@ class CertificationRequestAdmin extends AbstractAdmin
             ])
             ->add('processedBy', null, [
                 'label' => 'Traitée par',
+                'template' => 'admin/certification_request/list_processed_by.html.twig',
             ])
             ->add('processedAt', null, [
                 'label' => 'Date de traitement',
