@@ -24,17 +24,26 @@ class ForeignDistrict implements ZoneableInterface
     private $number;
 
     /**
+     * @var CustomZone
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\CustomZone")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $customZone;
+
+    /**
      * @var Collection|Country[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Geo\Country", mappedBy="foreignDistrict")
      */
     private $countries;
 
-    public function __construct(string $code, string $name, int $number)
+    public function __construct(string $code, string $name, int $number, CustomZone $customZone)
     {
         $this->code = $code;
         $this->name = $name;
         $this->number = $number;
+        $this->customZone = $customZone;
         $this->countries = new ArrayCollection();
     }
 
@@ -63,7 +72,12 @@ class ForeignDistrict implements ZoneableInterface
 
     public function getParents(): array
     {
-        return [];
+        $toMerge = [
+            [$this->customZone],
+            $this->customZone->getParents(),
+        ];
+
+        return array_values(array_unique(array_merge(...$toMerge)));
     }
 
     public function getZoneType(): string
