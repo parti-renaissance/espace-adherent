@@ -11,14 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CommitteeAdherentMandate extends AbstractAdherentMandate
 {
-    /**
-     * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", inversedBy="adherentMandates")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    private $committee;
-
     public function __construct(
         Adherent $adherent,
         string $gender,
@@ -28,16 +20,6 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
     ) {
         parent::__construct($adherent, $gender, $beginAt, $finishAt);
 
-        $this->committee = $committee;
-    }
-
-    public function getCommittee(): Committee
-    {
-        return $this->committee;
-    }
-
-    public function setCommittee(Committee $committee): void
-    {
         $this->committee = $committee;
     }
 }
