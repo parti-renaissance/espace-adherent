@@ -50,7 +50,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial/messages');
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -65,7 +65,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial/messages');
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -104,7 +104,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
         $form->setValues(['feed_item[content]' => $message->getContent().' test']);
         $this->client->submit($form);
-        $this->assertClientIsRedirectedTo('/conseil-territorial/messages', $this->client);
+        $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
 
         $this->client->followRedirect();
 
@@ -116,7 +116,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
 
         $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => 17], null, 1)[0];
-        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial/messages');
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -124,7 +124,7 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('delete_entity_delete')->form();
         $this->client->submit($form);
-        $this->assertClientIsRedirectedTo('/conseil-territorial/messages', $this->client);
+        $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
 
         $this->client->followRedirect();
         self::assertNotContains($message->getContent(), $this->client->getResponse()->getContent());

@@ -147,12 +147,12 @@ class TerritorialCouncilController extends Controller
     }
 
     /**
-     * @Route("", name="index", methods={"GET"})
-     * @Route("/{uuid}", name="selected_index", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
+     * @Route("/accueil", name="homepage", methods={"GET"})
+     * @Route("/accueil/{uuid}", name="selected_homepage", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      *
      * @param Adherent $adherent
      */
-    public function indexAction(UserInterface $adherent, TerritorialCouncil $territorialCouncil = null): Response
+    public function homepageAction(UserInterface $adherent, TerritorialCouncil $territorialCouncil = null): Response
     {
         $this->checkAccess($territorialCouncil);
 
@@ -161,7 +161,7 @@ class TerritorialCouncilController extends Controller
             $territorialCouncil = $membership->getTerritorialCouncil();
         }
 
-        return $this->render('territorial_council/index.html.twig', [
+        return $this->render('territorial_council/homepage.html.twig', [
             'membership' => $membership ?? null,
             'territorial_council' => $territorialCouncil,
             'with_selected_council' => $withSelectedCouncil,
@@ -169,8 +169,8 @@ class TerritorialCouncilController extends Controller
     }
 
     /**
-     * @Route("/messages", name="messages", methods={"GET"})
-     * @Route("/{uuid}/messages", name="selected_messages", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
+     * @Route("", name="index", methods={"GET"})
+     * @Route("/{uuid}", name="selected_index", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
      */
     public function feedItemsAction(
         Request $request,
@@ -234,7 +234,7 @@ class TerritorialCouncilController extends Controller
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('info', 'common.message_edited');
 
-            return $this->redirectToRoute('app_territorial_council_messages');
+            return $this->redirectToRoute('app_territorial_council_index');
         }
 
         return $this->render('territorial_council/edit_feed_item.html.twig', [
@@ -251,6 +251,6 @@ class TerritorialCouncilController extends Controller
     {
         $this->deleteFeedItem($request, $feedItem, FeedItemTypeEnum::TERRITORIAL_COUNCIL);
 
-        return $this->redirectToRoute('app_territorial_council_messages');
+        return $this->redirectToRoute('app_territorial_council_index');
     }
 }
