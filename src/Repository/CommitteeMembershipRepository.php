@@ -144,6 +144,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('cm')
+            ->addSelect('adherent')
+            ->innerJoin('cm.adherent', 'adherent')
             ->where('cm.committee = :committee')
             ->andWhere('cm.enableVote = :true')
             ->setParameters([
@@ -601,18 +603,18 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    public function enableVoteStatusForAdherents(Committee $committee, array $adherents): void
+    public function updateVoteStatusForAdherents(Committee $committee, array $adherents, bool $value): void
     {
         $this->createQueryBuilder('cm')
             ->update()
-            ->set('cm.enableVote', ':true')
+            ->set('cm.enableVote', ':value')
             ->Where('cm IN (:memberships)')
             ->setParameters([
                 'memberships' => $this->findBy([
                     'adherent' => $adherents,
                     'committee' => $committee,
                 ]),
-                'true' => true,
+                'value' => true === $value ?: null,
             ])
             ->getQuery()
             ->execute()

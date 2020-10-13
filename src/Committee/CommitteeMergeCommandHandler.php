@@ -2,7 +2,6 @@
 
 namespace App\Committee;
 
-use App\Collection\CommitteeMembershipCollection;
 use App\Committee\Event\FollowCommitteeEvent;
 use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Entity\Administrator;
@@ -89,8 +88,10 @@ class CommitteeMergeCommandHandler
 
             $this->em->flush();
 
-            $votingMemberships = $this->committeeMembershipRepository->findVotingMemberships($sourceCommittee);
-            $this->transferVotingMemberships($destinationCommittee, new CommitteeMembershipCollection($votingMemberships));
+            $this->transferVotingMemberships(
+                $destinationCommittee,
+                $this->committeeMembershipRepository->findVotingMemberships($sourceCommittee)
+            );
 
             $this->em->commit();
         } catch (\Exception $exception) {
@@ -145,10 +146,8 @@ class CommitteeMergeCommandHandler
         $this->dispatchCommitteeUpdate($destinationCommittee);
     }
 
-    private function revertDestinationCommitteeMemberships(
-        Committee $committee,
-        CommitteeMembershipCollection $memberships
-    ): void {
+    private function revertDestinationCommitteeMemberships(Committee $committee, array $memberships): void
+    {
         foreach ($memberships as $membership) {
             $committee->decrementMembersCount();
 
@@ -165,28 +164,29 @@ class CommitteeMergeCommandHandler
         $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
     }
 
-    private function transferVotingMemberships(
-        Committee $committee,
-        CommitteeMembershipCollection $membershipCollection
-    ): void {
-        $votingMemberships = $membershipCollection->filter(static function (CommitteeMembership $membership) {
+    private function transferVotingMemberships(Committee $committee, array $votingMemberships): void
+    {
+        $votingMemberships = array_filter($votingMemberships, function (CommitteeMembership $membership) {
             return $membership->isVotingCommittee();
         });
 
+        if (!$votingMemberships) {
+            return;
+        }
+
         $votingAdherents = array_map(static function (CommitteeMembership $membership) {
-            $election = $membership->getCommittee()->getCommitteeElection();
-            if ($election) {
+            if ($election = $membership->getCommittee()->getCommitteeElection()) {
                 $membership->removeCommitteeCandidacyForElection($election);
             }
 
-            $membership->disableVote();
-
             return $membership->getAdherent();
-        }, $votingMemberships->toArray());
+        }, $votingMemberships);
+
+        $this->committeeMembershipRepository->updateVoteStatusForAdherents(current($votingMemberships)->getCommittee(), $votingAdherents, false);
 
         $this->em->flush();
 
-        $this->committeeMembershipRepository->enableVoteStatusForAdherents($committee, $votingAdherents);
+        $this->committeeMembershipRepository->updateVoteStatusForAdherents($committee, $votingAdherents, true);
     }
 
     private function createCommitteeMembershipHistory(
