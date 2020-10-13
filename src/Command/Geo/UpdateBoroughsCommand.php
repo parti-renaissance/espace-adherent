@@ -209,7 +209,5 @@ final class UpdateBoroughsCommand extends Command
         $borough->activate();
         $borough->setName($entry['name']);
         $borough->setPostalCode([$entry['postalCode']]);
-
-        $this->io->progressAdvance();
     }
 }
