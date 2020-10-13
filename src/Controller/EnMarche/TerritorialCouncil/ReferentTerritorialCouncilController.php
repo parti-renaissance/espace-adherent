@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent/conseil-territorial", name="app_territorial_council_referent_")
+ * @Route(path="/espace-referent/instances", name="app_territorial_council_referent_")
  *
  * @Security("is_granted('ROLE_REFERENT')")
  */
