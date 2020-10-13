@@ -9,6 +9,8 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
@@ -116,6 +118,41 @@ class CertificationRequestAdmin extends AbstractAdmin
             ])
             ->add('processedBy', null, [
                 'label' => 'Traitée par',
+            ])
+            ->add('automaticallyProcessed', CallbackFilter::class, [
+                'label' => 'Traité automatiquement',
+                'mapped' => false,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Tous' => null,
+                        'global.yes' => true,
+                        'global.no' => false,
+                    ],
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!isset($value['value']) || null === $value['value']) {
+                        return;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.status != :pending_status")
+                        ->setParameter('pending_status', CertificationRequest::STATUS_PENDING)
+                    ;
+
+                    switch ($value['value']) {
+                        case true:
+                            $qb->andWhere("$alias.processedBy IS NULL");
+
+                            break;
+                        case false:
+                            $qb->andWhere("$alias.processedBy IS NOT NULL");
+
+                            break;
+                    }
+
+                    return true;
+                },
             ])
             ->add('processedAt', DateRangeFilter::class, [
                 'label' => 'Date de traitement',
