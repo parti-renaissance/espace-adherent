@@ -97,6 +97,18 @@ class CertificationRequestAdmin extends AbstractAdmin
                     'multiple' => true,
                 ],
             ])
+            ->add('ocrStatus', ChoiceFilter::class, [
+                'label' => 'Statut OCR',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => CertificationRequest::OCR_STATUS_CHOICES,
+                    'choice_label' => function (string $choice) {
+                        return "certification_request.status.$choice";
+                    },
+                    'multiple' => true,
+                ],
+            ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
                 'show_filter' => true,

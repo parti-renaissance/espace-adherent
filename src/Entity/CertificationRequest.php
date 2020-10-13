@@ -31,6 +31,11 @@ class CertificationRequest
     public const OCR_STATUS_PRE_REFUSED = 'pre_refused';
     public const OCR_STATUS_PRE_APPROVED = 'pre_approved';
 
+    public const OCR_STATUS_CHOICES = [
+        self::OCR_STATUS_PRE_REFUSED,
+        self::OCR_STATUS_PRE_APPROVED,
+    ];
+
     public const MIME_TYPE_JPG = 'image/jpeg';
     public const MIME_TYPE_PNG = 'image/png';
     public const MIME_TYPE_PDF = 'application/pdf';
