@@ -24,6 +24,7 @@ class Zone implements GeoInterface
     use GeoTrait;
     use EntityTimestampableTrait;
 
+    public const CUSTOM = 'custom';
     public const COUNTRY = 'country';
     public const REGION = 'region';
     public const DEPARTMENT = 'department';

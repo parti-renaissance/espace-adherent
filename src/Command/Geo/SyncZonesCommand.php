@@ -10,6 +10,7 @@ use App\Entity\Geo\City;
 use App\Entity\Geo\CityCommunity;
 use App\Entity\Geo\ConsularDistrict;
 use App\Entity\Geo\Country;
+use App\Entity\Geo\CustomZone;
 use App\Entity\Geo\Department;
 use App\Entity\Geo\District;
 use App\Entity\Geo\ForeignDistrict;
@@ -37,6 +38,7 @@ final class SyncZonesCommand extends Command
         CityCommunity::class,
         City::class,
         Borough::class,
+        CustomZone::class,
         ForeignDistrict::class,
         ConsularDistrict::class,
     ];
