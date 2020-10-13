@@ -46,19 +46,6 @@ class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
             }
         }
 
-        if ($value->isDeputyGeneralDelegate()) {
-            $deputyGeneralDelegate = $this->executiveOfficeMemberRepository->findOneDeputyGeneralDelegateMember();
-
-            if ($deputyGeneralDelegate && $value->getUuid() !== $deputyGeneralDelegate->getUuid()) {
-                $this->context
-                    ->buildViolation($constraint->uniqueDeputyGeneralDelegateMessage)
-                    ->setParameter('{{ fullName }}', $deputyGeneralDelegate->getFullName())
-                    ->atPath('deputyGeneralDelegate')
-                    ->addViolation()
-                ;
-            }
-        }
-
         if ($value->isExecutiveOfficer() && $value->isDeputyGeneralDelegate()) {
             $this->context
                 ->buildViolation($constraint->uniqueRoleMessage)
