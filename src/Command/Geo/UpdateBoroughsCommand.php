@@ -180,7 +180,7 @@ final class UpdateBoroughsCommand extends Command
         /* @var GeoInterface[] $entities */
         $entities = $this->em->getRepository(Borough::class)->findAll();
         foreach ($entities as $entity) {
-            $key = \get_class($entity).'#'.$entity->getCode();
+            $key = Borough::class.'#'.$entity->getCode();
             $this->entities->set($key, $entity);
 
             // Mark it as inactive, if it's present in the source, it becomes back active
@@ -190,13 +190,20 @@ final class UpdateBoroughsCommand extends Command
 
     private function processEntry(array $entry, City $city): void
     {
-        $borough = $this->boroughRepository->findOneBy(['code' => $entry['code']]);
+        $key = Borough::class.'#'.$entry['code'];
+        $borough = $this->entities->get($key);
+
         if (!$borough) {
-            $borough = new Borough(
-                $entry['code'],
-                $entry['name'],
-                $city
-            );
+            $borough = $this->boroughRepository->findOneBy(['code' => $entry['code']]);
+            if (!$borough) {
+                $borough = new Borough(
+                    $entry['code'],
+                    $entry['name'],
+                    $city
+                );
+            }
+
+            $this->entities->set($key, $borough);
         }
 
         $borough->activate();
