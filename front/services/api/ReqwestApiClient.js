@@ -308,7 +308,7 @@ export default class ReqwestApiClient {
 
     getTerritorialCouncilFeed(territorialCouncilUuid, page, callback) {
         this._createRequest(callback, {
-            url: '/conseil-territorial/messages?page='+page,
+            url: '/conseil-territorial?page='+page,
             type: 'html'
         });
     }
