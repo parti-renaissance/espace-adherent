@@ -3,8 +3,10 @@
 namespace App\Admin;
 
 use App\Entity\CertificationRequest;
+use App\Entity\Geo\Region;
 use App\Utils\PhoneNumberFormatter;
 use App\Utils\PhpConfigurator;
+use Doctrine\ORM\Query\Expr;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -15,6 +17,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CertificationRequestAdmin extends AbstractAdmin
@@ -86,6 +89,34 @@ class CertificationRequestAdmin extends AbstractAdmin
             ->add('adherent.emailAddress', null, [
                 'label' => 'Email',
                 'show_filter' => true,
+            ])
+            ->add('region', CallbackFilter::class, [
+                'label' => 'Région',
+                'mapped' => false,
+                'show_filter' => true,
+                'field_type' => EntityType::class,
+                'field_options' => [
+                    'class' => Region::class,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!isset($value['value']) || null === $value['value']) {
+                        return;
+                    }
+
+                    /** @var Region $region */
+                    $region = $value['value'];
+                    $qb->innerJoin("$alias.adherent", 'adherent');
+
+                    $postalCodeCondition = new Expr\Orx();
+                    foreach ($region->getDepartments() as $key => $department) {
+                        $postalCodeCondition->add("adherent.postAddress.postalCode LIKE :postal_code_$key");
+                        $qb->setParameter("postal_code_$key", $department->getCode().'%');
+                    }
+
+                    $qb->andWhere($postalCodeCondition);
+
+                    return true;
+                },
             ])
             ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
