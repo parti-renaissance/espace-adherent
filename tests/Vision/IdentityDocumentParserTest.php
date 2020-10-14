@@ -58,6 +58,20 @@ RF Nom: GARDIEN
 Prénom(s): Remi, Jean
 Né(e) le : 27.11 .1988
 TXT, 'Rémi', 'Gardien', '1988-11-27'];
+
+        yield [<<<'TXT'
+CARTE NATIONALE D'IDENTITÉ N° : 12345678910
+RF Nom: GARDIEN
+Prénomis): Remi, Jean
+Né(e) le : 27.11 .1988
+TXT, 'Rémi', 'Gardien', '1988-11-27'];
+
+        yield [<<<'TXT'
+CARTE NATIONALE D'IDENTITÉ N° : 12345678910
+RF Nom: GARDIEN
+Prénomist : Rémi, Jean
+Né(e) le : 27.11 .1988
+TXT, 'Rémi', 'Gardien', '1988-11-27'];
     }
 
     /**
