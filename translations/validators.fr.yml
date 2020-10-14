@@ -467,6 +467,9 @@ territorial_council.candidacy.invitation.membership_already_candidate: Vous ne p
 territorial_council.candidacy.invitation.membership_not_available: Ce membre n'est pas disponible
 territorial_council.candidacy.invitation.invalid_membership_quality: La qualité choisie n'est pas compatible avec votre choix de binôme
 
+territorail_council.official_report.no_file: Vous devez ajouter un fichier.
+territorail_council.official_report.mime_type: Seuls les fichiers .pdf sont acceptés.
+
 #
 # LRE
 #

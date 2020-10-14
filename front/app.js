@@ -174,8 +174,8 @@ class App {
         });
     }
 
-    runProcurationThanks() {
-        System.import('pages/procuration_thanks').catch((error) => { throw error; }).then((module) => {
+    runCopyToClipboard() {
+        System.import('pages/copy_to_clipboard').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }

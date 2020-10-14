@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 
+use App\Entity\Report\Report;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
         self::assertCount(1, $crawler->filter('#territorial_council'));
         self::assertCount(0, $crawler->filter('#political_committee'));
 
-        $this->client->request('GET', '/comite-politique/messages');
+        $this->client->request('GET', '/comite-politique');
         self::assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
     }
 
@@ -42,7 +43,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
         self::assertCount(1, $crawler->filter('#territorial_council'));
         self::assertCount(0, $crawler->filter('#political_committee'));
 
-        $this->client->request('GET', '/comite-politique/messages');
+        $this->client->request('GET', '/comite-politique');
         self::assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
     }
 
@@ -60,7 +61,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
         self::assertCount(1, $crawler = $crawler->filter('article#political_committee'));
 
         $crawler = $this->client->click($crawler->selectLink('Voir')->link());
-        self::assertEquals('http://test.enmarche.code/comite-politique/messages', $crawler->getUri());
+        self::assertEquals('http://test.enmarche.code/comite-politique', $crawler->getUri());
 
         self::assertCount(1, $crawler->filter('.territorial-council__aside h5:contains("Président du Comité politique")'));
     }
@@ -69,7 +70,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/comite-politique/messages');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comite-politique');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -84,7 +85,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/comite-politique/messages');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comite-politique');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -123,7 +124,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
 
         $form->setValues(['feed_item[content]' => $message->getContent().' test']);
         $this->client->submit($form);
-        $this->assertClientIsRedirectedTo('/comite-politique/messages', $this->client);
+        $this->assertClientIsRedirectedTo('/comite-politique', $this->client);
 
         $this->client->followRedirect();
 
@@ -135,7 +136,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
 
         $message = $this->getPoliticalCommitteeFeedItemRepository()->findBy(['author' => 17], null, 1)[0];
-        $crawler = $this->client->request(Request::METHOD_GET, '/comite-politique/messages');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comite-politique');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -143,10 +144,46 @@ class PoliticalCommitteeControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('delete_entity_delete')->form();
         $this->client->submit($form);
-        $this->assertClientIsRedirectedTo('/comite-politique/messages', $this->client);
+        $this->assertClientIsRedirectedTo('/comite-politique', $this->client);
 
         $this->client->followRedirect();
         self::assertNotContains($message->getContent(), $this->client->getResponse()->getContent());
+    }
+
+    public function testSeeOfficialReports()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/comite-politique/proces-verbaux');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $reports = $crawler->filter('.official-reports article');
+
+        self::assertCount(2, $reports);
+        self::assertContains('Deuxième PV 75', $reports->eq(0)->text());
+        self::assertContains('Ajouté par Referent Referent', $reports->eq(0)->text());
+        self::assertContains('le 15 octobre 2020', $reports->eq(0)->text());
+        self::assertContains('version 2', $reports->eq(0)->text());
+        self::assertContains('Modifié le 20 octobre 2020', $reports->eq(0)->text());
+        self::assertContains('Test PV 75 1', $reports->eq(1)->text());
+        self::assertContains('Ajouté par Referent Referent', $reports->eq(1)->text());
+        self::assertContains('le 10 octobre 2020', $reports->eq(1)->text());
+    }
+
+    public function testCannotDownloadOfficialReport()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
+
+        /** @var Report $report */
+        $report = $this->getOfficialReportRepository()->findOneBy(['name' => 'Test PV 75 1']);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/comite-politique/proces-verbaux/%s/telecharger', $report->getUuid())
+        );
+
+        static::assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
     }
 
     protected function setUp()

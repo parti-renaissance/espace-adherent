@@ -1,0 +1,40 @@
+{% extends 'territorial_council/political_committee/_layout.html.twig' %}
+
+{% block sub_content %}
+    <section class="official-reports">
+        {% for report in reports %}
+            <article class="activity-card b__nudge--bottom">
+                <div class="activity-card__type activity-card__type--instance">Procès-verbal</div>
+                <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">
+                    {{ report.name }}
+                </h2>
+                <div class="l__row--wrap font-roboto text--gray b__nudge--bottom-small">
+                    <div class="l__row">
+                        Ajouté par {{ report.author ? report.author.fullName : 'Anonyme' }}
+                        le {{ report.createdAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}
+                    </div>
+                    {% if report.createdAt != report.updatedAt %}
+                        <div class="l__row b__nudge--top-10">
+                            <span class="official-report__version">version {{ report.lastVersion }}</span>Modifié le {{ report.updatedAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
+                    <div class="l__row">
+                        <a href="{{ path('app_political_committee_official_report_download', {uuid: report.uuid}) }}"
+                           title="{{ report.name }}" class="btn btn--blue b__nudge--right-small"
+                           target="_blank" rel="noopener noreferrer">
+                            Voir
+                        </a>
+                    </div>
+            </article>
+        {% else %}
+            <div class="text--center">
+                <p class="text--body b__nudge--top-60">
+                    Aucun procès-verbal.
+                </p>
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}

@@ -284,7 +284,7 @@ class AdherentController extends Controller
                 if ('territorial_council' === $fromType) {
                     return $this->redirectToRoute('app_territorial_council_index');
                 } elseif ('political_committee' === $fromType) {
-                    return $this->redirectToRoute('app_political_committee_messages');
+                    return $this->redirectToRoute('app_political_committee_index');
                 }
 
                 return $this->redirectToRoute('homepage');

@@ -1,0 +1,47 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    {% set isNew = form.vars.value.id == null %}
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
+        <div>
+            <a href="{{ path('app_instances_official_report_referent_list') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
+        </div>
+
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">
+                {{ isNew ? 'Nouveau procès-verbal' : 'Modifier le procès-verbal' }}
+            </h2>
+
+            {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
+            {{ form_errors(form) }}
+
+            <div class="form__row">
+                {{ form_row(form.name, {label: 'Titre', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un titre'}}) }}
+            </div>
+
+            <div class="form__row">
+                {{ form_row(form.politicalCommittee, {label: 'Comité politique', label_attr: {class: 'filter__label', placeholder: 'Choisissez un comité politique'}}) }}
+            </div>
+
+            <div class="em-form__group">
+                <div id="form-file">
+                    <div class="em-form__file">
+                        {{ form_widget(form.file, { attr: { class: 'em-form__file--area' } }) }}
+                        {{ form_label(form.file, 'Téléchargez un procès-verbal en .pdf.', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
+                        <span class="em-form__file--name">Aucun fichier sélectionné</span>
+                        <span id="bad-file-selected" class="em-form__legend em-form--error visually-hidden">Le fichier séléctionné n'est pas autorisé</span>
+                    </div>
+                    <div class="em-form__legend">Formats acceptés : pdf • Taille max. : 5Mo.</div>
+                    {{ form_errors(form.file) }}
+                </div>
+            </div>
+
+            <div>
+                {{ form_row(form.save, {label: isNew ? 'Créer' : 'Modifier', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

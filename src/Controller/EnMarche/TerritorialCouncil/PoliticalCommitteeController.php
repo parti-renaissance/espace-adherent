@@ -5,14 +5,18 @@ namespace App\Controller\EnMarche\TerritorialCouncil;
 use App\Controller\CanaryControllerTrait;
 use App\Controller\EnMarche\FeedItemControllerTrait;
 use App\Controller\EntityControllerTrait;
+use App\Entity\TerritorialCouncil\OfficialReport;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
 use App\FeedItem\FeedItemTypeEnum;
 use App\Form\FeedItemType;
+use App\Repository\TerritorialCouncil\OfficialReportRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
+use League\Flysystem\FilesystemInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -28,7 +32,7 @@ class PoliticalCommitteeController extends Controller
     use EntityControllerTrait;
 
     /**
-     * @Route("/messages", name="messages", methods={"GET"})
+     * @Route("", name="index", methods={"GET"})
      */
     public function feedItemsAction(
         Request $request,
@@ -75,7 +79,7 @@ class PoliticalCommitteeController extends Controller
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('info', 'common.message_edited');
 
-            return $this->redirectToRoute('app_political_committee_messages');
+            return $this->redirectToRoute('app_political_committee_index');
         }
 
         return $this->render('territorial_council/edit_feed_item.html.twig', [
@@ -92,6 +96,54 @@ class PoliticalCommitteeController extends Controller
     {
         $this->deleteFeedItem($request, $feedItem, FeedItemTypeEnum::POLITICAL_COMMITTEE);
 
-        return $this->redirectToRoute('app_political_committee_messages');
+        return $this->redirectToRoute('app_political_committee_index');
+    }
+
+    /**
+     * @Route("/proces-verbaux", name="official_report_list", methods={"GET"})
+     */
+    public function listOfficialReportsAction(
+        UserInterface $adherent,
+        OfficialReportRepository $reportRepository
+    ): Response {
+        $reports = $reportRepository->getReportsForPoliticalCommittee(
+            $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee()
+        );
+
+        return $this->render('territorial_council/political_committee/official_reports.html.twig', [
+            'reports' => $reports,
+        ]);
+    }
+
+    /**
+     * @Route("/proces-verbaux/{uuid}/telecharger", name="official_report_download", methods={"GET"})
+     * @Security("is_granted('CAN_DOWNLOAD_OFFICIAL_REPORT', officialReport)")
+     */
+    public function downloadReportAction(
+        Request $request,
+        OfficialReport $officialReport,
+        FilesystemInterface $storage
+    ): Response {
+        $lastDocument = $officialReport->getLastDocument();
+        $filePath = $lastDocument->getFilePathWithDirectory();
+
+        if (!$storage->has($filePath)) {
+            throw $this->createNotFoundException('No file found in storage for this Official report.');
+        }
+
+        $response = new Response($storage->read($filePath), Response::HTTP_OK, [
+            'Content-Type' => $lastDocument->getMimeType(),
+        ]);
+
+        if ($request->query->has('download')) {
+            $disposition = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $lastDocument->getFilenameForDownload()
+            );
+
+            $response->headers->set('Content-Disposition', $disposition);
+        }
+
+        return $response;
     }
 }

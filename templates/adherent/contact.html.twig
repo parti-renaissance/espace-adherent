@@ -24,7 +24,7 @@
                         Retour au Conseil territorial</a>
 
                 {% elseif fromType == 'political_committee' %}
-                    <a href="{{ path('app_political_committee_messages') }}" class="back-to-list icon--with-text text--summary">
+                    <a href="{{ path('app_political_committee_index') }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}
                         Retour au Comité politique</a>
                 {% else %}
