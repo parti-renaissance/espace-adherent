@@ -44,7 +44,7 @@ class IdentityDocumentParser
     public function hasLastName(ImageAnnotations $imageAnnotations, string $lastName): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/Nom( )?:( )?(?<last_name>.+)\\n/', $this->text, $matches);
+            preg_match('/Nom( )?:( )?(?<last_name>.+)\\n/', $imageAnnotations->getText(), $matches);
 
             return $this->normalize($matches['last_name'] ?? null) === $this->normalize($lastName);
         } elseif ($imageAnnotations->isFrenchPassport()) {
@@ -59,13 +59,13 @@ class IdentityDocumentParser
     public function hasDateOfBirth(ImageAnnotations $imageAnnotations, \DateTimeInterface $dateOfBirth): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/(?<birth_date>\d{2}[\. ]\d{2}[\. ]\d{4})/', $this->text, $matches);
+            preg_match('/(?<birth_date>\d{2}[\. ]{1,2}\d{2}[\. ]{1,2}\d{4})/', $imageAnnotations->getText(), $matches);
 
             if (!isset($matches['birth_date']) || !$matches['birth_date']) {
                 return false;
             }
 
-            $birthDate = \DateTime::createFromFormat('d.m.Y', str_replace(' ', '.', $matches['birth_date']));
+            $birthDate = \DateTime::createFromFormat('d.m.Y', str_replace('..', '.', str_replace(' ', '.', $matches['birth_date'])));
 
             return $birthDate->format('Y-m-d') === $dateOfBirth->format('Y-m-d');
         } elseif ($imageAnnotations->isFrenchPassport()) {
@@ -77,7 +77,7 @@ class IdentityDocumentParser
                 $dateOfBirth->format('Y')
             );
 
-            preg_match($pattern, $payload, $matches);
+            preg_match($pattern, str_replace(['o', 'l', 'i'], ['0', '1', '1'], $payload), $matches);
 
             return isset($matches['birth_date']) && $matches['birth_date'];
         }
