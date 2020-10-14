@@ -25,7 +25,7 @@ class IdentityDocumentParser
     public function hasFirstName(ImageAnnotations $imageAnnotations, string $firstName): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/Prénom\s?((\(s\))?|s)\s?:\s?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
+            preg_match('/Prénom.{0,5}:\s?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
 
             $firstNames = array_map(function (string $firstName) {
                 return $this->normalize($firstName);
