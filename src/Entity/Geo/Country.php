@@ -39,12 +39,14 @@ class Country implements ZoneableInterface
 
     public function getParents(): array
     {
-        $toMerge = [
-            [$this->foreignDistrict],
-            $this->foreignDistrict->getParents(),
-        ];
+        $toMerge = [];
 
-        return array_values(array_unique(array_merge(...$toMerge)));
+        if ($this->foreignDistrict) {
+            $toMerge[] = [$this->foreignDistrict];
+            $toMerge[] = $this->foreignDistrict->getParents();
+        }
+
+        return $toMerge ? array_values(array_unique(array_merge(...$toMerge))) : [];
     }
 
     public function getZoneType(): string
