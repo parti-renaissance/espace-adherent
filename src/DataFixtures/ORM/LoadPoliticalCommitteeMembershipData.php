@@ -22,6 +22,7 @@ class LoadPoliticalCommitteeMembershipData extends Fixture
 
         $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-3'), new \DateTime('2020-06-06'));
         $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR));
+        $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::LEADER));
         $manager->persist($membership);
 
         $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-4'), new \DateTime('2020-07-07'));
@@ -34,14 +35,6 @@ class LoadPoliticalCommitteeMembershipData extends Fixture
 
         $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('deputy-75-1'), new \DateTime('2020-02-02'));
         $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::DEPUTY));
-        $manager->persist($membership);
-
-        $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-5'), new \DateTime('2020-02-20'));
-        $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::LEADER));
-        $manager->persist($membership);
-
-        $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-12'), new \DateTime('2020-02-02'));
-        $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::MAYOR));
         $manager->persist($membership);
 
         /** @var PoliticalCommittee $coPol92 */

@@ -130,6 +130,30 @@ class TerritorialCouncilControllerTest extends WebTestCase
         self::assertNotContains($message->getContent(), $this->client->getResponse()->getContent());
     }
 
+    public function testCanApply()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        self::assertCount(1, $crawler->filter('.btn:contains("Je candidate en binôme")'));
+        self::assertCount(0, $crawler->filter('.btn--disabled:contains("Je candidate en binôme")'));
+    }
+
+    public function testCannotApply()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        self::assertCount(1, $crawler->filter('.btn:contains("Je candidate en binôme")'));
+        self::assertCount(1, $crawler->filter('.btn--disabled:contains("Je candidate en binôme")'));
+    }
+
     protected function setUp()
     {
         parent::setUp();
