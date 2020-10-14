@@ -902,6 +902,8 @@ lre.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_nume
 #
 # TerritorialCouncil
 #
+territorial_council.convocation.mode.online: 100% en ligne
+territorial_council.convocation.mode.meeting: En présentiel
 territorial_council.referent: Président du Conseil territorial (unique)
 territorial_council.lre_manager: Responsable LRE membre du Conseil territorial (unique)
 territorial_council.referent_jam: Référent JAM membre du Conseil territorial (unique)

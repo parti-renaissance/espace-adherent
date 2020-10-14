@@ -87,6 +87,10 @@
             <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_designation*') ? 'active' }}">
                 <a href="{{ path('app_territorial_council_referent_designations_list') }}">Désignations</a>
             </li>
+
+            <li class="{{ is_active_route(app.request, 'app_instances_convocation_referent_*') ? 'active' }}">
+                <a href="{{ path('app_instances_convocation_referent_list') }}">Convocations</a>
+            </li>
         {% endif %}
     </ul>
 

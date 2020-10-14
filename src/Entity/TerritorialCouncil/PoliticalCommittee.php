@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\PoliticalCommitteeRepository")
  */
-class PoliticalCommittee
+class PoliticalCommittee implements InstanceEntityInterface
 {
     use EntityIdentityTrait;
 

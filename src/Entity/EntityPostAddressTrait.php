@@ -24,7 +24,7 @@ trait EntityPostAddressTrait
 
     public function getInlineFormattedAddress($locale = 'fr_FR'): string
     {
-        return $this->postAddress->getInlineFormattedAddress($locale);
+        return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
     }
 
     /**
@@ -147,7 +147,7 @@ trait EntityPostAddressTrait
 
     public function updatePostAddress(PostAddress $postAddress): void
     {
-        if (!$this->postAddress->equals($postAddress)) {
+        if (!$this->postAddress || !$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
         }
     }
