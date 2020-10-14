@@ -3,20 +3,18 @@
 namespace App\TerritorialCouncil\Listeners;
 
 use App\Mailer\MailerService;
+use App\Mailer\Message\ReferentInstanceConvocationMessage;
 use App\TerritorialCouncil\Convocation\Events;
 use App\TerritorialCouncil\Event\ConvocationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SendConvocationEmailListener implements EventSubscriberInterface
 {
     private $mailer;
-    private $urlGenerator;
 
-    public function __construct(MailerService $transactionalMailer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(MailerService $transactionalMailer)
     {
         $this->mailer = $transactionalMailer;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public static function getSubscribedEvents()
@@ -28,5 +26,17 @@ class SendConvocationEmailListener implements EventSubscriberInterface
 
     public function onConvocationCreate(ConvocationEvent $event): void
     {
+        $convocation = $event->getConvocation();
+        $instance = $convocation->getEntity();
+
+        if (!\count($memberships = $instance->getMemberships())) {
+            return;
+        }
+
+        $this->mailer->sendMessage(ReferentInstanceConvocationMessage::create(
+            $event->getConvocation(),
+            $convocation->getCreatedBy(),
+            $memberships->toArray()
+        ));
     }
 }

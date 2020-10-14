@@ -24,7 +24,7 @@ trait EntityPostAddressTrait
 
     public function getInlineFormattedAddress($locale = 'fr_FR'): string
     {
-        return $this->postAddress->getInlineFormattedAddress($locale);
+        return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
     }
 
     /**

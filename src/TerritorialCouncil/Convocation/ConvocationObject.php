@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "(this.getTerritorialCouncil() && !this.getPoliticalCommittee()) || (!this.getTerritorialCouncil() && this.getPoliticalCommittee())",
  *     message="Vous devez choisir soit un conseil territorial soit un comité politique."
  * )
- * @Assert\Expression("this.getMeetingEndDate() > this.getMeetingStartDate()", message="Date de fin ne peut pas être inférieur à la date de début.")
+ * @Assert\Expression("this.getMeetingEndDate() > this.getMeetingStartDate()", message="La date de fin ne peut pas être inférieure à la date de début.")
  */
 class ConvocationObject
 {

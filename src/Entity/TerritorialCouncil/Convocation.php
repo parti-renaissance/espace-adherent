@@ -2,8 +2,10 @@
 
 namespace App\Entity\TerritorialCouncil;
 
+use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -16,32 +18,33 @@ class Convocation
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;
+    use EntityTimestampableTrait;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     private $meetingStartDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     private $meetingEndDate;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
     private $description;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column
      */
     private $mode = DesignationVoteModeEnum::VOTE_MODE_ONLINE;
 
@@ -65,6 +68,14 @@ class Convocation
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommittee")
      */
     private $politicalCommittee;
+
+    /**
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    protected $createdBy;
 
     public function __construct()
     {
@@ -144,5 +155,20 @@ class Convocation
     public function setPoliticalCommittee(?PoliticalCommittee $politicalCommittee): void
     {
         $this->politicalCommittee = $politicalCommittee;
+    }
+
+    public function getCreatedBy(): ?Adherent
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?Adherent $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    public function isOnlineMode(): bool
+    {
+        return DesignationVoteModeEnum::VOTE_MODE_ONLINE === $this->mode;
     }
 }

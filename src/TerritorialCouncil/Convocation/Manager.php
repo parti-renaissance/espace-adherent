@@ -3,6 +3,7 @@
 namespace App\TerritorialCouncil\Convocation;
 
 use App\Address\PostAddressFactory;
+use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Convocation;
 use App\TerritorialCouncil\Event\ConvocationEvent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,10 +25,11 @@ class Manager
         $this->postAddressFactory = $addressFactory;
     }
 
-    public function create(ConvocationObject $object): void
+    public function create(ConvocationObject $object, Adherent $referent): void
     {
         $convocation = new Convocation();
 
+        $convocation->setCreatedBy($referent);
         $convocation->setTerritorialCouncil($object->getTerritorialCouncil());
         $convocation->setPoliticalCommittee($object->getPoliticalCommittee());
         $convocation->setDescription($object->getDescription());
