@@ -1,13 +1,18 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% for mandate in object.activeAdherentMandates if mandate is instanceof('App\\Entity\\AdherentMandate\\TerritorialCouncilAdherentMandate') %}
-        <span class="label label-warning">{{ ('political_committee.membership.quality.'~mandate.quality)|trans }}</span>
+    {% for mandate in object.activeAdherentMandates %}
+        {% if mandate is instanceof('App\\Entity\\AdherentMandate\\TerritorialCouncilAdherentMandate') %}
+            <span class="label label-warning">{{ ('political_committee.membership.quality.'~mandate.quality)|trans }}</span>
+        {% endif %}
+        {% if mandate is instanceof('App\\Entity\\AdherentMandate\\CommitteeAdherentMandate') %}
+            <span class="label label-warning">{{ 'territorial_council.membership.quality.elected_candidate_adherent'|trans }}</span>
+        {% endif %}
     {% endfor %}
     {% set electedRepresentative = get_elected_representative(object) %}
     {% if electedRepresentative %}
         {% for mandate in electedRepresentative.currentMandates %}
-            <span class="label label-success">{{ ('adherent_mandate.'~mandate.type)|trans }}</span>
+            <span class="label label-success">{{ mandate.name }}</span>
         {% endfor %}
     {% endif %}
 {% endblock %}

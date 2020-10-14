@@ -3,7 +3,9 @@
 namespace App\Entity\AdherentMandate;
 
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -67,6 +69,32 @@ abstract class AbstractAdherentMandate
      */
     protected $finishAt;
 
+    /**
+     * @var Committee
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", inversedBy="adherentMandates")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    protected $committee;
+
+    /**
+     * @var TerritorialCouncil
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    protected $territorialCouncil;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=255, nullable=true)
+     *
+     * @Assert\NotBlank(message="common.quality.invalid_choice")
+     * @Assert\Choice(choices=App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS, strict=true)
+     */
+    protected $quality;
+
     public function __construct(Adherent $adherent, string $gender, \DateTime $beginAt, \DateTime $finishAt = null)
     {
         $this->uuid = Uuid::uuid4();
@@ -124,5 +152,35 @@ abstract class AbstractAdherentMandate
     public function isEnded(): bool
     {
         return null !== $this->getFinishAt();
+    }
+
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function setCommittee(Committee $committee): void
+    {
+        $this->committee = $committee;
+    }
+
+    public function getTerritorialCouncil(): ?TerritorialCouncil
+    {
+        return $this->territorialCouncil;
+    }
+
+    public function setTerritorialCouncil(TerritorialCouncil $territorialCouncil): void
+    {
+        $this->territorialCouncil = $territorialCouncil;
+    }
+
+    public function getQuality(): ?string
+    {
+        return $this->quality;
+    }
+
+    public function setQuality(string $quality): void
+    {
+        $this->quality = $quality;
     }
 }

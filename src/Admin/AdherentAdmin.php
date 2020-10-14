@@ -7,11 +7,18 @@ use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentTag;
+use App\Entity\BaseGroup;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
 use App\Entity\CitizenProjectMembership;
+use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\SubscriptionType;
+use App\Entity\TerritorialCouncil\PoliticalCommittee;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
@@ -40,6 +47,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -512,7 +520,6 @@ HELP
             ])
             ->add('certified', CallbackFilter::class, [
                 'label' => 'Certifié',
-                'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
@@ -545,7 +552,6 @@ HELP
             ])
             ->add('nickname', null, [
                 'label' => 'Pseudo',
-                'show_filter' => false,
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
@@ -553,6 +559,10 @@ HELP
             ])
             ->add('registeredAt', DateRangeFilter::class, [
                 'label' => 'Date d\'adhésion',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('lastLoggedAt', DateRangeFilter::class, [
+                'label' => 'Dernière connexion',
                 'field_type' => DateRangePickerType::class,
             ])
             ->add('city', CallbackFilter::class, [
@@ -828,8 +838,7 @@ HELP
                 },
             ])
             ->add('mandates', CallbackFilter::class, [
-                'label' => 'adherent.mandate.admin.label',
-                'show_filter' => true,
+                'label' => 'Mandat(s) (legacy)',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => Mandates::CHOICES,
@@ -848,6 +857,171 @@ HELP
                     }
 
                     $qb->andWhere($where);
+
+                    return true;
+                },
+            ])
+            ->add('elected_representative_mandates', CallbackFilter::class, [
+                'label' => 'Mandat(s) RNE',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => MandateTypeEnum::CHOICES,
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->leftJoin(ElectedRepresentative::class, 'er', Expr\Join::WITH, sprintf('%s.id = er.adherent', $alias))
+                        ->leftJoin('er.mandates', 'mandate')
+                        ->andWhere('mandate.finishAt IS NULL')
+                        ->andWhere('mandate.onGoing = 1')
+                        ->andWhere('mandate.isElected = 1')
+                        ->andWhere('mandate.type IN (:types)')
+                        ->setParameter('types', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('adherent_mandates', CallbackFilter::class, [
+                'label' => 'Mandat(s) internes',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => \array_merge(
+                        TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS,
+                        ['TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT]
+                    ),
+                    'choice_label' => function (string $choice) {
+                        if ('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT === $choice) {
+                            return 'territorial_council.membership.quality.elected_candidate_adherent';
+                        } else {
+                            return 'political_committee.membership.quality.'.$choice;
+                        }
+                    },
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $mandatesCondition = 'adherentMandate.quality IN (:qualities)';
+                    if (\in_array('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, $value['value'])) {
+                        $mandatesCondition = '(adherentMandate.quality IN (:qualities) OR adherentMandate.committee IS NOT NULL)';
+                    }
+
+                    $qb
+                        ->leftJoin("$alias.adherentMandates", 'adherentMandate')
+                        ->andWhere('adherentMandate.finishAt IS NULL')
+                        ->andWhere($mandatesCondition)
+                        ->setParameter('qualities', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('memberships.committee', CallbackFilter::class, [
+                'label' => 'Comité principal',
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'context' => 'filter',
+                    'class' => Committee::class,
+                    'multiple' => true,
+                    'property' => 'name',
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'callback' => function ($admin, $property, $value) {
+                        $datagrid = $admin->getDatagrid();
+                        $queryBuilder = $datagrid->getQuery();
+                        $queryBuilder
+                            ->andWhere($queryBuilder->getRootAlias().'.status = :approved')
+                            ->setParameter('approved', BaseGroup::APPROVED)
+                            ->orderBy($queryBuilder->getRootAlias().'.name', 'ASC')
+                        ;
+                        $datagrid->setValue($property, null, $value);
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.committee IN (:committees)")
+                        ->andWhere("$alias.enableVote = 1")
+                        ->setParameter('committees', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('territorialCouncilMembership.territorialCouncil', CallbackFilter::class, [
+                'label' => 'Conseil territorial',
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'context' => 'filter',
+                    'class' => TerritorialCouncil::class,
+                    'multiple' => true,
+                    'property' => [
+                        'name',
+                        'codes',
+                    ],
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.territorialCouncil IN (:tc)")
+                        ->setParameter('tc', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('politicalCommitteeMembership.politicalCommittee', CallbackFilter::class, [
+                'label' => 'Comité politique',
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'context' => 'filter',
+                    'class' => PoliticalCommittee::class,
+                    'multiple' => true,
+                    'property' => 'name',
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'callback' => function ($admin, $property, $value) {
+                        $datagrid = $admin->getDatagrid();
+                        $queryBuilder = $datagrid->getQuery();
+                        $queryBuilder
+                            ->andWhere($queryBuilder->getRootAlias().'.isActive = 1')
+                            ->orderBy($queryBuilder->getRootAlias().'.name', 'ASC')
+                        ;
+                        $datagrid->setValue($property, null, $value);
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.politicalCommittee IN (:pc)")
+                        ->setParameter('pc', $value['value'])
+                    ;
 
                     return true;
                 },
@@ -907,6 +1081,7 @@ HELP
             ->add('postAddress', null, [
                 'label' => 'Ville (CP) Pays',
                 'template' => 'admin/adherent/list_postaddress.html.twig',
+                'header_style' => 'min-width: 75px',
             ])
             ->add('registeredAt', null, [
                 'label' => 'Date d\'adhésion',
@@ -917,10 +1092,12 @@ HELP
             ->add('instances', null, [
                 'label' => 'Instances de vote',
                 'virtual_field' => true,
+                'header_style' => 'min-width: 150px',
                 'template' => 'admin/adherent/list_vote_instances.html.twig',
             ])
             ->add('referentTags', null, [
                 'label' => 'Tags souscrits',
+                'associated_property' => 'code',
             ])
             ->add('managedAreaTags', null, [
                 'label' => 'Tags gérés',
