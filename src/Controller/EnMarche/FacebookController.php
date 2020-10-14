@@ -20,6 +20,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FacebookController extends Controller
 {
+    private $storage;
+
+    public function __construct(FilesystemInterface $storage)
+    {
+        $this->storage = $storage;
+    }
+
     /**
      * @Route("", name="app_facebook_index", methods={"GET"})
      */
@@ -74,7 +81,7 @@ class FacebookController extends Controller
     /**
      * @Route("/choisir-une-image", name="app_facebook_picture_choose", methods={"GET"})
      */
-    public function choosePictureAction(Request $request, FilesystemInterface $storage): Response
+    public function choosePictureAction(Request $request): Response
     {
         try {
             if (!$fbProfile = $this->getFacebookProfileRepository()->findOneByUuid($request->query->get('uuid'))) {
@@ -90,7 +97,7 @@ class FacebookController extends Controller
         $uuid = $fbProfile->getUuid()->toString();
 
         $urls = [];
-        foreach ($storage->listContents('static/watermarks') as $filter) {
+        foreach ($this->storage->listContents('static/watermarks') as $filter) {
             $parameters = [
                 'uuid' => $uuid,
                 'filter' => $filter['filename'],
@@ -195,21 +202,18 @@ class FacebookController extends Controller
         return str_replace('http://', 'https://', $url);
     }
 
-    private function buildFilteredPicture(
-        FacebookProfile $fbProfile,
-        FilesystemInterface $storage,
-        Request $request
-    ): string {
+    private function buildFilteredPicture(FacebookProfile $fbProfile, Request $request): string
+    {
         if (!$filterNumber = (int) $request->query->get('filter')) {
             throw $this->createNotFoundException();
         }
 
-        if (!$storage->has('static/watermarks/'.$filterNumber.'.png')) {
+        if (!$this->storage->has('static/watermarks/'.$filterNumber.'.png')) {
             throw $this->createNotFoundException();
         }
 
         $pictureData = $this->get('app.facebook.picture_importer')->import($fbProfile->getFacebookId());
-        $filterData = $storage->read('static/watermarks/'.$filterNumber.'.png');
+        $filterData = $this->storage->read('static/watermarks/'.$filterNumber.'.png');
 
         if (!$filteredPictureData = $this->get('app.facebook.picture_filterer')->applyFilter($pictureData, $filterData)) {
             throw $this->createNotFoundException();

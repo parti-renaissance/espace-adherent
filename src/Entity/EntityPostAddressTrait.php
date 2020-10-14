@@ -147,7 +147,7 @@ trait EntityPostAddressTrait
 
     public function updatePostAddress(PostAddress $postAddress): void
     {
-        if (!$this->postAddress->equals($postAddress)) {
+        if (!$this->postAddress || !$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
         }
     }

@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity("name")
  */
-class TerritorialCouncil implements StaticSegmentInterface
+class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterface
 {
     use EntityIdentityTrait;
     use EntityReferentTagTrait;
