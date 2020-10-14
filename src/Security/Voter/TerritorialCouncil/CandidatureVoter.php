@@ -3,6 +3,7 @@
 namespace App\Security\Voter\TerritorialCouncil;
 
 use App\Entity\Adherent;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -24,6 +25,14 @@ class CandidatureVoter extends Voter
         }
 
         if ($membership->hasForbiddenForCandidacyQuality()) {
+            return false;
+        }
+
+        if ($adherent->hasPoliticalCommitteeMembership()
+            && $adherent->getPoliticalCommitteeMembership()->hasOneOfQualities([
+                TerritorialCouncilQualityEnum::MAYOR,
+                TerritorialCouncilQualityEnum::LEADER,
+            ])) {
             return false;
         }
 
