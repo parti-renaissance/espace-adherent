@@ -3,6 +3,7 @@
 namespace App\Form\AdherentMessage;
 
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
+use App\Entity\UserListDefinitionEnum;
 use App\Form\MyReferentTagChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,7 +31,9 @@ class ReferentElectedRepresentativeFilterType extends AbstractType
             ->setDefaults([
                 'data_class' => ReferentElectedRepresentativeFilter::class,
                 'single_zone' => false,
+                'user_list_types' => [UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE],
             ])
+            ->setAllowedTypes('single_zone', ['bool'])
         ;
     }
 }

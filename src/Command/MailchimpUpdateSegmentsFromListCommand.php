@@ -3,9 +3,9 @@
 namespace App\Command;
 
 use App\Entity\MailchimpSegment;
+use App\Mailchimp\Driver;
 use App\Repository\MailchimpSegmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\ClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,24 +16,24 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
 {
     protected static $defaultName = 'mailchimp:sync:segments';
 
-    protected $entityManager;
-    protected $client;
-    protected $segmentRepository;
-    protected $mailchimpMainListId;
-    protected $mailchimpElectedRepresentativeListId;
+    private $entityManager;
+    private $driver;
+    private $segmentRepository;
+    private $mailchimpMainListId;
+    private $mailchimpElectedRepresentativeListId;
 
     /** @var SymfonyStyle */
-    protected $io;
+    private $io;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        ClientInterface $mailchimpClient,
         MailchimpSegmentRepository $segmentRepository,
+        Driver $driver,
         string $mailchimpListId,
         string $mailchimpElectedRepresentativeListId
     ) {
         $this->entityManager = $entityManager;
-        $this->client = $mailchimpClient;
+        $this->driver = $driver;
         $this->segmentRepository = $segmentRepository;
         $this->mailchimpMainListId = $mailchimpListId;
         $this->mailchimpElectedRepresentativeListId = $mailchimpElectedRepresentativeListId;
@@ -57,6 +57,7 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $list = $input->getArgument('list');
+        $listId = $this->getListId($list);
 
         $this->io->progressStart();
 
@@ -66,7 +67,7 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
         $this->entityManager->beginTransaction();
 
         try {
-            while ($segments = $this->getSegments($list, $offset, $limit)) {
+            while ($segments = $this->driver->getSegments($listId, $offset, $limit)) {
                 foreach ($segments as $segment) {
                     $this->updateSegment($segment, $list);
                 }
@@ -86,25 +87,6 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
         }
 
         $this->io->progressFinish();
-    }
-
-    private function getSegments(string $list, int $offset, int $limit): array
-    {
-        $params = [
-            'query' => [
-                'offset' => $offset,
-                'count' => $limit,
-                'fields' => 'segments.id,segments.name',
-            ],
-        ];
-
-        $response = $this->client->request('GET', sprintf('/3.0/lists/%s/segments', $this->getListId($list)), $params);
-
-        if (200 !== $response->getStatusCode()) {
-            return [];
-        }
-
-        return json_decode((string) $response->getBody(), true)['segments'];
     }
 
     private function findSegment(string $list, string $label): ?MailchimpSegment

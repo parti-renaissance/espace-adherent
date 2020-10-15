@@ -109,14 +109,25 @@ class Driver implements LoggerAwareInterface
         ]);
     }
 
-    public function createStaticSegment(string $name, string $listId, array $emails = []): array
+    public function getSegments(string $listId, int $offset = 0, int $limit = 1000): array
     {
-        $response = $this->send('POST', sprintf('/lists/%s/segments', $listId), [
+        $params = [
+            'offset' => $offset,
+            'count' => $limit,
+            'fields' => 'segments.id,segments.name',
+        ];
+
+        $response = $this->send('GET', sprintf('/lists/%s/segments?%s', $listId, http_build_query($params)));
+
+        return $this->isSuccessfulResponse($response) ? $this->toArray($response)['segments'] : [];
+    }
+
+    public function createStaticSegment(string $name, string $listId, array $emails = []): ResponseInterface
+    {
+        return $this->send('POST', sprintf('/lists/%s/segments', $listId), [
             'name' => $name,
             'static_segment' => $emails,
         ]);
-
-        return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
     }
 
     public function deleteStaticSegment(int $id): bool
@@ -168,6 +179,11 @@ class Driver implements LoggerAwareInterface
         return null;
     }
 
+    public function toArray(ResponseInterface $response): array
+    {
+        return \GuzzleHttp\json_decode((string) $response->getBody(), true);
+    }
+
     private function sendRequest(string $method, string $uri, array $body = []): bool
     {
         $response = $this->send($method, $uri, $body);
@@ -201,10 +217,5 @@ class Driver implements LoggerAwareInterface
     private function isSuccessfulResponse(?ResponseInterface $response): bool
     {
         return $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
-    }
-
-    private function toArray(ResponseInterface $response): array
-    {
-        return \GuzzleHttp\json_decode((string) $response->getBody(), true);
     }
 }

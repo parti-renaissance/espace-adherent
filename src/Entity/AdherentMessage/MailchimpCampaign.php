@@ -167,9 +167,12 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
         $this->label = $label;
     }
 
-    public function getMailchimpSegments(): Collection
+    /**
+     * @return MailchimpSegment[]
+     */
+    public function getMailchimpSegments(): array
     {
-        return $this->mailchimpSegments;
+        return $this->mailchimpSegments->toArray();
     }
 
     public function addMailchimpSegment(MailchimpSegment $mailchimpSegment): void

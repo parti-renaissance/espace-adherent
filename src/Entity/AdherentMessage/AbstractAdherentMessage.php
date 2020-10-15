@@ -32,6 +32,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE: "ReferentElectedRepresentativeMessage",
  *     AdherentMessageTypeEnum::REFERENT_INSTANCES: "ReferentInstancesMessage",
  *     AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE: "LegislativeCandidateAdherentMessage",
+ *     AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE: "LreManagerElectedRepresentativeMessage",
  * })
  *
  * @ApiResource(

@@ -3,11 +3,17 @@
 namespace App\Mailchimp\Campaign\ContentSection;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Utils\StringCleaner;
 
 class DeputyMessageSectionBuilder implements ContentSectionBuilderInterface
 {
+    public function supports(AdherentMessageInterface $message): bool
+    {
+        return $message instanceof DeputyAdherentMessage;
+    }
+
     public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void
     {
         $request

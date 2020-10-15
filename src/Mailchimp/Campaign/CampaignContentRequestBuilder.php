@@ -3,19 +3,20 @@
 namespace App\Mailchimp\Campaign;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Mailchimp\Campaign\ContentSection\ContentSectionBuilderInterface;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
-use Psr\Container\ContainerInterface;
 
 class CampaignContentRequestBuilder
 {
     private $objectIdMapping;
-    private $sectionBuildersLocator;
+    /**
+     * @var CampaignContentRequestBuilder[]|iterable
+     */
+    private $builders;
 
-    public function __construct(MailchimpObjectIdMapping $objectIdMapping, ContainerInterface $sectionBuildersLocator)
+    public function __construct(MailchimpObjectIdMapping $objectIdMapping, iterable $builders)
     {
         $this->objectIdMapping = $objectIdMapping;
-        $this->sectionBuildersLocator = $sectionBuildersLocator;
+        $this->builders = $builders;
     }
 
     public function createContentRequest(AdherentMessageInterface $message): EditCampaignContentRequest
@@ -25,19 +26,12 @@ class CampaignContentRequestBuilder
             $message->getContent()
         );
 
-        if ($sectionBuilder = $this->getSectionBuilder($message)) {
-            $sectionBuilder->build($message, $request);
+        foreach ($this->builders as $builder) {
+            if ($builder->supports($message)) {
+                $builder->build($message, $request);
+            }
         }
 
         return $request;
-    }
-
-    private function getSectionBuilder(AdherentMessageInterface $message): ?ContentSectionBuilderInterface
-    {
-        if ($this->sectionBuildersLocator->has($key = \get_class($message))) {
-            return $this->sectionBuildersLocator->get($key);
-        }
-
-        return null;
     }
 }

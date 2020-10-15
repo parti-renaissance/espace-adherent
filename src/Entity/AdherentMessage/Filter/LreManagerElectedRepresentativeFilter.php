@@ -7,6 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
-class ReferentElectedRepresentativeFilter extends AbstractElectedRepresentativeFilter
+class LreManagerElectedRepresentativeFilter extends AbstractElectedRepresentativeFilter
 {
 }

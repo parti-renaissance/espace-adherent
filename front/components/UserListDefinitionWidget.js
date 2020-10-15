@@ -13,7 +13,6 @@ const STATUS_CLASS = {
 };
 
 export default class UserListDefinitionWidget extends React.Component {
-
     constructor(props) {
         super(props);
 

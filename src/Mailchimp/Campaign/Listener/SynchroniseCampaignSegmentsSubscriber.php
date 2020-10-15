@@ -4,16 +4,19 @@ namespace App\Mailchimp\Campaign\Listener;
 
 use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Events;
-use App\Mailchimp\Synchronisation\MailchimpSegmentHandler;
+use App\Mailchimp\Manager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SynchroniseCampaignSegmentsSubscriber implements EventSubscriberInterface
 {
-    private $handler;
+    private $manager;
+    private $entityManager;
 
-    public function __construct(MailchimpSegmentHandler $handler)
+    public function __construct(Manager $manager, EntityManagerInterface $entityManager)
     {
-        $this->handler = $handler;
+        $this->manager = $manager;
+        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents()
@@ -29,7 +32,11 @@ class SynchroniseCampaignSegmentsSubscriber implements EventSubscriberInterface
 
         foreach ($campaign->getMailchimpSegments() as $mailchimpSegment) {
             if (!$mailchimpSegment->getExternalId()) {
-                $this->handler->synchronize($mailchimpSegment);
+                if ($segmentId = $this->manager->createMailchimpSegment($mailchimpSegment)) {
+                    $mailchimpSegment->setExternalId($segmentId);
+
+                    $this->entityManager->flush();
+                }
             }
         }
     }
