@@ -62,6 +62,20 @@ abstract class ThematicCommunityMembership
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
+    private $hasJob = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $job;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
     private $association = false;
 
     /**
@@ -126,6 +140,26 @@ abstract class ThematicCommunityMembership
     public function setCommunity(ThematicCommunity $community): void
     {
         $this->community = $community;
+    }
+
+    public function hasJob(): bool
+    {
+        return $this->hasJob;
+    }
+
+    public function setHasJob(bool $hasJob): void
+    {
+        $this->hasJob = $hasJob;
+    }
+
+    public function getJob(): ?string
+    {
+        return $this->job;
+    }
+
+    public function setJob(?string $job): void
+    {
+        $this->job = $job;
     }
 
     public function isAssociation(): bool

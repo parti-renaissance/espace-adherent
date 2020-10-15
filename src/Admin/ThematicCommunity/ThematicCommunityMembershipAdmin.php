@@ -129,10 +129,6 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     'disabled' => !$isContactMembership,
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 ])
-                ->add('job', TextType::class, [
-                    'label' => 'Métier',
-                    'disabled' => !$isContactMembership,
-                ])
                 ->add('postAddress.postalCode', TextType::class, [
                     'label' => 'Code postal',
                     'disabled' => !$isContactMembership,
@@ -162,6 +158,19 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                             ->setParameter('type', ThematicCommunityToUserListDefinitionEnum::MAP[$this->getSubject()->getCommunity()->getName()] ?? null)
                         ;
                     },
+                ])
+                ->add('hasJob', ChoiceType::class, [
+                    'label' => 'Métier en lien avec la communauté ?',
+                    'choices' => [
+                        'Non' => 0,
+                        'Oui' => 1,
+                    ],
+                    'expanded' => true,
+                    'multiple' => false,
+                ])
+                ->add('job', TextType::class, [
+                    'label' => 'Métier ?',
+                    'required' => false,
                 ])
                 ->add('association', ChoiceType::class, [
                     'label' => 'Membre d\'une association',
@@ -382,17 +391,9 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    /** @var QueryBuilder $qb */
-                    $qb
-                        ->leftJoin("$alias.contact", 'contact')
-                        ->leftJoin("$alias.adherent", 'adherent')
+                    $qb->andWhere("$alias.hasJob = :with_job")
+                        ->setParameter('with_job', (bool) $value['value'])
                     ;
-
-                    if (0 === $value['value']) {
-                        $qb->andWhere('adherent.job IS NULL AND contact.job IS NULL');
-                    } else {
-                        $qb->andWhere('adherent.job IS NOT NULL OR contact.job IS NOT NULL');
-                    }
 
                     return true;
                 },
