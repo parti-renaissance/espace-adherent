@@ -82,16 +82,6 @@ class ContactMembership extends ThematicCommunityMembership
         $this->contact->setPhone($phone);
     }
 
-    public function getJob(): ?string
-    {
-        return $this->contact ? $this->contact->getJob() : null;
-    }
-
-    public function setJob(string $job): void
-    {
-        $this->contact->setJob($job);
-    }
-
     public function getPostAddress(): ?PostAddress
     {
         return $this->contact->getPostAddressModel();

@@ -53,11 +53,6 @@ class AdherentMembership extends ThematicCommunityMembership
         return $this->adherent->getPostAddressModel();
     }
 
-    public function getJob(): ?string
-    {
-        return $this->adherent ? $this->adherent->getJob() : null;
-    }
-
     public function getCityName(): ?string
     {
         return $this->adherent ? $this->adherent->getCityName() : null;
