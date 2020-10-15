@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -20,17 +20,22 @@ class AddPoliticalCommitteeMembershipsCommand extends Command
 {
     private const BATCH_SIZE = 1000;
 
-    protected static $defaultName = 'app:territorial-council:add-political-committee-membership';
+    protected static $defaultName = 'app:territorial-council:update-political-committee-membership';
 
     private $em;
     private $politicalCommitteeManager;
+    private $pcMembershipRepository;
     /** @var SymfonyStyle */
     private $io;
 
-    public function __construct(EntityManagerInterface $em, PoliticalCommitteeManager $politicalCommitteeManager)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        PoliticalCommitteeManager $politicalCommitteeManager,
+        PoliticalCommitteeMembershipRepository $pcMembershipRepository
+    ) {
         $this->em = $em;
         $this->politicalCommitteeManager = $politicalCommitteeManager;
+        $this->pcMembershipRepository = $pcMembershipRepository;
 
         parent::__construct();
     }
@@ -54,22 +59,29 @@ class AddPoliticalCommitteeMembershipsCommand extends Command
         $this->io->progressStart($this->getTerritorialCouncilMembershipCount());
 
         $count = 0;
-        /** @var Adherent $adherent */
         foreach ($this->getTerritorialCouncilMembership() as $result) {
             /* @var TerritorialCouncilMembership $tcMembership */
             $tcMembership = $result[0];
-            $this->politicalCommitteeManager->createMembershipFromTerritorialCouncilMembership($tcMembership);
 
-            if (0 === (++$count % self::BATCH_SIZE)) {
-                $this->em->clear();
+            $pcMembership = $this->pcMembershipRepository->findOneBy([
+                'politicalCommittee' => $tcMembership->getTerritorialCouncil()->getPoliticalCommittee(),
+                'adherent' => $tcMembership->getAdherent(),
+            ]);
+
+            if ($pcMembership) {
+                $this->politicalCommitteeManager->updateOfficioMembersFromTerritorialCouncilMembership($pcMembership, $tcMembership);
+            } else {
+                $this->politicalCommitteeManager->createMembershipFromTerritorialCouncilMembership($tcMembership);
             }
+
+            $this->em->clear();
 
             $this->io->progressAdvance();
         }
 
         $this->io->progressFinish();
 
-        $this->io->success('Political committee memberships have been added successfully to adherents!');
+        $this->io->success('Political committee memberships have been updated successfully to adherents!');
     }
 
     private function getTerritorialCouncilMembership(): IterableResult
