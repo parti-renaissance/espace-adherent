@@ -2,6 +2,7 @@
 
 namespace App\Entity\ElectedRepresentative;
 
+use App\Entity\Geo\Zone as GeoZone;
 use App\Exception\BadMandateTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -49,8 +50,17 @@ class Mandate
      *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
      *     message="Le périmètre géographique est obligatoire."
      * )
+     *
+     * @deprecated Will be replace by $geoZone
      */
     private $zone;
+
+    /**
+     * @var GeoZone|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    private $geoZone;
 
     /**
      * @var bool
@@ -194,14 +204,30 @@ class Mandate
         $this->isElected = $isElected;
     }
 
+    /**
+     * @deprecated Will be replace by getGeoZone()
+     */
     public function getZone(): ?Zone
     {
         return $this->zone;
     }
 
+    /**
+     * @deprecated Will be replace by setGeoZone()
+     */
     public function setZone(Zone $zone): void
     {
         $this->zone = $zone;
+    }
+
+    public function getGeoZone(): ?GeoZone
+    {
+        return $this->geoZone;
+    }
+
+    public function setGeoZone(GeoZone $geoZone): void
+    {
+        $this->geoZone = $geoZone;
     }
 
     public function isOnGoing(): bool
