@@ -1,0 +1,250 @@
+"code","name","code_foreign_district"
+AF,Afghanistan,"11"
+ZA,Afrique du Sud,"10"
+AL,Albanie,"07"
+DZ,Algérie,"09"
+DE,Allemagne,"07"
+AD,Andorre,"05"
+AO,Angola,"10"
+AI,Anguilla,
+AQ,Antarctique,
+AG,Antigua-et-Barbuda,
+SA,Arabie saoudite,"10"
+AR,Argentine,"02"
+AM,Arménie,"07"
+AW,Aruba,
+AU,Australie,"11"
+AT,Autriche,"07"
+AZ,Azerbaïdjan,"11"
+BS,Bahamas,
+BH,Bahreïn,"10"
+BD,Bangladesh,"11"
+BB,Barbade,
+BE,Belgique,"04"
+BZ,Belize,
+BJ,Bénin,"10"
+BM,Bermudes,
+BT,Bhoutan,
+BY,Biélorussie,"11"
+BO,Bolivie,"02"
+BA,Bosnie-Herzégovine,"07"
+BW,Botswana,
+BR,Brésil,"02"
+BN,Brunéi Darussalam,"11"
+BG,Bulgarie,"07"
+BF,Burkina Faso,"09"
+BI,Burundi,"10"
+KH,Cambodge,"11"
+CM,Cameroun,"10"
+CA,Canada,"01"
+CV,Cap-Vert,"09"
+CL,Chili,"02"
+CN,Chine,"11"
+CY,Chypre,"08"
+CO,Colombie,"02"
+KM,Comores,"10"
+CG,Congo-Brazzaville,"10"
+CD,Congo-Kinshasa,"10"
+KP,Corée du Nord,"11"
+KR,Corée du Sud,"11"
+CR,Costa Rica,"02"
+CI,Côte d’Ivoire,"09"
+HR,Croatie,"07"
+CU,Cuba,"02"
+CW,Curaçao,
+DK,Danemark,"03"
+DJ,Djibouti,"10"
+DM,Dominique,
+EG,Égypte,"10"
+AE,Émirats arabes unis,"10"
+EC,Équateur,"02"
+ER,Érythrée,
+ES,Espagne,"05"
+EE,Estonie,"03"
+SZ,Eswatini,
+VA,État de la Cité du Vatican,"08"
+FM,États fédérés de Micronésie,
+US,États-Unis,"01"
+ET,Éthiopie,"10"
+FJ,Fidji,"11"
+FI,Finlande,"03"
+FR,France,
+GA,Gabon,"10"
+GM,Gambie,
+GE,Géorgie,"07"
+GS,Géorgie du Sud et îles Sandwich du Sud,
+GH,Ghana,"10"
+GI,Gibraltar,
+GR,Grèce,"08"
+GD,Grenade,
+GL,Groenland,
+GP,Guadeloupe,
+GU,Guam,
+GT,Guatemala,"02"
+GG,Guernesey,
+GN,Guinée,"09"
+GQ,Guinée équatoriale,"10"
+GW,Guinée-Bissau,"09"
+GY,Guyana,
+GF,Guyane française,
+HT,Haïti,"02"
+HN,Honduras,"02"
+HU,Hongrie,"07"
+BV,Île Bouvet,
+CX,Île Christmas,
+IM,Île de Man,
+NF,Île Norfolk,
+AX,Îles Åland,
+KY,Îles Caïmans,
+CC,Îles Cocos,
+CK,Îles Cook,
+FO,Îles Féroé,
+HM,Îles Heard et McDonald,
+FK,Îles Malouines,
+MP,Îles Mariannes du Nord,
+MH,Îles Marshall,
+UM,Îles mineures éloignées des États-Unis,
+PN,Îles Pitcairn,
+SB,Îles Salomon,
+TC,Îles Turques-et-Caïques,
+VG,Îles Vierges britanniques,
+VI,Îles Vierges des États-Unis,
+IN,Inde,"11"
+ID,Indonésie,"11"
+IQ,Irak,"10"
+IR,Iran,"11"
+IE,Irlande,"03"
+IS,Islande,"03"
+IL,Israël,"08"
+IT,Italie,"08"
+JM,Jamaïque,
+JP,Japon,"11"
+JE,Jersey,
+JO,Jordanie,"10"
+KZ,Kazakhstan,"11"
+KE,Kenya,"10"
+KG,Kirghizistan,"11"
+KI,Kiribati,
+KW,Koweït,"10"
+RE,La Réunion,
+LA,Laos,"11"
+LS,Lesotho,
+LV,Lettonie,"03"
+LB,Liban,"10"
+LR,Libéria,
+LY,Libye,"09"
+LI,Liechtenstein,"06"
+LT,Lituanie,"03"
+LU,Luxembourg,"04"
+MK,Macédoine du Nord,"07"
+MG,Madagascar,"10"
+MY,Malaisie,"11"
+MW,Malawi,
+MV,Maldives,
+ML,Mali,"09"
+MT,Malte,"08"
+MA,Maroc,"09"
+MQ,Martinique,
+MU,Maurice,"10"
+MR,Mauritanie,"09"
+YT,Mayotte,
+MX,Mexique,"02"
+MD,Moldavie,"07"
+MC,Monaco,"05"
+MN,Mongolie,
+ME,Monténégro,"07"
+MS,Montserrat,
+MZ,Mozambique,"10"
+MM,Myanmar (Birmanie),"11"
+NA,Namibie,"10"
+NR,Nauru,
+NP,Népal,"11"
+NI,Nicaragua,"02"
+NE,Niger,"09"
+NG,Nigéria,"10"
+NU,Niue,
+NO,Norvège,"03"
+NC,Nouvelle-Calédonie,
+NZ,Nouvelle-Zélande,"11"
+OM,Oman,"10"
+UG,Ouganda,"10"
+UZ,Ouzbékistan,"11"
+PK,Pakistan,"11"
+PW,Palaos,
+PA,Panama,"02"
+PG,Papouasie-Nouvelle-Guinée,"11"
+PY,Paraguay,"02"
+NL,Pays-Bas,"04"
+BQ,Pays-Bas caribéens,
+PE,Pérou,"02"
+PH,Philippines,"11"
+PL,Pologne,"07"
+PF,Polynésie française,
+PR,Porto Rico,
+PT,Portugal,"05"
+QA,Qatar,"10"
+HK,R.A.S. chinoise de Hong Kong,
+MO,R.A.S. chinoise de Macao,
+CF,République centrafricaine,"10"
+DO,République dominicaine,"02"
+RO,Roumanie,"07"
+GB,Royaume-Uni,"03"
+RU,Russie,"11"
+RW,Rwanda,"10"
+EH,Sahara occidental,
+BL,Saint-Barthélemy,
+KN,Saint-Christophe-et-Niévès,
+SM,Saint-Marin,
+MF,Saint-Martin,
+SX,Saint-Martin (partie néerlandaise),
+PM,Saint-Pierre-et-Miquelon,
+VC,Saint-Vincent-et-les-Grenadines,
+SH,Sainte-Hélène,
+LC,Sainte-Lucie,"02"
+SV,Salvador,"02"
+WS,Samoa,
+AS,Samoa américaines,
+ST,Sao Tomé-et-Principe,
+SN,Sénégal,"09"
+RS,Serbie,"07"
+SC,Seychelles,"10"
+SL,Sierra Leone,
+SG,Singapour,"11"
+SK,Slovaquie,"07"
+SI,Slovénie,"07"
+SO,Somalie,
+SD,Soudan,"10"
+SS,Soudan du Sud,"10"
+LK,Sri Lanka,"11"
+SE,Suède,"03"
+CH,Suisse,"06"
+SR,Suriname,
+SJ,Svalbard et Jan Mayen,
+SY,Syrie,"10"
+TJ,Tadjikistan,"11"
+TW,Taïwan,"11"
+TZ,Tanzanie,"10"
+TD,Tchad,"10"
+CZ,Tchéquie,"07"
+TF,Terres australes françaises,
+IO,Territoire britannique de l’océan Indien,
+PS,Territoires palestiniens,"08"
+TH,Thaïlande,"11"
+TL,Timor oriental,
+TG,Togo,"10"
+TK,Tokelau,
+TO,Tonga,
+TT,Trinité-et-Tobago,"02"
+TN,Tunisie,"09"
+TM,Turkménistan,"11"
+TR,Turquie,"08"
+TV,Tuvalu,
+UA,Ukraine,"11"
+UY,Uruguay,"02"
+VU,Vanuatu,"11"
+VE,Venezuela,"02"
+VN,Vietnam,"11"
+WF,Wallis-et-Futuna,
+YE,Yémen,"10"
+ZM,Zambie,"10"
+ZW,Zimbabwe,"10"

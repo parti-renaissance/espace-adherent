@@ -14,6 +14,12 @@ class CustomZone implements ZoneableInterface
     use GeoTrait;
     use EntityTimestampableTrait;
 
+    public function __construct(string $code, string $name)
+    {
+        $this->code = $code;
+        $this->name = $name;
+    }
+
     public function getParents(): array
     {
         return [];

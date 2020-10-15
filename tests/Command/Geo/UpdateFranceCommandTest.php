@@ -70,9 +70,6 @@ final class UpdateFranceCommandTest extends WebTestCase
         $output = $commandTester->getDisplay();
         $this->assertContains('Nothing was persisted in database', $output);
 
-        // @todo remove it once it's present in fixtures
-        $this->assertFalse($this->exists(Country::class, 'FR'));
-
         $this->assertFalse($this->exists(Region::class, 'A'));
         $this->assertFalse($this->exists(Region::class, 'B'));
 
