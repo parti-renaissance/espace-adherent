@@ -14,10 +14,12 @@ class ManagePoliticalCommitteeFeedItemVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return $subject->getAuthor()->equals($adherent)
+        return !$subject->isLocked()
+            && $subject->getAuthor()->equals($adherent)
             && $adherent->isTerritorialCouncilPresident()
             && $adherent->isPoliticalCommitteeMember()
-            && $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee() === $subject->getPoliticalCommittee();
+            && $adherent->getPoliticalCommitteeMembership()->getPoliticalCommittee() === $subject->getPoliticalCommittee()
+        ;
     }
 
     protected function supports($attribute, $subject)

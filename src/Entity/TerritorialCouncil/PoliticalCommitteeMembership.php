@@ -63,7 +63,7 @@ class PoliticalCommitteeMembership
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isAdditional = false;
+    private $isAdditional;
 
     public function __construct(
         PoliticalCommittee $politicalCommittee,

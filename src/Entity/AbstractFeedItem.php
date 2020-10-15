@@ -41,6 +41,13 @@ abstract class AbstractFeedItem
      */
     protected $createdAt;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isLocked = false;
+
     public function __construct(Adherent $author, string $content, string $createdAt = 'now')
     {
         $this->uuid = Uuid::uuid4();
@@ -72,5 +79,15 @@ abstract class AbstractFeedItem
     public function getAuthorFirstName(): string
     {
         return $this->author->getFirstName();
+    }
+
+    public function isLocked(): bool
+    {
+        return $this->isLocked;
+    }
+
+    public function setIsLocked(bool $isLocked): void
+    {
+        $this->isLocked = $isLocked;
     }
 }
