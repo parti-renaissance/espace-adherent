@@ -8,7 +8,6 @@ use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
-use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\MandateRepository;
@@ -73,9 +72,22 @@ class PoliticalCommitteeManager
             $tcMembership->getAdherent()
         );
 
-        $qualities = \array_map(function (TerritorialCouncilQuality $quality) {
-            return $quality->getName();
-        }, $tcMembership->getQualities()->toArray());
+        $this->updateOfficioMembersFromTerritorialCouncilMembership($pcMembership, $tcMembership);
+    }
+
+    public function updateOfficioMembersFromTerritorialCouncilMembership(
+        PoliticalCommitteeMembership $pcMembership,
+        TerritorialCouncilMembership $tcMembership
+    ): void {
+        $qualities = $tcMembership->getQualityNames();
+
+        foreach ($pcMembership->getQualities() as $quality) {
+            if (\in_array($name = $quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)
+                && !\in_array($name, $qualities)) {
+                $this->entityManager->remove($quality);
+            }
+        }
+        $this->entityManager->flush();
 
         foreach ($qualities as $name) {
             if (\in_array($name, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)) {
@@ -86,8 +98,11 @@ class PoliticalCommitteeManager
 
         if ($pcMembership->getQualities()->count() > 0) {
             $this->entityManager->persist($pcMembership);
-            $this->entityManager->flush();
+        } elseif ($pcMembership->getId()) {
+            $this->entityManager->remove($pcMembership);
         }
+
+        $this->entityManager->flush();
     }
 
     public function addPoliticalCommitteeQuality(Adherent $adherent, string $qualityName): void

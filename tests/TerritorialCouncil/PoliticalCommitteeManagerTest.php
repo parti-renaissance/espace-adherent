@@ -275,10 +275,6 @@ class PoliticalCommitteeManagerTest extends TestCase
             ->expects($this->never())
             ->method('persist')
         ;
-        $this->entityManager
-            ->expects($this->never())
-            ->method('flush')
-        ;
         $this->politicalCommitteeManager->createMembershipFromTerritorialCouncilMembership($tcMembership);
     }
 
