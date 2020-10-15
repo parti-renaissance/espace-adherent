@@ -29,7 +29,14 @@
                             <tbody>
                                 {% for convocation in paginator %}
                                     <tr>
-                                        <td>{{ convocation.entity.name }}</td>
+                                        <td>
+                                            {% set instance = convocation.entity %}
+                                            {% if instance is instanceof('App\\Entity\\TerritorialCouncil\\TerritorialCouncil') %}
+                                                <a href="{{ path('app_territorial_council_selected_index', {uuid: instance.uuid}) }}">
+                                            {% endif %}
+                                                {{ convocation.entity.name }}
+                                            {% if instance is instanceof('App\\Entity\\TerritorialCouncil\\TerritorialCouncil') %}</a>{% endif %}
+                                        </td>
                                         <td>{{ ('territorial_council.convocation.mode.'~convocation.mode)|trans }}</td>
                                         <td>{{ convocation.meetingStartDate|date('d/m/Y H:i') }}</td>
                                         <td>{{ convocation.meetingEndDate|date('d/m/Y H:i') }}</td>

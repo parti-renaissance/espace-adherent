@@ -14,9 +14,11 @@ class ManageTerritorialCouncilFeedItemVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return $subject->getAuthor()->equals($adherent)
+        return !$subject->isLocked()
+            && $subject->getAuthor()->equals($adherent)
             && $adherent->isTerritorialCouncilPresident()
-                && $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil() === $subject->getTerritorialCouncil();
+            && $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil() === $subject->getTerritorialCouncil()
+        ;
     }
 
     protected function supports($attribute, $subject)
