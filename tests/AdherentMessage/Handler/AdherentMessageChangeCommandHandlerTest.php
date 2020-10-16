@@ -28,12 +28,11 @@ use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\ReferentTag;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
+use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CitizenProjectMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder;
-use App\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder;
-use App\Mailchimp\Campaign\ContentSection\SenatorMessageSectionBuilder;
 use App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
 use App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -198,6 +197,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'first_name' => 'First Name',
                             'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                             'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'full_name' => 'Full Name',
                         ],
                     ],
                 ]]],
@@ -246,6 +246,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'first_name' => 'First Name',
                             'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                             'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'full_name' => 'Full Name',
                         ],
                     ],
                 ]]]
@@ -927,21 +928,20 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(
                 $this->mailchimpMapping,
-                $this->createSectionRequestBuildersLocator()
+                $this->createSectionRequestBuildersIterable()
             ),
         ]);
     }
 
-    private function createSectionRequestBuildersLocator(): ContainerInterface
+    private function createSectionRequestBuildersIterable(): iterable
     {
-        return new SimpleContainer([
-            CommitteeAdherentMessage::class => new CommitteeMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
-            ReferentAdherentMessage::class => new ReferentMessageSectionBuilder(),
-            DeputyAdherentMessage::class => new DeputyMessageSectionBuilder(),
-            SenatorAdherentMessage::class => new SenatorMessageSectionBuilder(),
-            MunicipalChiefAdherentMessage::class => new MunicipalChiefMessageSectionBuilder(),
-            CitizenProjectAdherentMessage::class => new CitizenProjectMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://citizen_project_url'])),
-        ]);
+        return [
+            new CommitteeMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
+            new BasicMessageSectionBuilder(),
+            new DeputyMessageSectionBuilder(),
+            new MunicipalChiefMessageSectionBuilder(),
+            new CitizenProjectMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://citizen_project_url'])),
+        ];
     }
 
     private function createRepositoryMock(AdherentMessageInterface $message): AdherentMessageRepository
@@ -957,7 +957,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         return new AdherentMessageChangeCommandHandler(
             $this->createRepositoryMock($message),
             new Manager(
-                new Driver($this->clientMock, 'test_main', 'test_elected_representative'),
+                new Driver($this->clientMock, 'test_main'),
                 $this->creatRequestBuildersLocator(),
                 $this->createEventDispatcher(),
                 $this->mailchimpMapping

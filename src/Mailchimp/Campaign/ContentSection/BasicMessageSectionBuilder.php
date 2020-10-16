@@ -3,11 +3,33 @@
 namespace App\Mailchimp\Campaign\ContentSection;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
+use App\Entity\AdherentMessage\LreManagerElectedRepresentativeMessage;
+use App\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
+use App\Entity\AdherentMessage\ReferentInstancesMessage;
+use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Utils\StringCleaner;
 
-class ElectedRepresentativeMessageSectionBuilder implements ContentSectionBuilderInterface
+class BasicMessageSectionBuilder implements ContentSectionBuilderInterface
 {
+    public function supports(AdherentMessageInterface $message): bool
+    {
+        return \in_array(
+            \get_class($message),
+            [
+                ReferentElectedRepresentativeMessage::class,
+                LreManagerElectedRepresentativeMessage::class,
+                LegislativeCandidateAdherentMessage::class,
+                ReferentAdherentMessage::class,
+                ReferentInstancesMessage::class,
+                SenatorAdherentMessage::class,
+            ],
+            true
+        );
+    }
+
     public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void
     {
         $request

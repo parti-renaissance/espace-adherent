@@ -111,6 +111,7 @@ class Manager implements LoggerAwareInterface
         $emailAddress = $electedRepresentative->getEmailAddress();
         $listId = $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
 
+        /** @var RequestBuilder $requestBuilder */
         $requestBuilder = $this->requestBuildersLocator
             ->get(RequestBuilder::class)
             ->updateFromElectedRepresentative($electedRepresentative)
@@ -248,10 +249,34 @@ class Manager implements LoggerAwareInterface
 
     public function createStaticSegment(string $name, string $listId = null): ?int
     {
-        return $this->driver->createStaticSegment(
+        $response = $this->driver->createStaticSegment(
             $name,
             $listId ?? $this->mailchimpObjectIdMapping->getMainListId()
-        )['id'] ?? null;
+        );
+
+        $responseData = $this->driver->toArray($response);
+
+        if (200 === $response->getStatusCode()) {
+            return $responseData['id'] ?? null;
+        }
+
+        // Search segment id in existing segments
+        if (400 === $response->getStatusCode() && isset($responseData['detail']) && 'Sorry, that tag already exists.' === $responseData['detail']) {
+            $offset = 0;
+            $limit = 1000;
+
+            while ($segments = $this->driver->getSegments($listId, $offset, $limit)) {
+                foreach ($segments as $segment) {
+                    if ($segment['name'] === $name) {
+                        return $segment['id'];
+                    }
+                }
+
+                $offset += \count($segments);
+            }
+        }
+
+        return null;
     }
 
     public function deleteStaticSegment(int $id): bool

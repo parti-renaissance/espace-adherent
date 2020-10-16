@@ -749,6 +749,7 @@ elected_representative:
         depute: "[M] Député(e)"
         senateur: "[M] Sénateur(rice)"
         euro_depute: "[M] Député(e) européen(ne)"
+        conseiller_d_arrondissement: "[M] Conseiller(ère) d'arrondissement"
         # PoliticalFunction
         mayor: "[F] Maire"
         deputy_mayor: "[F] Maire délégué(e)"

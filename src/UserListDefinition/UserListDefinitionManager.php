@@ -46,13 +46,12 @@ class UserListDefinitionManager
 
         $userListDefinitions = $this->userListDefinitionRepository->getForType($type);
         $items = $this->userListDefinitionRepository->getMemberIdsForType($type, $ids, $objectClass);
+
         foreach ($items as $item) {
             array_walk($userListDefinitions, function (&$userListDefinition) use ($item) {
                 if ($userListDefinition['code'] === $item['code']) {
                     $userListDefinition['ids'] = explode(',', $item['ids']);
                 }
-
-                return;
             });
         }
 

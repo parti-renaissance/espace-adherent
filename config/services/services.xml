@@ -446,8 +446,6 @@
         </service>
 
         <!-- Mailchimp -->
-        <service id="App\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />
-        <service id="App\Mailchimp\Synchronisation\EventListener\ElectedRepresentativeEventSubscriber" />
         <service id="App\Mailchimp\Driver">
             <argument type="service" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
@@ -475,27 +473,6 @@
             <tag name="container.service_locator" />
         </service>
 
-        <prototype namespace="App\Mailchimp\Campaign\ContentSection\" resource="../../src/Mailchimp/Campaign/ContentSection/" />
-
-        <service id="app.mailchimp.content_section_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
-            <argument type="collection">
-                <argument key="App\Entity\AdherentMessage\CitizenProjectAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\CitizenProjectMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\CommitteeAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\DeputyAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\ReferentAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\ReferentTerritorialCouncilMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\MunicipalChiefAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\SenatorAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\SenatorMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ElectedRepresentativeMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\LegislativeCandidateMessageSectionBuilder" />
-            </argument>
-            <tag name="container.service_locator" />
-        </service>
-
-        <service id="App\Mailchimp\Campaign\CampaignContentRequestBuilder">
-            <argument type="service" key="$sectionBuildersLocator" id="app.mailchimp.content_section_builders_locator" />
-        </service>
-
         <service id="App\Mailchimp\Campaign\MailchimpObjectIdMapping">
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_NEWSLETTER_LIST_ID)%</argument>
@@ -513,10 +490,6 @@
 
         <service id="App\Mailchimp\Synchronisation\RequestBuilder" shared="false"/>
         <service id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" shared="false"/>
-        <service id="App\Mailchimp\Campaign\CampaignRequestBuilder" />
-        <service id="App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber" />
-        <service id="App\Mailchimp\Campaign\Listener\SynchroniseCampaignSegmentsSubscriber" />
-        <service id="App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber" />
 
         <!-- Swagger -->
         <service id="App\Swagger\SwaggerDecorator"

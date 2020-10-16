@@ -2,13 +2,15 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
+use App\Entity\ReferentTag;
+use App\Entity\UserListDefinition;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  */
-abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessageFilter
+abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessageFilter implements CampaignAdherentMessageFilterInterface
 {
     /**
      * @var string|null
@@ -57,11 +59,25 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
     private $label;
 
     /**
-     * @var string|null
+     * @var UserListDefinition|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\UserListDefinition")
      */
     private $userListDefinition;
+
+    /**
+     * @var ReferentTag|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
+     *
+     * @Assert\NotNull
+     */
+    private $referentTag;
+
+    public function __construct(ReferentTag $referentTag = null)
+    {
+        $this->referentTag = $referentTag;
+    }
 
     public function getGender(): ?string
     {
@@ -123,13 +139,23 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
         $this->label = $label;
     }
 
-    public function getUserListDefinition(): ?string
+    public function getUserListDefinition(): ?UserListDefinition
     {
         return $this->userListDefinition;
     }
 
-    public function setUserListDefinition(string $userListDefinition = null): void
+    public function setUserListDefinition(?UserListDefinition $userListDefinition): void
     {
         $this->userListDefinition = $userListDefinition;
+    }
+
+    public function getReferentTag(): ?ReferentTag
+    {
+        return $this->referentTag;
+    }
+
+    public function setReferentTag(ReferentTag $referentTag = null): void
+    {
+        $this->referentTag = $referentTag;
     }
 }

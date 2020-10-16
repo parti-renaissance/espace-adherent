@@ -4,14 +4,15 @@ namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
+use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
+use App\Entity\AdherentMessage\LreManagerElectedRepresentativeMessage;
 use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\MailchimpSegment;
 use App\Mailchimp\Synchronisation\ElectedRepresentativeTagsBuilder;
 use App\Repository\MailchimpSegmentRepository;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class ReferentElectedRepresentativeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
+class ElectedRepresentativeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
     private $mailchimpSegmentRepository;
     private $translator;
@@ -24,11 +25,11 @@ class ReferentElectedRepresentativeMailchimpCampaignHandler extends AbstractMail
 
     public function supports(AdherentMessageInterface $message): bool
     {
-        return $message instanceof ReferentElectedRepresentativeMessage;
+        return \in_array(\get_class($message), [ReferentElectedRepresentativeMessage::class, LreManagerElectedRepresentativeMessage::class], true);
     }
 
     /**
-     * @param AdherentMessageFilterInterface|ReferentElectedRepresentativeFilter $filter
+     * @param AdherentMessageFilterInterface|AbstractElectedRepresentativeFilter $filter
      */
     protected function getCampaignFilters(AdherentMessageFilterInterface $filter): array
     {
@@ -36,21 +37,24 @@ class ReferentElectedRepresentativeMailchimpCampaignHandler extends AbstractMail
             throw new \InvalidArgumentException('There should be 1 selected tag for this campaign.');
         }
 
-        $segmentLabels = [
-            $referentTag->getCode(),
-            $filter->getMandate(),
-            $filter->getPoliticalFunction(),
-            $filter->getLabel(),
-            $filter->getUserListDefinition(),
-        ];
+        $segmentLabels = array_map(
+            function (string $code) { return $this->translateTag($code); },
+            array_filter([
+                $referentTag->getCode(),
+                $filter->getMandate(),
+                $filter->getPoliticalFunction(),
+                $filter->getLabel(),
+            ])
+        );
+
+        if ($userListDefinition = $filter->getUserListDefinition()) {
+            $trad = $this->translateTag($userListDefinition->getCode());
+            $segmentLabels[] = $trad === $userListDefinition->getCode() ? sprintf('[L] %s', $userListDefinition->getLabel()) : $trad;
+        }
 
         $filters = [];
         foreach ($segmentLabels as $segmentLabel) {
-            if (!$segmentLabel) {
-                continue;
-            }
-
-            $filters[] = $this->getSegment($this->translateTag($segmentLabel));
+            $filters[] = $this->getSegment($segmentLabel);
         }
 
         return [$this->buildConditions($filters)];
