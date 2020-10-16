@@ -61,6 +61,11 @@ trait GeoTrait
         $this->name = $name;
     }
 
+    public function getNameCode(): string
+    {
+        return \sprintf('%s (%s)', $this->name, $this->code);
+    }
+
     public function isActive(): bool
     {
         return $this->active;

@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\Mandate;
-use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -56,12 +55,21 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
 
     public function findByMandates(array $mandates): array
     {
+        $tags = [];
+        array_walk($mandates, function (Mandate $mandate) use (&$tags) {
+            if ($mandate->getZone()) {
+                $tags = array_merge($tags, $mandate->getZone()->getReferentTags()->toArray());
+            }
+
+            if ($mandate->getGeoZone()) {
+                $tags[] = $mandate->getGeoZone()->getReferentTag();
+            }
+        });
+
         return $this->createQueryBuilder('tc')
             ->leftJoin('tc.referentTags', 'tag')
-            ->leftJoin(Zone::class, 'zone', Join::WITH, 'tag MEMBER OF zone.referentTags')
-            ->leftJoin(Mandate::class, 'mandate', Join::WITH, 'mandate.zone = zone.id')
-            ->where('mandate.id IN (:mandates)')
-            ->setParameter('mandates', $mandates)
+            ->where('tag IN (:tags)')
+            ->setParameter('tags', $tags)
             ->getQuery()
             ->getResult()
         ;

@@ -21,7 +21,7 @@ class ElectionPoolCodeEnum extends Enum
         TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR,
         TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
         TerritorialCouncilQualityEnum::CITY_COUNCILOR,
-        TerritorialCouncilQualityEnum::CONSULAR_CONSELOR,
+        TerritorialCouncilQualityEnum::CONSULAR_COUNCILOR,
         TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
         TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
     ];
