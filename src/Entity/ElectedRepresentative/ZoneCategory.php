@@ -22,6 +22,7 @@ class ZoneCategory
     public const DISTRICT = 'Circonscription';
     public const CORSICA = 'Corse';
     public const FOF = 'FDE';
+    public const CONSULAR_DISTRICT = 'Consular District';
     public const BOROUGH = 'Arrondissement';
 
     public const ZONES = [
@@ -41,6 +42,9 @@ class ZoneCategory
             self::DISTRICT,
             self::DEPARTMENT,
             self::FOF,
+        ],
+        'CONSULAR_COUNCIL' => [
+            self::CONSULAR_DISTRICT,
         ],
         'EURO_DEPUTY' => [
             self::CITY,

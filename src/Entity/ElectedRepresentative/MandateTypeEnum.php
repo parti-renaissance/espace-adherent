@@ -15,6 +15,7 @@ final class MandateTypeEnum extends Enum
     public const SENATOR = 'senateur';
     public const EURO_DEPUTY = 'euro_depute';
     public const BOROUGH_COUNCIL = 'conseiller_d_arrondissement';
+    public const CONSULAR_COUNCIL = 'conseiller_consulaire';
 
     public const CITY_COUNCIL_LABEL = 'Conseiller(e) municipal(e)';
     public const EPCI_MEMBER_LABEL = 'Membre d\'EPCI';
@@ -25,6 +26,7 @@ final class MandateTypeEnum extends Enum
     public const SENATOR_LABEL = 'Sénateur(rice)';
     public const EURO_DEPUTY_LABEL = 'Député(e) européen(ne)';
     public const BOROUGH_COUNCIL_LABEL = 'Conseiller(ère) d\'arrondissement';
+    public const CONSULAR_COUNCIL_LABEL = 'Conseiller(ère) consulaire';
 
     public const CHOICES = [
         self::CITY_COUNCIL_LABEL => self::CITY_COUNCIL,
@@ -36,5 +38,6 @@ final class MandateTypeEnum extends Enum
         self::SENATOR_LABEL => self::SENATOR,
         self::EURO_DEPUTY_LABEL => self::EURO_DEPUTY,
         self::BOROUGH_COUNCIL_LABEL => self::BOROUGH_COUNCIL,
+        self::CONSULAR_COUNCIL_LABEL => self::CONSULAR_COUNCIL,
     ];
 }
