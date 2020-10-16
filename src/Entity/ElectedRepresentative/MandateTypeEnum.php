@@ -26,7 +26,7 @@ final class MandateTypeEnum extends Enum
     public const SENATOR_LABEL = 'Sénateur(rice)';
     public const EURO_DEPUTY_LABEL = 'Député(e) européen(ne)';
     public const BOROUGH_COUNCIL_LABEL = 'Conseiller(ère) d\'arrondissement';
-    public const CONSULAR_COUNCIL_LABEL = 'Conseiller(ère) consulaire';
+    public const CONSULAR_COUNCIL_LABEL = 'Conseiller(ère) FDE';
 
     public const CHOICES = [
         self::CITY_COUNCIL_LABEL => self::CITY_COUNCIL,

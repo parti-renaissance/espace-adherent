@@ -21,7 +21,7 @@ class TerritorialCouncilQualityEnum extends Enum
     public const DEPARTMENT_COUNCILOR = 'department_councilor';
     public const CITY_COUNCILOR = 'city_councilor';
     public const BOROUGH_COUNCILOR = 'borough_councilor';
-    public const CONSULAR_CONSELOR = 'consular_conselor';
+    public const CONSULAR_COUNCILOR = 'consular_councilor';
     public const COMMITTEE_SUPERVISOR = 'committee_supervisor';
     public const ELECTED_CANDIDATE_ADHERENT = 'elected_candidate_adherent';
 
@@ -42,7 +42,7 @@ class TerritorialCouncilQualityEnum extends Enum
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
         self::BOROUGH_COUNCILOR,
-        self::CONSULAR_CONSELOR,
+        self::CONSULAR_COUNCILOR,
         self::COMMITTEE_SUPERVISOR,
         self::ELECTED_CANDIDATE_ADHERENT,
     ];
@@ -61,8 +61,8 @@ class TerritorialCouncilQualityEnum extends Enum
         self::REGIONAL_COUNCILOR => 10,
         self::DEPARTMENT_COUNCILOR => 11,
         self::CITY_COUNCILOR => 12,
-        self::CONSULAR_CONSELOR => 13,
-        self::BOROUGH_COUNCILOR => 14,
+        self::BOROUGH_COUNCILOR => 13,
+        self::CONSULAR_COUNCILOR => 14,
         self::COMMITTEE_SUPERVISOR => 15,
         self::ELECTED_CANDIDATE_ADHERENT => 16,
     ];
@@ -82,7 +82,7 @@ class TerritorialCouncilQualityEnum extends Enum
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
         self::BOROUGH_COUNCILOR,
-        self::CONSULAR_CONSELOR,
+        self::CONSULAR_COUNCILOR,
         self::COMMITTEE_SUPERVISOR,
         self::ELECTED_CANDIDATE_ADHERENT,
     ];
@@ -103,7 +103,7 @@ class TerritorialCouncilQualityEnum extends Enum
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
         self::BOROUGH_COUNCILOR,
-        self::CONSULAR_CONSELOR,
+        self::CONSULAR_COUNCILOR,
         self::COMMITTEE_SUPERVISOR,
         self::ELECTED_CANDIDATE_ADHERENT,
     ];
@@ -132,7 +132,7 @@ class TerritorialCouncilQualityEnum extends Enum
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
         self::BOROUGH_COUNCILOR,
-        self::CONSULAR_CONSELOR,
+        self::CONSULAR_COUNCILOR,
         self::COMMITTEE_SUPERVISOR,
         self::ELECTED_CANDIDATE_ADHERENT,
     ];
@@ -152,7 +152,7 @@ class TerritorialCouncilQualityEnum extends Enum
         'territorial_council.membership.quality.department_councilor' => self::DEPARTMENT_COUNCILOR,
         'territorial_council.membership.quality.city_councilor' => self::CITY_COUNCILOR,
         'territorial_council.membership.quality.borough_councilor' => self::BOROUGH_COUNCILOR,
-        'territorial_council.membership.quality.consular_conselor' => self::CONSULAR_CONSELOR,
+        'territorial_council.membership.quality.consular_councilor' => self::CONSULAR_COUNCILOR,
         'territorial_council.membership.quality.committee_supervisor' => self::COMMITTEE_SUPERVISOR,
         'territorial_council.membership.quality.elected_candidate_adherent' => self::ELECTED_CANDIDATE_ADHERENT,
         'political_committee.membership.quality.leader' => 'PC_'.self::LEADER,
@@ -160,7 +160,7 @@ class TerritorialCouncilQualityEnum extends Enum
         'political_committee.membership.quality.department_councilor' => 'PC_'.self::DEPARTMENT_COUNCILOR,
         'political_committee.membership.quality.city_councilor' => 'PC_'.self::CITY_COUNCILOR,
         'political_committee.membership.quality.borough_councilor' => 'PC_'.self::BOROUGH_COUNCILOR,
-        'political_committee.membership.quality.consular_conselor' => 'PC_'.self::CONSULAR_CONSELOR,
+        'political_committee.membership.quality.consular_councilor' => 'PC_'.self::CONSULAR_COUNCILOR,
         'political_committee.membership.quality.committee_supervisor' => 'PC_'.self::COMMITTEE_SUPERVISOR,
         'political_committee.membership.quality.elected_candidate_adherent' => 'PC_'.self::ELECTED_CANDIDATE_ADHERENT,
     ];

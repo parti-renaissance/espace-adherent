@@ -926,7 +926,7 @@ territorial_council.membership.quality.regional_councilor: Conseiller(ère) rég
 territorial_council.membership.quality.department_councilor: Conseiller(ère) départemental(e)
 territorial_council.membership.quality.city_councilor: Conseiller(ère) municipal(e)
 territorial_council.membership.quality.borough_councilor: Conseiller(ère) d'arrondissement
-territorial_council.membership.quality.consular_conselor: Conseiller(ère) consulaire
+territorial_council.membership.quality.consular_councilor: Conseiller(ère) FDE
 territorial_council.membership.quality.committee_supervisor: Animateur(trice) local(e)
 territorial_council.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e)
 territorial_council.membership.qualities.referent: Présidents du Conseil territorial
@@ -943,7 +943,7 @@ territorial_council.membership.qualities.regional_councilor: Conseillers région
 territorial_council.membership.qualities.department_councilor: Conseillers départementaux
 territorial_council.membership.qualities.city_councilor: Conseillers municipaux
 territorial_council.membership.qualities.borough_councilor: Conseillers d'arrondissement
-territorial_council.membership.qualities.consular_conselor: Conseillers consulaires
+territorial_council.membership.qualities.consular_councilor: Conseillers FDE
 territorial_council.membership.qualities.committee_supervisor: Animateurs locaux
 territorial_council.membership.qualities.elected_candidate_adherent: Adhérents désignés
 territorial_council.adherent_has_no_membership: L'adhérent ({{ email }}) n'est pas un membre du Conseil territorial "{{ territorialCouncil }}"
@@ -972,7 +972,7 @@ political_committee.membership.quality.regional_councilor: Conseiller(ère) rég
 political_committee.membership.quality.department_councilor: Conseiller(ère) départemental(e) désigné(e)
 political_committee.membership.quality.city_councilor: Conseiller(ère) municipal(e) désigné(e)
 political_committee.membership.quality.borough_councilor: Conseiller(ère) d'arrondissement désigné(e)
-political_committee.membership.quality.consular_conselor: Conseiller(ère) consulaire désigné(e)
+political_committee.membership.quality.consular_councilor: Conseiller(ère) FDE désigné(e)
 political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e) au CoPol
 political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e) au CoPol
 political_committee.membership.adherent_has_already: L'adhérent ({{ email }}) est déjà un membre du Comité politique "{{ politicalCommittee }}"

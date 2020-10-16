@@ -32,7 +32,7 @@ class LoadTerritorialCouncilMembershipData extends Fixture
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-5'), new \DateTime('2020-02-02'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, '75'));
-        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CONSULAR_CONSELOR, '75'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CONSULAR_COUNCILOR, '75'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CITY_COUNCILOR, 'Paris 75010'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::BOROUGH_COUNCILOR, '75010'));
         $this->setReference('member_3_coTerr_75', $membership);
@@ -46,7 +46,7 @@ class LoadTerritorialCouncilMembershipData extends Fixture
 
         $membership = new TerritorialCouncilMembership($coTerrParis, $this->getReference('adherent-19'), new \DateTime('2020-02-02'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, 'En Marche Paris 8'));
-        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CONSULAR_CONSELOR, '75009'));
+        $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::CONSULAR_COUNCILOR, '75009'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR, '75'));
         $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REFERENT, '75'));
         $this->setReference('member_5_coTerr_75', $membership);

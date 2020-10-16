@@ -13,10 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * Oneshot command, can be deleted after execution.
- */
-class AddPoliticalCommitteeMembershipsCommand extends Command
+class UpdatePoliticalCommitteeMembershipsCommand extends Command
 {
     private const BATCH_SIZE = 1000;
 
@@ -43,7 +40,7 @@ class AddPoliticalCommitteeMembershipsCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Add political committee memberships to adherents.')
+            ->setDescription('Update political committee memberships (only qualities that cannot be elected).')
         ;
     }
 
@@ -54,7 +51,7 @@ class AddPoliticalCommitteeMembershipsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->io->title('Starting adding political committee memberships to adherents.');
+        $this->io->title('Starting updating political committee memberships.');
 
         $this->io->progressStart($this->getTerritorialCouncilMembershipCount());
 
@@ -81,7 +78,7 @@ class AddPoliticalCommitteeMembershipsCommand extends Command
 
         $this->io->progressFinish();
 
-        $this->io->success('Political committee memberships have been updated successfully to adherents!');
+        $this->io->success('Political committee memberships have been updated successfully!');
     }
 
     private function getTerritorialCouncilMembership(): IterableResult

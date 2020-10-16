@@ -26,7 +26,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertCount(8, $crawler->filter('.status.status__1'));
         $this->assertContains('Berthoux Gisele', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Conseiller(ère) départemental(e) 75', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertContains('Conseiller(ère) consulaire 75', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('Conseiller(ère) FDE 75', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('Conseiller(ère) municipal(e) Paris 75010', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('désignée', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertContains('02/02/2020', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
