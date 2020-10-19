@@ -24,14 +24,14 @@
                     </div>
 
                     <div class="filter__row">
-                        <label class="filter__label">Mode d'engagement</label>
-                        {{ form_widget(form.motivation, {attr: {class: 'filter__field'}}) }}
-                        {{ form_errors(form.motivation) }}
+                        <label class="filter__label">Modes d'engagement</label>
+                        {{ form_widget(form.motivations, {attr: {class: 'filter__field multi_select2'}}) }}
+                        {{ form_errors(form.motivations) }}
                     </div>
 
                     <div class="filter__row">
                         <label class="filter__label">Catégories</label>
-                        {{ form_widget(form.categories, {attr: {class: 'filter__field, multi_select2'}}) }}
+                        {{ form_widget(form.categories, {attr: {class: 'filter__field multi_select2'}}) }}
                         {{ form_errors(form.categories) }}
                     </div>
 

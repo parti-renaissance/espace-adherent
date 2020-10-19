@@ -86,11 +86,11 @@ abstract class ThematicCommunityMembership
     private $associationName;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="simple_array")
      */
-    private $motivation;
+    private $motivations = [];
 
     /**
      * @var bool
@@ -182,14 +182,14 @@ abstract class ThematicCommunityMembership
         $this->associationName = $associationName;
     }
 
-    public function getMotivation(): ?string
+    public function getMotivations(): array
     {
-        return $this->motivation;
+        return $this->motivations;
     }
 
-    public function setMotivation(string $motivation): void
+    public function setMotivations(array $motivations): void
     {
-        $this->motivation = $motivation;
+        $this->motivations = $motivations;
     }
 
     public function isExpert(): bool

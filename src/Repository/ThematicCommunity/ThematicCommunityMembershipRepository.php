@@ -224,10 +224,13 @@ class ThematicCommunityMembershipRepository extends ServiceEntityRepository
             }
         }
 
-        if ($motivation = $filter->getMotivation()) {
-            $qb->andWhere('tcm.motivation = :motivation')
-                ->setParameter('motivation', $motivation)
-            ;
+        if ($motivations = $filter->getMotivations()) {
+            $or = $qb->expr()->orX();
+            foreach ($motivations as $i => $motivation) {
+                $or->add("FIND_IN_SET(:motivation_$i, tcm.motivations) > 0");
+                $qb->setParameter("motivation_$i", $motivation);
+            }
+            $qb->andWhere($or);
         }
 
         if (null !== $filter->isExpert()) {

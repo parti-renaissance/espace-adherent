@@ -5,9 +5,12 @@
         {{ object.community.name }}
     </span>
     &nbsp;
-    <span class="label label-default">
-        {{ ('admin.thematic_community.membership.motivations.'~object.motivation)|trans }}
-    </span>
+    {% for motivation in object.motivations %}
+        <span class="label label-default">
+            {{ ('admin.thematic_community.membership.motivations.'~motivation)|trans }}
+        </span>
+        &nbsp;
+    {% endfor %}
 
     {% if object.expert %}
         <br>
