@@ -4,6 +4,8 @@ namespace App\Entity\ThematicCommunity;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNameSlugTrait;
+use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,10 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class ThematicCommunity
+class ThematicCommunity implements ImageOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityNameSlugTrait;
+    use ImageTrait;
 
     /**
      * @var string
@@ -74,5 +77,10 @@ class ThematicCommunity
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getImagePath(): string
+    {
+        return sprintf('images/thematic_community/banner/%s', $this->getImageName());
     }
 }
