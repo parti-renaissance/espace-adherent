@@ -16,19 +16,19 @@ class LoadThematicCommunityMembershipData extends AbstractFixture implements Dep
         $cm1 = new ContactMembership();
         $cm1->setContact($this->getReference('tc-contact-1'));
         $cm1->setCommunity($this->getReference('tc-sante'));
-        $cm1->setMotivation(ThematicCommunityMembership::MOTIVATION_THINKING);
+        $cm1->setMotivations([ThematicCommunityMembership::MOTIVATION_THINKING, ThematicCommunityMembership::MOTIVATION_ON_SPOT]);
         $manager->persist($cm1);
 
         $cm2 = new ContactMembership();
         $cm2->setContact($this->getReference('tc-contact-1'));
         $cm2->setCommunity($this->getReference('tc-education'));
-        $cm2->setMotivation(ThematicCommunityMembership::MOTIVATION_ON_SPOT);
+        $cm2->setMotivations([ThematicCommunityMembership::MOTIVATION_ON_SPOT]);
         $manager->persist($cm2);
 
         $am = new AdherentMembership();
         $am->setAdherent($this->getReference('adherent-8'));
         $am->setCommunity($this->getReference('tc-education'));
-        $am->setMotivation(ThematicCommunityMembership::MOTIVATION_INFORMATION);
+        $am->setMotivations([ThematicCommunityMembership::MOTIVATION_ON_SPOT, ThematicCommunityMembership::MOTIVATION_INFORMATION]);
         $am->setAssociation(true);
         $am->setAssociationName('Association de ouf');
         $manager->persist($am);
@@ -36,7 +36,7 @@ class LoadThematicCommunityMembershipData extends AbstractFixture implements Dep
         $amElected = new AdherentMembership();
         $amElected->setAdherent($this->getReference('adherent-5'));
         $amElected->setCommunity($this->getReference('tc-sante'));
-        $amElected->setMotivation(ThematicCommunityMembership::MOTIVATION_THINKING);
+        $amElected->setMotivations([ThematicCommunityMembership::MOTIVATION_THINKING]);
         $manager->persist($amElected);
 
         $manager->flush();

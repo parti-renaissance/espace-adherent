@@ -92,9 +92,9 @@ class ThematicCommunityMembershipFilter
     private $joinedUntil;
 
     /**
-     * @var string
+     * @var array
      */
-    private $motivation;
+    private $motivations = [];
 
     /**
      * @var UserListDefinition[]|Collection
@@ -282,14 +282,14 @@ class ThematicCommunityMembershipFilter
         $this->joinedUntil = $joinedUntil;
     }
 
-    public function getMotivation(): ?string
+    public function getMotivations(): array
     {
-        return $this->motivation;
+        return $this->motivations;
     }
 
-    public function setMotivation(?string $motivation): void
+    public function setMotivations(array $motivations): void
     {
-        $this->motivation = $motivation;
+        $this->motivations = $motivations;
     }
 
     public function getCategories(): ?Collection
@@ -362,7 +362,7 @@ class ThematicCommunityMembershipFilter
             }, $this->thematicCommunities),
             'joinedSince' => $this->joinedSince ? $this->joinedSince->format('Y-m-d') : null,
             'joinedUntil' => $this->joinedUntil ? $this->joinedUntil->format('Y-m-d') : null,
-            'motivation' => $this->motivation,
+            'motivations' => $this->motivations,
             'categories' => $this->categories,
             'expert' => $this->expert,
             'withJob' => $this->withJob,

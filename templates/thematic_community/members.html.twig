@@ -72,7 +72,7 @@
                                 {{ member.roles }}
                             </td>
                             <td>
-                                {{ ('admin.thematic_community.membership.motivations.'~member.motivation)|trans }}
+                                {{ member.motivations|map(m => ('admin.thematic_community.membership.motivations.'~m)|trans)|join(', ') }}
                             </td>
                             <td>
                                 {{ member.userListDefinitions.toString }}

@@ -185,10 +185,11 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     'label' => 'Nom de l\'association',
                     'required' => false,
                 ])
-                ->add('motivation', ChoiceType::class, [
+                ->add('motivations', ChoiceType::class, [
+                    'label' => 'Modes d\'engagement',
                     'expanded' => false,
-                    'multiple' => false,
-                    'placeholder' => '-- Choisir une motivation --',
+                    'multiple' => true,
+                    'placeholder' => '-- Choisir un mode d\'engagement --',
                     'choices' => ThematicCommunityMembership::MOTIVATIONS,
                     'choice_label' => static function ($choice) {
                         return 'admin.thematic_community.membership.motivations.'.$choice;
@@ -403,6 +404,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
+                    'multiple' => true,
                     'choices' => ThematicCommunityMembership::MOTIVATIONS,
                     'choice_label' => static function ($choice) {
                         return 'admin.thematic_community.membership.motivations.'.$choice;
@@ -413,8 +415,12 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $qb->andWhere(sprintf('%s.motivation', $alias).' = :motivation');
-                    $qb->setParameter('motivation', mb_strtolower($value['value']));
+                    $or = new Orx();
+                    foreach ($value['value'] as $i => $motivation) {
+                        $or->add(sprintf('FIND_IN_SET(:motivation_%d, %s.motivations) > 0', $i, $alias));
+                        $qb->setParameter(sprintf('motivation_%d', $i), mb_strtolower($motivation));
+                    }
+                    $qb->andWhere($or);
 
                     return true;
                 },

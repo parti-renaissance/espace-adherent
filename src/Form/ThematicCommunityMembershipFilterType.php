@@ -69,8 +69,9 @@ class ThematicCommunityMembershipFilterType extends AbstractType
             ])
             ->add('joinedSince', DatePickerType::class, ['required' => false])
             ->add('joinedUntil', DatePickerType::class, ['required' => false])
-            ->add('motivation', ChoiceType::class, [
+            ->add('motivations', ChoiceType::class, [
                 'required' => false,
+                'multiple' => true,
                 'choices' => ThematicCommunityMembership::MOTIVATIONS,
                 'choice_label' => function (string $choice) {
                     return 'admin.thematic_community.membership.motivations.'.$choice;
