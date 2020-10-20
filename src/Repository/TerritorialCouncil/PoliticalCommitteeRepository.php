@@ -16,6 +16,16 @@ class PoliticalCommitteeRepository extends ServiceEntityRepository
 
     public function createQueryBuilderWithReferentTagsCondition(array $referentTags): QueryBuilder
     {
+        $qb = $this
+            ->createQueryBuilder('pc')
+            ->innerJoin('pc.territorialCouncil', 'tc')
+            ->innerJoin('tc.referentTags', 'tag')
+        ;
+
+        if (!$referentTags) {
+            return $qb->andWhere('1 = 0');
+        }
+
         $tagCondition = 'tag IN (:tags)';
 
         foreach ($referentTags as $referentTag) {
@@ -26,9 +36,7 @@ class PoliticalCommitteeRepository extends ServiceEntityRepository
             }
         }
 
-        return $this->createQueryBuilder('pc')
-            ->innerJoin('pc.territorialCouncil', 'tc')
-            ->innerJoin('tc.referentTags', 'tag')
+        return $qb
             ->where($tagCondition)
             ->andWhere('pc.isActive = :true')
             ->andWhere('tc.isActive = :true')
