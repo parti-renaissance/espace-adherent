@@ -108,6 +108,10 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
 
     private function bindReferentTagsCondition(QueryBuilder $qb, array $referentTags): QueryBuilder
     {
+        if (!$referentTags) {
+            return $qb->andWhere('1 = 0');
+        }
+
         $tagCondition = 'referentTag IN (:tags)';
         foreach ($referentTags as $referentTag) {
             if ('75' === $referentTag->getCode()) {
@@ -136,9 +140,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
             ->leftJoin('adherent.adherentMandates', 'mandate')
         ;
 
-        if ($filter->getReferentTags()) {
-            $this->bindReferentTagsCondition($qb, $filter->getReferentTags());
-        }
+        $this->bindReferentTagsCondition($qb, $filter->getReferentTags());
 
         if (false !== \strpos($filter->getSort(), '.')) {
             $sort = $filter->getSort();

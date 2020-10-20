@@ -104,6 +104,15 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
 
     public function createQueryBuilderWithReferentTagsCondition(array $referentTags): QueryBuilder
     {
+        $qb = $this
+            ->createQueryBuilder('tc')
+            ->innerJoin('tc.referentTags', 'tag')
+        ;
+
+        if (!$referentTags) {
+            return $qb->andWhere('1 = 0');
+        }
+
         $tagCondition = 'tag IN (:tags)';
 
         foreach ($referentTags as $referentTag) {
@@ -114,8 +123,7 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
             }
         }
 
-        return $this->createQueryBuilder('tc')
-            ->innerJoin('tc.referentTags', 'tag')
+        return $qb
             ->where($tagCondition)
             ->andWhere('tc.isActive = :true')
             ->setParameters([
