@@ -76,6 +76,7 @@ class CertificationRequest
     /**
      * @var UploadedFile|null
      *
+     * @Assert\NotBlank
      * @Assert\File(
      *     maxSize="5M",
      *     mimeTypes=CertificationRequest::MIME_TYPES,

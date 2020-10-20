@@ -17,7 +17,7 @@ class ManageTerritorialCouncilVoter extends AbstractAdherentVoter
 
         /** @var TerritorialCouncil $subject */
         if ($adherent->isReferent()) {
-            $isGranted = !empty(array_intersect($subject->getReferentTagsCodes(), $this->getFilteredReferentTags($adherent->getManagedArea()->getTags()->toArray())));
+            $isGranted = !empty(array_intersect($subject->getReferentTags()->toArray(), $this->getFilteredReferentTags($adherent->getManagedArea()->getTags()->toArray())));
         }
 
         return $isGranted;
