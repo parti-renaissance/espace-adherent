@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\TerritorialCouncil\Designation;
 
 use App\Entity\Adherent;
+use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\Election;
 use App\Form\TerritorialCouncil\EditDesignationType;
 use App\Repository\TerritorialCouncil\ElectionRepository;
@@ -37,7 +38,9 @@ class ReferentDesignationController extends AbstractController
     public function listAction(UserInterface $adherent): Response
     {
         return $this->render('territorial_council_designation/list.html.twig', [
-            'elections' => $this->electionRepository->findAllForReferentTags($adherent->getManagedArea()->getTags()->toArray()),
+            'elections' => $this->electionRepository->findAllForReferentTags(
+                $this->getFilteredReferentTags($adherent->getManagedArea()->getTags()->toArray())
+            ),
         ]);
     }
 
@@ -81,5 +84,12 @@ class ReferentDesignationController extends AbstractController
         return $this->render('territorial_council_designation/convocation.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    private function getFilteredReferentTags(array $referentTags): array
+    {
+        return array_filter($referentTags, function (ReferentTag $referentTag) {
+            return !$referentTag->isCountryTag();
+        });
     }
 }

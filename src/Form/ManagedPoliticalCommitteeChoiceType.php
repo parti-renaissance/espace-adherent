@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -13,7 +14,9 @@ class ManagedPoliticalCommitteeChoiceType extends AbstractConnectedUserFormType
     {
         $resolver->setDefaults([
             'query_builder' => function (PoliticalCommitteeRepository $repository) {
-                return $repository->createQueryBuilderWithReferentTagsCondition($this->getReferentTags());
+                return $repository->createQueryBuilderWithReferentTagsCondition(
+                    $this->getFilteredReferentTags($this->getReferentTags())
+                );
             },
             'class' => PoliticalCommittee::class,
             'choice_label' => 'name',
@@ -23,5 +26,12 @@ class ManagedPoliticalCommitteeChoiceType extends AbstractConnectedUserFormType
     public function getParent()
     {
         return EntityType::class;
+    }
+
+    private function getFilteredReferentTags(array $referentTags): array
+    {
+        return array_filter($referentTags, function (ReferentTag $referentTag) {
+            return !$referentTag->isCountryTag();
+        });
     }
 }

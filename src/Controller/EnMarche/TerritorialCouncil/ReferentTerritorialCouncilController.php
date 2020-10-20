@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\TerritorialCouncil;
 
 use App\Controller\EnMarche\AccessDelegatorTrait;
+use App\Entity\ReferentTag;
 use App\Exporter\TerritorialCouncilMembersExporter;
 use App\Form\TerritorialCouncil\MemberFilterType;
 use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
@@ -35,7 +36,7 @@ class ReferentTerritorialCouncilController extends AbstractController
         TerritorialCouncilMembershipRepository $membershipRepository,
         TerritorialCouncilMembersExporter $exporter
     ): Response {
-        $referentTags = $this->getMainUser($request->getSession())->getManagedArea()->getTags()->toArray();
+        $referentTags = $this->getFilteredReferentTags($this->getMainUser($request->getSession())->getManagedArea()->getTags()->toArray());
         $filter = new MembersListFilter($referentTags, SubscriptionTypeEnum::REFERENT_EMAIL);
         $form = $this->createForm(MemberFilterType::class, $filter, [
             'referent_tags' => $referentTags,
@@ -60,5 +61,17 @@ class ReferentTerritorialCouncilController extends AbstractController
             'form' => $form->createView(),
             'total_count' => $membershipRepository->countForReferentTags($referentTags),
         ]);
+    }
+
+    /**
+     * @param ReferentTag[] $referentTags
+     *
+     * @return ReferentTag[]
+     */
+    private function getFilteredReferentTags(array $referentTags): array
+    {
+        return array_filter($referentTags, function (ReferentTag $referentTag) {
+            return !$referentTag->isCountryTag();
+        });
     }
 }
