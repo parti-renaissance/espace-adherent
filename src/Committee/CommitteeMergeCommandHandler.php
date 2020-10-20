@@ -72,8 +72,7 @@ class CommitteeMergeCommandHandler
                 })
             ;
 
-            $supervisorMembership = $this->committeeMembershipRepository->findSupervisorMembership($sourceCommittee);
-            if ($supervisorMembership) {
+            if ($supervisorMembership = $this->committeeMembershipRepository->findSupervisorMembership($sourceCommittee)) {
                 $supervisorMembership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
             }
 
@@ -125,7 +124,9 @@ class CommitteeMergeCommandHandler
 
             $this->em->flush();
 
-            $this->transferVotingMemberships($sourceCommittee, $mergedMemberships);
+            $this->transferVotingMemberships($sourceCommittee, array_filter($mergedMemberships, function (CommitteeMembership $membership) {
+                return $membership->isVotingCommittee();
+            }));
             $this->revertDestinationCommitteeMemberships($destinationCommittee, $mergedMemberships);
 
             $this->em->commit();
@@ -166,10 +167,6 @@ class CommitteeMergeCommandHandler
 
     private function transferVotingMemberships(Committee $committee, array $votingMemberships): void
     {
-        $votingMemberships = array_filter($votingMemberships, function (CommitteeMembership $membership) {
-            return $membership->isVotingCommittee();
-        });
-
         if (!$votingMemberships) {
             return;
         }
