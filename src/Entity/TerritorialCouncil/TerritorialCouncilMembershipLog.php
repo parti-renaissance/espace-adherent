@@ -32,7 +32,7 @@ class TerritorialCouncilMembershipLog
     private $type;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=500)
      */
     private $description;
 

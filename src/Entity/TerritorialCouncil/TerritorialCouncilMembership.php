@@ -57,7 +57,7 @@ class TerritorialCouncilMembership
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      *
      * @Assert\NotNull
      */
@@ -270,22 +270,12 @@ class TerritorialCouncilMembership
 
     public function getHighestQualityPriority(): int
     {
-        $qualities = $this->getQualities();
+        $priorities = array_intersect_key(
+            TerritorialCouncilQualityEnum::QUALITY_PRIORITIES,
+            array_fill_keys($this->getQualityNames(), true)
+        );
 
-        $priorities = \array_filter(TerritorialCouncilQualityEnum::QUALITY_PRIORITIES, function (int $priority, string $name) use ($qualities) {
-            $isPresent = false;
-            foreach ($qualities as $quality) {
-                if ($name === $quality->getName()) {
-                    $isPresent = true;
-
-                    break;
-                }
-            }
-
-            return $isPresent;
-        }, \ARRAY_FILTER_USE_BOTH);
-
-        return \count($priorities) > 0 ? max($priorities) : 1000;
+        return \count($priorities) > 0 ? min($priorities) : 1000;
     }
 
     public function getFullName(): string

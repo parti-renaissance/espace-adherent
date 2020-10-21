@@ -49,7 +49,7 @@ class TerritorialCouncilQuality
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      *
      * @Assert\NotNull
      */

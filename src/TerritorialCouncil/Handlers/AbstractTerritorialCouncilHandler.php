@@ -164,7 +164,10 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         // we check if no quality with removing constraints
         $msg = '';
         foreach ($actualMembership->getQualities() as $quality) {
-            $msg .= $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+            $constraintMsg = $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+            if ('' !== $constraintMsg && false === strpos($msg, $constraintMsg)) {
+                $msg .= $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+            }
         }
 
         if ('' !== $msg) {
