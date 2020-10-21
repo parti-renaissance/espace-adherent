@@ -25,7 +25,7 @@ class IdentityDocumentParser
     public function hasFirstName(ImageAnnotations $imageAnnotations, string $firstName): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/Pr(e|é)nom.{0,5}:\s?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
+            preg_match('/Pr(e|é)nom[^:]{0,5}:?\s?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
 
             $firstNames = array_map(function (string $firstName) {
                 return $this->normalize($firstName);
@@ -44,7 +44,7 @@ class IdentityDocumentParser
     public function hasLastName(ImageAnnotations $imageAnnotations, string $lastName): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/Nom( )?:( )?(?<last_name>.+)\\n/', $imageAnnotations->getText(), $matches);
+            preg_match('/Nom\s?:?\s?(?<last_name>.+)\\n/', $imageAnnotations->getText(), $matches);
 
             return $this->normalize($matches['last_name'] ?? null) === $this->normalize($lastName);
         } elseif ($imageAnnotations->isFrenchPassport()) {
