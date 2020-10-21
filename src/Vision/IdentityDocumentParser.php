@@ -7,6 +7,8 @@ use Cocur\Slugify\Slugify;
 
 class IdentityDocumentParser
 {
+    private const LEVENSHTEIN_LIMIT = 1;
+
     private $slugify;
 
     public function __construct(Slugify $slugify)
@@ -31,7 +33,15 @@ class IdentityDocumentParser
                 return $this->normalize($firstName);
             }, preg_split('/[\s,]+/', $matches['first_names'] ?? null));
 
-            return \in_array($this->normalize($firstName), $firstNames, true);
+            $normalizedFirstName = $this->normalize($firstName);
+
+            foreach ($firstNames as $matchedFirstName) {
+                if ($this->isMatching($matchedFirstName, $normalizedFirstName)) {
+                    return true;
+                }
+            }
+
+            return false;
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
@@ -46,7 +56,14 @@ class IdentityDocumentParser
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
             preg_match('/Nom\s?:?\s?(?<last_name>.+)\\n/', $imageAnnotations->getText(), $matches);
 
-            return $this->normalize($matches['last_name'] ?? null) === $this->normalize($lastName);
+            if (!($foundLastName = $matches['last_name'] ?? null)) {
+                return false;
+            }
+
+            $normalizedMatch = $this->normalize($matches['last_name'] ?? null);
+            $normalizedLastName = $this->normalize($lastName);
+
+            return $this->isMatching($normalizedMatch, $normalizedLastName);
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
@@ -88,5 +105,10 @@ class IdentityDocumentParser
     private function normalize(?string $str): string
     {
         return $this->slugify->slugify(trim($str));
+    }
+
+    private function isMatching(string $str1, string $str2): bool
+    {
+        return $str1 === $str2 || self::LEVENSHTEIN_LIMIT >= levenshtein($str1, $str2);
     }
 }
