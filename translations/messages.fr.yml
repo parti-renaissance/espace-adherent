@@ -846,6 +846,13 @@ certification_request.refusal_reason.document_not_in_conformity: La pièce fourn
 certification_request.refusal_reason.document_not_readable: La pièce fournie est illisible.
 certification_request.refusal_reason.informations_not_matching: Les informations ne correspondent pas.
 certification_request.refusal_reason.process_timeout: La demande n'a pas pu être traitée.
+certification_request.refusal_reason.birth_date_not_matching: La date de naissance indiquée ne correspond pas à celle figurant sur la pièce. Merci de modifier l’information avant de réitérer votre demande.
+certification_request.refusal_reason.unreadable_document: Merci de fournir un scan ou une photo de meilleure qualité car certaines informations sont illisibles.
+certification_request.refusal_reason.document_not_original: Merci de fournir un scan ou une photo du document original, en couleur et non d’une photocopie.
+certification_request.refusal_reason.reversed_first_and_last_name: Vos nom et prénom sont inversés. Merci de modifier l’information avant de réitérer votre demande.
+certification_request.refusal_reason.document_not_fully_visible: Merci de fournir un scan ou une photo où votre pièce d'identité figure dans son intégralité.
+certification_request.refusal_reason.document_not_front: Merci de fournir un scan ou une photo du recto de votre pièce d’identité.
+certification_request.refusal_reason.partial_first_name: Merci de renseigner votre prénom entier et pas une abréviation. Nous vous prions de modifier l’information avant de réitérer votre demande.
 certification_request.refusal_reason.other: Autre (à préciser)
 
 #

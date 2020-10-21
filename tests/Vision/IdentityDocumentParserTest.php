@@ -40,21 +40,29 @@ class IdentityDocumentParserTest extends WebTestCase
     public function provideCNIMatch(): iterable
     {
         yield [<<<'TXT'
-Nom: Gardien
-Prénom: Rémi
+Nom: XXXX
+Epouse: Doe
+Prénom: J4ne
 Date de naissance: 27.11.1988
-TXT, 'Rémi', 'Gardien', '1988-11-27'];
+TXT, 'Jane', 'Doe', '1988-11-27'];
+
+        yield [<<<'TXT'
+Nom: XXXX
+Nom d'usage: Doe
+Prénom: J4ne
+Date de naissance: 27.11.1988
+TXT, 'Jane', 'Doe', '1988-11-27'];
 
         yield [<<<'TXT'
 CARTE NATIONALE D'IDENTITÉ N° : 12345678910
-RF Nom: GARDIEN
+RF Nom: GARD1EN
 Prénom(s): Remi Jean
 Né(e) le : 27.11 1988
 TXT, 'Rémi', 'Gardien', '1988-11-27'];
 
         yield [<<<'TXT'
 CARTE NATIONALE D'IDENTITÉ N° : 12345678910
-RF Nom: GARDIEN
+RF Nom : GARDIEN
 Prénom(s): Remi, Jean
 Né(e) le : 27.11 .1988
 TXT, 'Rémi', 'Gardien', '1988-11-27'];
@@ -68,8 +76,8 @@ TXT, 'Rémi', 'Gardien', '1988-11-27'];
 
         yield [<<<'TXT'
 CARTE NATIONALE D'IDENTITÉ N° : 12345678910
-RF Nom: GARDIEN
-Prénomist : Rémi, Jean
+RF NomGARDIEN
+Prenomist : Rémi, Jean
 Né(e) le : 27.11 .1988
 TXT, 'Rémi', 'Gardien', '1988-11-27'];
     }

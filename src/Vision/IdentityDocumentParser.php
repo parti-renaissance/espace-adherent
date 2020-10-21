@@ -7,6 +7,16 @@ use Cocur\Slugify\Slugify;
 
 class IdentityDocumentParser
 {
+    private const LEVENSHTEIN_LIMIT = 1;
+
+    private const LAST_NAME_DEFAULT_LABEL = 'Nom';
+    private const LAST_NAME_CUSTOM_LABELS = [
+        'Epouse',
+        'Veuve',
+        'VV',
+        "Nom d(\')?usage",
+    ];
+
     private $slugify;
 
     public function __construct(Slugify $slugify)
@@ -25,13 +35,21 @@ class IdentityDocumentParser
     public function hasFirstName(ImageAnnotations $imageAnnotations, string $firstName): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/Prénom.{0,5}:\s?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
+            preg_match('/Pr(?:e|é)nom[^:]{0,5}:?\s?(?<first_names>.+)\\n/', $imageAnnotations->getText(), $matches);
 
             $firstNames = array_map(function (string $firstName) {
                 return $this->normalize($firstName);
             }, preg_split('/[\s,]+/', $matches['first_names'] ?? null));
 
-            return \in_array($this->normalize($firstName), $firstNames, true);
+            $normalizedFirstName = $this->normalize($firstName);
+
+            foreach ($firstNames as $matchedFirstName) {
+                if ($this->isMatching($matchedFirstName, $normalizedFirstName)) {
+                    return true;
+                }
+            }
+
+            return false;
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
@@ -44,9 +62,16 @@ class IdentityDocumentParser
     public function hasLastName(ImageAnnotations $imageAnnotations, string $lastName): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/Nom( )?:( )?(?<last_name>.+)\\n/', $imageAnnotations->getText(), $matches);
+            $text = $imageAnnotations->getText();
 
-            return $this->normalize($matches['last_name'] ?? null) === $this->normalize($lastName);
+            if (!$foundLastName = $this->retrieveCNILastName($text)) {
+                return false;
+            }
+
+            $normalizedMatch = $this->normalize($foundLastName);
+            $normalizedLastName = $this->normalize($lastName);
+
+            return $this->isMatching($normalizedMatch, $normalizedLastName);
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
@@ -88,5 +113,24 @@ class IdentityDocumentParser
     private function normalize(?string $str): string
     {
         return $this->slugify->slugify(trim($str));
+    }
+
+    private function retrieveCNILastName(string $text): ?string
+    {
+        return $this->matchCNILastName(self::LAST_NAME_CUSTOM_LABELS, $text) ?? $this->matchCNILastName([self::LAST_NAME_DEFAULT_LABEL], $text);
+    }
+
+    private function matchCNILastName(array $labels, string $text): ?string
+    {
+        $pattern = '/(%s)\s?:?\s?(?<last_name>.+)\\n/';
+
+        preg_match(sprintf($pattern, implode($labels, '|')), $text, $matches);
+
+        return $matches['last_name'] ?? null;
+    }
+
+    private function isMatching(string $str1, string $str2): bool
+    {
+        return $str1 === $str2 || self::LEVENSHTEIN_LIMIT >= levenshtein($str1, $str2);
     }
 }

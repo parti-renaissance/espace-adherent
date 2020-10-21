@@ -12,6 +12,7 @@ class ImageAnnotations
     public const FRENCH_PASSPORT_ENTITY_LABEL = 'French passport';
 
     public const FRENCH_IDENTITY_CARD_LABEL = 'carte d identité française';
+    public const FRENCH_ID_CARD_LABEL = 'french id card';
     public const FRENCH_PASSPORT_LABEL = 'french passport';
     public const PASSPORT_LABEL = 'passport';
 
@@ -80,7 +81,10 @@ class ImageAnnotations
     public function isFrenchNationalIdentityCard(): bool
     {
         return $this->isIdentityDocument()
-            && \in_array(self::FRENCH_IDENTITY_CARD_LABEL, $this->labels, true)
+            && 0 < \count(array_intersect($this->labels, [
+                self::FRENCH_IDENTITY_CARD_LABEL,
+                self::FRENCH_ID_CARD_LABEL,
+            ]))
         ;
     }
 
