@@ -10,6 +10,7 @@ use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeFeedItem;
 use App\Form\CommitteeFeedItemMessageType;
 use App\Form\VotingPlatform\Candidacy\CommitteeCandidacyType;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -192,7 +194,8 @@ class CommitteeController extends Controller
         UserInterface $adherent,
         Request $request,
         Committee $committee,
-        CommitteeManager $manager
+        CommitteeManager $manager,
+        MessageBusInterface $bus
     ): Response {
         if (!$this->isCsrfTokenValid('committee.vote', $request->request->get('token'))) {
             return $this->json([
@@ -215,6 +218,8 @@ class CommitteeController extends Controller
         } else {
             $manager->disableVoteInMembership($membership);
         }
+
+        $bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
 
         return $this->json(['status' => 'OK'], Response::HTTP_OK);
     }

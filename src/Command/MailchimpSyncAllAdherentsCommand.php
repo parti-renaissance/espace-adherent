@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,6 +43,8 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
             ->addOption('ref-tags', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('disabled-only', null, InputOption::VALUE_NONE)
+            ->addOption('certified-only', null, InputOption::VALUE_NONE)
+            ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -54,7 +57,12 @@ class MailchimpSyncAllAdherentsCommand extends Command
     {
         $limit = (int) $input->getOption('limit');
 
-        $paginator = $this->getQueryBuilder($input->getOption('ref-tags'), $input->getOption('disabled-only'));
+        $paginator = $this->getQueryBuilder(
+            $input->getOption('ref-tags'),
+            $input->getOption('disabled-only'),
+            $input->getOption('certified-only'),
+            $input->getOption('committee-voter-only')
+        );
 
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
@@ -69,7 +77,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         $offset = 0;
 
         do {
-            foreach ($paginator->getIterator() as $adherent) {
+            foreach ($paginator as $adherent) {
                 $this->bus->dispatch(new AdherentChangeCommand(
                     $adherent->getUuid(),
                     $adherent->getEmailAddress()
@@ -87,10 +95,19 @@ class MailchimpSyncAllAdherentsCommand extends Command
         } while ($offset < $count && (!$limit || $offset < $limit));
 
         $this->io->progressFinish();
+
+        return 0;
     }
 
-    private function getQueryBuilder(array $refTags, bool $disabledOnly): Paginator
-    {
+    /**
+     * @return Paginator|Adherent[]
+     */
+    private function getQueryBuilder(
+        array $refTags,
+        bool $disabledOnly,
+        bool $certifiedOnly,
+        bool $committeeVoterOnly
+    ): Paginator {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
             ->where('adherent.status = :status')
@@ -103,6 +120,21 @@ class MailchimpSyncAllAdherentsCommand extends Command
                 ->innerJoin('adherent.referentTags', 'tag')
                 ->andWhere('tag.code IN(:tags)')
                 ->setParameter('tags', $refTags)
+            ;
+        }
+
+        if ($certifiedOnly) {
+            $queryBuilder->andWhere('adherent.certifiedAt IS NOT NULL');
+        }
+
+        if ($committeeVoterOnly) {
+            $queryBuilder
+                ->innerJoin(
+                    'adherent.memberships',
+                    'membership',
+                    Join::WITH,
+                    'membership.adherent = adherent AND membership.enableVote IS NOT NULL'
+                )
             ;
         }
 
