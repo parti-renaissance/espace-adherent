@@ -21,9 +21,14 @@ class OfficialReportRepository extends ServiceEntityRepository
     /**
      * @return OfficialReport[]|PaginatorInterface
      */
-    public function getPaginator(int $page = 1, int $limit = 30): PaginatorInterface
+    public function getPaginator(array $referentTags, int $page = 1, int $limit = 30): PaginatorInterface
     {
         $qb = $this->createQueryBuilder('report')
+            ->innerJoin('report.politicalCommittee', 'politicalCommittee')
+            ->innerJoin('politicalCommittee.territorialCouncil', 'territorialCouncil')
+            ->innerJoin('territorialCouncil.referentTags', 'tag')
+            ->where('tag IN (:tags)')
+            ->setParameter('tags', $referentTags)
             ->orderBy('report.createdAt', 'DESC')
         ;
 

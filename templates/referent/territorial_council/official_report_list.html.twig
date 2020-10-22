@@ -22,10 +22,10 @@
                             <tr>
                                 <th style="min-width: 100px;">Comité politique</th>
                                 <th style="min-width: 100px;">Titre</th>
-                                <th style="width: 150px;">Date d'upload</th>
+                                <th style="width: 150px;">Date</th>
                                 <th style="width: 150px;">Date de modification</th>
                                 <th style="width: 150px;">Numéro de version</th>
-                                <th style="width: 150px;">Uploader - Président du CoPol</th>
+                                <th style="width: 150px;">Président du CoPol</th>
                                 <th style="width: 150px;">Actions</th>
                             </tr>
                             </thead>
@@ -35,7 +35,7 @@
                                     <td>{{ report.politicalCommittee }}</td>
                                     <td>{{ report.name }}</td>
                                     <td>{{ report.createdAt|date('d/m/Y H:i') }}</td>
-                                    <td>{{ report.updatedAt|date('d/m/Y H:i') }}</td>
+                                    <td>{{ report.createdAt != report.updatedAt ? report.updatedAt|date('d/m/Y H:i') : '' }}</td>
                                     <td>{{ report.lastVersion }}</td>
                                     <td>{{ report.author ?: 'Anonyme' }}</td>
                                     <td>

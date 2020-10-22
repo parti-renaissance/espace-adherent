@@ -26,7 +26,10 @@ class OfficialReportManagerController extends AbstractController
     {
         return $this->render(
             'referent/territorial_council/official_report_list.html.twig',
-            ['paginator' => $repository->getPaginator($request->query->getInt('page', 1))]
+            ['paginator' => $repository->getPaginator(
+                $this->getUser()->getManagedArea()->getTags()->toArray(),
+                $request->query->getInt('page', 1)
+            )]
         );
     }
 
