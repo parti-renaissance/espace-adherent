@@ -71,6 +71,18 @@
         <span class="label label-primary" style="padding: 2px;">Candidats Sénatoriales 2020</span><br/>
     {% endif %}
 
+    {% if object.isRegionalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Candidat aux régionales</span><br/>
+    {% endif %}
+
+    {% if object.isDepartmentalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Candidat aux départementales</span><br/>
+    {% endif %}
+
+    {% if object.isTdlDepartmentalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Tdl départementale</span><br/>
+    {% endif %}
+
     {% if object.isMunicipalManager %}
         <span class="label label-primary" style="padding: 2px;">Responsable communal</span><br/>
     {% endif %}

@@ -12,6 +12,9 @@ use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\ManagedArea\DepartmentalCandidateManagedArea;
+use App\Entity\ManagedArea\RegionalCandidateManagedArea;
+use App\Entity\ManagedArea\TdlDepartmentalCandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
@@ -531,6 +534,30 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $senatorialCandidateManagedArea;
 
     /**
+     * @var RegionalCandidateManagedArea|null
+     *
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity="App\Entity\ManagedArea\RegionalCandidateManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $regionalCandidateManagedArea;
+
+    /**
+     * @var DepartmentalCandidateManagedArea|null
+     *
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity="App\Entity\ManagedArea\DepartmentalCandidateManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $departmentalCandidateManagedArea;
+
+    /**
+     * @var TdlDepartmentalCandidateManagedArea|null
+     *
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity="App\Entity\ManagedArea\TdlDepartmentalCandidateManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $tdlDepartmentalCandidateManagedArea;
+
+    /**
      * @var LreArea|null
      *
      * @ORM\OneToOne(targetEntity="LreArea", cascade={"all"}, orphanRemoval=true)
@@ -848,6 +875,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_SENATORIAL_CANDIDATE';
         }
 
+        if ($this->isRegionalCandidate()) {
+            $roles[] = 'ROLE_REGIONAL_CANDIDATE';
+        }
+
+        if ($this->isDepartmentalCandidate()) {
+            $roles[] = 'ROLE_DEPARTMENTAL_CANDIDATE';
+        }
+
+        if ($this->isTdlDepartmentalCandidate()) {
+            $roles[] = 'ROLE_TDL_DEPARTMENTAL_CANDIDATE';
+        }
+
         if ($this->isLre()) {
             $roles[] = 'ROLE_LRE';
         }
@@ -900,6 +939,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isElectionResultsReporter()
             || $this->isMunicipalManagerSupervisor()
             || $this->isSenatorialCandidate()
+            || $this->isRegionalCandidate()
+            || $this->isDepartmentalCandidate()
+            || $this->isTdlDepartmentalCandidate()
             || $this->isLre()
             || $this->isLegislativeCandidate()
             || $this->isThematicCommunityChief()
@@ -2386,6 +2428,53 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?SenatorialCandidateManagedArea $senatorialCandidateManagedArea
     ): void {
         $this->senatorialCandidateManagedArea = $senatorialCandidateManagedArea;
+    }
+
+    public function isRegionalCandidate(): bool
+    {
+        return $this->regionalCandidateManagedArea instanceof RegionalCandidateManagedArea;
+    }
+
+    public function getRegionalCandidateManagedArea(): ?RegionalCandidateManagedArea
+    {
+        return $this->regionalCandidateManagedArea;
+    }
+
+    public function setRegionalCandidateManagedArea(?RegionalCandidateManagedArea $regionalCandidateManagedArea): void
+    {
+        $this->regionalCandidateManagedArea = $regionalCandidateManagedArea;
+    }
+
+    public function isDepartmentalCandidate(): bool
+    {
+        return $this->departmentalCandidateManagedArea instanceof DepartmentalCandidateManagedArea;
+    }
+
+    public function getDepartmentalCandidateManagedArea(): ?DepartmentalCandidateManagedArea
+    {
+        return $this->departmentalCandidateManagedArea;
+    }
+
+    public function setDepartmentalCandidateManagedArea(
+        ?DepartmentalCandidateManagedArea $departmentalCandidateManagedArea
+    ): void {
+        $this->departmentalCandidateManagedArea = $departmentalCandidateManagedArea;
+    }
+
+    public function isTdlDepartmentalCandidate(): bool
+    {
+        return $this->tdlDepartmentalCandidateManagedArea instanceof TdlDepartmentalCandidateManagedArea;
+    }
+
+    public function getTdlDepartmentalCandidateManagedArea(): ?TdlDepartmentalCandidateManagedArea
+    {
+        return $this->tdlDepartmentalCandidateManagedArea;
+    }
+
+    public function setTdlDepartmentalCandidateManagedArea(
+        ?TdlDepartmentalCandidateManagedArea $tdlDepartmentalCandidateManagedArea
+    ): void {
+        $this->tdlDepartmentalCandidateManagedArea = $tdlDepartmentalCandidateManagedArea;
     }
 
     public function getLreArea(): ?LreArea

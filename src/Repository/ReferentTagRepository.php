@@ -48,4 +48,14 @@ class ReferentTagRepository extends ServiceEntityRepository
             ])
         ;
     }
+
+    public function createSelectDepartmentsQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('tag')
+            ->where('tag.type = :type_dpt')
+            ->setParameters([
+                'type_dpt' => ReferentTag::TYPE_DEPARTMENT,
+            ])
+        ;
+    }
 }
