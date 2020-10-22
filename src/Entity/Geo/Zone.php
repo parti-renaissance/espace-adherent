@@ -63,14 +63,6 @@ class Zone implements GeoInterface
      */
     private $children;
 
-    /**
-     * @var ReferentTag|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private $referentTag;
-
     public function __construct(string $type, string $code, string $name, ReferentTag $referentTag = null)
     {
         $this->type = $type;
@@ -105,15 +97,5 @@ class Zone implements GeoInterface
     public function getChildren(): array
     {
         return $this->children->toArray();
-    }
-
-    public function getReferentTag(): ?ReferentTag
-    {
-        return $this->referentTag;
-    }
-
-    public function setReferentTag(?ReferentTag $referentTag): void
-    {
-        $this->referentTag = $referentTag;
     }
 }
