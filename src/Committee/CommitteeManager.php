@@ -412,7 +412,7 @@ class CommitteeManager
     public function disableVoteInMembership(CommitteeMembership $membership): void
     {
         if ($membership->hasActiveCommitteeCandidacy()) {
-            throw CommitteeMembershipException::createRunningCommitteeCandidacyException($membership->getUuid(), $committee->getName);
+            throw CommitteeMembershipException::createRunningCommitteeCandidacyException($membership->getUuid(), $membership->getCommittee()->getName());
         }
 
         $membership->disableVote();

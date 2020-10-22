@@ -6,29 +6,32 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\CertificationRequest;
 use App\Entity\Reporting\AdherentCertificationHistory;
+use App\Membership\AdherentEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CertificationAuthorityManager
 {
     private $em;
     private $documentManager;
     private $messageNotifier;
+    private $eventDispatcher;
 
     public function __construct(
         EntityManagerInterface $em,
         CertificationRequestDocumentManager $documentManager,
-        CertificationRequestNotifier $messageNotifier
+        CertificationRequestNotifier $messageNotifier,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->em = $em;
         $this->documentManager = $documentManager;
         $this->messageNotifier = $messageNotifier;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function certify(Adherent $adherent, Administrator $administrator): void
     {
         $this->certifyAdherent($adherent, $administrator);
-
-        $this->em->flush();
     }
 
     public function uncertify(Adherent $adherent, Administrator $administrator): void
@@ -38,6 +41,8 @@ class CertificationAuthorityManager
         $this->em->persist(AdherentCertificationHistory::createUncertify($adherent, $administrator));
 
         $this->em->flush();
+
+        $this->eventDispatcher->dispatch(Events::ADHERENT_UNCERTIFIED, new AdherentEvent($adherent));
     }
 
     public function approve(
@@ -53,8 +58,6 @@ class CertificationAuthorityManager
         if ($removeDocument) {
             $this->removeDocument($certificationRequest);
         }
-
-        $this->em->flush();
 
         $this->messageNotifier->sendApprovalMessage($certificationRequest);
     }
@@ -102,6 +105,9 @@ class CertificationAuthorityManager
         $adherent->certify();
 
         $this->em->persist(AdherentCertificationHistory::createCertify($adherent, $administrator));
+        $this->em->flush();
+
+        $this->eventDispatcher->dispatch(Events::ADHERENT_CERTIFIED, new AdherentEvent($adherent));
     }
 
     private function removeDocument(CertificationRequest $certificationRequest): void

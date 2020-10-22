@@ -10,6 +10,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\PostAddress;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\MailchimpSegment\MailchimpSegmentTagEnum;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
@@ -391,11 +392,33 @@ class RequestBuilder
             $tags[] = ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG;
         }
 
+        if ($adherent->isCertified()) {
+            $tags[] = MailchimpSegmentTagEnum::CERTIFIED;
+        }
+
+        if ($adherent->hasVotingCommitteeMembership()) {
+            $tags[] = MailchimpSegmentTagEnum::COMMITTEE_VOTER;
+        }
+
         return $tags;
     }
 
     private function getInactiveTags(Adherent $adherent): array
     {
-        return PostAddress::FRANCE === $adherent->getCountry() ? [ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG] : [];
+        $tags = [];
+
+        if (PostAddress::FRANCE === $adherent->getCountry()) {
+            $tags[] = ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG;
+        }
+
+        if (!$adherent->isCertified()) {
+            $tags[] = MailchimpSegmentTagEnum::CERTIFIED;
+        }
+
+        if (!$adherent->hasVotingCommitteeMembership()) {
+            $tags[] = MailchimpSegmentTagEnum::COMMITTEE_VOTER;
+        }
+
+        return $tags;
     }
 }
