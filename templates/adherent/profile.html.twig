@@ -20,7 +20,7 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
 
-    {% include 'membership/_profile_script.html.twig' %}
+    {% include 'membership/_profile_script.html.twig' with {genderField: '#adherent_profile_gender', customGenderField: '#adherent_profile_customGender'} %}
 
     <script type="text/javascript">
         Kernel.onLoad(function() {

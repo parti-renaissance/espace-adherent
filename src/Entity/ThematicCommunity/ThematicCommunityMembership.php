@@ -8,6 +8,8 @@ use App\Entity\EntityUserListDefinitionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ThematicCommunity\ThematicCommunityMembershipRepository")
@@ -40,6 +42,9 @@ abstract class ThematicCommunityMembership
         self::MOTIVATION_ON_SPOT,
     ];
 
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_VERIFIED = 'verified';
+
     use EntityIdentityTrait;
     use EntityUserListDefinitionTrait;
 
@@ -61,6 +66,7 @@ abstract class ThematicCommunityMembership
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     * @Assert\NotNull
      */
     private $hasJob = false;
 
@@ -75,6 +81,7 @@ abstract class ThematicCommunityMembership
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     * @Assert\NotNull
      */
     private $association = false;
 
@@ -88,7 +95,8 @@ abstract class ThematicCommunityMembership
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(type="simple_array", nullable=true)
+     * @Assert\NotBlank
      */
     private $motivations = [];
 
@@ -98,6 +106,13 @@ abstract class ThematicCommunityMembership
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $expert = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $status = self::STATUS_PENDING;
 
     /**
      * @var Adherent
@@ -115,9 +130,9 @@ abstract class ThematicCommunityMembership
      */
     protected $contact;
 
-    public function __construct()
+    public function __construct(UuidInterface $uuid = null)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->joinedAt = new \DateTime();
         $this->userListDefinitions = new ArrayCollection();
     }
@@ -200,6 +215,21 @@ abstract class ThematicCommunityMembership
     public function setExpert(bool $expert): void
     {
         $this->expert = $expert;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function isPending(): bool
+    {
+        return self::STATUS_PENDING === $this->status;
     }
 
     public function getContact(): ?Contact

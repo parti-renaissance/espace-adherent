@@ -11,7 +11,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ThematicCommunity\ThematicCommunityRepository")
  */
 class ThematicCommunity implements ImageOwnerInterface
 {
@@ -52,6 +52,11 @@ class ThematicCommunity implements ImageOwnerInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     public function getDescription(): ?string

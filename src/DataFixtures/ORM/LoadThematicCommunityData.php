@@ -18,7 +18,7 @@ class LoadThematicCommunityData extends AbstractFixture
         $manager->persist($tc1);
 
         $tc2 = new ThematicCommunity();
-        $tc2->setName('Éducation');
+        $tc2->setName('Ecole');
         $tc2->setDescription('Une communtauté autour de l\'éducation');
 
         $this->addReference('tc-education', $tc2);

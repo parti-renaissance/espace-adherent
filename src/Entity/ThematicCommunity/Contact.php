@@ -4,6 +4,8 @@ namespace App\Entity\ThematicCommunity;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
+use App\Entity\PostAddress;
+use App\Membership\ActivityPositions;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -103,9 +105,15 @@ class Contact
      */
     private $job;
 
+    /**
+     * @ORM\Column(length=100, nullable=true)
+     */
+    private $position;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
+        $this->postAddress = PostAddress::createEmptyAddress();
     }
 
     public function getFirstName(): ?string
@@ -163,7 +171,7 @@ class Contact
         return $this->birthDate;
     }
 
-    public function setBirthDate(\DateTime $birthDate): void
+    public function setBirthDate(?\DateTime $birthDate): void
     {
         $this->birthDate = $birthDate;
     }
@@ -173,12 +181,12 @@ class Contact
         return $this->phone;
     }
 
-    public function setPhone(PhoneNumber $phone): void
+    public function setPhone(?PhoneNumber $phone): void
     {
         $this->phone = $phone;
     }
 
-    public function getActivityArea(): string
+    public function getActivityArea(): ?string
     {
         return $this->activityArea;
     }
@@ -188,7 +196,7 @@ class Contact
         $this->activityArea = $activityArea;
     }
 
-    public function getJobArea(): string
+    public function getJobArea(): ?string
     {
         return $this->jobArea;
     }
@@ -198,7 +206,7 @@ class Contact
         $this->jobArea = $jobArea;
     }
 
-    public function getJob(): string
+    public function getJob(): ?string
     {
         return $this->job;
     }
@@ -206,5 +214,19 @@ class Contact
     public function setJob(string $job): void
     {
         $this->job = $job;
+    }
+
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(string $position): void
+    {
+        if (!ActivityPositions::exists($position)) {
+            throw new \InvalidArgumentException(sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositions::ALL)));
+        }
+
+        $this->position = $position;
     }
 }

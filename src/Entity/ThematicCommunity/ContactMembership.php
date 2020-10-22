@@ -2,6 +2,8 @@
 
 namespace App\Entity\ThematicCommunity;
 
+use App\Address\AddressInterface;
+use App\Address\PostAddressFactory;
 use App\Entity\PostAddress;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -67,7 +69,7 @@ class ContactMembership extends ThematicCommunityMembership
         return $this->contact ? $this->contact->getBirthDate() : null;
     }
 
-    public function setBirthDate(\DateTime $birthDate): void
+    public function setBirthDate(?\DateTime $birthDate): void
     {
         $this->contact->setBirthDate($birthDate);
     }
@@ -77,14 +79,29 @@ class ContactMembership extends ThematicCommunityMembership
         return $this->contact ? $this->contact->getPhone() : null;
     }
 
-    public function setPhone(PhoneNumber $phone): void
+    public function setPhone(?PhoneNumber $phone): void
     {
         $this->contact->setPhone($phone);
     }
 
-    public function getPostAddress(): ?PostAddress
+    public function getPosition(): ?string
     {
-        return $this->contact->getPostAddressModel();
+        return $this->contact ? $this->contact->getPosition() : null;
+    }
+
+    public function setPosition(string $position): void
+    {
+        $this->contact->setPosition($position);
+    }
+
+    public function getPostAddress(): PostAddress
+    {
+        return $this->contact ? $this->contact->getPostAddressModel() : PostAddress::createEmptyAddress();
+    }
+
+    public function setPostAddress(AddressInterface $address): void
+    {
+        $this->contact->updatePostAddress((new PostAddressFactory())->createFromAddress($address));
     }
 
     public function getCityName(): ?string
