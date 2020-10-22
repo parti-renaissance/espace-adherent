@@ -39,6 +39,8 @@ use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\RepublicanSilence;
 use App\Entity\SubscriptionType;
 use App\Entity\Summary;
+use App\Entity\TerritorialCouncil\OfficialReport;
+use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilFeedItem;
@@ -78,7 +80,9 @@ use App\Repository\ProcurationRequestRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Repository\SummaryRepository;
+use App\Repository\TerritorialCouncil\OfficialReportRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
+use App\Repository\TerritorialCouncil\PoliticalCommitteeRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilFeedItemRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\Repository\ThreadCommentRepository;
@@ -352,6 +356,11 @@ trait TestHelperTrait
         return $this->getRepository(TerritorialCouncil::class);
     }
 
+    public function getPoliticalCommitteeRepository(): PoliticalCommitteeRepository
+    {
+        return $this->getRepository(PoliticalCommittee::class);
+    }
+
     public function getTerritorialCouncilFeedItemRepository(): TerritorialCouncilFeedItemRepository
     {
         return $this->getRepository(TerritorialCouncilFeedItem::class);
@@ -360,6 +369,11 @@ trait TestHelperTrait
     public function getPoliticalCommitteeFeedItemRepository(): PoliticalCommitteeFeedItemRepository
     {
         return $this->getRepository(PoliticalCommitteeFeedItem::class);
+    }
+
+    public function getOfficialReportRepository(): OfficialReportRepository
+    {
+        return $this->getRepository(OfficialReport::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

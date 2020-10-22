@@ -315,7 +315,7 @@ export default class ReqwestApiClient {
 
     getPoliticalCommitteeFeed(politicalCommitteeUuid, page, callback) {
         this._createRequest(callback, {
-            url: '/comite-politique/messages?page='+page,
+            url: '/comite-politique?page='+page,
             type: 'html'
         });
     }

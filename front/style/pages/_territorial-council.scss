@@ -356,3 +356,14 @@
     &-15 { color: $blue; }
     &-16 { color: $blue--dark; }
 }
+
+.official-report {
+    &__version {
+        background-color: $green--territory;
+        color: $white;
+        margin-right: 10px;
+        padding: 0 7px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+}

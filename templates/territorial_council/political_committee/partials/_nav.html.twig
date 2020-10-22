@@ -1,0 +1,11 @@
+<nav class="tabs-nav border-on b__nudge--bottom-larger">
+    <ul>
+        <li class="{{ is_active_route(app.request, 'app_political_committee_index') ? 'active' }}" id="tab-messages-list">
+            <a href="{{ path('app_political_committee_index') }}" class="tabs-nav__item">Messages du référent</a>
+        </li>
+
+        <li class="{{ is_active_route(app.request, 'app_political_committee_official_report_list') ? 'active' }}" id="tab-home">
+            <a href="{{ path('app_political_committee_official_report_list') }}" class="tabs-nav__item">Procès-verbaux</a>
+        </li>
+    </ul>
+</nav>

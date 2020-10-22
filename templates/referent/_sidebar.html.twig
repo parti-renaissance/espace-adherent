@@ -91,6 +91,10 @@
             <li class="{{ is_active_route(app.request, 'app_instances_convocation_referent_*') ? 'active' }}">
                 <a href="{{ path('app_instances_convocation_referent_list') }}">Convocations</a>
             </li>
+
+            <li class="{{ is_active_route(app.request, 'app_instances_official_report_referent_*') ? 'active' }}">
+                <a href="{{ path('app_instances_official_report_referent_list') }}">Procès-verbaux</a>
+            </li>
         {% endif %}
     </ul>
 
