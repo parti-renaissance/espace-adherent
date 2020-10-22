@@ -9,8 +9,8 @@
                     {{ report.name }}
                 </h2>
                 <div class="l__row--wrap font-roboto text--gray b__nudge--bottom-small">
-                    <div class="l__row">
-                        Ajouté par {{ report.author ? report.author.fullName : 'Anonyme' }}
+                    <div>
+                        Ajouté par <b>{{ report.author ? report.author.fullName : 'Anonyme' }}</b>
                         le {{ report.createdAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}
                     </div>
                     {% if report.createdAt != report.updatedAt %}

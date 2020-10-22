@@ -101,7 +101,7 @@ class OfficialReportManagerControllerTest extends WebTestCase
         self::assertCount(2, $crawler->filter('tbody tr.official-report'));
         self::assertContains('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(0)->text());
         self::assertContains('10/10/2020 10:10', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(2)->text());
-        self::assertContains('10/10/2020 10:10', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(3)->text());
+        self::assertContains('', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(3)->text());
         self::assertContains('1', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(4)->text());
         self::assertContains('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(1)->filter('td')->eq(5)->text());
 
