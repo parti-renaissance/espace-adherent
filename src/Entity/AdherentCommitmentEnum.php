@@ -9,6 +9,7 @@ class AdherentCommitmentEnum extends Enum
     public const COMMITMENT_INFORM_ME = 'inform_me';
     public const COMMITMENT_PARTICIPATE_MILITANT_ACTION = 'participate_militant_action';
     public const COMMITMENT_RELAY_SOCIAL_CONTENT = 'relay_social_content';
+    public const COMMITMENT_APPEAL_CAMPAIGN = 'appeal_campaign';
 
     public const IDEAS_MAKING_KNOWN_FRENCH_CONCERNS = 'making_known_french_concerns';
     public const IDEAS_BE_CONSULTED_ON_REFORMS = 'be_consulted_on_reforms';
@@ -32,6 +33,7 @@ class AdherentCommitmentEnum extends Enum
         self::COMMITMENT_INFORM_ME,
         self::COMMITMENT_PARTICIPATE_MILITANT_ACTION,
         self::COMMITMENT_RELAY_SOCIAL_CONTENT,
+        self::COMMITMENT_APPEAL_CAMPAIGN,
     ];
 
     public const IDEAS_ACTIONS = [
