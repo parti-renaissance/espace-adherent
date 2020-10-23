@@ -6,7 +6,6 @@ use MyCLabs\Enum\Enum;
 
 class AdherentCommitmentEnum extends Enum
 {
-    public const COMMITMENT_SUPPORT_MAJORITY = 'support_majority';
     public const COMMITMENT_INFORM_ME = 'inform_me';
     public const COMMITMENT_PARTICIPATE_MILITANT_ACTION = 'participate_militant_action';
     public const COMMITMENT_RELAY_SOCIAL_CONTENT = 'relay_social_content';
@@ -30,7 +29,6 @@ class AdherentCommitmentEnum extends Enum
     public const PROGESSIVISM_PRESENT_MYSELF_TO_ELECTION = 'present_myself_to_election';
 
     public const COMMITMENT_ACTIONS = [
-        self::COMMITMENT_SUPPORT_MAJORITY,
         self::COMMITMENT_INFORM_ME,
         self::COMMITMENT_PARTICIPATE_MILITANT_ACTION,
         self::COMMITMENT_RELAY_SOCIAL_CONTENT,
