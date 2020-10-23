@@ -45,3 +45,23 @@
         </div>
     </div>
 {% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.em-form__file--area').bind('change', (event) => {
+                const $input = $(event.currentTarget);
+                const selectedFileName = $input.val();
+                const $fileName = $input.siblings('.em-form__file--name');
+                const $label = $input.siblings('.em-form__file--label');
+
+                if (0 < $input.length && 0 < selectedFileName.length) {
+                    $fileName.html(selectedFileName.split('\\').pop());
+                    $label.html('Modifier la pièce jointe');
+                }
+            });
+        });
+    </script>
+{% endblock %}

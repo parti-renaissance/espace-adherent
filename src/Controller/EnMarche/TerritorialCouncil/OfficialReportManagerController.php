@@ -44,6 +44,13 @@ class OfficialReportManagerController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$report->getAuthor()
+                && !$report->getPoliticalCommittee()->getTerritorialCouncil()->getMemberships()->getPresident()) {
+                $this->addFlash('error', 'Vous ne pouvez pas créer un procès-verbal du Comité politique sans président.');
+
+                return $this->redirectToRoute('app_instances_official_report_referent_list');
+            }
+
             $manager->handleRequest($report);
 
             $this->addFlash('info', 'Le procès-verbal a été créé avec succès.');

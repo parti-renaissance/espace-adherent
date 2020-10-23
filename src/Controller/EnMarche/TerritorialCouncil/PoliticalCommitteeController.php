@@ -116,14 +116,11 @@ class PoliticalCommitteeController extends Controller
     }
 
     /**
-     * @Route("/proces-verbaux/{uuid}/telecharger", name="official_report_download", methods={"GET"})
+     * @Route("/proces-verbaux/{uuid}", name="official_report_download", methods={"GET"})
      * @Security("is_granted('CAN_DOWNLOAD_OFFICIAL_REPORT', officialReport)")
      */
-    public function downloadReportAction(
-        Request $request,
-        OfficialReport $officialReport,
-        FilesystemInterface $storage
-    ): Response {
+    public function downloadReportAction(OfficialReport $officialReport, FilesystemInterface $storage): Response
+    {
         $lastDocument = $officialReport->getLastDocument();
         $filePath = $lastDocument->getFilePathWithDirectory();
 
@@ -135,14 +132,12 @@ class PoliticalCommitteeController extends Controller
             'Content-Type' => $lastDocument->getMimeType(),
         ]);
 
-        if ($request->query->has('download')) {
-            $disposition = $response->headers->makeDisposition(
-                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                $lastDocument->getFilenameForDownload()
-            );
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $lastDocument->getFilenameForDownload()
+        );
 
-            $response->headers->set('Content-Disposition', $disposition);
-        }
+        $response->headers->set('Content-Disposition', $disposition);
 
         return $response;
     }

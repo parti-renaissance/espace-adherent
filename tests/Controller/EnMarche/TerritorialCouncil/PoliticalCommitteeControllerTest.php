@@ -180,7 +180,7 @@ class PoliticalCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/comite-politique/proces-verbaux/%s/telecharger', $report->getUuid())
+            \sprintf('/comite-politique/proces-verbaux/%s', $report->getUuid())
         );
 
         static::assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
