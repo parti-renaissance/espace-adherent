@@ -31,6 +31,9 @@ class LoadPoliticalCommitteeData extends Fixture
                     $this->createPoliticalCommittee($manager, 'CoPol de Paris', '75', true);
 
                     break;
+                case '77':
+                    $this->createPoliticalCommittee($manager, "CoPol du département $department", $department, true);
+                    break;
                 // does not exist
                 case '96':
                     break;

@@ -57,6 +57,45 @@ class OfficialReportManagerControllerTest extends WebTestCase
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
+    public function testCannotCreateOfficialReportWhenNoPresident()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/instances/proces-verbaux/creer');
+
+        self::assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $politicalCommittee = $this->getPoliticalCommitteeRepository()->findOneBy(['name' => 'CoPol du département 77 (77)']);
+        $csrfInput = $crawler->filter('form input[id$=__token]')->first();
+        $formName = str_replace('__token', '', $csrfInput->attr('id'));
+
+        $form = $crawler->selectButton('Créer')->form();
+
+        $values = $form->getPhpValues()[$formName];
+        $values['name'] = 'New PV';
+        $values['politicalCommittee'] = $politicalCommittee->getId();
+
+        $files = [
+            'official_report' => [
+                'error' => ['file' => \UPLOAD_ERR_OK],
+                'name' => ['file' => 'pv.pdf'],
+                'size' => ['file' => 631],
+                'tmp_name' => ['file' => __DIR__.'/../../../Fixtures/document.pdf'],
+                'type' => ['file' => 'application/pdf'],
+            ],
+        ];
+
+        $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values], $files);
+
+        self::assertClientIsRedirectedTo('/espace-referent/instances/proces-verbaux', $this->client);
+
+        $crawler = $this->client->followRedirect();
+        $this->isSuccessful($this->client->getResponse());
+
+        self::assertCount(1, $crawler->filter('.flash--error .flash__inner'));
+        self::assertContains('Vous ne pouvez pas créer un procès-verbal du Comité politique sans président.', $crawler->filter('.flash__inner')->text());
+    }
+
     public function testCreateOfficialReport()
     {
         $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
@@ -69,10 +108,45 @@ class OfficialReportManagerControllerTest extends WebTestCase
 
         self::assertCount(1, $creationLink);
 
-        $this->client->click($creationLink->link());
+        $crawler = $this->client->click($creationLink->link());
 
         $this->assertEquals('http://'.$this->hosts['app'].'/espace-referent/instances/proces-verbaux/creer', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $politicalCommittee = $this->getPoliticalCommitteeRepository()->findOneBy(['name' => 'CoPol de Paris (75)']);
+        $csrfInput = $crawler->filter('form input[id$=__token]')->first();
+        $formName = str_replace('__token', '', $csrfInput->attr('id'));
+
+        $form = $crawler->selectButton('Créer')->form();
+
+        $values = $form->getPhpValues()[$formName];
+        $values['name'] = 'New PV';
+        $values['politicalCommittee'] = $politicalCommittee->getId();
+
+        $files = [
+            'official_report' => [
+                'error' => ['file' => \UPLOAD_ERR_OK],
+                'name' => ['file' => 'pv.pdf'],
+                'size' => ['file' => 631],
+                'tmp_name' => ['file' => __DIR__.'/../../../Fixtures/document.pdf'],
+                'type' => ['file' => 'application/pdf'],
+            ],
+        ];
+
+        $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values], $files);
+
+        self::assertClientIsRedirectedTo('/espace-referent/instances/proces-verbaux', $this->client);
+
+        $crawler = $this->client->followRedirect();
+        $this->isSuccessful($this->client->getResponse());
+
+        self::assertCount(3, $crawler->filter('tbody tr.official-report'));
+        self::assertContains('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(0)->text());
+        self::assertContains('New PV', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(1)->text());
+        self::assertContains((new \DateTime('now'))->format('d/m/Y'), $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(2)->text());
+        self::assertContains('', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(3)->text());
+        self::assertContains('1', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(4)->text());
+        self::assertContains('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(5)->text());
     }
 
     /**

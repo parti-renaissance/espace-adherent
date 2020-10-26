@@ -107,7 +107,7 @@ class OfficialReportDocument
 
     public function getFilenameForDownload(): ?string
     {
-        return \sprintf('%s_v%d.%s', $this->filename, $this->version, $this->getExtension());
+        return \sprintf('%s_v%d.%s', $this->report->getName(), $this->version, $this->getExtension());
     }
 
     public function getFilePathWithDirectory(): string
