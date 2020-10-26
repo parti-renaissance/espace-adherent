@@ -57,7 +57,7 @@ RUN apt-get update -q && \
 
     cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \
 
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    curl -sS https://getcomposer.org/composer-1.phar | php -- --install-dir=/usr/local/bin --filename=composer && \
 
     # Blackfire
     wget -O - https://packages.blackfire.io/gpg.key | apt-key add - \
