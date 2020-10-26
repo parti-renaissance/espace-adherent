@@ -2,6 +2,6 @@
 
 {% block field %}
     {% for category in object.userListDefinitions %}
-        <span class="label" style="background: {{ category.color }}">{{ category }}</span>
+        <span class="label label-default" style="background: {{ category.color|default('#d2d6de') }}">{{ category }}</span>
     {% endfor %}
 {% endblock %}
