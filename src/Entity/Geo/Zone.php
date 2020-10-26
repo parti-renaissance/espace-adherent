@@ -3,7 +3,6 @@
 namespace App\Entity\Geo;
 
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,12 +62,11 @@ class Zone implements GeoInterface
      */
     private $children;
 
-    public function __construct(string $type, string $code, string $name, ReferentTag $referentTag = null)
+    public function __construct(string $type, string $code, string $name)
     {
         $this->type = $type;
         $this->code = $code;
         $this->name = $name;
-        $this->referentTag = $referentTag;
         $this->parents = new ArrayCollection();
         $this->children = new ArrayCollection();
     }

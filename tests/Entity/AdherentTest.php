@@ -8,6 +8,7 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectMembership;
 use App\Entity\CommitteeMembership;
+use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
 use App\Geocoder\Coordinates;
@@ -145,7 +146,7 @@ class AdherentTest extends TestCase
 
         // Referent
         $adherent = $this->createAdherent();
-        $adherent->setReferent([new ReferentTag('06')], -1.6743, 48.112);
+        $adherent->setReferent([new ReferentTag('06', null, new Zone('', '', '06'))], -1.6743, 48.112);
 
         $this->assertFalse($adherent->isBasicAdherent());
 
