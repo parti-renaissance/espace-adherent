@@ -29,9 +29,6 @@ class CommitteeFeedManagerTest extends WebTestCase
     /* @var CommitteeMembershipRepository */
     private $committeeMembershipRepository;
 
-    /* @var EmailRepository */
-    private $emailRepository;
-
     public function testCreateMessage()
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
@@ -42,11 +39,6 @@ class CommitteeFeedManagerTest extends WebTestCase
 
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
-
-        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'jacques.picard@en-marche.fr');
-        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'luciole1989@spambox.fr');
-        $this->assertCountMails(1, CommitteeMessageNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
     }
 
     public function testCreateNoNotificationMessage()
@@ -59,21 +51,15 @@ class CommitteeFeedManagerTest extends WebTestCase
 
         $this->assertInstanceOf(CommitteeFeedItem::class, $message);
         $this->assertSame($messageContent, $message->getContent());
-
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'jacques.picard@en-marche.fr');
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'luciole1989@spambox.fr');
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
     }
 
     public function setUp()
     {
         $this->init();
 
-        $this->committeeFeedManager = $this->get('app.committee.feed_manager');
+        $this->committeeFeedManager = $this->get(CommitteeFeedManager::class);
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
-        $this->emailRepository = $this->getEmailRepository();
 
         parent::setUp();
     }
@@ -85,7 +71,6 @@ class CommitteeFeedManagerTest extends WebTestCase
         $this->committeeFeedManager = null;
         $this->committeeRepository = null;
         $this->committeeMembershipRepository = null;
-        $this->emailRepository = null;
 
         parent::tearDown();
     }

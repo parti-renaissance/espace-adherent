@@ -14,7 +14,7 @@ class UniqueCommittee extends Constraint
 {
     public $errorPath = 'name';
     public $message = 'committee.canonical_name.not_unique';
-    public $service = 'app.validator.unique_committee';
+    public $service = UniqueCommitteeValidator::class;
 
     public function validatedBy()
     {

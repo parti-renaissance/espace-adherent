@@ -378,7 +378,7 @@ trait TestHelperTrait
 
     public function getCommitteeFeedManager(): CommitteeFeedManager
     {
-        return $this->container->get('app.committee.feed_manager');
+        return $this->container->get(CommitteeFeedManager::class);
     }
 
     protected function getAdherent(string $uuid): ?Adherent

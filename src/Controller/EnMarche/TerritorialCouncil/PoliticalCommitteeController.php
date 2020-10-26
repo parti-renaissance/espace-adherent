@@ -31,6 +31,13 @@ class PoliticalCommitteeController extends Controller
     use FeedItemControllerTrait;
     use EntityControllerTrait;
 
+    private $timelineMaxItems;
+
+    public function __construct(int $timelineMaxItems)
+    {
+        $this->timelineMaxItems = $timelineMaxItems;
+    }
+
     /**
      * @Route("", name="index", methods={"GET"})
      */
@@ -43,11 +50,7 @@ class PoliticalCommitteeController extends Controller
 
         $membership = $adherent->getPoliticalCommitteeMembership();
         $politicalCommittee = $membership->getPoliticalCommittee();
-        $feedItems = $feedItemRepository->getFeedItems(
-            $politicalCommittee,
-            $page,
-            $this->getParameter('timeline_max_messages')
-        );
+        $feedItems = $feedItemRepository->getFeedItems($politicalCommittee, $page, $this->timelineMaxItems);
 
         if (1 < $page) {
             return $this->render('territorial_council/partials/_feed_items.html.twig', [

@@ -137,7 +137,7 @@ Feature:
     Given I am on "/comites/en-marche-comite-de-berlin"
     Then I should see "JE CANDIDATE"
     When I follow "committee-toggle-candidacy"
-    Then I should be on "/comites/en-marche-comite-de-berlin/candidater"
+    Then I should be on "/comites/en-marche-comite-de-berlin/candidature"
     When I press "Passer cette étape"
     Then I should be on "/comites/en-marche-comite-de-berlin"
     And I should see "Votre candidature a bien été enregistrée"

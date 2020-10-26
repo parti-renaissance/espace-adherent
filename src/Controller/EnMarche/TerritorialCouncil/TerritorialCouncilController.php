@@ -35,6 +35,13 @@ class TerritorialCouncilController extends Controller
     use FeedItemControllerTrait;
     use EntityControllerTrait;
 
+    private $timelineMaxItems;
+
+    public function __construct(int $timelineMaxItems)
+    {
+        $this->timelineMaxItems = $timelineMaxItems;
+    }
+
     /**
      * @Route("/faq", name="faq", methods={"GET"})
      * @Route("/{uuid}/faq", name="selected_faq", methods={"GET"}, requirements={"uuid": "%pattern_uuid%"})
@@ -186,11 +193,7 @@ class TerritorialCouncilController extends Controller
         }
 
         $page = $request->query->getInt('page', 1);
-        $feedItems = $feedItemRepository->getFeedItems(
-            $territorialCouncil,
-            $page,
-            $this->getParameter('timeline_max_messages')
-        );
+        $feedItems = $feedItemRepository->getFeedItems($territorialCouncil, $page, $this->timelineMaxItems);
 
         if (1 < $page) {
             return $this->render('territorial_council/partials/_feed_items.html.twig', [

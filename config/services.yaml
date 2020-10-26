@@ -90,6 +90,8 @@ services:
         resource: '../src/Geocoder/'
     App\ThematicCommunity\Handler\:
         resource: '../src/ThematicCommunity/Handler/'
+    App\Committee\:
+        resource: '../src/Committee/'
 
     # Services
 
@@ -150,6 +152,10 @@ services:
 
     App\Normalizer\Indexer\ThrowExceptionNormalizer:
         tags: [{name: 'serializer.normalizer', priority: -801}] # to be just after CustomNormalizer
+
+    App\Committee\EventListener\CommitteeSubscriber:
+        arguments:
+            $producer: '@old_sound_rabbit_mq.sync_api_producer'
 
     # Form
     App\Form\PurifiedTextareaType:

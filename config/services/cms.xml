@@ -32,7 +32,7 @@
 
         <service id="app.document_manager" class="App\Documents\DocumentManager">
             <argument type="service" id="App\Documents\DocumentRepository"/>
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="App\Committee\CommitteeManager"/>
         </service>
 
         <!-- Filesystem -->

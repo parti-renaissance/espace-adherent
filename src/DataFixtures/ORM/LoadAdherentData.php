@@ -1117,7 +1117,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
 
     private function getCommitteeFactory(): CommitteeFactory
     {
-        return $this->container->get('app.committee.factory');
+        return $this->container->get(CommitteeFactory::class);
     }
 
     private function getStandardSubscriptionTypes(): array

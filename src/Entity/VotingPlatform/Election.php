@@ -119,11 +119,6 @@ class Election
         return $this->designation->getTitle();
     }
 
-    public function getDesignationType(): string
-    {
-        return $this->designation->getType();
-    }
-
     public function getElectionEntity(): ElectionEntity
     {
         return $this->electionEntity;

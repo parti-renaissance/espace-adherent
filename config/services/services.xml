@@ -49,9 +49,6 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <!-- Committee -->
-        <service id="App\Committee\CommitteeMergeCommandHandler" public="true" />
-
         <!-- TurnkeyProject -->
         <service id="App\TurnkeyProject\TurnkeyProjectManager">
             <call method="setGlide">
@@ -292,14 +289,6 @@
         <!-- User subscriber -->
         <service id="App\Membership\EventListener\UserSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-        </service>
-
-        <!-- Committee subscriber -->
-        <service id="App\Committee\EventListener\CommitteeSubscriber">
-            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-        </service>
-        <service id="App\Committee\EventListener\SendEmailForNewFollowerListener">
-            <argument type="service" key="$mailer" id="app.mailer.transactional" />
         </service>
 
         <!-- Event subscriber -->

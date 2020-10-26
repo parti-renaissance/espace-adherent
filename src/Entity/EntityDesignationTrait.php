@@ -157,4 +157,9 @@ trait EntityDesignationTrait
 
         return DesignationStatusEnum::CLOSED;
     }
+
+    public function getDesignationType(): string
+    {
+        return $this->designation->getType();
+    }
 }

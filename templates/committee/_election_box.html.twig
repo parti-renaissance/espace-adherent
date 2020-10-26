@@ -66,7 +66,7 @@
         {% if committee_election.isCandidacyPeriodActive %}
             {% if able_to_candidate %}
                 {% if member_is_candidate_in_committee %}
-                    <a href="{{ path('app_committee_update_candidacy', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Je modifie ma candidature</a>
+                    <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Je modifie ma candidature</a>
                 {% elseif candidacy_committee_membership is null and member_voting_in_committee %}
                     {% if app.user.isOtherGender() %}
                         <a href="#"
@@ -84,13 +84,13 @@
                                 <div>
                                     {% set candidate_url_params = {slug: committee.slug} %}
 
-                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
-                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::MALE')})) }}">Homme</a>
+                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidature_edit', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
+                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidature_edit', candidate_url_params|merge({gender: constant('App\\ValueObject\\Genders::MALE')})) }}">Homme</a>
                                 </div>
                             </div>
                         </div>
                     {% else %}
-                        <a href="{{ path('app_committee_candidate', {slug: committee.slug}) }}"
+                        <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}"
                            id="committee-toggle-candidacy"
                            class="btn btn--pink btn--no-wrap box-el"
                         >Je candidate</a>
@@ -205,7 +205,7 @@
 
         {% if member_is_candidate_in_committee and committee_election.isCandidacyPeriodActive %}
             <p class="candidacy-remove text--body text--small b__nudge--top">
-                <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
+                <a href="{{ path('app_committee_candidature_remove', {slug: committee.slug, back: true}) }}"
                       class="link--no-decor text--blue--dark em-confirm--trigger box-el"
                       data-confirm-title="Candidature"
                       data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
