@@ -17,6 +17,7 @@ use App\Repository\UserListDefinitionRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,12 +51,16 @@ class ThematicCommunityMembershipImportCommand extends Command
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /** @var FilesystemInterface */
+    private $filesystem;
+
+    public function __construct(EntityManagerInterface $entityManager, FilesystemInterface $filesystem)
     {
         $this->entityManager = $entityManager;
         $this->adherentRepository = $entityManager->getRepository(Adherent::class);
         $this->communityRepository = $entityManager->getRepository(ThematicCommunity::class);
         $this->userListDefinitionRepository = $entityManager->getRepository(UserListDefinition::class);
+        $this->filesystem = $filesystem;
         parent::__construct();
     }
 
@@ -84,12 +89,20 @@ class ThematicCommunityMembershipImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $i = 0;
         $filename = $input->getArgument('file');
 
-        $handle = \fopen($filename, 'rb');
-        \fgetcsv($handle, 0, ';');
-        while ($row = \fgetcsv($handle, 800, ';')) {
+        $content = $this->filesystem->read($filename);
+        $content = \explode("\n", $content);
+
+        unset($content[0]); // remove csv headers
+
+        foreach ($content as $i => $row) {
+            $row = \explode(';', $row);
+
+            if (empty($row)) {
+                continue;
+            }
+
             $community = $this->communityRepository->findOneBy(['name' => $row[2]]);
 
             if (!$community) {
@@ -143,7 +156,7 @@ class ThematicCommunityMembershipImportCommand extends Command
 
             $this->entityManager->persist($membership);
 
-            if (0 === ++$i % self::BATCH_SIZE) {
+            if (0 === (($i + 1) % self::BATCH_SIZE)) {
                 $this->entityManager->flush();
                 $this->entityManager->clear(ThematicCommunityMembership::class);
             }
@@ -151,8 +164,6 @@ class ThematicCommunityMembershipImportCommand extends Command
 
         $this->entityManager->flush();
         $this->entityManager->clear();
-
-        \fclose($handle);
     }
 
     protected function setUserListDefinitions(ThematicCommunityMembership $membership, array $categories): void
