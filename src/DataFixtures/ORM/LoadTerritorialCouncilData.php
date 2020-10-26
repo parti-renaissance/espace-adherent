@@ -65,4 +65,11 @@ class LoadTerritorialCouncilData extends Fixture
 
         $this->addReference('coTerr_'.\mb_strtolower($code), $territorialCouncil);
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            LoadReferentTagData::class,
+        ];
+    }
 }

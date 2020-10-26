@@ -69,6 +69,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2019-07-23')
         );
+        $mandate->setGeoZone($this->getReference('zone_city_community_200054781'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::OTHER_MEMBER,
             'Some precisions',
@@ -119,6 +120,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2014-03-23')
         );
+        $mandate->setGeoZone($this->getReference('zone_city_92024'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::MAYOR,
             null,
@@ -186,6 +188,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2014-03-23')
         );
+        $mandate1->setGeoZone($this->getReference('zone_city_76540'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::DEPUTY_MAYOR,
             null,
@@ -204,6 +207,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2017-01-11')
         );
+        $mandate2->setGeoZone($this->getReference('zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::PRESIDENT_OF_EPCI,
             null,
@@ -246,6 +250,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2016-03-23')
         );
+        $mandate1->setGeoZone($this->getReference('zone_region_94'));
         $mandate2 = new Mandate(
             MandateTypeEnum::DEPUTY,
             true,
@@ -257,6 +262,7 @@ class LoadElectedRepresentativeData extends Fixture
             new \DateTime('2011-12-23'),
             new \DateTime('2015-02-23')
         );
+        $mandate2->setGeoZone($this->getReference('zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::OTHER_MEMBER,
             null,
@@ -328,6 +334,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2015-03-13')
         );
+        $mandate1->setGeoZone($this->getReference('zone_department_13'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::VICE_PRESIDENT_OF_EPCI,
             null,
@@ -346,6 +353,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2017-07-18')
         );
+        $mandate2->setGeoZone($this->getReference('zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::MAYOR_ASSISTANT,
             null,
@@ -389,6 +397,7 @@ class LoadElectedRepresentativeData extends Fixture
             false,
             new \DateTime('2020-03-15')
         );
+        $mandate->setGeoZone($this->getReference('zone_region_94'));
         $erWithNotElectedMandate->addMandate($mandate);
 
         $manager->persist($erWithNotElectedMandate);
@@ -405,6 +414,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2019-03-15')
         );
+        $mandate->setGeoZone($this->getReference('zone_borough_75107'));
         $erParis->addMandate($mandate);
 
         $manager->persist($erParis);
@@ -421,6 +431,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2019-01-11')
         );
+        $mandate->setGeoZone($this->getReference('zone_district_75-8'));
         $erParis2->addMandate($mandate);
 
         $manager->persist($erParis2);
@@ -437,6 +448,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2018-01-11')
         );
+        $mandate->setGeoZone($this->getReference('zone_department_75'));
         $erParis3->addMandate($mandate);
 
         $manager->persist($erParis3);
@@ -452,6 +464,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2018-01-11')
         );
+        $mandate->setGeoZone($this->getReference('zone_department_59'));
         $erDepartment59->addMandate($mandate);
 
         $manager->persist($erDepartment59);
