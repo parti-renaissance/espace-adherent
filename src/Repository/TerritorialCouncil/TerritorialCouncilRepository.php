@@ -56,21 +56,31 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
     public function findByMandates(array $mandates): array
     {
         $tags = [];
-        array_walk($mandates, function (Mandate $mandate) use (&$tags) {
+        $zones = [];
+        array_walk($mandates, function (Mandate $mandate) use (&$tags, &$geoZones) {
             if ($mandate->getZone()) {
                 $tags = array_merge($tags, $mandate->getZone()->getReferentTags()->toArray());
             }
 
             if ($mandate->getGeoZone()) {
-                $tags[] = $mandate->getGeoZone()->getReferentTag();
+                $zones[] = $mandate->getGeoZone();
             }
         });
 
-        return $this->createQueryBuilder('tc')
+        $qb = $this->createQueryBuilder('tc')
             ->leftJoin('tc.referentTags', 'tag')
             ->where('tag IN (:tags)')
             ->setParameter('tags', $tags)
-            ->getQuery()
+        ;
+
+        if ($zones) {
+            $qb->leftJoin('tag.zone', 'zone')
+                ->orWhere('zone IN (:zones)')
+                ->setParameter('zones', $zones)
+            ;
+        }
+
+        return $qb->getQuery()
             ->getResult()
         ;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMSSerializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -20,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity("name")
  * @UniqueEntity("code")
+ *
+ * @deprecated
  */
 class ReferentTag
 {
@@ -79,6 +82,13 @@ class ReferentTag
      * @SymfonySerializer\Groups({"read_api"})
      */
     private $type;
+
+    /**
+     * @var Zone
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    private $zone;
 
     public function __construct(string $name = null, string $code = null)
     {
@@ -164,5 +174,10 @@ class ReferentTag
     public function getDepartmentCodeFromCirconscriptionName(): ?string
     {
         return $this->isDistrictTag() ? \substr($this->code, 6, 2) : null;
+    }
+
+    public function getZone(): Zone
+    {
+        return $this->zone;
     }
 }
