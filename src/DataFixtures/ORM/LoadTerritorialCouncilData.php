@@ -2,67 +2,54 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
-use App\Repository\ReferentTagRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadTerritorialCouncilData extends Fixture
 {
-    private const NAME_CORSE = 'Conseil territorial de la Corse';
-
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        // For french department tags
-        foreach (\range(1, 98) as $department) {
-            $department = \str_pad($department, 2, '0', \STR_PAD_LEFT);
+        /* @var ReferentTag $referentTagFde */
+        $referentTagFde = $this->getReference('referent_tag_fde');
+        $this->createTerritorialCouncilFromReferentTag($manager, $referentTagFde);
 
-            switch ($department) {
-                // for Corsica
-                case '20':
-                    $this->createTerritorialCouncil($manager, self::NAME_CORSE, '20, 2A, 2B');
+        /* @var ReferentTag $referentTagCorsica */
+        $referentTagCorsica = $this->getReference('referent_tag_corsica');
+        $this->createTerritorialCouncilFromReferentTag($manager, $referentTagCorsica);
 
-                    break;
-                // for Paris
-                case '75':
-                    foreach (\range(1, 20) as $district) {
-                        $district = \str_pad($district, 2, '0', \STR_PAD_LEFT);
+        $referentTags = $manager->getRepository(ReferentTag::class)->findBy([
+            'type' => [
+                ReferentTag::TYPE_DEPARTMENT,
+                ReferentTag::TYPE_DISTRICT,
+                ReferentTag::TYPE_BOROUGH,
+            ],
+        ]);
 
-                        $this->createTerritorialCouncil($manager, "Conseil territorial de Paris 750$district", "750$district");
-                    }
-
-                    $this->createTerritorialCouncil($manager, 'Conseil territorial de Paris', '75');
-
-                    break;
-                // does not exist
-                case '96':
-                    break;
-                default:
-                    $this->createTerritorialCouncil($manager, "Conseil territorial du département $department", $department);
-
-                    break;
-            }
+        foreach ($referentTags as $referentTag) {
+            $this->createTerritorialCouncilFromReferentTag($manager, $referentTag);
         }
-
-        $this->createTerritorialCouncil($manager, 'Conseil territorial des Français de l\'Étranger', ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG);
 
         $manager->flush();
     }
 
-    private function createTerritorialCouncil(ObjectManager $manager, string $name, string $code): void
+    private function createTerritorialCouncilFromReferentTag(ObjectManager $manager, ReferentTag $referentTag): void
     {
+        $code = $referentTag->getCode();
+        $name = sprintf('Conseil territorial du %s (%s)', $referentTag->getName(), $code);
         $territorialCouncil = new TerritorialCouncil($name, $code);
-
-        if (self::NAME_CORSE === $name) {
-            $territorialCouncil->addReferentTag($this->getReference('referent_tag_20'));
-            $territorialCouncil->addReferentTag($this->getReference('referent_tag_2a'));
-            $territorialCouncil->addReferentTag($this->getReference('referent_tag_2b'));
-        } else {
-            $territorialCouncil->addReferentTag($this->getReference('referent_tag_'.\mb_strtolower($code)));
-        }
+        $territorialCouncil->addReferentTag($referentTag);
 
         $manager->persist($territorialCouncil);
+        $this->addReference('coTerr_'.$territorialCouncil->getCodes(), $territorialCouncil);
+    }
 
-        $this->addReference('coTerr_'.\mb_strtolower($code), $territorialCouncil);
+    public function getDependencies(): array
+    {
+        return [
+            LoadReferentData::class,
+            LoadReferentTagData::class,
+        ];
     }
 }

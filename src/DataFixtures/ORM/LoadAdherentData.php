@@ -102,7 +102,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
             'birthdate' => '1972-11-23',
         ]);
-        $adherent1->addReferentTag($this->getReference('referent_tag_ch'));
+        $adherent1->addReferentTag($this->getReference('referent_tag_country_CH'));
         $adherent1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('adherent-1', $adherent1);
 
@@ -127,7 +127,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
-        $adherent2->addReferentTag($this->getReference('referent_tag_73'));
+        $adherent2->addReferentTag($this->getReference('referent_tag_department_73'));
         $this->addReference('adherent-2', $adherent2);
 
         $adherent3 = $adherentFactory->createFromArray([
@@ -147,8 +147,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-01-03 08:47:54',
         ]);
         $adherent3->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent3->addReferentTag($this->getReference('referent_tag_75'));
-        $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
+        $adherent3->addReferentTag($this->getReference('referent_tag_department_75'));
+        $adherent3->addReferentTag($this->getReference('referent_tag_borough_75108'));
         $adherent3->addTag($this->getReference('adherent_tag_at007'));
         $this->addReference('adherent-3', $adherent3);
 
@@ -171,8 +171,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent4->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent4->removeSubscriptionTypeByCode(SubscriptionTypeEnum::DEPUTY_EMAIL);
         $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130, 91300');
-        $adherent4->addReferentTag($this->getReference('referent_tag_75'));
-        $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
+        $adherent4->addReferentTag($this->getReference('referent_tag_department_75'));
+        $adherent4->addReferentTag($this->getReference('referent_tag_borough_75109'));
         $this->addReference('adherent-4', $adherent4);
 
         $adherent5 = $adherentFactory->createFromArray([
@@ -193,7 +193,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
         $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms'));
-        $adherent5->addReferentTag($this->getReference('referent_tag_92'));
+        $adherent5->addReferentTag($this->getReference('referent_tag_department_92'));
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $adherentFactory->createFromArray([
@@ -215,7 +215,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent6->addTag($this->getReference('adherent_tag_at002'));
         $adherent6->addTag($this->getReference('adherent_tag_at003'));
         $adherent6->addTag($this->getReference('adherent_tag_at007'));
-        $adherent6->addReferentTag($this->getReference('referent_tag_13'));
+        $adherent6->addReferentTag($this->getReference('referent_tag_department_13'));
         $this->addReference('adherent-6', $adherent6);
 
         $adherent7 = $adherentFactory->createFromArray([
@@ -233,7 +233,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $adherent7->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent7->addReferentTag($this->getReference('referent_tag_77'));
+        $adherent7->addReferentTag($this->getReference('referent_tag_department_77'));
         $this->addReference('adherent-7', $adherent7);
 
         $adherent9 = $adherentFactory->createFromArray([
@@ -254,7 +254,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles->add($this->getReference('adherent'));
         $adherent9->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $adherent9->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent9->addReferentTag($this->getReference('referent_tag_76'));
+        $adherent9->addReferentTag($this->getReference('referent_tag_department_76'));
         $this->addReference('adherent-9', $adherent9);
 
         $adherent10 = $adherentFactory->createFromArray([
@@ -275,7 +275,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles->add($this->getReference('adherent'));
         $adherent10->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent10->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent10->addReferentTag($this->getReference('referent_tag_de'));
+        $adherent10->addReferentTag($this->getReference('referent_tag_country_DE'));
         $this->addReference('adherent-10', $adherent10);
 
         $adherent11 = $adherentFactory->createFromArray([
@@ -296,7 +296,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles = new ArrayCollection();
         $roles->add($this->getReference('adherent'));
         $adherent11->setBoardMember(BoardMember::AREA_ABROAD, $roles);
-        $adherent11->addReferentTag($this->getReference('referent_tag_sg'));
+        $adherent11->addReferentTag($this->getReference('referent_tag_country_SG'));
         $this->addReference('adherent-11', $adherent11);
 
         $adherent12 = $adherentFactory->createFromArray([
@@ -321,7 +321,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent12->getBoardMember()->addSavedBoardMember($adherent9->getBoardMember());
         $adherent12->getBoardMember()->addSavedBoardMember($adherent2->getBoardMember());
         $adherent12->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent12->addReferentTag($this->getReference('referent_tag_us'));
+        $adherent12->addReferentTag($this->getReference('referent_tag_country_US'));
         $this->addReference('adherent-12', $adherent12);
 
         $adherent13 = $adherentFactory->createFromArray([
@@ -335,7 +335,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'birthdate' => '1987-05-13',
         ]);
         $adherent13->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent13->addReferentTag($this->getReference('referent_tag_ch'));
+        $adherent13->addReferentTag($this->getReference('referent_tag_country_CH'));
         $adherent13->setMandates(['european_deputy']);
         $adherent13->addHandledThematicCommunity($this->getReference('tc-sante'));
         $adherent13->addHandledThematicCommunity($this->getReference('tc-education'));
@@ -355,7 +355,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'birthdate' => '1988-04-13',
         ]);
         $adherent14->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent14->addReferentTag($this->getReference('referent_tag_ch'));
+        $adherent14->addReferentTag($this->getReference('referent_tag_country_CH'));
 
         // Non activated, enabled adherent
         $adherent15 = $adherentFactory->createFromArray([
@@ -371,7 +371,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $adherent15->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent15->setStatus(Adherent::ENABLED);
-        $adherent15->addReferentTag($this->getReference('referent_tag_ch'));
+        $adherent15->addReferentTag($this->getReference('referent_tag_country_CH'));
         $this->addReference('adherent-15', $adherent15);
 
         $adherent16 = $adherentFactory->createFromArray([
@@ -445,8 +445,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2018-01-03 08:47:54',
         ]);
         $adherent3->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent3->addReferentTag($this->getReference('referent_tag_75'));
-        $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
+        $adherent3->addReferentTag($this->getReference('referent_tag_department_75'));
+        $adherent3->addReferentTag($this->getReference('referent_tag_borough_75108'));
 
         $this->addReference('adherent-20', $adherent19);
 
@@ -465,13 +465,13 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $referent->setReferent(
             [
-                $this->getReference('referent_tag_ch'),
-                $this->getReference('referent_tag_es'),
-                $this->getReference('referent_tag_92'),
-                $this->getReference('referent_tag_76'),
-                $this->getReference('referent_tag_77'),
-                $this->getReference('referent_tag_13'),
-                $this->getReference('referent_tag_59'),
+                $this->getReference('referent_tag_country_CH'),
+                $this->getReference('referent_tag_country_ES'),
+                $this->getReference('referent_tag_department_92'),
+                $this->getReference('referent_tag_department_76'),
+                $this->getReference('referent_tag_department_77'),
+                $this->getReference('referent_tag_department_13'),
+                $this->getReference('referent_tag_department_59'),
             ],
             -1.6743,
             48.112
@@ -480,9 +480,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles->add($this->getReference('referent'));
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $referent->addReferentTag($this->getReference('referent_tag_77'));
+        $referent->addReferentTag($this->getReference('referent_tag_department_77'));
         $referent->addCharter(new ReferentCharter());
-        $referent->setLreArea(new LreArea($this->getReference('referent_tag_76')));
+        $referent->setLreArea(new LreArea($this->getReference('referent_tag_department_76')));
         $this->addReference('adherent-8', $referent);
 
         $referent75and77 = $adherentFactory->createFromArray([
@@ -500,17 +500,17 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $referent75and77->setReferent(
             [
-                $this->getReference('referent_tag_75'),
-                $this->getReference('referent_tag_77'),
-                $this->getReference('referent_tag_75008'),
-                $this->getReference('referent_tag_75009'),
+                $this->getReference('referent_tag_department_75'),
+                $this->getReference('referent_tag_department_77'),
+                $this->getReference('referent_tag_borough_75108'),
+                $this->getReference('referent_tag_borough_75109'),
             ],
             -1.6743,
             48.112
         );
         $referent75and77->setPrintPrivilege(true);
         $referent75and77->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
+        $referent75and77->addReferentTag($this->getReference('referent_tag_department_75'));
         $this->addReference('adherent-19', $referent75and77);
 
         $referentChild = $adherentFactory->createFromArray([
@@ -528,14 +528,14 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $referentChild->setReferent(
             [
-                $this->getReference('referent_tag_ch'),
-                $this->getReference('referent_tag_93'),
+                $this->getReference('referent_tag_country_CH'),
+                $this->getReference('referent_tag_department_93'),
             ],
             -1.6743,
             48.112
         );
         $referentChild->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $referentChild->addReferentTag($this->getReference('referent_tag_77'));
+        $referentChild->addReferentTag($this->getReference('referent_tag_department_77'));
 
         $coordinator = $adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_1_UUID,
@@ -552,7 +552,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $coordinator->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $coordinator->setCoordinatorCommitteeArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
-        $coordinator->addReferentTag($this->getReference('referent_tag_94'));
+        $coordinator->addReferentTag($this->getReference('referent_tag_corsica'));
 
         $coordinatorCP = $adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_2_UUID,
@@ -569,8 +569,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $coordinatorCP->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $coordinatorCP->setCoordinatorCitizenProjectArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
-        $coordinatorCP->addReferentTag($this->getReference('referent_tag_75'));
-        $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
+        $coordinatorCP->addReferentTag($this->getReference('referent_tag_department_75'));
+        $coordinatorCP->addReferentTag($this->getReference('referent_tag_borough_75108'));
         $this->addReference('adherent-17', $coordinatorCP);
 
         $deputy_75_1 = $adherentFactory->createFromArray([
@@ -588,8 +588,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles->add($this->getReference('deputy'));
         $deputy_75_1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
-        $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));
-        $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
+        $deputy_75_1->addReferentTag($this->getReference('referent_tag_department_75'));
+        $deputy_75_1->addReferentTag($this->getReference('referent_tag_borough_75108'));
         $this->addReference('deputy-75-1', $deputy_75_1);
 
         $deputy_75_2 = $adherentFactory->createFromArray([
@@ -607,8 +607,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles->add($this->getReference('deputy'));
         $deputy_75_2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $deputy_75_2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
-        $deputy_75_2->addReferentTag($this->getReference('referent_tag_75'));
-        $deputy_75_1->addReferentTag($this->getReference('referent_tag_75002'));
+        $deputy_75_2->addReferentTag($this->getReference('referent_tag_department_75'));
+        $deputy_75_1->addReferentTag($this->getReference('referent_tag_borough_75102'));
         $this->addReference('deputy-75-2', $deputy_75_2);
 
         $deputy_ch_li = $adherentFactory->createFromArray([
@@ -626,7 +626,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $roles->add($this->getReference('deputy'));
         $deputy_ch_li->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $deputy_ch_li->setBoardMember(BoardMember::AREA_ABROAD, $roles);
-        $deputy_ch_li->addReferentTag($this->getReference('referent_tag_ch'));
+        $deputy_ch_li->addReferentTag($this->getReference('referent_tag_country_CH'));
         $this->addReference('deputy-ch-li', $deputy_ch_li);
 
         // senator
@@ -644,7 +644,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $senatorArea = new SenatorArea();
-        $senatorArea->setDepartmentTag($this->getReference('referent_tag_59'));
+        $senatorArea->setDepartmentTag($this->getReference('referent_tag_department_59'));
         $senator_59->setSenatorArea($senatorArea);
         $this->addReference('senator-59', $senator_59);
 
@@ -752,7 +752,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $senatorialCandidateManagedArea = new SenatorialCandidateManagedArea();
-        $senatorialCandidateManagedArea->addDepartmentTag($this->getReference('referent_tag_59'));
+        $senatorialCandidateManagedArea->addDepartmentTag($this->getReference('referent_tag_department_59'));
         $senatorialCandidate->setSenatorialCandidateManagedArea($senatorialCandidateManagedArea);
         $this->addReference('senatorial-candidate', $senatorialCandidate);
 

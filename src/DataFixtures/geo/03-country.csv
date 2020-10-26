@@ -1,95 +1,95 @@
 "code","name","code_foreign_district"
-AF,Afghanistan,"11"
-ZA,Afrique du Sud,"10"
-AL,Albanie,"07"
-DZ,Algérie,"09"
-DE,Allemagne,"07"
-AD,Andorre,"05"
-AO,Angola,"10"
+AF,Afghanistan,CIRCO_FDE-11
+ZA,Afrique du Sud,CIRCO_FDE-10
+AL,Albanie,CIRCO_FDE-07
+DZ,Algérie,CIRCO_FDE-09
+DE,Allemagne,CIRCO_FDE-07
+AD,Andorre,CIRCO_FDE-05
+AO,Angola,CIRCO_FDE-10
 AI,Anguilla,
 AQ,Antarctique,
 AG,Antigua-et-Barbuda,
-SA,Arabie saoudite,"10"
-AR,Argentine,"02"
-AM,Arménie,"07"
+SA,Arabie saoudite,CIRCO_FDE-10
+AR,Argentine,CIRCO_FDE-02
+AM,Arménie,CIRCO_FDE-07
 AW,Aruba,
-AU,Australie,"11"
-AT,Autriche,"07"
-AZ,Azerbaïdjan,"11"
+AU,Australie,CIRCO_FDE-11
+AT,Autriche,CIRCO_FDE-07
+AZ,Azerbaïdjan,CIRCO_FDE-11
 BS,Bahamas,
-BH,Bahreïn,"10"
-BD,Bangladesh,"11"
+BH,Bahreïn,CIRCO_FDE-10
+BD,Bangladesh,CIRCO_FDE-11
 BB,Barbade,
-BE,Belgique,"04"
+BE,Belgique,CIRCO_FDE-04
 BZ,Belize,
-BJ,Bénin,"10"
+BJ,Bénin,CIRCO_FDE-10
 BM,Bermudes,
 BT,Bhoutan,
-BY,Biélorussie,"11"
-BO,Bolivie,"02"
-BA,Bosnie-Herzégovine,"07"
+BY,Biélorussie,CIRCO_FDE-11
+BO,Bolivie,CIRCO_FDE-02
+BA,Bosnie-Herzégovine,CIRCO_FDE-07
 BW,Botswana,
-BR,Brésil,"02"
-BN,Brunéi Darussalam,"11"
-BG,Bulgarie,"07"
-BF,Burkina Faso,"09"
-BI,Burundi,"10"
-KH,Cambodge,"11"
-CM,Cameroun,"10"
-CA,Canada,"01"
-CV,Cap-Vert,"09"
-CL,Chili,"02"
-CN,Chine,"11"
-CY,Chypre,"08"
-CO,Colombie,"02"
-KM,Comores,"10"
-CG,Congo-Brazzaville,"10"
-CD,Congo-Kinshasa,"10"
-KP,Corée du Nord,"11"
-KR,Corée du Sud,"11"
-CR,Costa Rica,"02"
-CI,Côte d’Ivoire,"09"
-HR,Croatie,"07"
-CU,Cuba,"02"
+BR,Brésil,CIRCO_FDE-02
+BN,Brunéi Darussalam,CIRCO_FDE-11
+BG,Bulgarie,CIRCO_FDE-07
+BF,Burkina Faso,CIRCO_FDE-09
+BI,Burundi,CIRCO_FDE-10
+KH,Cambodge,CIRCO_FDE-11
+CM,Cameroun,CIRCO_FDE-10
+CA,Canada,CIRCO_FDE-01
+CV,Cap-Vert,CIRCO_FDE-09
+CL,Chili,CIRCO_FDE-02
+CN,Chine,CIRCO_FDE-11
+CY,Chypre,CIRCO_FDE-08
+CO,Colombie,CIRCO_FDE-02
+KM,Comores,CIRCO_FDE-10
+CG,Congo-Brazzaville,CIRCO_FDE-10
+CD,Congo-Kinshasa,CIRCO_FDE-10
+KP,Corée du Nord,CIRCO_FDE-11
+KR,Corée du Sud,CIRCO_FDE-11
+CR,Costa Rica,CIRCO_FDE-02
+CI,Côte d’Ivoire,CIRCO_FDE-09
+HR,Croatie,CIRCO_FDE-07
+CU,Cuba,CIRCO_FDE-02
 CW,Curaçao,
-DK,Danemark,"03"
-DJ,Djibouti,"10"
+DK,Danemark,CIRCO_FDE-03
+DJ,Djibouti,CIRCO_FDE-10
 DM,Dominique,
-EG,Égypte,"10"
-AE,Émirats arabes unis,"10"
-EC,Équateur,"02"
+EG,Égypte,CIRCO_FDE-10
+AE,Émirats arabes unis,CIRCO_FDE-10
+EC,Équateur,CIRCO_FDE-02
 ER,Érythrée,
-ES,Espagne,"05"
-EE,Estonie,"03"
+ES,Espagne,CIRCO_FDE-05
+EE,Estonie,CIRCO_FDE-03
 SZ,Eswatini,
-VA,État de la Cité du Vatican,"08"
+VA,État de la Cité du Vatican,CIRCO_FDE-08
 FM,États fédérés de Micronésie,
-US,États-Unis,"01"
-ET,Éthiopie,"10"
-FJ,Fidji,"11"
-FI,Finlande,"03"
+US,États-Unis,CIRCO_FDE-01
+ET,Éthiopie,CIRCO_FDE-10
+FJ,Fidji,CIRCO_FDE-11
+FI,Finlande,CIRCO_FDE-03
 FR,France,
-GA,Gabon,"10"
+GA,Gabon,CIRCO_FDE-10
 GM,Gambie,
-GE,Géorgie,"07"
+GE,Géorgie,CIRCO_FDE-07
 GS,Géorgie du Sud et îles Sandwich du Sud,
-GH,Ghana,"10"
+GH,Ghana,CIRCO_FDE-10
 GI,Gibraltar,
-GR,Grèce,"08"
+GR,Grèce,CIRCO_FDE-08
 GD,Grenade,
 GL,Groenland,
 GP,Guadeloupe,
 GU,Guam,
-GT,Guatemala,"02"
+GT,Guatemala,CIRCO_FDE-02
 GG,Guernesey,
-GN,Guinée,"09"
-GQ,Guinée équatoriale,"10"
-GW,Guinée-Bissau,"09"
+GN,Guinée,CIRCO_FDE-09
+GQ,Guinée équatoriale,CIRCO_FDE-10
+GW,Guinée-Bissau,CIRCO_FDE-09
 GY,Guyana,
 GF,Guyane française,
-HT,Haïti,"02"
-HN,Honduras,"02"
-HU,Hongrie,"07"
+HT,Haïti,CIRCO_FDE-02
+HN,Honduras,CIRCO_FDE-02
+HU,Hongrie,CIRCO_FDE-07
 BV,Île Bouvet,
 CX,Île Christmas,
 IM,Île de Man,
@@ -109,88 +109,88 @@ SB,Îles Salomon,
 TC,Îles Turques-et-Caïques,
 VG,Îles Vierges britanniques,
 VI,Îles Vierges des États-Unis,
-IN,Inde,"11"
-ID,Indonésie,"11"
-IQ,Irak,"10"
-IR,Iran,"11"
-IE,Irlande,"03"
-IS,Islande,"03"
-IL,Israël,"08"
-IT,Italie,"08"
+IN,Inde,CIRCO_FDE-11
+ID,Indonésie,CIRCO_FDE-11
+IQ,Irak,CIRCO_FDE-10
+IR,Iran,CIRCO_FDE-11
+IE,Irlande,CIRCO_FDE-03
+IS,Islande,CIRCO_FDE-03
+IL,Israël,CIRCO_FDE-08
+IT,Italie,CIRCO_FDE-08
 JM,Jamaïque,
-JP,Japon,"11"
+JP,Japon,CIRCO_FDE-11
 JE,Jersey,
-JO,Jordanie,"10"
-KZ,Kazakhstan,"11"
-KE,Kenya,"10"
-KG,Kirghizistan,"11"
+JO,Jordanie,CIRCO_FDE-10
+KZ,Kazakhstan,CIRCO_FDE-11
+KE,Kenya,CIRCO_FDE-10
+KG,Kirghizistan,CIRCO_FDE-11
 KI,Kiribati,
-KW,Koweït,"10"
+KW,Koweït,CIRCO_FDE-10
 RE,La Réunion,
-LA,Laos,"11"
+LA,Laos,CIRCO_FDE-11
 LS,Lesotho,
-LV,Lettonie,"03"
-LB,Liban,"10"
+LV,Lettonie,CIRCO_FDE-03
+LB,Liban,CIRCO_FDE-10
 LR,Libéria,
-LY,Libye,"09"
-LI,Liechtenstein,"06"
-LT,Lituanie,"03"
-LU,Luxembourg,"04"
-MK,Macédoine du Nord,"07"
-MG,Madagascar,"10"
-MY,Malaisie,"11"
+LY,Libye,CIRCO_FDE-09
+LI,Liechtenstein,CIRCO_FDE-06
+LT,Lituanie,CIRCO_FDE-03
+LU,Luxembourg,CIRCO_FDE-04
+MK,Macédoine du Nord,CIRCO_FDE-07
+MG,Madagascar,CIRCO_FDE-10
+MY,Malaisie,CIRCO_FDE-11
 MW,Malawi,
 MV,Maldives,
-ML,Mali,"09"
-MT,Malte,"08"
-MA,Maroc,"09"
+ML,Mali,CIRCO_FDE-09
+MT,Malte,CIRCO_FDE-08
+MA,Maroc,CIRCO_FDE-09
 MQ,Martinique,
-MU,Maurice,"10"
-MR,Mauritanie,"09"
+MU,Maurice,CIRCO_FDE-10
+MR,Mauritanie,CIRCO_FDE-09
 YT,Mayotte,
-MX,Mexique,"02"
-MD,Moldavie,"07"
-MC,Monaco,"05"
+MX,Mexique,CIRCO_FDE-02
+MD,Moldavie,CIRCO_FDE-07
+MC,Monaco,CIRCO_FDE-05
 MN,Mongolie,
-ME,Monténégro,"07"
+ME,Monténégro,CIRCO_FDE-07
 MS,Montserrat,
-MZ,Mozambique,"10"
-MM,Myanmar (Birmanie),"11"
-NA,Namibie,"10"
+MZ,Mozambique,CIRCO_FDE-10
+MM,Myanmar (Birmanie),CIRCO_FDE-11
+NA,Namibie,CIRCO_FDE-10
 NR,Nauru,
-NP,Népal,"11"
-NI,Nicaragua,"02"
-NE,Niger,"09"
-NG,Nigéria,"10"
+NP,Népal,CIRCO_FDE-11
+NI,Nicaragua,CIRCO_FDE-02
+NE,Niger,CIRCO_FDE-09
+NG,Nigéria,CIRCO_FDE-10
 NU,Niue,
-NO,Norvège,"03"
+NO,Norvège,CIRCO_FDE-03
 NC,Nouvelle-Calédonie,
-NZ,Nouvelle-Zélande,"11"
-OM,Oman,"10"
-UG,Ouganda,"10"
-UZ,Ouzbékistan,"11"
-PK,Pakistan,"11"
+NZ,Nouvelle-Zélande,CIRCO_FDE-11
+OM,Oman,CIRCO_FDE-10
+UG,Ouganda,CIRCO_FDE-10
+UZ,Ouzbékistan,CIRCO_FDE-11
+PK,Pakistan,CIRCO_FDE-11
 PW,Palaos,
-PA,Panama,"02"
-PG,Papouasie-Nouvelle-Guinée,"11"
-PY,Paraguay,"02"
-NL,Pays-Bas,"04"
+PA,Panama,CIRCO_FDE-02
+PG,Papouasie-Nouvelle-Guinée,CIRCO_FDE-11
+PY,Paraguay,CIRCO_FDE-02
+NL,Pays-Bas,CIRCO_FDE-04
 BQ,Pays-Bas caribéens,
-PE,Pérou,"02"
-PH,Philippines,"11"
-PL,Pologne,"07"
+PE,Pérou,CIRCO_FDE-02
+PH,Philippines,CIRCO_FDE-11
+PL,Pologne,CIRCO_FDE-07
 PF,Polynésie française,
 PR,Porto Rico,
-PT,Portugal,"05"
-QA,Qatar,"10"
+PT,Portugal,CIRCO_FDE-05
+QA,Qatar,CIRCO_FDE-10
 HK,R.A.S. chinoise de Hong Kong,
 MO,R.A.S. chinoise de Macao,
-CF,République centrafricaine,"10"
-DO,République dominicaine,"02"
-RO,Roumanie,"07"
-GB,Royaume-Uni,"03"
-RU,Russie,"11"
-RW,Rwanda,"10"
+CF,République centrafricaine,CIRCO_FDE-10
+DO,République dominicaine,CIRCO_FDE-02
+RO,Roumanie,CIRCO_FDE-07
+GB,Royaume-Uni,CIRCO_FDE-03
+RU,Russie,CIRCO_FDE-11
+RW,Rwanda,CIRCO_FDE-10
 EH,Sahara occidental,
 BL,Saint-Barthélemy,
 KN,Saint-Christophe-et-Niévès,
@@ -200,51 +200,52 @@ SX,Saint-Martin (partie néerlandaise),
 PM,Saint-Pierre-et-Miquelon,
 VC,Saint-Vincent-et-les-Grenadines,
 SH,Sainte-Hélène,
-LC,Sainte-Lucie,"02"
-SV,Salvador,"02"
+LC,Sainte-Lucie,CIRCO_FDE-02
+SV,Salvador,CIRCO_FDE-02
 WS,Samoa,
 AS,Samoa américaines,
 ST,Sao Tomé-et-Principe,
-SN,Sénégal,"09"
-RS,Serbie,"07"
-SC,Seychelles,"10"
+SN,Sénégal,CIRCO_FDE-09
+RS,Serbie,CIRCO_FDE-07
+SC,Seychelles,CIRCO_FDE-10
 SL,Sierra Leone,
-SG,Singapour,"11"
-SK,Slovaquie,"07"
-SI,Slovénie,"07"
+SG,Singapour,CIRCO_FDE-11
+SK,Slovaquie,CIRCO_FDE-07
+SI,Slovénie,CIRCO_FDE-07
 SO,Somalie,
-SD,Soudan,"10"
-SS,Soudan du Sud,"10"
-LK,Sri Lanka,"11"
-SE,Suède,"03"
-CH,Suisse,"06"
+SD,Soudan,CIRCO_FDE-10
+SS,Soudan du Sud,CIRCO_FDE-10
+LK,Sri Lanka,CIRCO_FDE-11
+SE,Suède,CIRCO_FDE-03
+CH,Suisse,CIRCO_FDE-06
 SR,Suriname,
 SJ,Svalbard et Jan Mayen,
-SY,Syrie,"10"
-TJ,Tadjikistan,"11"
-TW,Taïwan,"11"
-TZ,Tanzanie,"10"
-TD,Tchad,"10"
-CZ,Tchéquie,"07"
+SY,Syrie,CIRCO_FDE-10
+TJ,Tadjikistan,CIRCO_FDE-11
+TW,Taïwan,CIRCO_FDE-11
+TZ,Tanzanie,CIRCO_FDE-10
+TD,Tchad,CIRCO_FDE-10
+CZ,Tchéquie,CIRCO_FDE-07
 TF,Terres australes françaises,
 IO,Territoire britannique de l’océan Indien,
-PS,Territoires palestiniens,"08"
-TH,Thaïlande,"11"
+PS,Territoires palestiniens,CIRCO_FDE-08
+TH,Thaïlande,CIRCO_FDE-11
 TL,Timor oriental,
-TG,Togo,"10"
+TG,Togo,CIRCO_FDE-10
 TK,Tokelau,
 TO,Tonga,
-TT,Trinité-et-Tobago,"02"
-TN,Tunisie,"09"
-TM,Turkménistan,"11"
-TR,Turquie,"08"
+TT,Trinité-et-Tobago,CIRCO_FDE-02
+TN,Tunisie,CIRCO_FDE-09
+TM,Turkménistan,CIRCO_FDE-11
+TR,Turquie,CIRCO_FDE-08
 TV,Tuvalu,
-UA,Ukraine,"11"
-UY,Uruguay,"02"
-VU,Vanuatu,"11"
-VE,Venezuela,"02"
-VN,Vietnam,"11"
+UA,Ukraine,CIRCO_FDE-11
+UY,Uruguay,CIRCO_FDE-02
+VU,Vanuatu,CIRCO_FDE-11
+VE,Venezuela,CIRCO_FDE-02
+VN,Vietnam,CIRCO_FDE-11
 WF,Wallis-et-Futuna,
-YE,Yémen,"10"
-ZM,Zambie,"10"
-ZW,Zimbabwe,"10"
+YE,Yémen,CIRCO_FDE-10
+ZM,Zambie,CIRCO_FDE-10
+ZW,Zimbabwe,CIRCO_FDE-10
+XK,Kosovo,CIRCO_FDE-07

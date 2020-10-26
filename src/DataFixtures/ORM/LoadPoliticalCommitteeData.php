@@ -3,68 +3,43 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
-use App\Repository\ReferentTagRepository;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadPoliticalCommitteeData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    private const ACTIVE_DEPARTMENTS = [
+        '75', // Paris
+        '77', // Seine-et-Marne
+    ];
+
+    public function load(ObjectManager $manager): void
     {
-        foreach (\range(1, 98) as $department) {
-            $department = \str_pad($department, 2, '0', \STR_PAD_LEFT);
+        $terCos = $manager->getRepository(TerritorialCouncil::class)->findAll();
+        foreach ($terCos as $terCo) {
+            $coPol = new PoliticalCommittee($terCo->getNameCodes(), $terCo);
+            $coPol->setIsActive($this->determineShouldBeActive($coPol));
 
-            switch ($department) {
-                // for Corsica
-                case '20':
-                    $this->createPoliticalCommittee($manager, 'CoPol de la Corse', '20, 2A, 2B');
-
-                    break;
-                // for Paris
-                case '75':
-                    foreach (\range(1, 20) as $district) {
-                        $district = \str_pad($district, 2, '0', \STR_PAD_LEFT);
-
-                        $this->createPoliticalCommittee($manager, "CoPol de Paris 750$district", "750$district");
-                    }
-
-                    $this->createPoliticalCommittee($manager, 'CoPol de Paris', '75', true);
-
-                    break;
-                case '77':
-                    $this->createPoliticalCommittee($manager, "CoPol du département $department", $department, true);
-                    break;
-                // does not exist
-                case '96':
-                    break;
-                default:
-                    $this->createPoliticalCommittee($manager, "CoPol du département $department", $department);
-
-                    break;
-            }
+            $manager->persist($coPol);
+            $this->addReference('coPol_'.$terCo->getCodes(), $coPol);
         }
-
-        $this->createPoliticalCommittee($manager, 'CoPol des Français de l\'Étranger', ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG);
 
         $manager->flush();
     }
 
-    private function createPoliticalCommittee(
-        ObjectManager $manager,
-        string $name,
-        string $code,
-        bool $isActive = false
-    ): void {
-        $territorialCouncil = $this->getReference('coTerr_'.\mb_strtolower($code));
-        $politicalCommittee = new PoliticalCommittee(\sprintf('%s (%s)', $name, $code), $territorialCouncil);
-        $politicalCommittee->setIsActive($isActive);
+    private function determineShouldBeActive(PoliticalCommittee $coPol): bool
+    {
+        foreach ($coPol->getTerritorialCouncil()->getReferentTags() as $referentTag) {
+            if ($referentTag->isDepartmentTag() && \in_array($referentTag->getCode(), self::ACTIVE_DEPARTMENTS, true)) {
+                return true;
+            }
+        }
 
-        $manager->persist($politicalCommittee);
-
-        $this->addReference('coPol_'.\mb_strtolower($code), $politicalCommittee);
+        return false;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadTerritorialCouncilData::class,

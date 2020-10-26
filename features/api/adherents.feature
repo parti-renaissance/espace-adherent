@@ -109,10 +109,10 @@ Feature:
     {
       "uuid": "2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf",
       "managedAreaTagCodes": [
-        "75008",
-        "75009",
         "75",
-        "77"
+        "77",
+        "75108",
+        "75109"
       ],
       "country": "FR",
       "zipCode": "75001",
@@ -127,10 +127,10 @@ Feature:
         {
           "label": "ROLE_REFERENT",
           "codes": [
-            "75008",
-            "75009",
             "75",
-            "77"
+            "77",
+            "75108",
+            "75109"
           ]
         },
         {

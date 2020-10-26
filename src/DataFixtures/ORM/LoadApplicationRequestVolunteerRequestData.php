@@ -97,7 +97,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
             $volunteerRequest->setIsPreviousCampaignMember(false);
             $volunteerRequest->setShareAssociativeCommitment(false);
 
-            $volunteerRequest->addReferentTag($this->getReference('referent_tag_59'));
+            $volunteerRequest->addReferentTag($this->getReference('referent_tag_department_59'));
 
             $manager->persist($volunteerRequest);
         }

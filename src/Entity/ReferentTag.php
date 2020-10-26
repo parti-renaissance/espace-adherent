@@ -176,6 +176,11 @@ class ReferentTag
         return $this->isDistrictTag() ? \substr($this->code, 6, 2) : null;
     }
 
+    public function setZone(Zone $zone): void
+    {
+        $this->zone = $zone;
+    }
+
     public function getZone(): Zone
     {
         return $this->zone;

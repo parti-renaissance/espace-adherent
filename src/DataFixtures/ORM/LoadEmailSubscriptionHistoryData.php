@@ -46,30 +46,30 @@ class LoadEmailSubscriptionHistoryData extends AbstractFixture implements Depend
         // one updates his address and the new one have common referent tag(s) with the old one (it can happen with paris district for example)
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-3'),
-            [$this->getReference('referent_tag_75')],
+            [$this->getReference('referent_tag_department_75')],
             '-5 months'
         );
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-3'),
-            [$this->getReference('referent_tag_75008')],
+            [$this->getReference('referent_tag_borough_75108')],
             '-5 months'
         );
 
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-4'),
-            [$this->getReference('referent_tag_75'), $this->getReference('referent_tag_75009')],
+            [$this->getReference('referent_tag_department_75'), $this->getReference('referent_tag_borough_75109')],
             '-4 months'
         );
 
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-7'),
-            [$this->getReference('referent_tag_77')],
+            [$this->getReference('referent_tag_department_77')],
             '-3 months'
         );
 
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-17'),
-            [$this->getReference('referent_tag_75'), $this->getReference('referent_tag_75008')],
+            [$this->getReference('referent_tag_department_75'), $this->getReference('referent_tag_borough_75108')],
             '-2 months'
         );
 

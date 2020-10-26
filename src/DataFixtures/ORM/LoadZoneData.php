@@ -14,7 +14,7 @@ class LoadZoneData extends Fixture
         '13001' => 'Marseille (13001)',
         '59000' => 'Lille (59000)',
         '69001' => 'Lyon 1er (69001)',
-        '75007' => 'Paris 7eme (75007)',
+        '75107' => 'Paris 7eme (75007)',
         '76000' => 'Rouen (76000)',
         '77000' => 'Melun (77000)',
         '92110' => 'Clichy (92110)',
@@ -83,17 +83,17 @@ class LoadZoneData extends Fixture
     ];
 
     private const DISTRICTS = [
-        '06003' => 'Alpes-Maritimes, 3ème circonscription (06-03)',
-        '13001' => 'Bouches-du-Rhône, 1ère circonscription (13-01)',
-        '59009' => 'Nord, 9ème circonscription (59-09)',
-        '75007' => 'Paris, 7ème circonscription (75-07)',
-        '75008' => 'Paris, 8ème circonscription (75-08)',
-        '76002' => 'Seine-Maritime, 2ème circonscription (76-02)',
-        '77001' => 'Seine-et-Marne, 1ère circonscription (77-01)',
-        '69010' => 'Rhône, 10ème circonscription (69-10)',
-        '78006' => 'Yvelines, 6ème circonscription (78-06)',
-        '974002' => 'Réunion, 2ème circonscription (974-02)',
-        '2A001' => 'Corse-du-Sud, 1ère circonscription (2A-01)',
+        '06-3' => 'Alpes-Maritimes, 3ème circonscription (06-03)',
+        '13-1' => 'Bouches-du-Rhône, 1ère circonscription (13-01)',
+        '59-9' => 'Nord, 9ème circonscription (59-09)',
+        '75-7' => 'Paris, 7ème circonscription (75-07)',
+        '75-8' => 'Paris, 8ème circonscription (75-08)',
+        '76-2' => 'Seine-Maritime, 2ème circonscription (76-02)',
+        '77-1' => 'Seine-et-Marne, 1ère circonscription (77-01)',
+        '69-10' => 'Rhône, 10ème circonscription (69-10)',
+        '78-6' => 'Yvelines, 6ème circonscription (78-06)',
+        '974-2' => 'Réunion, 2ème circonscription (974-02)',
+        '2A-1' => 'Corse-du-Sud, 1ère circonscription (2A-01)',
     ];
 
     public function load(ObjectManager $manager)
@@ -102,9 +102,9 @@ class LoadZoneData extends Fixture
 
         foreach (self::CITIES as $code => $name) {
             $zoneCity = new Zone($this->getReference('zone-category-ville'), $name);
-            $zoneCity->addReferentTag($this->getReference('referent_tag_'.substr($code, 0, 2)));
-            if ('75007' == $code) {
-                $zoneCity->addReferentTag($this->getReference('referent_tag_'.$code));
+            $zoneCity->addReferentTag($this->getReference('referent_tag_department_'.substr($code, 0, 2)));
+            if ('75107' == $code) {
+                $zoneCity->addReferentTag($this->getReference('referent_tag_borough_'.$code));
             }
 
             $manager->persist($zoneCity);
@@ -114,7 +114,7 @@ class LoadZoneData extends Fixture
         foreach (self::EPCI as $codeDpt => $arrEpci) {
             foreach ($arrEpci as $key => $epci) {
                 $zoneEPCI = new Zone($this->getReference('zone-category-epci'), $epci);
-                $zoneEPCI->addReferentTag($this->getReference("referent_tag_$codeDpt"));
+                $zoneEPCI->addReferentTag($this->getReference("referent_tag_department_$codeDpt"));
 
                 $manager->persist($zoneEPCI);
                 ++$key;
@@ -124,7 +124,7 @@ class LoadZoneData extends Fixture
 
         foreach (self::DEPARTMENTS as $code => $name) {
             $zoneDpt = new Zone($this->getReference('zone-category-département'), $name);
-            $zoneDpt->addReferentTag($this->getReference('referent_tag_'.\mb_strtolower($code)));
+            $zoneDpt->addReferentTag($this->getReference('referent_tag_department_'.$code));
 
             $manager->persist($zoneDpt);
             $this->setReference("zone-dpt-$code", $zoneDpt);
@@ -133,7 +133,6 @@ class LoadZoneData extends Fixture
         foreach (self::REGIONS as $code => $name) {
             $zoneRegion = new Zone($this->getReference('zone-category-région'), $name);
             $code = \str_pad($code, 2, '0', \STR_PAD_LEFT);
-            $zoneRegion->addReferentTag($this->getReference("referent_tag_$code"));
 
             $manager->persist($zoneRegion);
             $this->setReference("zone-region-$code", $zoneRegion);
@@ -141,20 +140,19 @@ class LoadZoneData extends Fixture
 
         foreach (self::DISTRICTS as $code => $name) {
             $zoneRegion = new Zone($this->getReference('zone-category-circonscription'), $name);
-            $code = \str_pad($code, 2, '0', \STR_PAD_LEFT);
-            $zoneRegion->addReferentTag($this->getReference("referent_tag_circo_$code"));
+            $zoneRegion->addReferentTag($this->getReference("referent_tag_district_$code"));
 
             $manager->persist($zoneRegion);
             $this->setReference("zone-district-$code", $zoneRegion);
         }
 
         $zoneCorsica = new Zone($this->getReference('zone-category-corse'), 'Corse');
-        $zoneCorsica->addReferentTag($this->getReference('referent_tag_20'));
+        $zoneCorsica->addReferentTag($this->getReference('referent_tag_corsica'));
         $manager->persist($zoneCorsica);
         $this->setReference('zone-corsica', $zoneCorsica);
 
         $zoneFOF = new Zone($this->getReference('zone-category-fde'), 'Français de l\'Étranger');
-        $zoneFOF->addReferentTag($this->getReference('referent_tag_fof'));
+        $zoneFOF->addReferentTag($this->getReference('referent_tag_fde'));
         $manager->persist($zoneFOF);
         $this->setReference('zone-fof', $zoneFOF);
 

@@ -102,7 +102,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             $runningMateRequest->setProfessionalAssets($faker->paragraph(10));
             $runningMateRequest->setCreatedAt($faker->dateTimeBetween('-3 week'));
             $runningMateRequest->setUpdatedAt($faker->dateTimeBetween('-1 day'));
-            $runningMateRequest->addReferentTag($this->getReference('referent_tag_59'));
+            $runningMateRequest->addReferentTag($this->getReference('referent_tag_department_59'));
 
             $manager->persist($runningMateRequest);
         }

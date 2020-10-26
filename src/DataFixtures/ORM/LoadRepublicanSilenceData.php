@@ -9,13 +9,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadRepublicanSilenceData extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $entity = new RepublicanSilence();
-        $entity->addReferentTag($this->getReference('referent_tag_75001'));
-        $entity->addReferentTag($this->getReference('referent_tag_91'));
-        $entity->addReferentTag($this->getReference('referent_tag_93'));
-        $entity->addReferentTag($this->getReference('referent_tag_sg'));
+        $entity->addReferentTag($this->getReference('referent_tag_borough_75101'));
+        $entity->addReferentTag($this->getReference('referent_tag_department_91'));
+        $entity->addReferentTag($this->getReference('referent_tag_department_93'));
+        $entity->addReferentTag($this->getReference('referent_tag_country_SG'));
         $entity->setBeginAt(new \DateTime('-10 days'));
         $entity->setFinishAt(new \DateTime('+10 days'));
 
@@ -23,7 +23,7 @@ class LoadRepublicanSilenceData extends AbstractFixture implements DependentFixt
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadReferentTagData::class,

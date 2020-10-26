@@ -400,7 +400,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             VoteListNuanceEnum::NC,
             null,
-            $this->getReference('zone-city-75007'),
+            $this->getReference('zone-city-75107'),
             $erWithNotElectedMandate,
             true,
             new \DateTime('2019-03-15')
@@ -416,7 +416,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             VoteListNuanceEnum::REM,
             LaREMSupportEnum::OFFICIAL,
-            $this->getReference('zone-district-75008'),
+            $this->getReference('zone-district-75-8'),
             $erWithNotElectedMandate,
             true,
             new \DateTime('2019-01-11')

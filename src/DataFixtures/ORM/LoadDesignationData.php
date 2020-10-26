@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadDesignationData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Committee designation with started CANDIDATURE period in France
         $designation = new Designation('Désignation avec les candidatures ouvertes');
@@ -72,7 +72,7 @@ class LoadDesignationData extends Fixture
         // COPOL designation with started CANDIDATURE period
         $designation = new Designation('Désignation COPOL avec les candidatures ouvertes');
         $designation->setType(DesignationTypeEnum::COPOL);
-        $designation->addReferentTag($this->getReference('referent_tag_75'));
+        $designation->addReferentTag($this->getReference('referent_tag_department_75'));
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
 
         $this->setReference('designation-6', $designation);
@@ -81,7 +81,7 @@ class LoadDesignationData extends Fixture
         // COPOL designation with started VOTE period
         $designation = new Designation('Désignation COPOL les votes');
         $designation->setType(DesignationTypeEnum::COPOL);
-        $designation->addReferentTag($this->getReference('referent_tag_92'));
+        $designation->addReferentTag($this->getReference('referent_tag_department_92'));
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
         $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
         $designation->setVoteStartDate(new \DateTime('-1 hour'));
@@ -94,7 +94,7 @@ class LoadDesignationData extends Fixture
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadReferentTagData::class,
