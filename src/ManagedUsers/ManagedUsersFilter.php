@@ -3,6 +3,7 @@
 namespace App\ManagedUsers;
 
 use App\Entity\Committee;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -88,11 +89,20 @@ class ManagedUsersFilter
     private $includeCitizenProjectHosts;
 
     /**
+     * @deprecated
+     *
      * @var ReferentTag[]
      *
      * @Assert\NotNull
      */
     private $referentTags;
+
+    /**
+     * @var Zone[]
+     *
+     * @Assert\NotNull
+     */
+    private $zones;
 
     /**
      * @var bool|null
@@ -151,9 +161,14 @@ class ManagedUsersFilter
         }
 
         $this->subscriptionType = $subscriptionType;
-        $this->referentTags = $referentTags;
+        $this->referentTags = [];
+        $this->zones = [];
         $this->committeeUuids = $committeeUuids;
         $this->cities = $cities;
+
+        foreach ($referentTags as $referentTag) {
+            $this->addReferentTag($referentTag);
+        }
     }
 
     public function getGender(): ?string
@@ -302,6 +317,8 @@ class ManagedUsersFilter
     }
 
     /**
+     * @deprecated
+     *
      * @return ReferentTag[]
      */
     public function getReferentTags(): array
@@ -309,11 +326,19 @@ class ManagedUsersFilter
         return $this->referentTags;
     }
 
+    /**
+     * @deprecated
+     */
     public function addReferentTag(ReferentTag $referentTag): void
     {
+        $this->addZone($referentTag->getZone());
+
         $this->referentTags[] = $referentTag;
     }
 
+    /**
+     * @deprecated
+     */
     public function removeReferentTag(ReferentTag $referentTag): void
     {
         foreach ($this->referentTags as $key => $tag) {
@@ -323,6 +348,30 @@ class ManagedUsersFilter
         }
 
         $this->referentTags = array_values($this->referentTags);
+    }
+
+    /**
+     * @return Zone[]
+     */
+    public function getZones(): array
+    {
+        return $this->zones;
+    }
+
+    public function addZone(Zone $zone): void
+    {
+        $this->zones[] = $zone;
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+        foreach ($this->zones as $key => $value) {
+            if ($value->getId() === $zone->getId()) {
+                unset($this->zones[$key]);
+            }
+        }
+
+        $this->zones = array_values($this->zones);
     }
 
     public function getEmailSubscription(): ?bool

@@ -6,6 +6,8 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
+use App\Entity\Geo\Zone;
+use App\Entity\ReferentTag;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -103,8 +105,10 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $this->withActiveMandatesCondition($qb);
 
-        if ($filter->getReferentTags()) {
-            $this->withZoneCondition($qb, $filter->getReferentTags());
+        /* @var Zone[]|ReferentTag[] $zonesAndReferentTags */
+        $zonesAndReferentTags = array_merge($filter->getZones(), $filter->getReferentTags());
+        if ($zonesAndReferentTags) {
+            $this->withZoneCondition($qb, $zonesAndReferentTags);
             $qb
                 ->orderBy('er.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
                 ->addOrderBy('mandate.number', 'ASC')
@@ -240,45 +244,30 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
     }
 
-    private function withZoneCondition(QueryBuilder $qb, array $referentTags, string $alias = 'er'): QueryBuilder
+    private function withZoneCondition(QueryBuilder $qb, array $zonesOrReferentTags, string $alias = 'er'): QueryBuilder
     {
         if (!\in_array('mandate', $qb->getAllAliases(), true)) {
             $qb->leftJoin($alias.'.mandates', 'mandate');
         }
 
-        $hasParis = false;
-        $districtDptCodes = [];
-        foreach ($referentTags as $tag) {
-            if ($districtDptCode = $tag->getDepartmentCodeFromCirconscriptionName()) {
-                $districtDptCodes[] = $districtDptCode;
-            }
-
-            if (0 === mb_strpos($tag->getCode(), '750') || 0 === mb_strpos($tag->getCode(), 'CIRCO_750')) {
-                $hasParis = true;
-
-                break;
-            }
+        $zones = [];
+        foreach ($zonesOrReferentTags as $zoneOrReferentTag) {
+            $zones[] = $zoneOrReferentTag instanceof ReferentTag ? $zoneOrReferentTag->getZone() : $zoneOrReferentTag;
         }
 
-        $zoneCondition = new Orx();
-        $zoneCondition->add('tag IN (:tags)');
-        $qb->setParameter('tags', $referentTags);
-        // if referent has some Paris tag, we should return elected representatives of all Paris zones
-        if ($hasParis) {
-            $zoneCondition->add('tag.code LIKE :paris_arr OR tag.code LIKE :paris_circo');
-            $qb->setParameter('paris_arr', '750%');
-            $qb->setParameter('paris_circo', 'CIRCO\_750%');
+        if ($zones) {
+            $qb
+                ->innerJoin('mandate.geoZone', 'zone')
+                ->leftJoin('zone.children', 'zone_child')
+                ->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->in('zone.id', ':zones'),
+                        $qb->expr()->in('zone_child.id', ':zones'),
+                    )
+                )
+                ->setParameter(':zones', $zones)
+            ;
         }
-
-        if ($districtDptCodes) {
-            $zoneCondition->add('tag.code IN (:districtDptCodes)');
-            $qb->setParameter('districtDptCodes', $districtDptCodes);
-        }
-
-        $qb
-            ->leftJoin('zone.referentTags', 'tag')
-            ->andWhere($zoneCondition)
-        ;
 
         return $qb;
     }

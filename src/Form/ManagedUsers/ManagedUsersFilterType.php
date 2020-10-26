@@ -2,13 +2,13 @@
 
 namespace App\Form\ManagedUsers;
 
-use App\Entity\ReferentTag;
+use App\Entity\Geo\Zone;
 use App\Form\DatePickerType;
 use App\Form\EventListener\IncludeExcludeFilterRoleListener;
 use App\Form\FilterRoleType;
 use App\Form\GenderType;
 use App\Form\MemberInterestsChoiceType;
-use App\Form\MyReferentTagChoiceType;
+use App\Form\MyZoneChoiceType;
 use App\ManagedUsers\ManagedUsersFilter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -77,13 +77,13 @@ class ManagedUsersFilterType extends AbstractType
         ;
 
         if (false === $options['single_zone']) {
-            $builder->add('referentTags', MyReferentTagChoiceType::class, [
+            $builder->add('zones', MyZoneChoiceType::class, [
                 'placeholder' => 'Tous',
                 'required' => false,
                 'by_reference' => false,
             ]);
 
-            $referentTagsField = $builder->get('referentTags');
+            $referentTagsField = $builder->get('zones');
 
             $referentTagsField->addModelTransformer(new CallbackTransformer(
                 static function ($value) use ($referentTagsField) {
@@ -98,7 +98,7 @@ class ManagedUsersFilterType extends AbstractType
                         return  $referentTagsField->getOption('choices');
                     }
 
-                    if ($value instanceof ReferentTag) {
+                    if ($value instanceof Zone) {
                         return [$value];
                     }
 

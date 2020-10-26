@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ReferentManagedArea
 {
+    use EntityZoneTrait;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -20,6 +23,8 @@ class ReferentManagedArea
     private $id;
 
     /**
+     * @deprecated
+     *
      * @var ReferentTag[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
@@ -49,7 +54,13 @@ class ReferentManagedArea
     {
         $this->markerLatitude = $latitude;
         $this->markerLongitude = $longitude;
-        $this->tags = new ArrayCollection($tags);
+        $this->zones = new ArrayCollection();
+
+        // Force sync among zones and tags
+        $this->tags = new ArrayCollection();
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
     }
 
     public function getId(): ?int
@@ -58,6 +69,8 @@ class ReferentManagedArea
     }
 
     /**
+     * @deprecated
+     *
      * @return ReferentTag[]|Collection
      */
     public function getTags(): Collection
@@ -65,26 +78,36 @@ class ReferentManagedArea
         return $this->tags;
     }
 
+    /**
+     * @deprecated
+     */
     public function addTag(ReferentTag $tag): void
     {
+        $this->addZone($tag->getZone());
+
         if (!$this->tags->contains($tag)) {
             $this->tags->add($tag);
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function removeTag(ReferentTag $tag): void
     {
+        $this->removeZone($tag->getZone());
+
         $this->tags->removeElement($tag);
     }
 
     public function getOnlyManagedCountryCodes($value): array
     {
-        return array_values(array_filter(array_map(function (ReferentTag $tag) use ($value) {
-            if (ctype_alpha($tag->getCode())
-                && (!$value || ($value && 0 === stripos($tag->getName(), $value)))) {
-                return [$tag->getCode() => $tag->getName()];
+        return array_values(array_filter(array_map(function (Zone $zone) use ($value) {
+            if (ctype_alpha($zone->getCode())
+                && (!$value || ($value && 0 === stripos($zone->getName(), $value)))) {
+                return [$zone->getCode() => $zone->getName()];
             }
-        }, $this->tags->toArray())));
+        }, $this->zones->toArray())));
     }
 
     public function getMarkerLatitude(): ?string
@@ -115,16 +138,25 @@ class ReferentManagedArea
         $this->markerLongitude = $markerLongitude;
     }
 
+    /**
+     * @deprecated
+     */
     public function getReferentTagCodes(): array
     {
         return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->getTags()->toArray());
     }
 
+    /**
+     * @deprecated
+     */
     public function getReferentTagCodesAsString(): string
     {
         return !empty($this->getTags()) ? implode(', ', $this->getReferentTagCodes()) : '';
     }
 
+    /**
+     * @deprecated
+     */
     public function hasFranceTag(): bool
     {
         foreach ($this->tags as $tag) {

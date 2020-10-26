@@ -36,6 +36,9 @@ abstract class AbstractConnectedUserFormType extends AbstractType
         return $user;
     }
 
+    /**
+     * @deprecated
+     */
     protected function getReferentTags(): array
     {
         if (!$user = $this->getUser()) {

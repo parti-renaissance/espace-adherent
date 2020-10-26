@@ -3,6 +3,7 @@
 namespace App\ElectedRepresentative\Filter;
 
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Entity\UserListDefinition;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -66,6 +67,15 @@ class ListFilter
     private $emailSubscribed;
 
     /**
+     * @var Zone[]
+     *
+     * @Assert\NotNull
+     */
+    private $zones = [];
+
+    /**
+     * @deprecated
+     *
      * @var ReferentTag[]
      *
      * @Assert\NotNull
@@ -88,9 +98,18 @@ class ListFilter
      */
     private $order = 'a';
 
-    public function __construct(array $referentTags = [])
+    /**
+     * @param Zone[]|ReferentTag[] $zonesOrReferentTags
+     */
+    public function __construct(array $zonesOrReferentTags = [])
     {
-        $this->referentTags = $referentTags;
+        foreach ($zonesOrReferentTags as $zoneOrReferentTag) {
+            if ($zoneOrReferentTag instanceof ReferentTag) {
+                $this->addReferentTag($zoneOrReferentTag);
+            } else {
+                $this->addZone($zoneOrReferentTag);
+            }
+        }
     }
 
     public function getGender(): ?string
@@ -194,6 +213,8 @@ class ListFilter
     }
 
     /**
+     * @deprecated
+     *
      * @return ReferentTag[]
      */
     public function getReferentTags(): array
@@ -201,11 +222,40 @@ class ListFilter
         return $this->referentTags;
     }
 
+    public function addZone(Zone $zone): void
+    {
+        $this->zones[] = $zone;
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+        foreach ($this->zones as $key => $current) {
+            if ($current->getId() === $zone->getId()) {
+                unset($this->zones[$key]);
+            }
+        }
+    }
+
+    /**
+     * @return Zone[]
+     */
+    public function getZones(): array
+    {
+        return $this->zones;
+    }
+
+    /**
+     * @deprecated
+     */
     public function addReferentTag(ReferentTag $referentTag): void
     {
         $this->referentTags[] = $referentTag;
+        $this->addZone($referentTag->getZone());
     }
 
+    /**
+     * @deprecated
+     */
     public function removeReferentTag(ReferentTag $referentTag): void
     {
         foreach ($this->referentTags as $key => $tag) {
@@ -213,6 +263,8 @@ class ListFilter
                 unset($this->referentTags[$key]);
             }
         }
+
+        $this->removeZone($referentTag->getZone());
     }
 
     public function getSort(): string
