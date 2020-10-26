@@ -65,6 +65,10 @@ adherent.activity_position.student: Étudiant
 adherent.activity_position.retired: Retraité
 adherent.activity_position.employed: En activité
 adherent.activity_position.unemployed: En recherche d'emploi
+adherent.activity_position.self_employed_and_liberal_professions: Indépendant / Profession libérale
+adherent.activity_position.worker: Ouvrier
+adherent.activity_position.intermediate_profession: Profession intermédiaire
+adherent.activity_position.executive: Cadre
 
 referent: référent
 coreferent: co-référent
@@ -1049,9 +1053,9 @@ adherent_mandate.euro_depute: "Député(e) européen(ne)"
 #
 # Thematic community
 #
-admin.thematic_community.membership.motivations.thinking: Réflexion
-admin.thematic_community.membership.motivations.information: Information
-admin.thematic_community.membership.motivations.on_spot: Terrain
+admin.thematic_community.membership.motivations.thinking: Vous impliquer dans des groupes de réflexion
+admin.thematic_community.membership.motivations.information: Vous informer sur l'actualité et les réformes
+admin.thematic_community.membership.motivations.on_spot: Participer à des actions de terrain
 admin.thematic_community_membership.type.adherent: Adhérent
 admin.thematic_community_membership.type.electedRepresentative: Élu
 admin.thematic_community_membership.type.contact: Contact
@@ -1059,6 +1063,19 @@ admin.thematic_community_membership.type.contact: Contact
 thematic_community_chief.popup.title: Charte de bonne utilisation des outils numériques
 thematic_community_chief.popup.subtitle: à l’usage des Responsables Communautés Thématiques
 thematic_community_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_responsables_ct.pdf
+
+thematic_community.label.sante: Pour la santé
+thematic_community.label.ecole: Pour l'école
+thematic_community.label.ecologie: Pour la transition écologique
+thematic_community.label.pme: Pour les petites et moyennes entreprises
+thematic_community.label.agriculture-et-alimentation: Pour l'agriculture et l'alimentation
+thematic_community.label.europe: Pour l'Europe
+
+# this field label can change in function of the community
+thematic_community.userListDefinitions.label.ecole: Vous êtes
+thematic_community.userListDefinitions.label.ecologie: Vos thèmes d'intérêt
+thematic_community.userListDefinitions.label.pme: Quel est le secteur d'activité de votre entreprise ?
+thematic_community.userListDefinitions.label.agriculture-et-alimentation: Quelle est votre relation avec le monde de l'agriculture et/ou de l'alimentation ?
 
 #
 # Page

@@ -1,59 +1,22 @@
-{% extends 'adherent_space/_layout.html.twig' %}
-
-{% block page_title 'Espace Responsable Thématique' %}
-
-{% block canonical_url url('app_thematic_community_members_list') %}
-
-{% set hasCharterAccepted = app.user.charters.hasThematicCommunityChiefCharterAccepted %}
-
-{% block stylesheets %}
-    {% if not hasCharterAccepted %}
-        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
-    {% endif %}
-{% endblock %}
-
-{% block adherent_space_header_title %}
-    Vous gérez : <span class="text--black text--bold">{{ app.user.handledThematicCommunities|map(tc => tc.name)|join(', ') }}</span>
-{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
-    <main class="manager-space manager-body">
-        <aside class="manager-sidebar">
-            {{ include('thematic_community/_sidebar.html.twig') }}
-        </aside>
-
-        <section class="manager-content">
-            <div class="manager-content__container">
-                <div class="text--body">
-                    {% block thematic_community_chief_content %}{% endblock %}
+    <div id="thematic-community">
+        <div class="details">
+            <div class="header"
+                    {% if thematic_community.imageName is not empty %}
+                        style="background-image: url({{ path('asset_url', {path: thematic_community.imagePath}) }})"
+                    {% endif %}
+            >
+                <div class="l__wrapper--600 shift-top">
+                    <p class="subtitle">Je m'engage</p>
+                    <h1>{{ ('thematic_community.label.'~thematic_community.slug)|trans }}</h1>
                 </div>
             </div>
-        </section>
 
-        {% if not hasCharterAccepted %}
-            {% include 'chart_dialog.html.twig' with {
-                'title': 'thematic_community_chief.popup.title'|trans,
-                'subtitle': 'thematic_community_chief.popup.subtitle'|trans,
-                'fileUrl': 'thematic_community_chief.popup.file_url'|trans
-            } %}
-        {% endif %}
-    </main>
-{% endblock %}
-
-{% block final_javascripts %}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
-
-    {% if not hasCharterAccepted %}
-        {% if js is not defined %}
-            {% import 'javascript.js.twig' as js %}
-        {% endif %}
-
-
-        <script type="text/javascript">
-          Kernel.onLoad(function() {
-              {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_THEMATIC_COMMUNITY_CHIEF')) }}
-          } );
-        </script>
-    {% endif %}
+            <main class="l__wrapper--narrow shift-top">
+                {% block thematic_community_content %}{% endblock %}
+            </main>
+        </div>
+    </div>
 {% endblock %}

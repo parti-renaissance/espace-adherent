@@ -48,6 +48,11 @@ class AdherentMembership extends ThematicCommunityMembership
         return $this->adherent ? $this->adherent->getPhone() : null;
     }
 
+    public function getPosition(): ?string
+    {
+        return $this->adherent ? $this->adherent->getPosition() : null;
+    }
+
     public function getPostAddress(): ?PostAddress
     {
         return $this->adherent->getPostAddressModel();

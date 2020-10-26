@@ -3,8 +3,10 @@
 namespace App\Repository\ThematicCommunity;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use App\Entity\Adherent;
 use App\Entity\CitizenProjectMembership;
 use App\Entity\CommitteeMembership;
+use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Repository\PaginatorTrait;
 use App\Subscription\SubscriptionTypeEnum;
@@ -273,6 +275,31 @@ class ThematicCommunityMembershipRepository extends ServiceEntityRepository
             ->setParameter('communities', $thematicCommunities)
             ->getQuery()
             ->getSingleScalarResult()
+        ;
+    }
+
+    public function findAdherentMemberships(Adherent $adherent): array
+    {
+        return $this->createQueryBuilder('tcm')
+            ->where('tcm.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function isEmailContactAlreadyRegisteredOnCommunity(
+        ThematicCommunity $thematicCommunity,
+        string $email
+    ): bool {
+        return null !== $this->createQueryBuilder('tcm')
+            ->innerJoin('tcm.contact', 'c')
+            ->where('tcm.community = :community')
+            ->andWhere('c.email = :email')
+            ->setParameter('community', $thematicCommunity)
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

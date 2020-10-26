@@ -64,6 +64,7 @@ class ThematicCommunityAdmin extends AbstractAdmin
             ])
             ->add('image', FileType::class, [
                 'label' => 'Bannière',
+                'required' => false,
             ])
             ->add('enabled', null, [
                 'label' => 'Active',
