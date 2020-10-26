@@ -997,6 +997,7 @@ adherent_commitment.commitmentActions.support_majority: Soutenir les réformes e
 adherent_commitment.commitmentActions.inform_me: M'informer sur les réformes et l'action publique
 adherent_commitment.commitmentActions.participate_militant_action: 'Participer à une action militante de terrain (ex : distribuer des tracts, faire un collage ou boitage)'
 adherent_commitment.commitmentActions.relay_social_content: Relayer des contenus sur les réseaux sociaux
+adherent_commitment.commitmentActions.appeal_campaign: Participer à des campagnes d’appel
 
 adherent_commitment.debateAndProposeIdeasActions.making_known_french_concerns: Contribuer à faire connaitre les préoccupations des Français
 adherent_commitment.debateAndProposeIdeasActions.be_consulted_on_reforms: Etre consulté(e) sur des réformes
