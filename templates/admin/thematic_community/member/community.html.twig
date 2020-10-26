@@ -5,7 +5,7 @@
         {{ object.community.name }}
     </span>
     &nbsp;
-    {% for motivation in object.motivations %}
+    {% for motivation in object.motivations|filter(m => m is not empty) %}
         <span class="label label-default">
             {{ ('admin.thematic_community.membership.motivations.'~motivation)|trans }}
         </span>
