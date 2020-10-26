@@ -624,14 +624,16 @@ $(document).ready(function() {
     });
 {% endmacro %}
 
-{% macro toggleMandatesSelect(checkboxSelector, selectSelector) %}
-    (function (checkboxSelector, selectSelector) {
+{% macro toggleMandatesSelect(checkboxSelector, selectSelector, helpTextSelector) %}
+    (function (checkboxSelector, selectSelector, helpTextSelector) {
         const formElected = $(checkboxSelector);
         const selectMandates = $(selectSelector);
+        const helpText = $(helpTextSelector);
 
         formElected.click(function() {
             const isChecked = $(this).is(':checked');
 
+            helpText.toggle(isChecked);
             selectMandates.parent().toggle(isChecked);
             selectMandates.attr('required', isChecked);
 
@@ -640,5 +642,5 @@ $(document).ready(function() {
             }
         });
         formElected.triggerHandler('click');
-    })('{{ checkboxSelector }}', '{{ selectSelector }}');
+    })('{{ checkboxSelector }}', '{{ selectSelector }}', '{{ helpTextSelector }}');
 {% endmacro %}

@@ -146,6 +146,16 @@ class AdherentProfile
      */
     private $activityArea;
 
+    /**
+     * @var array
+     *
+     * @Assert\Choice(
+     *     callback={"App\Membership\Mandates", "all"},
+     *     multiple=true
+     * )
+     */
+    private $mandates = [];
+
     public function __construct()
     {
         $this->address = new Address();
@@ -170,6 +180,7 @@ class AdherentProfile
         $dto->telegramPageUrl = $adherent->getTelegramPageUrl();
         $dto->job = $adherent->getJob();
         $dto->activityArea = $adherent->getActivityArea();
+        $dto->mandates = $adherent->getMandates();
 
         return $dto;
     }
@@ -332,5 +343,15 @@ class AdherentProfile
     public function setActivityArea(?string $activityArea): void
     {
         $this->activityArea = $activityArea;
+    }
+
+    public function getMandates(): ?array
+    {
+        return $this->mandates;
+    }
+
+    public function setMandates(?array $mandates): void
+    {
+        $this->mandates = $mandates;
     }
 }
