@@ -140,7 +140,9 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
             ->leftJoin('adherent.adherentMandates', 'mandate')
         ;
 
-        $this->bindReferentTagsCondition($qb, $filter->getReferentTags());
+        if ($filter->getReferentTags() || (!$filter->getTerritorialCouncil() && !$filter->getPoliticalCommittee())) {
+            $this->bindReferentTagsCondition($qb, $filter->getReferentTags());
+        }
 
         if (false !== \strpos($filter->getSort(), '.')) {
             $sort = $filter->getSort();
