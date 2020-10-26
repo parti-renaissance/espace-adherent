@@ -6,10 +6,8 @@ use App\Committee\Feed\CommitteeFeedManager;
 use App\Committee\Feed\CommitteeMessage;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\CommitteeFeedItem;
-use App\Mailer\Message\CommitteeMessageNotificationMessage;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
-use App\Repository\EmailRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 

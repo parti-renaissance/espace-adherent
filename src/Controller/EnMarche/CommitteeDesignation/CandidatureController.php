@@ -45,7 +45,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        if ($election->getDesignationType() === DesignationTypeEnum::COMMITTEE_ADHERENT) {
+        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
             $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION);
         }
 

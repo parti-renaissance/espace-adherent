@@ -31,12 +31,6 @@
         <!-- Addresses -->
         <service id="app.address.post_address_factory" class="App\Address\PostAddressFactory" public="false" />
 
-        <!-- Geocoder -->
-        <service id="app.validator.geocodable_address" class="App\Validator\GeocodableAddressValidator">
-            <argument type="service" id="App\Geocoder\Geocoder"/>
-            <tag name="validator.constraint_validator" alias="app.validator.geocodable_address"/>
-        </service>
-
         <!-- Map -->
         <service id="app.map.google_maps_static_provider" class="App\Map\GoogleStaticMapProvider">
             <argument type="service" id="csa_guzzle.client.google_maps_static_api" />
@@ -74,13 +68,6 @@
         <service id="app.membership.adherent_factory" class="App\Membership\AdherentFactory">
             <argument type="service" id="security.encoder_factory"/>
             <argument type="service" id="app.address.post_address_factory"/>
-        </service>
-
-        <service id="app.validator.unique_membership" class="App\Validator\UniqueMembershipValidator">
-            <argument type="service" id="App\Repository\AdherentRepository"/>
-            <argument type="service" id="App\Repository\AdherentChangeEmailTokenRepository"/>
-            <argument type="service" id="security.token_storage" />
-            <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>
         </service>
 
         <service id="app.adherent.contact_message_handler" class="App\Contact\ContactMessageHandler">

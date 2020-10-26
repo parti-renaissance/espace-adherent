@@ -55,18 +55,8 @@
                 <argument type="service" id="app.glide" />
             </call>
         </service>
-        <service id="App\Validator\UniqueTurnkeyProjectPinnedValidator" />
-        <service id="App\Validator\UniqueVotePlaceAssessorValidator" />
-        <service id="App\Validator\ValidAdherentCoReferentValidator" />
-
-        <!-- Biography -->
-        <service id="App\Validator\UniqueExecutiveOfficeMemberRoleValidator" />
 
         <!-- Donation -->
-        <service id="App\Validator\PayboxSubscriptionValidator" />
-        <service id="App\Validator\UniqueDonationSubscriptionValidator" />
-        <service id="App\Validator\MaxFiscalYearDonationValidator" />
-        <service id="App\Validator\MaxMonthDonationValidator" />
         <service id="App\Donation\DonationFactory" />
         <service id="App\Donation\PayboxPaymentUnsubscription">
             <argument type="service" key="$mailer" id="app.mailer.transactional" />
@@ -98,9 +88,6 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>
         <service id="App\Membership\EventListener\ChangeEmailFlashMessageSubscriber" />
-        <service id="App\Validator\BannedAdherentValidator">
-            <argument type="service" id="App\Repository\BannedAdherentRepository" />
-        </service>
         <service id="App\Membership\AdherentAccountActivationHandler" />
 
         <!-- Event -->
@@ -196,8 +183,6 @@
         <service id="App\Referent\ManagedCitizenProjectsExporter" />
 
         <!-- J'écoute -->
-        <service id="App\Validator\SurveyQuestionTypeChoiceValidator" />
-        <service id="App\Validator\DataSurveyAnswerTypeChoiceValidator" />
         <service id="App\Jecoute\DataSurveyNotifier">
             <argument type="service" id="app.mailer.transactional"/>
         </service>
@@ -259,10 +244,6 @@
         <service id="App\HTMLPurifier\Injector\ImageDimension">
             <argument>%image_max_length%</argument>
         </service>
-
-        <!-- Validators -->
-        <service id="App\Validator\DateRangeValidator" />
-        <service id="App\Validator\EventRegistrationValidator" />
 
         <!-- History -->
         <service id="App\History\EmailSubscriptionHistoryHandler" />
@@ -387,7 +368,6 @@
         <service id="App\Storage\ImageStorage" />
 
         <!-- Ideas Workshop -->
-        <service id="App\Validator\CommitteeMemberValidator" />
         <service id="App\IdeasWorkshop\Listener\IdeaPublishListener" />
         <service id="App\IdeasWorkshop\Listener\IdeaExtendListener" />
         <service id="App\IdeasWorkshop\Listener\ApproveThreadCommentListener" />
@@ -404,7 +384,6 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
             <tag name="messenger.message_handler"/>
         </service>
-        <service id="App\Validator\MandatoryQuestionValidator" />
 
         <service id="App\Logging\CurrentUserProcessor">
             <tag name="monolog.processor" method="processRecord" />
@@ -518,7 +497,6 @@
         <service id="App\ChezVous\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
         </service>
-        <service id="App\Validator\ChezVous\MeasurePayloadValidator" />
 
         <service id="App\EventListener\AdministratorExportHistoryListener" />
 
@@ -528,8 +506,5 @@
                 <argument type="service" id="logger" />
             </call>
         </service>
-
-        <!-- TerritorialCouncil -->
-        <service id="App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator" />
     </services>
 </container>

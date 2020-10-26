@@ -4,7 +4,7 @@ namespace App\Newsletter;
 
 use App\Entity\Adherent;
 use App\Entity\NewsletterSubscription;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -13,7 +13,7 @@ class NewsletterSubscriptionHandler
     private $manager;
     private $eventDispatcher;
 
-    public function __construct(EntityManager $manager, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EntityManagerInterface $manager, EventDispatcherInterface $eventDispatcher)
     {
         $this->manager = $manager;
         $this->eventDispatcher = $eventDispatcher;

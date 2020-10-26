@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
 class UniqueMembership extends Constraint
 {
     public $message = 'adherent.email_address.not_unique';
-    public $service = 'app.validator.unique_membership';
+    public $service = UniqueMembershipValidator::class;
 
     public function validatedBy()
     {

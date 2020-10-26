@@ -92,6 +92,8 @@ services:
         resource: '../src/ThematicCommunity/Handler/'
     App\Committee\:
         resource: '../src/Committee/'
+    App\Validator\:
+        resource: '../src/Validator/'
 
     # Services
 

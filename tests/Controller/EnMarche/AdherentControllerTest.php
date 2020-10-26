@@ -866,11 +866,11 @@ class AdherentControllerTest extends WebTestCase
     /**
      * @dataProvider provideRegularAdherentsCredentials
      */
-    public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $phone): void
+    public function testRegularAdherentCanCreateOneNewCommittee(string $emailAddress, string $phone): void
     {
         $this->client->followRedirects();
 
-        $this->authenticateAsAdherent($this->client, $emaiLAddress);
+        $this->authenticateAsAdherent($this->client, $emailAddress);
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-comite');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame($phone, $crawler->filter('#create_committee_phone_number')->attr('value'));
@@ -929,7 +929,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
         $this->assertSame('Lyon est En Marche !', $committee->getName());
         $this->assertTrue($committee->isWaitingForApproval());
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emailAddress));
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.');
@@ -1210,12 +1210,5 @@ class AdherentControllerTest extends WebTestCase
         return array_map(static function (SubscriptionType $type) use ($codes) {
             return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
         }, $this->getSubscriptionTypeRepository()->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES));
-    }
-
-    private function checkIdeasAuthorCategory(array $ideas, string $categoryName)
-    {
-        foreach ($ideas as $idea) {
-            $this->assertSame($categoryName, $idea->getAuthorCategory());
-        }
     }
 }
