@@ -157,19 +157,12 @@ class City implements ZoneableInterface
             $toMerge[] = $this->department->getParents();
         }
 
-        foreach ($this->districts as $district) {
-            $toMerge[] = [$district];
-            $toMerge[] = $district->getParents();
-        }
+        $toMerge[] = $this->districts->toArray();
 
-        foreach ($this->cantons as $canton) {
-            $toMerge[] = [$canton];
-            $toMerge[] = $canton->getParents();
-        }
+        $toMerge[] = $this->cantons->toArray();
 
         if ($this->cityCommunity) {
             $toMerge[] = [$this->cityCommunity];
-            $toMerge[] = $this->cityCommunity->getParents();
         }
 
         return $toMerge ? array_values(array_unique(array_merge(...$toMerge))) : [];

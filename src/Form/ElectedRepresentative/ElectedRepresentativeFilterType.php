@@ -7,10 +7,8 @@ use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
-use App\Repository\ElectedRepresentative\ZoneRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -78,15 +76,6 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'required' => false,
                 'multiple' => true,
             ])
-            ->add('cities', EntityType::class, [
-                'label' => 'elected_representative.cities',
-                'class' => Zone::class,
-                'required' => false,
-                'multiple' => true,
-                'query_builder' => function (ZoneRepository $zoneRepository) use ($options) {
-                    return $zoneRepository->createSelectByReferentTagsQueryBuilder($options['referent_tags']);
-                },
-            ])
             ->add('userListDefinitions', EntityType::class, [
                 'label' => 'elected_representative.user_list_definitions',
                 'class' => UserListDefinition::class,
@@ -117,11 +106,11 @@ class ElectedRepresentativeFilterType extends AbstractType
             ->setDefaults([
                 'data_class' => ListFilter::class,
                 'user_list_definition_type' => null,
-                'referent_tags' => [],
+                'managed_zones' => [],
                 'allow_extra_fields' => true,
             ])
             ->setAllowedTypes('user_list_definition_type', 'array')
-            ->setAllowedTypes('referent_tags', 'array')
+            ->setAllowedTypes('managed_zones', 'array')
         ;
     }
 }
