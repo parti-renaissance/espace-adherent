@@ -61,9 +61,9 @@ Feature: Merge committees from admin panel
     And I should be on "/admin/app/reporting-committeemergehistory/list"
     And "api_sync" should have 2 messages
     And "api_sync" should have messages below:
-      | routing_key       | body                                                                                                                                                                                                                                                                                                                 |
-      | committee.updated | {"uuid":"b0cd0e52-a5a4-410b-bba3-37afdd326a0a","status":"REFUSED","membersCount":2,"name":"En Marche Dammarie-les-Lys","slug":"en-marche-dammarie-les-lys","tags":["77"],"longitude":2.624205,"latitude":48.5182194,"country":"FR","address":"824 Avenue du Lys","zipCode":"77190","city":"Dammarie-les-Lys"}     |
-      | committee.updated | {"uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","status":"APPROVED","membersCount":5,"name":"En Marche Paris 8","slug":"en-marche-paris-8","tags":["75108","75"],"longitude":2.313243,"latitude":48.870506,"country":"FR","address":"60 avenue des Champs-\u00c9lys\u00e9es","zipCode":"75008","city":"Paris 8e"} |
+      | routing_key       | body                                                                                                                                                                                                                                                                                                             |
+      | committee.updated | {"uuid":"b0cd0e52-a5a4-410b-bba3-37afdd326a0a","status":"REFUSED","membersCount":2,"name":"En Marche Dammarie-les-Lys","slug":"en-marche-dammarie-les-lys","longitude":2.624205,"latitude":48.5182194,"country":"FR","address":"824 Avenue du Lys","zipCode":"77190","city":"Dammarie-les-Lys","tags":["77"]}    |
+      | committee.updated | {"uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","status":"APPROVED","membersCount":5,"name":"En Marche Paris 8","slug":"en-marche-paris-8","longitude":2.313243,"latitude":48.870506,"country":"FR","address":"60 avenue des Champs-\u00c9lys\u00e9es","zipCode":"75008","city":"Paris 8e","tags":["75","75108"]} |
     Then I am on "/admin/app/committee/3/members"
     And I should not see "Animateur principal"
     And I should not see "Co-animateur"
