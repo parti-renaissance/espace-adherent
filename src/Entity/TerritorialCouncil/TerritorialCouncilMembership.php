@@ -4,6 +4,7 @@ namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\UuidEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"adherent", "territorialCouncil"})
  */
-class TerritorialCouncilMembership
+class TerritorialCouncilMembership implements UuidEntityInterface
 {
     use EntityIdentityTrait;
 

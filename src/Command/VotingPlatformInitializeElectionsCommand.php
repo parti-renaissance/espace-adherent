@@ -51,7 +51,7 @@ class VotingPlatformInitializeElectionsCommand extends Command
         $this->io->progressStart();
 
         foreach ($designations as $designation) {
-            if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
+            if ($designation->isCommitteeType()) {
                 $this->configureCommitteeElections($designation);
             } elseif (DesignationTypeEnum::COPOL === $designation->getType()) {
                 $this->configureTerritorialCouncilElections($designation);

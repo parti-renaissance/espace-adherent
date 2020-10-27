@@ -7,4 +7,6 @@ interface ElectionEntityInterface
     public function getDesignation(): Designation;
 
     public function isCandidacyPeriodActive(): bool;
+
+    public function isOngoing(): bool;
 }

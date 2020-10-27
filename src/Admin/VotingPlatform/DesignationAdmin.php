@@ -2,11 +2,11 @@
 
 namespace App\Admin\VotingPlatform;
 
+use App\Admin\AbstractAdmin;
 use App\Entity\ReferentTag;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Form\Admin\DesignationTypeType;
 use App\Form\Admin\DesignationZoneType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -28,6 +28,7 @@ class DesignationAdmin extends AbstractAdmin
                 ])
                 ->add('type', DesignationTypeType::class, [
                     'label' => 'Type d’élection',
+                    'disabled' => !$this->isCreation(),
                 ])
             ->end()
             ->with('Zone 🌍', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
@@ -35,7 +36,7 @@ class DesignationAdmin extends AbstractAdmin
                     'required' => false,
                     'label' => 'Zone',
                     'multiple' => true,
-                    'help' => 'pour les élections de type "Comités-Adhérents"',
+                    'help' => 'pour les élections de types: "Comités-Adhérents" ou "Comités-Animateurs"',
                 ])
                 ->add('referentTags', EntityType::class, [
                     'class' => ReferentTag::class,

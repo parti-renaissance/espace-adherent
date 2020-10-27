@@ -1,6 +1,4 @@
 {% set candidacy_committee_membership = app.user.memberships.committeeCandidacyMembership %}
-{% set committee_election = committee.committeeElection %}
-{% set designation = committee_election.designation %}
 
 {% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE') %}
 {% set member_is_candidate_in_committee = able_to_candidate and candidacy_committee_membership == membership %}

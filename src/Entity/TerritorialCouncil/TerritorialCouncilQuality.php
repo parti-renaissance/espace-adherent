@@ -25,7 +25,7 @@ class TerritorialCouncilQuality
     /**
      * @var TerritorialCouncilMembership|null
      *
-     * @ORM\ManyToOne(targetEntity="TerritorialCouncilMembership", inversedBy="qualities")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", inversedBy="qualities")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $territorialCouncilMembership;

@@ -4,6 +4,7 @@ namespace App\Repository\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\Election;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -26,7 +27,7 @@ class CandidacyRepository extends ServiceEntityRepository
             ->andWhere('candidacy.status = :confirmed')
             ->setParameters([
                 'election' => $election,
-                'confirmed' => Candidacy::STATUS_CONFIRMED,
+                'confirmed' => CandidacyInterface::STATUS_CONFIRMED,
             ])
             ->getQuery()
             ->getResult()
@@ -43,7 +44,7 @@ class CandidacyRepository extends ServiceEntityRepository
             ->groupBy('candidacy.quality')
             ->setParameters([
                 'election' => $election,
-                'confirmed' => Candidacy::STATUS_CONFIRMED,
+                'confirmed' => CandidacyInterface::STATUS_CONFIRMED,
             ])
             ->getQuery()
             ->getArrayResult()

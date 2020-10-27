@@ -5,14 +5,17 @@ namespace App\Controller\EnMarche\CommitteeDesignation;
 use App\Committee\Election\CandidacyManager;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeCandidacy;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
+use App\Form\Committee\CandidacyBinomeType;
 use App\Form\VotingPlatform\Candidacy\CommitteeCandidacyType;
+use App\Form\VotingPlatform\Candidacy\CommitteeSupervisorCandidacyType;
 use App\Security\Voter\Committee\CommitteeCandidacyVoter;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,28 +68,33 @@ class CandidatureController extends AbstractController
                 }
             }
 
-            $candidacy = new CommitteeCandidacy($election, $candidacyGender);
+            $candidacy = $this->candidatureManager->createCandidacy($election, $candidacyGender);
         }
 
         $isCreation = null === $candidacy->getId();
 
-        $form = $this->createForm(CommitteeCandidacyType::class, $candidacy);
-
-        if ($isCreation) {
-            $form->add('skip', SubmitType::class);
-        }
-
-        $form->handleRequest($request);
+        $form = $this
+            ->createCandidacyForm($candidacy)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->candidatureManager->updateCandidature($candidacy, $adherent, $committee);
 
             $this->addFlash('info', 'Votre candidature a bien été '.($isCreation ? 'enregistrée' : 'modifiée'));
 
-            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+            if (
+                DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()
+                || $candidacy->hasPendingInvitation()
+                || !$isCreation
+            ) {
+                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+            }
+
+            return $this->redirectToRoute('app_committee_candidature_select_pair_candidate', ['slug' => $committee->getSlug()]);
         }
 
-        return $this->render('committee/edit_candidacy.html.twig', [
+        return $this->render(sprintf('committee/candidacy/form_%s.html.twig', $election->getDesignationType()), [
             'candidacy' => $candidacy,
             'form' => $form->createView(),
             'committee' => $committee,
@@ -115,5 +123,85 @@ class CandidatureController extends AbstractController
         }
 
         return $this->redirectToRoute('app_adherent_committees');
+    }
+
+    /**
+     * @Route("/choix-de-binome", name="_select_pair_candidate", methods={"GET", "POST"})
+     *
+     * @param Adherent $adherent
+     */
+    public function selectPairCandidateAction(Committee $committee, Request $request, UserInterface $adherent): Response
+    {
+        if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        }
+
+        if (!($candidacy = $this->candidatureManager->getCandidacy($adherent, $committee)) || $candidacy->isConfirmed()) {
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        }
+
+        if ($candidacy->hasInvitation()) {
+            if ($candidacy->getInvitation()->isAccepted()) {
+                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+            }
+
+            $previouslyInvitedMembership = $candidacy->getInvitation()->getMembership();
+        }
+
+        $form = $this
+            ->createForm(CandidacyBinomeType::class, $candidacy)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $invitation = $candidacy->getInvitation();
+            $this->candidatureManager->updateInvitation($invitation, $candidacy, $previouslyInvitedMembership ?? null);
+
+            $this->addFlash('info', 'Votre invitation a bien été envoyée');
+
+            return $this->redirectToRoute('app_committee_candidature_select_pair_candidate_finish', ['slug' => $committee->getSlug()]);
+        }
+
+        return $this->render('committee/candidacy/candidacy_invitation.html.twig', [
+            'form' => $form->createView(),
+            'invitation' => $candidacy->getInvitation(),
+            'committee' => $committee,
+        ]);
+    }
+
+    /**
+     * @Route("/choix-de-binome/fini", name="_select_pair_candidate_finish", methods={"GET"})
+     *
+     * @param Adherent $adherent
+     */
+    public function finishInvitationStepAction(Committee $committee, UserInterface $adherent): Response
+    {
+        if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        }
+
+        if (!($candidacy = $this->candidatureManager->getCandidacy($adherent, $committee)) || !($invitation = $candidacy->getInvitation())) {
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        }
+
+        return $this->render('committee/candidacy/candidacy_invitation_confirmation.html.twig', [
+            'invitation' => $invitation,
+            'committee' => $committee,
+        ]);
+    }
+
+    private function createCandidacyForm(CandidacyInterface $candidacy): FormInterface
+    {
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $candidacy->getType()) {
+            return $this->createForm(CommitteeSupervisorCandidacyType::class, $candidacy);
+        }
+
+        $form = $this->createForm(CommitteeCandidacyType::class, $candidacy);
+
+        if (!$candidacy->getId()) {
+            $form->add('skip', SubmitType::class);
+        }
+
+        return $form;
     }
 }

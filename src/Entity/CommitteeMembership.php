@@ -31,7 +31,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeMembershipRepository")
  */
-class CommitteeMembership
+class CommitteeMembership implements UuidEntityInterface
 {
     public const COMMITTEE_HOST = 'HOST';
     public const COMMITTEE_FOLLOWER = 'FOLLOWER';
@@ -51,7 +51,7 @@ class CommitteeMembership
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Groups({"export"})
+     * @Groups({"export", "api_candidacy_read"})
      */
     private $adherent;
 
@@ -122,6 +122,14 @@ class CommitteeMembership
         $this->joinedAt = $subscriptionDate ?? new \DateTime();
 
         $this->committeeCandidacies = new ArrayCollection();
+    }
+
+    /**
+     * @Groups({"api_candidacy_read"})
+     */
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     final public static function getHostPrivileges(): array
@@ -211,6 +219,11 @@ class CommitteeMembership
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->adherent ? $this->adherent->getFullName() : null;
     }
 
     public function getCommittee(): Committee

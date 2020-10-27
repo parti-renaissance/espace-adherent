@@ -1,0 +1,56 @@
+{% extends 'committee/_candidacy_layout.html.twig' %}
+
+{% block page_title 'Choix de votre binôme' %}
+
+{% block candidacy_content %}
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
+        <div>
+            <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
+        </div>
+
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Choix de votre binôme</h2>
+
+            <p class="text--body text--gray text--small b__nudge--bottom-50">
+                Les membres non sélectionnables ne sont pas éligibles car ils sont déjà candidats.
+            </p>
+
+            {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
+            {{ form_errors(form) }}
+
+            <div class="em-form__group">
+                {{ form_label(form.invitation, 'Sélectionnez un membre pour composer votre binôme', {label_attr: {class: 'em-form__label'}}) }}
+
+                {{ form_widget(form.invitation) }}
+
+                <div class="membership-widget-wrapper"></div>
+            </div>
+
+            <div>
+                {{ form_row(form.save, {label: 'Envoyer l\'invitation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+
+                {% if not invitation or not invitation.id %}
+                    <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                        Étape précedente
+                    </a>
+                {% endif %}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runCommitteeCandidacy(
+                '{{ committee.slug }}',
+                '#{{ form.invitation.membership.vars.id }}',
+                '#{{ form.save.vars.id }}',
+                '.membership-widget-wrapper'
+            );
+        });
+    </script>
+{% endblock %}

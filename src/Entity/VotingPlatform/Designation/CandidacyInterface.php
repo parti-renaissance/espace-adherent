@@ -8,7 +8,6 @@ use Ramsey\Uuid\UuidInterface;
 
 interface CandidacyInterface extends ImageOwnerInterface
 {
-    public const TYPE_COMMITTEE = 'committee';
     public const TYPE_TERRITORIAL_COUNCIL = 'territorial_council';
 
     public const STATUS_DRAFT = 'draft';

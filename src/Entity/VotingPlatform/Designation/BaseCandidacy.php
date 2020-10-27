@@ -51,6 +51,30 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     private $biography;
 
     /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $status = CandidacyInterface::STATUS_DRAFT;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=2000)
+     */
+    protected $faithStatement;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    protected $isPublicFaithStatement = false;
+
+    /**
      * @var UploadedFile|null
      *
      * @Assert\Image(
@@ -61,6 +85,16 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     protected $image;
 
     private $removeImage = false;
+
+    /**
+     * @var CandidacyInvitationInterface|null
+     */
+    protected $invitation;
+
+    /**
+     * @var CandidacyInterface|null
+     */
+    protected $binome;
 
     public function __construct(string $gender = null, UuidInterface $uuid = null)
     {
@@ -144,5 +178,80 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     public function getIndexOptions(): array
     {
         return [];
+    }
+
+    public function isDraft(): bool
+    {
+        return CandidacyInterface::STATUS_DRAFT === $this->status;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return CandidacyInterface::STATUS_CONFIRMED === $this->status;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function confirm(): void
+    {
+        $this->status = CandidacyInterface::STATUS_CONFIRMED;
+    }
+
+    public function getFaithStatement(): ?string
+    {
+        return $this->faithStatement;
+    }
+
+    public function setFaithStatement(?string $faithStatement): void
+    {
+        $this->faithStatement = $faithStatement;
+    }
+
+    public function isPublicFaithStatement(): bool
+    {
+        return $this->isPublicFaithStatement;
+    }
+
+    public function setIsPublicFaithStatement(bool $isPublicFaithStatement): void
+    {
+        $this->isPublicFaithStatement = $isPublicFaithStatement;
+    }
+
+    public function hasInvitation(): bool
+    {
+        return null !== $this->invitation;
+    }
+
+    public function hasPendingInvitation(): bool
+    {
+        return null !== $this->invitation && $this->invitation->isPending();
+    }
+
+    public function getInvitation(): ?CandidacyInvitationInterface
+    {
+        return $this->invitation;
+    }
+
+    public function setInvitation(?CandidacyInvitationInterface $invitation): void
+    {
+        $this->invitation = $invitation;
+    }
+
+    public function getBinome(): ?CandidacyInterface
+    {
+        return $this->binome;
+    }
+
+    public function setBinome(?CandidacyInterface $binome): void
+    {
+        $this->binome = $binome;
+    }
+
+    public function isOngoing(): bool
+    {
+        return $this->getElection()->isOngoing();
     }
 }

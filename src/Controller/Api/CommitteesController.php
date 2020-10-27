@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Committee\Election\CandidacyManager;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -112,6 +113,43 @@ class CommitteesController extends Controller
                 ];
             }, $memberships),
         ]);
+    }
+
+    /**
+     * @Route("/committee/{slug}/candidacy/available-memberships", name="api_committee_candidacy_available_memberships_get", methods={"GET"})
+     *
+     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
+     *
+     * @param Adherent $adherent
+     */
+    public function getAvailableMembershipsAction(
+        Committee $committee,
+        Request $request,
+        UserInterface $adherent,
+        CandidacyManager $candidacyManager,
+        CommitteeMembershipRepository $repository
+    ): Response {
+        if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
+            throw $this->createAccessDeniedException('No election is started');
+        }
+
+        if (!$candidacy = $candidacyManager->getCandidacy($adherent, $committee)) {
+            throw $this->createAccessDeniedException('You do not have a candidacy');
+        }
+
+        if (!$query = trim($request->query->get('query', ''))) {
+            return $this->json(
+                ['message' => 'Veuillez utiliser la recherche pour retrouver votre binôme'],
+                JsonResponse::HTTP_BAD_REQUEST
+            );
+        }
+
+        return $this->json(
+            $repository->findAvailableMemberships($candidacy, $query),
+            JsonResponse::HTTP_OK,
+            [],
+            ['groups' => ['api_candidacy_read']]
+        );
     }
 
     /**

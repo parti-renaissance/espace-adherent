@@ -80,7 +80,7 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
      * @var Collection|TerritorialCouncilMembership[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="TerritorialCouncilMembership",
+     *     targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership",
      *     cascade={"persist", "remove"},
      *     mappedBy="territorialCouncil",
      *     orphanRemoval=true

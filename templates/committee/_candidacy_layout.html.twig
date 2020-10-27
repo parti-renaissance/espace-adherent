@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <main class="committee">
+        <header class="committee__header--slim background--blue">
+            <div class="l__wrapper committee__header__content">
+                <div class="text--white committee__header__titles">
+                    <div class="text--uppercase text--small b__nudge--bottom-tiny">
+                        Comité local
+                    </div>
+                    <div class="committee__name">
+                        <h2>{{ committee.name }}</h2>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {% block candidacy_content %}{% endblock %}
+    </main>
+{% endblock %}
