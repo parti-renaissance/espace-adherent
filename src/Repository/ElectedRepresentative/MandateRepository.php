@@ -34,9 +34,10 @@ class MandateRepository extends ServiceEntityRepository
     ): array {
         return $this
             ->createQueryBuilder('mandate')
-            ->select('mandate', 'zone')
+            ->select('mandate', 'zone', 'geoZone')
             ->leftJoin('mandate.electedRepresentative', 'electedRepresentative')
             ->leftJoin('mandate.zone', 'zone')
+            ->leftJoin('mandate.geoZone', 'geoZone')
             ->leftJoin('electedRepresentative.userListDefinitions', 'userListDefinition')
             ->where('mandate.type IN (:types)')
             ->andWhere('mandate.isElected = 1')

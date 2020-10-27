@@ -71,12 +71,32 @@ class Zone implements GeoInterface
         $this->children = new ArrayCollection();
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function isConsularDistrict(): bool
+    {
+        return Zone::CONSULAR_DISTRICT === $this->type;
+    }
+
     /**
      * @return self[]
      */
     public function getParents(): array
     {
         return $this->parents->toArray();
+    }
+
+    /**
+     * @return self[]
+     */
+    public function getParentsOfType(string $type): array
+    {
+        return array_filter($this->parents->toArray(), function (Zone $zone) use ($type) {
+            return $type === $zone->getType();
+        });
     }
 
     public function addParent(self $zone): void
