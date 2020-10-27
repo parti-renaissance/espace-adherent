@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\Mandate;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -57,13 +58,18 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
     {
         $tags = [];
         $zones = [];
-        array_walk($mandates, function (Mandate $mandate) use (&$tags, &$geoZones) {
+        array_walk($mandates, function (Mandate $mandate) use (&$tags, &$zones) {
             if ($mandate->getZone()) {
                 $tags = array_merge($tags, $mandate->getZone()->getReferentTags()->toArray());
             }
 
             if ($mandate->getGeoZone()) {
-                $zones[] = $mandate->getGeoZone();
+                $zone = $mandate->getGeoZone();
+                $zones[] = $zone;
+
+                if ($zone->isConsularDistrict()) {
+                    $zones = array_merge($zones, $zone->getParentsOfType(Zone::FOREIGN_DISTRICT));
+                }
             }
         });
 
