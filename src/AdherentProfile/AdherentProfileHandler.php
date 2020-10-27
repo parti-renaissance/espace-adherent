@@ -11,6 +11,7 @@ use App\Membership\AdherentProfileWasUpdatedEvent;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Referent\ReferentTagManager;
+use App\Referent\ReferentZoneManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -31,6 +32,9 @@ class AdherentProfileHandler
     /** @var ReferentTagManager */
     private $referentTagManager;
 
+    /** @var ReferentZoneManager */
+    private $referentZoneManager;
+
     /** @var EmailSubscriptionHistoryHandler */
     private $emailSubscriptionHistoryHandler;
 
@@ -40,6 +44,7 @@ class AdherentProfileHandler
         PostAddressFactory $addressFactory,
         AdherentChangeEmailHandler $emailHandler,
         ReferentTagManager $referentTagManager,
+        ReferentZoneManager $referentZoneManager,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
     ) {
         $this->dispatcher = $dispatcher;
@@ -47,6 +52,7 @@ class AdherentProfileHandler
         $this->addressFactory = $addressFactory;
         $this->emailHandler = $emailHandler;
         $this->referentTagManager = $referentTagManager;
+        $this->referentZoneManager = $referentZoneManager;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
     }
 
@@ -73,6 +79,10 @@ class AdherentProfileHandler
             $oldReferentTags = $adherent->getReferentTags()->toArray();
             $this->referentTagManager->assignReferentLocalTags($adherent);
             $this->emailSubscriptionHistoryHandler->handleReferentTagsUpdate($adherent, $oldReferentTags);
+        }
+
+        if ($this->referentZoneManager->isUpdateNeeded($adherent)) {
+            $this->referentZoneManager->assignZone($adherent);
         }
     }
 }

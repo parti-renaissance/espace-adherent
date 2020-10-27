@@ -94,6 +94,8 @@ services:
         resource: '../src/Committee/'
     App\Validator\:
         resource: '../src/Validator/'
+    App\Referent\:
+        resource: '../src/Referent/'
 
     # Services
 

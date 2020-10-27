@@ -81,7 +81,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface, EquatableInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface
 {
     public const ENABLED = 'ENABLED';
     public const TO_DELETE = 'TO_DELETE';
@@ -93,6 +93,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityPostAddressTrait;
     use LazyCollectionTrait;
     use EntityReferentTagTrait;
+    use EntityZoneTrait;
 
     /**
      * @ORM\Column(length=25, unique=true, nullable=true)
@@ -625,6 +626,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->subscriptionTypes = new ArrayCollection();
         $this->ideas = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->zones = new ArrayCollection();
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
         $this->receivedDelegatedAccesses = new ArrayCollection();
