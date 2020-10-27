@@ -732,11 +732,13 @@ elected_representative.labels: Étiquettes
 elected_representative.mandates: Mandats
 elected_representative.political_functions: Fonctions
 elected_representative.cities: Villes
+elected_representative.zones: Zones
 elected_representative.user_list_definitions: Labels
 elected_representative.filter.labels: Choisissez des étiquettes
 elected_representative.filter.mandates: Choisissez des mandates
 elected_representative.filter.political_functions: Choisissez des fonctions
 elected_representative.filter.cities: Choisissez des villes
+elected_representative.filter.zones: Choisissez des zones
 elected_representative.filter.user_list_definitions: Choisissez des labels
 elected_representative.filter.contact_type.adherent: Adhérent
 elected_representative.filter.contact_type.contact: Contact

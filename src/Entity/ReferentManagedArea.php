@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -55,6 +56,19 @@ class ReferentManagedArea
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Zone[]|Collection
+     */
+    public function getZones(): Collection
+    {
+        $zones = new ArrayCollection();
+        foreach ($this->getTags() as $tag) {
+            $zones->add($tag->getZone());
+        }
+
+        return $zones;
     }
 
     /**
