@@ -27,6 +27,7 @@
             App.runProfileUpdatePage();
 
             {{ js.address(form.address, { cityAutocomplete: true }) }}
+            $('.select2').select2({theme: 'default em-form'});
         });
     </script>
 {% endblock %}
@@ -123,6 +124,19 @@
                 {{ form_row(form.job, {label: 'Métier'}) }}
             </div>
             {{ form_row(form.activityArea, {half: true, label: 'Secteur d\'activité'}) }}
+        </div>
+
+        <div class="em-form__section">
+            <h2 class="section-subtitle">Vos mandats déclarés</h2>
+            <div class="em-form__row">
+                <div class="em-form__group">
+                    {{ form_label(form.mandates, 'adherent.mandate.label') }}
+                    {{ form_widget(form.mandates, {attr: {class: 'select2'}}) }}
+                    {{ form_errors(form.mandates) }}
+
+                    <p class="help__text b__nudge--top-10">Cette information est seulement déclarative et facilitera le lien entre votre compte adhérent et vos mandats.</p>
+                </div>
+            </div>
         </div>
 
         <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />

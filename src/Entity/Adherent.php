@@ -1179,6 +1179,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->linkedinPageUrl = $adherentProfile->getLinkedinPageUrl();
         $this->job = $adherentProfile->getJob();
         $this->activityArea = $adherentProfile->getActivityArea();
+        $this->mandates = $adherentProfile->getMandates();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
