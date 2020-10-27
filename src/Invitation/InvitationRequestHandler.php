@@ -5,7 +5,7 @@ namespace App\Invitation;
 use App\Entity\Invite;
 use App\Mailer\MailerService;
 use App\Mailer\Message\MovementInvitationMessage;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class InvitationRequestHandler
@@ -13,7 +13,7 @@ class InvitationRequestHandler
     private $entityManager;
     private $mailer;
 
-    public function __construct(EntityManager $entityManager, MailerService $mailer)
+    public function __construct(EntityManagerInterface $entityManager, MailerService $mailer)
     {
         $this->entityManager = $entityManager;
         $this->mailer = $mailer;

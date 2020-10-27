@@ -39,3 +39,9 @@ services:
 
     App\Content\ClarificationFactory:
         public: true
+
+    App\Committee\CommitteeFactory:
+        public: true
+
+    App\Committee\Feed\CommitteeFeedManager:
+        public: true

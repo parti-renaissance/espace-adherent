@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
 class Recaptcha extends Constraint
 {
     public $message = 'common.recaptcha.invalid_message';
-    public $service = 'app.validator.recaptcha';
+    public $service = RecaptchaValidator::class;
 
     public function validatedBy()
     {

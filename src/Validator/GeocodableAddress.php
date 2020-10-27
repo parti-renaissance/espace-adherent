@@ -15,7 +15,7 @@ class GeocodableAddress extends Constraint
     const INVALID_ERROR = 'db20d91f-9b70-4747-a75d-29ae0dfacf70';
 
     public $message = 'common.address.not_geocodable';
-    public $service = 'app.validator.geocodable_address';
+    public $service = GeocodableAddressValidator::class;
 
     public function validatedBy()
     {

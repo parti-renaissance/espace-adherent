@@ -23,13 +23,6 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <service id="app.validator.was_not_invited_recently_validator" class="App\Validator\WasNotInvitedRecentlyValidator">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="property_accessor" />
-
-            <tag name="validator.constraint_validator" />
-        </service>
-
         <!-- Procuration -->
         <service id="app.procuration.proxy_message_factory" class="App\Procuration\ProcurationProxyMessageFactory" public="false">
             <argument type="service" id="app.routing.remote_url_generator" />

@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use App\Committee\CommitteeFactory;
 use App\Committee\CommitteeManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
@@ -516,7 +517,7 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testAllowToCreateCommmitee()
     {
         /** @var CommitteeManager $manager */
-        $manager = $this->get('app.committee.manager');
+        $manager = $this->get(CommitteeManager::class);
 
         $this->authenticateAsAdherent($this->client, 'martine.lindt@gmail.com');
         $adherent = $this->getAdherentRepository()->findOneByEmail('martine.lindt@gmail.com');
@@ -551,7 +552,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $adherent = $this->getAdherentRepository()->findOneByEmail('michel.vasseur@example.ch');
         $manager->unfollowCommittee($adherent, $this->getCommitteeRepository()->findOneByName('En Marche - Suisse'));
 
-        $committee = $this->get('app.committee.factory')->createFromArray([
+        $committee = $this->get(CommitteeFactory::class)->createFromArray([
             'uuid' => '79638242-6662-11e7-b114-ef08860a1845',
             'created_by' => (string) $adherent->getUuid(),
             'created_at' => '2017-01-12 19:34:12',

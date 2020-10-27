@@ -52,7 +52,7 @@
                         </div>
                         {{ form_errors(form.image) }}
 
-                        {% if candidacy is defined and candidacy.imageName %}
+                        {% if candidacy.id and candidacy.imageName %}
                             {% set image_url = path('asset_url', {path: candidacy.imagePath}) %}
                         {% endif %}
 
@@ -127,13 +127,8 @@
             on(dom('.delete-profile-image--trigger'), 'click', function (event) {
                 event.preventDefault();
 
-                {% if candidacy is defined %}
-                    inputFile.value = '';
-                    dom('#' + '{{ form.croppedImage.vars.id }}').value = -1;
-                {% else %}
-                    inputFile.value = '';
-                    dom('#' + '{{ form.croppedImage.vars.id }}').value = '';
-                {% endif %}
+                inputFile.value = '';
+                dom('#' + '{{ form.croppedImage.vars.id }}').value = {{ candidacy.id ? -1 : "''" }};
 
                 show(dom('.image-uploader--label'));
                 hide(dom('.image-uploader--preview'));

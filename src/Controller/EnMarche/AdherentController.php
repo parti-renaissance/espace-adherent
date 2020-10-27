@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche;
 use App\CitizenProject\CitizenProjectCreationCommand;
 use App\CitizenProject\CitizenProjectPermissions;
 use App\Committee\CommitteeCreationCommand;
+use App\Committee\CommitteeCreationCommandHandler;
 use App\Committee\CommitteeManager;
 use App\Contact\ContactMessage;
 use App\Entity\Adherent;
@@ -140,14 +141,14 @@ class AdherentController extends Controller
      * @Route("/creer-mon-comite", name="app_adherent_create_committee", methods={"GET", "POST"})
      * @Security("is_granted('CREATE_COMMITTEE')")
      */
-    public function createCommitteeAction(Request $request): Response
+    public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CreateCommitteeCommandType::class, $command);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.creation_handler')->handle($command);
+            $commandHandler->handle($command);
             $this->addFlash('info', 'committee.creation.success');
 
             return $this->redirectToRoute('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]);
@@ -301,10 +302,8 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listMyCommitteesAction(string $noResultMessage = null): Response
+    public function listMyCommitteesAction(CommitteeManager $manager, string $noResultMessage = null): Response
     {
-        $manager = $this->get('app.committee.manager');
-
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
             'no_result_message' => $noResultMessage,

@@ -16,11 +16,14 @@ class SendEmailForNewFollowerListener implements EventSubscriberInterface
     private $urlGenerator;
     private $mailer;
 
-    public function __construct(CommitteeManager $manager, UrlGeneratorInterface $urlGenerator, MailerService $mailer)
-    {
+    public function __construct(
+        CommitteeManager $manager,
+        UrlGeneratorInterface $urlGenerator,
+        MailerService $transactionalMailer
+    ) {
         $this->manager = $manager;
         $this->urlGenerator = $urlGenerator;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
     }
 
     public static function getSubscribedEvents()
