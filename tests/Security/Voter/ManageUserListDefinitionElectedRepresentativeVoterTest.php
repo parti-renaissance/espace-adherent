@@ -4,6 +4,7 @@ namespace Tests\App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentManagedArea;
 use App\Entity\ReferentTag;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -70,7 +71,7 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
 
     public function testAdherentIsNotGrantedIfNotInReferentArea()
     {
-        $tags = [new ReferentTag()];
+        $tags = [new ReferentTag(null, null, new Zone('', '', ''))];
         $adherent = $this->getAdherentMock(true, true, $tags);
         $electedRepresentative = $this->createMock(ElectedRepresentative::class);
 
@@ -91,7 +92,7 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
 
     public function testAdherentIsGrantedIfReferent()
     {
-        $tags = [new ReferentTag()];
+        $tags = [new ReferentTag(null, null, new Zone('', '', ''))];
         $adherent = $this->getAdherentMock(true, true, $tags);
         $electedRepresentative = $this->createMock(ElectedRepresentative::class);
 

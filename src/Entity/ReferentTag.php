@@ -90,10 +90,11 @@ class ReferentTag
      */
     private $zone;
 
-    public function __construct(string $name = null, string $code = null)
+    public function __construct(string $name = null, string $code = null, Zone $zone = null)
     {
         $this->name = $name;
         $this->code = $code;
+        $this->zone = $zone;
     }
 
     public function __toString(): string

@@ -24,6 +24,7 @@ use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Entity\District;
+use App\Entity\Geo\Zone;
 use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\ReferentTag;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
@@ -140,8 +141,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $message = $this->preparedMessage(ReferentAdherentMessage::class);
 
         $message->setFilter($filter = new ReferentUserFilter([
-            $tag1 = new ReferentTag('Tag1', 'code1'),
-            $tag2 = new ReferentTag('Tag2', 'code2'),
+            $tag1 = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1')),
+            $tag2 = new ReferentTag('Tag2', 'code2', new Zone('mock', 'code1', 'Tag2')),
         ]));
         $tag1->setExternalId(123);
         $tag2->setExternalId(456);
@@ -265,7 +266,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     public function testDeputyMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(DeputyAdherentMessage::class);
-        $message->setFilter($filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1')));
+        $message->setFilter($filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1'))));
         $tag->setExternalId(123);
 
         (new AdherentZoneMailchimpCampaignHandler())->handle($message);
@@ -334,7 +335,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     public function testSenatorMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(SenatorAdherentMessage::class);
-        $filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1')); // 5 and 6 are included by default
+        $filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1'))); // 5 and 6 are included by default
         $filter->setIncludeCitizenProjectHosts(false); // exclude 2
         $filter->setIncludeCommitteeSupervisors(false); // exclude 3
         $filter->setIncludeCommitteeHosts(true); // include 4
