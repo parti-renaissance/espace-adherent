@@ -9,6 +9,8 @@
 {% block page_title 'Modifier la candidature' %}
 
 {% block candidacy_content %}
+    {% set committee_election = committee.committeeElection %}
+
     {% block candidacy_form %}{% endblock %}
 
     <div id="modal-wrapper"></div>
