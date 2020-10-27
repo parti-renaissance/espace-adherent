@@ -163,7 +163,8 @@ class AreaUtils
 
         switch ($department) {
             case self::PREFIX_POSTALCODE_PARIS_DISTRICTS:
-                return $postalCode;
+                // Fix prefix in Paris codes, because postal codes start with "750" and codes with "751"
+                return '751'.substr($postalCode, 3);
             case self::PREFIX_POSTALCODE_TOM:
                 return self::POSTALCODE_MONACO === $postalCode ? self::CODE_MONACO : mb_substr($postalCode, 0, 3);
             case self::PREFIX_POSTALCODE_DOM:
