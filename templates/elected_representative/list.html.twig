@@ -68,11 +68,6 @@
                         <div class="manager__filters__section">
                             <div class="manager__filters__group">
                                 <div class="filter__row">
-                                    <label class="filter__label">Villes</label>
-                                    {{ form_widget(form.cities, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'elected_representative.filter.cities'|trans}}) }}
-                                </div>
-
-                                <div class="filter__row">
                                     <label class="filter__label">Labels</label>
                                     {{ form_widget(form.userListDefinitions, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'elected_representative.filter.user_list_definitions'|trans}}) }}
                                 </div>
@@ -152,7 +147,7 @@
                                     <td>
                                         {% for mandate in elected_representative.currentMandates %}
                                             <b>{{ mandate }}</b><br />
-                                            <i>{{ mandate.zone }}</i><br />
+                                            <i>{{ mandate.geoZone }}</i><br />
                                         {% endfor %}
                                     </td>
                                     <td>

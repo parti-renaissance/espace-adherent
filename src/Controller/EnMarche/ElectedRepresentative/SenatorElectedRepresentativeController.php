@@ -17,8 +17,8 @@ class SenatorElectedRepresentativeController extends AbstractElectedRepresentati
         return 'senator';
     }
 
-    protected function getManagedTags(Adherent $adherent): array
+    protected function getManagedZones(Adherent $adherent): array
     {
-        return [$adherent->getSenatorArea()->getDepartmentTag()];
+        return [$adherent->getSenatorArea()->getDepartmentTag()->getZone()];
     }
 }

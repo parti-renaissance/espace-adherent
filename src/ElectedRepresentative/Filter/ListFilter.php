@@ -3,7 +3,7 @@
 namespace App\ElectedRepresentative\Filter;
 
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
-use App\Entity\ReferentTag;
+use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -66,11 +66,16 @@ class ListFilter
     private $emailSubscribed;
 
     /**
-     * @var ReferentTag[]
+     * @var Zone[]
+     */
+    private $managedZones = [];
+
+    /**
+     * @var Zone[]
      *
      * @Assert\NotNull
      */
-    private $referentTags = [];
+    private $zones = [];
 
     /**
      * @var string
@@ -88,9 +93,9 @@ class ListFilter
      */
     private $order = 'a';
 
-    public function __construct(array $referentTags = [])
+    public function __construct(array $managedZones = [])
     {
-        $this->referentTags = $referentTags;
+        $this->managedZones = $managedZones;
     }
 
     public function getGender(): ?string
@@ -153,16 +158,6 @@ class ListFilter
         $this->politicalFunctions = $politicalFunctions;
     }
 
-    public function getCities(): ?array
-    {
-        return $this->cities;
-    }
-
-    public function setCities(?array $cities): void
-    {
-        $this->cities = $cities;
-    }
-
     public function getUserListDefinitions(): ?array
     {
         return $this->userListDefinitions;
@@ -194,23 +189,31 @@ class ListFilter
     }
 
     /**
-     * @return ReferentTag[]
+     * @return Zone[]
      */
-    public function getReferentTags(): array
+    public function getManagesZones(): array
     {
-        return $this->referentTags;
+        return $this->managedZones;
     }
 
-    public function addReferentTag(ReferentTag $referentTag): void
+    /**
+     * @return Zone[]
+     */
+    public function getZones(): array
     {
-        $this->referentTags[] = $referentTag;
+        return $this->zones;
     }
 
-    public function removeReferentTag(ReferentTag $referentTag): void
+    public function addZone(Zone $zone): void
     {
-        foreach ($this->referentTags as $key => $tag) {
-            if ($tag->getId() === $referentTag->getId()) {
-                unset($this->referentTags[$key]);
+        $this->zones[] = $zone;
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+        foreach ($this->zones as $key => $tag) {
+            if ($tag->getId() === $zone->getId()) {
+                unset($this->zones[$key]);
             }
         }
     }
@@ -248,7 +251,7 @@ class ListFilter
             'userListDefinitions' => array_map(function (UserListDefinition $label) {
                 return $label->getId();
             }, $this->userListDefinitions),
-            'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
+            'zones' => 1 === \count($this->zones) ? current($this->zones)->getId() : null,
             'sort' => $this->sort,
             'order' => $this->order,
             'contactType' => $this->contactType,

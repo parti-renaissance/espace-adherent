@@ -17,8 +17,8 @@ class DeputyElectedRepresentativeController extends AbstractElectedRepresentativ
         return 'deputy';
     }
 
-    protected function getManagedTags(Adherent $adherent): array
+    protected function getManagedZones(Adherent $adherent): array
     {
-        return [$adherent->getManagedDistrict()->getReferentTag()];
+        return [$adherent->getManagedDistrict()->getReferentTag()->getZone()];
     }
 }
