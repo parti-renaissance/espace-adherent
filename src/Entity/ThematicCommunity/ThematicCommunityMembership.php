@@ -66,14 +66,15 @@ abstract class ThematicCommunityMembership
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
      * @Assert\NotNull
      */
     private $hasJob = false;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $job;
 
@@ -81,14 +82,15 @@ abstract class ThematicCommunityMembership
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
      * @Assert\NotNull
      */
     private $association = false;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $associationName;
 
@@ -96,6 +98,7 @@ abstract class ThematicCommunityMembership
      * @var array
      *
      * @ORM\Column(type="simple_array", nullable=true)
+     *
      * @Assert\NotBlank
      */
     private $motivations = [];
@@ -110,12 +113,12 @@ abstract class ThematicCommunityMembership
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      */
     private $status = self::STATUS_PENDING;
 
     /**
-     * @var Adherent
+     * @var Adherent|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -123,7 +126,7 @@ abstract class ThematicCommunityMembership
     protected $adherent;
 
     /**
-     * @var Contact
+     * @var Contact|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\ThematicCommunity\Contact", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
