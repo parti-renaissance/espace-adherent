@@ -45,8 +45,6 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\Length(max=500)
      */
     private $biography;
 
@@ -55,15 +53,12 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
      *
      * @ORM\Column
      */
-    private $status = CandidacyInterface::STATUS_DRAFT;
+    protected $status = CandidacyInterface::STATUS_DRAFT;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=2000)
      */
     protected $faithStatement;
 
@@ -238,6 +233,10 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     public function setInvitation(?CandidacyInvitationInterface $invitation): void
     {
         $this->invitation = $invitation;
+
+        if ($invitation) {
+            $invitation->setCandidacy($this);
+        }
     }
 
     public function getBinome(): ?CandidacyInterface

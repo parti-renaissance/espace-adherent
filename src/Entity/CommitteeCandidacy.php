@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -62,6 +64,11 @@ class CommitteeCandidacy extends BaseCandidacy
         parent::__construct($gender, $uuid);
 
         $this->type = $election->getDesignationType();
+
+        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type) {
+            $this->status = CandidacyInterface::STATUS_CONFIRMED;
+        }
+
         $this->committeeElection = $election;
     }
 

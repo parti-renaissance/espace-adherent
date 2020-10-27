@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass
@@ -33,8 +32,6 @@ abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface
 
     /**
      * @var TerritorialCouncilMembership|CommitteeMembership
-     *
-     * @Assert\NotBlank(groups={"Default", "invitation_edit"})
      */
     protected $membership;
 

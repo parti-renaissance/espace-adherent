@@ -54,7 +54,7 @@ class CandidatureControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
         $this->client->followRedirect();
 
-        $this->assertContains('Vous ne pouvez pas candidater pour cette désignation.', $content = $this->client->getResponse()->getContent());
+        $this->assertContains('Vous ne pouvez pas candidater ou modifier votre candidature pour cette désignation.', $content = $this->client->getResponse()->getContent());
         $this->assertNotContains('Retirer ma pré-candidature', $content);
 
         $this->client->request('GET', '/conseil-territorial/candidature/retirer');

@@ -149,7 +149,7 @@
                 event.preventDefault();
 
                 inputFile.value = '';
-                dom('#' + '{{ form.croppedImage.vars.id }}').value = {{ candidacy.id ? -1 : "''" }};
+                dom('#' + '{{ form.croppedImage.vars.id }}').value = {{ candidacy and candidacy.id ? -1 : "''" }};
 
                 show(dom('.image-uploader--label'));
                 hide(dom('.image-uploader--preview'));

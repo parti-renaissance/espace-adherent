@@ -32,13 +32,21 @@ final class Version20201027174614 extends AbstractMigration
         ADD 
           binome_id INT DEFAULT NULL, 
         ADD 
-          status VARCHAR(255) NOT NULL, 
+          status VARCHAR(255) DEFAULT NULL, 
         ADD 
-          type VARCHAR(255) NOT NULL, 
+          type VARCHAR(255) DEFAULT NULL, 
         ADD 
           faith_statement LONGTEXT DEFAULT NULL, 
         ADD 
           is_public_faith_statement TINYINT(1) DEFAULT \'0\' NOT NULL');
+
+        $this->addSql("UPDATE committee_candidacy SET `type` = 'committee_adherent', status = 'confirmed' WHERE `type` IS NULL");
+
+        $this->addSql('ALTER TABLE 
+          committee_candidacy 
+        CHANGE status status VARCHAR(255) NOT NULL, 
+        CHANGE type type VARCHAR(255) NOT NULL');
+
         $this->addSql('ALTER TABLE 
           committee_candidacy 
         ADD 
