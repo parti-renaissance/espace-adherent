@@ -173,10 +173,10 @@ TXT, 'Rémi', 'Gardien', '1988-11-27'];
     {
         return $this->createImageAnnotations(
             [
-                ImageAnnotations::FRENCH_IDENTITY_CARD_LABEL,
+                'carte d identité française',
             ],
             [
-                ImageAnnotations::IDENTITY_DOCUMENT_LABEL,
+                'Identity document',
             ],
             $text
         );
@@ -186,10 +186,10 @@ TXT, 'Rémi', 'Gardien', '1988-11-27'];
     {
         return $this->createImageAnnotations(
             [
-                ImageAnnotations::FRENCH_PASSPORT_LABEL,
+                'french passport',
             ],
             [
-                ImageAnnotations::IDENTITY_DOCUMENT_LABEL,
+                'Identity document',
             ],
             $text
         );
