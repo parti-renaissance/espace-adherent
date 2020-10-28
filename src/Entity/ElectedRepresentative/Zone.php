@@ -3,6 +3,7 @@
 namespace App\Entity\ElectedRepresentative;
 
 use App\Entity\EntityReferentTagTrait;
+use App\Entity\Geo\Zone as GeoZone;
 use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -94,6 +95,13 @@ class Zone
      */
     private $children;
 
+    /**
+     * @var GeoZone|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    private $geoZone;
+
     public function __construct(ZoneCategory $category = null, string $name = null)
     {
         $this->category = $category;
@@ -158,5 +166,15 @@ class Zone
         if (!$this->children->contains($zone)) {
             $this->children->add($zone);
         }
+    }
+
+    public function setGeoZone(GeoZone $geoZone): void
+    {
+        $this->geoZone = $geoZone;
+    }
+
+    public function getGeoZone(): ?GeoZone
+    {
+        return $this->geoZone;
     }
 }

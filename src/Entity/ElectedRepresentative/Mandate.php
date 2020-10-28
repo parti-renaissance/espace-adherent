@@ -160,6 +160,7 @@ class Mandate
         $this->type = $type;
         $this->isElected = $isElected;
         $this->zone = $zone;
+        $this->geoZone = $zone ? $zone->getGeoZone() : null;
         $this->electedRepresentative = $electedRepresentative;
         $this->laREMSupport = $laREMSupport;
         $this->politicalAffiliation = $politicalAffiliation;
@@ -218,6 +219,7 @@ class Mandate
     public function setZone(Zone $zone): void
     {
         $this->zone = $zone;
+        $this->geoZone = $zone->getGeoZone();
     }
 
     public function getGeoZone(): ?GeoZone
