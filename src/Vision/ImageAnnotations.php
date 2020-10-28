@@ -11,10 +11,23 @@ class ImageAnnotations
     public const PASSPORT_ENTITY_LABEL = 'Passport';
     public const FRENCH_PASSPORT_ENTITY_LABEL = 'French passport';
 
-    public const FRENCH_IDENTITY_CARD_LABEL = 'carte d identité française';
-    public const FRENCH_ID_CARD_LABEL = 'french id card';
-    public const FRENCH_PASSPORT_LABEL = 'french passport';
-    public const PASSPORT_LABEL = 'passport';
+    public const PASSPORT_LABELS = [
+        'passeport francais',
+        'passeport biometrique',
+        'passport francais',
+        'french passport',
+        'passport',
+        'passeport',
+    ];
+
+    public const IDENTITY_CARD_LABELS = [
+        'carte d identité française',
+        'french id card',
+        'carte d identite francaise',
+        'carte nationale d identité',
+        'cni francaise',
+        'carte nationale d identite',
+    ];
 
     /**
      * @Groups({"ocr"})
@@ -81,20 +94,14 @@ class ImageAnnotations
     public function isFrenchNationalIdentityCard(): bool
     {
         return $this->isIdentityDocument()
-            && 0 < \count(array_intersect($this->labels, [
-                self::FRENCH_IDENTITY_CARD_LABEL,
-                self::FRENCH_ID_CARD_LABEL,
-            ]))
+            && 0 < \count(array_intersect($this->labels, self::IDENTITY_CARD_LABELS))
         ;
     }
 
     public function isFrenchPassport(): bool
     {
         return $this->isIdentityDocument()
-            && 0 < \count(array_intersect($this->labels, [
-                self::FRENCH_PASSPORT_LABEL,
-                self::PASSPORT_LABEL,
-            ]))
+            && 0 < \count(array_intersect($this->labels, self::PASSPORT_LABELS))
         ;
     }
 
