@@ -2,12 +2,14 @@
 
 namespace App\Repository\TerritorialCouncil;
 
+use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\TerritorialCouncil\Candidacy\SearchAvailableMembershipFilter;
@@ -53,15 +55,16 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
                     ->andWhere('t2.name IN (:qualities)')
                     ->getDQL()
             ))
-            ->andWhere('adherent.gender = :gender')
+            ->andWhere('adherent.gender = :gender AND adherent.status = :adherent_status')
             ->setParameters([
-                'candidacy_draft_status' => Candidacy::STATUS_DRAFT,
+                'candidacy_draft_status' => CandidacyInterface::STATUS_DRAFT,
                 'election' => $candidacy->getElection(),
                 'council' => $membership->getTerritorialCouncil(),
                 'quality' => $filter->getQuality(),
                 'membership_id' => $membership->getId(),
                 'gender' => $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE,
                 'qualities' => TerritorialCouncilQualityEnum::FORBIDDEN_TO_CANDIDATE,
+                'adherent_status' => Adherent::ENABLED,
             ])
             ->orderBy('adherent.lastName')
             ->addOrderBy('adherent.firstName')

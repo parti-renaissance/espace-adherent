@@ -213,15 +213,6 @@ class TerritorialCouncilController extends Controller
         ]);
     }
 
-    private function checkAccess(TerritorialCouncil $territorialCouncil = null): void
-    {
-        if ($territorialCouncil) {
-            $this->denyAccessUnlessGranted(ManageTerritorialCouncilVoter::PERMISSION, $territorialCouncil);
-        } else {
-            $this->denyAccessUnlessGranted(AccessVoter::PERMISSION);
-        }
-    }
-
     /**
      * @Route("/messages/{id}/modifier", name="edit_feed_item", methods={"GET", "POST"})
      * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
@@ -234,7 +225,7 @@ class TerritorialCouncilController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->getEntityManager()->flush();
             $this->addFlash('info', 'common.message_edited');
 
             return $this->redirectToRoute('app_territorial_council_index');
@@ -255,5 +246,14 @@ class TerritorialCouncilController extends Controller
         $this->deleteFeedItem($request, $feedItem, FeedItemTypeEnum::TERRITORIAL_COUNCIL);
 
         return $this->redirectToRoute('app_territorial_council_index');
+    }
+
+    private function checkAccess(TerritorialCouncil $territorialCouncil = null): void
+    {
+        if ($territorialCouncil) {
+            $this->denyAccessUnlessGranted(ManageTerritorialCouncilVoter::PERMISSION, $territorialCouncil);
+        } else {
+            $this->denyAccessUnlessGranted(AccessVoter::PERMISSION);
+        }
     }
 }

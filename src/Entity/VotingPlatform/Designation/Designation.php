@@ -293,7 +293,7 @@ class Designation
     public function hasValidZone(): bool
     {
         return
-            (DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type && !empty($this->zones))
+            ($this->isCommitteeType() && !empty($this->zones))
             || (DesignationTypeEnum::COPOL === $this->type && !$this->referentTags->isEmpty())
         ;
     }
@@ -361,5 +361,10 @@ class Designation
         }
 
         return [];
+    }
+
+    public function isCommitteeType(): bool
+    {
+        return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_ADHERENT, DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
     }
 }

@@ -8,8 +8,8 @@ use App\Mailer\Message\TerritorialCouncilCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationCreatedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationDeclinedMessage;
 use App\Mailer\Message\TerritorialCouncilCandidacyInvitationRemovedMessage;
-use App\TerritorialCouncil\Event\CandidacyInvitationEvent;
 use App\TerritorialCouncil\Events;
+use App\VotingPlatform\Event\CandidacyInvitationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -41,8 +41,12 @@ class SendCandidacyEmailListener implements EventSubscriberInterface
 
     public function onInvitationUpdate(CandidacyInvitationEvent $event): void
     {
-        /** @var Candidacy $candidacy */
         $candidacy = $event->getCandidacy();
+
+        if (!$candidacy instanceof Candidacy) {
+            return;
+        }
+
         $invitation = $event->getInvitation();
         $previouslyInvitedMembership = $event->getPreviouslyInvitedMembership();
 
@@ -68,8 +72,12 @@ class SendCandidacyEmailListener implements EventSubscriberInterface
 
     public function onInvitationDecline(CandidacyInvitationEvent $event): void
     {
-        /** @var Candidacy $candidacy */
         $candidacy = $event->getCandidacy();
+
+        if (!$candidacy instanceof Candidacy) {
+            return;
+        }
+
         $invitation = $event->getInvitation();
 
         $this->mailer->sendMessage(TerritorialCouncilCandidacyInvitationDeclinedMessage::create(
@@ -82,8 +90,12 @@ class SendCandidacyEmailListener implements EventSubscriberInterface
 
     public function onInvitationAccept(CandidacyInvitationEvent $event): void
     {
-        /** @var Candidacy $candidacy */
         $candidacy = $event->getCandidacy();
+
+        if (!$candidacy instanceof Candidacy) {
+            return;
+        }
+
         $invitation = $event->getInvitation();
 
         $this->mailer->sendMessage(TerritorialCouncilCandidacyInvitationAcceptedMessage::create(

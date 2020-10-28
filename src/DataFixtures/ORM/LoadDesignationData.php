@@ -91,6 +91,17 @@ class LoadDesignationData extends Fixture
         $this->setReference('designation-7', $designation);
         $manager->persist($designation);
 
+        $designation = new Designation('Désignation "Comités-Animateurs" ouverte');
+        $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
+        $designation->setZones([DesignationZoneEnum::FRANCE]);
+        $designation->setCandidacyStartDate(new \DateTime());
+        $designation->setCandidacyEndDate(new \DateTime('+ 1 day'));
+        $designation->setVoteStartDate(new \DateTime('+2 days'));
+        $designation->setVoteEndDate(new \DateTime('+4 days'));
+
+        $this->setReference('designation-8', $designation);
+        $manager->persist($designation);
+
         $manager->flush();
     }
 

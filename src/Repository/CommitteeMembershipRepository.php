@@ -8,10 +8,13 @@ use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\BaseGroup;
 use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Event\Filter\ListFilterObject;
 use App\Subscription\SubscriptionTypeEnum;
+use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
@@ -632,6 +635,39 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @return CommitteeMembership[]
+     */
+    public function findAvailableMemberships(CommitteeCandidacy $candidacy, string $query): array
+    {
+        $membership = $candidacy->getCommitteeMembership();
+
+        return $this
+            ->createQueryBuilder('membership')
+            ->addSelect('adherent')
+            ->innerJoin('membership.adherent', 'adherent')
+            ->leftJoin('membership.committeeCandidacies', 'candidacy', Join::WITH, 'candidacy.committeeMembership = membership AND candidacy.committeeElection = :election')
+            ->where('membership.committee = :committee')
+            ->andWhere('candidacy IS NULL OR candidacy.status = :candidacy_draft_status')
+            ->andWhere('membership.id != :membership_id')
+            ->andWhere('adherent.gender = :gender AND adherent.status = :adherent_status')
+            ->andWhere('(adherent.firstName LIKE :query OR adherent.lastName LIKE :query)')
+            ->setParameters([
+                'query' => sprintf('%s%%', $query),
+                'candidacy_draft_status' => CandidacyInterface::STATUS_DRAFT,
+                'election' => $candidacy->getElection(),
+                'committee' => $membership->getCommittee(),
+                'membership_id' => $membership->getId(),
+                'gender' => $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE,
+                'adherent_status' => Adherent::ENABLED,
+            ])
+            ->orderBy('adherent.lastName')
+            ->addOrderBy('adherent.firstName')
+            ->getQuery()
+            ->getResult()
         ;
     }
 }

@@ -4,7 +4,6 @@ namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
-use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -21,23 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Candidacy extends BaseCandidacy
 {
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=2000)
-     */
-    private $faithStatement;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $isPublicFaithStatement = false;
-
-    /**
      * @var Election
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\Election")
@@ -48,7 +30,7 @@ class Candidacy extends BaseCandidacy
     /**
      * @var TerritorialCouncilMembership
      *
-     * @ORM\ManyToOne(targetEntity="TerritorialCouncilMembership", inversedBy="candidacies")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", inversedBy="candidacies")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $membership;
@@ -61,7 +43,7 @@ class Candidacy extends BaseCandidacy
      *
      * @Assert\Valid(groups={"invitation_edit"})
      */
-    private $invitation;
+    protected $invitation;
 
     /**
      * @var string
@@ -71,19 +53,12 @@ class Candidacy extends BaseCandidacy
     private $quality;
 
     /**
-     * @var string
-     *
-     * @ORM\Column
-     */
-    private $status = CandidacyInterface::STATUS_DRAFT;
-
-    /**
      * @var Candidacy|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\Candidacy", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $binome;
+    protected $binome;
 
     /**
      * Helps to render two or single candidate
@@ -124,55 +99,6 @@ class Candidacy extends BaseCandidacy
         $this->membership = $membership;
     }
 
-    public function isOngoing(): bool
-    {
-        return $this->election->isOngoing();
-    }
-
-    public function getFaithStatement(): ?string
-    {
-        return $this->faithStatement;
-    }
-
-    public function setFaithStatement(?string $faithStatement): void
-    {
-        $this->faithStatement = $faithStatement;
-    }
-
-    public function isPublicFaithStatement(): bool
-    {
-        return $this->isPublicFaithStatement;
-    }
-
-    public function setIsPublicFaithStatement(bool $isPublicFaithStatement): void
-    {
-        $this->isPublicFaithStatement = $isPublicFaithStatement;
-    }
-
-    public function hasInvitation(): bool
-    {
-        return null !== $this->invitation;
-    }
-
-    public function hasPendingInvitation(): bool
-    {
-        return null !== $this->invitation && $this->invitation->isPending();
-    }
-
-    public function getInvitation(): ?CandidacyInvitation
-    {
-        return $this->invitation;
-    }
-
-    public function setInvitation(?CandidacyInvitation $invitation): void
-    {
-        $this->invitation = $invitation;
-
-        if ($invitation) {
-            $invitation->setCandidacy($this);
-        }
-    }
-
     public function getQuality(): ?string
     {
         return $this->quality;
@@ -188,21 +114,6 @@ class Candidacy extends BaseCandidacy
         $this->quality = $quality;
     }
 
-    public function isDraft(): bool
-    {
-        return CandidacyInterface::STATUS_DRAFT === $this->status;
-    }
-
-    public function isConfirmed(): bool
-    {
-        return CandidacyInterface::STATUS_CONFIRMED === $this->status;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
     public function updateFromBinome(): void
     {
         if ($this->binome) {
@@ -210,21 +121,6 @@ class Candidacy extends BaseCandidacy
             $this->faithStatement = $this->binome->getFaithStatement();
             $this->isPublicFaithStatement = $this->binome->isPublicFaithStatement();
         }
-    }
-
-    public function getBinome(): ?Candidacy
-    {
-        return $this->binome;
-    }
-
-    public function setBinome(Candidacy $candidacy): void
-    {
-        $this->binome = $candidacy;
-    }
-
-    public function confirm(): void
-    {
-        $this->status = CandidacyInterface::STATUS_CONFIRMED;
     }
 
     /**

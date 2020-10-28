@@ -8,6 +8,7 @@ use App\Mailer\Message\CommitteeCandidacyRemovedConfirmationMessage;
 use App\Mailer\Message\CommitteeNewCandidacyNotificationMessage;
 use App\Mailer\Message\CommitteeRemovedCandidacyNotificationMessage;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CommitteeCandidacyEvent;
 use App\VotingPlatform\Events;
@@ -35,7 +36,7 @@ class CommitteeCandidacySendEmailsListener implements EventSubscriberInterface
 
     public function onCandidacyCreated(BaseCandidacyEvent $event): void
     {
-        if (!$event instanceof CommitteeCandidacyEvent) {
+        if (!$event instanceof CommitteeCandidacyEvent || DesignationTypeEnum::COMMITTEE_ADHERENT !== $event->getCandidacy()->getType()) {
             return;
         }
 
@@ -52,7 +53,7 @@ class CommitteeCandidacySendEmailsListener implements EventSubscriberInterface
 
     public function onCandidacyRemoved(BaseCandidacyEvent $event): void
     {
-        if (!$event instanceof CommitteeCandidacyEvent) {
+        if (!$event instanceof CommitteeCandidacyEvent || DesignationTypeEnum::COMMITTEE_ADHERENT !== $event->getCandidacy()->getType()) {
             return;
         }
 

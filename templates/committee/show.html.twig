@@ -124,7 +124,10 @@
 
             {# If the vote was started, hide box if 0 candidates #}
             {% if not committee_election.isVotePeriodStarted or committee_election.countCandidacies > 0 %}
-                {% include 'committee/_election_box.html.twig' %}
+                {% set designation = committee_election.designation %}
+                {% set candidacy = membership.committeeCandidacy(committee_election) %}
+
+                {% include "committee/election_box/_#{committee_election.designation.type}.html.twig" %}
 
                 <div id="modal-wrapper"></div>
             {% endif %}

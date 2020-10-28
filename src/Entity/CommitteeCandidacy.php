@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
@@ -31,9 +34,40 @@ class CommitteeCandidacy extends BaseCandidacy
      */
     private $committeeMembership;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $type;
+
+    /**
+     * @var CommitteeCandidacyInvitation|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\CommitteeCandidacyInvitation", inversedBy="candidacy", cascade={"all"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @Assert\Valid(groups={"invitation_edit"})
+     */
+    protected $invitation;
+
+    /**
+     * @var Candidacy|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\CommitteeCandidacy", cascade={"all"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    protected $binome;
+
     public function __construct(CommitteeElection $election, string $gender = null, UuidInterface $uuid = null)
     {
         parent::__construct($gender, $uuid);
+
+        $this->type = $election->getDesignationType();
+
+        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type) {
+            $this->status = CandidacyInterface::STATUS_CONFIRMED;
+        }
 
         $this->committeeElection = $election;
     }
@@ -63,23 +97,13 @@ class CommitteeCandidacy extends BaseCandidacy
         $this->committeeMembership = $committeeMembership;
     }
 
-    public function isOngoing(): bool
-    {
-        return $this->committeeElection->isOngoing();
-    }
-
     public function getType(): string
     {
-        return self::TYPE_COMMITTEE;
+        return $this->type;
     }
 
     public function getAdherent(): Adherent
     {
         return $this->committeeMembership->getAdherent();
-    }
-
-    public function getStatus(): string
-    {
-        return CandidacyInterface::STATUS_CONFIRMED;
     }
 }

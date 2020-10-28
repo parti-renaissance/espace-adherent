@@ -299,9 +299,16 @@ export default class ReqwestApiClient {
         });
     }
 
-    getTerritorialCouncilAvailableMemberships({quality, query}, callback, errorCallback) {
+    getTerritorialCouncilAvailableMemberships({ quality, query }, callback, errorCallback) {
         this._reqwest({
             url: `/api/territorial-council/candidacy/available-memberships?quality=${quality || ''}${query ? `&query=${query}` : ''}`,
+            type: 'json',
+        }).then(response => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
+    }
+
+    getCommitteeAvailableMemberships({ slug, query }, callback, errorCallback) {
+        this._reqwest({
+            url: `/api/committee/${slug}/candidacy/available-memberships?${query ? `query=${query}` : ''}`,
             type: 'json',
         }).then(response => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
     }

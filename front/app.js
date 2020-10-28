@@ -357,6 +357,12 @@ class App {
             module.default(this.get('api'), qualityFieldSelector, membershipFieldSelector, submitButtonSelector, wrapperSelector);
         });
     }
+
+    runCommitteeCandidacy(slug, membershipFieldSelector, submitButtonSelector, wrapperSelector) {
+        System.import('pages/committee_candidacy').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'), slug, membershipFieldSelector, submitButtonSelector, wrapperSelector);
+        });
+    }
 }
 
 window.App = new App();

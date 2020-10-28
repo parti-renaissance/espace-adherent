@@ -1,21 +1,24 @@
 <?php
 
-namespace App\TerritorialCouncil\Event;
+namespace App\VotingPlatform\Event;
 
-use App\Entity\TerritorialCouncil\CandidacyInvitation;
+use App\Entity\CommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
-use App\VotingPlatform\Event\TerritorialCouncilCandidacyEvent;
+use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 
-class CandidacyInvitationEvent extends TerritorialCouncilCandidacyEvent
+class CandidacyInvitationEvent extends BaseCandidacyEvent
 {
     private $invitation;
     private $previouslyInvitedMembership;
 
+    /**
+     * @param TerritorialCouncilMembership|CommitteeMembership $previouslyInvitedMembership
+     */
     public function __construct(
         CandidacyInterface $candidacy,
-        CandidacyInvitation $invitation = null,
-        TerritorialCouncilMembership $previouslyInvitedMembership = null
+        CandidacyInvitationInterface $invitation = null,
+        $previouslyInvitedMembership = null
     ) {
         parent::__construct($candidacy);
 
@@ -23,12 +26,12 @@ class CandidacyInvitationEvent extends TerritorialCouncilCandidacyEvent
         $this->previouslyInvitedMembership = $previouslyInvitedMembership;
     }
 
-    public function getInvitation(): ?CandidacyInvitation
+    public function getInvitation(): ?CandidacyInvitationInterface
     {
         return $this->invitation;
     }
 
-    public function getPreviouslyInvitedMembership(): ?TerritorialCouncilMembership
+    public function getPreviouslyInvitedMembership(): ?object
     {
         return $this->previouslyInvitedMembership;
     }

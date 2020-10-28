@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Form\TerritorialCouncil;
+namespace App\Form\Committee;
 
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\CommitteeMembership;
 use App\Form\DataTransformer\UuidToObjectTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class CandidacyInvitedMembershipType extends AbstractType
+class CommitteeCandidacyInvitedMembershipType extends AbstractType
 {
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $dataTransformer)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $dataTransformer;
+        $this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new UuidToObjectTransformer($this->entityManager, TerritorialCouncilMembership::class));
+        $builder->addModelTransformer(new UuidToObjectTransformer($this->entityManager, CommitteeMembership::class));
     }
 
     public function getParent()

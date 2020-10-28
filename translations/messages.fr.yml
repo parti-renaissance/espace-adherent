@@ -869,6 +869,7 @@ adherent_certification_history.action.uncertify: Annulation de certification
 # VotingPlatform
 #
 voting_platform.designation.type_committee_adherent: Comités-Adhérents
+voting_platform.designation.type_committee_supervisor: Comités-Animateurs
 voting_platform.designation.type_copol: Comité politique
 voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
