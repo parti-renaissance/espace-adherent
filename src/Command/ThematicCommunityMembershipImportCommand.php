@@ -97,11 +97,11 @@ class ThematicCommunityMembershipImportCommand extends Command
         unset($content[0]); // remove csv headers
 
         foreach ($content as $i => $row) {
-            $row = \explode(';', $row);
-
             if (empty($row)) {
                 continue;
             }
+
+            $row = \explode(';', $row);
 
             $community = $this->communityRepository->findOneBy(['name' => $row[2]]);
 
@@ -194,13 +194,17 @@ class ThematicCommunityMembershipImportCommand extends Command
         string $thinking,
         string $onSpot
     ): void {
-        $motivations = [
+        $motivations = \array_filter([
             $information ? ThematicCommunityMembership::MOTIVATION_INFORMATION : null,
             $thinking ? ThematicCommunityMembership::MOTIVATION_THINKING : null,
             $onSpot ? ThematicCommunityMembership::MOTIVATION_ON_SPOT : null,
-        ];
+        ]);
 
-        $membership->setMotivations(\array_filter($motivations));
+        if (empty($motivations)) {
+            return;
+        }
+
+        $membership->setMotivations($motivations);
     }
 
     protected function setPosition(Contact $contact, string $position): void

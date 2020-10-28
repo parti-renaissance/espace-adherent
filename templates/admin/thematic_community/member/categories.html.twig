@@ -1,7 +1,9 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% for category in object.userListDefinitions %}
-        <span class="label label-default" style="background: {{ category.color|default('#d2d6de') }}">{{ category }}</span>
-    {% endfor %}
+    <div style="max-width: 250px">
+        {% for category in object.userListDefinitions %}
+            <span class="label label-default" style="background: {{ category.color|default('#d2d6de') }}">{{ category }}</span>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Admin\ThematicCommunity;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ThematicCommunity\AdherentMembership;
 use App\Entity\ThematicCommunity\ContactMembership;
+use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Entity\ThematicCommunity\ThematicCommunityToUserListDefinitionEnum;
 use App\Entity\UserListDefinition;
@@ -261,6 +262,33 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     }
 
                     $qb->orWhere($or);
+
+                    return true;
+                },
+            ])
+            ->add('community', CallbackFilter::class, [
+                'label' => 'Communauté',
+                'show_filter' => true,
+                'field_type' => EntityType::class,
+                'field_options' => [
+                    'class' => ThematicCommunity::class,
+                    'multiple' => true,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('tc')
+                            ->where('tc.enabled = 1')
+                        ;
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    /** @var QueryBuilder $qb */
+                    $qb
+                        ->andWhere("$alias.community IN (:value)")
+                        ->setParameter('value', $value['value'])
+                    ;
 
                     return true;
                 },

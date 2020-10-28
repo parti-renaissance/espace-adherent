@@ -65,7 +65,9 @@
                                 {% else %}
                                     ~
                                 {% endif %},
-                                {{ member.birthdate|birthdate_to_age ~ ' ans' }}
+                                {% if member.birthdate %}
+                                    {{ member.birthdate|birthdate_to_age ~ ' ans' }}
+                                {% endif %}
                                 </div>
                             </td>
                             <td>
