@@ -15,6 +15,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Entity\Geo\Zone;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
@@ -23,6 +24,7 @@ use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
+use App\Form\Admin\CandidateManagedAreaType;
 use App\Form\Admin\CoordinatorManagedAreaType;
 use App\Form\Admin\LreAreaType;
 use App\Form\Admin\MunicipalChiefManagedAreaType;
@@ -383,32 +385,9 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => false,
                     'required' => false,
                 ])
-                ->add('procurationManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'coordinator.label.codes',
-                    'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
-                ])
-                ->add('assessorManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'assessors_manager',
-                    'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
-                ])
                 ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
                     'label' => 'coordinator.label.codes.cp',
                     'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
-                ])
-                ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
-                    'label' => 'Candidat Municipales 2020 🇫🇷',
-                    'help' => <<<HELP
-Laisser vide si l'adhérent n'est pas chef municipal. 
-Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/> 
-Utiliser <strong>75100</strong> pour la ville de Paris, 
-<strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
-HELP
-,
-                ])
-                ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
-                    'label' => 'Candidat Sénatoriales 2020',
                 ])
                 ->add('lreArea', LreAreaType::class, [
                     'label' => 'La république ensemble',
@@ -423,6 +402,21 @@ HELP
                     'label' => 'Accès à "La maison des impressions"',
                     'required' => false,
                 ])
+            ->end()
+            ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
+                ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
+                    'label' => 'Candidat Municipales 2020 🇫🇷',
+                    'help' => <<<HELP
+        Laisser vide si l'adhérent n'est pas chef municipal. 
+        Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/> 
+        Utiliser <strong>75100</strong> pour la ville de Paris, 
+        <strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
+HELP
+                    ,
+                ])
+                ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
+                    'label' => 'Candidat Sénatoriales 2020',
+                ])
                 ->add('legislativeCandidateManagedDistrict', AvailableDistrictAutocompleteType::class, [
                     'label' => 'Candidat aux législatives',
                     'by_reference' => false,
@@ -430,8 +424,19 @@ HELP
                     'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
                     'callback' => [DistrictAdmin::class, 'prepareLegislativeCandidateAutocompleteFilterCallback'],
                 ])
-            ->end()
-            ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
+                ->add('candidateManagedArea', CandidateManagedAreaType::class, [
+                    'label' => 'Candidat',
+                ])
+                ->add('procurationManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'coordinator.label.codes',
+                    'required' => false,
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                ])
+                ->add('assessorManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'assessors_manager',
+                    'required' => false,
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                ])
                 ->add('electionResultsReporter', null, [
                     'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
                     'required' => false,
@@ -486,7 +491,7 @@ HELP
                         return $er
                             ->createQueryBuilder('tc')
                             ->andWhere('tc.enabled = 1')
-                        ;
+                            ;
                     },
                 ])
             ->end()
@@ -822,6 +827,28 @@ HELP
                     if (\in_array(AdherentRoleEnum::SENATORIAL_CANDIDATE, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.senatorialCandidateManagedArea', $alias), 'senatorialCandidateManagedArea');
                         $where->add('senatorialCandidateManagedArea IS NOT NULL');
+                    }
+
+                    if (array_intersect(AdherentRoleEnum::getCandidates(), $value['value'])) {
+                        $qb
+                            ->leftJoin(sprintf('%s.candidateManagedArea', $alias), 'candidateManagedArea')
+                            ->leftJoin('candidateManagedArea.zone', 'zone')
+                        ;
+                    }
+
+                    if (\in_array(AdherentRoleEnum::CANDIDATE_REGIONAL_HEADED, $value['value'], true)) {
+                        $where->add('zone.type = :type_region');
+                        $qb->setParameter('type_region', Zone::REGION);
+                    }
+
+                    if (\in_array(AdherentRoleEnum::CANDIDATE_REGIONAL_LEADER, $value['value'], true)) {
+                        $where->add('zone.type = :type_dpt');
+                        $qb->setParameter('type_dpt', Zone::DEPARTMENT);
+                    }
+
+                    if (\in_array(AdherentRoleEnum::CANDIDATE_DEPARTMENTAL, $value['value'], true)) {
+                        $where->add('zone.type = :type_canton');
+                        $qb->setParameter('type_canton', Zone::CANTON);
                     }
 
                     // thematic community chief

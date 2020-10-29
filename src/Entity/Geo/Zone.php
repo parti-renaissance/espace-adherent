@@ -36,6 +36,12 @@ class Zone implements GeoInterface
     public const FOREIGN_DISTRICT = 'foreign_district';
     public const CONSULAR_DISTRICT = 'consular_district';
 
+    public const CANDIDATE_TYPES = [
+        self::CANTON,
+        self::DEPARTMENT,
+        self::REGION,
+    ];
+
     /**
      * @var string
      *

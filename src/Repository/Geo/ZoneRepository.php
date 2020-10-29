@@ -14,6 +14,7 @@ use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 final class ZoneRepository extends ServiceEntityRepository
@@ -50,5 +51,15 @@ final class ZoneRepository extends ServiceEntityRepository
         $zone->setName($zoneable->getName());
 
         return $zone;
+    }
+
+    public function createSelectForCandidatesQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('zone')
+            ->where('zone.type IN (:types)')
+            ->setParameters([
+                'types' => Zone::CANDIDATE_TYPES,
+            ])
+        ;
     }
 }

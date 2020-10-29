@@ -12,6 +12,8 @@ use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\Geo\Zone;
+use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
@@ -539,6 +541,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $lreArea;
 
     /**
+     * @var CandidateManagedArea|null
+     *
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity="App\Entity\ManagedArea\CandidateManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $candidateManagedArea;
+
+    /**
      * Access to external services regarding printing
      *
      * @var bool
@@ -848,6 +858,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_SENATORIAL_CANDIDATE';
         }
 
+        if ($this->isHeadedRegionalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_REGIONAL_HEADED';
+        }
+
+        if ($this->isLeaderRegionalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_REGIONAL_LEADER';
+        }
+
+        if ($this->isDepartmentalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_DEPARTMENTAL';
+        }
+
         if ($this->isLre()) {
             $roles[] = 'ROLE_LRE';
         }
@@ -900,6 +922,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isElectionResultsReporter()
             || $this->isMunicipalManagerSupervisor()
             || $this->isSenatorialCandidate()
+            || $this->isHeadedRegionalCandidate()
+            || $this->isLeaderRegionalCandidate()
+            || $this->isDepartmentalCandidate()
             || $this->isLre()
             || $this->isLegislativeCandidate()
             || $this->isThematicCommunityChief()
@@ -2387,6 +2412,31 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?SenatorialCandidateManagedArea $senatorialCandidateManagedArea
     ): void {
         $this->senatorialCandidateManagedArea = $senatorialCandidateManagedArea;
+    }
+
+    public function getCandidateManagedArea(): ?CandidateManagedArea
+    {
+        return $this->candidateManagedArea;
+    }
+
+    public function setCandidateManagedArea(?CandidateManagedArea $candidateManagedArea): void
+    {
+        $this->candidateManagedArea = $candidateManagedArea;
+    }
+
+    public function isHeadedRegionalCandidate(): bool
+    {
+        return $this->candidateManagedArea ? Zone::REGION === $this->candidateManagedArea->getZone()->getType() : false;
+    }
+
+    public function isLeaderRegionalCandidate(): bool
+    {
+        return $this->candidateManagedArea ? Zone::DEPARTMENT === $this->candidateManagedArea->getZone()->getType() : false;
+    }
+
+    public function isDepartmentalCandidate(): bool
+    {
+        return $this->candidateManagedArea ? Zone::CANTON === $this->candidateManagedArea->getZone()->getType() : false;
     }
 
     public function getLreArea(): ?LreArea
