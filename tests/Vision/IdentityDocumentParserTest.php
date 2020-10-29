@@ -40,6 +40,7 @@ class IdentityDocumentParserTest extends WebTestCase
     public function provideCNIMatch(): iterable
     {
         yield [<<<'TXT'
+Date d'expiration: 10.10.2022
 Nom: XXXX
 Epouse: Doe
 Prénom: J4ne
