@@ -23,7 +23,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */
@@ -32,7 +32,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */
@@ -41,7 +41,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
      * @Assert\Email
@@ -49,14 +49,14 @@ class Contact
     private $email;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $gender;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(nullable=true)
      */
@@ -73,7 +73,10 @@ class Contact
     private $birthDate;
 
     /**
+     * @var PhoneNumber
+     *
      * @ORM\Column(type="phone_number", nullable=true)
+     *
      * @Assert\NotBlank
      */
     private $phone;
@@ -81,7 +84,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -90,7 +93,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -99,14 +102,14 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
      */
     private $job;
 
     /**
-     * @ORM\Column(length=100, nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $position;
 

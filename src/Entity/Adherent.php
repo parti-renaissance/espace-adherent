@@ -158,7 +158,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $birthdate;
 
     /**
-     * @ORM\Column(length=20, nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $position;
 

@@ -31,7 +31,7 @@ class ThematicCommunity implements ImageOwnerInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */
