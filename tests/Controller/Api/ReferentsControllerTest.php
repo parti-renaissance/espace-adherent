@@ -33,14 +33,14 @@ class ReferentsControllerTest extends WebTestCase
         $this->assertEachJsonItemContainsKey('coordinates', $content);
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -51,7 +51,7 @@ class ProcurationReliabilityProcessorTest extends WebTestCase
         yield ['municipal-chief-3@en-marche-dev.fr', 8];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -60,7 +60,7 @@ class ProcurationReliabilityProcessorTest extends WebTestCase
         $this->procurationReliabilityProcessor = $this->get(ProcurationReliabilityProcessor::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

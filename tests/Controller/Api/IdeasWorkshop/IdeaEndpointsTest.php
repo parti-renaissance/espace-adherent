@@ -95,7 +95,7 @@ class IdeaEndpointTest extends WebTestCase
         ;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->init();
         parent::setUp();

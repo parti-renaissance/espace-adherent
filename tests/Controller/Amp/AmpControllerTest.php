@@ -21,7 +21,7 @@ class AmpControllerTest extends WebTestCase
 
         $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertContains('<amp-img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('<amp-img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testArticleDraft()
@@ -33,7 +33,7 @@ class AmpControllerTest extends WebTestCase
 
     public function testRedirectionToArticle()
     {
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
+        $this->client = $this->makeClient(['HTTP_HOST' => $this->hosts['app']]);
 
         $this->client->request(Request::METHOD_GET, '/amp/article/outre-mer');
 
@@ -46,7 +46,7 @@ class AmpControllerTest extends WebTestCase
 
     public function testRedirectionToProposal()
     {
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
+        $this->client = $this->makeClient(['HTTP_HOST' => $this->hosts['app']]);
 
         $this->client->request(Request::METHOD_GET, '/amp/proposition/produire-en-france-et-sauver-la-planete');
 
@@ -59,7 +59,7 @@ class AmpControllerTest extends WebTestCase
 
     public function testRedirectionToOrderArticle()
     {
-        $this->client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
+        $this->client = $this->makeClient(['HTTP_HOST' => $this->hosts['app']]);
 
         $this->client->request(Request::METHOD_GET, '/amp/transformer-la-france/premiere-article');
 
@@ -76,7 +76,7 @@ class AmpControllerTest extends WebTestCase
 
         $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertContains('<amp-img src="/assets/images/proposal.jpg', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('<amp-img src="/assets/images/proposal.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testProposalDraft()
@@ -92,7 +92,7 @@ class AmpControllerTest extends WebTestCase
 
         $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertContains('<amp-img src="/assets/images/order_article.jpg', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('<amp-img src="/assets/images/order_article.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testOrderArticleDraft()
@@ -109,14 +109,14 @@ class AmpControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init('amp');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

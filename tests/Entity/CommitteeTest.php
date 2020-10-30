@@ -4,6 +4,7 @@ namespace Tests\App\Entity;
 
 use App\Entity\Committee;
 use App\Entity\PostAddress;
+use App\Exception\CommitteeAlreadyApprovedException;
 use App\Geocoder\Coordinates;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
@@ -112,11 +113,9 @@ class CommitteeTest extends TestCase
         $this->assertEquals(new \DateTime($timestamp), $committee->getApprovedAt());
     }
 
-    /**
-     * @expectedException \App\Exception\CommitteeAlreadyApprovedException
-     */
     public function testApproveCommitteeTwice()
     {
+        $this->expectException(CommitteeAlreadyApprovedException::class);
         $committee = $this->createCommittee();
         $committee->approved();
 

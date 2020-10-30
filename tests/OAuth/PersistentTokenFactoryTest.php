@@ -175,12 +175,11 @@ class PersistentTokenFactoryTest extends TestCase
         $this->assertTrue($accessToken->hasScope('write:users'));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to find App\Entity\Adherent entity by its identifier "9410cccb-c91e-4f51-a31f-f2bcadc52f94".
-     */
     public function testTryCreateAccessTokenWithoutUserFails(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to find App\Entity\Adherent entity by its identifier "9410cccb-c91e-4f51-a31f-f2bcadc52f94".');
+
         $token = $this->createAccessToken();
         $token->setUserIdentifier(self::USER_UUID);
 
@@ -195,12 +194,10 @@ class PersistentTokenFactoryTest extends TestCase
         $this->tokenFactory->createAccessToken($token);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Unable to find App\Entity\OAuth\Client entity by its identifier "07aba895-11b6-45f9-b95f-7fdb3d9b43c1".
-     */
     public function testTryCreateAccessTokenWithoutClientFails(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to find App\Entity\OAuth\Client entity by its identifier "07aba895-11b6-45f9-b95f-7fdb3d9b43c1".');
         $token = $this->createAccessToken();
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
@@ -277,7 +274,7 @@ class PersistentTokenFactoryTest extends TestCase
         return new InMemoryScope($identifier);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -291,7 +288,7 @@ class PersistentTokenFactoryTest extends TestCase
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->accessTokenRepository = null;
         $this->clientRepository = null;

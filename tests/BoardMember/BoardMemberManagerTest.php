@@ -86,7 +86,7 @@ class BoardMemberManagerTest extends WebTestCase
         $this->assertContainsOnlyInstancesOf(Role::class, $roles);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -96,7 +96,7 @@ class BoardMemberManagerTest extends WebTestCase
         $this->boardMemberManager = $this->container->get('app.board_member.manager');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

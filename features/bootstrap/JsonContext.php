@@ -2,12 +2,13 @@
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Exception\ExpectationException;
 use Behatch\Context\JsonContext as BehatchJsonContext;
-use Coduo\PHPMatcher\PHPMatcher;
+use Coduo\PHPMatcher\PHPUnit\PHPMatcherAssertions;
 
 class JsonContext extends BehatchJsonContext
 {
+    use PHPMatcherAssertions;
+
     public function theJsonShouldBeEqualTo(PyStringNode $content)
     {
         $this->assertJson($content->getRaw(), $this->getJson());
@@ -46,8 +47,6 @@ class JsonContext extends BehatchJsonContext
 
     protected function match($expected, $actual)
     {
-        if (!PHPMatcher::match($actual, $expected, $error)) {
-            throw new ExpectationException($error, $this->getSession());
-        }
+        $this->assertMatchesPattern($expected, $actual);
     }
 }

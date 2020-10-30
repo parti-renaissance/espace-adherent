@@ -3,6 +3,7 @@
 namespace Tests\App\Documents;
 
 use App\Documents\DocumentRepository;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
 use PHPUnit\Framework\TestCase;
@@ -50,11 +51,9 @@ class DocumentRepositoryTest extends TestCase
         $this->assertSame($fixture, $document['content']);
     }
 
-    /**
-     * @expectedException \League\Flysystem\FileNotFoundException
-     */
     public function testReadDocumentFailsWhenInvalid()
     {
+        $this->expectException(FileNotFoundException::class);
         $this->repository->readDocument(DocumentRepository::DIRECTORY_ADHERENTS, 'invalid.pdf');
     }
 
@@ -68,7 +67,7 @@ class DocumentRepositoryTest extends TestCase
         $this->filesystem->write(DocumentRepository::DIRECTORY_ROOT.'/'.$directory.'/'.$path, $content);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filesystem = new Filesystem(new MemoryAdapter());
         $this->repository = new DocumentRepository($this->filesystem);
@@ -76,7 +75,7 @@ class DocumentRepositoryTest extends TestCase
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

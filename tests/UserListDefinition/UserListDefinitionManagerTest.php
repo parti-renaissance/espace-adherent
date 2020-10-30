@@ -320,7 +320,7 @@ class UserListDefinitionManagerTest extends WebTestCase
         );
 
         $this->expectException(UserListDefinitionMemberException::class);
-        $this->expectExceptionMessageRegExp('/Connected user cannot manage .+ member$/');
+        $this->expectExceptionMessageMatches('/Connected user cannot manage .+ member$/');
 
         $userListDefinitionManager->updateUserListDefinitionMembers(
             $userListDefinitions,
@@ -465,7 +465,7 @@ class UserListDefinitionManagerTest extends WebTestCase
         ]);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -480,7 +480,7 @@ class UserListDefinitionManagerTest extends WebTestCase
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->userListDefinitionManager = null;
 

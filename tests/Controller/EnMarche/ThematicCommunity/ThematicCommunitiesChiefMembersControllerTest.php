@@ -34,7 +34,7 @@ class ThematicCommunitiesChiefMembersControllerTest extends WebTestCase
             'f[lastName]' => 'bert',
         ]));
         $this->assertCount(1, $crawler->filter('table tbody tr.referent__item'));
-        $this->assertContains('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item td')->first()->text());
+        $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item td')->first()->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Appliquer')->form([
             'f[lastName]' => null,
@@ -42,14 +42,14 @@ class ThematicCommunitiesChiefMembersControllerTest extends WebTestCase
         ]));
 
         $this->assertCount(3, $crawler->filter('table tbody tr.referent__item'));
-        $this->assertNotContains('Berthoux Gisele', $crawler->filter('table tbody')->text());
+        $this->assertStringNotContainsString('Berthoux Gisele', $crawler->filter('table tbody')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Appliquer')->form([
             'f[gender]' => 'male',
             'f[ageMin]' => 40,
         ]));
         $this->assertCount(1, $crawler->filter('table tbody tr.referent__item'));
-        $this->assertNotContains('Peter John', $crawler->filter('table tbody')->text());
+        $this->assertStringNotContainsString('Peter John', $crawler->filter('table tbody')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Appliquer')->form([
             'f[gender]' => null,
@@ -63,21 +63,21 @@ class ThematicCommunitiesChiefMembersControllerTest extends WebTestCase
             'f[smsSubscription]' => true,
         ]));
         $this->assertCount(1, $crawler->filter('table tbody tr.referent__item'));
-        $this->assertContains('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item td')->first()->text());
+        $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item td')->first()->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Appliquer')->form([
             'f[smsSubscription]' => null,
             'f[thematicCommunities]' => [1], // Santé
         ]));
         $this->assertCount(2, $crawler->filter('table tbody tr.referent__item'));
-        $this->assertNotContains('Referent Referent', $crawler->filter('table tbody tr.referent__item')->text());
+        $this->assertStringNotContainsString('Referent Referent', $crawler->filter('table tbody tr.referent__item')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Appliquer')->form([
             'f[thematicCommunities]' => [1], // Santé
             'f[with_job]' => true,
         ]));
         $this->assertCount(1, $crawler->filter('table tbody tr.referent__item'));
-        $this->assertContains('Peter John', $crawler->filter('table tbody tr.referent__item td')->first()->text());
+        $this->assertStringContainsString('Peter John', $crawler->filter('table tbody tr.referent__item td')->first()->text());
     }
 
     public function testThematicCommunityMembersOrder()
@@ -86,26 +86,26 @@ class ThematicCommunitiesChiefMembersControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/communautes-thematiques/membres');
 
         $crawler = $this->client->click($crawler->selectLink('Identité')->link());
-        $this->assertContains('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item')->eq(0)->filter('td')->first()->text());
-        $this->assertContains('Peter John', $crawler->filter('table tbody tr.referent__item')->eq(1)->filter('td')->first()->text());
-        $this->assertContains('Peter John', $crawler->filter('table tbody tr.referent__item')->eq(2)->filter('td')->first()->text());
-        $this->assertContains('Referent Referent', $crawler->filter('table tbody tr.referent__item')->eq(3)->filter('td')->first()->text());
+        $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item')->eq(0)->filter('td')->first()->text());
+        $this->assertStringContainsString('Peter John', $crawler->filter('table tbody tr.referent__item')->eq(1)->filter('td')->first()->text());
+        $this->assertStringContainsString('Peter John', $crawler->filter('table tbody tr.referent__item')->eq(2)->filter('td')->first()->text());
+        $this->assertStringContainsString('Referent Referent', $crawler->filter('table tbody tr.referent__item')->eq(3)->filter('td')->first()->text());
 
         $crawler = $this->client->click($crawler->selectLink('Identité')->link());
-        $this->assertContains('Referent Referent', $crawler->filter('table tbody tr.referent__item')->eq(0)->filter('td')->first()->text());
-        $this->assertContains('Peter John', $crawler->filter('table tbody tr.referent__item')->eq(1)->filter('td')->first()->text());
-        $this->assertContains('Peter John', $crawler->filter('table tbody tr.referent__item')->eq(2)->filter('td')->first()->text());
-        $this->assertContains('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item')->eq(3)->filter('td')->first()->text());
+        $this->assertStringContainsString('Referent Referent', $crawler->filter('table tbody tr.referent__item')->eq(0)->filter('td')->first()->text());
+        $this->assertStringContainsString('Peter John', $crawler->filter('table tbody tr.referent__item')->eq(1)->filter('td')->first()->text());
+        $this->assertStringContainsString('Peter John', $crawler->filter('table tbody tr.referent__item')->eq(2)->filter('td')->first()->text());
+        $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('table tbody tr.referent__item')->eq(3)->filter('td')->first()->text());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

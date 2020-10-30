@@ -83,7 +83,7 @@ class InvitationControllerTest extends WebTestCase
         $this->assertCount(1, $this->invitationRepository->findAll());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -92,7 +92,7 @@ class InvitationControllerTest extends WebTestCase
         $this->invitationRepository = $this->getInvitationRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

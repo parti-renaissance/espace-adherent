@@ -20,14 +20,14 @@ class NotifyIdeaAuthorAboutContributionsCommandTest extends WebTestCase
         $this->assertCountMails(1, IdeaNotificationWithoutContributionsMessage::class, 'michel.vasseur@example.ch');
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->init();
 
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

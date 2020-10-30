@@ -23,12 +23,11 @@ class AdherentResetPasswordTokenTest extends AbstractAdherentTokenTest
         $this->assertInstanceOf(\DateTime::class, $token->getUsageDate());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Token must have a new password.
-     */
     public function testUseResetPasswordTokenFailWithoutPassword()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Token must have a new password.');
+
         $adherent = $this->createAdherent();
         $token = AdherentResetPasswordToken::generate($adherent);
 

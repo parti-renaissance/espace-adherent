@@ -33,7 +33,7 @@ class ArticleControllerTest extends WebTestCase
 
         $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testArticleWithoutImage()
@@ -42,7 +42,7 @@ class ArticleControllerTest extends WebTestCase
 
         $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertNotContains('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
+        $this->assertStringNotContainsString('<img src="/assets/images/article.jpg', $this->client->getResponse()->getContent());
     }
 
     public function testArticleDraft()
@@ -113,17 +113,17 @@ class ArticleControllerTest extends WebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/articles/opinions/mes-opinions');
 
-        $this->assertContains('<a href="http://www.google.fr" class="category category--opinions">', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('<a href="http://www.google.fr" class="category category--opinions">', $this->client->getResponse()->getContent());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

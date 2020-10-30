@@ -123,7 +123,7 @@ class SitemapFactoryTest extends TestCase
         $this->invokeReflectionMethod('addCommittees', new Sitemap(), 1, 10);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -189,7 +189,7 @@ class SitemapFactoryTest extends TestCase
         ;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->objectManager = null;
         $this->router = null;

@@ -32,7 +32,10 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testLandingWithoutComingElection()
     {
-        $this->loadFixtures([]); // We need empty tables for this test only
+        array_map(function (ElectionRound $round) {
+            $round->setDate(new \DateTime('-5 days'));
+        }, $this->getRepository(ElectionRound::class)->findAll());
+        $this->getEntityManager(ElectionRound::class)->flush();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/procuration');
 
@@ -291,7 +294,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->assertSame("En cochant cette case, j'accepte d'être recontacté par LaREM pour la prochaine échéance électorale, à savoir les élections départementales de 2021.", $crawler->filter('#procuration_reachable > label')->text());
         $this->assertSame("En cochant cette case, j'accepte que LaREM traite mes données dans le cadre de la plateforme de procuration en ligne. *", $crawler->filter('#procuration_authorization > label')->text());
-        $this->assertContains("Les informations marquées d'un astérisque sont obligatoires", $crawler->filter('#procuration_legal_notices')->text());
+        $this->assertStringContainsString("Les informations marquées d'un astérisque sont obligatoires", $crawler->filter('#procuration_legal_notices')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
@@ -420,7 +423,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame("En cochant cette case, j'accepte d'être recontacté par LaREM pour la prochaine échéance électorale, à savoir les élections départementales de 2021.", $crawler->filter('#procuration_reachable > label')->text());
         $this->assertSame("En cochant cette case, je m'engage à voter selon les vœux du mandant. *", $crawler->filter('#procuration_conditions > label')->text());
         $this->assertSame("En cochant cette case, j'accepte que LaREM traite mes données dans le cadre de la plateforme de procuration en ligne. *", $crawler->filter('#procuration_authorization > label')->text());
-        $this->assertContains("Les informations marquées d'un astérisque sont obligatoires", $crawler->filter('#procuration_legal_notices')->text());
+        $this->assertStringContainsString("Les informations marquées d'un astérisque sont obligatoires", $crawler->filter('#procuration_legal_notices')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
@@ -669,7 +672,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('2e tour des éléctions législatives 2017', $rounds->eq(3)->text());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -679,7 +682,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->procurationProxyRepostitory = $this->getProcurationProxyRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -59,7 +59,7 @@ class AdminThreadCommentControllerTest extends WebTestCase
         $this->assertTrue($threadComment->isEnabled());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -68,7 +68,7 @@ class AdminThreadCommentControllerTest extends WebTestCase
         $this->threadCommentRepository = $this->getThreadCommentRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

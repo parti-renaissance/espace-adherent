@@ -89,7 +89,7 @@ class TransactionSubscriberTest extends WebTestCase
         return $params;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -99,7 +99,7 @@ class TransactionSubscriberTest extends WebTestCase
         $this->transactionRepository = $this->getTransactionRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

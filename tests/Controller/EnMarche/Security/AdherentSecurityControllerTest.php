@@ -130,7 +130,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
         $this->assertCount(1, $crawler->filter('input[name="form[email]"]'));
         $this->assertCount(1, $error = $crawler->filter('.form__error'));
-        $this->assertContains('Cette valeur ne doit pas être vide.', $error->text(), 'An empty email should be erroneous.');
+        $this->assertStringContainsString('Cette valeur ne doit pas être vide.', $error->text(), 'An empty email should be erroneous.');
     }
 
     public function testRetrieveForgotPasswordActionWithUnknownEmail(): void
@@ -151,7 +151,7 @@ class AdherentSecurityControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form__error'));
-        $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
+        $this->assertStringContainsString('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
     }
 
@@ -173,14 +173,14 @@ class AdherentSecurityControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form__error'));
-        $this->assertContains('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
+        $this->assertStringContainsString('Un e-mail vous a été envoyé contenant un lien pour réinitialiser votre mot de passe.', $crawler->text());
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'carl999@example.fr'), 'An email should have been sent.');
     }
 
     public function testResetPasswordAction(): void
     {
-        $client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
+        $client = $this->makeClient(['HTTP_HOST' => $this->hosts['app']]);
         $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
         $token = $this->getFirstAdherentResetPasswordToken();
         $oldPassword = $adherent->getPassword();
@@ -219,7 +219,7 @@ class AdherentSecurityControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -229,7 +229,7 @@ class AdherentSecurityControllerTest extends WebTestCase
         $this->emailRepository = $this->getEmailRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

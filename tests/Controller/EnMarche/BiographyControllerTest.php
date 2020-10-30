@@ -20,32 +20,32 @@ class BiographyControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'CASTANER Christophe',
             $crawler->filter('#biography .executive-office-leaders > ul li:nth-child(1)')->text()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "Secrétaire d'État auprès du Premier ministre, chargé des Relations avec le Parlement.",
             $crawler->filter('#biography .executive-office-leaders > ul li:nth-child(1) .description')->text()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'P. Pierre',
             $crawler->filter('#biography .executive-office-leaders > ul li:nth-child(2)')->text()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'ABADIE Caroline',
             $crawler->filter('#biography .executive-office-members > ul li:nth-child(1)')->text()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'AGAMENNONE Béatrice',
             $crawler->filter('#biography .executive-office-members > ul li:nth-child(2)')->text()
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'AVIA Laëtitia',
             $crawler->filter('#biography .executive-office-members > ul li:nth-child(3)')->text()
         );
@@ -59,29 +59,29 @@ class BiographyControllerTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertContains('Christophe CASTANER', $crawler->filter('#biography .profile-header h1')->text());
+        $this->assertStringContainsString('Christophe CASTANER', $crawler->filter('#biography .profile-header h1')->text());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Délégué général du mouvement',
             $crawler->filter('#biography .profile-header span')->text()
         );
 
         $this->assertCount(4, $crawler->filter('#biography .profile-header .social-networks a'));
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Christophe Castaner, né le 3 janvier 1966 à Ollioules, est un juriste et homme politique français.',
             $crawler->filter('#biography .profile-content p')->text()
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

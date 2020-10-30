@@ -4,6 +4,7 @@ namespace Tests\App\Procuration;
 
 use App\Entity\ProcurationRequest;
 use App\Procuration\ElectionContext;
+use App\Procuration\Exception\InvalidProcurationFlowException;
 use App\Procuration\ProcurationSession;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -18,12 +19,12 @@ class ProcurationSessionTest extends TestCase
     /** @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $session;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->session = $this->createMock(SessionInterface::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->session = null;
     }
@@ -47,12 +48,10 @@ class ProcurationSessionTest extends TestCase
         $procuration->startRequest();
     }
 
-    /**
-     * @expectedException \App\Procuration\Exception\InvalidProcurationFlowException
-     * @expectedExceptionMessage An election context is required to start the flow.
-     */
     public function testStartRequestRequiresElectionContext()
     {
+        $this->expectException(InvalidProcurationFlowException::class);
+        $this->expectExceptionMessage('An election context is required to start the flow.');
         $procuration = new ProcurationSession($this->session);
 
         $this->session
@@ -161,12 +160,10 @@ class ProcurationSessionTest extends TestCase
         $this->assertEquals($context, $procuration->getElectionContext());
     }
 
-    /**
-     * @expectedException \App\Procuration\Exception\InvalidProcurationFlowException
-     * @expectedExceptionMessage No election context.
-     */
     public function testGetElectionContextRequiresContext()
     {
+        $this->expectException(InvalidProcurationFlowException::class);
+        $this->expectExceptionMessage('No election context.');
         $procuration = new ProcurationSession($this->session);
 
         $this->session

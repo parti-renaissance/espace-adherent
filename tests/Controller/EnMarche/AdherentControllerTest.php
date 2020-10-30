@@ -160,7 +160,7 @@ class AdherentControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('#auth-error')->text());
+        $this->assertStringContainsString('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('#auth-error')->text());
     }
 
     public function testEditAdherentProfile(): void
@@ -962,7 +962,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Documents', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Documents', $this->client->getResponse()->getContent());
     }
 
     public function testContactActionSecured(): void
@@ -979,7 +979,7 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Contacter Michelle Dufour', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Contacter Michelle Dufour', $this->client->getResponse()->getContent());
 
         $this->client->submit($crawler->selectButton('Envoyer')->form([
             'g-recaptcha-response' => 'dummy',
@@ -1079,7 +1079,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
-        $this->assertContains("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
         $reasons = Unregistration::REASONS_LIST_ADHERENT;
@@ -1113,7 +1113,7 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
         --$nbFollowers;
 
-        $this->assertContains("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
 
         /** @var Adherent $adherent */
         $adherent = $this->getAdherentRepository()->findOneByEmail($userEmail);
@@ -1185,7 +1185,7 @@ class AdherentControllerTest extends WebTestCase
         ];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -1195,7 +1195,7 @@ class AdherentControllerTest extends WebTestCase
         $this->emailRepository = $this->getEmailRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

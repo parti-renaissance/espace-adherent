@@ -15,15 +15,15 @@ use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator;
 use App\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class UniqueTerritorialCouncilMemberValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testInvalidQualitiesThrowsException(): void
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate($this->createAdherent(), new UniqueTerritorialCouncilMember([
             'qualities' => 'referent',
         ]));
@@ -47,11 +47,9 @@ class UniqueTerritorialCouncilMemberValidatorTest extends ConstraintValidatorTes
         $this->assertNoViolation();
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     */
     public function testUnknownQualityThrowsException(): void
     {
+        $this->expectException(ConstraintDefinitionException::class);
         $this->validator->validate($this->createAdherent(), new UniqueTerritorialCouncilMember([
             'qualities' => ['invalid', 'lre'],
         ]));

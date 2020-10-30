@@ -84,14 +84,14 @@ class CommitteesControllerTest extends WebTestCase
         ], $data['candidacies'][1]);
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

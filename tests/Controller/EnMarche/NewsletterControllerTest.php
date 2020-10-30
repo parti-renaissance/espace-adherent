@@ -217,7 +217,7 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('Vos 2 invitations ont bien été envoyées', trim($crawler->filter('.newsletter-result > h2')->text()));
+        $this->assertStringContainsString('Vos 2 invitations ont bien été envoyées', trim($crawler->filter('.newsletter-result > h2')->text()));
 
         // Invitations should have been saved
         $this->assertCount(2, $invitations = $this->newsletterInviteRepository->findAll());
@@ -233,11 +233,11 @@ class NewsletterControllerTest extends WebTestCase
         // Email should have been sent
         $this->assertCountMails(1, NewsletterInvitationMessage::class, 'hugo.hamon@clichy-beach.com');
         $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite1->getEmail()));
-        $this->assertContains('/newsletter?mail=hugo.hamon%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
+        $this->assertStringContainsString('/newsletter?mail=hugo.hamon%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
 
         $this->assertCountMails(1, NewsletterInvitationMessage::class, 'jules.pietri@clichy-beach.com');
         $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite2->getEmail()));
-        $this->assertContains('/newsletter?mail=jules.pietri%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
+        $this->assertStringContainsString('/newsletter?mail=jules.pietri%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
     }
 
     public function testInvitationSentWithoutRedirection()
@@ -294,7 +294,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertSame('59000', $subscription->getPostalCode());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -305,7 +305,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->emailRepository = $this->getEmailRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

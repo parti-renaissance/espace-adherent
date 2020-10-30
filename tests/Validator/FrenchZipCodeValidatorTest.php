@@ -5,15 +5,14 @@ namespace Tests\App\Validator;
 use App\Address\Address;
 use App\Validator\FrenchZipCode;
 use App\Validator\FrenchZipCodeValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class FrenchZipCodeValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testValidateWithMissContext(): void
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->setObject(new \stdClass());
 
         $this->validator->validate('42', new FrenchZipCode());

@@ -123,7 +123,7 @@ class ProcurationRequestTest extends TestCase
      */
     public function testProcess(
         string $proxyVoteCountry,
-        string $proxiesCount,
+        int $proxiesCount,
         array $requests,
         bool $expectedFrenchAvailability,
         bool $expectedForeignAvailability
@@ -184,7 +184,7 @@ class ProcurationRequestTest extends TestCase
         yield 'Proxy from foreign country, with 2 slots and two requests (one from france and one from foreign country): should not be available for french nor foreign extra requests' => [
             'GB', 2, [true, false], false, false,
         ];
-        yield 'Same scenario as above, but changing requests order: should be the same result as above..' => [
+        yield 'Same scenario as above, but changing requests order: should be the same result as above.' => [
             'GB', 2, [false, true], false, false,
         ];
         yield 'Proxy from foreign country, with 2 slots and two requests from france: should not be available for french nor foreign extra requests' => [
@@ -202,8 +202,8 @@ class ProcurationRequestTest extends TestCase
         yield 'Proxy from foreign country, with 3 slots and two requests (one from france and one from foreign country): should not be available for french and foreign extra request' => [
             'GB', 3, [true, false], true, true,
         ];
-        yield 'Same scenario as above, but changing requests order: should be the same result as above' => [
-            'GB', 3, [false, true], false, true,
+        yield 'Same scenario as above, but changing requests order: should be the same result as above..' => [
+            'GB', 3, [false, true], true, true,
         ];
         yield 'Proxy from foreign country, with 3 slots and two requests from foreign country: should be available for french and foreign extra requests' => [
             'GB', 3, [false, false], true, true,
@@ -214,10 +214,10 @@ class ProcurationRequestTest extends TestCase
         yield 'Proxy from foreign country, with 3 slots and 3 requests (one from france and two from foreign countries): should not be available for french nor foreign extra requests' => [
             'GB', 3, [true, false, false], false, false,
         ];
-        yield 'Same scenario as above, but changing requests order: should be the same result as above' => [
+        yield 'Same scenario as above, but changing requests order: should be the same result as above...' => [
             'GB', 3, [false, true, false], false, false,
         ];
-        yield 'Same scenario as above, but changing requests order: should be the same result as above' => [
+        yield 'Same scenario as above, but changing requests order: should be the same result as above....' => [
             'GB', 3, [false, false, true], false, false,
         ];
         yield 'Proxy from foreign country, with 3 slots and three requests from foreign country: should not be available for french nor foreign extra requests' => [

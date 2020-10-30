@@ -35,9 +35,9 @@ class PageControllerTest extends WebTestCase
 
         $videoGridText = $crawler->filter('.videos__grid')->text();
 
-        $this->assertContains('Laurence Haïm a un message pour vous. Inscrivez-vous ➜ en-marche.fr/bercy', $videoGridText);
-        $this->assertContains('#MacronPau avec les helpers en coulisses. Allez allez ! Cette révolution nous allons la porter.', $videoGridText);
-        $this->assertNotContains('Découvrez le teaser', $videoGridText);
+        $this->assertStringContainsString('Laurence Haïm a un message pour vous. Inscrivez-vous ➜ en-marche.fr/bercy', $videoGridText);
+        $this->assertStringContainsString('#MacronPau avec les helpers en coulisses. Allez allez ! Cette révolution nous allons la porter.', $videoGridText);
+        $this->assertStringNotContainsString('Découvrez le teaser', $videoGridText);
     }
 
     public function testMouvementLegislativesAction()
@@ -68,14 +68,14 @@ class PageControllerTest extends WebTestCase
         yield ['/emmanuel-macron/test'];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

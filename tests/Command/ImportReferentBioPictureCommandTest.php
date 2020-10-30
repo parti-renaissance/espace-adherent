@@ -30,19 +30,21 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $this->createCorrectZipArchive();
         $output = $this->runCommand(ImportReferentBioPictureCommand::COMMAND_NAME, ['fileUrl' => self::VALID_ARCHIVE_NAME]);
 
+        $output = $output->getDisplay();
+
         $referentRepository = $this->getRepository(Referent::class);
         $mediaRepository = $this->getRepository(Media::class);
 
         $referent1 = $referentRepository->findOneBy(['firstName' => 'Nicolas', 'lastName' => 'Bordes']);
         $referent2 = $referentRepository->findOneBy(['firstName' => 'Alban', 'lastName' => 'Martin']);
 
-        $this->assertContains('Import OK', $output);
+        $this->assertStringContainsString('Import OK', $output);
         $this->assertNotNull($mediaRepository->findOneByName('Nicolas Bordes'));
         $this->assertNotNull($mediaRepository->findOneByName('Alban Martin'));
         $this->assertNotNull($referent1->getMedia());
         $this->assertNotNull($referent2->getMedia());
-        $this->assertContains('Nicolas Bordes Le Lorem Ipsum est simplement du faux texte', $referent1->getDescription());
-        $this->assertContains('Alban Martin Le Lorem Ipsum est simplement du faux texte', $referent2->getDescription());
+        $this->assertStringContainsString('Nicolas Bordes Le Lorem Ipsum est simplement du faux texte', $referent1->getDescription());
+        $this->assertStringContainsString('Alban Martin Le Lorem Ipsum est simplement du faux texte', $referent2->getDescription());
     }
 
     public function testCommandWithoutCsvInArchive()
@@ -50,31 +52,32 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $this->createZipArchiveWithoutCsv();
         $output = $this->runCommand(ImportReferentBioPictureCommand::COMMAND_NAME, ['fileUrl' => self::ARCHIVE_WITHOUT_CSV_NAME]);
 
-        $this->assertContains('csv not found', $output);
+        $output = $output->getDisplay();
+        $this->assertStringContainsString('csv not found', $output);
     }
 
     public function testCommandWithNotExistReferentInDb()
     {
         $this->createZipArchiveWithMissingDbReferentName();
         $output = $this->runCommand(ImportReferentBioPictureCommand::COMMAND_NAME, ['fileUrl' => self::ARCHIVE_WITH_NOT_REFERENT_IN_DB]);
-
-        $this->assertContains('The following referents are not found in database', $output);
-        $this->assertContains('3 - Toto Tata', $output);
+        $output = $output->getDisplay();
+        $this->assertStringContainsString('The following referents are not found in database', $output);
+        $this->assertStringContainsString('3 - Toto Tata', $output);
     }
 
     public function testCommandWithNotFoundImageFileInArchive()
     {
         $this->createZipArchiveWithMissingImageFile();
         $output = $this->runCommand(ImportReferentBioPictureCommand::COMMAND_NAME, ['fileUrl' => self::ARCHIVE_WITH_MISSING_IMAGE_FILE]);
-
+        $output = $output->getDisplay();
         $referentRepository = $this->getRepository(Referent::class);
         $mediaRepository = $this->getRepository(Media::class);
 
         $referent1 = $referentRepository->findOneBy(['firstName' => 'Nicolas', 'lastName' => 'Bordes']);
         $referent2 = $referentRepository->findOneBy(['firstName' => 'Alban', 'lastName' => 'Martin']);
 
-        $this->assertContains('The image name are not found in zip archive OR can\'t upload it on storage', $output);
-        $this->assertContains('Image not found : Nicolas Bordes missing_file.jpg', $output);
+        $this->assertStringContainsString('The image name are not found in zip archive OR can\'t upload it on storage', $output);
+        $this->assertStringContainsString('Image not found : Nicolas Bordes missing_file.jpg', $output);
         $this->assertNotNull($mediaRepository->findOneByPath('alban_martin.jpg'));
         $this->assertNull($mediaRepository->findOneByPath('missing_file.jpg'));
         $this->assertNull($referent1->getMedia());
@@ -161,14 +164,14 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $archive->close();
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->container = $this->getContainer();
 
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

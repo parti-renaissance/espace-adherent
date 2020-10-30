@@ -219,7 +219,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -227,7 +227,7 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         $this->subscriber = new EntityAddressGeocodingSubscriber(new Geocoder(new DummyGeocoder()), $this->manager);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->manager = null;
         $this->subscriber = null;

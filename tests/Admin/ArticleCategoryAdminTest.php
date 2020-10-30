@@ -89,14 +89,14 @@ class ArticleCategoryAdminTest extends WebTestCase
         $this->assertValidationErrors(['data.ctaLink'], $this->client->getContainer());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

@@ -142,7 +142,7 @@ class AssetsControllerTest extends WebTestCase
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -151,7 +151,7 @@ class AssetsControllerTest extends WebTestCase
         $this->signature = SignatureFactory::create($this->container->getParameter('kernel.secret'));
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

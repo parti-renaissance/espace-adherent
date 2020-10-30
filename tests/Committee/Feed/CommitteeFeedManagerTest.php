@@ -51,7 +51,7 @@ class CommitteeFeedManagerTest extends WebTestCase
         $this->assertSame($messageContent, $message->getContent());
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->init();
 
@@ -62,7 +62,7 @@ class CommitteeFeedManagerTest extends WebTestCase
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

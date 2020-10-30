@@ -344,7 +344,7 @@ class CommitteeManagerTest extends WebTestCase
         $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

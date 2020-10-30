@@ -71,7 +71,7 @@ class AdminChezVousCityControllerTest extends WebTestCase
         $this->assertSame(1, $this->getIndexer()->countForIndexByType(City::class));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -80,7 +80,7 @@ class AdminChezVousCityControllerTest extends WebTestCase
         $this->cityRepository = $this->get(CityRepository::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

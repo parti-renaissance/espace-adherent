@@ -350,14 +350,14 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Annie Versaire")'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

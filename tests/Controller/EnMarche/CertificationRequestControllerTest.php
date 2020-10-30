@@ -27,7 +27,7 @@ class CertificationRequestControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
-        $this->assertContains('Votre profil est certifié', $crawler->filter('.certification-status')->text());
+        $this->assertStringContainsString('Votre profil est certifié', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsDisabled();
     }
@@ -38,7 +38,7 @@ class CertificationRequestControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
-        $this->assertContains('Demande de certification en attente', $crawler->filter('.certification-status')->text());
+        $this->assertStringContainsString('Demande de certification en attente', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsDisabled();
     }
@@ -50,7 +50,7 @@ class CertificationRequestControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
-        $this->assertContains('Demande de certification refusée', $crawler->filter('.certification-status')->text());
+        $this->assertStringContainsString('Demande de certification refusée', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsSuccessful($email);
         $this->assertEquals(3, $this->countCertificationRequests($email));
@@ -62,7 +62,7 @@ class CertificationRequestControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
-        $this->assertContains('Demande de certification bloquée', $crawler->filter('.certification-status')->text());
+        $this->assertStringContainsString('Demande de certification bloquée', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsDisabled();
     }
@@ -74,7 +74,7 @@ class CertificationRequestControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
-        $this->assertContains('Votre profil n\'est pas encore certifié.', $crawler->filter('.certification-status')->text());
+        $this->assertStringContainsString('Votre profil n\'est pas encore certifié.', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsSuccessful($email);
         $this->assertEquals(1, $this->countCertificationRequests($email));
@@ -117,11 +117,11 @@ class CertificationRequestControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(200, $this->client->getResponse());
-        $this->assertContains('Votre demande de certification a bien été enregistrée.', $crawler->filter('.flash')->text());
-        $this->assertContains('Demande de certification en attente', $crawler->filter('.certification-status')->text());
+        $this->assertStringContainsString('Votre demande de certification a bien été enregistrée.', $crawler->filter('.flash')->text());
+        $this->assertStringContainsString('Demande de certification en attente', $crawler->filter('.certification-status')->text());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -130,7 +130,7 @@ class CertificationRequestControllerTest extends WebTestCase
         $this->certificationRequestRepository = $this->getRepository(CertificationRequest::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->certificationRequestRepository = null;
 
