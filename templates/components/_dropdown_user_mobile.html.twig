@@ -167,6 +167,9 @@
                     <li><a href="{{ path('app_search_events') }}">Événements</a></li>
                     <li><a href="{{ path('app_search_committees') }}">Comités</a></li>
                     <li><a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a></li>
+                    {% if is_canary_enabled() %}
+                        <li><a href="{{ path('app_thematic_community_index') }}">Communautés thématiques</a></li>
+                    {% endif %}
                     <li><a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a></li>
                     <li><a href="{{ mooc_host }}">Formation</a></li>
                     <li><a href="{{ mooc_host }}/sengager-a-la-republique-en-marche">S'engager à LaREM</a></li>
