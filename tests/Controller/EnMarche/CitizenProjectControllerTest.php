@@ -5,6 +5,7 @@ namespace Tests\App\Controller\EnMarche;
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCitizenProjectData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Entity\CitizenProject;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
@@ -130,7 +131,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertSame(\GuzzleHttp\json_encode([[
-            'uuid' => LoadAdherentData::COMMITTEE_1_UUID,
+            'uuid' => LoadCommitteeData::COMMITTEE_1_UUID,
             'name' => 'En Marche Paris 8',
         ]]), $this->client->getResponse()->getContent());
 
@@ -161,7 +162,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
-        $committee = $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID);
+        $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID);
         $this->assertCount(1, $citizenProject->getCommitteeSupports());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/mon-comite-soutien/%s', $citizenProject->getSlug()));

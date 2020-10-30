@@ -4,6 +4,7 @@ namespace Tests\App\Controller\Admin;
 
 use App\Committee\CommitteeAdherentMandateManager;
 use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -23,7 +24,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     public function testApproveAction(): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
 
         $this->assertFalse($committee->isApproved());
 
@@ -34,7 +35,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->get('doctrine.orm.entity_manager')->clear();
 
-        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
 
         $this->assertTrue($committee->isApproved());
         $this->assertCountMails(1, CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com');
@@ -46,7 +47,7 @@ class AdminCommitteeControllerTest extends WebTestCase
      */
     public function testCannotChangeMandateIfCommitteeNotApprovedAction(string $action): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
         $adherent = $this->getAdherentRepository()->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertFalse($committee->isApproved());

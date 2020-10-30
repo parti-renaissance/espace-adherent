@@ -40,6 +40,10 @@ class LoadCertificationData extends Fixture
         $adherent4 = $this->getReference('adherent-4');
         /** @var Adherent $adherent5 */
         $adherent5 = $this->getReference('adherent-5');
+        /** @var Adherent $adherent6 */
+        $adherent6 = $this->getReference('municipal-manager-1');
+        /** @var Adherent $adherent7 */
+        $adherent7 = $this->getReference('senatorial-candidate');
 
         /** @var Administrator $administrator */
         $administrator = $this->getReference('administrator-2');
@@ -48,6 +52,8 @@ class LoadCertificationData extends Fixture
         $this->certificationAuthorityManager->certify($adherent1, $administrator);
         $this->certificationAuthorityManager->uncertify($adherent1, $administrator);
         $this->certificationAuthorityManager->certify($adherent1, $administrator);
+        $this->certificationAuthorityManager->certify($adherent6, $administrator);
+        $this->certificationAuthorityManager->certify($adherent7, $administrator);
 
         // Adherent with pending certification request
         $this->createRequest($adherent2);

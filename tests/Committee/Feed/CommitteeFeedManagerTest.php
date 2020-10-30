@@ -4,7 +4,7 @@ namespace Tests\App\Committee\Feed;
 
 use App\Committee\Feed\CommitteeFeedManager;
 use App\Committee\Feed\CommitteeMessage;
-use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Entity\CommitteeFeedItem;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
@@ -29,8 +29,8 @@ class CommitteeFeedManagerTest extends WebTestCase
 
     public function testCreateMessage()
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
-        $author = $this->committeeMembershipRepository->findHostMembers($this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID))->first();
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_1_UUID);
+        $author = $this->committeeMembershipRepository->findHostMembers($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID))->first();
 
         $messageContent = 'Bienvenue !';
         $message = $this->committeeFeedManager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent));
@@ -41,8 +41,8 @@ class CommitteeFeedManagerTest extends WebTestCase
 
     public function testCreateNoNotificationMessage()
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
-        $author = $this->committeeMembershipRepository->findHostMembers($this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID))->first();
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_1_UUID);
+        $author = $this->committeeMembershipRepository->findHostMembers($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID))->first();
 
         $messageContent = 'Bienvenue !';
         $message = $this->committeeFeedManager->createMessage(new CommitteeMessage($author, $committee, 'Foo subject', $messageContent, true, 'now', false));

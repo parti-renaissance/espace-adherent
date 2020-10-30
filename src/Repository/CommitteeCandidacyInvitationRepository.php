@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Repository\TerritorialCouncil;
+namespace App\Repository;
 
-use App\Entity\TerritorialCouncil\CandidacyInvitation;
-use App\Entity\TerritorialCouncil\Election;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\CommitteeCandidacyInvitation;
+use App\Entity\CommitteeElection;
+use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class CandidacyInvitationRepository extends ServiceEntityRepository
+class CommitteeCandidacyInvitationRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, CandidacyInvitation::class);
+        parent::__construct($registry, CommitteeCandidacyInvitation::class);
     }
 
     /**
-     * @return CandidacyInvitation[]
+     * @return CommitteeCandidacyInvitation[]
      */
-    public function findAllPendingForMembership(TerritorialCouncilMembership $membership, Election $election): array
+    public function findAllPendingForMembership(CommitteeMembership $membership, CommitteeElection $election): array
     {
         return $this->createQueryBuilder('invitation')
             ->innerJoin('invitation.candidacy', 'candidacy')
             ->where('invitation.membership = :membership')
-            ->andWhere('candidacy.election = :election')
+            ->andWhere('candidacy.committeeElection = :election')
             ->andWhere('invitation.status = :pending')
             ->setParameters([
                 'membership' => $membership,

@@ -636,10 +636,13 @@ class CommitteeRepository extends ServiceEntityRepository
             $zoneCondition = new Orx();
 
             // Outre-Mer condition
-            $zoneCondition->add(sprintf(
-                'c.postAddress.country = :fr AND SUBSTRING(c.postAddress.postalCode, 1, 3) %s (:outremer_codes)',
-                \in_array(DesignationZoneEnum::OUTRE_MER, $designation->getZones(), true) ? 'IN' : 'NOT IN'
-            ));
+            if (\in_array(DesignationZoneEnum::OUTRE_MER, $designation->getZones(), true) || \in_array(DesignationZoneEnum::FRANCE, $designation->getZones(), true)) {
+                $zoneCondition->add(sprintf(
+                    'c.postAddress.country = :fr AND SUBSTRING(c.postAddress.postalCode, 1, 3) %s (:outremer_codes)',
+                    \in_array(DesignationZoneEnum::OUTRE_MER, $designation->getZones(), true) ? 'IN' : 'NOT IN'
+                ));
+                $qb->setParameter('outremer_codes', array_keys(FranceCitiesBundle::DOMTOM_INSEE_CODE));
+            }
 
             // France vs FDE
             if ([DesignationZoneEnum::FRANCE, DesignationZoneEnum::FDE] !== array_intersect([DesignationZoneEnum::FRANCE, DesignationZoneEnum::FDE], $designation->getZones())) {
@@ -652,7 +655,6 @@ class CommitteeRepository extends ServiceEntityRepository
             $qb
                 ->andWhere($zoneCondition)
                 ->setParameter('fr', Address::FRANCE)
-                ->setParameter('outremer_codes', array_keys(FranceCitiesBundle::DOMTOM_INSEE_CODE))
             ;
         }
 

@@ -65,11 +65,20 @@ class CandidacyManager
         );
     }
 
-    public function getCandidacy(Adherent $adherent, Committee $committee): ?CommitteeCandidacy
-    {
+    public function getCandidacy(
+        Adherent $adherent,
+        Committee $committee,
+        bool $createIfNotExist = false
+    ): ?CommitteeCandidacy {
         $membership = $adherent->getMembershipFor($committee);
 
-        return $membership->getCommitteeCandidacy($committee->getCommitteeElection());
+        $candidacy = $membership->getCommitteeCandidacy($election = $committee->getCommitteeElection());
+
+        if ($createIfNotExist && !$candidacy) {
+            return $this->createCandidacy($election, $adherent->getGender());
+        }
+
+        return $candidacy;
     }
 
     public function createCandidacy(CommitteeElection $election, string $adherentGender): CandidacyInterface
@@ -110,6 +119,36 @@ class CandidacyManager
         $this->eventDispatcher->dispatch(
             Events::CANDIDACY_INVITATION_UPDATE,
             new CandidacyInvitationEvent($candidacy, $invitation, $previouslyInvitedMembership)
+        );
+    }
+
+    public function acceptInvitation(CommitteeCandidacyInvitation $invitation, CommitteeCandidacy $acceptedBy): void
+    {
+        $invitation->accept();
+
+        $invitation->getCandidacy()->updateFromBinome();
+        $invitation->getCandidacy()->confirm();
+        $acceptedBy->confirm();
+
+        $membership = $invitation->getMembership();
+
+        $this->updateCandidature($acceptedBy, $membership->getAdherent(), $membership->getCommittee());
+
+        $this->eventDispatcher->dispatch(
+            Events::CANDIDACY_INVITATION_ACCEPT,
+            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation)
+        );
+    }
+
+    public function declineInvitation(CommitteeCandidacyInvitation $invitation): void
+    {
+        $invitation->decline();
+
+        $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(
+            Events::CANDIDACY_INVITATION_DECLINE,
+            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation)
         );
     }
 }

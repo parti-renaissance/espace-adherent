@@ -60,13 +60,6 @@ class Candidacy extends BaseCandidacy
      */
     protected $binome;
 
-    /**
-     * Helps to render two or single candidate
-     *
-     * @var bool
-     */
-    private $taken = false;
-
     public function __construct(
         TerritorialCouncilMembership $membership,
         Election $election,
@@ -117,9 +110,9 @@ class Candidacy extends BaseCandidacy
     public function updateFromBinome(): void
     {
         if ($this->binome) {
+            parent::updateFromBinome();
+
             $this->quality = $this->binome->getQuality();
-            $this->faithStatement = $this->binome->getFaithStatement();
-            $this->isPublicFaithStatement = $this->binome->isPublicFaithStatement();
         }
     }
 
@@ -140,16 +133,6 @@ class Candidacy extends BaseCandidacy
                 && 0 === strpos($this->membership->getQualitiesWithZones()[$this->quality], 'Paris ')
             )
         ;
-    }
-
-    public function isTaken(): bool
-    {
-        return $this->taken;
-    }
-
-    public function take(): void
-    {
-        $this->taken = true;
     }
 
     public function getType(): string

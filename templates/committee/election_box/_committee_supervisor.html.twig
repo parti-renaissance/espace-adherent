@@ -21,7 +21,7 @@
                         {% if candidacy.binome %}
                             <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
                                 <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
-                                Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.binome.membership.fullName }}.<br />
+                                Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.binome.committeeMembership.fullName }}.<br />
                                 Vous ne pouvez plus retirer votre candidature.
                             </p>
                         {% else %}
@@ -135,7 +135,7 @@
 
         {% if not committee_election.isVotePeriodStarted %}
             <p class="text--body text--small {{ with_two_rows is defined and with_two_rows ? 'b__nudge--top-large' }} b__nudge--right text--gray box-el">
-{#                Consulter <a href="#" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>#}
+                Consulter <a href="{{ path('app_committee_candidature_candidacy_list', {slug: committee.slug}) }}" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
             </p>
         {% endif %}
 

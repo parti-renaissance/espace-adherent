@@ -146,6 +146,7 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
     {
         return [
             LoadAdherentData::class,
+            LoadCommitteeData::class,
         ];
     }
 }

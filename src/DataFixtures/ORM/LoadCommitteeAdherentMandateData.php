@@ -45,6 +45,7 @@ class LoadCommitteeAdherentMandateData extends Fixture
     {
         return [
             LoadAdherentData::class,
+            LoadCommitteeData::class,
         ];
     }
 }

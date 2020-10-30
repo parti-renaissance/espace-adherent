@@ -332,6 +332,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
     {
         return [
             LoadAdherentData::class,
+            LoadCommitteeData::class,
             LoadCitizenProjectCategoryData::class,
             LoadCitizenProjectSkillData::class,
             LoadTurnkeyProjectData::class,

@@ -3,8 +3,9 @@ Feature: Merge committees from admin panel
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdminData    |
-      | LoadAdherentData |
+      | LoadAdminData     |
+      | LoadAdherentData  |
+      | LoadCommitteeData |
     When I am logged as "superadmin@en-marche-dev.fr" admin
 
   Scenario: A committee can not be merged if it is not approved

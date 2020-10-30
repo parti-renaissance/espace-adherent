@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
+use App\Entity\CommitteeCandidacyInvitation;
 use App\Image\ImageManager;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -77,6 +78,18 @@ class LoadCommitteeCandidacyData extends Fixture
 
         $manager->persist($candidacy);
 
+        $adherent = $this->getReference('senatorial-candidate');
+        $committee = $this->getReference('committee-12');
+
+        // Designation COMMITTEE-SUPERVISOR
+        $this->createSupervisorCandidacy(
+            $manager,
+            $committee,
+            $adherent,
+            $this->getReference('municipal-manager-1'),
+            __DIR__.'/../../../app/data/dist/avatar_homme_01.jpg'
+        );
+
         $manager->flush();
     }
 
@@ -84,11 +97,45 @@ class LoadCommitteeCandidacyData extends Fixture
     {
         return [
             LoadAdherentData::class,
+            LoadCommitteeData::class,
         ];
     }
 
     private function getImageManager(): ImageManager
     {
         return $this->container->get(ImageManager::class);
+    }
+
+    private function createSupervisorCandidacy(
+        ObjectManager $manager,
+        Committee $committee,
+        Adherent $adherent,
+        ?Adherent $invited,
+        string $imagePath
+    ): CommitteeCandidacy {
+        $candidacy = new CommitteeCandidacy($committee->getCurrentElection(), $adherent->getGender());
+        $candidacy->setCommitteeMembership($adherent->getMembershipFor($committee));
+        $candidacy->setBiography('Voluptas ea rerum eligendi rerum ipsum optio iusto qui. Harum minima labore tempore odio doloribus sint nihil veniam. Sint voluptas et ea cum ipsa aut. Odio ut sequi at optio mollitia asperiores voluptas.');
+        $candidacy->setFaithStatement('Eum earum explicabo assumenda nesciunt hic ea. Veniam magni assumenda ab fugiat dolores consequatur voluptatem. Recusandae explicabo quia voluptatem magnam.');
+        $candidacy->setIsPublicFaithStatement(true);
+
+        $candidacy->setImage(new UploadedFile(
+            $imagePath,
+            'image.jpg',
+            'image/jpeg',
+            null,
+            null,
+            true
+        ));
+
+        if ($invited) {
+            $candidacy->setInvitation($invitation = new CommitteeCandidacyInvitation());
+            $invitation->setMembership($invited->getMembershipFor($committee));
+        }
+
+        $manager->persist($candidacy);
+        $this->getImageManager()->saveImage($candidacy);
+
+        return $candidacy;
     }
 }

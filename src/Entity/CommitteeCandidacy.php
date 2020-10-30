@@ -106,4 +106,24 @@ class CommitteeCandidacy extends BaseCandidacy
     {
         return $this->committeeMembership->getAdherent();
     }
+
+    /**
+     * @Assert\IsTrue(groups={"accept_invitation"})
+     */
+    public function isValidForConfirmation(): bool
+    {
+        return DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $this->type
+            || ($this->binome && $this->binome->getInvitation() && $this->binome->isDraft())
+        ;
+    }
+
+    /**
+     * @Assert\IsTrue(groups={"committee_supervisor_candidacy", "accept_invitation"}, message="Photo est obligatoire")
+     */
+    public function isValid(): bool
+    {
+        return $this->hasImageName() && !$this->isRemoveImage()
+            || $this->getImage()
+        ;
+    }
 }

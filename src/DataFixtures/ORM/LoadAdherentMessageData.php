@@ -51,6 +51,7 @@ class LoadAdherentMessageData extends Fixture
     {
         return [
             LoadAdherentData::class,
+            LoadCommitteeData::class,
             LoadCitizenProjectData::class,
         ];
     }

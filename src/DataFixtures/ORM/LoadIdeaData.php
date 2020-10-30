@@ -171,6 +171,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
     {
         return [
             LoadAdherentData::class,
+            LoadCommitteeData::class,
             LoadIdeaNeedData::class,
             LoadIdeaCategoryData::class,
             LoadIdeaThemeData::class,

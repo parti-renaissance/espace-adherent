@@ -485,7 +485,7 @@ class LoadEventData extends Fixture
     {
         $uuid = (string) $committee->getUuid();
 
-        if (LoadAdherentData::COMMITTEE_1_UUID === $uuid) {
+        if (LoadCommitteeData::COMMITTEE_1_UUID === $uuid) {
             yield [
                 'subject' => '[Comité local] Nouveau message',
                 'text' => 'Ouverture du comité !',
@@ -513,7 +513,7 @@ class LoadEventData extends Fixture
             ];
         }
 
-        if (LoadAdherentData::COMMITTEE_3_UUID === $uuid) {
+        if (LoadCommitteeData::COMMITTEE_3_UUID === $uuid) {
             yield [
                 'subject' => '[Comité local] Nouveau message',
                 'text' => 'Lancement du comité !',
@@ -547,6 +547,7 @@ class LoadEventData extends Fixture
         return [
             LoadAdherentData::class,
             LoadEventCategoryData::class,
+            LoadCommitteeData::class,
         ];
     }
 }
