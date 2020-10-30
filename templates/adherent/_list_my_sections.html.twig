@@ -75,6 +75,11 @@
         <a href="{{ path('app_access_delegation_unset', {type: 'senatorial_candidate_elected_representatives'}) }}">Espace Sénatoriales</a>
     </li>
 {% endif %}
+{% if app.user.isCandidate %}
+    <li>
+        <a href="{{ path('app_access_delegation_unset', {type: 'candidate'}) }}">Espace candidat</a>
+    </li>
+{% endif %}
 {% if app.user.isJecouteManager %}
     <li>
         <a href="{{ path('app_access_delegation_unset', {type: 'jecoute_manager_local_surveys'}) }}">Espace responsable J'écoute</a>

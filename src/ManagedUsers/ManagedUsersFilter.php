@@ -3,6 +3,7 @@
 namespace App\ManagedUsers;
 
 use App\Entity\Committee;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -90,14 +91,27 @@ class ManagedUsersFilter
     /**
      * @var ReferentTag[]
      *
-     * @Assert\NotNull
+     * @Assert\Expression(
+     *     expression="this.getReferentTags() or this.getZones()",
+     *     message="referent.managed_zone.empty"
+     * )
      */
     private $referentTags;
+
+    /**
+     * @var Zone[]
+     */
+    private $zones;
 
     /**
      * @var bool|null
      */
     private $emailSubscription;
+
+    /**
+     * @var bool|null
+     */
+    private $smsSubscription;
 
     /**
      * @var string|null
@@ -144,14 +158,16 @@ class ManagedUsersFilter
         string $subscriptionType = null,
         array $referentTags = [],
         array $committeeUuids = [],
-        array $cities = []
+        array $cities = [],
+        array $zones = []
     ) {
-        if (empty($referentTags)) {
-            throw new \InvalidArgumentException('Referent tags could not be empty');
+        if (empty($referentTags) && empty($zones)) {
+            throw new \InvalidArgumentException('Both referent tags and zones could not be empty');
         }
 
         $this->subscriptionType = $subscriptionType;
         $this->referentTags = $referentTags;
+        $this->zones = $zones;
         $this->committeeUuids = $committeeUuids;
         $this->cities = $cities;
     }
@@ -325,6 +341,30 @@ class ManagedUsersFilter
         $this->referentTags = array_values($this->referentTags);
     }
 
+    /**
+     * @return Zone[]
+     */
+    public function getZones(): array
+    {
+        return $this->zones;
+    }
+
+    public function addZone(Zone $zone): void
+    {
+        $this->zones[] = $zone;
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+        foreach ($this->zones as $key => $value) {
+            if ($value->getId() === $zone->getId()) {
+                unset($this->zones[$key]);
+            }
+        }
+
+        $this->zones = array_values($this->zones);
+    }
+
     public function getEmailSubscription(): ?bool
     {
         return $this->emailSubscription;
@@ -333,6 +373,16 @@ class ManagedUsersFilter
     public function setEmailSubscription(?bool $emailSubscription): void
     {
         $this->emailSubscription = $emailSubscription;
+    }
+
+    public function getSmsSubscription(): ?bool
+    {
+        return $this->smsSubscription;
+    }
+
+    public function setSmsSubscription(?bool $smsSubscription): void
+    {
+        $this->smsSubscription = $smsSubscription;
     }
 
     public function getVoteInCommittee(): ?bool
@@ -409,7 +459,9 @@ class ManagedUsersFilter
                 'interests' => $this->interests,
                 'registeredSince' => $this->registeredSince ? $this->registeredSince->format('Y-m-d') : null,
                 'registeredUntil' => $this->registeredUntil ? $this->registeredUntil->format('Y-m-d') : null,
+                'zones' => 1 === \count($this->zones) ? current($this->zones)->getId() : null,
                 'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
+                'smsSubscription' => $this->smsSubscription,
                 'emailSubscription' => $this->emailSubscription,
                 'voteInCommittee' => $this->voteInCommittee,
                 'sort' => $this->sort,

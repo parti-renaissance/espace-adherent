@@ -174,6 +174,7 @@ referent.message.min_length: Le message doit contenir au moins {{ limit }} carac
 referent.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
 referent.adherent.invalid_email: Veuillez renseigner une adresse mail liée à un compte adhérent
 referent.adherent.can_be_coreferent: Cet adhérent est déjà co-référent d’un autre territoire
+referent.managed_zone.empty: La zone gérée ne doit pas être vide.
 
 #
 # Adherent Message

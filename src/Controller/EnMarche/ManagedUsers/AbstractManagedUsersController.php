@@ -38,7 +38,7 @@ abstract class AbstractManagedUsersController extends Controller
         }
 
         if ('html' !== $_format) {
-            return $exporter->getResponse($_format, $filter);
+            return $exporter->getResponse($_format, $filter, $this->getSpaceType());
         }
 
         $users = $this->managedUsersRepository->searchByFilter($filter, $request->query->getInt('page', 1));
@@ -47,7 +47,7 @@ abstract class AbstractManagedUsersController extends Controller
             'form' => $form->createView(),
             'users' => $users,
             'filter' => $filter,
-            'total_count' => $this->managedUsersRepository->countManagedUsers($filter->getReferentTags()),
+            'total_count' => $this->managedUsersRepository->countManagedUsers($filter->getReferentTags(), $filter->getZones()),
         ]);
     }
 

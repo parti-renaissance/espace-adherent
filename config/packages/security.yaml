@@ -368,6 +368,15 @@ security:
             - ROLE_ADMIN_TERRITORIAL_COUNCIL_MEMBERSHIP_LOG
             - ROLE_ADMIN_THEMATIC_COMMUNITY
 
+        ROLE_CANDIDATE_REGIONAL_HEADED:
+            - ROLE_CANDIDATE
+
+        ROLE_CANDIDATE_REGIONAL_LEADER:
+            - ROLE_CANDIDATE
+
+        ROLE_CANDIDATE_DEPARTMENTAL:
+            - ROLE_CANDIDATE
+
     access_decision_manager:
         strategy: unanimous
 

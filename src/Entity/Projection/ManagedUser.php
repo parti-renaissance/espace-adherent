@@ -2,6 +2,7 @@
 
 namespace App\Entity\Projection;
 
+use App\Entity\Geo\Zone;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
@@ -69,6 +70,13 @@ class ManagedUser
      * @ORM\Column
      */
     private $email;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=150, nullable=true)
+     */
+    private $address;
 
     /**
      * @var string|null
@@ -218,11 +226,17 @@ class ManagedUser
      */
     private $voteCommitteeId;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    private $zone;
+
     public function __construct(
         int $status,
         string $type,
         int $originalId,
         string $email,
+        string $address,
         string $postalCode,
         string $committeePostalCode = null,
         string $city = null,
@@ -237,6 +251,7 @@ class ManagedUser
         int $isCommitteeHost = 0,
         int $isCommitteeSupervisor = 0,
         ?array $subscriptionTypes = [],
+        ?Zone $zone = null,
         string $subscribedTags = null,
         \DateTime $createdAt = null,
         string $gender = null,
@@ -251,6 +266,7 @@ class ManagedUser
         $this->originalId = $originalId;
         $this->adherentUuid = $uuid;
         $this->email = $email;
+        $this->address = $address;
         $this->postalCode = $postalCode;
         $this->committeePostalCode = $committeePostalCode;
         $this->city = $city;
@@ -272,6 +288,7 @@ class ManagedUser
         $this->citizenProjects = $citizenProjects;
         $this->citizenProjectsOrganizer = $citizenProjectsOrganizer;
         $this->voteCommitteeId = $voteCommitteeId;
+        $this->zone = $zone;
     }
 
     public function getId(): int
@@ -311,6 +328,11 @@ class ManagedUser
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
     }
 
     public function getPostalCode(): ?string
@@ -473,5 +495,10 @@ class ManagedUser
     public function getVoteCommitteeId(): ?int
     {
         return $this->voteCommitteeId;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
     }
 }
