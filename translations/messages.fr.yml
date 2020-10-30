@@ -96,6 +96,9 @@ municipal_manager_supervisor: Responsable attribution
 election_results_reporter: Rapporteur résultats
 print_privilege: Accès LMI
 senatorial_candidate: Candidat Sénatoriales 2020
+candidate_regional_headed: Tête de liste aux régionales
+candidate_regional_leader: Chef de file aux régionales
+candidate_departmental: Candidat aux départementales
 lre: La République Ensemble (LRE)
 legislative_candidate: Candidat aux législatives
 thematic_community_chief: Responsable Thématique
