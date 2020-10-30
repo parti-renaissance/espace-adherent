@@ -243,6 +243,15 @@ class AreaUtils
         return $relatedCodes;
     }
 
+    public static function getZone(EntityPostAddressInterface $entity): ?string
+    {
+        if (self::CODE_FRANCE === $entity->getCountry()) {
+            return $entity->getInseeCode();
+        }
+
+        return $entity->getCountry();
+    }
+
     private static function isParisCode(string $code): bool
     {
         return self::PREFIX_POSTALCODE_PARIS_DISTRICTS === mb_substr($code, 0, 2);

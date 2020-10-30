@@ -177,11 +177,6 @@
         <service id="App\Procuration\ProcurationRequestSerializer" />
         <service id="App\Procuration\ProcurationSession" />
 
-        <!-- Referent -->
-        <service id="App\Referent\ReferentTagManager" />
-        <service id="App\Referent\ManagedCommitteesExporter" />
-        <service id="App\Referent\ManagedCitizenProjectsExporter" />
-
         <!-- J'écoute -->
         <service id="App\Jecoute\DataSurveyNotifier">
             <argument type="service" id="app.mailer.transactional"/>
