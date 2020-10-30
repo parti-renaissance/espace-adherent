@@ -21,6 +21,7 @@ class CandidateManagedArea
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $zone;
 
@@ -37,5 +38,20 @@ class CandidateManagedArea
     public function setZone(?Zone $zone): void
     {
         $this->zone = $zone;
+    }
+
+    public function isRegionalZone(): bool
+    {
+        return Zone::REGION === $this->getZone()->getType();
+    }
+
+    public function isDepartmentalZone(): bool
+    {
+        return Zone::DEPARTMENT === $this->getZone()->getType();
+    }
+
+    public function isCantonalZone(): bool
+    {
+        return Zone::CANTON === $this->getZone()->getType();
     }
 }

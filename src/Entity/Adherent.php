@@ -12,7 +12,6 @@ use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
-use App\Entity\Geo\Zone;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
@@ -2426,17 +2425,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isHeadedRegionalCandidate(): bool
     {
-        return $this->candidateManagedArea ? Zone::REGION === $this->candidateManagedArea->getZone()->getType() : false;
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isRegionalZone() : false;
     }
 
     public function isLeaderRegionalCandidate(): bool
     {
-        return $this->candidateManagedArea ? Zone::DEPARTMENT === $this->candidateManagedArea->getZone()->getType() : false;
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isDepartmentalZone() : false;
     }
 
     public function isDepartmentalCandidate(): bool
     {
-        return $this->candidateManagedArea ? Zone::CANTON === $this->candidateManagedArea->getZone()->getType() : false;
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isCantonalZone() : false;
     }
 
     public function getLreArea(): ?LreArea

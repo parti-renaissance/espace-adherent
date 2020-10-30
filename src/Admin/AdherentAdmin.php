@@ -829,21 +829,23 @@ HELP
                         $where->add('senatorialCandidateManagedArea IS NOT NULL');
                     }
 
-                    if (array_intersect(AdherentRoleEnum::getCandidates(), $value['value'])) {
+                    if ($candidateRoles = array_intersect(AdherentRoleEnum::getCandidates(), $value['value'])) {
                         $qb
                             ->leftJoin(sprintf('%s.candidateManagedArea', $alias), 'candidateManagedArea')
-                            ->leftJoin('candidateManagedArea.zone', 'zone')
+                            ->leftJoin('candidateManagedArea.zone', 'candidate_zone')
+                            ->setParameter('candiate_zone_types', array_map(function (string $role) {
+                                switch ($role) {
+                                    case AdherentRoleEnum::CANDIDATE_REGIONAL_HEADED:
+                                        return Zone::REGION;
+                                    case AdherentRoleEnum::CANDIDATE_REGIONAL_LEADER:
+                                        return Zone::DEPARTMENT;
+                                    case AdherentRoleEnum::CANDIDATE_DEPARTMENTAL:
+                                        return Zone::CANTON;
+                                }
+                            }, $candidateRoles))
                         ;
-                    }
 
-                    if (\in_array(AdherentRoleEnum::CANDIDATE_REGIONAL_HEADED, $value['value'], true)) {
-                        $where->add('zone.type = :type_region');
-                        $qb->setParameter('type_region', Zone::REGION);
-                    }
-
-                    if (\in_array(AdherentRoleEnum::CANDIDATE_REGIONAL_LEADER, $value['value'], true)) {
-                        $where->add('zone.type = :type_dpt');
-                        $qb->setParameter('type_dpt', Zone::DEPARTMENT);
+                        $where->add('candidate_zone.type IN (:candiate_zone_types)');
                     }
 
                     if (\in_array(AdherentRoleEnum::CANDIDATE_DEPARTMENTAL, $value['value'], true)) {
