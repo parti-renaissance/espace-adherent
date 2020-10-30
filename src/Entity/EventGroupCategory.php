@@ -20,6 +20,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class EventGroupCategory extends BaseEventCategory
 {
+    const CAMPAIGN_EVENTS = 'evenements-de-campagne';
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\EventCategory", mappedBy="eventGroupCategory", fetch="EAGER")
      * @ORM\OrderBy({"name": "ASC"})

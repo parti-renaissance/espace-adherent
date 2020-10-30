@@ -6,6 +6,7 @@ use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Event;
+use App\Entity\EventGroupCategory;
 use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
 use App\Event\EventRegistrationCommand;
@@ -61,7 +62,7 @@ abstract class AbstractEventManagerController extends Controller
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
 
         $form = $this
-            ->createForm(EventCommandType::class, $command)
+            ->createForm(EventCommandType::class, $command, ['event_group_category' => $this->getEventGroupCategory()])
             ->handleRequest($request)
         ;
 
@@ -104,5 +105,10 @@ abstract class AbstractEventManagerController extends Controller
     protected function getEventClassName(): string
     {
         return Event::class;
+    }
+
+    protected function getEventGroupCategory(): ?EventGroupCategory
+    {
+        return null;
     }
 }

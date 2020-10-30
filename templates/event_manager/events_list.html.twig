@@ -58,21 +58,23 @@
             );
         });
 
-        document.sendEventLinkByMessage = function (event) {
-            event.preventDefault();
+        {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::CANDIDATE') %}
+            document.sendEventLinkByMessage = function (event) {
+                event.preventDefault();
 
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '{{ path("app_message_#{space_name}_create") }}';
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ path("app_message_#{space_name}_create") }}';
 
-            var messageElement = document.createElement('input');
-            messageElement.name = 'message_content';
-            messageElement.value = 'Inscrivez-vous à l\'événement <a href="' + event.target.dataset.url + '">ici</a>';
+                var messageElement = document.createElement('input');
+                messageElement.name = 'message_content';
+                messageElement.value = 'Inscrivez-vous à l\'événement <a href="' + event.target.dataset.url + '">ici</a>';
 
-            form.appendChild(messageElement);
-            document.body.appendChild(form);
-            form.submit();
-        }
+                form.appendChild(messageElement);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        {% endif %}
     </script>
 {% endblock %}
 

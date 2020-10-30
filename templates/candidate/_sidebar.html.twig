@@ -12,5 +12,11 @@
                 <a href="{{ path('app_candidate_managed_users_list') }}">Adhérents</a>
             </li>
         {% endif %}
+
+        {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
+            <li class="{{ is_active_route(app.request, 'app_candidate_event_manager_event*') ? 'active' }}">
+                <a href="{{ path('app_candidate_event_manager_events') }}">Événements</a>
+            </li>
+        {% endif %}
     </ul>
 </nav>
