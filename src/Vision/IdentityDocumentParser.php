@@ -86,7 +86,7 @@ class IdentityDocumentParser
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
             preg_match_all('/(?<birth_date>\d{2}[\. ]{1,2}\d{2}[\. ]{1,2}\d{4})/', $imageAnnotations->getText(), $matches);
 
-            if (!isset($matches['birth_date']) || !$matches['birth_date'] || empty($matches['birth_date'])) {
+            if (empty($matches['birth_date'])) {
                 return false;
             }
 
