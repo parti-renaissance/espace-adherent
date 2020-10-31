@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 
+use App\DataFixtures\ORM\LoadAdherentData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,7 +79,8 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
     public function testDeleteEditMessageDenied()
     {
-        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => 17], null, 1)[0];
+        $adherent = $this->getAdherent(LoadAdherentData::REFERENT_2_UUID);
+        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => $adherent], null, 1)[0];
 
         $this->client->request(Request::METHOD_GET, '/conseil-territorial/messages/'.$message->getId().'/modifier');
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
@@ -92,9 +94,10 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
     public function testEditMessage()
     {
-        $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
+        $adherent = $this->getAdherent(LoadAdherentData::REFERENT_2_UUID);
+        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
-        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => 17], null, 1, 2)[0];
+        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => $adherent], null, 1, 2)[0];
         $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial/messages/'.$message->getId().'/modifier');
 
         $this->isSuccessful($this->client->getResponse());
@@ -113,9 +116,10 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
     public function testDeleteMessage()
     {
-        $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
+        $adherent = $this->getAdherent(LoadAdherentData::REFERENT_2_UUID);
+        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
 
-        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => 17], null, 1)[0];
+        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => $adherent], null, 1)[0];
         $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
 
         $this->isSuccessful($this->client->getResponse());

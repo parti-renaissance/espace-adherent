@@ -5,12 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\Entity\ThematicCommunity\AdherentMembership;
 use App\Entity\ThematicCommunity\ContactMembership;
 use App\Entity\ThematicCommunity\ThematicCommunityMembership;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadThematicCommunityMembershipData extends AbstractFixture implements DependentFixtureInterface
+class LoadThematicCommunityMembershipData extends Fixture implements DependentFixtureInterface
 {
     private const MEMBERSHIP_UUID_1 = 'b168d99c-f3ff-4701-948f-be180c8d2af6';
     private const MEMBERSHIP_UUID_2 = '2420524f-f52e-46af-a945-327c48788d37';

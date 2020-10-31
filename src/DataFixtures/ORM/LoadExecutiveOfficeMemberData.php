@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Biography\ExecutiveOfficeMember;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadExecutiveOfficeMemberData extends AbstractFixture
+class LoadExecutiveOfficeMemberData extends Fixture
 {
     public function load(ObjectManager $manager)
     {

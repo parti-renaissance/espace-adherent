@@ -5,34 +5,37 @@ namespace App\DataFixtures\ORM;
 use App\Content\MediaFactory;
 use App\Content\PageFactory;
 use App\Entity\Page;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadPageData implements FixtureInterface, ContainerAwareInterface
+class LoadPageData extends Fixture
 {
-    use ContainerAwareTrait;
+    private $pageFactory;
+    private $mediaFactory;
+    private $storage;
+
+    public function __construct(PageFactory $pageFactory, MediaFactory $mediaFactory, FilesystemInterface $storage)
+    {
+        $this->pageFactory = $pageFactory;
+        $this->mediaFactory = $mediaFactory;
+        $this->storage = $storage;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $factory = $this->container->get(PageFactory::class);
-        $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get(FilesystemInterface::class);
-
         $description = 'Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, '.
             'du risque, qui vivent pour la liberté, l\'égalité, et l\'Europe.';
 
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
-        $storage->put('images/page.jpg', file_get_contents($mediaFile->getPathname()));
-        $media = $mediaFactory->createFromFile('Page image', 'page.jpg', $mediaFile);
+        $this->storage->put('images/page.jpg', file_get_contents($mediaFile->getPathname()));
+        $media = $this->mediaFactory->createFromFile('Page image', 'page.jpg', $mediaFile);
 
         $manager->persist($media);
         $manager->flush();
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'emmanuel macron',
             'title' => 'Emmanuel Macron - Ce que je suis',
             'slug' => 'emmanuel-macron',
@@ -41,7 +44,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'emmanuel macron révolution',
             'title' => 'Emmanuel Macron - Révolution',
             'slug' => 'emmanuel-macron/revolution',
@@ -50,7 +53,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'mouvement en marche',
             'title' => 'Le mouvement - Nos valeurs',
             'slug' => 'le-mouvement',
@@ -59,7 +62,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'mouvement en marche organisation porte-parole',
             'title' => 'Le mouvement - Notre organisation',
             'slug' => 'le-mouvement/notre-organisation',
@@ -68,7 +71,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'mouvement en marche organigramme',
             'title' => 'Le mouvement - Organigramme',
             'slug' => 'le-mouvement/organigramme',
@@ -77,7 +80,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'mouvement en marche organisation comité comités',
             'title' => 'Le mouvement - Les comités',
             'slug' => 'le-mouvement/les-comites',
@@ -86,7 +89,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'mouvement en marche bénévole volontaire',
             'title' => 'Le mouvement - Devenez bénévole',
             'slug' => 'le-mouvement/devenez-benevole',
@@ -95,7 +98,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'mouvement en marche législatives',
             'title' => 'Le mouvement - Législatives',
             'slug' => 'le-mouvement-legislatives',
@@ -104,7 +107,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'désintox fake news fausse informations',
             'title' => 'Désintox',
             'slug' => 'desintox',
@@ -113,7 +116,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'mentions légales',
             'title' => 'Mentions légales',
             'slug' => 'mentions-legales',
@@ -122,7 +125,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'politique cookies',
             'title' => 'Politique des Cookies',
             'slug' => 'politique-cookies',
@@ -131,7 +134,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'programme propositions',
             'title' => 'Les propositions d\'Emmanuel Macron',
             'slug' => 'emmanuel-macron-propositions',
@@ -141,7 +144,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'loi travail ordonnances explications',
             'title' => 'Les ordonnances expliquées',
             'slug' => 'les-ordonnances-expliquees',
@@ -149,7 +152,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'content' => file_get_contents(__DIR__.'/../explainer.html'),
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'title' => 'Ça, c\'est du concret !',
             'slug' => 'concrete',
             'description' => $description,
@@ -157,7 +160,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'title' => 'Action talents - Accueil',
             'slug' => 'action-talents',
             'description' => $description,
@@ -165,7 +168,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'title' => 'Action talents - Candidater',
             'slug' => 'action-talents/candidater',
             'description' => $description,
@@ -173,7 +176,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'title' => '1000 Talents',
             'slug' => '1000-talents',
             'description' => 'Faire tomber les barrières de l\'engagement politique.',
@@ -181,7 +184,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'title' => 'Carrières',
             'slug' => 'nos-offres',
             'description' => $description,
@@ -189,7 +192,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'title' => 'Test Static Page',
             'slug' => 'emmanuel-macron/test',
             'description' => $description,
@@ -197,7 +200,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'espace formation',
             'title' => 'Mon parcours de formation',
             'slug' => 'espace-formation',
@@ -206,7 +209,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'espace formation',
             'title' => 'Foire aux questions',
             'slug' => 'espace-formation/faq',
@@ -216,7 +219,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'layout' => Page::LAYOUT_DEFAULT,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'larem candidats municipales 2020',
             'title' => 'Candidat(e)s investi(e)s et soutenu(e)s par LaREM pour les élections municipales de 2020',
             'slug' => 'municipales/candidats-investis ',
@@ -226,7 +229,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'layout' => Page::LAYOUT_MUNICIPALES,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'test layout with header image',
             'title' => 'Test du layout avec bannière',
             'slug' => 'test-layout-banniere',
@@ -236,7 +239,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'layout' => Page::LAYOUT_DEFAULT_WITH_HEADER_IMAGE,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'nous reussirons',
             'title' => 'Nous reussirons (titre non affiché)',
             'slug' => 'nous-reussirons',

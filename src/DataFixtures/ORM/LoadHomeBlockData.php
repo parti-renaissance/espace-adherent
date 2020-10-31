@@ -6,36 +6,15 @@ use App\Content\HomeBlockFactory;
 use App\Content\MediaFactory;
 use App\Entity\HomeBlock;
 use App\Entity\Media;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
+class LoadHomeBlockData extends Fixture
 {
-    use ContainerAwareTrait;
-
-    /**
-     * @var EntityManager
-     */
-    private $em;
-
-    /**
-     * @var MediaFactory
-     */
     private $mediaFactory;
-
-    /**
-     * @var HomeBlockFactory
-     */
     private $homeBlockFactory;
-
-    /**
-     * @var Filesystem
-     */
     private $storage;
 
     /**
@@ -43,20 +22,25 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
      */
     private $mediasRegistry;
 
-    public function load(ObjectManager $manager)
-    {
-        $this->em = $this->container->get('doctrine.orm.entity_manager');
-        $this->mediaFactory = $this->container->get(MediaFactory::class);
-        $this->homeBlockFactory = $this->container->get(HomeBlockFactory::class);
-        $this->storage = $this->container->get(FilesystemInterface::class);
-
-        $this->loadMedias();
-        $this->loadHomeBlocks();
+    public function __construct(
+        MediaFactory $mediaFactory,
+        HomeBlockFactory $homeBlockFactory,
+        FilesystemInterface $storage
+    ) {
+        $this->mediaFactory = $mediaFactory;
+        $this->homeBlockFactory = $homeBlockFactory;
+        $this->storage = $storage;
     }
 
-    private function loadMedias()
+    public function load(ObjectManager $manager)
     {
-        $repository = $this->em->getRepository(Media::class);
+        $this->loadMedias($manager);
+        $this->loadHomeBlocks($manager);
+    }
+
+    private function loadMedias(ObjectManager $manager): void
+    {
+        $repository = $manager->getRepository(Media::class);
 
         foreach (self::$data as $homeBlockData) {
             if (!\array_key_exists('path', $homeBlockData)) {
@@ -82,24 +66,24 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
                 $mediaFile
             );
 
-            $this->em->persist($media);
+            $manager->persist($media);
 
             $this->mediasRegistry[$media->getPath()] = $media;
         }
 
-        $this->em->flush();
+        $manager->flush();
     }
 
-    private function loadHomeBlocks()
+    private function loadHomeBlocks(ObjectManager $manager): void
     {
-        $repository = $this->em->getRepository(HomeBlock::class);
+        $repository = $manager->getRepository(HomeBlock::class);
 
         foreach (self::$data as $i => $homeBlockData) {
             if ($repository->findOneBy(['position' => $i])) {
                 continue;
             }
 
-            $this->em->persist($this->homeBlockFactory->createFromArray([
+            $manager->persist($this->homeBlockFactory->createFromArray([
                 'position' => $i,
                 'positionName' => $homeBlockData['positionName'],
                 'type' => $homeBlockData['type'],
@@ -113,7 +97,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
             ]));
         }
 
-        $this->em->flush();
+        $manager->flush();
     }
 
     private static $data = [

@@ -9,11 +9,19 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Image\ImageManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LoadTerritorialCouncilCandidacyData extends Fixture
+class LoadTerritorialCouncilCandidacyData extends Fixture implements DependentFixtureInterface
 {
+    private $imageManager;
+
+    public function __construct(ImageManager $imageManager)
+    {
+        $this->imageManager = $imageManager;
+    }
+
     public function load(ObjectManager $manager)
     {
         // CO TERR 75
@@ -130,14 +138,9 @@ class LoadTerritorialCouncilCandidacyData extends Fixture
         }
 
         $manager->persist($candidacy);
-        $this->getImageManager()->saveImage($candidacy);
+        $this->imageManager->saveImage($candidacy);
 
         return $candidacy;
-    }
-
-    private function getImageManager(): ImageManager
-    {
-        return $this->container->get(ImageManager::class);
     }
 
     public function getDependencies()

@@ -5,29 +5,34 @@ namespace App\DataFixtures\ORM;
 use App\Content\MediaFactory;
 use App\Content\ProposalFactory;
 use App\Entity\ProposalTheme;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadProposalData implements FixtureInterface, ContainerAwareInterface
+class LoadProposalData extends Fixture
 {
-    use ContainerAwareTrait;
+    private $proposalFactory;
+    private $mediaFactory;
+    private $storage;
+
+    public function __construct(
+        ProposalFactory $proposalFactory,
+        MediaFactory $mediaFactory,
+        FilesystemInterface $storage
+    ) {
+        $this->proposalFactory = $proposalFactory;
+        $this->mediaFactory = $mediaFactory;
+        $this->storage = $storage;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $factory = $this->container->get(ProposalFactory::class);
-        $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get(FilesystemInterface::class);
-        $em = $this->container->get('doctrine.orm.entity_manager');
-
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');
-        $storage->put('images/proposal.jpg', file_get_contents($mediaFile->getPathname()));
-        $media = $mediaFactory->createFromFile('Proposition image', 'proposal.jpg', $mediaFile);
-        $em->persist($media);
+        $this->storage->put('images/proposal.jpg', file_get_contents($mediaFile->getPathname()));
+        $media = $this->mediaFactory->createFromFile('Proposition image', 'proposal.jpg', $mediaFile);
+        $manager->persist($media);
 
         $manager->flush();
 
@@ -42,7 +47,7 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
 
         // Proposals
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->proposalFactory->createFromArray([
             'position' => 1,
             'title' => 'Produire en France et sauver la planète',
             'slug' => 'produire-en-france-et-sauver-la-planete',
@@ -55,7 +60,7 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->proposalFactory->createFromArray([
             'position' => 2,
             'title' => 'Mieux vivre de son travail',
             'slug' => 'mieux-vivre-de-son-travail',
@@ -68,7 +73,7 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->proposalFactory->createFromArray([
             'position' => 3,
             'title' => 'Eduquer tous nos enfants',
             'slug' => 'eduquer-tous-nos-enfants',

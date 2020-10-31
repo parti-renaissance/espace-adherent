@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ProgrammaticFoundation\Tag;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadProgrammaticFoundationTagData extends AbstractFixture
+class LoadProgrammaticFoundationTagData extends Fixture
 {
     private const TAG_LABELS = [
         'Écologie',

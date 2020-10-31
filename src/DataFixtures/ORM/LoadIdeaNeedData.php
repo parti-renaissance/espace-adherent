@@ -4,10 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\IdeasWorkshop\Need;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadIdeaNeedData extends AbstractFixture
+class LoadIdeaNeedData extends Fixture
 {
     public function load(ObjectManager $manager)
     {

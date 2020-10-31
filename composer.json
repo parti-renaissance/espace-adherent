@@ -133,7 +133,7 @@
         "behatch/contexts": "^2.7",
         "coduo/php-matcher": "^5.0",
         "dama/doctrine-test-bundle": "^5.0",
-        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "fabpot/goutte": "^3.2",
         "friendsofphp/php-cs-fixer": "^2.16",
         "fzaninotto/faker": "^1.9",

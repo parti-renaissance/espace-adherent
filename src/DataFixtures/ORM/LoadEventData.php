@@ -14,10 +14,10 @@ use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadEventData extends Fixture
+class LoadEventData extends Fixture implements DependentFixtureInterface
 {
     public const EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
     public const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
@@ -41,7 +41,19 @@ class LoadEventData extends Fixture
     public const EVENT_20_UUID = '65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e';
     public const EVENT_21_UUID = '0e5f9f02-fa33-4c2c-a700-4235d752315b';
 
-    use ContainerAwareTrait;
+    private $committeeFeedManager;
+    private $eventFactory;
+    private $eventRegistrationFactory;
+
+    public function __construct(
+        CommitteeFeedManager $committeeFeedManager,
+        EventFactory $eventFactory,
+        EventRegistrationFactory $eventRegistrationFactory
+    ) {
+        $this->committeeFeedManager = $committeeFeedManager;
+        $this->eventFactory = $eventFactory;
+        $this->eventRegistrationFactory = $eventRegistrationFactory;
+    }
 
     public function load(ObjectManager $manager)
     {
@@ -77,10 +89,7 @@ class LoadEventData extends Fixture
         // New York
         $committee9 = $this->getReference('committee-9');
 
-        $committeeEventFactory = $this->getEventFactory();
-        $registrationFactory = $this->getEventRegistrationFactory();
-
-        $eventHidden = $committeeEventFactory->createFromArray([
+        $eventHidden = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_21_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -94,7 +103,7 @@ class LoadEventData extends Fixture
         ]);
         $eventHidden->setPublished(true);
 
-        $event1 = $committeeEventFactory->createFromArray([
+        $event1 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_1_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -109,7 +118,7 @@ class LoadEventData extends Fixture
         ]);
         $event1->incrementParticipantsCount();
 
-        $event2 = $committeeEventFactory->createFromArray([
+        $event2 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_2_UUID,
             'organizer' => $author7,
             'committee' => $committee3,
@@ -124,7 +133,7 @@ class LoadEventData extends Fixture
         $event2->incrementParticipantsCount();
         $event2->incrementParticipantsCount();
 
-        $event3 = $committeeEventFactory->createFromArray([
+        $event3 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_3_UUID,
             'organizer' => $author7,
             'committee' => $committee4,
@@ -138,7 +147,7 @@ class LoadEventData extends Fixture
         ]);
         $event3->incrementParticipantsCount();
 
-        $event4 = $committeeEventFactory->createFromArray([
+        $event4 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_4_UUID,
             'organizer' => $author7,
             'committee' => $committee5,
@@ -152,7 +161,7 @@ class LoadEventData extends Fixture
         ]);
         $event4->incrementParticipantsCount();
 
-        $event5 = $committeeEventFactory->createFromArray([
+        $event5 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_5_UUID,
             'organizer' => $author7,
             'committee' => $committee2,
@@ -166,7 +175,7 @@ class LoadEventData extends Fixture
         ]);
         $event5->incrementParticipantsCount();
 
-        $event6 = $committeeEventFactory->createFromArray([
+        $event6 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_6_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -181,7 +190,7 @@ class LoadEventData extends Fixture
         $event6->cancel();
         $event6->incrementParticipantsCount();
 
-        $event7 = $committeeEventFactory->createFromArray([
+        $event7 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_7_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -195,7 +204,7 @@ class LoadEventData extends Fixture
         ]);
         $event7->incrementParticipantsCount();
 
-        $event8 = $committeeEventFactory->createFromArray([
+        $event8 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_8_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -209,7 +218,7 @@ class LoadEventData extends Fixture
         ]);
         $event8->incrementParticipantsCount();
 
-        $event9 = $committeeEventFactory->createFromArray([
+        $event9 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_9_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -223,7 +232,7 @@ class LoadEventData extends Fixture
         ]);
         $event9->incrementParticipantsCount();
 
-        $event10 = $committeeEventFactory->createFromArray([
+        $event10 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_10_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -237,7 +246,7 @@ class LoadEventData extends Fixture
         ]);
         $event10->incrementParticipantsCount();
 
-        $event11 = $committeeEventFactory->createFromArray([
+        $event11 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_11_UUID,
             'organizer' => $author11,
             'committee' => $committee8,
@@ -252,7 +261,7 @@ class LoadEventData extends Fixture
         ]);
         $event11->incrementParticipantsCount(2);
 
-        $event12 = $committeeEventFactory->createFromArray([
+        $event12 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_12_UUID,
             'organizer' => $author12,
             'committee' => $committee9,
@@ -267,7 +276,7 @@ class LoadEventData extends Fixture
         ]);
         $event12->incrementParticipantsCount(2);
 
-        $event13 = $committeeEventFactory->createFromArray([
+        $event13 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_13_UUID,
             'organizer' => $author12,
             'committee' => $committee9,
@@ -282,7 +291,7 @@ class LoadEventData extends Fixture
         ]);
         $event13->setPublished(false);
 
-        $event14 = $committeeEventFactory->createFromArray([
+        $event14 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_14_UUID,
             'organizer' => null,
             'committee' => $committee9,
@@ -297,7 +306,7 @@ class LoadEventData extends Fixture
         ]);
         $event14->setPublished(true);
 
-        $event15 = $committeeEventFactory->createFromArray([
+        $event15 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_15_UUID,
             'organizer' => $author13,
             'committee' => $committee10,
@@ -312,7 +321,7 @@ class LoadEventData extends Fixture
         ]);
         $event15->setPublished(true);
 
-        $event16 = $committeeEventFactory->createFromArray([
+        $event16 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_16_UUID,
             'organizer' => $referent75and77,
             'name' => 'Référent event',
@@ -325,7 +334,7 @@ class LoadEventData extends Fixture
         ]);
         $event16->setPublished(true);
 
-        $event17 = $committeeEventFactory->createFromArray([
+        $event17 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_17_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -339,7 +348,7 @@ class LoadEventData extends Fixture
         ]);
         $event17->setPublished(true);
 
-        $event18 = $committeeEventFactory->createFromArray([
+        $event18 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_18_UUID,
             'organizer' => $author3,
             'committee' => $committee1,
@@ -353,7 +362,7 @@ class LoadEventData extends Fixture
         ]);
         $event18->setPublished(true);
 
-        $event19 = $committeeEventFactory->createFromArray([
+        $event19 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_19_UUID,
             'organizer' => $author7,
             'committee' => $committee4,
@@ -367,7 +376,7 @@ class LoadEventData extends Fixture
         ]);
         $event19->setPublished(true);
 
-        $event20 = $committeeEventFactory->createFromArray([
+        $event20 = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_20_UUID,
             'organizer' => $author7,
             'committee' => $committee4,
@@ -403,29 +412,29 @@ class LoadEventData extends Fixture
         $manager->persist($event19);
         $manager->persist($event20);
 
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event10, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event1, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author7)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event3, $author7)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event4, $author7)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event5, $author7)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event6, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event7, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event11, $author11)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event11, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author12)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event16, $referent75and77)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event17, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event18, $author3)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event19, $author7)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $author7)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent4)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event20, $coordinator)));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($event1, $adherent4)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event8, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event9, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event10, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $author7)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event3, $author7)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event4, $author7)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event5, $author7)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event6, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event7, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event11, $author11)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event11, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author12)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event12, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event16, $referent75and77)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event17, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event18, $author3)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event19, $author7)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event20, $author7)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event20, $adherent4)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event20, $coordinator)));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $adherent4)));
         // Registrations of not connected users
         $eventRegistration1 = new EventRegistrationCommand($event10);
         $eventRegistration1->setFirstName('Marie');
@@ -439,9 +448,9 @@ class LoadEventData extends Fixture
         $eventRegistration3->setFirstName('Jean');
         $eventRegistration3->setLastName('PIERRE');
         $eventRegistration3->setEmailAddress('jean.pierre@test.com');
-        $manager->persist($registrationFactory->createFromCommand($eventRegistration1));
-        $manager->persist($registrationFactory->createFromCommand($eventRegistration2));
-        $manager->persist($registrationFactory->createFromCommand($eventRegistration3));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand($eventRegistration1));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand($eventRegistration2));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand($eventRegistration3));
 
         $manager->flush();
 
@@ -471,14 +480,14 @@ class LoadEventData extends Fixture
         string $text,
         string $createdAt = 'now'
     ) {
-        return $this->getCommitteeFeedManager()->createMessage(
+        return $this->committeeFeedManager->createMessage(
             new CommitteeMessage($author, $committee, $subject, $text, true, $createdAt)
         );
     }
 
     private function publishCommitteeEvent(EntityEvent $event)
     {
-        return $this->getCommitteeFeedManager()->createEvent(new CommitteeEvent($event->getOrganizer(), $event));
+        return $this->committeeFeedManager->createEvent(new CommitteeEvent($event->getOrganizer(), $event));
     }
 
     private function getCommitteeMessageData(Committee $committee): \Generator
@@ -525,21 +534,6 @@ class LoadEventData extends Fixture
                 'created_at' => '2017-01-17 20:02:21',
             ];
         }
-    }
-
-    private function getCommitteeFeedManager(): CommitteeFeedManager
-    {
-        return $this->container->get(CommitteeFeedManager::class);
-    }
-
-    private function getEventFactory(): EventFactory
-    {
-        return $this->container->get(EventFactory::class);
-    }
-
-    private function getEventRegistrationFactory(): EventRegistrationFactory
-    {
-        return $this->container->get('app.event.registration_factory');
     }
 
     public function getDependencies()

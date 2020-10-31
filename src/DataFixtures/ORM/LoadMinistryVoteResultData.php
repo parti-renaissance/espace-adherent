@@ -6,9 +6,10 @@ use App\Election\VoteListNuanceEnum;
 use App\Entity\Election\MinistryListTotalResult;
 use App\Entity\Election\MinistryVoteResult;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadMinistryVoteResultData extends Fixture
+class LoadMinistryVoteResultData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {

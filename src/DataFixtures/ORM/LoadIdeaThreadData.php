@@ -4,12 +4,12 @@ namespace App\DataFixtures\ORM;
 
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\IdeasWorkshop\Thread;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInterface
+class LoadIdeaThreadData extends Fixture implements DependentFixtureInterface
 {
     public const THREAD_01_UUID = 'dfd6a2f2-5579-421f-96ac-98993d0edea1';
     public const THREAD_02_UUID = '6b077cc4-1cbd-4615-b607-c23009119406';

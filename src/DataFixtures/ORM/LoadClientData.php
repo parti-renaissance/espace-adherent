@@ -5,15 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\Entity\OAuth\Client;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadClientData extends AbstractFixture
+class LoadClientData extends Fixture
 {
-    use ContainerAwareTrait;
-
     public const CLIENT_01_UUID = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19';
     public const CLIENT_02_UUID = '661cc3b7-322d-4441-a510-ab04eda71737';
     public const CLIENT_03_UUID = '4122f4ce-f994-45f7-9ff5-f9f09ab3991e';

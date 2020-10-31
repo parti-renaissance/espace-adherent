@@ -4,34 +4,40 @@ namespace App\DataFixtures\ORM;
 
 use App\Content\CustomSearchResultFactory;
 use App\Content\MediaFactory;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadCustomSearchData implements FixtureInterface, ContainerAwareInterface
+class LoadCustomSearchData extends Fixture
 {
-    use ContainerAwareTrait;
+    private $customSearchResultFactory;
+    private $mediaFactory;
+    private $storage;
+
+    public function __construct(
+        CustomSearchResultFactory $customSearchResultFactory,
+        MediaFactory $mediaFactory,
+        FilesystemInterface $storage
+    ) {
+        $this->customSearchResultFactory = $customSearchResultFactory;
+        $this->mediaFactory = $mediaFactory;
+        $this->storage = $storage;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $factory = $this->container->get(CustomSearchResultFactory::class);
-        $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get(FilesystemInterface::class);
-
         $description = 'Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, '.
             'du risque, qui vivent pour la liberté, l\'égalité, et l\'Europe.';
 
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
-        $storage->put('images/custom_search.jpg', file_get_contents($mediaFile->getPathname()));
-        $media = $mediaFactory->createFromFile('Custom search image', 'custom_search.jpg', $mediaFile);
+        $this->storage->put('images/custom_search.jpg', file_get_contents($mediaFile->getPathname()));
+        $media = $this->mediaFactory->createFromFile('Custom search image', 'custom_search.jpg', $mediaFile);
 
         $manager->persist($media);
         $manager->flush();
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->customSearchResultFactory->createFromArray([
             'keywords' => 'programme propositions',
             'title' => 'Le programme d\'Emmanuel Macron',
             'url' => '/emmanuel-macron/le-programme',
@@ -39,7 +45,7 @@ class LoadCustomSearchData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->customSearchResultFactory->createFromArray([
             'keywords' => 'mouvement en marche nos valeurs',
             'title' => 'Le mouvement - Nos valeurs',
             'url' => '/le-mouvement',

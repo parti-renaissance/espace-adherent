@@ -8,11 +8,11 @@ use App\Entity\Reporting\EmailSubscriptionHistoryAction;
 use App\Repository\AdherentRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadEmailSubscriptionHistoryData extends AbstractFixture implements DependentFixtureInterface
+class LoadEmailSubscriptionHistoryData extends Fixture implements DependentFixtureInterface
 {
     /**
      * @var AdherentRepository

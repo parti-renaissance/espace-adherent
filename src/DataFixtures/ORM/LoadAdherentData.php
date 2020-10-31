@@ -22,14 +22,12 @@ use App\Entity\SenatorialCandidateManagedArea;
 use App\Membership\ActivityPositions;
 use App\Membership\AdherentFactory;
 use App\Subscription\SubscriptionTypeEnum;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadAdherentData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadAdherentData extends Fixture implements DependentFixtureInterface
 {
     public const ADHERENT_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9697';
     public const ADHERENT_2_UUID = 'e6977a4d-2646-5f6c-9c82-88e58dca8458';
@@ -68,14 +66,17 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
 
     public const DEFAULT_PASSWORD = 'secret!12345';
 
-    use ContainerAwareTrait;
+    private $adherentFactory;
+
+    public function __construct(AdherentFactory $adherentFactory)
+    {
+        $this->adherentFactory = $adherentFactory;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $adherentFactory = $this->getAdherentFactory();
-
         // Create adherent users list
-        $adherent1 = $adherentFactory->createFromArray([
+        $adherent1 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'michelle.dufour@example.ch',
@@ -89,7 +90,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('adherent-1', $adherent1);
 
-        $adherent2 = $adherentFactory->createFromArray([
+        $adherent2 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_2_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'carl999@example.fr',
@@ -113,7 +114,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent2->addReferentTag($this->getReference('referent_tag_73'));
         $this->addReference('adherent-2', $adherent2);
 
-        $adherent3 = $adherentFactory->createFromArray([
+        $adherent3 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_3_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'jacques.picard@en-marche.fr',
@@ -135,7 +136,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent3->addTag($this->getReference('adherent_tag_at007'));
         $this->addReference('adherent-3', $adherent3);
 
-        $adherent4 = $adherentFactory->createFromArray([
+        $adherent4 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_4_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'luciole1989@spambox.fr',
@@ -158,7 +159,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
         $this->addReference('adherent-4', $adherent4);
 
-        $adherent5 = $adherentFactory->createFromArray([
+        $adherent5 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_5_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'gisele-berthoux@caramail.com',
@@ -179,7 +180,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent5->addReferentTag($this->getReference('referent_tag_92'));
         $this->addReference('adherent-5', $adherent5);
 
-        $adherent6 = $adherentFactory->createFromArray([
+        $adherent6 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_6_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'benjyd@aol.com',
@@ -201,7 +202,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent6->addReferentTag($this->getReference('referent_tag_13'));
         $this->addReference('adherent-6', $adherent6);
 
-        $adherent7 = $adherentFactory->createFromArray([
+        $adherent7 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_7_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'francis.brioul@yahoo.com',
@@ -219,7 +220,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent7->addReferentTag($this->getReference('referent_tag_77'));
         $this->addReference('adherent-7', $adherent7);
 
-        $adherent9 = $adherentFactory->createFromArray([
+        $adherent9 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_9_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'laura@deloche.com',
@@ -240,7 +241,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent9->addReferentTag($this->getReference('referent_tag_76'));
         $this->addReference('adherent-9', $adherent9);
 
-        $adherent10 = $adherentFactory->createFromArray([
+        $adherent10 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_10_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'martine.lindt@gmail.com',
@@ -261,7 +262,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent10->addReferentTag($this->getReference('referent_tag_de'));
         $this->addReference('adherent-10', $adherent10);
 
-        $adherent11 = $adherentFactory->createFromArray([
+        $adherent11 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_11_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'lolodie.dutemps@hotnix.tld',
@@ -282,7 +283,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent11->addReferentTag($this->getReference('referent_tag_sg'));
         $this->addReference('adherent-11', $adherent11);
 
-        $adherent12 = $adherentFactory->createFromArray([
+        $adherent12 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_12_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'kiroule.p@blabla.tld',
@@ -307,7 +308,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent12->addReferentTag($this->getReference('referent_tag_us'));
         $this->addReference('adherent-12', $adherent12);
 
-        $adherent13 = $adherentFactory->createFromArray([
+        $adherent13 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_13_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'michel.vasseur@example.ch',
@@ -327,7 +328,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent13->setLreArea($lreArea);
         $this->addReference('adherent-13', $adherent13);
 
-        $adherent14 = $adherentFactory->createFromArray([
+        $adherent14 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_14_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'damien.schmidt@example.ch',
@@ -341,7 +342,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent14->addReferentTag($this->getReference('referent_tag_ch'));
 
         // Non activated, enabled adherent
-        $adherent15 = $adherentFactory->createFromArray([
+        $adherent15 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_15_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'thomas.leclerc@example.ch',
@@ -357,7 +358,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent15->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('adherent-15', $adherent15);
 
-        $adherent16 = $adherentFactory->createFromArray([
+        $adherent16 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_16_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'commissaire.biales@example.fr',
@@ -374,7 +375,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent16->setPosition(ActivityPositions::EMPLOYED);
         $adherent16->setAssessorManagedAreaCodesAsString('93, 59, UK');
 
-        $adherent17 = $adherentFactory->createFromArray([
+        $adherent17 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_17_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'jean-claude.dusse@example.fr',
@@ -393,7 +394,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent17->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('municipal-manager-lille', $adherent17);
 
-        $adherent18 = $adherentFactory->createFromArray([
+        $adherent18 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_18_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'bernard.morin@example.fr',
@@ -412,7 +413,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent18->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('municipal-manager-roubaix', $adherent18);
 
-        $adherent19 = $adherentFactory->createFromArray([
+        $adherent19 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_19_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'cedric.lebon@en-marche-dev.fr',
@@ -431,7 +432,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent19->setStatus(Adherent::ENABLED);
         $this->addReference('adherent-20', $adherent19);
 
-        $referent = $adherentFactory->createFromArray([
+        $referent = $this->adherentFactory->createFromArray([
             'uuid' => self::REFERENT_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'referent@en-marche-dev.fr',
@@ -466,7 +467,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent->setLreArea(new LreArea($this->getReference('referent_tag_76')));
         $this->addReference('adherent-8', $referent);
 
-        $referent75and77 = $adherentFactory->createFromArray([
+        $referent75and77 = $this->adherentFactory->createFromArray([
             'uuid' => self::REFERENT_2_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'referent-75-77@en-marche-dev.fr',
@@ -494,7 +495,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
         $this->addReference('adherent-19', $referent75and77);
 
-        $referentChild = $adherentFactory->createFromArray([
+        $referentChild = $this->adherentFactory->createFromArray([
             'uuid' => self::REFERENT_3_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'referent-child@en-marche-dev.fr',
@@ -518,7 +519,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referentChild->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referentChild->addReferentTag($this->getReference('referent_tag_77'));
 
-        $coordinator = $adherentFactory->createFromArray([
+        $coordinator = $this->adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'coordinateur@en-marche-dev.fr',
@@ -535,7 +536,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $coordinator->setCoordinatorCommitteeArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
         $coordinator->addReferentTag($this->getReference('referent_tag_94'));
 
-        $coordinatorCP = $adherentFactory->createFromArray([
+        $coordinatorCP = $this->adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_2_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'coordinatrice-cp@en-marche-dev.fr',
@@ -554,7 +555,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
         $this->addReference('adherent-17', $coordinatorCP);
 
-        $deputy_75_1 = $adherentFactory->createFromArray([
+        $deputy_75_1 = $this->adherentFactory->createFromArray([
             'uuid' => self::DEPUTY_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'deputy@en-marche-dev.fr',
@@ -573,7 +574,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
         $this->addReference('deputy-75-1', $deputy_75_1);
 
-        $deputy_75_2 = $adherentFactory->createFromArray([
+        $deputy_75_2 = $this->adherentFactory->createFromArray([
             'uuid' => self::DEPUTY_3_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'deputy-75-2@en-marche-dev.fr',
@@ -592,7 +593,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75002'));
         $this->addReference('deputy-75-2', $deputy_75_2);
 
-        $deputy_ch_li = $adherentFactory->createFromArray([
+        $deputy_ch_li = $this->adherentFactory->createFromArray([
             'uuid' => self::DEPUTY_2_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'deputy-ch-li@en-marche-dev.fr',
@@ -611,7 +612,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $this->addReference('deputy-ch-li', $deputy_ch_li);
 
         // senator
-        $senator_59 = $adherentFactory->createFromArray([
+        $senator_59 = $this->adherentFactory->createFromArray([
             'uuid' => self::SENATOR_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'senateur@en-marche-dev.fr',
@@ -630,7 +631,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $this->addReference('senator-59', $senator_59);
 
         // municipal chief
-        $municipalChief1 = $adherentFactory->createFromArray([
+        $municipalChief1 = $this->adherentFactory->createFromArray([
             'uuid' => self::MUNICIPAL_CHIEF_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'municipal-chief@en-marche-dev.fr',
@@ -650,7 +651,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalChief1->setMunicipalChiefManagedArea($municipalChiefArea1);
         $this->addReference('municipal-chief-1', $municipalChief1);
 
-        $municipalChief2 = $adherentFactory->createFromArray([
+        $municipalChief2 = $this->adherentFactory->createFromArray([
             'uuid' => self::MUNICIPAL_CHIEF_2_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'municipal-chief-2@en-marche-dev.fr',
@@ -668,7 +669,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalChief2->setMunicipalChiefManagedArea($municipalChiefArea2);
         $this->addReference('municipal-chief-2', $municipalChief2);
 
-        $municipalChief3 = $adherentFactory->createFromArray([
+        $municipalChief3 = $this->adherentFactory->createFromArray([
             'uuid' => self::MUNICIPAL_CHIEF_3_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'municipal-chief-3@en-marche-dev.fr',
@@ -686,7 +687,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalChief3->setMunicipalChiefManagedArea($municipalChiefArea3);
         $this->addReference('municipal-chief-3', $municipalChief3);
 
-        $assessor = $adherentFactory->createFromArray([
+        $assessor = $this->adherentFactory->createFromArray([
             'uuid' => self::ASSESSOR_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'assesseur@en-marche-dev.fr',
@@ -703,7 +704,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $assessor->setElectionResultsReporter(true);
         $this->addReference('assessor-1', $assessor);
 
-        $municipalManager = $adherentFactory->createFromArray([
+        $municipalManager = $this->adherentFactory->createFromArray([
             'uuid' => self::MUNICIPAL_MANAGER_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'responsable-communal@en-marche-dev.fr',
@@ -719,7 +720,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalManager->setMunicipalManagerRole(new MunicipalManagerRoleAssociation([$this->getReference('city-lille')]));
         $this->addReference('municipal-manager-1', $municipalManager);
 
-        $senatorialCandidate = $adherentFactory->createFromArray([
+        $senatorialCandidate = $this->adherentFactory->createFromArray([
             'uuid' => self::SENATORIAL_CANDIDATE_UUID,
             'password' => self::DEFAULT_PASSWORD,
             'email' => 'senatorial-candidate@en-marche-dev.fr',
@@ -886,11 +887,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($resetPasswordToken);
 
         $manager->flush();
-    }
-
-    private function getAdherentFactory(): AdherentFactory
-    {
-        return $this->container->get('app.membership.adherent_factory');
     }
 
     private function getStandardSubscriptionTypes(): array

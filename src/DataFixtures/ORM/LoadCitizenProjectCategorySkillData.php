@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\CitizenProjectCategorySkill;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadCitizenProjectCategorySkillData extends AbstractFixture implements DependentFixtureInterface
+class LoadCitizenProjectCategorySkillData extends Fixture implements DependentFixtureInterface
 {
     const CATEGORY_SKILL_PROVIDER = [
             'cpc001' => [

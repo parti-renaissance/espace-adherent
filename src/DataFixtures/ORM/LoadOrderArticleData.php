@@ -5,31 +5,42 @@ namespace App\DataFixtures\ORM;
 use App\Content\MediaFactory;
 use App\Content\OrderArticleFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadOrderArticleData extends Fixture
+class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
 {
+    private $orderArticleFactory;
+    private $mediaFactory;
+    private $storage;
+
+    public function __construct(
+        OrderArticleFactory $orderArticleFactory,
+        MediaFactory $mediaFactory,
+        FilesystemInterface $storage
+    ) {
+        $this->orderArticleFactory = $orderArticleFactory;
+        $this->mediaFactory = $mediaFactory;
+        $this->storage = $storage;
+    }
+
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
 
-        $factory = $this->container->get(OrderArticleFactory::class);
-        $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get(FilesystemInterface::class);
-
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');
-        $storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
-        $media = $mediaFactory->createFromFile('Order article image', 'order_article.jpg', $mediaFile);
+        $this->storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
+        $media = $this->mediaFactory->createFromFile('Order article image', 'order_article.jpg', $mediaFile);
 
         $manager->persist($media);
         $manager->flush();
 
         // Article
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->orderArticleFactory->createFromArray([
             'position' => 1,
             'title' => 'La première article sur la page des ordonnances',
             'slug' => 'premiere-article',
@@ -43,7 +54,7 @@ class LoadOrderArticleData extends Fixture
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->orderArticleFactory->createFromArray([
             'position' => 2,
             'title' => 'Article en brouillon pour la page des ordonnances en brouillon',
             'slug' => 'brouillon',

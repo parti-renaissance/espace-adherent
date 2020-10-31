@@ -7,9 +7,16 @@ services:
         autoconfigure: true
         public: false
 
+    App\DataFixtures\:
+        resource: '../src/DataFixtures/'
+
     Tests\App\Test\Geocoder\DummyGeocoder: ~
 
     Geocoder\Geocoder: '@Tests\App\Test\Geocoder\DummyGeocoder'
+
+    Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader:
+        alias: 'doctrine.fixtures.loader'
+        public: true
 
     app.mailer.transactional_client:
         class: 'Tests\App\Test\Mailer\NullEmailClient'

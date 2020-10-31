@@ -5,9 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\BaseEventCategory;
 use App\Entity\EventCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadEventCategoryData extends Fixture
+class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
 {
     const LEGACY_EVENT_CATEGORIES = [
         'CE001' => 'Kiosque',

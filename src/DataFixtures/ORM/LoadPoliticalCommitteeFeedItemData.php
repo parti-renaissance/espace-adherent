@@ -5,9 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadPoliticalCommitteeFeedItemData extends Fixture
+class LoadPoliticalCommitteeFeedItemData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\InstitutionalEventCategory;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadInstitutionalEventCategoryData extends AbstractFixture
+class LoadInstitutionalEventCategoryData extends Fixture
 {
     const INSTITUTIONAL_EVENT_CATEGORIES = [
         'category-1' => 'Comité politique',
