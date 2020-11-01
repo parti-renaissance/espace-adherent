@@ -1,4 +1,4 @@
-{% set able_to_candidate = true %}
+{% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE', committee) %}
 
 <section class="instance__elections-box b__nudge--bottom-larger">
     <div class="l__row">

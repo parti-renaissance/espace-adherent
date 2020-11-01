@@ -53,7 +53,7 @@ class CandidatureController extends AbstractController
         }
 
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
-            $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION);
+            $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
         }
 
         $candidacy = $this->candidatureManager->getCandidacy($adherent, $committee);
