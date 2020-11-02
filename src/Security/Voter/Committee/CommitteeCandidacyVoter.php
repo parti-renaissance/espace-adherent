@@ -38,11 +38,9 @@ class CommitteeCandidacyVoter extends AbstractAdherentVoter
                 return false;
             }
 
-            if (!$voteEndDate = $election->getVoteEndDate()) {
-                return false;
-            }
+            $refDate = $election->getVoteEndDate() ?? new \DateTime();
 
-            if ($membership->getSubscriptionDate()->modify('+1 months') > $voteEndDate) {
+            if ($membership->getSubscriptionDate()->modify('+1 months') > $refDate) {
                 return false;
             }
 
@@ -50,7 +48,7 @@ class CommitteeCandidacyVoter extends AbstractAdherentVoter
                 return false;
             }
 
-            if ((clone $registrationDate)->modify('+3 months') > $voteEndDate) {
+            if ((clone $registrationDate)->modify('+3 months') > $refDate) {
                 return false;
             }
 

@@ -10,6 +10,7 @@ use App\History\CommitteeMembershipHistoryHandler;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
+use App\Security\Voter\Committee\CommitteeCandidacyVoter;
 use App\Statistics\StatisticsParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -136,6 +137,8 @@ class CommitteesController extends Controller
         if (!$candidacy = $candidacyManager->getCandidacy($adherent, $committee)) {
             throw $this->createAccessDeniedException('You do not have a candidacy');
         }
+
+        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
 
         if (!$query = trim($request->query->get('query', ''))) {
             return $this->json(
