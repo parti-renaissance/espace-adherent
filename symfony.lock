@@ -1147,6 +1147,9 @@
     "tackk/cartographer": {
         "version": "1.1.0"
     },
+    "tetranz/select2entity-bundle": {
+        "version": "v2.10.1"
+    },
     "thecodingmachine/safe": {
         "version": "v0.1.16"
     },
