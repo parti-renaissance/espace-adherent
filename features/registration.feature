@@ -6,8 +6,7 @@ Feature:
 
   Scenario: I can register as an adherent
     Given the following fixtures are loaded:
-      | LoadReferentTagData |
-      | LoadAdherentData    |
+      | LoadCommitteeData |
     When I am on "/adhesion"
     And I fill in the following:
       | adherent_registration[firstName]            | Jean-Pierre         |

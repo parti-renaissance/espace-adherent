@@ -1,13 +1,11 @@
-{% extends 'territorial_council/_slim_header_layout.html.twig' %}
+{% extends 'committee/_candidacy_layout.html.twig' %}
 
 {% block page_title 'Votre candidature ou vos invitations' %}
 
-{% import 'territorial_council/_macros.html.twig' as helper %}
-
-{% block territorial_council_content %}
-    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
-        <div>
-            <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
+{% block candidacy_content %}
+    <div class="l__wrapper b__nudge--bottom-huge">
+        <div class="b__nudge--top b__nudge--bottom">
+            <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
         </div>
 
         <div class="l__wrapper--slim">
@@ -20,7 +18,7 @@
 
                         <p class="text--body text--dark b__nudge--bottom-60">
                             {{ adherent.fullName }} a bien reçu votre demande de binôme,
-                            vous recevrez un e-mail lorsqu’elle aura répondu à votre invitation.
+                            vous recevrez un e-mail lorsqu’{{ adherent.isFemale ? 'elle' : 'il' }} aura répondu à votre invitation.
                         </p>
 
                         <p class="font-roboto text--bold b__nudge--bottom-large">Invitation envoyée</p>
@@ -32,16 +30,16 @@
                             } %}
 
                             <div>
-                                <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--ghosting--pink btn--no-wrap">Modifier ma demande de binôme</a>
+                                <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap">Modifier ma demande de binôme</a>
                             </div>
                         </div>
 
                         <hr/>
 
                         <div class="l__row l__row--wrap b__nudge--top-large">
-                            <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--pink btn--no-wrap">Modifier mes informations</a>
+                            <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap">Modifier mes informations</a>
 
-                            <a href="{{ path('app_territorial_council_candidature_remove') }}"
+                            <a href="{{ path('app_committee_candidature_remove', {slug: committee.slug}) }}"
                                class="link--no-decor font-roboto em-confirm--trigger b__nudge--left"
                                data-confirm-title="Candidature"
                                data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?">Retirer ma pré-candidature
@@ -52,7 +50,7 @@
                             <p class="font-roboto text--gray">Vous n'avez pas encore choisi votre binôme</p>
 
                             <p>
-                                <a href="{{ path('app_territorial_council_candidature_select_pair_candidate') }}" class="btn btn--pink btn--no-wrap box-el">Je choisis un binôme</a>
+                                <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap box-el">Je choisis un binôme</a>
                             </p>
                         </div>
                     {% endif %}
@@ -76,13 +74,13 @@
                                     </p>
 
                                     <div>
-                                        <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_territorial_council_candidature_edit', {gender: constant('App\\ValueObject\\Genders::FEMALE')}) }}">Femme</a>
-                                        <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_territorial_council_candidature_edit', {gender: constant('App\\ValueObject\\Genders::MALE')}) }}">Homme</a>
+                                        <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidature_edit', {slug: committee.slug, gender: constant('App\\ValueObject\\Genders::FEMALE')}) }}">Femme</a>
+                                        <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidature_edit', {slug: committee.slug, gender: constant('App\\ValueObject\\Genders::MALE')}) }}">Homme</a>
                                     </div>
                                 </div>
                             </div>
                         {% else %}
-                            <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--pink btn--no-wrap">Je candidate en binôme</a>
+                            <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap">Je candidate en binôme</a>
                         {% endif %}
                     </div>
                 {% endif %}
@@ -90,20 +88,25 @@
 
             <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Mes invitations</h2>
             <p class="text--body text--dark b__nudge--bottom-50">
-                Retrouvez ici les invitations des membres pour candidater en binôme paritaire au Comité politique.
+                Retrouvez ici les invitations des membres pour candidater en binôme.
                 Vous pouvez choisir d’accepter une invitation et devrez alors compléter les informations de votre
                 candidature.
             </p>
 
             {% for invitation in invitations %}
-                {% set author_candidacy = invitation.candidacy %}
+                {% set author = invitation.candidacy.committeeMembership.adherent %}
+
                 <div class="candidacy-invitation l__row l__row--wrap l__row--h-stretch b__nudge--bottom">
-                    {{ helper.display_candidate_identity(author_candidacy) }}
+                    {% include 'components/_member_identity_box.html.twig' with {
+                        initials: author.initials,
+                        image_path: invitation.candidacy.imagePath,
+                        full_name: author.fullName,
+                    } %}
 
                     <div class="l__row">
-                        <a href="{{ path('app_territorial_council_candidature_invitation_accept', {uuid: invitation.uuid}) }}" class="btn btn--pink btn--no-wrap">Accepter</a>
+                        <a href="{{ path('app_committee_candidature_invitation_accept', {slug: committee.slug, uuid: invitation.uuid}) }}" class="btn btn--pink btn--no-wrap">Accepter</a>
 
-                        <a href="{{ path('app_territorial_council_candidature_invitation_decline', {uuid: invitation.uuid}) }}" class="btn btn--ghosting--pink btn--no-wrap em-confirm--trigger b__nudge--left-small"
+                        <a href="{{ path('app_committee_candidature_invitation_decline', {slug: committee.slug, uuid: invitation.uuid}) }}" class="btn btn--ghosting--pink btn--no-wrap em-confirm--trigger b__nudge--left-small"
                            data-confirm-title="Invitation"
                            data-confirm-content="Êtes-vous sûr de vouloir décliner l'invitation ?"
                         >Décliner</a>

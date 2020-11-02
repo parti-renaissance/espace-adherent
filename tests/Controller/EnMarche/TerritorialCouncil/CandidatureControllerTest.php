@@ -119,7 +119,7 @@ class CandidatureControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/conseil-territorial');
         $crawler = $this->client->click($crawler->filter('.territorial-council__aside--section')->selectLink('Gérer')->link());
 
-        $this->assertSame('Pierre Kiroule', $crawler->filter('.l__row.identity .font-roboto')->text());
+        $this->assertSame('Pierre Kiroule', trim($crawler->filter('.l__row.identity .font-roboto')->text()));
 
         $this->assertStringContainsString('Modifier ma demande de binôme', $content = $this->client->getResponse()->getContent());
         $this->assertStringContainsString('Modifier mes informations', $content);

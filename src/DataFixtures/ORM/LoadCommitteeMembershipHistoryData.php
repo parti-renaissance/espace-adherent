@@ -67,6 +67,8 @@ class LoadCommitteeMembershipHistoryData extends Fixture
 
     public function getDependencies()
     {
-        return [LoadAdherentData::class];
+        return [
+            LoadCommitteeData::class,
+        ];
     }
 }

@@ -53,6 +53,31 @@
         {% endif %}
     </div>
 
+    {% if has_role_adherent and committee.hasActiveElection and membership %}
+        {% set committee_election = committee.committeeElection %}
+
+        {# If the vote was started, hide box if 0 candidates #}
+        {% if not committee_election.isVotePeriodStarted or committee_election.countCandidacies > 0 %}
+            {% set candidacy = membership.committeeCandidacy(committee_election) %}
+
+            {% if not candidacy or candidacy.isDraft %}
+                <div class="committee__card">
+                    <h5>Candidature & invitations</h5>
+                    <div class="text--body">
+                        <p class="text--body text--dark b__nudge--bottom">
+                            Gérez, modifiez ou annulez votre candidature ou vos invitations.
+                        </p>
+                        <div>
+                            <a href="{{ path('app_committee_candidature_invitation_list', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap">
+                                Gérer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
     {% if committee.socialNetworksLinks|length > 0 %}
     <div class="committee__card">
         <h5>Suivez notre comité</h5>

@@ -91,6 +91,13 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
      */
     protected $binome;
 
+    /**
+     * Helps to render two or single candidate
+     *
+     * @var bool
+     */
+    private $taken = false;
+
     public function __construct(string $gender = null, UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -252,5 +259,23 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     public function isOngoing(): bool
     {
         return $this->getElection()->isOngoing();
+    }
+
+    public function updateFromBinome(): void
+    {
+        if ($this->binome) {
+            $this->faithStatement = $this->binome->getFaithStatement();
+            $this->isPublicFaithStatement = $this->binome->isPublicFaithStatement();
+        }
+    }
+
+    public function isTaken(): bool
+    {
+        return $this->taken;
+    }
+
+    public function take(): void
+    {
+        $this->taken = true;
     }
 }

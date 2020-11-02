@@ -50,7 +50,7 @@ class LoadAdherentMessageData extends Fixture
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
+            LoadCommitteeData::class,
             LoadCitizenProjectData::class,
         ];
     }

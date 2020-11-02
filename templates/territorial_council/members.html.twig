@@ -11,7 +11,7 @@
                 {% set adherent = membership.adherent %}
 
                 <div class="territorial-council__member">
-                    {% include 'territorial_council/partials/_member_identity_box.html.twig' with {
+                    {% include 'components/_member_identity_box.html.twig' with {
                         initials: adherent.initials,
                         full_name: adherent.fullName
                     } %}
