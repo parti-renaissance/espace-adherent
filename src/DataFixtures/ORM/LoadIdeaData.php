@@ -170,7 +170,6 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            LoadAdherentData::class,
             LoadCommitteeData::class,
             LoadIdeaNeedData::class,
             LoadIdeaCategoryData::class,

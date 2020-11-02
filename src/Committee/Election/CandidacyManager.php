@@ -74,7 +74,7 @@ class CandidacyManager
 
         $candidacy = $membership->getCommitteeCandidacy($election = $committee->getCommitteeElection());
 
-        if ($createIfNotExist && !$candidacy) {
+        if ($createIfNotExist && !$candidacy && $election) {
             return $this->createCandidacy($election, $adherent->getGender());
         }
 

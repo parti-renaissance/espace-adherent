@@ -358,7 +358,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
             LoadCommitteeData::class,
             LoadCommitteeCandidacyData::class,
             LoadDesignationData::class,

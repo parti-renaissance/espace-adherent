@@ -96,7 +96,6 @@ class LoadCommitteeCandidacyData extends Fixture
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
             LoadCommitteeData::class,
         ];
     }

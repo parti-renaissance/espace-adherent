@@ -545,7 +545,6 @@ class LoadEventData extends Fixture
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
             LoadEventCategoryData::class,
             LoadCommitteeData::class,
         ];

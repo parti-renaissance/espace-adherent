@@ -39,7 +39,6 @@ Feature:
 
   Scenario Outline: Publish message on committee created|updated
     Given the following fixtures are loaded:
-      | LoadAdherentData  |
       | LoadCommitteeData |
     And I clean the "api_sync" queue
     When I dispatch the "<event>" committee event with "En Marche Paris 8"
@@ -54,7 +53,6 @@ Feature:
 
   Scenario: Publish message on committee deleted
     Given the following fixtures are loaded:
-      | LoadAdherentData  |
       | LoadCommitteeData |
     And I clean the "api_sync" queue
     When I dispatch the "committee.deleted" committee event with "En Marche Paris 8"

@@ -145,7 +145,6 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
             LoadCommitteeData::class,
         ];
     }
