@@ -644,6 +644,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     public function findAvailableMemberships(CommitteeCandidacy $candidacy, string $query): array
     {
         $membership = $candidacy->getCommitteeMembership();
+        $refDate = $candidacy->getElection()->getVoteEndDate() ?? new \DateTime();
 
         return $this
             ->createQueryBuilder('membership')
@@ -655,6 +656,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('membership.id != :membership_id')
             ->andWhere('adherent.gender = :gender AND adherent.status = :adherent_status')
             ->andWhere('(adherent.firstName LIKE :query OR adherent.lastName LIKE :query)')
+            ->andWhere('adherent.certifiedAt IS NOT NULL AND adherent.registeredAt <= :registration_limit_date AND membership.joinedAt <= :limit_date')
             ->setParameters([
                 'query' => sprintf('%s%%', $query),
                 'candidacy_draft_status' => CandidacyInterface::STATUS_DRAFT,
@@ -663,6 +665,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 'membership_id' => $membership->getId(),
                 'gender' => $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE,
                 'adherent_status' => Adherent::ENABLED,
+                'registration_limit_date' => (clone $refDate)->modify('-3 months'),
+                'limit_date' => (clone $refDate)->modify('-30 days'),
             ])
             ->orderBy('adherent.lastName')
             ->addOrderBy('adherent.firstName')

@@ -92,6 +92,11 @@ class CommitteeCandidacy extends BaseCandidacy
         return $this->committeeMembership;
     }
 
+    public function getMembership(): ?CommitteeMembership
+    {
+        return $this->committeeMembership;
+    }
+
     public function setCommitteeMembership(CommitteeMembership $committeeMembership): void
     {
         $this->committeeMembership = $committeeMembership;

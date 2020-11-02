@@ -52,9 +52,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
-            $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
-        }
+        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
 
         $candidacy = $this->candidatureManager->getCandidacy($adherent, $committee);
 
@@ -118,6 +116,8 @@ class CandidatureController extends AbstractController
             }
         }
 
+        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
+
         $this->candidatureManager->removeCandidacy($this->getUser(), $committee);
 
         $this->addFlash('info', 'Votre candidature a bien été supprimée');
@@ -143,6 +143,8 @@ class CandidatureController extends AbstractController
         if (!($candidacy = $this->candidatureManager->getCandidacy($adherent, $committee)) || $candidacy->isConfirmed()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
+
+        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
 
         if ($candidacy->hasInvitation()) {
             if ($candidacy->getInvitation()->isAccepted()) {
@@ -212,6 +214,8 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
+        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
+
         return $this->render('committee/candidacy/invitation_list.html.twig', [
             'invitations' => $repository->findAllPendingForMembership($adherent->getMembershipFor($committee), $election),
             'committee' => $committee,
@@ -238,6 +242,8 @@ class CandidatureController extends AbstractController
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
+
+        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
 
         $acceptedBy = $this->candidatureManager->getCandidacy($adherent, $committee, true);
 
@@ -278,17 +284,14 @@ class CandidatureController extends AbstractController
      * @ParamConverter("votePlace", class="App\Entity\CommitteeCandidacyInvitation", options={"mapping": {"uuid": "uuid"}})
      *
      * @Security("invitation.getMembership() == user.getMembershipFor(committee)")
-     *
-     * @param Adherent $adherent
      */
-    public function declineInvitationAction(
-        Committee $committee,
-        CommitteeCandidacyInvitation $invitation,
-        UserInterface $adherent
-    ): Response {
+    public function declineInvitationAction(Committee $committee, CommitteeCandidacyInvitation $invitation): Response
+    {
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
+
+        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
 
         if (!$invitation->isPending()) {
             $this->addFlash('error', 'Vous ne pouvez pas décliner cette invitation');
@@ -308,7 +311,7 @@ class CandidatureController extends AbstractController
      */
     public function candidacyListAction(Committee $committee, CommitteeCandidacyRepository $repository): Response
     {
-        if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
+        if (!($election = $committee->getCommitteeElection()) || $election->isVotePeriodStarted()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
