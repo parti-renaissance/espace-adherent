@@ -62,4 +62,56 @@ final class ZoneRepository extends ServiceEntityRepository
             ])
         ;
     }
+
+    /**
+     * @return Zone[]
+     */
+    public function searchByTermAndManagedZones(string $term, array $zones, int $max): array
+    {
+        $qb = $this
+            ->createQueryBuilder('zone')
+            ->leftJoin('zone.parents', 'parents')
+        ;
+
+        if ('' === $term) {
+            return [];
+        }
+
+        if ($zones) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->in('zone.id', ':zones'),
+                        $qb->expr()->in('parents.id', ':zones'),
+                    )
+                )
+                ->setParameter(':zones', $zones)
+                ->orderBy('zone.name')
+            ;
+        }
+
+        if ('' !== $term) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->like(
+                            $qb->expr()->concat('zone.name', $qb->expr()->literal("\n"), 'zone.code'),
+                            ':term'
+                        ),
+                        $qb->expr()->like(
+                            $qb->expr()->concat('parents.name', $qb->expr()->literal("\n"), 'parents.code'),
+                            ':term'
+                        )
+                    )
+                )
+                ->setParameter(':term', "%$term%")
+            ;
+        }
+
+        return $qb
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
