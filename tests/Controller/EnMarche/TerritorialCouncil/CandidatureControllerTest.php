@@ -5,9 +5,9 @@ namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadTerritorialCouncilMembershipData;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Mailer\Message\TerritorialCouncilCandidacyInvitationAcceptedMessage;
-use App\Mailer\Message\TerritorialCouncilCandidacyInvitationCreatedMessage;
-use App\Mailer\Message\TerritorialCouncilCandidacyInvitationDeclinedMessage;
+use App\Mailer\Message\VotingPlatformCandidacyInvitationAcceptedMessage;
+use App\Mailer\Message\VotingPlatformCandidacyInvitationCreatedMessage;
+use App\Mailer\Message\VotingPlatformCandidacyInvitationDeclinedMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Mandrill\MailAssertTrait;
@@ -170,7 +170,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/choix-de-binome/fini', $this->client);
 
-        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationCreatedMessage::class, 'kiroule.p@blabla.tld');
+        $this->assertCountMails(1, VotingPlatformCandidacyInvitationCreatedMessage::class, 'kiroule.p@blabla.tld');
     }
 
     public function testICanDeclineAnInvitation(): void
@@ -190,7 +190,7 @@ class CandidatureControllerTest extends WebTestCase
 
         self::assertStringContainsString('Invitation a bien été déclinée', $this->client->getResponse()->getContent());
 
-        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationDeclinedMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, VotingPlatformCandidacyInvitationDeclinedMessage::class, 'gisele-berthoux@caramail.com');
     }
 
     public function testICanAcceptAnInvitation(): void
@@ -222,8 +222,8 @@ class CandidatureControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
 
-        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationAcceptedMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationAcceptedMessage::class, 'kiroule.p@blabla.tld');
+        $this->assertCountMails(1, VotingPlatformCandidacyInvitationAcceptedMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, VotingPlatformCandidacyInvitationAcceptedMessage::class, 'kiroule.p@blabla.tld');
 
         $crawler = $this->client->followRedirect();
 

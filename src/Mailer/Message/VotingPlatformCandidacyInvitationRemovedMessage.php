@@ -6,27 +6,24 @@ use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Ramsey\Uuid\Uuid;
 
-final class TerritorialCouncilCandidacyInvitationCreatedMessage extends Message
+final class VotingPlatformCandidacyInvitationRemovedMessage extends AbstractVotingPlatformCandidacyInvitationMessage
 {
-    public static function create(
-        Adherent $invited,
-        Adherent $candidate,
-        Designation $designation,
-        string $quality,
-        string $invitationUrl
-    ): self {
+    public static function create(Adherent $invited, Adherent $candidate, Designation $designation, string $url): self
+    {
+        $isCommittee = $designation->isCommitteeType();
+
         return new self(
             Uuid::uuid4(),
             $invited->getEmailAddress(),
             $invited->getFullName(),
-            sprintf('[Désignations] %s vous a invité(e) à candidater en binôme', $candidate->getFirstName()),
+            sprintf('%s %s a annulé son invitation', self::getMailSubjectPrefix($isCommittee), $candidate->getFirstName()),
             [
+                'is_committee' => $isCommittee,
                 'invited_first_name' => $invited->getFirstName(),
                 'candidate_first_name' => $candidate->getFirstName(),
                 'candidate_last_name' => $candidate->getLastName(),
-                'quality' => $quality,
                 'candidacy_end_date' => self::dateToString($designation->getCandidacyEndDate()),
-                'invitation_url' => $invitationUrl,
+                'action_url' => $url,
             ]
         );
     }
