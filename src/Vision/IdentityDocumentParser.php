@@ -84,15 +84,21 @@ class IdentityDocumentParser
     public function hasDateOfBirth(ImageAnnotations $imageAnnotations, \DateTimeInterface $dateOfBirth): bool
     {
         if ($imageAnnotations->isFrenchNationalIdentityCard()) {
-            preg_match('/(?<birth_date>\d{2}[\. ]{1,2}\d{2}[\. ]{1,2}\d{4})/', $imageAnnotations->getText(), $matches);
+            preg_match_all('/(?<birth_date>\d{2}[\. ]{1,2}\d{2}[\. ]{1,2}\d{4})/', $imageAnnotations->getText(), $matches);
 
-            if (!isset($matches['birth_date']) || !$matches['birth_date']) {
+            if (empty($matches['birth_date'])) {
                 return false;
             }
 
-            $birthDate = \DateTime::createFromFormat('d.m.Y', str_replace('..', '.', str_replace(' ', '.', $matches['birth_date'])));
+            foreach ($matches['birth_date'] as $birthDate) {
+                $birthDate = \DateTime::createFromFormat('d.m.Y', str_replace('..', '.', str_replace(' ', '.', $birthDate)));
 
-            return $birthDate->format('Y-m-d') === $dateOfBirth->format('Y-m-d');
+                if ($birthDate->format('Y-m-d') === $dateOfBirth->format('Y-m-d')) {
+                    return true;
+                }
+            }
+
+            return false;
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
