@@ -1,8 +1,12 @@
-{% set able_to_candidate = true %}
+{% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE', committee) %}
 
 <section class="instance__elections-box b__nudge--bottom-larger">
     <div class="l__row">
-        <h2 class="text--medium box-el">Désignation du binôme d'animateurs</h2>
+        <h2 class="text--medium box-el">Élection du binôme paritaire d'Animateurs locaux</h2>
+    </div>
+
+    <div class="text--body text--dark b__nudge--top b__nudge--bottom-large instance__elections-box--text">
+        Candidatez en binôme pour animer le comité local du Mouvement.
     </div>
 
     <p class="text--body text--bold b__nudge--top b__nudge--bottom-large instance__elections-box--text">
