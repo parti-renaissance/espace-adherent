@@ -62,4 +62,24 @@ final class ZoneRepository extends ServiceEntityRepository
             ])
         ;
     }
+
+    public function createSelectByManagedZones(array $zones): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('zone');
+
+        if ($zones) {
+            $qb
+                ->leftJoin('zone.parents', 'parents')
+                ->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->in('zone.id', ':managed_zones'),
+                        $qb->expr()->in('parents.id', ':managed_zones'),
+                    )
+                )
+                ->setParameter(':managed_zones', $zones)
+            ;
+        }
+
+        return $qb;
+    }
 }
