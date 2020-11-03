@@ -98,6 +98,10 @@
                 </div>
             </div>
 
+            <p class="font-roboto text-center">
+                ⚠️ <strong>Une fois votre binôme validé, vous ne pourrez plus annuler votre candidature.</strong>
+            </p>
+
             <div>
                 {{ form_row(form.save, {label: invitation is defined ? 'Accepter et enregistrer' : (candidacy and candidacy.id ? 'Enregistrer' : 'Enregistrer et choisir mon binôme'), attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
             </div>

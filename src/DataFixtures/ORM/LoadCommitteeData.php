@@ -270,7 +270,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $manager->persist($adherent19->followCommittee($committee4));
         $manager->persist($membership = $adherent19->followCommittee($committee5));
         $membership->enableVote();
-        $manager->persist($adherent20->superviseCommittee($committee12, new \DateTime('-1.5 months')));
+        $manager->persist($adherent20->superviseCommittee($committee12, new \DateTime('-2 months')));
         $manager->persist($adherent13->followCommittee($committee12));
         $manager->persist($adherent14->followCommittee($committee12));
         $manager->persist($adherent21->followCommittee($committee12, new \DateTime('-2 months')));
