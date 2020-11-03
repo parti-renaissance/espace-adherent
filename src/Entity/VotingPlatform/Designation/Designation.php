@@ -367,4 +367,12 @@ class Designation
     {
         return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_ADHERENT, DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
     }
+
+    public function isBinomeDesignation(): bool
+    {
+        return \in_array($this->type, [
+            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+            DesignationTypeEnum::COPOL,
+        ], true);
+    }
 }

@@ -6,7 +6,24 @@
     </div>
 
     <div class="text--body text--dark b__nudge--top instance__elections-box--text">
-        Candidatez en binôme pour animer le comité local du Mouvement.
+        Candidatez en binôme pour animer le comité local du Mouvement. <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark box-el" target="_blank">En savoir plus</a>.
+        <br/>Quel est le rôle des animateurs locaux paritaires
+
+        <div class="em-tooltip">
+            <span class="em-tooltip--trigger">?</span>
+            <div class="em-tooltip--content em-tooltip--content-big em-tooltip--content-bordered">
+                <p><strong>Quel est le rôle du binôme d’animateurs locaux ?</strong></p>
+
+                <ul>
+                    <li>Accueillir les adhérents et animer le comité local</li>
+                    <li>Œuvrer au développement du comité</li>
+                    <li>Mobiliser les adhérents pour les actions de terrain et la réflexion menée par le mouvement sur les territoires</li>
+                    <li>Organiser, sur le territoire du comité, le soutien aux candidats soutenus par LaREM pour les élections locales et nationales</li>
+                </ul>
+
+                <p>Le binôme paritaire d'animateurs locaux est élu pour deux ans par les membres du comité local.</p>
+            </div>
+        </div>
     </div>
 
     <p class="text--body text--bold b__nudge--top b__nudge--bottom-large instance__elections-box--text">
@@ -23,7 +40,7 @@
 
                     {% if candidacy.isConfirmed %}
                         {% if candidacy.binome %}
-                            <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
+                            <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top elections-icon-container">
                                 <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
                                 Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.binome.committeeMembership.fullName }}.<br />
                                 Vous ne pouvez plus retirer votre candidature.

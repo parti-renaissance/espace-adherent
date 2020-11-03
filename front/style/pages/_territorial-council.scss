@@ -184,26 +184,6 @@
         }
     }
 
-    #membership-container {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-
-        .form__radio {
-            flex-basis: 100%;
-            margin-right: 0;
-            margin-top: 20px;
-
-            @media (min-width: $mobile) {
-                flex-basis: 50%;
-            }
-
-            label:before {
-                top: 13px;
-            }
-        }
-    }
-
     .em-form .em-form__group {
         .hidden-membership {
             display: none;

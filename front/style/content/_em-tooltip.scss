@@ -46,6 +46,14 @@
             text-align: center;
         }
 
+        &-big {
+            width: 600px;
+        }
+
+        &-bordered {
+            border: 1px solid #eeeeee;
+        }
+
         &-reversed {
             background: $dark;
             color: $white;
@@ -57,11 +65,16 @@
             margin-bottom: 15px;
         }
 
-        p {
+        p,li {
             font-weight: 400;
             font-size: 14px;
             line-height: 20px;
             margin: 0;
+        }
+
+        ul {
+            list-style: initial;
+            margin-left: 20px;
         }
     }
 

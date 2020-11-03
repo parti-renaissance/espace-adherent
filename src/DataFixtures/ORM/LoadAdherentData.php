@@ -735,6 +735,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $senatorialCandidateManagedArea = new SenatorialCandidateManagedArea();
         $senatorialCandidateManagedArea->addDepartmentTag($this->getReference('referent_tag_59'));
         $senatorialCandidate->setSenatorialCandidateManagedArea($senatorialCandidateManagedArea);
+        $senatorialCandidate->certify();
         $this->addReference('senatorial-candidate', $senatorialCandidate);
 
         // Create adherents accounts activation keys
