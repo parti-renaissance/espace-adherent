@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\ThematicCommunity;
 
+use App\Controller\CanaryControllerTrait;
 use App\Entity\ThematicCommunity\AdherentMembership;
 use App\Entity\ThematicCommunity\Contact;
 use App\Entity\ThematicCommunity\ContactMembership;
@@ -14,7 +15,7 @@ use App\Security\Http\Session\AnonymousFollowerSession;
 use App\ThematicCommunity\Handler\ThematicCommunityMembershipHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +25,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/communautes-thematiques", name="app_thematic_community_")
  */
-class ThematicCommunityController extends AbstractController
+class ThematicCommunityController extends Controller
 {
+    use CanaryControllerTrait;
+
     /** @var ThematicCommunityMembershipHandler */
     private $handler;
 
@@ -42,6 +45,8 @@ class ThematicCommunityController extends AbstractController
         ThematicCommunityMembershipRepository $membershipRepository,
         UserInterface $user = null
     ): Response {
+        $this->disableInProduction();
+
         $joinedCommunities = [];
         if ($user) {
             $memberships = $membershipRepository->findAdherentMemberships($user);
@@ -67,6 +72,8 @@ class ThematicCommunityController extends AbstractController
         UserInterface $user = null,
         AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
+        $this->disableInProduction();
+
         if (
             $this->isGranted('IS_ANONYMOUS')
             && $authentication = $anonymousFollowerSession->start($request)
@@ -114,6 +121,8 @@ class ThematicCommunityController extends AbstractController
      */
     public function editMembershipAction(Request $request, ThematicCommunityMembership $membership): Response
     {
+        $this->disableInProduction();
+
         if ($membership->isPending()) {
             return $this->render('thematic_community/membership_pending.html.twig', [
                 'membership' => $membership,
@@ -144,6 +153,8 @@ class ThematicCommunityController extends AbstractController
      */
     public function leaveMembershipAction(ThematicCommunityMembership $membership): RedirectResponse
     {
+        $this->disableInProduction();
+
         $this->handler->unsubscribe($membership);
 
         $this->addFlash('info', \sprintf('Vous ne faites plus partie de la communauté %s.', $membership->getCommunity()->getName()));
@@ -157,6 +168,8 @@ class ThematicCommunityController extends AbstractController
      */
     public function confirmMembershipAction(ThematicCommunityMembership $membership): RedirectResponse
     {
+        $this->disableInProduction();
+
         $this->handler->confirmMembership($membership);
 
         $this->addFlash('info', sprintf('Vous êtes désormais membre de la communauté "%s"', $membership->getCommunity()->getName()));
@@ -170,6 +183,8 @@ class ThematicCommunityController extends AbstractController
      */
     public function reSendConfirmationEmailAction(ThematicCommunityMembership $membership): RedirectResponse
     {
+        $this->disableInProduction();
+
         $this->handler->sendConfirmEmail($membership);
 
         $this->addFlash('info', \sprintf('Un email de confirmation vous a été renvoyé à l\'adresse "%s".', $membership->getEmail()));
