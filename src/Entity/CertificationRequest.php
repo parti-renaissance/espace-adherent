@@ -455,4 +455,11 @@ class CertificationRequest
         $this->ocrResult = null;
         $this->ocrPayload = null;
     }
+
+    public function cleanOcr(): void
+    {
+        if (isset($this->ocrPayload['text'])) {
+            $this->ocrPayload['text'] = null;
+        }
+    }
 }

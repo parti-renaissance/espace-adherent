@@ -59,5 +59,7 @@ class CertificationRequestRemoveDocumentCommand extends Command
     private function removeDocument(CertificationRequest $certificationRequest): void
     {
         $this->documentManager->removeDocument($certificationRequest);
+
+        $certificationRequest->cleanOcr();
     }
 }
