@@ -5,12 +5,13 @@ namespace App\DataFixtures\ORM;
 use App\Entity\ApplicationRequest\RunningMateRequest;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use libphonenumber\PhoneNumberUtil;
 use Ramsey\Uuid\Uuid;
 
-class LoadApplicationRequestRunningMateRequestData extends Fixture
+class LoadApplicationRequestRunningMateRequestData extends Fixture implements DependentFixtureInterface
 {
     private const UUID_1 = '23db4b50-dbe3-4b7f-9bd8-f3eaba8367de';
     private const UUID_2 = '64bae83d-0d29-42a7-a394-fb31648131f2';

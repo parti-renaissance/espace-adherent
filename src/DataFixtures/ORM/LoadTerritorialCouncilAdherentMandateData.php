@@ -7,12 +7,11 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadTerritorialCouncilAdherentMandateData extends Fixture
+class LoadTerritorialCouncilAdherentMandateData extends Fixture implements DependentFixtureInterface
 {
-    public const MEMBERSHIP_UUID1 = 'ad3780fe-d607-4d01-bc1a-d537fe351908';
-
     public function load(ObjectManager $manager)
     {
         /** @var TerritorialCouncil $coTerrParis */

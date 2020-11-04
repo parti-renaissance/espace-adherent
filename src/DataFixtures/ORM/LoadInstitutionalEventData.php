@@ -5,23 +5,24 @@ namespace App\DataFixtures\ORM;
 use App\Entity\PostAddress;
 use App\Event\EventFactory;
 use Cake\Chronos\Chronos;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadInstitutionalEventData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadInstitutionalEventData extends Fixture implements DependentFixtureInterface
 {
     const INSTITUTIONAL_EVENT_1_UUID = '3f46976e-e76a-476e-86d7-575c6d3bc15e';
 
-    use ContainerAwareTrait;
+    private $eventFactory;
+
+    public function __construct(EventFactory $eventFactory)
+    {
+        $this->eventFactory = $eventFactory;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $eventFactory = $this->getEventFactory();
-
-        $institutionalEvent1 = $eventFactory->createInstitutionalEventFromArray([
+        $institutionalEvent1 = $this->eventFactory->createInstitutionalEventFromArray([
             'uuid' => self::INSTITUTIONAL_EVENT_1_UUID,
             'organizer' => $this->getReference('adherent-8'),
             'name' => 'Evénement institutionnel numéro 1',
@@ -38,11 +39,6 @@ class LoadInstitutionalEventData extends AbstractFixture implements ContainerAwa
         $manager->persist($institutionalEvent1);
 
         $manager->flush();
-    }
-
-    private function getEventFactory(): EventFactory
-    {
-        return $this->container->get(EventFactory::class);
     }
 
     public function getDependencies()

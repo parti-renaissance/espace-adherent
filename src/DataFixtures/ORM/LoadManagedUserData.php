@@ -5,16 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadManagedUserData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadManagedUserData extends Fixture implements DependentFixtureInterface
 {
-    use ContainerAwareTrait;
-
     public function load(ObjectManager $manager)
     {
         $managedUserFactory = $this->getManagedUserFactory();

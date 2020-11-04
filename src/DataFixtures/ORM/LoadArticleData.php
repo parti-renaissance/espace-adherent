@@ -13,18 +13,28 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class LoadArticleData extends Fixture
 {
+    private $articleFactory;
+    private $mediaFactory;
+    private $storage;
+
+    public function __construct(
+        ArticleFactory $articleFactory,
+        MediaFactory $mediaFactory,
+        FilesystemInterface $storage
+    ) {
+        $this->articleFactory = $articleFactory;
+        $this->mediaFactory = $mediaFactory;
+        $this->storage = $storage;
+    }
+
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
 
-        $factory = $this->container->get(ArticleFactory::class);
-        $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get(FilesystemInterface::class);
-
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');
-        $storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
-        $media = $mediaFactory->createFromFile('Article image', 'article.jpg', $mediaFile);
+        $this->storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
+        $media = $this->mediaFactory->createFromFile('Article image', 'article.jpg', $mediaFile);
 
         $manager->persist($media);
         $manager->flush();
@@ -41,7 +51,7 @@ class LoadArticleData extends Fixture
         $manager->flush();
 
         // Article
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->articleFactory->createFromArray([
             'title' => '« Les outre-mer sont l’un des piliers de notre richesse culturelle. »',
             'slug' => 'outre-mer',
             'description' => 'outre-mer',
@@ -54,7 +64,7 @@ class LoadArticleData extends Fixture
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->articleFactory->createFromArray([
             'title' => '« Mes opinions »',
             'slug' => 'mes-opinions',
             'description' => 'mes-opinions',
@@ -67,7 +77,7 @@ class LoadArticleData extends Fixture
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->articleFactory->createFromArray([
             'title' => 'Article en brouillon',
             'slug' => 'brouillon',
             'description' => 'brouillon',
@@ -80,7 +90,7 @@ class LoadArticleData extends Fixture
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->articleFactory->createFromArray([
             'title' => 'Article image cachée',
             'slug' => 'sans-image',
             'description' => 'sans-image',
@@ -93,7 +103,7 @@ class LoadArticleData extends Fixture
             'amp_content' => file_get_contents(__DIR__.'/../content_amp.html'),
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->articleFactory->createFromArray([
             'title' => 'Article dans une category pas affichée',
             'slug' => 'article-avec-category-non-afficher',
             'description' => 'Article dans une category pas affichée',
@@ -109,7 +119,7 @@ class LoadArticleData extends Fixture
         // A lot of articles for listing
         foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory, $opinionsCategory, $noDisplayCategory] as $category) {
             for ($i = 0; $i < 25; ++$i) {
-                $manager->persist($factory->createFromArray([
+                $manager->persist($this->articleFactory->createFromArray([
                     'title' => mb_substr($faker->sentence(), 0, 60),
                     'slug' => $faker->slug(),
                     'description' => $faker->text(),

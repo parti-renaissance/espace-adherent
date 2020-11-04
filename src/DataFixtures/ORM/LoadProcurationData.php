@@ -5,12 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumber;
 
-class LoadProcurationData extends AbstractFixture implements DependentFixtureInterface
+class LoadProcurationData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

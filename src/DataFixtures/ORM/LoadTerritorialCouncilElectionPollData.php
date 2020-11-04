@@ -8,9 +8,10 @@ use App\Entity\TerritorialCouncil\ElectionPoll\PollChoice;
 use App\Entity\TerritorialCouncil\ElectionPoll\Vote;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadTerritorialCouncilElectionPollData extends Fixture
+class LoadTerritorialCouncilElectionPollData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

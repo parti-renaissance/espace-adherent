@@ -16,9 +16,10 @@ use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadGeoZoneData extends Fixture
+class LoadGeoZoneData extends Fixture implements DependentFixtureInterface
 {
     private const ZONEABLES = [
         Country::class,

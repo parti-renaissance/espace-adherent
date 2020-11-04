@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Redirection;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 
-class LoadRedirectionData implements FixtureInterface
+class LoadRedirectionData extends Fixture
 {
     public function load(ObjectManager $manager)
     {

@@ -7,11 +7,11 @@ use App\Entity\Report\IdeasWorkshop\IdeaReport;
 use App\Entity\Report\IdeasWorkshop\ThreadCommentReport;
 use App\Entity\Report\IdeasWorkshop\ThreadReport;
 use App\Entity\Report\ReportReasonEnum;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadReportData extends AbstractFixture implements DependentFixtureInterface
+class LoadReportData extends Fixture implements DependentFixtureInterface
 {
     /**
      * {@inheritdoc}

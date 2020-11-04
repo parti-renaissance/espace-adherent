@@ -5,13 +5,13 @@ namespace App\DataFixtures\ORM;
 use App\Entity\LegislativeCandidate;
 use App\Entity\LegislativeDistrictZone;
 use App\ValueObject\Genders;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * @see https://fr.wikipedia.org/wiki/Liste_des_circonscriptions_l%C3%A9gislatives_de_la_France
  */
-class LoadLegislativesData implements FixtureInterface
+class LoadLegislativesData extends Fixture
 {
     public function load(ObjectManager $manager)
     {

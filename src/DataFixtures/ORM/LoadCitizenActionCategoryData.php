@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\CitizenActionCategory;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadCitizenActionCategoryData extends AbstractFixture
+class LoadCitizenActionCategoryData extends Fixture
 {
     public function load(ObjectManager $manager)
     {

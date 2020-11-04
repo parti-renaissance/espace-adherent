@@ -6,11 +6,11 @@ use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
 use App\Entity\ThematicCommunity\Contact;
 use App\Jecoute\GenderEnum;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumber;
 
-class LoadThematicCommunityContactData extends AbstractFixture
+class LoadThematicCommunityContactData extends Fixture
 {
     public function load(ObjectManager $manager)
     {

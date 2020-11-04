@@ -8,10 +8,15 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadAdminData extends Fixture
 {
+    private $administratorFactory;
+
+    public function __construct(AdministratorFactory $administratorFactory)
+    {
+        $this->administratorFactory = $administratorFactory;
+    }
+
     public function load(ObjectManager $manager)
     {
-        $factory = $this->getAdministratorFactory();
-
         $adminRoles = [
             'ROLE_ADMIN_DASHBOARD',
             'ROLE_ADMIN_MEDIAS',
@@ -78,14 +83,14 @@ class LoadAdminData extends Fixture
             'ROLE_ADMIN_REDIRECTIONS',
         ];
 
-        $superAdmin2fa = $factory->createFromArray([
+        $superAdmin2fa = $this->administratorFactory->createFromArray([
             'email' => 'titouan.galopin@en-marche.fr',
             'password' => 'secret!12345',
             'roles' => $adminRoles,
             'secret' => 'D3GU3BR4LUDK5NWR',
         ]);
 
-        $admin = $factory->createFromArray([
+        $admin = $this->administratorFactory->createFromArray([
             'email' => 'jean.dupond@en-marche.fr',
             'password' => 'secret!12345',
             'roles' => $adminRoles,
@@ -93,26 +98,26 @@ class LoadAdminData extends Fixture
         ]);
         $this->setReference('administrator-1', $admin);
 
-        $writer = $factory->createFromArray([
+        $writer = $this->administratorFactory->createFromArray([
             'email' => 'martin.pierre@en-marche.fr',
             'password' => 'secret!12345',
             'roles' => $writerRoles,
         ]);
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->administratorFactory->createFromArray([
             'email' => 'admin@en-marche-dev.fr',
             'password' => 'admin',
             'roles' => $adminRoles,
         ]));
 
-        $manager->persist($superadmin = $factory->createFromArray([
+        $manager->persist($superadmin = $this->administratorFactory->createFromArray([
             'email' => 'superadmin@en-marche-dev.fr',
             'password' => 'superadmin',
             'roles' => ['ROLE_SUPER_ADMIN'],
         ]));
         $this->setReference('administrator-2', $superadmin);
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($this->administratorFactory->createFromArray([
             'email' => 'writer@en-marche-dev.fr',
             'password' => 'writer',
             'roles' => $writerRoles,
@@ -122,10 +127,5 @@ class LoadAdminData extends Fixture
         $manager->persist($admin);
         $manager->persist($writer);
         $manager->flush();
-    }
-
-    private function getAdministratorFactory(): AdministratorFactory
-    {
-        return $this->container->get('app.admin.administrator_factory');
     }
 }

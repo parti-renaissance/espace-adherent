@@ -5,11 +5,11 @@ namespace App\DataFixtures\ORM;
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\IdeasWorkshop\Vote;
 use App\Entity\IdeasWorkshop\VoteTypeEnum;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadIdeaVoteData extends AbstractFixture implements DependentFixtureInterface
+class LoadIdeaVoteData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

@@ -9,12 +9,12 @@ use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
 use App\Repository\AdherentRepository;
 use App\Repository\OAuth\ClientRepository;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInterface
+class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
 {
     /**
      * @var AdherentRepository

@@ -5,12 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Image;
 use App\Entity\Mooc\Mooc;
 use Cake\Chronos\MutableDateTime;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadMoocData extends AbstractFixture implements DependentFixtureInterface
+class LoadMoocData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

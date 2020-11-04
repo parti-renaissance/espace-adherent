@@ -3,16 +3,12 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\FacebookVideo;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadFacebookVideoData implements FixtureInterface, ContainerAwareInterface
+class LoadFacebookVideoData extends Fixture
 {
-    use ContainerAwareTrait;
-
     public function load(ObjectManager $manager)
     {
         $video = new FacebookVideo();

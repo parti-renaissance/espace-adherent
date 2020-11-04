@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\IdeasWorkshop\Guideline;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadIdeaGuidelineData extends AbstractFixture
+class LoadIdeaGuidelineData extends Fixture
 {
     public function load(ObjectManager $manager)
     {

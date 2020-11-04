@@ -6,16 +6,12 @@ use App\Committee\CommitteeFactory;
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\CommitteeElection;
 use App\Entity\PostAddress;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadCommitteeData extends Fixture implements DependentFixtureInterface
 {
-    use ContainerAwareTrait;
-
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
     public const COMMITTEE_3_UUID = 'b0cd0e52-a5a4-410b-bba3-37afdd326a0a';
@@ -29,14 +25,19 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
     public const COMMITTEE_11_UUID = 'eb050b5e-9444-49ec-b3dc-005c98024507';
     public const COMMITTEE_12_UUID = '138140a5-1dd2-11b2-88c6-671b351502ee';
 
+    private $committeeFactory;
+
+    public function __construct(CommitteeFactory $committeeFactory)
+    {
+        $this->committeeFactory = $committeeFactory;
+    }
+
     public function load(ObjectManager $manager)
     {
         AutoIncrementResetter::resetAutoIncrement($manager, 'committees');
 
-        $committeeFactory = $this->getCommitteeFactory();
-
         // Create some default committees and make people join them
-        $committee1 = $committeeFactory->createFromArray([
+        $committee1 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_1_UUID,
             'created_by' => LoadAdherentData::ADHERENT_3_UUID,
             'created_at' => '2017-01-12 13:25:54',
@@ -51,7 +52,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee1->approved('2017-01-12 15:54:18');
         $this->addReference('committee-1', $committee1);
 
-        $committee2 = $committeeFactory->createFromArray([
+        $committee2 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_2_UUID,
             'created_by' => LoadAdherentData::ADHERENT_6_UUID,
             'created_at' => '2017-01-12 19:34:12',
@@ -62,7 +63,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         ]);
         $this->addReference('committee-2', $committee2);
 
-        $committee3 = $committeeFactory->createFromArray([
+        $committee3 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_3_UUID,
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-01-26 16:08:24',
@@ -76,7 +77,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee3->approved('2017-01-27 09:18:33');
         $this->addReference('committee-3', $committee3);
 
-        $committee4 = $committeeFactory->createFromArray([
+        $committee4 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_4_UUID,
             'created_by' => LoadAdherentData::ADHERENT_4_UUID,
             'created_at' => '2017-01-19 08:36:55',
@@ -89,7 +90,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee4->setCurrentElection(new CommitteeElection($this->getReference('designation-3')));
         $this->addReference('committee-4', $committee4);
 
-        $committee5 = $committeeFactory->createFromArray([
+        $committee5 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_5_UUID,
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-01-19 10:54:28',
@@ -102,7 +103,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee5->setCurrentElection(new CommitteeElection($this->getReference('designation-2')));
         $this->addReference('committee-5', $committee5);
 
-        $committee6 = $committeeFactory->createFromArray([
+        $committee6 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_6_UUID,
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2017-03-18 20:12:33',
@@ -115,7 +116,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee6->setCurrentElection(new CommitteeElection($this->getReference('designation-1')));
         $this->addReference('committee-6', $committee6);
 
-        $committee7 = $committeeFactory->createFromArray([
+        $committee7 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_7_UUID,
             'created_by' => LoadAdherentData::ADHERENT_10_UUID,
             'created_at' => '2017-03-19 08:14:45',
@@ -128,7 +129,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee7->setCurrentElection(new CommitteeElection($this->getReference('designation-1')));
         $this->addReference('committee-7', $committee7);
 
-        $committee8 = $committeeFactory->createFromArray([
+        $committee8 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_8_UUID,
             'created_by' => LoadAdherentData::ADHERENT_11_UUID,
             'created_at' => '2017-04-10 17:34:18',
@@ -141,7 +142,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee8->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
         $this->addReference('committee-8', $committee8);
 
-        $committee9 = $committeeFactory->createFromArray([
+        $committee9 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_9_UUID,
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2017-04-09 12:16:22',
@@ -154,7 +155,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee9->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
         $this->addReference('committee-9', $committee9);
 
-        $committee10 = $committeeFactory->createFromArray([
+        $committee10 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_10_UUID,
             'created_by' => LoadAdherentData::REFERENT_1_UUID,
             'created_at' => '2017-05-09 12:18:22',
@@ -167,7 +168,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee10->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
         $this->addReference('committee-10', $committee10);
 
-        $committee11 = $committeeFactory->createFromArray([
+        $committee11 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_11_UUID,
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-05-12 12:18:22',
@@ -180,7 +181,7 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $committee11->refused('2017-05-14 13:17:42');
         $this->addReference('committee-11', $committee11);
 
-        $committee12 = $committeeFactory->createFromArray([
+        $committee12 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_12_UUID,
             'created_by' => LoadAdherentData::REFERENT_1_UUID,
             'created_at' => '2020-10-29 09:00:00',
@@ -276,11 +277,6 @@ class LoadCommitteeData extends AbstractFixture implements ContainerAwareInterfa
         $manager->persist($adherent21->followCommittee($committee12, new \DateTime('-2 months')));
 
         $manager->flush();
-    }
-
-    private function getCommitteeFactory(): CommitteeFactory
-    {
-        return $this->container->get(CommitteeFactory::class);
     }
 
     public function getDependencies()
