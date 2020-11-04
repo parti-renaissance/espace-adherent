@@ -43,9 +43,22 @@
                 </ul>
             </div>
         </div>
-        <li>
-            <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
-        </li>
+        <div class="l__row">
+            <div class="nav-dropdown">
+                <p>
+                    Actualités
+                    <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
+                </p>
+                <ul class="nav-dropdown__item">
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'info-coronavirus' }) }}">Info Coronavirus</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('articles_list', { category: 'tout' }) }}">Toutes nos actualités</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="l__row">
             <div class="nav-dropdown">
                 <p>
