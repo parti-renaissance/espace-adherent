@@ -28,6 +28,7 @@ use App\Membership\MembershipRequest;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
+use App\Validator\UniqueMembership;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -79,6 +80,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener", "App\EntityListener\RevokeDelegatedAccessListener"})
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
+ * @UniqueMembership(groups={"Admin"})
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */

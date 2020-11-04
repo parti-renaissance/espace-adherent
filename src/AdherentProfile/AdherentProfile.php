@@ -4,11 +4,16 @@ namespace App\AdherentProfile;
 
 use App\Address\Address;
 use App\Entity\Adherent;
+use App\Membership\MembershipInterface;
+use App\Validator\UniqueMembership;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AdherentProfile
+/**
+ * @UniqueMembership
+ */
+class AdherentProfile implements MembershipInterface
 {
     /**
      * @var string|null

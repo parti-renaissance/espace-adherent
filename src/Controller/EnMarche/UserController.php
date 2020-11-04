@@ -54,9 +54,12 @@ class UserController extends Controller
         $adherent = $this->getUser();
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
 
-        $form = $this->createForm(AdherentProfileType::class, $adherentProfile, ['disabled_form' => $adherent->isCertified()]);
+        $form = $this
+            ->createForm(AdherentProfileType::class, $adherentProfile, ['disabled_form' => $adherent->isCertified()])
+            ->handleRequest($request)
+        ;
 
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $handler->update($adherent, $adherentProfile);
             $this->addFlash('info', 'adherent.update_profile.success');
 

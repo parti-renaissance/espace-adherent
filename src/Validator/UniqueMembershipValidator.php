@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Membership\MembershipInterface;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use App\Repository\AdherentRepository;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -42,14 +43,18 @@ class UniqueMembershipValidator extends ConstraintValidator
         }
 
         // Chosen email address is not already taken by someone else
-        if (!$email || !$adherent = $this->findAdherent($email)) {
+        if (!$email || !$adherentUuid = $this->findAdherentIdentifiers($email)) {
+            return;
+        }
+
+        if ($member instanceof Adherent && $member->getUuid()->equals($adherentUuid)) {
             return;
         }
 
         // 1. User is not authenticated yet and wants to register with someone else email address.
         // 2. User is authenticated and wants to change his\her email address for someone else email address.
         $user = $this->getAuthenticatedUser();
-        if (!$user || !$user->equals($adherent)) {
+        if (!$user || !$user->getUuid()->equals($adherentUuid)) {
             $this
                 ->context
                 ->buildViolation($constraint->message)
@@ -74,16 +79,17 @@ class UniqueMembershipValidator extends ConstraintValidator
         return $user;
     }
 
-    private function findAdherent(string $emailAddress): ?Adherent
+    private function findAdherentIdentifiers(string $emailAddress): ?UuidInterface
     {
-        if ($adherent = $this->adherentRepository->findOneByEmail($emailAddress)) {
-            return $adherent;
+        if ($identifiers = $this->adherentRepository->findIdentifiersByEmail($emailAddress)) {
+            return $identifiers['uuid'];
         }
 
         if ($token = $this->changeEmailTokenRepository->findLastUnusedByEmail($emailAddress)) {
-            return $this->adherentRepository->findOneByUuid($token->getAdherentUuid());
+            return ($adherent = $this->adherentRepository->findOneByUuid($token->getAdherentUuid())) ? $adherent->getUuid() : null;
         }
 
-        return $this->adherentRepository->findByUuid(Adherent::createUuid($emailAddress));
+        return ($adherent = $this->adherentRepository->findByUuid(Adherent::createUuid($emailAddress))) ?
+            $adherent->getUuid() : null;
     }
 }
