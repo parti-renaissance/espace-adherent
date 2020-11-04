@@ -2440,6 +2440,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->candidateManagedArea ? $this->candidateManagedArea->isCantonalZone() : false;
     }
 
+    public function isCandidate(): bool
+    {
+        return $this->candidateManagedArea instanceof CandidateManagedArea;
+    }
+
     public function getLreArea(): ?LreArea
     {
         return $this->lreArea;
