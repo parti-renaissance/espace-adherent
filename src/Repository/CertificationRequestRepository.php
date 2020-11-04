@@ -25,6 +25,20 @@ class CertificationRequestRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findDocumentsToDelete(\DateTimeInterface $createdBefore): iterable
+    {
+        return $this
+            ->createQueryBuilder('cr')
+            ->andWhere('cr.createdAt <= :created_at')
+            ->andWhere('cr.documentName IS NOT NULL')
+            ->setParameters([
+                'created_at' => $createdBefore,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findPreRefused(\DateTimeInterface $createdBefore): iterable
     {
         return $this

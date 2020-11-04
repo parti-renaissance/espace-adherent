@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Adherent\Certification\CertificationRequestDocumentManager;
-use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,9 +11,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CertificationRequestProcessTimeoutCommand extends Command
+class CertificationRequestRemoveDocumentCommand extends Command
 {
-    protected static $defaultName = 'app:certification-request:process-timeout';
+    protected static $defaultName = 'app:certification-request:remove-document';
 
     private $em;
     private $certificationRequestRepository;
@@ -36,7 +35,7 @@ class CertificationRequestProcessTimeoutCommand extends Command
     {
         $this
             ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in days (default: 14)', 14)
-            ->setDescription('Refuse unprocessed Certification Requests.')
+            ->setDescription('Removes document of Certification Requests.')
         ;
     }
 
@@ -48,18 +47,17 @@ class CertificationRequestProcessTimeoutCommand extends Command
         $createdBefore->add(\DateInterval::createFromDateString($interval));
 
         /** @var CertificationRequest[]|iterable $certificationRequests */
-        $certificationRequests = $this->certificationRequestRepository->findPending($createdBefore);
+        $certificationRequests = $this->certificationRequestRepository->findDocumentsToDelete($createdBefore);
 
         foreach ($certificationRequests as $certificationRequest) {
-            $this->processTimeout($certificationRequest);
+            $this->removeDocument($certificationRequest);
 
             $this->em->flush();
         }
     }
 
-    private function processTimeout(CertificationRequest $certificationRequest): void
+    private function removeDocument(CertificationRequest $certificationRequest): void
     {
-        $certificationRequest->refuse(CertificationRequestRefuseCommand::REFUSAL_REASON_PROCESS_TIMEOUT);
-        $certificationRequest->process();
+        $this->documentManager->removeDocument($certificationRequest);
     }
 }
