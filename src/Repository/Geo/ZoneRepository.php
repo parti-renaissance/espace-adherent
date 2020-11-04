@@ -114,4 +114,28 @@ final class ZoneRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findForMandateAdminAutocomplete(?string $term, array $types, int $limit): array
+    {
+        if (!$term || !$types) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('zone');
+
+        return $qb
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like('zone.name', ':term'),
+                    $qb->expr()->like('zone.code', ':term'),
+                )
+            )
+            ->andWhere($qb->expr()->in('zone.type', ':types'))
+            ->setParameter(':term', "$term%")
+            ->setParameter(':types', $types)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

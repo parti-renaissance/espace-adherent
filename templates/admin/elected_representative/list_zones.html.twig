@@ -2,6 +2,6 @@
 
 {% block field %}
     {% for mandate in object.currentMandates %}
-        {{ mandate.zone }} {% if not loop.last %}<br />{% endif %}
+        {{ mandate.geoZone }} {% if not loop.last %}<br />{% endif %}
     {% endfor %}
 {% endblock %}
