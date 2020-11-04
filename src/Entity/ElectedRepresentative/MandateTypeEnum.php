@@ -2,6 +2,7 @@
 
 namespace App\Entity\ElectedRepresentative;
 
+use App\Entity\Geo\Zone;
 use MyCLabs\Enum\Enum;
 
 final class MandateTypeEnum extends Enum
@@ -39,5 +40,44 @@ final class MandateTypeEnum extends Enum
         self::EURO_DEPUTY_LABEL => self::EURO_DEPUTY,
         self::BOROUGH_COUNCIL_LABEL => self::BOROUGH_COUNCIL,
         self::CONSULAR_COUNCIL_LABEL => self::CONSULAR_COUNCIL,
+    ];
+
+    public const ZONES_BY_MANDATE = [
+        self::CITY_COUNCIL => [
+            Zone::CITY,
+            Zone::BOROUGH,
+        ],
+        self::EPCI_MEMBER => [
+            Zone::CITY_COMMUNITY,
+        ],
+        self::DEPARTMENTAL_COUNCIL => [
+            Zone::DEPARTMENT,
+        ],
+        self::REGIONAL_COUNCIL => [
+            Zone::REGION,
+            Zone::DEPARTMENT,
+        ],
+        self::CORSICA_ASSEMBLY_MEMBER => [],
+        self::DEPUTY => [
+            Zone::DISTRICT,
+        ],
+        self::SENATOR => [
+            Zone::DISTRICT,
+            Zone::DEPARTMENT,
+            Zone::FOREIGN_DISTRICT,
+        ],
+        self::CONSULAR_COUNCIL => [
+            Zone::CONSULAR_DISTRICT,
+        ],
+        self::EURO_DEPUTY => [
+            Zone::CITY,
+            Zone::BOROUGH,
+            Zone::DEPARTMENT,
+            Zone::DISTRICT,
+        ],
+        self::BOROUGH_COUNCIL => [
+            Zone::CITY,
+            Zone::BOROUGH,
+        ],
     ];
 }

@@ -824,6 +824,20 @@
 
         <!--
         ######################################################
+        # Geo
+        ######################################################
+        -->
+
+        <service id="app.admin.geo.zone" class="App\Admin\Geo\ZoneAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\Geo\Zone</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # Extension
         ######################################################
         -->

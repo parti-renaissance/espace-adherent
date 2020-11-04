@@ -3,6 +3,7 @@
 namespace App\Entity\Geo;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait GeoTrait
 {
@@ -12,6 +13,8 @@ trait GeoTrait
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\GeneratedValue
+     *
+     * @SymfonySerializer\Groups({"autocomplete"})
      */
     private $id;
 
@@ -61,6 +64,9 @@ trait GeoTrait
         $this->name = $name;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"autocomplete"})
+     */
     public function getNameCode(): string
     {
         return \sprintf('%s (%s)', $this->name, $this->code);
