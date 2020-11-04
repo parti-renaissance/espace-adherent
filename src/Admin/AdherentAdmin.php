@@ -848,11 +848,6 @@ HELP
                         $where->add('candidate_zone.type IN (:candiate_zone_types)');
                     }
 
-                    if (\in_array(AdherentRoleEnum::CANDIDATE_DEPARTMENTAL, $value['value'], true)) {
-                        $where->add('zone.type = :type_canton');
-                        $qb->setParameter('type_canton', Zone::CANTON);
-                    }
-
                     // thematic community chief
                     if (\in_array(AdherentRoleEnum::THEMATIC_COMMUNITY_CHIEF, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.handledThematicCommunities', $alias), 'tc');
