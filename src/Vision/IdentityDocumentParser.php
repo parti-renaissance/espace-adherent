@@ -3,7 +3,7 @@
 namespace App\Vision;
 
 use App\Entity\Adherent;
-use Cocur\Slugify\Slugify;
+use Cocur\Slugify\SlugifyInterface;
 
 class IdentityDocumentParser
 {
@@ -19,7 +19,7 @@ class IdentityDocumentParser
 
     private $slugify;
 
-    public function __construct(Slugify $slugify)
+    public function __construct(SlugifyInterface $slugify)
     {
         $this->slugify = $slugify;
     }

@@ -12,7 +12,7 @@ use App\Exception\InvalidDonationPayloadException;
 use App\Exception\InvalidDonationStatusException;
 use App\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use App\Membership\MembershipRegistrationProcess;
-use Cocur\Slugify\Slugify;
+use Cocur\Slugify\SlugifyInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -58,7 +58,7 @@ class DonationRequestUtils
 
     public function __construct(
         ServiceLocator $donationRequestUtilsLocator,
-        Slugify $slugify,
+        SlugifyInterface $slugify,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         Geocoder $geocoder
     ) {

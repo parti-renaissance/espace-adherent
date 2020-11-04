@@ -16,7 +16,6 @@ use App\Repository\MediaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Tackk\Cartographer\ChangeFrequency;
 use Tackk\Cartographer\Sitemap;
 use Tackk\Cartographer\SitemapIndex;
@@ -37,13 +36,16 @@ class SitemapFactory
     ];
 
     private $manager;
-    private $router;
+    private $urlGenerator;
     private $cache;
 
-    public function __construct(ObjectManager $manager, RouterInterface $router, CacheItemPoolInterface $cache)
-    {
+    public function __construct(
+        ObjectManager $manager,
+        UrlGeneratorInterface $urlGenerator,
+        CacheItemPoolInterface $cache
+    ) {
         $this->manager = $manager;
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
         $this->cache = $cache;
     }
 
@@ -438,6 +440,6 @@ class SitemapFactory
 
     private function generateUrl(string $name, array $parameters = []): ?string
     {
-        return $this->router->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

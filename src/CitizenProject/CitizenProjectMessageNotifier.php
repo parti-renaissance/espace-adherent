@@ -18,14 +18,13 @@ use App\Mailer\Message\TurnkeyProjectApprovalConfirmationMessage;
 use App\Repository\AdherentRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 class CitizenProjectMessageNotifier implements EventSubscriberInterface
 {
     private $manager;
     private $mailer;
     private $committeeManager;
-    private $router;
+    private $urlGenerator;
     private $adherentRepository;
 
     public function __construct(
@@ -33,13 +32,13 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         CitizenProjectManager $manager,
         MailerService $mailer,
         CommitteeManager $committeeManager,
-        RouterInterface $router
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->manager = $manager;
         $this->mailer = $mailer;
         $this->committeeManager = $committeeManager;
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function onCitizenProjectApprove(CitizenProjectWasApprovedEvent $event): void
@@ -157,6 +156,6 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 
     private function generateUrl(string $name, array $parameters = []): string
     {
-        return $this->router->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate($name, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

@@ -5,7 +5,7 @@ namespace App\EntityListener;
 use App\Entity\Article;
 use App\Redirection\Dynamic\RedirectionManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ArticleListener
 {
@@ -17,7 +17,7 @@ class ArticleListener
      */
     private $redirections = [];
 
-    public function __construct(RedirectionManager $redirectionManager, Router $router)
+    public function __construct(RedirectionManager $redirectionManager, UrlGeneratorInterface $router)
     {
         $this->redirectionManager = $redirectionManager;
         $this->router = $router;
