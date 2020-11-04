@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Adherent\Certification\CertificationRequestDocumentManager;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
@@ -18,16 +17,13 @@ class CertificationRequestProcessTimeoutCommand extends Command
 
     private $em;
     private $certificationRequestRepository;
-    private $documentManager;
 
     public function __construct(
         EntityManagerInterface $em,
-        CertificationRequestRepository $certificationRequestRepository,
-        CertificationRequestDocumentManager $documentManager
+        CertificationRequestRepository $certificationRequestRepository
     ) {
         $this->em = $em;
         $this->certificationRequestRepository = $certificationRequestRepository;
-        $this->documentManager = $documentManager;
 
         parent::__construct();
     }
