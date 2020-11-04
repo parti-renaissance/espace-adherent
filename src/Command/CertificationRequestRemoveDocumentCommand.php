@@ -41,10 +41,7 @@ class CertificationRequestRemoveDocumentCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $interval = sprintf('-%d day', (int) $input->getOption('interval'));
-
-        $createdBefore = new \DateTime('now');
-        $createdBefore->add(\DateInterval::createFromDateString($interval));
+        $createdBefore = new \DateTime(sprintf('-%d day', (int) $input->getOption('interval')));
 
         /** @var CertificationRequest[]|iterable $certificationRequests */
         $certificationRequests = $this->certificationRequestRepository->findDocumentsToDelete($createdBefore);
