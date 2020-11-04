@@ -35,6 +35,8 @@ class ReferentZoneManager
 
         $newZone = ManagedAreaUtils::getZone($adherent);
 
-        return $currentZones !== [$newZone];
+        $newZones = $newZone ? [$newZone] : [];
+
+        return $currentZones !== $newZones;
     }
 }

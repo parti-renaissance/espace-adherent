@@ -246,7 +246,11 @@ class AreaUtils
     public static function getZone(EntityPostAddressInterface $entity): ?string
     {
         if (self::CODE_FRANCE === $entity->getCountry()) {
-            return $entity->getInseeCode();
+            // for cities in the department starting by 0, the code contains only 4 figures
+            // but a zone in this case should start with 0
+            $inseeCode = $entity->getInseeCode();
+
+            return $inseeCode ? str_pad($inseeCode, 5, '0', \STR_PAD_LEFT) : null;
         }
 
         return $entity->getCountry();
