@@ -5,6 +5,7 @@ namespace App\Entity\TerritorialCouncil;
 use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Sluggable\Util\Urlizer;
 
 /**
  * @ORM\Entity
@@ -107,7 +108,7 @@ class OfficialReportDocument
 
     public function getFilenameForDownload(): ?string
     {
-        return \sprintf('%s_v%d.%s', $this->report->getName(), $this->version, $this->getExtension());
+        return \sprintf('%s_v%d.%s', Urlizer::urlize($this->report->getName()), $this->version, $this->getExtension());
     }
 
     public function getFilePathWithDirectory(): string
