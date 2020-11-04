@@ -45,9 +45,6 @@ services:
         alias: App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
         public: true
 
-    App\Image\ImageManager:
-        public: true
-
     Tests\App\Image\DummyImageManager: ~
 
     App\Image\ImageManagerInterface: '@Tests\App\Image\DummyImageManager'
