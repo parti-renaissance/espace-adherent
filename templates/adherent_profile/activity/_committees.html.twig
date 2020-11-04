@@ -14,44 +14,104 @@
             {% set committee_is_locked = not is_granted('COMMITTEE_IS_NOT_LOCKED', committee) %}
 
             <article class="activity-card b__nudge--bottom {{ membership.votingCommittee ? 'main-committee' }}">
-                <div class="activity-card__type activity-card__type--committee">Comité</div>
-                <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold l__row">{{ committee.name }}</h2>
-                <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
-                    <div class="l__row b__nudge--right-small">
-                        <img src="{{ asset('/images/icons/activity/place.svg') }}" alt="Ville" class="b__nudge--right-nano">
-                        <span>{{ committee.getCityName }}</span>
-                    </div>
-                    <div class="l__row">
-                        <img src="{{ asset('/images/icons/activity/members.svg') }}" alt="Adhérents" class="b__nudge--right-nano">
-                        <span>{{ committee.membersCount }} adhérents</span>
-                    </div>
-                </div>
-
-                <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
-                    <div class="l__row">
-                        <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" title="{{ committee.name }}" class="btn btn--blue b__nudge--right-small">
-                            Voir
-                        </a>
+                <div class="space--30">
+                    <div class="activity-card__type activity-card__type--committee">Comité</div>
+                    <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold l__row">{{ committee.name }}</h2>
+                    <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
+                        <div class="l__row b__nudge--right-small">
+                            <img src="{{ asset('/images/icons/activity/place.svg') }}" alt="Ville" class="b__nudge--right-nano">
+                            <span>{{ committee.getCityName }}</span>
+                        </div>
+                        <div class="l__row">
+                            <img src="{{ asset('/images/icons/activity/members.svg') }}" alt="Adhérents" class="b__nudge--right-nano">
+                            <span>{{ committee.membersCount }} adhérents</span>
+                        </div>
                     </div>
 
-                    <div class="b__nudge--top">
-                        <div class="em-switch__wrapper">
-                            <label class="switch">
-                                <input
-                                        type="checkbox"
-                                        class="vote-switcher{{ is_adherent_able_to_change_vote and not committee_is_locked ? ' vote-switcher-enabled'}}"
-                                        data-committee-title="{{ committee.name }}"
-                                        data-committee-slug="{{ committee.slug }}"
-                                        data-token="{{ csrf_token('committee.vote') }}"
-                                        {{ not is_adherent_able_to_change_vote or committee_is_locked ? 'disabled="disabled"' }}
-                                        {{ membership.votingCommittee ? 'checked="checked"' }}
-                                >
-                                <span class="slider"></span>
-                            </label>
-                            <span class="em-switch__label">Comité de désignation</span>
+                    <div class="activity-card__footer b__nudge--top">
+                        <div class="l__row l__row--h-stretch l__row--bottom l__row--wrap">
+                            <div class="l__row">
+                                <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" title="{{ committee.name }}" class="btn btn--blue b__nudge--right-small">
+                                    Voir
+                                </a>
+                            </div>
+
+                            <div class="b__nudge--top">
+                                <div class="em-switch__wrapper">
+                                    <label class="switch">
+                                        <input
+                                            type="checkbox"
+                                            class="vote-switcher{{ is_adherent_able_to_change_vote and not committee_is_locked ? ' vote-switcher-enabled'}}"
+                                            data-committee-title="{{ committee.name }}"
+                                            data-committee-slug="{{ committee.slug }}"
+                                            data-token="{{ csrf_token('committee.vote') }}"
+                                            {{ not is_adherent_able_to_change_vote or committee_is_locked ? 'disabled="disabled"' }}
+                                            {{ membership.votingCommittee ? 'checked="checked"' }}
+                                        >
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span class="em-switch__label">Comité de désignation</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                {% set committee_election = committee.getCurrentElection %}
+
+                {% if committee_election and committee_election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+                    <div class="activity-card__footer-note text--small space--20-30">
+                        {% if is_granted('ABLE_TO_CANDIDATE', committee) %}
+                            <div class="b__nudge--right">
+                                <img src="{{ asset('/images/icons/icn_vote.svg') }}" alt="vote icon" title="Election"/>
+                            </div>
+                            <div>
+                                {% if membership.committeeCandidacy(committee_election) %}
+                                    <div>Vous êtes candidat{{ app.user.isFemale ? 'e' }} dans ce comité.
+                                        <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.</div>
+
+                                    {% if committee_election.isCandidacyPeriodActive %}
+                                        <div>Vous pouvez modifier votre candidature jusqu'au {{ committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi') }}.</div>
+                                    {% elseif not committee_election.isCandidacyPeriodActive and committee_election.isVotePeriodStarted %}
+                                        <div>Vous pourrez y voter à partir du {{ committee_election.getVoteStartDate|date('d/m/Y H\\hi') }}.</div>
+                                    {% elseif committee_election.isVotePeriodActive %}
+                                        <div>Vous pouvez y voter jusqu'au {{ committee_election.getVoteEndDate|date('d/m/Y H\\hi') }}.</div>
+                                    {% endif %}
+                                {% else %}
+                                    <div>Une élection est en cours dans ce comité.
+                                        <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.</div>
+
+                                    {% if committee_election.isCandidacyPeriodActive %}
+                                        <div>Vous pouvez y candidater jusqu'au {{ committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi') }}.</div>
+                                    {% elseif not committee_election.isCandidacyPeriodActive and committee_election.isVotePeriodStarted %}
+                                        <div>Vous pourrez y voter à partir du {{ committee_election.getVoteStartDate|date('d/m/Y H\\hi') }}.</div>
+                                    {% elseif committee_election.isVotePeriodActive %}
+                                        <div>Vous pouvez y voter jusqu'au {{ committee_election.getVoteEndDate|date('d/m/Y H\\hi') }}.</div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="b__nudge--right">
+                                <img src="{{ asset('/images/icons/icn_close.svg') }}" alt="close icon"/>
+                            </div>
+
+                            <div>
+                                {% if app.user.registeredAt > date('-3 months') %}
+                                    Vous ne pouvez ni candidater ni voter à cette élection car vous en êtes adhérent{{ app.user.isFemale ? 'e' }} depuis moins de 3 mois.
+                                    <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.
+                                {% elseif membership.subscriptionDate > date('-30 days') %}
+                                    Vous ne pouvez ni candidater ni voter dans ce comité à cette élection car vous en êtes membre depuis moins de 30 jours.
+                                    <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.
+                                {% elseif not app.user.isCertified %}
+                                    Certifiez votre profil pour candidater et voter à cette élection.
+                                    <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.
+                                    <br/>
+                                    <a href="{{ path('app_certification_request_home') }}" class="link--no-decor text--blue--dark">Me certifier ➜</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </article>
         {% endfor %}
 

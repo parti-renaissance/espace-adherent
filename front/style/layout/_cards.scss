@@ -681,7 +681,6 @@
     box-sizing: border-box;
     background-color: $white;
     border: 1px solid $lines-grey;
-    padding: 30px;
 
     &.main-committee {
         border-color: $pink;
@@ -711,5 +710,13 @@
         position: absolute;
         top: 40px;
         right: 30px;
+    }
+
+    &__footer {
+        &-note {
+            background: #F0F4F7;
+            color: $silver-dark;
+            display: flex;
+        }
     }
 }
