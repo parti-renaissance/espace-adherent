@@ -15,9 +15,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class SearchController extends Controller
 {
+    private $searchParametersFilter;
+    private $searchResultsProvidersManager;
+    private $translator;
+
+    public function __construct(
+        SearchParametersFilter $searchParametersFilter,
+        SearchResultsProvidersManager $searchResultsProvidersManager,
+        TranslatorInterface $translator
+    ) {
+        $this->searchParametersFilter = $searchParametersFilter;
+        $this->searchResultsProvidersManager = $searchResultsProvidersManager;
+        $this->translator = $translator;
+    }
+
     /**
      * @Route("/evenements", name="app_search_events", methods={"GET"})
      * @Route("/evenements/categorie/{slug}", name="app_search_events_by_category")
@@ -38,16 +53,16 @@ class SearchController extends Controller
             $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_EVENTS);
         }
 
-        $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
+        $search = $this->searchParametersFilter->handleRequest($request);
         $user = $this->getUser();
         if ($user && \in_array(EntityPostAddressTrait::class, class_uses($user))) {
             $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         }
 
         try {
-            $results = $this->get(SearchResultsProvidersManager::class)->find($search);
+            $results = $this->searchResultsProvidersManager->find($search);
         } catch (GeocodingException $exception) {
-            $errors[] = $this->get('translator')->trans('search.geocoding.exception');
+            $errors[] = $this->translator->trans('search.geocoding.exception');
         }
 
         return $this->render('search/search_events.html.twig', [
@@ -65,16 +80,16 @@ class SearchController extends Controller
     {
         $request->query->set(SearchParametersFilter::PARAMETER_TYPE, SearchParametersFilter::TYPE_COMMITTEES);
 
-        $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
+        $search = $this->searchParametersFilter->handleRequest($request);
         $user = $this->getUser();
         if ($user && \in_array(EntityPostAddressTrait::class, class_uses($user))) {
             $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         }
 
         try {
-            $results = $this->get(SearchResultsProvidersManager::class)->find($search);
+            $results = $this->searchResultsProvidersManager->find($search);
         } catch (GeocodingException $exception) {
-            $errors[] = $this->get('translator')->trans('search.geocoding.exception');
+            $errors[] = $this->translator->trans('search.geocoding.exception');
         }
 
         return $this->render('search/search_committees.html.twig', [
@@ -97,12 +112,12 @@ class SearchController extends Controller
      */
     public function resultsAction(Request $request)
     {
-        $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
+        $search = $this->searchParametersFilter->handleRequest($request);
 
         try {
-            $results = $this->get(SearchResultsProvidersManager::class)->find($search);
+            $results = $this->searchResultsProvidersManager->find($search);
         } catch (GeocodingException $exception) {
-            $errors[] = $this->get('translator')->trans('search.geocoding.exception');
+            $errors[] = $this->translator->trans('search.geocoding.exception');
         }
 
         return $this->render('search/results.html.twig', [

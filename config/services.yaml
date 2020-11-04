@@ -208,3 +208,25 @@ services:
             $keyFilePath: '%kernel.project_dir%/gcloud-service-key.json'
 
     Geocoder\Geocoder: '@bazinga_geocoder.geocoder'
+
+    League\Flysystem\Filesystem:
+        arguments:
+            - !service
+                class: 'League\Flysystem\AdapterInterface'
+                factory: 'App\Storage\FilesystemAdapterFactory::createAdapter'
+                arguments:
+                    - '%kernel.environment%'
+                    - '%kernel.project_dir%/app/data'
+                    - '%env(GCLOUD_PROJECT_ID)%'
+                    - '%kernel.project_dir%/gcloud-service-key.json'
+                    - '%env(GCLOUD_BUCKET)%'
+                    - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+
+    League\Flysystem\FilesystemInterface: '@League\Flysystem\Filesystem'
+
+    App\Recaptcha\RecaptchaApiClient:
+        arguments:
+            $privateKey: '%env(RECAPTCHA_PRIVATE_KEY)%'
+            $config:
+                timeout: 5.0
+                environment: '%kernel.environment%'

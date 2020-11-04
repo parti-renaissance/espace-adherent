@@ -403,6 +403,7 @@ security:
         api_oauth:
             pattern: ^/api/(me|webhooks|statistics/|jecoute/|crm-paris/)
             stateless: true
+            provider: users_db
             guard:
                 authenticators:
                     - 'App\OAuth\OAuthAuthenticator'

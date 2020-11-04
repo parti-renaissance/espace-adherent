@@ -49,5 +49,4 @@ services:
 
     App\Image\ImageManagerInterface: '@Tests\App\Image\DummyImageManager'
 
-    App\Vision\IdentityDocumentParser: ~
     App\Repository\DonatorRepository: ~

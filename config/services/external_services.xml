@@ -4,16 +4,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <!-- Recaptcha -->
-        <service id="app.recaptcha.api_client" class="App\Recaptcha\RecaptchaApiClient" public="false">
-            <argument>%env(RECAPTCHA_PRIVATE_KEY)%</argument>
-            <argument type="collection">
-                <argument key="timeout">5.0</argument>
-                <argument key="environment">%kernel.environment%</argument>
-            </argument>
-            <argument type="service" id="request_stack"/>
-        </service>
-
         <!-- Mailer (transactional) -->
         <service id="app.mailer.transactional" class="App\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
