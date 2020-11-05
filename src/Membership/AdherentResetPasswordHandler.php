@@ -20,12 +20,12 @@ class AdherentResetPasswordHandler
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         ObjectManager $manager,
         EncoderFactoryInterface $encoderFactory
     ) {
         $this->urlGenerator = $urlGenerator;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->manager = $manager;
         $this->encoderFactory = $encoderFactory;
     }

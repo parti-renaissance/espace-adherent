@@ -48,12 +48,6 @@
             <argument>App\Mandrill\EmailTemplate</argument>
         </service>
 
-        <service id="App\Mailer\EventSubscriber\EmailPersisterEventSubscriber">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="App\Repository\EmailRepository"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
         <!-- Facebook API -->
         <service id="app.facebook.api" class="Facebook\Facebook">
             <argument type="collection">

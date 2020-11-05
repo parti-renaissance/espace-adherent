@@ -11,26 +11,6 @@
             <argument>%legislatives_standard_hotline_email%</argument>
         </service>
 
-        <!-- Api -->
-        <service id="app.api.committee_provider" class="App\Api\CommitteeProvider">
-            <argument type="service" id="App\Repository\CommitteeRepository"/>
-            <argument type="service" id="router"/>
-        </service>
-
-        <service id="app.api.event_provider" class="App\Api\EventProvider">
-            <argument type="service" id="App\Repository\EventRepository"/>
-            <argument type="service" id="router"/>
-        </service>
-
-        <service id="app.api.legislative_candidate_provider" class="App\Api\LegislativeCandidateProvider">
-            <argument type="service" id="App\Repository\LegislativeCandidateRepository"/>
-            <argument type="service" id="App\Twig\AssetRuntime"/>
-            <argument type="service" id="router"/>
-        </service>
-
-        <!-- Addresses -->
-        <service id="app.address.post_address_factory" class="App\Address\PostAddressFactory" public="false" />
-
         <!-- Map -->
         <service id="app.map.google_maps_static_provider" class="App\Map\GoogleStaticMapProvider">
             <argument type="service" id="csa_guzzle.client.google_maps_static_api" />
@@ -42,8 +22,8 @@
         <!-- Adherents -->
         <service id="App\Membership\MembershipRequestHandler">
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.membership.adherent_factory"/>
-            <argument type="service" id="app.address.post_address_factory"/>
+            <argument type="service" id="App\Membership\AdherentFactory"/>
+            <argument type="service" id="App\Address\PostAddressFactory"/>
             <argument type="service" id="App\OAuth\CallbackManager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
@@ -54,66 +34,7 @@
             <argument type="service" id="App\Adherent\UnregistrationHandler"/>
         </service>
 
-        <service id="app.adherent_change_password_handler" class="App\Membership\AdherentChangePasswordHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.password_encoder"/>
-        </service>
-
-        <service id="app.adherent_reset_password_handler" class="App\Membership\AdherentResetPasswordHandler">
-            <argument type="service" id="router"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.encoder_factory"/>
-        </service>
-
-        <service id="app.membership.adherent_factory" class="App\Membership\AdherentFactory">
-            <argument type="service" id="security.encoder_factory"/>
-            <argument type="service" id="app.address.post_address_factory"/>
-        </service>
-
         <service id="app.adherent.contact_message_handler" class="App\Contact\ContactMessageHandler">
-            <argument type="service" id="app.mailer.campaign" />
-        </service>
-
-        <service id="App\Membership\MemberActivityTracker">
-            <argument type="service" id="App\Repository\EventRegistrationRepository" />
-            <argument type="service" id="App\Repository\EventRepository" />
-        </service>
-
-        <service id="app.unregistration.serializer" class="App\Membership\UnregistrationSerializer" />
-
-        <!-- Citizen projects -->
-        <service id="app.citizen_project.authority" class="App\CitizenProject\CitizenProjectManagementAuthority">
-            <argument type="service" id="App\CitizenProject\CitizenProjectManager"/>
-            <argument type="service" id="event_dispatcher"/>
-        </service>
-
-        <service id="app.citizen_project.creation_handler" class="App\CitizenProject\CitizenProjectCreationCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="App\CitizenProject\CitizenProjectFactory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="App\CitizenProject\CitizenProjectManager"/>
-            <argument type="service" id="App\Referent\ReferentTagManager"/>
-        </service>
-
-        <service id="app.citizen_project.update_handler" class="App\CitizenProject\CitizenProjectUpdateCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.address.post_address_factory"/>
-            <argument type="service" id="App\CitizenProject\CitizenProjectManager"/>
-            <argument type="service" id="App\Referent\ReferentTagManager"/>
-        </service>
-
-        <service id="app.citizen_project.citizen_project_message_notifier" class="App\CitizenProject\CitizenProjectMessageNotifier">
-            <argument type="service" id="App\Repository\AdherentRepository"/>
-            <argument type="service" id="App\CitizenProject\CitizenProjectManager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="App\Committee\CommitteeManager"/>
-            <argument type="service" id="router"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="App\CitizenProject\CitizenProjectContactActorsCommandHandler">
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
@@ -156,16 +77,6 @@
 
         <service id="app.event.contact_members_handler" class="App\Event\EventContactMembersCommandHandler">
             <argument type="service" id="app.mailer.campaign" />
-        </service>
-
-        <!-- CitizenActions -->
-        <service autowire="true" id="App\CitizenAction\CitizenActionManager"/>
-        <service autowire="true" id="App\CitizenAction\CitizenActionCommandHandler" />
-        <service id="App\CitizenAction\CitizenActionRegistrationCommandHandler">
-            <argument type="service" id="app.event.registration_factory"/>
-            <argument type="service" id="app.event.registration_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
         </service>
 
         <!-- BoardMember -->
@@ -211,19 +122,6 @@
             </call>
         </service>
 
-        <service id="App\Search\CommitteeSearchResultsProvider" public="false">
-            <argument type="service" id="App\Repository\CommitteeRepository"/>
-        </service>
-
-        <service id="App\Search\EventSearchResultsProvider" public="false">
-            <argument type="service" id="App\Repository\EventRepository"/>
-        </service>
-
         <service id="App\Search\CitizenActionSearchResultsProvider" parent="App\Search\EventSearchResultsProvider" public="false"/>
-
-        <service id="App\Search\CitizenProjectSearchResultsProvider" public="false">
-            <argument type="service" id="App\Repository\CitizenProjectRepository"/>
-            <argument type="service" id="App\CitizenProject\CitizenProjectManager"/>
-        </service>
     </services>
 </container>

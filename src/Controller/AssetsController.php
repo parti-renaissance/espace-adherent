@@ -176,7 +176,7 @@ class AssetsController extends Controller
      */
     private function createWhiteImage(): string
     {
-        $imagePath = $this->container->get('kernel')->getCacheDir().\DIRECTORY_SEPARATOR.'white_image.png';
+        $imagePath = $this->getParameter('kernel.cache_dir').\DIRECTORY_SEPARATOR.'white_image.png';
 
         $image = imagecreatetruecolor(1, 1);
         imagesavealpha($image, true);
@@ -191,11 +191,9 @@ class AssetsController extends Controller
      * @Route("/image-transformer.jpg", name="asset_timeline", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
-    public function timelineImageAction(Request $request)
+    public function timelineImageAction(Request $request, TimelineImageFactory $imageFactory): Response
     {
         $locale = preg_match('#/en/#', $request->headers->get('referer')) ? 'en' : 'fr';
-
-        $imageFactory = $this->get(TimelineImageFactory::class);
 
         return new Response(file_get_contents($imageFactory->createImage($locale)), Response::HTTP_OK, [
             'Content-Type' => 'image/jpeg',

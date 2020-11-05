@@ -16,9 +16,9 @@ class MailerConsumer extends AbstractConsumer
      */
     private $mailerService;
 
-    public function setMailerService(MailerService $mailerService): void
+    public function setMailerService(MailerService $transactionalMailer): void
     {
-        $this->mailerService = $mailerService;
+        $this->mailerService = $transactionalMailer;
     }
 
     protected function configureDataConstraints(): array

@@ -4,6 +4,7 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\JeMarcheReport;
 use App\Form\JeMarcheReportType;
+use App\JeMarche\JeMarcheReportHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,7 @@ class JeMarcheController extends Controller
     /**
      * @Route("/jemarche", name="app_je_marche_action", methods={"GET", "POST"})
      */
-    public function actionAction(Request $request): Response
+    public function actionAction(Request $request, JeMarcheReportHandler $handler): Response
     {
         $jeMarcheReport = JeMarcheReport::createWithCaptcha((string) $request->request->get('g-recaptcha-response'));
 
@@ -30,7 +31,7 @@ class JeMarcheController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.je_marche_report_handler')->handle($jeMarcheReport);
+            $handler->handle($jeMarcheReport);
 
             return $this->redirectToRoute('app_je_marche_thanks');
         }

@@ -9,9 +9,9 @@ class ProcurationReminderHandler
     private $mailer;
     private $factory;
 
-    public function __construct(MailerService $mailer, ProcurationProxyMessageFactory $factory)
+    public function __construct(MailerService $transactionalMailer, ProcurationProxyMessageFactory $factory)
     {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->factory = $factory;
     }
 

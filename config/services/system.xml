@@ -96,70 +96,36 @@
             </call>
         </service>
 
-        <!-- Redirections from old website -->
-        <service id="app.legacy_redirections_subscriber" class="App\Redirection\LegacyRedirectionsSubscriber">
-            <tag name="kernel.event_subscriber" />
-        </service>
-
         <!-- Dynamic redirections subscriber -->
         <service id="app.dynamic_redirections_subscriber" class="App\Redirection\Dynamic\RedirectionsSubscriber">
             <call method="addHandler">
-                <argument type="service" id="app.dynamic_redirect_to_admin_panel_handler" />
+                <argument type="service" id="App\Redirection\Dynamic\RedirectToAdminPanelHandler" />
             </call>
             <call method="addHandler">
-                <argument type="service" id="app.dynamic_redirect_to_remove_uuid_handler" />
+                <argument type="service" id="App\Redirection\Dynamic\RedirectToRemoveUuidHandler" />
             </call>
             <call method="addHandler">
-                <argument type="service" id="app.dynamic_redirect_to_route_handler" />
+                <argument type="service" id="App\Redirection\Dynamic\RedirectToRouteHandler" />
             </call>
             <call method="addHandler">
-                <argument type="service" id="app.dynamic_redirect_to_path_handler" />
+                <argument type="service" id="App\Redirection\Dynamic\RedirectToPathHandler" />
             </call>
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <!-- Dynamic redirections provider configuration -->
-        <service id="app.dynamic_redirections_provider" class="App\Redirection\Dynamic\RedirectionsProvider" />
-
-        <!-- Dynamic redirections "to admin panel" handler -->
-        <service id="app.dynamic_redirect_to_admin_panel_handler" class="App\Redirection\Dynamic\RedirectToAdminPanelHandler">
-            <argument type="service" id="App\Redirection\Dynamic\RedirectionManager" />
-        </service>
-        <service id="App\Redirection\Dynamic\RedirectionManager" class="App\Redirection\Dynamic\RedirectionManager">
-            <argument type="service" id="app.cache.redirection" />
-            <argument type="service" id="doctrine.orm.default_entity_manager"/>
-            <argument type="service" id="jms_serializer.serializer"/>
-            <argument type="service" id="App\Repository\RedirectionRepository"/>
-        </service>
-
         <!-- Dynamic redirections "to remove uuid" handler-->
-        <service id="app.dynamic_redirect_to_remove_uuid_handler" class="App\Redirection\Dynamic\RedirectToRemoveUuidHandler">
-            <argument type="service" id="app.dynamic_redirections_provider" />
+        <service id="App\Redirection\Dynamic\RedirectToRemoveUuidHandler">
+            <argument type="service" id="App\Redirection\Dynamic\RedirectionsProvider" />
             <argument type="service" id="router" />
             <argument type="service" id="App\Repository\EventRepository" />
             <argument>%pattern_uuid%</argument>
-        </service>
-
-        <!-- Dynamic redirections "to route" handler-->
-        <service id="app.dynamic_redirect_to_route_handler" class="App\Redirection\Dynamic\RedirectToRouteHandler">
-            <argument type="service" id="app.dynamic_redirections_provider" />
-            <argument type="service" id="router" />
-            <argument type="service" id="App\Repository\EventRepository" />
-            <argument type="service" id="App\Repository\ArticleRepository" />
-            <argument type="service" id="App\Repository\ProposalRepository" />
-            <argument type="service" id="App\Repository\OrderArticleRepository" />
-        </service>
-
-        <!-- Dynamic redirections "to path" handler -->
-        <service id="app.dynamic_redirect_to_path_handler" class="App\Redirection\Dynamic\RedirectToPathHandler">
-            <argument type="service" id="app.dynamic_redirections_provider" />
         </service>
 
         <!-- Dynamic redirections "to path" handler -->
         <service id="app.react_routing_loader" class="App\React\ReactAppRegistry" />
 
         <!-- Security -->
-        <service id="app.security.adherent_login_timestamp_recorder" class="App\Security\AdherentLoginTimestampRecorder">
+        <service id="App\Security\AdherentLoginTimestampRecorder">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <tag name="kernel.event_subscriber"/>
         </service>
@@ -168,19 +134,11 @@
             <argument type="service" id="security.token_storage" />
         </service>
 
-        <service id="app.security.legacy_migration_listener" class="App\Security\LegacyMigrationListener">
+        <service id="App\Security\LegacyMigrationListener">
             <argument type="service" id="security.encoder_factory" />
             <argument type="service" id="doctrine.orm.entity_manager" />
 
             <tag name="kernel.event_listener" event="security.interactive_login" method="onSecurityInteractiveLogin" />
-        </service>
-
-        <service id="App\Security\InactiveAdminListener">
-            <argument type="service" id="Psr\Container\ContainerInterface"/>
-            <argument>%env(SESSION_MAX_IDLE_TIME)%</argument>
-
-            <tag name="container.service_subscriber" />
-            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
 
         <!-- Cache -->

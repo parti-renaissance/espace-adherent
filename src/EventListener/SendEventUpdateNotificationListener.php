@@ -31,11 +31,11 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
     public function __construct(
         EventRegistrationRepository $registrationRepository,
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->registrationRepository = $registrationRepository;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
     }
 

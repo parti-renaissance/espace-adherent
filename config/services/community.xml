@@ -3,20 +3,6 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <!-- Newsletter -->
-        <service id="app.newsletter_subscription.factory" class="App\Newsletter\NewsletterSubscriptionFactory" />
-
-        <service id="app.newsletter_subscription.handler" class="App\Newsletter\NewsletterSubscriptionHandler">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="event_dispatcher" />
-        </service>
-
-        <service id="app.newsletter_invitation.handler" class="App\Newsletter\NewsletterInvitationHandler">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailer.transactional" />
-            <argument type="service" id="router" />
-        </service>
-
         <!-- Invitation -->
         <service id="App\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
@@ -32,12 +18,6 @@
         <service id="app.procuration.reminder_handler" class="App\Procuration\ProcurationReminderHandler">
             <argument type="service" id="app.mailer.transactional" />
             <argument type="service" id="app.procuration.proxy_message_factory"/>
-        </service>
-
-        <!-- Je Marche -->
-         <service id="app.je_marche_report_handler" class="App\JeMarche\JeMarcheReportHandler">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailer.transactional" />
         </service>
 
         <!-- Ton Macron -->
@@ -89,11 +69,6 @@
             <argument type="service" id="app.facebook.api" />
             <argument type="service" id="filesystem" />
             <argument>%kernel.cache_dir%</argument>
-        </service>
-
-        <!-- Summary -->
-        <service id="App\Summary\SummaryFactory">
-            <argument type="service" id="cocur_slugify" />
         </service>
 
         <service id="App\Summary\SummaryManager">

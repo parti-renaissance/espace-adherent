@@ -9,6 +9,7 @@ use App\Exception\AdherentTokenExpiredException;
 use App\Form\AdherentResetPasswordType;
 use App\Form\LoginType;
 use App\Membership\AdherentChangeEmailHandler;
+use App\Membership\AdherentResetPasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -61,8 +62,11 @@ class SecurityController extends Controller
     /**
      * @Route("/mot-de-passe-oublie", name="forgot_password", methods={"GET", "POST"})
      */
-    public function retrieveForgotPasswordAction(Request $request)
-    {
+    public function retrieveForgotPasswordAction(
+        Request $request,
+        AdherentResetPasswordHandler $handler,
+        AdherentRepository $adherentRepository
+    ): Response {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_search_events');
         }
@@ -76,8 +80,8 @@ class SecurityController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
 
-            if ($adherent = $this->getDoctrine()->getRepository(Adherent::class)->findOneByEmail($email)) {
-                $this->get('app.adherent_reset_password_handler')->handle($adherent);
+            if ($adherent = $adherentRepository->findOneByEmail($email)) {
+                $handler->handle($adherent);
             }
 
             $this->addFlash('info', 'adherent.reset_password.email_sent');
@@ -107,8 +111,9 @@ class SecurityController extends Controller
     public function resetPasswordAction(
         Request $request,
         Adherent $adherent,
-        AdherentResetPasswordToken $resetPasswordToken
-    ) {
+        AdherentResetPasswordToken $resetPasswordToken,
+        AdherentResetPasswordHandler $handler
+    ): Response {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_search_events');
         }
@@ -123,7 +128,7 @@ class SecurityController extends Controller
             $newPassword = $form->get('password')->getData();
 
             try {
-                $this->get('app.adherent_reset_password_handler')->reset($adherent, $resetPasswordToken, $newPassword);
+                $handler->reset($adherent, $resetPasswordToken, $newPassword);
                 $this->addFlash('info', 'adherent.reset_password.success');
 
                 return $this->redirectToRoute('app_user_profile');

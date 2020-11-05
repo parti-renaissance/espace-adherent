@@ -20,13 +20,13 @@ class AdherentChangeEmailHandler
     private $dispatcher;
 
     public function __construct(
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         ObjectManager $manager,
         AdherentChangeEmailTokenRepository $repository,
         UrlGeneratorInterface $urlGenerator,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->manager = $manager;
         $this->repository = $repository;
         $this->urlGenerator = $urlGenerator;

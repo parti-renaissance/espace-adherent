@@ -38,6 +38,7 @@ services:
         autoconfigure: true
         public: false
         bind:
+            $environment: '%kernel.environment%'
             $mailchimpClient: '@csa_guzzle.client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
@@ -65,37 +66,12 @@ services:
             tags: ['messenger.message_handler']
 
     # Imports
-    App\Adherent\:
-        resource: '../src/Adherent/'
-    App\AdherentMessage\:
-        resource: '../src/AdherentMessage'
-    App\Command\:
-        resource: '../src/Command/*'
-    App\Filesystem\:
-        resource: '../src/Filesystem/'
-    App\Form\:
-        resource: '../src/Form/'
-    App\Image\:
-        resource: '../src/Image/'
-    App\TerritorialCouncil\:
-        resource: '../src/TerritorialCouncil/'
-    App\VotingPlatform\:
-        resource: '../src/VotingPlatform/'
-    App\Normalizer\:
-        resource: '../src/Normalizer/'
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{Admin,Algolia,OAuth,Twig,Mailchimp,Mailer,DependencyInjection,Controller,Entity,Security,Kernel.php}'
     App\Algolia\:
         resource: '../src/Algolia/'
         exclude: '../src/Algolia/Sonata/{Pager,ProxyQuery}'
-    App\Geocoder\:
-        resource: '../src/Geocoder/'
-    App\ThematicCommunity\Handler\:
-        resource: '../src/ThematicCommunity/Handler/'
-    App\Committee\:
-        resource: '../src/Committee/'
-    App\Validator\:
-        resource: '../src/Validator/'
-    App\Referent\:
-        resource: '../src/Referent/'
 
     # Services
 
@@ -230,3 +206,7 @@ services:
             $config:
                 timeout: 5.0
                 environment: '%kernel.environment%'
+
+    App\Procuration\ProcurationProxyMessageFactory:
+        arguments:
+            $replyToEmailAddress: '%procurations_reply_to_email%'

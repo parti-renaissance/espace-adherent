@@ -4,8 +4,6 @@ namespace App\Security;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
-use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -14,14 +12,22 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
-class InactiveAdminListener implements ServiceSubscriberInterface
+class InactiveAdminListener
 {
-    private $container;
+    private $session;
+    private $tokenStorage;
+    private $logoutUrlGenerator;
     private $maxIdleTime;
 
-    public function __construct(ContainerInterface $container, int $maxIdleTime = 0)
-    {
-        $this->container = $container;
+    public function __construct(
+        SessionInterface $session,
+        TokenStorageInterface $tokenStorage,
+        LogoutUrlGenerator $logoutUrlGenerator,
+        int $maxIdleTime = 0
+    ) {
+        $this->session = $session;
+        $this->tokenStorage = $tokenStorage;
+        $this->logoutUrlGenerator = $logoutUrlGenerator;
         $this->maxIdleTime = $maxIdleTime;
     }
 
@@ -31,7 +37,7 @@ class InactiveAdminListener implements ServiceSubscriberInterface
             return;
         }
 
-        if ($token = $this->container->get('security.token_storage')->getToken()) {
+        if ($token = $this->tokenStorage->getToken()) {
             $user = $token->getUser();
 
             $isPreviousAdmin = false;
@@ -45,23 +51,14 @@ class InactiveAdminListener implements ServiceSubscriberInterface
 
             if ($this->maxIdleTime > 0 &&
                 ($user instanceof Administrator || ($user instanceof Adherent && $isPreviousAdmin))) {
-                $lapse = time() - $this->container->get('session')->getMetadataBag()->getLastUsed();
+                $lapse = time() - $this->session->getMetadataBag()->getLastUsed();
 
                 if ($lapse > $this->maxIdleTime) {
-                    $this->container->get('security.token_storage')->setToken(null);
+                    $this->tokenStorage->setToken(null);
 
-                    $event->setResponse(new RedirectResponse($this->container->get('security.logout_url_generator')->getLogoutPath()));
+                    $event->setResponse(new RedirectResponse($this->logoutUrlGenerator->getLogoutPath()));
                 }
             }
         }
-    }
-
-    public static function getSubscribedServices()
-    {
-        return [
-            'session' => SessionInterface::class,
-            'security.token_storage' => TokenStorageInterface::class,
-            'security.logout_url_generator' => LogoutUrlGenerator::class,
-        ];
     }
 }

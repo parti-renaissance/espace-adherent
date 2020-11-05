@@ -15,10 +15,13 @@ class EventInvitationHandler
     private $mailer;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, RemoteUrlGenerator $urlGenerator)
-    {
+    public function __construct(
+        ObjectManager $manager,
+        MailerService $transactionalMailer,
+        RemoteUrlGenerator $urlGenerator
+    ) {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
     }
 

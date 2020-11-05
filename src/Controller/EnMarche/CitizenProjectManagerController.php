@@ -6,6 +6,7 @@ use App\CitizenProject\CitizenProjectContactActorsCommand;
 use App\CitizenProject\CitizenProjectContactActorsCommandHandler;
 use App\CitizenProject\CitizenProjectManager;
 use App\CitizenProject\CitizenProjectUpdateCommand;
+use App\CitizenProject\CitizenProjectUpdateCommandHandler;
 use App\Entity\CitizenProject;
 use App\Form\CitizenProjectCommandType;
 use App\Form\CitizenProjectContactActorsType;
@@ -30,7 +31,8 @@ class CitizenProjectManagerController extends Controller
     public function editAction(
         Request $request,
         CitizenProject $citizenProject,
-        CitizenProjectManager $manager
+        CitizenProjectManager $manager,
+        CitizenProjectUpdateCommandHandler $handler
     ): Response {
         $command = CitizenProjectUpdateCommand::createFromCitizenProject($citizenProject);
         $form = $this->createForm(CitizenProjectCommandType::class, $command, [
@@ -40,7 +42,7 @@ class CitizenProjectManagerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.citizen_project.update_handler')->handle($command);
+            $handler->handle($command);
             $this->addFlash('info', 'citizen_project.update.success');
 
             return $this->redirectToRoute('app_citizen_project_manager_edit', [

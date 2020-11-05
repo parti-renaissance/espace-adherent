@@ -22,12 +22,12 @@ class EventMessageNotifier implements EventSubscriberInterface
     private $urlGenerator;
 
     public function __construct(
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         CommitteeManager $committeeManager,
         EventRegistrationRepository $registrationRepository,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->committeeManager = $committeeManager;
         $this->registrationRepository = $registrationRepository;
         $this->urlGenerator = $urlGenerator;

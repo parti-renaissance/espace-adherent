@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche;
 
 use App\CitizenProject\CitizenProjectCreationCommand;
+use App\CitizenProject\CitizenProjectCreationCommandHandler;
 use App\CitizenProject\CitizenProjectPermissions;
 use App\Committee\CommitteeCreationCommand;
 use App\Committee\CommitteeCreationCommandHandler;
@@ -166,8 +167,11 @@ class AdherentController extends Controller
      * @Route("/creer-mon-projet-citoyen/{slug}", defaults={"slug": null}, name="app_adherent_create_citizen_project", methods={"GET", "POST"})
      * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
      */
-    public function createCitizenProjectAction(Request $request, TurnkeyProject $turnkeyProject = null): Response
-    {
+    public function createCitizenProjectAction(
+        Request $request,
+        CitizenProjectCreationCommandHandler $handler,
+        TurnkeyProject $turnkeyProject = null
+    ): Response {
         if ($this->isGranted('IS_ANONYMOUS')
             && $authentication = $this->get(AnonymousFollowerSession::class)->start($request)
         ) {
@@ -189,7 +193,7 @@ class AdherentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.citizen_project.creation_handler')->handle($command, $turnkeyProject);
+            $handler->handle($command, $turnkeyProject);
             $this->addFlash('info', 'citizen_project.creation.success');
 
             return $this->redirectToRoute('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]);

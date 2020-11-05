@@ -7,9 +7,6 @@
         <!-- Markdown -->
         <service id="League\CommonMark\CommonMarkConverter" />
 
-        <!-- Content -->
-        <prototype namespace="App\Content\" resource="../../src/Content" />
-
         <!-- Feed -->
         <service id="app.feed_generator.article" class="App\Feed\ArticleFeedGenerator">
             <argument>%locale%</argument>
@@ -26,10 +23,6 @@
         </service>
 
         <!-- Documents -->
-        <service id="App\Documents\DocumentRepository" public="false">
-            <argument type="service" id="League\Flysystem\FilesystemInterface" />
-        </service>
-
         <service id="app.document_manager" class="App\Documents\DocumentManager">
             <argument type="service" id="App\Documents\DocumentRepository"/>
             <argument type="service" id="App\Committee\CommitteeManager"/>
