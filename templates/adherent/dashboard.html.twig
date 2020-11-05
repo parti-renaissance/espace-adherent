@@ -19,7 +19,7 @@
                     {{ get_user_level_label(app.user) }},
                 {% endif %}
 
-                {{ 'dashboard.adherent_since'|trans({'%date%': app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, "MMMM yyyy")}) }}
+                {{ 'dashboard.adherent_since'|transchoice(app.user.isFemale, {'%date%': app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, "MMMM yyyy")}) }}
             </p>
         </div>
 

@@ -1,12 +1,15 @@
 {% for item in committee_timeline %}
+    {% set author = item.author %}
     <div class="committee__timeline__item committee__timeline__{{ item.type }}">
         <div class="committee__timeline__item--head l__row l__row--middle">
             <div class="avatar-initials avatar--small avatar--style-01 b__nudge--right-small">
-                {{item.author.initials}}
+                {{author.initials}}
             </div>
             <h3 class="text--body">
-                {{ has_role_adherent ? item.author.fullName : item.author.partialName }}
-                <span class="text--summary text--small text--gray b__nudge--bottom">{{ item.author.isSupervisorOf(committee) ? 'animateur' : (item.author.isHostOf(committee) ? 'co-animateur') }}</span>
+                {{ has_role_adherent ? author.fullName : author.partialName }}
+                <span class="text--summary text--small text--gray b__nudge--bottom">
+                    {{ (author.isSupervisorOf(committee) ? 'committee.supervisor' : (author.isHostOf(committee) ? 'committee.host'))|trans_with_gender(author) }}
+                </span>
             </h3>
         </div>
         {{ include("committee/timeline/_#{item.type}.html.twig", ignore_missing=true) }}

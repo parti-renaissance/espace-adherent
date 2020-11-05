@@ -34,7 +34,7 @@ class DelegateAccessType extends AbstractType
 
         $builder
             ->add('delegated', HiddenType::class, [
-                'invalid_message' => 'Aucun adhérent trouvé avec cette adresse email. Veuillez réessayer.',
+                'invalid_message' => 'Aucun(e) adhérent(e) trouvé avec cette adresse email. Veuillez réessayer.',
             ])
             ->add('email', EmailType::class, [
                 'mapped' => false,

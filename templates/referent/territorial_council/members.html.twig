@@ -151,7 +151,7 @@
                                     </td>
                                     <td>
                                         {% for quality in membership.qualities %}
-                                            <b>{{ ('territorial_council.membership.quality.' ~ quality.name)|trans }}</b> {{ quality.zone }}
+                                            <b>{{ ('territorial_council.membership.quality.' ~ quality.name)|transchoice(adherent.isFemale) }}</b> {{ quality.zone }}
 
                                             {% if adherent.findMandatesForQuality(quality.name, true)|length %}
                                                 <span class="elected-tag elected-tag--small text--on-yellow text--bold b__nudge--left-nano">désigné{{ adherent.isFemale ? 'e' }}</span>
@@ -180,7 +180,7 @@
                                     <td>
                                         {% set is_email_subscribed = filter.subscriptionType and filter.subscriptionType in adherent.subscriptionTypes %}
                                         <span class="status status__{{ is_email_subscribed ? '1' : '2' }}">
-                                            {{ (is_email_subscribed ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
+                                            {{ (is_email_subscribed ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans_with_gender(adherent) }}
                                         </span>
                                     </td>
                                 </tr>

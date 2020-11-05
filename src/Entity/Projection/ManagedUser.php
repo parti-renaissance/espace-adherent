@@ -2,8 +2,8 @@
 
 namespace App\Entity\Projection;
 
+use App\Entity\EntityGenderInterface;
 use App\Entity\EntityZoneTrait;
-use App\Entity\Geo\Zone;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +28,7 @@ use Ramsey\Uuid\UuidInterface;
  *     )
  * })
  */
-class ManagedUser
+class ManagedUser implements EntityGenderInterface
 {
     use EntityZoneTrait;
 
@@ -501,5 +501,10 @@ class ManagedUser
     public function getVoteCommitteeId(): ?int
     {
         return $this->voteCommitteeId;
+    }
+
+    public function isFemale(): bool
+    {
+        return Genders::FEMALE === $this->gender;
     }
 }

@@ -157,7 +157,7 @@
                         <td class="member-city-name">{{ member.cityName|default('~') }}</td>
                         <td>
                             <span class="status status__{{ member.hasSubscribedLocalHostEmails ? '1' : '2' }}">
-                                {{ (member.hasSubscribedLocalHostEmails ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
+                                {{ (member.hasSubscribedLocalHostEmails ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans_with_gender(member) }}
                             </span>
                         </td>
                         <td>

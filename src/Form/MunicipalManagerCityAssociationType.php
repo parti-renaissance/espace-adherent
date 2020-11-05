@@ -26,7 +26,7 @@ class MunicipalManagerCityAssociationType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'E-mail de l\'adhérent',
+                    'placeholder' => 'E-mail de l\'adhérent(e)',
                     'class' => 'form--full',
                 ],
                 'invalid_message' => 'city.municipal_manager_association.adherent_not_found',

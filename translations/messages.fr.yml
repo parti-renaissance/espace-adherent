@@ -30,7 +30,13 @@ common.i.am: Je suis
 common.all: Tous
 common.jecoute_manager: Accès aux questionnaires
 common.adherent.subscribed: Abonné(e)
+common.by_gender.adherent.subscribed: |
+    {0} Abonné |
+    {1} Abonnée
 common.adherent.unsubscribed: Non-abonné(e)
+common.by_gender.adherent.unsubscribed: |
+    {0} Non-abonné |
+    {1} Non-abonnée
 common.adherent.status_email: Statut (e-mail)
 common.message_edited: Votre message a bien été édité.
 common.message_deleted: Votre message a bien été supprimé.
@@ -113,10 +119,10 @@ lre: La République Ensemble (LRE)
 legislative_candidate: Candidat aux législatives
 thematic_community_chief: Responsable Thématique
 
-role_or_mandat.adherent: Adhérent
-role_or_mandat.supervisor: Animateur local
-role_or_mandat.citizen_project_admin: Porteur de projets citoyens
-role_or_mandat.referent: Référent
+role_or_mandat.adherent: Adhérent(e)
+role_or_mandat.supervisor: Animateur(trice) local(e)
+role_or_mandat.citizen_project_admin: Porteur(teuse) de projets citoyens
+role_or_mandat.referent: Référent(e)
 role_or_mandat.contact: Contact
 
 adherent.registration.success: |
@@ -165,18 +171,20 @@ adherent.admin.elected_representative.description: Ces informations sont celles 
 # Dashboard
 #
 dashboard.welcome: Bienvenue, %firstname% !
-dashboard.adherent_since: adhérent depuis %date%
+dashboard.adherent_since: |
+    {0} adhérent depuis %date%|
+    {1} adhérente depuis %date%
 dashboard.members_stats: |
-    {0} <span class="newblue">Aucun adhérent</span> dans ce département|
-    {1} <span class="newblue">%nb_members% adhérent</span> dans ce département|
-    ]1,Inf[ <span class="newblue">%nb_members% adhérents</span> dans ce département
+    {0} <span class="newblue">Aucun adhérent(e)</span> dans ce département|
+    {1} <span class="newblue">%nb_members% adhérent(e)</span> dans ce département|
+    ]1,Inf[ <span class="newblue">%nb_members% adhérent(e)s</span> dans ce département
 dashboard.subscriber_stats: |
     {0}, aucun accepte de recevoir des e-mails.|
     {1}, %nb_subscribers% accepte de recevoir des e-mails.|
     ]1,Inf[, %nb_subscribers% acceptent de recevoir des e-mails.
 dashboard.send_email: Envoyer un e-mail
 dashboard.create_event: Créer un événement
-dashboard.show_members: Voir tous les adhérents
+dashboard.show_members: Voir tous les adhérent(e)s
 dashboard.show_committees: Voir tous les comités
 dashboard.my_emails_sended: Les e-mails que j'ai envoyés
 dashboard.show_emails: Voir tous les emails
@@ -219,7 +227,7 @@ committee.creation.success: Votre comité a été créé avec succès. Il est en
 
 committee.update.success: Les informations du comité ont été mises à jour avec succès.
 
-committee.members_count: '1 adhérent|%count% adhérents'
+committee.members_count: '1 adhérent(e)|%count% adhérent(e)s'
 event.participants_count: '1 inscrit|%count% inscrits'
 event.capacity: '1 inscrit|%count% inscrits'
 capacity: 'inscrit|inscrits'
@@ -235,7 +243,7 @@ committee.event.contact.none: Vous n'avez sélectionné aucun inscrit à contact
 committee.event.contact.success: Félicitations, votre message a bien été envoyé aux inscrits sélectionnés.
 committee.event.registration.success: Votre inscription à l'événement est confirmée.
 
-committee.contact_members.none: Vous n'avez sélectionné aucun adhérent à contacter.
+committee.contact_members.none: Vous n'avez sélectionné aucun(e) adhérent(e) à contacter.
 committee.contact_members.success: Félicitations, votre message a bien été envoyé aux membres sélectionnés.
 
 committee.promote_host.success: Le membre a été promu animateur du comité avec succès.
@@ -245,6 +253,13 @@ committee.elected_candidate_adherent.female: Désignée
 committee.elected_candidate_adherent.male: Désigné
 
 my_committees: Mes comités
+
+committee.supervisor: |
+    {0} animateur |
+    {1} animatrice
+committee.host: |
+    {0} co-animateur |
+    {1} co-animatrice
 
 #
 # CitizenProject
@@ -760,10 +775,10 @@ elected_representative:
     mailchimp_tag:
         adherent: Adhérent(e)
         # Mandate
-        conseiller_municipal: "[M] Conseiller(e) municipal(e)"
+        conseiller_municipal: "[M] Conseiller(ère) municipal(e)"
         membre_EPCI: "[M] Membre d'EPCI"
-        conseiller_departemental: "[M] Conseiller(e) départemental(e)"
-        conseiller_regional: "[M] Conseiller(e) régional(e)"
+        conseiller_departemental: "[M] Conseiller(ère) départemental(e)"
+        conseiller_regional: "[M] Conseiller(ère) régional(e)"
         membre_assemblee_corse: "[M] Membre de l'Assemblée de Corse"
         depute: "[M] Député(e)"
         senateur: "[M] Sénateur(rice)"
@@ -946,43 +961,71 @@ territorial_council.government_member: Membre du gouvernement membre du Conseil 
 territorial_council.admin.description: |
     Sélectionnez un Conseil territorial pour donner le droit de vote à cet adhérent sur la qualité souhaitée.
     Un seul adhérent par Conseil territorial et Comité Politique pourra être nommé Référent, Responsable LRE ou Référent JAM.
-territorial_council.membership.quality.referent: Président(e) du Conseil territorial
+territorial_council.membership.quality.referent: |
+    {0} Président du Conseil territorial |
+    {1} Présidente du Conseil territorial
 territorial_council.membership.quality.government_member: Membre du Gouvernement
-territorial_council.membership.quality.referent_jam: Référent(e) JAM
+territorial_council.membership.quality.referent_jam: |
+    {0} Référent JAM |
+    {1} Référente JAM
 territorial_council.membership.quality.lre_manager: Responsable LRE
-territorial_council.membership.quality.senator: Sénateur(trice)
-territorial_council.membership.quality.deputy: Député(e)
-territorial_council.membership.quality.european_deputy: Député(e) européen(ne)
-territorial_council.membership.quality.regional_council_president: Président(e) conseil régional
-territorial_council.membership.quality.departmental_council_president: Président(e) conseil départemental
+territorial_council.membership.quality.senator: |
+    {0} Sénateur |
+    {1} Sénatrice
+territorial_council.membership.quality.deputy: |
+    {0} Député |
+    {1} Députée
+territorial_council.membership.quality.european_deputy: |
+    {0} Député européen |
+    {1} Députée européenne
+territorial_council.membership.quality.regional_council_president: |
+    {0} Président conseil régional |
+    {1} Présidente conseil régional
+territorial_council.membership.quality.departmental_council_president: |
+    {0} Président conseil départemental |
+    {1} Présidente conseil départemental
 territorial_council.membership.quality.mayor: Maire
-territorial_council.membership.quality.regional_councilor: Conseiller(ère) régional(e)
+territorial_council.membership.quality.regional_councilor: |
+    {0} Conseiller régional |
+    {1} Conseillère régionale
 territorial_council.membership.quality.corsica_assembly_member: Membre de l'Assemblée de Corse
-territorial_council.membership.quality.department_councilor: Conseiller(ère) départemental(e)
-territorial_council.membership.quality.city_councilor: Conseiller(ère) municipal(e)
-territorial_council.membership.quality.borough_councilor: Conseiller(ère) d'arrondissement
-territorial_council.membership.quality.consular_councilor: Conseiller(ère) FDE
-territorial_council.membership.quality.committee_supervisor: Animateur(trice) local(e)
-territorial_council.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e)
-territorial_council.membership.qualities.referent: Présidents du Conseil territorial
+territorial_council.membership.quality.department_councilor: |
+    {0} Conseiller départemental |
+    {1} Conseillère départementale
+territorial_council.membership.quality.city_councilor: |
+    {0} Conseiller municipal |
+    {1} Conseillère municipale
+territorial_council.membership.quality.borough_councilor: |
+    {0} Conseiller d'arrondissement |
+    {1} Conseillère d'arrondissement
+territorial_council.membership.quality.consular_councilor: |
+    {0} Conseiller FDE |
+    {1} Conseillère FDE
+territorial_council.membership.quality.committee_supervisor: |
+    {0} Animateur local |
+    {1} Animatrice locale
+territorial_council.membership.quality.elected_candidate_adherent: |
+    {0} Adhérent désigné |
+    {1} Adhérente désignée
+territorial_council.membership.qualities.referent: Président(e)s du Conseil territorial
 territorial_council.membership.qualities.government_member: Membres du Gouvernement
-territorial_council.membership.qualities.referent_jam: Référents JAM
+territorial_council.membership.qualities.referent_jam: Référent(e)s JAM
 territorial_council.membership.qualities.lre_manager: Responsables LRE
-territorial_council.membership.qualities.senator: Sénateurs
-territorial_council.membership.qualities.deputy: Députés
-territorial_council.membership.qualities.european_deputy: Députés européens
-territorial_council.membership.qualities.regional_council_president: Présidents conseil régional
-territorial_council.membership.qualities.departmental_council_president: Présidents conseil départemental
+territorial_council.membership.qualities.senator: Sénateur(trice)s
+territorial_council.membership.qualities.deputy: Député(e)s
+territorial_council.membership.qualities.european_deputy: Député(e)s européen(ne)s
+territorial_council.membership.qualities.regional_council_president: Président(e)s conseil régional
+territorial_council.membership.qualities.departmental_council_president: Président(e)s conseil départemental
 territorial_council.membership.qualities.mayor: Maires
-territorial_council.membership.qualities.regional_councilor: Conseillers régionaux
+territorial_council.membership.qualities.regional_councilor: Conseiller(ère)s régionaux(nales)
 territorial_council.membership.qualities.corsica_assembly_member: Membres de l'Assemblée de Corse
-territorial_council.membership.qualities.department_councilor: Conseillers départementaux
-territorial_council.membership.qualities.city_councilor: Conseillers municipaux
-territorial_council.membership.qualities.borough_councilor: Conseillers d'arrondissement
-territorial_council.membership.qualities.consular_councilor: Conseillers FDE
-territorial_council.membership.qualities.committee_supervisor: Animateurs locaux
-territorial_council.membership.qualities.elected_candidate_adherent: Adhérents désignés
-territorial_council.adherent_has_no_membership: L'adhérent ({{ email }}) n'est pas un membre du Conseil territorial "{{ territorialCouncil }}"
+territorial_council.membership.qualities.department_councilor: Conseiller(ère)s départementaux(tales)
+territorial_council.membership.qualities.city_councilor: Conseiller(ère)s municipaux(pales)
+territorial_council.membership.qualities.borough_councilor: Conseiller(ère)s d'arrondissement
+territorial_council.membership.qualities.consular_councilor: Conseiller(ère)s FDE
+territorial_council.membership.qualities.committee_supervisor: Animateur(trice)s locaux(cales)
+territorial_council.membership.qualities.elected_candidate_adherent: Adhérent(e)s désigné(e)s
+territorial_council.adherent_has_no_membership: L'adhérent(e) ({{ email }}) n'est pas un membre du Conseil territorial "{{ territorialCouncil }}"
 
 #
 # TerritorialCouncilMembershipLog
@@ -1013,7 +1056,7 @@ political_committee.membership.quality.consular_councilor: Conseiller(ère) FDE 
 political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e) au CoPol
 political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e) au CoPol
 political_committee.membership.adherent_has_already: L'adhérent ({{ email }}) est déjà un membre du Comité politique "{{ politicalCommittee }}"
-political_committee.membership.adherent_has_no_membership: L'adhérent ({{ email }}) en'est pas un membre du Comité politique du Conseil territorial "{{ territorialCouncil }}"
+political_committee.membership.adherent_has_no_membership: L'adhérent ({{ email }}) n'est pas un membre du Comité politique du Conseil territorial "{{ territorialCouncil }}"
 political_committee.membership.has_max_number_of_mayor_and_leader: Vous ne pouvez nommer que {{ max }} maire ou président du groupe d'opposition LaREM dans le Comité politique "{{ politicalCommittee }}".
 
 #
@@ -1064,14 +1107,14 @@ adherent_commitment.update_success: Votre engagement à bien été enregistré.
 # AdherentMandate
 #
 adherent_mandate.committee.committee_not_approved: Comité doit être approuvé pour gérer les adhérents désignés.
-adherent_mandate.committee.not_valid_gender: Le genre "{{ gender }}" de l'adhérent ({{ email }}) n'est pas valide.
-adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({{ email }}) est déjà un adhérent désigné dans un comité "{{ committee }}".
-adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{{ committee }}" a déjà un adhérent désigné ({{ gender }}).
-adherent_mandate.adherent_has_territorial_council_membership: L'adhérent ({{ email }}) est déjà membre du Conseil territorial "{{ territorialCouncil }}".
-adherent_mandate.conseiller_municipal: "Conseiller(e) municipal(e)"
+adherent_mandate.committee.not_valid_gender: Le genre "{{ gender }}" de l'adhérent(e) ({{ email }}) n'est pas valide.
+adherent_mandate.committee.adherent_with_active_mandate: L'adhérent(e) ({{ email }}) est déjà un(e) adhérent(e) désigné(e) dans un comité "{{ committee }}".
+adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{{ committee }}" a déjà un(e) adhérent(e) désigné(e) ({{ gender }}).
+adherent_mandate.adherent_has_territorial_council_membership: L'adhérent(e) ({{ email }}) est déjà membre du Conseil territorial "{{ territorialCouncil }}".
+adherent_mandate.conseiller_municipal: "Conseiller(ère) municipal(e)"
 adherent_mandate.membre_EPCI: "Membre d'EPCI"
-adherent_mandate.conseiller_departemental: "Conseiller(e) départemental(e)"
-adherent_mandate.conseiller_regional: "Conseiller(e) régional(e)"
+adherent_mandate.conseiller_departemental: "Conseiller(ère) départemental(e)"
+adherent_mandate.conseiller_regional: "Conseiller(ère) régional(e)"
 adherent_mandate.membre_assemblee_corse: "Membre de l'Assemblée de Corse"
 adherent_mandate.depute: "Député(e)"
 adherent_mandate.senateur: "Sénateur(rice)"

@@ -98,7 +98,7 @@ class DelegatedAccess
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="receivedDelegatedAccesses")
      *
-     * @Assert\NotBlank(message="Veuillez sélectionner un adhérent.")
+     * @Assert\NotBlank(message="Veuillez sélectionner un(e) adhérent(e).")
      */
     private $delegated;
 

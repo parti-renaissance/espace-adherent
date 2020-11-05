@@ -23,7 +23,7 @@ class LreElectedRepresentativeControllerTest extends WebTestCase
 
         $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
         $this->assertStringContainsString('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertStringContainsString('Conseiller(e) municipal(e) (DIV)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertStringContainsString('Conseiller(ère) municipal(e) (DIV)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
     }
 
     public function testListAllElectedRepresentatives()

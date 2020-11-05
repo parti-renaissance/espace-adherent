@@ -20,10 +20,10 @@ final class MandateTypeEnum extends Enum
     public const BOROUGH_COUNCIL = 'conseiller_d_arrondissement';
     public const CONSULAR_COUNCIL = 'conseiller_consulaire';
 
-    public const CITY_COUNCIL_LABEL = 'Conseiller(e) municipal(e)';
+    public const CITY_COUNCIL_LABEL = 'Conseiller(ère) municipal(e)';
     public const EPCI_MEMBER_LABEL = 'Membre d\'EPCI';
-    public const DEPARTMENTAL_COUNCIL_LABEL = 'Conseiller(e) départemental(e)';
-    public const REGIONAL_COUNCIL_LABEL = 'Conseiller(e) régional(e)';
+    public const DEPARTMENTAL_COUNCIL_LABEL = 'Conseiller(ère) départemental(e)';
+    public const REGIONAL_COUNCIL_LABEL = 'Conseiller(ère) régional(e)';
     public const CORSICA_ASSEMBLY_MEMBER_LABEL = 'Membre de l\'Assemblée de Corse';
     public const DEPUTY_LABEL = 'Député(e)';
     public const SENATOR_LABEL = 'Sénateur(rice)';

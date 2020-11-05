@@ -49,7 +49,9 @@
                     </div>
                     <div class="b__nudge--left-medium">
                         <div class="text--body text--bold">{{ has_role_adherent ? host.fullName : host.partialName }}</div>
-                        <span class="text--normal text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
+                        <span class="text--normal text--gray b__nudge--bottom">
+                            {{ (host.isSupervisorOf(committee) ? 'committee.supervisor' : 'committee.host')|trans_with_gender(host) }}
+                        </span>
                     </div>
                     {% if is_host and app.user.equals(host) %}
                         <span class="text--small m-auto--left">(vous)</span>

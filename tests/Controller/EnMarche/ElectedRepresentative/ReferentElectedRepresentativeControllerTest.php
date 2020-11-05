@@ -157,7 +157,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertStringContainsString('François Hollande', $crawler->filter('.elected-representative-sponsorships tbody tr')->eq(0)->text());
         $this->assertStringContainsString('Emmanuel Macron', $crawler->filter('.elected-representative-sponsorships tbody tr')->eq(1)->text());
         $this->assertCount(1, $crawler->filter('.elected-representative-mandates tbody tr'));
-        $this->assertStringContainsString('Conseiller(e) municipal(e)', $crawler->filter('.elected-representative-mandates tbody tr')->text());
+        $this->assertStringContainsString('Conseiller(ère) municipal(e)', $crawler->filter('.elected-representative-mandates tbody tr')->text());
         $this->assertStringContainsString('REM', $crawler->filter('.elected-representative-mandates tbody tr')->text());
         $this->assertStringContainsString('Soutien officiel', $crawler->filter('.elected-representative-mandates tbody tr')->text());
         $this->assertStringContainsString('23 juillet 2019', $crawler->filter('.elected-representative-mandates tbody tr')->text());

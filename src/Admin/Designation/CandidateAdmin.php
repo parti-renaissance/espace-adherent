@@ -152,7 +152,7 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
             ])
             ->add('quality', 'trans', [
                 'label' => 'Qualité',
-                'format' => 'territorial_council.membership.quality.%s',
+                'format' => 'territorial_council.membership.qualities.%s',
             ])
             ->add('created_at', 'text', [
                 'label' => 'Date de candidature',

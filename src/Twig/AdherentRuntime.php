@@ -5,11 +5,13 @@ namespace App\Twig;
 use App\Adherent\SessionModal\SessionModalActivatorListener;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\EntityGenderInterface;
 use App\Entity\ReferentSpaceAccessInformation;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class AdherentRuntime implements RuntimeExtensionInterface
@@ -18,17 +20,21 @@ class AdherentRuntime implements RuntimeExtensionInterface
     private $accessInformationRepository;
     private $electedRepresentativeRepository;
     private $committeeMandateRepository;
+    /** @var TranslatorInterface */
+    private $translator;
 
     public function __construct(
         ElectedRepresentativeRepository $electedRepresentativeRepository,
         ReferentSpaceAccessInformationRepository $accessInformationRepository,
         CommitteeAdherentMandateRepository $committeeMandateRepository,
+        TranslatorInterface $translator,
         array $interests
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->accessInformationRepository = $accessInformationRepository;
         $this->committeeMandateRepository = $committeeMandateRepository;
         $this->memberInterests = $interests;
+        $this->translator = $translator;
     }
 
     public function getMemberInterestLabel(string $interest)
@@ -153,5 +159,17 @@ class AdherentRuntime implements RuntimeExtensionInterface
     {
         // get and remove session modal context if presents
         return $request->getSession()->remove(SessionModalActivatorListener::SESSION_KEY);
+    }
+
+    public function getTransWithGender(
+        string $id,
+        EntityGenderInterface $user,
+        array $parameters = [],
+        string $domain = null,
+        string $locale = null
+    ): ?string {
+        $parameters['%count%'] = (int) $user->isFemale();
+
+        return $this->translator->trans($id, $parameters, $domain = null, $locale);
     }
 }

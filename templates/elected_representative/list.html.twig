@@ -187,7 +187,7 @@
                                             {% if elected_representative.adherent.hasSmsSubscriptionType %}
                                                 {{ elected_representative.adherent.phone ? elected_representative.adherent.phone|phone_number_format : 'Non renseigné' }}
                                             {% else %}
-                                                Non-abonné(e)
+                                                {{ 'common.adherent.unsubscribed'|trans_with_gender(elected_representative.adherent) }}
                                             {% endif %}
                                         {% endif %}
                                     </td>

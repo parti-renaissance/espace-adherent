@@ -17,7 +17,7 @@ class AssessorRoleAssociationType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'E-mail de l\'adhérent',
+                    'placeholder' => 'E-mail de l\'adhérent(e)',
                     'class' => 'form--full',
                 ],
                 'invalid_message' => 'assessor.adherent_association.adherent_not_found',

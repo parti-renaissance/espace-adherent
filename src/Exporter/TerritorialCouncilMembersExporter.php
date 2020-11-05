@@ -44,7 +44,7 @@ class TerritorialCouncilMembersExporter
                         'Prénom' => $adherent->getFirstName(),
                         'Genre' => $this->translator->trans($adherent->getGenderName()),
                         'Âge' => $adherent->getAge(),
-                        'Qualités' => $this->getQualityNames($tcMembership),
+                        'Qualités' => $this->getQualityNames($tcMembership, $adherent->isFemale()),
                         'Zones géographiques' => $tcMembership->getQualityZonesAsString(),
                         'Membre depuis le' => $tcMembership->getJoinedAt()->format('d/m/Y'),
                     ];
@@ -53,10 +53,10 @@ class TerritorialCouncilMembersExporter
         );
     }
 
-    private function getQualityNames(TerritorialCouncilMembership $tcMembership): string
+    private function getQualityNames(TerritorialCouncilMembership $tcMembership, bool $isFemale): string
     {
-        return implode(', ', \array_map(function (TerritorialCouncilQuality $quality) {
-            return $this->translator->trans('territorial_council.membership.quality.'.$quality->getName());
+        return implode(', ', \array_map(function (TerritorialCouncilQuality $quality) use ($isFemale) {
+            return $this->translator->trans('territorial_council.membership.quality.'.$quality->getName(), [], null, null, (int) $isFemale);
         }, $tcMembership->getQualities()->toArray()));
     }
 }
