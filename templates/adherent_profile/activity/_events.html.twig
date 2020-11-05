@@ -18,7 +18,7 @@
         {% else %}
             {% for registration in upcoming_events %}
                 {% set event = registration.event %}
-                <article class="activity-card b__nudge--bottom">
+                <article class="activity-card b__nudge--bottom space--30">
                     <div class="activity-card__type activity-card__type--event">Événement</div>
                     <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">{{- event.name -}}</h2>
                     {% if event.type and event.isCitizenAction %}
@@ -75,7 +75,7 @@
         {% else %}
             {% for registration in past_events %}
                 {% set event = registration.event %}
-                <article class="activity-card b__nudge--bottom">
+                <article class="activity-card b__nudge--bottom space--30">
                     <div class="activity-card__type activity-card__type--event">Événement</div>
                     <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">{{- event.name -}}</h2>
                     {% if event.type and event.isCitizenAction %}
