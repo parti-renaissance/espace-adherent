@@ -1090,3 +1090,20 @@ thematic_community.userListDefinitions.label.agriculture-et-alimentation: Quelle
 page.layout.default: Défaut avec titre (sans image d'en-tête)
 page.layout.default_with_header_image: Défaut avec image d'en tête (sans titre)
 page.layout.municipales: Municipales
+
+#
+# Geo Zone
+#
+
+geo_zone.zones: Zones
+geo_zone.country: Pays
+geo_zone.custom: Autres
+geo_zone.region: Région
+geo_zone.department: Départment
+geo_zone.district: Circonscriptions électorales
+geo_zone.city: Ville
+geo_zone.borough: Arrondissement
+geo_zone.city_community: Communauté de commune
+geo_zone.canton: Canton
+geo_zone.foreign_district: Circonscriptions de l'étranger
+geo_zone.consular_district: Circonscriptions consulaire

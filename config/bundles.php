@@ -41,4 +41,5 @@ return [
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     Exporter\Bridge\Symfony\Bundle\SonataExporterBundle::class => ['all' => true],
     Algolia\SearchBundle\AlgoliaSearchBundle::class => ['all' => true],
+    Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle::class => ['all' => true],
 ];

@@ -34,7 +34,7 @@ class LreElectedRepresentativeController extends AbstractElectedRepresentativeCo
     protected function createFilterForm(array $managedZones, ListFilter $filter = null): FormInterface
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
-            'managed_zones' => $managedZones,
+            'space_type' => $this->getSpaceType(),
             'user_list_definition_type' => [
                 UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
                 UserListDefinitionEnum::TYPE_LRE,
