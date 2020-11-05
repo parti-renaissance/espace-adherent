@@ -110,4 +110,45 @@ class AreaUtilsTest extends TestCase
         yield [null, 'FR', '75056'];
         yield [null, 'CH', '57340'];
     }
+
+    /**
+     * @dataProvider provideZones
+     */
+    public function testGetZone(string $country, ?string $inseeCode, string $expectedZone): void
+    {
+        $entity = new class($country, $inseeCode) implements EntityPostAddressInterface {
+            public $country;
+            public $inseeCode;
+
+            public function __construct(string $country, ?string $inseeCode)
+            {
+                $this->country = $country;
+                $this->inseeCode = $inseeCode;
+            }
+
+            public function getCountry(): ?string
+            {
+                return $this->country;
+            }
+
+            public function getPostalCode(): ?string
+            {
+                return '11111';
+            }
+
+            public function getInseeCode(): ?string
+            {
+                return $this->inseeCode;
+            }
+        };
+
+        $this->assertEquals($expectedZone, AreaUtils::getZone($entity));
+    }
+
+    public function provideZones(): \Generator
+    {
+        yield ['CH', null, 'CH'];
+        yield ['FR', '75010', '75010'];
+        yield ['FR', '6059', '06059'];
+    }
 }
