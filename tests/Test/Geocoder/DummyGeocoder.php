@@ -109,6 +109,10 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.5278939,
             'longitude' => 2.6484923,
         ],
+        'melun, france' => [
+            'latitude' => 48.5278939,
+            'longitude' => 2.6484923,
+        ],
     ];
 
     public function geocode(string $address): Collection

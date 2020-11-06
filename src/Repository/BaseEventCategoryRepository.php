@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\BaseEventCategory;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-abstract class BaseEventCategoryRepository extends EntityRepository
+abstract class BaseEventCategoryRepository extends ServiceEntityRepository
 {
     public function findAllEnabledOrderedByName(): array
     {

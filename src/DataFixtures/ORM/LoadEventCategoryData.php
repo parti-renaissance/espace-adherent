@@ -50,6 +50,16 @@ class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
             'status' => BaseEventCategory::DISABLED,
             'group' => 'event-group-category-0',
         ],
+        'CE017' => [
+            'name' => 'Élections régionales',
+            'status' => BaseEventCategory::ENABLED,
+            'group' => 'event-group-category-4',
+        ],
+        'CE018' => [
+            'name' => 'Élections départementales',
+            'status' => BaseEventCategory::ENABLED,
+            'group' => 'event-group-category-4',
+        ],
     ];
 
     public function load(ObjectManager $manager)

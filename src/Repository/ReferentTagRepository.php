@@ -35,11 +35,21 @@ class ReferentTagRepository extends ServiceEntityRepository
      */
     public function findByZones(array $zones): array
     {
-        if (!$zones) {
-            return [];
-        }
+        $qb = $this->createQueryBuilder('tag');
 
-        return $this->findBy(['zone' => $zones]);
+        return $qb
+            ->innerJoin('tag.zone', 'zone')
+            ->leftJoin('zone.parents', 'parent')
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->in('zone.id', ':zones'),
+                    $qb->expr()->in('parent.id', ':zones'),
+                )
+            )
+            ->setParameter(':zones', $zones)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public function findByPartialName(string $name, int $limit, int $offset): array

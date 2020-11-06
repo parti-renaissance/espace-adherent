@@ -411,7 +411,7 @@ class EventControllerTest extends AbstractEventControllerTest
         ++$countCategories; // add citizen_action
         $this->assertNotContains('Catégorie masquée', $labels);
         self::assertSame($countCategories, $options->count());
-        self::assertSame(3, $optgroup->count());
+        self::assertSame(4, $optgroup->count());
     }
 
     public function testAdherentCanUnregisterToEvent()
