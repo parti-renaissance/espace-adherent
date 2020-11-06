@@ -15,9 +15,9 @@ use App\Repository\OrderArticleRepository;
 use App\Repository\PageRepository;
 use App\Sitemap\SitemapFactory;
 use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\Routing\RouterInterface;
 use Tackk\Cartographer\Sitemap;
 

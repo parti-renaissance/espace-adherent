@@ -81,7 +81,8 @@ class CitizenProjectManagerController extends Controller
     public function contactActorsAction(
         Request $request,
         CitizenProject $citizenProject,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        CitizenProjectContactActorsCommandHandler $handler
     ): Response {
         if (!$this->isCsrfTokenValid('citizen_project.contact_actors', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to contact actors.');
@@ -106,7 +107,7 @@ class CitizenProjectManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(CitizenProjectContactActorsCommandHandler::class)->handle($command);
+            $handler->handle($command);
             $this->addFlash('info', 'citizen_project.contact_actors.success');
 
             return $this->redirectToRoute('app_citizen_project_list_actors', [

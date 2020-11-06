@@ -9,10 +9,11 @@ use App\CitizenProject\CitizenProjectWasUpdatedEvent;
 use App\Collection\AdherentCollection;
 use App\DataFixtures\ORM\LoadCitizenProjectData;
 use App\Entity\Adherent;
+use App\Entity\CitizenProject;
 use App\Events;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use League\Glide\Server;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -83,10 +84,11 @@ class CitizenProjectManagerTest extends WebTestCase
         ;
 
         $citizenProjectManager = new CitizenProjectManager(
-            $this->createConfiguredMock(RegistryInterface::class, ['getManager' => $this->createMock(ObjectManager::class)]),
+            $this->createMock(EntityManagerInterface::class),
             $this->getStorage(),
             $this->createMock(CitizenProjectAuthority::class),
-            $eventDispatcher
+            $eventDispatcher,
+            $this->createMock(Server::class)
         );
         $citizenProjectManager->followCitizenProject($adherent, $citizenProject);
     }
@@ -98,10 +100,11 @@ class CitizenProjectManagerTest extends WebTestCase
         $this->init();
 
         $this->citizenProjectManager = new CitizenProjectManager(
-            $this->getManagerRegistry(),
+            $this->getEntityManager(CitizenProject::class),
             $this->getStorage(),
             $this->createMock(CitizenProjectAuthority::class),
-            $this->createMock(EventDispatcherInterface::class)
+            $this->createMock(EventDispatcherInterface::class),
+            $this->createMock(Server::class)
         );
     }
 

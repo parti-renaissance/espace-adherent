@@ -22,14 +22,13 @@ class TurnkeyProjectManager
      */
     private $turnkeyProjectRepository;
 
-    public function __construct(TurnkeyProjectRepository $turnkeyProjectRepository, FilesystemInterface $storage)
-    {
+    public function __construct(
+        TurnkeyProjectRepository $turnkeyProjectRepository,
+        FilesystemInterface $storage,
+        Server $glide
+    ) {
         $this->storage = $storage;
         $this->turnkeyProjectRepository = $turnkeyProjectRepository;
-    }
-
-    public function setGlide(Server $glide): void
-    {
         $this->glide = $glide;
     }
 

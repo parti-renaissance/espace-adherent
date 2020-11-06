@@ -85,7 +85,7 @@ class CertificationManagerTest extends WebTestCase
         $this->init();
 
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->certificationManager = $this->container->get(CertificationManager::class);
+        $this->certificationManager = $this->get(CertificationManager::class);
     }
 
     protected function tearDown(): void

@@ -12,14 +12,18 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/email-subscriptions")
+ * @Route("/email-subscriptions/change", name="app_change_email_subscriptions_webhook", methods={"GET", "POST"})
  */
 class SubscriptionController extends Controller
 {
-    /**
-     * @Route("/change", name="app_change_email_subscriptions_webhook", methods={"GET", "POST"})
-     */
-    public function changeEmailSubscriptionsAction(Request $request): Response
+    private $handler;
+
+    public function __construct(SubscriptionHandler $handler)
+    {
+        $this->handler = $handler;
+    }
+
+    public function __invoke(Request $request): Response
     {
         if (!$request->query->has('secret') || !$secret = $request->query->get('secret')) {
             throw new UnauthorizedHttpException('There is no secret');
@@ -41,7 +45,7 @@ class SubscriptionController extends Controller
             throw new BadRequestHttpException('The request should contain correct data.');
         }
 
-        $this->get(SubscriptionHandler::class)->changeSubscription($type, $data['email'], $data['list_id']);
+        $this->handler->changeSubscription($type, $data['email'], $data['list_id']);
 
         return new Response('OK');
     }

@@ -349,9 +349,9 @@ class CommitteeManagerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->container = $this->getContainer();
+        static::$container = $this->getContainer();
         $this->committeeManager = new CommitteeManager(
-            $this->getManagerRegistry(),
+            $this->getEntityManager(Committee::class),
             $this->get('event_dispatcher')
         );
     }

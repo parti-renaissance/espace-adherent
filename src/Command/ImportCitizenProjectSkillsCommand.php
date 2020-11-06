@@ -3,11 +3,13 @@
 namespace App\Command;
 
 use App\Entity\CitizenProjectSkill;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\Repository\CitizenProjectSkillRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImportCitizenProjectSkillsCommand extends ContainerAwareCommand
+class ImportCitizenProjectSkillsCommand extends Command
 {
     const CITIZEN_PROJECT_SKILLS = [
         'Juriste (conseil juridique)',
@@ -117,9 +119,16 @@ class ImportCitizenProjectSkillsCommand extends ContainerAwareCommand
         $output->writeln(sprintf('Finish : %s citizenProjectSkills was added', $countToAdd));
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    /** @required */
+    public function setCitizenProjectSkillsRepository(
+        CitizenProjectSkillRepository $citizenProjectSkillsRepository
+    ): void {
+        $this->citizenProjectSkillsRepository = $citizenProjectSkillsRepository;
+    }
+
+    /** @required */
+    public function setEntityManager(EntityManagerInterface $entityManager): void
     {
-        $this->entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->citizenProjectSkillsRepository = $this->entityManager->getRepository(CitizenProjectSkill::class);
+        $this->entityManager = $entityManager;
     }
 }

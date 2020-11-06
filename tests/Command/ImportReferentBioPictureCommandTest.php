@@ -166,7 +166,7 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->container = $this->getContainer();
+        static::$container = $this->getContainer();
 
         parent::setUp();
     }

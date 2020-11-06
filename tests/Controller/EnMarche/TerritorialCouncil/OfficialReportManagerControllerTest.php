@@ -93,7 +93,7 @@ class OfficialReportManagerControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
 
         self::assertCount(1, $crawler->filter('.flash--error .flash__inner'));
-        self::assertContains('Vous ne pouvez pas créer un procès-verbal du Comité politique sans président.', $crawler->filter('.flash__inner')->text());
+        self::assertStringContainsString('Vous ne pouvez pas créer un procès-verbal du Comité politique sans président.', $crawler->filter('.flash__inner')->text());
     }
 
     public function testCreateOfficialReport()
@@ -141,12 +141,12 @@ class OfficialReportManagerControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
 
         self::assertCount(3, $crawler->filter('tbody tr.official-report'));
-        self::assertContains('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(0)->text());
-        self::assertContains('New PV', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(1)->text());
-        self::assertContains((new \DateTime('now'))->format('d/m/Y'), $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(2)->text());
-        self::assertContains('', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(3)->text());
-        self::assertContains('1', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(4)->text());
-        self::assertContains('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(5)->text());
+        self::assertStringContainsString('CoPol de Paris (75)', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(0)->text());
+        self::assertStringContainsString('New PV', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(1)->text());
+        self::assertStringContainsString((new \DateTime('now'))->format('d/m/Y'), $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(2)->text());
+        self::assertSame('', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(3)->text());
+        self::assertStringContainsString('1', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(4)->text());
+        self::assertStringContainsString('Referent Referent', $crawler->filter('tbody tr.official-report')->eq(0)->filter('td')->eq(5)->text());
     }
 
     /**

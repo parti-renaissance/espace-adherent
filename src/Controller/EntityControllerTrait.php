@@ -3,15 +3,24 @@
 namespace App\Controller;
 
 use App\Form\DeleteEntityType;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 trait EntityControllerTrait
 {
-    public function getEntityManager(): EntityManager
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    /** @required */
+    public function setEntityManager(EntityManagerInterface $entityManager): void
     {
-        return $this->getDoctrine()->getManager();
+        $this->entityManager = $entityManager;
+    }
+
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->entityManager;
     }
 
     public function insert($entity): void

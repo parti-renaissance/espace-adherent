@@ -102,7 +102,7 @@ class HomeControllerTest extends WebTestCase
     {
         $this->client->request(Request::METHOD_GET, $uri);
 
-        $this->assertClientIsRedirectedTo($redirectUri, $this->client, false, true);
+        $this->assertClientIsRedirectedTo($redirectUri, $this->client, true, true);
 
         $this->client->followRedirect();
 

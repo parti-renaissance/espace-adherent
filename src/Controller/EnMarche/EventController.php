@@ -4,7 +4,9 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\Event;
 use App\Event\EventInvitation;
+use App\Event\EventInvitationHandler;
 use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationCommandHandler;
 use App\Event\EventRegistrationManager;
 use App\Exception\BadUuidRequestException;
 use App\Exception\InvalidUuidException;
@@ -62,8 +64,12 @@ class EventController extends Controller
      *
      * @Security("is_granted('ROLE_ADHERENT')")
      */
-    public function attendAdherentAction(Event $event, UserInterface $adherent, ValidatorInterface $validator): Response
-    {
+    public function attendAdherentAction(
+        Event $event,
+        UserInterface $adherent,
+        ValidatorInterface $validator,
+        EventRegistrationCommandHandler $eventRegistrationCommandHandler
+    ): Response {
         if ($event->isFinished()) {
             throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
         }
@@ -78,7 +84,7 @@ class EventController extends Controller
         $errors = $validator->validate($command);
 
         if (0 === $errors->count()) {
-            $this->get('app.event.registration_handler')->handle($command);
+            $eventRegistrationCommandHandler->handle($command);
             $this->addFlash('info', 'committee.event.registration.success');
 
             return $this->redirectToRoute('app_event_attend_confirmation', [
@@ -96,8 +102,12 @@ class EventController extends Controller
      * @Route("/inscription", name="app_event_attend", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
-    public function attendAction(Request $request, Event $event, ?UserInterface $adherent): Response
-    {
+    public function attendAction(
+        Request $request,
+        Event $event,
+        ?UserInterface $adherent,
+        EventRegistrationCommandHandler $eventRegistrationCommandHandler
+    ): Response {
         if ($adherent) {
             return $this->redirectToRoute('app_event_attend_adherent', ['slug' => $event->getSlug()]);
         }
@@ -125,7 +135,7 @@ class EventController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.event.registration_handler')->handle($command);
+            $eventRegistrationCommandHandler->handle($command);
             $this->addFlash('info', 'committee.event.registration.success');
 
             return $this->redirectToRoute('app_event_attend_confirmation', [
@@ -149,10 +159,11 @@ class EventController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function attendConfirmationAction(Request $request, Event $event): Response
-    {
-        $manager = $this->get('app.event.registration_manager');
-
+    public function attendConfirmationAction(
+        Request $request,
+        Event $event,
+        EventRegistrationManager $manager
+    ): Response {
         try {
             if (!$registration = $manager->findRegistration($uuid = $request->query->get('registration'))) {
                 throw $this->createNotFoundException(sprintf('Unable to find event registration by its UUID: %s', $uuid));
@@ -175,14 +186,15 @@ class EventController extends Controller
     /**
      * @Route("/invitation", name="app_event_invite", methods={"GET", "POST"})
      */
-    public function inviteAction(Request $request, Event $event): Response
+    public function inviteAction(Request $request, Event $event, EventInvitationHandler $handler): Response
     {
         $eventInvitation = EventInvitation::createFromAdherent(
             $this->getUser(),
             $request->request->get('g-recaptcha-response')
         );
 
-        $form = $this->createForm(EventInvitationType::class, $eventInvitation)
+        $form = $this
+            ->createForm(EventInvitationType::class, $eventInvitation)
             ->handleRequest($request)
         ;
 
@@ -190,7 +202,7 @@ class EventController extends Controller
             /** @var EventInvitation $invitation */
             $invitation = $form->getData();
 
-            $this->get('app.event.invitation_handler')->handle($invitation, $event);
+            $handler->handle($invitation, $event);
             $request->getSession()->set('event_invitations_count', \count($invitation->guests));
 
             return $this->redirectToRoute('app_event_invitation_sent', [

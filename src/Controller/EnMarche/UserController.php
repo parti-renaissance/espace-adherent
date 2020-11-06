@@ -152,7 +152,7 @@ class UserController extends Controller
      * @Route("/desadherer", name="app_user_terminate_membership", methods={"GET", "POST"})
      * @Security("is_granted('UNREGISTER')")
      */
-    public function terminateMembershipAction(Request $request): Response
+    public function terminateMembershipAction(Request $request, MembershipRequestHandler $handler): Response
     {
         $adherent = $this->getUser();
         $unregistrationCommand = new UnregistrationCommand();
@@ -167,7 +167,7 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(MembershipRequestHandler::class)->terminateMembership($unregistrationCommand, $adherent);
+            $handler->terminateMembership($unregistrationCommand, $adherent);
             $this->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
 

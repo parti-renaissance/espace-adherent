@@ -7,16 +7,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Handle dynamic redirections.
  */
 class RedirectionsSubscriber implements EventSubscriberInterface
 {
+    private $handlers;
+
     /**
-     * @var RedirectToInterface[]
+     * @param RedirectToInterface[]
      */
-    private $handlers = [];
+    public function __construct(iterable $handlers)
+    {
+        $this->handlers = $handlers;
+    }
 
     /**
      * {@inheritdoc}
@@ -24,7 +30,7 @@ class RedirectionsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'kernel.exception' => 'onKernelException',
+            KernelEvents::EXCEPTION => 'onKernelException',
         ];
     }
 
@@ -35,6 +41,7 @@ class RedirectionsSubscriber implements EventSubscriberInterface
         }
 
         $path = $event->getRequest()->getPathInfo();
+
         /* @var RedirectToInterface $handler */
         foreach ($this->handlers as $handler) {
             if ($handler->handle($event, $path, Response::HTTP_MOVED_PERMANENTLY)) {
@@ -65,16 +72,6 @@ class RedirectionsSubscriber implements EventSubscriberInterface
                 str_replace($event->getRequest()->getPathInfo(), $path, $event->getRequest()->getRequestUri()),
                 Response::HTTP_MOVED_PERMANENTLY
             ));
-        }
-    }
-
-    /**
-     * Adds a RedirectTo handler.
-     */
-    public function addHandler(RedirectToInterface $handler): void
-    {
-        if (!\in_array($handler, $this->handlers)) {
-            $this->handlers[] = $handler;
         }
     }
 }

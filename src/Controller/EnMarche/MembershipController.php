@@ -21,7 +21,9 @@ use App\Membership\MembershipRequest;
 use App\Membership\MembershipRequestHandler;
 use App\OAuth\CallbackManager;
 use App\Repository\AdherentRepository;
+use App\Security\AuthenticationUtils;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -30,10 +32,24 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class MembershipController extends Controller
 {
+    private $membershipRequestHandler;
+    private $authenticationUtils;
+    private $entityManager;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        MembershipRequestHandler $membershipRequestHandler,
+        AuthenticationUtils $authenticationUtils
+    ) {
+        $this->entityManager = $entityManager;
+        $this->membershipRequestHandler = $membershipRequestHandler;
+        $this->authenticationUtils = $authenticationUtils;
+    }
+
     /**
      * This action enables a guest user to adhere to the community.
      *
@@ -42,7 +58,7 @@ class MembershipController extends Controller
     public function registerAction(
         Request $request,
         GeoCoder $geoCoder,
-        AuthorizationChecker $authorizationChecker,
+        AuthorizationCheckerInterface $authorizationChecker,
         CallbackManager $callbackManager
     ): Response {
         if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -58,7 +74,7 @@ class MembershipController extends Controller
 
         try {
             if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-                $this->get(MembershipRequestHandler::class)->registerAsUser($membership);
+                $this->membershipRequestHandler->registerAsUser($membership);
 
                 return $this->redirectToRoute('app_membership_complete');
             }
@@ -78,10 +94,10 @@ class MembershipController extends Controller
      *
      * @Route("/adhesion", name="app_membership_join", methods={"GET", "POST"})
      */
-    public function adhesionAction(Request $request, GeoCoder $geoCoder): Response
+    public function adhesionAction(Request $request, GeoCoder $geoCoder, AdherentRepository $repository): Response
     {
         if ($this->isGranted('ROLE_USER')) {
-            return $this->joinAdherent($request);
+            return $this->joinAdherent($request, $repository);
         }
 
         $membership = MembershipRequest::createWithCaptcha(
@@ -97,7 +113,7 @@ class MembershipController extends Controller
 
         try {
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->get(MembershipRequestHandler::class)->registerAsAdherent($membership);
+                $this->membershipRequestHandler->registerAsAdherent($membership);
 
                 return $this->redirectToRoute('app_membership_pin_interests');
             }
@@ -109,11 +125,11 @@ class MembershipController extends Controller
             'membership' => $membership,
             'form' => $form->createView(),
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
-            'nb_adherent' => $this->getDoctrine()->getRepository(Adherent::class)->countAdherents(),
+            'nb_adherent' => $repository->countAdherents(),
         ]);
     }
 
-    private function joinAdherent(Request $request): Response
+    private function joinAdherent(Request $request, AdherentRepository $repository): Response
     {
         $followerSession = $this->get(AnonymousFollowerSession::class);
 
@@ -135,13 +151,13 @@ class MembershipController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(MembershipRequestHandler::class)->join($user, $membership);
+            $this->membershipRequestHandler->join($user, $membership);
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             $this->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
-            $this->get('app.security.authentication_utils')->authenticateAdherent($user);
+            $this->authenticationUtils->authenticateAdherent($user);
 
             $this->addFlash('info', 'adherent.activation.success');
 
@@ -152,7 +168,7 @@ class MembershipController extends Controller
             'membership' => $membership,
             'form' => $form->createView(),
             'countries' => UnitedNationsBundle::getCountries($request->getLocale()),
-            'nb_adherent' => $this->getDoctrine()->getRepository(Adherent::class)->countAdherents(),
+            'nb_adherent' => $repository->countAdherents(),
         ]);
     }
 
@@ -202,7 +218,7 @@ class MembershipController extends Controller
             $accountActivationHandler->handle($adherent, $activationToken);
 
             if ($adherent->isAdherent()) {
-                $this->get(MembershipRequestHandler::class)->sendConfirmationJoinMessage($adherent);
+                $this->membershipRequestHandler->sendConfirmationJoinMessage($adherent);
 
                 $this->addFlash('info', 'adherent.activation.success');
 
@@ -251,7 +267,7 @@ class MembershipController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted()) {
             if ($form->get('submit')->isClicked() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
+                $this->entityManager->flush();
             }
 
             return $this->redirectToRoute('app_membership_choose_committees_around_adherent');

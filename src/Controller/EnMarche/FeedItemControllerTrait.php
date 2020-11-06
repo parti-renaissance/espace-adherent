@@ -4,19 +4,23 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\AbstractFeedItem;
 use App\FeedItem\FeedItemPermissions;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 trait FeedItemControllerTrait
 {
-    public function deleteFeedItem(Request $request, AbstractFeedItem $feedItem, string $feedItemType): void
-    {
+    public function deleteFeedItem(
+        EntityManagerInterface $em,
+        Request $request,
+        AbstractFeedItem $feedItem,
+        string $feedItemType
+    ): void {
         $form = $this->createDeleteForm('', "{$feedItemType}_delete_feed_item", $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
         }
 
-        $em = $this->getDoctrine()->getManager();
         $em->remove($feedItem);
         $em->flush();
 

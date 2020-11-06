@@ -2,13 +2,17 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use League\Glide\Server;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GlideClearCacheCommand extends ContainerAwareCommand
+class GlideClearCacheCommand extends Command
 {
+    /** @var Server */
+    private $glide;
+
     protected function configure()
     {
         $this
@@ -20,8 +24,14 @@ class GlideClearCacheCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getContainer()->get('app.glide')->deleteCache($input->getArgument('path'));
+        $this->glide->deleteCache($input->getArgument('path'));
 
         $output->writeln('Done');
+    }
+
+    /** @required */
+    public function setGlide(Server $glide): void
+    {
+        $this->glide = $glide;
     }
 }

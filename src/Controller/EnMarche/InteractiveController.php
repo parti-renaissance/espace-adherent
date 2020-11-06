@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche;
 use App\Controller\CanaryControllerTrait;
 use App\Entity\MyEuropeInvitation;
 use App\Form\MyEuropeType;
+use App\Interactive\MyEuropeProcessorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,12 +20,11 @@ class InteractiveController extends Controller
     /**
      * @Route("/mon-europe", name="app_my_europe", methods={"GET", "POST"})
      */
-    public function myEuropeAction(Request $request): Response
+    public function myEuropeAction(Request $request, MyEuropeProcessorHandler $handler): Response
     {
         $this->disableInProduction();
 
         $session = $request->getSession();
-        $handler = $this->get('app.interactive.my_europe_processor_handler');
         $myEurope = $handler->start($session, (string) $request->request->get('g-recaptcha-response'));
         $transition = $handler->getCurrentTransition($myEurope);
         $myEurope->messageSubject = self::MESSAGE_SUBJECT;
@@ -35,7 +35,7 @@ class InteractiveController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($myEuropeLog = $this->get('app.interactive.my_europe_processor_handler')->process($session, $myEurope)) {
+            if ($myEuropeLog = $handler->process($session, $myEurope)) {
                 return $this->redirectToRoute('app_my_europe_mail_sent', [
                     'uuid' => $myEuropeLog->getUuid()->toString(),
                 ]);
@@ -54,11 +54,11 @@ class InteractiveController extends Controller
     /**
      * @Route("/mon-europe/recommencer", name="app_my_europe_restart", methods={"GET"})
      */
-    public function restartMyEuropeAction(Request $request): Response
+    public function restartMyEuropeAction(Request $request, MyEuropeProcessorHandler $handler): Response
     {
         $this->disableInProduction();
 
-        $this->get('app.interactive.my_europe_processor_handler')->terminate($request->getSession());
+        $handler->terminate($request->getSession());
 
         return $this->redirectToRoute('app_my_europe');
     }

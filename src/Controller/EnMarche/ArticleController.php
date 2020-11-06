@@ -4,6 +4,9 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\Article;
 use App\Entity\ArticleCategory;
+use App\Feed\ArticleFeedGenerator;
+use App\Repository\ArticleCategoryRepository;
+use App\Repository\ArticleRepository;
 use Psr\Cache\CacheItemPoolInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,15 +27,19 @@ class ArticleController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function actualitesAction(Request $request, string $category, int $page): Response
-    {
+    public function actualitesAction(
+        ArticleCategoryRepository $categoriesRepo,
+        ArticleRepository $articlesRepo,
+        Request $request,
+        string $category,
+        int $page
+    ): Response {
         if ('/articles/'.ArticleCategory::DEFAULT_CATEGORY === $request->getRequestUri()) {
             return $this->redirectToRoute('articles_list', [], Response::HTTP_MOVED_PERMANENTLY);
         }
 
         $noFilterByCategory = new ArticleCategory('Toute l\'actualité', ArticleCategory::DEFAULT_CATEGORY);
 
-        $categoriesRepo = $this->getDoctrine()->getRepository(ArticleCategory::class);
         $articleCategory = !ArticleCategory::isDefault($category)
             ? $categoriesRepo->findOneBySlug($category)
             : $noFilterByCategory;
@@ -43,7 +50,6 @@ class ArticleController extends Controller
 
         $categories = $categoriesRepo->findBy(['display' => true]);
         array_unshift($categories, $noFilterByCategory);
-        $articlesRepo = $this->getDoctrine()->getRepository(Article::class);
         $articlesCount = $articlesRepo->countAllByCategory($category);
 
         if (!$this->isPaginationValid($articlesCount, $page)) {
@@ -63,28 +69,25 @@ class ArticleController extends Controller
      * @Route("/articles/{categorySlug}/{articleSlug}", name="article_view", methods={"GET"})
      * @Entity("article", expr="repository.findOnePublishedBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
-    public function articleAction(Article $article): Response
+    public function articleAction(Article $article, ArticleRepository $repository): Response
     {
-        $latestArticles = $this->getDoctrine()->getRepository(Article::class)->findThreeLatestOtherThan($article);
-
         return $this->render('article/article.html.twig', [
             'article' => $article,
-            'latestArticles' => $latestArticles,
+            'latestArticles' => $repository->findThreeLatestOtherThan($article),
         ]);
     }
 
     /**
      * @Route("/feed.xml", name="articles_feed", methods={"GET"})
      */
-    public function feedAction(): Response
+    public function feedAction(ArticleFeedGenerator $generator, ArticleRepository $repository): Response
     {
         /** @var CacheItemPoolInterface $cache */
         $cache = $this->get('cache.app');
         $cachedRenderedFeed = $cache->getItem('rss_feed');
 
         if (!$cachedRenderedFeed->isHit()) {
-            $generator = $this->get('app.feed_generator.article');
-            $feed = $generator->buildFeed($this->getDoctrine()->getRepository(Article::class)->findAllForFeed());
+            $feed = $generator->buildFeed($repository->findAllForFeed());
 
             $cachedRenderedFeed->set($feed->render());
             $cachedRenderedFeed->expiresAfter($this->getParameter('feed_ttl') * 60);

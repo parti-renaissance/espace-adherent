@@ -1,108 +1,25 @@
 parameters:
     env(RABBITMQ_DSN): 'amqp://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASSWORD)%@%env(RABBITMQ_HOST)%:%env(RABBITMQ_PORT)%/%2f?lazy=0&connection_timeout=10&read_write_timeout=10&heartbeat=5'
 
-    # Configure middleware of bus, this parameter will be removed from the container after that MessengerPass is passed
-    messenger.middleware:
-        - { id: send_message }
-        - { id: handle_message }
-
-services:
-    _defaults:
-        autoconfigure: true
-        autowire: true
-        public: false
-
-    # Message Bus with its alias
+framework:
     messenger:
-        class: Symfony\Component\Messenger\MessageBus
-        tags: [messenger.bus]
-        arguments: [[]]
-    Symfony\Component\Messenger\MessageBusInterface: '@messenger'
-
-    messenger.middleware.handle_message:
-        class: Symfony\Component\Messenger\Middleware\HandleMessageMiddleware
-        arguments: [[]]
-
-    # Middleware, used in the parameter `messenger.middleware`
-    messenger.middleware.send_message:
-        class: Symfony\Component\Messenger\Middleware\SendMessageMiddleware
-
-    # Message Serializer with its alias
-    Symfony\Component\Messenger\Transport\Serialization\Serializer:
-        arguments:
-            $serializer: '@Symfony\Component\Serializer\SerializerInterface'
-
-    Symfony\Component\Messenger\Transport\Serialization\SerializerInterface: '@Symfony\Component\Messenger\Transport\Serialization\Serializer'
-
-    # Transport Factory - global
-    Symfony\Component\Messenger\Transport\TransportFactory:
-        arguments: [!tagged messenger.transport_factory]
-
-    # Transport Factory - AMQP transport
-    Symfony\Component\Messenger\Transport\AmqpExt\AmqpTransportFactory:
-        tags: [messenger.transport_factory]
-        arguments:
-            $debug: '%kernel.debug%'
-
-    # Transport AMQP
-    messenger.transport.mailchimp_sync:
-        class: Symfony\Component\Messenger\Transport\TransportInterface
-        factory: 'Symfony\Component\Messenger\Transport\TransportFactory:createTransport'
-        tags:
-            - { name: messenger.receiver, alias: mailchimp_sync }
-        arguments:
-            $dsn: '%env(RABBITMQ_DSN)%'
-            $options:
-                exchange: { name: 'messenger-topic', type: topic }
-                queue: { name: 'mailchimp_sync', routing_key: 'mailchimp.sync' }
-
-    messenger.transport.mailchimp_campaign:
-        class: Symfony\Component\Messenger\Transport\TransportInterface
-        factory: 'Symfony\Component\Messenger\Transport\TransportFactory:createTransport'
-        tags:
-            - { name: messenger.receiver, alias: mailchimp_campaign }
-        arguments:
-            $dsn: '%env(RABBITMQ_DSN)%'
-            $options:
-                exchange: { name: 'messenger-topic', type: topic }
-                queue: { name: 'mailchimp_campaign', routing_key: 'mailchimp.campaign' }
-
-    messenger.transport.default:
-        class: Symfony\Component\Messenger\Transport\TransportInterface
-        factory: 'Symfony\Component\Messenger\Transport\TransportFactory:createTransport'
-        tags:
-            - { name: messenger.receiver, alias: default }
-        arguments:
-            $dsn: '%env(RABBITMQ_DSN)%'
-            $options:
-                exchange: { name: 'messenger-topic', type: topic }
-                queue: { name: 'default', routing_key: 'async.command' }
-
-    # Senders Locator witch defines a mapping [MessageClass => [alias: service]]
-    messenger.transport.senders_locator:
-        class: Symfony\Component\Messenger\Transport\Sender\SendersLocator
-        arguments:
-            $senders:
-                App\Mailchimp\CampaignMessageInterface: { mailchimp_campaign: '@messenger.transport.mailchimp_campaign' }
-                App\Mailchimp\SynchronizeMessageInterface: { mailchimp_sync: '@messenger.transport.mailchimp_sync' }
-                App\Messenger\Message\AsynchronousMessageInterface: { default: '@messenger.transport.default' }
-
-    Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface: '@messenger.transport.senders_locator'
-
-    # Receiver command
-    console.command.messenger_consume_messages:
-        class: Symfony\Component\Messenger\Command\ConsumeMessagesCommand
-        arguments:
-            -
-            - '@messenger.receiver_locator'
-            - '@Psr\Log\LoggerInterface'
-            - []
-            - []
-
-    messenger.receiver_locator:
-        tags: [container.service_locator]
-        arguments: [[]]
-
-    App\Messenger\:
-        resource: '../../src/Messenger/*'
-        exclude: '../../src/Messenger/{Message}'
+        transports:
+            default:
+                dsn: "%env(RABBITMQ_DSN)%"
+                options:
+                    exchange: { name: 'messenger-topic', type: topic }
+                    queue: { name: 'default', routing_key: 'async.command' }
+            mailchimp_sync:
+                dsn: "%env(RABBITMQ_DSN)%"
+                options:
+                    exchange: { name: 'messenger-topic', type: topic }
+                    queue: { name: 'mailchimp_sync', routing_key: 'mailchimp.sync' }
+            mailchimp_campaign:
+                dsn: "%env(RABBITMQ_DSN)%"
+                options:
+                    exchange: { name: 'messenger-topic', type: topic }
+                    queue: { name: 'mailchimp_campaign', routing_key: 'mailchimp.campaign' }
+        routing:
+            App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
+            App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
+            App\Messenger\Message\AsynchronousMessageInterface: default

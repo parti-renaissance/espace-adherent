@@ -49,7 +49,7 @@
         </service>
 
         <!-- Facebook API -->
-        <service id="app.facebook.api" class="Facebook\Facebook">
+        <service id="Facebook\Facebook">
             <argument type="collection">
                 <argument key="app_id">%env(FACEBOOK_APP_ID)%</argument>
                 <argument key="app_secret">%env(FACEBOOK_APP_SECRET)%</argument>

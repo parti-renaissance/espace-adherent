@@ -2,7 +2,7 @@
 
 namespace App\Controller\Legislatives;
 
-use App\Entity\Event;
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,10 +20,10 @@ class MapsController extends Controller
     /**
      * @Route("/les-evenements", name="legislatives_events", methods={"GET"})
      */
-    public function eventsAction(): Response
+    public function eventsAction(EventRepository $repository): Response
     {
         return $this->render('legislatives/map_events.html.twig', [
-            'eventCount' => $this->getDoctrine()->getRepository(Event::class)->countUpcomingEvents(),
+            'eventCount' => $repository->countUpcomingEvents(),
         ]);
     }
 }

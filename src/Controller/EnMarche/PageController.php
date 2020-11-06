@@ -2,8 +2,8 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Entity\FacebookVideo;
 use App\Entity\Page;
+use App\Repository\FacebookVideoRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ class PageController extends Controller
     /**
      * @Route("/formation", name="page_campus", methods={"GET"})
      */
-    public function campusAction()
+    public function campusAction(): Response
     {
         return $this->render('page/campus/home.html.twig');
     }
@@ -26,7 +26,7 @@ class PageController extends Controller
     /**
      * @Route("/formation/difficultes-internet", name="page_campus_internet", methods={"GET"})
      */
-    public function campusInternetAction()
+    public function campusInternetAction(): Response
     {
         return $this->render('page/campus/internet.html.twig');
     }
@@ -35,7 +35,7 @@ class PageController extends Controller
      * @Route("/emmanuel-macron", name="page_emmanuel_macron", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron')")
      */
-    public function emmanuelMacronAction(Page $page)
+    public function emmanuelMacronAction(Page $page): Response
     {
         return $this->render('page/emmanuel-macron/ce-que-je-suis.html.twig', ['page' => $page]);
     }
@@ -44,7 +44,7 @@ class PageController extends Controller
      * @Route("/emmanuel-macron/revolution", name="page_emmanuel_macron_revolution", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron/revolution')")
      */
-    public function emmanuelMacronRevolutionAction(Page $page)
+    public function emmanuelMacronRevolutionAction(Page $page): Response
     {
         return $this->render('page/emmanuel-macron/revolution.html.twig', ['page' => $page]);
     }
@@ -52,10 +52,10 @@ class PageController extends Controller
     /**
      * @Route("/emmanuel-macron/videos", name="page_emmanuel_macron_videos", methods={"GET"})
      */
-    public function emmanuelMacronVideosAction()
+    public function emmanuelMacronVideosAction(FacebookVideoRepository $repository): Response
     {
         return $this->render('page/emmanuel-macron/videos.html.twig', [
-            'videos' => $this->getDoctrine()->getRepository(FacebookVideo::class)->findPublishedVideos(),
+            'videos' => $repository->findPublishedVideos(),
         ]);
     }
 
@@ -63,7 +63,7 @@ class PageController extends Controller
      * @Route("/le-mouvement", name="page_le_mouvement", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('le-mouvement')")
      */
-    public function mouvementValeursAction(Page $page)
+    public function mouvementValeursAction(Page $page): Response
     {
         return $this->render('page/le-mouvement/nos-valeurs.html.twig', ['page' => $page]);
     }
@@ -71,7 +71,7 @@ class PageController extends Controller
     /**
      * @Route("/le-mouvement/legislatives", name="page_le_mouvement_legislatives", methods={"GET"})
      */
-    public function mouvementLegislativesAction()
+    public function mouvementLegislativesAction(): Response
     {
         return $this->redirect('https://legislatives.en-marche.fr', Response::HTTP_MOVED_PERMANENTLY);
     }
@@ -80,7 +80,7 @@ class PageController extends Controller
      * @Route("/le-mouvement/les-comites", name="page_le_mouvement_les_comites", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('le-mouvement/les-comites')")
      */
-    public function mouvementComitesAction(Page $page)
+    public function mouvementComitesAction(Page $page): Response
     {
         return $this->render('page/le-mouvement/les-comites.html.twig', ['page' => $page]);
     }
@@ -89,7 +89,7 @@ class PageController extends Controller
      * @Route("/le-mouvement/devenez-benevole", name="page_le_mouvement_devenez_benevole", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('le-mouvement/devenez-benevole')")
      */
-    public function mouvementBenevoleAction(Page $page)
+    public function mouvementBenevoleAction(Page $page): Response
     {
         return $this->render('page/le-mouvement/devenez-benevole.html.twig', ['page' => $page]);
     }
@@ -98,7 +98,7 @@ class PageController extends Controller
      * @Route("/mentions-legales", name="page_mentions_legales", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('mentions-legales')")
      */
-    public function mentionsLegalesAction(Page $page)
+    public function mentionsLegalesAction(Page $page): Response
     {
         return $this->render('page/mentions-legales.html.twig', ['page' => $page]);
     }
@@ -107,7 +107,7 @@ class PageController extends Controller
      * @Route("/politique-cookies", name="page_politique_cookies", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('politique-cookies')")
      */
-    public function politiqueCookiesAction(Page $page)
+    public function politiqueCookiesAction(Page $page): Response
     {
         return $this->render('page/politique-cookies.html.twig', ['page' => $page]);
     }
@@ -115,7 +115,7 @@ class PageController extends Controller
     /**
      * @Route("/okcandidatlegislatives", name="legislatives_confirm_newsletter", methods={"GET"})
      */
-    public function legislativesConfirmNewsletterAction()
+    public function legislativesConfirmNewsletterAction(): Response
     {
         return $this->render('legislative_candidate/confirm_newsletter.html.twig');
     }
@@ -123,7 +123,7 @@ class PageController extends Controller
     /**
      * @Route("/elles-marchent", name="page_elles_marchent", methods={"GET"})
      */
-    public function ellesMarchentAction()
+    public function ellesMarchentAction(): Response
     {
         return $this->render('page/elles-marchent.html.twig');
     }
@@ -131,7 +131,7 @@ class PageController extends Controller
     /**
      * @Route("/candidatures-delegue-general-et-bureau-executif", name="page_burex", methods={"GET"})
      */
-    public function burexAction()
+    public function burexAction(): Response
     {
         return $this->render('page/burex-lists.html.twig');
     }
@@ -140,7 +140,7 @@ class PageController extends Controller
      * @Route("/1000-talents", name="page_1000_talents", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('1000-talents')")
      */
-    public function page1000TalentsAction(Page $page)
+    public function page1000TalentsAction(Page $page): Response
     {
         return $this->render('page/talents/1000-talents/home.html.twig', ['page' => $page]);
     }
@@ -149,7 +149,7 @@ class PageController extends Controller
      * @Route("/cestduconcret", name="page_concrete", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('concrete')")
      */
-    public function concreteAction(Page $page)
+    public function concreteAction(Page $page): Response
     {
         return $this->render('page/concrete/home.html.twig', ['page' => $page]);
     }
@@ -158,7 +158,7 @@ class PageController extends Controller
      * @Route("/action-talents", name="page_action_talents", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('action-talents')")
      */
-    public function actionTalentsAction(Page $page)
+    public function actionTalentsAction(Page $page): Response
     {
         return $this->render('page/talents/action-talents/home.html.twig', ['page' => $page]);
     }
@@ -166,7 +166,7 @@ class PageController extends Controller
     /**
      * @Route("/grande-marche-europe", name="page_grande_marche_europe", methods={"GET"})
      */
-    public function grandeMarcheEuropeAction()
+    public function grandeMarcheEuropeAction(): Response
     {
         return $this->render('page/grande-marche-europe/grande-marche-europe.html.twig');
     }
@@ -175,7 +175,7 @@ class PageController extends Controller
      * @Route("/action-talents/candidater", name="page_action_talents_apply", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('action-talents/candidater')")
      */
-    public function actionTalentsApplicationAction(Page $page)
+    public function actionTalentsApplicationAction(Page $page): Response
     {
         return $this->render('page/talents/action-talents/apply.html.twig', ['page' => $page]);
     }
@@ -184,7 +184,7 @@ class PageController extends Controller
      * @Route("/nos-offres", name="page_jobs", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('nos-offres')")
      */
-    public function jobsAction(Page $page)
+    public function jobsAction(Page $page): Response
     {
         return $this->render('page/jobs.html.twig', ['page' => $page]);
     }
@@ -192,7 +192,7 @@ class PageController extends Controller
     /**
      * @Entity("page", expr="repository.findOneBySlug(slug)")
      */
-    public function showPageAction(Page $page)
+    public function showPageAction(Page $page): Response
     {
         return $this->render(sprintf('page/layout/%s.html.twig', $page->getLayout()), ['page' => $page]);
     }

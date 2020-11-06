@@ -7,7 +7,6 @@ use App\OAuth\Model\DeviceApiUser;
 use App\Repository\AdherentRepository;
 use App\Repository\DeviceRepository;
 use App\Security\Exception\BadCredentialsException;
-use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Ramsey\Uuid\Uuid;
@@ -28,20 +27,17 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
     private $httpMessageFactory;
     private $adherentRepository;
     private $deviceRepository;
-    private $entityManager;
 
     public function __construct(
         ResourceServer $resourceServer,
         HttpMessageFactoryInterface $httpMessageFactory,
         AdherentRepository $adherentRepository,
-        DeviceRepository $deviceRepository,
-        EntityManagerInterface $entityManager
+        DeviceRepository $deviceRepository
     ) {
         $this->resourceServer = $resourceServer;
         $this->httpMessageFactory = $httpMessageFactory;
         $this->adherentRepository = $adherentRepository;
         $this->deviceRepository = $deviceRepository;
-        $this->entityManager = $entityManager;
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
@@ -125,5 +121,10 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
     public function supportsRememberMe()
     {
         return false;
+    }
+
+    public function supports(Request $request)
+    {
+        return true;
     }
 }

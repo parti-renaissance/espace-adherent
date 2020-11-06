@@ -21,13 +21,13 @@ final class InvitationProcessorHandler
     public function __construct(
         TonMacronMessageBodyBuilder $builder,
         ObjectManager $manager,
-        MailerService $transactionalMailer,
-        StateMachine $stateMachine
+        MailerService $campaignMailer,
+        StateMachine $tonMacronInvitationStateMachine
     ) {
         $this->builder = $builder;
         $this->manager = $manager;
-        $this->mailer = $transactionalMailer;
-        $this->stateMachine = $stateMachine;
+        $this->mailer = $campaignMailer;
+        $this->stateMachine = $tonMacronInvitationStateMachine;
     }
 
     public function start(SessionInterface $session): InvitationProcessor

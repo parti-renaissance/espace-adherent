@@ -15,7 +15,7 @@ class NotifyIdeaAuthorAboutContributionsCommandTest extends WebTestCase
 
     public function testSendMailAboutContributions(): void
     {
-        $this->runCommand('idea-workshop:notification:contributions');
+        $this->runCommand('idea-workshop:notification:contributions', [], true);
 
         $this->assertCountMails(1, IdeaNotificationWithoutContributionsMessage::class, 'michel.vasseur@example.ch');
     }

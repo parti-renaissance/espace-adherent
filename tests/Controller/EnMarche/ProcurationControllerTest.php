@@ -79,7 +79,7 @@ class ProcurationControllerTest extends WebTestCase
     public function testChooseElectionOnRequest()
     {
         $this->assertFalse(
-            $this->container->get(ProcurationSession::class)->hasElectionContext(),
+            $this->get(ProcurationSession::class)->hasElectionContext(),
             'The session should not have an election context yet.'
         );
 
@@ -115,7 +115,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE, $this->client);
         $this->assertTrue(
-            $this->client->getContainer()->get(ProcurationSession::class)->hasElectionContext(),
+            static::$container->get(ProcurationSession::class)->hasElectionContext(),
             'The session should have saved an election context.'
         );
     }
@@ -123,7 +123,7 @@ class ProcurationControllerTest extends WebTestCase
     public function testChooseElectionOnProposal()
     {
         $this->assertFalse(
-            $this->container->get(ProcurationSession::class)->hasElectionContext(),
+            $this->get(ProcurationSession::class)->hasElectionContext(),
             'The session should not have an election context yet.'
         );
 
@@ -158,7 +158,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/procuration/je-propose', $this->client);
         $this->assertTrue(
-            $this->client->getContainer()->get(ProcurationSession::class)->hasElectionContext(),
+            static::$container->get(ProcurationSession::class)->hasElectionContext(),
             'The session should have saved an election context.'
         );
     }
@@ -711,7 +711,7 @@ class ProcurationControllerTest extends WebTestCase
 
     private function assertCurrentProcurationRequestSameAs(ProcurationRequest $expectedRequest): void
     {
-        $this->assertEquals($expectedRequest, $this->client->getContainer()->get(ProcurationSession::class)->getCurrentRequest());
+        $this->assertEquals($expectedRequest, static::$container->get(ProcurationSession::class)->getCurrentRequest());
     }
 
     private function createPhoneNumber(string $country, string $number): PhoneNumber

@@ -3,9 +3,8 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-
         <!-- Legislatives -->
-        <service id="app.legislatives.contact_handler" class="App\Legislative\LegislativeCampaignContactMessageHandler">
+        <service id="App\Legislative\LegislativeCampaignContactMessageHandler">
             <argument type="service" id="app.mailer.transactional"/>
             <argument>%legislatives_financial_hotline_email%</argument>
             <argument>%legislatives_standard_hotline_email%</argument>
@@ -34,58 +33,22 @@
             <argument type="service" id="App\Adherent\UnregistrationHandler"/>
         </service>
 
-        <service id="app.adherent.contact_message_handler" class="App\Contact\ContactMessageHandler">
+        <service id="App\Contact\ContactMessageHandler">
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
         <!-- Events -->
-        <service id="app.event.registration_factory" class="App\Event\EventRegistrationFactory"/>
-
-        <service id="app.event.handler" class="App\Event\EventCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="App\Event\EventFactory"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-        </service>
-
-        <service id="app.event.invitation_handler" class="App\Event\EventInvitationHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.routing.remote_url_generator"/>
-        </service>
-
-        <service id="app.event.registration_handler" class="App\Event\EventRegistrationCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.event.registration_factory"/>
-            <argument type="service" id="app.event.registration_manager"/>
-        </service>
-        <service alias="app.event.registration_handler" id="App\Event\EventRegistrationCommandHandler" />
-
-        <service id="app.event.message_notifier" class="App\Event\EventMessageNotifier">
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="App\Committee\CommitteeManager"/>
-            <argument type="service" id="App\Repository\EventRegistrationRepository"/>
-            <argument type="service" id="router"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="app.event.registration_manager" class="App\Event\EventRegistrationManager">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="App\Repository\EventRegistrationRepository"/>
-        </service>
-
-        <service id="app.event.registration_exporter" class="App\Event\EventRegistrationExporter" />
-
-        <service id="app.event.contact_members_handler" class="App\Event\EventContactMembersCommandHandler">
+        <service id="App\Event\EventContactMembersCommandHandler">
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
         <!-- BoardMember -->
-        <service id="app.board_member.manager" class="App\BoardMember\BoardMemberManager">
+        <service id="App\BoardMember\BoardMemberManager">
             <argument type="service" id="App\Repository\AdherentRepository" />
             <argument type="service" id="App\Repository\BoardMember\RoleRepository" />
         </service>
 
-        <service id="app.board_member.message_notifier" class="App\BoardMember\BoardMemberMessageNotifier">
+        <service id="App\BoardMember\BoardMemberMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
         </service>
 

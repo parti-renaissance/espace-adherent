@@ -121,7 +121,7 @@ final class UpdateFranceCommandTest extends WebTestCase
     private function exists(string $class, string $code): bool
     {
         /* @var EntityManagerInterface $repository */
-        $repository = self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $repository = static::$container->get('doctrine.orm.entity_manager');
 
         return (bool) $repository->getRepository($class)->findOneBy([
             'code' => $code,

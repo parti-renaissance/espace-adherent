@@ -54,7 +54,7 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
 
         $this->isSuccessful($response);
         $this->assertArrayHasKey('content-disposition', $response->headers->all());
-        $this->assertStringContainsString('attachment; filename="tract_', $response->headers->get('content-disposition'));
+        $this->assertStringContainsString('attachment; filename=tract_', $response->headers->get('content-disposition'));
         $this->assertSame('application/pdf', $response->headers->get('content-type'));
     }
 

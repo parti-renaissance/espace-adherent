@@ -9,6 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Exception\BaseGroupException;
 use App\Exception\CitizenProjectMembershipException;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,6 +79,7 @@ class AdminCitizenProjectController extends Controller
      * @Route("/{citizenProject}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege", methods={"GET"})
      */
     public function changePrivilegeAction(
+        EntityManagerInterface $manager,
         Request $request,
         CitizenProject $citizenProject,
         Adherent $adherent,
@@ -90,7 +92,7 @@ class AdminCitizenProjectController extends Controller
 
         try {
             $authority->changePrivilege($adherent, $citizenProject, $privilege);
-            $this->getDoctrine()->getManager()->flush();
+            $manager->flush();
         } catch (CitizenProjectMembershipException $e) {
             $this->addFlash('error', $e->getMessage());
         }

@@ -39,7 +39,7 @@ class MailchimpSyncAllElectedRepresentativesCommand extends Command
     protected function configure()
     {
         $this
-            ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED)
         ;
     }
 

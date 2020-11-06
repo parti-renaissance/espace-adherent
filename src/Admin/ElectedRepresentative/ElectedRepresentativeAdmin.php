@@ -35,6 +35,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\Form\Type\BooleanType;
+use Sonata\Form\Type\CollectionType as SonataCollectionType;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -239,7 +240,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'class' => 'col-md-6',
                 ]
             )
-                ->add('socialNetworkLinks', 'sonata_type_collection', [
+                ->add('socialNetworkLinks', SonataCollectionType::class, [
                     'by_reference' => false,
                     'label' => false,
                 ], [
@@ -254,7 +255,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'class' => 'col-md-6',
                 ]
             )
-                ->add('labels', 'sonata_type_collection', [
+                ->add('labels', SonataCollectionType::class, [
                     'by_reference' => false,
                     'label' => false,
                 ], [
@@ -276,7 +277,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Mandats')
-                ->add('mandates', 'sonata_type_collection', [
+                ->add('mandates', SonataCollectionType::class, [
                     'by_reference' => false,
                     'label' => false,
                 ], [
@@ -286,7 +287,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Fonctions')
-                ->add('politicalFunctions', 'sonata_type_collection', [
+                ->add('politicalFunctions', SonataCollectionType::class, [
                     'by_reference' => false,
                     'label' => false,
                 ], [

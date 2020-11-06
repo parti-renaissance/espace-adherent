@@ -11,6 +11,7 @@ use App\Entity\CommitteeFeedItem;
 use App\Form\CommitteeFeedItemMessageType;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -74,6 +75,7 @@ class CommitteeController extends AbstractController
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
     public function timelineEditAction(
+        EntityManagerInterface $manager,
         Request $request,
         Committee $committee,
         CommitteeFeedItem $committeeFeedItem
@@ -84,7 +86,7 @@ class CommitteeController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $manager->flush();
             $this->addFlash('info', 'common.message_edited');
 
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
@@ -104,6 +106,7 @@ class CommitteeController extends AbstractController
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
     public function timelineDeleteAction(
+        EntityManagerInterface $em,
         Request $request,
         Committee $committee,
         CommitteeFeedItem $committeeFeedItem
@@ -114,7 +117,6 @@ class CommitteeController extends AbstractController
             throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
         }
 
-        $em = $this->getDoctrine()->getManager();
         $em->remove($committeeFeedItem);
         $em->flush();
 

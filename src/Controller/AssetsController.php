@@ -9,9 +9,11 @@ use App\Entity\Proposal;
 use App\Geocoder\Coordinates;
 use App\Map\StaticMapProviderInterface;
 use App\Timeline\TimelineImageFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
+use League\Glide\Server;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -30,11 +32,18 @@ class AssetsController extends Controller
         'svg' => 'image/svg+xml',
     ];
 
+    private $manager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * @Route("/assets/{path}", requirements={"path": ".+"}, name="asset_url", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
-    public function assetAction(FilesystemInterface $storage, string $path, Request $request)
+    public function assetAction(Server $glide, FilesystemInterface $storage, string $path, Request $request)
     {
         $parameters = $request->query->all();
 
@@ -60,7 +69,6 @@ class AssetsController extends Controller
             ]);
         }
 
-        $glide = $this->get('app.glide');
         $glide->setResponseFactory(new SymfonyResponseFactory($request));
 
         try {
@@ -114,9 +122,8 @@ class AssetsController extends Controller
      * @Route("/algolia/{type}/{slug}", requirements={"type": "proposal|custom|article|clarification"}, methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
-    public function algoliaAction(Request $request, string $type, string $slug)
+    public function algoliaAction(Server $glide, Request $request, string $type, string $slug)
     {
-        $glide = $this->get('app.glide');
         $glide->setResponseFactory(new SymfonyResponseFactory($request));
 
         try {
@@ -134,7 +141,7 @@ class AssetsController extends Controller
     private function getTypePath(string $type, string $slug): string
     {
         if ('custom' === $type) {
-            $entity = $this->getDoctrine()->getRepository(CustomSearchResult::class)->find((int) $slug);
+            $entity = $this->manager->getRepository(CustomSearchResult::class)->find((int) $slug);
         } else {
             $entity = $this->getTypeRepository($type)->findOneBySlug($slug);
         }
@@ -152,21 +159,19 @@ class AssetsController extends Controller
 
     private function getTypeRepository(string $type)
     {
-        $manager = $this->getDoctrine()->getManager();
-
         if ('proposal' === $type) {
-            return $manager->getRepository(Proposal::class);
+            return $this->manager->getRepository(Proposal::class);
         }
 
         if ('clarification' === $type) {
-            return $manager->getRepository(Clarification::class);
+            return $this->manager->getRepository(Clarification::class);
         }
 
         if ('article' === $type) {
-            return $manager->getRepository(Article::class);
+            return $this->manager->getRepository(Article::class);
         }
 
-        return $manager->getRepository(Article::class);
+        return $this->manager->getRepository(Article::class);
     }
 
     /**

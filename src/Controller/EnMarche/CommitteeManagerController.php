@@ -10,7 +10,9 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Event\EventCommand;
+use App\Event\EventCommandHandler;
 use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationCommandHandler;
 use App\Event\Filter\ListFilterObject;
 use App\Form\CommitteeCommandType;
 use App\Form\CommitteeMemberFilterType;
@@ -74,18 +76,24 @@ class CommitteeManagerController extends Controller
      *
      * @Security("committee.isApproved()")
      */
-    public function addEventAction(Request $request, Committee $committee, GeoCoder $geoCoder): Response
-    {
+    public function addEventAction(
+        Request $request,
+        Committee $committee,
+        GeoCoder $geoCoder,
+        EventCommandHandler $eventCommandHandler,
+        EventRegistrationCommandHandler $eventRegistrationCommandHandler
+    ): Response {
         $command = new EventCommand($this->getUser(), $committee);
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
-        $form = $this->createForm(EventCommandType::class, $command);
-        $form->handleRequest($request);
+
+        $form = $this
+            ->createForm(EventCommandType::class, $command)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $event = $this->get('app.event.handler')->handle($command);
-
-            $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
-            $this->get('app.event.registration_handler')->handle($registrationCommand);
+            $event = $eventCommandHandler->handle($command);
+            $eventRegistrationCommandHandler->handle(new EventRegistrationCommand($event, $this->getUser()));
 
             $this->addFlash('info', 'committee.event.creation.success');
 

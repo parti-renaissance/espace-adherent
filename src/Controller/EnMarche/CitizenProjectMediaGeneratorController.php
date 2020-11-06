@@ -24,8 +24,11 @@ class CitizenProjectMediaGeneratorController extends Controller
     /**
      * @Route("/images", name="app_citizen_project_image_generator", methods={"GET", "POST"})
      */
-    public function generateImageAction(Request $request, CitizenProject $citizenProject): Response
-    {
+    public function generateImageAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        CitizenProjectCoverGenerator $coverGenerator
+    ): Response {
         $form = $this
             ->createForm(CitizenProjectImageType::class)
             ->handleRequest($request)
@@ -34,7 +37,7 @@ class CitizenProjectMediaGeneratorController extends Controller
         $coverImage = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $coverImage = $this->get(CitizenProjectCoverGenerator::class)->generate($form->getData());
+            $coverImage = $coverGenerator->generate($form->getData());
         }
 
         return $this->render(
@@ -50,8 +53,11 @@ class CitizenProjectMediaGeneratorController extends Controller
     /**
      * @Route("/tracts", name="app_citizen_project_tract_generator", methods={"GET", "POST"})
      */
-    public function generateTractAction(Request $request, CitizenProject $citizenProject): Response
-    {
+    public function generateTractAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        CitizenProjectTractGenerator $tractGenerator
+    ): Response {
         $form = $this
             ->createForm(CitizenProjectTractType::class)
             ->handleRequest($request)
@@ -60,7 +66,7 @@ class CitizenProjectMediaGeneratorController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $tractCommand = $form->getData();
 
-            $pdfContent = $this->get(CitizenProjectTractGenerator::class)->generate($tractCommand);
+            $pdfContent = $tractGenerator->generate($tractCommand);
 
             return new PdfResponse($pdfContent->getContent(), uniqid('tract_', false).'.pdf');
         }

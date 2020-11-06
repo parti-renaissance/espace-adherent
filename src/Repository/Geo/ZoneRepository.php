@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-final class ZoneRepository extends ServiceEntityRepository
+class ZoneRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

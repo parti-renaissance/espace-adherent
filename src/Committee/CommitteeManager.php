@@ -23,9 +23,8 @@ use App\Repository\AdherentRepository;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManager
@@ -35,12 +34,12 @@ class CommitteeManager
 
     private const COMMITTEE_PROPOSALS_COUNT = 3;
 
-    private $registry;
+    private $entityManager;
     private $dispatcher;
 
-    public function __construct(RegistryInterface $registry, EventDispatcherInterface $dispatcher)
+    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher)
     {
-        $this->registry = $registry;
+        $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
     }
 
@@ -258,7 +257,7 @@ class CommitteeManager
         $this->changePrivilege($creator, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR, false);
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
 
         $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
@@ -272,7 +271,7 @@ class CommitteeManager
         $committee->preApproved();
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
 
         $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
@@ -302,7 +301,7 @@ class CommitteeManager
         }
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
 
         $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
@@ -316,7 +315,7 @@ class CommitteeManager
         $committee->preRefused();
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
 
         $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
@@ -345,7 +344,7 @@ class CommitteeManager
             }
         }
 
-        $this->getManager()->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -357,13 +356,12 @@ class CommitteeManager
      */
     public function followCommittee(Adherent $adherent, Committee $committee, $flush = true): void
     {
-        $manager = $this->getManager();
-        $manager->persist($membership = $adherent->followCommittee($committee));
+        $this->entityManager->persist($membership = $adherent->followCommittee($committee));
 
-        $manager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
+        $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
 
         if ($flush) {
-            $manager->flush();
+            $this->entityManager->flush();
         }
 
         $this->dispatcher->dispatch(Events::COMMITTEE_NEW_FOLLOWER, new FollowCommitteeEvent($adherent, $committee));
@@ -403,7 +401,7 @@ class CommitteeManager
         }
 
         $membership->enableVote();
-        $this->getManager()->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -412,19 +410,17 @@ class CommitteeManager
     public function disableVoteInMembership(CommitteeMembership $membership): void
     {
         $membership->disableVote();
-        $this->getManager()->flush();
+        $this->entityManager->flush();
     }
 
     private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void
     {
-        $manager = $this->getManager();
-
-        $manager->remove($membership);
+        $this->entityManager->remove($membership);
         $committee->decrementMembersCount();
 
-        $manager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::LEAVE()));
+        $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::LEAVE()));
 
-        $manager->flush();
+        $this->entityManager->flush();
 
         $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
 
@@ -434,29 +430,24 @@ class CommitteeManager
         );
     }
 
-    private function getManager(): ObjectManager
-    {
-        return $this->registry->getManager();
-    }
-
     private function getCommitteeRepository(): CommitteeRepository
     {
-        return $this->registry->getRepository(Committee::class);
+        return $this->entityManager->getRepository(Committee::class);
     }
 
     private function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository
     {
-        return $this->registry->getRepository(CommitteeFeedItem::class);
+        return $this->entityManager->getRepository(CommitteeFeedItem::class);
     }
 
     private function getMembershipRepository(): CommitteeMembershipRepository
     {
-        return $this->registry->getRepository(CommitteeMembership::class);
+        return $this->entityManager->getRepository(CommitteeMembership::class);
     }
 
     private function getAdherentRepository(): AdherentRepository
     {
-        return $this->registry->getRepository(Adherent::class);
+        return $this->entityManager->getRepository(Adherent::class);
     }
 
     public function countApprovedCommittees(): int
@@ -561,7 +552,7 @@ class CommitteeManager
 
             if ($votingMembership = $adherent->getMemberships()->getVotingCommitteeMembership()) {
                 $votingMembership->disableVote();
-                $this->getManager()->flush();
+                $this->entityManager->flush();
             }
 
             $membership->enableVote();
@@ -570,7 +561,7 @@ class CommitteeManager
         $membership->setPrivilege($privilege);
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
 
         $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new FollowCommitteeEvent($adherent));

@@ -43,11 +43,14 @@ services:
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $transactionalMailer: '@app.mailer.transactional'
+            $campaignMailer: '@app.mailer.campaign'
             $votingProcessWorkflow: '@state_machine.voting_process'
             $votingPlatformCache: !service
                 class: Symfony\Component\Cache\Simple\Psr6Cache
                 arguments: ['@app.cache.voting_platform']
             $geoGouvApiClient: '@app.http_client.geo_gouv'
+            $tonMacronInvitationStateMachine: '@state_machine.ton_macron_invitation'
+            $patternUuid: '%pattern_uuid%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -64,11 +67,13 @@ services:
             tags: ['app.adherent.territorial_council_membership.handler']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
+        App\Redirection\Dynamic\RedirectToInterface:
+            tags: ['app.redirection.handler']
 
     # Imports
     App\:
         resource: '../src/*'
-        exclude: '../src/{Admin,Algolia,OAuth,Twig,Mailchimp,Mailer,DependencyInjection,Controller,Entity,Security,Kernel.php}'
+        exclude: '../src/{Admin,Algolia,OAuth,Twig,Mailchimp,DependencyInjection,Controller,Entity,Security,Kernel.php}'
     App\Algolia\:
         resource: '../src/Algolia/'
         exclude: '../src/Algolia/Sonata/{Pager,ProxyQuery}'
@@ -88,6 +93,10 @@ services:
     App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.territorial_council_membership.handler'
+
+    App\Redirection\Dynamic\RedirectionsSubscriber:
+        arguments:
+            $handlers: !tagged 'app.redirection.handler'
 
     App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
         arguments: [ !tagged 'app.adherent_message.mailchimp.campaign.handler' ]
@@ -210,3 +219,26 @@ services:
     App\Procuration\ProcurationProxyMessageFactory:
         arguments:
             $replyToEmailAddress: '%procurations_reply_to_email%'
+
+    Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request: '@lexik_paybox.request_cancellation_handler'
+    Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request: '@lexik_paybox.request_handler'
+
+    Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory: '@sensio_framework_extra.psr7.http_message_factory'
+    Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface: '@sensio_framework_extra.psr7.http_foundation_factory'
+
+    League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface: '@App\OAuth\Store\AccessTokenStore'
+    League\OAuth2\Server\Repositories\UserRepositoryInterface: '@App\OAuth\Repository\OAuthUserRepository'
+    League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface: '@App\OAuth\Store\AuthorizationCodeStore'
+    League\OAuth2\Server\Repositories\ClientRepositoryInterface: '@App\OAuth\Store\ClientStore'
+    League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface: '@App\OAuth\Store\RefreshTokenStore'
+    League\OAuth2\Server\Repositories\ScopeRepositoryInterface: '@App\OAuth\Store\ScopeStore'
+
+    Symfony\Component\Security\Http\Logout\LogoutUrlGenerator: '@security.logout_url_generator'
+
+    Sonata\AdminBundle\Builder\ShowBuilderInterface: '@sonata.admin.builder.orm_show'
+    Sonata\Exporter\Exporter: '@sonata.exporter.exporter'
+
+    App\Security\EventListener\LastVisitedPageOnGetListener:
+        arguments:
+            $apiPathPrefix: '%env(API_PATH_PREFIX)%'
+            $firewallMap: '@security.firewall.map'

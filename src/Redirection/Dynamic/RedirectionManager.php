@@ -5,7 +5,7 @@ namespace App\Redirection\Dynamic;
 use App\Entity\Redirection;
 use App\Repository\RedirectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
 class RedirectionManager
@@ -18,7 +18,7 @@ class RedirectionManager
     public function __construct(
         CacheItemPoolInterface $cache,
         EntityManagerInterface $entityManager,
-        Serializer $serializer,
+        SerializerInterface $serializer,
         RedirectionRepository $repository
     ) {
         $this->cache = $cache;

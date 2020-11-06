@@ -59,9 +59,10 @@ class CommitteesController extends Controller
     public function getMembersCommitteeCountAction(
         Request $request,
         Adherent $referent,
-        CommitteeMembershipHistoryHandler $committeeMembershipHistoryHandler
+        CommitteeMembershipHistoryHandler $committeeMembershipHistoryHandler,
+        CommitteeRepository $repository
     ): Response {
-        $filter = StatisticsParametersFilter::createFromRequest($request, $this->getDoctrine()->getRepository(Committee::class));
+        $filter = StatisticsParametersFilter::createFromRequest($request, $repository);
 
         return new JsonResponse(['committee_members' => $committeeMembershipHistoryHandler->queryCountByMonth($referent, 6, $filter)]);
     }

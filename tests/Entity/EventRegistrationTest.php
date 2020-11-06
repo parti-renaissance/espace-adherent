@@ -87,7 +87,6 @@ class EventRegistrationTest extends TestCase
 
         $event = $this
             ->getMockBuilder(Event::class)
-            ->setMethods(['getUuid'])
             ->setMethodsExcept(['equals'])
             ->disableOriginalConstructor()
             ->getMock()
