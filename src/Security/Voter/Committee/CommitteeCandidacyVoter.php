@@ -20,6 +20,19 @@ class CommitteeCandidacyVoter extends AbstractAdherentVoter
             return false;
         }
 
+        $refDate = $election->getVoteEndDate() ?? new \DateTime();
+
+        if ($adherent->isMinor($refDate)) {
+            return false;
+        }
+
+        if (
+            ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership())
+            && !$candidateMembership->getCommittee()->equals($subject)
+        ) {
+            return false;
+        }
+
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
             if (
                 $adherent->isReferent()
@@ -37,8 +50,6 @@ class CommitteeCandidacyVoter extends AbstractAdherentVoter
             if (!$adherent->isCertified()) {
                 return false;
             }
-
-            $refDate = $election->getVoteEndDate() ?? new \DateTime();
 
             if ($membership->getSubscriptionDate()->modify('+1 months') > $refDate) {
                 return false;
