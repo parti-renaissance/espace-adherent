@@ -81,6 +81,10 @@ class AdherentAdmin extends AbstractAdmin
         'extract' => 'EXTRACT',
     ];
 
+    protected $formOptions = [
+        'validation_groups' => ['Default', 'Admin'],
+    ];
+
     private $dispatcher;
     private $emailSubscriptionHistoryManager;
     /** @var PoliticalCommitteeManager */
