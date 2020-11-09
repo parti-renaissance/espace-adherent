@@ -28,6 +28,8 @@ abstract class AbstractManagedUsersController extends Controller
      */
     public function listAction(Request $request, string $_format, ManagedUsersExporter $exporter): Response
     {
+        set_time_limit(0);
+
         $form = $this
             ->createFilterForm($filter = $this->createFilterModel($request))
             ->handleRequest($request)
