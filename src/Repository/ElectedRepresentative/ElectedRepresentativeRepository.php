@@ -4,8 +4,10 @@ namespace App\Repository\ElectedRepresentative;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\ElectedRepresentative\Filter\ListFilter;
+use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
@@ -281,5 +283,27 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
 
         return $qb;
+    }
+
+    public function hasActiveParliamentaryMandate(Adherent $adherent): bool
+    {
+        return 0 < (int) $this->createQueryBuilder('e')
+            ->select('COUNT(1)')
+            ->innerJoin('e.mandates', 'm')
+            ->where('m.onGoing = :true AND m.isElected = :true AND m.finishAt IS NULL')
+            ->andWhere('m.type IN (:types)')
+            ->andWhere('e.adherent = :adherent')
+            ->setParameters([
+                'true' => true,
+                'adherent' => $adherent,
+                'types' => [
+                    MandateTypeEnum::SENATOR,
+                    MandateTypeEnum::DEPUTY,
+                    MandateTypeEnum::EURO_DEPUTY,
+                ],
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }

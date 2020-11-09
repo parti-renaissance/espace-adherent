@@ -10,6 +10,7 @@
         </div>
     {% else %}
         {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership() %}
+        {% set has_active_parliamentary_mandate = has_active_parliamentary_mandate(app.user) %}
 
         {% for membership in committee_memberships %}
             {% set committee = membership.committee %}
@@ -64,65 +65,70 @@
                 {% if committee_election and committee_election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
                     <div class="activity-card__footer-note text--small space--20-30 font-roboto ">
                         {% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE', committee) %}
+                        {% set help_link = '<a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>' %}
+                        {% set help_text = null %}
+
+                        {% if able_to_candidate %}
+                            {% set image_url = '/images/icons/icn_vote-rose.svg' %}
+
+                            {% if membership.committeeCandidacy(committee_election) %}
+                                {% set main_text = 'Vous êtes candidat' ~ (app.user.isFemale ? 'e') ~ ' dans ce comité.' %}
+
+                                {% if committee_election.isCandidacyPeriodActive %}
+                                    {% set help_text = 'Vous pouvez modifier votre candidature jusqu\'au ' ~ (committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi')) ~ '.' %}
+                                {% elseif not committee_election.isCandidacyPeriodActive and committee_election.isVotePeriodStarted %}
+                                    {% set help_text = 'Vous pourrez y voter à partir du ' ~ (committee_election.getVoteStartDate|date('d/m/Y H\\hi')) ~ '.' %}
+                                {% elseif committee_election.isVotePeriodActive %}
+                                    {% set help_text = 'Vous pouvez y voter jusqu\'au ' ~ (committee_election.getVoteEndDate|date('d/m/Y H\\hi')) ~ '.' %}
+                                {% endif %}
+                            {% else %}
+                                {% set main_text = 'Une élection est en cours dans ce comité.' %}
+
+                                {% if committee_election.isCandidacyPeriodActive %}
+                                    {% set help_text = 'Vous pouvez y candidater jusqu\'au ' ~ (committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi')) ~ '.' %}
+                                {% elseif not committee_election.isCandidacyPeriodActive and committee_election.isVotePeriodStarted %}
+                                    {% set help_text = 'Vous pourrez y voter à partir du ' ~ (committee_election.getVoteStartDate|date('d/m/Y H\\hi')) ~ '.' %}
+                                {% elseif committee_election.isVotePeriodActive %}
+                                    {% set help_text = 'Vous pouvez y voter jusqu\'au ' ~ (committee_election.getVoteEndDate|date('d/m/Y H\\hi')) ~ '.' %}
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            {% set image_url = '/images/icons/icn_close-rose.svg' %}
+
+                            {% set ref_date = committee_election.getVoteEndDate ?? date() %}
+
+                            {% if candidacy_membership and candidacy_membership != membership %}
+                                {% set main_text = 'Vous ne pouvez ni candidater ni voter dans ce comité car vous êtes candidat' ~ (app.user.isFemale ? 'e') ~ ' dans le comité ' ~ candidacy_membership.committee.name ~ '.' %}
+                            {% elseif app.user.isMinor(ref_date) %}
+                                {% set main_text = 'Les mineurs ne peuvent pas candidater à cette élection. Vous pourrez néanmoins y voter.' %}
+
+                                {% if not app.user.isCertified %}
+                                    {% set help_text = '<br/><a href="' ~ path('app_certification_request_home') ~ '" class="link--no-decor text--blue--dark">Me certifier ➜</a>' %}
+                                {% endif %}
+                            {% elseif has_active_parliamentary_mandate %}
+                                {% set image_url = '/images/icons/icn_vote-rose.svg' %}
+                                {% set main_text = 'Les Parlementaires ne peuvent pas candidater à cette élection. Vous pourrez néanmoins y voter.' %}
+                            {% elseif app.user.registeredAt > ref_date|date_modify('-3 months') %}
+                                 {% set main_text = 'Vous ne pouvez ni candidater ni voter à cette élection car vous êtes adhérent' ~ (app.user.isFemale ? 'e') ~ ' depuis moins de 3 mois.' %}
+                            {% elseif membership.subscriptionDate > ref_date|date_modify('-30 days') %}
+                                {% set main_text = 'Vous ne pouvez ni candidater ni voter dans ce comité à cette élection car vous en êtes membre depuis moins de 30 jours.' %}
+                            {% elseif not app.user.isCertified %}
+                                {% set main_text = 'Certifiez votre profil pour candidater et voter à cette élection.' %}
+                                {% set help_text = '<br/><a href="' ~ path('app_certification_request_home') ~ '" class="link--no-decor text--blue--dark">Me certifier ➜</a>' %}
+                            {% endif %}
+                        {% endif %}
 
                         <div class="b__nudge--right">
-                            <img src="{{ asset('/images/icons/icn_' ~ (able_to_candidate ? 'vote' : 'close') ~ '-rose.svg') }}" alt="vote/close icon" title="Election"/>
+                            <img src="{{ asset(image_url) }}" alt="vote/close icon" title="Election"/>
                         </div>
 
                         <div>
                             <div class="text--pink b__nudge--bottom-tiny">
                                 <strong>Élection du binôme paritaire d'Animateurs locaux</strong>
                             </div>
+                            <div>{{ main_text }} {{ (help_link ~ '.')|raw }}</div>
 
-                            {% if able_to_candidate %}
-                                {% if membership.committeeCandidacy(committee_election) %}
-                                    <div>Vous êtes candidat{{ app.user.isFemale ? 'e' }} dans ce comité.
-                                        <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.</div>
-
-                                    {% if committee_election.isCandidacyPeriodActive %}
-                                        <div>Vous pouvez modifier votre candidature jusqu'au {{ committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi') }}.</div>
-                                    {% elseif not committee_election.isCandidacyPeriodActive and committee_election.isVotePeriodStarted %}
-                                        <div>Vous pourrez y voter à partir du {{ committee_election.getVoteStartDate|date('d/m/Y H\\hi') }}.</div>
-                                    {% elseif committee_election.isVotePeriodActive %}
-                                        <div>Vous pouvez y voter jusqu'au {{ committee_election.getVoteEndDate|date('d/m/Y H\\hi') }}.</div>
-                                    {% endif %}
-                                {% else %}
-                                    <div>Une élection est en cours dans ce comité.
-                                        <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.</div>
-
-                                    {% if committee_election.isCandidacyPeriodActive %}
-                                        <div>Vous pouvez y candidater jusqu'au {{ committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi') }}.</div>
-                                    {% elseif not committee_election.isCandidacyPeriodActive and committee_election.isVotePeriodStarted %}
-                                        <div>Vous pourrez y voter à partir du {{ committee_election.getVoteStartDate|date('d/m/Y H\\hi') }}.</div>
-                                    {% elseif committee_election.isVotePeriodActive %}
-                                        <div>Vous pouvez y voter jusqu'au {{ committee_election.getVoteEndDate|date('d/m/Y H\\hi') }}.</div>
-                                    {% endif %}
-                                {% endif %}
-                            {% else %}
-                                {% set ref_date = committee_election.getVoteEndDate ?? date() %}
-
-                                {% if candidacy_membership and candidacy_membership != membership %}
-                                    Vous ne pouvez ni candidater ni voter dans ce comité car vous êtes candidat{{ app.user.isFemale ? 'e' }} dans le comité {{candidacy_membership.committee.name}}.
-                                    <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.
-                                {% elseif app.user.isMinor(ref_date) %}
-                                    Les mineurs ne peuvent pas candidater à cette élection. Vous pourrez néanmoins y voter.
-                                    <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.
-                                    {% if not app.user.isCertified %}
-                                        <br/><a href="{{ path('app_certification_request_home') }}" class="link--no-decor text--blue--dark">Me certifier ➜</a>
-                                    {% endif %}
-                                {% elseif app.user.registeredAt > ref_date|date_modify('-3 months') %}
-                                    Vous ne pouvez ni candidater ni voter à cette élection car vous êtes adhérent{{ app.user.isFemale ? 'e' }} depuis moins de 3 mois.
-                                    <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.
-                                {% elseif membership.subscriptionDate > ref_date|date_modify('-30 days') %}
-                                    Vous ne pouvez ni candidater ni voter dans ce comité à cette élection car vous en êtes membre depuis moins de 30 jours.
-                                    <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.
-                                {% elseif not app.user.isCertified %}
-                                    Certifiez votre profil pour candidater et voter à cette élection.
-                                    <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>.
-                                    <br/>
-                                    <a href="{{ path('app_certification_request_home') }}" class="link--no-decor text--blue--dark">Me certifier ➜</a>
-                                {% endif %}
-                            {% endif %}
+                            <div>{{ help_text ? help_text|raw }}</div>
                         </div>
                     </div>
                 {% endif %}
