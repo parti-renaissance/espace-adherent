@@ -394,6 +394,10 @@ class CommitteeManager
      */
     public function enableVoteInMembership(CommitteeMembership $membership, Adherent $adherent): void
     {
+        if ($membership->isVotingCommittee()) {
+            return;
+        }
+
         if ($existingVotingMembership = $adherent->getMemberships()->getVotingCommitteeMembership()) {
             $this->disableVoteInMembership($existingVotingMembership);
         }
