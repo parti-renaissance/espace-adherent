@@ -31,7 +31,7 @@ class LreElectedRepresentativeController extends AbstractElectedRepresentativeCo
         return [$adherent->getLreArea()->getReferentTag()->getZone()];
     }
 
-    protected function createFilterForm(array $managedZones, ListFilter $filter = null): FormInterface
+    protected function createFilterForm(ListFilter $filter = null): FormInterface
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
             'space_type' => $this->getSpaceType(),

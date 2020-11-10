@@ -30,7 +30,7 @@ abstract class AbstractElectedRepresentativeController extends Controller
         $filter = new ListFilter($managedZones = $this->getManagedZones($this->getMainUser($request->getSession())));
 
         $form = $this
-            ->createFilterForm($managedZones, $filter)
+            ->createFilterForm($filter)
             ->handleRequest($request)
         ;
 
@@ -44,7 +44,7 @@ abstract class AbstractElectedRepresentativeController extends Controller
             'elected_representatives' => $electedRepresentatives,
             'filter' => $filter,
             'form' => $form->createView(),
-            'total_count' => $electedRepresentativeRepository->countForZones($filter->getZones()),
+            'total_count' => $electedRepresentativeRepository->countForZones($managedZones),
         ]);
     }
 
@@ -65,7 +65,7 @@ abstract class AbstractElectedRepresentativeController extends Controller
      */
     abstract protected function getManagedZones(Adherent $adherent): array;
 
-    protected function createFilterForm(array $managedZones, ListFilter $filter = null): FormInterface
+    protected function createFilterForm(ListFilter $filter = null): FormInterface
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
             'space_type' => $this->getSpaceType(),

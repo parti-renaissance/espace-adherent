@@ -185,8 +185,8 @@
                         },
                         select: function( event, ui ) {
                             var elementId = el.attr('id');
-                            var id = elementId.substr(0, elementId.indexOf('_zone'));
-                            var zoneIdField = el.parents('.row').find("input[id$='" + id + "_zone']");
+                            var id = elementId.substr(0, elementId.indexOf('_geoZone'));
+                            var zoneIdField = el.parents('.row').find("input[id$='" + id + "_geoZone']");
                             $(el).val(ui.item.label);
                             $(zoneIdField).val(ui.item.value);
 

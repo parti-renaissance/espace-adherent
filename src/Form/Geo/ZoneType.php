@@ -32,7 +32,7 @@ class ZoneType extends AbstractType implements DataTransformerInterface
 
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
-        $view->vars['zone_label'] = ($data = $form->getData()) instanceof Zone ? $data->getName() : '';
+        $view->vars['zone_label'] = ($data = $form->getData()) instanceof Zone ? $data->getNameCode() : '';
     }
 
     public function transform($value)
