@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
 use App\Subscription\SubscriptionTypeEnum;
+use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -34,6 +35,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'first_name' => $this->getReference('adherent-1')->getFirstName(),
             'last_name' => $this->getReference('adherent-1')->getLastName(),
             'birthday' => $this->getReference('adherent-1')->getBirthdate(),
+            'phone' => PhoneNumberUtils::create('+33666666666'),
             'is_committee_member' => 0,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
@@ -59,6 +61,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'birthday' => $this->getReference('adherent-13')->getBirthdate(),
             'committees' => $committee10->getName(),
             'committee_uuids' => [$committee10->getUuid()->toString()],
+            'phone' => PhoneNumberUtils::create('+33666666666'),
             'is_committee_member' => 1,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
@@ -84,6 +87,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'birthday' => $this->getReference('adherent-5')->getBirthdate(),
             'committees' => $committee1->getName(),
             'committee_uuids' => [$committee1->getUuid()->toString()],
+            'phone' => PhoneNumberUtils::create('+33666666666'),
             'is_committee_member' => 0,
             'is_committee_host' => 1,
             'is_committee_supervisor' => 0,

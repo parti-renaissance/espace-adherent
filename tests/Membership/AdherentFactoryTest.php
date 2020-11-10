@@ -67,7 +67,7 @@ class AdherentFactoryTest extends TestCase
             'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182'),
             'birthdate' => '1950-07-08',
             'position' => ActivityPositions::RETIRED,
-            'phone' => '33 0102030405',
+            'phone' => '+330102030405',
         ]);
 
         $this->assertInstanceOf(Adherent::class, $adherent);

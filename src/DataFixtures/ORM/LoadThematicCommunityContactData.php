@@ -6,9 +6,9 @@ use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
 use App\Entity\ThematicCommunity\Contact;
 use App\Jecoute\GenderEnum;
+use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use libphonenumber\PhoneNumber;
 
 class LoadThematicCommunityContactData extends Fixture
 {
@@ -23,7 +23,7 @@ class LoadThematicCommunityContactData extends Fixture
         $c1->setActivityArea(ActivityAreaEnum::ACTIVITIES[14]);
         $c1->setJob('CTO de la France');
         $c1->setJobArea(JobEnum::JOBS[0]);
-        $c1->setPhone((new PhoneNumber())->setCountryCode(33)->setNationalNumber('612345678'));
+        $c1->setPhone(PhoneNumberUtils::create('+33612345678'));
 
         $this->addReference('tc-contact-1', $c1);
         $manager->persist($c1);

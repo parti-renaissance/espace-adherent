@@ -4,7 +4,7 @@ namespace App\Assessor;
 
 use App\Entity\AssessorRequest;
 use App\Serializer\XlsxEncoder;
-use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhoneNumberUtils;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -79,7 +79,7 @@ class AssessorRequestExporter
                 'voteCity' => $assessorRequest->getVoteCity(),
                 'officeNumber' => $assessorRequest->getOfficeNumber(),
                 'emailAddress' => $assessorRequest->getEmailAddress(),
-                'formattedPhone' => PhoneNumberFormatter::format($assessorRequest->getPhone()),
+                'formattedPhone' => PhoneNumberUtils::format($assessorRequest->getPhone()),
             ];
         }
 

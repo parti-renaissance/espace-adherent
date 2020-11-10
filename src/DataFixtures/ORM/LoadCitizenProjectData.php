@@ -77,7 +77,7 @@ class LoadCitizenProjectData extends Fixture implements DependentFixtureInterfac
             'created_by' => LoadAdherentData::ADHERENT_6_UUID,
             'created_at' => '2017-10-12 18:34:12',
             'address' => NullablePostAddress::createFrenchAddress('26 Boulevard Louis Guichoux', '13003-13203', null, 43.325543, 5.376076),
-            'phone' => '33 673643424',
+            'phone' => '+33673643424',
         ]);
         $citizenProject2->setImageName('default.png');
         $citizenProject2->preApproved();
@@ -129,7 +129,7 @@ class LoadCitizenProjectData extends Fixture implements DependentFixtureInterfac
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-19 11:54:28',
             'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.6241569, 2.4265995),
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
         ]);
         $citizenProject5->setImageName('default.png');
         $citizenProject5->approved();
@@ -146,7 +146,7 @@ class LoadCitizenProjectData extends Fixture implements DependentFixtureInterfac
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2017-09-18 20:12:33',
             'address' => NullablePostAddress::createFrenchAddress('28 Boulevard Louis Guichoux', '13003-13203', null, 43.32560, 5.376207),
-            'phone' => '33 234823644',
+            'phone' => '+33234823644',
         ]);
         $citizenProject6->setImageName('default.png');
         $citizenProject6->approved('2017-10-19 09:17:24');
@@ -195,7 +195,7 @@ class LoadCitizenProjectData extends Fixture implements DependentFixtureInterfac
             'created_at' => '2017-10-09 12:16:22',
             'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             'district' => 'Brooklyn',
-            'phone' => '1 2123150100',
+            'phone' => '+12123150100',
         ]);
         $citizenProject9->setImageName('default.png');
         $citizenProject9->approved('2017-10-09 13:27:42');
@@ -228,7 +228,7 @@ class LoadCitizenProjectData extends Fixture implements DependentFixtureInterfac
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2018-09-09 12:12:12',
             'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
-            'phone' => '1 2123150100',
+            'phone' => '+12123150100',
         ]);
         $citizenProject11->setImageName('default.png');
         $this->addReference('citizen-project-11', $citizenProject11);

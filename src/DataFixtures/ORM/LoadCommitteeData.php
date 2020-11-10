@@ -45,7 +45,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'slug' => 'en-marche-paris-8',
             'description' => 'Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.8705073, 2.3132432),
-            'phone' => '33 187264236',
+            'phone' => '+33187264236',
             'facebook_page_url' => 'https://facebook.com/enmarche-paris-8',
             'twitter_nickname' => 'enmarche75008',
         ]);
@@ -59,7 +59,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche Marseille 3',
             'description' => "En Marche ! C'est aussi à Marseille !",
             'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', null, 43.3256095, 5.374416),
-            'phone' => '33 673643424',
+            'phone' => '+33673643424',
         ]);
         $this->addReference('committee-2', $committee2);
 
@@ -71,7 +71,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'slug' => 'en-marche-dammarie-les-lys',
             'description' => 'Les jeunes avec En Marche !',
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'name_locked' => true,
         ]);
         $committee3->approved('2017-01-27 09:18:33');
@@ -84,7 +84,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'Antenne En Marche de Fontainebleau',
             'description' => 'Vous êtes Bellifontain ? Nous aussi ! Rejoignez-nous !',
             'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.4047652, 2.6987591),
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
         ]);
         $committee4->approved();
         $committee4->setCurrentElection(new CommitteeElection($this->getReference('designation-3')));
@@ -97,7 +97,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche - Comité de Évry',
             'description' => 'En Marche pour une nouvelle vision, du renouveau pour la France.',
             'address' => PostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.6241569, 2.4265995),
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
         ]);
         $committee5->approved();
         $committee5->setCurrentElection(new CommitteeElection($this->getReference('designation-2')));
@@ -110,7 +110,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche - Comité de Rouen',
             'description' => 'En Marche pour la France et la ville de Rouen.',
             'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', null, 49.443232, 1.099971),
-            'phone' => '33 234823644',
+            'phone' => '+33234823644',
         ]);
         $committee6->approved('2017-03-19 09:17:24');
         $committee6->setCurrentElection(new CommitteeElection($this->getReference('designation-1')));
@@ -123,7 +123,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche - Comité de Berlin',
             'description' => 'En Marche pour la France et nos partenaires Allemands.',
             'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', null, 52.5330939, 13.4662418),
-            'phone' => '49 2211653540',
+            'phone' => '+492211653540',
         ]);
         $committee7->approved('2017-03-19 13:43:26');
         $committee7->setCurrentElection(new CommitteeElection($this->getReference('designation-1')));
@@ -136,7 +136,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche - Comité de Singapour',
             'description' => 'En Marche pour la France mais depuis Singapour.',
             'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, 1.3329126, 103.8795163),
-            'phone' => '65 66888868',
+            'phone' => '+6566888868',
         ]);
         $committee8->approved('2017-04-10 20:23:18');
         $committee8->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
@@ -149,7 +149,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche - Comité de New York City',
             'description' => 'Les expats sont en En Marche.',
             'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', null, 40.7625289, -73.9859927),
-            'phone' => '1 2123150100',
+            'phone' => '+12123150100',
         ]);
         $committee9->approved('2017-04-09 13:27:42');
         $committee9->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
@@ -162,7 +162,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche - Suisse',
             'description' => 'En Marche pour la France et nos partenaires en Suisse.',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
         ]);
         $committee10->approved('2017-05-09 13:17:42');
         $committee10->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
@@ -175,7 +175,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche - Suisse refused',
             'description' => 'En Marche pour la France et nos partenaires en Suisse. (refused)',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
-            'phone' => '33 673654567',
+            'phone' => '+33673654567',
         ]);
         $committee11->approved('2017-05-13 13:17:42');
         $committee11->refused('2017-05-14 13:17:42');
@@ -188,7 +188,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche - Allemagne',
             'description' => 'En Marche Allemagne.',
             'address' => PostAddress::createForeignAddress('DE', '10789', 'Berlin', 'Breitscheidplatz', null, 52.5065133, 13.1445545),
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
         ]);
         $committee12->approved('2020-10-29 12:00:00');
         $committee12->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));

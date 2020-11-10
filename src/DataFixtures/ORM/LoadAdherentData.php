@@ -102,7 +102,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('122 rue de Mouxy', '73100-73182', null, 45.570898, 5.927206),
             'birthdate' => '1950-07-08',
             'position' => 'retired',
-            'phone' => '33 0111223344',
+            'phone' => '+33111223344',
             'registered_at' => '2016-11-16 20:45:33',
         ]);
         $adherent2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -127,7 +127,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
             'birthdate' => '1953-04-03',
             'position' => 'retired',
-            'phone' => '33 187264236',
+            'phone' => '+33187264236',
             'registered_at' => '2017-01-03 08:47:54',
         ]);
         $adherent3->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -147,7 +147,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('13 boulevard des Italiens', '75009-75109', null, 48.8713224, 2.3353755),
             'birthdate' => '1989-09-17',
             'position' => 'student',
-            'phone' => '33 727363643',
+            'phone' => '+33727363643',
             'registered_at' => '2017-01-18 13:15:28',
         ]);
         $adherent4->setPosition(ActivityPositions::UNEMPLOYED);
@@ -170,7 +170,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684),
             'birthdate' => '1983-12-24',
             'position' => 'unemployed',
-            'phone' => '33 138764334',
+            'phone' => '+33138764334',
             'registered_at' => '2017-01-08 05:55:43',
         ]);
         $adherent5->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -191,7 +191,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('39 rue de Crimée', '13003-13203', null, 43.3062866, 5.3791498),
             'birthdate' => '1987-02-08',
             'position' => 'employed',
-            'phone' => '33 673643424',
+            'phone' => '+33673643424',
             'registered_at' => '2017-01-16 18:33:22',
         ]);
         $adherent6->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -213,7 +213,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-01-07',
             'position' => 'employed',
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $adherent7->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -231,7 +231,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 Place du Général de Gaulle', '76000-76540', null, 49.443232, 1.099971),
             'birthdate' => '1973-04-11',
             'position' => 'employed',
-            'phone' => '33 234823644',
+            'phone' => '+33234823644',
             'registered_at' => '2017-02-16 17:12:08',
         ]);
         $roles = new ArrayCollection();
@@ -252,7 +252,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createForeignAddress('DE', '10369', 'Berlin', '7 Hohenschönhauser Str.', null, 52.5330939, 13.4662418),
             'birthdate' => '2000-11-14',
             'position' => 'student',
-            'phone' => '49 2211653540',
+            'phone' => '+492211653540',
             'registered_at' => '2017-02-23 13:56:12',
         ]);
         $roles = new ArrayCollection();
@@ -273,7 +273,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, 1.3329126, 103.8795163),
             'birthdate' => '2002-07-13',
             'position' => 'employed',
-            'phone' => '65 66888868',
+            'phone' => '+6566888868',
             'registered_at' => '2017-04-10 14:08:12',
         ]);
         $adherent11->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -294,7 +294,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', null, 40.7625289, -73.9859927),
             'birthdate' => '1964-10-02',
             'position' => 'employed',
-            'phone' => '1 2123150100',
+            'phone' => '+12123150100',
             'registered_at' => '2017-04-09 06:20:38',
         ]);
         $roles = new ArrayCollection();
@@ -369,7 +369,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('26 Rue Louis Blanc', '75000-75010', null, 50.649561, 3.0644126),
             'birthdate' => '1950-07-25',
             'position' => 'commissioner',
-            'phone' => '33 712345678',
+            'phone' => '+33712345678',
             'registered_at' => '1994-03-09 00:00:00',
         ]);
         $adherent16->setPosition(ActivityPositions::EMPLOYED);
@@ -386,7 +386,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('13 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
             'birthdate' => '1952-04-16',
             'position' => 'commissioner',
-            'phone' => '33 712345678',
+            'phone' => '+33712345678',
             'registered_at' => '1994-03-09 00:00:00',
         ]);
         $adherent17->setPosition(ActivityPositions::EMPLOYED);
@@ -405,7 +405,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('230 Rue du Moulin', '59246-59411', null, 50.481964435189084, 3.10317921728396),
             'birthdate' => '1951-05-04',
             'position' => 'commissioner',
-            'phone' => '33 712345678',
+            'phone' => '+33712345678',
             'registered_at' => '1994-03-09 00:00:00',
         ]);
         $adherent18->setPosition(ActivityPositions::EMPLOYED);
@@ -425,7 +425,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108', null, 48.8699464, 2.3297187),
             'birthdate' => '1967-01-03',
             'position' => 'retired',
-            'phone' => '33 187264236',
+            'phone' => '+33187264236',
             'registered_at' => '2018-01-03 08:47:54',
         ]);
         $adherent19->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -442,7 +442,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-01-07',
             'position' => 'employed',
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $referent->setReferent(
@@ -477,7 +477,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '75001-75101', null, 48.5278939, 2.6484923),
             'birthdate' => '1970-01-08',
             'position' => 'employed',
-            'phone' => '33 6765204050',
+            'phone' => '+336765204050',
             'registered_at' => '2018-05-12 12:31:45',
         ]);
         $referent75and77->setReferent(
@@ -505,7 +505,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('3 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1962-02-07',
             'position' => 'employed',
-            'phone' => '33 673654348',
+            'phone' => '+33673654348',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
         $referentChild->setReferent(
@@ -529,7 +529,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('75 Avenue Aristide Briand', '94110-94003', null, 48.805347, 2.325805),
             'birthdate' => '1969-04-10',
             'position' => 'employed',
-            'phone' => '33 665859053',
+            'phone' => '+33665859053',
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinator->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -546,7 +546,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('Place de la Madeleine', '75008-75108', null, 48.8704135, 2.324256),
             'birthdate' => '1989-03-13',
             'position' => 'employed',
-            'phone' => '33 665859053',
+            'phone' => '+33665859053',
             'registered_at' => '2017-09-20 15:31:21',
         ]);
         $coordinatorCP->setSubscriptionTypes($this->getStandardSubscriptionTypes());
@@ -622,7 +622,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1992-07-28',
             'position' => 'employed',
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $senatorArea = new SenatorArea();
@@ -641,7 +641,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1992-07-28',
             'position' => 'employed',
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $municipalChief1->addCharter(new MunicipalChiefCharter());
@@ -661,7 +661,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $municipalChiefArea2 = new MunicipalChiefManagedArea();
@@ -679,7 +679,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $municipalChiefArea3 = new MunicipalChiefManagedArea();
@@ -697,7 +697,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $assessor->setAssessorRole(new AssessorRoleAssociation($this->getReference('vote-place-lille-wazemmes')));
@@ -714,7 +714,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('12 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
             'birthdate' => '1983-08-27',
             'position' => 'employed',
-            'phone' => '33 673654350',
+            'phone' => '+33673654350',
             'registered_at' => '2019-07-10 09:19:00',
         ]);
         $municipalManager->setMunicipalManagerRole(new MunicipalManagerRoleAssociation([$this->getReference('city-lille')]));
@@ -730,7 +730,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1982-08-27',
             'position' => 'employed',
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $senatorialCandidateManagedArea = new SenatorialCandidateManagedArea();

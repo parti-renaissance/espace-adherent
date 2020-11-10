@@ -559,7 +559,7 @@ class CommitteeManagerControllerTest extends WebTestCase
             'name' => 'En Marche Lille 20',
             'description' => "En Marche ! C'est aussi dans le NORD",
             'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', 43.3256095, 5.374416),
-            'phone' => '33 673643424',
+            'phone' => '+33673643424',
         ]);
         $this->manager->persist($committee);
         $this->manager->flush();

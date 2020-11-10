@@ -8,10 +8,10 @@ use App\Entity\Election\CityContact;
 use App\Entity\Election\CityManager;
 use App\Entity\Election\CityPartner;
 use App\Entity\Election\CityPrevision;
+use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use libphonenumber\PhoneNumber;
 
 class LoadElectionCityCardData extends Fixture implements DependentFixtureInterface
 {
@@ -25,7 +25,7 @@ class LoadElectionCityCardData extends Fixture implements DependentFixtureInterf
         $cityCard1->setHeadquartersManager(new CityManager('John Doe'));
         $cityCard1->setPoliticManager(new CityManager(
             'Jane Doe',
-            $this->createPhoneNumber('0612345678')
+            PhoneNumberUtils::create('+33612345678')
         ));
         $cityCard1->setPreparationPrevision(new CityPrevision(
             CityPrevision::STRATEGY_FUSION,
@@ -41,7 +41,7 @@ class LoadElectionCityCardData extends Fixture implements DependentFixtureInterf
             $cityCard1,
             'Michel Doe',
             'Manager',
-            $this->createPhoneNumber('0698765432'),
+            PhoneNumberUtils::create('+33698765432'),
             'Didier Doe',
             true,
             'No comment',
@@ -50,7 +50,7 @@ class LoadElectionCityCardData extends Fixture implements DependentFixtureInterf
             $cityCard1,
             'Jacques Doe',
             'Chef',
-            $this->createPhoneNumber('0687654878'),
+            PhoneNumberUtils::create('+33687654878'),
             'Didier Doe',
             false
         ));
@@ -71,15 +71,6 @@ class LoadElectionCityCardData extends Fixture implements DependentFixtureInterf
     private function createCityCard(City $city, ?int $population = null, ?string $priority = null): CityCard
     {
         return new CityCard($city, $population, $priority);
-    }
-
-    private function createPhoneNumber(string $number): PhoneNumber
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode(33);
-        $phone->setNationalNumber($number);
-
-        return $phone;
     }
 
     public function getDependencies(): array
