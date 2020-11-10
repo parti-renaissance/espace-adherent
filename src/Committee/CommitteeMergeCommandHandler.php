@@ -6,12 +6,14 @@ use App\Committee\Event\FollowCommitteeEvent;
 use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Entity\Administrator;
 use App\Entity\Committee;
+use App\Entity\CommitteeCandidacyInvitation;
 use App\Entity\CommitteeMembership;
 use App\Entity\Reporting\CommitteeMembershipAction;
 use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Entity\Reporting\CommitteeMergeHistory;
 use App\Events;
 use App\Membership\UserEvents;
+use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeMembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -21,15 +23,18 @@ class CommitteeMergeCommandHandler
     private $dispatcher;
     private $em;
     private $committeeMembershipRepository;
+    private $committeeCandidacyRepository;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         EntityManagerInterface $em,
-        CommitteeMembershipRepository $committeeMembershipRepository
+        CommitteeMembershipRepository $committeeMembershipRepository,
+        CommitteeCandidacyRepository $committeeCandidacyRepository
     ) {
         $this->dispatcher = $dispatcher;
         $this->em = $em;
         $this->committeeMembershipRepository = $committeeMembershipRepository;
+        $this->committeeCandidacyRepository = $committeeCandidacyRepository;
     }
 
     public function countNewMembers(CommitteeMergeCommand $committeeMergeCommand): int
@@ -86,6 +91,8 @@ class CommitteeMergeCommandHandler
             ));
 
             $this->em->flush();
+
+            $this->transferCandidatures($sourceCommittee, $destinationCommittee);
 
             $this->transferVotingMemberships(
                 $destinationCommittee,
@@ -200,5 +207,33 @@ class CommitteeMergeCommandHandler
         Administrator $administrator
     ): CommitteeMergeHistory {
         return new CommitteeMergeHistory($sourceCommittee, $destinationCommittee, $mergedMemberships, $administrator);
+    }
+
+    private function transferCandidatures(?Committee $sourceCommittee, ?Committee $destinationCommittee)
+    {
+        $sourceElection = $sourceCommittee->getCurrentElection();
+        $destinationElection = $destinationCommittee->getCurrentElection();
+
+        // Move all candidacies from the source committee to new committee if both have the same election type
+        if ($sourceElection && $destinationElection && $sourceElection->getDesignation() === $destinationElection->getDesignation()) {
+            $candidacies = $this->committeeCandidacyRepository->findByCommittee($sourceCommittee, $sourceElection->getDesignation());
+
+            foreach ($candidacies as $candidacy) {
+                if ($newMembership = $candidacy->getAdherent()->getMembershipFor($destinationCommittee)) {
+                    $candidacy->setCommitteeMembership($newMembership);
+                    $candidacy->setCommitteeElection($destinationElection);
+
+                    /** @var CommitteeCandidacyInvitation $invitation */
+                    if (
+                        ($invitation = $candidacy->getInvitation())
+                        && ($newInvitedMembership = $invitation->getMembership()->getAdherent()->getMembershipFor($destinationCommittee))
+                    ) {
+                        $invitation->setMembership($newInvitedMembership);
+                    }
+                }
+            }
+
+            $this->em->flush();
+        }
     }
 }
