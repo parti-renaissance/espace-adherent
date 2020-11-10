@@ -3,12 +3,13 @@ Feature: Merge committees from admin panel
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdminData     |
-      | LoadCommitteeData |
-    When I am logged as "superadmin@en-marche-dev.fr" admin
+      | LoadAdminData              |
+      | LoadCommitteeData          |
+      | LoadCommitteeCandidacyData |
 
   Scenario: A committee can not be merged if it is not approved
-    Given I am on "/admin/app/reporting-committeemergehistory/merge"
+    Given I am logged as "superadmin@en-marche-dev.fr" admin
+    And I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 2 |
       | ID du comité de destination | 1 |
@@ -20,7 +21,8 @@ Feature: Merge committees from admin panel
     And "api_sync" should have 0 message
 
   Scenario: A committee can not be merged if the destination committee is not approved
-    Given I am on "/admin/app/reporting-committeemergehistory/merge"
+    Given I am logged as "superadmin@en-marche-dev.fr" admin
+    And I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 1 |
       | ID du comité de destination | 2 |
@@ -32,7 +34,8 @@ Feature: Merge committees from admin panel
     And "api_sync" should have 0 message
 
   Scenario: A committee can not be merged into itself
-    Given I am on "/admin/app/reporting-committeemergehistory/merge"
+    Given I am logged as "superadmin@en-marche-dev.fr" admin
+    And I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 1 |
       | ID du comité de destination | 1 |
@@ -44,7 +47,8 @@ Feature: Merge committees from admin panel
     And "api_sync" should have 0 message
 
   Scenario: A committee merge and revert must trigger events in RabbitMQ
-    Given I am on "/admin/committee/1/members"
+    Given I am logged as "superadmin@en-marche-dev.fr" admin
+    And I am on "/admin/committee/1/members"
     Then I should see 4 ".committee-members tbody tr" elements
     And I should not see "francis.brioul@yahoo.com"
     Given I am on "/admin/app/reporting-committeemergehistory/merge"
@@ -85,3 +89,27 @@ Feature: Merge committees from admin panel
     And I should see 4 ".committee-members tbody tr" elements
     And I should not see "francis.brioul@yahoo.com"
 
+  Scenario: All candidacies of merged committee should be transferred to the new committee
+    Given I am logged as "senatorial-candidate@en-marche-dev.fr"
+    When I am on "/comites/en-marche-allemagne"
+    Then I should see "Isabelle Responsable Communal doit accepter votre demande pour que votre candidature soit confirmée"
+
+    Given I am logged as "superadmin@en-marche-dev.fr" admin
+    And I am on "/admin/app/reporting-committeemergehistory/merge"
+    When I fill in the following:
+      | ID du comité source         | 12 |
+      | ID du comité de destination | 10 |
+    And I press "Fusionner"
+    Then the response status code should be 200
+    And I should see "l'arrivée de 2 nouveau(x) membre(s) au sein du comité de destination En Marche - Suisse (10)"
+    Then I press "Confirmer la fusion"
+    And the response status code should be 200
+    And I should be on "/admin/app/reporting-committeemergehistory/list"
+
+    Given I am logged as "senatorial-candidate@en-marche-dev.fr"
+    When I am on "/comites/en-marche-allemagne"
+    Then the response status code should be 403
+
+    When I am on "/comites/en-marche-suisse"
+    Then the response status code should be 200
+    And I should see "Isabelle Responsable Communal doit accepter votre demande pour que votre candidature soit confirmée"
