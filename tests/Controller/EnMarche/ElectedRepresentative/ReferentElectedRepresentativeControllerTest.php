@@ -24,13 +24,13 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $this->assertCount(5, $crawler->filter('tbody tr.referent__item'));
         $this->assertCount(1, $crawler->filter('.status.status__1'));
         $this->assertStringContainsString('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertStringContainsString('Conseiller(e) municipal(e) (NC)Clichy (92110)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertStringContainsString('Conseiller(e) municipal(e) (NC)Clichy (92024)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Maire', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringNotContainsString('Président(e) d\'EPCI', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('PS (2016)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Non', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('Conseiller(e) municipal(e) (DIV)Rouen (76000)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('Conseiller(e) municipal(e) (DIV)Rouen (76540)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString(' G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(4)->text()));
         $this->assertStringContainsString('Non', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
@@ -126,28 +126,6 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $crawler = $this->client->submit($form);
 
         $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
-
-        // filter by cities
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[contactType]'] = 'other';
-        $form['f[cities]'] = [6];
-
-        $crawler = $this->client->submit($form);
-
-        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertStringContainsString('LOBELL André', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-
-        // filter by userListDefinitions
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[contactType]'] = 'other';
-        $form['f[cities]'] = [6];
-        $form['f[userListDefinitions]'] = [3];
-
-        $crawler = $this->client->submit($form);
-
-        $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
     }
 
     public function testListElectedRepresentativesForParis()
@@ -158,11 +136,12 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
 
         $text = $crawler->filter('tbody')->text();
 
-        $this->assertCount(3, $crawler->filter('tr.referent__item'));
+        $this->assertCount(4, $crawler->filter('tr.referent__item'));
 
         $this->assertStringContainsString('PARIS Département', $text);
         $this->assertStringContainsString('PARIS Arrondissement', $text);
         $this->assertStringContainsString('PARISS Circonscription', $text);
+        $this->assertStringContainsString('Métropole du Grand Paris', $text); // DUFOUR Michelle's mandate
     }
 
     public function testShowElectedRepresentative()

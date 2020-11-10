@@ -113,7 +113,7 @@
     {% endif %}
 {% endblock %}
 
-{% block app_admin_elected_representative_mandate_zone_zone_widget %}
+{% block app_admin_elected_representative_mandate_geoZone_zone_widget %}
     <div class="row">
         <div class="form-group">
             <div class="sonata-ba-field sonata-ba-field-standard-natural">
@@ -161,20 +161,20 @@
             });
 
             var addAutocomplete = function () {
-                $("input[id$='_zone_autocomplete']").each(function (i, el) {
+                $("input[id$='_geoZone_autocomplete']").each(function (i, el) {
                     el = $(el);
                     el.autocomplete({
                         source: function(request, response) {
                             var elementId = el.attr('id');
-                            var id = elementId.substr(0, elementId.indexOf('_zone_autocomplete'));
+                            var id = elementId.substr(0, elementId.indexOf('_geoZone_autocomplete'));
                             var type = el.parents('.row').find("select[id$='" + id + "_type']").val();
                             var term = request.term.trim();
 
                             if (term.length > 0) {
-                                $.get("{{ path('app_elected_representative_zone')|raw }}?zone=" + term + "&type=" + type, function(data) {
+                                $.get("{{ path('app_admin_zone_autocomplete')|raw }}?zone=" + term + "&type=" + type, function(data) {
                                     response($.map(data, function(m) {
                                         return {
-                                            label: m.name,
+                                            label: m.nameCode,
                                             value: m.id
                                         };
                                     }));
@@ -591,7 +591,7 @@
                 </label>
                 <div class="sonata-ba-field sonata-ba-field-standard-natural">
                 {% for mandate in mandates %}
-                    <div>{{ mandate.name }} {{ mandate.lastPoliticalFunction ? '- '~mandate.lastPoliticalFunction : '' }} ({{ mandate.zone }})</div>
+                    <div>{{ mandate.name }} {{ mandate.lastPoliticalFunction ? '- '~mandate.lastPoliticalFunction : '' }} ({{ mandate.geoZone }})</div>
                 {% endfor %}
                 </div>
             </div>

@@ -17,8 +17,8 @@ class ReferentElectedRepresentativeController extends AbstractElectedRepresentat
         return 'referent';
     }
 
-    protected function getManagedTags(Adherent $adherent): array
+    protected function getManagedZones(Adherent $adherent): array
     {
-        return $adherent->getManagedArea()->getTags()->toArray();
+        return $adherent->getManagedArea()->getZones()->toArray();
     }
 }

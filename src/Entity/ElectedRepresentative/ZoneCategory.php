@@ -25,39 +25,6 @@ class ZoneCategory
     public const CONSULAR_DISTRICT = 'Consular District';
     public const BOROUGH = 'Arrondissement';
 
-    public const ZONES = [
-        'CITY_COUNCIL' => [
-            self::CITY,
-            self::BOROUGH,
-        ],
-        'EPCI_MEMBER' => [self::EPCI],
-        'DEPARTMENTAL_COUNCIL' => [self::DEPARTMENT],
-        'REGIONAL_COUNCIL' => [
-            self::REGION,
-            self::DEPARTMENT,
-        ],
-        'CORSICA_ASSEMBLY_MEMBER' => [self::CORSICA],
-        'DEPUTY' => [self::DISTRICT],
-        'SENATOR' => [
-            self::DISTRICT,
-            self::DEPARTMENT,
-            self::FOF,
-        ],
-        'CONSULAR_COUNCIL' => [
-            self::CONSULAR_DISTRICT,
-        ],
-        'EURO_DEPUTY' => [
-            self::CITY,
-            self::BOROUGH,
-            self::DEPARTMENT,
-            self::DISTRICT,
-        ],
-        'BOROUGH_COUNCIL' => [
-            self::CITY,
-            self::BOROUGH,
-        ],
-    ];
-
     public const ALL = [
         self::CITY,
         self::EPCI,

@@ -6,6 +6,7 @@ use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\ElectedRepresentative\ElectedRepresentativeFilterType;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -26,15 +27,15 @@ abstract class AbstractElectedRepresentativeController extends Controller
         Request $request,
         ElectedRepresentativeRepository $electedRepresentativeRepository
     ): Response {
-        $filter = new ListFilter($managedTags = $this->getManagedTags($this->getMainUser($request->getSession())));
+        $filter = new ListFilter($managedZones = $this->getManagedZones($this->getMainUser($request->getSession())));
 
         $form = $this
-            ->createFilterForm($managedTags, $filter)
+            ->createFilterForm($managedZones, $filter)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $filter = new ListFilter($managedTags);
+            $filter = new ListFilter($managedZones);
         }
 
         $electedRepresentatives = $electedRepresentativeRepository->searchByFilter($filter, $request->query->getInt('page', 1), 50);
@@ -43,7 +44,7 @@ abstract class AbstractElectedRepresentativeController extends Controller
             'elected_representatives' => $electedRepresentatives,
             'filter' => $filter,
             'form' => $form->createView(),
-            'total_count' => $electedRepresentativeRepository->countForReferentTags($filter->getReferentTags()),
+            'total_count' => $electedRepresentativeRepository->countForZones($filter->getZones()),
         ]);
     }
 
@@ -59,12 +60,15 @@ abstract class AbstractElectedRepresentativeController extends Controller
 
     abstract protected function getSpaceType(): string;
 
-    abstract protected function getManagedTags(Adherent $adherent): array;
+    /**
+     * @return Zone[]
+     */
+    abstract protected function getManagedZones(Adherent $adherent): array;
 
-    protected function createFilterForm(array $managedTags, ListFilter $filter = null): FormInterface
+    protected function createFilterForm(array $managedZones, ListFilter $filter = null): FormInterface
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
-            'referent_tags' => $managedTags,
+            'space_type' => $this->getSpaceType(),
             'user_list_definition_type' => [UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE],
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,

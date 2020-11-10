@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\ElectedRepresentative;
 
 use App\Entity\Adherent;
+use App\Entity\ReferentTag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,8 +18,16 @@ class SenatorialCandidateElectedRepresentativeController extends AbstractElected
         return 'senatorial_candidate';
     }
 
-    protected function getManagedTags(Adherent $adherent): array
+    protected function getManagedZones(Adherent $adherent): array
     {
-        return $adherent->getSenatorialCandidateManagedArea()->getDepartmentTags()->toArray();
+        $zones = [];
+
+        /* @var ReferentTag $referentTag */
+        $referentTags = $adherent->getSenatorialCandidateManagedArea()->getDepartmentTags();
+        foreach ($referentTags as $referentTag) {
+            $zones[] = $referentTag->getZone();
+        }
+
+        return $zones;
     }
 }

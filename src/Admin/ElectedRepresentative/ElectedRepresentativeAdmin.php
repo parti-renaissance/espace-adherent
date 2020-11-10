@@ -12,8 +12,6 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use App\Entity\ElectedRepresentative\Zone;
-use App\Entity\ElectedRepresentative\ZoneCategory;
 use App\Entity\UserListDefinition;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
@@ -27,7 +25,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -442,79 +439,20 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('mandates.zone', CallbackFilter::class, [
+            ->add('mandates.geoZone', ModelAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
                 'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'model_manager' => $this->getModelManager(),
                     'admin_code' => $this->getCode(),
-                    'context' => 'filter',
-                    'class' => Zone::class,
-                    'multiple' => true,
-                    'property' => 'name',
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'callback' => function ($admin, $property, $value) {
-                        $datagrid = $admin->getDatagrid();
-                        $queryBuilder = $datagrid->getQuery();
-                        $queryBuilder
-                            ->leftJoin($queryBuilder->getRootAlias().'.category', 'category')
-                            ->andWhere('category.name != :district')
-                            ->setParameter('district', ZoneCategory::DISTRICT)
-                            ->orderBy($queryBuilder->getRootAlias().'.name', 'ASC')
-                        ;
-                        $datagrid->setValue($property, null, $value);
-                    },
+                    'multiple' => true,
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return false;
-                    }
-
-                    $where = new Expr\Orx();
-                    if (!\in_array('zone', $qb->getAllAliases(), true)) {
-                        $qb->leftJoin("$alias.$field", 'zone');
-                    }
-
-                    /** @var Zone $zone */
-                    foreach ($value['value'] as $key => $zone) {
-                        switch ($zone->getCategory()->getName()) {
-                            case ZoneCategory::REGION:
-                                if (!\in_array('referentTag', $qb->getAllAliases())) {
-                                    $qb->leftJoin('zone.referentTags', 'referentTag');
-                                }
-
-                                $where->add('referentTag IN (:tags)');
-                                $qb->setParameter('tags', $zone->getReferentTags());
-
-                                break;
-                            case ZoneCategory::DEPARTMENT:
-                                if (!\in_array('category', $qb->getAllAliases(), true)) {
-                                    $qb->leftJoin('zone.category', 'category');
-                                }
-
-                                if (!\in_array('referentTag', $qb->getAllAliases(), true)) {
-                                    $qb->leftJoin('zone.referentTags', 'referentTag');
-                                }
-
-                                $where->add('(referentTag IN (:tags) AND category.name != :category_name)');
-                                $qb
-                                    ->setParameter('tags', $zone->getReferentTags())
-                                    ->setParameter('category_name', ZoneCategory::REGION)
-                                ;
-
-                                break;
-                            default:
-                                $where->add("$alias.$field = :zone_$key");
-                                $qb->setParameter("zone_$key", $zone);
-                        }
-                    }
-
-                    $qb->andWhere($where);
-
-                    return true;
-                },
             ])
             ->add('isAdherent', CallbackFilter::class, [
                 'label' => 'Est adhérent ?',

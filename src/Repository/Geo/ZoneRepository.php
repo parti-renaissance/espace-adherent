@@ -62,4 +62,80 @@ final class ZoneRepository extends ServiceEntityRepository
             ])
         ;
     }
+
+    /**
+     * @return Zone[]
+     */
+    public function searchByTermAndManagedZones(string $term, array $zones, int $max): array
+    {
+        $qb = $this
+            ->createQueryBuilder('zone')
+            ->leftJoin('zone.parents', 'parents')
+        ;
+
+        if ('' === $term) {
+            return [];
+        }
+
+        if ($zones) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->in('zone.id', ':zones'),
+                        $qb->expr()->in('parents.id', ':zones'),
+                    )
+                )
+                ->setParameter(':zones', $zones)
+                ->orderBy('zone.name')
+            ;
+        }
+
+        if ('' !== $term) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->like(
+                            $qb->expr()->concat('zone.name', $qb->expr()->literal("\n"), 'zone.code'),
+                            ':term'
+                        ),
+                        $qb->expr()->like(
+                            $qb->expr()->concat('parents.name', $qb->expr()->literal("\n"), 'parents.code'),
+                            ':term'
+                        )
+                    )
+                )
+                ->setParameter(':term', "%$term%")
+            ;
+        }
+
+        return $qb
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findForMandateAdminAutocomplete(?string $term, array $types, int $limit): array
+    {
+        if (!$term || !$types) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('zone');
+
+        return $qb
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like('zone.name', ':term'),
+                    $qb->expr()->like('zone.code', ':term'),
+                )
+            )
+            ->andWhere($qb->expr()->in('zone.type', ':types'))
+            ->setParameter(':term', "$term%")
+            ->setParameter(':types', $types)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
