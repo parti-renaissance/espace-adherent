@@ -141,4 +141,9 @@ class AdherentRuntime implements RuntimeExtensionInterface
     {
         return $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
     }
+
+    public function hasActiveParliamentaryMandate(Adherent $adherent): bool
+    {
+        return $this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent);
+    }
 }

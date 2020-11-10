@@ -4,12 +4,20 @@ namespace App\Security\Voter\Committee;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 
 class CommitteeCandidacyVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'ABLE_TO_CANDIDATE';
+
+    private $electedRepresentativeRepository;
+
+    public function __construct(ElectedRepresentativeRepository $electedRepresentativeRepository)
+    {
+        $this->electedRepresentativeRepository = $electedRepresentativeRepository;
+    }
 
     /**
      * @param Committee $subject
@@ -60,6 +68,10 @@ class CommitteeCandidacyVoter extends AbstractAdherentVoter
             }
 
             if ((clone $registrationDate)->modify('+3 months') > $refDate) {
+                return false;
+            }
+
+            if ($this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent)) {
                 return false;
             }
 
