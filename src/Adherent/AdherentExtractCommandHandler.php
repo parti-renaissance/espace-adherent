@@ -5,7 +5,7 @@ namespace App\Adherent;
 use App\Csv\CsvResponseFactory;
 use App\Extract\AbstractEmailExtractCommandHandler;
 use App\Repository\AdherentRepository;
-use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhoneNumberUtils;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
@@ -66,7 +66,7 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
 
                     break;
                 case AdherentExtractCommand::FIELD_PHONE:
-                    $row[$this->translateField($field)] = PhoneNumberFormatter::format($adherent->getPhone());
+                    $row[$this->translateField($field)] = PhoneNumberUtils::format($adherent->getPhone());
 
                     break;
                 case AdherentExtractCommand::FIELD_REGISTERED_AT:

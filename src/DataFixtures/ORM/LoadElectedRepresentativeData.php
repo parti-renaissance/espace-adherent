@@ -15,10 +15,10 @@ use App\Entity\ElectedRepresentative\PoliticalFunction;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\SocialLinkTypeEnum;
 use App\Entity\ElectedRepresentative\SocialNetworkLink;
+use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
 class LoadElectedRepresentativeData extends Fixture implements DependentFixtureInterface
@@ -102,7 +102,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'female',
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
         );
-        $this->setPhoneNumber($erCityCouncilWithFinishedFunction, '0999887766');
+        $erCityCouncilWithFinishedFunction->setContactPhone(PhoneNumberUtils::create('+330999887766'));
         $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem'));
         $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-instances_member'));
         $label = new ElectedRepresentativeLabel(
@@ -471,14 +471,6 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $manager->persist($erDepartment59);
 
         $manager->flush();
-    }
-
-    private function setPhoneNumber(ElectedRepresentative $er, string $phoneNumber): void
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode('33');
-        $phone->setNationalNumber($phoneNumber);
-        $er->setContactPhone($phone);
     }
 
     private function createElectedRepresentative(

@@ -75,10 +75,10 @@
         {% endif %}
     </ul>
 
-    <ul>
-        <li class="menu-section">Instances</li>
+    {% if isReferent %}
+        <ul>
+            <li class="menu-section">Instances</li>
 
-        {% if isReferent %}
             <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_members*') ? 'active' }}">
                 <a href="{{ path('app_territorial_council_referent_members_list') }}">Membres</a>
             </li>
@@ -94,10 +94,8 @@
             <li class="{{ is_active_route(app.request, 'app_instances_official_report_referent_*') ? 'active' }}">
                 <a href="{{ path('app_instances_official_report_referent_list') }}">Procès-verbaux</a>
             </li>
-        {% endif %}
-    </ul>
+        </ul>
 
-    {% if isReferent %}
         {% if enable_assessor_space %}
             <ul>
                 <li class="menu-section">Élections</li>
@@ -106,21 +104,19 @@
                 </li>
             </ul>
         {% endif %}
-    {% endif %}
 
-    <ul>
-        <li class="menu-section">Mon équipe</li>
-        {% if isReferent %}
+        <ul>
+            <li class="menu-section">Mon équipe</li>
+
             <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' }}">
                 <a href="{{ path('app_referent_institutional_events') }}">Réunions privées</a>
             </li>
-        {% endif %}
 
-        {% if is_granted('ROLE_REFERENT') %}
+
             <li class="{{ is_active_route(app.request, ['app_referent_my_team_list', 'app_referent_my_team_delegate_access']) ? 'active' }}">
                 <a href="{{ path('app_referent_my_team_list') }}">Délégations d'accès</a>
             </li>
-        {% endif %}
-    </ul>
+        </ul>
+    {% endif %}
 </nav>
 {% endif %}

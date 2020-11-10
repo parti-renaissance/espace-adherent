@@ -1,3 +1,13 @@
+{% macro phone_number(user) %}
+    {% if is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') and user.phone and user.country == 'FR' and date() < date("2020-12-24") %}
+        Caché
+    {% else %}
+        {{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}
+    {% endif %}
+{% endmacro %}
+
+{% import _self as helper %}
+
 <table class="datagrid__table-manager">
     <thead>
     <tr>
@@ -50,7 +60,7 @@
             <td>
                 {{ user.getUserRoleLabels('<br />')|raw }}
             </td>
-            <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
+            <td>{{ helper.phone_number(user) }}</td>
             <td>
                 {% set hasSmsSubscriptionType = user.hasSmsSubscriptionType %}
                 <span class="status status__{{ hasSmsSubscriptionType ? '1' : '2' }}">

@@ -4,7 +4,7 @@ namespace App\Admin;
 
 use App\Entity\CertificationRequest;
 use App\Entity\Geo\Region;
-use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Query\Expr;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -237,7 +237,7 @@ class CertificationRequestAdmin extends AbstractAdmin
                 $certificationRequest = $certificationRequest[0];
                 $adherent = $certificationRequest->getAdherent();
 
-                $phone = PhoneNumberFormatter::format($adherent->getPhone());
+                $phone = PhoneNumberUtils::format($adherent->getPhone());
                 $birthDate = $adherent->getBirthdate();
 
                 return [

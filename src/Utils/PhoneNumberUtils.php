@@ -6,7 +6,7 @@ use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 
-class PhoneNumberFormatter
+class PhoneNumberUtils
 {
     public static function format(?PhoneNumber $phone, int $format = PhoneNumberFormat::INTERNATIONAL): string
     {
@@ -14,8 +14,11 @@ class PhoneNumberFormatter
             return '';
         }
 
-        $phoneUtil = PhoneNumberUtil::getInstance();
+        return PhoneNumberUtil::getInstance()->format($phone, $format);
+    }
 
-        return $phone ? $phoneUtil->format($phone, $format) : '';
+    public static function create(string $number): ?PhoneNumber
+    {
+        return PhoneNumberUtil::getInstance()->parse($number);
     }
 }

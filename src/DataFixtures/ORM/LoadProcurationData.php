@@ -5,10 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\ProcurationProxy;
 use App\Entity\ProcurationRequest;
+use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use libphonenumber\PhoneNumber;
 
 class LoadProcurationData extends Fixture implements DependentFixtureInterface
 {
@@ -28,7 +28,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'London',
             'GB',
-            '44 7911123487',
+            '+447911123487',
             '1972-11-23',
             'GB',
             'E14 8BY',
@@ -48,7 +48,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75018-75118',
             null,
             'FR',
-            '33 655443322',
+            '+33655443322',
             '1968-10-09',
             'FR',
             '75018',
@@ -69,7 +69,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '77000-77288',
             null,
             'FR',
-            '33 169641061',
+            '+33169641061',
             '1945-01-29',
             'FR',
             '75018',
@@ -90,7 +90,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75018-75118',
             null,
             'FR',
-            '33 988776655',
+            '+33988776655',
             '1991-01-18',
             'FR',
             '92110',
@@ -111,7 +111,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75008-75108',
             null,
             'FR',
-            '33 0099887766',
+            '+330099887766',
             '1962-10-11',
             'FR',
             '75020',
@@ -132,7 +132,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75010-75110',
             null,
             'FR',
-            '33 655443322',
+            '+33655443322',
             '1978-03-09',
             'FR',
             '75010',
@@ -153,7 +153,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '44000-44109',
             null,
             'FR',
-            '33 411809703',
+            '+33411809703',
             '1964-01-16',
             'FR',
             '44000',
@@ -174,7 +174,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75011-75111',
             null,
             'FR',
-            '33 111809703',
+            '+33111809703',
             '1984-11-05',
             'FR',
             '75008',
@@ -195,7 +195,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             'London',
             'London',
             'GB',
-            '44 7911123443',
+            '+447911123443',
             '1972-11-23',
             'FR',
             '75008',
@@ -217,7 +217,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             'Barcelona',
             'Barcelona',
             'ES',
-            '34 9999888222',
+            '+349999888222',
             '1985-01-20',
             'ES',
             '08001',
@@ -237,7 +237,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'London',
             'GB',
-            '44 7911123456',
+            '+447911123456',
             '1972-11-23',
             'GB',
             'E14 8BY',
@@ -257,7 +257,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             'London',
             null,
             'GB',
-            '44 7911123457',
+            '+447911123457',
             '1989-12-20',
             'GB',
             'GV6H',
@@ -279,7 +279,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             'London',
             null,
             'GB',
-            '44 7911123458',
+            '+447911123458',
             '1989-12-20',
             'GB',
             'GV6H',
@@ -304,7 +304,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75020-75120',
             null,
             'FR',
-            '33 988776655',
+            '+33988776655',
             '1989-02-17',
             'FR',
             '75018',
@@ -325,7 +325,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75020-75120',
             null,
             'FR',
-            '33 988776655',
+            '+33988776655',
             '1974-01-17',
             'FR',
             '75018',
@@ -346,7 +346,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '44100-44109',
             null,
             'FR',
-            '33 269692256',
+            '+33269692256',
             '1969-10-17',
             'FR',
             '44100',
@@ -369,7 +369,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75008-75108',
             null,
             'FR',
-            '33 673849284',
+            '+33673849284',
             '1979-12-01',
             'FR',
             '75008',
@@ -397,7 +397,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '75010-75110',
             null,
             'FR',
-            '33 673839259',
+            '+33673839259',
             '1982-02-21',
             'FR',
             '75010',
@@ -420,7 +420,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             '91300-91377',
             null,
             'FR',
-            '33 675645342',
+            '+33675645342',
             '1953-09-19',
             'FR',
             '91300',
@@ -443,7 +443,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             null,
             'London',
             'GB',
-            '44 7911123459',
+            '+447911123459',
             '1972-11-23',
             'GB',
             'E14 8BY',
@@ -468,7 +468,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             'London',
             null,
             'GB',
-            '44 7911123465',
+            '+447911123465',
             '1989-12-21',
             'GB',
             'GV6H',
@@ -534,7 +534,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         bool $requestFromFrance = true
     ): ProcurationRequest {
         if ($phone) {
-            $phone = $this->createPhone($phone);
+            $phone = PhoneNumberUtils::create($phone);
         }
 
         $request = new ProcurationRequest();
@@ -586,7 +586,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         bool $disabled = false
     ): ProcurationProxy {
         if ($phone) {
-            $phone = $this->createPhone($phone);
+            $phone = PhoneNumberUtils::create($phone);
         }
 
         $proxy = new ProcurationProxy($referent);
@@ -613,23 +613,5 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         $proxy->setProxiesCount($proxiesCount);
 
         return $proxy;
-    }
-
-    /**
-     * Returns a PhoneNumber object.
-     *
-     * The format must be something like "33 0102030405"
-     *
-     * @param string $phoneNumber
-     */
-    private function createPhone($phoneNumber): PhoneNumber
-    {
-        list($country, $number) = explode(' ', $phoneNumber);
-
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($country);
-        $phone->setNationalNumber($number);
-
-        return $phone;
     }
 }
