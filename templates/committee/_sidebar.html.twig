@@ -1,4 +1,8 @@
 <aside class="committee__aside l__wrapper--aside">
+    {% if membership %}
+        <div class="font-roboto text--silver-gray b__nudge--bottom">Vous êtes membre de ce comité depuis le {{ membership.subscriptionDate|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy à HH:mm') }}</div>
+    {% endif %}
+
     {% if has_role_adherent and committee.hasActiveElection and is_granted('ABLE_TO_CANDIDATE', committee) %}
         {% set committee_election = committee.committeeElection %}
 
@@ -32,9 +36,11 @@
         <h5>
             Administration
         </h5>
+
         {% if not has_role_user %}
             <p class="text--summary text--gray b__nudge--bottom">Connectez-vous pour pouvoir contacter les responsables de comité.</p>
         {% endif %}
+
         <ul class="committee__hosts">
             {% for host in committee_hosts %}
                 <li class="committee-host text--body b__nudge--bottom">
@@ -89,5 +95,4 @@
             {% endfor %}
         </div>
     {% endif %}
-
 </aside>
