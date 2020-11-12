@@ -464,14 +464,13 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     /* @var Collection|Zone[] $zones */
                     $zones = $value['value'];
 
-                    if (!$zones) {
+                    if (\count($zones)) {
                         $ids = $zones->map(static function (Zone $zone) {
                             return $zone->getId();
                         })->toArray();
 
                         /* @var QueryBuilder $qb */
                         $qb
-                            ->leftJoin($alias.'.mandates', 'mandate')
                             ->innerJoin('mandate.geoZone', 'geo_zone')
                             ->innerJoin('geo_zone.parents', 'geo_zone_parent')
                             ->andWhere(
