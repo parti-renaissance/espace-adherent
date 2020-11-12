@@ -15,6 +15,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 final class ZoneRepository extends ServiceEntityRepository
@@ -68,17 +69,15 @@ final class ZoneRepository extends ServiceEntityRepository
      */
     public function searchByTermAndManagedZones(string $term, array $zones, int $max): array
     {
-        $qb = $this
-            ->createQueryBuilder('zone')
-            ->leftJoin('zone.parents', 'parents')
-        ;
-
         if ('' === $term) {
             return [];
         }
 
+        $qb = $this->createQueryBuilder('zone');
+
         if ($zones) {
             $qb
+                ->leftJoin('zone.parents', 'parents')
                 ->andWhere(
                     $qb->expr()->orX(
                         $qb->expr()->in('zone.id', ':zones'),
@@ -102,11 +101,15 @@ final class ZoneRepository extends ServiceEntityRepository
             ;
         }
 
-        return $qb
-            ->setMaxResults($max)
+        $query = $qb
             ->getQuery()
-            ->getResult()
+            ->setFirstResult(0)
+            ->setMaxResults($max)
         ;
+
+        $paginator = new Paginator($query, true);
+
+        return iterator_to_array($paginator->getIterator());
     }
 
     public function findForMandateAdminAutocomplete(?string $term, array $types, int $limit): array
