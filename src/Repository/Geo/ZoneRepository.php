@@ -94,14 +94,8 @@ final class ZoneRepository extends ServiceEntityRepository
             $qb
                 ->andWhere(
                     $qb->expr()->orX(
-                        $qb->expr()->like(
-                            $qb->expr()->concat('zone.name', $qb->expr()->literal("\n"), 'zone.code'),
-                            ':term'
-                        ),
-                        $qb->expr()->like(
-                            $qb->expr()->concat('parents.name', $qb->expr()->literal("\n"), 'parents.code'),
-                            ':term'
-                        )
+                        $qb->expr()->like('zone.name', ':term'),
+                        $qb->expr()->like('zone.code', ':term'),
                     )
                 )
                 ->setParameter(':term', "%$term%")
