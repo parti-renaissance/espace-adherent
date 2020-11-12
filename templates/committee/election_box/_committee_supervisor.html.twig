@@ -10,7 +10,7 @@
         <br/>Quel est le rôle des animateurs locaux paritaires
 
         <div class="em-tooltip">
-            <span class="em-tooltip--trigger">?</span>
+            <span class="em-tooltip--trigger em-tooltip--trigger-circle">?</span>
             <div class="em-tooltip--content em-tooltip--content-big em-tooltip--content-bordered">
                 <p><strong>Quel est le rôle du binôme d’animateurs locaux ?</strong></p>
 
@@ -88,7 +88,30 @@
                     {% endif %}
                 {% endif %}
             {% else %}
-                <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Je candidate en binôme</span>
+                <div class="em-tooltip">
+                    <span class="em-tooltip--trigger b__nudge--right btn btn--disabled">
+                        Je candidate en binôme
+                    </span>
+
+                    <div class="em-tooltip--content em-tooltip--content-bordered">
+                        {% set ref_date = committee_election.getVoteEndDate ?? date() %}
+                        {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership() %}
+
+                        {% if app.user.isMinor(ref_date) %}
+                            Les mineurs ne peuvent pas candidater.
+                        {% elseif has_active_parliamentary_mandate(app.user) %}
+                            Les parlementaires ne peuvent pas candidater.
+                        {% elseif app.user.registeredAt > ref_date|date_modify('-3 months') %}
+                            Vous êtes adhérent{{ app.user.isFemale ? 'e' }} depuis moins de 3 mois.
+                        {% elseif membership.subscriptionDate > ref_date|date_modify('-30 days') %}
+                            Vous êtes membre de ce comité depuis moins de 30 jours.
+                        {% elseif not app.user.isCertified %}
+                            Vous devez certifier votre profil pour participer.
+                        {% elseif candidacy_membership and candidacy_membership != membership %}
+                            Vous êtes déjà candidat{{ app.user.isFemale ? 'e' }} dans le comité {{ candidacy_membership.committee.name }}.
+                        {% endif %}
+                    </div>
+                </div>
             {% endif %}
         {% elseif not committee_election.isVotePeriodStarted %}
             <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ committee_election.voteStartDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
@@ -96,7 +119,7 @@
                 <span class="clock-container"></span>
             </div>
         {% else %}
-            {% set voting_platform_election = null %}
+            {% set voting_platform_election = get_voting_platform_election_for_committee(committee) %}
 
             {% if voting_platform_election %}
                 {% if voting_platform_election.isVotePeriodActive %}
@@ -136,11 +159,28 @@
                                 <span class="text--dark text--small">Les résultats seront publiés dans :</span>
                                 <span class="clock-container"></span>
                             </div>
-
-                            <p>
-                                <span class="btn btn--disabled btn--no-wrap">Je participe</span>
-                            </p>
                         {% endif %}
+
+                        <div class="em-tooltip">
+                            <span class="em-tooltip--trigger b__nudge--right btn btn--disabled">
+                                Je participe
+                            </span>
+
+                            <div class="em-tooltip--content em-tooltip--content-bordered">
+                                {% set ref_date = committee_election.getVoteEndDate ?? date() %}
+                                {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership() %}
+
+                                {% if app.user.registeredAt > ref_date|date_modify('-3 months') %}
+                                    Vous êtes adhérent{{ app.user.isFemale ? 'e' }} depuis moins de 3 mois.
+                                {% elseif membership.subscriptionDate > ref_date|date_modify('-30 days') %}
+                                    Vous êtes membre de ce comité depuis moins de 30 jours.
+                                {% elseif not app.user.isCertified %}
+                                    Vous devez certifier votre profil pour participer.
+                                {% elseif candidacy_membership and candidacy_membership != membership %}
+                                    Vous êtes déjà candidat{{ app.user.isFemale ? 'e' }} dans le comité {{ candidacy_membership.committee.name }}.
+                                {% endif %}
+                            </div>
+                        </div>
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
                     <p class="text--small text--dark instance__elections-box--text">
