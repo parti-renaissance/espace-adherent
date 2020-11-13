@@ -21,6 +21,10 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_INSEE_CODE = 'INSEE_CODE';
     public const MERGE_FIELD_DEPARTMENTAL_CODE = 'DPT_CODE';
     public const MERGE_FIELD_ADHERENT = 'ISADHERENT';
+    public const MERGE_FIELD_ZONE_CITY = 'ZONE_CITY';
+    public const MERGE_FIELD_ZONE_DEPARTMENT = 'ZONE_DEPARTMENT';
+    public const MERGE_FIELD_ZONE_REGION = 'ZONE_REGION';
+    public const MERGE_FIELD_ZONE_COUNTRY = 'ZONE_COUNTRY';
 
     private $memberIdentifier;
 
