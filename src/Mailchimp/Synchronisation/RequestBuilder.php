@@ -248,29 +248,38 @@ class RequestBuilder
     public function setZones(Collection $zones): self
     {
         foreach ($zones as $zone) {
-            switch ($zone->getType()) {
-                case Zone::CITY:
-                    $this->zoneCity = $zone;
+            $this->setZone($zone);
 
-                    break;
-                case Zone::DEPARTMENT:
-                    $this->zoneDepartment = $zone;
-
-                    break;
-                case Zone::REGION:
-                    $this->zoneRegion = $zone;
-
-                    break;
-                case Zone::COUNTRY:
-                    $this->zoneCountry = $zone;
-
-                    break;
-                default:
-                    break;
+            foreach ($zone->getParents() as $parent) {
+                $this->setZone($parent);
             }
         }
 
         return $this;
+    }
+
+    private function setZone(Zone $zone): void
+    {
+        switch ($zone->getType()) {
+            case Zone::CITY:
+                $this->zoneCity = $zone;
+
+                break;
+            case Zone::DEPARTMENT:
+                $this->zoneDepartment = $zone;
+
+                break;
+            case Zone::REGION:
+                $this->zoneRegion = $zone;
+
+                break;
+            case Zone::COUNTRY:
+                $this->zoneCountry = $zone;
+
+                break;
+            default:
+                break;
+        }
     }
 
     public function buildMemberRequest(string $memberIdentifier): MemberRequest
