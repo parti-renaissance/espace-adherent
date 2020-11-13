@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Controller\EnMarche\Filesystem;
+namespace Tests\App\Controller\Admin;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,20 +10,20 @@ use Tests\App\Controller\ControllerTestTrait;
 /**
  * @group functional
  */
-class FileControllerTest extends WebTestCase
+class AdminFileControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
     /**
      * @dataProvider provideAdherentsWithNoAccess
      */
-    public function testAdherentCannotDownloadFile(string $adherentEmail)
+    public function testAdherentCannotDownloadFileIfNoPermission(string $adherentEmail)
     {
         $image = $this->getFileRepository()->findOneBy(['name' => 'Image for all']);
 
         $this->authenticateAsAdherent($this->client, $adherentEmail);
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/documents/%s', $image->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('admin/filesystem/documents/%s', $image->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -34,7 +34,7 @@ class FileControllerTest extends WebTestCase
 
         $this->authenticateAsAdmin($this->client, 'writer@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/documents/%s', $image->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/admin/filesystem/documents/%s', $image->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -45,7 +45,7 @@ class FileControllerTest extends WebTestCase
 
         $this->authenticateAsAdmin($this->client, 'admin@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/documents/%s', $directory->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/admin/filesystem/documents/%s', $directory->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
         self::assertStringContainsStringIgnoringCase('Directory cannot be download.', $this->client->getResponse()->getContent());
@@ -57,7 +57,7 @@ class FileControllerTest extends WebTestCase
 
         $this->authenticateAsAdmin($this->client, 'admin@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/documents/%s', $directory->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/admin/filesystem/documents/%s', $directory->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         self::assertClientIsRedirectedTo('https://dpt.en-marche.fr', $this->client);
@@ -69,7 +69,7 @@ class FileControllerTest extends WebTestCase
 
         $this->authenticateAsAdmin($this->client, 'admin@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/documents/%s', $directory->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/admin/filesystem/documents/%s', $directory->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
         self::assertStringContainsStringIgnoringCase('No file found in storage for this File.', $this->client->getResponse()->getContent());

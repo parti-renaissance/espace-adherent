@@ -18,5 +18,9 @@
                 <a href="{{ path('app_candidate_event_manager_events') }}">Événements</a>
             </li>
         {% endif %}
+
+        <li class="{{ is_active_route(app.request, 'app_candidate_files_*') ? 'active' }}">
+            <a href="{{ path('app_candidate_files_list') }}">Documents</a>
+        </li>
     </ul>
 </nav>

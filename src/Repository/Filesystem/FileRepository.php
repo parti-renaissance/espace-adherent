@@ -3,8 +3,10 @@
 namespace App\Repository\Filesystem;
 
 use App\Entity\Filesystem\File;
+use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Filesystem\FileTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class FileRepository extends ServiceEntityRepository
@@ -41,6 +43,43 @@ class FileRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function findWithPermissionsInDirectory(
+        array $permissions,
+        File $directory = null,
+        string $order = 'a'
+    ): array {
+        $qb = $this->createWithPermissionsQueryBuilder($permissions)
+            ->andWhere('file.displayed = 1 ')
+            ->orderBy('file.name', 'd' === $order ? 'DESC' : 'ASC')
+        ;
+
+        if ($directory) {
+            $qb
+                ->andWhere('file.parent = :directory')
+                ->setParameter('directory', $directory)
+            ;
+        } else {
+            $qb
+                ->andWhere('file.parent IS NULL')
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function createWithPermissionsQueryBuilder(array $permissions): QueryBuilder
+    {
+        array_push($permissions, FilePermissionEnum::ALL);
+
+        return $this->createQueryBuilder('file')
+            ->leftJoin('file.permissions', 'permission')
+            ->leftJoin('file.children', 'child')
+            ->leftJoin('child.permissions', 'childPermission')
+            ->where('(permission.name IN (:permissions) OR childPermission.name IN (:permissions))')
+            ->setParameter('permissions', $permissions)
         ;
     }
 }
