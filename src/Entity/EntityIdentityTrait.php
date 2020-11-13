@@ -19,6 +19,8 @@ trait EntityIdentityTrait
      * @ORM\GeneratedValue
      *
      * @ApiProperty(identifier=false)
+     *
+     * @SymfonySerializer\Groups({"autocomplete"})
      */
     protected $id;
 

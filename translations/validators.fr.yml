@@ -475,3 +475,10 @@ territorail_council.official_report.mime_type: Seuls les fichiers .pdf sont acce
 # LRE
 #
 lre_area.all_tags_and_one_selected: Vous ne pouvez pas cocher "La République Ensemble sans restriction de zone" et sélectionner une zone La République Ensemble en même temps
+
+#
+# Filesystem
+#
+file.validation.filename_length: Le nom du document (avec l'extension) ne peut pas dépasser 255 caractères.
+file.validation.file_or_link: Vous pouvez ajouter soit un fichier, soit un lien.
+file.validation.name.not_unique: Ce nom de dossier est déjà utilisé.

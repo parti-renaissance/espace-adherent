@@ -73,6 +73,8 @@ services:
         resource: '../src/AdherentMessage'
     App\Command\:
         resource: '../src/Command/*'
+    App\Filesystem\:
+        resource: '../src/Filesystem/'
     App\Form\:
         resource: '../src/Form/'
     App\Image\:
