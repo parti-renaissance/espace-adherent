@@ -1107,3 +1107,14 @@ geo_zone.city_community: Communauté de commune
 geo_zone.canton: Canton
 geo_zone.foreign_district: Circonscriptions de l'étranger
 geo_zone.consular_district: Circonscriptions consulaire
+
+#
+# Filesystem
+#
+file_permission.all: Tous
+file_permission.candidate_regional_headed: Tête de liste aux régionales
+file_permission.candidate_regional_leader: Chef de file aux régionales
+file_permission.candidate_departmental: Candidat aux départementales
+file.type.directory: Dossier
+file.type.file: Fichier
+file.type.external_link: Lien externe

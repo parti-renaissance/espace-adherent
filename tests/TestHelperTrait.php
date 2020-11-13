@@ -20,6 +20,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Email;
 use App\Entity\Event;
 use App\Entity\EventRegistration;
+use App\Entity\Filesystem\File;
 use App\Entity\IdeasWorkshop\Idea;
 use App\Entity\IdeasWorkshop\Thread;
 use App\Entity\IdeasWorkshop\ThreadComment;
@@ -67,6 +68,7 @@ use App\Repository\EmailRepository;
 use App\Repository\EmailSubscriptionHistoryRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\EventRepository;
+use App\Repository\Filesystem\FileRepository;
 use App\Repository\IdeasWorkshop\IdeaRepository;
 use App\Repository\InstitutionalEventRepository;
 use App\Repository\InvitationRepository;
@@ -374,6 +376,11 @@ trait TestHelperTrait
     public function getOfficialReportRepository(): OfficialReportRepository
     {
         return $this->getRepository(OfficialReport::class);
+    }
+
+    public function getFileRepository(): FileRepository
+    {
+        return $this->getRepository(File::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

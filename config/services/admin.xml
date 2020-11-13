@@ -390,6 +390,16 @@
             <argument />
         </service>
 
+        <service id="app.admin.file" class="App\Admin\Filesystem\FileAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Documents" group="Territoire" />
+
+            <argument />
+            <argument>App\Entity\Filesystem\File</argument>
+            <argument />
+            <argument type="service" id="App\Repository\Filesystem\FileRepository"/>
+            <argument type="service" id="App\Filesystem\FileManager"/>
+        </service>
+
         <!--
         ######################################################
         # Instances

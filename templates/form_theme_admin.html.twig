@@ -598,3 +598,42 @@
         {% endif %}
     {% endif %}
 {% endblock %}
+
+{% block app_admin_file_file_parent_widget %}
+    {{ form_widget(form) }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var addAutocomplete = function () {
+                $("#{{ form.vars.id }}").each(function (i, el) {
+                    el = $(el);
+                    el.autocomplete({
+                        source: function(request, response) {
+                            var term = request.term.trim();
+
+                            if (term.length > 0) {
+                                $.get("{{ path('app_autocomplete_file_directory')|raw }}?term=" + term, function(data) {
+                                    response($.map(data, function(d) {
+                                        return {
+                                            label: d.name,
+                                            value: d.id
+                                        };
+                                    }));
+                                });
+                            } else {
+                                response([]);
+                            }
+                        },
+                        select: function( event, ui ) {
+                            $(el).val(ui.item.label);
+
+                            return false;
+                        },
+                    });
+                });
+            };
+
+            addAutocomplete();
+        });
+    </script>
+{% endblock %}
