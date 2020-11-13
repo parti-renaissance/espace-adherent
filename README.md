@@ -1,7 +1,6 @@
 ![En Marche !, le mouvement d'Emmanuel Macron](https://github.com/EnMarche/en-marche.fr/blob/master/public/logo/em-logo.svg)
 
 [![CircleCI](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master.svg?style=svg)](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master)
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4408/badge)](https://bestpractices.coreinfrastructure.org/projects/4408)
 
 > An English ReadMe is available after the French one.
 
