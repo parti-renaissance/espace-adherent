@@ -155,6 +155,7 @@ final class SyncZonesCommand extends Command
         $zone = $this->zoneRepository->zoneableAsZone($zoneable);
         $this->entities->set($key, $zone);
 
+        $zone->clearParents();
         foreach ($zoneable->getParents() as $zoneableParent) {
             $zone->addParent($this->zoneableAsZone($zoneableParent));
         }
