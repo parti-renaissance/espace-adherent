@@ -65,10 +65,8 @@ services:
             tags: ['messenger.message_handler']
 
     # Imports
-    App\Adherent\Unregistration\Handlers\:
-        resource: '../src/Adherent/Unregistration/Handlers/'
-    App\Adherent\Certification\:
-        resource: '../src/Adherent/Certification'
+    App\Adherent\:
+        resource: '../src/Adherent/'
     App\AdherentMessage\:
         resource: '../src/AdherentMessage'
     App\Command\:
