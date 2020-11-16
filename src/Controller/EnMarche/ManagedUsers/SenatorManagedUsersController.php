@@ -38,10 +38,13 @@ class SenatorManagedUsersController extends AbstractManagedUsersController
     {
         /** @var Adherent $adherent */
         $adherent = $this->getMainUser($request->getSession());
+        $session = $request->getSession();
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::SENATOR_EMAIL,
-            [$adherent->getSenatorArea()->getDepartmentTag()]
+            [$adherent->getSenatorArea()->getDepartmentTag()],
+            $this->getRestrictedCommittees($session),
+            $this->getRestrictedCities($session)
         );
     }
 }

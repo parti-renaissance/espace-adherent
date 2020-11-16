@@ -2,9 +2,9 @@
 
 namespace App\Entity\ElectedRepresentative;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityUserListDefinitionTrait;
+use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,8 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ElectedRepresentativeRepository")
  *
  * @UniqueEntity(fields={"adherent"}, message="elected_representative.invalid_adherent")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ElectedRepresentative
 {
@@ -103,13 +101,6 @@ class ElectedRepresentative
     private $birthPlace;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="bigint", nullable=true)
-     */
-    private $officialId;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(length=255, nullable=true)
@@ -134,17 +125,6 @@ class ElectedRepresentative
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $hasFollowedTraining = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     * @Assert\Expression(
-     *     "not (this.getAdherent() == null and value == true)",
-     *     message="elected_representative.is_adherent.no_adherent_email"
-     * )
-     */
-    private $isAdherent = false;
 
     /**
      * Mailchimp unsubscribed date
@@ -196,7 +176,6 @@ class ElectedRepresentative
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
-     * @ORM\OrderBy({"number": "ASC"})
      *
      * @Assert\Valid
      */
@@ -264,7 +243,6 @@ class ElectedRepresentative
         string $lastName,
         \DateTime $birthDate,
         string $gender = null,
-        int $officialId = null,
         UuidInterface $uuid = null
     ): self {
         $electedRepresentative = new self();
@@ -274,7 +252,6 @@ class ElectedRepresentative
         $electedRepresentative->lastName = $lastName;
         $electedRepresentative->gender = $gender;
         $electedRepresentative->birthDate = $birthDate;
-        $electedRepresentative->officialId = $officialId;
 
         return $electedRepresentative;
     }
@@ -294,7 +271,7 @@ class ElectedRepresentative
         $this->uuid = $uuid;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -304,7 +281,7 @@ class ElectedRepresentative
         $this->lastName = $lastName;
     }
 
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -324,7 +301,7 @@ class ElectedRepresentative
         $this->gender = $gender;
     }
 
-    public function getBirthDate(): \DateTime
+    public function getBirthDate(): ?\DateTime
     {
         return $this->birthDate;
     }
@@ -344,16 +321,6 @@ class ElectedRepresentative
         $this->birthPlace = $birthPlace;
     }
 
-    public function getOfficialId(): ?int
-    {
-        return $this->officialId;
-    }
-
-    public function setOfficialId(int $officialId): void
-    {
-        $this->officialId = $officialId;
-    }
-
     public function getContactEmail(): ?string
     {
         return $this->contactEmail;
@@ -362,11 +329,6 @@ class ElectedRepresentative
     public function setContactEmail(?string $contactEmail = null): void
     {
         $this->contactEmail = $contactEmail;
-    }
-
-    public function getAdherentPhone(): ?PhoneNumber
-    {
-        return $this->adherent ? $this->adherent->getPhone() : null;
     }
 
     public function getContactPhone(): ?PhoneNumber
@@ -394,12 +356,7 @@ class ElectedRepresentative
      */
     public function isAdherent(): bool
     {
-        return $this->isAdherent;
-    }
-
-    public function setIsAdherent(bool $isAdherent): void
-    {
-        $this->isAdherent = $isAdherent;
+        return $this->adherent instanceof Adherent;
     }
 
     public function getAdherent(): ?Adherent
@@ -447,6 +404,16 @@ class ElectedRepresentative
     {
         return $this->mandates->filter(function (Mandate $mandate) {
             return $mandate->isElected() && $mandate->isOnGoing() && null === $mandate->getFinishAt();
+        });
+    }
+
+    /**
+     * @return Mandate[]|Collection
+     */
+    public function getFinishedMandates(): Collection
+    {
+        return $this->mandates->filter(function (Mandate $mandate) {
+            return $mandate->isElected() && !$mandate->isOnGoing();
         });
     }
 
@@ -507,7 +474,7 @@ class ElectedRepresentative
 
     public function exportIsAdherent(): string
     {
-        return $this->isAdherent ? 'oui' : 'non';
+        return $this->isAdherent() ? 'oui' : 'non';
     }
 
     public function exportMandates(): string
@@ -647,5 +614,38 @@ class ElectedRepresentative
     public function __toString(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);
+    }
+
+    /**
+     * @return ReferentTag[]|ArrayCollection
+     */
+    public function getActiveReferentTags(): ArrayCollection
+    {
+        $activeTags = new ArrayCollection();
+
+        foreach ($this->getCurrentMandates() as $mandate) {
+            if (!$zone = $mandate->getZone()) {
+                continue;
+            }
+
+            foreach ($zone->getReferentTags() as $referentTag) {
+                if (!$activeTags->contains($referentTag)) {
+                    $activeTags->add($referentTag);
+                }
+            }
+        }
+
+        return $activeTags;
+    }
+
+    public function getActiveReferentTagCodes(): array
+    {
+        $tags = [];
+
+        foreach ($this->getActiveReferentTags() as $referentTag) {
+            $tags[] = $referentTag->getCode();
+        }
+
+        return array_unique($tags);
     }
 }

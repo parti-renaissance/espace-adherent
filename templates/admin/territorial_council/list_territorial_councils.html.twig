@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% for tc in object.foundTerritorialCouncils %}
+            <li>
+                {{ tc }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

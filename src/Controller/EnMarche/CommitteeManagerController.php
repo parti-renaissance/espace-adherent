@@ -4,7 +4,8 @@ namespace App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
 use App\Committee\CommitteeCommand;
-use App\Committee\CommitteeContactMembersCommand;
+use App\Committee\CommitteeManager;
+use App\Committee\CommitteeUpdateCommandHandler;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -13,16 +14,13 @@ use App\Event\EventRegistrationCommand;
 use App\Event\Filter\ListFilterObject;
 use App\Form\CommitteeCommandType;
 use App\Form\CommitteeMemberFilterType;
-use App\Form\ContactMembersType;
 use App\Form\EventCommandType;
 use App\Repository\CommitteeMembershipRepository;
 use App\Serializer\XlsxEncoder;
-use App\Utils\GroupUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,17 +34,27 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class CommitteeManagerController extends Controller
 {
+    private $manager;
+
+    public function __construct(CommitteeManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * @Route("/editer", name="app_committee_manager_edit", methods={"GET", "POST"})
      */
-    public function editAction(Request $request, Committee $committee): Response
-    {
+    public function editAction(
+        Request $request,
+        Committee $committee,
+        CommitteeUpdateCommandHandler $commandHandler
+    ): Response {
         $command = CommitteeCommand::createFromCommittee($committee);
         $form = $this->createForm(CommitteeCommandType::class, $command);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.update_handler')->handle($command);
+            $commandHandler->handle($command);
             $this->addFlash('info', 'committee.update.success');
 
             return $this->redirectToRoute('app_committee_manager_edit', [
@@ -57,7 +65,7 @@ class CommitteeManagerController extends Controller
         return $this->render('committee_manager/edit.html.twig', [
             'form' => $form->createView(),
             'committee' => $committee,
-            'committee_hosts' => $this->get('app.committee.manager')->getCommitteeHosts($committee),
+            'committee_hosts' => $this->manager->getCommitteeHosts($committee),
         ]);
     }
 
@@ -88,7 +96,7 @@ class CommitteeManagerController extends Controller
 
         return $this->render('committee_manager/add_event.html.twig', [
             'committee' => $committee,
-            'committee_hosts' => $this->get('app.committee.manager')->getCommitteeHosts($committee),
+            'committee_hosts' => $this->manager->getCommitteeHosts($committee),
             'form' => $form->createView(),
         ]);
     }
@@ -169,63 +177,13 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/membres/contact", name="app_committee_contact_members", methods={"POST"})
-     *
-     * @Security("committee.isApproved()")
-     */
-    public function contactMembersAction(Request $request, Committee $committee): Response
-    {
-        if (!$this->isCsrfTokenValid('committee.contact_members', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to contact members.');
-        }
-
-        $committeeManager = $this->get('app.committee.manager');
-
-        $uuids = GroupUtils::getUuidsFromJson($request->request->get('contacts', ''));
-        $adherents = GroupUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
-        $command = new CommitteeContactMembersCommand($adherents, $this->getUser());
-
-        $contacts = GroupUtils::getUuidsFromAdherents($adherents);
-
-        if (empty($contacts)) {
-            $this->addFlash('info', 'committee.contact_members.none');
-
-            return $this->redirectToRoute('app_committee_manager_list_members', [
-                'slug' => $committee->getSlug(),
-            ]);
-        }
-
-        $form = $this->createForm(ContactMembersType::class, $command)
-            ->add('submit', SubmitType::class)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.contact_members_handler')->handle($command);
-            $this->addFlash('info', 'committee.contact_members.success');
-
-            return $this->redirectToRoute('app_committee_manager_list_members', [
-                'slug' => $committee->getSlug(),
-            ]);
-        }
-
-        return $this->render('committee_manager/contact.html.twig', [
-            'committee' => $committee,
-            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'contacts' => GroupUtils::getUuidsFromAdherents($adherents),
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/promouvoir-suppleant/{member_uuid}", name="app_committee_promote_host", methods={"GET", "POST"})
      * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
     public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
-        $committeeManager = $this->get('app.committee.manager');
-        if (!$committeeManager->isPromotableHost($member, $committee)) {
+        if (!$this->manager->isPromotableHost($member, $committee)) {
             throw $this->createNotFoundException(sprintf('Member "%s" of committee "%s" can not be promoted as a host privileged person.', $member->getUuid(), $committee->getUuid()));
         }
 
@@ -233,7 +191,7 @@ class CommitteeManagerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $committeeManager->promote($member, $committee);
+            $this->manager->promote($member, $committee);
             $this->addFlash('info', 'committee.promote_host.success');
 
             return $this->redirectToRoute('app_committee_manager_list_members', [
@@ -244,7 +202,7 @@ class CommitteeManagerController extends Controller
         return $this->render('committee_manager/promote_host.html.twig', [
             'member' => $member,
             'committee' => $committee,
-            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'committee_hosts' => $this->manager->getCommitteeHosts($committee),
             'form' => $form->createView(),
         ]);
     }
@@ -256,8 +214,7 @@ class CommitteeManagerController extends Controller
      */
     public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
-        $committeeManager = $this->get('app.committee.manager');
-        if (!$committeeManager->isDemotableHost($member, $committee)) {
+        if (!$this->manager->isDemotableHost($member, $committee)) {
             throw $this->createNotFoundException(sprintf('Member "%s" of committee "%s" can not be demoted as a simple follower.', $member->getUuid(), $committee->getUuid()));
         }
 
@@ -265,7 +222,7 @@ class CommitteeManagerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $committeeManager->demote($member, $committee);
+            $this->manager->demote($member, $committee);
             $this->addFlash('info', 'committee.demote_host.success');
 
             return $this->redirectToRoute('app_committee_manager_list_members', [
@@ -276,7 +233,7 @@ class CommitteeManagerController extends Controller
         return $this->render('committee_manager/demote_host.html.twig', [
             'member' => $member,
             'committee' => $committee,
-            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'committee_hosts' => $this->manager->getCommitteeHosts($committee),
             'form' => $form->createView(),
         ]);
     }

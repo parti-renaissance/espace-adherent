@@ -3,11 +3,17 @@
 namespace App\Mailchimp\Campaign\ContentSection;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Utils\StringCleaner;
 
 class MunicipalChiefMessageSectionBuilder implements ContentSectionBuilderInterface
 {
+    public function supports(AdherentMessageInterface $message): bool
+    {
+        return $message instanceof MunicipalChiefAdherentMessage;
+    }
+
     public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void
     {
         $adherent = $message->getAuthor();

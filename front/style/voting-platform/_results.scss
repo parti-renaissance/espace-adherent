@@ -61,14 +61,17 @@
 
                 &__ballots-detail {
                     width: 100%;
-                    max-width: 676px;
 
                     .table--container {
                         background: $white;
                         padding: 40px;
+                        overflow: auto;
+                        box-sizing: border-box;
+                        max-width: 100%;
 
                         table {
                             width: 100%;
+                            min-width: 750px;
                         }
                     }
                 }
@@ -77,6 +80,8 @@
     }
 
     .progress-bar {
+        flex-grow: 1;
+
         &__gauge {
             flex-basis: 100%;
             height: 12px;
@@ -86,7 +91,6 @@
             .slider {
                 height: 100%;
                 border-radius: 6px;
-                background: $blue;
             }
         }
 
@@ -97,12 +101,16 @@
             font-weight: bold;
         }
     }
+}
 
-    .elected-tag {
-        display: inline-block;
-        padding: 5px;
-        font-size: 12px;
-        line-height: 14px;
-        vertical-align: middle;
+.elected-tag {
+    display: inline-block;
+    padding: 5px;
+    font-size: 12px;
+    line-height: 14px;
+    vertical-align: middle;
+
+    &--small {
+        padding: 2px;
     }
 }

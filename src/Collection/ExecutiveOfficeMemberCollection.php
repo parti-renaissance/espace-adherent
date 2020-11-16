@@ -23,12 +23,10 @@ class ExecutiveOfficeMemberCollection extends ArrayCollection
         return !$collection->isEmpty() ? $collection->first() : null;
     }
 
-    public function getDeputyGeneralDelegate(): ?ExecutiveOfficeMember
+    public function getDeputyGeneralDelegate(): self
     {
-        $collection = $this->filter(function (ExecutiveOfficeMember $executiveOfficeMember) {
+        return $this->filter(function (ExecutiveOfficeMember $executiveOfficeMember) {
             return $executiveOfficeMember->isDeputyGeneralDelegate();
         });
-
-        return !$collection->isEmpty() ? $collection->first() : null;
     }
 }

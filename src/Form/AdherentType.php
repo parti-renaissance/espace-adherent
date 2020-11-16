@@ -22,14 +22,20 @@ class AdherentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $countryCode = $builder->getData() && $builder->getData()->getAddress() ? $builder->getData()->getAddress()->getCountry() : null;
+        /** @var MembershipRequest $membershipRequest */
+        $membershipRequest = $builder->getData();
+        $isCertified = $membershipRequest ? $membershipRequest->isCertified() : false;
+
+        $countryCode = $membershipRequest && $membershipRequest->getAddress() ? $membershipRequest->getAddress()->getCountry() : null;
 
         $builder
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,
+                'disabled' => $isCertified,
             ])
             ->add('lastName', TextType::class, [
                 'format_identity_case' => true,
+                'disabled' => $isCertified,
             ])
             ->add('nationality', CountryType::class, [
                 'placeholder' => 'Nationalité',
@@ -40,13 +46,16 @@ class AdherentType extends AbstractType
                 'required' => false,
                 'placeholder' => 'common.i.am',
             ])
-            ->add('gender', GenderType::class)
+            ->add('gender', GenderType::class, [
+                'disabled' => $isCertified,
+            ])
             ->add('customGender', TextType::class, [
                 'required' => false,
             ])
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
                 'years' => $options['years'],
+                'disabled' => $isCertified,
                 'placeholder' => [
                     'year' => 'AAAA',
                     'month' => 'MM',
@@ -82,6 +91,7 @@ class AdherentType extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
+
             if (!\array_key_exists('elected', $data)
                 || (\array_key_exists('elected', $data) && false === $data['elected'])) {
                 unset($data['mandates']);

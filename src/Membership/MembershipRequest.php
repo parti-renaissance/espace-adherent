@@ -157,6 +157,11 @@ class MembershipRequest implements MembershipInterface
      */
     private $mandates;
 
+    /**
+     * @var bool
+     */
+    private $certified = false;
+
     public function __construct()
     {
         $this->address = new Address();
@@ -189,8 +194,29 @@ class MembershipRequest implements MembershipInterface
         $dto->mandates = $adherent->getMandates();
         $dto->elected = $adherent->hasMandate();
         $dto->nationality = $adherent->getNationality();
+        $dto->certified = $adherent->isCertified();
 
         return $dto;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->certified;
     }
 
     public function setAddress(Address $address): void

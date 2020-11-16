@@ -2,12 +2,12 @@
 
 namespace App\Entity\Jecoute;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -16,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="jecoute_survey_question")
  * @ORM\Entity
-
- * @Algolia\Index(autoIndex=false)
  */
 class SurveyQuestion implements AuthoredInterface
 {
@@ -139,6 +137,16 @@ class SurveyQuestion implements AuthoredInterface
     public function getDataAnswers(): Collection
     {
         return $this->dataAnswers;
+    }
+
+    public function getDataAnswersFor(SurveyQuestion $surveyQuestion, DataSurvey $dataSurvey)
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('surveyQuestion', $surveyQuestion))
+            ->andWhere(Criteria::expr()->eq('dataSurvey', $dataSurvey))
+        ;
+
+        return $this->dataAnswers->matching($criteria)->first();
     }
 
     public function addDataAnswer(DataAnswer $dataAnswer): void

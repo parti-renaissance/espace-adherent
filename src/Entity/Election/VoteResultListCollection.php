@@ -2,7 +2,6 @@
 
 namespace App\Entity\Election;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\City;
 use App\Entity\ElectionRound;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,8 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Election\VoteResultListCollectionRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class VoteResultListCollection
 {

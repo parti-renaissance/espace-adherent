@@ -1,0 +1,73 @@
+{% extends 'territorial_council/_main_layout.html.twig' %}
+
+{% import 'territorial_council/_macros.html.twig' as helper %}
+
+{% block page_title 'Candidats aux élections' %}
+
+{% block sub_content %}
+    <section class="territorial-council__candidacies">
+        <h2 class="b__nudge--bottom-larger">Candidats aux élections</h2>
+
+        <div class="b__nudge--bottom-larger">
+            {% set current_quality = null %}
+
+            {% for candidacy in candidacies|sort((a, b) => a.qualityPriority <=> b.qualityPriority) if not candidacy.isTaken %}
+                {% if current_quality is null or current_quality != candidacy.quality %}
+                    {% set current_quality = candidacy.quality %}
+
+                    <h4 class="text--muted text--normal text--uppercase b__nudge--top-large b__nudge--bottom-large quality-title-{{ candidacy.qualityPriority }}">
+                        {{ ('territorial_council.membership.qualities.' ~ current_quality)|trans }}
+                    </h4>
+                {% endif %}
+
+                <div class="territorial-council__candidacie l__row l__row--wrap">
+                    {% set first_candidacy = candidacy.isFemale ? candidacy : (candidacy.binome ? candidacy.binome : candidacy) %}
+
+                    {{ first_candidacy.take() }}
+                    <div class="territorial-council__candidate">
+                        {{ helper.display_candidate_identity(first_candidacy, '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.isFemale ? 'F' : 'H') ~ '</span>') }}
+                    </div>
+
+                    {% if first_candidacy.binome %}
+                        {{ first_candidacy.binome.take() }}
+
+                        <div class="territorial-council__candidate">
+                            {{ helper.display_candidate_identity(first_candidacy.binome, '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.binome.isFemale ? 'F' : 'H') ~ '</span>') }}
+                        </div>
+                    {% endif %}
+
+                    <div>
+                        <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
+                           data-confirm-content-element="#candidate-biography-content-{{ first_candidacy.uuid }}"
+                        > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>
+
+                        <div id="candidate-biography-content-{{ first_candidacy.uuid }}" class="hidden">
+                            <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentations</h3>
+
+                            <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.membership.fullName }}</h2>
+                            <p class="text--body text--dark">{{ first_candidacy.biography|nl2br }}</p>
+
+                            {% if first_candidacy.binome %}
+                                <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.binome.membership.fullName }}</h2>
+                                <p class="text--body text--dark">{{ first_candidacy.binome.biography|nl2br }}</p>
+                            {% endif %}
+
+                            <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
+
+                            {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or first_candidacy.isPublicFaithStatement %}
+                                <p class="text--body text--dark">{{ first_candidacy.faithStatement|nl2br }}</p>
+                            {% else %}
+                                <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text--center">
+                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" /><br/>
+                    Aucune candidature
+                </p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

@@ -23,6 +23,6 @@ export default class Approach extends React.Component {
     }
 }
 
-Approach.propsType = {
+Approach.propTypes = {
     approach: PropTypes.object.isRequired,
 };

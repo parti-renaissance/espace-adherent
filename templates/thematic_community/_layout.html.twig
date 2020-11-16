@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div id="thematic-community">
+        <div class="details">
+            <div class="header"
+                    {% if thematic_community.imageName is not empty %}
+                        style="background-image: url({{ path('asset_url', {path: thematic_community.imagePath}) }})"
+                    {% endif %}
+            >
+                <div class="l__wrapper--600 shift-top">
+                    <p class="subtitle">Je m'engage</p>
+                    <h1>{{ ('thematic_community.label.'~thematic_community.slug)|trans }}</h1>
+                </div>
+            </div>
+
+            <main class="l__wrapper--narrow shift-top">
+                {% block thematic_community_content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}

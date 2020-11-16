@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\CitizenProjectSkill;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadCitizenProjectSkillData extends AbstractFixture
+class LoadCitizenProjectSkillData extends Fixture
 {
     const SKILLS = [
         'CPS001' => 'Paysage',

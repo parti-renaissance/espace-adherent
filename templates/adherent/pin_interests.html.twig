@@ -1,27 +1,42 @@
-{% extends 'adherent/layout.twig' %}
+{% extends 'adherent_profile/_layout.html.twig' %}
 
-{% block adherent_profile_form %}
+{% block page_title 'Centres d\'intérêt' %}
 
-    <h3>Centres d'intérêt</h3>
-    <div class="text--summary b__nudge--top-10">Cochez vos centres d'intérêt.</div>
+{% block adherent_profile_content %}
 
-    {{ form_start(form, { attr: { id: 'app_adherent_pin_interests' } }) }}
+<section class="adherent-profile__section">
+    <h1 class="text--medium-large">Centres d'intérêt</h1>
+    {{ form_start(form, {attr: {class: 'em-form'}}) }}
 
         {{ form_errors(form.interests) }}
 
-        <div class="form l__row l__row--wrap">
-            {% for interest in form.interests %}
-                <div class="form__checkbox form__checkbox--col">
-                    {{ form_widget(interest) }}
-                    {{ form_label(interest) }}
-                </div>
-            {% endfor %}
-        </div>
+        <section class="em-form__section">
+            <h2 class="section-subtitle">Vos centres d'intérêt</h2>
+            {{ form_errors(form.interests) }}
+            <div class="em-form__group">
+                <label for="" class="em-form__label">Les thématiques qui vous intéressent...</label>
 
-        <div class="b__nudge--top">
-            {{ form_widget(form.submit, { label: 'Enregistrer les modifications', attr: { class: 'btn--blue' } }) }}
-        </div>
+                <div class="checkb-cols">
+                    {% for interest in form.interests %}
+                        <div class="checkb-cols__col">
+                            <div class="form__checkbox">
+                                {{ form_widget(interest) }}
+                                {{ form_label(interest) }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+    <section class="em-form__section">
+        <h2 class="section-subtitle">Communautés thématiques</h2>
+        <p class="text--body text--dark">Elles arrivent bientôt &#128521;</p>
+    </section>
+
+    <button class="btn btn--blue">Enregistrer</button>
 
     {{ form_end(form) }}
+</section>
 
 {% endblock %}

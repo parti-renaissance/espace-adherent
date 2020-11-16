@@ -22,17 +22,8 @@ class ZoneCategory
     public const DISTRICT = 'Circonscription';
     public const CORSICA = 'Corse';
     public const FOF = 'FDE';
-
-    public const ZONES = [
-        'CITY_COUNCIL' => [self::CITY],
-        'EPCI_MEMBER' => [self::EPCI],
-        'DEPARTMENTAL_COUNCIL' => [self::DEPARTMENT],
-        'REGIONAL_COUNCIL' => [self::REGION],
-        'CORSICA_ASSEMBLY_MEMBER' => [self::CORSICA],
-        'DEPUTY' => [self::DISTRICT],
-        'SENATOR' => [self::DEPARTMENT, self::FOF],
-        'EURO_DEPUTY' => [],
-    ];
+    public const CONSULAR_DISTRICT = 'Consular District';
+    public const BOROUGH = 'Arrondissement';
 
     public const ALL = [
         self::CITY,
@@ -42,6 +33,7 @@ class ZoneCategory
         self::DISTRICT,
         self::CORSICA,
         self::FOF,
+        self::BOROUGH,
     ];
 
     /**

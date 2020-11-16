@@ -2,42 +2,51 @@
 
 namespace App\Controller\EnMarche;
 
+use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
 use App\Controller\EntityControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeFeedItem;
 use App\Form\CommitteeFeedItemMessageType;
-use App\Form\VotingPlatform\CandidacyBiographyType;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Security\Http\Session\AnonymousFollowerSession;
-use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/comites/{slug}")
  */
-class CommitteeController extends Controller
+class CommitteeController extends AbstractController
 {
     use EntityControllerTrait;
+
+    private $committeeManager;
+    private $timelineMaxItems;
+
+    public function __construct(CommitteeManager $committeeManager, int $timelineMaxItems)
+    {
+        $this->committeeManager = $committeeManager;
+        $this->timelineMaxItems = $timelineMaxItems;
+    }
 
     /**
      * @Route(name="app_committee_show", methods={"GET"})
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
-    public function showAction(Request $request, Committee $committee): Response
-    {
-        if ($this->isGranted('IS_ANONYMOUS')
-            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
-        ) {
+    public function showAction(
+        Request $request,
+        Committee $committee,
+        AnonymousFollowerSession $anonymousFollowerSession
+    ): Response {
+        if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
             return $authenticate;
         }
 
@@ -47,16 +56,14 @@ class CommitteeController extends Controller
             ]);
         }
 
-        $committeeManager = $this->getCommitteeManager();
-
-        $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
+        $feeds = $this->committeeManager->getTimeline($committee, $this->timelineMaxItems);
 
         return $this->render('committee/show.html.twig', [
             'committee' => $committee,
-            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
+            'committee_hosts' => $this->committeeManager->getCommitteeHosts($committee),
             'committee_timeline' => $feeds,
             'committee_timeline_forms' => $this->createTimelineDeleteForms($feeds),
-            'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
+            'committee_timeline_max_messages' => $this->timelineMaxItems,
         ]);
     }
 
@@ -78,14 +85,14 @@ class CommitteeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('info', 'committee.message_edited');
+            $this->addFlash('info', 'common.message_edited');
 
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
         return $this->render('committee/timeline/edit.html.twig', [
             'committee' => $committee,
-            'committee_hosts' => $this->getCommitteeManager()->getCommitteeHosts($committee),
+            'committee_hosts' => $this->committeeManager->getCommitteeHosts($committee),
             'form' => $form->createView(),
         ]);
     }
@@ -111,7 +118,7 @@ class CommitteeController extends Controller
         $em->remove($committeeFeedItem);
         $em->flush();
 
-        $this->addFlash('info', 'committee.message_deleted');
+        $this->addFlash('info', 'common.message_deleted');
 
         return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
     }
@@ -122,9 +129,9 @@ class CommitteeController extends Controller
      */
     public function timelineAction(Request $request, Committee $committee): Response
     {
-        $timeline = $this->getCommitteeManager()->getTimeline(
+        $timeline = $this->committeeManager->getTimeline(
             $committee,
-            $this->getParameter('timeline_max_messages'),
+            $this->timelineMaxItems,
             $request->query->getInt('offset', 0)
         );
 
@@ -141,13 +148,16 @@ class CommitteeController extends Controller
      * @Route("/rejoindre", name="app_committee_follow", condition="request.request.has('token')", methods={"POST"})
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")
      */
-    public function followAction(Request $request, Committee $committee): Response
-    {
+    public function followAction(
+        Request $request,
+        Committee $committee,
+        CommitteeManagementAuthority $committeeManagementAuthority
+    ): Response {
         if (!$this->isCsrfTokenValid('committee.follow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow committee.');
         }
 
-        $this->get('app.committee.authority')->followCommittee($this->getUser(), $committee);
+        $committeeManagementAuthority->followCommittee($this->getUser(), $committee);
 
         return new JsonResponse([
             'button' => [
@@ -168,7 +178,7 @@ class CommitteeController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
         }
 
-        $this->getCommitteeManager()->unfollowCommittee($this->getUser(), $committee);
+        $this->committeeManager->unfollowCommittee($this->getUser(), $committee);
 
         return new JsonResponse([
             'button' => [
@@ -192,7 +202,7 @@ class CommitteeController extends Controller
         UserInterface $adherent,
         Request $request,
         Committee $committee,
-        CommitteeManager $manager
+        MessageBusInterface $bus
     ): Response {
         if (!$this->isCsrfTokenValid('committee.vote', $request->request->get('token'))) {
             return $this->json([
@@ -201,142 +211,17 @@ class CommitteeController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        if ($adherent->getMemberships()->getCommitteeCandidacyMembership()) {
-            return $this->json([
-                'status' => 'NOK',
-                'error' => 'Vous devez retirer votre candidature pour pouvoir changer de comité de désignation.',
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
         $membership = $adherent->getMembershipFor($committee);
 
         if ($enable) {
-            $manager->enableVoteInMembership($membership, $adherent);
+            $this->committeeManager->enableVoteInMembership($membership, $adherent);
         } else {
-            $manager->disableVoteInMembership($membership);
+            $this->committeeManager->disableVoteInMembership($membership);
         }
+
+        $bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
 
         return $this->json(['status' => 'OK'], Response::HTTP_OK);
-    }
-
-    /**
-     * @Route("/candidater", name="app_committee_candidate", methods={"GET", "POST"})
-     *
-     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee) and is_granted('ABLE_TO_CANDIDATE')")
-     */
-    public function candidateAction(
-        UserInterface $adherent,
-        Committee $committee,
-        Request $request,
-        CommitteeManager $manager
-    ): Response {
-        if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
-            $this->addFlash('error', 'Vous ne pouvez pas candidater pour cette désignation.');
-
-            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-        }
-
-        /** @var Adherent $adherent */
-        $candidacyGender = $adherent->getGender();
-
-        if ($adherent->isOtherGender()) {
-            $candidacyGender = $request->query->get('gender');
-
-            if (!$candidacyGender || !\in_array($candidacyGender, Genders::CIVILITY_CHOICES, true)) {
-                $this->addFlash('error', 'Le genre de la candidature n\'a pas été sélectionné');
-
-                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-            }
-        }
-
-        $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), $candidacyGender);
-
-        $form = $this
-            ->createForm(CandidacyBiographyType::class, $candidacy)
-            ->add('skip', SubmitType::class)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($manager->candidateInCommittee($candidacy, $adherent, $committee)) {
-                $this->addFlash('info', 'Votre candidature a bien été enregistrée');
-
-                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-            }
-        }
-
-        return $this->render('committee/edit_candidacy.html.twig', [
-            'form' => $form->createView(),
-            'committee' => $committee,
-        ]);
-    }
-
-    /**
-     * @Route("/modifie-ma-candidature", name="app_committee_update_candidacy", methods={"GET", "POST"})
-     *
-     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
-     */
-    public function updateCandidacyAction(
-        Request $request,
-        Committee $committee,
-        UserInterface $adherent,
-        CommitteeManager $manager
-    ): Response {
-        if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
-            $this->addFlash('error', 'Vous ne pouvez plus modifier votre candidature.');
-
-            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-        }
-
-        /** @var Adherent $adherent */
-        if (!$candidacy = $manager->getCandidacy($adherent, $committee)) {
-            throw $this->createNotFoundException();
-        }
-
-        $form = $this
-            ->createForm(CandidacyBiographyType::class, $candidacy)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->saveCandidacy($candidacy);
-
-            $this->addFlash('info', 'Votre candidature a bien été modifiée');
-
-            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-        }
-
-        return $this->render('committee/edit_candidacy.html.twig', [
-            'candidacy' => $candidacy,
-            'committee' => $committee,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/retirer-sa-candidature", name="app_committee_remove_candidacy", methods={"GET"})
-     *
-     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
-     */
-    public function removeCandidacy(Request $request, Committee $committee, CommitteeManager $manager): Response
-    {
-        if (!$committee->getCommitteeElection() || !$committee->getCommitteeElection()->isCandidacyPeriodActive()) {
-            if (!(false === $committee->getCommitteeElection()->isVotePeriodStarted() && $this->isGranted('ROLE_PREVIOUS_ADMIN'))) {
-                $this->addFlash('error', 'Vous ne pouvez pas retirer votre candidature.');
-
-                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-            }
-        }
-
-        $manager->removeCandidacy($this->getUser(), $committee);
-
-        $this->addFlash('info', 'Votre candidature a bien été supprimée');
-
-        if ($request->query->has('back')) {
-            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-        }
-
-        return $this->redirectToRoute('app_adherent_committees');
     }
 
     /**
@@ -360,10 +245,5 @@ class CommitteeController extends Controller
         }
 
         return $forms;
-    }
-
-    private function getCommitteeManager(): CommitteeManager
-    {
-        return $this->get(CommitteeManager::class);
     }
 }

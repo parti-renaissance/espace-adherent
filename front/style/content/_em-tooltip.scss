@@ -6,19 +6,22 @@
 
     &--trigger {
         display: block;
-        min-width: 18px;
-        height: 18px;
-        background-color: $white;
         box-sizing: border-box;
-        line-height: 15px;
-        font-size: 13px;
-        font-family: $font-roboto;
-        text-align: center;
-        border-radius: 20px;
-        border: 2px solid #e1e5ea;
-        font-weight: 700;
-        color: #444;
         cursor: pointer;
+
+        &-circle {
+            border-radius: 20px;
+            min-width: 18px;
+            height: 18px;
+            line-height: 15px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 700;
+            background-color: $white;
+            font-family: $font-roboto;
+            border: 2px solid $lines-grey;
+            color: $dark;
+        }
     }
 
     &--content {
@@ -33,10 +36,31 @@
         color: #444;
         position: absolute;
         top: 30px;
-        left: -190px;
+        left: -70px;
         transition: opacity .125s ease-in-out;
         -webkit-transition: opacity .125s ease-in-out;
         font-family: $font-roboto;
+
+        &-small {
+            top: -35px;
+            left: -60px;
+            width: 150px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        &-big {
+            width: 600px;
+        }
+
+        &-bordered {
+            border: 1px solid #eeeeee;
+        }
+
+        &-reversed {
+            background: $dark;
+            color: $white;
+        }
 
         div {
             font-size: 18px;
@@ -44,11 +68,16 @@
             margin-bottom: 15px;
         }
 
-        p {
+        p,li {
             font-weight: 400;
             font-size: 14px;
             line-height: 20px;
             margin: 0;
+        }
+
+        ul {
+            list-style: initial;
+            margin-left: 20px;
         }
     }
 

@@ -24,6 +24,11 @@ class CertificationRequestDuplicateHandler implements CertificationRequestHandle
         $this->documentManager = $documentManager;
     }
 
+    public function getPriority(): int
+    {
+        return 255;
+    }
+
     public function supports(CertificationRequest $certificationRequest): bool
     {
         return $certificationRequest->isPending();

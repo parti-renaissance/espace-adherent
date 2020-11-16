@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\VotingPlatform\Designation\DesignationStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 trait EntityDesignationTrait
@@ -12,11 +13,16 @@ trait EntityDesignationTrait
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", fetch="EAGER")
      */
-    private $designation;
+    protected $designation;
 
     public function getDesignation(): Designation
     {
         return $this->designation;
+    }
+
+    public function setDesignation(Designation $designation): void
+    {
+        $this->designation = $designation;
     }
 
     public function getCandidacyPeriodStartDate(): \DateTime
@@ -57,6 +63,13 @@ trait EntityDesignationTrait
         ;
     }
 
+    public function isCandidacyPeriodStarted(): bool
+    {
+        $now = new \DateTime();
+
+        return $this->designation && $this->getCandidacyPeriodStartDate() && $this->getCandidacyPeriodStartDate() <= $now;
+    }
+
     public function isVotePeriodActive(): bool
     {
         $now = new \DateTime();
@@ -78,6 +91,11 @@ trait EntityDesignationTrait
         return $this->designation && $this->getVoteStartDate() && $this->getVoteStartDate() <= $now;
     }
 
+    public function isBinomeDesignation(): bool
+    {
+        return $this->designation->isBinomeDesignation();
+    }
+
     public function isResultPeriodActive(): bool
     {
         if (!$voteEndDate = $this->getVoteEndDate()) {
@@ -92,6 +110,13 @@ trait EntityDesignationTrait
                 sprintf('+%d days', $this->designation->getResultDisplayDelay())
             )
         ;
+    }
+
+    public function isResultPeriodStarted(): bool
+    {
+        $now = new \DateTime();
+
+        return $this->designation && $this->getVoteEndDate() && $this->getVoteEndDate() <= $now;
     }
 
     public function getAdditionalRoundDuration(): int
@@ -115,5 +140,31 @@ trait EntityDesignationTrait
     public function getRealVoteEndDate(): \DateTime
     {
         return $this->getVoteEndDate();
+    }
+
+    public function getStatus(): string
+    {
+        if (!$this->isCandidacyPeriodStarted()) {
+            return DesignationStatusEnum::NOT_STARTED;
+        }
+
+        if (!$this->isVotePeriodStarted()) {
+            if ($this->getVoteStartDate()) {
+                return DesignationStatusEnum::SCHEDULED;
+            }
+
+            return DesignationStatusEnum::OPENED;
+        }
+
+        if ($this->isVotePeriodActive()) {
+            return DesignationStatusEnum::IN_PROGRESS;
+        }
+
+        return DesignationStatusEnum::CLOSED;
+    }
+
+    public function getDesignationType(): string
+    {
+        return $this->designation->getType();
     }
 }

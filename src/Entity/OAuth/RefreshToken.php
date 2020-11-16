@@ -2,7 +2,6 @@
 
 namespace App\Entity\OAuth;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -12,8 +11,6 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\UniqueConstraint(name="oauth_refresh_tokens_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="oauth_refresh_tokens_identifier_unique", columns="identifier")
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class RefreshToken extends AbstractToken
 {

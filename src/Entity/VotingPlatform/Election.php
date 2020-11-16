@@ -2,11 +2,11 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityDesignationTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\ElectionResult\ElectionResult;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,8 +18,6 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\ElectionRepository")
  *
  * @ORM\Table(name="voting_platform_election")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Election
 {
@@ -45,7 +43,7 @@ class Election
     private $status = ElectionStatusEnum::OPEN;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -55,6 +53,7 @@ class Election
      * @var ElectionRound[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionRound", mappedBy="election", cascade={"all"})
+     * @ORM\OrderBy({"id": "ASC"})
      */
     private $electionRounds;
 
@@ -72,13 +71,43 @@ class Election
      */
     private $secondRoundEndDate;
 
-    public function __construct(Designation $designation, UuidInterface $uuid = null, array $rounds = [])
-    {
+    /**
+     * @var ElectionResult|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionResult", mappedBy="election", cascade={"persist"})
+     */
+    private $electionResult;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
+     */
+    private $additionalPlaces;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $additionalPlacesGender;
+
+    public function __construct(
+        Designation $designation,
+        UuidInterface $uuid = null,
+        array $rounds = [],
+        ElectionEntity $entity = null
+    ) {
         $this->designation = $designation;
         $this->uuid = $uuid ?? Uuid::uuid4();
 
         $this->electionRounds = new ArrayCollection();
         $this->electionPools = new ArrayCollection();
+        $this->electionEntity = $entity;
+
+        if ($entity) {
+            $entity->setElection($this);
+        }
 
         foreach ($rounds as $round) {
             $this->addElectionRound($round);
@@ -88,11 +117,6 @@ class Election
     public function getTitle(): string
     {
         return $this->designation->getTitle();
-    }
-
-    public function getDesignationType(): string
-    {
-        return $this->designation->getType();
     }
 
     public function getElectionEntity(): ElectionEntity
@@ -113,8 +137,17 @@ class Election
 
     public function isVotePeriodActive(): bool
     {
-        return ElectionStatusEnum::OPEN === $this->status
-            && ($this->isDesignationVotePeriodActive() || $this->isSecondRoundVotePeriodActive());
+        return $this->isOpen() && ($this->isDesignationVotePeriodActive() || $this->isSecondRoundVotePeriodActive());
+    }
+
+    public function isOpen(): bool
+    {
+        return ElectionStatusEnum::OPEN === $this->status;
+    }
+
+    public function isClosed(): bool
+    {
+        return ElectionStatusEnum::CLOSED === $this->status;
     }
 
     public function close(): void
@@ -137,6 +170,14 @@ class Election
             $pool->setElection($this);
             $this->electionPools->add($pool);
         }
+    }
+
+    /**
+     * @return ElectionPool[]
+     */
+    public function getElectionPools(): array
+    {
+        return $this->electionPools->toArray();
     }
 
     public function getCurrentRound(): ?ElectionRound
@@ -168,5 +209,84 @@ class Election
     public function isSecondRoundVotePeriodActive(): bool
     {
         return null !== $this->secondRoundEndDate && (new \DateTime()) <= $this->secondRoundEndDate;
+    }
+
+    public function getSecondRoundEndDate(): ?\DateTime
+    {
+        return $this->secondRoundEndDate;
+    }
+
+    /**
+     * @return ElectionRound[]
+     */
+    public function getElectionRounds(): array
+    {
+        return $this->electionRounds->toArray();
+    }
+
+    public function getFirstRound(): ?ElectionRound
+    {
+        return $this->electionRounds->first() ?? null;
+    }
+
+    public function getElectionResult(): ?ElectionResult
+    {
+        return $this->electionResult;
+    }
+
+    public function setElectionResult(?ElectionResult $electionResult): void
+    {
+        $this->electionResult = $electionResult;
+    }
+
+    public function hasResult(): bool
+    {
+        return null !== $this->electionResult;
+    }
+
+    public function canClose(): bool
+    {
+        if ($this->isClosed()) {
+            return false;
+        }
+
+        $now = new \DateTime();
+
+        if ($secondDate = $this->getSecondRoundEndDate()) {
+            return $secondDate < $now;
+        }
+
+        if (!$this->electionResult) {
+            return false;
+        }
+
+        $roundResult = $this->electionResult->getElectionRoundResult($this->getCurrentRound());
+
+        return $roundResult && $roundResult->hasOnlyElectedPool();
+    }
+
+    public function getClosedAt(): ?\DateTime
+    {
+        return $this->closedAt;
+    }
+
+    public function getAdditionalPlaces(): ?int
+    {
+        return $this->additionalPlaces;
+    }
+
+    public function setAdditionalPlaces(?int $additionalPlaces): void
+    {
+        $this->additionalPlaces = $additionalPlaces;
+    }
+
+    public function getAdditionalPlacesGender(): ?string
+    {
+        return $this->additionalPlacesGender;
+    }
+
+    public function setAdditionalPlacesGender(string $gender): void
+    {
+        $this->additionalPlacesGender = $gender;
     }
 }

@@ -1,0 +1,31 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set results = get_election_candidate_result(object.adherent_id, object.designation.id, object.election_entity.committee_id ?? null, object.election_entity.territorial_council_id ?? null) %}
+
+    {% if results|length %}
+        {% set filters = {electionRound__election__designation: {value: object.designation.id}} %}
+
+        {% if object.type == 'committee' %}
+            {% set filters = filters|merge({electionRound__election__electionEntity__committee: {value: object.election_entity.id}}) %}
+        {% else %}
+            {% set filters = filters|merge({electionRound__election__electionEntity__territorialCouncil: {value: object.election_entity.id}}) %}
+        {% endif %}
+
+        <a href="{{ path('admin_app_votingplatform_vote_list', {filter: filters}) }}">
+    {% endif %}
+
+    {% for index in [0, 1] %}
+        {% if results[index] is defined %}
+            {{ results[index].total }}
+        {% else %}
+            ~
+        {% endif %}
+
+        {{ index != 1 ? ' / ' }}
+    {% endfor %}
+
+    {% if results|length %}
+        </a>
+    {% endif %}
+{% endblock %}

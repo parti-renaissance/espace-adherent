@@ -1,7 +1,8 @@
 ![En Marche !, le mouvement d'Emmanuel Macron](https://github.com/EnMarche/en-marche.fr/blob/master/public/logo/em-logo.svg)
 
 [![CircleCI](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master.svg?style=svg)](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master)
-
+![CodeQL](https://github.com/EnMarche/en-marche.fr/workflows/CodeQL/badge.svg)
+![OSSAR](https://github.com/EnMarche/en-marche.fr/workflows/OSSAR/badge.svg)
 > An English ReadMe is available after the French one.
 
 Ce repository est l'application [Symfony](http://symfony.com) qui propulse la plateforme [en-marche.fr](https://en-marche.fr).

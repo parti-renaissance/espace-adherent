@@ -2,18 +2,17 @@
 
 namespace App\Entity\ElectedRepresentative;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Entity\Geo\Zone as GeoZone;
 use App\Exception\BadMandateTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\MandateRepository")
  * @ORM\Table(name="elected_representative_mandate")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Mandate
 {
@@ -51,8 +50,17 @@ class Mandate
      *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
      *     message="Le périmètre géographique est obligatoire."
      * )
+     *
+     * @deprecated Will be replace by $geoZone
      */
     private $zone;
+
+    /**
+     * @var GeoZone|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     */
+    private $geoZone;
 
     /**
      * @var bool
@@ -196,14 +204,30 @@ class Mandate
         $this->isElected = $isElected;
     }
 
+    /**
+     * @deprecated Will be replace by getGeoZone()
+     */
     public function getZone(): ?Zone
     {
         return $this->zone;
     }
 
+    /**
+     * @deprecated Will be replace by setGeoZone()
+     */
     public function setZone(Zone $zone): void
     {
         $this->zone = $zone;
+    }
+
+    public function getGeoZone(): ?GeoZone
+    {
+        return $this->geoZone;
+    }
+
+    public function setGeoZone(GeoZone $geoZone): void
+    {
+        $this->geoZone = $geoZone;
     }
 
     public function isOnGoing(): bool
@@ -292,6 +316,22 @@ class Mandate
     public function getPoliticalFunctions(): Collection
     {
         return $this->politicalFunctions;
+    }
+
+    public function getLastPoliticalFunction(): ?PoliticalFunction
+    {
+        if (0 === $this->politicalFunctions->count()) {
+            return null;
+        }
+
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('onGoing', true))
+            ->orderBy(['beginAt' => 'DESC'])
+        ;
+
+        $functions = $this->politicalFunctions->matching($criteria);
+
+        return $functions->count() > 0 ? $functions->first() : null;
     }
 
     public function __toString(): string

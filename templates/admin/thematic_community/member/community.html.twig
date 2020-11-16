@@ -1,0 +1,22 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="max-width: 250px">
+        <span class="label" style="margin-right: 2px; background-color: {{ constant('App\\Entity\\ThematicCommunity\\ThematicCommunity::COLORS')[object.community.slug] }}">
+            {{ object.community.name }}
+        </span>
+
+        {% for motivation in object.motivations %}
+            <span class="label label-default" style="margin-right: 2px;">
+                {{ ('admin.thematic_community.membership.motivations.'~motivation)|trans }}
+            </span>
+        {% endfor %}
+
+        {% if object.expert %}
+            <br>
+            <span class="label label-danger">
+                Expert
+            </span>
+        {% endif %}
+    </div>
+{% endblock %}

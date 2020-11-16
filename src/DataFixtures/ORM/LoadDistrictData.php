@@ -5,22 +5,21 @@ namespace App\DataFixtures\ORM;
 use App\Deputy\LightFileDistrictLoader;
 use App\Entity\District;
 use App\Entity\ReferentTag;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadDistrictData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadDistrictData extends Fixture implements DependentFixtureInterface
 {
-    use ContainerAwareTrait;
-
     private $districtLoader;
+
+    public function __construct(LightFileDistrictLoader $districtLoader)
+    {
+        $this->districtLoader = $districtLoader;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $this->districtLoader = $this->container->get(LightFileDistrictLoader::class);
-
         $this->districtLoader->load(
             __DIR__.'/../deputy/circonscriptions_all.csv',
             __DIR__.'/../deputy/france_circonscriptions_legislatives.json',
@@ -31,6 +30,7 @@ class LoadDistrictData extends AbstractFixture implements ContainerAwareInterfac
 
         $this->getReference('deputy-75-1')->setManagedDistrict($districtRepository->findOneBy(['code' => '75001']));
         $this->getReference('deputy-75-2')->setManagedDistrict($districtRepository->findOneBy(['code' => '75002']));
+        $this->getReference('senatorial-candidate')->setLegislativeCandidateManagedDistrict($districtRepository->findOneBy(['code' => '75002']));
 
         $this->getReference('deputy-ch-li')->setManagedDistrict($districtRepository->findOneBy(['code' => 'FDE-06']));
 
@@ -58,7 +58,7 @@ INSERT INTO adherent_referent_tag (adherent_id, referent_tag_id)
 );
 SQL;
 
-        $this->container->get('doctrine')->getManager()->getConnection()->exec($sql);
+        $manager->getConnection()->exec($sql);
     }
 
     public function getDependencies()

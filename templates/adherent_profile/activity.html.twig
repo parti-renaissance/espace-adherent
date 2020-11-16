@@ -1,0 +1,47 @@
+{% extends 'adherent_profile/_layout.html.twig' %}
+
+{% block page_title 'Activités' %}
+
+{% set is_adherent_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
+
+{% block adherent_profile_content %}
+    {% if is_granted('TERRITORIAL_COUNCIL_MEMBER') %}
+        <section class="adherent-profile__section b__nudge--bottom-50" id="instances">
+            {% include('adherent_profile/activity/_instances.html.twig') %}
+        </section>
+    {% endif %}
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="committees">
+        {% include('adherent_profile/activity/_committees.html.twig') %}
+    </section>
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="events">
+        {% include('adherent_profile/activity/_events.html.twig') %}
+    </section>
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="citizen-projects">
+        {% include('adherent_profile/activity/_citizen_projects.html.twig') %}
+    </section>
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="adi">
+        {% include('adherent_profile/activity/_adi.html.twig') %}
+    </section>
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="donations">
+        {% include('adherent_profile/activity/_donations.html.twig') %}
+    </section>
+
+    <div id="modal-wrapper"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if is_adherent_able_to_change_vote %}
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                App.runMyActivityCommitteeList('.vote-switcher-enabled');
+            });
+        </script>
+    {% endif %}
+{% endblock %}

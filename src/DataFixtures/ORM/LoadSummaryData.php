@@ -14,11 +14,11 @@ use App\Summary\JobDuration;
 use App\Summary\JobLocation;
 use App\Summary\SummaryFactory;
 use Cocur\Slugify\Slugify;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadSummaryData implements FixtureInterface, DependentFixtureInterface
+class LoadSummaryData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

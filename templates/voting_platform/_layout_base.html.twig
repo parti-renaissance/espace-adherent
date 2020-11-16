@@ -8,7 +8,7 @@
 {% block designation_banner '' %}
 
 {% block header %}
-    <header class="voting-platform__header">
+    <header class="voting-platform__header voting-platform-theme__{{ designation_type }}">
         <div class="l__wrapper--wide l__row l__row--h-stretch l__row--wrap">
             <div class="l__row space--20-0">
                 <a href="{{ path('homepage') }}" class="link--no-decor text--logo b__nudge--right-large">EM!</a>
@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block content %}
-    <main class="voting-platform">
+    <main class="voting-platform voting-platform-theme__{{ designation_type }}">
         {% block voting_platform_ornametns %}
             <div class="voting-platform__ornaments">
                 <img src="{{ asset('images/vote-platform-ornaments/ornament-1.png') }}" class="ornament ornament--1" />
@@ -41,7 +41,14 @@
                 <div class="l__wrapper--slim">
                     <div class="introduction-header">
                         <h1 class="text--larger b__nudge--bottom-large">{{ election.title }}</h1>
-                        <p class="text--body text--default-large text--muted b__nudge--bottom-large">La désignation est ouverte du {{ election.voteStartDate|date('d/m/Y') }} au {{ election.voteEndDate|date('d/m/Y') }}</p>
+                        <p class="text--body text--default-large text--muted b__nudge--bottom-large">
+                            La désignation est ouverte du
+                            {% if election.isSecondRoundVotePeriodActive %}
+                                {{ election.voteEndDate|date('d/m/Y \à H:i') }} au {{ election.secondRoundEndDate|date('d/m/Y \à H:i') }}
+                            {% else %}
+                                {{ election.voteStartDate|date('d/m/Y \à H:i') }} au {{ election.voteEndDate|date('d/m/Y \à H:i') }}
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
             {% endblock %}

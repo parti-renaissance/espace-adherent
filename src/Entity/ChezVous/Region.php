@@ -2,7 +2,6 @@
 
 namespace App\Entity\ChezVous;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="chez_vous_regions")
  *
  * @UniqueEntity("code")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Region
 {
@@ -35,8 +32,6 @@ class Region
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Algolia\Attribute
      */
     private $name;
 
@@ -47,8 +42,6 @@ class Region
      *
      * @Assert\NotBlank
      * @Assert\Length(max="10")
-     *
-     * @Algolia\Attribute
      */
     private $code;
 

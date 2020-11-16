@@ -19,7 +19,7 @@ export default class Project extends React.Component {
     }
 }
 
-Project.propsType = {
+Project.propTypes = {
     project: PropTypes.object.isRequired,
     preventAutoExpand: PropTypes.bool,
 };

@@ -2,6 +2,7 @@
 
 namespace Tests\App\Mailer\Transport;
 
+use App\Mailer\Exception\MailerException;
 use App\Mailer\Transport\ApiTransport;
 use GuzzleHttp\ClientInterface as HttpClientInterface;
 use GuzzleHttp\Psr7\Response as HttpResponse;
@@ -12,16 +13,14 @@ use Tests\App\Test\Mailer\DummyEmailTemplate;
 
 class ApiTransportTest extends TestCase
 {
-    /**
-     * @expectedException \App\Mailer\Exception\MailerException
-     * @expectedExceptionMessage Unable to send email to recipients.
-     */
     public function testCannotSendTemplateEmail()
     {
+        $this->expectException(MailerException::class);
+        $this->expectExceptionMessage('Unable to send email to recipients.');
         $httpClient = $this->getMockBuilder(HttpClientInterface::class)->getMock();
         $httpClient->expects($this->once())->method('request')->willReturn(new HttpResponse(400));
 
-        $client = new DummyEmailClient($httpClient, 'public-key', 'private-key');
+        $client = new DummyEmailClient($httpClient);
         $transport = new ApiTransport($client);
         $transport->sendTemplateEmail($this->createDummyEmail());
     }
@@ -46,13 +45,12 @@ EOF;
             ->expects($this->once())
             ->method('request')
             ->with('POST', 'send', [
-                'auth' => ['public-key', 'private-key'],
                 'body' => json_encode($email->getBody()),
             ])
             ->willReturn(new HttpResponse(200, [], $body))
         ;
 
-        $client = new DummyEmailClient($httpClient, 'public-key', 'private-key');
+        $client = new DummyEmailClient($httpClient);
         $transport = new ApiTransport($client);
         $transport->sendTemplateEmail($email);
 

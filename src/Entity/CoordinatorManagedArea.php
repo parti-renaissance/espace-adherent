@@ -2,14 +2,11 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="coordinator_managed_areas")
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CoordinatorManagedArea
 {

@@ -35,6 +35,7 @@ abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHand
                 /** @var MailchimpCampaign $campaign */
                 $campaign = $campaigns[$i];
                 $campaign->resetFilter();
+                $labels = [];
 
                 foreach ($campaignFilters[$i] as $campaignFilter) {
                     if ('static_segment' === $campaignFilter['type']) {
@@ -43,6 +44,10 @@ abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHand
                     } elseif ('text_merge' === $campaignFilter['type']) {
                         $campaign->setCity($campaignFilter['value']);
                         $campaign->setLabel($campaignFilter['label']);
+                    } elseif ('mailchimp_segment' === $campaignFilter['type']) {
+                        $campaign->addMailchimpSegment($campaignFilter['value']);
+                        $labels[] = $campaignFilter['label'];
+                        $campaign->setLabel(implode(' - ', $labels));
                     }
                 }
             } elseif (isset($campaigns[$i])) {

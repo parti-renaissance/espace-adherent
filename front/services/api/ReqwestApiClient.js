@@ -298,4 +298,32 @@ export default class ReqwestApiClient {
             data: data,
         });
     }
+
+    getTerritorialCouncilAvailableMemberships({ quality, query }, callback, errorCallback) {
+        this._reqwest({
+            url: `/api/territorial-council/candidacy/available-memberships?quality=${quality || ''}${query ? `&query=${query}` : ''}`,
+            type: 'json',
+        }).then(response => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
+    }
+
+    getCommitteeAvailableMemberships({ slug, query }, callback, errorCallback) {
+        this._reqwest({
+            url: `/api/committee/${slug}/candidacy/available-memberships?${query ? `query=${query}` : ''}`,
+            type: 'json',
+        }).then(response => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
+    }
+
+    getTerritorialCouncilFeed(territorialCouncilUuid, page, callback) {
+        this._createRequest(callback, {
+            url: '/conseil-territorial?page='+page,
+            type: 'html'
+        });
+    }
+
+    getPoliticalCommitteeFeed(politicalCommitteeUuid, page, callback) {
+        this._createRequest(callback, {
+            url: '/comite-politique?page='+page,
+            type: 'html'
+        });
+    }
 }

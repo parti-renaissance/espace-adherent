@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\BannedAdherent;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadBannedAdherentData extends AbstractFixture
+class LoadBannedAdherentData extends Fixture
 {
     public function load(ObjectManager $manager)
     {

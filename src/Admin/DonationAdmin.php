@@ -11,10 +11,10 @@ use App\Entity\DonationTag;
 use App\Entity\PostAddress;
 use App\Entity\Transaction;
 use App\Form\UnitedNationsCountryType;
-use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -53,7 +53,7 @@ class DonationAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        Filesystem $storage,
+        FilesystemInterface $storage,
         EventDispatcher $dispatcher
     ) {
         parent::__construct($code, $class, $baseControllerName);
@@ -460,7 +460,7 @@ class DonationAdmin extends AbstractAdmin
             $referenceDonation = $donator->getReferenceDonation();
             $adherent = $donator->getAdherent();
 
-            $phone = $adherent instanceof Adherent ? PhoneNumberFormatter::format($adherent->getPhone()) : null;
+            $phone = $adherent instanceof Adherent ? PhoneNumberUtils::format($adherent->getPhone()) : null;
 
             return [
                 'id' => $donation->getId(),

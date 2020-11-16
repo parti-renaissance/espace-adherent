@@ -6,14 +6,18 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
+use App\Entity\BaseGroup;
 use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Event\Filter\ListFilterObject;
 use App\Subscription\SubscriptionTypeEnum;
+use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -78,6 +82,25 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
     }
 
+    public function findActivityMemberships(Adherent $adherent, int $page = 1, int $limit = 5): PaginatorInterface
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('cm')
+            ->innerJoin('cm.committee', 'c')
+            ->where('cm.adherent = :adherent')
+            ->andWhere('c.status = :approved')
+            ->andWhere('c.approvedAt IS NOT NULL')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('approved', BaseGroup::APPROVED)
+        ;
+
+        return $this->configurePaginator(
+            $queryBuilder,
+            $page,
+            $limit
+        );
+    }
+
     public function findMemberships(Adherent $adherent): CommitteeMembershipCollection
     {
         $query = $this
@@ -124,6 +147,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('cm')
+            ->addSelect('adherent')
+            ->innerJoin('cm.adherent', 'adherent')
             ->where('cm.committee = :committee')
             ->andWhere('cm.enableVote = :true')
             ->setParameters([
@@ -295,41 +320,24 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      *
      * NOTE: this returns poorly hydrated instances of Adherent, but is optimized for merging of committees
      *
-     * @return Adherent[]|AdherentCollection
+     * @return CommitteeMembership[]
      */
-    public function findMembersToMerge(Committee $sourceCommittee, Committee $destinationCommittee): AdherentCollection
+    public function findMembersToMerge(Committee $sourceCommittee, Committee $destinationCommittee): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm
-            ->addEntityResult(Adherent::class, 'a')
-            ->addFieldResult('a', 'id', 'id')
-            ->addFieldResult('a', 'uuid', 'uuid')
-            ->addFieldResult('a', 'email_address', 'emailAddress')
+        return $this
+            ->createQueryBuilder('cm_src')
+            ->select('PARTIAL adherent.{id, uuid, emailAddress}')
+            ->addSelect('PARTIAL cm_src.{id, joinedAt}')
+            ->innerJoin('cm_src.adherent', 'adherent')
+            ->leftJoin(CommitteeMembership::class, 'cm_dest', Join::WITH, 'cm_dest.adherent = adherent AND cm_dest.committee = :dest_committee')
+            ->where('cm_dest.id IS NULL AND cm_src.committee = :src_committee')
+            ->setParameters([
+                'src_committee' => $sourceCommittee,
+                'dest_committee' => $destinationCommittee,
+            ])
+            ->getQuery()
+            ->getResult()
         ;
-
-        $sql = <<<'SQL'
-            SELECT
-                a.id,
-                a.uuid,
-                a.email_address
-            FROM adherents AS a
-            INNER JOIN committees_memberships AS cm_src
-                ON cm_src.committee_id = :source_committee
-                AND cm_src.adherent_id = a.id
-            LEFT JOIN committees_memberships AS cm_dest
-                ON cm_dest.committee_id = :destination_committee
-                AND cm_dest.adherent_id = a.id
-            WHERE cm_dest.id IS NULL
-SQL
-        ;
-
-        return new AdherentCollection(
-            $this->_em
-                ->createNativeQuery($sql, $rsm)
-                ->setParameter('source_committee', $sourceCommittee)
-                ->setParameter('destination_committee', $destinationCommittee)
-                ->getResult()
-        );
     }
 
     /**
@@ -598,18 +606,18 @@ SQL
         ;
     }
 
-    public function enableVoteStatusForAdherents(Committee $committee, array $adherents): void
+    public function updateVoteStatusForAdherents(Committee $committee, array $adherents, bool $value): void
     {
         $this->createQueryBuilder('cm')
             ->update()
-            ->set('cm.enableVote', ':true')
+            ->set('cm.enableVote', ':value')
             ->Where('cm IN (:memberships)')
             ->setParameters([
                 'memberships' => $this->findBy([
                     'adherent' => $adherents,
                     'committee' => $committee,
                 ]),
-                'true' => true,
+                'value' => true === $value ?: null,
             ])
             ->getQuery()
             ->execute()
@@ -627,6 +635,43 @@ SQL
             ])
             ->getQuery()
             ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @return CommitteeMembership[]
+     */
+    public function findAvailableMemberships(CommitteeCandidacy $candidacy, string $query): array
+    {
+        $membership = $candidacy->getCommitteeMembership();
+        $refDate = $candidacy->getElection()->getVoteEndDate() ?? new \DateTime();
+
+        return $this
+            ->createQueryBuilder('membership')
+            ->addSelect('adherent')
+            ->innerJoin('membership.adherent', 'adherent')
+            ->leftJoin('membership.committeeCandidacies', 'candidacy', Join::WITH, 'candidacy.committeeMembership = membership AND candidacy.committeeElection = :election')
+            ->where('membership.committee = :committee')
+            ->andWhere('candidacy IS NULL OR candidacy.status = :candidacy_draft_status')
+            ->andWhere('membership.id != :membership_id')
+            ->andWhere('adherent.gender = :gender AND adherent.status = :adherent_status')
+            ->andWhere('(adherent.firstName LIKE :query OR adherent.lastName LIKE :query)')
+            ->andWhere('adherent.certifiedAt IS NOT NULL AND adherent.registeredAt <= :registration_limit_date AND membership.joinedAt <= :limit_date')
+            ->setParameters([
+                'query' => sprintf('%s%%', $query),
+                'candidacy_draft_status' => CandidacyInterface::STATUS_DRAFT,
+                'election' => $candidacy->getElection(),
+                'committee' => $membership->getCommittee(),
+                'membership_id' => $membership->getId(),
+                'gender' => $candidacy->isFemale() ? Genders::MALE : Genders::FEMALE,
+                'adherent_status' => Adherent::ENABLED,
+                'registration_limit_date' => (clone $refDate)->modify('-3 months'),
+                'limit_date' => (clone $refDate)->modify('-30 days'),
+            ])
+            ->orderBy('adherent.lastName')
+            ->addOrderBy('adherent.firstName')
+            ->getQuery()
+            ->getResult()
         ;
     }
 }

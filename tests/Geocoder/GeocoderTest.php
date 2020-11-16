@@ -3,11 +3,11 @@
 namespace Tests\App\Geocoder;
 
 use App\Geocoder\Coordinates;
+use App\Geocoder\Exception\GeocodingException;
 use App\Geocoder\Geocoder;
 use Geocoder\Geocoder as BazingaGeocoder;
 use Geocoder\Model\Address;
 use Geocoder\Model\AddressCollection;
-use Geocoder\Model\Coordinates as BazingaCoordinates;
 use PHPUnit\Framework\TestCase;
 
 class GeocoderTest extends TestCase
@@ -20,9 +20,9 @@ class GeocoderTest extends TestCase
     public function testGeocodeAddressSucceeds()
     {
         $addresses = new AddressCollection([
-            new Address(new BazingaCoordinates(48.901058, 2.318325)),
+            Address::createFromArray(['latitude' => 48.901058, 'longitude' => 2.318325]),
             // the second one will be ignored
-            new Address(new BazingaCoordinates(48.901053, 2.318321)),
+            Address::createFromArray(['latitude' => 48.901053, 'longitude' => 2.318321]),
         ]);
 
         $this
@@ -40,11 +40,9 @@ class GeocoderTest extends TestCase
         $this->assertSame(2.318325, $coordinates->getLongitude());
     }
 
-    /**
-     * @expectedException \App\Geocoder\Exception\GeocodingException
-     */
     public function testGeocodeAddressFails()
     {
+        $this->expectException(GeocodingException::class);
         $this
             ->adapter
             ->expects($this->once())
@@ -56,11 +54,9 @@ class GeocoderTest extends TestCase
         $this->geocoder->geocode(self::ADDRESS);
     }
 
-    /**
-     * @expectedException \App\Geocoder\Exception\GeocodingException
-     */
     public function testCannotGeocodeAddress()
     {
+        $this->expectException(GeocodingException::class);
         $this
             ->adapter
             ->expects($this->once())
@@ -72,7 +68,7 @@ class GeocoderTest extends TestCase
         $this->geocoder->geocode(self::ADDRESS);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -80,7 +76,7 @@ class GeocoderTest extends TestCase
         $this->geocoder = new Geocoder($this->adapter);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->adapter = null;
         $this->geocoder = null;

@@ -4,8 +4,8 @@ namespace App\AdherentMessage\Listener;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Command\AdherentMessageDeleteCommand;
-use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CampaignAdherentMessageInterface;
+use App\Entity\AdherentMessage\Filter\CampaignAdherentMessageFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -45,7 +45,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if ($object instanceof AdherentMessageInterface) {
+        if ($object instanceof CampaignAdherentMessageInterface) {
             $this->dispatchMessage($object);
         }
     }
@@ -54,9 +54,9 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if ($object instanceof AdherentMessageInterface && false === $object->isSynchronized()) {
+        if ($object instanceof CampaignAdherentMessageInterface && false === $object->isSynchronized()) {
             $this->dispatchMessage($object);
-        } elseif ($object instanceof AdherentMessageFilterInterface && false === $object->isSynchronized()) {
+        } elseif ($object instanceof CampaignAdherentMessageFilterInterface && false === $object->isSynchronized()) {
             $this->dispatchMessage($object->getMessage());
         }
     }
@@ -67,7 +67,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityUpdates() as $object) {
-            if (!$object instanceof AdherentMessageFilterInterface) {
+            if (!$object instanceof CampaignAdherentMessageFilterInterface) {
                 continue;
             }
 
@@ -79,7 +79,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         }
     }
 
-    private function dispatchMessage(AdherentMessageInterface $object): void
+    private function dispatchMessage(CampaignAdherentMessageInterface $object): void
     {
         $this->bus->dispatch(new AdherentMessageChangeCommand($object->getUuid()));
     }

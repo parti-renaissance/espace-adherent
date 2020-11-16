@@ -38,10 +38,13 @@ class DeputyManagedUsersController extends AbstractManagedUsersController
     {
         /** @var Adherent $adherent */
         $adherent = $this->getMainUser($request->getSession());
+        $session = $request->getSession();
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::DEPUTY_EMAIL,
-            [$adherent->getManagedDistrict()->getReferentTag()]
+            [$adherent->getManagedDistrict()->getReferentTag()],
+            $this->getRestrictedCommittees($session),
+            $this->getRestrictedCities($session)
         );
     }
 }

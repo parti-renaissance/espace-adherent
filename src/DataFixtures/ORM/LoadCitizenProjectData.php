@@ -5,13 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\CitizenProject\CitizenProjectFactory;
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\NullablePostAddress;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use League\Flysystem\FilesystemInterface;
 
-class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadCitizenProjectData extends Fixture implements DependentFixtureInterface
 {
     public const CITIZEN_PROJECT_1_UUID = 'aa364092-3999-4102-930c-f711ef971195';
     public const CITIZEN_PROJECT_2_UUID = '552934ed-2ac6-4a3a-a490-ddc8bf959444';
@@ -27,20 +26,23 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
     public const CITIZEN_PROJECT_12_UUID = '3251ff14-cb9e-4f50-aab4-c332e50e9ff1';
     public const CITIZEN_PROJECT_13_UUID = '9f78a464-ddce-45cf-9cc1-3303c50842f2';
 
-    use ContainerAwareTrait;
+    private $storage;
+    private $citizenProjectFactory;
+
+    public function __construct(FilesystemInterface $storage, CitizenProjectFactory $citizenProjectFactory)
+    {
+        $this->storage = $storage;
+        $this->citizenProjectFactory = $citizenProjectFactory;
+    }
 
     public function load(ObjectManager $manager)
     {
         AutoIncrementResetter::resetAutoIncrement($manager, 'citizen_projects');
 
         // Add CitizenProject default image
-        $storage = $this->container->get('app.storage');
-        $storage->put('images/citizen_projects/default.png', file_get_contents(__DIR__.'/../citizen-projects/default.png'));
+        $this->storage->put('images/citizen_projects/default.png', file_get_contents(__DIR__.'/../citizen-projects/default.png'));
 
-        // Create some default citizen projects and make people join them
-        $citizenProjectFactory = $this->getCitizenProjectFactory();
-
-        $citizenProject1 = $citizenProjectFactory->createFromArray([
+        $citizenProject1 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_1_UUID,
             'name' => 'Le projet citoyen à Paris 8',
             'subtitle' => 'Le projet citoyen des habitants du 8ème arrondissement de Paris.',
@@ -64,7 +66,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         $citizenProject1->addCommitteeOnSupport($this->getReference('committee-10'));
         $this->addReference('citizen-project-1', $citizenProject1);
 
-        $citizenProject2 = $citizenProjectFactory->createFromArray([
+        $citizenProject2 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_2_UUID,
             'name' => 'Le projet citoyen à Marseille',
             'subtitle' => 'Le projet citoyen à Marseille !',
@@ -75,13 +77,13 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
             'created_by' => LoadAdherentData::ADHERENT_6_UUID,
             'created_at' => '2017-10-12 18:34:12',
             'address' => NullablePostAddress::createFrenchAddress('26 Boulevard Louis Guichoux', '13003-13203', null, 43.325543, 5.376076),
-            'phone' => '33 673643424',
+            'phone' => '+33673643424',
         ]);
         $citizenProject2->setImageName('default.png');
         $citizenProject2->preApproved();
         $this->addReference('citizen-project-2', $citizenProject2);
 
-        $citizenProject3 = $citizenProjectFactory->createFromArray([
+        $citizenProject3 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_3_UUID,
             'name' => 'Le projet citoyen à Dammarie-les-Lys',
             'subtitle' => 'Le projet citoyen sans adresse et téléphone',
@@ -100,7 +102,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         $citizenProject3->approved('2017-10-27 10:18:33');
         $this->addReference('citizen-project-3', $citizenProject3);
 
-        $citizenProject4 = $citizenProjectFactory->createFromArray([
+        $citizenProject4 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_4_UUID,
             'subtitle' => 'Encore un projet citoyen',
             'category' => $this->getReference('cpc004'),
@@ -116,7 +118,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         $citizenProject4->approved();
         $this->addReference('citizen-project-4', $citizenProject4);
 
-        $citizenProject5 = $citizenProjectFactory->createFromArray([
+        $citizenProject5 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_5_UUID,
             'name' => 'Formation en ligne ouverte à tous à Évry',
             'subtitle' => 'Équipe de la formation en ligne ouverte à tous à Évry',
@@ -127,13 +129,13 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
             'created_by' => LoadAdherentData::ADHERENT_7_UUID,
             'created_at' => '2017-10-19 11:54:28',
             'address' => NullablePostAddress::createFrenchAddress("Place des Droits de l'Homme et du Citoyen", '91000-91228', null, 48.6241569, 2.4265995),
-            'phone' => '33 673654349',
+            'phone' => '+33673654349',
         ]);
         $citizenProject5->setImageName('default.png');
         $citizenProject5->approved();
         $this->addReference('citizen-project-5', $citizenProject5);
 
-        $citizenProject6 = $citizenProjectFactory->createFromArray([
+        $citizenProject6 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_6_UUID,
             'name' => 'Formation en ligne ouverte à tous',
             'subtitle' => 'Équipe de la formation en ligne ouverte à tous',
@@ -144,13 +146,13 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
             'created_by' => LoadAdherentData::ADHERENT_9_UUID,
             'created_at' => '2017-09-18 20:12:33',
             'address' => NullablePostAddress::createFrenchAddress('28 Boulevard Louis Guichoux', '13003-13203', null, 43.32560, 5.376207),
-            'phone' => '33 234823644',
+            'phone' => '+33234823644',
         ]);
         $citizenProject6->setImageName('default.png');
         $citizenProject6->approved('2017-10-19 09:17:24');
         $this->addReference('citizen-project-6', $citizenProject6);
 
-        $citizenProject7 = $citizenProjectFactory->createFromArray([
+        $citizenProject7 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_7_UUID,
             'name' => 'Projet citoyen à Berlin',
             'subtitle' => 'Projet citoyen de nos partenaires Allemands.',
@@ -165,7 +167,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         $citizenProject7->setImageName('default.png');
         $this->addReference('citizen-project-7', $citizenProject7);
 
-        $citizenProject8 = $citizenProjectFactory->createFromArray([
+        $citizenProject8 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_8_UUID,
             'name' => 'En Marche - Projet citoyen',
             'subtitle' => 'Projet citoyen.',
@@ -181,7 +183,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         $citizenProject8->approved('2017-10-10 18:23:18');
         $this->addReference('citizen-project-8', $citizenProject8);
 
-        $citizenProject9 = $citizenProjectFactory->createFromArray([
+        $citizenProject9 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_9_UUID,
             'name' => 'Projet citoyen à New York City',
             'subtitle' => 'Projet citoyen à New York City.',
@@ -193,13 +195,13 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
             'created_at' => '2017-10-09 12:16:22',
             'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
             'district' => 'Brooklyn',
-            'phone' => '1 2123150100',
+            'phone' => '+12123150100',
         ]);
         $citizenProject9->setImageName('default.png');
         $citizenProject9->approved('2017-10-09 13:27:42');
         $this->addReference('citizen-project-9', $citizenProject9);
 
-        $citizenProject10 = $citizenProjectFactory->createFromArray([
+        $citizenProject10 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_10_UUID,
             'name' => 'Projet citoyen refusé à Paris 8',
             'subtitle' => 'Le projet citoyen refusé',
@@ -215,7 +217,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         $citizenProject10->setImageName('default.png');
         $this->addReference('citizen-project-10', $citizenProject10);
 
-        $citizenProject11 = $citizenProjectFactory->createFromArray([
+        $citizenProject11 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_11_UUID,
             'name' => '[En attente] Projet citoyen à New York City',
             'subtitle' => '[En attente] Projet citoyen à New York City.',
@@ -226,12 +228,12 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
             'created_by' => LoadAdherentData::ADHERENT_12_UUID,
             'created_at' => '2018-09-09 12:12:12',
             'address' => NullablePostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
-            'phone' => '1 2123150100',
+            'phone' => '+12123150100',
         ]);
         $citizenProject11->setImageName('default.png');
         $this->addReference('citizen-project-11', $citizenProject11);
 
-        $citizenProject12 = $citizenProjectFactory->createFromArray([
+        $citizenProject12 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_12_UUID,
             'name' => 'Un stage pour tous',
             'subtitle' => 'Aider les collégiens à trouver un stage même sans réseau',
@@ -248,7 +250,7 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         $citizenProject12->approved('2018-09-19 19:34:18');
         $this->addReference('citizen-project-12', $citizenProject12);
 
-        $citizenProject13 = $citizenProjectFactory->createFromArray([
+        $citizenProject13 = $this->citizenProjectFactory->createFromArray([
             'uuid' => self::CITIZEN_PROJECT_13_UUID,
             'name' => 'Un stage pour tous',
             'subtitle' => 'Aider les collégiens à trouver un stage même sans réseau',
@@ -322,15 +324,10 @@ class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareIn
         $manager->flush();
     }
 
-    private function getCitizenProjectFactory(): CitizenProjectFactory
-    {
-        return $this->container->get(CitizenProjectFactory::class);
-    }
-
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
+            LoadCommitteeData::class,
             LoadCitizenProjectCategoryData::class,
             LoadCitizenProjectSkillData::class,
             LoadTurnkeyProjectData::class,

@@ -33,6 +33,9 @@ trait EntityPersonNameTrait
         return trim($this->getFullName());
     }
 
+    /**
+     * @SymfonySerializer\Groups({"api_candidacy_read"})
+     */
     public function getFullName(): string
     {
         return $this->firstName.' '.$this->lastName;
@@ -76,6 +79,9 @@ trait EntityPersonNameTrait
         return mb_strtoupper(mb_substr($normalized, 0, 1));
     }
 
+    /**
+     * @SymfonySerializer\Groups({"api_candidacy_read"})
+     */
     public function getInitials(): string
     {
         return $this->getFirstNameInitial().$this->getLastNameInitial(false);

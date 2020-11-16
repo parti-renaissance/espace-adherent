@@ -2,7 +2,6 @@
 
 namespace App\Entity\Election;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\City;
 use App\Entity\ElectionRound;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,8 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="ministry_vote_result_city_round_unique", columns={"city_id", "election_round_id"}),
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class MinistryVoteResult extends BaseVoteResult
 {

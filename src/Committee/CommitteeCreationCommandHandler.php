@@ -21,14 +21,14 @@ class CommitteeCreationCommandHandler
         EventDispatcherInterface $dispatcher,
         CommitteeFactory $factory,
         CommitteeManager $manager,
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         PhotoManager $photoManager,
         ReferentTagManager $referentTagManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->photoManager = $photoManager;
         $this->referentTagManager = $referentTagManager;
     }

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Loader from './Loader';
 import numberFormat from '../utils/number';
+import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
 export default class MessageStatisticsWidget extends React.Component {
     constructor(props) {
@@ -128,6 +129,6 @@ export default class MessageStatisticsWidget extends React.Component {
     }
 }
 
-MessageStatisticsWidget.propsType = {
-    api: PropTypes.object.isRequired,
+MessageStatisticsWidget.propTypes = {
+    api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
 };

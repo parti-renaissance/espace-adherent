@@ -4,10 +4,12 @@ namespace App\Repository\VotingPlatform;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 
 class VoterRepository extends ServiceEntityRepository
 {
@@ -49,17 +51,76 @@ class VoterRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findForElection(Election $election): array
+    public function findForElectionRound(ElectionRound $electionRound): array
     {
         return $this->createQueryBuilder('voter')
             ->select('adherent.firstName', 'adherent.lastName')
-            ->addSelect(sprintf('(SELECT v.votedAt FROM %s AS v WHERE v.voter = voter) as vote', Vote::class))
+            ->addSelect(sprintf('(
+                    SELECT v.votedAt
+                    FROM %s AS v
+                    WHERE v.voter = voter
+                    AND v.electionRound = :electionRound
+                ) as vote', Vote::class))
             ->innerJoin('voter.votersLists', 'list')
             ->leftJoin('voter.adherent', 'adherent')
             ->where('list.election = :election')
-            ->setParameter('election', $election)
+            ->setParameter('election', $electionRound->getElection())
+            ->setParameter('electionRound', $electionRound)
             ->getQuery()
             ->getArrayResult()
+        ;
+    }
+
+    /**
+     * @return Voter[]
+     */
+    public function findForElection(Election $election, bool $partial = false): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->addSelect($partial ? 'PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}' : 'adherent')
+            ->innerJoin('voter.votersLists', 'list')
+            ->innerJoin('voter.adherent', 'adherent')
+            ->where('list.election = :election')
+            ->setParameter('election', $election)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Voter[]|array
+     */
+    public function findVotersToRemindForElection(Election $election): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->innerJoin('voter.votersLists', 'list')
+            ->innerJoin('list.election', 'election')
+            ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :current_round')
+            ->andWhere('list.election = :election')
+            ->andWhere('vote IS NULL')
+            ->andWhere('voter.adherent IS NOT NULL')
+            ->setParameters([
+                'election' => $election,
+                'current_round' => $election->getCurrentRound(),
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Voter[]|array
+     */
+    public function findVotersToNotifyForSecondRound(Election $election): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->innerJoin('voter.votersLists', 'list')
+            ->innerJoin('list.election', 'election')
+            ->andWhere('list.election = :election')
+            ->andWhere('voter.adherent IS NOT NULL')
+            ->setParameter('election', $election)
+            ->getQuery()
+            ->getResult()
         ;
     }
 }

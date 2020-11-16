@@ -151,6 +151,15 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
                 ],
             ])
         ;
+
+        if ($this->hasAccess('show')) {
+            $listMapper
+                ->add('export', null, [
+                    'virtual_field' => true,
+                    'template' => 'admin/jecoute/_exports.html.twig',
+                ])
+            ;
+        }
     }
 
     protected function configureRoutes(RouteCollection $collection)

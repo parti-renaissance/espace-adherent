@@ -1,9 +1,7 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.isAdherent is null %}
-        <span class="label label-primary">Peut-être</span><br />
-    {% elseif object.isAdherent %}
+    {% if object.isAdherent %}
         <span class="label label-success">Adhérent(e)</span><br />
     {% endif %}
     {% for userListDefinition in object.userListDefinitions %}

@@ -69,6 +69,8 @@ class MailchimpSyncAllElectedRepresentativesCommand extends Command
         do {
             /** @var ElectedRepresentative $electedRepresentative */
             foreach ($paginator->getIterator() as $electedRepresentative) {
+                $this->io->comment($electedRepresentative->getEmailAddress());
+
                 $this->bus->dispatch(new ElectedRepresentativeChangeCommand($electedRepresentative->getUuid()));
 
                 $this->io->progressAdvance();

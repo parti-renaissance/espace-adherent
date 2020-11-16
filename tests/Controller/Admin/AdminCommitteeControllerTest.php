@@ -2,7 +2,9 @@
 
 namespace Tests\App\Controller\Admin;
 
+use App\Committee\CommitteeAdherentMandateManager;
 use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -22,7 +24,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     public function testApproveAction(): void
     {
-        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
 
         $this->assertFalse($committee->isApproved());
 
@@ -33,14 +35,39 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->get('doctrine.orm.entity_manager')->clear();
 
-        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
 
         $this->assertTrue($committee->isApproved());
         $this->assertCountMails(1, CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com');
         $this->assertCountMails(1, CommitteeApprovalReferentMessage::class, 'referent@en-marche-dev.fr');
     }
 
-    protected function setUp()
+    /**
+     * @dataProvider provideActions
+     */
+    public function testCannotChangeMandateIfCommitteeNotApprovedAction(string $action): void
+    {
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
+        $adherent = $this->getAdherentRepository()->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
+
+        $this->assertFalse($committee->isApproved());
+
+        $this->authenticateAsAdmin($this->client);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/%s/members/%s/%s-mandate', $committee->getId(), $adherent->getId(), $action)
+        );
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+    }
+
+    public function provideActions(): iterable
+    {
+        yield [CommitteeAdherentMandateManager::CREATE_ACTION];
+        yield [CommitteeAdherentMandateManager::FINISH_ACTION];
+    }
+
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -49,7 +76,7 @@ class AdminCommitteeControllerTest extends WebTestCase
         $this->committeeRepository = $this->getCommitteeRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

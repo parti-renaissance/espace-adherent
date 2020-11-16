@@ -16,7 +16,7 @@ export default class Loader extends React.Component {
     }
 }
 
-Loader.propsType = {
-    wrapperClassName: PropTypes.string.optional,
-    title: PropTypes.string.optional,
+Loader.propTypes = {
+    wrapperClassName: PropTypes.string,
+    title: PropTypes.string,
 };

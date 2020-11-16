@@ -22,11 +22,11 @@ class SenatorialCandidateElectedRepresentativeControllerTest extends WebTestCase
         $this->assertResponseStatusCode(200, $this->client->getResponse());
 
         $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
-        $this->assertContains('Nord Département', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertContains('Sénateur(rice) (RN)Nord (59)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertStringContainsString('Nord Département', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertStringContainsString('Sénateur(rice) (RN)Nord (59)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -35,7 +35,7 @@ class SenatorialCandidateElectedRepresentativeControllerTest extends WebTestCase
         $this->disableRepublicanSilence();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

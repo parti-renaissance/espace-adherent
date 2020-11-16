@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -20,6 +19,8 @@ trait EntityIdentityTrait
      * @ORM\GeneratedValue
      *
      * @ApiProperty(identifier=false)
+     *
+     * @SymfonySerializer\Groups({"autocomplete"})
      */
     protected $id;
 
@@ -29,8 +30,6 @@ trait EntityIdentityTrait
      * @var UuidInterface
      *
      * @ORM\Column(type="uuid")
-     *
-     * @Algolia\Attribute
      *
      * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "idea_thread_comment_read", "idea_read", "idea_thread_list_read", "approach_list_read"})
      *

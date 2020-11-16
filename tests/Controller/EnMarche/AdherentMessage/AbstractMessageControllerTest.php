@@ -21,7 +21,7 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, $email);
 
         $crawler = $this->client->request('GET', '/');
-        self::assertContains($spaceLabel, $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertStringContainsString($spaceLabel, $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
 
         $crawler = $this->client->click($crawler->selectLink($spaceLabel)->link());
         $this->assertResponseStatusCode(200, $this->client->getResponse());
@@ -43,12 +43,12 @@ class AbstractMessageControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/');
 
-        self::assertContains('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertStringContainsString('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
         $crawler = $this->client->click($crawler->selectLink('Espace député partagé (FDE-06)')->link());
 
         self::assertEquals('http://test.enmarche.code/espace-depute/messagerie', $crawler->getUri());
         self::assertEquals(0, $crawler->filter('.datagrid__table-manager tbody tr td span.status__2')->count());
-        self::assertContains('Vous êtes collaborateur parlementaire du député Député CHLI FDESIX', $crawler->filter('main .second-section p')->text());
+        self::assertStringContainsString('Vous êtes collaborateur parlementaire du député Député CHLI FDESIX', $crawler->filter('main .manager-sidebar__menu p')->text());
 
         $crawler = $this->client->request('GET', '/espace-depute/messagerie/creer');
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer le brouillon')->form(['adherent_message' => [
@@ -67,9 +67,9 @@ class AbstractMessageControllerTest extends WebTestCase
         self::assertEquals('http://test.enmarche.code/espace-depute/utilisateurs', $crawler->getUri());
 
         $crawler = $this->client->request('GET', '/espace-depute/messagerie');
-        self::assertNotContains('Vous êtes collaborateur parlementaire du député Député CHLI FDESIX', $crawler->filter('main')->text());
+        self::assertStringNotContainsString('Vous êtes collaborateur parlementaire du député Député CHLI FDESIX', $crawler->filter('main')->text());
         self::assertEquals(1, $crawler->filter('.datagrid__table-manager tbody tr td span.status__2')->count());
-        self::assertContains('test by delegated adherent', $crawler->filter('table.datagrid__table-manager')->text());
+        self::assertStringContainsString('test by delegated adherent', $crawler->filter('table.datagrid__table-manager')->text());
     }
 
     public function testICannotSeeTabsIfIHaveNotAccess()
@@ -77,11 +77,11 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
 
         $crawler = $this->client->request('GET', '/espace-partage/f4ce89da-1272-4a01-a47e-4ce5248ce018');
-        self::assertCount(2, $crawler->filter('nav.manager-header__menu li'));
-        self::assertCount(0, $crawler->filter('nav.manager-header__menu li a:contains("Mes messages")'));
-        self::assertCount(0, $crawler->filter('nav.manager-header__menu li a:contains("Comités")'));
-        self::assertCount(1, $crawler->filter('nav.manager-header__menu li a:contains("Adhérents")'));
-        self::assertCount(1, $crawler->filter('nav.manager-header__menu li a:contains("Événements")'));
+        self::assertCount(2, $crawler->filter('nav.manager-sidebar__menu li'));
+        self::assertCount(0, $crawler->filter('nav.manager-sidebar__menu li a:contains("Mes messages")'));
+        self::assertCount(0, $crawler->filter('nav.manager-sidebar__menu li a:contains("Comités")'));
+        self::assertCount(1, $crawler->filter('nav.manager-sidebar__menu li a:contains("Adhérents")'));
+        self::assertCount(1, $crawler->filter('nav.manager-sidebar__menu li a:contains("Événements")'));
     }
 
     /**
@@ -109,7 +109,7 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', '/');
-        self::assertContains('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertStringContainsString('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
 
         $this->logout($this->client);
         $this->getEntityManager(Adherent::class)->clear();
@@ -121,7 +121,7 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', '/');
-        self::assertNotContains('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertStringNotContainsString('Espace député partagé (FDE-06)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
     }
 
     /**
@@ -151,10 +151,10 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', '/');
-        self::assertNotContains('Espace délégué du sénateur Bob Senateur (59)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        self::assertStringNotContainsString('Espace délégué du sénateur Bob Senateur (59)', $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -162,7 +162,7 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->client->followRedirects();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -275,7 +275,7 @@ class OAuthServerControllerTest extends WebTestCase
 //        $this->client->request(Request::METHOD_GET, '/espace-personnel/applications');
 //        $response = $this->client->getResponse();
 //        $this->isSuccessful($response);
-//        $this->assertContains('<td>En-Marche !</td>', $response->getContent());
+//        $this->assertStringContainsString('<td>En-Marche !</td>', $response->getContent());
     }
 
     public function testOAuthAuthenticationFailedWithoutRedirectUriIfClientHasMoreThan1RedirectUri(): void
@@ -422,7 +422,7 @@ class OAuthServerControllerTest extends WebTestCase
         return $token->convertToJWT($this->privateCryptKey);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -432,7 +432,7 @@ class OAuthServerControllerTest extends WebTestCase
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

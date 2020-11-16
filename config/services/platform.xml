@@ -31,28 +31,6 @@
         <!-- Addresses -->
         <service id="app.address.post_address_factory" class="App\Address\PostAddressFactory" public="false" />
 
-        <!-- Geocoder -->
-        <service id="app.geocoder" class="App\Geocoder\Geocoder" public="false">
-            <argument type="service" id="geocoder"/>
-        </service>
-
-        <service id="App\Geocoder\GeocodableInterface" alias="app.geocoder" />
-
-        <service id="app.geocoder.cache_adapter" alias="cache.redis_doctrine_provider" />
-
-        <service id="app.geocoder.coordinates_factory" class="App\Geocoder\CoordinatesFactory" />
-
-        <service id="app.geocoder.entity_address_geocoding_subscriber" class="App\Geocoder\Subscriber\EntityAddressGeocodingSubscriber">
-            <argument type="service" id="app.geocoder"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="app.validator.geocodable_address" class="App\Validator\GeocodableAddressValidator">
-            <argument type="service" id="app.geocoder"/>
-            <tag name="validator.constraint_validator" alias="app.validator.geocodable_address"/>
-        </service>
-
         <!-- Map -->
         <service id="app.map.google_maps_static_provider" class="App\Map\GoogleStaticMapProvider">
             <argument type="service" id="csa_guzzle.client.google_maps_static_api" />
@@ -70,6 +48,7 @@
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="App\Referent\ReferentTagManager"/>
+            <argument type="service" id="App\Referent\ReferentZoneManager"/>
             <argument type="service" id="App\Membership\MembershipRegistrationProcess"/>
             <argument type="service" id="App\History\EmailSubscriptionHistoryHandler"/>
             <argument type="service" id="App\Adherent\UnregistrationHandler"/>
@@ -92,18 +71,6 @@
             <argument type="service" id="app.address.post_address_factory"/>
         </service>
 
-        <service id="app.validator.unique_membership" class="App\Validator\UniqueMembershipValidator">
-            <argument type="service" id="App\Repository\AdherentRepository"/>
-            <argument type="service" id="App\Repository\AdherentChangeEmailTokenRepository"/>
-            <argument type="service" id="security.token_storage" />
-            <tag name="validator.constraint_validator" alias="app.validator.unique_membership"/>
-        </service>
-
-        <service id="App\Form\MemberInterestsChoiceType">
-            <argument type="string">%adherent_interests%</argument>
-            <tag name="form.type" />
-        </service>
-
         <service id="app.adherent.contact_message_handler" class="App\Contact\ContactMessageHandler">
             <argument type="service" id="app.mailer.campaign" />
         </service>
@@ -114,61 +81,6 @@
         </service>
 
         <service id="app.unregistration.serializer" class="App\Membership\UnregistrationSerializer" />
-
-        <!-- Committees -->
-        <service id="app.committee.manager" alias="App\Committee\CommitteeManager">
-            <deprecated>The "app.committee.manager" is deprecated in favor of the App\Committee\CommitteeManager FQCN.</deprecated>
-        </service>
-        <service id="App\Committee\CommitteeManager">
-            <argument type="service" id="doctrine"/>
-            <argument type="service" id="event_dispatcher"/>
-        </service>
-
-        <service id="app.committee.authority" class="App\Committee\CommitteeManagementAuthority">
-            <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="router"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="event_dispatcher" />
-        </service>
-
-        <service id="app.committee.factory" class="App\Committee\CommitteeFactory">
-            <argument type="service" id="App\Referent\ReferentTagManager"/>
-            <argument type="service" id="app.address.post_address_factory"/>
-        </service>
-
-        <service id="app.committee.update_handler" class="App\Committee\CommitteeUpdateCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="app.address.post_address_factory"/>
-            <argument type="service" id="app.committee.photo.manager"/>
-            <argument type="service" id="App\Referent\ReferentTagManager"/>
-        </service>
-
-        <service id="app.committee.creation_handler" class="App\Committee\CommitteeCreationCommandHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="app.committee.factory"/>
-            <argument type="service" id="App\Committee\CommitteeManager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.committee.photo.manager"/>
-            <argument type="service" id="App\Referent\ReferentTagManager"/>
-        </service>
-
-        <service id="app.committee.contact_members_handler" class="App\Committee\CommitteeContactMembersCommandHandler">
-            <argument type="service" id="app.mailer.campaign" />
-        </service>
-
-        <service id="app.committee.feed_manager" class="App\Committee\Feed\CommitteeFeedManager">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.committee.manager"/>
-            <argument type="service" id="app.mailer.campaign"/>
-            <argument type="service" id="router"/>
-            <argument type="service" id="App\Repository\CommitteeFeedItemRepository"/>
-        </service>
-
-        <service id="app.validator.unique_committee" class="App\Validator\UniqueCommitteeValidator">
-            <argument type="service" id="App\Repository\CommitteeRepository"/>
-            <tag name="validator.constraint_validator" alias="app.validator.unique_committee"/>
-        </service>
 
         <!-- Citizen projects -->
         <service id="app.citizen_project.authority" class="App\CitizenProject\CitizenProjectManagementAuthority">
@@ -196,18 +108,13 @@
             <argument type="service" id="App\Repository\AdherentRepository"/>
             <argument type="service" id="App\CitizenProject\CitizenProjectManager"/>
             <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="App\Committee\CommitteeManager"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="App\CitizenProject\CitizenProjectContactActorsCommandHandler">
             <argument type="service" id="app.mailer.campaign" />
-        </service>
-
-        <service id="app.committee.photo.manager" class="App\Committee\PhotoManager">
-            <argument type="service" id="app.storage"/>
-            <argument type="service" id="app.glide"/>
         </service>
 
         <!-- Events -->
@@ -234,7 +141,7 @@
 
         <service id="app.event.message_notifier" class="App\Event\EventMessageNotifier">
             <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="app.committee.manager"/>
+            <argument type="service" id="App\Committee\CommitteeManager"/>
             <argument type="service" id="App\Repository\EventRegistrationRepository"/>
             <argument type="service" id="router"/>
             <tag name="kernel.event_subscriber"/>
@@ -278,7 +185,7 @@
 
         <!-- Search -->
         <service id="App\Search\SearchParametersFilter" shared="false">
-            <argument type="service" id="app.geocoder"/>
+            <argument type="service" id="App\Geocoder\Geocoder"/>
             <argument type="service" id="cache.app"/>
 
             <call method="setMaxResults">

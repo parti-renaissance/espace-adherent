@@ -1,0 +1,50 @@
+.accordion {
+  max-height: 30px;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in;
+
+  &.opened {
+    max-height: 330px;
+
+    .trigger-container {
+      background-color: rgba(123,136,155,0.1);
+      transform: rotate(180deg);
+
+      &::before {
+        border-color: $black;
+      }
+    }
+  }
+
+  .trigger-container {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: rgba(123,136,155,0);
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      width: 6px;
+      height: 6px;
+      left: 11px;
+      top: 10px;
+      transform: rotate(-45deg);
+      border-left: 2px solid;
+      border-bottom: 2px solid;
+      border-color: $silver-grey;
+    }
+  }
+
+  &:hover {
+    .trigger-container {
+      background-color: rgba(123,136,155,0.1);
+    }
+  }
+}

@@ -16,6 +16,7 @@ class MunicipalChiefMunicipalManagerAttributionControllerTest extends WebTestCas
 
     public function testReferentCanReachMunicipalManagerAttributionForm()
     {
+        $this->client->followRedirects();
         $this->authenticateAsAdherent($this->client, 'municipal-chief@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/');
@@ -33,7 +34,7 @@ class MunicipalChiefMunicipalManagerAttributionControllerTest extends WebTestCas
         $cities = $crawler->filter('.datagrid__table-manager tbody tr');
         $this->assertCount(1, $cities);
 
-        $this->assertContains('Lille (59350)', $cities->eq(0)->text());
+        $this->assertStringContainsString('Lille (59350)', $cities->eq(0)->text());
     }
 
     public function testAdherentCanNotSeeMunicipalManagerAttributionForm()
@@ -44,14 +45,14 @@ class MunicipalChiefMunicipalManagerAttributionControllerTest extends WebTestCas
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

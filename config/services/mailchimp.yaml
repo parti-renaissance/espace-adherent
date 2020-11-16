@@ -9,21 +9,15 @@ services:
     _instanceof:
         App\Mailchimp\Webhook\Handler\WebhookHandlerInterface:
             tags: ['app.mailchimp.webhook_handler']
-        App\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
-            tags: ['app.mailchimp.campaign.handler']
+        App\Mailchimp\Campaign\ContentSection\ContentSectionBuilderInterface:
+            tags: [ 'app.mailchimp.campaign.content_builder' ]
         App\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface:
             tags: ['app.mailchimp.campaign.segment_condition_builder']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
 
-    App\Mailchimp\Webhook\Handler\:
-        resource: ../../src/Mailchimp/Webhook/Handler/
-
-    App\Mailchimp\Campaign\SegmentConditionBuilder\:
-        resource: ../../src/Mailchimp/Campaign/SegmentConditionBuilder/
-
-    App\AdherentMessage\MailchimpCampaign\:
-        resource: ../../src/AdherentMessage/MailchimpCampaign/
+    App\Mailchimp\:
+        resource: ../../src/Mailchimp/
 
     App\Mailchimp\Webhook\WebhookHandler:
         arguments: [!tagged 'app.mailchimp.webhook_handler']
@@ -32,13 +26,9 @@ services:
         arguments:
             $builders: !tagged 'app.mailchimp.campaign.segment_condition_builder'
 
-    App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
-        arguments: [!tagged 'app.mailchimp.campaign.handler']
-
-    App\AdherentMessage\StatisticsAggregator: ~
-
-    App\Mailchimp\Synchronisation\Handler\:
-        resource: ../../src/Mailchimp/Synchronisation/Handler/
+    App\Mailchimp\Campaign\CampaignContentRequestBuilder:
+        arguments:
+            $builders: !tagged 'app.mailchimp.campaign.content_builder'
 
     App\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler:
         tags:
@@ -57,9 +47,6 @@ services:
             - { name: 'monolog.logger', channel: 'mailchimp_sync' }
         calls:
             - ['setLogger', ['@logger']]
-
-    App\AdherentMessage\Handler\:
-        resource: ../../src/AdherentMessage/Handler/
 
     App\Newsletter\Handler\:
         resource: ../../src/Newsletter/Handler/

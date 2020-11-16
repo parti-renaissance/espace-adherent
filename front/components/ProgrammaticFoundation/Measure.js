@@ -97,7 +97,7 @@ export default class Measure extends React.Component {
     }
 }
 
-Measure.propsType = {
+Measure.propTypes = {
     measure: PropTypes.object.isRequired,
     preventAutoExpand: PropTypes.bool,
 };

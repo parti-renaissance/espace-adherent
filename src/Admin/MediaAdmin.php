@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\Media;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class MediaAdmin extends AbstractAdmin
 {
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $storage;
 
@@ -170,7 +170,7 @@ class MediaAdmin extends AbstractAdmin
         ;
     }
 
-    public function setStorage(Filesystem $storage): void
+    public function setStorage(FilesystemInterface $storage): void
     {
         $this->storage = $storage;
     }

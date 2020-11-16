@@ -24,7 +24,7 @@ class FileListenerTest extends WebTestCase
         self::assertNull($entityFile->getFile());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         self::bootKernel();
         $container = self::$kernel->getContainer();

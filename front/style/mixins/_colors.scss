@@ -27,6 +27,7 @@ $green--apple: #0CD283;
 $green--pale: #d3ffeb;
 $green--ocean: #42b883;
 $green--ocean--light: #ECF8F3;
+$green--territory: #208e73;
 $orange: #FF6955;
 $pink: #FF4D89;
 $pink-hover: #E53072;
@@ -43,6 +44,7 @@ $yellow-hover: #c4d02a; //old
 $yellow--light: #FFEB00;
 $yellow--europe: #FFD600;
 $yellow--dark: #AB820B;
+$yellow--orange: #FDB121;
 $cta: #1254d8;
 $cta-hover: #0251C0;
 
@@ -273,6 +275,10 @@ $gradient--menu: linear-gradient(to right, rgba(white, 0), white);
 
 .background--blue {
     background-color: $blue;
+}
+
+.background--green-territory {
+    background-color: $green--territory;
 }
 
 .background--blue-light {

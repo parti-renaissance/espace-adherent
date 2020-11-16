@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class MunicipalChiefFilter extends AbstractAdherentMessageFilter
+class MunicipalChiefFilter extends AbstractAdherentMessageFilter implements CampaignAdherentMessageFilterInterface
 {
     /**
      * @var string|null

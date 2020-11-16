@@ -50,6 +50,8 @@ class InvitationController extends Controller
      * @Route("/espace-depute/invitation", name="app_deputy_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "deputy"})
      * @Route("/espace-senateur/invitation", name="app_senator_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "senator"})
      * @Route("/espace-comite/{slug}/invitation", name="app_supervisor_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "supervisor"})
+     * @Route("/espace-candidat-legislative/invitation", name="app_legislative_candidate_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "legislative_candidate"})
+     * @Route("/espace-candidate/invitation", name="app_candidate_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "candidate"})
      *
      * @Security("is_granted('ROLE_ADHERENT')")
      */

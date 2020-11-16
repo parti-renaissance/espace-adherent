@@ -49,8 +49,8 @@ CONTENT;
 
         $this->assertRegExp(sprintf('#%s#', preg_quote($regex)), $responseContent);
 
-        // Ensure adherents without subscription type 'municipal_email' isn't exported
-        $this->assertNotContains('gisele-berthoux@caramail.com', $responseContent);
+        // Ensure adherents without subscription type 'candidate_email' isn't exported
+        $this->assertStringNotContainsString('gisele-berthoux@caramail.com', $responseContent);
     }
 
     public function testAnonymousCanNotExportAdherentsCsv(): void
@@ -64,14 +64,14 @@ CONTENT;
         $this->assertStatusCode(401, $this->client);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

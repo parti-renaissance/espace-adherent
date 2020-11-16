@@ -10,3 +10,15 @@
         </div>
     </div>
 {% endblock %}
+
+{% block vote_step_pool_title %}
+    Sélectionnez {{ pool.code|lower == 'female' ? 'une candidate Femme' : 'un candidat Homme' }}
+{% endblock %}
+
+{% block vote_finish_action_block %}
+    <div class="b__nudge--bottom-large b__nudge--top-large">
+        <a href="{{ path('app_committee_show', {slug: election.electionEntity.committee.slug}) }}" class="btn btn--blue">
+            Retour au comité
+        </a>
+    </div>
+{% endblock %}

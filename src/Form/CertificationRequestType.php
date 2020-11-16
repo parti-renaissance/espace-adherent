@@ -13,7 +13,11 @@ class CertificationRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('document', FileType::class)
+            ->add('document', FileType::class, [
+                'attr' => [
+                    'accept' => implode(',', CertificationRequest::MIME_TYPES),
+                ],
+            ])
             ->add('cgu', RequiredCheckboxType::class)
         ;
     }

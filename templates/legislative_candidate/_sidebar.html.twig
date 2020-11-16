@@ -1,0 +1,16 @@
+<nav class="manager-sidebar__menu">
+    {% set isLegislativeCandidate = is_granted('ROLE_LEGISLATIVE_CANDIDATE') %}
+    <ul>
+        {% if isLegislativeCandidate or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
+            <li class="{{ is_active_route(app.request, 'app_message_legislative_candidate_*') ? 'active' }}">
+                <a href="{{ path("app_message_legislative_candidate_list", route_params|default({})) }}">Mes messages</a>
+            </li>
+        {% endif %}
+
+        {% if isLegislativeCandidate or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
+            <li class="{{ is_active_route(app.request, ['app_legislative_candidate_managed_users_list', 'app_legislative_candidate_adherent_invitation']) ? 'active' }}">
+                <a href="{{ path('app_legislative_candidate_managed_users_list') }}">Adhérents</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

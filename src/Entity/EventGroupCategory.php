@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,11 +17,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  *
  * @UniqueEntity("name")
- *
- * @Algolia\Index
  */
 class EventGroupCategory extends BaseEventCategory
 {
+    const CAMPAIGN_EVENTS = 'evenements-de-campagne';
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\EventCategory", mappedBy="eventGroupCategory", fetch="EAGER")
      * @ORM\OrderBy({"name": "ASC"})

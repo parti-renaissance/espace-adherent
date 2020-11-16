@@ -54,7 +54,7 @@ class ProcurationProxyMessageFactory
     /**
      * @param ProcurationRequest[] $requests
      */
-    public function createProxyReminderMessage(array $requests): ProcurationProxyReminderMessage
+    public function createProxyReminderMessage(array $requests): ?ProcurationProxyReminderMessage
     {
         if (!$requests) {
             return null;

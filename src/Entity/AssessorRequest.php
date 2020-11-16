@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use App\ValueObject\Genders;
@@ -17,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="assessor_requests")
  * @ORM\Entity(repositoryClass="App\Repository\AssessorRequestRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AssessorRequest
 {
@@ -90,7 +87,12 @@ class AssessorRequest
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank(message="common.birthdate.not_blank")
-     * @Assert\Range(max="-18 years", maxMessage="assessor.birthdate.minimum_required_age")
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="-18 years",
+     *     minMessage="assessor.birthdate.maximum_required_age",
+     *     maxMessage="assessor.birthdate.minimum_required_age"
+     * )
      */
     private $birthdate;
 

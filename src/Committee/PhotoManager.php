@@ -3,7 +3,7 @@
 namespace App\Committee;
 
 use App\Entity\Committee;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 
 class PhotoManager
@@ -11,7 +11,7 @@ class PhotoManager
     private $storage;
     private $glide;
 
-    public function __construct(Filesystem $storage, Server $glide)
+    public function __construct(FilesystemInterface $storage, Server $glide)
     {
         $this->storage = $storage;
         $this->glide = $glide;

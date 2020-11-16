@@ -5,6 +5,7 @@ namespace Tests\App\Controller\EnMarche;
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCitizenProjectData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Entity\CitizenProject;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
@@ -60,12 +61,12 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertTrue($this->seeDefaultCitizenProjectImage());
         $this->assertFalse($this->seeCommentSection());
 
-        $this->assertContains('Le problème', $crawler->filter('#citizen-project-problem-description > p:nth-child(1)')->text());
-        $this->assertContains($citizenProject->getProblemDescription(), $crawler->filter('#citizen-project-problem-description > p:nth-child(2)')->text());
-        $this->assertContains('Notre projet', $crawler->filter('#citizen-project-proposed-solution > p:nth-child(1)')->text());
-        $this->assertContains($citizenProject->getProposedSolution(), $crawler->filter('#citizen-project-proposed-solution > p:nth-child(2)')->text());
-        $this->assertContains('Les actions à lancer', $crawler->filter('#citizen-project-required-means > p:nth-child(1)')->text());
-        $this->assertContains($citizenProject->getRequiredMeans(), $crawler->filter('#citizen-project-required-means > p:nth-child(2)')->text());
+        $this->assertStringContainsString('Le problème', $crawler->filter('#citizen-project-problem-description > p:nth-child(1)')->text());
+        $this->assertStringContainsString($citizenProject->getProblemDescription(), $crawler->filter('#citizen-project-problem-description > p:nth-child(2)')->text());
+        $this->assertStringContainsString('Notre projet', $crawler->filter('#citizen-project-proposed-solution > p:nth-child(1)')->text());
+        $this->assertStringContainsString($citizenProject->getProposedSolution(), $crawler->filter('#citizen-project-proposed-solution > p:nth-child(2)')->text());
+        $this->assertStringContainsString('Les actions à lancer', $crawler->filter('#citizen-project-required-means > p:nth-child(1)')->text());
+        $this->assertStringContainsString($citizenProject->getRequiredMeans(), $crawler->filter('#citizen-project-required-means > p:nth-child(2)')->text());
     }
 
     public function testCreatorCanSeePendingCitizenProject(): void
@@ -130,7 +131,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertSame(\GuzzleHttp\json_encode([[
-            'uuid' => LoadAdherentData::COMMITTEE_1_UUID,
+            'uuid' => LoadCommitteeData::COMMITTEE_1_UUID,
             'name' => 'En Marche Paris 8',
         ]]), $this->client->getResponse()->getContent());
 
@@ -161,7 +162,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
         $citizenProject = $this->getCitizenProjectRepository()->findOneByUuid(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
-        $committee = $this->getCommittee(LoadAdherentData::COMMITTEE_1_UUID);
+        $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID);
         $this->assertCount(1, $citizenProject->getCommitteeSupports());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/projets-citoyens/mon-comite-soutien/%s', $citizenProject->getSlug()));
@@ -330,7 +331,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('4 membres', $crawler->filter('#members .citizen-project__card__title')->text());
+        $this->assertStringContainsString('4 membres', $crawler->filter('#members .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -351,7 +352,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('5 membres', $crawler->filter('#members .citizen-project__card__title')->text());
+        $this->assertStringContainsString('5 membres', $crawler->filter('#members .citizen-project__card__title')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -369,7 +370,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $citizenProjectUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('4 membres', $crawler->filter('#members .citizen-project__card__title')->text());
+        $this->assertStringContainsString('4 membres', $crawler->filter('#members .citizen-project__card__title')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -418,8 +419,8 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
     private function assertSeeComment(int $position, string $author, string $text): void
     {
         $crawler = $this->client->getCrawler();
-        $this->assertContains($author, $crawler->filter('.citizen-project-comment')->eq($position)->text());
-        $this->assertContains($text, $crawler->filter('.citizen-project-comment div:nth-child(2) p')->eq($position)->text());
+        $this->assertStringContainsString($author, $crawler->filter('.citizen-project-comment')->eq($position)->text());
+        $this->assertStringContainsString($text, $crawler->filter('.citizen-project-comment div:nth-child(2) p')->eq($position)->text());
     }
 
     private function seeCommentSection(): bool
@@ -462,14 +463,14 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         return true;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -1,14 +1,18 @@
 {% spaceless %}
 
-    {% set menu = [
-        {
-            label: 'Partager par e-mail',
-            callbackName: 'sendEventLinkByMessage',
-            data: {
-                'data-url': url('app_event_show', {slug: event.slug}),
+    {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::CANDIDATE') %}
+        {% set menu = [
+            {
+                label: 'Partager par e-mail',
+                callbackName: 'sendEventLinkByMessage',
+                data: {
+                    'data-url': url('app_event_show', {slug: event.slug}),
+                }
             }
-        }
-    ] %}
+        ] %}
+    {% else %}
+        {% set menu = [] %}
+    {% endif %}
 
     {% if is_granted('HOST_EVENT', event) %}
         {% set menu = menu|merge([

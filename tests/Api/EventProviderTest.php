@@ -106,7 +106,7 @@ class EventProviderTest extends TestCase
         return $event;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanupContainer($this->container);
 

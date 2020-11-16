@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Address\GeoCoder;
 use App\Entity\Report\ReportableInterface;
 use App\Geocoder\GeoPointInterface;
@@ -35,8 +34,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "institutional_event": "App\Entity\InstitutionalEvent",
  *     "municipal_event": "App\Entity\MunicipalEvent",
  * })
- *
- * @Algolia\Index
  */
 abstract class BaseEvent implements GeoPointInterface, ReportableInterface, ReferentTaggableEntity
 {
@@ -83,13 +80,11 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @ORM\Column(length=100)
      *
-     * @Algolia\Attribute
-     *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      *
      * @SymfonySerializer\Groups({"event_read"})
      *
-     * @Assert\Length(100)
+     * @Assert\Length(max=100)
      */
     protected $name;
 
@@ -99,8 +94,6 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @var string|null
      *
      * @ORM\Column(length=100)
-     *
-     * @Algolia\Attribute
      */
     protected $canonicalName;
 
@@ -114,8 +107,6 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *     handlers={@Gedmo\SlugHandler(class="App\Event\UniqueEventNameHandler")}
      * )
      *
-     * @Algolia\Attribute
-     *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      *
      * @SymfonySerializer\Groups({"event_read"})
@@ -126,8 +117,6 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @var string
      *
      * @ORM\Column(type="text")
-     *
-     * @Algolia\Attribute
      *
      * @SymfonySerializer\Groups({"event_read"})
      */
@@ -240,6 +229,11 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
         return $this->name;
     }
 
+    public function getCanonicalName(): ?string
+    {
+        return $this->canonicalName;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -303,13 +297,6 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
     public function decrementParticipantsCount(int $increment = 1): void
     {
         $this->participantsCount = max($this->participantsCount - $increment, 0);
-    }
-
-    public function updatePostAddress(PostAddress $postAddress): void
-    {
-        if (!$this->postAddress->equals($postAddress)) {
-            $this->postAddress = $postAddress;
-        }
     }
 
     public function setName(string $name): void
@@ -381,22 +368,6 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
     public function setPublished(bool $published): void
     {
         $this->published = $published;
-    }
-
-    /**
-     * @Algolia\Attribute(algoliaName="begin_at")
-     */
-    public function getReadableCreatedAt(): string
-    {
-        return $this->beginAt->format('d/m/Y H:i');
-    }
-
-    /**
-     * @Algolia\Attribute(algoliaName="finish_at")
-     */
-    public function getReadableUpdatedAt(): string
-    {
-        return $this->finishAt->format('d/m/Y H:i');
     }
 
     public function getCapacity(): ?int

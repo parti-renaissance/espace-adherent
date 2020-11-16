@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  *
  * @ORM\Table(name="voting_platform_election_pool")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ElectionPool
 {
@@ -29,7 +26,7 @@ class ElectionPool
      *
      * @ORM\Column
      */
-    private $title;
+    private $code;
 
     /**
      * @var Election
@@ -63,9 +60,9 @@ class ElectionPool
      */
     private $electionRounds;
 
-    public function __construct(string $title)
+    public function __construct(string $code)
     {
-        $this->title = $title;
+        $this->code = $code;
         $this->candidateGroups = new ArrayCollection();
         $this->electionRounds = new ArrayCollection();
     }
@@ -75,9 +72,14 @@ class ElectionPool
         return $this->id;
     }
 
-    public function getTitle(): string
+    public function getCode(): string
     {
-        return $this->title;
+        return $this->code;
+    }
+
+    public function getElection(): Election
+    {
+        return $this->election;
     }
 
     public function setElection(Election $election): void
@@ -106,5 +108,10 @@ class ElectionPool
         if (!$this->electionRounds->contains($round)) {
             $this->electionRounds->add($round);
         }
+    }
+
+    public function countCandidateGroups(): int
+    {
+        return $this->candidateGroups->count();
     }
 }

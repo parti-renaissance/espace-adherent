@@ -1,5 +1,11 @@
 {% extends 'message/filter.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
 {% block filter_content %}
     <div class="form__title b__nudge--bottom-larger">
         <h3 class="text--medium  text--center">Filtrer mon message</h3>
@@ -134,11 +140,6 @@
             {{ form_end(form) }}
         </div>
     </div>
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block final_javascripts %}

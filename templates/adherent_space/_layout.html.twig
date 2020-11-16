@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block footer '' %}
+
+{% block header %}
+    {% set is_certified = is_granted(constant('App\\Adherent\\Certification\\CertificationPermissions::CERTIFIED')) %}
+    <nav class="manager-topbar">
+        <div class="manager-topbar__container">
+            <a href="{{ path('homepage') }}" class="text--logo b__nudge--right-large">EM!</a>
+
+            <a href="#" class="manager-topbar__menu-mobile js-topbar-sidebar-mobile">
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </a>
+
+            {% if is_granted('ROLE_SUPERVISOR') or
+                is_granted('ROLE_HOST') or
+                is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or
+                is_granted('ROLE_REFERENT') or
+                is_granted('ROLE_COREFERENT') or
+                is_granted('ROLE_DEPUTY') or
+                is_granted('ROLE_SENATOR') or
+                is_granted('ROLE_BOARD_MEMBER') or
+                is_granted('ROLE_COORDINATOR') or
+                is_granted('ROLE_PROCURATION_MANAGER') or
+                is_granted('ROLE_LEGISLATIVE_CANDIDATE') or
+                is_granted('ROLE_ASSESSOR_MANAGER') or
+                is_granted('ROLE_MUNICIPAL_CHIEF') or
+                is_granted('ROLE_JECOUTE_MANAGER') or
+                is_granted('ROLE_ASSESSOR') or
+                is_granted('ROLE_ELECTION_RESULTS_REPORTER') or
+                is_granted('ROLE_MUNICIPAL_MANAGER') or
+                is_granted('ROLE_MUNICIPAL_MANAGER_SUPERVISOR') or
+                is_granted('ROLE_SENATORIAL_CANDIDATE') or
+                is_granted('ROLE_CANDIDATE') or
+                is_granted('ROLE_DELEGATED_REFERENT') or
+                is_granted('ROLE_DELEGATED_DEPUTY') or
+                is_granted('ROLE_DELEGATED_SENATOR') or
+                is_granted('ROLE_LRE')
+            %}
+                {% set totalSections =
+                    (app.user.isSupervisor or app.user.isHost) +
+                    (app.user.isReferent or app.user.isCoReferent) +
+                    app.user.isDeputy +
+                    app.user.isSenator +
+                    app.user.isCoordinatorCitizenProjectSector +
+                    app.user.isCoordinatorCommitteeSector +
+                    app.user.isProcurationManager +
+                    app.user.isAssessorManager +
+                    app.user.isMunicipalChief +
+                    app.user.isJecouteManager +
+                    app.user.isMunicipalManagerSupervisor +
+                    app.user.isAssessor +
+                    app.user.isMunicipalManager +
+                    app.user.isElectionResultsReporter +
+                    app.user.isSenatorialCandidate +
+                    app.user.isCandidate +
+                    app.user.isLre +
+                    is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
+                    app.user.isDelegatedReferent +
+                    app.user.isDelegatedDeputy +
+                    app.user.isDelegatedSenator
+                %}
+
+                <div class="em-dropdown manager-topbar__spaces">
+                    <div class="manager-topbar__spaces--content em-dropdown--trigger">
+                        <span class="current-space">{{ block('page_title') }}</span>
+                    </div>
+
+                    <div class="em-dropdown--container">
+                        <ul>
+                            <li class="b__nudge--bottom-small"><a href="{{ path('homepage') }}">Retour à la page d'accueil</a></li>
+                            <li class="dropdown-section">Mes espaces</li>
+                            {{ include('adherent/_list_my_sections.html.twig') }}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+
+            <p class="manager-topbar__area text--small">
+                {% block adherent_space_header_title %}{% endblock %}
+            </p>
+
+            <div class="em-dropdown em-nav-dropdown manager-topbar__user desktop">
+                <span class="em-dropdown--trigger icon--with-text">
+                    {{ include('components/user.html.twig') }}
+                    {{ app.user.firstName }}
+                </span>
+                {{ include('components/_dropdown_user_desktop.html.twig') }}
+            </div>
+
+            <div class="em-dropdown em-nav-dropdown manager-topbar__user mobile">
+                <span class="em-dropdown--trigger icon--with-text">
+                    {{ include('components/user.html.twig') }}
+                </span>
+                <div class="em-dropdown--container em-nav">
+                    {{ include('components/_dropdown_user_mobile.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            on(dom('.js-topbar-sidebar-mobile'), 'click', function(event) {
+                event.preventDefault();
+
+                var sidebar = dom('.manager-sidebar');
+                var body = dom('body');
+
+                if (!sidebar.style.display || sidebar.style.display === 'none') {
+                    show(sidebar);
+                    addClass(body, 'o-hidden');
+                } else {
+                    hide(sidebar);
+                    removeClass(body, 'o-hidden');
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -5,16 +5,13 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use App\Utils\PhoneNumberUtils;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadManagedUserData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadManagedUserData extends Fixture implements DependentFixtureInterface
 {
-    use ContainerAwareTrait;
-
     public function load(ObjectManager $manager)
     {
         $managedUserFactory = $this->getManagedUserFactory();
@@ -32,16 +29,19 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'uuid' => $this->getReference('adherent-1')->getUuid(),
             'email' => $this->getReference('adherent-1')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-1')->getPostalCode(),
+            'address' => $this->getReference('adherent-1')->getAddress(),
             'city' => $this->getReference('adherent-1')->getCityName(),
             'country' => $this->getReference('adherent-1')->getCountry(),
             'first_name' => $this->getReference('adherent-1')->getFirstName(),
             'last_name' => $this->getReference('adherent-1')->getLastName(),
             'birthday' => $this->getReference('adherent-1')->getBirthdate(),
+            'phone' => PhoneNumberUtils::create('+33666666666'),
             'is_committee_member' => 0,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
             'subscription_types' => [SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
+            'zone' => null,
             'created_at' => '2017-06-01 09:22:45',
             'gender' => 'male',
         ]);
@@ -53,6 +53,7 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'uuid' => $this->getReference('adherent-13')->getUuid(),
             'email' => $this->getReference('adherent-13')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-13')->getPostalCode(),
+            'address' => $this->getReference('adherent-13')->getAddress(),
             'city' => $this->getReference('adherent-13')->getCityName(),
             'country' => $this->getReference('adherent-13')->getCountry(),
             'first_name' => $this->getReference('adherent-13')->getFirstName(),
@@ -60,11 +61,13 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'birthday' => $this->getReference('adherent-13')->getBirthdate(),
             'committees' => $committee10->getName(),
             'committee_uuids' => [$committee10->getUuid()->toString()],
+            'phone' => PhoneNumberUtils::create('+33666666666'),
             'is_committee_member' => 1,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
+            'zone' => null,
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
         ]);
@@ -76,6 +79,7 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'uuid' => $this->getReference('adherent-5')->getUuid(),
             'email' => $this->getReference('adherent-5')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-5')->getPostalCode(),
+            'address' => $this->getReference('adherent-5')->getAddress(),
             'city' => $this->getReference('adherent-5')->getCityName(),
             'country' => $this->getReference('adherent-5')->getCountry(),
             'first_name' => $this->getReference('adherent-5')->getFirstName(),
@@ -83,11 +87,13 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'birthday' => $this->getReference('adherent-5')->getBirthdate(),
             'committees' => $committee1->getName(),
             'committee_uuids' => [$committee1->getUuid()->toString()],
+            'phone' => PhoneNumberUtils::create('+33666666666'),
             'is_committee_member' => 0,
             'is_committee_host' => 1,
             'is_committee_supervisor' => 0,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => '92,59',
+            'zone' => null,
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
             'citizenProjects' => [
@@ -103,6 +109,7 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'email' => $this->getReference('adherent-7')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-7')->getPostalCode(),
             'committee_postal_code' => '91',
+            'address' => $this->getReference('adherent-7')->getAddress(),
             'city' => $this->getReference('adherent-7')->getCityName(),
             'country' => $this->getReference('adherent-7')->getCountry(),
             'first_name' => $this->getReference('adherent-7')->getFirstName(),
@@ -116,6 +123,7 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'is_committee_supervisor' => 1,
             'subscription_types' => null,
             'subscribedTags' => '77,59',
+            'zone' => null,
             'created_at' => '2017-08-12 16:12:13',
             'gender' => 'male',
             'supervisor_tags' => [
@@ -145,7 +153,7 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
+            LoadCommitteeData::class,
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\App\RepublicanSilence\TagExtractor;
 
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentManagedArea;
 use App\Entity\ReferentTag;
 use App\RepublicanSilence\TagExtractor\ReferentTagExtractor;
@@ -16,8 +17,8 @@ class ReferentTagExtractorTest extends TestCase
 
         $adherentMock = $this->createConfiguredMock(Adherent::class, [
             'getManagedArea' => new ReferentManagedArea([
-                new ReferentTag(null, 'tag1'),
-                new ReferentTag(null, 'tag2'),
+                new ReferentTag(null, 'tag1', new Zone('mock', 'tag1', '')),
+                new ReferentTag(null, 'tag2', new Zone('mock', 'tag2', '')),
             ]),
         ]);
 

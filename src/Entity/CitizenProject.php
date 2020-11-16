@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Collection\AdherentCollection;
 use App\Exception\CitizenProjectAlreadyApprovedException;
@@ -31,14 +30,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CitizenProjectRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface
 {
     use EntityNullablePostAddressTrait;
     use EntityReferentTagTrait;
     use SkillTrait;
+    use StaticSegmentTrait;
 
     public const STATUSES_NOT_ALLOWED_TO_CREATE = [
         self::PENDING,
@@ -65,23 +63,17 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
      *
      * @Gedmo\Slug(fields={"postAddress.postalCode", "canonicalName"})
      *
-     * @Algolia\Attribute
-     *
      * @JMS\Groups({"public", "citizen_project_read"})
      */
     protected $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CitizenProjectCategory")
-     *
-     * @Algolia\Attribute
      */
     private $category;
 
     /**
      * @ORM\Column
-     *
-     * @Algolia\Attribute
      *
      * @JMS\Groups({"public", "citizen_project_read"})
      */
@@ -201,13 +193,6 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $turnkeyProject;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $mailchimpId;
 
     /**
      * @var CitizenAction|null
@@ -737,15 +722,5 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
         }
 
         return self::TYPES[self::SIMPLE_TYPE];
-    }
-
-    public function getMailchimpId(): ?int
-    {
-        return $this->mailchimpId;
-    }
-
-    public function setMailchimpId(?int $mailchimpId): void
-    {
-        $this->mailchimpId = $mailchimpId;
     }
 }

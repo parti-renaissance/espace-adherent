@@ -7,9 +7,11 @@ use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Subscription\SubscriptionTypeEnum;
 
@@ -19,11 +21,13 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     {
         return \in_array(\get_class($filter->getMessage()), [
             ReferentAdherentMessage::class,
+            ReferentInstancesMessage::class,
             DeputyAdherentMessage::class,
             CommitteeAdherentMessage::class,
             CitizenProjectAdherentMessage::class,
             MunicipalChiefAdherentMessage::class,
             SenatorAdherentMessage::class,
+            LegislativeCandidateAdherentMessage::class,
         ], true);
     }
 
@@ -42,9 +46,15 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
-
+            case ReferentInstancesMessage::class:
+                $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
+                break;
             case DeputyAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
+                break;
+
+            case LegislativeCandidateAdherentMessage::class:
+                $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
                 break;
 
             case SenatorAdherentMessage::class:
@@ -62,7 +72,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             case MunicipalChiefAdherentMessage::class:
                 /** @var MunicipalChiefFilter $filter */
                 if (($filter = $campaign->getMessage()->getFilter()) && $filter->getContactAdherents()) {
-                    $interestKeys[] = SubscriptionTypeEnum::MUNICIPAL_EMAIL;
+                    $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
                     break;
                 }
 

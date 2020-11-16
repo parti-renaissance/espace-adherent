@@ -39,10 +39,10 @@ class AssessorRequestTest extends TestCase
     public function provideProcessTestCases(): \Generator
     {
         yield 'After processing an holder to a vote place, we should have only one substitute office available on the vote place' => [
-            AssessorOfficeEnum::HOLDER, 0, 1, ['assessor_request.office.substitute.label'],
+            AssessorOfficeEnum::HOLDER, false, true, ['assessor_request.office.substitute.label'],
         ];
         yield 'After processing a substitute to a vote place, we should have only one holder office available on the vote place' => [
-            AssessorOfficeEnum::SUBSTITUTE, 1, 0, ['assessor_request.office.holder.label'],
+            AssessorOfficeEnum::SUBSTITUTE, true, false, ['assessor_request.office.holder.label'],
         ];
     }
 
@@ -74,10 +74,10 @@ class AssessorRequestTest extends TestCase
     public function provideUnprocessTestCases(): \Generator
     {
         yield 'After unprocessing an holder to a vote place, we should have both offices available on the vote place' => [
-            AssessorOfficeEnum::HOLDER, 1, 1, ['assessor_request.office.holder.label', 'assessor_request.office.substitute.label'],
+            AssessorOfficeEnum::HOLDER, true, true, ['assessor_request.office.holder.label', 'assessor_request.office.substitute.label'],
         ];
         yield 'After unprocessing a substitute to a vote place, we should have both offices available on the vote place' => [
-            AssessorOfficeEnum::SUBSTITUTE, 1, 1, ['assessor_request.office.holder.label', 'assessor_request.office.substitute.label'],
+            AssessorOfficeEnum::SUBSTITUTE, true, true, ['assessor_request.office.holder.label', 'assessor_request.office.substitute.label'],
         ];
     }
 }

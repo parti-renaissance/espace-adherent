@@ -2,7 +2,6 @@
 
 namespace App\Entity\ChezVous;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,8 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ChezVous\MeasureTypeRepository")
  * @ORM\Table(name="chez_vous_measure_types")
- *
- * @Algolia\Index(autoIndex=false)
  *
  * @UniqueEntity("code")
  */
@@ -34,8 +31,6 @@ class MeasureType
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      * @Assert\Choice(callback={"App\ChezVous\MeasureChoiceLoader", "getTypeChoices"})
-     *
-     * @Algolia\Attribute
      */
     private $code;
 
@@ -46,8 +41,6 @@ class MeasureType
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
-     *
-     * @Algolia\Attribute
      */
     private $label;
 
@@ -64,8 +57,6 @@ class MeasureType
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
-     *
-     * @Algolia\Attribute
      */
     private $sourceLink;
 
@@ -75,8 +66,6 @@ class MeasureType
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
-     *
-     * @Algolia\Attribute
      */
     private $sourceLabel;
 
@@ -86,8 +75,6 @@ class MeasureType
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
-     *
-     * @Algolia\Attribute
      */
     private $oldolfLink;
 
@@ -97,8 +84,6 @@ class MeasureType
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
-     *
-     * @Algolia\Attribute
      */
     private $eligibilityLink;
 
@@ -108,8 +93,6 @@ class MeasureType
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
-     *
-     * @Algolia\Attribute
      */
     private $citizenProjectsLink;
 
@@ -119,8 +102,6 @@ class MeasureType
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
-     *
-     * @Algolia\Attribute
      */
     private $ideasWorkshopLink;
 
@@ -229,13 +210,5 @@ class MeasureType
     public function setIdeasWorkshopLink(?string $ideasWorkshopLink): void
     {
         $this->ideasWorkshopLink = $ideasWorkshopLink;
-    }
-
-    /**
-     * @Algolia\Attribute(algoliaName="updatedAt")
-     */
-    public function exportUpdatedAt(): string
-    {
-        return $this->updatedAt->format('Y/m/d');
     }
 }

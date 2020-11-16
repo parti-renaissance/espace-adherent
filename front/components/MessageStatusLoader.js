@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Loader from './Loader';
 import numberFormat from '../utils/number';
+import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
 const MAX_API_CALLS = 50;
 
@@ -67,8 +68,12 @@ export default class MessageStatusLoader extends React.Component {
                     }
                 <p>
                     <a href={this.props.sendLocked ? '#' : './send'}
-                       className={`btn btn--large-and-full b__nudge--top${
-                        this.props.sendLocked ? ' btn--disabled' : ' btn--blue'}`}>Envoyer
+                       className={`btn btn--large-and-full b__nudge--top em-confirm--trigger ${
+                        this.props.sendLocked ? ' btn--disabled' : ' btn--blue'}`}
+                       data-confirm-title="Confirmation"
+                       data-confirm-content={`Êtes-vous sûr de vouloir envoyer le message à ${
+                           this.state.recipientCount} contact${1 < this.state.recipientCount ? 's' : ''} ?`}>
+                        Envoyer
                     </a>
                     {this.renderActionButtons()}
                 </p>
@@ -135,11 +140,11 @@ MessageStatusLoader.defaultProps = {
     sendLocked: false,
 };
 
-MessageStatusLoader.propsType = {
-    api: PropTypes.object.isRequired,
+MessageStatusLoader.propTypes = {
+    api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
     messageId: PropTypes.string.isRequired,
     synchronized: PropTypes.bool,
-    recipientCount: PropTypes.integer,
+    recipientCount: PropTypes.number,
     withResetButton: PropTypes.bool,
     sendLocked: PropTypes.bool,
 };

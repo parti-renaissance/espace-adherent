@@ -1,9 +1,11 @@
-{% extends 'adherent/layout.twig' %}
+{% extends 'adherent_profile/_layout.html.twig' %}
 
-{% block adherent_profile_form %}
+{% block adherent_profile_content %}
+<section class="adherent-profile__section">
     {{ form_start(confirmation_form) }}
-        <p>Êtes-vous sûr(e) de vouloir arrêter votre don mensuel ?</p>
+        <p class="text--body">Êtes-vous sûr(e) de vouloir arrêter votre don mensuel ?</p>
         {{ form_widget(confirmation_form.allow) }}
         {{ form_widget(confirmation_form.deny) }}
     {{ form_end(confirmation_form) }}
+</section>
 {% endblock %}

@@ -7,8 +7,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class ElectedRepresentativeTagsBuilder
 {
-    public const ADHERENT_TAG = 'adherent';
-    private const TRANSLATION_PREFIX = 'elected_representative.mailchimp_tag.';
+    public const TRANSLATION_PREFIX = 'elected_representative.mailchimp_tag.';
 
     private $translator;
 
@@ -20,6 +19,7 @@ class ElectedRepresentativeTagsBuilder
     public function buildTags(ElectedRepresentative $electedRepresentative): array
     {
         $tags = [];
+        $translatedTags = [];
 
         foreach ($electedRepresentative->getCurrentMandates() as $mandate) {
             $tags[] = $mandate->getType();
@@ -30,20 +30,23 @@ class ElectedRepresentativeTagsBuilder
         }
 
         foreach ($electedRepresentative->getUserListDefinitions() as $userListDefinition) {
-            $tags[] = $userListDefinition->getCode();
+            $trad = $this->translateKey($userListDefinition->getCode());
+            if ($trad === $userListDefinition->getCode()) {
+                $trad = sprintf('[L] %s', $userListDefinition->getLabel());
+            }
+
+            $translatedTags[] = $trad;
         }
 
         foreach ($electedRepresentative->getCurrentLabels() as $label) {
             $tags[] = $label->getName();
         }
 
-        if ($electedRepresentative->isAdherent()) {
-            $tags[] = self::ADHERENT_TAG;
-        }
-
-        return array_map(function (string $tag) {
-            return $this->translateKey($tag);
-        }, array_unique($tags));
+        return array_unique(array_merge(
+            $translatedTags,
+            array_map([$this, 'translateKey'], array_unique($tags)),
+            $electedRepresentative->getActiveReferentTagCodes()
+        ));
     }
 
     public function translateKey(string $key): string

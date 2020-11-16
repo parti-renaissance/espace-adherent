@@ -4,13 +4,15 @@ namespace App\Repository\ElectedRepresentative;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\ElectedRepresentative\Filter\ListFilter;
+use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\UserListDefinitionEnum;
+use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Entity\Geo\Zone;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -47,20 +49,13 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
      */
     public function searchByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
     {
-        return $this->configurePaginator(
-            $this->createFilterQueryBuilder($filter),
-            $page,
-            $limit,
-            static function (Query $query) {
-                $query
-                    ->useResultCache(true)
-                    ->setResultCacheLifetime(1800)
-                ;
-            }
-        );
+        return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
     }
 
-    public function countForReferentTags(array $referentTags): int
+    /**
+     * @param Zone[] $zones
+     */
+    public function countForZones(array $zones): int
     {
         $qb = $this
             ->createQueryBuilder('er')
@@ -68,22 +63,24 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         ;
         $this->withActiveMandatesCondition($qb);
 
-        return (int) $this
-            ->withZoneCondition($qb, $referentTags)
+        if ($zones) {
+            $this->withZoneCondition($qb, $zones);
+        }
+
+        return (int) $qb
             ->getQuery()
             ->getSingleScalarResult()
         ;
     }
 
-    public function isInReferentManagedArea(ElectedRepresentative $electedRepresentative, array $referentTags): bool
+    public function isInReferentManagedArea(ElectedRepresentative $electedRepresentative, array $zones): bool
     {
-        $qb = $this
-            ->createQueryBuilder('er')
-        ;
+        $qb = $this->createQueryBuilder('er');
+
         $this->withActiveMandatesCondition($qb);
 
         $res = $this
-            ->withZoneCondition($qb, $referentTags)
+            ->withZoneCondition($qb, $zones)
             ->andWhere('er = :electedRepresentative')
             ->setParameter('electedRepresentative', $electedRepresentative)
             ->getQuery()
@@ -108,11 +105,17 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('er')
-            ->orderBy('er.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
         $this->withActiveMandatesCondition($qb);
-        $this->withZoneCondition($qb, $filter->getReferentTags());
+
+        if ($filter->getManagesZones()) {
+            $this->withZoneCondition($qb, $filter->getManagesZones());
+            $qb
+                ->orderBy('er.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
+                ->addOrderBy('mandate.number', 'ASC')
+            ;
+        }
 
         $qb
             ->addSelect('mandate', 'zone', 'politicalFunction', 'userListDefinition', 'label')
@@ -182,27 +185,48 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($cities = $filter->getCities()) {
-            $qb
-                ->andWhere('mandate.zone in (:cities)')
-                ->setParameter('cities', $cities)
-            ;
+        if ($zones = $filter->getZones()) {
+            $this->withZoneCondition($qb, $zones);
         }
 
         if ($userListDefinitions = $filter->getUserListDefinitions()) {
             $qb
                 ->andWhere('userListDefinition.id in (:userListDefinitions)')
-                ->andWhere('userListDefinition.type = :erType')
                 ->setParameter('userListDefinitions', $userListDefinitions)
-                ->setParameter('erType', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
             ;
         }
 
-        $isAdherent = $filter->isAdherent();
-        if ($isAdherent) {
-            $qb->andWhere('er.isAdherent = 1');
-        } elseif (false === $isAdherent) {
-            $qb->andWhere('er.isAdherent = 0');
+        if ($contactType = $filter->getContactType()) {
+            switch ($contactType) {
+                case ElectedRepresentativeTypeEnum::ADHERENT:
+                    $qb->andWhere('er.adherent IS NOT NULL');
+
+                    break;
+                case ElectedRepresentativeTypeEnum::CONTACT:
+                    $qb
+                        ->andWhere('er.adherent IS NULL')
+                        ->andWhere('er.contactEmail IS NOT NULL')
+                    ;
+
+                    break;
+                case ElectedRepresentativeTypeEnum::OTHER:
+                    $qb
+                        ->andWhere('er.adherent IS NULL')
+                        ->andWhere('er.contactEmail IS NULL')
+                    ;
+
+                    break;
+                default:
+                    throw new \InvalidArgumentException("ElectedRepresentative contactType \"$contactType\" is undefined.");
+            }
+        }
+
+        $emailSubscribed = $filter->isEmailSubscribed();
+        if (null !== $emailSubscribed) {
+            $qb
+                ->andWhere('er.emailUnsubscribed = :email_unsubscribed')
+                ->setParameter('email_unsubscribed', !$emailSubscribed)
+            ;
         }
 
         return $qb;
@@ -212,53 +236,64 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
     {
         return $qb
             ->leftJoin($alias.'.mandates', 'mandate')
+            ->leftJoin('mandate.zone', 'zone')
             ->andWhere('mandate.finishAt IS NULL')
             ->andWhere('mandate.onGoing = 1')
             ->andWhere('mandate.isElected = 1')
         ;
     }
 
-    private function withZoneCondition(QueryBuilder $qb, array $referentTags, string $alias = 'er'): QueryBuilder
+    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'er'): QueryBuilder
     {
+        if (!$zones) {
+            return $qb;
+        }
+
         if (!\in_array('mandate', $qb->getAllAliases(), true)) {
             $qb->leftJoin($alias.'.mandates', 'mandate');
         }
 
-        $hasParis = false;
-        $districtDptCodes = [];
-        foreach ($referentTags as $tag) {
-            if ($districtDptCode = $tag->getDepartmentCodeFromCirconscriptionName()) {
-                $districtDptCodes[] = $districtDptCode;
-            }
-
-            if (0 === mb_strpos($tag->getCode(), '750') || 0 === mb_strpos($tag->getCode(), 'CIRCO_750')) {
-                $hasParis = true;
-
-                break;
-            }
+        if (!\in_array('geo_zone', $qb->getAllAliases(), true)) {
+            $qb->innerJoin('mandate.geoZone', 'geo_zone');
         }
 
-        $zoneCondition = new Orx();
-        $zoneCondition->add('tag IN (:tags)');
-        $qb->setParameter('tags', $referentTags);
-        // if referent has some Paris tag, we should return elected representatives of all Paris zones
-        if ($hasParis) {
-            $zoneCondition->add('tag.code LIKE :paris_arr OR tag.code LIKE :paris_circo');
-            $qb->setParameter('paris_arr', '750%');
-            $qb->setParameter('paris_circo', 'CIRCO\_750%');
+        if (!\in_array('geo_zone_parent', $qb->getAllAliases(), true)) {
+            $qb->innerJoin('geo_zone.parents', 'geo_zone_parent');
         }
 
-        if ($districtDptCodes) {
-            $zoneCondition->add('tag.code IN (:districtDptCodes)');
-            $qb->setParameter('districtDptCodes', $districtDptCodes);
-        }
+        $ids = array_map(static function ($zone) {
+            return $zone->getId();
+        }, $zones);
 
-        $qb
-            ->leftJoin('mandate.zone', 'zone')
-            ->leftJoin('zone.referentTags', 'tag')
-            ->andWhere($zoneCondition)
+        return $qb
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->in('geo_zone.id', $ids),
+                    $qb->expr()->in('geo_zone_parent.id', $ids),
+                )
+            )
         ;
+    }
 
-        return $qb;
+    public function hasActiveParliamentaryMandate(Adherent $adherent): bool
+    {
+        return 0 < (int) $this->createQueryBuilder('e')
+            ->select('COUNT(1)')
+            ->innerJoin('e.mandates', 'm')
+            ->where('m.onGoing = :true AND m.isElected = :true AND m.finishAt IS NULL')
+            ->andWhere('m.type IN (:types)')
+            ->andWhere('e.adherent = :adherent')
+            ->setParameters([
+                'true' => true,
+                'adherent' => $adherent,
+                'types' => [
+                    MandateTypeEnum::SENATOR,
+                    MandateTypeEnum::DEPUTY,
+                    MandateTypeEnum::EURO_DEPUTY,
+                ],
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }

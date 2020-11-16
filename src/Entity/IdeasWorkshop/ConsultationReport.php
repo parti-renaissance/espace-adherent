@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -21,8 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="ideas_workshop_consultation_report")
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ConsultationReport
 {

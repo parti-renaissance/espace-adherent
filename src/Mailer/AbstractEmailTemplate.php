@@ -5,7 +5,7 @@ namespace App\Mailer;
 use App\Mailer\Message\Message;
 use Ramsey\Uuid\UuidInterface;
 
-abstract class AbstractEmailTemplate implements \JsonSerializable
+abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplateInterface
 {
     protected $uuid;
     protected $senderEmail;
@@ -17,6 +17,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable
     protected $recipients;
     protected $template;
     protected $vars;
+    protected $templateContent;
     /** @var bool|null */
     protected $preserveRecipients;
 
@@ -32,7 +33,8 @@ abstract class AbstractEmailTemplate implements \JsonSerializable
         string $replyTo = null,
         array $cc = [],
         array $bcc = [],
-        array $vars = []
+        array $vars = [],
+        array $templateContent = []
     ) {
         $this->uuid = $uuid;
         $this->template = $template;
@@ -44,6 +46,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable
         $this->bcc = $bcc;
         $this->recipients = [];
         $this->vars = $vars;
+        $this->templateContent = $templateContent;
     }
 
     public static function createWithMessage(
@@ -63,7 +66,8 @@ abstract class AbstractEmailTemplate implements \JsonSerializable
             $message->getReplyTo(),
             $message->getCC(),
             $message->getBCC(),
-            $message->getVars()
+            $message->getVars(),
+            $message->getTemplateContent()
         );
 
         foreach ($message->getRecipients() as $recipient) {

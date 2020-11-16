@@ -60,7 +60,7 @@ class ManagedUserRepositoryTest extends WebTestCase
         yield [false, 2];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -69,7 +69,7 @@ class ManagedUserRepositoryTest extends WebTestCase
         $this->referentTagRepository = $this->getRepository(ReferentTag::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

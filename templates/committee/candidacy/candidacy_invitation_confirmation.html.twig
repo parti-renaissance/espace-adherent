@@ -1,0 +1,22 @@
+{% extends 'committee/_candidacy_layout.html.twig' %}
+
+{% block page_title 'Choix de votre binôme' %}
+
+{% block candidacy_content %}
+    <div class="l__wrapper b__nudge--bottom-huge">
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Choix de votre binôme</h2>
+            <p class="text--body text--dark">
+                Nous vous confirmons que {{ invitation.membership.fullName }} a bien reçue votre demande de binôme. Vous recevrez un e-mail lorsque l'invité(e)
+                aura répondu à votre invitation.<br/><br/>
+
+                Vous avez changé d'avis ? Vous pouvez à tout moment modifier vos demandes en vous rendant sur la page du comité.
+            </p>
+            <div>
+                <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="btn btn--blue btn--large-and-full b__nudge--top-50">
+                    Terminer
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

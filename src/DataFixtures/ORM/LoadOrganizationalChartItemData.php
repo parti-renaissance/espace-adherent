@@ -7,9 +7,10 @@ use App\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem;
 use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadOrganizationalChartItemData extends Fixture
+class LoadOrganizationalChartItemData extends Fixture implements DependentFixtureInterface
 {
     public const MAPPING = [
         'referent' => [

@@ -12,7 +12,9 @@ function cancelCallback(event) {
 function contentCallback(element) {
     return (
         <div className="font-roboto">
-            <div className="text--bold text--default-large">Candidature</div>
+            {element.dataset.confirmTitle ?
+                <div className="text--bold text--default-large">{element.dataset.confirmTitle}</div> : ''
+            }
             <p className="b__nudge--top-15 b__nudge--bottom-large text--dark">
                 {element.dataset.confirmContent || 'Êtes-vous sûr ?'}
             </p>
@@ -30,22 +32,21 @@ function contentCallback(element) {
 }
 
 export default function () {
-    findAll(document, '.em-confirm--trigger').forEach((element) => {
-        on(element, 'click', (event) => {
-            event.preventDefault();
-
-            const modalWrapper = document.createElement('div');
-            modalWrapper.style.display = 'inline-block';
-
-            element.parentNode.insertBefore(modalWrapper, element);
-
-            modal = render(
-                <Modal
-                    contentCallback={() => contentCallback(element)}
-                    closeCallback={() => { modalWrapper.remove(); }}
-                />,
-                modalWrapper
-            );
-        });
+    on(document, 'click', (event) => {
+        const element = event.target;
+        if (!hasClass(element, 'em-confirm--trigger')) {
+            return;
+        }
+        event.preventDefault();
+        const modalWrapper = document.createElement('div');
+        modalWrapper.style.display = 'inline-block';
+        element.parentNode.insertBefore(modalWrapper, element);
+        modal = render(
+            <Modal
+                contentCallback={() => contentCallback(element)}
+                closeCallback={() => { modalWrapper.remove(); }}
+            />,
+            modalWrapper
+        );
     });
 }

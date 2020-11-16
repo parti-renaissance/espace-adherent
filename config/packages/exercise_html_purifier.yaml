@@ -11,3 +11,5 @@ exercise_html_purifier:
         CSS.AllowedProperties: text-align,border-style,border-width,float,height,width,margin
         AutoFormat.Custom:
             - '@App\HTMLPurifier\Injector\ImageDimension'
+    basic_content:
+        HTML.AllowedElements: p, ol,ul,li,br

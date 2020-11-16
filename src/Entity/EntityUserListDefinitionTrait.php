@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Collection\UserListDefinitionCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,7 +20,11 @@ trait EntityUserListDefinitionTrait
      */
     public function getUserListDefinitions(): Collection
     {
-        return $this->userListDefinitions;
+        if ($this->userListDefinitions instanceof UserListDefinitionCollection) {
+            return $this->userListDefinitions;
+        }
+
+        return new UserListDefinitionCollection($this->userListDefinitions->toArray());
     }
 
     public function addUserListDefinition(UserListDefinition $userListDefinition): void

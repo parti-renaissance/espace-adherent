@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+@import "../../node_modules/flatpickr/dist/flatpickr";
 
 @import "mixins/vars";
 @import "mixins/fonts";
@@ -32,6 +33,8 @@
 @import "layout/modal";
 @import "layout/power-select";
 @import "layout/tabs";
+@import "layout/accordion";
+@import "layout/em-dropdown";
 
 @import "content/header";
 @import "content/inside-common";
@@ -81,9 +84,14 @@
 @import "pages/static/global";
 @import "pages/static/municipales";
 @import "pages/static/trombinoscope";
+@import "pages/static/default-with-header";
 @import "pages/retirement-simulator";
 @import "pages/assessor_space";
 @import "pages/adherent-activities";
+@import "pages/adherent-profile";
+@import "pages/territorial-council";
+@import "pages/referent_space";
+@import "pages/thematic-communities";
 
 @import "manager-space/_base-layout";
 @import "manager-space/_filters";

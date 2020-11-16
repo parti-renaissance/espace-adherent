@@ -12,9 +12,11 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentAccountActivationMessage;
 use App\Mailer\Message\AdherentAccountActivationReminderMessage;
 use App\Mailer\Message\AdherentAccountConfirmationMessage;
+use App\Mailer\Message\AdherentMembershipReminderMessage;
 use App\Mailer\Message\AdherentTerminateMembershipMessage;
 use App\OAuth\CallbackManager;
 use App\Referent\ReferentTagManager;
+use App\Referent\ReferentZoneManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,6 +30,7 @@ class MembershipRequestHandler
     private $mailer;
     private $manager;
     private $referentTagManager;
+    private $referentZoneManager;
     private $membershipRegistrationProcess;
     private $emailSubscriptionHistoryHandler;
     private $unregistrationHandler;
@@ -40,6 +43,7 @@ class MembershipRequestHandler
         MailerService $mailer,
         ObjectManager $manager,
         ReferentTagManager $referentTagManager,
+        ReferentZoneManager $referentZoneManager,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
         UnregistrationHandler $unregistrationHandler
@@ -51,6 +55,7 @@ class MembershipRequestHandler
         $this->mailer = $mailer;
         $this->manager = $manager;
         $this->referentTagManager = $referentTagManager;
+        $this->referentZoneManager = $referentZoneManager;
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
         $this->unregistrationHandler = $unregistrationHandler;
@@ -62,6 +67,7 @@ class MembershipRequestHandler
         $this->manager->persist($adherent);
 
         $this->referentTagManager->assignReferentLocalTags($adherent);
+        $this->referentZoneManager->assignZone($adherent);
 
         $this->sendEmailValidation($adherent);
 
@@ -94,12 +100,20 @@ class MembershipRequestHandler
         return $this->mailer->sendMessage(AdherentAccountActivationMessage::create($adherent, $activationUrl));
     }
 
+    public function sendEmailReminder(Adherent $adherent): bool
+    {
+        $donationUrl = $this->callbackManager->generateUrl('donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return $this->mailer->sendMessage(AdherentMembershipReminderMessage::create($adherent, $donationUrl));
+    }
+
     public function registerAsAdherent(MembershipRequest $membershipRequest): void
     {
         $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);
         $this->manager->persist($adherent);
 
         $this->referentTagManager->assignReferentLocalTags($adherent);
+        $this->referentZoneManager->assignZone($adherent);
 
         $this->membershipRegistrationProcess->start($adherent->getUuid()->toString());
 
@@ -170,6 +184,10 @@ class MembershipRequestHandler
             $oldReferentTags = $adherent->getReferentTags()->toArray();
             $this->referentTagManager->assignReferentLocalTags($adherent);
             $this->emailSubscriptionHistoryHandler->handleReferentTagsUpdate($adherent, $oldReferentTags);
+        }
+
+        if ($this->referentZoneManager->isUpdateNeeded($adherent)) {
+            $this->referentZoneManager->assignZone($adherent);
         }
     }
 

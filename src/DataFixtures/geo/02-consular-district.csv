@@ -1,0 +1,131 @@
+"code","name","number","cities","code_foreign_district"
+CONS_001-1,Canada 1ère circo,1,"Vancouver,Calgary",CIRCO_FDE-01
+CONS_001-2,Canada 2ème circo,2,Toronto,CIRCO_FDE-01
+CONS_001-3,Canada 3ème circo,3,Québec,CIRCO_FDE-01
+CONS_001-4,Canada 4ème circo,4,"Montréal,Moncton,Halifax",CIRCO_FDE-01
+CONS_002-1,États-Unis 1ère circo,1,Atlanta,CIRCO_FDE-01
+CONS_002-2,États-Unis 2ème circo,2,Boston,CIRCO_FDE-01
+CONS_002-3,États-Unis 3ème circo,3,Houston,CIRCO_FDE-01
+CONS_002-4,États-Unis 4ème circo,4,Chicago,CIRCO_FDE-01
+CONS_002-5,États-Unis 5ème circo,5,Miami,CIRCO_FDE-01
+CONS_002-6,États-Unis 6ème circo,6,Washington,CIRCO_FDE-01
+CONS_002-7,États-Unis 7ème circo,7,Los Angeles,CIRCO_FDE-01
+CONS_002-8,États-Unis 8ème circo,8,San Francisco,CIRCO_FDE-01
+CONS_002-9,États-Unis 9ème circo,9,New York,CIRCO_FDE-01
+CONS_003,Argentine,0,Buenos Aires,CIRCO_FDE-02
+CONS_004,Bolivie,0,La Paz,CIRCO_FDE-02
+CONS_005-1,Brésil 1ère circo,1,"Brazilia,Recife,Paramaribo",CIRCO_FDE-02
+CONS_005-2,Brésil 2ème circo,2,Rio de Janeiro,CIRCO_FDE-02
+CONS_005-3,Brésil 3ème circo,3,Sao Paulo,CIRCO_FDE-02
+CONS_006,Chili,0,Santiago,CIRCO_FDE-02
+CONS_007,Colombie,0,Bogota,CIRCO_FDE-02
+CONS_008,"Costa Rica, Honduras, Nicaragua",0,"San José,Tegucigalpa,Managua",CIRCO_FDE-02
+CONS_009,Equateur,0,Quito,CIRCO_FDE-02
+CONS_010,"Guatemala, Salvador",0,"Guatemal,San Salvador",CIRCO_FDE-02
+CONS_011,Haïti,0,Port-au-Prince,CIRCO_FDE-02
+CONS_012,Mexique,0,Mexico,CIRCO_FDE-02
+CONS_013,"Panama, Cuba, Jamaïque",0,"Panama,La Havane,Kingston",CIRCO_FDE-02
+CONS_014,Paraguay,0,Assomption,CIRCO_FDE-02
+CONS_015,Pérou,0,Lima,CIRCO_FDE-02
+CONS_016,République dominicaine,0,Saint-Domingue,CIRCO_FDE-02
+CONS_017,Uruguay,0,Montevideo,CIRCO_FDE-02
+CONS_018,"Vénézuela, Sainte-Lucie, Trinité et Tobago",0,"Caracas,Castries,Port-d'Espagne",CIRCO_FDE-02
+CONS_019,Danemark,0,Copenhague,CIRCO_FDE-03
+CONS_020,"Finlande, Lituanie, Lettonie, Estonie",0,"Helsinski,Vilnius,Riga,Talinn",CIRCO_FDE-03
+CONS_021,Irlande,0,Dublin,CIRCO_FDE-03
+CONS_022,"Norvège, Islande",0,"Oslo,Reykjavik",CIRCO_FDE-03
+CONS_023-1,Royaume-Uni 1ère circo,1,"Edimbourg,Glasgow",CIRCO_FDE-03
+CONS_023-2,Royaume-Uni 2ème circo,2,Londres,CIRCO_FDE-03
+CONS_024,Suède,0,Stockholm,CIRCO_FDE-03
+CONS_025,Belgique,0,Bruxelles,CIRCO_FDE-04
+CONS_026,Luxembourg,0,Luxembourg,CIRCO_FDE-04
+CONS_027,Pays-Bas,0,Amsterdam,CIRCO_FDE-04
+CONS_028,Andorre,0,Andorre La Vieille,CIRCO_FDE-05
+CONS_029,Monaco ,0,Monaco,CIRCO_FDE-05
+CONS_030-1,Espagne 1ère circo,1,Barcelone,CIRCO_FDE-05
+CONS_030-2,Espagne  2ème circo,2,"Séville,Madrid,Bilbao",CIRCO_FDE-05
+CONS_031,Portugal,0,"Lisbonne,Porto",CIRCO_FDE-05
+CONS_032-1,Suisse 1ère circo,1,Zurich,CIRCO_FDE-06
+CONS_032-2,Suisse 2ème circo,2,Genève,CIRCO_FDE-06
+CONS_033-1,Allemagne 1ère circo,1,"Berlin,Hambourg",CIRCO_FDE-07
+CONS_033-2,Allemagne 2ème circo,2,"Francfort,Dusseldorf,Sarrebruck",CIRCO_FDE-07
+CONS_033-3,Allemagne 3ème circo,3,"Munich,Stuttgart",CIRCO_FDE-07
+CONS_034,"Autriche, Slovaquie, Slovénie",0,"Vienne,Bratislava,Ljubjana",CIRCO_FDE-07
+CONS_035,"Arménie, Géorgie",0,"Erevan,Tblissi",CIRCO_FDE-07
+CONS_036,"Bulgarie, Bosnie-Herzégovine, Macédoine, Albanie, Kosovo, Monténégro",0,"Sofia,Sarajevo,Skopje,Tirana,Pristina,Podgorica",CIRCO_FDE-07
+CONS_037,Croatie,0,Zagreb,CIRCO_FDE-07
+CONS_038,Hongrie,0,Budapest,CIRCO_FDE-07
+CONS_039,Pologne,0,"Varsovie,Cracovie",CIRCO_FDE-07
+CONS_040,République Tchèque,0,Prague,CIRCO_FDE-07
+CONS_041,"Roumanie, Moldavie",0,"Bucarest,Chisinau",CIRCO_FDE-07
+CONS_042,Serbie,0,Belgrade,CIRCO_FDE-07
+CONS_043,Chypre,0,Nicosie,CIRCO_FDE-08
+CONS_044,Grèce,0,"Athènes,Thessalonique",CIRCO_FDE-08
+CONS_045-1,Italie 1ère circo,1,"Rome,Naples,La Valette,Cité du Vatican",CIRCO_FDE-08
+CONS_045-2,Italie 2ème circo,2,"Milan,Turin/Gènes",CIRCO_FDE-08
+CONS_046,Turquie,0,"Istanbul,Ankara",CIRCO_FDE-08
+CONS_047-1,Israël et territoires palestiniens 1ère circo,1,Jérusalem,CIRCO_FDE-08
+CONS_047-2,Israël et territoires palestiniens 2ème circo,2,"Tel Aviv,Haïfa",CIRCO_FDE-08
+CONS_048-1,Algérie 1ère circo,1,Oran,CIRCO_FDE-09
+CONS_048-2,Algérie 2ème circo,2,Annaba,CIRCO_FDE-09
+CONS_048-3,Algérie 3ème circo,3,Alger,CIRCO_FDE-09
+CONS_049-1,Maroc 1ère circo,1,Tanger,CIRCO_FDE-09
+CONS_049-2,Maroc  2ème circo,2,Fès,CIRCO_FDE-09
+CONS_049-3,Maroc 3ème circo,3,Agadir,CIRCO_FDE-09
+CONS_049-4,Maroc 4ème circo,4,Marrakech,CIRCO_FDE-09
+CONS_049-5,Maroc 5ème circo,5,Rabat,CIRCO_FDE-09
+CONS_049-6,Maroc 6ème circo,6,Casablanca,CIRCO_FDE-09
+CONS_050,"Tunisie, Libye",0,"Tunis,Tripoli",CIRCO_FDE-09
+CONS_051,Burkina Faso,0,Ouagadougou,CIRCO_FDE-09
+CONS_052,Côte d'Ivoire,0,Abidjan,CIRCO_FDE-09
+CONS_053,Guinée,0,Conakry,CIRCO_FDE-09
+CONS_054,Mali,0,Bamako,CIRCO_FDE-09
+CONS_055,Mauritanie,0,Nouakchott,CIRCO_FDE-09
+CONS_056,Niger,0,Niamey,CIRCO_FDE-09
+CONS_057,"Sénégal, Guinée-Bissau, Cap-Vert",0,"Dakar,Bissau,Praia",CIRCO_FDE-09
+CONS_058,Égypte,0,"Le Caire,Alexandrie",CIRCO_FDE-10
+CONS_059,Bénin,0,Cotonou,CIRCO_FDE-10
+CONS_060,"Togo, Ghana",0,"Lomé,Accra",CIRCO_FDE-10
+CONS_061,"Afrique du sud, Mozambique, Namibie",0,"Johannesburg,Le Cap,Maputo,Windhoek,Gabrone",CIRCO_FDE-10
+CONS_062,Angola,0,Luanda,CIRCO_FDE-10
+CONS_063,"Cameroun, Guinée équatoriale",0,"Douala,Yaoundé,Malabo",CIRCO_FDE-10
+CONS_064,Comores,0,Moroni,CIRCO_FDE-10
+CONS_065,Congo,0,"Pointe-Noire,Brazzaville",CIRCO_FDE-10
+CONS_066,Djibouti,0,Djibouti,CIRCO_FDE-10
+CONS_067,"Éthiopie, Soudan, Soudan du sud",0,"Addis-Abeba,Khartoum,Djouba",CIRCO_FDE-10
+CONS_068,Gabon,0,"Libreville,Port-Gentil",CIRCO_FDE-10
+CONS_069,"Kenya, Ouganda, Rwanda, Burundi, Tanzanie, Zambie, Zimbabwe",0,"Nairobi,Kampala,Kigali,Bujumbura,Dar es Salam,Lusaka,Harare",CIRCO_FDE-10
+CONS_070,Madagascar,0,"Tananarive,Diégo-Suarez,Majunga,Tamatave",CIRCO_FDE-10
+CONS_071,"Maurice, Seychelles",0,"Port-Louis,Victoria",CIRCO_FDE-10
+CONS_072,Nigeria,0,"Lagos,Abuja",CIRCO_FDE-10
+CONS_073,République centrafricaine,0,Bangui,CIRCO_FDE-10
+CONS_074,République Démocratique du Congo,0,Kinshasa,CIRCO_FDE-10
+CONS_075,Tchad,0,Ndjamena,CIRCO_FDE-10
+CONS_076-1,Arabie Saoudite 1ère circo,1,"Djeddah,Sanaa",CIRCO_FDE-10
+CONS_076-2,Arabie Saoudite 2ème circo,2,"Ryad,Koweit",CIRCO_FDE-10
+CONS_077,"Émirats arabes unis, Oman",0,"Dubai,Abou Dabi,Mascate",CIRCO_FDE-10
+CONS_078,"Jordanie, Irak",0,"Amman,Bagdad,Erbil",CIRCO_FDE-10
+CONS_079,"Liban, Syrie",0,"Beyrouth,Damas",CIRCO_FDE-10
+CONS_080,"Qatar, Bahreïn",0,"Doha,Manama",CIRCO_FDE-10
+CONS_081,Ukraine,0,Kiev,CIRCO_FDE-11
+CONS_082,"Russie, Biélorusie",0,"Moscou,Saint-Petersbourg,Ekaterinbourg,Minsk",CIRCO_FDE-11
+CONS_083,"Iran, Pakistan, Afghanistan, Azerbaidjan, Turkménistan, Kazakhstan, Tadjikistan, Ouzbékistan, Kirghizstan",0,"Téhéran,Islamabad,Karachi,Kaboul,Bakou,Achgabat,Astana,Almaty,Douchanbé,Tachkent",CIRCO_FDE-11
+CONS_084,"Australie, Fidji, Papouasie-Nouvelle-Guinée",0,"Sydney,Canberra,Suva,Port Moresby",CIRCO_FDE-11
+CONS_085,Cambodge,0,Phnom Penh,CIRCO_FDE-11
+CONS_086-1,Chine 1ère circo,1,"Canton,Wuhan,Chengdu",CIRCO_FDE-11
+CONS_086-2,Chine 2ème circo,2,"Pékin,Shenyang,Oulan Bator,Pyongyang",CIRCO_FDE-11
+CONS_086-3,Chine 3ème circo,3,"Hong Kong,Macao",CIRCO_FDE-11
+CONS_086-4,Chine 4ème circo,4,Shanghaï,CIRCO_FDE-11
+CONS_087,"Corée du sud, Taïwan",0,"Séoul,Taipei",CIRCO_FDE-11
+CONS_088-1,Inde 1ère circo,1,"New Delhi,Bangalore,Bombay,Calcutta,Dacca,Katmandou,Colombo",CIRCO_FDE-11
+CONS_088-2,Inde 2ème circo,2,"Pondichéry,Chennai",CIRCO_FDE-11
+CONS_089,Indonésie,0,Jakarta,CIRCO_FDE-11
+CONS_090,Japon,0,"Tokyo,Kyoto",CIRCO_FDE-11
+CONS_091,Laos,0,Vientiane,CIRCO_FDE-11
+CONS_092,"Malaisie, Bruneï",0,"Kuala Lumpur,Badar Seri Begawan",CIRCO_FDE-11
+CONS_093,Nouvelle-Zélande,0,Wellington,CIRCO_FDE-11
+CONS_094,Philippines,0,Manille,CIRCO_FDE-11
+CONS_095,Singapour,0,Singapour,CIRCO_FDE-11
+CONS_096,"Thaïlande, Birmanie",0,"Bangkok,Rangoun",CIRCO_FDE-11
+CONS_097,Vanuatu,0,Port-Vila,CIRCO_FDE-11
+CONS_098,Vietnam,0,"Hô-Chi-Minh-Ville,Hanoi",CIRCO_FDE-11

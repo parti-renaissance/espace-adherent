@@ -40,7 +40,7 @@ export default class SearchBar extends React.Component {
     }
 }
 
-SearchBar.propsType = {
+SearchBar.propTypes = {
     onFilterTextChange: PropTypes.func.isRequired,
     onFilterCityChange: PropTypes.func.isRequired,
 

@@ -208,6 +208,14 @@
     </div>
 {%- endblock -%}
 
+{%- block radio_row -%}
+    <div class="form__radio">
+        {{ form_widget(form) }}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+    </div>
+{%- endblock -%}
+
 {# Bug Fix for waiting this PR: https://github.com/misd-service-development/phone-number-bundle/pull/175 #}
 {% block misd_tel_widget %}
     <div {{ block('widget_container_attributes') }}>
@@ -243,7 +251,19 @@
     {{ block('choice_tab_widget') }}
 {% endblock %}
 
+{% block _elected_representative_filter_gender_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
 {% block _referent_filter_gender_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
+{% block _referent_elected_representative_filter_gender_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
+{% block _referent_elected_representative_filter_isAdherent_widget %}
     {{ block('choice_tab_widget') }}
 {% endblock %}
 
@@ -255,7 +275,7 @@
     {{ block('choice_tab_widget') }}
 {% endblock %}
 
-{% block _f_isAdherent_widget %}
+{% block _f_contactType_widget %}
     {{ block('choice_tab_widget') }}
 {% endblock %}
 
@@ -416,3 +436,17 @@
         </div>
     </div>
 {% endblock %}
+
+{% block date_time_picker_widget %}
+    {% if attr.class is defined and 'em-datetime-picker' not in attr.class %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' em-datetime-picker')|trim}) -%}
+    {% endif %}
+    {{ block('datetime_widget') }}
+{%- endblock date_time_picker_widget %}
+
+{% block date_picker_widget %}
+    {% if attr.class is defined and 'em-datetime-picker' not in attr.class %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' em-datetime-picker')|trim}) -%}
+    {% endif %}
+    {{ block('date_widget') }}
+{%- endblock date_picker_widget %}

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Mailer\Message\Message;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -10,8 +9,6 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Table(name="emails")
  * @ORM\Entity(repositoryClass="App\Repository\EmailRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Email
 {
@@ -88,9 +85,11 @@ class Email
             $recipients[] = $recipient->getFullName().' <'.$recipient->getEmailAddress().'>';
         }
 
+        $parts = explode('\\', \get_class($message));
+
         return new static(
             $message->getUuid(),
-            str_replace('App\\Mailer\\Message\\', '', \get_class($message)),
+            end($parts),
             $message->getReplyTo() ?? 'EnMarche',
             $recipients,
             $requestPayload

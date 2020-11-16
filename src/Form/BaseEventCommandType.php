@@ -6,7 +6,6 @@ use App\Entity\EventCategory;
 use App\Event\BaseEventCommand;
 use App\Form\DataTransformer\EventDateTimeZoneTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
@@ -19,6 +18,14 @@ class BaseEventCommandType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $beginDate = $builder->getData() ? $builder->getData()->getBeginAt() : null;
+        $now = new \DateTime('now');
+        $dateTimeOptions = [
+            'min_date' => $beginDate && $beginDate < $now ? $beginDate : $now,
+            'max_date' => new \DateTime('+5 years'),
+            'minute_increment' => 15,
+        ];
+
         $builder
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
@@ -36,14 +43,8 @@ class BaseEventCommandType extends AbstractType
             ->add('timeZone', TimezoneType::class, [
                 'choices' => $this->getTimezones(),
             ])
-            ->add('beginAt', DateTimeType::class, [
-                'years' => $options['years'],
-                'minutes' => $options['minutes'],
-            ])
-            ->add('finishAt', DateTimeType::class, [
-                'years' => $options['years'],
-                'minutes' => $options['minutes'],
-            ])
+            ->add('beginAt', DateTimePickerType::class, $dateTimeOptions)
+            ->add('finishAt', DateTimePickerType::class, $dateTimeOptions)
             ->add('capacity', IntegerType::class, [
                 'required' => false,
                 'attr' => ['min' => 1],
@@ -55,7 +56,7 @@ class BaseEventCommandType extends AbstractType
             $command = $event->getData();
 
             if (null === $command->getBeginAt() || null === $command->getFinishAt()) {
-                $beginDate = $this->createBeginDate($event->getForm()->getConfig()->getOption('minutes'));
+                $beginDate = $this->createBeginDate();
 
                 $command->setBeginAt($beginDate);
                 $command->setFinishAt((clone $beginDate)->modify('+2 hours'));
@@ -66,17 +67,8 @@ class BaseEventCommandType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $years = range(date('Y'), date('Y') + 5);
-
         $resolver
             ->setDefaults([
-                'years' => array_combine($years, $years),
-                'minutes' => [
-                    '00' => '0',
-                    '15' => '15',
-                    '30' => '30',
-                    '45' => '45',
-                ],
                 'event_category_class' => EventCategory::class,
             ])
         ;
@@ -89,13 +81,13 @@ class BaseEventCommandType extends AbstractType
      * ex 2:
      *     with time 16h52m it returns 17h00
      */
-    protected function createBeginDate(array $minutes): \DateTime
+    protected function createBeginDate(): \DateTime
     {
         $now = new \DateTime();
         $nowMinute = $now->format('i');
         $step = null;
 
-        foreach ($minutes as $step) {
+        foreach (['0', '15', '30', '45'] as $step) {
             if ($nowMinute <= $step) {
                 break;
             }

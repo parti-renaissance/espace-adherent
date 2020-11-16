@@ -1,0 +1,59 @@
+<div class="l__row l__row--h-stretch l__row--wrap">
+    <h1 class="text--medium-large">Mes dons</h1>
+    {% if donations_history is not empty %}
+    <a href="{{ path('donation_index') }}" class="btn btn--red b__nudge--bottom-larger">Faire un nouveau don</a>
+    {% endif %}
+</div>
+
+{% if donations_history is not empty %}
+    <p class="text--body">Merci pour votre engagement à nos côtés !</p>
+    <p class="text--body text--bold">Votre dernier don remonte à {{ donations_history|first.date|ago }}.</p>
+    {% if subscribed_donations %}
+    <p class="text--body">
+        <a href="{{ path('donation_subscription_cancel') }}" class="text--blue--dark link--no-decor">
+            {{ 'adherent.stop_donation'|transchoice(subscribed_donations|length) }}
+        </a>. <br />
+        {% for subscribed_donation in subscribed_donations %}
+            Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros }}€ le {{ subscribed_donation.nextDonationAt|localizeddate('medium', 'none') }}
+            {% if not loop.last %}
+                <br />
+            {% endif %}
+        {% endfor %}
+    {% elseif last_subscription_ended %}
+        Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|localizeddate('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('donation_index') }}">en cliquant ici</a>.
+    {% else %}
+        <a href="{{ path('donation_index') }}">Faire un nouveau don</a>.
+    </p>
+    {% endif %}
+    <p class="text--body text--small text--gray">
+        Veuillez noter que votre reçu fiscal sera envoyé entre avril et juin, il n'est pas nécessaire de le joindre à la déclaration de revenus de mai. Une fois obtenu, conservez-le pour pouvoir le présenter en cas de contrôle de l'administration fiscale.
+    </p>
+
+    <div class="b__nudge--top-large">
+        <table class="em-table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Type</th>
+                <th>Moyen de paiement</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for donation in donations_history %}
+                <tr>
+                    <td>{{ donation.date|localizeddate('medium', 'none') }}</td>
+                    <td>{{ donation.amountInEuros }} €</td>
+                    <td>{{ donation.isSubscription ? 'Don mensuel' : 'Don ponctuel' }}</td>
+                    <td>{{ ('donation.type.' ~ donation.type)|trans }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="space--40-0 text--center">
+        <p class="font-roboto text--default-large text--bold b__nudge--bottom">Soutenir La République En Marche</p>
+        <a class="btn btn--red" href="{{ path('donation_index') }}">Je donne</a>
+    </div>
+{% endif %}

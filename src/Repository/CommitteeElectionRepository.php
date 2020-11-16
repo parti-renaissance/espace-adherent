@@ -30,4 +30,26 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @return CommitteeElection[]
+     */
+    public function findAllToNotify(Designation $designation, int $offset = 0, ?int $limit = 200): array
+    {
+        return $this->createQueryBuilder('ce')
+            ->addSelect('c')
+            ->innerJoin('ce.committee', 'c')
+            ->innerJoin('ce.candidacies', 'candidacy')
+            ->where('ce.designation = :designation')
+            ->andWhere('ce.adherentNotified = :false')
+            ->setParameters([
+                'designation' => $designation,
+                'false' => false,
+            ])
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -6,14 +6,15 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Designation\DesignationZoneEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadDesignationData extends Fixture
+class LoadDesignationData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        // Committee designation with started CANDIDATURE period
-        $designation = new Designation();
+        // Committee designation with started CANDIDATURE period in France
+        $designation = new Designation('Désignation avec les candidatures ouvertes');
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
@@ -25,7 +26,7 @@ class LoadDesignationData extends Fixture
         $manager->persist($designation);
 
         // Committee designation with started VOTE period
-        $designation = new Designation();
+        $designation = new Designation('Désignation avec les votes ouverts');
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
@@ -37,7 +38,7 @@ class LoadDesignationData extends Fixture
         $manager->persist($designation);
 
         // Committee designation with started RESULT period
-        $designation = new Designation();
+        $designation = new Designation('Désignation avec les résultats disponibles');
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
@@ -49,7 +50,7 @@ class LoadDesignationData extends Fixture
         $manager->persist($designation);
 
         // Archived Committee designation
-        $designation = new Designation();
+        $designation = new Designation('Désignation archivée');
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-6 months'));
@@ -60,6 +61,47 @@ class LoadDesignationData extends Fixture
         $this->setReference('designation-4', $designation);
         $manager->persist($designation);
 
+        // Committee designation with started CANDIDATURE period in FDE
+        $designation = new Designation('Désignation "Comités-Animateurs" ouverte');
+        $designation->setZones([DesignationZoneEnum::FDE]);
+        $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
+        $designation->setCandidacyStartDate(new \DateTime('-1 day'));
+        $designation->setCandidacyEndDate(new \DateTime('+5 days'));
+        $designation->setVoteStartDate(new \DateTime('+7 days'));
+        $designation->setVoteEndDate(new \DateTime('+2 weeks'));
+
+        $this->setReference('designation-5', $designation);
+        $manager->persist($designation);
+
+        // COPOL designation with started CANDIDATURE period
+        $designation = new Designation('Désignation COPOL avec les candidatures ouvertes');
+        $designation->setType(DesignationTypeEnum::COPOL);
+        $designation->addReferentTag($this->getReference('referent_tag_75'));
+        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
+
+        $this->setReference('designation-6', $designation);
+        $manager->persist($designation);
+
+        // COPOL designation with started VOTE period
+        $designation = new Designation('Désignation COPOL les votes');
+        $designation->setType(DesignationTypeEnum::COPOL);
+        $designation->addReferentTag($this->getReference('referent_tag_92'));
+        $designation->setCandidacyStartDate(new \DateTime('-1 month'));
+        $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
+        $designation->setVoteStartDate(new \DateTime('-1 hour'));
+        $designation->setVoteEndDate(new \DateTime('+4 week'));
+        $designation->markAsLimited();
+
+        $this->setReference('designation-7', $designation);
+        $manager->persist($designation);
+
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadReferentTagData::class,
+        ];
     }
 }

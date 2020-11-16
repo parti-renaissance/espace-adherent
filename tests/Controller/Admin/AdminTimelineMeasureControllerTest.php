@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\Admin;
 
-use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
+use Algolia\SearchBundle\SearchService;
 use App\DataFixtures\ORM\LoadTimelineData;
 use App\Entity\Timeline\Manifesto;
 use App\Entity\Timeline\Measure;
@@ -16,7 +16,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
-use Tests\App\Test\Algolia\DummyIndexer;
+use Tests\App\Test\Algolia\DummySearchService;
 
 /**
  * @group functional
@@ -60,21 +60,8 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Oui, supprimer')->form());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $entitiesToIndex = $this->getIndexer()->getEntitiesToIndex();
-        $entitiesToUnIndex = $this->getIndexer()->getEntitiesToUnIndex();
-
-        $this->assertCount(1, $entitiesToUnIndex);
-        $this->assertArrayHasKey('Measure_test', $entitiesToUnIndex);
-        $this->assertCount(1, $entitiesToUnIndex['Measure_test']);
-
-        $this->assertCount(1, $entitiesToIndex);
-        $this->assertArrayHasKey('Theme_test', $entitiesToIndex);
-        $this->assertCount(1, $entitiesToIndex['Theme_test']);
-        $this->assertArraySubset([
-            'titles' => [
-                'fr' => LoadTimelineData::THEMES['TT001']['title']['fr'],
-            ],
-        ], $entitiesToIndex['Theme_test'][0]);
+        $this->assertSame(1, $this->getIndexer()->countForUnIndexByType(Measure::class));
+        $this->assertSame(1, $this->getIndexer()->countForIndexByType(Theme::class));
     }
 
     public function testIndexedThemesAfterMeasureUpdate()
@@ -107,120 +94,11 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $indexedEntities = $this->getIndexer()->getEntitiesToIndex();
-
-        $this->assertCount(2, $indexedEntities);
-        $this->assertArrayHasKey('Measure_test', $indexedEntities);
-        $this->assertArrayHasKey('Theme_test', $indexedEntities);
-        $this->assertCount(1, $indexedEntities['Measure_test']);
-        $this->assertCount(2, $indexedEntities['Theme_test']);
-
-        $measurePayload = $indexedEntities['Measure_test'][0];
-        $oldThemePayload = $indexedEntities['Theme_test'][0];
-        $newThemePayload = $indexedEntities['Theme_test'][1];
-
-        $this->assertArraySubset([
-            'id' => $measure->getId(),
-            'link' => '',
-            'status' => 'IN_PROGRESS',
-            'major' => true,
-            'profileIds' => $this->getProfileIdsByTitles([
-                LoadTimelineData::PROFILES['TP002']['title']['fr'],
-                LoadTimelineData::PROFILES['TP003']['title']['fr'],
-            ]),
-            'manifestoId' => $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA001']['title']['fr']),
-            'titles' => [
-                'fr' => LoadTimelineData::MEASURES['TM001']['title']['fr'],
-                'en' => LoadTimelineData::MEASURES['TM001']['title']['en'],
-            ],
-        ], $measurePayload);
-
-        $this->assertArrayHasKey('objectID', $measurePayload);
-        $this->assertNotEmpty($measurePayload);
-
-        $this->assertArrayHasKey('formattedUpdatedAt', $measurePayload);
-        $this->assertNotEmpty($measurePayload);
-
-        $this->assertArraySubset([
-            'id' => $currentTheme->getId(),
-            'featured' => true,
-            'image' => null,
-            'measureIds' => $this->getMeasureIdsByTitles([
-                LoadTimelineData::MEASURES['TM002']['title']['fr'],
-                LoadTimelineData::MEASURES['TM003']['title']['fr'],
-                LoadTimelineData::MEASURES['TM004']['title']['fr'],
-                LoadTimelineData::MEASURES['TM005']['title']['fr'],
-                LoadTimelineData::MEASURES['TM006']['title']['fr'],
-                LoadTimelineData::MEASURES['TM007']['title']['fr'],
-                LoadTimelineData::MEASURES['TM008']['title']['fr'],
-                LoadTimelineData::MEASURES['TM012']['title']['fr'],
-            ]),
-            'profileIds' => $this->getProfileIdsByTitles([
-                LoadTimelineData::PROFILES['TP002']['title']['fr'],
-                LoadTimelineData::PROFILES['TP003']['title']['fr'],
-                LoadTimelineData::PROFILES['TP004']['title']['fr'],
-                LoadTimelineData::PROFILES['TP001']['title']['fr'],
-                LoadTimelineData::PROFILES['TP005']['title']['fr'],
-            ]),
-            'manifestoIds' => [
-                $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA001']['title']['fr']),
-            ],
-            'titles' => [
-                'fr' => LoadTimelineData::THEMES['TT001']['title']['fr'],
-                'en' => LoadTimelineData::THEMES['TT001']['title']['en'],
-            ],
-            'slugs' => [
-                'fr' => LoadTimelineData::THEMES['TT001']['slug']['fr'],
-                'en' => LoadTimelineData::THEMES['TT001']['slug']['en'],
-            ],
-            'descriptions' => [
-                'fr' => LoadTimelineData::THEMES['TT001']['description']['fr'],
-                'en' => LoadTimelineData::THEMES['TT001']['description']['en'],
-            ],
-        ], $oldThemePayload);
-
-        $this->assertArrayHasKey('objectID', $oldThemePayload);
-        $this->assertNotEmpty($oldThemePayload['objectID']);
-
-        $this->assertArraySubset([
-            'id' => $newTheme->getId(),
-            'featured' => true,
-            'image' => null,
-            'measureIds' => $this->getMeasureIdsByTitles([
-                LoadTimelineData::MEASURES['TM001']['title']['fr'],
-                LoadTimelineData::MEASURES['TM005']['title']['fr'],
-                LoadTimelineData::MEASURES['TM014']['title']['fr'],
-                LoadTimelineData::MEASURES['TM017']['title']['fr'],
-            ]),
-            'profileIds' => $this->getProfileIdsByTitles([
-                LoadTimelineData::PROFILES['TP002']['title']['fr'],
-                LoadTimelineData::PROFILES['TP003']['title']['fr'],
-                LoadTimelineData::PROFILES['TP005']['title']['fr'],
-                LoadTimelineData::PROFILES['TP001']['title']['fr'],
-            ]),
-            'manifestoIds' => [
-                $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA001']['title']['fr']),
-                $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA003']['title']['fr']),
-            ],
-            'titles' => [
-                'fr' => LoadTimelineData::THEMES['TT003']['title']['fr'],
-                'en' => LoadTimelineData::THEMES['TT003']['title']['en'],
-            ],
-            'slugs' => [
-                'fr' => LoadTimelineData::THEMES['TT003']['slug']['fr'],
-                'en' => LoadTimelineData::THEMES['TT003']['slug']['en'],
-            ],
-            'descriptions' => [
-                'fr' => LoadTimelineData::THEMES['TT003']['description']['fr'],
-                'en' => LoadTimelineData::THEMES['TT003']['description']['en'],
-            ],
-        ], $newThemePayload);
-
-        $this->assertArrayHasKey('objectID', $newThemePayload);
-        $this->assertNotEmpty($newThemePayload['objectID']);
+        $this->assertSame(1, $this->getIndexer()->countForIndexByType(Measure::class));
+        $this->assertSame(2, $this->getIndexer()->countForIndexByType(Theme::class));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -232,7 +110,7 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
         $this->manifestoRepository = $this->getRepository(Manifesto::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
@@ -263,8 +141,8 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
         return $this->manifestoRepository->findOneByTitle($manifestoTitle)->getId();
     }
 
-    private function getIndexer(): DummyIndexer
+    private function getIndexer(): DummySearchService
     {
-        return $this->client->getContainer()->get(Indexer::class);
+        return $this->client->getContainer()->get(SearchService::class);
     }
 }

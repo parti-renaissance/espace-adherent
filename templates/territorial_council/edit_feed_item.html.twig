@@ -1,0 +1,23 @@
+{% extends base_layout %}
+
+{% block sub_content %}
+    <div id="territorial-council-message-form" class="territorial-council__message">
+        {{ form(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.ckeditor(form.vars.id ~ '_content', null, constant('App\\Entity\\UserDocument::TYPE_TERRITORIAL_COUNCIL_FEED'), 5000, true) }}
+        });
+    </script>
+{% endblock %}

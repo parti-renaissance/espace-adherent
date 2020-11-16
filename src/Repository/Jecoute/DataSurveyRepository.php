@@ -3,7 +3,9 @@
 namespace App\Repository\Jecoute;
 
 use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class DataSurveyRepository extends ServiceEntityRepository
@@ -28,6 +30,16 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->setParameter('endDate', $endDate)
             ->getQuery()
             ->getSingleScalarResult()
+        ;
+    }
+
+    public function iterateForSurvey(Survey $survey): IterableResult
+    {
+        return $this->createQueryBuilder('jds')
+            ->where('jds.survey = :survey')
+            ->setParameter('survey', $survey)
+            ->getQuery()
+            ->iterate()
         ;
     }
 }

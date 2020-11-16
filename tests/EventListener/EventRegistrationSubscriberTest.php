@@ -85,7 +85,7 @@ class EventRegistrationSubscriberTest extends TestCase
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -93,7 +93,7 @@ class EventRegistrationSubscriberTest extends TestCase
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->mailer = null;
         $this->urlGenerator = null;

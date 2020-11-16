@@ -51,6 +51,7 @@ class ImportDonationsCommand extends Command
         'allegmagne' => 'DE',
         'allemagne' => 'DE',
         'argentina' => 'AR',
+        'australie' => 'AU',
         'autriche' => 'AT',
         'belgique' => 'BE',
         'burkina faso' => 'BF',
@@ -66,6 +67,7 @@ class ImportDonationsCommand extends Command
         'hong kong' => 'HK',
         'hong kong (chine)' => 'HK',
         'ile maurice' => 'MU',
+        'irlande' => 'IE',
         'israel' => 'IL',
         'italie' => 'IT',
         'jordanie' => 'JO',
@@ -78,6 +80,7 @@ class ImportDonationsCommand extends Command
         'maroc' => 'MA',
         'monaco' => 'MC',
         'nicaragua' => 'NI',
+        'nouvelle caledonie' => 'NC',
         'panama' => 'PA',
         'pays bas' => 'NL',
         'philippines' => 'PH',
@@ -100,6 +103,10 @@ class ImportDonationsCommand extends Command
         'francaise' => 'FR',
         'française' => 'FR',
         'belge' => 'BE',
+        'americaine' => 'US',
+        'allemande' => 'DE',
+        'irlandaise' => 'IE',
+        'neerlandaise' => 'NL',
     ];
 
     /**
@@ -181,6 +188,7 @@ class ImportDonationsCommand extends Command
             $transferNumber = trim($row['transfer_number']);
             $checkNumber = trim($row['check_number']);
             $donatedAt = \DateTimeImmutable::createFromFormat('d/m/Y', trim($row['date']));
+            $beneficiary = trim($row['beneficiary']);
 
             if (!\array_key_exists($type, self::TYPES_MAP)) {
                 $this->io->text("\"$type\" is not a valid transaction type. (line $line)");
@@ -224,7 +232,7 @@ class ImportDonationsCommand extends Command
                 continue;
             }
 
-            $amount = str_replace([' ', ','], ['', '.'], $amount);
+            $amount = str_replace([' ', ' ', ','], ['', '', '.'], $amount);
 
             if (!is_numeric($amount)) {
                 $this->io->text("\"$amount\" is not a valid amount. (line $line)");
@@ -232,18 +240,20 @@ class ImportDonationsCommand extends Command
                 continue;
             }
 
-            $identifier = $this->incrementDonatorIdentifier($identifier);
+            if (!$donator = $this->findDonator($firstName, $lastName, $email)) {
+                $identifier = $this->incrementDonatorIdentifier($identifier);
 
-            $donator = new Donator(
-                $lastName,
-                $firstName,
-                $cityName,
-                self::COUNTRIES_MAP[$country],
-                $email,
-                $gender ? self::GENDERS_MAP[$gender] : null
-            );
+                $donator = new Donator(
+                    $lastName,
+                    $firstName,
+                    $cityName,
+                    self::COUNTRIES_MAP[$country],
+                    $email,
+                    $gender ? self::GENDERS_MAP[$gender] : null
+                );
 
-            $donator->setIdentifier($identifier);
+                $donator->setIdentifier($identifier);
+            }
 
             $donation = new Donation(
                 Uuid::uuid4(),
@@ -272,27 +282,35 @@ class ImportDonationsCommand extends Command
                 $donation->setCheckNumber($checkNumber);
             }
 
+            if (!empty($beneficiary)) {
+                $donation->setBeneficiary($beneficiary);
+            }
+
             $this->em->persist($donator);
             $this->em->persist($donation);
+            $this->em->flush();
 
             ++$count;
 
             $this->io->progressAdvance();
 
             if (0 === ($count % self::BATCH_SIZE)) {
-                $this->em->flush();
                 $this->em->clear();
             }
         }
 
         $this->updateDonatorIdentifier($identifier);
 
-        $this->em->flush();
         $this->em->clear();
 
         $this->io->progressFinish();
 
         $this->io->success("$count donations imported successfully !");
+    }
+
+    private function findDonator(string $firstName, string $lastName, string $email = null): ?Donator
+    {
+        return !empty($email) ? $this->donatorRepository->findOneForMatching($email, $firstName, $lastName) : null;
     }
 
     private function getLastDonatorIdentifier(): string

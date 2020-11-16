@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.designationType == 'copol' %}
+        CoTerr : <a href="{{ path('admin_app_territorialcouncil_territorialcouncil_list', {filter: {id: {value: object.electionEntity.territorialCouncil.id}}}) }}">{{ object.electionEntity.name }}</a>
+    {% else %}
+        <a href="{{ path('admin_app_committee_list', {filter: {id: {value: object.electionEntity.committee.id}}}) }}">{{ object.electionEntity.name }}</a>
+    {% endif %}
+{% endblock %}

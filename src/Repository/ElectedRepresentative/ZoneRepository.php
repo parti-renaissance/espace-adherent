@@ -2,10 +2,10 @@
 
 namespace App\Repository\ElectedRepresentative;
 
-use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ElectedRepresentative\ZoneCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ZoneRepository extends ServiceEntityRepository
@@ -15,29 +15,18 @@ class ZoneRepository extends ServiceEntityRepository
         parent::__construct($registry, Zone::class);
     }
 
-    /**
-     * Finds zones for autocomplete.
-     */
-    public function findForAutocomplete(string $zone, string $type, int $limit = 10): array
+    public function createSelectByReferentTagsQueryBuilder(array $referentTags): QueryBuilder
     {
-        $mandateType = array_search($type, MandateTypeEnum::toArray());
-        $categories = ZoneCategory::ZONES[$mandateType];
-
-        if (!\count($categories)) {
-            return [];
-        }
-
         return $this->createQueryBuilder('zone')
-            ->innerJoin('zone.category', 'category')
-            ->where('zone.name LIKE :name')
-            ->andWhere('category.name IN (:categories)')
+            ->leftJoin('zone.category', 'category')
+            ->leftJoin('zone.referentTags', 'referentTag')
+            ->where('category.name = :category')
+            ->andWhere('referentTag IN (:tags)')
             ->setParameters([
-                'name' => $zone.'%',
-                'categories' => $categories,
+                'tags' => $referentTags,
+                'category' => ZoneCategory::CITY,
             ])
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult()
+            ->orderBy('zone.name')
         ;
     }
 }

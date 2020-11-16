@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Address\AddressInterface;
 use App\Address\GeocodableAddress;
 use App\Geocoder\Coordinates;
@@ -14,8 +13,6 @@ use Symfony\Component\Intl\Intl;
 
 /**
  * @ORM\Embeddable
- *
- * @Algolia\Index(autoIndex=false)
  */
 class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInterface
 {
@@ -27,8 +24,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
-     *
-     * @Algolia\Attribute
      */
     private $address;
 
@@ -38,8 +33,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @Algolia\Attribute
      */
     private $postalCode;
 
@@ -58,8 +51,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Algolia\Attribute
      */
     private $cityName;
 
@@ -69,8 +60,6 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string
      *
      * @ORM\Column(length=2, nullable=true)
-     *
-     * @Algolia\Attribute
      */
     private $country;
 
@@ -81,15 +70,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Algolia\Attribute
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Algolia\Attribute
      */
     private $longitude;
 

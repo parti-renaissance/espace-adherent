@@ -8,6 +8,7 @@ use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use App\Entity\CitizenProject;
@@ -224,10 +225,20 @@ class CitizenProjectMessageController extends Controller
 
             $this->addFlash('info', 'adherent_message.campaign_sent_successfully');
         } else {
-            $this->addFlash('info', 'adherent_message.campaign_sent_failure');
+            $this->addFlash('error', 'adherent_message.campaign_sent_failure');
         }
 
         return $this->redirectToRoute('app_message_citizen_project_list', ['citizen_project_slug' => $citizenProject->getSlug()]);
+    }
+
+    /**
+     * @Route("/{uuid}/confirmation", name="send_success", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")
+     */
+    public function sendSuccessAction(AbstractAdherentMessage $message, CitizenProject $citizenProject): Response
+    {
+        return $this->renderTemplate('message/send_success/default.html.twig', $citizenProject, ['message' => $message]);
     }
 
     /**

@@ -4,11 +4,11 @@ namespace App\DataFixtures\ORM;
 
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\IdeasWorkshop\Answer;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInterface
+class LoadIdeaAnswerData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

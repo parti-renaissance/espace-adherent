@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     name="turnkey_projects_files",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="turnkey_projects_file_slug_extension", columns={"slug", "extension"})}
  * )
- *
- * @Algolia\Index(autoIndex=false)
  */
 class TurnkeyProjectFile extends BaseFile
 {

@@ -1,0 +1,168 @@
+.instance__elections-box {
+    box-sizing: border-box;
+    background-color: $white;
+    box-shadow: 0 15px 30px 0 rgba(255, 77, 137, 0.15);
+    border-radius: 4px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    -webkit-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    -webkit-transition-timing-function: ease-out;
+    -o-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+
+    h2 {
+        color: $pink;
+        max-width: 500px;
+    }
+
+    hr {
+        border: none;
+        width: 100%;
+        height: 1px;
+        display: block;
+        background-color: $lines-grey;
+        margin: 0;
+    }
+
+    &--content {
+        width: 100%;
+    }
+
+    &--result {
+        flex-basis: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid $lines-grey;
+        padding: 40px;
+        box-sizing: border-box;
+
+        @media (min-width: $mobile) {
+            flex-basis: calc(50% - 12px);
+        }
+
+        &.elected {
+            background-image: url('/images/icons/certification/certification_confettis.svg');
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-size: auto 100px;
+        }
+    }
+
+    .elections-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        @media (min-width: $mobile) {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        > .btn {
+            margin: 0 0 20px 0;
+
+            @media (min-width: $mobile) {
+                margin: 0 20px 0 0;
+            }
+        }
+
+        .candidacy-remove {
+            flex-basis: 100%;
+        }
+    }
+
+    .elections-icon-container {
+        position: relative;
+        padding-left: 34px;
+    }
+
+    .elections-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &:hover {
+        box-shadow: 0 15px 45px 0 rgba(255, 77, 137, 0.30);
+    }
+}
+
+.image-cropper--container {
+    img {
+        max-width: 100%;
+    }
+}
+
+.image-uploader {
+    &--preview {
+        text-align: center;
+
+        label {
+            color: $blue;
+            font-size: 16px;
+            cursor: pointer;
+
+            &:hover {
+                color: $blue--light;
+            }
+        }
+    }
+}
+
+.preview-image--container {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    border-radius: 50%;
+    font-size: 24px;
+    background-color: $gray--lighter;
+    font-weight: bold;
+    color: $blue;
+    font-style: italic;
+    text-align: center;
+}
+
+.candidate-gender {
+    display: inline-flex;
+    vertical-align: middle;
+    color: $neutral-grey;
+    font-size: 10px;
+    font-family: $font-roboto;
+    border: solid 1px $neutral-grey;
+    height: 16px;
+    width: 12px;
+}
+
+.membership-widget-wrapper {
+    #membership-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .form__radio {
+            flex-basis: 100%;
+            margin-right: 0;
+            margin-top: 20px;
+
+            @media (min-width: $mobile) {
+                flex-basis: 50%;
+            }
+
+            label:before {
+                top: 13px;
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set filters = {designation: {value: object.designation.id}} %}
+
+    {% if object.type == 'committee' %}
+        {% set filters = filters|merge({electionEntity__committee: {value: object.election_entity.id}}) %}
+    {% else %}
+        {% set filters = filters|merge({electionEntity__territorialCouncil: {value: object.election_entity.id}}) %}
+    {% endif %}
+
+    <a href="{{ path('admin_app_votingplatform_election_list', {filter: filters}) }}">
+        {{ object.designation.label }}
+    </a>
+{% endblock %}

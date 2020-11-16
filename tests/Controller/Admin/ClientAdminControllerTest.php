@@ -81,7 +81,7 @@ class ClientAdminControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -90,7 +90,7 @@ class ClientAdminControllerTest extends WebTestCase
         $this->authenticateAsAdmin($this->client);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

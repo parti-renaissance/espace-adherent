@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <ul>
+        {% for quality in object.actualQualityNames %}
+            <li>
+                {{ ('territorial_council.membership.quality.'~quality)|trans }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -62,7 +62,9 @@ class AssessorRequestCommand
     /**
      * @Assert\NotBlank(message="common.birthdate.not_blank", groups={"fill_personal_info"})
      * @Assert\Range(
+     *     min="-120 years",
      *     max="-18 years",
+     *     minMessage="assessor.birthdate.maximum_required_age",
      *     maxMessage="assessor.birthdate.minimum_required_age",
      *     groups={"fill_personal_info"}
      * )

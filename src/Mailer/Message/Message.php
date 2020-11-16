@@ -18,6 +18,7 @@ class Message
     protected $senderName;
     protected $cc;
     protected $bcc;
+    protected $templateContent = [];
 
     /**
      * @var bool|null
@@ -27,14 +28,16 @@ class Message
     /**
      * Message constructor.
      *
-     * @param UuidInterface $uuid           The unique identifier of this message
-     * @param string        $template       The Message template ID
-     * @param string        $recipientEmail The first recipient email address
-     * @param string|null   $recipientName  The first recipient name
-     * @param string        $subject        The message subject
-     * @param array         $commonVars     The common variables shared by all recipients
-     * @param array         $recipientVars  The recipient's specific variables
-     * @param string        $replyTo        The email address to use for the Reply-to header
+     * @param UuidInterface $uuid            The unique identifier of this message
+     * @param string        $template        The Message template ID
+     * @param string        $recipientEmail  The first recipient email address
+     * @param string|null   $recipientName   The first recipient name
+     * @param string        $subject         The message subject
+     * @param array         $commonVars      The common variables shared by all recipients
+     * @param array         $recipientVars   The recipient's specific variables
+     * @param string        $replyTo         The email address to use for the Reply-to header
+     * @param string        $template        The email template
+     * @param array         $templateContent The email template content (mc:edit tags)
      */
     final public function __construct(
         UuidInterface $uuid,
@@ -44,7 +47,8 @@ class Message
         array $commonVars = [],
         array $recipientVars = [],
         string $replyTo = null,
-        string $template = null
+        string $template = null,
+        array $templateContent = []
     ) {
         $this->uuid = $uuid;
         $this->recipients = [];
@@ -54,6 +58,7 @@ class Message
         $this->cc = [];
         $this->bcc = [];
         $this->template = $template;
+        $this->templateContent = $templateContent;
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
     }
@@ -180,6 +185,16 @@ class Message
         $this->preserveRecipients = $preserveRecipients;
     }
 
+    public function getTemplateContent(): array
+    {
+        return $this->templateContent;
+    }
+
+    public function setTemplateContent(array $templateContent): void
+    {
+        $this->templateContent = $templateContent;
+    }
+
     /**
      * Transforms the mail class name from `CamelCase` to `snake_case` and remove Message word from the end
      */
@@ -194,6 +209,13 @@ class Message
                 ltrim(preg_replace('#[A-Z]([A-Z](?![a-z]))*#', '-$0', end($parts)), '-')
             )
         );
+    }
+
+    protected static function dateToString(
+        ?\DateTimeInterface $date,
+        string $format = 'EEEE d MMMM y, HH\'h\'mm'
+    ): string {
+        return $date ? self::formatDate($date, $format) : '';
     }
 
     protected static function formatDate(\DateTimeInterface $date, string $format): string

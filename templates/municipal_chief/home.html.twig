@@ -11,10 +11,12 @@
             <div class="manager-overview__case">
                 <span class="manager-overview__case--section">Mes contacts</span>
                 <span class="manager-overview__case--value">{{ candidate_count }}</span>
-                <h1 class="manager-overview__case--title">Candidature{{ candidate_count > 1 ? 's' }}</h1>
-                <footer class="manager-overview__case--footer">
-                    <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}" class="btn btn btn--ghosting--blue">Analyser</a>
-                </footer>
+                {% if enable_municipal_space %}
+                    <h1 class="manager-overview__case--title">Candidature{{ candidate_count > 1 ? 's' }}</h1>
+                    <footer class="manager-overview__case--footer">
+                        <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}" class="btn btn btn--ghosting--blue">Analyser</a>
+                    </footer>
+                {% endif %}
             </div>
             <div class="manager-overview__case">
                 <span class="manager-overview__case--section">Mes contacts</span>

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\VotingPlatform\Designation\AbstractElectionEntity;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,17 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeElectionRepository")
  */
-class CommitteeElection
+class CommitteeElection extends AbstractElectionEntity
 {
-    use EntityDesignationTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
     /**
      * @var Committee
      *
@@ -36,13 +28,21 @@ class CommitteeElection
      */
     private $candidacies;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $adherentNotified = false;
+
     public function __construct(Designation $designation = null)
     {
-        $this->designation = $designation;
+        parent::__construct($designation);
+
         $this->candidacies = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -60,5 +60,10 @@ class CommitteeElection
     public function countCandidacies(): int
     {
         return $this->candidacies->count();
+    }
+
+    public function setAdherentNotified(bool $adherentNotified): void
+    {
+        $this->adherentNotified = $adherentNotified;
     }
 }

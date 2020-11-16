@@ -4,6 +4,7 @@ namespace Tests\App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentManagedArea;
 use App\Entity\ReferentTag;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -70,13 +71,14 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
 
     public function testAdherentIsNotGrantedIfNotInReferentArea()
     {
-        $tags = [new ReferentTag()];
+        $zone = new Zone('', '', '');
+        $tags = [new ReferentTag(null, null, $zone)];
         $adherent = $this->getAdherentMock(true, true, $tags);
         $electedRepresentative = $this->createMock(ElectedRepresentative::class);
 
         $this->electedRepresentativeRepository->expects($this->once())
             ->method('isInReferentManagedArea')
-            ->with($electedRepresentative, $tags)
+            ->with($electedRepresentative, [$zone])
             ->willReturn(true)
         ;
 
@@ -91,13 +93,14 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
 
     public function testAdherentIsGrantedIfReferent()
     {
-        $tags = [new ReferentTag()];
+        $zone = new Zone('', '', '');
+        $tags = [new ReferentTag(null, null, $zone)];
         $adherent = $this->getAdherentMock(true, true, $tags);
         $electedRepresentative = $this->createMock(ElectedRepresentative::class);
 
         $this->electedRepresentativeRepository->expects($this->once())
             ->method('isInReferentManagedArea')
-            ->with($electedRepresentative, $tags)
+            ->with($electedRepresentative, [$zone])
             ->willReturn(true)
         ;
 
@@ -121,7 +124,7 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
         $adherent = $this->createAdherentMock();
 
         if ($referentTags) {
-            $referentManagedArea = $this->createMock(ReferentManagedArea::class);
+            $referentManagedArea = $this->createPartialMock(ReferentManagedArea::class, ['getTags']);
             $referentManagedArea->expects($this->once())
                 ->method('getTags')
                 ->willReturn(new ArrayCollection($referentTags))

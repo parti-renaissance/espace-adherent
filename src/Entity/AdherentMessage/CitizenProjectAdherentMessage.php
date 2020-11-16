@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
-class CitizenProjectAdherentMessage extends AbstractAdherentMessage
+class CitizenProjectAdherentMessage extends AbstractAdherentMessage implements CampaignAdherentMessageInterface
 {
     public function getType(): string
     {

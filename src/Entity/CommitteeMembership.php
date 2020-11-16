@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -31,10 +30,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeMembershipRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
-class CommitteeMembership
+class CommitteeMembership implements UuidEntityInterface
 {
     public const COMMITTEE_HOST = 'HOST';
     public const COMMITTEE_FOLLOWER = 'FOLLOWER';
@@ -54,7 +51,7 @@ class CommitteeMembership
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Groups({"export"})
+     * @Groups({"export", "api_candidacy_read"})
      */
     private $adherent;
 
@@ -116,15 +113,23 @@ class CommitteeMembership
         Committee $committee,
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
-        string $subscriptionDate = 'now'
+        \DateTimeInterface $subscriptionDate = null
     ) {
         $this->uuid = $uuid;
         $this->committee = $committee;
         $this->adherent = $adherent;
         $this->privilege = $privilege;
-        $this->joinedAt = new \DateTime($subscriptionDate);
+        $this->joinedAt = $subscriptionDate ?? new \DateTime();
 
         $this->committeeCandidacies = new ArrayCollection();
+    }
+
+    /**
+     * @Groups({"api_candidacy_read"})
+     */
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     final public static function getHostPrivileges(): array
@@ -135,13 +140,16 @@ class CommitteeMembership
     public static function createForSupervisor(
         Committee $committee,
         Adherent $supervisor,
-        string $subscriptionDate = 'now'
+        \DateTimeInterface $subscriptionDate
     ): self {
         return static::createForAdherent($committee, $supervisor, self::COMMITTEE_SUPERVISOR, $subscriptionDate);
     }
 
-    public static function createForHost(Committee $committee, Adherent $host, string $subscriptionDate = 'now'): self
-    {
+    public static function createForHost(
+        Committee $committee,
+        Adherent $host,
+        \DateTimeInterface $subscriptionDate
+    ): self {
         return static::createForAdherent($committee, $host, self::COMMITTEE_HOST, $subscriptionDate);
     }
 
@@ -151,8 +159,8 @@ class CommitteeMembership
     public static function createForAdherent(
         Committee $committee,
         Adherent $adherent,
-        string $privilege = self::COMMITTEE_FOLLOWER,
-        string $subscriptionDate = 'now'
+        string $privilege,
+        \DateTimeInterface $subscriptionDate
     ): self {
         return new self(
             self::createUuid($adherent->getUuid(), $committee->getUuid()),
@@ -211,6 +219,11 @@ class CommitteeMembership
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->adherent ? $this->adherent->getFullName() : null;
     }
 
     public function getCommittee(): Committee

@@ -39,8 +39,8 @@ class LoadSubscriptionTypeData extends Fixture
                 'externalId' => '456def',
             ],
             [
-                'label' => 'Recevoir les e-mails de mon/ma candidat(e) aux municipales 2020',
-                'code' => SubscriptionTypeEnum::MUNICIPAL_EMAIL,
+                'label' => 'Recevoir les e-mails de mes candidat(e)s LaREM',
+                'code' => SubscriptionTypeEnum::CANDIDATE_EMAIL,
                 'externalId' => null,
             ],
             [

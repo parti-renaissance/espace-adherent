@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ReferentTag;
+use App\Utils\AreaUtils;
 use Doctrine\ORM\QueryBuilder;
 
 trait GeoFilterTrait
@@ -41,6 +42,19 @@ trait GeoFilterTrait
                 );
 
                 $qb->setParameter("code_$key", "$code%");
+            } elseif ($tag->isMetropolisTag() && \array_key_exists($code, AreaUtils::METROPOLIS)) {
+                $inseeCodeExpression = $qb->expr()->orX();
+                foreach (AreaUtils::METROPOLIS[$code] as $key => $inseeCode) {
+                    $inseeCodeExpression->add("$alias.postAddress.city LIKE :inseeCode_$code$key");
+                    $qb->setParameter("inseeCode_$code$key", "%-$inseeCode");
+                }
+
+                $codesFilter->add(
+                    $qb->expr()->andX(
+                        "$countryColumn = 'FR'",
+                        $inseeCodeExpression
+                    )
+                );
             } elseif ($tag->isDistrictTag()) {
                 if (!$referentTagsColumn) {
                     $code = substr($code, 6, 2);

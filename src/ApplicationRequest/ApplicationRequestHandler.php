@@ -8,7 +8,7 @@ use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Referent\ReferentTagManager;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -23,7 +23,7 @@ class ApplicationRequestHandler
     public function __construct(
         AdherentRepository $adherentRepository,
         EntityManagerInterface $manager,
-        Filesystem $storage,
+        FilesystemInterface $storage,
         EventDispatcherInterface $eventDispatcher,
         ReferentTagManager $referentTagManager
     ) {

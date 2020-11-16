@@ -29,18 +29,18 @@ class StatsControllerTest extends WebTestCase
         $this->assertArraySubset([
             'userCount' => 33,
             'eventCount' => 19,
-            'committeeCount' => 9,
+            'committeeCount' => 10,
         ], $data);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

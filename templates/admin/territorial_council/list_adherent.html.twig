@@ -1,0 +1,6 @@
+{% extends 'admin/list/list_author.html.twig' %}
+
+{% block field %}
+    {% set author = object.adherent %}
+    {{ parent() }}
+{% endblock %}

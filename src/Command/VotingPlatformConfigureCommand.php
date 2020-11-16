@@ -3,28 +3,36 @@
 namespace App\Command;
 
 use App\Entity\CommitteeElection;
+use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
 use App\Entity\VotingPlatform\ElectionPool;
+use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
 use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeElectionRepository;
 use App\Repository\CommitteeMembershipRepository;
+use App\Repository\TerritorialCouncil\CandidacyRepository as TerritorialCouncilCandidacyRepository;
+use App\Repository\TerritorialCouncil\ElectionRepository as TerritorialCouncilElectionRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Events;
+use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class VotingPlatformConfigureCommand extends Command
 {
@@ -46,6 +54,12 @@ class VotingPlatformConfigureCommand extends Command
     private $committeeMembershipRepository;
     /** @var VoterRepository */
     private $voterRepository;
+    /** @var EventDispatcherInterface */
+    private $dispatcher;
+    /** @var TerritorialCouncilElectionRepository */
+    private $territorialCouncilElectionRepository;
+    /** @var TerritorialCouncilCandidacyRepository */
+    private $territorialCouncilCandidacyRepository;
 
     protected function configure()
     {
@@ -73,6 +87,8 @@ class VotingPlatformConfigureCommand extends Command
         foreach ($designations as $designation) {
             if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
                 $this->configureCommitteeElections($designation);
+            } elseif (DesignationTypeEnum::COPOL === $designation->getType()) {
+                $this->configureCopolElections($designation);
             } else {
                 $this->io->error(sprintf('Unhandled designation type "%s"', $designation->getType()));
             }
@@ -99,14 +115,10 @@ class VotingPlatformConfigureCommand extends Command
 
                 $this->io->progressAdvance();
 
-                $election = new Election(
-                    $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
-                    null,
-                    [new ElectionRound()]
-                );
-                $election->setElectionEntity(new ElectionEntity($committee));
+                $election = $this->createNewElection($designation);
+                $election->getElectionEntity()->setCommittee($committee);
 
-                $this->configureNewElection($election);
+                $this->configureNewElectionForCommittee($election);
             }
 
             $this->entityManager->clear();
@@ -117,7 +129,118 @@ class VotingPlatformConfigureCommand extends Command
         }
     }
 
-    private function configureNewElection(Election $election): void
+    private function configureCopolElections(Designation $designation): void
+    {
+        $offset = 0;
+
+        while ($territorialCouncilElections = $this->territorialCouncilElectionRepository->findAllByDesignation($designation, $offset)) {
+            foreach ($territorialCouncilElections as $coTerrElection) {
+                $coTerr = $coTerrElection->getTerritorialCouncil();
+
+                if ($this->electionRepository->hasElectionForTerritorialCouncil($coTerr, $designation)) {
+                    continue;
+                }
+
+                if (!$this->isValidTerritorialCouncilElection($coTerrElection)) {
+                    continue;
+                }
+
+                $this->io->progressAdvance();
+
+                $election = $election = $this->createNewElection($designation);
+                $election->getElectionEntity()->setTerritorialCouncil($coTerr);
+
+                if (($poll = $coTerrElection->getElectionPoll()) && $choice = $poll->getTopChoice()) {
+                    $election->setAdditionalPlaces($choice->getValue());
+                    $election->setAdditionalPlacesGender($poll->getGender());
+                }
+
+                $this->configureNewElectionForTerritorialCouncil($election, $coTerrElection);
+            }
+
+            $this->entityManager->clear();
+
+            $designation = $this->entityManager->merge($designation);
+
+            $offset += \count($territorialCouncilElections);
+        }
+    }
+
+    private function configureNewElectionForTerritorialCouncil(
+        Election $election,
+        TerritorialCouncilElection $coTerrElection
+    ): void {
+        $electionRound = $election->getCurrentRound();
+        $coTerr = $coTerrElection->getTerritorialCouncil();
+
+        // Create candidates groups
+        $candidacies = $this->territorialCouncilCandidacyRepository->findAllConfirmedForElection($coTerrElection);
+
+        $pools = [];
+
+        foreach ($candidacies as $candidacy) {
+            if ($candidacy->isTaken()) {
+                continue;
+            }
+
+            $adherent = $candidacy->getMembership()->getAdherent();
+
+            $group = new CandidateGroup();
+            $group->addCandidate($candidate = new Candidate(
+                $adherent->getFirstName(),
+                $adherent->getLastName(),
+                $candidacy->getGender(),
+                $adherent
+            ));
+
+            $candidate->setImagePath($candidacy->getImagePath());
+            $candidate->setBiography($candidacy->getBiography());
+            $candidate->setFaithStatement($candidacy->getFaithStatement());
+            $candidacy->take();
+
+            if ($binome = $candidacy->getBinome()) {
+                $adherent = $binome->getMembership()->getAdherent();
+
+                $group->addCandidate($candidate = new Candidate(
+                    $adherent->getFirstName(),
+                    $adherent->getLastName(),
+                    $binome->getGender(),
+                    $adherent
+                ));
+
+                $candidate->setImagePath($binome->getImagePath());
+                $candidate->setBiography($binome->getBiography());
+                $candidate->setFaithStatement($binome->getFaithStatement());
+                $binome->take();
+            }
+
+            if (!isset($pools[$candidacy->getQuality()])) {
+                $pools[$candidacy->getQuality()] = new ElectionPool($candidacy->getQuality());
+            }
+
+            $pools[$candidacy->getQuality()]->addCandidateGroup($group);
+        }
+
+        foreach ($pools as $pool) {
+            if ($pool->getCandidateGroups()) {
+                $electionRound->addElectionPool($pool);
+                $election->addElectionPool($pool);
+            }
+        }
+
+        $list = $this->createVoterList(
+            $election,
+            array_map(function (TerritorialCouncilMembership $membership) { return $membership->getAdherent(); }, $coTerr->getMemberships()->toArray())
+        );
+
+        $this->entityManager->persist($list);
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election));
+    }
+
+    private function configureNewElectionForCommittee(Election $election): void
     {
         $electionRound = $election->getCurrentRound();
         $committee = $election->getElectionEntity()->getCommittee();
@@ -125,8 +248,8 @@ class VotingPlatformConfigureCommand extends Command
         // Create candidates groups
         $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $election->getDesignation());
 
-        $womanPool = new ElectionPool('Femme');
-        $manPool = new ElectionPool('Homme');
+        $femalePool = new ElectionPool(ElectionPoolCodeEnum::FEMALE);
+        $malePool = new ElectionPool(ElectionPoolCodeEnum::MALE);
 
         foreach ($candidacies as $candidacy) {
             $adherent = $candidacy->getCommitteeMembership()->getAdherent();
@@ -135,42 +258,42 @@ class VotingPlatformConfigureCommand extends Command
             $group->addCandidate($candidate = new Candidate(
                 $adherent->getFirstName(),
                 $adherent->getLastName(),
-                $candidacy->getGender()
+                $candidacy->getGender(),
+                $adherent
             ));
 
             $candidate->setImagePath($candidacy->getImagePath());
             $candidate->setBiography($candidacy->getBiography());
 
-            if ($candidate->isWoman()) {
-                $womanPool->addCandidateGroup($group);
+            if ($candidate->isFemale()) {
+                $femalePool->addCandidateGroup($group);
             } else {
-                $manPool->addCandidateGroup($group);
+                $malePool->addCandidateGroup($group);
             }
         }
 
-        if ($womanPool->getCandidateGroups()) {
-            $electionRound->addElectionPool($womanPool);
-            $election->addElectionPool($womanPool);
+        if ($femalePool->getCandidateGroups()) {
+            $electionRound->addElectionPool($femalePool);
+            $election->addElectionPool($femalePool);
         }
 
-        if ($manPool->getCandidateGroups()) {
-            $electionRound->addElectionPool($manPool);
-            $election->addElectionPool($manPool);
+        if ($malePool->getCandidateGroups()) {
+            $electionRound->addElectionPool($malePool);
+            $election->addElectionPool($malePool);
         }
 
         $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
 
-        $list = new VotersList($election);
-
-        foreach ($memberships as $membership) {
-            $adherent = $membership->getAdherent();
-
-            $list->addVoter($this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent));
-        }
+        $list = $this->createVoterList(
+            $election,
+            array_map(function (TerritorialCouncilMembership $membership) { return $membership->getAdherent(); }, $memberships)
+        );
 
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
         $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election));
     }
 
     private function isValidCommitteeElection(CommitteeElection $committeeElection, Designation $designation): bool
@@ -192,6 +315,54 @@ class VotingPlatformConfigureCommand extends Command
         if (0 === \count($candidacies)) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have at least 1 candidate', $committee->getSlug()));
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function createNewElection(Designation $designation): Election
+    {
+        return new Election(
+            $this->entityManager->getPartialReference(Designation::class, $designation->getId()),
+            null,
+            [new ElectionRound()],
+            new ElectionEntity()
+        );
+    }
+
+    private function createVoterList(Election $election, array $adherents): VotersList
+    {
+        $list = new VotersList($election);
+
+        foreach ($adherents as $adherent) {
+            $list->addVoter($this->voterRepository->findForAdherent($adherent) ?? new Voter($adherent));
+        }
+
+        return $list;
+    }
+
+    private function isValidTerritorialCouncilElection(TerritorialCouncilElection $coTerrElection): bool
+    {
+        $coTerr = $coTerrElection->getTerritorialCouncil();
+
+        // validate voters
+        if ($coTerr->getMemberships()->isEmpty()) {
+            if ($this->io->isDebug()) {
+                $this->io->warning(sprintf('CoTerr "%s" does not have any voters', $coTerr->getUuid()->toString()));
+            }
+
+            return false;
+        }
+
+        // validate candidatures
+        $candidacies = $this->territorialCouncilCandidacyRepository->findAllConfirmedForElection($coTerrElection);
+
+        if (0 === \count($candidacies)) {
+            if ($this->io->isDebug()) {
+                $this->io->warning(sprintf('CoTerr "%s" does not have at least 1 candidate', $coTerr->getUuid()->toString()));
             }
 
             return false;
@@ -240,5 +411,25 @@ class VotingPlatformConfigureCommand extends Command
     public function setVoterRepository(VoterRepository $voterRepository): void
     {
         $this->voterRepository = $voterRepository;
+    }
+
+    /** @required */
+    public function setDispatcher(EventDispatcherInterface $dispatcher): void
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
+    /** @required */
+    public function setTerritorialCouncilElectionRepository(
+        TerritorialCouncilElectionRepository $territorialCouncilElectionRepository
+    ): void {
+        $this->territorialCouncilElectionRepository = $territorialCouncilElectionRepository;
+    }
+
+    /** @required */
+    public function setTerritorialCouncilCandidacyRepository(
+        TerritorialCouncilCandidacyRepository $territorialCouncilCandidacyRepository
+    ): void {
+        $this->territorialCouncilCandidacyRepository = $territorialCouncilCandidacyRepository;
     }
 }

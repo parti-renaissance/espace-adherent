@@ -4,7 +4,7 @@ namespace App\EntityListener;
 
 use App\Entity\EntityFileInterface;
 use Doctrine\ORM\Mapping as ORM;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -14,7 +14,7 @@ class FileListener
     private $storage;
     private $glide;
 
-    public function __construct(Filesystem $storage, Server $glide)
+    public function __construct(FilesystemInterface $storage, Server $glide)
     {
         $this->storage = $storage;
         $this->glide = $glide;

@@ -34,9 +34,13 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
 
     protected function createFilterModel(Request $request): ManagedUsersFilter
     {
+        $session = $request->getSession();
+
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::REFERENT_EMAIL,
-            $this->getMainUser($request->getSession())->getManagedArea()->getTags()->toArray(),
+            $this->getMainUser($session)->getManagedArea()->getTags()->toArray(),
+            $this->getRestrictedCommittees($session),
+            $this->getRestrictedCities($session)
         );
     }
 }

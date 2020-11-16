@@ -9,6 +9,7 @@ use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\PaginatorTrait;
 use App\Repository\ReferentTagRepository;
 use App\Repository\ReferentTrait;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
@@ -57,7 +58,13 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        $this->withZoneCondition($qb, $filter->getReferentTags());
+        if ($filter->getReferentTags()) {
+            $this->withZoneCondition($qb, $filter->getReferentTags());
+        }
+
+        if ($filter->getZones()) {
+            $this->withGeoZoneCondition($qb, $filter->getZones());
+        }
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();
@@ -241,22 +248,57 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if (null !== $filter->getSmsSubscription()) {
+            $subscriptionTypesCondition = 'FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) > 0';
+            if (false === $filter->getSmsSubscription()) {
+                $subscriptionTypesCondition = '(FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) = 0 OR u.subscriptionTypes IS NULL)';
+            }
+
+            $qb
+                ->andWhere($subscriptionTypesCondition)
+                ->setParameter('sms_subscription_type', SubscriptionTypeEnum::MILITANT_ACTION_SMS)
+            ;
+        }
+
         if (null !== $filter->getVoteInCommittee()) {
             $qb->andWhere(sprintf('u.voteCommitteeId %s NULL', $filter->getVoteInCommittee() ? 'IS NOT' : 'IS'));
+        }
+
+        if (null !== $filter->getSmsSubscription()) {
+            $subscriptionTypesCondition = 'FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) > 0';
+            if (false === $filter->getSmsSubscription()) {
+                $subscriptionTypesCondition = '(FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) = 0 OR u.subscriptionTypes IS NULL)';
+            }
+
+            $qb
+                ->andWhere($subscriptionTypesCondition)
+                ->setParameter('sms_subscription_type', SubscriptionTypeEnum::MILITANT_ACTION_SMS)
+            ;
         }
 
         return $qb;
     }
 
-    public function countManagedUsers(array $referentTags): int
+    public function countManagedUsers(array $referentTags = [], array $zones = []): int
     {
+        if (empty($referentTags) && empty($zones)) {
+            throw new \InvalidArgumentException('Both referent tags and zones could not be empty');
+        }
+
         $qb = $this
             ->createQueryBuilder('u')
             ->select('COUNT(u.id)')
         ;
 
-        return (int) $this
-            ->withZoneCondition($qb, $referentTags)
+        if ($referentTags) {
+            $this->withZoneCondition($qb, $referentTags);
+        }
+
+        if ($zones) {
+            $this->withGeoZoneCondition($qb, $zones);
+        }
+
+        return (int) $qb
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -283,5 +325,20 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         return $qb->andWhere($tagsFilter);
+    }
+
+    private function withGeoZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'u'): QueryBuilder
+    {
+        return $qb
+            ->innerJoin("$alias.zone", 'zone')
+            ->leftJoin('zone.parents', 'parent')
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->in('zone.id', ':zones'),
+                    $qb->expr()->in('parent.id', ':zones'),
+                )
+            )
+            ->setParameter(':zones', $zones)
+        ;
     }
 }

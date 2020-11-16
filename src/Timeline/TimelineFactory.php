@@ -8,13 +8,11 @@ use App\Entity\Timeline\Profile;
 use App\Entity\Timeline\Theme;
 use App\Repository\MediaRepository;
 use Cocur\Slugify\Slugify;
-use League\Flysystem\Filesystem as Storage;
-use Symfony\Component\Filesystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 class TimelineFactory
 {
-    private $filesystem;
     private $mediaFactory;
     private $mediaRepository;
     private $slugifier;
@@ -24,14 +22,12 @@ class TimelineFactory
         MediaFactory $mediaFactory,
         MediaRepository $mediaRepository,
         Slugify $slugifier,
-        Storage $storage,
-        Filesystem $filesystem
+        FilesystemInterface $storage
     ) {
         $this->mediaFactory = $mediaFactory;
         $this->mediaRepository = $mediaRepository;
         $this->slugifier = $slugifier;
         $this->storage = $storage;
-        $this->filesystem = $filesystem;
 
         $this->slugifier->activateRuleSet('default');
     }
@@ -63,7 +59,7 @@ class TimelineFactory
         $mediaPath = sprintf('timeline_macron/%s.jpg', $this->slugify($name));
         $temporaryFilename = sprintf('%s/%s', sys_get_temp_dir(), $mediaPath);
 
-        $this->filesystem->copy($path, $temporaryFilename);
+        $this->storage->copy($path, $temporaryFilename);
 
         $mediaFile = new File($temporaryFilename);
 

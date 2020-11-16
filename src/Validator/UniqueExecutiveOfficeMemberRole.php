@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraint;
 class UniqueExecutiveOfficeMemberRole extends Constraint
 {
     public $uniqueExecutiveOfficerMessage = 'executive_office_member.executive_officer.unique';
-    public $uniqueDeputyGeneralDelegateMessage = 'executive_office_member.deputy_general_delegate.unique';
     public $uniqueRoleMessage = 'executive_office_member.role.unique';
 
     public function getTargets()

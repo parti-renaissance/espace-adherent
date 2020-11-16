@@ -5,11 +5,9 @@ namespace App\VotingPlatform\Event;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
-use Symfony\Component\EventDispatcher\Event;
 
-class CommitteeCandidacyEvent extends Event
+class CommitteeCandidacyEvent extends BaseCandidacyEvent
 {
-    private $committeeCandidacy;
     private $committee;
     private $candidate;
     private $supervisor;
@@ -20,15 +18,11 @@ class CommitteeCandidacyEvent extends Event
         Adherent $candidate,
         Adherent $supervisor = null
     ) {
-        $this->committeeCandidacy = $candidacy;
+        parent::__construct($candidacy);
+
         $this->committee = $committee;
         $this->candidate = $candidate;
         $this->supervisor = $supervisor;
-    }
-
-    public function getCommitteeCandidacy(): CommitteeCandidacy
-    {
-        return $this->committeeCandidacy;
     }
 
     public function getCommittee(): Committee

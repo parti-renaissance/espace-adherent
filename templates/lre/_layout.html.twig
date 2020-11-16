@@ -1,0 +1,59 @@
+{% extends 'adherent_space/_layout.html.twig' %}
+
+{% block page_title 'Espace La République Ensemble' %}
+
+{% block banner '' %}
+
+{% set hasCharterAccepted = app.user.charters.hasLreCharterAccepted %}
+
+{% block stylesheets %}
+    {% if not hasCharterAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <main class="manager-space manager-body">
+        <aside class="manager-sidebar">
+            {{ include('lre/_sidebar.html.twig') }}
+        </aside>
+
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    {% block lre_content %}{% endblock %}
+                </div>
+            </div>
+        </section>
+
+        {% if not hasCharterAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'lre.popup.title'|trans,
+                'fileUrl': 'lre.popup.file_url'|trans
+            } %}
+        {% endif %}
+    </main>
+{% endblock %}
+
+{% block adherent_space_header_title %}
+    Vous gérez : <span class="text--black text--bold">{{ app.user.lreArea.allTags ? 'Toutes les zones' : app.user.lreArea.referentTag }}</span>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+
+    {% if not hasCharterAccepted %}
+        <script type="text/javascript">
+          Kernel.onLoad(function() {
+              {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_LRE')) }}
+          });
+        </script>
+    {% endif %}
+{% endblock %}

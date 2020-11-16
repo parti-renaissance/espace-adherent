@@ -2,7 +2,7 @@
     {% set selected_committee = null %}
     {% set has_started_designation = false %}
 
-    {% for membership in app.user.memberships if not selected_committee and membership.committee.currentDesignation and membership.committee.currentDesignation.isOngoing %}
+    {% for membership in app.user.memberships if not selected_committee and membership.committee.committeeElection and membership.committee.committeeElection.isOngoing and membership.committee.committeeElection.countCandidacies %}
         {% if not has_started_designation %}
             {% set has_started_designation = true %}
         {% endif %}
@@ -20,7 +20,7 @@
                         {% if selected_committee %}
                             Une désignation est ouverte dans <a class="link--no-decor link--white" href="{{ path('app_committee_show', {slug: selected_committee.slug}) }}"><strong>votre comité</strong></a> !
                         {% else %}
-                            Des désignations sont ouvertes, <a class="link--no-decor link--white" href="{{ path('app_adherent_committees') }}"><strong>choisissez un comité de désignation</strong></a> pour y participer.
+                            Des désignations sont ouvertes, <a class="link--no-decor link--white" href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}"><strong>choisissez un comité de désignation</strong></a> pour y participer.
                         {% endif %}
                     </div>
 

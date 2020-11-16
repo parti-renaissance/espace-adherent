@@ -2,7 +2,6 @@
 
 namespace App\Entity\Reporting;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ReferentTag;
@@ -21,8 +20,6 @@ use Ramsey\Uuid\UuidInterface;
  *     }
  * )
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CommitteeMembershipHistory
 {

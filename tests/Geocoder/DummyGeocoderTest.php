@@ -3,17 +3,17 @@
 namespace Tests\App\Geocoder;
 
 use App\Geocoder\Coordinates;
+use App\Geocoder\Exception\GeocodingException;
+use App\Geocoder\Geocoder;
 use PHPUnit\Framework\TestCase;
 use Tests\App\Test\Geocoder\DummyGeocoder;
 
 class DummyGeocoderTest extends TestCase
 {
-    /**
-     * @expectedException \App\Geocoder\Exception\GeocodingException
-     */
     public function testGeocodeAddressFails()
     {
-        $geocoder = new DummyGeocoder();
+        $this->expectException(GeocodingException::class);
+        $geocoder = new Geocoder(new DummyGeocoder());
         $geocoder->geocode('12 chemin de Bamby, 69003 Lyon, FR');
     }
 
@@ -22,7 +22,7 @@ class DummyGeocoderTest extends TestCase
      */
     public function testGeocodeAddress(string $address, float $latitude, float $longitude)
     {
-        $geocoder = new DummyGeocoder();
+        $geocoder = new Geocoder(new DummyGeocoder());
         $coordinates = $geocoder->geocode($address);
 
         $this->assertInstanceOf(Coordinates::class, $coordinates);

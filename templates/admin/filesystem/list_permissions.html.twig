@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% for permission in object.permissions %}
+        {{ ('file_permission.'~permission)|trans({}, 'messages') }}{% if not loop.last %}<br />{% endif %}
+    {% endfor %}
+{% endblock %}

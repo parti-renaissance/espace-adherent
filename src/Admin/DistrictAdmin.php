@@ -30,6 +30,23 @@ class DistrictAdmin extends AbstractAdmin
 
     public static function prepareAutocompleteFilterCallback(self $admin, string $property, string $name): void
     {
+        self::autocompleteFilterCallback('managedDistrict', $admin, $property, $name);
+    }
+
+    public static function prepareLegislativeCandidateAutocompleteFilterCallback(
+        self $admin,
+        string $property,
+        string $name
+    ): void {
+        self::autocompleteFilterCallback('legislativeCandidateManagedDistrict', $admin, $property, $name);
+    }
+
+    protected static function autocompleteFilterCallback(
+        string $field,
+        self $admin,
+        string $property,
+        string $name
+    ): void {
         $admin->getDatagrid()->setValue($property, null, $name);
         /** @var QueryBuilder $qb */
         $qb = $admin
@@ -37,7 +54,7 @@ class DistrictAdmin extends AbstractAdmin
             ->getQuery()
         ;
         $qb
-            ->leftJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.managedDistrict = '.$qb->getRootAliases()[0])
+            ->leftJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.'.$field.' = '.$qb->getRootAliases()[0])
             ->andWhere('adherent IS NULL')
         ;
     }

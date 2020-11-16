@@ -83,10 +83,12 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_MY_EUROPE',
                     'ROLE_ADMIN_LEGISLATIVES',
                     'ROLE_ADMIN_ADHERENTS',
+                    'ROLE_ADMIN_ADHERENTS_READONLY',
                     'ROLE_ADMIN_SUMMARY',
                     'ROLE_ADMIN_SKILLS',
                     'ROLE_ADMIN_COMMITTEES',
                     'ROLE_ADMIN_COMMITTEES_MERGE',
+                    'ROLE_ADMIN_COMMITTEE_DESIGNATION',
                     'ROLE_ADMIN_EVENTS',
                     'ROLE_ADMIN_INSTITUTIONAL_EVENTS',
                     'ROLE_ADMIN_CITIZEN_ACTIONS',
@@ -123,6 +125,10 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_ELECTION_CITY_CARD',
                     'ROLE_ADMIN_ELECTION_CITY_CARD_MANAGERS',
                     'ROLE_ADMIN_ELECTED_REPRESENTATIVE',
+                    'ROLE_ADMIN_TERRITORIAL_COUNCIL',
+                    'ROLE_ADMIN_TERRITORIAL_COUNCIL_MEMBERSHIP_LOG',
+                    'ROLE_ADMIN_THEMATIC_COMMUNITY',
+                    'ROLE_ADMIN_FILES',
                 ],
             ])
             ->add(

@@ -9,7 +9,6 @@ use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\MyTeam\DelegatedAccess;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,7 +28,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     AdherentMessageTypeEnum::COMMITTEE: "CommitteeAdherentMessage",
  *     AdherentMessageTypeEnum::CITIZEN_PROJECT: "CitizenProjectAdherentMessage",
  *     AdherentMessageTypeEnum::MUNICIPAL_CHIEF: "MunicipalChiefAdherentMessage",
- *     AdherentMessageTypeEnum::SENATOR: "SenatorAdherentMessage"
+ *     AdherentMessageTypeEnum::SENATOR: "SenatorAdherentMessage",
+ *     AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE: "ReferentElectedRepresentativeMessage",
+ *     AdherentMessageTypeEnum::REFERENT_INSTANCES: "ReferentInstancesMessage",
+ *     AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE: "LegislativeCandidateAdherentMessage",
+ *     AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE: "LreManagerElectedRepresentativeMessage",
  * })
  *
  * @ApiResource(
@@ -37,7 +40,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     collectionOperations={},
  *     itemOperations={
  *         "get": {
- *             "access_control": "is_granted('ROLE_ADHERENT') and (object.getAuthor() == user or object.isDelegatedAuthor(user))",
+ *             "access_control": "is_granted('ROLE_ADHERENT') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}}
  *         }
@@ -120,6 +123,20 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     private $mailchimpCampaigns;
 
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $recipientCount;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $sendToTimeline = false;
+
     public function __construct(UuidInterface $uuid, Adherent $author)
     {
         $this->uuid = $uuid;
@@ -127,7 +144,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         $this->mailchimpCampaigns = new ArrayCollection();
     }
 
-    public static function createFromAdherent(Adherent $adherent): self
+    public static function createFromAdherent(Adherent $adherent): AdherentMessageInterface
     {
         return new static(Uuid::uuid4(), $adherent);
     }
@@ -241,12 +258,17 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     public function getRecipientCount(): ?int
     {
-        return array_sum($this->mailchimpCampaigns
+        return $this->recipientCount + array_sum($this->mailchimpCampaigns
             ->map(static function (MailchimpCampaign $campaign) {
                 return $campaign->getRecipientCount();
             })
             ->toArray()
         );
+    }
+
+    public function setRecipientCount(?int $recipientCount): void
+    {
+        $this->recipientCount = $recipientCount;
     }
 
     public function getFromName(): ?string
@@ -303,15 +325,18 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         }
     }
 
-    public function isDelegatedAuthor(Adherent $user): bool
+    public function isMailchimp(): bool
     {
-        /** @var DelegatedAccess $delegatedAccess */
-        foreach ($user->getReceivedDelegatedAccesses() as $delegatedAccess) {
-            if ($delegatedAccess->getDelegator() === $this->getAuthor()) {
-                return true;
-            }
-        }
+        return $this instanceof CampaignAdherentMessageInterface;
+    }
 
-        return false;
+    public function isSendToTimeline(): bool
+    {
+        return $this->sendToTimeline;
+    }
+
+    public function setSendToTimeline(bool $value): void
+    {
+        $this->sendToTimeline = $value;
     }
 }

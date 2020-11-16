@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ProgrammaticFoundation\Measure;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadApproachMeasureData extends AbstractFixture implements DependentFixtureInterface
+class LoadApproachMeasureData extends Fixture implements DependentFixtureInterface
 {
     private const CONTENTS = [
         '<p>Ut tortor mi, ullamcorper sed elit at, fringilla molestie leo. In efficitur arcu dui, id posuere nulla ultricies quis. Sed fringilla lac<a href="#">us sed enim vestibul</a>um, at ornare metus scelerisque. Phasellus id sagittis neque. In justo quam, placerat a pretium a, mattis et nibh. Duis consequat ac metus aliquam fermentum.</p>

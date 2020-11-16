@@ -2,10 +2,12 @@
 
 namespace App\Exporter;
 
+use App\Controller\EnMarche\ManagedUsers\CandidateManagedUsersController;
+use App\Entity\Projection\ManagedUser;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\Projection\ManagedUserRepository;
 use Sonata\Exporter\Exporter as SonataExporter;
-use Sonata\Exporter\Source\DoctrineORMQuerySourceIterator;
+use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\Response;
 
 class ManagedUsersExporter
@@ -19,32 +21,50 @@ class ManagedUsersExporter
         $this->repository = $repository;
     }
 
-    public function getResponse(string $format, ManagedUsersFilter $filter): Response
+    public function getResponse(string $format, ManagedUsersFilter $filter, string $spaceType): Response
     {
+        switch ($spaceType) {
+            case CandidateManagedUsersController::SPACE_NAME:
+                $callback = function (ManagedUser $managedUser) {
+                    return [
+                        'Prénom' => $managedUser->getFirstName(),
+                        'Nom' => $managedUser->getLastName(),
+                        'Âge' => $managedUser->getAge(),
+                        'Genre' => $managedUser->getGenderLabel(),
+                        'Adresse postale' => $managedUser->getAddress(),
+                        'Commune' => $managedUser->getCity(),
+                        'Code postal' => $managedUser->getPostalCode(),
+                        'Pays' => $managedUser->getCountry(),
+                    ];
+                };
+
+                break;
+            default:
+                $callback = function (ManagedUser $managedUser) {
+                    return [
+                        'Prénom' => $managedUser->getFirstName(),
+                        'Nom' => $managedUser->getLastName(),
+                        'Âge' => $managedUser->getAge(),
+                        'Genre' => $managedUser->getGenderLabel(),
+                        'Rôle' => $managedUser->getUserRoleLabels(),
+                        'Commune' => $managedUser->getCity(),
+                        'Code postal' => $managedUser->getPostalCode(),
+                        'Pays' => $managedUser->getCountry(),
+                        'Adhésion le' => $managedUser->getCreatedAt()->format('d/m/Y H:i'),
+                        'Comités' => $managedUser->getCommitteesAsString(),
+                    ];
+                };
+        }
+
+        $array = new \ArrayObject($this->repository->getExportQueryBuilder($filter)->getResult());
+
         return $this->exporter->getResponse(
             $format,
             sprintf('adherents--%s.%s', date('d-m-Y--H-i'), $format),
-            new DoctrineORMQuerySourceIterator(
-                $this->repository->getExportQueryBuilder($filter),
-                $this->getExportFields(),
-                'd/m/Y H:i'
+            new IteratorCallbackSourceIterator(
+                $array->getIterator(),
+                $callback
             )
         );
-    }
-
-    private function getExportFields(): array
-    {
-        return [
-            'Prénom' => 'firstName',
-            'Nom' => 'lastName',
-            'Âge' => 'age',
-            'Genre' => 'getGenderLabel',
-            'Rôle' => 'getUserRoleLabels',
-            'Commune' => 'city',
-            'Code postal' => 'postalCode',
-            'Pays' => 'country',
-            'Adhésion le' => 'createdAt',
-            'Comités' => 'getCommitteesAsString',
-        ];
     }
 }

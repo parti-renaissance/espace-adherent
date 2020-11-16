@@ -94,28 +94,8 @@ class EventManagerControllerTest extends WebTestCase
                     'city' => '69001-69381',
                     'cityName' => '',
                 ],
-                'beginAt' => [
-                    'date' => [
-                        'year' => '2022',
-                        'month' => '3',
-                        'day' => '2',
-                    ],
-                    'time' => [
-                        'hour' => '9',
-                        'minute' => '30',
-                    ],
-                ],
-                'finishAt' => [
-                    'date' => [
-                        'year' => '2022',
-                        'month' => '3',
-                        'day' => '2',
-                    ],
-                    'time' => [
-                        'hour' => '19',
-                        'minute' => '0',
-                    ],
-                ],
+                'beginAt' => '2022-03-02 09:30',
+                'finishAt' => '2022-03-02 19:00',
                 'capacity' => '1500',
                 'timeZone' => 'Europe/Zurich',
             ],
@@ -410,14 +390,14 @@ CONTENT;
         $this->isSuccessful($this->client->getResponse());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

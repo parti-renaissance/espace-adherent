@@ -6,7 +6,7 @@ use App\Entity\ImageOwnerInterface;
 use App\Storage\ImageStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ImageManager
+class ImageManager implements ImageManagerInterface
 {
     /**
      * @var ImageStorage

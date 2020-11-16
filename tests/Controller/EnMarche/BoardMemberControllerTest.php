@@ -52,7 +52,7 @@ class BoardMemberControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-membres-conseil/');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Referent', $crawler->filter('h1')->text());
+        $this->assertStringContainsString('Referent', $crawler->filter('h1')->text());
     }
 
     public function testSearchBoardMember()
@@ -89,11 +89,11 @@ class BoardMemberControllerTest extends WebTestCase
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
         $this->assertCount(5, $results);
-        $this->assertContains('Carl Mirabeau', $results->first()->text());
-        $this->assertContains('Député PARIS I', $results->eq(1)->text());
-        $this->assertContains('Député PARIS II', $results->eq(2)->text());
-        $this->assertContains('Député CHLI FDESIX', $results->eq(3)->text());
-        $this->assertContains('Referent Referent', $results->eq(4)->text());
+        $this->assertStringContainsString('Carl Mirabeau', $results->first()->text());
+        $this->assertStringContainsString('Député PARIS I', $results->eq(1)->text());
+        $this->assertStringContainsString('Député PARIS II', $results->eq(2)->text());
+        $this->assertStringContainsString('Député CHLI FDESIX', $results->eq(3)->text());
+        $this->assertStringContainsString('Referent Referent', $results->eq(4)->text());
 
         // Age
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
@@ -105,7 +105,7 @@ class BoardMemberControllerTest extends WebTestCase
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
         $this->assertCount(2, $results);
-        $this->assertContains('Laura Deloche', $results->first()->text());
+        $this->assertStringContainsString('Laura Deloche', $results->first()->text());
 
         // Name
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
@@ -118,7 +118,7 @@ class BoardMemberControllerTest extends WebTestCase
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
         $this->assertCount(1, $results);
-        $this->assertContains('Martine Lindt', $results->first()->text());
+        $this->assertStringContainsString('Martine Lindt', $results->first()->text());
 
         // Postal Code
         $this->client->submit($this->client->getCrawler()->selectButton('Rechercher')->form([
@@ -130,7 +130,7 @@ class BoardMemberControllerTest extends WebTestCase
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
         $this->assertCount(1, $results);
-        $this->assertContains('Élodie Dutemps', $results->first()->text());
+        $this->assertStringContainsString('Élodie Dutemps', $results->first()->text());
 
         // Area
         $form = $this->client->getCrawler()->selectButton('Rechercher')->form();
@@ -141,9 +141,9 @@ class BoardMemberControllerTest extends WebTestCase
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
         $this->assertCount(3, $results);
-        $this->assertContains('Laura Deloche', $results->first()->text());
-        $this->assertContains('Député PARIS I', $results->eq(1)->text());
-        $this->assertContains('Referent Referent', $results->eq(2)->text());
+        $this->assertStringContainsString('Laura Deloche', $results->first()->text());
+        $this->assertStringContainsString('Député PARIS I', $results->eq(1)->text());
+        $this->assertStringContainsString('Referent Referent', $results->eq(2)->text());
 
         // Role
         $form = $this->client->getCrawler()->selectButton('Rechercher')->form();
@@ -154,7 +154,7 @@ class BoardMemberControllerTest extends WebTestCase
 
         $results = $this->client->getCrawler()->filter('.spaces__results__row');
         $this->assertCount(1, $results);
-        $this->assertContains('Referent Referent', $results->first()->text());
+        $this->assertStringContainsString('Referent Referent', $results->first()->text());
     }
 
     public function testSavedProfilBoardMember()
@@ -166,21 +166,21 @@ class BoardMemberControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(4, $members);
-        $this->assertContains('Carl Mirabeau', $members->first()->text());
+        $this->assertStringContainsString('Carl Mirabeau', $members->first()->text());
         $this->assertRegExp('/\d+, M, Mouxy/', $members->first()->text());
-        $this->assertContains('Laura Deloche', $members->eq(1)->text());
+        $this->assertStringContainsString('Laura Deloche', $members->eq(1)->text());
         $this->assertRegExp('/\d+, F, Rouen/', $members->eq(1)->text());
-        $this->assertContains('Martine Lindt', $members->eq(2)->text());
+        $this->assertStringContainsString('Martine Lindt', $members->eq(2)->text());
         $this->assertRegExp('/\d+, F, Berlin/', $members->eq(2)->text());
-        $this->assertContains('Élodie Dutemps', $members->eq(3)->text());
+        $this->assertStringContainsString('Élodie Dutemps', $members->eq(3)->text());
         $this->assertRegExp('/\d+, F, Singapour/', $members->eq(3)->text());
-        $this->assertContains('4 profils sauvegardés', $crawler->filter('h2')->eq(1)->text());
+        $this->assertStringContainsString('4 profils sauvegardés', $crawler->filter('h2')->eq(1)->text());
 
         // Statistics
         $stats = $crawler->filter('#saved_board_members_statistics');
-        $this->assertContains('75% femmes / 25% hommes', $stats->html());
-        $this->assertContains('38 ans de moyenne d\'âge', $stats->html());
-        $this->assertContains('25% Métropole / 0% DOM-TOM / 75% Étranger', $stats->html());
+        $this->assertStringContainsString('75% femmes / 25% hommes', $stats->html());
+        $this->assertStringContainsString('39 ans de moyenne d\'âge', $stats->html());
+        $this->assertStringContainsString('25% Métropole / 0% DOM-TOM / 75% Étranger', $stats->html());
     }
 
     public function testSendMessageToSearchResult()
@@ -220,7 +220,7 @@ class BoardMemberControllerTest extends WebTestCase
         $this->client->click($this->client->getCrawler()->selectLink('Envoyer un message à ces 4 personnes')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('4 membres du Conseil', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('4 membres du Conseil', $this->client->getResponse()->getContent());
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
             'board_member_message' => [
                 'subject' => 'Sujet',
@@ -247,7 +247,7 @@ class BoardMemberControllerTest extends WebTestCase
         $this->client->click($this->client->getCrawler()->filter('.spaces__results__row')->eq(1)->selectLink('Envoyer un message')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('Un membre du Conseil', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Un membre du Conseil', $this->client->getResponse()->getContent());
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form([
             'board_member_message' => [
                 'subject' => 'Sujet',
@@ -308,14 +308,14 @@ class BoardMemberControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

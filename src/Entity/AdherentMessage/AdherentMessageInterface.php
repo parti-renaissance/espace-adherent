@@ -4,6 +4,7 @@ namespace App\Entity\AdherentMessage;
 
 use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use Ramsey\Uuid\UuidInterface;
 
@@ -57,4 +58,8 @@ interface AdherentMessageInterface extends AuthoredInterface
     public function resetFilter(): void;
 
     public function updateFromDataObject(AdherentMessageDataObject $dataObject): AdherentMessageInterface;
+
+    public function markAsSent(): void;
+
+    public static function createFromAdherent(Adherent $adherent): self;
 }

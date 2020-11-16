@@ -5,11 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumberUtil;
 use Ramsey\Uuid\Uuid;
 
-class LoadApplicationRequestVolunteerRequestData extends Fixture
+class LoadApplicationRequestVolunteerRequestData extends Fixture implements DependentFixtureInterface
 {
     private const UUID_1 = '214ef0d4-8923-48a6-99e1-e50eeefaeaf4';
     private const UUID_2 = 'a6ac8cc7-776f-4f4f-854e-f6b0a1bd7c62';

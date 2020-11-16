@@ -10,6 +10,7 @@ use App\Entity\CitizenProjectCategory;
 use App\Entity\Committee;
 use App\Entity\NullablePostAddress;
 use App\Entity\PostAddress;
+use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
 use App\Membership\ActivityPositions;
@@ -218,15 +219,15 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $this->subscriber = new EntityAddressGeocodingSubscriber(new DummyGeocoder(), $this->manager);
+        $this->subscriber = new EntityAddressGeocodingSubscriber(new Geocoder(new DummyGeocoder()), $this->manager);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->manager = null;
         $this->subscriber = null;

@@ -37,7 +37,7 @@ class MyEuropeChoiceRepositoryTest extends WebTestCase
         $this->assertSame('a642dbc7-aba5-49e4-877a-06bc1ef23168', $common->getUuid()->toString());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -45,7 +45,7 @@ class MyEuropeChoiceRepositoryTest extends WebTestCase
         $this->repository = $this->getMyEuropeChoiceRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

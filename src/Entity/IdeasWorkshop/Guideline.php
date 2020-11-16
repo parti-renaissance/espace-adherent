@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EnabledInterface;
@@ -33,8 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Table(name="ideas_workshop_guideline")
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Guideline implements EnabledInterface
 {

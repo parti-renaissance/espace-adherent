@@ -13,7 +13,9 @@ use App\Entity\City;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentManagedArea;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Statistics\StatisticsParametersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
@@ -75,6 +77,18 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function findOneByEmail(string $email): ?Adherent
     {
         return $this->findOneBy(['emailAddress' => $email]);
+    }
+
+    public function findIdentifiersByEmail(string $email): ?array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id, a.uuid, a.emailAddress')
+            ->where('a.emailAddress = :email_address')
+            ->setParameter('email_address', $email)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     /**
@@ -153,6 +167,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('rda')
             ->addSelect('scma')
             ->addSelect('ref_tags')
+            ->addSelect('lre')
             ->leftJoin('a.procurationManagedArea', 'pma')
             ->leftJoin('a.assessorManagedArea', 'ama')
             ->leftJoin('a.jecouteManagedArea', 'jma')
@@ -169,6 +184,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin('a.boardMember', 'bm')
             ->leftJoin('a.receivedDelegatedAccesses', 'rda')
             ->leftJoin('a.senatorialCandidateManagedArea', 'scma')
+            ->leftJoin('a.lreArea', 'lre')
             ->where('a.emailAddress = :username')
             ->setParameter('username', $username)
             ->getQuery()
@@ -843,7 +859,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 INNER JOIN subscription_type st
                     ON ast.subscription_type_id = st.id
                 WHERE ast.adherent_id = a.id
-                AND st.code = :municipal_email_subscription_code
+                AND st.code = :candidate_email_subscription_code
                 LIMIT 1
             )
             ;
@@ -852,7 +868,7 @@ SQL;
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->bindValue('country_code_france', AreaUtils::CODE_FRANCE);
         $stmt->bindValue('prefix_postalcode_paris', AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS.'%');
-        $stmt->bindValue('municipal_email_subscription_code', SubscriptionTypeEnum::MUNICIPAL_EMAIL);
+        $stmt->bindValue('candidate_email_subscription_code', SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $stmt->bindValue('sms_mms_subscription_code', SubscriptionTypeEnum::MILITANT_ACTION_SMS);
         $stmt->execute();
 
@@ -930,6 +946,45 @@ SQL;
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function findByTerritorialCouncilAndQuality(
+        TerritorialCouncil $territorialCouncil,
+        string $quality,
+        Adherent $exceptOf = null
+    ): ?Adherent {
+        $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.territorialCouncilMembership', 'tcm')
+            ->leftJoin('tcm.qualities', 'quality')
+            ->where('tcm.territorialCouncil = :tc')
+            ->andWhere('quality.name = :quality')
+            ->setParameter('tc', $territorialCouncil)
+            ->setParameter('quality', $quality)
+        ;
+
+        if ($exceptOf) {
+            $qb
+                ->andWhere('a.id != :adherent')
+                ->setParameter('adherent', $exceptOf)
+            ;
+        }
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findSimilarProfilesForElectedRepresentative(ElectedRepresentative $electedRepresentative)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('LOWER(a.firstName) = :firstName AND LOWER(a.lastName) = :lastName')
+            ->orWhere('a.birthdate = :birthDate')
+            ->setParameters([
+                'firstName' => $electedRepresentative->getFirstName(),
+                'lastName' => $electedRepresentative->getLastName(),
+                'birthDate' => $electedRepresentative->getBirthDate(),
+            ])
+            ->getQuery()
+            ->getResult()
         ;
     }
 }

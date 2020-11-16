@@ -1,0 +1,39 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% set adherent = object.adherent %}
+    <div style="width: 160px; margin-top: 5px;">
+        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+            <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}" class="btn btn-xs btn-default" title="Fiche adhérent">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Fiche adhérent
+            </a>
+        {% elseif is_granted('ROLE_APP_ADMIN_ADHERENT_VIEW') %}
+            <a href="{{ path('admin_app_adherent_show', { id: object.adherent.id }) }}" class="btn btn-xs btn-default" title="Fiche adhérent">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Fiche adhérent
+            </a>
+        {% endif %}
+
+        {% set electedRepresentative = get_elected_representative(adherent) %}
+        {% if electedRepresentative %}
+            <a href="{{ path('admin_app_electedrepresentative_electedrepresentative_edit', { id: electedRepresentative.id }) }}" class="btn btn-xs btn-default" title="Fiche élu">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Fiche élu
+            </a>
+        {% endif %}
+
+        {% set membershipToken = csrf_token('territorial_council.change_political_committee_membership.' ~ adherent.id) %}
+        {% if adherent.isMayorOrLeader %}
+            <a href="{{ path('app_admin_territorial_council_change_political_committee_membership', { territorialCouncil: object.territorialCouncil.id, adherent: adherent.id, action: constant('App\\TerritorialCouncil\\PoliticalCommitteeManager::REMOVE_ACTION'), token: membershipToken }) }}"
+               class="btn btn-default btn-sm">
+                Retirer du CoPol
+            </a>
+        {% elseif not adherent.hasPoliticalCommitteeMembership %}
+            <a href="{{ path('app_admin_territorial_council_change_political_committee_membership', { territorialCouncil: object.territorialCouncil.id, adherent: adherent.id, action: constant('App\\TerritorialCouncil\\PoliticalCommitteeManager::CREATE_ACTION'), token: membershipToken }) }}"
+               class="btn btn-default btn-sm">
+                Faire monter au CoPol
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

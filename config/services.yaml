@@ -15,11 +15,10 @@ parameters:
     feed_ttl:                             60 # in minutes
     legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
     legislatives_standard_hotline_email:  'campagne.legislatives@en-marche.fr'
-    algolia.application_id:               "%env(ALGOLIA_APP_ID)%"
-    algolia.api_key:                      "%env(ALGOLIA_BACK_API_KEY)%"
     app_host:                             "%env(APP_HOST)%"
     amp_host:                             "%env(AMP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
+    nous_reussirons_host:                 "%env(NOUS_REUSSIRONS_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"
     api_path_prefix:                      "%env(API_PATH_PREFIX)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
@@ -31,6 +30,7 @@ parameters:
     adherent_message_committee_limit: 1000
     adherent_message_deputy_limit: 1000
     adherent_message_senator_limit: 1000
+    coterr_meeting_max_start_date: 2020-12-31 23:59:59
 
 services:
     _defaults:
@@ -40,24 +40,66 @@ services:
         bind:
             $mailchimpClient: '@csa_guzzle.client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
+            $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $transactionalMailer: '@app.mailer.transactional'
             $votingProcessWorkflow: '@state_machine.voting_process'
             $votingPlatformCache: !service
                 class: Symfony\Component\Cache\Simple\Psr6Cache
                 arguments: ['@app.cache.voting_platform']
+            $geoGouvApiClient: '@app.http_client.geo_gouv'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
             tags: ['app.adherent.unregistration.handler']
         App\Adherent\Certification\Handlers\CertificationRequestHandlerInterface:
             tags: ['app.adherent.certification_request.handler']
+        App\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
+            tags: [ 'app.adherent_message.mailchimp.campaign.handler' ]
+        App\AdherentMessage\TransactionalMessage\MessageModifier\MessageModifierInterface:
+            tags: [ 'app.adherent_message.transaction.message_modifier' ]
+        App\AdherentMessage\Sender\SenderInterface:
+            tags: [ 'app.adherent_message.sender' ]
+        App\TerritorialCouncil\Handlers\TerritorialCouncilMembershipHandlerInterface:
+            tags: ['app.adherent.territorial_council_membership.handler']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
 
+    # Imports
+    App\Adherent\Unregistration\Handlers\:
+        resource: '../src/Adherent/Unregistration/Handlers/'
+    App\Adherent\Certification\:
+        resource: '../src/Adherent/Certification'
+    App\AdherentMessage\:
+        resource: '../src/AdherentMessage'
     App\Command\:
         resource: '../src/Command/*'
+    App\Filesystem\:
+        resource: '../src/Filesystem/'
+    App\Form\:
+        resource: '../src/Form/'
+    App\Image\:
+        resource: '../src/Image/'
+    App\TerritorialCouncil\:
+        resource: '../src/TerritorialCouncil/'
+    App\VotingPlatform\:
+        resource: '../src/VotingPlatform/'
+    App\Normalizer\:
+        resource: '../src/Normalizer/'
+    App\Algolia\:
+        resource: '../src/Algolia/'
+        exclude: '../src/Algolia/Sonata/{Pager,ProxyQuery}'
+    App\Geocoder\:
+        resource: '../src/Geocoder/'
+    App\ThematicCommunity\Handler\:
+        resource: '../src/ThematicCommunity/Handler/'
+    App\Committee\:
+        resource: '../src/Committee/'
+    App\Validator\:
+        resource: '../src/Validator/'
+    App\Referent\:
+        resource: '../src/Referent/'
 
-    Algolia\AlgoliaSearchBundle\Indexer\Indexer: '@algolia.indexer'
+    # Services
 
     App\Map\StaticMapProviderInterface: '@app.map.google_maps_static_provider'
 
@@ -65,15 +107,91 @@ services:
         arguments:
             $handlers: !tagged 'app.adherent.unregistration.handler'
 
-    App\Adherent\Unregistration\Handlers\:
-        resource: ../src/Adherent/Unregistration/Handlers/
-
-    App\Adherent\Certification\:
-        resource: ../src/Adherent/Certification
-
     App\Adherent\Certification\CertificationRequestProcessCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.certification_request.handler'
 
-    App\VotingPlatform\:
-        resource: ../src/VotingPlatform/
+    App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
+        arguments:
+            $handlers: !tagged 'app.adherent.territorial_council_membership.handler'
+
+    App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
+        arguments: [ !tagged 'app.adherent_message.mailchimp.campaign.handler' ]
+
+    App\AdherentMessage\Listener\UpdateTransactionalAdherentMessageDataListener:
+        arguments: [ !tagged 'app.adherent_message.transaction.message_modifier' ]
+
+    App\AdherentMessage\AdherentMessageManager:
+        arguments:
+            $senders: !tagged 'app.adherent_message.sender'
+
+    App\AdherentMessage\MessageLimiter:
+        arguments:
+            -
+                referent: '%adherent_message_referent_limit%'
+                committee: '%adherent_message_committee_limit%'
+                deputy: '%adherent_message_deputy_limit%'
+                senator: '%adherent_message_senator_limit%'
+
+    App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
+        tags: ['doctrine.event_subscriber']
+
+    App\Normalizer\IdeaAnswerNormalizer:
+        arguments:
+            - '@api_platform.serializer.normalizer.item'
+            - '@api_platform.metadata.resource.metadata_factory'
+
+    App\Normalizer\IdeaThreadNormalizer:
+        arguments:
+            - '@api_platform.serializer.normalizer.item'
+            - '@api_platform.metadata.resource.metadata_factory'
+
+    App\Normalizer\IdeaAuthorNicknameNormalizer:
+        arguments: ['@api_platform.serializer.normalizer.item']
+
+    App\Normalizer\IdeaThemeNormalizer:
+        arguments: ['@api_platform.serializer.normalizer.item']
+
+    App\Normalizer\ItemNormalizerDecorator:
+        decorates: 'api_platform.serializer.normalizer.item'
+        arguments: ['@App\Normalizer\ItemNormalizerDecorator.inner']
+
+    App\Normalizer\Indexer\ThrowExceptionNormalizer:
+        tags: [{name: 'serializer.normalizer', priority: -801}] # to be just after CustomNormalizer
+
+    App\Committee\EventListener\CommitteeSubscriber:
+        arguments:
+            $producer: '@old_sound_rabbit_mq.sync_api_producer'
+
+    # Form
+    App\Form\PurifiedTextareaType:
+        arguments:
+            -
+                default: '@app.html_purifier.default'
+                enrich_content: '@app.html_purifier.enrich_content'
+                basic_content: '@app.html_purifier.basic_content'
+
+    App\Form\MemberInterestsChoiceType:
+        arguments:
+            - '%adherent_interests%'
+
+    App\Form\TerritorialCouncil\EditDesignationType:
+        arguments:
+            - '%coterr_meeting_max_start_date%'
+
+    # Validators
+    App\Validator\TerritorialCouncil\TerritorialCouncilDesignationValidator:
+        arguments:
+            - '%coterr_meeting_max_start_date%'
+
+    App\Algolia\SearchService:
+        decorates: 'search.service'
+        arguments:
+            - '@App\Algolia\SearchService.inner'
+            - '%kernel.debug%'
+
+    App\Vision\ImageAnnotatorClient:
+        arguments:
+            $keyFilePath: '%kernel.project_dir%/gcloud-service-key.json'
+
+    Geocoder\Geocoder: '@bazinga_geocoder.geocoder'

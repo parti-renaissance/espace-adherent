@@ -1,11 +1,11 @@
-{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
-
-{% set source_committee = object.sourceCommittee %}
-{% set destination_committee = object.destinationCommittee %}
+{% extends 'admin/committee/merge/_layout.html.twig' %}
 
 {% block title %}
     Annulation de la fusion de comités
 {% endblock %}
+
+{% set source_committee = object.sourceCommittee %}
+{% set destination_committee = object.destinationCommittee %}
 
 {% block show %}
     <div class="row">
@@ -50,7 +50,7 @@
                                 la réactivation du comité source <b>{{ source_committee.name }} ({{ source_committee.id }})</b>
                             </li>
                             <li>
-                                le départ de <b>{{ object.mergedMemberships.count }}</b> membre(s), rappatriés après la fusion,
+                                le départ de <b>{{ object.mergedMemberships|length }}</b> membre(s), rappatriés après la fusion,
                                 au sein du comité de destination <b>{{ destination_committee.name }} ({{ destination_committee.id }})</b>
                             </li>
                             <li>

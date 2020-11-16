@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\StaticSegmentInterface;
-use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\AdherentMandate\CommitteeAdherentMandate;
+use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use App\Exception\CommitteeAlreadyApprovedException;
 use App\Report\ReportType;
+use App\ValueObject\Genders;
 use App\ValueObject\Link;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -84,13 +87,13 @@ use Ramsey\Uuid\UuidInterface;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface
 {
     use EntityPostAddressTrait;
     use EntityReferentTagTrait;
+    use EntityElectionHelperTrait;
+    use StaticSegmentTrait;
 
     public const STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER = [
         self::PRE_REFUSED,
@@ -116,8 +119,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
      * The group description.
      *
      * @ORM\Column(type="text")
-     *
-     * @Algolia\Attribute
      */
     protected $description;
 
@@ -162,13 +163,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $photoUploaded = false;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $mailchimpId;
-
-    /**
      * @var CommitteeElection[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
@@ -176,16 +170,16 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $committeeElections;
 
     /**
-     * @var Designation|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation")
-     */
-    private $currentDesignation;
-
-    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
+
+    /**
+     * @var CommitteeAdherentMandate|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\CommitteeAdherentMandate", mappedBy="committee", fetch="EXTRA_LAZY")
+     */
+    private $adherentMandates;
 
     public function __construct(
         UuidInterface $uuid,
@@ -217,6 +211,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->description = $description;
         $this->postAddress = $address;
         $this->citizenProjectSupports = new ArrayCollection();
+        $this->adherentMandates = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
         $this->committeeElections = new ArrayCollection();
 
@@ -237,9 +232,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $this->coordinatorComment;
     }
 
-    /**
-     * @param string $coordinatorComment
-     */
     public function setCoordinatorComment(?string $coordinatorComment): void
     {
         $this->coordinatorComment = $coordinatorComment;
@@ -267,34 +259,22 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function getCommitteeElection(): ?CommitteeElection
     {
-        if (!$this->currentDesignation) {
-            return null;
-        }
-
-        foreach ($this->committeeElections as $election) {
-            if ($election->getDesignation() === $this->currentDesignation) {
-                return $election;
-            }
-        }
-
-        return null;
+        return $this->getCurrentElection();
     }
 
-    public function getCurrentDesignation(): ?Designation
+    /**
+     * @return ElectionEntityInterface[]
+     */
+    public function getElections(): array
     {
-        return $this->currentDesignation;
+        return $this->committeeElections->toArray();
     }
 
-    public function setCurrentDesignation(Designation $designation): void
+    public function addElection(ElectionEntityInterface $election): void
     {
-        $this->currentDesignation = $designation;
-    }
-
-    public function addCommitteeElection(CommitteeElection $committeeElection): void
-    {
-        if (!$this->committeeElections->contains($committeeElection)) {
-            $committeeElection->setCommittee($this);
-            $this->committeeElections->add($committeeElection);
+        if (!$this->committeeElections->contains($election)) {
+            $election->setCommittee($this);
+            $this->committeeElections->add($election);
         }
     }
 
@@ -489,20 +469,75 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return ReportType::COMMITTEE;
     }
 
-    public function getMailchimpId(): ?int
+    public function getAdherentMandates(): Collection
     {
-        return $this->mailchimpId;
+        return $this->adherentMandates;
     }
 
-    public function setMailchimpId(int $mailchimpId): void
+    public function setAdherentMandates(Collection $adherentMandates): void
     {
-        $this->mailchimpId = $mailchimpId;
+        $this->adherentMandates = $adherentMandates;
     }
 
-    public function hasActiveElection(): bool
+    public function addAdherentMandate(CommitteeAdherentMandate $adherentMandate): void
     {
-        $election = $this->getCommitteeElection();
+        if (!$this->adherentMandates->contains($adherentMandate)) {
+            $this->adherentMandates->add($adherentMandate);
+        }
+    }
 
-        return $election && $election->getDesignation()->isActive();
+    public function removeAdherentMandate(CommitteeAdherentMandate $adherentMandate): void
+    {
+        $this->adherentMandates->removeElement($adherentMandate);
+    }
+
+    public function hasMaleMandate(): bool
+    {
+        return $this->hasMandateWithGender(Genders::MALE);
+    }
+
+    public function hasFemaleMandate(): bool
+    {
+        return $this->hasMandateWithGender(Genders::FEMALE);
+    }
+
+    public function hasMandateWithGender(string $gender): bool
+    {
+        if (0 === $this->adherentMandates->count()) {
+            return false;
+        }
+
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->andWhere(Criteria::expr()->eq('gender', $gender))
+        ;
+
+        return $this->adherentMandates->matching($criteria)->count() > 0;
+    }
+
+    public function getActiveAdherentMandates(): Collection
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('finishAt', null))
+            ->orderBy(['gender' => 'ASC'])
+        ;
+
+        return $this->adherentMandates->matching($criteria);
+    }
+
+    public function getActiveAdherentMandateAdherentIds(): array
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('finishAt', null))
+            ->orderBy(['gender' => 'ASC'])
+        ;
+
+        return $this->adherentMandates
+            ->matching($criteria)
+            ->map(function (CommitteeAdherentMandate $adherentMandate) {
+                return $adherentMandate->getAdherent()->getId();
+            })
+            ->toArray()
+        ;
     }
 }

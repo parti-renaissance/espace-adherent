@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -12,8 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CertificationRequestRepository")
  * @ORM\Table(name="certification_request")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CertificationRequest
 {
@@ -29,6 +26,23 @@ class CertificationRequest
         self::STATUS_APPROVED,
         self::STATUS_REFUSED,
         self::STATUS_BLOCKED,
+    ];
+
+    public const OCR_STATUS_PRE_REFUSED = 'pre_refused';
+    public const OCR_STATUS_PRE_APPROVED = 'pre_approved';
+
+    public const OCR_STATUS_CHOICES = [
+        self::OCR_STATUS_PRE_REFUSED,
+        self::OCR_STATUS_PRE_APPROVED,
+    ];
+
+    public const MIME_TYPE_JPG = 'image/jpeg';
+    public const MIME_TYPE_PNG = 'image/png';
+    public const MIME_TYPE_PDF = 'application/pdf';
+
+    public const MIME_TYPES = [
+        self::MIME_TYPE_JPG,
+        self::MIME_TYPE_PNG,
     ];
 
     /**
@@ -62,14 +76,10 @@ class CertificationRequest
     /**
      * @var UploadedFile|null
      *
+     * @Assert\NotBlank
      * @Assert\File(
      *     maxSize="5M",
-     *     mimeTypes={
-     *         "application/pdf",
-     *         "application/x-pdf",
-     *         "image/jpeg",
-     *         "image/png"
-     *     },
+     *     mimeTypes=CertificationRequest::MIME_TYPES,
      *     mimeTypesMessage="certification_request.document.mime_type"
      * )
      */
@@ -141,6 +151,27 @@ class CertificationRequest
     private $refusalComment;
 
     /**
+     * @var array|null
+     *
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $ocrPayload;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $ocrStatus;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $ocrResult;
+
+    /**
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity=Adherent::class)
@@ -179,6 +210,11 @@ class CertificationRequest
     public function getDocumentMimeType(): ?string
     {
         return $this->documentMimeType;
+    }
+
+    public function isPdfDocument(): bool
+    {
+        return self::MIME_TYPE_PDF === $this->documentMimeType;
     }
 
     public function getDocumentExtension(): ?string
@@ -371,5 +407,59 @@ class CertificationRequest
     public function getRefusalReasonKey(): string
     {
         return 'certification_request.refusal_reason.'.$this->refusalReason;
+    }
+
+    public function getOcrPayload(): ?array
+    {
+        return $this->ocrPayload;
+    }
+
+    public function setOcrPayload(?array $ocrPayload): void
+    {
+        $this->ocrPayload = $ocrPayload;
+    }
+
+    public function getOcrStatus(): ?string
+    {
+        return $this->ocrStatus;
+    }
+
+    public function setOcrStatus(?string $ocrStatus): void
+    {
+        $this->ocrStatus = $ocrStatus;
+    }
+
+    public function getOcrResult(): ?string
+    {
+        return $this->ocrResult;
+    }
+
+    public function setOcrResult(?string $ocrResult): void
+    {
+        $this->ocrResult = $ocrResult;
+    }
+
+    public function isPreApproved(): bool
+    {
+        return self::OCR_STATUS_PRE_APPROVED === $this->ocrStatus;
+    }
+
+    public function isPreRefused(): bool
+    {
+        return self::OCR_STATUS_PRE_REFUSED === $this->ocrStatus;
+    }
+
+    public function resetOcr(): void
+    {
+        $this->ocrStatus = null;
+        $this->ocrResult = null;
+        $this->ocrPayload = null;
+    }
+
+    public function cleanOcr(): void
+    {
+        if (isset($this->ocrPayload['text'])) {
+            $this->ocrPayload['text'] = null;
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace App\Committee;
 use App\Address\PostAddressFactory;
 use App\Entity\Committee;
 use App\Referent\ReferentTagManager;
-use libphonenumber\PhoneNumber;
+use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 
 class CommitteeFactory
@@ -29,7 +29,7 @@ class CommitteeFactory
 
         $phone = null;
         if (isset($data['phone'])) {
-            $phone = $this->createPhone($data['phone']);
+            $phone = PhoneNumberUtils::create($data['phone']);
         }
 
         $uuid = isset($data['uuid'])
@@ -83,23 +83,5 @@ class CommitteeFactory
         }
 
         return $committee;
-    }
-
-    /**
-     * Returns a PhoneNumber object.
-     *
-     * The format must be something like "33 0102030405"
-     *
-     * @param string $phoneNumber
-     */
-    private function createPhone($phoneNumber): PhoneNumber
-    {
-        list($country, $number) = explode(' ', $phoneNumber);
-
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($country);
-        $phone->setNationalNumber($number);
-
-        return $phone;
     }
 }

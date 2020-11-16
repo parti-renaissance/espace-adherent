@@ -9,7 +9,7 @@ use App\Entity\MemberSummary\Training;
 use App\Entity\Summary;
 use App\Repository\SummaryRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use League\Glide\Signatures\SignatureFactory;
 use Ramsey\Uuid\Uuid;
@@ -35,7 +35,7 @@ class SummaryManager
         SummaryRepository $repository,
         ObjectManager $manager,
         UrlGeneratorInterface $router,
-        Filesystem $storage,
+        FilesystemInterface $storage,
         Server $glide,
         string $signKey
     ) {

@@ -2,6 +2,8 @@
 
 namespace App\Controller\EnMarche\Coordinator;
 
+use App\Committee\CommitteeManagementAuthority;
+use App\Committee\CommitteeManager;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Committee;
 use App\Exception\BaseGroupException;
@@ -30,7 +32,7 @@ class CoordinatorCommitteeController extends Controller
             throw new BadRequestHttpException('Unexpected committee request status in the query string.', $e);
         }
 
-        $committees = $this->get('app.committee.manager')->getCoordinatorCommittees($this->getUser(), $filter);
+        $committees = $this->get(CommitteeManager::class)->getCoordinatorCommittees($this->getUser(), $filter);
 
         $forms = [];
         foreach ($committees as $committee) {
@@ -56,8 +58,11 @@ class CoordinatorCommitteeController extends Controller
      *
      * @Route("/{uuid}/{slug}/pre-valider-comite", name="app_coordinator_committee_validate", methods={"POST"})
      */
-    public function validateAction(Request $request, Committee $committee): Response
-    {
+    public function validateAction(
+        Request $request,
+        Committee $committee,
+        CommitteeManagementAuthority $committeeManagementAuthority
+    ): Response {
         $form = $this->createForm(CoordinatorAreaType::class, $committee, [
             'data_class' => Committee::class,
         ]);
@@ -66,10 +71,10 @@ class CoordinatorCommitteeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 if ($form->get('refuse')->isClicked()) {
-                    $this->get('app.committee.authority')->preRefuse($committee);
+                    $committeeManagementAuthority->preRefuse($committee);
                     $this->addFlash('info', 'Merci. Votre appréciation a été transmise à nos équipes.');
                 } elseif ($form->get('accept')->isClicked()) {
-                    $this->get('app.committee.authority')->preApprove($committee);
+                    $committeeManagementAuthority->preApprove($committee);
                     $this->addFlash('info', 'Merci. Votre appréciation a été transmise à nos équipes.');
                 }
             } catch (BaseGroupException $exception) {

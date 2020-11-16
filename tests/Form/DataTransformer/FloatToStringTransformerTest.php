@@ -4,6 +4,7 @@ namespace Tests\App\Form\DataTransformer;
 
 use App\Form\DataTransformer\FloatToStringTransformer;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class FloatToStringTransformerTest extends TestCase
 {
@@ -42,21 +43,18 @@ class FloatToStringTransformerTest extends TestCase
         $this->assertSame(0.0, (new FloatToStringTransformer())->reverseTransform(null));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected a float.
-     */
     public function testTransformWithNoFloatValue()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected a float.');
         (new FloatToStringTransformer())->transform('42');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected a string.
-     */
     public function testReverseTransformWithNoStringValue()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected a string.');
+
         (new FloatToStringTransformer())->reverseTransform(42);
     }
 }

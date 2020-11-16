@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Address\GeoCoder;
 use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,8 +10,6 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InstitutionalEventRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class InstitutionalEvent extends BaseEvent implements AuthoredInterface
 {

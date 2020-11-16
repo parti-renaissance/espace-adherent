@@ -16,7 +16,8 @@ use App\UserListDefinition\UserListDefinitionPermissions;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -89,7 +90,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $this->createMock(EntityManagerInterface::class),
-            $this->createMock(EventDispatcherInterface::class),
+            $this->createBus(),
             $userListDefinitionRepository,
             $this->createMock(AuthorizationCheckerInterface::class),
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -140,7 +141,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
-            $this->createMock(EventDispatcherInterface::class),
+            $this->createBus(),
             $userListDefinitionRepository,
             $this->createMock(AuthorizationCheckerInterface::class),
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -200,7 +201,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
-            $this->createMock(EventDispatcherInterface::class),
+            $this->createBus(),
             $userListDefinitionRepository,
             $authorizationChecker,
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -245,7 +246,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
-            $this->createMock(EventDispatcherInterface::class),
+            $this->createBus(),
             $this->createMock(UserListDefinitionRepository::class),
             $this->createMock(AuthorizationCheckerInterface::class),
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -312,14 +313,14 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
-            $this->createMock(EventDispatcherInterface::class),
+            $this->createBus(),
             $userListDefinitionRepository,
             $authorizationChecker,
             $this->createMock(UserListDefinitionHistoryManager::class)
         );
 
         $this->expectException(UserListDefinitionMemberException::class);
-        $this->expectExceptionMessageRegExp('/Connected user cannot manage .+ member$/');
+        $this->expectExceptionMessageMatches('/Connected user cannot manage .+ member$/');
 
         $userListDefinitionManager->updateUserListDefinitionMembers(
             $userListDefinitions,
@@ -445,7 +446,7 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $userListDefinitionManager = new UserListDefinitionManager(
             $em,
-            $this->createMock(EventDispatcherInterface::class),
+            $this->createBus(),
             $userListDefinitionRepository,
             $authorizationChecker,
             $this->createMock(UserListDefinitionHistoryManager::class)
@@ -457,7 +458,14 @@ class UserListDefinitionManagerTest extends WebTestCase
         );
     }
 
-    protected function setUp()
+    private function createBus(): MessageBusInterface
+    {
+        return $this->createConfiguredMock(MessageBusInterface::class, [
+            'dispatch' => new Envelope(new \stdClass()),
+        ]);
+    }
+
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -465,14 +473,14 @@ class UserListDefinitionManagerTest extends WebTestCase
 
         $this->userListDefinitionManager = new UserListDefinitionManager(
             $this->createMock(EntityManagerInterface::class),
-            $this->createMock(EventDispatcherInterface::class),
+            $this->createBus(),
             $this->createMock(UserListDefinitionRepository::class),
             $this->createMock(AuthorizationCheckerInterface::class),
             $this->createMock(UserListDefinitionHistoryManager::class)
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->userListDefinitionManager = null;
 

@@ -8,22 +8,21 @@ use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
 use App\ElectedRepresentative\UserListDefinitionHistoryManager;
 use App\Election\VoteListNuanceEnum;
-use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use App\Entity\ElectedRepresentative\Zone;
-use App\Entity\ElectedRepresentative\ZoneCategory;
+use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
-use App\Repository\ElectedRepresentative\MandateRepository;
 use App\ValueObject\Genders;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -53,7 +52,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     ];
 
     private $dispatcher;
-    private $mandateRepository;
     private $userListDefinitionHistoryManager;
 
     /**
@@ -66,13 +64,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         $class,
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
-        MandateRepository $mandateRepository,
         UserListDefinitionHistoryManager $userListDefinitionHistoryManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
-        $this->mandateRepository = $mandateRepository;
         $this->userListDefinitionHistoryManager = $userListDefinitionHistoryManager;
     }
 
@@ -126,9 +122,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'actions' => [
-                    'edit' => [],
-                ],
+                'template' => 'admin/elected_representative/list_actions.html.twig',
             ])
         ;
     }
@@ -137,9 +131,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         $showMapper
             ->with('Identité', ['class' => 'col-md-6'])
-                ->add('officialId', null, [
-                    'label' => 'ID élu officiel',
-                ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
                 ])
@@ -156,10 +147,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
                 ->add('contactEmail', null, [
                     'label' => 'Autre e-mail de contact',
-                ])
-                ->add('isAdherent', null, [
-                    'label' => 'Adhérent',
-                    'template' => 'admin/elected_representative/show_is_adherent.html.twig',
                 ])
                 ->add('phone', null, [
                     'mapped' => false,
@@ -187,10 +174,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Identité', ['class' => 'col-md-6'])
-                ->add('officialId', null, [
-                    'label' => 'ID élu officiel',
-                    'disabled' => true,
-                ])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
                     'placeholder' => 'common.gender.unknown',
@@ -216,18 +199,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'label' => 'Autre e-mail de contact',
                     'required' => false,
                 ])
-                ->add('isAdherent', ChoiceType::class, [
-                    'label' => 'Est adhérent ?',
-                    'choices' => [
-                        'global.yes' => true,
-                        'global.no' => false,
-                    ],
-                ])
-                ->add('adherentPhone', PhoneNumberType::class, [
-                    'required' => false,
-                    'disabled' => true,
-                    'label' => 'Téléphone',
-                ])
                 ->add('contactPhone', PhoneNumberType::class, [
                     'required' => false,
                     'label' => 'Autre téléphone de contact',
@@ -248,8 +219,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'query_builder' => function (EntityRepository $er) {
                         return $er
                             ->createQueryBuilder('uld')
-                            ->andWhere('uld.type = :type')
-                            ->setParameter('type', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+                            ->andWhere('uld.type IN (:type)')
+                            ->setParameter('type', [
+                                UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
+                                UserListDefinitionEnum::TYPE_LRE,
+                            ])
                             ->orderBy('uld.label', 'ASC')
                         ;
                     },
@@ -322,25 +296,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->end()
         ;
 
-        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit']);
         $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
-    }
-
-    public function preSubmit(FormEvent $event): void
-    {
-        $form = $event->getForm();
-        $data = $event->getData();
-
-        /** @var Adherent $adherent */
-        $adherent = $form->getData()->getAdherent();
-        $adherentEmail = $adherent ? $adherent->getEmailAddress() : null;
-        $formAdherentEmail = $data['adherent'] ?: null;
-
-        // for any change of email, 'isAdherent' should be set to true ('oui' value)
-        if ($formAdherentEmail && $adherentEmail !== $formAdherentEmail) {
-            $data['isAdherent'] = true;
-            $event->setData($data);
-        }
     }
 
     public function submit(FormEvent $event): void
@@ -487,7 +443,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('mandates.zone', CallbackFilter::class, [
+            ->add('mandates.geoZone', CallbackFilter::class, [
                 'label' => 'Périmètres géographiques',
                 'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
@@ -497,70 +453,39 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'context' => 'filter',
                     'class' => Zone::class,
                     'multiple' => true,
-                    'property' => 'name',
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
-                    'callback' => function ($admin, $property, $value) {
-                        $datagrid = $admin->getDatagrid();
-                        $queryBuilder = $datagrid->getQuery();
-                        $queryBuilder
-                            ->leftJoin($queryBuilder->getRootAlias().'.category', 'category')
-                            ->andWhere('category.name != :district')
-                            ->setParameter('district', ZoneCategory::DISTRICT)
-                            ->orderBy($queryBuilder->getRootAlias().'.name', 'ASC')
-                        ;
-                        $datagrid->setValue($property, null, $value);
-                    },
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return false;
+                    /* @var Collection|Zone[] $zones */
+                    $zones = $value['value'];
+
+                    if (\count($zones)) {
+                        $ids = $zones->map(static function (Zone $zone) {
+                            return $zone->getId();
+                        })->toArray();
+
+                        /* @var QueryBuilder $qb */
+                        $qb
+                            ->innerJoin('mandate.geoZone', 'geo_zone')
+                            ->innerJoin('geo_zone.parents', 'geo_zone_parent')
+                            ->andWhere(
+                                $qb->expr()->orX(
+                                    $qb->expr()->in('geo_zone.id', $ids),
+                                    $qb->expr()->in('geo_zone_parent.id', $ids),
+                                )
+                            )
+                        ;
                     }
-
-                    $where = new Expr\Orx();
-                    if (!\in_array('zone', $qb->getAllAliases(), true)) {
-                        $qb->leftJoin("$alias.$field", 'zone');
-                    }
-
-                    /** @var Zone $zone */
-                    foreach ($value['value'] as $key => $zone) {
-                        switch ($zone->getCategory()->getName()) {
-                            case ZoneCategory::REGION:
-                                if (!\in_array('referentTag', $qb->getAllAliases())) {
-                                    $qb->leftJoin('zone.referentTags', 'referentTag');
-                                }
-
-                                $where->add('referentTag IN (:tags)');
-                                $qb->setParameter('tags', $zone->getReferentTags());
-
-                                break;
-                            case ZoneCategory::DEPARTMENT:
-                                if (!\in_array('category', $qb->getAllAliases(), true)) {
-                                    $qb->leftJoin('zone.category', 'category');
-                                }
-
-                                if (!\in_array('referentTag', $qb->getAllAliases(), true)) {
-                                    $qb->leftJoin('zone.referentTags', 'referentTag');
-                                }
-
-                                $where->add('(referentTag IN (:tags) AND category.name != :category_name)');
-                                $qb
-                                    ->setParameter('tags', $zone->getReferentTags())
-                                    ->setParameter('category_name', ZoneCategory::REGION)
-                                ;
-
-                                break;
-                            default:
-                                $where->add("$alias.$field = :zone_$key");
-                                $qb->setParameter("zone_$key", $zone);
-                        }
-                    }
-
-                    $qb->andWhere($where);
 
                     return true;
                 },
             ])
+
             ->add('isAdherent', CallbackFilter::class, [
                 'label' => 'Est adhérent ?',
                 'show_filter' => true,
@@ -577,11 +502,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     switch ($value['value']) {
                         case 'yes':
-                            $qb->andWhere(sprintf('%s.isAdherent = 1', $alias));
+                            $qb->andWhere("$alias.adherent IS NOT NULL");
 
                             return true;
                         case 'no':
-                            $qb->andWhere(sprintf('%s.isAdherent = 0', $alias));
+                            $qb->andWhere("$alias.adherent IS NULL");
 
                             return true;
                         default:
@@ -602,8 +527,11 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                         $qb = $datagrid->getQuery();
                         $alias = $qb->getRootAlias();
                         $qb
-                            ->andWhere($alias.'.type = :type')
-                            ->setParameter('type', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE)
+                            ->andWhere($alias.'.type IN (:type)')
+                            ->setParameter('type', [
+                                UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
+                                UserListDefinitionEnum::TYPE_LRE,
+                            ])
                             ->orderBy($alias.'.label', 'ASC')
                         ;
                         $datagrid->setValue($property, null, $value);

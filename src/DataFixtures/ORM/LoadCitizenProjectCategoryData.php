@@ -4,10 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\CitizenProjectCategory;
 use App\Entity\EventCategory;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadCitizenProjectCategoryData extends AbstractFixture
+class LoadCitizenProjectCategoryData extends Fixture
 {
     const CITIZEN_PROJECT_CATEGORIES = [
         'CPC001' => 'Nature et Environnement',

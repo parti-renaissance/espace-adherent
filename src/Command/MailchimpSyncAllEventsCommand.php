@@ -7,6 +7,7 @@ use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectMembership;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -25,10 +26,12 @@ class MailchimpSyncAllEventsCommand extends Command
 
     private const COMMITTEE_TYPE = 'committee';
     private const CITIZEN_PROJECT_TYPE = 'citizen_project';
+    private const TERRITORIAL_COUNCIL_TYPE = 'territorial_council';
 
     private static $allTypes = [
         self::COMMITTEE_TYPE,
         self::CITIZEN_PROJECT_TYPE,
+        self::TERRITORIAL_COUNCIL_TYPE,
     ];
 
     private $entityManager;
@@ -125,6 +128,13 @@ class MailchimpSyncAllEventsCommand extends Command
                     ->select('PARTIAL cp.{id, uuid}')
                     ->innerJoin(CitizenProjectMembership::class, 'membership', Join::WITH, 'membership.citizenProject = cp')
                     ->groupBy('cp')
+                ;
+
+            case self::TERRITORIAL_COUNCIL_TYPE:
+                return $this->entityManager
+                    ->getRepository(TerritorialCouncil::class)
+                    ->createQueryBuilder('council')
+                    ->select('PARTIAL council.{id, uuid}')
                 ;
         }
     }

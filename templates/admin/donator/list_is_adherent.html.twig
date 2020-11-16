@@ -2,9 +2,18 @@
 
 {% block field %}
     {% if object.isAdherent %}
-        <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}">
+        {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+            <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}">
+                {{ object.adherent }}
+            </a>
+        {% elseif is_granted('ROLE_APP_ADMIN_ADHERENT_VIEW') %}
+            <a href="{{ path('admin_app_adherent_show', { id: object.adherent.id }) }}">
+                {{ object.adherent }}
+            </a>
+        {% else %}
             {{ object.adherent }}
-        </a>
+        {% endif %}
+
         {% if object.adherent.phone %}
             <br>
             <a href="tel:{{ object.adherent.phone|phone_number_format }}">

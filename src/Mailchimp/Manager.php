@@ -7,9 +7,12 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\MailchimpSegment;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Event\CampaignEvent;
+use App\Mailchimp\Event\RequestEvent;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
@@ -108,6 +111,7 @@ class Manager implements LoggerAwareInterface
         $emailAddress = $electedRepresentative->getEmailAddress();
         $listId = $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
 
+        /** @var RequestBuilder $requestBuilder */
         $requestBuilder = $this->requestBuildersLocator
             ->get(RequestBuilder::class)
             ->updateFromElectedRepresentative($electedRepresentative)
@@ -158,6 +162,9 @@ class Manager implements LoggerAwareInterface
     public function editCampaign(MailchimpCampaign $campaign): bool
     {
         $message = $campaign->getMessage();
+
+        $this->eventDispatcher->dispatch(Events::CAMPAIGN_FILTERS_PRE_BUILD, new CampaignEvent($campaign));
+
         $requestBuilder = $this->requestBuildersLocator->get(CampaignRequestBuilder::class);
 
         $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($campaign);
@@ -240,9 +247,36 @@ class Manager implements LoggerAwareInterface
         return $this->driver->sendTestCampaign($campaign->getExternalId(), $emails);
     }
 
-    public function createStaticSegment(string $name): ?int
+    public function createStaticSegment(string $name, string $listId = null): ?int
     {
-        return $this->driver->createStaticSegment($name)['id'] ?? null;
+        $response = $this->driver->createStaticSegment(
+            $name,
+            $listId ?? $this->mailchimpObjectIdMapping->getMainListId()
+        );
+
+        $responseData = $this->driver->toArray($response);
+
+        if (200 === $response->getStatusCode()) {
+            return $responseData['id'] ?? null;
+        }
+
+        // Search segment id in existing segments
+        if (400 === $response->getStatusCode() && isset($responseData['detail']) && 'Sorry, that tag already exists.' === $responseData['detail']) {
+            $offset = 0;
+            $limit = 1000;
+
+            while ($segments = $this->driver->getSegments($listId, $offset, $limit)) {
+                foreach ($segments as $segment) {
+                    if ($segment['name'] === $name) {
+                        return $segment['id'];
+                    }
+                }
+
+                $offset += \count($segments);
+            }
+        }
+
+        return null;
     }
 
     public function deleteStaticSegment(int $id): bool
@@ -307,5 +341,15 @@ class Manager implements LoggerAwareInterface
             $requestBuilder->createMemberTagsRequest($emailAddress, $currentTags),
             $listId
         );
+    }
+
+    public function createMailchimpSegment(MailchimpSegment $mailchimpSegment): ?int
+    {
+        $listId = MailchimpSegment::LIST_MAIN === $mailchimpSegment->getList()
+            ? $this->mailchimpObjectIdMapping->getMainListId()
+            : $this->mailchimpObjectIdMapping->getElectedRepresentativeListId()
+        ;
+
+        return $this->createStaticSegment($mailchimpSegment->getLabel(), $listId);
     }
 }

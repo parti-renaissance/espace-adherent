@@ -30,7 +30,7 @@ class AssessorManagerControllerTest extends WebTestCase
         self::SUBJECT_VOTE_PLACE,
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -552,7 +552,7 @@ class AssessorManagerControllerTest extends WebTestCase
         self::assertSame($profile['city'], trim($crawler->filter('#vote-place-city')->text()));
 
         foreach ($profile['availableOffices'] as $availableOffice) {
-            $this->assertContains($availableOffice, trim($crawler->filter('#vote-place-available-offices')->html()));
+            $this->assertStringContainsString($availableOffice, trim($crawler->filter('#vote-place-available-offices')->html()));
         }
     }
 

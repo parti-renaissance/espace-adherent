@@ -1,0 +1,22 @@
+{% set delegated_access_uuid = app.request.attributes.get('delegated_access_uuid') %}
+<nav class="manager-sidebar__menu">
+    {% if app.user is not same as(currentUserOrDelegator) %}
+        <p class="manager-sidebar__text text--body">Vous êtes <span class="text--black">{{ delegated_access.role|lower }}</span> du candidat <span class="text--black">{{ currentUserOrDelegator }}</span></p>
+    {% endif %}
+
+    <ul>
+        <li class="menu-section">Territoires</li>
+
+        {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
+            <li class="{{ is_active_route(app.request, ['app_candidate_managed_users_list', 'app_candidate_adherent_invitation']) ? 'active' }}">
+                <a href="{{ path('app_candidate_managed_users_list') }}">Adhérents</a>
+            </li>
+        {% endif %}
+
+        {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
+            <li class="{{ is_active_route(app.request, 'app_candidate_event_manager_event*') ? 'active' }}">
+                <a href="{{ path('app_candidate_event_manager_events') }}">Événements</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

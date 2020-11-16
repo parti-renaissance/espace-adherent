@@ -18,20 +18,20 @@ class ProcurationSendReminderCommandTest extends WebTestCase
     {
         $this->decorated = false;
         $output = $this->runCommand(ProcurationSendReminderCommand::COMMAND_NAME);
-
-        $this->assertContains('1 reminders sent', $output);
+        $output = $output->getDisplay();
+        $this->assertStringContainsString('1 reminders sent', $output);
         $this->assertCountMails(1, ProcurationProxyReminderMessage::class);
         $this->assertCount(1, $this->getProcurationRequestRepository()->findBy(['reminded' => 1]), 'The command should add a reminder.');
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->container = $this->getContainer();
 
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

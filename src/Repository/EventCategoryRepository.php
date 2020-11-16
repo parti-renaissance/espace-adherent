@@ -3,13 +3,20 @@
 namespace App\Repository;
 
 use App\Entity\EventCategory;
+use App\Entity\EventGroupCategory;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 class EventCategoryRepository extends BaseEventCategoryRepository
 {
-    public function createQueryForAllEnabledOrderedByName(): \Doctrine\ORM\QueryBuilder
+    public function __construct(ManagerRegistry $registry)
     {
-        return $this
-            ->createQueryBuilder('ec')
+        parent::__construct($registry, EventCategory::class);
+    }
+
+    public function createQueryForAllEnabledOrderedByName(?EventGroupCategory $groupCategory): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('ec')
                 ->join('ec.eventGroupCategory', 'egc')
                 ->where('ec.status = :status')
                 ->andWhere('egc.status = :status')
@@ -19,5 +26,14 @@ class EventCategoryRepository extends BaseEventCategoryRepository
                     'status' => EventCategory::ENABLED,
                 ])
         ;
+
+        if ($groupCategory) {
+            $qb
+                ->andWhere('ec.eventGroupCategory = :groupCategory')
+                ->setParameter('groupCategory', $groupCategory)
+            ;
+        }
+
+        return $qb;
     }
 }

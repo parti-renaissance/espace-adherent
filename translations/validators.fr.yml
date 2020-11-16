@@ -62,11 +62,15 @@ common.personal_data_collection.required: L'acceptation des mentions d'informati
 
 common.checkbox.is_true: Veuillez cocher cette case pour continuer
 
+common.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
+common.message.max_length: Le message ne doit pas contenir plus de {{ limit }} caractères.
+
 #
 # Adherent
 #
 adherent.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 adherent.birthdate.minimum_required_age: Vous devez être âgé d'au moins 15 ans pour adhérer.
+adherent.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour adhérer.
 
 adherent.email_address.not_unique: Cette adresse e-mail existe déjà.
 
@@ -83,6 +87,14 @@ adherent.unregistration.reasons: Afin de confirmer la suppression de votre compt
 
 adherent.nickname.invalid_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres, et les caractères _ et -
 adherent.nickname.invalid_extended_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres (contenant des accents aussi), et les caractères _, -, ! et .
+
+#
+# Adherent profile
+#
+adherent_profile.facebook_page_url.invalid: Cette URL ne semble pas être une URL Facebook valide.
+adherent_profile.twitter_page_url.invalid: Cette URL ne semble pas être une URL Twitter valide.
+adherent_profile.linkedin_page_url.invalid: Cette URL ne semble pas être une URL LinkedIn valide.
+adherent_profile.telegram_page_url.invalid: Cette URL ne semble pas être une URL Telegram valide.
 
 #
 # Committee
@@ -103,9 +115,6 @@ committee.event.invalid_capacity: La capacité doit être un nombre entier valid
 
 committee.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.
 committee.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
-
-committee.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
-committee.message.max_length: Le message ne doit pas contenir plus de {{ limit }} caractères.
 
 #
 # CitizenProject
@@ -165,6 +174,7 @@ referent.message.min_length: Le message doit contenir au moins {{ limit }} carac
 referent.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
 referent.adherent.invalid_email: Veuillez renseigner une adresse mail liée à un compte adhérent
 referent.adherent.can_be_coreferent: Cet adhérent est déjà co-référent d’un autre territoire
+referent.managed_zone.empty: La zone gérée ne doit pas être vide.
 
 #
 # Adherent Message
@@ -220,6 +230,7 @@ procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser 100 ca
 
 procuration.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17 ans pour demander une procuration.
+procuration.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour demander une procuration.
 
 procuration.reason.not_blank: Vous devez spécifier une raison.
 procuration.reason.invalid: Cette raison n'est pas valide.
@@ -266,6 +277,7 @@ legislative_district_zone.area_type.invalid: Le type de circonscription choisi e
 legislative_candidate.slug.invalid: L'identifiant d'URL ne peut contenir que des lettres minuscules, des chiffres et des tirets.
 legislative_candidate.facebook_page_url.invalid: Cette URL ne semble pas être une URL Facebook valide.
 legislative_candidate.twitter_page_url.invalid: Cette URL ne semble pas être une URL Twitter valide.
+legislative_candidate.linkedin_page_url.invalid: Cette URL ne semble pas être une URL LinkedIn valide.
 legislative_candidate.district_number.invalid: Le numéro de circonscription doit être un nombre entier positif.
 legislative_candidate.latitude.invalid: Cette valeur n'est pas une latitude valide.
 legislative_candidate.longitude.invalid: Cette valeur n'est pas une longitude valide.
@@ -349,6 +361,7 @@ assessor.last_name.min_length: Votre nom doit comporter au moins 2 caractères.
 assessor.last_name.max_length: Vos nom ne peuvent pas dépasser 100 caractères.
 
 assessor.birthdate.minimum_required_age: Vous devez être âgé d'au moins 18 ans pour être assesseur.
+assessor.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour être assesseur.
 
 assessor.office.invalid_choice: Vous devez choisir l'une des fonctions proposées.
 
@@ -440,9 +453,32 @@ city.municipal_manager_association.adherent_not_found: Aucun adhérent trouvé a
 # Elected Representatives
 #
 elected_representative.invalid_adherent: Cet e-mail correspond à un compte adhérent déjà associé à un autre élu.
-elected_representative.is_adherent.no_adherent_email: Pour déclarer un élu comme adhérent, vous devez d'abord renseigner son mail.
 
 #
 # CertificationRequest
 #
-certification_request.document.mime_type: Seuls les fichiers jpg, png et pdf sont acceptés.
+certification_request.document.mime_type: Seuls les fichiers jpg et png sont acceptés.
+
+#
+# TerritorialCouncil
+#
+territorial_council.member.unique: "{{ adherent }} est déjà nommé \"{{ quality }}\" au sein du conseil territorial \"{{ territorialCouncil }}\". Vous devez retirer l'affectation de cet adhérent afin de nommer un nouveau."
+territorial_council.candidacy.invitation.invalid_gender: Votre binôme doit être du sexe opposé
+territorial_council.candidacy.invitation.membership_already_candidate: Vous ne pouvez pas inviter un membre avec une candidature validée
+territorial_council.candidacy.invitation.membership_not_available: Ce membre n'est pas disponible
+territorial_council.candidacy.invitation.invalid_membership_quality: La qualité choisie n'est pas compatible avec votre choix de binôme
+
+territorail_council.official_report.no_file: Vous devez ajouter un fichier.
+territorail_council.official_report.mime_type: Seuls les fichiers .pdf sont acceptés.
+
+#
+# LRE
+#
+lre_area.all_tags_and_one_selected: Vous ne pouvez pas cocher "La République Ensemble sans restriction de zone" et sélectionner une zone La République Ensemble en même temps
+
+#
+# Filesystem
+#
+file.validation.filename_length: Le nom du document (avec l'extension) ne peut pas dépasser 255 caractères.
+file.validation.file_or_link: Vous pouvez ajouter soit un fichier, soit un lien.
+file.validation.name.not_unique: Ce nom de dossier est déjà utilisé.

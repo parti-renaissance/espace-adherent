@@ -4,7 +4,7 @@ namespace App\UserDocument;
 
 use App\Entity\UserDocument;
 use Doctrine\Common\Persistence\ObjectManager;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,7 +15,7 @@ class UserDocumentManager
     private $manager;
     private $storage;
 
-    public function __construct(ValidatorInterface $validator, ObjectManager $manager, Filesystem $storage)
+    public function __construct(ValidatorInterface $validator, ObjectManager $manager, FilesystemInterface $storage)
     {
         $this->validator = $validator;
         $this->manager = $manager;

@@ -63,7 +63,7 @@ export default class SubApproach extends React.Component {
     }
 }
 
-SubApproach.propsType = {
+SubApproach.propTypes = {
     subApproach: PropTypes.object.isRequired,
     parentSectionIdentifier: PropTypes.number.isRequired,
 };

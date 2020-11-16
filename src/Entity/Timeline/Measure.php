@@ -2,7 +2,6 @@
 
 namespace App\Entity\Timeline;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="timeline_measures")
  * @ORM\Entity(repositoryClass="App\Repository\Timeline\MeasureRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
@@ -42,8 +39,6 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue
-     *
-     * @Algolia\Attribute
      */
     private $id;
 
@@ -53,8 +48,6 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
-     *
-     * @Algolia\Attribute
      */
     private $link;
 
@@ -68,8 +61,6 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      *     choices=Measure::STATUSES,
      *     strict=true
      * )
-     *
-     * @Algolia\Attribute
      */
     private $status;
 
@@ -85,8 +76,6 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Algolia\Attribute
      */
     private $major;
 
@@ -198,18 +187,6 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         $this->updatedAt = new \DateTime('now');
     }
 
-    /**
-     * @Algolia\Attribute
-     */
-    public function getFormattedUpdatedAt(): ?string
-    {
-        if (!$this->updatedAt) {
-            return null;
-        }
-
-        return $this->updatedAt->format('Y-m-d H:i:s');
-    }
-
     public function isMajor(): bool
     {
         return $this->major;
@@ -318,27 +295,6 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         return $themes;
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="profileIds")
-     */
-    public function getProfileIds(): array
-    {
-        return array_map(function (Profile $profile) {
-            return $profile->getId();
-        }, $this->profiles->toArray());
-    }
-
-    /**
-     * @Algolia\Attribute(algoliaName="manifestoId")
-     */
-    public function getManifestoId(): ?int
-    {
-        return $this->manifesto ? $this->manifesto->getId() : null;
-    }
-
-    /**
-     * @Algolia\Attribute(algoliaName="titles")
-     */
     public function getTitles(): array
     {
         return $this->getFieldTranslations('title');
@@ -362,5 +318,10 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     public function exportManifesto(): string
     {
         return $this->manifesto->exportTitles();
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Tests\App\Entity;
 
+use App\Exception\AdherentTokenAlreadyUsedException;
+use App\Exception\AdherentTokenMismatchException;
 use App\ValueObject\SHA1;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -13,21 +15,17 @@ abstract class AbstractAdherentTokenTest extends TestCase
 
     protected $tokenClass;
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testCannotCreateExpiredToken()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $adherent = $this->createAdherent();
 
         $this->generateToken($adherent, '-10 minutes');
     }
 
-    /**
-     * @expectedException \App\Exception\AdherentTokenMismatchException
-     */
     public function testCannotActivateKeyForAnotherAdherent()
     {
+        $this->expectException(AdherentTokenMismatchException::class);
         $adherent1 = $this->createAdherent('john.smith@example.org');
         $adherent2 = $this->createAdherent('jane.doe@example.com');
 
@@ -36,11 +34,9 @@ abstract class AbstractAdherentTokenTest extends TestCase
         $token->consume($adherent2);
     }
 
-    /**
-     * @expectedException \App\Exception\AdherentTokenAlreadyUsedException
-     */
     public function testCannotActivateSameAdherentActivationTokenTwice()
     {
+        $this->expectException(AdherentTokenAlreadyUsedException::class);
         $adherent = $this->createAdherent();
 
         $token = $this->generateToken($adherent);
@@ -74,7 +70,7 @@ abstract class AbstractAdherentTokenTest extends TestCase
         return \call_user_func([$this->tokenClass, 'generate'], $adherent, $lifetime);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanupContainer($this->container);
 

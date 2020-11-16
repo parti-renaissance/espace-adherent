@@ -130,7 +130,7 @@ class MembershipControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Votre compte est déjà actif.', $crawler->filter('.flash')->text());
+        $this->assertStringContainsString('Votre compte est déjà actif.', $crawler->filter('.flash')->text());
 
         // Try to authenticate with credentials
         $this->client->submit($crawler->selectButton('Connexion')->form([
@@ -276,7 +276,7 @@ class MembershipControllerTest extends WebTestCase
             ]
         );
 
-        $this->assertContains('Oups, quelque chose s\'est mal passé', $this->client->getCrawler()->filter('#adherent_registration_emailAddress_first_errors')->text());
+        $this->assertStringContainsString('Oups, quelque chose s\'est mal passé', $this->client->getCrawler()->filter('#adherent_registration_emailAddress_first_errors')->text());
     }
 
     public function testCreateAdherentWithCustomGender(): void
@@ -341,7 +341,7 @@ class MembershipControllerTest extends WebTestCase
         ];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -352,7 +352,7 @@ class MembershipControllerTest extends WebTestCase
         $this->emailRepository = $this->getEmailRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(indexes={
  *     @ORM\Index(columns={"email", "used_at", "expired_at"})
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AdherentChangeEmailToken extends AdherentToken
 {

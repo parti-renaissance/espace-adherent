@@ -40,11 +40,13 @@
 {% block mouvement_content %}
     <div id="biography">
 
-        {% if executiveOfficer or deputyGeneralDelegate %}
-            <div class="executive-office-leaders">
+        {% if executiveOfficer or not deputyGeneralDelegate.isEmpty %}
+            {% set members = [executiveOfficer]|merge(deputyGeneralDelegate.toArray) %}
+
+            <div class="{% if members|length > 2 %}executive-office-members{% else %}executive-office-leaders{% endif %}">
                 <h2 class="text--center">Nos délégués généraux</h2>
                 <ul class="team">
-                    {% for member in [executiveOfficer, deputyGeneralDelegate] %}
+                    {% for member in members %}
                         {% if member %}
                             <li>
                                 <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: member.slug }) }}">
@@ -99,6 +101,15 @@
                 </ul>
             </div>
         {% endif %}
+
+        <div class="space--30">
+            <h2>Les porte-parole</h2>
+            <p>
+                Nommés par le Bureau Executif, ils ont pour mission de représenter le Mouvement dans les médias.
+            </p>
+            <a href="{{ path('app_static_page', { slug: 'porte-parole' }) }}"
+               target="_blank" rel="noopener noreferrer" class="btn btn--blue">Les porte-parole</a>
+        </div>
 
         <div class="space--30">
             <h2>Les responsables fonctionnel(le)s</h2>

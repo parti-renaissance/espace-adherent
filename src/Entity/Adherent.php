@@ -2,15 +2,22 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
 use App\Collection\CitizenProjectMembershipCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -20,9 +27,12 @@ use App\Membership\MembershipInterface;
 use App\Membership\MembershipRequest;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Subscription\SubscriptionTypeEnum;
+use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
+use App\Validator\UniqueMembership;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -70,10 +80,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener", "App\EntityListener\RevokeDelegatedAccessListener"})
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
+ * @UniqueMembership(groups={"Admin"})
  *
- * @Algolia\Index(autoIndex=false)
+ * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface, EquatableInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface
 {
     public const ENABLED = 'ENABLED';
     public const TO_DELETE = 'TO_DELETE';
@@ -85,6 +96,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityPostAddressTrait;
     use LazyCollectionTrait;
     use EntityReferentTagTrait;
+    use EntityZoneTrait;
 
     /**
      * @ORM\Column(length=25, unique=true, nullable=true)
@@ -150,7 +162,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $birthdate;
 
     /**
-     * @ORM\Column(length=20, nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $position;
 
@@ -170,6 +182,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $activatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $membershipRemindedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -197,9 +214,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $subscriptionTypes;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": 0})
+     * @var District|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\District", cascade={"persist"})
      */
-    private $legislativeCandidate;
+    private $legislativeCandidateManagedDistrict;
 
     /**
      * @var ReferentManagedArea|null
@@ -282,6 +301,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToOne(targetEntity="App\Entity\JecouteManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $jecouteManagedArea;
+
+    /**
+     * @var TerritorialCouncilMembership|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     *
+     * @JMS\Groups({"adherent_change_diff"})
+     */
+    private $territorialCouncilMembership;
+
+    /**
+     * @var PoliticalCommitteeMembership|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommitteeMembership", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     */
+    private $politicalCommitteeMembership;
 
     /**
      * @var CommitteeMembership[]|Collection
@@ -388,11 +423,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $displayMedia = true;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -402,6 +441,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $facebookPageUrl;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -411,6 +452,43 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $twitterPageUrl;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url(groups="Admin")
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="legislative_candidate.linkedin_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255, groups="Admin")
+     */
+    private $linkedinPageUrl;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url(groups="Admin")
+     * @Assert\Length(max=255, groups="Admin")
+     */
+    private $telegramPageUrl;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $job;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $activityArea;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(length=2, nullable=true)
      */
     private $nationality;
@@ -455,6 +533,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToOne(targetEntity="App\Entity\SenatorialCandidateManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $senatorialCandidateManagedArea;
+
+    /**
+     * @var LreArea|null
+     *
+     * @ORM\OneToOne(targetEntity="LreArea", cascade={"all"}, orphanRemoval=true)
+     * @Assert\Valid
+     */
+    private $lreArea;
+
+    /**
+     * @var CandidateManagedArea|null
+     *
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity="App\Entity\ManagedArea\CandidateManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $candidateManagedArea;
 
     /**
      * Access to external services regarding printing
@@ -515,6 +609,27 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $receivedDelegatedAccesses;
 
+    /**
+     * @var AdherentCommitment
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\AdherentCommitment", mappedBy="adherent", cascade={"all"})
+     */
+    private $commitment;
+
+    /**
+     * @var ThematicCommunity[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\ThematicCommunity\ThematicCommunity")
+     */
+    private $handledThematicCommunities;
+
+    /**
+     * @var AbstractAdherentMandate[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\AbstractAdherentMandate", mappedBy="adherent", fetch="EXTRA_LAZY")
+     */
+    private $adherentMandates;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -522,9 +637,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->subscriptionTypes = new ArrayCollection();
         $this->ideas = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->zones = new ArrayCollection();
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
         $this->receivedDelegatedAccesses = new ArrayCollection();
+        $this->handledThematicCommunities = new ArrayCollection();
+        $this->adherentMandates = new ArrayCollection();
     }
 
     public static function create(
@@ -563,7 +681,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->postAddress = $postAddress;
         $adherent->phone = $phone;
         $adherent->status = $status;
-        $adherent->legislativeCandidate = false;
         $adherent->registeredAt = new \DateTime($registeredAt);
         $adherent->tags = new ArrayCollection($tags);
         $adherent->referentTags = new ArrayCollection($referentTags);
@@ -708,7 +825,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_JECOUTE_MANAGER';
         }
 
-        if ($this->legislativeCandidate) {
+        if ($this->isLegislativeCandidate()) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
 
@@ -744,6 +861,26 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_SENATORIAL_CANDIDATE';
         }
 
+        if ($this->isHeadedRegionalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_REGIONAL_HEADED';
+        }
+
+        if ($this->isLeaderRegionalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_REGIONAL_LEADER';
+        }
+
+        if ($this->isDepartmentalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_DEPARTMENTAL';
+        }
+
+        if ($this->isLre()) {
+            $roles[] = 'ROLE_LRE';
+        }
+
+        if ($this->isThematicCommunityChief()) {
+            $roles[] = 'ROLE_THEMATIC_COMMUNITY_CHIEF';
+        }
+
         return array_merge(\array_unique($roles), $this->roles);
     }
 
@@ -770,6 +907,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasAdvancedPrivileges(): bool
     {
         return $this->isReferent()
+            || $this->isDelegatedReferent()
             || $this->isCoordinator()
             || $this->isProcurationManager()
             || $this->isAssessorManager()
@@ -779,11 +917,20 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isCitizenProjectAdministrator()
             || $this->isBoardMember()
             || $this->isDeputy()
+            || $this->isDelegatedDeputy()
             || $this->isSenator()
+            || $this->isDelegatedSenator()
             || $this->isMunicipalChief()
             || $this->isMunicipalManager()
             || $this->isElectionResultsReporter()
             || $this->isMunicipalManagerSupervisor()
+            || $this->isSenatorialCandidate()
+            || $this->isHeadedRegionalCandidate()
+            || $this->isLeaderRegionalCandidate()
+            || $this->isDepartmentalCandidate()
+            || $this->isLre()
+            || $this->isLegislativeCandidate()
+            || $this->isThematicCommunityChief()
         ;
     }
 
@@ -834,6 +981,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->gender;
     }
 
+    public function getGenderName(): ?string
+    {
+        return array_search($this->gender, Genders::CHOICES);
+    }
+
     public function getCustomGender(): ?string
     {
         return $this->customGender;
@@ -865,6 +1017,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getAge(): ?int
     {
         return $this->birthdate ? $this->birthdate->diff(new \DateTime())->y : null;
+    }
+
+    public function isMinor(\DateTime $date = null): bool
+    {
+        return null === $this->birthdate || $this->birthdate->diff($date ?? new \DateTime())->y < 18;
     }
 
     public function getPosition(): ?string
@@ -899,6 +1056,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getActivatedAt(): ?\DateTime
     {
         return $this->activatedAt;
+    }
+
+    public function setMembershipReminded(): void
+    {
+        $this->membershipRemindedAt = new \DateTime();
+    }
+
+    public function isMembershipReminded(): bool
+    {
+        return null !== $this->membershipRemindedAt;
     }
 
     public function changePassword(string $newPassword): void
@@ -1029,6 +1196,29 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->interests = $interests;
     }
 
+    public function updateProfile(AdherentProfile $adherentProfile, PostAddress $postAddress): void
+    {
+        $this->customGender = $adherentProfile->getCustomGender();
+        $this->gender = $adherentProfile->getGender();
+        $this->firstName = $adherentProfile->getFirstName();
+        $this->lastName = $adherentProfile->getLastName();
+        $this->birthdate = $adherentProfile->getBirthdate();
+        $this->position = $adherentProfile->getPosition();
+        $this->phone = $adherentProfile->getPhone();
+        $this->nationality = $adherentProfile->getNationality();
+        $this->facebookPageUrl = $adherentProfile->getFacebookPageUrl();
+        $this->twitterPageUrl = $adherentProfile->getTwitterPageUrl();
+        $this->telegramPageUrl = $adherentProfile->getTelegramPageUrl();
+        $this->linkedinPageUrl = $adherentProfile->getLinkedinPageUrl();
+        $this->job = $adherentProfile->getJob();
+        $this->activityArea = $adherentProfile->getActivityArea();
+        $this->mandates = $adherentProfile->getMandates();
+
+        if (!$this->postAddress->equals($postAddress)) {
+            $this->postAddress = $postAddress;
+        }
+    }
+
     public function updateMembership(MembershipRequest $membership, PostAddress $postAddress): void
     {
         $this->customGender = $membership->customGender;
@@ -1050,31 +1240,37 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * Joins a committee as a SUPERVISOR privileged person.
      */
-    public function superviseCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR, $subscriptionDate);
+    public function superviseCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR, $subscriptionDate ?? new \DateTime());
     }
 
     /**
      * Joins a committee as a HOST privileged person.
      */
-    public function hostCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate);
+    public function hostCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate ?? new \DateTime());
     }
 
     /**
      * Joins a committee as a simple FOLLOWER privileged person.
      */
-    public function followCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate);
+    public function followCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate ?? new \DateTime());
     }
 
     private function joinCommittee(
         Committee $committee,
         string $privilege,
-        string $subscriptionDate
+        \DateTimeInterface $subscriptionDate
     ): CommitteeMembership {
         $committee->incrementMembersCount();
 
@@ -1156,7 +1352,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->managedArea;
     }
 
-    public function setManagedArea(ReferentManagedArea $managedArea): void
+    public function setManagedArea(?ReferentManagedArea $managedArea): void
     {
         $this->managedArea = $managedArea;
     }
@@ -1338,6 +1534,88 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->jecouteManagedArea = null;
     }
 
+    public function getTerritorialCouncilMembership(): ?TerritorialCouncilMembership
+    {
+        return $this->territorialCouncilMembership;
+    }
+
+    public function setTerritorialCouncilMembership(?TerritorialCouncilMembership $territorialCouncilMembership): void
+    {
+        $this->territorialCouncilMembership = $territorialCouncilMembership;
+
+        if ($territorialCouncilMembership) {
+            $this->territorialCouncilMembership->setAdherent($this);
+        }
+    }
+
+    public function hasTerritorialCouncilMembership(): bool
+    {
+        return $this->territorialCouncilMembership instanceof TerritorialCouncilMembership;
+    }
+
+    public function isTerritorialCouncilMember(): bool
+    {
+        return $this->territorialCouncilMembership instanceof TerritorialCouncilMembership
+            && $this->territorialCouncilMembership->getTerritorialCouncil()->isActive();
+    }
+
+    public function isTerritorialCouncilPresident(): bool
+    {
+        return $this->isTerritorialCouncilMember()
+            && $this->territorialCouncilMembership->isPresident();
+    }
+
+    public function revokeTerritorialCouncilMembership(): void
+    {
+        if (!$this->territorialCouncilMembership) {
+            return;
+        }
+
+        $this->territorialCouncilMembership->revoke();
+        $this->territorialCouncilMembership = null;
+    }
+
+    public function getPoliticalCommitteeMembership(): ?PoliticalCommitteeMembership
+    {
+        return $this->politicalCommitteeMembership;
+    }
+
+    public function setPoliticalCommitteeMembership(?PoliticalCommitteeMembership $politicalCommitteeMembership): void
+    {
+        $this->politicalCommitteeMembership = $politicalCommitteeMembership;
+
+        if ($politicalCommitteeMembership) {
+            $this->politicalCommitteeMembership->setAdherent($this);
+        }
+    }
+
+    public function hasPoliticalCommitteeMembership(): bool
+    {
+        return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership;
+    }
+
+    public function isPoliticalCommitteeMember(): bool
+    {
+        return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership
+            && $this->politicalCommitteeMembership->getPoliticalCommittee()->isActive();
+    }
+
+    public function revokePoliticalCommitteeMembership(): void
+    {
+        if (!$this->politicalCommitteeMembership) {
+            return;
+        }
+
+        $this->politicalCommitteeMembership->revoke();
+        $this->politicalCommitteeMembership = null;
+    }
+
+    public function isMayorOrLeader(): bool
+    {
+        return $this->politicalCommitteeMembership
+            && ($this->politicalCommitteeMembership->hasOneOfQualities([TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::LEADER]));
+    }
+
     public function getManagedAreaMarkerLatitude(): ?string
     {
         if (!$this->managedArea) {
@@ -1477,6 +1755,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->memberships;
     }
 
+    public function hasVotingCommitteeMembership(): bool
+    {
+        return null !== $this->getMemberships()->getVotingCommitteeMembership();
+    }
+
     public function hasLoadedMemberships(): bool
     {
         return $this->isCollectionLoaded($this->memberships);
@@ -1529,6 +1812,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->isAdherent()
             && !$this->isHost()
+            && !$this->isCitizenProjectAdministrator()
             && !$this->isReferent()
             && !$this->isBoardMember()
             && !$this->isDeputy()
@@ -1585,12 +1869,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isLegislativeCandidate(): bool
     {
-        return $this->legislativeCandidate;
+        return $this->legislativeCandidateManagedDistrict instanceof District;
     }
 
-    public function setLegislativeCandidate(bool $candidate): void
+    public function getLegislativeCandidateManagedDistrict(): ?District
     {
-        $this->legislativeCandidate = $candidate;
+        return $this->legislativeCandidateManagedDistrict;
+    }
+
+    public function setLegislativeCandidateManagedDistrict(?District $legislativeCandidateManagedDistrict): void
+    {
+        $this->legislativeCandidateManagedDistrict = $legislativeCandidateManagedDistrict;
     }
 
     public function isNicknameUsed(): bool
@@ -1831,8 +2120,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @Algolia\Attribute(algoliaName="address_city")
-     *
      * @JMS\Groups({"adherent_change_diff", "public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
@@ -1870,6 +2157,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isMunicipalChief()
             || $this->isSenator()
             || $this->isDelegatedSenator()
+            || $this->isLegislativeCandidate()
         ;
     }
 
@@ -1892,6 +2180,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function __clone()
     {
         $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
+        $this->territorialCouncilMembership = $this->territorialCouncilMembership ? clone $this->territorialCouncilMembership : null;
     }
 
     /**
@@ -2105,6 +2394,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         });
     }
 
+    public function hasDelegatedFromUser(self $delegator, string $access = null): bool
+    {
+        /** @var DelegatedAccess $delegatedAccess */
+        foreach ($this->getReceivedDelegatedAccesses() as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator() === $delegator && (!$access || \in_array($access, $delegatedAccess->getAccesses(), true))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function isSenatorialCandidate(): bool
     {
         return $this->senatorialCandidateManagedArea instanceof SenatorialCandidateManagedArea;
@@ -2121,45 +2422,170 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->senatorialCandidateManagedArea = $senatorialCandidateManagedArea;
     }
 
-    public function getAllReferentManagedTagsCodes()
+    public function getCandidateManagedArea(): ?CandidateManagedArea
     {
-        $tags = [];
-        if ($this->isReferent()) {
-            $tags = $this->getManagedArea()->getReferentTagCodes();
-        }
-
-        foreach ($this->getReceivedDelegatedAccessOfType('referent') as $delegatedAccess) {
-            $tags = \array_merge($tags, $delegatedAccess->getDelegator()->getManagedArea()->getReferentTagCodes());
-        }
-
-        return array_unique($tags);
+        return $this->candidateManagedArea;
     }
 
-    public function getAllDeputyManagedTagsCodes()
+    public function setCandidateManagedArea(?CandidateManagedArea $candidateManagedArea): void
     {
-        $tags = [];
-        if ($this->isDeputy()) {
-            $tags = [$this->getManagedDistrict()->getReferentTag()->getCode()];
-        }
-
-        foreach ($this->getReceivedDelegatedAccessOfType('deputy') as $delegatedAccess) {
-            $tags[] = $delegatedAccess->getDelegator()->getManagedDistrict()->getReferentTag()->getCode();
-        }
-
-        return \array_unique($tags);
+        $this->candidateManagedArea = $candidateManagedArea;
     }
 
-    public function getAllSenatorManagedTagsCodes()
+    public function isHeadedRegionalCandidate(): bool
     {
-        $tags = [];
-        if ($this->isSenator()) {
-            $tags = [$this->getSenatorArea()->getDepartmentTag()->getCode()];
-        }
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isRegionalZone() : false;
+    }
 
-        foreach ($this->getReceivedDelegatedAccessOfType('senator') as $delegatedAccess) {
-            $tags[] = $delegatedAccess->getDelegator()->getSenatorArea()->getDepartmentTag()->getCode();
-        }
+    public function isLeaderRegionalCandidate(): bool
+    {
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isDepartmentalZone() : false;
+    }
 
-        return \array_unique($tags);
+    public function isDepartmentalCandidate(): bool
+    {
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isCantonalZone() : false;
+    }
+
+    public function isCandidate(): bool
+    {
+        return $this->candidateManagedArea instanceof CandidateManagedArea;
+    }
+
+    public function getLreArea(): ?LreArea
+    {
+        return $this->lreArea;
+    }
+
+    public function setLreArea(?LreArea $lreArea): void
+    {
+        $this->lreArea = $lreArea;
+    }
+
+    public function isLre(): bool
+    {
+        return $this->lreArea instanceof LreArea;
+    }
+
+    public function getFacebookPageUrl(): ?string
+    {
+        return $this->facebookPageUrl;
+    }
+
+    public function setFacebookPageUrl(?string $facebookPageUrl): void
+    {
+        $this->facebookPageUrl = $facebookPageUrl;
+    }
+
+    public function getTwitterPageUrl(): ?string
+    {
+        return $this->twitterPageUrl;
+    }
+
+    public function setTwitterPageUrl(?string $twitterPageUrl): void
+    {
+        $this->twitterPageUrl = $twitterPageUrl;
+    }
+
+    public function getLinkedinPageUrl(): ?string
+    {
+        return $this->linkedinPageUrl;
+    }
+
+    public function setLinkedinPageUrl(?string $linkedinPageUrl): void
+    {
+        $this->linkedinPageUrl = $linkedinPageUrl;
+    }
+
+    public function getTelegramPageUrl(): ?string
+    {
+        return $this->telegramPageUrl;
+    }
+
+    public function setTelegramPageUrl(?string $telegramPageUrl): void
+    {
+        $this->telegramPageUrl = $telegramPageUrl;
+    }
+
+    public function getJob(): ?string
+    {
+        return $this->job;
+    }
+
+    public function setJob(?string $job): void
+    {
+        $this->job = $job;
+    }
+
+    public function getActivityArea(): ?string
+    {
+        return $this->activityArea;
+    }
+
+    public function setActivityArea(?string $activityArea): void
+    {
+        $this->activityArea = $activityArea;
+    }
+
+    public function getCommitment(): ?AdherentCommitment
+    {
+        return $this->commitment;
+    }
+
+    public function setCommitment(AdherentCommitment $commitment): void
+    {
+        $this->commitment = $commitment;
+    }
+
+    public function getHandledThematicCommunities(): Collection
+    {
+        return $this->handledThematicCommunities;
+    }
+
+    public function setHandledThematicCommunities(Collection $handledThematicCommunities): void
+    {
+        $this->handledThematicCommunities = $handledThematicCommunities;
+    }
+
+    public function addHandledThematicCommunity(ThematicCommunity $thematicCommunity): void
+    {
+        if (!$this->handledThematicCommunities->contains($thematicCommunity)) {
+            $this->handledThematicCommunities->add($thematicCommunity);
+        }
+    }
+
+    public function removeHandledThematicCommunity(ThematicCommunity $thematicCommunity): void
+    {
+        $this->handledThematicCommunities->removeElement($thematicCommunity);
+    }
+
+    public function isThematicCommunityChief()
+    {
+        return $this->handledThematicCommunities->count() > 0;
+    }
+
+    public function getAdherentMandates(): Collection
+    {
+        return $this->adherentMandates;
+    }
+
+    public function getActiveAdherentMandates(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->orderBy(['beginAt' => 'DESC'])
+        ;
+
+        return $this->adherentMandates->matching($criteria);
+    }
+
+    public function findMandatesForQuality(string $quality, bool $active = false): array
+    {
+        return $this->adherentMandates->filter(function (AbstractAdherentMandate $mandate) use ($quality, $active) {
+            return $mandate instanceof TerritorialCouncilAdherentMandate
+                && $mandate->getQuality() === $quality
+                && (false === $active || null === $mandate->getFinishAt())
+            ;
+        })->toArray();
     }
 }

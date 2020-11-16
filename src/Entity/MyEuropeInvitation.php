@@ -2,15 +2,12 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Interactive\MyEuropeProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MyEuropeInvitationRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class MyEuropeInvitation extends InteractiveInvitation
 {

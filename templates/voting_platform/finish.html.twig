@@ -54,11 +54,8 @@
             de confirmation que vous venez de recevoir. Aucun lien entre vous et ce numéro n'étant enregistré, nous ne serons pas
             en mesure de vous le redonner.
         </p>
-        <div class="b__nudge--bottom-large b__nudge--top-large">
-            <a href="{{ path('app_committee_show', {slug: election.electionEntity.committee.slug}) }}" class="btn btn--blue">
-                Retour au comité
-            </a>
-        </div>
+
+        {{ block('vote_finish_action_block') }}
     </div>
 {% endblock %}
 

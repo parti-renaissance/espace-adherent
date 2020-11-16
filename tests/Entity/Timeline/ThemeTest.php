@@ -25,17 +25,6 @@ class ThemeTest extends TestCase
         $this->assertEquals(['Titre 1', 'Title 1', 'Titre 2', 'Title 2'], $theme->getMeasureTitles());
     }
 
-    public function testMeasureIds()
-    {
-        $theme = new Theme();
-
-        $theme->addMeasure($this->createMeasure(6));
-        $theme->addMeasure($this->createMeasure(44));
-        $theme->addMeasure($this->createMeasure(59));
-
-        $this->assertEquals([6, 44, 59], $theme->getMeasureIds());
-    }
-
     public function testProfileIds()
     {
         $theme = new Theme();

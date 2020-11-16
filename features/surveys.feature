@@ -16,7 +16,7 @@ Feature:
     Then I should see "Mon espace J'écoute"
     And I should see "Vous gérez : CH, ES, 92, 76, 77, 13, 59"
 
-    # Create
+    # Create
     Given I am on "/espace-responsable-jecoute/questionnaire/creer"
     And I press "OK"
     When I wait 10 seconds until I see "⟵ Retour"
@@ -24,8 +24,9 @@ Feature:
       | survey_form[name]                            | Un questionnaire jecoute manager |
       | survey_form[questions][0][question][content] | Une question ?                   |
     And I wait 10 seconds until I see "Champ libre"
-    And I click the "#survey_form_questions_0_question_type .form__checkbox:nth-child(3) > label" selector
+    And I click the "#survey_form_questions_0_question_type .form__radio:nth-child(3) > label" selector
     And I press "Enregistrer le questionnaire local"
+    And I wait 10 seconds until I see "NOM DU QUESTIONNAIRE"
     Then I should see "Le questionnaire a bien été enregistré."
 
     # Edit
@@ -56,4 +57,7 @@ Feature:
     And I follow "Statistiques"
     Then I should see "Statistiques : Questionnaire national numéro 1"
     And I should see "Une première question du 1er questionnaire national ?"
-    And I should see "Aucune donnée n'est disponible pour le moment."
+    And I should see "Voir les 2 réponses"
+    And I should see "Une première question du 1er questionnaire national ?"
+    And I should see "4 réponses"
+    And I should see "25 %"

@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Adherent\Certification\CertificationRequestDocumentManager;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
 use App\Entity\CertificationRequest;
 use App\Repository\CertificationRequestRepository;
@@ -18,16 +17,13 @@ class CertificationRequestProcessTimeoutCommand extends Command
 
     private $em;
     private $certificationRequestRepository;
-    private $documentManager;
 
     public function __construct(
         EntityManagerInterface $em,
-        CertificationRequestRepository $certificationRequestRepository,
-        CertificationRequestDocumentManager $documentManager
+        CertificationRequestRepository $certificationRequestRepository
     ) {
         $this->em = $em;
         $this->certificationRequestRepository = $certificationRequestRepository;
-        $this->documentManager = $documentManager;
 
         parent::__construct();
     }
@@ -36,15 +32,16 @@ class CertificationRequestProcessTimeoutCommand extends Command
     {
         $this
             ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Interval in days (default: 14)', 14)
-            ->setDescription('Removes document of unprocessed Certification Requests.')
+            ->setDescription('Refuse unprocessed Certification Requests.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $interval = sprintf('-%s day', $input->getOption('interval'));
+        $createdBefore = new \DateTime(sprintf('-%d day', (int) $input->getOption('interval')));
+
         /** @var CertificationRequest[]|iterable $certificationRequests */
-        $certificationRequests = $this->certificationRequestRepository->findPending($interval);
+        $certificationRequests = $this->certificationRequestRepository->findPending($createdBefore);
 
         foreach ($certificationRequests as $certificationRequest) {
             $this->processTimeout($certificationRequest);
@@ -57,7 +54,5 @@ class CertificationRequestProcessTimeoutCommand extends Command
     {
         $certificationRequest->refuse(CertificationRequestRefuseCommand::REFUSAL_REASON_PROCESS_TIMEOUT);
         $certificationRequest->process();
-
-        $this->documentManager->removeDocument($certificationRequest);
     }
 }

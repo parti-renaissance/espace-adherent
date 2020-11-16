@@ -22,11 +22,15 @@ class ChangeCommitteeVoteVoter extends Voter
 
     protected function voteOnAttribute($attribute, $committee, TokenInterface $token)
     {
+        /** @var Adherent $adherent */
         $adherent = $token->getUser();
 
         if (!$adherent instanceof Adherent) {
             return false;
         }
+
+        // Unlock this voter for the next election type (committee-supervisor)
+        return true;
 
         $isPreviousAdmin = $this->isPreviousAdmin($token);
 

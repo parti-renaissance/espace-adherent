@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche;
 use App\CitizenProject\CitizenProjectCreationCommand;
 use App\CitizenProject\CitizenProjectPermissions;
 use App\Committee\CommitteeCreationCommand;
+use App\Committee\CommitteeCreationCommandHandler;
 use App\Committee\CommitteeManager;
 use App\Contact\ContactMessage;
 use App\Entity\Adherent;
@@ -38,7 +39,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -118,7 +118,6 @@ class AdherentController extends Controller
     {
         $form = $this
             ->createForm(AdherentInterestsFormType::class, $adherent = $this->getUser())
-            ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
             ->handleRequest($request)
         ;
 
@@ -142,14 +141,14 @@ class AdherentController extends Controller
      * @Route("/creer-mon-comite", name="app_adherent_create_committee", methods={"GET", "POST"})
      * @Security("is_granted('CREATE_COMMITTEE')")
      */
-    public function createCommitteeAction(Request $request): Response
+    public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CreateCommitteeCommandType::class, $command);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.committee.creation_handler')->handle($command);
+            $commandHandler->handle($command);
             $this->addFlash('info', 'committee.creation.success');
 
             return $this->redirectToRoute('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]);
@@ -245,6 +244,8 @@ class AdherentController extends Controller
                     $from = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($fromId);
                 } elseif ('citizen_project' === $fromType) {
                     $from = $this->getDoctrine()->getRepository(CitizenProject::class)->findOneByUuid($fromId);
+                } elseif ('territorial_council' === $fromType || 'political_committee' === $fromType) {
+                    $from = true;
                 } else {
                     $from = $this->getDoctrine()->getRepository(Event::class)->findOneByUuid($fromId);
                 }
@@ -281,6 +282,12 @@ class AdherentController extends Controller
                     ]);
                 }
 
+                if ('territorial_council' === $fromType) {
+                    return $this->redirectToRoute('app_territorial_council_index');
+                } elseif ('political_committee' === $fromType) {
+                    return $this->redirectToRoute('app_political_committee_index');
+                }
+
                 return $this->redirectToRoute('homepage');
             }
         } catch (ConnectException $e) {
@@ -295,10 +302,8 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listMyCommitteesAction(string $noResultMessage = null): Response
+    public function listMyCommitteesAction(CommitteeManager $manager, string $noResultMessage = null): Response
     {
-        $manager = $this->get('app.committee.manager');
-
         return $this->render('adherent/list_my_committees.html.twig', [
             'committees' => $manager->getAdherentCommittees($this->getUser()),
             'no_result_message' => $noResultMessage,

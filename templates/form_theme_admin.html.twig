@@ -113,7 +113,7 @@
     {% endif %}
 {% endblock %}
 
-{% block app_admin_elected_representative_mandate_zone_zone_widget %}
+{% block app_admin_elected_representative_mandate_geoZone_zone_widget %}
     <div class="row">
         <div class="form-group">
             <div class="sonata-ba-field sonata-ba-field-standard-natural">
@@ -124,7 +124,7 @@
     </div>
 {% endblock %}
 
-{% block app_admin_elected_representative_mandates_sonata_type_collection_mandates_row -%}
+{% block app_admin_elected_representative_mandates_sonata_type_collection_row -%}
     <div class="mandates-collection">
         {{ block('form_row') }}
     </div>
@@ -161,20 +161,20 @@
             });
 
             var addAutocomplete = function () {
-                $("input[id$='_zone_autocomplete']").each(function (i, el) {
+                $("input[id$='_geoZone_autocomplete']").each(function (i, el) {
                     el = $(el);
                     el.autocomplete({
                         source: function(request, response) {
                             var elementId = el.attr('id');
-                            var id = elementId.substr(0, elementId.indexOf('_zone_autocomplete'));
+                            var id = elementId.substr(0, elementId.indexOf('_geoZone_autocomplete'));
                             var type = el.parents('.row').find("select[id$='" + id + "_type']").val();
                             var term = request.term.trim();
 
                             if (term.length > 0) {
-                                $.get("{{ path('app_elected_representative_zone')|raw }}?zone=" + term + "&type=" + type, function(data) {
+                                $.get("{{ path('app_admin_zone_autocomplete')|raw }}?zone=" + term + "&type=" + type, function(data) {
                                     response($.map(data, function(m) {
                                         return {
-                                            label: m.name,
+                                            label: m.nameCode,
                                             value: m.id
                                         };
                                     }));
@@ -185,8 +185,8 @@
                         },
                         select: function( event, ui ) {
                             var elementId = el.attr('id');
-                            var id = elementId.substr(0, elementId.indexOf('_zone'));
-                            var zoneIdField = el.parents('.row').find("input[id$='" + id + "_zone']");
+                            var id = elementId.substr(0, elementId.indexOf('_geoZone'));
+                            var zoneIdField = el.parents('.row').find("input[id$='" + id + "_geoZone']");
                             $(el).val(ui.item.label);
                             $(zoneIdField).val(ui.item.value);
 
@@ -477,4 +477,163 @@
             {{ form_errors(form.eligibleAdvisersCount) }}
         </td>
     </tr>
+{% endblock %}
+
+{% block app_admin_voting_platform_designation_referentTags_entity_widget %}
+    {{ form_widget(form) }}
+
+    <div>
+        <script type="application/javascript">
+            function toggleCheckRefTags(checked) {
+                var options = $('#{{ form.vars.id }} > option');
+
+                if (checked) {
+                    options.prop('selected', 'selected');
+                } else {
+                    options.removeAttr('selected');
+                }
+
+                return false;
+            }
+        </script>
+
+        <button onClick="return toggleCheckRefTags(true);" class="btn btn-xs btn-primary">Tout sélectionner <span class="glyphicon glyphicon-ok-circle"></span></button>
+
+        <button onClick="return toggleCheckRefTags(false);" class="btn btn-xs btn-primary">Tout désélectionner <span class="glyphicon glyphicon-remove-circle"></span></button>
+    </div>
+{% endblock %}
+
+{% block app_admin_adherent_adherent_territorial_council_membership_row %}
+    {{ block('form_row') }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("div.territorial-council-member-info").on('select2:unselecting change', "select[id$='TerritorialCouncil']", function() {
+                    var elementId = $(this).attr('id');
+                    var elementValue = $(this).val();
+
+                    $("select[id$='TerritorialCouncil']").each(function (i, element) {
+                        if (elementId != $(element).attr('id')) {
+                            $(element).prop('disabled', elementValue !== '');
+                        }
+                    });
+            });
+
+            $("select[id$='TerritorialCouncil']").each(function (i, element) {
+                if ($(element).val() !== '') {
+                    $("select[id$='TerritorialCouncil']").each(function (i, el) {
+                        if ($(element).attr('id') != $(el).attr('id')) {
+                            $(el).prop('disabled', $(element).val() !== '');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block app_admin_adherent_electedRepresentative_text_row %}
+    {% set adherent = form.parent.vars.value %}
+    {% set elected_representative = get_elected_representative(adherent) %}
+    {% if not elected_representative %}
+        L'adhérent n'est pas un élu.
+    {% else %}
+        <div class="form-group">
+            <label class="control-label">
+                ID élu
+            </label>
+
+            <div class="inline-block">
+                <div class="left row col-md-5">
+                    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                        <input type="text" disabled="disabled" required="required" class=" form-control" value="{{ elected_representative.id }}">
+                    </div>
+                </div>
+                <div class="rigth row col-md-7">
+                    <a class="btn elected-representative-link" title="Fiche élu"
+                       target="_blank" rel="noopener noreferrer"
+                       href="{{ path('admin_app_electedrepresentative_electedrepresentative_edit', { id: elected_representative.id }) }}">
+                        Voir <i class="fa fa-external-link"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">
+                Labels
+            </label>
+            <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                <div style="width: 100%;">
+                    {% for listDefinition in elected_representative.userListDefinitions %}
+                        <span class="elected-representative-label" style="{{ listDefinition.color ? 'background-color: '~listDefinition.color  : 'color: #333;' }}">
+                            {{ listDefinition.label }}
+                        </span>
+                    {% else %}
+                        <span>Aucun label</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {% if elected_representative.currentMandates|length > 0 %}
+            {% set mandates = elected_representative.currentMandates %}
+            {% set label = 'Mandats en cours' %}
+        {% else %}
+            {% set mandates = elected_representative.finishedMandates %}
+            {% set label = 'Mandats passés' %}
+        {% endif %}
+
+        {% if mandates|length > 0 %}
+            <div class="form-group">
+                <label class="control-label">
+                    {{ label }}
+                </label>
+                <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                {% for mandate in mandates %}
+                    <div>{{ mandate.name }} {{ mandate.lastPoliticalFunction ? '- '~mandate.lastPoliticalFunction : '' }} ({{ mandate.geoZone }})</div>
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block app_admin_file_file_parent_widget %}
+    {{ form_widget(form) }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var addAutocomplete = function () {
+                $("#{{ form.vars.id }}").each(function (i, el) {
+                    el = $(el);
+                    el.autocomplete({
+                        source: function(request, response) {
+                            var term = request.term.trim();
+
+                            if (term.length > 0) {
+                                $.get("{{ path('app_autocomplete_file_directory')|raw }}?term=" + term, function(data) {
+                                    response($.map(data, function(d) {
+                                        return {
+                                            label: d.name,
+                                            value: d.id
+                                        };
+                                    }));
+                                });
+                            } else {
+                                response([]);
+                            }
+                        },
+                        select: function( event, ui ) {
+                            $(el).val(ui.item.label);
+
+                            return false;
+                        },
+                    });
+                });
+            };
+
+            addAutocomplete();
+        });
+    </script>
 {% endblock %}

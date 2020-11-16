@@ -3,14 +3,14 @@
 namespace App\Adherent\Certification;
 
 use App\Entity\CertificationRequest;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CertificationRequestDocumentManager
 {
     private $storage;
 
-    public function __construct(Filesystem $storage)
+    public function __construct(FilesystemInterface $storage)
     {
         $this->storage = $storage;
     }

@@ -3,7 +3,10 @@
 namespace App\Twig;
 
 use App\Entity\Adherent;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentSpaceAccessInformation;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -11,10 +14,18 @@ class AdherentRuntime implements RuntimeExtensionInterface
 {
     private $memberInterests;
     private $accessInformationRepository;
+    private $electedRepresentativeRepository;
+    private $committeeMandateRepository;
 
-    public function __construct(ReferentSpaceAccessInformationRepository $accessInformationRepository, array $interests)
-    {
+    public function __construct(
+        ElectedRepresentativeRepository $electedRepresentativeRepository,
+        ReferentSpaceAccessInformationRepository $accessInformationRepository,
+        CommitteeAdherentMandateRepository $committeeMandateRepository,
+        array $interests
+    ) {
+        $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->accessInformationRepository = $accessInformationRepository;
+        $this->committeeMandateRepository = $committeeMandateRepository;
         $this->memberInterests = $interests;
     }
 
@@ -62,45 +73,53 @@ class AdherentRuntime implements RuntimeExtensionInterface
         $labels = [];
 
         if ($adherent->isAdherent()) {
-            $labels[] = $adherent->isFemale() ? 'Adhérente 😍' : 'Adhérent 😍';
+            $labels[] = $adherent->isFemale() ? 'Adhérente' : 'Adhérent';
         } else {
             $labels[] = 'Non-adhérent(e)';
         }
 
         if ($adherent->isReferent()) {
-            $labels[] = $adherent->isFemale() ? 'Référente 🥇' : 'Référent 🥇';
+            $labels[] = $adherent->isFemale() ? 'Référente' : 'Référent';
         }
 
         if ($adherent->isCoReferent() || $adherent->isDelegatedReferent()) {
-            $labels[] = 'Équipe du référent 🥈';
+            $labels[] = 'Équipe du référent';
         }
 
         if ($adherent->isDeputy()) {
-            $labels[] = $adherent->isFemale() ? 'Députée 🏛' : 'Député 🏛';
+            $labels[] = $adherent->isFemale() ? 'Députée' : 'Député';
         }
 
         if ($adherent->isDelegatedDeputy()) {
-            $labels[] = 'Équipe du député 🏛';
+            $labels[] = 'Équipe du député';
         }
 
         if ($adherent->isSenator()) {
-            $labels[] = $adherent->isFemale() ? 'Sénatrice 🏛' : 'Sénateur 🏛';
+            $labels[] = $adherent->isFemale() ? 'Sénatrice' : 'Sénateur';
         }
 
         if ($adherent->isDelegatedSenator()) {
-            $labels[] = 'Équipe du sénateur 🏛';
+            $labels[] = 'Équipe du sénateur';
         }
 
         if ($adherent->isSupervisor()) {
-            $labels[] = $adherent->isFemale() ? 'Animatrice 🏅' : 'Animateur 🏅';
+            $labels[] = $adherent->isFemale() ? 'Animatrice' : 'Animateur';
         }
 
         if ($adherent->isHost()) {
-            $labels[] = $adherent->isFemale() ? 'Co-animatrice 🏅' : 'Co-animateur 🏅';
+            $labels[] = $adherent->isFemale() ? 'Co-animatrice' : 'Co-animateur';
         }
 
         if ($adherent->isMunicipalChief()) {
-            $labels[] = 'Candidat Municipales 2020 🇫🇷';
+            $labels[] = 'Candidat Municipales 2020';
+        }
+
+        if ($adherent->isTerritorialCouncilMember()) {
+            $labels[] = 'Membre des instances';
+        }
+
+        if ($this->committeeMandateRepository->hasActiveMandate($adherent)) {
+            $labels[] = $adherent->isFemale() ? 'Adhérente désignée' : 'Adhérent désigné';
         }
 
         return $labels;
@@ -116,5 +135,15 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         return null;
+    }
+
+    public function getElectedRepresentative(Adherent $adherent): ?ElectedRepresentative
+    {
+        return $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
+    }
+
+    public function hasActiveParliamentaryMandate(Adherent $adherent): bool
+    {
+        return $this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent);
     }
 }

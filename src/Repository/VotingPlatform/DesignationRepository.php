@@ -19,7 +19,8 @@ class DesignationRepository extends ServiceEntityRepository
     public function getIncomingDesignations(\DateTime $voteStartDate): array
     {
         return $this->createQueryBuilder('d')
-            ->where('d.voteStartDate <= :date')
+            ->where('d.voteStartDate IS NOT NULL AND d.voteEndDate IS NOT NULL')
+            ->andWhere('d.voteStartDate <= :date AND d.voteEndDate > :date')
             ->setParameter('date', $voteStartDate)
             ->getQuery()
             ->getResult()
@@ -34,6 +35,25 @@ class DesignationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->where('d.candidacyStartDate <= :date')
             ->andWhere('(d.candidacyEndDate IS NULL OR d.candidacyEndDate > :date)')
+            ->andWhere('d.limited = :false')
+            ->setParameters([
+                'date' => $candidacyStartDate,
+                'false' => false,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Designation[]
+     */
+    public function getWithFinishCandidacyPeriod(\DateTime $candidacyStartDate): array
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.candidacyStartDate <= :date')
+            ->andWhere('d.candidacyEndDate < :date')
+            ->andWhere('d.voteStartDate > :date')
             ->setParameter('date', $candidacyStartDate)
             ->getQuery()
             ->getResult()

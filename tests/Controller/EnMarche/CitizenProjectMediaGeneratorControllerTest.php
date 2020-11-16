@@ -30,7 +30,7 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAzQAAAE4CAYAAACNL7YlAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALiQAAC4kBN8nLrQAAIABJREFUeAEAKoDVfwFGTpn/AAEAAAEAAQAAAQEAAQEAAAEAAQAAAQEAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
             $crawler->selectImage('Cover Facebook image')->image()->getUri()
         );
@@ -54,18 +54,18 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
 
         $this->isSuccessful($response);
         $this->assertArrayHasKey('content-disposition', $response->headers->all());
-        $this->assertContains('attachment; filename="tract_', $response->headers->get('content-disposition'));
+        $this->assertStringContainsString('attachment; filename="tract_', $response->headers->get('content-disposition'));
         $this->assertSame('application/pdf', $response->headers->get('content-type'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

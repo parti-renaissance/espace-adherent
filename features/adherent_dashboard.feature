@@ -85,12 +85,6 @@ Feature:
     And I should see "Animateur 🏅, adhérent depuis janvier 2017 "
     And I should see an "img" element
 
-    # As an animator, I should have an e-mail section
-    Then I should see "Les e-mails que j'ai envoyés"
-    And I should see 2 ".emails ul li" elements
-    And I should see "[Comité local] [Comité local] Nouveau message"
-    And I should see "destinataires"
-
     # As an animator, I should have an events section
     Then I should see "Les événements que j'ai créés"
     And I should see 2 ".events ul li" elements
@@ -112,13 +106,13 @@ Feature:
 
     # As an animator, I should have a committee section
     Then I should see "Les comités dont je fais partie"
-    And I should see "En Marche - Comité de Singapour"
-    And I should see "En Marche - Comité de New York City"
+    And I should see "En Marche Paris 8"
+    And I should see "En Marche Dammarie-les-Lys"
 
     # As an animator, I should have a citizen project section
     Then I should see "Mes projets citoyens"
-    And I should see "En Marche - Projet citoyen"
-    And I should see "Projet citoyen à New York City"
+    And I should see "Le projet citoyen à Paris 8"
+    And I should see "Le projet citoyen à Dammarie-les-Lys"
 
     # As an animator, I should have an activity section
     Then I should see "Activité récente"

@@ -5,7 +5,7 @@ namespace App\Admin\ElectedRepresentative;
 use App\Election\VoteListNuanceEnum;
 use App\Entity\ElectedRepresentative\LaREMSupportEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
-use App\Form\ElectedRepresentative\ZoneType;
+use App\Form\Geo\ZoneType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -71,7 +71,7 @@ class MandateAdmin extends AbstractAdmin
                 'error_bubbling' => true,
                 'attr' => ['class' => 'width-140'],
             ])
-            ->add('zone', ZoneType::class, [
+            ->add('geoZone', ZoneType::class, [
                 'label' => 'Périmètre géographique',
                 'required' => false,
             ])

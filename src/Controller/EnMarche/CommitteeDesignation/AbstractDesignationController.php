@@ -1,0 +1,225 @@
+<?php
+
+namespace App\Controller\EnMarche\CommitteeDesignation;
+
+use App\Entity\Committee;
+use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
+use App\Entity\VotingPlatform\ElectionResult\ElectionPoolResult;
+use App\Entity\VotingPlatform\ElectionRound;
+use App\Repository\VotingPlatform\ElectionRepository;
+use App\Repository\VotingPlatform\VoteResultRepository;
+use App\Repository\VotingPlatform\VoterRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+abstract class AbstractDesignationController extends AbstractController
+{
+    private $electionRepository;
+
+    public function __construct(ElectionRepository $electionRepository)
+    {
+        $this->electionRepository = $electionRepository;
+    }
+
+    /**
+     * @Route("", name="_list", methods={"GET"})
+     */
+    public function listDesignationsAction(Request $request, Committee $committee): Response
+    {
+        return $this->renderTemplate('committee_designation/list.html.twig', $request, [
+            'committee' => $committee,
+            'elections' => $this->electionRepository->getAllAggregatedDataForCommittee($committee),
+        ]);
+    }
+
+    /**
+     * @Route("/{uuid}/{election_round_uuid}", name="_dashboard", methods={"GET"}, defaults={"election_round_uuid": null})
+     *
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
+     */
+    public function dashboardAction(
+        Request $request,
+        Committee $committee,
+        Election $election,
+        ElectionRound $electionRound = null
+    ): Response {
+        if (!$electionRound) {
+            $electionRound = $election->isSecondRoundVotePeriodActive()
+                ? $election->getFirstRound()
+                : $election->getCurrentRound()
+            ;
+        }
+
+        return $this->renderTemplate('committee_designation/dashboard.html.twig', $request, [
+            'committee' => $committee,
+            'election_round' => $electionRound,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/{uuid}/liste-emargement/{election_round_uuid}",
+     *     name="_voters_list",
+     *     methods={"GET"},
+     *     defaults={"election_round_uuid": null}
+     * )
+     *
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
+     */
+    public function listVotersAction(
+        Request $request,
+        Committee $committee,
+        Election $election,
+        VoterRepository $voterRepository,
+        ElectionRound $electionRound = null
+    ): Response {
+        if (!$electionRound) {
+            $electionRound = $election->isSecondRoundVotePeriodActive()
+                ? $election->getFirstRound()
+                : $election->getCurrentRound()
+            ;
+        }
+
+        if (!$this->hasAccess($election, $electionRound)) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+        }
+
+        return $this->renderTemplate('committee_designation/voters_list.html.twig', $request, [
+            'committee' => $committee,
+            'election_round' => $electionRound,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
+            'voters' => $voterRepository->findForElectionRound($electionRound),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/{uuid}/resultats/{election_round_uuid}",
+     *     name="_results",
+     *     methods={"GET"},
+     *     defaults={"election_round_uuid": null}
+     * )
+     *
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
+     */
+    public function showResultsAction(
+        Request $request,
+        Committee $committee,
+        Election $election,
+        ElectionRound $electionRound = null
+    ): Response {
+        if (!$electionRound) {
+            $electionRound = $election->isSecondRoundVotePeriodActive()
+                ? $election->getFirstRound()
+                : $election->getCurrentRound()
+            ;
+        }
+
+        if (!$this->hasAccess($election, $electionRound)) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+        }
+
+        return $this->renderTemplate('committee_designation/results.html.twig', $request, [
+            'committee' => $committee,
+            'election_round' => $electionRound,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
+            'election_pool_result' => current(array_filter(
+                $election->getElectionResult()->getElectionRoundResult($electionRound)->getElectionPoolResults(),
+                function (ElectionPoolResult $poolResult) use ($request) {
+                    return $poolResult->getElectionPool()->getCode() === ($request->query->has('femme') ? ElectionPoolCodeEnum::FEMALE : ElectionPoolCodeEnum::MALE);
+                }
+            )),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     "/{uuid}/bulletins/{election_round_uuid}",
+     *     name="_votes",
+     *     methods={"GET"},
+     *     defaults={"election_round_uuid": null}
+     * )
+     *
+     * @ParamConverter("electionRound", options={"mapping": {"election_round_uuid": "uuid"}})
+     */
+    public function listVotesAction(
+        Request $request,
+        Committee $committee,
+        Election $election,
+        VoteResultRepository $voteResultRepository,
+        ElectionRound $electionRound = null
+    ): Response {
+        if (!$electionRound) {
+            $electionRound = $election->isSecondRoundVotePeriodActive()
+                ? $election->getFirstRound()
+                : $election->getCurrentRound()
+            ;
+        }
+
+        if (!$this->hasAccess($election, $electionRound)) {
+            return $this->redirectToSpaceRoute('dashboard', $committee, $election);
+        }
+
+        return $this->renderTemplate('committee_designation/votes_list.html.twig', $request, [
+            'committee' => $committee,
+            'election_round' => $electionRound,
+            'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
+            'votes' => $voteResultRepository->getResultsForRound($electionRound),
+        ]);
+    }
+
+    abstract protected function getSpaceType(): string;
+
+    protected function renderTemplate(string $template, Request $request, array $parameters = []): Response
+    {
+        return $this->render($template, array_merge(
+            $parameters,
+            [
+                'base_template' => sprintf('committee_designation/_base_%s.html.twig', $messageType = $this->getSpaceType()),
+                'space_type' => $messageType,
+                'route_params' => $this->getRouteParameters($request),
+            ]
+        ));
+    }
+
+    protected function redirectToSpaceRoute(
+        string $subName,
+        Committee $committee,
+        Election $election,
+        array $parameters = []
+    ): Response {
+        return $this->redirectToRoute("app_{$this->getSpaceType()}_designations_${subName}", array_merge([
+            'committee_slug' => $committee->getSlug(),
+            'uuid' => $election->getUuid()->toString(),
+        ], $parameters));
+    }
+
+    protected function getRouteParameters(Request $request): array
+    {
+        return [
+            'committee_slug' => $request->attributes->get('committee_slug'),
+        ];
+    }
+
+    protected function hasAccess(Election $election, ElectionRound $electionRound): bool
+    {
+        if (!$electionRound->isRoundOf($election)) {
+            return false;
+        }
+
+        if ($election->isVotePeriodActive() && !$election->isSecondRoundVotePeriodActive()) {
+            return false;
+        }
+
+        if ($election->isSecondRoundVotePeriodActive() && $electionRound->isActive()) {
+            return false;
+        }
+
+        return true;
+    }
+}

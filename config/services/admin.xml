@@ -23,7 +23,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
 
             <call method="setGlide">
@@ -66,7 +66,7 @@
                 </argument>
             </call>
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
@@ -189,7 +189,7 @@
             <argument />
             <argument>App\Entity\Committee</argument>
             <argument />
-            <argument type="service" id="app.committee.manager" />
+            <argument type="service" id="App\Committee\CommitteeManager" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher"/>
         </service>
@@ -268,7 +268,7 @@
             <argument />
             <argument>App\Entity\Referent</argument>
             <argument>App\Controller\Admin\AdminReferentController</argument>
-            <argument type="service" id="app.form.data_transformer.referent_area_transformer" />
+            <argument type="service" id="App\Form\DataTransformer\ReferentAreaTransformer" />
             <call method="setTemplate">
                 <argument>list</argument>
                 <argument>admin/referent/admin_list.html.twig</argument>
@@ -390,6 +390,64 @@
             <argument />
         </service>
 
+        <service id="app.admin.file" class="App\Admin\Filesystem\FileAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Documents" group="Territoire" />
+
+            <argument />
+            <argument>App\Entity\Filesystem\File</argument>
+            <argument />
+            <argument type="service" id="App\Repository\Filesystem\FileRepository"/>
+            <argument type="service" id="App\Filesystem\FileManager"/>
+        </service>
+
+        <!--
+        ######################################################
+        # Instances
+        ######################################################
+        -->
+        <service id="app.admin.territorial_council" class="App\Admin\TerritorialCouncil\TerritorialCouncilAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="CoTerr et CoPol" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\TerritorialCouncil\TerritorialCouncil</argument>
+            <argument />
+
+            <call method="addChild">
+                <argument type="service" id="app.admin.territorial_council_membership" />
+            </call>
+        </service>
+
+        <service id="app.admin.territorial_council_membership" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Membres" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembership</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.voting_platform.designation" class="App\Admin\VotingPlatform\DesignationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Désignations statutaires" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Designation\Designation</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.territorial_council_membership_log" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipLogAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Logs" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.political_committee" class="App\Admin\TerritorialCouncil\PoliticalCommitteeAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\TerritorialCouncil\PoliticalCommittee</argument>
+            <argument />
+        </service>
         <!--
         ######################################################
         # Finances
@@ -711,7 +769,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
@@ -726,7 +784,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
@@ -776,15 +834,17 @@
 
         <!--
         ######################################################
-        # Data Transformer
+        # Geo
         ######################################################
         -->
 
-        <service id="app.form.data_transformer.referent_area_transformer" class="App\Form\DataTransformer\ReferentAreaTransformer">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-        </service>
+        <service id="app.admin.geo.zone" class="App\Admin\Geo\ZoneAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
 
-        <service autowire="true" public="false" id="App\Form\DataTransformer\CommitteeTransformer"/>
+            <argument />
+            <argument>App\Entity\Geo\Zone</argument>
+            <argument />
+        </service>
 
         <!--
         ######################################################
@@ -800,6 +860,10 @@
             <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
             <tag name="sonata.admin.extension" target="app.admin.chez_vous_city" />
+            <tag name="sonata.admin.extension" target="app.admin.custom_search_result" />
+            <tag name="sonata.admin.extension" target="app.admin.proposal" />
+            <tag name="sonata.admin.extension" target="app.admin.clarification" />
+            <tag name="sonata.admin.extension" target="app.admin.article" />
         </service>
 
         <service id="app.admin.empty_translation_remover_extension" class="App\Admin\Extension\EmptyTranslationRemoverAdminExtension">
@@ -874,7 +938,7 @@
             <argument>App\Entity\ApplicationRequest\RunningMateRequest</argument>
             <argument />
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
         </service>
 
@@ -910,7 +974,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
 
             <call method="setGlide">
@@ -1092,7 +1156,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
 
             <call method="setGlide">
@@ -1183,14 +1247,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.voting_platform.election" class="App\Admin\VotingPlatform\DesignationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Désignations statutaires" group="Désignations" />
-
-            <argument />
-            <argument>App\Entity\VotingPlatform\Designation\Designation</argument>
-            <argument />
-        </service>
-
         <!--
         ######################################################
         # ProgrammaticFoundation
@@ -1237,5 +1293,67 @@
             <argument />
         </service>
 
+        <!--
+        ######################################################
+        # Thematic Community
+        ######################################################
+        -->
+
+        <service id="app.admin.thematic_community" class="App\Admin\ThematicCommunity\ThematicCommunityAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Communautés" group="Communautés thématiques" />
+
+            <argument />
+            <argument>App\Entity\ThematicCommunity\ThematicCommunity</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.thematic_community_membership" class="App\Admin\ThematicCommunity\ThematicCommunityMembershipAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Membres" group="Communautés thématiques" />
+
+            <argument />
+            <argument>App\Entity\ThematicCommunity\ThematicCommunityMembership</argument>
+            <argument />
+
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="contact">App\Entity\ThematicCommunity\ContactMembership</argument>
+                    <argument key="adherent">App\Entity\ThematicCommunity\AdherentMembership</argument>
+                </argument>
+            </call>
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/thematic_community/member/edit.html.twig</argument>
+            </call>
+        </service>
+
+        <!--
+        ######################################################
+        # Designation dashboards
+        ######################################################
+        -->
+        <service id="app.admin.designation.election" class="App\Admin\Designation\VotingPlatformElectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Elections" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Election</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.designation.candidature" class="App\Admin\Designation\CandidateAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Candidatures" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\Algolia\AlgoliaCandidature</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.designation.vote" class="App\Admin\Designation\VotingPlatformVoteAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Emargements" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Vote</argument>
+            <argument />
+        </service>
     </services>
 </container>

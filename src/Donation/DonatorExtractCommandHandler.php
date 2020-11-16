@@ -7,7 +7,7 @@ use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Extract\AbstractEmailExtractCommandHandler;
 use App\Repository\DonatorRepository;
-use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhoneNumberUtils;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
@@ -88,7 +88,7 @@ class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
                     break;
                 case DonatorExtractCommand::FIELD_PHONE:
                     $row[$this->translateField($field)] = $lastDonation
-                        ? PhoneNumberFormatter::format($lastDonation->getPhone())
+                        ? PhoneNumberUtils::format($lastDonation->getPhone())
                         : null
                     ;
 

@@ -26,7 +26,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testCreateSupervisorMembership()
     {
-        $membership = CommitteeMembership::createForSupervisor($this->createCommittee(), $adherent = $this->createAdherent());
+        $membership = CommitteeMembership::createForSupervisor($this->createCommittee(), $adherent = $this->createAdherent(), new \DateTime());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -41,7 +41,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testCreateHostMembership()
     {
-        $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createAdherent());
+        $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createAdherent(), new \DateTime());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -56,7 +56,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testCreateFollowerMembership()
     {
-        $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createAdherent());
+        $membership = CommitteeMembership::createForAdherent($this->createCommittee(), $adherent = $this->createAdherent(), CommitteeMembership::COMMITTEE_FOLLOWER, new \DateTime());
 
         $this->assertInstanceOf(CommitteeMembership::class, $membership);
         $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
@@ -71,7 +71,7 @@ class CommitteeMembershipTest extends TestCase
 
     public function testChangePrivileges()
     {
-        $membership = CommitteeMembership::createForSupervisor($this->createCommittee(), $this->createAdherent());
+        $membership = CommitteeMembership::createForSupervisor($this->createCommittee(), $this->createAdherent(), new \DateTime());
 
         $this->assertTrue($membership->isSupervisor());
         $this->assertFalse($membership->isHostMember());

@@ -81,7 +81,7 @@ class InteractiveControllerTest extends WebTestCase
         $this->assertNull($this->client->getRequest()->getSession()->get(MyEuropeProcessorHandler::SESSION_KEY));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -92,7 +92,7 @@ class InteractiveControllerTest extends WebTestCase
         $this->emailRepository = $this->getEmailRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

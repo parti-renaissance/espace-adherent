@@ -1,0 +1,22 @@
+<nav class="manager-sidebar__menu">
+    <ul>
+        <li class="menu-section">Messagerie</li>
+
+        <li class="{{ is_active_route(app.request, 'app_message_lre_manager_elected_representative_*') ? 'active' }}">
+            <a href="{{ path('app_message_lre_manager_elected_representative_list') }}" class="messaging elected">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                    <use xlink:href="/images/icons/icons.svg#messaging"></use>
+                </svg>
+                Aux élus
+            </a>
+        </li>
+    </ul>
+
+    <ul>
+        <li class="menu-section">Territoires</li>
+
+        <li class="{{ is_active_route(app.request, 'app_lre_elected_representatives_*') ? 'active' }}">
+            <a href="{{ path('app_lre_elected_representatives_list') }}">Élus</a>
+        </li>
+    </ul>
+</nav>

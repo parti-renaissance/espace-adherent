@@ -4,6 +4,7 @@ namespace App\Form\AdherentMessage;
 
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Form\CommitteeChoiceType;
+use App\Form\DatePickerType;
 use App\Form\EventListener\IncludeExcludeFilterRoleListener;
 use App\Form\FilterRoleType;
 use App\Form\GenderType;
@@ -11,7 +12,6 @@ use App\Form\MemberInterestsChoiceType;
 use App\Repository\CommitteeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,8 +45,8 @@ class AdherentZoneFilterType extends AbstractType
             ->add('lastName', TextType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
-            ->add('registeredSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
-            ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
+            ->add('registeredSince', DatePickerType::class, ['required' => false])
+            ->add('registeredUntil', DatePickerType::class, ['required' => false])
             ->add('committee', CommitteeChoiceType::class, [
                 'required' => false,
                 'query_builder' => static function (CommitteeRepository $repository) use ($options) {

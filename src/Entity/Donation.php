@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Donation\PayboxPaymentSubscription;
 use App\Geocoder\GeoPointInterface;
 use Cake\Chronos\Chronos;
@@ -25,8 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\DonationRepository")
  * @ORM\EntityListeners({"App\EntityListener\DonationListener"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Donation implements GeoPointInterface
 {
@@ -173,6 +170,13 @@ class Donation implements GeoPointInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $beneficiary;
 
     /**
      * @var Donator|null
@@ -599,5 +603,15 @@ class Donation implements GeoPointInterface
     public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
+    }
+
+    public function setBeneficiary(string $beneficiary = null): void
+    {
+        $this->beneficiary = $beneficiary;
+    }
+
+    public function getBeneficiary(): ?string
+    {
+        return $this->beneficiary;
     }
 }

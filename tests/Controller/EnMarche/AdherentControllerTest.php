@@ -11,7 +11,6 @@ use App\DataFixtures\ORM\LoadIdeaThreadData;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use App\Entity\IdeasWorkshop\Idea;
 use App\Entity\IdeasWorkshop\Thread;
 use App\Entity\IdeasWorkshop\ThreadComment;
@@ -63,33 +62,38 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $crawler = $this->client->click($crawler->selectLink('Mes activités')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mes événements')->link());
 
+        // first page
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertSame(6, $crawler->filter('.event-registration')->count());
-
-        $titles = $crawler->filter('.event-registration h2 a');
+        $this->assertSame(5, $crawler->filter('#upcoming-events article')->count());
+        $titles = $crawler->filter('#upcoming-events h2');
         $this->assertSame('Meeting de New York City', trim($titles->first()->text()));
         $this->assertSame('Projet citoyen #3', trim($titles->eq(1)->text()));
         $this->assertSame('Réunion de réflexion parisienne', trim($titles->eq(2)->text()));
         $this->assertSame('Réunion de réflexion dammarienne', trim($titles->eq(3)->text()));
         $this->assertSame('Projet citoyen Paris-18', trim($titles->eq(4)->text()));
-        $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->last()->text()));
 
-        $crawler = $this->client->click($crawler->selectLink('Passés')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertSame(7, $crawler->filter('.event-registration')->count());
-
-        $titles = $crawler->filter('.event-registration h2 a');
+        $this->assertSame(5, $crawler->filter('#past-events article')->count());
+        $titles = $crawler->filter('#past-events h2');
         $this->assertSame('Meeting de Singapour', trim($titles->first()->text()));
         $this->assertSame('Grand débat parisien', trim($titles->eq(1)->text()));
         $this->assertSame('Événement à Paris 1', trim($titles->eq(2)->text()));
         $this->assertSame('Événement à Paris 2', trim($titles->eq(3)->text()));
         $this->assertSame('Marche Parisienne', trim($titles->eq(4)->text()));
-        $this->assertSame('Grand Meeting de Paris', trim($titles->eq(5)->text()));
+
+        // second page
+        $crawler = $this->client->click($crawler->filter('#upcoming-events .listing__paginator .link--no-decor')->link());
+        $titles = $crawler->filter('#upcoming-events h2');
+        self::assertEquals('http://test.enmarche.code/parametres/mes-activites?page=2&type=upcoming_events#events', $crawler->getUri());
+        $this->assertSame(1, $crawler->filter('#upcoming-events article')->count());
+        $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->first()->text()));
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites?page=2&type=past_events#events');
+        self::assertEquals('http://test.enmarche.code/parametres/mes-activites?page=2&type=past_events#events', $crawler->getUri());
+        $titles = $crawler->filter('#past-events h2');
+        $this->assertSame(2, $crawler->filter('#past-events article')->count());
+        $this->assertSame('Grand Meeting de Paris', trim($titles->first()->text()));
         $this->assertSame('Grand Meeting de Marseille', trim($titles->last()->text()));
     }
 
@@ -156,7 +160,7 @@ class AdherentControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('#auth-error')->text());
+        $this->assertStringContainsString('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('#auth-error')->text());
     }
 
     public function testEditAdherentProfile(): void
@@ -178,8 +182,8 @@ class AdherentControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
-        $inputPattern = 'input[name="adherent[%s]"]';
-        $optionPattern = 'select[name="adherent[%s]"] option[selected="selected"]';
+        $inputPattern = 'input[name="adherent_profile[%s]"]';
+        $optionPattern = 'select[name="adherent_profile[%s]"] option[selected="selected"]';
 
         self::assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
         self::assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
@@ -190,16 +194,14 @@ class AdherentControllerTest extends WebTestCase
         self::assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
         self::assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
         self::assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
-        self::assertSame('8', $crawler->filter(sprintf($optionPattern, 'birthdate][day'))->attr('value'));
-        self::assertSame('7', $crawler->filter(sprintf($optionPattern, 'birthdate][month'))->attr('value'));
-        self::assertSame('1950', $crawler->filter(sprintf($optionPattern, 'birthdate][year'))->attr('value'));
+        self::assertSame('1950-07-08', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
         self::assertCount(2, $adherent->getReferentTags());
         self::assertAdherentHasReferentTag($adherent, '73');
         self::assertAdherentHasReferentTag($adherent, 'CIRCO_73004');
 
         // Submit the profile form with invalid data
-        $crawler = $this->client->submit($crawler->selectButton('adherent[submit]')->form([
-            'adherent' => [
+        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
+            'adherent_profile' => [
                 'gender' => 'male',
                 'firstName' => '',
                 'lastName' => '',
@@ -219,18 +221,20 @@ class AdherentControllerTest extends WebTestCase
             ],
         ]));
 
-        $errors = $crawler->filter('.form__errors > li');
+        $errors = $crawler->filter('.em-form--error');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        self::assertSame(5, $errors->count());
+        self::assertSame(6, $errors->count());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        self::assertSame('Veuillez renseigner un code postal.', $errors->eq(2)->text());
+        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(2)->text());
         self::assertSame('L\'adresse est obligatoire.', $errors->eq(3)->text());
+        self::assertSame('Veuillez renseigner un code postal.', $errors->eq(4)->text());
+        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(5)->text());
 
         // Submit the profile form with too long input
-        $crawler = $this->client->submit($crawler->selectButton('adherent[submit]')->form([
-            'adherent' => [
+        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
+            'adherent_profile' => [
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
@@ -247,25 +251,23 @@ class AdherentControllerTest extends WebTestCase
                     'number' => '04 01 02 03 04',
                 ],
                 'position' => 'student',
-                'birthdate' => [
-                    'year' => '1985',
-                    'month' => '10',
-                    'day' => '27',
-                ],
+                'birthdate' => '1985-10-27',
             ],
         ]));
 
-        $errors = $crawler->filter('.form__errors > li');
+        $errors = $crawler->filter('.em-form--error');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        self::assertSame(3, $errors->count());
-        self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(0)->text());
-        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(1)->text());
-        self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(2)->text());
+        self::assertSame(5, $errors->count());
+        self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(0)->text());
+        self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(1)->text());
+        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
+        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(3)->text());
+        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(4)->text());
 
         // Submit the profile form with valid data
-        $this->client->submit($crawler->selectButton('adherent[submit]')->form([
-            'adherent' => [
+        $this->client->submit($crawler->selectButton('Enregistrer')->form([
+            'adherent_profile' => [
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
@@ -274,22 +276,18 @@ class AdherentControllerTest extends WebTestCase
                     'country' => 'FR',
                     'postalCode' => '06000',
                     'city' => '06000-6088',
-                    'cityName' => 'Nice, France',
+                    'cityName' => 'Nice',
                 ],
                 'phone' => [
                     'country' => 'FR',
                     'number' => '04 01 02 03 04',
                 ],
                 'position' => 'student',
-                'birthdate' => [
-                    'year' => '1985',
-                    'month' => '10',
-                    'day' => '27',
-                ],
+                'birthdate' => '1985-10-27',
             ],
         ]));
 
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $this->client);
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -325,60 +323,18 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(0, $histories06Unsubscriptions);
     }
 
-    public function testEditMandates(): void
+    public function testCertifiedAdherentCanNotEditFields(): void
     {
-        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
-
-        $adherent = $this->getAdherentRepository()->findOneByEmail('michel.vasseur@example.ch');
-        $ideas = $this->getIdeaRepository()->findBy(['author' => $adherent]);
-
-        $this->checkIdeasAuthorCategory($ideas, AuthorCategoryEnum::ELECTED);
-
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
 
-        $form = $crawler->selectButton('adherent[submit]')->form();
-        $form['adherent[elected]']->untick();
-
-        // Submit the profile form with valid data
-        $this->client->submit($form, [
-            'adherent' => [
-                'gender' => 'male',
-                'firstName' => 'Michel',
-                'lastName' => 'VASSEUR',
-                'address' => [
-                    'address' => '12 Pilgerweg',
-                    'country' => 'CH',
-                    'postalCode' => '8802',
-                    'cityName' => 'Kilchberg',
-                ],
-                'nationality' => 'CH',
-                'phone' => [
-                    'country' => 'CH',
-                    'number' => '31 359 21 11',
-                ],
-                'position' => 'employed',
-                'birthdate' => [
-                    'year' => '1987',
-                    'month' => '10',
-                    'day' => '13',
-                ],
-            ],
-        ]);
-
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->seeFlashMessage($crawler, 'Vos informations ont été mises à jour avec succès.');
-
-        // We need to reload the manager reference to get the updated data
-        $this->manager->clear();
-        /** @var Adherent $adherent */
-        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findOneByEmail('michel.vasseur@example.ch');
-        $ideas = $this->getIdeaRepository()->findBy(['author' => $adherent]);
-
-        self::assertSame([], $adherent->getMandates());
-        $this->checkIdeasAuthorCategory($ideas, AuthorCategoryEnum::ADHERENT);
+        $disabledFields = $crawler->filter('form[name="adherent_profile"] input[disabled="disabled"], form[name="adherent_profile"] select[disabled="disabled"]');
+        self::assertCount(5, $disabledFields);
+        self::assertEquals('adherent_profile[firstName]', $disabledFields->eq(0)->attr('name'));
+        self::assertEquals('adherent_profile[lastName]', $disabledFields->eq(1)->attr('name'));
+        self::assertEquals('adherent_profile[gender]', $disabledFields->eq(2)->attr('name'));
+        self::assertEquals('adherent_profile[customGender]', $disabledFields->eq(3)->attr('name'));
+        self::assertEquals('adherent_profile[birthdate]', $disabledFields->eq(4)->attr('name'));
     }
 
     public function testEditAdherentInterests(): void
@@ -389,8 +345,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $checkBoxPattern = '#app_adherent_pin_interests '.
-                           'input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
+        $checkBoxPattern = 'form[name="app_adherent_pin_interests"] .checkb-cols input[type="checkbox"][name="app_adherent_pin_interests[interests][]"]';
 
         $this->assertCount(18, $checkboxes = $crawler->filter($checkBoxPattern));
 
@@ -411,7 +366,7 @@ class AdherentControllerTest extends WebTestCase
             8 => $interestsValues[8],
         ];
 
-        $this->client->submit($crawler->selectButton('app_adherent_pin_interests[submit]')->form(), [
+        $this->client->submit($crawler->selectButton('Enregistrer')->form(), [
             'app_adherent_pin_interests' => [
                 'interests' => $chosenInterests,
             ],
@@ -459,7 +414,7 @@ class AdherentControllerTest extends WebTestCase
             ],
         ]);
 
-        $errors = $crawler->filter('.form__errors > li');
+        $errors = $crawler->filter('.em-form--error');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         self::assertSame(2, $errors->count());
@@ -911,14 +866,12 @@ class AdherentControllerTest extends WebTestCase
     /**
      * @dataProvider provideRegularAdherentsCredentials
      */
-    public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $phone): void
+    public function testRegularAdherentCanCreateOneNewCommittee(string $emailAddress, string $phone): void
     {
         $this->client->followRedirects();
 
-        $this->authenticateAsAdherent($this->client, $emaiLAddress);
-        $crawler = $this->client->request(Request::METHOD_GET, '/');
-        $crawler = $this->client->click($crawler->selectLink('Créer un comité')->link());
-
+        $this->authenticateAsAdherent($this->client, $emailAddress);
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-comite');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame($phone, $crawler->filter('#create_committee_phone_number')->attr('value'));
 
@@ -976,7 +929,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
         $this->assertSame('Lyon est En Marche !', $committee->getName());
         $this->assertTrue($committee->isWaitingForApproval());
-        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
+        $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emailAddress));
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.');
@@ -1009,7 +962,7 @@ class AdherentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Documents', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Documents', $this->client->getResponse()->getContent());
     }
 
     public function testContactActionSecured(): void
@@ -1026,7 +979,7 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Contacter Michelle Dufour', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Contacter Michelle Dufour', $this->client->getResponse()->getContent());
 
         $this->client->submit($crawler->selectButton('Envoyer')->form([
             'g-recaptcha-response' => 'dummy',
@@ -1102,7 +1055,7 @@ class AdherentControllerTest extends WebTestCase
     ): void {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
-        $referentTagsBeforeUnregistration = $adherentBeforeUnregistration->getReferentTags()->toArray(); // It triggers the real SQL query instead of lazy-load
+        $referentTagsBeforeUnregistration = $adherentBeforeUnregistration->getReferentTags()->toArray(); // It triggers the real SQL query instead of lazy-load
 
         $this->authenticateAsAdherent($this->client, $userEmail);
 
@@ -1126,7 +1079,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
-        $this->assertContains("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
         $reasons = Unregistration::REASONS_LIST_ADHERENT;
@@ -1157,10 +1110,10 @@ class AdherentControllerTest extends WebTestCase
             new RemoveAdherentAndRelatedDataCommand(Uuid::fromString($uuid))
         );
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
+        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
         --$nbFollowers;
 
-        $this->assertContains("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
 
         /** @var Adherent $adherent */
         $adherent = $this->getAdherentRepository()->findOneByEmail($userEmail);
@@ -1201,7 +1154,7 @@ class AdherentControllerTest extends WebTestCase
     {
         return [
             'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 'en-marche-suisse', 3],
-            'adherent 2' => ['luciole1989@spambox.fr', LoadAdherentData::ADHERENT_4_UUID, 'en-marche-paris-8', 4],
+            'adherent 2' => ['cedric.lebon@en-marche-dev.fr', LoadAdherentData::ADHERENT_19_UUID, 'en-marche-comite-de-evry', 6],
         ];
     }
 
@@ -1232,7 +1185,7 @@ class AdherentControllerTest extends WebTestCase
         ];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -1242,7 +1195,7 @@ class AdherentControllerTest extends WebTestCase
         $this->emailRepository = $this->getEmailRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
@@ -1257,12 +1210,5 @@ class AdherentControllerTest extends WebTestCase
         return array_map(static function (SubscriptionType $type) use ($codes) {
             return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
         }, $this->getSubscriptionTypeRepository()->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES));
-    }
-
-    private function checkIdeasAuthorCategory(array $ideas, string $categoryName)
-    {
-        foreach ($ideas as $idea) {
-            $this->assertSame($categoryName, $idea->getAuthorCategory());
-        }
     }
 }

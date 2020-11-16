@@ -5,9 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Election\VoteResultList;
 use App\Entity\Election\VoteResultListCollection;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadVoteResultListCollectionData extends Fixture
+class LoadVoteResultListCollectionData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

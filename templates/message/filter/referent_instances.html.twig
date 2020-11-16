@@ -1,0 +1,160 @@
+{% extends 'message/filter.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block filter_content %}
+    <div class="form__title b__nudge--bottom-larger">
+        <h3 class="text--medium  text--center">Filtrer mon message</h3>
+        <div class="form__step">
+            <span class="active">2</span>
+            / 2
+        </div>
+    </div>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
+            <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+            {{ form_errors(form) }}
+
+            <div class="instance-type-tab" id="instance-type-tab-coterr">
+                {% if form.politicalCommittee is defined %}
+                    <div class="manager__filters__row">
+                        <div class="manager__filters__section">
+                            <div class="filter__row">
+                                <div class="form__radio">
+                                    <input type="radio" name="instance-type" id="instance-type-coterr" />
+                                    <label for="instance-type-coterr">Conseil territorial</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="manager__filters__row">
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Conseil territorial</label>
+                                {{ form_widget(form.territorialCouncil, {attr: {class: 'filter__field'}}) }}
+                                {{ form_errors(form.territorialCouncil) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Qualité</label>
+                                {{ form_widget(form.territorialCouncilQualities, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'Choisissez des qualités'}}) }}
+                                {{ form_errors(form.territorialCouncilQualities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if form.politicalCommittee is defined %}
+                <div class="instance-type-tab" id="instance-type-tab-copol">
+                    <div class="manager__filters__row">
+                        <div class="manager__filters__section">
+                            <div class="filter__row">
+                                <div class="form__radio">
+                                    <input type="radio" name="instance-type" id="instance-type-copol" class="form_radio"/>
+                                    <label for="instance-type-copol">Comité politique</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__row">
+                        <div class="manager__filters__section">
+                            <div class="manager__filters__group">
+                                <div class="filter__row">
+                                    <label class="filter__label">Comité politique</label>
+                                    {{ form_widget(form.politicalCommittee, {attr: {class: 'filter__field'}}) }}
+                                    {{ form_errors(form.politicalCommittee) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="manager__filters__section">
+                            <div class="manager__filters__group">
+                                <div class="filter__row">
+                                    <label class="filter__label">Qualité</label>
+                                    {{ form_widget(form.politicalCommitteeQualities, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'Choisissez des qualités'}}) }}
+                                    {{ form_errors(form.politicalCommitteeQualities) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                {% if message.filter %}
+                    <a
+                        href="{{ path('app_message_referent_instances_filter', {uuid: message.uuid, reset: true}) }}"
+                        class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset"
+                    >Réinitialiser le filtre</a>
+                {% endif %}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.multi_select2').each(function () {
+                $(this).select2({
+                    placeholder: this.dataset.placeholder || '',
+                    theme: 'default em-filters'
+                });
+            });
+
+            {% if form.politicalCommittee is defined %}
+                var copolSelect = $('#referent_instances_filter_politicalCommittee');
+
+                var coterrRadio = $('#instance-type-coterr');
+                var copolRadio = $('#instance-type-copol');
+
+                var switchCallback = function (activeElement, inactiveElement) {
+                    activeElement.addClass('active');
+                    inactiveElement.removeClass('active');
+
+                    activeElement.find('.manager__filters__row:last-child input,select').prop('disabled', false);
+                    inactiveElement.find('.manager__filters__row:last-child input,select').prop('disabled', true);
+                }
+
+                coterrRadio.on('change', function () {
+                    switchCallback($('#instance-type-tab-coterr'), $('#instance-type-tab-copol'));
+                });
+
+                copolRadio.on('change', function () {
+                    switchCallback($('#instance-type-tab-copol'), $('#instance-type-tab-coterr'));
+                });
+
+                if (copolSelect.val()) {
+                    copolRadio.prop('checked', true).trigger('change');
+                } else {
+                    coterrRadio.prop('checked', true).trigger('change');
+                }
+            {% endif %}
+        });
+    </script>
+{% endblock %}

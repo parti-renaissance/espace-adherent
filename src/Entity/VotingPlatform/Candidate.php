@@ -2,7 +2,7 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,8 +13,6 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity
  *
  * @ORM\Table(name="voting_platform_candidate")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Candidate
 {
@@ -51,6 +49,13 @@ class Candidate
     /**
      * @var string|null
      *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $faithStatement;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      */
     private $imagePath;
@@ -63,11 +68,32 @@ class Candidate
      */
     private $candidateGroup;
 
-    public function __construct(string $firstName, string $lastName, string $gender, UuidInterface $uuid = null)
-    {
+    /**
+     * @var Adherent
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $adherent;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $additionallyElected = false;
+
+    public function __construct(
+        string $firstName,
+        string $lastName,
+        string $gender,
+        Adherent $adherent = null,
+        UuidInterface $uuid = null
+    ) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->gender = $gender;
+        $this->adherent = $adherent;
 
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
@@ -82,14 +108,14 @@ class Candidate
         return sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
-    public function isWoman(): bool
+    public function isFemale(): bool
     {
         return Genders::FEMALE === $this->gender;
     }
 
-    public function isMan(): bool
+    public function getGender(): string
     {
-        return Genders::MALE === $this->gender;
+        return $this->gender;
     }
 
     public function getBiography(): ?string
@@ -100,6 +126,16 @@ class Candidate
     public function setBiography(?string $biography): void
     {
         $this->biography = $biography;
+    }
+
+    public function getFaithStatement(): ?string
+    {
+        return $this->faithStatement;
+    }
+
+    public function setFaithStatement(?string $faithStatement): void
+    {
+        $this->faithStatement = $faithStatement;
     }
 
     public function getImagePath(): ?string
@@ -125,5 +161,20 @@ class Candidate
     public function getInitials(): string
     {
         return mb_strtoupper(mb_substr($this->firstName, 0, 1).mb_substr($this->lastName, 0, 1));
+    }
+
+    public function isAdditionallyElected(): bool
+    {
+        return $this->additionallyElected;
+    }
+
+    public function setAdditionallyElected(bool $elected): void
+    {
+        $this->additionallyElected = $elected;
+    }
+
+    public function getAdherent(): Adherent
+    {
+        return $this->adherent;
     }
 }

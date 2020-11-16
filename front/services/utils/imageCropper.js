@@ -3,11 +3,13 @@ import { render } from 'react-dom';
 import Modal from '../../components/Modal';
 import Cropper from 'cropperjs';
 
-let modal, cropper, fileElement;
+let modal, cropper, fileElement, croppedImageElement;
 
-export default (inputElement) => {
-    fileElement = inputElement;
-    const files = inputElement.files;
+export default (inputFileElement, inputCroppedImageElement) => {
+    fileElement = inputFileElement;
+    croppedImageElement = inputCroppedImageElement;
+
+    const files = inputFileElement.files;
 
     if (!files || files.length < 1) {
         return;
@@ -65,7 +67,7 @@ function handleCropAction() {
 
     updatePreviewImages(dataUrl);
 
-    dom('#candidacy_biography_croppedImage').value = dataUrl;
+    croppedImageElement.value = dataUrl;
     fileElement.value = '';
 
     modal.hideModal();

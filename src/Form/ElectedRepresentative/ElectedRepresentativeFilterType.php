@@ -3,14 +3,13 @@
 namespace App\Form\ElectedRepresentative;
 
 use App\ElectedRepresentative\Filter\ListFilter;
+use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use App\Entity\ElectedRepresentative\Zone;
-use App\Entity\ElectedRepresentative\ZoneCategory;
+use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
-use App\Repository\ElectedRepresentative\ZoneRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ElectedRepresentativeFilterType extends AbstractType
 {
@@ -38,13 +38,22 @@ class ElectedRepresentativeFilterType extends AbstractType
                     'common.gender.unknown' => Genders::UNKNOWN,
                 ],
             ])
-            ->add('isAdherent', ChoiceType::class, [
+            ->add('contactType', ChoiceType::class, [
+                'placeholder' => 'common.all',
+                'choices' => ElectedRepresentativeTypeEnum::ALL,
+                'choice_label' => function (string $choice) {
+                    return "elected_representative.filter.contact_type.$choice";
+                },
+                'expanded' => true,
+                'multiple' => false,
+                'required' => false,
+            ])
+            ->add('emailSubscribed', ChoiceType::class, [
                 'placeholder' => 'common.all',
                 'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
+                    'elected_representative.filter.email_subscribed.subscribed' => true,
+                    'elected_representative.filter.email_subscribed.unsubscribed' => false,
                 ],
-                'expanded' => true,
                 'multiple' => false,
                 'required' => false,
             ])
@@ -69,23 +78,18 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'required' => false,
                 'multiple' => true,
             ])
-            ->add('cities', EntityType::class, [
-                'label' => 'elected_representative.cities',
-                'class' => Zone::class,
-                'required' => false,
+            ->add('zones', Select2EntityType::class, [
                 'multiple' => true,
-                'query_builder' => function (ZoneRepository $zoneRepository) use ($options) {
-                    return $zoneRepository
-                        ->createQueryBuilder('zone')
-                        ->leftJoin('zone.category', 'category')
-                        ->leftJoin('zone.referentTags', 'referentTag')
-                        ->orderBy('zone.name')
-                        ->where('category.name = :category')
-                        ->andWhere('referentTag IN (:tags)')
-                        ->setParameter('tags', $options['referent_tags'])
-                        ->setParameter('category', ZoneCategory::CITY)
-                    ;
-                },
+                'remote_route' => 'api_zone_autocomplete',
+                'remote_params' => ['space' => $options['space_type']],
+                'class' => Zone::class,
+                'primary_key' => 'id',
+                'minimum_input_length' => 2,
+                'page_limit' => 25,
+                'delay' => 250,
+                'language' => 'fr',
+                'placeholder' => 'Zones',
+                'autostart' => false,
             ])
             ->add('userListDefinitions', EntityType::class, [
                 'label' => 'elected_representative.user_list_definitions',
@@ -96,8 +100,8 @@ class ElectedRepresentativeFilterType extends AbstractType
                     return $er
                         ->createQueryBuilder('uld')
                         ->orderBy('uld.label')
-                        ->where('uld.type = :type')
-                        ->setParameter('type', $options['user_list_definition_type'] ?? null)
+                        ->where('uld.type IN (:type)')
+                        ->setParameter('type', $options['user_list_definition_type'] ?? [])
                     ;
                 },
             ])
@@ -117,11 +121,11 @@ class ElectedRepresentativeFilterType extends AbstractType
             ->setDefaults([
                 'data_class' => ListFilter::class,
                 'user_list_definition_type' => null,
-                'referent_tags' => [],
+                'space_type' => null,
                 'allow_extra_fields' => true,
             ])
-            ->setAllowedTypes('user_list_definition_type', 'string')
-            ->setAllowedTypes('referent_tags', 'array')
+            ->setAllowedTypes('user_list_definition_type', 'array')
+            ->setAllowedTypes('space_type', 'string')
         ;
     }
 }

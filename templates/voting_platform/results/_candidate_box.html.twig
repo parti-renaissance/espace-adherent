@@ -1,29 +1,34 @@
 {% import 'voting_platform/_macros.html.twig' as helper %}
 
+{% set candidate_group = candidate_group_result.candidateGroup %}
+
 <div class="candidate__box {{ candidate_group.elected ? 'elected' }} l__row  b__nudge--bottom-medium">
-    <div class="box__content l__row">
-        <div class="candidate-photo avatar-initials avatar--medium avatar--style-01">
-            {% for candidate in candidate_group.candidates %}
-                {{ helper.display_candidate_photo(candidate) }}
-            {% endfor %}
+    <div class="box__content">
+        <div class="l__row l__row--h-stretch">
+            <h3 class="text--medium pool-name">{{ get_election_pool_title_key(pool_result.electionPool)|trans }}</h3>
+            <div class="text--body text--right text--dark">{{ candidate_group_result.total }} bulletin{{ candidate_group_result.total > 1 ? 's' }}</div>
         </div>
 
-        <div class="candidate-infos l__col">
-            {% for candidate in candidate_group.candidates %}
-                <div class="l__row l__row--h-stretch">
-                    <h3 class="candidate-name text--medium b__nudge--bottom-tiny">
-                        {{ candidate.fullName }}
-
-                        {% if candidate_group.elected %}
-                            <span class="elected-tag text--body text--on-yellow text--bold">Candidat désigné</span>
-                        {% endif %}
-                    </h3>
-                    <div class="text--body text--right text--dark">{{ votes }} bulletin{{ votes > 1 ? 's' }}</div>
-                </div>
+        <ul class="candidate-names">
+            {% for candidate in candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+                <li class="text--body">{{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
+                    {% if (pool_result.isElected and candidate_group.elected) or candidate.additionallyElected %}
+                        <span class="elected-tag text--body text--on-yellow text--bold b__nudge--left-small">Désigné{{ candidate.isFemale ? 'e' }}</span>
+                    {% endif %}
+                </li>
             {% endfor %}
+        </ul>
 
+        <div class="candidate-footer l__row">
+            <div class="l__row b__nudge--right">
+                {% for candidate in candidate_group.candidates %}
+                    <div class="candidate-photo avatar-initials avatar--small avatar--style-01">
+                        {{ helper.display_candidate_photo(candidate) }}
+                    </div>
+                {% endfor %}
+            </div>
             <div class="l__row progress-bar">
-                {% set votes_rate = resume.expressed == 0 ? 0 : votes * 100 / resume.expressed %}
+                {% set votes_rate = candidate_group_result.rate %}
                 <div class="progress-bar__gauge">
                     <div class="slider" style="width: {{ votes_rate }}%"></div>
                 </div>

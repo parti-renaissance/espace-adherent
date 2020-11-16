@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.type is constant('App\\Entity\\TerritorialCouncil\\TerritorialCouncilMembershipLog::TYPE_WARNING') %}
+        <span class="label label-warning">{{ object.type }}</span><br/>
+    {% elseif object.type is constant('App\\Entity\\TerritorialCouncil\\TerritorialCouncilMembershipLog::TYPE_INFO') %}
+        <span class="label label-info">{{ object.type }}</span><br/>
+    {% endif %}
+{% endblock %}

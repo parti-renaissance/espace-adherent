@@ -126,7 +126,7 @@ class CertificationAuthorityManagerTest extends WebTestCase
         $this->assertCountMails(1, CertificationRequestBlockedMessage::class, $email);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -136,7 +136,7 @@ class CertificationAuthorityManagerTest extends WebTestCase
         $this->certificationAuthorityManager = $this->container->get(CertificationAuthorityManager::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

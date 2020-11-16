@@ -122,7 +122,7 @@ EOF;
         return $mock;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -137,7 +137,7 @@ EOF;
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->manager = null;
         $this->repository = null;

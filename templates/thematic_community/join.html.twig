@@ -1,0 +1,191 @@
+{% extends 'thematic_community/_layout.html.twig' %}
+
+{% form_theme form 'form_theme_profile.html.twig' %}
+
+{% block page_title 'Rejoindre une cause' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+
+    {% if not app.user %}
+        {% include 'membership/_profile_script.html.twig' with {genderField: '#thematic_community_membership_gender', customGenderField: '#thematic_community_membership_customGender'} %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+
+    <script type="text/javascript">
+      Kernel.onLoad(function() {
+        {% if not app.user %}
+          {{ js.autocomlete_address(form.postAddress, {cityAutocomplete: true}) }}
+        {% endif %}
+        $('.select2').select2({
+          placeholder: 'Sélectionner',
+          theme: 'default em-form',
+        });
+
+        $('.radio-toggler input[type=radio]').on('change', function (e) {
+          const target = $(this).closest('.radio-toggler').data('target');
+          if ($(this).val() == 1) {
+            $(target).show();
+          } else {
+            $(target).hide();
+          }
+        });
+      });
+    </script>
+{% endblock %}
+
+{% block thematic_community_content %}
+    {{ form_start(form, {attr: {class: 'em-form'}}) }}
+    <section class="l__wrapper--600 space-top">
+        <article class="description">
+            <p class="text--body text--dark">
+                {{ thematic_community.description }}
+            </p>
+        </article>
+    </section>
+    {% if not app.user %}
+    <section class="content l__wrapper--600">
+        <article class="account-block background--lighter l__row l__row--pack-center">
+            <div class="">
+                <p class="text--body text--bold text--default-large">Vous êtes adhérent LaREM ?</p>
+                <p class="text--dark">
+                    Pour une inscription simplifiée à cette communauté thématique, <a href="{{ path('app_thematic_community_join', {slug: thematic_community.slug, anonymous_authentication_intention: path('app_user_login')}) }}" class="link--newblue link--no-decor">connectez-vous</a>.
+                </p>
+            </div>
+        </article>
+        <article>
+            <div class="em-form__section">
+                <h2 class="subtitle">Informations personnelles</h2>
+
+                <div class="em-form__row">
+                    {{ form_row(form.lastName) }}
+                    {{ form_row(form.firstName) }}
+                </div>
+
+                <div class="em-form__row">
+                    {{ form_row(form.gender) }}
+                    {{ form_row(form.customGender, {attr: {placeholder: 'Précisez votre genre'}, label_attr: {class: 'invisible'}}) }}
+                </div>
+
+                <div class="em-form__row">
+                    {{ form_row(form.email) }}
+                </div>
+
+                <div class="em-form__row">
+                    {{ form_row(form.phone.country, {half: true, label: 'Téléphone'}) }}
+                    {{ form_row(form.phone.number, {label_attr: {class: 'invisible'}, attr: {placeholder: 'Numéro de téléphone'}}) }}
+                </div>
+
+                <div class="em-form__row">
+                    {{ form_row(form.position) }}
+                    {{ form_row(form.birthDate) }}
+                </div>
+
+                <div class="em-form__row">
+                    <div class="address-autocomplete em-form__group">
+                        <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
+                    </div>
+                    <p class="text--error visually-hidden" id="address-autocomplete-help-message">
+                        Nous n'avons pas reconnu votre adresse, veuillez <a href="#">cliquer ici</a> pour pouvoir la renseigner librement.
+                    </p>
+                </div>
+
+                <div class="address-block">
+                    <div class="em-form__row">
+                        {{ form_row(form.postAddress.address, {attr: {placeholder: 'Adresse postale'}}) }}
+
+                    </div>
+                    <div class="em-form__row">
+                        {{ form_row(form.postAddress.postalCode, {attr: {placeholder: 'Code postal'}}) }}
+                        {{ form_row(form.postAddress.city, {attr: {class: 'register__form__city'}}) }}
+                        {{ form_row(form.postAddress.cityName, {attr: {class: 'register__form__city_name', 'placeholder': 'Ville'}}) }}
+                    </div>
+                    <div class="em-form__row">
+                        {{ form_row(form.postAddress.country, {attr: {placeholder: 'Pays'}}) }}
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    {% endif %}
+    <section class="content l__wrapper--600">
+        <article>
+            <div class="em-form__section">
+                <h2 class="subtitle b__nudge--top-0">Votre profil thématique</h2>
+
+                <div class="em-form__row">
+                    <div class="em-form__group em-form__radio--inline">
+                        {{ form_label(form.hasJob) }}
+                        <div class="radio-toggler" data-target="#form-membership-job">
+                            {{ form_widget(form.hasJob) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div id="form-membership-job" class="em-form__row" {% if not form.hasJob.vars.value %}style="display: none;"{% endif %}>
+                    {{ form_row(form.job) }}
+                </div>
+
+                <div class="em-form__row">
+                    <div class="em-form__group em-form__radio--inline">
+                        {{ form_label(form.association) }}
+                        <div class="radio-toggler" data-target="#form-membership-association">
+                            {{ form_widget(form.association) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div id="form-membership-association" class="em-form__row" {% if not form.association.vars.value %}style="display: none;"{% endif %}>
+                    {{ form_row(form.associationName) }}
+                </div>
+
+                {% if form.userListDefinitions is defined %}
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        {{ form_label(form.userListDefinitions) }}
+                        {{ form_widget(form.userListDefinitions, {attr: {class: 'select2'}}) }}
+                        {{ form_errors(form.userListDefinitions) }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        {{ form_label(form.motivations) }}
+                        {{ form_widget(form.motivations, {attr: {class: 'select2'}}) }}
+                        {{ form_errors(form.motivations) }}
+                    </div>
+                </div>
+
+                <div class="space--30-0">
+                    <button class="btn btn--blue btn--large-and-full">{{ membership is defined ? 'Enregistrer' : 'Je m\'inscris' }}</button>
+                    <a href="{{ path('app_thematic_community_index') }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">Retour</a>
+                </div>
+                {% if membership is defined %}
+                    <div class="text--center">
+                        <a
+                            href="{{ path('app_thematic_community_membership_leave', {uuid: membership.uuid}) }}"
+                            class="em-confirm--trigger text--gray link--no-decor"
+                            data-confirm-title="Confirmation"
+                            data-confirm-content="Voulez-vous vraiment quitter cette communauté ?"
+                        >
+                            Quitter cette communauté
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </article>
+    </section>
+    {{ form_end(form) }}
+{% endblock %}

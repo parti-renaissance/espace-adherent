@@ -2,10 +2,13 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\ReferentTag;
+use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -13,13 +16,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\DesignationRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Designation
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $label;
 
     /**
      * @var string|null
@@ -31,14 +39,18 @@ class Designation
     private $type;
 
     /**
-     * @var string[]
+     * @var string[]|null
      *
-     * @ORM\Column(type="simple_array")
-     *
-     * @Assert\NotBlank
-     * @Assert\Count(min=1)
+     * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $zones = [];
+    private $zones;
+
+    /**
+     * @var ReferentTag[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
+     */
+    private $referentTags;
 
     /**
      * @var \DateTime|null
@@ -108,9 +120,29 @@ class Designation
      */
     private $lockPeriodThreshold = 3;
 
-    public function __construct(UuidInterface $uuid = null)
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $limited = false;
+
+    public function __construct(string $label = null, UuidInterface $uuid = null)
     {
+        $this->label = $label;
         $this->uuid = $uuid ?? Uuid::uuid4();
+
+        $this->referentTags = new ArrayCollection();
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): void
+    {
+        $this->label = $label;
     }
 
     public function getType(): ?string
@@ -123,14 +155,43 @@ class Designation
         $this->type = $type;
     }
 
-    public function getZones(): array
+    public function getZones(): ?array
     {
         return $this->zones;
     }
 
-    public function setZones(array $zones): void
+    public function setZones(?array $zones): void
     {
         $this->zones = $zones;
+    }
+
+    /**
+     * @return ReferentTag[]
+     */
+    public function getReferentTags(): array
+    {
+        return $this->referentTags->toArray();
+    }
+
+    public function addReferentTag(ReferentTag $tag): void
+    {
+        if (!$this->referentTags->contains($tag)) {
+            $this->referentTags->add($tag);
+        }
+    }
+
+    public function removeReferentTag(ReferentTag $tag): void
+    {
+        $this->referentTags->removeElement($tag);
+    }
+
+    public function setReferentTags(array $referentTags): void
+    {
+        $this->referentTags->clear();
+
+        foreach ($referentTags as $tag) {
+            $this->addReferentTag($tag);
+        }
     }
 
     public function getCandidacyStartDate(): ?\DateTime
@@ -216,13 +277,24 @@ class Designation
     /**
      * @Assert\IsTrue(message="La combinaison des dates est invalide.")
      */
-    public function isValid(): bool
+    public function hasValidDates(): bool
     {
         return !empty($this->candidacyStartDate)
             && (
                 (!empty($this->candidacyEndDate) && !empty($this->voteStartDate) && !empty($this->voteEndDate))
                 || (empty($this->candidacyEndDate) && empty($this->voteStartDate) && empty($this->voteEndDate))
             )
+        ;
+    }
+
+    /**
+     * @Assert\IsTrue(message="La configuration de la zone est invalide")
+     */
+    public function hasValidZone(): bool
+    {
+        return
+            ($this->isCommitteeType() && !empty($this->zones))
+            || (DesignationTypeEnum::COPOL === $this->type && !$this->referentTags->isEmpty())
         ;
     }
 
@@ -254,7 +326,53 @@ class Designation
 
         return $this->getVoteEndDate()
             && $this->getVoteEndDate() <= $now
-            && $now < (clone $this->getVoteEndDate())->modify(sprintf('+%d days', $this->getResultDisplayDelay()))
+            && $now < $this->getResultEndDate()
         ;
+    }
+
+    public function getResultEndDate(): ?\DateTime
+    {
+        if (!$this->getVoteEndDate()) {
+            return null;
+        }
+
+        return (clone $this->getVoteEndDate())->modify(sprintf('+%d days', $this->getResultDisplayDelay()));
+    }
+
+    public function markAsLimited(): void
+    {
+        $this->limited = true;
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+        $this->uuid = Uuid::uuid4();
+        $this->referentTags = new ArrayCollection();
+    }
+
+    public function getPoolTypes(): array
+    {
+        switch ($this->getType()) {
+            case DesignationTypeEnum::COMMITTEE_ADHERENT:
+                return ElectionPoolCodeEnum::COMMITTEE_ADHERENT;
+            case DesignationTypeEnum::COPOL:
+                return ElectionPoolCodeEnum::COPOL;
+        }
+
+        return [];
+    }
+
+    public function isCommitteeType(): bool
+    {
+        return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_ADHERENT, DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
+    }
+
+    public function isBinomeDesignation(): bool
+    {
+        return \in_array($this->type, [
+            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+            DesignationTypeEnum::COPOL,
+        ], true);
     }
 }

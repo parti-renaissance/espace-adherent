@@ -1,0 +1,70 @@
+{% extends 'adherent_space/_layout.html.twig' %}
+
+{% set currentUserOrDelegator = current_user() %}
+{% set delegated_access = get_delegated_access() %}
+
+{% block page_title %}
+    {% if app.user is same as(currentUserOrDelegator) %}
+        Espace candidat aux législatives
+    {% else %}
+        Espace candidat aux législatives partagé
+    {% endif %}
+{% endblock %}
+
+{% set hasCharterAccepted = app.user.charters.hasLegislativeCandidateCharterAccepted %}
+
+{% block stylesheets %}
+    {% if not hasCharterAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <main class="manager-space manager-body">
+        <aside class="manager-sidebar">
+            {{ include('legislative_candidate/_sidebar.html.twig') }}
+        </aside>
+
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    {% block legislative_candidate_content %}{% endblock %}
+                </div>
+            </div>
+        </section>
+
+        {% if not hasCharterAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'legislative_candidate.popup.title'|trans,
+                'subtitle': 'legislative_candidate.popup.subtitle'|trans,
+                'fileUrl': 'legislative_candidate.popup.file_url'|trans
+            } %}
+        {% endif %}
+    </main>
+{% endblock %}
+
+{% block adherent_space_header_title %}
+    {% if app.user is not same as(currentUserOrDelegator) %}
+        Vous êtes <span class="text--black text--bold">{{ delegated_access.role|lower }}</span> du candidat aux législatives <span class="text--black text--bold">{{ currentUserOrDelegator }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if not hasCharterAccepted %}
+        {% if js is not defined %}
+            {% import 'javascript.js.twig' as js %}
+        {% endif %}
+
+
+        <script type="text/javascript">
+          Kernel.onLoad(function() {
+              {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE')) }}
+          } );
+        </script>
+    {% endif %}
+{% endblock %}

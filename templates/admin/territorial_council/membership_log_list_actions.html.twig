@@ -1,0 +1,29 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="margin-top: 5px;">
+        <a href="{{ path('admin_app_territorialcouncil_territorialcouncilmembershiplog_edit', { id: object.id }) }}" class="btn btn-xs btn-default" title="Éditer">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Éditer
+        </a>
+        <br />
+
+        {% set electedRepresentative = get_elected_representative(object.adherent) %}
+        {% if electedRepresentative %}
+            <a href="{{ path('admin_app_electedrepresentative_electedrepresentative_edit', { id: electedRepresentative.id }) }}" class="btn btn-xs btn-default" title="Fiche élu">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Fiche élu
+            </a>
+        {% endif %}
+
+        {% set token = csrf_token('territorial_council_membership_log.resolve.' ~ object.id) %}
+        {% set status = object.isResolved
+            ? constant('App\\Controller\\Admin\\AdminTerritorialCouncilMembershipLogController::STATUS_UNRESOLVED')
+            : constant('App\\Controller\\Admin\\AdminTerritorialCouncilMembershipLogController::STATUS_RESOLVED')
+        %}
+        <a href="{{ path('app_admin_territorial_council_membership_log_resolve', { membershipLog: object.id, status: status, token: token }) }}" class="btn btn-xs btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            {{ object.isResolved ? 'Mettre en non résolu' : 'Mettre en résolu' }}
+        </a>
+    </div>
+{% endblock %}

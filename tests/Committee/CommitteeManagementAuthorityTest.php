@@ -5,7 +5,9 @@ namespace Tests\App\Committee;
 use App\Collection\AdherentCollection;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
+use App\Committee\MultipleReferentsFoundException;
 use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Mailer\MailerService;
@@ -23,7 +25,7 @@ class CommitteeManagementAuthorityTest extends TestCase
 {
     public function testApprove()
     {
-        $committee = $this->createCommittee(LoadAdherentData::COMMITTEE_1_UUID, 'Paris 8e');
+        $committee = $this->createCommittee(LoadCommitteeData::COMMITTEE_1_UUID, 'Paris 8e');
         $animator = $this->createAnimator(LoadAdherentData::ADHERENT_3_UUID);
 
         $manager = $this->createManager($animator);
@@ -48,7 +50,7 @@ class CommitteeManagementAuthorityTest extends TestCase
 
     public function testNotifyReferentsForApproval()
     {
-        $committee = $this->createCommittee(LoadAdherentData::COMMITTEE_1_UUID, 'Paris 8e');
+        $committee = $this->createCommittee(LoadCommitteeData::COMMITTEE_1_UUID, 'Paris 8e');
         $animator = $this->createAnimator(LoadAdherentData::ADHERENT_3_UUID);
         $referent = $this->createMock(Adherent::class);
 
@@ -66,19 +68,17 @@ class CommitteeManagementAuthorityTest extends TestCase
             '/espace-adherent/contacter/%s?from=%s&id=%s',
             LoadAdherentData::ADHERENT_3_UUID,
             'committee',
-            LoadAdherentData::COMMITTEE_1_UUID
+            LoadCommitteeData::COMMITTEE_1_UUID
         ));
 
         $committeeManagementAuthority = new CommitteeManagementAuthority($manager, $urlGenerator, $mailer, $this->createMock(EventDispatcherInterface::class));
         $committeeManagementAuthority->notifyReferentsForApproval($committee);
     }
 
-    /**
-     * @expectedException \App\Committee\MultipleReferentsFoundException
-     */
     public function testNotifyReferentsForApprovalWithMultipleReferents()
     {
-        $committee = $this->createCommittee(LoadAdherentData::COMMITTEE_1_UUID, 'Paris 8e');
+        $this->expectException(MultipleReferentsFoundException::class);
+        $committee = $this->createCommittee(LoadCommitteeData::COMMITTEE_1_UUID, 'Paris 8e');
         $animator = $this->createAnimator(LoadAdherentData::ADHERENT_3_UUID);
         $referent = $this->createMock(Adherent::class);
 

@@ -237,6 +237,15 @@ $text--size-extra-large--big: 128px;
     color: $silver-grey;
 }
 
+@mixin subtitle {
+    font-family: $font-gillsans;
+    font-size: 16px;
+    font-weight: normal;
+    color: $neutral-grey;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 .text {
     &--breakword {
         @include breakword;
@@ -474,6 +483,10 @@ $text--size-extra-large--big: 128px;
 
     &--gray {
         color: $black--half;
+    }
+
+    &--black {
+        color: $black;
     }
 
     &--muted {

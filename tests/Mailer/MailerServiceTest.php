@@ -2,6 +2,7 @@
 
 namespace Tests\App\Mailer;
 
+use App\Mailer\EmailClientInterface;
 use App\Mailer\EmailTemplateFactory;
 use App\Mailer\Event\MailerEvent;
 use App\Mailer\Event\MailerEvents;
@@ -36,7 +37,8 @@ class MailerServiceTest extends TestCase
                 'contact@en-marche.fr',
                 'En Marche',
                 DummyEmailTemplate::class
-            )
+            ),
+            $this->createMock(EmailClientInterface::class)
         );
 
         $this->assertTrue($service->sendMessage(DummyMessage::create()));
@@ -63,9 +65,30 @@ class MailerServiceTest extends TestCase
                 'contact@en-marche.fr',
                 'En Marche',
                 DummyEmailTemplate::class
-            )
+            ),
+            $this->createMock(EmailClientInterface::class)
         );
 
         $this->assertFalse($service->sendMessage(DummyMessage::create()));
+    }
+
+    public function testRenderEmailTemplate(): void
+    {
+        $emailClientMock = $this->createConfiguredMock(EmailClientInterface::class, [
+            'renderEmail' => '<p>email template</p>',
+        ]);
+
+        $service = new MailerService(
+            $this->createMock(EventDispatcherInterface::class),
+            new FailingTransport(),
+            new EmailTemplateFactory(
+                'contact@en-marche.fr',
+                'En Marche',
+                DummyEmailTemplate::class
+            ),
+            $emailClientMock
+        );
+
+        $this->assertSame('<p>email template</p>', $service->renderMessage(DummyMessage::create()));
     }
 }

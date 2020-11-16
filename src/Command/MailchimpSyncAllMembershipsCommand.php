@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\CitizenProjectMembership;
 use App\Entity\CommitteeMembership;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\QueryBuilder;
@@ -22,10 +23,12 @@ class MailchimpSyncAllMembershipsCommand extends Command
 
     private const COMMITTEE_TYPE = 'committee';
     private const CITIZEN_PROJECT_TYPE = 'citizen_project';
+    private const TERRITORIAL_COUNCIL_TYPE = 'territorial_council';
 
     private static $allTypes = [
         self::COMMITTEE_TYPE,
         self::CITIZEN_PROJECT_TYPE,
+        self::TERRITORIAL_COUNCIL_TYPE,
     ];
 
     private $entityManager;
@@ -45,7 +48,8 @@ class MailchimpSyncAllMembershipsCommand extends Command
     {
         $this
             ->addArgument('type', null, InputArgument::REQUIRED, implode('|', static::$allTypes))
-            ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED)
+            ->addOption('object-id', null, InputOption::VALUE_REQUIRED)
         ;
     }
 
@@ -63,8 +67,9 @@ class MailchimpSyncAllMembershipsCommand extends Command
         }
 
         $limit = (int) $input->getOption('limit');
+        $objectId = $input->getOption('object-id');
 
-        $paginator = $this->buildPaginator($type);
+        $paginator = $this->buildPaginator($type, $objectId);
 
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
@@ -79,11 +84,12 @@ class MailchimpSyncAllMembershipsCommand extends Command
         $offset = 0;
 
         do {
-            /** @var CommitteeMembership|CitizenProjectMembership $membership */
+            /** @var CommitteeMembership|CitizenProjectMembership|TerritorialCouncilMembership $membership */
             foreach ($paginator->getIterator() as $membership) {
                 switch ($type) {
                     case self::COMMITTEE_TYPE: $object = $membership->getCommittee(); break;
                     case self::CITIZEN_PROJECT_TYPE: $object = $membership->getCitizenProject(); break;
+                    case self::TERRITORIAL_COUNCIL_TYPE: $object = $membership->getTerritorialCouncil(); break;
                 }
 
                 $this->bus->dispatch(new AddAdherentToStaticSegmentCommand(
@@ -108,31 +114,52 @@ class MailchimpSyncAllMembershipsCommand extends Command
         $this->io->progressFinish();
     }
 
-    private function buildPaginator(string $type): Paginator
+    private function buildPaginator(string $type, int $objectId = null): Paginator
     {
-        return new Paginator($this->getQueryBuilder($type)->getQuery());
+        return new Paginator($this->getQueryBuilder($type, $objectId)->getQuery());
     }
 
-    private function getQueryBuilder(string $type): QueryBuilder
+    private function getQueryBuilder(string $type, int $objectId = null): QueryBuilder
     {
         switch ($type) {
             case self::COMMITTEE_TYPE:
-                return $this->entityManager
+                $qb = $this->entityManager
                     ->getRepository(CommitteeMembership::class)
                     ->createQueryBuilder('membership')
                     ->addSelect('PARTIAL adherent.{id, uuid}')
                     ->innerJoin('membership.adherent', 'adherent')
-                    ->innerJoin('membership.committee', 'committee')
+                    ->innerJoin('membership.committee', 'object')
                 ;
+                break;
 
             case self::CITIZEN_PROJECT_TYPE:
-                return $this->entityManager
+                $qb = $this->entityManager
                     ->getRepository(CitizenProjectMembership::class)
                     ->createQueryBuilder('membership')
                     ->addSelect('PARTIAL adherent.{id, uuid}')
                     ->innerJoin('membership.adherent', 'adherent')
-                    ->innerJoin('membership.citizenProject', 'cp')
+                    ->innerJoin('membership.citizenProject', 'object')
                 ;
+                break;
+
+            case self::TERRITORIAL_COUNCIL_TYPE:
+                $qb = $this->entityManager
+                    ->getRepository(TerritorialCouncilMembership::class)
+                    ->createQueryBuilder('membership')
+                    ->addSelect('PARTIAL adherent.{id, uuid}')
+                    ->innerJoin('membership.adherent', 'adherent')
+                    ->innerJoin('membership.territorialCouncil', 'object')
+                ;
+                break;
         }
+
+        if ($objectId) {
+            $qb
+                ->andWhere('object.id = :id')
+                ->setParameter('id', $objectId)
+            ;
+        }
+
+        return $qb;
     }
 }

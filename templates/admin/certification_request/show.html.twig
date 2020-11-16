@@ -115,6 +115,44 @@
                             <div class="table-responsive no-padding">
                                 <table class="table table-bordered table-striped sonata-ba-list">
                                     <tbody>
+                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            <tr>
+                                                <th class="sonata-ba-list-field-header-text">Logs OCR</th>
+                                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                    {% set payload = object.ocrPayload %}
+                                                    {% if payload.labels is defined and payload.labels is not empty %}
+                                                        Labels:
+                                                        <ul>
+                                                            {% for label in payload.labels %}
+                                                                <li>{{ label }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                    {% if payload.webEntities is defined and payload.webEntities is not empty %}
+                                                        Détections:
+                                                        <ul>
+                                                            {% for webEntity in payload.webEntities %}
+                                                                <li>{{ webEntity }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                    {% if payload.text is defined %}
+                                                        Texte:
+                                                        <pre style="max-height: 700px; overflow: scroll;">
+                                                            {{- payload.text|replace({'\\n': '\n'}) -}}
+                                                        </pre>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <th class="sonata-ba-list-field-header-text">Résultat OCR</th>
+                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                {% if object.isPreRefused %}
+                                                    {{ ('certification_request.refusal_reason.' ~ object.ocrResult)|trans }}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <th class="sonata-ba-list-field-header-text">Lien</th>
                                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
@@ -136,7 +174,7 @@
                                                        src="{{ admin.generateObjectUrl('document', object) }}"
                                                        width="100%"
                                                        style="min-height: 400px"
-                                                      >
+                                                >
                                             </td>
                                         </tr>
                                     </tbody>

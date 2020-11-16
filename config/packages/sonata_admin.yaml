@@ -1,5 +1,6 @@
 sonata_admin:
     title_logo: logo/small_bg_white.jpg
+    show_mosaic_button: false
     templates:
         layout:  admin/layout.html.twig
     security:

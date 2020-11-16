@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,8 +12,6 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\CandidateGroupRepository")
  *
  * @ORM\Table(name="voting_platform_candidate_group")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CandidateGroup
 {
@@ -82,5 +79,23 @@ class CandidateGroup
     public function setElected(bool $elected): void
     {
         $this->elected = $elected;
+    }
+
+    public function getGenders(): array
+    {
+        return array_map(function (Candidate $candidate) {
+            return $candidate->getGender();
+        }, $this->candidates->toArray());
+    }
+
+    public function getCandidateByGender(string $gender): ?Candidate
+    {
+        foreach ($this->candidates as $candidate) {
+            if ($candidate->getGender() === $gender) {
+                return $candidate;
+            }
+        }
+
+        return null;
     }
 }

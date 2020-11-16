@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Skill;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadSkillData implements FixtureInterface
+class LoadSkillData extends Fixture
 {
     const SKILLS = [
         'S001' => 'Software',

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="donation_transactions", indexes={
  *     @ORM\Index(name="donation_transactions_result_idx", columns={"paybox_result_code"})
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Transaction
 {
