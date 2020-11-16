@@ -47,6 +47,12 @@ class LoadCertificationData extends Fixture implements DependentFixtureInterface
         $adherent1->certify();
         $manager->persist(AdherentCertificationHistory::createCertify($adherent1, $administrator));
 
+        $adherent6->certify();
+        $manager->persist(AdherentCertificationHistory::createCertify($adherent6, $administrator));
+
+        $adherent7->certify();
+        $manager->persist(AdherentCertificationHistory::createCertify($adherent7, $administrator));
+
         // Adherent with pending certification request
         $manager->persist($this->createRequest($adherent2));
 
