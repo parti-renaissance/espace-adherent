@@ -10,6 +10,7 @@ use App\Intl\FranceCitiesBundle;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
+use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -85,8 +86,11 @@ abstract class AbstractMyTeamController extends Controller
     /**
      * @Route("/search", name="search", methods={"POST"})
      */
-    public function search(Request $request, AdherentRepository $adherentRepository): Response
-    {
+    public function search(
+        Request $request,
+        AdherentRepository $adherentRepository,
+        ReferentTagRepository $referentTagRepository
+    ): Response {
         $form = $this->createForm(MyTeamSearchAdherentType::class);
         $form->handleRequest($request);
 
@@ -161,6 +165,8 @@ abstract class AbstractMyTeamController extends Controller
     ): array;
 
     abstract protected function getManagedTags(Adherent $adherent): array;
+
+    abstract protected function getZones(Adherent $adherent): array;
 
     private function renderTemplate(string $template, array $parameters = [])
     {

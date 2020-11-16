@@ -26,6 +26,11 @@ class DeputyMyTeamController extends AbstractMyTeamController
         return [$adherent->getManagedDistrict()->getReferentTag()];
     }
 
+    protected function getZones(Adherent $adherent): array
+    {
+        return [];
+    }
+
     protected function getSpaceType(): string
     {
         return self::SPACE_NAME;

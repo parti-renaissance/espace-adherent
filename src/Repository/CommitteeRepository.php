@@ -434,6 +434,18 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findByPartialNameForCandidate(array $referentTags, string $search, int $limit = 10): array
+    {
+        $qb = $this
+            ->createPartialNameQueryBuilder($search, $alias = 'committee')
+            ->setMaxResults($limit)
+        ;
+
+        $this->applyGeoFilter($qb, $referentTags, $alias);
+
+        return $qb->getQuery()->getResult();
+    }
+
     private function createPartialNameQueryBuilder(string $search, string $alias = 'c'): QueryBuilder
     {
         return $this

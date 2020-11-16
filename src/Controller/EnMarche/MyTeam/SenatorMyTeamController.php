@@ -26,6 +26,11 @@ class SenatorMyTeamController extends AbstractMyTeamController
         return [$adherent->getSenatorArea()->getDepartmentTag()];
     }
 
+    protected function getZones(Adherent $adherent): array
+    {
+        return [];
+    }
+
     protected function getSpaceType(): string
     {
         return self::SPACE_NAME;

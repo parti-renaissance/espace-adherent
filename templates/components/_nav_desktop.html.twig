@@ -205,6 +205,7 @@
     is_granted('ROLE_DELEGATED_REFERENT') or
     is_granted('ROLE_DELEGATED_DEPUTY') or
     is_granted('ROLE_DELEGATED_SENATOR') or
+    is_granted('ROLE_DELEGATED_CANDIDATE') or
     is_granted('ROLE_LRE') or
     is_granted('ROLE_THEMATIC_COMMUNITY_CHIEF')
 %}
@@ -231,6 +232,7 @@
         app.user.isDelegatedReferent +
         app.user.isDelegatedDeputy +
         app.user.isDelegatedSenator +
+        app.user.isDelegatedCandidate +
         app.user.isThematicCommunityChief
     %}
 

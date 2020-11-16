@@ -83,6 +83,18 @@
         <span class="label label-primary" style="padding: 2px;">Candidat aux départementales</span><br/>
     {% endif %}
 
+    {% if object.isDelegatedHeadedRegionalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Tête de liste aux régionales délégué</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedLeaderRegionalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Chef de file aux régionales délégué</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedDepartmentalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Candidat aux départementales délégué</span><br/>
+    {% endif %}
+
     {% if object.isMunicipalManager %}
         <span class="label label-primary" style="padding: 2px;">Responsable communal</span><br/>
     {% endif %}

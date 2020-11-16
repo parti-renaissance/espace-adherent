@@ -99,6 +99,9 @@ senatorial_candidate: Candidat Sénatoriales 2020
 candidate_regional_headed: Tête de liste aux régionales
 candidate_regional_leader: Chef de file aux régionales
 candidate_departmental: Candidat aux départementales
+delegated_candidate_regional_headed: Tête de liste aux régionales délégué
+delegated_candidate_regional_leader: Chef de file aux régionales délégué
+delegated_candidate_departmental: Candidat aux départementales délégué
 lre: La République Ensemble (LRE)
 legislative_candidate: Candidat aux législatives
 thematic_community_chief: Responsable Thématique
@@ -894,13 +897,14 @@ designation.candidate.status.confirmed: Confirmée
 #
 # Delegated access
 #
-delegated_access.form.access.messages: Mes messages
+delegated_access.form.access.messages: Messagerie
 delegated_access.form.access.events: Événements
 delegated_access.form.access.adherents: Adhérents
 delegated_access.form.access.committee: Comités
 delegated_access.form.access.jecoute: J'écoute
 delegated_access.form.access.citizen_projects: Projets citoyens
 delegated_access.form.access.elected_representatives: Élus
+delegated_access.form.access.files: Documents
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
 delegated_access.updated_successfully: L'accès délégué à votre espace a correctement été mis à jour
 delegated_access.deleted_successfully: L'accès délégué à votre espace a correctement été supprimé

@@ -3,6 +3,7 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadCommitteeData;
+use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
@@ -128,12 +129,14 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         // Ex-host should be allow to follow again
         $this->assertTrue($this->seeFollowLink($crawler));
 
-        // Clear security token
-        $this->client->getCookieJar()->clear();
+        $this->logout($this->client);
+        $this->getEntityManager(Adherent::class)->clear();
 
         // Login again as supervisor
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
 
