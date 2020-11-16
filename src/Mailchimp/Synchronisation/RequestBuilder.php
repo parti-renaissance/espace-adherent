@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -15,6 +16,7 @@ use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use App\Repository\ReferentTagRepository;
+use Doctrine\Common\Collections\Collection;
 
 class RequestBuilder
 {
@@ -43,6 +45,12 @@ class RequestBuilder
     private $isSubscribeRequest = true;
     private $referentTagsCodes = [];
 
+    /** @var Zone|null */
+    private $zoneCity;
+    private $zoneDepartment;
+    private $zoneRegion;
+    private $zoneCountry;
+
     public function __construct(
         MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder
@@ -67,6 +75,7 @@ class RequestBuilder
             ->setActiveTags($this->getAdherentActiveTags($adherent))
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
+            ->setZones($adherent->getZones())
         ;
     }
 
@@ -233,6 +242,46 @@ class RequestBuilder
         return $this;
     }
 
+    /**
+     * @param Collection|Zone[] $zones
+     */
+    public function setZones(Collection $zones): self
+    {
+        foreach ($zones as $zone) {
+            $this->setZone($zone);
+
+            foreach ($zone->getParents() as $parent) {
+                $this->setZone($parent);
+            }
+        }
+
+        return $this;
+    }
+
+    private function setZone(Zone $zone): void
+    {
+        switch ($zone->getType()) {
+            case Zone::CITY:
+                $this->zoneCity = $zone;
+
+                break;
+            case Zone::DEPARTMENT:
+                $this->zoneDepartment = $zone;
+
+                break;
+            case Zone::REGION:
+                $this->zoneRegion = $zone;
+
+                break;
+            case Zone::COUNTRY:
+                $this->zoneCountry = $zone;
+
+                break;
+            default:
+                break;
+        }
+    }
+
     public function buildMemberRequest(string $memberIdentifier): MemberRequest
     {
         $request = new MemberRequest($memberIdentifier);
@@ -320,6 +369,22 @@ class RequestBuilder
 
         if (false !== $this->takenForCity) {
             $mergeFields[MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM] = (string) $this->takenForCity;
+        }
+
+        if ($this->zoneCity) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CITY] = (string) $this->zoneCity;
+        }
+
+        if ($this->zoneDepartment) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DEPARTMENT] = (string) $this->zoneDepartment;
+        }
+
+        if ($this->zoneRegion) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_REGION] = (string) $this->zoneRegion;
+        }
+
+        if ($this->zoneCountry) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_COUNTRY] = (string) $this->zoneCountry;
         }
 
         return $mergeFields;
