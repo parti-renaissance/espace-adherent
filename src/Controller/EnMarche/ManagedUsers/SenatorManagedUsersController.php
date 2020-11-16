@@ -31,6 +31,7 @@ class SenatorManagedUsersController extends AbstractManagedUsersController
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
             'single_zone' => true,
+            'space_type' => $this->getSpaceType(),
         ]);
     }
 
@@ -42,7 +43,7 @@ class SenatorManagedUsersController extends AbstractManagedUsersController
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::SENATOR_EMAIL,
-            [$adherent->getSenatorArea()->getDepartmentTag()],
+            [$adherent->getSenatorArea()->getDepartmentTag()->getZone()],
             $this->getRestrictedCommittees($session),
             $this->getRestrictedCities($session)
         );

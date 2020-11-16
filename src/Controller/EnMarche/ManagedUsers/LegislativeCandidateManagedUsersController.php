@@ -31,6 +31,7 @@ class LegislativeCandidateManagedUsersController extends AbstractManagedUsersCon
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
             'single_zone' => true,
+            'space_type' => $this->getSpaceType(),
         ]);
     }
 
@@ -41,7 +42,7 @@ class LegislativeCandidateManagedUsersController extends AbstractManagedUsersCon
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::CANDIDATE_EMAIL,
-            [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()]
+            [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()->getZone()],
         );
     }
 }

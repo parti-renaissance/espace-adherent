@@ -6,8 +6,9 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData      |
-      | LoadDistrictData      |
+      | LoadAdherentData               |
+      | LoadDistrictData               |
+      | LoadReferentTagsZonesLinksData |
 
   Scenario: As deputy, I should see a popup when I'm in the deputy space
     Given I am logged as "deputy@en-marche-dev.fr"

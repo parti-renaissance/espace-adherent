@@ -4,12 +4,14 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\Entity\Geo\Zone;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentManagedUsersMessage;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use App\Mailer\Message\InstitutionalEventInvitationMessage;
 use App\Repository\ReferentManagedUsersMessageRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
@@ -224,50 +226,36 @@ class ReferentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         self::assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
-        $data = [
-            'f' => [
-                'city' => 77,
-            ],
-        ];
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        /* @var ChoiceFormField $zonesField */
+        $zonesField = $form->get('f[zones]');
+        $zonesField->disableValidation()->setValue([
+            $this->getRepository(Zone::class)->findOneBy([
+                'type' => Zone::DEPARTMENT,
+                'code' => '77', // Seine-et-Marne
+            ])->getId(),
+        ]);
+
+        $this->client->submit($form);
         self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         self::assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
-        $data = [
-            'f' => [
-                'city' => 'Melun',
-            ],
-        ];
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        /* @var ChoiceFormField $zonesField */
+        $zonesField = $form->get('f[zones]');
+        $zonesField->disableValidation()->setValue([
+            $this->getRepository(Zone::class)->findOneBy([
+                'type' => Zone::CITY,
+                'code' => '77288', // Melun
+            ])->getId(),
+        ]);
+
+        $this->client->submit($form);
         self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $data = [
-            'f' => [
-                'city' => 'FR',
-            ],
-        ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $data = [
-            'f' => [
-                'city' => 13,
-            ],
-        ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $data = [
-            'f' => [
-                'city' => 59,
-            ],
-        ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Gender
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
@@ -311,17 +299,6 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         self::assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        // Managed Area
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $data = [
-            'f' => [
-                'referentTags' => 102,
-            ],
-        ];
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testFilterAdherents()

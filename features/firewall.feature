@@ -6,8 +6,9 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadHomeBlockData |
-      | LoadAdherentData  |
+      | LoadHomeBlockData              |
+      | LoadAdherentData               |
+      | LoadReferentTagsZonesLinksData |
 
   Scenario Outline: As an anonymous I can view non-secured pages
     Given I am on "<uri>"

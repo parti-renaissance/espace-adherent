@@ -41,7 +41,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'is_committee_supervisor' => 0,
             'subscription_types' => [SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
-            'zone' => null,
+            'zone' => $this->getReference('zone_country_CH'),
             'created_at' => '2017-06-01 09:22:45',
             'gender' => 'male',
         ]);
@@ -67,7 +67,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'is_committee_supervisor' => 0,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
-            'zone' => null,
+            'zone' => $this->getReference('zone_country_CH'),
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
         ]);
@@ -93,7 +93,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'is_committee_supervisor' => 0,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => '92,59',
-            'zone' => null,
+            'zone' => $this->getReference('zone_department_92'),
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
             'citizenProjects' => [
@@ -123,7 +123,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'is_committee_supervisor' => 1,
             'subscription_types' => null,
             'subscribedTags' => '77,59',
-            'zone' => null,
+            'zone' => $this->getReference('zone_city_77288'),
             'created_at' => '2017-08-12 16:12:13',
             'gender' => 'male',
             'supervisor_tags' => [
@@ -154,6 +154,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
     {
         return [
             LoadCommitteeData::class,
+            LoadGeoZoneData::class,
         ];
     }
 }

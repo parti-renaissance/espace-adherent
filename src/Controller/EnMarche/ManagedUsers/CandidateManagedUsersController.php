@@ -29,6 +29,7 @@ class CandidateManagedUsersController extends AbstractManagedUsersController
         return $this->createForm(CandidateManagedUsersFilterType::class, $filter, [
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
+            'space_type' => $this->getSpaceType(),
         ]);
     }
 
@@ -38,10 +39,10 @@ class CandidateManagedUsersController extends AbstractManagedUsersController
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::CANDIDATE_EMAIL,
+            [$this->getMainUser($session)->getCandidateManagedArea()->getZone()],
             [],
             [],
             [],
-            [$this->getMainUser($session)->getCandidateManagedArea()->getZone()]
         );
     }
 }

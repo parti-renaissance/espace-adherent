@@ -4,7 +4,7 @@ namespace App\Form\AdherentMessage;
 
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\UserListDefinitionEnum;
-use App\Form\MyReferentTagChoiceType;
+use App\Form\MyZoneChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,7 +19,7 @@ class ReferentElectedRepresentativeFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (false === $options['single_zone']) {
-            $builder->add('referentTag', MyReferentTagChoiceType::class);
+            $builder->add('managedZone', MyZoneChoiceType::class);
         }
 
         $builder->remove('label');

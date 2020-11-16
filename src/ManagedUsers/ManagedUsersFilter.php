@@ -4,7 +4,6 @@ namespace App\ManagedUsers;
 
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
-use App\Entity\ReferentTag;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -89,14 +88,14 @@ class ManagedUsersFilter
     private $includeCitizenProjectHosts;
 
     /**
-     * @var ReferentTag[]
+     * @var Zone[]
      *
      * @Assert\Expression(
-     *     expression="this.getReferentTags() or this.getZones()",
+     *     expression="this.getManagedZones() or this.getZones()",
      *     message="referent.managed_zone.empty"
      * )
      */
-    private $referentTags;
+    private $managedZones;
 
     /**
      * @var Zone[]
@@ -156,17 +155,17 @@ class ManagedUsersFilter
 
     public function __construct(
         string $subscriptionType = null,
-        array $referentTags = [],
+        array $managedZones = [],
         array $committeeUuids = [],
         array $cities = [],
         array $zones = []
     ) {
-        if (empty($referentTags) && empty($zones)) {
-            throw new \InvalidArgumentException('Both referent tags and zones could not be empty');
+        if (empty($managedZones) && empty($zones)) {
+            throw new \InvalidArgumentException('Both managed zones and zones could not be empty');
         }
 
         $this->subscriptionType = $subscriptionType;
-        $this->referentTags = $referentTags;
+        $this->managedZones = $managedZones;
         $this->zones = $zones;
         $this->committeeUuids = $committeeUuids;
         $this->cities = $cities;
@@ -318,27 +317,27 @@ class ManagedUsersFilter
     }
 
     /**
-     * @return ReferentTag[]
+     * @return Zones[]
      */
-    public function getReferentTags(): array
+    public function getManagedZones(): array
     {
-        return $this->referentTags;
+        return $this->managedZones;
     }
 
-    public function addReferentTag(ReferentTag $referentTag): void
+    public function addManagedZone(Zone $zone): void
     {
-        $this->referentTags[] = $referentTag;
+        $this->managedZones[] = $zone;
     }
 
-    public function removeReferentTag(ReferentTag $referentTag): void
+    public function removeManagedZone(Zone $zone): void
     {
-        foreach ($this->referentTags as $key => $tag) {
-            if ($tag->getId() === $referentTag->getId()) {
-                unset($this->referentTags[$key]);
+        foreach ($this->managedZones as $key => $managedZone) {
+            if ($managedZone->getId() === $zone->getId()) {
+                unset($this->managedZones[$key]);
             }
         }
 
-        $this->referentTags = array_values($this->referentTags);
+        $this->managedZones = array_values($this->managedZones);
     }
 
     /**
@@ -460,7 +459,7 @@ class ManagedUsersFilter
                 'registeredSince' => $this->registeredSince ? $this->registeredSince->format('Y-m-d') : null,
                 'registeredUntil' => $this->registeredUntil ? $this->registeredUntil->format('Y-m-d') : null,
                 'zones' => 1 === \count($this->zones) ? current($this->zones)->getId() : null,
-                'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
+                'managedZones' => 1 === \count($this->managedZones) ? current($this->managedZones)->getId() : null,
                 'smsSubscription' => $this->smsSubscription,
                 'emailSubscription' => $this->emailSubscription,
                 'voteInCommittee' => $this->voteInCommittee,

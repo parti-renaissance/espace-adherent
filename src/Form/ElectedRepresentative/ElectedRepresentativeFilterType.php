@@ -7,9 +7,9 @@ use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
+use App\Form\ZoneAutoCompleteType;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,7 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ElectedRepresentativeFilterType extends AbstractType
 {
@@ -78,18 +77,8 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'required' => false,
                 'multiple' => true,
             ])
-            ->add('zones', Select2EntityType::class, [
-                'multiple' => true,
-                'remote_route' => 'api_zone_autocomplete',
+            ->add('zones', ZoneAutoCompleteType::class, [
                 'remote_params' => ['space' => $options['space_type']],
-                'class' => Zone::class,
-                'primary_key' => 'id',
-                'minimum_input_length' => 2,
-                'page_limit' => 25,
-                'delay' => 250,
-                'language' => 'fr',
-                'placeholder' => 'Zones',
-                'autostart' => false,
             ])
             ->add('userListDefinitions', EntityType::class, [
                 'label' => 'elected_representative.user_list_definitions',

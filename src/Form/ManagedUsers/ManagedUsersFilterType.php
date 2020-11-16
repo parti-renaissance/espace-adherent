@@ -2,12 +2,12 @@
 
 namespace App\Form\ManagedUsers;
 
-use App\Entity\ReferentTag;
+use App\Entity\Geo\Zone;
 use App\Form\DatePickerType;
 use App\Form\EventListener\IncludeExcludeFilterRoleListener;
 use App\Form\FilterRoleType;
 use App\Form\MemberInterestsChoiceType;
-use App\Form\MyReferentTagChoiceType;
+use App\Form\MyZoneChoiceType;
 use App\ManagedUsers\ManagedUsersFilter;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -51,28 +51,28 @@ class ManagedUsersFilterType extends AbstractManagedUsersFilterType
         ;
 
         if (false === $options['single_zone']) {
-            $builder->add('referentTags', MyReferentTagChoiceType::class, [
+            $builder->add('managedZones', MyZoneChoiceType::class, [
                 'placeholder' => 'Tous',
                 'required' => false,
                 'by_reference' => false,
             ]);
 
-            $referentTagsField = $builder->get('referentTags');
+            $managedZonesField = $builder->get('managedZones');
 
-            $referentTagsField->addModelTransformer(new CallbackTransformer(
-                static function ($value) use ($referentTagsField) {
-                    if (\is_array($value) && \count($value) === \count($referentTagsField->getOption('choices'))) {
+            $managedZonesField->addModelTransformer(new CallbackTransformer(
+                static function ($value) use ($managedZonesField) {
+                    if (\is_array($value) && \count($value) === \count($managedZonesField->getOption('choices'))) {
                         return null;
                     }
 
                     return $value;
                 },
-                static function ($value) use ($referentTagsField) {
+                static function ($value) use ($managedZonesField) {
                     if (null === $value) {
-                        return  $referentTagsField->getOption('choices');
+                        return  $managedZonesField->getOption('choices');
                     }
 
-                    if ($value instanceof ReferentTag) {
+                    if ($value instanceof Zone) {
                         return [$value];
                     }
 
@@ -86,6 +86,8 @@ class ManagedUsersFilterType extends AbstractManagedUsersFilterType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $resolver
             ->setDefaults([
                 'data_class' => ManagedUsersFilter::class,
