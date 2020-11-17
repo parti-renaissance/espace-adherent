@@ -47,7 +47,7 @@ abstract class AbstractManagedUsersController extends Controller
             'form' => $form->createView(),
             'users' => $users,
             'filter' => $filter,
-            'total_count' => $this->managedUsersRepository->countManagedUsers($filter->getReferentTags(), $filter->getZones()),
+            'total_count' => $this->managedUsersRepository->countManagedUsers($filter->getManagedZones()),
         ]);
     }
 

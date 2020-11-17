@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\ReferentTag;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Security;
@@ -36,6 +37,9 @@ abstract class AbstractConnectedUserFormType extends AbstractType
         return $user;
     }
 
+    /**
+     * @return ReferentTag[]
+     */
     protected function getReferentTags(): array
     {
         if (!$user = $this->getUser()) {
@@ -47,5 +51,16 @@ abstract class AbstractConnectedUserFormType extends AbstractType
         }
 
         return $user->getManagedArea()->getTags()->toArray();
+    }
+
+    protected function getReferentZones(): array
+    {
+        $zones = [];
+
+        foreach ($this->getReferentTags() as $referentTag) {
+            $zones[] = $referentTag->getZone();
+        }
+
+        return $zones;
     }
 }

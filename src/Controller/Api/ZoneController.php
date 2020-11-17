@@ -87,6 +87,14 @@ class ZoneController extends AbstractController
             return $zones;
         }
 
+        if ('candidate' === $spaceType) {
+            return [$adherent->getCandidateManagedArea()->getZone()];
+        }
+
+        if ('legislative_candidate' === $spaceType) {
+            return [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()->getZone()];
+        }
+
         return [];
     }
 

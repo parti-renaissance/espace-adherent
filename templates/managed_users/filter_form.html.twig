@@ -9,11 +9,11 @@
         <div class="manager__filters__row">
             <div class="manager__filters__section">
                 <div class="manager__filters__group">
-                    {% if form.referentTags is defined %}
+                    {% if form.managedZones is defined %}
                         <div class="filter__row">
                             <label class="filter__label">Zones gérées</label>
-                            {{ form_widget(form.referentTags, {attr: {class: 'filter__field'}}) }}
-                            {{ form_errors(form.referentTags) }}
+                            {{ form_widget(form.managedZones, {attr: {class: 'filter__field'}}) }}
+                            {{ form_errors(form.managedZones) }}
                         </div>
                     {% endif %}
 
@@ -97,9 +97,9 @@
                     </div>
 
                     <div class="filter__row">
-                        <label class="filter__label">Ville ou code postal</label>
-                        {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
-                        {{ form_errors(form.city) }}
+                        <label class="filter__label">Zones</label>
+                        {{ form_widget(form.zones) }}
+                        {{ form_errors(form.zones) }}
                     </div>
 
                     <div class="filter__row">

@@ -7,12 +7,10 @@ use App\Entity\Projection\ManagedUser;
 use App\Intl\FranceCitiesBundle;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\PaginatorTrait;
-use App\Repository\ReferentTagRepository;
 use App\Repository\ReferentTrait;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -58,13 +56,9 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        if ($filter->getReferentTags()) {
-            $this->withZoneCondition($qb, $filter->getReferentTags());
-        }
+        $this->withZoneCondition($qb, $filter->getManagedZones());
 
-        if ($filter->getZones()) {
-            $this->withGeoZoneCondition($qb, $filter->getZones());
-        }
+        $this->withZoneCondition($qb, $filter->getZones());
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();
@@ -204,17 +198,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (true === $filter->includeCommitteeSupervisors()) {
-            $and = new Andx();
-            $and->add('u.isCommitteeSupervisor = 1');
-
-            $supervisorExpression = $qb->expr()->orX();
-            foreach ($filter->getReferentTags() as $key => $code) {
-                $supervisorExpression->add(sprintf('FIND_IN_SET(:code_%s, u.supervisorTags) > 0', $key));
-                $qb->setParameter('code_'.$key, $code->getCode());
-            }
-
-            $and->add($supervisorExpression);
-            $typeExpression->add($and);
+            $typeExpression->add('u.isCommitteeSupervisor = 1');
         }
 
         if (true === $filter->includeCitizenProjectHosts()) {
@@ -279,10 +263,10 @@ class ManagedUserRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function countManagedUsers(array $referentTags = [], array $zones = []): int
+    public function countManagedUsers(array $zones = []): int
     {
-        if (empty($referentTags) && empty($zones)) {
-            throw new \InvalidArgumentException('Both referent tags and zones could not be empty');
+        if (empty($zones)) {
+            throw new \InvalidArgumentException('Zones could not be empty');
         }
 
         $qb = $this
@@ -290,13 +274,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->select('COUNT(u.id)')
         ;
 
-        if ($referentTags) {
-            $this->withZoneCondition($qb, $referentTags);
-        }
-
-        if ($zones) {
-            $this->withGeoZoneCondition($qb, $zones);
-        }
+        $this->withZoneCondition($qb, $zones);
 
         return (int) $qb
             ->getQuery()
@@ -304,41 +282,31 @@ class ManagedUserRepository extends ServiceEntityRepository
         ;
     }
 
-    private function withZoneCondition(QueryBuilder $qb, array $referentTags, string $alias = 'u'): QueryBuilder
+    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'u'): QueryBuilder
     {
-        if (1 === \count($referentTags) && ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === ($tag = current($referentTags))->getCode()) {
-            return $qb->andWhere("${alias}.country != 'FR'");
+        if (!$zones) {
+            return $qb;
         }
 
-        $tagsFilter = $qb->expr()->orX();
-
-        foreach ($referentTags as $key => $tag) {
-            $tagsFilter->add("FIND_IN_SET(:tag_$key, $alias.subscribedTags) > 0");
-            $tagsFilter->add(
-                $qb->expr()->andX(
-                    "$alias.country = 'FR'",
-                    $qb->expr()->like("$alias.committeePostalCode", ":tag_prefix_$key")
-                )
-            );
-            $qb->setParameter("tag_$key", $tag->getCode());
-            $qb->setParameter("tag_prefix_$key", $tag->getCode().'%');
+        if (!\in_array('zone', $qb->getAllAliases(), true)) {
+            $qb->innerJoin("$alias.zone", 'zone');
         }
 
-        return $qb->andWhere($tagsFilter);
-    }
+        if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {
+            $qb->innerJoin('zone.parents', 'zone_parent');
+        }
 
-    private function withGeoZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'u'): QueryBuilder
-    {
+        $ids = array_map(static function ($zone) {
+            return $zone->getId();
+        }, $zones);
+
         return $qb
-            ->innerJoin("$alias.zone", 'zone')
-            ->leftJoin('zone.parents', 'parent')
             ->andWhere(
                 $qb->expr()->orX(
-                    $qb->expr()->in('zone.id', ':zones'),
-                    $qb->expr()->in('parent.id', ':zones'),
+                    $qb->expr()->in('zone.id', $ids),
+                    $qb->expr()->in('zone_parent.id', $ids),
                 )
             )
-            ->setParameter(':zones', $zones)
         ;
     }
 }

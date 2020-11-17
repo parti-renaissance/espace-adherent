@@ -30,7 +30,7 @@ class ManagedUserControllerTest extends WebTestCase
         return [
             ['/espace-referent', 'referent@en-marche-dev.fr', 4],
             ['/espace-depute', 'deputy@en-marche-dev.fr', 1],
-            ['/espace-senateur', 'senateur@en-marche-dev.fr', 2],
+            ['/espace-senateur', 'senateur@en-marche-dev.fr', 1],
         ];
     }
 

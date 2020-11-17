@@ -122,4 +122,12 @@ class Zone implements GeoInterface
     {
         return $this->children->toArray();
     }
+
+    public function isInFrance(): bool
+    {
+        return
+            !\in_array($this->type, [self::COUNTRY, self::FOREIGN_DISTRICT, self::CONSULAR_DISTRICT]) ||
+            (self::COUNTRY === $this->type && 'FR' === $this->code)
+        ;
+    }
 }

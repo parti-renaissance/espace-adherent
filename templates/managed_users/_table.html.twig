@@ -67,7 +67,13 @@
                     {{ (hasSmsSubscriptionType ? 'global.yes' : 'global.no')|trans }}
                 </span>
             </td>
-            <td>{{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}</td>
+            <td>
+                {{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}
+                {% if not user.zone.isInFrance %}
+                    <br>
+                    <small>Zone: {{ user.zone.nameCode }}</small>
+                {% endif %}
+            </td>
             <td>
                 {% set committees_count = user.committees|length %}
 

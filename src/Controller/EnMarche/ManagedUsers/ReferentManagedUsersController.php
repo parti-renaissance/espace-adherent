@@ -29,6 +29,7 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
         return $this->createForm(ReferentManagedUsersFilterType::class, $filter, [
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
+            'space_type' => $this->getSpaceType(),
         ]);
     }
 
@@ -38,7 +39,7 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::REFERENT_EMAIL,
-            $this->getMainUser($session)->getManagedArea()->getTags()->toArray(),
+            $this->getMainUser($session)->getManagedArea()->getZones()->toArray(),
             $this->getRestrictedCommittees($session),
             $this->getRestrictedCities($session)
         );
