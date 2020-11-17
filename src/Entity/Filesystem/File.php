@@ -417,6 +417,11 @@ class File
         return FileTypeEnum::EXTERNAL_LINK === $this->type;
     }
 
+    public function isPdf(): bool
+    {
+        return 'application/x-pdf' === $this->mimeType || 'application/pdf' === $this->mimeType;
+    }
+
     public function markAsFile(): void
     {
         $this->type = FileTypeEnum::FILE;

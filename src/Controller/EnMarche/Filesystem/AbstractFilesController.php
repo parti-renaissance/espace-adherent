@@ -47,7 +47,7 @@ abstract class AbstractFilesController extends Controller
         ]);
 
         $disposition = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $file->isPdf() ? ResponseHeaderBag::DISPOSITION_INLINE : ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             $this->getFilenameForDownload($file)
         );
 
