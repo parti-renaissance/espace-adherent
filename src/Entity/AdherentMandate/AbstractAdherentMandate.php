@@ -23,8 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class AbstractAdherentMandate
 {
-    const COMMITTEE_TYPE = 'committee';
-    const TERRITORIAL_COUNCIL_TYPE = 'territorial_council';
+    public const REASON_ELECTION = 'election';
+    public const REASON_COMMITTEE_MERGE = 'committee_merge';
+    public const REASON_MANUAL = 'manual';
 
     use EntityIdentityTrait;
 
@@ -94,6 +95,13 @@ abstract class AbstractAdherentMandate
      * @Assert\Choice(choices=App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS, strict=true)
      */
     protected $quality;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $reason;
 
     public function __construct(Adherent $adherent, string $gender, \DateTime $beginAt, \DateTime $finishAt = null)
     {
@@ -182,5 +190,15 @@ abstract class AbstractAdherentMandate
     public function setQuality(string $quality): void
     {
         $this->quality = $quality;
+    }
+
+    public function getReason(): ?string
+    {
+        return $this->reason;
+    }
+
+    public function setReason(?string $reason): void
+    {
+        $this->reason = $reason;
     }
 }

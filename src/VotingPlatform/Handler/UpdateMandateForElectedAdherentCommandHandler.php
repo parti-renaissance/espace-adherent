@@ -2,6 +2,7 @@
 
 namespace App\VotingPlatform\Handler;
 
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\VotingPlatform\Candidate;
@@ -42,7 +43,11 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
             case DesignationTypeEnum::COMMITTEE_ADHERENT:
                 $repository = $this->entityManager->getRepository(CommitteeAdherentMandate::class);
 
-                $repository->closeCommitteeMandate($election->getElectionEntity()->getCommittee(), $election->getVoteEndDate());
+                $repository->closeCommitteeMandate(
+                    $election->getElectionEntity()->getCommittee(),
+                    AbstractAdherentMandate::REASON_ELECTION,
+                    $election->getVoteEndDate()
+                );
 
                 break;
 
