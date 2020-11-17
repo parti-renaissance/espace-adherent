@@ -19,7 +19,7 @@
             {% endif %}
         </div>
     {% elseif session_modal_context == constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::CONTEXT_COMMITTEE_ELECTION') %}
-        {% set memberships = app.user.memberships|filter(membership => membership.id in app.session.get(constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::COMMITTEE_MEMBERSHIP_LIST'))) %}
+        {% set memberships = app.user.memberships.getMembershipsForApprovedCommittees()|filter(membership => membership.id in app.session.get(constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::COMMITTEE_MEMBERSHIP_LIST'))) %}
 
         {% set committee_election = memberships|first.committee.currentElection %}
 
