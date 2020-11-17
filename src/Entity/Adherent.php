@@ -12,6 +12,7 @@ use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
@@ -2587,5 +2588,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 && (false === $active || null === $mandate->getFinishAt())
             ;
         })->toArray();
+    }
+
+    public function getFilePermissions(): array
+    {
+        $roles = array_map(static function (string $role) {
+            return str_replace('role_', '', mb_strtolower($role));
+        }, $this->getRoles());
+
+        return array_values(array_intersect(FilePermissionEnum::toArray(), $roles));
     }
 }

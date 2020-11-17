@@ -612,7 +612,7 @@
                             var term = request.term.trim();
 
                             if (term.length > 0) {
-                                $.get("{{ path('app_autocomplete_file_directory')|raw }}?term=" + term, function(data) {
+                                $.get("{{ path('app_admin_files_autocomplete_file_directory')|raw }}?term=" + term, function(data) {
                                     response($.map(data, function(d) {
                                         return {
                                             label: d.name,

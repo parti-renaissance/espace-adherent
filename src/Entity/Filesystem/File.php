@@ -133,12 +133,19 @@ class File
     /**
      * @var File|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Filesystem\File", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Filesystem\File", inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
      *
      * @Assert\Valid
      */
     private $parent;
+
+    /**
+     * @var File[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Filesystem\File", mappedBy="parent", fetch="EXTRA_LAZY")
+     */
+    private $children;
 
     /**
      * @var string|null
@@ -264,12 +271,31 @@ class File
         $this->parent = $parent;
     }
 
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
     /**
      * @return Collection|FilePermission[]
      */
     public function getPermissions(): Collection
     {
         return $this->permissions;
+    }
+
+    public function getPermissionNames(): array
+    {
+        return array_map(function (FilePermission $permission) {
+            return $permission->getName();
+        }, $this->permissions->toArray());
+    }
+
+    public function hasPermission(string $name): bool
+    {
+        return $this->getPermissions()->filter(function (FilePermission $permission) use ($name) {
+            return $permission->getName() === $name;
+        })->count() > 0;
     }
 
     public function addPermission(FilePermission $permission): void
@@ -339,6 +365,14 @@ class File
     public function getPath(): string
     {
         return sprintf('files/filesystem/%s', $this->getUuid()->toString());
+    }
+
+    public function getNameWithExtension(): ?string
+    {
+        return $this->isFile()
+            ? \sprintf('%s.%s', $this->getName(), $this->getExtension())
+            : ''
+        ;
     }
 
     public function getFullname(): ?string

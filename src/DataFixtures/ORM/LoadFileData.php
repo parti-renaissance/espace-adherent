@@ -46,7 +46,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
             '2020-11-12 09:10:11'
         );
         $imageCD = $this->createFile(
-            'Image for departmental candidates.jpg',
+            'Image for departmental candidates',
             $admin,
             $images,
             [FilePermissionEnum::CANDIDATE_DEPARTMENTAL],
@@ -84,6 +84,14 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
             '2020-11-01 09:09:09'
         );
 
+        $externalLink = $this->createExternalLink(
+            'dpt link',
+            $superadmin,
+            'https://dpt.en-marche.fr',
+            null,
+            [FilePermissionEnum::ALL]
+        );
+
         $pdfAll = $this->createFile(
             'PDF for all',
             $superadmin,
@@ -96,7 +104,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         );
 
         $pdfHidden = $this->createFile(
-            'PDF for all',
+            'PDF for all hidden',
             $superadmin,
             $documents,
             [FilePermissionEnum::ALL],
@@ -119,6 +127,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         $manager->persist($externalLinkAll);
         $manager->persist($externalLinkRC);
         $manager->persist($externalLinkHidden);
+        $manager->persist($externalLink);
 
         $manager->persist($pdfAll);
         $manager->persist($pdfHidden);
@@ -142,7 +151,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         string $name,
         Administrator $admin,
         string $externalLink,
-        File $parent,
+        ?File $parent,
         array $permissions,
         bool $displayed = true,
         string $createdAt = '2020-11-10 09:08:07'

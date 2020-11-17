@@ -12,6 +12,7 @@ use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\CoordinatorManagedArea;
 use App\Entity\LreArea;
+use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MunicipalChiefManagedArea;
 use App\Entity\MunicipalManagerRoleAssociation;
 use App\Entity\MunicipalManagerSupervisorRole;
@@ -134,6 +135,11 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent3->addReferentTag($this->getReference('referent_tag_75'));
         $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
         $adherent3->addTag($this->getReference('adherent_tag_at007'));
+        $zoneIDF = $this->getReference('zone_region_11');
+        $adherent3->addZone($zoneIDF);
+        $candidateManagedAreaRegion = new CandidateManagedArea();
+        $candidateManagedAreaRegion->setZone($zoneIDF);
+        $adherent3->setCandidateManagedArea($candidateManagedAreaRegion);
         $this->addReference('adherent-3', $adherent3);
 
         $adherent4 = $this->adherentFactory->createFromArray([
@@ -158,6 +164,11 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent4->addReferentTag($this->getReference('referent_tag_75'));
         $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
         $this->addReference('adherent-4', $adherent4);
+        $adherent4->addZone($this->getReference('zone_department_92'));
+        $zoneDpt92 = $this->getReference('zone_department_92');
+        $candidateManagedAreaDpt = new CandidateManagedArea();
+        $candidateManagedAreaDpt->setZone($zoneDpt92);
+        $adherent4->setCandidateManagedArea($candidateManagedAreaDpt);
 
         $adherent5 = $this->adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_5_UUID,
@@ -218,6 +229,11 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]);
         $adherent7->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent7->addReferentTag($this->getReference('referent_tag_77'));
+        $zoneCanton7711 = $this->getReference('zone_canton_7711');
+        $adherent7->addZone($zoneCanton7711);
+        $candidateManagedAreaCanton = new CandidateManagedArea();
+        $candidateManagedAreaCanton->setZone($zoneCanton7711);
+        $adherent7->setCandidateManagedArea($candidateManagedAreaCanton);
         $this->addReference('adherent-7', $adherent7);
 
         $adherent9 = $this->adherentFactory->createFromArray([
@@ -907,6 +923,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             LoadCityData::class,
             LoadTerritorialCouncilData::class,
             LoadThematicCommunityData::class,
+            LoadGeoZoneData::class,
         ];
     }
 }
