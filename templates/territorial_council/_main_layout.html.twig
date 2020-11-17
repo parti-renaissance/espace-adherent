@@ -7,8 +7,6 @@
             {% set election = territorial_council.currentElection %}
             {% include 'territorial_council/partials/_election_box.html.twig' %}
 
-            <div id="modal-wrapper"></div>
-
             {% if election.electionPoll %}
                 {% include 'territorial_council/partials/_election_poll.html.twig' %}
             {% endif %}

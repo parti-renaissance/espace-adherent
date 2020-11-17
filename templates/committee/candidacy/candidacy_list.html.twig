@@ -16,7 +16,7 @@
 
         <div class="committee__candidacies b__nudge--bottom-larger">
             {% for candidacy in candidacies if not candidacy.isTaken %}
-                <div class="territorial-council__candidacie l__row l__row--wrap">
+                <div class="territorial-council__candidacies l__row l__row--wrap">
                     {% set first_candidacy = candidacy.isFemale ? candidacy : (candidacy.binome ? candidacy.binome : candidacy) %}
 
                     {% set adherent = first_candidacy.committeeMembership.adherent %}
@@ -48,7 +48,8 @@
 
                     <div>
                         <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
-                           data-confirm-content-element="#candidate-biography-content-{{ first_candidacy.uuid }}"
+                           data-content-element="#candidate-biography-content-{{ first_candidacy.uuid }}"
+                           data-modal-side="right"
                         > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>
 
                         <div id="candidate-biography-content-{{ first_candidacy.uuid }}" class="hidden">

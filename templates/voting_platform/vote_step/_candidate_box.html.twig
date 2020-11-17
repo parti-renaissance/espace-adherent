@@ -26,7 +26,8 @@
                     {% if candidacies_with_bio|length > 0 %}
                         <div class="candidate-biography">
                             <a href="#" class="text--body link--no-decor text--blue--dark b__nudge--none em-modal--trigger"
-                               data-confirm-content-element="#candidate-biography-content-{{ candidate_group.uuid }}"
+                               data-content-element="#candidate-biography-content-{{ candidate_group.uuid }}"
+                               data-modal-side="right"
                             >Voir la candidature</a>
 
                             <div id="candidate-biography-content-{{ candidate_group.uuid }}" class="hidden">
