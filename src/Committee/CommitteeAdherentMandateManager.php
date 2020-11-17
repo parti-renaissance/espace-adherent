@@ -4,6 +4,7 @@ namespace App\Committee;
 
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
@@ -96,6 +97,7 @@ class CommitteeAdherentMandateManager
         }
 
         $mandate->setFinishAt(new \DateTime());
+        $mandate->setReason(AbstractAdherentMandate::REASON_MANUAL);
 
         $this->entityManager->flush();
     }

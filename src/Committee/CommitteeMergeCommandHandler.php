@@ -4,6 +4,7 @@ namespace App\Committee;
 
 use App\Committee\Event\FollowCommitteeEvent;
 use App\Committee\Event\UnfollowCommitteeEvent;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacyInvitation;
@@ -13,6 +14,7 @@ use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Entity\Reporting\CommitteeMergeHistory;
 use App\Events;
 use App\Membership\UserEvents;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeMembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,17 +26,20 @@ class CommitteeMergeCommandHandler
     private $em;
     private $committeeMembershipRepository;
     private $committeeCandidacyRepository;
+    private $mandateRepository;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         EntityManagerInterface $em,
         CommitteeMembershipRepository $committeeMembershipRepository,
-        CommitteeCandidacyRepository $committeeCandidacyRepository
+        CommitteeCandidacyRepository $committeeCandidacyRepository,
+        CommitteeAdherentMandateRepository $mandateRepository
     ) {
         $this->dispatcher = $dispatcher;
         $this->em = $em;
         $this->committeeMembershipRepository = $committeeMembershipRepository;
         $this->committeeCandidacyRepository = $committeeCandidacyRepository;
+        $this->mandateRepository = $mandateRepository;
     }
 
     public function countNewMembers(CommitteeMergeCommand $committeeMergeCommand): int
@@ -89,6 +94,8 @@ class CommitteeMergeCommandHandler
                 $mergedMemberships,
                 $administrator
             ));
+
+            $this->mandateRepository->closeCommitteeMandate($sourceCommittee, AbstractAdherentMandate::REASON_COMMITTEE_MERGE);
 
             $this->em->flush();
 

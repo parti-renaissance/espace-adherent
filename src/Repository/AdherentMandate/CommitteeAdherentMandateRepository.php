@@ -90,16 +90,18 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
         }, $activeMandates);
     }
 
-    public function closeCommitteeMandate(Committee $committee, \DateTime $finishAt): void
+    public function closeCommitteeMandate(Committee $committee, string $reason, \DateTime $finishAt = null): void
     {
         $this->createQueryBuilder('m')
             ->update()
             ->where('m.committee = :committee')
             ->andWhere('m.finishAt IS NULL')
             ->set('m.finishAt', ':finish_at')
+            ->set('m.reason', ':reason')
             ->setParameters([
                 'committee' => $committee,
-                'finish_at' => $finishAt,
+                'finish_at' => $finishAt ?? new \DateTime(),
+                'reason' => $reason,
             ])
             ->getQuery()
             ->execute()
