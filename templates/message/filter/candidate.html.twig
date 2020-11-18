@@ -26,6 +26,25 @@
             <div class="manager__filters__row">
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
+
+                        <div class="filter__row">
+                            <label class="filter__label">Nom</label>
+                            {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                            {{ form_errors(form.lastName) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Prénom</label>
+                            {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                            {{ form_errors(form.firstName) }}
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+
                         <div class="filter__row">
                             <label class="filter__label">Genre</label>
                             {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
@@ -49,38 +68,9 @@
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
                         <div class="filter__row">
-                            <label class="filter__label">Date d'adhésion</label>
-                            <div class="filter__multi">
-                                <label style="width: 45%">
-                                    {{ form_widget(form.registeredSince, {label: false, attr: {class: 'filter__field candidate-incompatible'}}) }}
-                                </label>
-                                à
-                                <label style="width: 45%">
-                                    {{ form_widget(form.registeredUntil, {label: false, attr: {class: 'filter__field candidate-incompatible'}}) }}
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="filter__row">
                             <label class="filter__label">Zone</label>
                             {{ form_widget(form.zone) }}
                             {{ form_errors(form.zone) }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="manager__filters__section">
-                    <div class="manager__filters__group">
-                        <div class="filter__row">
-                            <label class="filter__label">Nom</label>
-                            {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
-                            {{ form_errors(form.lastName) }}
-                        </div>
-
-                        <div class="filter__row">
-                            <label class="filter__label">Prénom</label>
-                            {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
-                            {{ form_errors(form.firstName) }}
                         </div>
                     </div>
                 </div>

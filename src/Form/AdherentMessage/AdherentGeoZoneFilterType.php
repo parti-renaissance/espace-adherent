@@ -3,7 +3,6 @@
 namespace App\Form\AdherentMessage;
 
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Form\DatePickerType;
 use App\Form\GenderType;
 use App\Form\ZoneAutoCompleteType;
 use Symfony\Component\Form\AbstractType;
@@ -26,8 +25,6 @@ class AdherentGeoZoneFilterType extends AbstractType
             ->add('ageMax', IntegerType::class, ['required' => false])
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
-            ->add('registeredSince', DatePickerType::class, ['required' => false])
-            ->add('registeredUntil', DatePickerType::class, ['required' => false])
             ->add('zone', ZoneAutoCompleteType::class, [
                 'remote_params' => ['space' => $options['space_type']],
                 'multiple' => false,

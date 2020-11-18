@@ -3,7 +3,6 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
@@ -17,13 +16,12 @@ class AdherentRegistrationDateConditionBuilder implements SegmentConditionBuilde
         return $filter instanceof ReferentUserFilter
             || $filter instanceof CommitteeFilter
             || $filter instanceof AdherentZoneFilter
-            || $filter instanceof AdherentGeoZoneFilter
         ;
     }
 
     public function build(MailchimpCampaign $campaign): array
     {
-        /** @var CommitteeFilter|ReferentUserFilter|AdherentZoneFilter|AdherentGeoZoneFilter $filter */
+        /** @var CommitteeFilter|ReferentUserFilter|AdherentZoneFilter $filter */
         $filter = $campaign->getMessage()->getFilter();
 
         $conditions = [];

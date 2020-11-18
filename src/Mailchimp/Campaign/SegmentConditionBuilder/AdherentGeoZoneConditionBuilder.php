@@ -21,15 +21,11 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
 
         $zone = $filter->getZone();
 
-        $conditions = [];
-
-        $conditions[] = [
+        return  [[
             'condition_type' => 'TextMerge',
             'op' => 'ends',
             'field' => MemberRequest::getMergeFieldFromZone($zone),
             'value' => sprintf('(%s)', $zone->getCode()),
-        ];
-
-        return $conditions;
+        ]];
     }
 }
