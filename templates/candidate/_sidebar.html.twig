@@ -6,6 +6,11 @@
 
     <ul>
         <li class="menu-section">Territoires</li>
+        {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
+            <li class="{{ is_active_route(app.request, 'app_message_candidate_*') ? 'active' }}">
+                <a href="{{ path("app_message_candidate_list", route_params|default({})) }}">Mes messages</a>
+            </li>
+        {% endif %}
 
         {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_ADHERENTS') %}
             <li class="{{ is_active_route(app.request, ['app_candidate_managed_users_list', 'app_candidate_adherent_invitation']) ? 'active' }}">

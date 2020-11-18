@@ -2,6 +2,8 @@
 
 namespace App\Mailchimp\Synchronisation\Request;
 
+use App\Entity\Geo\Zone;
+
 class MemberRequest implements MemberRequestInterface
 {
     public const DATE_FORMAT = 'Y-m-d';
@@ -81,5 +83,21 @@ class MemberRequest implements MemberRequestInterface
         }
 
         return $data;
+    }
+
+    public static function getMergeFieldFromZone(Zone $zone): string
+    {
+        switch ($zone->getType()) {
+            case Zone::CITY:
+                return self::MERGE_FIELD_ZONE_CITY;
+            case Zone::DEPARTMENT:
+                return self::MERGE_FIELD_ZONE_DEPARTMENT;
+            case Zone::REGION:
+                return self::MERGE_FIELD_ZONE_REGION;
+            case Zone::COUNTRY:
+                return self::MERGE_FIELD_ZONE_COUNTRY;
+            default:
+                throw new \InvalidArgumentException(sprintf('Zone type "%s" is not synchronized with mailchimp.', $zone->getType()));
+        }
     }
 }

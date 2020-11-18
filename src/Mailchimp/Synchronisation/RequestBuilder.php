@@ -372,19 +372,19 @@ class RequestBuilder
         }
 
         if ($this->zoneCity) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_CITY] = (string) $this->zoneCity;
+            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCity)] = (string) $this->zoneCity;
         }
 
         if ($this->zoneDepartment) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_DEPARTMENT] = (string) $this->zoneDepartment;
+            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneDepartment)] = (string) $this->zoneDepartment;
         }
 
         if ($this->zoneRegion) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_REGION] = (string) $this->zoneRegion;
+            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneRegion)] = (string) $this->zoneRegion;
         }
 
         if ($this->zoneCountry) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ZONE_COUNTRY] = (string) $this->zoneCountry;
+            $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCountry)] = (string) $this->zoneCountry;
         }
 
         return $mergeFields;
