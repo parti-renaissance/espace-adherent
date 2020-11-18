@@ -2,7 +2,7 @@
 
 <div id="session-modal--content" class="font-roboto">
     {% if session_modal_context == constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::CONTEXT_CERTIFICATION') %}
-        <h3>Certifiez votre profil</h3>
+        <h2>Certifiez votre profil</h2>
 
         <p class="text--body">Cela vous permet notamment de voter pour vos futurs animateurs et animatrices de comités locaux. C’est simple, rapide et sécurisé !</p>
 
@@ -19,7 +19,7 @@
             {% endif %}
         </div>
     {% elseif session_modal_context == constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::CONTEXT_COMMITTEE_ELECTION') %}
-        {% set memberships = app.user.memberships|filter(membership => membership.id in app.session.get(constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::COMMITTEE_MEMBERSHIP_LIST'))) %}
+        {% set memberships = app.user.memberships.getMembershipsForApprovedCommittees()|filter(membership => membership.id in app.session.get(constant('App\\Adherent\\SessionModal\\SessionModalActivatorListener::COMMITTEE_MEMBERSHIP_LIST'))) %}
 
         {% set committee_election = memberships|first.committee.currentElection %}
 
@@ -31,7 +31,7 @@
             <p class="text--body">Vous pouvez candidater dans ces comités :</p>
             {% set memberships = memberships|filter(membership => membership.committee.currentElection.isCandidacyPeriodActive) %}
         {% elseif committee_election.isVotePeriodActive %}
-            <h3>Votez pour votre binôme d'animateurs</h3>
+            <h2>Votez pour votre binôme d'animateurs</h2>
 
             <p class="text--body">Vous avez jusqu'au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }} pour voter à l'élection des binômes paritaires d'animateurs locaux.</p>
 

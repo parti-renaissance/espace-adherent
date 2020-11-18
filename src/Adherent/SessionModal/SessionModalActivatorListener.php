@@ -61,11 +61,11 @@ class SessionModalActivatorListener implements EventSubscriberInterface
             return;
         }
 
-        if (($memberships = $adherent->getMemberships())->isEmpty()) {
+        if (!$memberships = $adherent->getMemberships()->getMembershipsForApprovedCommittees()) {
             return;
         }
 
-        $availableCommitteeMemberships = array_filter($memberships->toArray(), function (CommitteeMembership $membership) use ($refDate) {
+        $availableCommitteeMemberships = array_filter($memberships, function (CommitteeMembership $membership) use ($refDate) {
             return $membership->getSubscriptionDate() <= $refDate->modify('-30 days')
                 && $membership->getCommittee()->hasActiveElection();
         });
