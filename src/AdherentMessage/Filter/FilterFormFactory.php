@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
 use App\Entity\UserListDefinitionEnum;
 use App\Exception\InvalidAdherentMessageType;
+use App\Form\AdherentMessage\AdherentGeoZoneFilterType;
 use App\Form\AdherentMessage\AdherentZoneFilterType;
 use App\Form\AdherentMessage\CommitteeFilterType;
 use App\Form\AdherentMessage\ElectedRepresentativeFilterType;
@@ -78,6 +79,10 @@ class FilterFormFactory
             case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
                 return $this->formFactory->create(AdherentZoneFilterType::class, $data, [
                     'referent_tags' => [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()],
+                ]);
+            case AdherentMessageTypeEnum::CANDIDATE:
+                return $this->formFactory->create(AdherentGeoZoneFilterType::class, $data, [
+                    'space_type' => AdherentMessageTypeEnum::CANDIDATE,
                 ]);
         }
 

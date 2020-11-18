@@ -4,6 +4,7 @@ namespace App\AdherentMessage\Filter;
 
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
@@ -35,6 +36,8 @@ abstract class FilterFactory
                 return static::createReferentTerritorialCouncilFilter($user);
             case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
                 return static::createLegislativeCandidateFilter($user);
+            case AdherentMessageTypeEnum::CANDIDATE:
+                return static::createCandidateFilter($user);
         }
     }
 
@@ -115,5 +118,14 @@ abstract class FilterFactory
         }
 
         return new AdherentZoneFilter($user->getLegislativeCandidateManagedDistrict()->getReferentTag());
+    }
+
+    private static function createCandidateFilter(Adherent $user): AdherentGeoZoneFilter
+    {
+        if (!$user->isCandidate()) {
+            throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a candidate');
+        }
+
+        return new AdherentGeoZoneFilter($user->getCandidateManagedArea()->getZone());
     }
 }

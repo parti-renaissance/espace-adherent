@@ -2,6 +2,7 @@
 
 namespace App\AdherentMessage;
 
+use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
@@ -26,6 +27,7 @@ class AdherentMessageTypeEnum extends Enum
     public const LRE_MANAGER_ELECTED_REPRESENTATIVE = 'lre_manager_elected_representative';
     public const REFERENT_INSTANCES = 'referent_instances';
     public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
+    public const CANDIDATE = 'candidate';
 
     public const CLASSES = [
         self::DEPUTY => DeputyAdherentMessage::class,
@@ -38,5 +40,6 @@ class AdherentMessageTypeEnum extends Enum
         self::LRE_MANAGER_ELECTED_REPRESENTATIVE => LreManagerElectedRepresentativeMessage::class,
         self::REFERENT_INSTANCES => ReferentInstancesMessage::class,
         self::LEGISLATIVE_CANDIDATE => LegislativeCandidateAdherentMessage::class,
+        self::CANDIDATE => CandidateAdherentMessage::class,
     ];
 }
