@@ -13,6 +13,14 @@
     {% endif %}
 {% endblock %}
 
+{% set hasCharterAccepted = app.user.charters.hasCandidateCharterAccepted %}
+
+{% block stylesheets %}
+    {% if not hasCharterAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% set isCandidate = is_granted('ROLE_CANDIDATE') %}
     <main class="manager-space manager-body">
@@ -27,6 +35,14 @@
                 </div>
             </div>
         </section>
+
+        {% if not hasCharterAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'candidate.popup.title'|trans,
+                'subtitle': 'candidate.popup.subtitle'|trans,
+                'fileUrl': 'candidate.popup.file_url'|trans
+            } %}
+        {% endif %}
     </main>
 {% endblock %}
 
@@ -46,4 +62,16 @@
 
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if not hasCharterAccepted %}
+        {% if js is not defined %}
+            {% import 'javascript.js.twig' as js %}
+        {% endif %}
+
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_CANDIDATE')) }}
+            } );
+        </script>
+    {% endif %}
 {% endblock %}

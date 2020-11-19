@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
+use App\Entity\AdherentCharter\CandidateCharter;
 use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentResetPasswordToken;
@@ -142,6 +143,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $candidateManagedAreaRegion = new CandidateManagedArea();
         $candidateManagedAreaRegion->setZone($zoneIDF);
         $adherent3->setCandidateManagedArea($candidateManagedAreaRegion);
+        $adherent3->addCharter(new CandidateCharter());
         $this->addReference('adherent-3', $adherent3);
 
         $adherent4 = $this->adherentFactory->createFromArray([
@@ -171,6 +173,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $candidateManagedAreaDpt->setZone($zoneDpt92);
         $adherent4->addZone($zoneDpt92);
         $adherent4->setCandidateManagedArea($candidateManagedAreaDpt);
+        $adherent4->addCharter(new CandidateCharter());
         $this->addReference('adherent-4', $adherent4);
 
         $adherent5 = $this->adherentFactory->createFromArray([
