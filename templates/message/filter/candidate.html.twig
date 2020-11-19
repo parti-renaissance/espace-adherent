@@ -80,7 +80,7 @@
                 <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
                 {% if message.filter %}
                     <a
-                        href="{{ path('app_message_referent_filter', {uuid: message.uuid, reset: true}) }}"
+                        href="{{ path('app_message_candidate_filter', {uuid: message.uuid, reset: true}) }}"
                         class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset"
                     >Réinitialiser le filtre</a>
                 {% endif %}

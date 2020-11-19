@@ -50,6 +50,9 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
             case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
                 $prefix = 'Candidat aux législatives';
                 break;
+            case AdherentMessageTypeEnum::CANDIDATE:
+                $prefix = 'Candidat';
+                break;
             default:
                 $prefix = '';
         }

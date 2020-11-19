@@ -7,6 +7,7 @@ use App\Repository\AdherentChangeEmailTokenRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -19,6 +20,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
     private $repository;
     private $session;
     private $translator;
+    private $message;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -34,7 +36,10 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [KernelEvents::CONTROLLER => 'setChangeEmailFlashMessage'];
+        return [
+            KernelEvents::CONTROLLER => 'setChangeEmailFlashMessage',
+            KernelEvents::RESPONSE => 'removeMessageOnRedirection',
+        ];
     }
 
     public function setChangeEmailFlashMessage(FilterControllerEvent $event): void
@@ -44,10 +49,20 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
         }
 
         if ($token = $this->repository->findLastUnusedByAdherent($this->tokenStorage->getToken()->getUser())) {
-            $this->session->getFlashBag()->add('info', $this->translator->trans(
+            $this->session->getFlashBag()->add('info', $this->message = $this->translator->trans(
                 self::MESSAGE,
                 ['{{ email }}' => $token->getEmail()]
             ));
+        }
+    }
+
+    public function removeMessageOnRedirection(FilterResponseEvent $event): void
+    {
+        if ($event->getResponse()->isRedirection()) {
+            $messages = $this->session->getFlashBag()->peek('info');
+            $this->session->getFlashBag()->set('info', array_filter($messages, function (string $message) {
+                return $this->message !== $message;
+            }));
         }
     }
 
@@ -78,7 +93,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (\in_array(self::MESSAGE, $this->session->getFlashBag()->peek('info'), true)) {
+        if (\in_array($this->message, $this->session->getFlashBag()->peek('info'), true)) {
             return false;
         }
 

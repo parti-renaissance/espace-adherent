@@ -3,6 +3,7 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
@@ -28,6 +29,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             MunicipalChiefAdherentMessage::class,
             SenatorAdherentMessage::class,
             LegislativeCandidateAdherentMessage::class,
+            CandidateAdherentMessage::class,
         ], true);
     }
 
@@ -54,6 +56,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 break;
 
             case LegislativeCandidateAdherentMessage::class:
+            case CandidateAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::CANDIDATE_EMAIL;
                 break;
 
