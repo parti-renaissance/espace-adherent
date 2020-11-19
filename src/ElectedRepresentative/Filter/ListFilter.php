@@ -191,7 +191,7 @@ class ListFilter
     /**
      * @return Zone[]
      */
-    public function getManagesZones(): array
+    public function getManagedZones(): array
     {
         return $this->managedZones;
     }

@@ -56,9 +56,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        $this->withZoneCondition($qb, $filter->getManagedZones());
-
-        $this->withZoneCondition($qb, $filter->getZones());
+        $zones = $filter->getZones() ?: $filter->getManagedZones();
+        $this->withZoneCondition($qb, $zones);
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();
