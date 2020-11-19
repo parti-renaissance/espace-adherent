@@ -1113,6 +1113,13 @@ geo_zone.foreign_district: Circonscriptions de l'étranger
 geo_zone.consular_district: Circonscriptions consulaire
 
 #
+# Candidate
+#
+candidate.popup.title: Charte de bonne utilisation des outils numériques
+candidate.popup.subtitle: à l’usage des candidats
+candidate.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_candidats.pdf
+
+#
 # Filesystem
 #
 file_permission.all: Tous
