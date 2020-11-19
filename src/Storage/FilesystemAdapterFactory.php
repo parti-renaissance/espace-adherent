@@ -3,10 +3,9 @@
 namespace App\Storage;
 
 use Google\Cloud\Storage\StorageClient;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\Memory;
-use Superbalist\Flysystem\GoogleStorage\GoogleStorageAdapter;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class FilesystemAdapterFactory
 {
@@ -15,10 +14,14 @@ class FilesystemAdapterFactory
         string $localPath,
         $gcloudId,
         $gcloudKeyFilePath,
-        $gcloudBucket
+        $gcloudBucket,
+        UrlGeneratorInterface $urlGenerator
     ) {
         if ('prod' !== $environment) {
-            return new Local($localPath);
+            $adapter = new WebLocalAdapter($localPath);
+            $adapter->setUrlGenerator($urlGenerator);
+
+            return $adapter;
         }
 
         $storage = new StorageClient([
