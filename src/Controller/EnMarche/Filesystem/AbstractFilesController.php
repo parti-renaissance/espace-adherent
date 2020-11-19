@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\Filesystem;
 
+use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
 use Gedmo\Sluggable\Util\Urlizer;
@@ -15,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractFilesController extends Controller
 {
+    use AccessDelegatorTrait;
+
     private $fileRepository;
 
     public function __construct(FileRepository $fileRepository)
@@ -63,7 +66,7 @@ abstract class AbstractFilesController extends Controller
     public function listAction(Request $request, File $directory = null): Response
     {
         $order = $request->query->get('order', 'a');
-        $files = $this->fileRepository->findWithPermissionsInDirectory($this->getUser()->getFilePermissions(), $directory, $order);
+        $files = $this->fileRepository->findWithPermissionsInDirectory($this->getMainUser($request->getSession())->getFilePermissions(), $directory, $order);
 
         return $this->renderTemplate('filesystem/list.html.twig', [
             'files' => $files,
