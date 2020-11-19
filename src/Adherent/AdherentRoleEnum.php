@@ -55,12 +55,25 @@ class AdherentRoleEnum extends Enum
     public const CANDIDATE_REGIONAL_LEADER = 'candidate_regional_leader';
     public const CANDIDATE_DEPARTMENTAL = 'candidate_departmental';
 
+    public const DELEGATED_CANDIDATE_REGIONAL_HEADED = 'delegated_candidate_regional_headed';
+    public const DELEGATED_CANDIDATE_REGIONAL_LEADER = 'delegated_candidate_regional_leader';
+    public const DELEGATED_CANDIDATE_DEPARTMENTAL = 'delegated_candidate_departmental';
+
     public static function getCandidates(): array
     {
         return [
             self::CANDIDATE_REGIONAL_HEADED,
             self::CANDIDATE_REGIONAL_LEADER,
             self::CANDIDATE_DEPARTMENTAL,
+        ];
+    }
+
+    public static function getDelegatedCandidates(): array
+    {
+        return [
+            self::DELEGATED_CANDIDATE_REGIONAL_HEADED,
+            self::DELEGATED_CANDIDATE_REGIONAL_LEADER,
+            self::DELEGATED_CANDIDATE_DEPARTMENTAL,
         ];
     }
 }

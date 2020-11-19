@@ -32,9 +32,23 @@
                 <a href="{{ path('app_candidate_event_manager_events') }}">Événements</a>
             </li>
         {% endif %}
-
-        <li class="{{ is_active_route(app.request, 'app_candidate_files_*') ? 'active' }}">
-            <a href="{{ path('app_candidate_files_list') }}">Documents</a>
-        </li>
     </ul>
+
+    {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_FILES') %}
+        <ul>
+            <li class="menu-section">Mon équipe</li>
+
+            {% if is_granted('HAS_DELEGATED_ACCESS_FILES') %}
+                <li class="{{ is_active_route(app.request, 'app_candidate_files_*') ? 'active' }}">
+                    <a href="{{ path('app_candidate_files_list') }}">Documents</a>
+                </li>
+            {% endif %}
+
+            {% if isCandidate %}
+                <li class="{{ is_active_route(app.request, ['app_candidate_my_team_list', 'app_candidate_my_team_delegate_access']) ? 'active' }}">
+                    <a href="{{ path('app_candidate_my_team_list') }}">Délégations d'accès</a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
 </nav>

@@ -15,6 +15,7 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
@@ -929,6 +930,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isHeadedRegionalCandidate()
             || $this->isLeaderRegionalCandidate()
             || $this->isDepartmentalCandidate()
+            || $this->isDelegatedCandidate()
             || $this->isLre()
             || $this->isLegislativeCandidate()
             || $this->isThematicCommunityChief()
@@ -2158,6 +2160,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isMunicipalChief()
             || $this->isSenator()
             || $this->isDelegatedSenator()
+            || $this->isDelegatedCandidate()
             || $this->isLegislativeCandidate()
         ;
     }
@@ -2451,6 +2454,44 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isCandidate(): bool
     {
         return $this->candidateManagedArea instanceof CandidateManagedArea;
+    }
+
+    public function isDelegatedCandidate(): bool
+    {
+        return \count($this->getReceivedDelegatedAccessOfType(DelegatedAccessEnum::TYPE_CANDIDATE)) > 0;
+    }
+
+    public function isDelegatedHeadedRegionalCandidate(): bool
+    {
+        foreach ($this->getReceivedDelegatedAccessOfType(DelegatedAccessEnum::TYPE_CANDIDATE) as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator()->isHeadedRegionalCandidate()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isDelegatedLeaderRegionalCandidate(): bool
+    {
+        foreach ($this->getReceivedDelegatedAccessOfType(DelegatedAccessEnum::TYPE_CANDIDATE) as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator()->isLeaderRegionalCandidate()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isDelegatedDepartmentalCandidate(): bool
+    {
+        foreach ($this->getReceivedDelegatedAccessOfType(DelegatedAccessEnum::TYPE_CANDIDATE) as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator()->isDepartmentalCandidate()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getLreArea(): ?LreArea

@@ -16,6 +16,7 @@ use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
+use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
@@ -850,6 +851,41 @@ HELP
                         ;
 
                         $where->add('candidate_zone.type IN (:candiate_zone_types)');
+                    }
+
+                    if ($delegatedCandidateRoles = array_intersect(AdherentRoleEnum::getDelegatedCandidates(), $value['value'])) {
+                        if ($delegatedTypes = array_intersect(
+                            [
+                                AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_HEADED,
+                                AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_LEADER,
+                                AdherentRoleEnum::DELEGATED_CANDIDATE_DEPARTMENTAL,
+                            ],
+                            $value['value']
+                        )) {
+                            if (!\in_array('rda', $qb->getAllAliases(), true)) {
+                                $qb->leftJoin(\sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
+                            }
+                            $where->add('rda.type = :delegated_candidate');
+                            $qb->setParameter('delegated_candidate', DelegatedAccessEnum::TYPE_CANDIDATE);
+                        }
+
+                        $qb
+                            ->leftJoin('rda.delegator', 'delegator')
+                            ->leftJoin('delegator.candidateManagedArea', 'delegatorCandidateManagedArea')
+                            ->leftJoin('delegatorCandidateManagedArea.zone', 'delegator_candidate_zone')
+                            ->setParameter('delegator_candiate_zone_types', array_map(function (string $role) {
+                                switch ($role) {
+                                    case AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_HEADED:
+                                        return Zone::REGION;
+                                    case AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_LEADER:
+                                        return Zone::DEPARTMENT;
+                                    case AdherentRoleEnum::DELEGATED_CANDIDATE_DEPARTMENTAL:
+                                        return Zone::CANTON;
+                                }
+                            }, $delegatedCandidateRoles))
+                        ;
+
+                        $where->add('delegator_candidate_zone.type IN (:delegator_candiate_zone_types)');
                     }
 
                     // thematic community chief

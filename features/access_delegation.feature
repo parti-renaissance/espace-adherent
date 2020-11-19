@@ -7,6 +7,7 @@ Feature:
     Background:
         Given the following fixtures are loaded:
             | LoadAdherentData        |
+            | LoadCommitteeData       |
             | LoadDelegatedAccessData |
             | LoadDistrictData        |
         And I am logged as "deputy-ch-li@en-marche-dev.fr"
@@ -32,7 +33,7 @@ Feature:
         When I select "michelle.dufour@example.ch" from "js-select-adherent"
 
         When I select "Responsable communication" from "delegate_access_role"
-        And I click the "#delegate_access_accesses label:contains('Mes messages')" selector
+        And I click the "#delegate_access_accesses label:contains('Messagerie')" selector
         And I click the "#delegate_access_accesses label:contains('Événements')" selector
         And I click the "#delegate_access_accesses label:contains('Adhérents')" selector
         And I click the "#delegate_access_accesses label:contains('Comités')" selector
@@ -53,7 +54,7 @@ Feature:
 
         When I fill in "delegate_access_email" with "carl999@example.fr"
         And I select "Responsable communication" from "delegate_access_role"
-        And I click the "#delegate_access_accesses label:contains('Mes messages')" selector
+        And I click the "#delegate_access_accesses label:contains('Messagerie')" selector
         And I press "Valider"
         Then I should be on "/espace-depute/mon-equipe"
         And I should see 4 ".team-organization__member-container" element
