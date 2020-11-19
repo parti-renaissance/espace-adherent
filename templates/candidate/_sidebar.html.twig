@@ -38,7 +38,7 @@
         <ul>
             <li class="menu-section">Mon équipe</li>
 
-            {% if is_granted('HAS_DELEGATED_ACCESS_FILES') %}
+            {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_FILES') %}
                 <li class="{{ is_active_route(app.request, 'app_candidate_files_*') ? 'active' }}">
                     <a href="{{ path('app_candidate_files_list') }}">Documents</a>
                 </li>
