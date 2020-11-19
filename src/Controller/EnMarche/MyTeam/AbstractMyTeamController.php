@@ -26,7 +26,7 @@ abstract class AbstractMyTeamController extends Controller
      */
     public function list(DelegatedAccessRepository $delegatedAccessRepository): Response
     {
-        $delegatedAccesses = $delegatedAccessRepository->findBy(['delegator' => $this->getUser()]);
+        $delegatedAccesses = $delegatedAccessRepository->findBy(['delegator' => $this->getUser(), 'type' => $this->getSpaceType()]);
 
         return $this->renderTemplate('my_team/list.html.twig', [
             'delegatedAccesses' => $delegatedAccesses,

@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MyTeam\DelegatedAccessRepository")
  * @ORM\Table(name="my_team_delegated_access")
- * @UniqueEntity(fields={"delegator", "delegated"}, message="Vous avez déjà délégué des accès à cet adhérent.")
+ * @UniqueEntity(fields={"delegator", "delegated", "type"}, message="Vous avez déjà délégué des accès à cet adhérent.")
  */
 class DelegatedAccess
 {
