@@ -28,4 +28,9 @@ class ReferentMyTeamController extends AbstractMyTeamController
     {
         return $adherent->getManagedArea()->getTags()->toArray();
     }
+
+    protected function getZones(Adherent $adherent): array
+    {
+        return [];
+    }
 }

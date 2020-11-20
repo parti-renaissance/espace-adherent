@@ -99,6 +99,7 @@
                     <span class="head">Informations</span>
                     <ul class="items">
                         <li><a href="{{ path('app_user_edit') }}">Général</a></li>
+                        <li><a href="{{ path('app_certification_request_home') }}">Certification</a></li>
                         <li><a href="{{ path('app_user_change_password') }}">Mot de passe</a></li>
                         <li><a href="{{ path('app_adherent_pin_interests') }}">Centres d'intéret</a></li>
                         <li><a href="{{ path('app_adherent_commitment') }}">Engagement</a></li>
@@ -149,8 +150,10 @@
                 </ul>
             </div>
             <div class="b__nudge--bottom">
+                <span class="head">Actualités</span>
                 <ul class="items">
-                    <li><a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a></li>
+                    <li><a href="{{ path('app_static_page', { slug: 'infocovid' }) }}">InfoCovid</a></li>
+                    <li><a href="{{ path('articles_list', {category: 'tout'}) }}">Toutes nos actualités</a></li>
                 </ul>
             </div>
             <div class="b__nudge--bottom">
@@ -166,6 +169,9 @@
                     <li><a href="{{ path('app_search_events') }}">Événements</a></li>
                     <li><a href="{{ path('app_search_committees') }}">Comités</a></li>
                     <li><a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a></li>
+                    {% if is_canary_enabled() %}
+                        <li><a href="{{ path('app_thematic_community_index') }}">Communautés thématiques</a></li>
+                    {% endif %}
                     <li><a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a></li>
                     <li><a href="{{ mooc_host }}">Formation</a></li>
                     <li><a href="{{ mooc_host }}/sengager-a-la-republique-en-marche">S'engager à LaREM</a></li>

@@ -28,9 +28,9 @@ class MunicipalManagerSupervisorMunicipalManagerAttributionControllerTest extend
         $cities = $crawler->filter('.datagrid__table-manager tbody tr');
         $this->assertCount(3, $cities);
 
-        $this->assertContains('Lille (59350)', $cities->eq(0)->text());
-        $this->assertContains('Roubaix (59512)', $cities->eq(1)->text());
-        $this->assertContains('Seclin (59560)', $cities->eq(2)->text());
+        $this->assertStringContainsString('Lille (59350)', $cities->eq(0)->text());
+        $this->assertStringContainsString('Roubaix (59512)', $cities->eq(1)->text());
+        $this->assertStringContainsString('Seclin (59560)', $cities->eq(2)->text());
     }
 
     public function testAdherentCanNotSeeMunicipalManagerAttributionForm()
@@ -41,14 +41,14 @@ class MunicipalManagerSupervisorMunicipalManagerAttributionControllerTest extend
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

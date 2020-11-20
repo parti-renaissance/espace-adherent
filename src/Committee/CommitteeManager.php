@@ -10,7 +10,6 @@ use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
-use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
 use App\Entity\Reporting\CommitteeMembershipAction;
@@ -24,9 +23,6 @@ use App\Repository\AdherentRepository;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
-use App\VotingPlatform\Event\BaseCandidacyEvent;
-use App\VotingPlatform\Event\CommitteeCandidacyEvent;
-use App\VotingPlatform\Events as VotingPlatformEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -398,6 +394,10 @@ class CommitteeManager
      */
     public function enableVoteInMembership(CommitteeMembership $membership, Adherent $adherent): void
     {
+        if ($membership->isVotingCommittee()) {
+            return;
+        }
+
         if ($existingVotingMembership = $adherent->getMemberships()->getVotingCommitteeMembership()) {
             $this->disableVoteInMembership($existingVotingMembership);
         }
@@ -411,55 +411,8 @@ class CommitteeManager
      */
     public function disableVoteInMembership(CommitteeMembership $membership): void
     {
-        if ($membership->hasActiveCommitteeCandidacy()) {
-            throw CommitteeMembershipException::createRunningCommitteeCandidacyException($membership->getUuid(), $committee->getName);
-        }
-
         $membership->disableVote();
         $this->getManager()->flush();
-    }
-
-    public function candidateInCommittee(CommitteeCandidacy $candidacy, Adherent $adherent, Committee $committee): bool
-    {
-        $membership = $this->getCommitteeMembership($adherent, $committee);
-
-        if ($membership && $membership->isVotingCommittee()) {
-            $membership->addCommitteeCandidacy($candidacy);
-
-            $this->getManager()->flush();
-
-            $this->dispatcher->dispatch(
-                VotingPlatformEvents::CANDIDACY_CREATED,
-                new CommitteeCandidacyEvent($candidacy, $committee, $adherent, $this->getCommitteeSupervisor($committee))
-            );
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public function removeCandidacy(Adherent $adherent, Committee $committee): void
-    {
-        $committeeElection = $committee->getCommitteeElection();
-        $membership = $this->getCommitteeMembership($adherent, $committee);
-
-        if ($membership && $candidacy = $membership->getCommitteeCandidacy($committeeElection)) {
-            $manager = $this->getManager();
-
-            $manager->remove($candidacy);
-            $manager->flush();
-
-            $this->dispatcher->dispatch(
-                VotingPlatformEvents::CANDIDACY_REMOVED,
-                new CommitteeCandidacyEvent(
-                    $candidacy,
-                    $committee,
-                    $adherent,
-                    $this->getCommitteeSupervisor($committee)
-                )
-            );
-        }
     }
 
     private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void
@@ -621,19 +574,5 @@ class CommitteeManager
         }
 
         $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new FollowCommitteeEvent($adherent));
-    }
-
-    public function getCandidacy(Adherent $adherent, Committee $committee): ?CommitteeCandidacy
-    {
-        $membership = $this->getCommitteeMembership($adherent, $committee);
-
-        return $membership->getCommitteeCandidacy($committee->getCommitteeElection());
-    }
-
-    public function saveCandidacy(CommitteeCandidacy $candidacy): void
-    {
-        $this->getManager()->flush();
-
-        $this->dispatcher->dispatch(VotingPlatformEvents::CANDIDACY_UPDATED, new BaseCandidacyEvent($candidacy));
     }
 }

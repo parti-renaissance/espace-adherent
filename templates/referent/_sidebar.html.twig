@@ -8,7 +8,7 @@
     {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
         <ul>
             <li class="menu-section">Messagerie</li>
-            <li class="{{ is_active_route(app.request, 'app_message_referent_*') and not is_active_route(app.request, ['app_message_referent_elected_representative_*', 'app_message_referent_territorial_council_*']) ? 'active' }}">
+            <li class="{{ is_active_route(app.request, 'app_message_referent_*') and not is_active_route(app.request, ['app_message_referent_elected_representative_*', 'app_message_referent_instances_*']) ? 'active' }}">
                 <a href="{{ path('app_message_referent_list') }}" class="messaging adherent">
                     <svg width="16" height="16" viewBox="0 0 16 16">
                         <use xlink:href="/images/icons/icons.svg#messaging"></use>
@@ -24,12 +24,12 @@
                     Aux élus
                 </a>
             </li>
-            <li class="{{ is_active_route(app.request, 'app_message_referent_territorial_council_*') ? 'active' }}">
-                <a href="{{ path('app_message_referent_territorial_council_list') }}" class="messaging council">
+            <li class="{{ is_active_route(app.request, 'app_message_referent_instances_*') ? 'active' }}">
+                <a href="{{ path('app_message_referent_instances_list') }}" class="messaging council">
                     <svg width="16" height="16" viewBox="0 0 16 16">
                         <use xlink:href="/images/icons/icons.svg#messaging"></use>
                     </svg>
-                    Au Conseil territorial
+                    Aux instances
                 </a>
             </li>
         </ul>
@@ -50,7 +50,6 @@
             </li>
         {% endif %}
 
-        {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_event_manager_event*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_managed_users_list', 'app_jecoute_referent_*']) %}
         {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_EVENTS') %}
             <li class="{{ is_active_route(app.request, 'app_referent_event_manager_event*') ? 'active' }}">
                 <a href="{{ path('app_referent_event_manager_events') }}">Événements</a>
@@ -76,10 +75,10 @@
         {% endif %}
     </ul>
 
-    <ul>
-        <li class="menu-section">Instances</li>
+    {% if isReferent %}
+        <ul>
+            <li class="menu-section">Instances</li>
 
-        {% if isReferent %}
             <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_members*') ? 'active' }}">
                 <a href="{{ path('app_territorial_council_referent_members_list') }}">Membres</a>
             </li>
@@ -87,10 +86,16 @@
             <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_designation*') ? 'active' }}">
                 <a href="{{ path('app_territorial_council_referent_designations_list') }}">Désignations</a>
             </li>
-        {% endif %}
-    </ul>
 
-    {% if isReferent %}
+            <li class="{{ is_active_route(app.request, 'app_instances_convocation_referent_*') ? 'active' }}">
+                <a href="{{ path('app_instances_convocation_referent_list') }}">Convocations</a>
+            </li>
+
+            <li class="{{ is_active_route(app.request, 'app_instances_official_report_referent_*') ? 'active' }}">
+                <a href="{{ path('app_instances_official_report_referent_list') }}">Procès-verbaux</a>
+            </li>
+        </ul>
+
         {% if enable_assessor_space %}
             <ul>
                 <li class="menu-section">Élections</li>
@@ -99,21 +104,19 @@
                 </li>
             </ul>
         {% endif %}
-    {% endif %}
 
-    <ul>
-        <li class="menu-section">Mon équipe</li>
-        {% if isReferent %}
+        <ul>
+            <li class="menu-section">Mon équipe</li>
+
             <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' }}">
                 <a href="{{ path('app_referent_institutional_events') }}">Réunions privées</a>
             </li>
-        {% endif %}
 
-        {% if is_granted('ROLE_REFERENT') %}
+
             <li class="{{ is_active_route(app.request, ['app_referent_my_team_list', 'app_referent_my_team_delegate_access']) ? 'active' }}">
                 <a href="{{ path('app_referent_my_team_list') }}">Délégations d'accès</a>
             </li>
-        {% endif %}
-    </ul>
+        </ul>
+    {% endif %}
 </nav>
 {% endif %}

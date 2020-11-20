@@ -4,6 +4,7 @@ namespace App\TerritorialCouncil\Designation;
 
 use App\Address\Address;
 use App\Validator\TerritorialCouncil\TerritorialCouncilDesignation as AssertTerritorialCouncilDesignation;
+use App\Validator\WysiwygLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -69,14 +70,14 @@ class UpdateDesignationRequest
      * @var string|null
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=2000)
+     * @WysiwygLength(max=2000)
      */
     private $description;
 
     /**
      * @var string|null
      *
-     * @Assert\Length(max=2000)
+     * @WysiwygLength(max=2000)
      */
     private $questions;
 

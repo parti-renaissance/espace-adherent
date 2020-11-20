@@ -2,11 +2,15 @@
 
 namespace App\Repository;
 
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+/**
+ * @deprecated
+ */
 class ReferentTagRepository extends ServiceEntityRepository
 {
     public const FRENCH_OUTSIDE_FRANCE_TAG = 'FOF';
@@ -24,6 +28,28 @@ class ReferentTagRepository extends ServiceEntityRepository
     public function findByCodes(array $codes): array
     {
         return $this->findBy(['code' => $codes]);
+    }
+
+    /**
+     * @param Zone[] $zones
+     */
+    public function findByZones(array $zones): array
+    {
+        $qb = $this->createQueryBuilder('tag');
+
+        return $qb
+            ->innerJoin('tag.zone', 'zone')
+            ->leftJoin('zone.parents', 'parent')
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->in('zone.id', ':zones'),
+                    $qb->expr()->in('parent.id', ':zones'),
+                )
+            )
+            ->setParameter(':zones', $zones)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public function findByPartialName(string $name, int $limit, int $offset): array

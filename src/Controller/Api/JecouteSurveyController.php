@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/jecoute")
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS')")
+ * @Security("is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')")
  */
 class JecouteSurveyController extends Controller
 {

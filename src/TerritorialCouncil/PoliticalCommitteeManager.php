@@ -8,7 +8,6 @@ use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
-use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\MandateRepository;
@@ -57,12 +56,11 @@ class PoliticalCommitteeManager
         PoliticalCommittee $politicalCommittee,
         string $qualityName
     ): PoliticalCommitteeMembership {
-        $pcMembership = new PoliticalCommitteeMembership(
-            $politicalCommittee,
-            $adherent
-        );
+        $pcMembership = new PoliticalCommitteeMembership($politicalCommittee, $adherent);
         $pcQuality = new PoliticalCommitteeQuality($qualityName);
         $pcMembership->addQuality($pcQuality);
+        $pcMembership->setIsAdditional($this->checkIsAdditional($qualityName, $adherent));
+        $adherent->setPoliticalCommitteeMembership($pcMembership);
 
         return $pcMembership;
     }
@@ -74,9 +72,22 @@ class PoliticalCommitteeManager
             $tcMembership->getAdherent()
         );
 
-        $qualities = \array_map(function (TerritorialCouncilQuality $quality) {
-            return $quality->getName();
-        }, $tcMembership->getQualities()->toArray());
+        $this->updateOfficioMembersFromTerritorialCouncilMembership($pcMembership, $tcMembership);
+    }
+
+    public function updateOfficioMembersFromTerritorialCouncilMembership(
+        PoliticalCommitteeMembership $pcMembership,
+        TerritorialCouncilMembership $tcMembership
+    ): void {
+        $qualities = $tcMembership->getQualityNames();
+
+        foreach ($pcMembership->getQualities() as $quality) {
+            if (\in_array($name = $quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)
+                && !\in_array($name, $qualities)) {
+                $this->entityManager->remove($quality);
+            }
+        }
+        $this->entityManager->flush();
 
         foreach ($qualities as $name) {
             if (\in_array($name, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)) {
@@ -87,31 +98,23 @@ class PoliticalCommitteeManager
 
         if ($pcMembership->getQualities()->count() > 0) {
             $this->entityManager->persist($pcMembership);
-            $this->entityManager->flush();
+        } elseif ($pcMembership->getId()) {
+            $this->entityManager->remove($pcMembership);
         }
+
+        $this->entityManager->flush();
     }
 
-    public function addPoliticalCommitteeQuality(
-        Adherent $adherent,
-        string $qualityName,
-        bool $checkQuality = true
-    ): void {
+    public function addPoliticalCommitteeQuality(Adherent $adherent, string $qualityName): void
+    {
         if (!$pcMembership = $adherent->getPoliticalCommitteeMembership()) {
-            return;
-        }
-
-        if ($checkQuality) {
-            if (!\in_array($qualityName, array_merge(
-                TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS,
-                TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS))
-            ) {
+            if (!($tcMembership = $adherent->getTerritorialCouncilMembership())) {
                 return;
-            } elseif (\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)) {
-                if (!($tcMembership = $adherent->getTerritorialCouncilMembership())
-                    || null === $this->tcMandateRepository->findActiveMandateWithQuality($adherent, $tcMembership->getTerritorialCouncil(), $qualityName)) {
-                    return;
-                }
             }
+
+            $this->createMembership($adherent, $tcMembership->getTerritorialCouncil()->getPoliticalCommittee(), $qualityName);
+
+            return;
         }
 
         $pcMembership->addQuality(new PoliticalCommitteeQuality($qualityName));
@@ -210,10 +213,21 @@ class PoliticalCommitteeManager
         }
 
         $membership = $this->createMembership($adherent, $politicalCommittee, $quality);
-        $adherent->setPoliticalCommitteeMembership($membership);
 
         $this->entityManager->persist($membership);
         $this->entityManager->flush();
+    }
+
+    public function canAddQuality(string $qualityName, Adherent $adherent): bool
+    {
+        if (\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)
+            || (\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
+                && ($tcMembership = $adherent->getTerritorialCouncilMembership())
+                && $this->tcMandateRepository->findActiveMandateWithQuality($adherent, $tcMembership->getTerritorialCouncil(), $qualityName))) {
+            return true;
+        }
+
+        return false;
     }
 
     public function removeMayorOrLeaderMembership(TerritorialCouncil $territorialCouncil, Adherent $adherent): void
@@ -239,6 +253,18 @@ class PoliticalCommitteeManager
         $this->removeQualityByName($politicalCommitteeMembership, $quality);
 
         $this->entityManager->flush();
+    }
+
+    private function checkIsAdditional(string $qualityName, Adherent $adherent): bool
+    {
+        if (!\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
+            || !($tcMembership = $adherent->getTerritorialCouncilMembership())) {
+            return false;
+        }
+
+        $mandate = $this->tcMandateRepository->findActiveMandateWithQuality($adherent, $tcMembership->getTerritorialCouncil(), $qualityName);
+
+        return $mandate->isAdditionallyElected();
     }
 
     private function updateManagedInAdminQualitiesInMembership(

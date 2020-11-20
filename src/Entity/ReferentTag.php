@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMSSerializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("name")
  * @UniqueEntity("code")
  *
- * @Algolia\Index(autoIndex=false)
+ * @deprecated
  */
 class ReferentTag
 {
@@ -30,6 +30,7 @@ class ReferentTag
     public const TYPE_COUNTRY = 'country';
     public const TYPE_DISTRICT = 'district';
     public const TYPE_BOROUGH = 'borough';
+    public const TYPE_METROPOLIS = 'metropolis';
 
     /**
      * @ORM\Id
@@ -82,10 +83,18 @@ class ReferentTag
      */
     private $type;
 
-    public function __construct(string $name = null, string $code = null)
+    /**
+     * @var Zone
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
+     */
+    private $zone;
+
+    public function __construct(string $name = null, string $code = null, Zone $zone = null)
     {
         $this->name = $name;
         $this->code = $code;
+        $this->zone = $zone;
     }
 
     public function __toString(): string
@@ -138,6 +147,11 @@ class ReferentTag
         return $this->type;
     }
 
+    public function isCountryTag(): bool
+    {
+        return self::TYPE_COUNTRY === $this->type;
+    }
+
     public function isDistrictTag(): bool
     {
         return self::TYPE_DISTRICT === $this->type;
@@ -153,8 +167,23 @@ class ReferentTag
         return self::TYPE_BOROUGH === $this->type;
     }
 
+    public function isMetropolisTag(): bool
+    {
+        return self::TYPE_METROPOLIS === $this->type;
+    }
+
     public function getDepartmentCodeFromCirconscriptionName(): ?string
     {
         return $this->isDistrictTag() ? \substr($this->code, 6, 2) : null;
+    }
+
+    public function getZone(): Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(Zone $zone): void
+    {
+        $this->zone = $zone;
     }
 }

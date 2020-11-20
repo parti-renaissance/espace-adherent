@@ -3,7 +3,7 @@
 namespace Tests\App\Admin;
 
 use App\AdherentMessage\Command\CreateStaticSegmentCommand;
-use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Repository\CommitteeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -28,7 +28,7 @@ class CommitteeAdminTest extends WebTestCase
         $this->authenticateAsAdmin($this->client);
 
         $this->client->enableProfiler();
-        $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
 
         $this->client->request('GET', sprintf('/admin/committee/%d/approve', $committee->getId()));
 
@@ -37,7 +37,7 @@ class CommitteeAdminTest extends WebTestCase
         $this->assertMessageIsDispatched(CreateStaticSegmentCommand::class);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -46,7 +46,7 @@ class CommitteeAdminTest extends WebTestCase
         $this->committeeRepository = $this->getCommitteeRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

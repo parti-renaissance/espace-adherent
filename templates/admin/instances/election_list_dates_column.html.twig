@@ -1,0 +1,14 @@
+{% extends 'admin/CRUD/list_array.html.twig' %}
+
+{% block field %}
+    {% set designation = object.designation %}
+
+    {% set value = [
+        designation.getCandidacyStartDate|date('d/m/Y H\\hi'),
+        designation.getCandidacyEndDate|date('d/m/Y H\\hi'),
+        designation.getVoteStartDate|date('d/m/Y H\\hi'),
+        designation.getVoteEndDate|date('d/m/Y H\\hi'),
+    ] %}
+
+    {{ parent() }}
+{% endblock %}

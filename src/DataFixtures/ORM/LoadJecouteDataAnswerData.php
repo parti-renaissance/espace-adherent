@@ -5,12 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Jecoute\Choice;
 use App\Entity\Jecoute\DataAnswer;
 use App\Entity\Jecoute\DataSurvey;
-use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadJecouteDataAnswerData extends Fixture
+class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -23,6 +23,15 @@ class LoadJecouteDataAnswerData extends Fixture
         /** @var SurveyQuestion $survey1Question3 */
         $survey1Question3 = $this->getReference('survey-1-question-3');
 
+        /** @var SurveyQuestion $nationalSurvey1Question1 */
+        $nationalSurvey1Question1 = $this->getReference('national-survey-1-question-1');
+
+        /** @var SurveyQuestion $nationalSurvey1Question2 */
+        $nationalSurvey1Question2 = $this->getReference('national-survey-1-question-2');
+
+        /** @var SurveyQuestion $nationalSurvey2Question1 */
+        $nationalSurvey2Question1 = $this->getReference('national-survey-2-question-1');
+
         /** @var DataSurvey $dataSurvey1 */
         $dataSurvey1 = $this->getReference('data-survey-1');
 
@@ -31,6 +40,15 @@ class LoadJecouteDataAnswerData extends Fixture
 
         /** @var DataSurvey $dataSurvey3 */
         $dataSurvey3 = $this->getReference('data-survey-3');
+
+        /** @var DataSurvey $nationalSurvey1 */
+        $nationalSurvey1 = $this->getReference('data-national-survey-1');
+
+        /** @var DataSurvey $nationalSurvey2 */
+        $nationalSurvey2 = $this->getReference('data-national-survey-2');
+
+        /** @var DataSurvey $nationalSurvey3 */
+        $nationalSurvey3 = $this->getReference('data-national-survey-3');
 
         // Data Survey 1
 
@@ -107,6 +125,45 @@ class LoadJecouteDataAnswerData extends Fixture
 
         $manager->persist($dataSurvey3Answer1);
         $manager->persist($dataSurvey3Answer2);
+
+        // Data Survey National
+
+        $dataNationalSurvey1Answer1 = new DataAnswer();
+        $dataNationalSurvey1Answer1->setSurveyQuestion($nationalSurvey1Question1);
+        $dataNationalSurvey1Answer1->setDataSurvey($nationalSurvey1);
+        $dataNationalSurvey1Answer1->setTextField('Réponse nationale !');
+
+        $manager->persist($dataNationalSurvey1Answer1);
+
+        $dataNationalSurvey1Answer2 = new DataAnswer();
+        $dataNationalSurvey1Answer2->setSurveyQuestion($nationalSurvey1Question2);
+        $dataNationalSurvey1Answer2->setDataSurvey($nationalSurvey1);
+        $dataNationalSurvey1Answer2->addSelectedChoice($this->getReference('national-question-2-choice-2'));
+        $dataNationalSurvey1Answer2->addSelectedChoice($this->getReference('national-question-2-choice-3'));
+
+        $manager->persist($dataNationalSurvey1Answer2);
+
+        $dataNationalSurvey2Answer1 = new DataAnswer();
+        $dataNationalSurvey2Answer1->setSurveyQuestion($nationalSurvey1Question1);
+        $dataNationalSurvey2Answer1->setDataSurvey($nationalSurvey2);
+        $dataNationalSurvey2Answer1->setTextField('La réponse nationale de la 2eme personne');
+
+        $manager->persist($dataNationalSurvey2Answer1);
+
+        $dataNationalSurvey2Answer2 = new DataAnswer();
+        $dataNationalSurvey2Answer2->setSurveyQuestion($nationalSurvey1Question2);
+        $dataNationalSurvey2Answer2->setDataSurvey($nationalSurvey2);
+        $dataNationalSurvey2Answer2->addSelectedChoice($this->getReference('national-question-2-choice-1'));
+        $dataNationalSurvey2Answer2->addSelectedChoice($this->getReference('national-question-2-choice-4'));
+
+        $manager->persist($dataNationalSurvey2Answer2);
+
+        $dataNationalSurvey3Answer1 = new DataAnswer();
+        $dataNationalSurvey3Answer1->setSurveyQuestion($nationalSurvey2Question1);
+        $dataNationalSurvey3Answer1->setDataSurvey($nationalSurvey3);
+        $dataNationalSurvey3Answer1->addSelectedChoice($this->getReference('national-question-3-choice-1'));
+
+        $manager->persist($dataNationalSurvey3Answer1);
 
         $manager->flush();
     }

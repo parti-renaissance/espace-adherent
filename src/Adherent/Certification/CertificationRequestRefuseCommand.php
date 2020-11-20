@@ -10,6 +10,13 @@ class CertificationRequestRefuseCommand extends AbstractCertificationRequestMode
     public const REFUSAL_REASON_DOCUMENT_NOT_READABLE = 'document_not_readable';
     public const REFUSAL_REASON_INFORMATIONS_NOT_MATCHING = 'informations_not_matching';
     public const REFUSAL_REASON_PROCESS_TIMEOUT = 'process_timeout';
+    public const REFUSAL_REASON_BIRTH_DATE_NOT_MATCHING = 'birth_date_not_matching';
+    public const REFUSAL_REASON_UNREADABLE_DOCUMENT = 'unreadable_document';
+    public const REFUSAL_REASON_DOCUMENT_NOT_ORIGINAL = 'document_not_original';
+    public const REFUSAL_REASON_REVERSED_FIRST_AND_LAST_NAME = 'reversed_first_and_last_name';
+    public const REFUSAL_REASON_DOCUMENT_NOT_FULLY_VISIBLE = 'document_not_fully_visible';
+    public const REFUSAL_REASON_DOCUMENT_NOT_FRONT = 'document_not_front';
+    public const REFUSAL_REASON_PARTIAL_FIRST_NAME = 'partial_first_name';
     public const REFUSAL_REASON_OTHER = 'other';
 
     public const REFUSAL_REASONS = [
@@ -17,6 +24,13 @@ class CertificationRequestRefuseCommand extends AbstractCertificationRequestMode
         self::REFUSAL_REASON_DOCUMENT_NOT_READABLE,
         self::REFUSAL_REASON_INFORMATIONS_NOT_MATCHING,
         self::REFUSAL_REASON_PROCESS_TIMEOUT,
+        self::REFUSAL_REASON_BIRTH_DATE_NOT_MATCHING,
+        self::REFUSAL_REASON_UNREADABLE_DOCUMENT,
+        self::REFUSAL_REASON_DOCUMENT_NOT_ORIGINAL,
+        self::REFUSAL_REASON_REVERSED_FIRST_AND_LAST_NAME,
+        self::REFUSAL_REASON_DOCUMENT_NOT_FULLY_VISIBLE,
+        self::REFUSAL_REASON_DOCUMENT_NOT_FRONT,
+        self::REFUSAL_REASON_PARTIAL_FIRST_NAME,
         self::REFUSAL_REASON_OTHER,
     ];
 

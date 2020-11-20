@@ -43,11 +43,10 @@ class AddressTest extends TestCase
         $this->assertTrue($address->isFrenchAddress());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testCreateInvalidValidFrenchAddress()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $address = new Address();
         $address->setCity('69001');
     }

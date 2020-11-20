@@ -4,10 +4,11 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\MyTeam\DelegatedAccess;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadDelegatedAccessData extends Fixture
+class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterface
 {
     private const ACCESS_UUID_1 = '2e80d106-4bcb-4b28-97c9-3856fc235b27';
     private const ACCESS_UUID_2 = 'f4ce89da-1272-4a01-a47e-4ce5248ce018';
@@ -16,6 +17,7 @@ class LoadDelegatedAccessData extends Fixture
     private const ACCESS_UUID_5 = 'd2315289-a3fd-419c-a3dd-3e1ff71b754d';
     private const ACCESS_UUID_6 = '7fdf8fb0-1628-4500-b0b2-34c40cc27a2c';
     private const ACCESS_UUID_7 = '08f40730-d807-4975-8773-69d8fae1da74';
+    private const ACCESS_UUID_8 = '01ddb89b-25be-4ccb-a90f-8338c42e7e58';
 
     public function load(ObjectManager $manager)
     {
@@ -85,6 +87,24 @@ class LoadDelegatedAccessData extends Fixture
         $delegatedAccess7->setDelegator($this->getReference('adherent-8')); // referent@en-marche-dev.fr
         $delegatedAccess7->setRole('Collaborateur parlementaire');
         $delegatedAccess7->setType('referent');
+
+        $manager->persist($delegatedAccess7);
+
+        // access from candidate
+        $delegatedAccess8 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_8));
+        $delegatedAccess8->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
+        $delegatedAccess8->setDelegator($this->getReference('adherent-3')); // jacques.picard@en-marche.fr
+        $delegatedAccess8->setRole('Candidat délégué');
+        $delegatedAccess8->setType('candidate');
+        $delegatedAccess8->setAccesses([
+            DelegatedAccess::ACCESS_ADHERENTS,
+            DelegatedAccess::ACCESS_MESSAGES,
+            DelegatedAccess::ACCESS_EVENTS,
+            DelegatedAccess::ACCESS_FILES,
+            DelegatedAccess::ACCESS_JECOUTE,
+        ]);
+        $delegatedAccess8->setRestrictedCities(['77288', '59002']);
+        $delegatedAccess8->setRestrictedCommittees([$this->getReference('committee-4')]);
 
         $manager->persist($delegatedAccess7);
 

@@ -7,13 +7,11 @@ use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadCitizenActionData extends Fixture implements DependentFixtureInterface
 {
     const CITIZEN_ACTION_1_UUID = '3f46976e-e76a-476e-86d7-575c6d3bc15f';
     const CITIZEN_ACTION_2_UUID = '36ab5f85-5feb-4ff7-8218-d2da63045b74';
@@ -25,14 +23,18 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
     const CITIZEN_ACTION_8_UUID = 'a02ca3c7-1b07-46cd-81b2-d309258e53f9';
     const CITIZEN_ACTION_9_UUID = '8d8a8ce7-ba60-4750-a300-bf0356e0ae0f';
 
-    use ContainerAwareTrait;
+    private $eventFactory;
+    private $registrationFactory;
+
+    public function __construct(EventFactory $eventFactory, EventRegistrationFactory $registrationFactory)
+    {
+        $this->eventFactory = $eventFactory;
+        $this->registrationFactory = $registrationFactory;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $eventFactory = $this->getEventFactory();
-        $registrationFactory = $this->getEventRegistrationFactory();
-
-        $actionCitoyenne1 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne1 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_1_UUID,
             'citizen_project' => $this->getReference('citizen-project-3'),
             'organizer' => $this->getReference('adherent-1'),
@@ -48,7 +50,7 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $actionCitoyenne1->setPublished(true);
         $actionCitoyenne1->incrementParticipantsCount();
 
-        $actionCitoyenne2 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne2 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_2_UUID,
             'citizen_project' => $this->getReference('citizen-project-2'),
             'organizer' => $this->getReference('adherent-2'),
@@ -63,7 +65,7 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $actionCitoyenne2->setPublished(false);
         $actionCitoyenne2->incrementParticipantsCount();
 
-        $actionCitoyenne3 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne3 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_3_UUID,
             'citizen_project' => $this->getReference('citizen-project-1'),
             'organizer' => $this->getReference('adherent-3'),
@@ -78,7 +80,7 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $actionCitoyenne3->setPublished(true);
         $actionCitoyenne3->incrementParticipantsCount();
 
-        $actionCitoyenne4 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne4 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_4_UUID,
             'citizen_project' => $this->getReference('citizen-project-1'),
             'organizer' => $this->getReference('adherent-3'),
@@ -93,7 +95,7 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $actionCitoyenne4->setPublished(true);
         $actionCitoyenne4->incrementParticipantsCount(2);
 
-        $actionCitoyenne5 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne5 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_5_UUID,
             'citizen_project' => $this->getReference('citizen-project-3'),
             'organizer' => $this->getReference('adherent-13'),
@@ -108,7 +110,7 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $actionCitoyenne5->setPublished(true);
         $actionCitoyenne5->incrementParticipantsCount();
 
-        $actionCitoyenne6 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne6 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_6_UUID,
             'citizen_project' => $this->getReference('citizen-project-4'),
             'organizer' => $this->getReference('adherent-13'),
@@ -125,7 +127,7 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $actionCitoyenne6->cancel();
         $actionCitoyenne6->incrementParticipantsCount();
 
-        $actionCitoyenne7 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne7 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_7_UUID,
             'citizen_project' => $this->getReference('citizen-project-9'),
             'organizer' => $this->getReference('adherent-13'),
@@ -141,7 +143,7 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $actionCitoyenne7->setPublished(true);
         $actionCitoyenne7->incrementParticipantsCount(10);
 
-        $actionCitoyenne8 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne8 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_8_UUID,
             'citizen_project' => $this->getReference('citizen-project-9'),
             'organizer' => $this->getReference('adherent-13'),
@@ -155,7 +157,7 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
             'time_zone' => 'Europe/Zurich',
         ]);
 
-        $actionCitoyenne9 = $eventFactory->createCitizenActionFromArray([
+        $actionCitoyenne9 = $this->eventFactory->createCitizenActionFromArray([
             'uuid' => self::CITIZEN_ACTION_9_UUID,
             'citizen_project' => $this->getReference('citizen-project-2'),
             'organizer' => $this->getReference('adherent-3'),
@@ -180,17 +182,17 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $manager->persist($actionCitoyenne8);
         $manager->persist($actionCitoyenne9);
 
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne1, $this->getReference('adherent-1'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne2, $this->getReference('adherent-2'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne3, $this->getReference('adherent-3'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-3'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-5'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-4'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne5, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne6, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne7, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne8, $this->getReference('adherent-13'))));
-        $manager->persist($registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne9, $this->getReference('adherent-13'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne1, $this->getReference('adherent-1'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne2, $this->getReference('adherent-2'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne3, $this->getReference('adherent-3'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-3'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-5'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne4, $this->getReference('adherent-4'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne5, $this->getReference('adherent-13'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne6, $this->getReference('adherent-13'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne7, $this->getReference('adherent-13'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne8, $this->getReference('adherent-13'))));
+        $manager->persist($this->registrationFactory->createFromCommand(new EventRegistrationCommand($actionCitoyenne9, $this->getReference('adherent-13'))));
         // Registrations of not connected users
         $eventRegistration1 = new EventRegistrationCommand($actionCitoyenne4);
         $eventRegistration1->setFirstName('Marie');
@@ -200,20 +202,10 @@ class LoadCitizenActionData extends AbstractFixture implements ContainerAwareInt
         $eventRegistration2->setFirstName('Pierre');
         $eventRegistration2->setLastName('FRANCE');
         $eventRegistration2->setEmailAddress('pierre.france@test.com');
-        $manager->persist($registrationFactory->createFromCommand($eventRegistration1));
-        $manager->persist($registrationFactory->createFromCommand($eventRegistration2));
+        $manager->persist($this->registrationFactory->createFromCommand($eventRegistration1));
+        $manager->persist($this->registrationFactory->createFromCommand($eventRegistration2));
 
         $manager->flush();
-    }
-
-    private function getEventFactory(): EventFactory
-    {
-        return $this->container->get(EventFactory::class);
-    }
-
-    private function getEventRegistrationFactory(): EventRegistrationFactory
-    {
-        return $this->container->get('app.event.registration_factory');
     }
 
     public function getDependencies()

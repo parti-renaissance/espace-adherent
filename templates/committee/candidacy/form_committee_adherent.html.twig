@@ -1,0 +1,82 @@
+{% extends 'committee/edit_candidacy.html.twig' %}
+
+{% block candidacy_form %}
+    <div class="l__wrapper">
+        <div class="committee__main b__nudge--top-50">
+            <div>
+                <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="text--body link--no-decor link--blue--dark">⟵ Annuler</a>
+            </div>
+            <div class="l__wrapper--600">
+                <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Votre candidature</h2>
+                <p class="text--body text--dark b__nudge--bottom-50">
+                    Ajoutez une photo de vous et un texte de présentation à votre candidature.
+                    Ces informations resteront modifiables jusqu'à la clôture des candidatures.
+                    <!-- le <strong>{{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y") }}</strong>
+                        à <strong>{{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}</strong> -->
+                    Si vous préférez ne rien mettre, cliquez sur « passer cette étape ».
+                </p>
+                {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
+                {{ form_errors(form) }}
+
+                <div class="em-form__group">
+                    <label for="{{ form.image.vars.id }}" class="em-form__label">Ajouter une photo</label>
+                    <div class="text--body text--dark b__nudge--bottom-small">
+                        Une photo d'identité permettra aux adhérents de mieux vous reconnaître.
+                    </div>
+                    {{ form_errors(form.image) }}
+
+                    {% if candidacy.id and candidacy.imageName %}
+                        {% set image_url = path('asset_url', {path: candidacy.imagePath}) %}
+                    {% endif %}
+
+                    <div class="em-form__file">
+                        {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
+
+                        <div>
+                            <div class="image-uploader--label {{ image_url is defined ? 'hidden' }}">
+                                {{ form_label(form.image, 'Télécharger une photo', {label_attr: {class: 'text--blue--dark em-form__file--label'}}) }}
+                                <div class="em-form__file--name custom-file-label">Aucun fichier sélectionné</div>
+                            </div>
+
+                            <div class="image-uploader--preview {{ image_url is not defined ? 'hidden' }}">
+                                <div>
+                                    <div class="preview-image--container" {% if image_url is defined %}style="background-image: url({{ image_url }})"{% endif %}></div>
+                                </div>
+
+                                <div>
+                                    <label for="{{ form.image.vars.id }}">Modifier</label>
+                                    <span class="separtor"><strong>·</strong></span>
+                                    <a href="#" class="link--no-decor link--blue delete-profile-image--trigger">Supprimer</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
+                </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.biography, 'Ajouter une présentation', {label_attr: {class: 'em-form__label'}}) }}
+                    <div class="text--body text--dark b__nudge--bottom-small">
+                        Motivez votre candidature par une présentation rapide.
+                    </div>
+                    {{ form_errors(form.biography) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.biography, {attr: {class: ' em-form__field ', rows: 50}}) }}
+                    </div>
+                </div>
+
+                <div>
+                    {{ form_row(form.save, {label: 'Valider', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+
+                    {% if form.skip is defined %}
+                        {{ form_row(form.skip, {label: 'Passer cette étape', attr: {class: 'btn btn--ghosting-blue btn--large-and-full b__nudge--top-15'}}) }}
+                    {% endif %}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

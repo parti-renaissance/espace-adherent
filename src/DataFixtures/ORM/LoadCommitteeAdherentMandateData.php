@@ -5,9 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadCommitteeAdherentMandateData extends Fixture
+class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -44,7 +45,7 @@ class LoadCommitteeAdherentMandateData extends Fixture
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
+            LoadCommitteeData::class,
         ];
     }
 }

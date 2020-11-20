@@ -213,4 +213,26 @@
             }
         }
     }
+
+    .instance-type-tab {
+        padding: 10px;
+
+        &:first-child {
+            border-bottom: 1px solid gray;
+        }
+
+        .manager__filters__row:first-child {
+            margin-bottom: 10px;
+
+            label {
+                font-family: "Roboto", Helvetica, sans-serif;
+                font-size: 13px;
+                font-weight: bold;
+                line-height: normal;
+                color: $silver-grey;
+                margin-bottom: 7px;
+                text-transform: uppercase;
+            }
+        }
+    }
 }

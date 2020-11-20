@@ -255,7 +255,7 @@ class AdherentRepositoryTest extends WebTestCase
         ];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -265,7 +265,7 @@ class AdherentRepositoryTest extends WebTestCase
         $this->referentTagRepository = $this->getRepository(ReferentTag::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

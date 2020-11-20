@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ReferentTag;
@@ -17,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\DesignationRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Designation
 {
@@ -296,7 +293,7 @@ class Designation
     public function hasValidZone(): bool
     {
         return
-            (DesignationTypeEnum::COMMITTEE_ADHERENT === $this->type && !empty($this->zones))
+            ($this->isCommitteeType() && !empty($this->zones))
             || (DesignationTypeEnum::COPOL === $this->type && !$this->referentTags->isEmpty())
         ;
     }
@@ -364,5 +361,18 @@ class Designation
         }
 
         return [];
+    }
+
+    public function isCommitteeType(): bool
+    {
+        return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_ADHERENT, DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
+    }
+
+    public function isBinomeDesignation(): bool
+    {
+        return \in_array($this->type, [
+            DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+            DesignationTypeEnum::COPOL,
+        ], true);
     }
 }

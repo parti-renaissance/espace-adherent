@@ -45,7 +45,7 @@ class CandidatureController extends Controller
 
         /** @var Election $election */
         if (!($election = $council->getCurrentElection()) || !$election->isCandidacyPeriodActive()) {
-            $this->addFlash('error', 'Vous ne pouvez pas candidater pour cette désignation.');
+            $this->addFlash('error', 'Vous ne pouvez pas candidater ou modifier votre candidature pour cette désignation.');
 
             return $this->redirectToRoute('app_territorial_council_index');
         }
@@ -83,11 +83,12 @@ class CandidatureController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $isCreation = null === $candidacy->getId();
             $this->manager->updateCandidature($candidacy);
 
             $this->addFlash('info', 'Votre candidature a bien été enregistrée');
 
-            if ($candidacy->hasPendingInvitation()) {
+            if ($candidacy->hasPendingInvitation() || !$isCreation) {
                 return $this->redirectToRoute('app_territorial_council_index');
             }
 

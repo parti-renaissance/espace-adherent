@@ -7,7 +7,7 @@ use App\Entity\Skill;
 use App\Entity\Summary;
 use App\Form\EventListener\SkillListener;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -44,7 +44,7 @@ class SummaryType extends AbstractType
     ];
 
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $storage;
 
@@ -55,7 +55,7 @@ class SummaryType extends AbstractType
 
     private $entityManager;
 
-    public function __construct(Filesystem $storage, Server $glide, EntityManagerInterface $entityManager)
+    public function __construct(FilesystemInterface $storage, Server $glide, EntityManagerInterface $entityManager)
     {
         $this->storage = $storage;
         $this->glide = $glide;

@@ -65,6 +65,10 @@
         line-height: 32px;
         margin-right: 10px;
         display: inline-block;
+
+        a {
+            border-bottom: none;
+        }
     }
 
     .datagrid__count {

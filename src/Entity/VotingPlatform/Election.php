@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityDesignationTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -19,8 +18,6 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\ElectionRepository")
  *
  * @ORM\Table(name="voting_platform_election")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Election
 {
@@ -122,11 +119,6 @@ class Election
         return $this->designation->getTitle();
     }
 
-    public function getDesignationType(): string
-    {
-        return $this->designation->getType();
-    }
-
     public function getElectionEntity(): ElectionEntity
     {
         return $this->electionEntity;
@@ -178,6 +170,14 @@ class Election
             $pool->setElection($this);
             $this->electionPools->add($pool);
         }
+    }
+
+    /**
+     * @return ElectionPool[]
+     */
+    public function getElectionPools(): array
+    {
+        return $this->electionPools->toArray();
     }
 
     public function getCurrentRound(): ?ElectionRound

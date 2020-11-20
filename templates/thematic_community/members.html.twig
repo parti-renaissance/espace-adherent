@@ -1,0 +1,147 @@
+{% extends 'thematic_community/_layout_thematic_community_chief.html.twig' %}
+
+{% block thematic_community_chief_content %}
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
+        <h3>Membres</h3>
+
+        {% if total_count %}
+            <span class="datagrid__count">
+                <span>{{ members.totalItems|number_format(0, ',', ' ') }}</span> sur {{ total_count|number_format(0, ',', ' ') }} membre{{ total_count > 1 ? 's' : '' }}
+            </span>
+        {% endif %}
+    </div>
+
+    {% include 'thematic_community/filter_form.html.twig' %}
+
+    <div class="datagrid">
+        <div class="b__nudge--bottom-larger">
+            <div class="datagrid__table-container">
+                <table class="datagrid__table-manager">
+                    <thead>
+                    <tr>
+                        {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
+
+                        <th style="width: 130px;">
+                            <a
+                                    href="{{ path("app_thematic_community_members_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
+                                    class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
+                            >
+                                Identité
+                            </a>
+                        </th>
+                        <th style="width: 100px;">Rôle / Mandat</th>
+                        <th style="width: 100px;">Mode d'engagement</th>
+                        <th style="width: 100px;">Catégories</th>
+                        <th style="width: 100px;">Téléphone</th>
+                        <th style="width: 100px;">Commune</th>
+                        <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
+                            <a
+                                    href="{{ path("app_thematic_community_members_list", {f: filter.toArray()|merge({sort: 'joinedAt', order: order})}) }}"
+                                    class="sort-link sort-link--order-{{ filter.sort == 'joinedAt' ? filter.order : 'a' }}"
+                            >
+                                Membre depuis le
+                            </a>
+                        </th>
+                        <th style="width: 100px;">Statut</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for member in members %}
+                        <tr class="referent__item referent__item--todo">
+                            <td class="adherent-identity">
+                                <div class="adherent-name">
+                                    {{ member.lastName }} {{ member.firstName }}
+                                    {% if member.isCertified %}
+                                        {{ include('components/_certification_logo.html.twig') }}
+                                    {% endif %}
+                                </div>
+                                <div class="adherent-caracs">
+                                {% if member.gender %}
+                                    {% if 'male' == member.gender %}
+                                        {{ 'common.gender.man'|trans }}
+                                    {% else %}
+                                        {{ 'common.gender.woman'|trans }}
+                                    {% endif %}
+                                {% else %}
+                                    ~
+                                {% endif %},
+                                {% if member.birthdate %}
+                                    {{ member.birthdate|birthdate_to_age ~ ' ans' }}
+                                {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                {{ member.roles }}
+                            </td>
+                            <td>
+                                {{ member.motivations|map(m => ('admin.thematic_community.membership.motivations.'~m)|trans)|join(', ') }}
+                            </td>
+                            <td>
+                                {{ member.userListDefinitions.toString }}
+                            </td>
+                            <td>{{ member.phone ? member.phone|phone_number_format : 'Non renseigné' }}</td>
+                            <td>{{ member.postAddress.cityName }} <br/> {{ member.postAddress.postalCode }}{% if member.postAddress.country %}, {{ member.postAddress.country }}{% endif %}</td>
+                            <td class="datagrid__table__col--hide-mobile">
+                                {{ member.joinedAt|date('d/m/Y H:i') }}
+                            </td>
+                            <td>
+                                <div class="em-tooltip">
+                                    {{ include('components/_sms_icon.svg.twig', {enabled: member.hasSmsSubscriptionType}) }}
+                                    <div class="em-tooltip--content em-tooltip--content-small em-tooltip--content-reversed">
+                                        <p>{{ member.hasSmsSubscriptionType ? 'Abonné' : 'Non abonné' }} SMS</p>
+                                    </div>
+                                </div>
+
+                                <div class="em-tooltip">
+                                    {{ include('components/_email_icon.svg.twig', {enabled: member.hasEmailSubscriptionType}) }}
+                                    <div class="em-tooltip--content em-tooltip--content-small em-tooltip--content-reversed">
+                                        <p>{{ member.hasEmailSubscriptionType ? 'Abonné' : 'Non abonné' }} Email</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="text--center">
+                                <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                Aucun résultat
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% if members.count %}
+            {% include 'components/_modern_pagination.html.twig' with {
+                current_page: members.currentPage,
+                total_pages: members.lastPage,
+                pagination_route_params: {f: filter.toArray()},
+            } %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+
+    <script type="text/javascript">
+      Kernel.onLoad(function() {
+        $('.multi_select2').each(function () {
+          $(this).select2({
+            placeholder: this.dataset.placeholder || '',
+            theme: 'default em-filters'
+          });
+        });
+      });
+    </script>
+{% endblock %}

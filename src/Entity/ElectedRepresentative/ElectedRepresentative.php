@@ -2,7 +2,6 @@
 
 namespace App\Entity\ElectedRepresentative;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityUserListDefinitionTrait;
 use App\Entity\ReferentTag;
@@ -21,8 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ElectedRepresentativeRepository")
  *
  * @UniqueEntity(fields={"adherent"}, message="elected_representative.invalid_adherent")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ElectedRepresentative
 {

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 trait EntitySoftDeletableTrait
@@ -24,9 +23,6 @@ trait EntitySoftDeletableTrait
         return isset($this->deletedAt);
     }
 
-    /**
-     * @Algolia\IndexIf
-     */
     public function isNotDeleted(): bool
     {
         return !$this->isDeleted();

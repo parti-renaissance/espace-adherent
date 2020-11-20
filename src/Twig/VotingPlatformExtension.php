@@ -17,6 +17,8 @@ class VotingPlatformExtension extends AbstractExtension
             new TwigFunction('get_my_vote_for_election', [VotingPlatformRuntime::class, 'findMyVoteForElection']),
             new TwigFunction('get_election_last_vote', [VotingPlatformRuntime::class, 'findMyLastVote']),
             new TwigFunction('get_election_pool_title_key', [$this, 'getElectionPoolTitleKey']),
+            new TwigFunction('get_election_participation_details', [VotingPlatformRuntime::class, 'getElectionParticipationDetails']),
+            new TwigFunction('get_election_candidate_result', [VotingPlatformRuntime::class, 'getElectionCandidateResult']),
         ];
     }
 

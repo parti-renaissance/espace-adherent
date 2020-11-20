@@ -9,6 +9,7 @@ use App\Entity\Proposal;
 use App\Geocoder\Coordinates;
 use App\Map\StaticMapProviderInterface;
 use App\Timeline\TimelineImageFactory;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Signatures\SignatureException;
@@ -33,12 +34,12 @@ class AssetsController extends Controller
      * @Route("/assets/{path}", requirements={"path": ".+"}, name="asset_url", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
-    public function assetAction(string $path, Request $request)
+    public function assetAction(FilesystemInterface $storage, string $path, Request $request)
     {
         $parameters = $request->query->all();
 
         if (!empty($parameters['mime_type'])) {
-            return new Response($this->get('app.storage')->read($path), Response::HTTP_OK, [
+            return new Response($storage->read($path), Response::HTTP_OK, [
                 'Content-Type' => $parameters['mime_type'],
             ]);
         }
@@ -54,7 +55,7 @@ class AssetsController extends Controller
         }
 
         if (\array_key_exists($extension = substr($path, -3), self::EXTENSIONS_TYPES)) {
-            return new Response($this->get('app.storage')->read($path), Response::HTTP_OK, [
+            return new Response($storage->read($path), Response::HTTP_OK, [
                 'Content-Type' => self::EXTENSIONS_TYPES[$extension],
             ]);
         }
@@ -100,10 +101,10 @@ class AssetsController extends Controller
      * @Route("/video/homepage.{format}", requirements={"format": "mov|mp4"}, name="homepage_video_url", methods={"GET"})
      * @Cache(maxage=60, smaxage=60)
      */
-    public function videoAction(string $format)
+    public function videoAction(FilesystemInterface $storage, string $format)
     {
         return new Response(
-            $this->get('app.storage')->read('static/videos/homepage.'.$format),
+            $storage->read('static/videos/homepage.'.$format),
             Response::HTTP_OK,
             ['Content-Type' => 'video/'.$format]
         );

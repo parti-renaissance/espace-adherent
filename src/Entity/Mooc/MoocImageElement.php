@@ -2,15 +2,12 @@
 
 namespace App\Entity\Mooc;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Image;
 use App\Validator\ImageObject as AssertImageObject;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class MoocImageElement extends BaseMoocElement
 {

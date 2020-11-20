@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\MemberSummary\MissionType;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadMissionTypeData implements FixtureInterface
+class LoadMissionTypeData extends Fixture
 {
     const MISSION_TYPES = [
         'MT_001' => 'Me former à l\'action politique et citoyenne',

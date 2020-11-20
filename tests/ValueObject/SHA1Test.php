@@ -9,11 +9,11 @@ class SHA1Test extends TestCase
 {
     /**
      * @dataProvider provideInvalidHash
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /The given hash ".+" does not have a valid SHA-1 format\./
      */
     public function testCreateSHA1FailsWithInvalidSHA1Hash(string $hash)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/The given hash ".+" does not have a valid SHA-1 format\./');
         SHA1::fromString($hash);
     }
 

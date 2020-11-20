@@ -2,7 +2,6 @@
 
 namespace App\Entity\Formation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityMediaInterface;
 use App\Entity\EntityMediaTrait;
 use App\Entity\PositionTrait;
@@ -17,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="formation_modules")
  * @ORM\Entity(repositoryClass="App\Repository\Formation\ModuleRepository")
 
- * @Algolia\Index(autoIndex=false)
  *
  * @UniqueEntity(fields={"title", "axe"}, message="module.title.unique_entity")
  * @UniqueEntity(fields={"slug", "axe"}, message="module.slug.unique_entity")

@@ -7,4 +7,6 @@ interface EntityPostAddressInterface
     public function getCountry(): ?string;
 
     public function getPostalCode(): ?string;
+
+    public function getInseeCode(): ?string;
 }

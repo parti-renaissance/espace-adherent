@@ -3,7 +3,7 @@
 namespace App\ManagedUsers;
 
 use App\Entity\Committee;
-use App\Entity\ReferentTag;
+use App\Entity\Geo\Zone;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -88,16 +88,29 @@ class ManagedUsersFilter
     private $includeCitizenProjectHosts;
 
     /**
-     * @var ReferentTag[]
+     * @var Zone[]
      *
-     * @Assert\NotNull
+     * @Assert\Expression(
+     *     expression="this.getManagedZones() or this.getZones()",
+     *     message="referent.managed_zone.empty"
+     * )
      */
-    private $referentTags;
+    private $managedZones;
+
+    /**
+     * @var Zone[]
+     */
+    private $zones;
 
     /**
      * @var bool|null
      */
     private $emailSubscription;
+
+    /**
+     * @var bool|null
+     */
+    private $smsSubscription;
 
     /**
      * @var string|null
@@ -142,16 +155,18 @@ class ManagedUsersFilter
 
     public function __construct(
         string $subscriptionType = null,
-        array $referentTags = [],
+        array $managedZones = [],
         array $committeeUuids = [],
-        array $cities = []
+        array $cities = [],
+        array $zones = []
     ) {
-        if (empty($referentTags)) {
-            throw new \InvalidArgumentException('Referent tags could not be empty');
+        if (empty($managedZones) && empty($zones)) {
+            throw new \InvalidArgumentException('Both managed zones and zones could not be empty');
         }
 
         $this->subscriptionType = $subscriptionType;
-        $this->referentTags = $referentTags;
+        $this->managedZones = $managedZones;
+        $this->zones = $zones;
         $this->committeeUuids = $committeeUuids;
         $this->cities = $cities;
     }
@@ -302,27 +317,51 @@ class ManagedUsersFilter
     }
 
     /**
-     * @return ReferentTag[]
+     * @return Zones[]
      */
-    public function getReferentTags(): array
+    public function getManagedZones(): array
     {
-        return $this->referentTags;
+        return $this->managedZones;
     }
 
-    public function addReferentTag(ReferentTag $referentTag): void
+    public function addManagedZone(Zone $zone): void
     {
-        $this->referentTags[] = $referentTag;
+        $this->managedZones[] = $zone;
     }
 
-    public function removeReferentTag(ReferentTag $referentTag): void
+    public function removeManagedZone(Zone $zone): void
     {
-        foreach ($this->referentTags as $key => $tag) {
-            if ($tag->getId() === $referentTag->getId()) {
-                unset($this->referentTags[$key]);
+        foreach ($this->managedZones as $key => $managedZone) {
+            if ($managedZone->getId() === $zone->getId()) {
+                unset($this->managedZones[$key]);
             }
         }
 
-        $this->referentTags = array_values($this->referentTags);
+        $this->managedZones = array_values($this->managedZones);
+    }
+
+    /**
+     * @return Zone[]
+     */
+    public function getZones(): array
+    {
+        return $this->zones;
+    }
+
+    public function addZone(Zone $zone): void
+    {
+        $this->zones[] = $zone;
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+        foreach ($this->zones as $key => $value) {
+            if ($value->getId() === $zone->getId()) {
+                unset($this->zones[$key]);
+            }
+        }
+
+        $this->zones = array_values($this->zones);
     }
 
     public function getEmailSubscription(): ?bool
@@ -333,6 +372,16 @@ class ManagedUsersFilter
     public function setEmailSubscription(?bool $emailSubscription): void
     {
         $this->emailSubscription = $emailSubscription;
+    }
+
+    public function getSmsSubscription(): ?bool
+    {
+        return $this->smsSubscription;
+    }
+
+    public function setSmsSubscription(?bool $smsSubscription): void
+    {
+        $this->smsSubscription = $smsSubscription;
     }
 
     public function getVoteInCommittee(): ?bool
@@ -409,7 +458,9 @@ class ManagedUsersFilter
                 'interests' => $this->interests,
                 'registeredSince' => $this->registeredSince ? $this->registeredSince->format('Y-m-d') : null,
                 'registeredUntil' => $this->registeredUntil ? $this->registeredUntil->format('Y-m-d') : null,
-                'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
+                'zones' => 1 === \count($this->zones) ? current($this->zones)->getId() : null,
+                'managedZones' => 1 === \count($this->managedZones) ? current($this->managedZones)->getId() : null,
+                'smsSubscription' => $this->smsSubscription,
                 'emailSubscription' => $this->emailSubscription,
                 'voteInCommittee' => $this->voteInCommittee,
                 'sort' => $this->sort,

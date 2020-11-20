@@ -2,14 +2,11 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table
  * @ORM\Entity(repositoryClass="App\Repository\ReferentSpaceAccessInformationRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ReferentSpaceAccessInformation
 {

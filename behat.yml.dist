@@ -10,6 +10,7 @@ default:
                 - Behatch\Context\XmlContext
                 - Behatch\Context\TableContext
                 - FixtureContext:
+                    fixturesLoader: '@Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader'
                     manager: "@doctrine.orm.default_entity_manager"
                 - RestContext:
                     sslPrivateKey: "%%ssl_private_key%%"

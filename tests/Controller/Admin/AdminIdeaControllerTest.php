@@ -59,7 +59,7 @@ class AdminIdeaControllerTest extends WebTestCase
         $this->assertTrue($idea->isEnabled());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -68,7 +68,7 @@ class AdminIdeaControllerTest extends WebTestCase
         $this->ideaRepository = $this->getIdeaRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

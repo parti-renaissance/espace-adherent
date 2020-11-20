@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\Mandate;
-use App\Entity\ElectedRepresentative\Zone;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -56,13 +56,37 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
 
     public function findByMandates(array $mandates): array
     {
-        return $this->createQueryBuilder('tc')
+        $tags = [];
+        $zones = [];
+        array_walk($mandates, function (Mandate $mandate) use (&$tags, &$zones) {
+            if ($mandate->getZone()) {
+                $tags = array_merge($tags, $mandate->getZone()->getReferentTags()->toArray());
+            }
+
+            if ($mandate->getGeoZone()) {
+                $zone = $mandate->getGeoZone();
+                $zones[] = $zone;
+
+                if ($zone->isConsularDistrict()) {
+                    $zones = array_merge($zones, $zone->getParentsOfType(Zone::FOREIGN_DISTRICT));
+                }
+            }
+        });
+
+        $qb = $this->createQueryBuilder('tc')
             ->leftJoin('tc.referentTags', 'tag')
-            ->leftJoin(Zone::class, 'zone', Join::WITH, 'tag MEMBER OF zone.referentTags')
-            ->leftJoin(Mandate::class, 'mandate', Join::WITH, 'mandate.zone = zone.id')
-            ->where('mandate.id IN (:mandates)')
-            ->setParameter('mandates', $mandates)
-            ->getQuery()
+            ->where('tag IN (:tags)')
+            ->setParameter('tags', $tags)
+        ;
+
+        if ($zones) {
+            $qb->leftJoin('tag.zone', 'zone')
+                ->orWhere('zone IN (:zones)')
+                ->setParameter('zones', $zones)
+            ;
+        }
+
+        return $qb->getQuery()
             ->getResult()
         ;
     }
@@ -96,6 +120,15 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
 
     public function createQueryBuilderWithReferentTagsCondition(array $referentTags): QueryBuilder
     {
+        $qb = $this
+            ->createQueryBuilder('tc')
+            ->innerJoin('tc.referentTags', 'tag')
+        ;
+
+        if (!$referentTags) {
+            return $qb->andWhere('1 = 0');
+        }
+
         $tagCondition = 'tag IN (:tags)';
 
         foreach ($referentTags as $referentTag) {
@@ -106,10 +139,13 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
             }
         }
 
-        return $this->createQueryBuilder('tc')
-            ->innerJoin('tc.referentTags', 'tag')
+        return $qb
             ->where($tagCondition)
-            ->setParameter('tags', $referentTags)
+            ->andWhere('tc.isActive = :true')
+            ->setParameters([
+                'tags' => $referentTags,
+                'true' => true,
+            ])
         ;
     }
 }

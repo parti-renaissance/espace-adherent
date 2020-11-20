@@ -4,8 +4,8 @@ namespace App\Assessor;
 
 use App\Entity\AssessorRequest;
 use App\Entity\VotePlace;
+use App\Utils\PhoneNumberUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
 class AssessorRequestFactory
@@ -20,7 +20,7 @@ class AssessorRequestFactory
 
     public static function createFromArray(array $data): AssessorRequest
     {
-        $assessor = AssessorRequest::create(
+        return AssessorRequest::create(
             $data['uuid'],
             $data['gender'],
             $data['lastName'],
@@ -33,7 +33,7 @@ class AssessorRequestFactory
             $data['voteCity'],
             $data['officeNumber'],
             $data['emailAddress'],
-            self::createPhone($data['phoneNumber']),
+            PhoneNumberUtils::create($data['phoneNumber']),
             $data['assessorCity'] ?? null,
             $data['assessorPostalCode'] ?? null,
             $data['birthName'],
@@ -42,13 +42,11 @@ class AssessorRequestFactory
             $data['reachable'] ?? false,
             $data['assessorCountry'] ?? 'FR'
         );
-
-        return $assessor;
     }
 
     public function createFromCommand(AssessorRequestCommand $assessorRequestCommand): AssessorRequest
     {
-        $assessorRequest = AssessorRequest::create(
+        return AssessorRequest::create(
             Uuid::uuid4(),
             $assessorRequestCommand->getGender(),
             $assessorRequestCommand->getLastName(),
@@ -71,8 +69,6 @@ class AssessorRequestFactory
             $assessorRequestCommand->getAssessorCountry(),
             $this->getVotePlaceWishesChoices($assessorRequestCommand->getVotePlaceWishes())
         );
-
-        return $assessorRequest;
     }
 
     private function getVotePlaceWishesChoices(array $ids): array
@@ -84,17 +80,6 @@ class AssessorRequestFactory
         }
 
         return $references;
-    }
-
-    private static function createPhone(string $phoneNumber): PhoneNumber
-    {
-        list($country, $number) = explode(' ', $phoneNumber);
-
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($country);
-        $phone->setNationalNumber($number);
-
-        return $phone;
     }
 
     /**

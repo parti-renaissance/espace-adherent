@@ -19,7 +19,7 @@ class AdministratorExportHistoryListenerTest extends WebTestCase
 
     use ControllerTestTrait;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class AdministratorExportHistoryListenerTest extends WebTestCase
         $this->historyRepository = $this->getRepository(AdministratorExportHistory::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -273,6 +273,22 @@ class EventRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findEventsByOrganizerAndGroupCategory(Adherent $organizer, string $groupSlug): array
+    {
+        return $this
+            ->createQueryBuilder('e')
+            ->innerJoin('e.category', 'category')
+            ->innerJoin('category.eventGroupCategory', 'groupCategory')
+            ->where('e.organizer = :organizer')
+            ->andWhere('groupCategory.slug = :groupSlug')
+            ->setParameter('organizer', $organizer)
+            ->setParameter('groupSlug', $groupSlug)
+            ->orderBy('e.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     private function createUpcomingEventsQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('e');

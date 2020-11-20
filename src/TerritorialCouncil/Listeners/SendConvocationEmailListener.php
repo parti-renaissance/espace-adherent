@@ -3,41 +3,40 @@
 namespace App\TerritorialCouncil\Listeners;
 
 use App\Mailer\MailerService;
-use App\Mailer\Message\TerritorialCouncilElectionConvocationMessage;
-use App\TerritorialCouncil\Event\TerritorialCouncilEvent;
-use App\TerritorialCouncil\Events;
+use App\Mailer\Message\ReferentInstanceConvocationMessage;
+use App\TerritorialCouncil\Convocation\Events;
+use App\TerritorialCouncil\Event\ConvocationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SendConvocationEmailListener implements EventSubscriberInterface
 {
     private $mailer;
-    private $urlGenerator;
 
-    public function __construct(MailerService $transactionalMailer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(MailerService $transactionalMailer)
     {
         $this->mailer = $transactionalMailer;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            Events::DESIGNATION_SWITCHED => 'onDesignationSwitch',
+            Events::CONVOCATION_CREATED => 'onConvocationCreate',
         ];
     }
 
-    public function onDesignationSwitch(TerritorialCouncilEvent $event): void
+    public function onConvocationCreate(ConvocationEvent $event): void
     {
-        $territorialCouncil = $event->getTerritorialCouncil();
+        $convocation = $event->getConvocation();
+        $instance = $convocation->getEntity();
 
-        $membershipCollection = $territorialCouncil->getMemberships();
+        if (!\count($memberships = $instance->getMemberships())) {
+            return;
+        }
 
-        $this->mailer->sendMessage(TerritorialCouncilElectionConvocationMessage::create(
-            $territorialCouncil,
-            $membershipCollection->toArray(),
-            $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $membershipCollection->getPresident()
+        $this->mailer->sendMessage(ReferentInstanceConvocationMessage::create(
+            $event->getConvocation(),
+            $convocation->getCreatedBy(),
+            $memberships->toArray()
         ));
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Entity\Biography;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Validator\UniqueExecutiveOfficeMemberRole;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -19,8 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @UniqueExecutiveOfficeMemberRole
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ExecutiveOfficeMember extends AbstractBiography
 {

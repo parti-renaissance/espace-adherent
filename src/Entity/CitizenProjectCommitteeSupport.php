@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="citizen_project_committee_supports")
  * @ORM\Entity(repositoryClass="App\Repository\CitizenProjectCommitteeSupportRepository")
- * @Algolia\Index(autoIndex=false)
  */
 class CitizenProjectCommitteeSupport
 {

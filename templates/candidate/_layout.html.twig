@@ -1,0 +1,77 @@
+{% extends 'adherent_space/_layout.html.twig' %}
+
+{% block canonical_url url('app_candidate_managed_users_list') %}
+
+{% set currentUserOrDelegator = current_user() %}
+{% set delegated_access = get_delegated_access() %}
+
+{% block page_title %}
+    {% if app.user is same as(currentUserOrDelegator) %}
+        Espace candidat
+    {% else %}
+        Espace candidat partagé
+    {% endif %}
+{% endblock %}
+
+{% set hasCharterAccepted = app.user.charters.hasCandidateCharterAccepted %}
+
+{% block stylesheets %}
+    {% if not hasCharterAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% set isCandidate = is_granted('ROLE_CANDIDATE') %}
+    <main class="manager-space manager-body">
+        <aside class="manager-sidebar">
+            {{ include('candidate/_sidebar.html.twig') }}
+        </aside>
+
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    {% block candidate_content %}{% endblock %}
+                </div>
+            </div>
+        </section>
+
+        {% if not hasCharterAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'candidate.popup.title'|trans,
+                'subtitle': 'candidate.popup.subtitle'|trans,
+                'fileUrl': 'candidate.popup.file_url'|trans
+            } %}
+        {% endif %}
+    </main>
+{% endblock %}
+
+{% block adherent_space_header_title %}
+    Vous gérez : <span class="text--black text--bold">{{ currentUserOrDelegator.candidateManagedArea.zone }} </span>
+
+    {% set last_visit_date = get_referent_previous_visit_date(app.user) %}
+
+    {% if last_visit_date is not null %}
+        • Dernière visite le <span class="text--black text--bold">{{ last_visit_date|date('d/m/Y') }}</span>
+        à <span class="text--black text--bold">{{ last_visit_date|date('H\\hi') }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if not hasCharterAccepted %}
+        {% if js is not defined %}
+            {% import 'javascript.js.twig' as js %}
+        {% endif %}
+
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_CANDIDATE')) }}
+            } );
+        </script>
+    {% endif %}
+{% endblock %}

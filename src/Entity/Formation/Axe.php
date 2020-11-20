@@ -2,7 +2,6 @@
 
 namespace App\Entity\Formation;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityMediaInterface;
 use App\Entity\EntityMediaTrait;
 use App\Entity\PositionTrait;
@@ -17,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="formation_axes")
  * @ORM\Entity
 
- * @Algolia\Index(autoIndex=false)
  *
  * @UniqueEntity(fields={"title"}, message="Il existe déjà un axe de formation avec ce titre.")
  */

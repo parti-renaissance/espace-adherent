@@ -2,7 +2,6 @@
 
 namespace App\Entity\OAuth;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntitySoftDeletableTrait;
 use App\Entity\EntitySoftDeletedInterface;
@@ -26,8 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="oauth_clients", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="oauth_clients_uuid_unique", columns="uuid")
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Client implements EntitySoftDeletedInterface
 {

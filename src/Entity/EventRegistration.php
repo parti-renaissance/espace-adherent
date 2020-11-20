@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -12,8 +11,6 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\Index(name="event_registration_email_address_idx", columns={"email_address"}),
  *     @ORM\Index(name="event_registration_adherent_uuid_idx", columns={"adherent_uuid"}),
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class EventRegistration
 {

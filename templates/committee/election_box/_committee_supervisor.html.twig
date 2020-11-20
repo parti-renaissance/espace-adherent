@@ -1,0 +1,214 @@
+{% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE', committee) %}
+
+<section class="instance__elections-box b__nudge--bottom-larger">
+    <div class="l__row">
+        <h2 class="text--medium box-el">Élection du binôme paritaire d'Animateurs locaux</h2>
+    </div>
+
+    <div class="text--body text--dark b__nudge--top instance__elections-box--text">
+        Candidatez en binôme pour animer le comité local du Mouvement. <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark box-el" target="_blank">En savoir plus</a>.
+        <br/>Quel est le rôle des animateurs locaux paritaires
+
+        <div class="em-tooltip">
+            <span class="em-tooltip--trigger em-tooltip--trigger-circle">?</span>
+            <div class="em-tooltip--content em-tooltip--content-big em-tooltip--content-bordered">
+                <p><strong>Quel est le rôle du binôme d’animateurs locaux ?</strong></p>
+
+                <ul>
+                    <li>Accueillir les adhérents et animer le comité local</li>
+                    <li>Œuvrer au développement du comité</li>
+                    <li>Mobiliser les adhérents pour les actions de terrain et la réflexion menée par le mouvement sur les territoires</li>
+                    <li>Organiser, sur le territoire du comité, le soutien aux candidats soutenus par LaREM pour les élections locales et nationales</li>
+                </ul>
+
+                <p>Le binôme paritaire d'animateurs locaux est élu pour deux ans par les membres du comité local.</p>
+            </div>
+        </div>
+    </div>
+
+    <p class="text--body text--bold b__nudge--top b__nudge--bottom-large instance__elections-box--text">
+        Le vote sera ouvert du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }} au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}.
+    </p>
+
+    <hr/>
+
+    <div class="text--body l__row l__row--wrap b__nudge--top">
+        {% if committee_election.isCandidacyPeriodActive %}
+            {% if able_to_candidate %}
+                {% if candidacy %}
+                    {% set with_two_rows = true %}
+
+                    {% if candidacy.isConfirmed %}
+                        {% if candidacy.binome %}
+                            <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top elections-icon-container">
+                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
+                                Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.binome.committeeMembership.fullName }}.<br />
+                                Vous ne pouvez plus retirer votre candidature.
+                            </p>
+                        {% else %}
+                            <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container l__col--half">
+                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
+                                Vous êtes candidat{{ candidacy.isFemale ? 'e' }} seul{{ candidacy.isFemale ? 'e' }} à titre dérogatoire.
+                            </p>
+                        {% endif %}
+
+                        <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Modifier ma demande de binôme</span>
+                    {% elseif candidacy.hasPendingInvitation %}
+                        <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
+                            <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" />
+                            {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
+                        </p>
+
+                        <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier ma demande de binôme</a>
+                    {% else %}
+                        <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap b__nudge--right box-el">Je choisis un binôme</a>
+                    {% endif %}
+
+                    <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier mes informations</a>
+                {% else %}
+                    {% if app.user.isOtherGender() %}
+                        <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el em-modal--trigger"
+                           data-content-element="#candidacy-gender-choice-content"
+                        >Je candidate en binôme</a>
+
+                        <div class="hidden" id="candidacy-gender-choice-content">
+                            <div class="text--center font-roboto">
+                                <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
+                                    Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
+                                </p>
+
+                                <div>
+                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidature_edit', {slug: committee.slug, gender: constant('App\\ValueObject\\Genders::FEMALE')}) }}">Femme</a>
+                                    <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidature_edit', {slug: committee.slug, gender: constant('App\\ValueObject\\Genders::MALE')}) }}">Homme</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el">Je candidate en binôme</a>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <div class="em-tooltip">
+                    <span class="em-tooltip--trigger b__nudge--right btn btn--disabled">
+                        Je candidate en binôme
+                    </span>
+
+                    <div class="em-tooltip--content em-tooltip--content-bordered">
+                        {% set ref_date = committee_election.getVoteEndDate ?? date() %}
+                        {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership() %}
+
+                        {% if app.user.isMinor(ref_date) %}
+                            Les mineurs ne peuvent pas candidater.
+                        {% elseif has_active_parliamentary_mandate(app.user) %}
+                            Les parlementaires ne peuvent pas candidater.
+                        {% elseif app.user.registeredAt > ref_date|date_modify('-3 months') %}
+                            Vous êtes adhérent{{ app.user.isFemale ? 'e' }} depuis moins de 3 mois.
+                        {% elseif membership.subscriptionDate > ref_date|date_modify('-30 days') %}
+                            Vous êtes membre de ce comité depuis moins de 30 jours.
+                        {% elseif not app.user.isCertified %}
+                            Vous devez certifier votre profil pour participer.
+                        {% elseif candidacy_membership and candidacy_membership != membership %}
+                            Vous êtes déjà candidat{{ app.user.isFemale ? 'e' }} dans le comité {{ candidacy_membership.committee.name }}.
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        {% elseif not committee_election.isVotePeriodStarted %}
+            <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ committee_election.voteStartDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                <span class="text--dark text--small">Le vote ouvrira dans :</span>
+                <span class="clock-container"></span>
+            </div>
+        {% else %}
+            {% set voting_platform_election = get_voting_platform_election_for_committee(committee) %}
+
+            {% if voting_platform_election %}
+                {% if voting_platform_election.isVotePeriodActive %}
+                    {% if voting_platform_election.isSecondRoundVotePeriodActive %}
+                        <p class="text--dark text--small instance__elections-box--text">
+                            A la suite de cette première désignation il y a eu une égalité entre les candidats,
+                            nous vous invitions à voter de nouveau.
+                        </p>
+                        <p class="text--small text--dark instance__elections-box--text">Consulter les
+                            <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="link--no-decor text--blue--dark box-el">
+                                résultats incomplets
+                            </a>
+                        </p>
+                        <hr/>
+                    {% endif %}
+
+                    {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
+                        <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                            <span class="text--dark text--small">Il vous reste</span>
+                            <span class="clock-container"></span>
+                            <span class="text--dark text--small">pour participer à la désignation.</span>
+                        </div>
+
+                        <p>
+                            <a href="{{ path('app_voting_platform_index', {uuid: voting_platform_election.uuid}) }}"
+                               id="committee-toggle-candidacy"
+                               class="btn btn--pink btn--no-wrap box-el"
+                            >Je participe</a>
+                        </p>
+                    {% else %}
+                        {% set my_vote = get_my_vote_for_election(app.user, voting_platform_election.currentRound) %}
+
+                        {% if my_vote %}
+                            <p class="text--dark text--small instance__elections-box--text l__col--full">Votre choix a bien été enregistré.</p>
+
+                            <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
+                                <span class="text--dark text--small">Les résultats seront publiés dans :</span>
+                                <span class="clock-container"></span>
+                            </div>
+                        {% endif %}
+
+                        <div class="em-tooltip">
+                            <span class="em-tooltip--trigger b__nudge--right btn btn--disabled">
+                                Je participe
+                            </span>
+
+                            <div class="em-tooltip--content em-tooltip--content-bordered">
+                                {% set ref_date = committee_election.getVoteEndDate ?? date() %}
+                                {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership() %}
+
+                                {% if app.user.registeredAt > ref_date|date_modify('-3 months') %}
+                                    Vous êtes adhérent{{ app.user.isFemale ? 'e' }} depuis moins de 3 mois.
+                                {% elseif membership.subscriptionDate > ref_date|date_modify('-30 days') %}
+                                    Vous êtes membre de ce comité depuis moins de 30 jours.
+                                {% elseif not app.user.isCertified %}
+                                    Vous devez certifier votre profil pour participer.
+                                {% elseif candidacy_membership and candidacy_membership != membership %}
+                                    Vous êtes déjà candidat{{ app.user.isFemale ? 'e' }} dans le comité {{ candidacy_membership.committee.name }}.
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% elseif voting_platform_election.isResultPeriodActive %}
+                    <p class="text--small text--dark instance__elections-box--text">
+                        {% if voting_platform_election.getElectionResult %}
+                            Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
+                        {% else %}
+                            Le dépouillement est en cours, encore quelques secondes !
+                        {% endif %}
+                    </p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        {% if not committee_election.isVotePeriodStarted %}
+            <p class="text--body text--small {{ with_two_rows is defined and with_two_rows ? 'b__nudge--top-large' }} b__nudge--right text--gray box-el">
+                Consulter <a href="{{ path('app_committee_candidature_candidacy_list', {slug: committee.slug}) }}" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
+            </p>
+        {% endif %}
+
+        {% if able_to_candidate and candidacy and candidacy.isDraft and committee_election.isCandidacyPeriodActive %}
+            <p class="candidacy-remove text--body text--small b__nudge--top-large b__nudge--right">
+                <a href="{{ path('app_committee_candidature_remove', {slug: committee.slug, back: true}) }}"
+                   class="link--no-decor text--blue--dark em-confirm--trigger box-el"
+                   data-confirm-title="Candidature"
+                   data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
+                   id="remove-candidacy-link">Retirer ma pré-candidature
+                </a>
+            </p>
+        {% endif %}
+    </div>
+</section>

@@ -41,13 +41,17 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
                 $prefix = 'Municipales 2020';
                 break;
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
+            case AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE:
                 $prefix = 'Élus';
                 break;
-            case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
+            case AdherentMessageTypeEnum::REFERENT_INSTANCES:
                 $prefix = 'Conseil territorial';
                 break;
             case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
                 $prefix = 'Candidat aux législatives';
+                break;
+            case AdherentMessageTypeEnum::CANDIDATE:
+                $prefix = 'Candidat';
                 break;
             default:
                 $prefix = '';

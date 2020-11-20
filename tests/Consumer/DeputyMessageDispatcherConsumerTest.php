@@ -31,7 +31,7 @@ class DeputyMessageDispatcherConsumerTest extends TestCase
      */
     private $entityManager;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this
@@ -44,7 +44,7 @@ class DeputyMessageDispatcherConsumerTest extends TestCase
         $this->validator = $this->createMock(ValidatorInterface::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->entityManager = null;
         $this->validator = null;
@@ -101,7 +101,7 @@ class DeputyMessageDispatcherConsumerTest extends TestCase
         $this->assertSame(ConsumerInterface::MSG_ACK, $consumer->execute($message));
     }
 
-    private function createIterator(array $data): \PHPUnit_Framework_MockObject_MockObject
+    private function createIterator(array $data): IterableResult
     {
         $mock = $this
             ->getMockBuilder(IterableResult::class)

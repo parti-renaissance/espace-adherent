@@ -5,9 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\BaseEventCategory;
 use App\Entity\EventCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadEventCategoryData extends Fixture
+class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
 {
     const LEGACY_EVENT_CATEGORIES = [
         'CE001' => 'Kiosque',
@@ -48,6 +49,16 @@ class LoadEventCategoryData extends Fixture
             'name' => 'Catégorie masquée',
             'status' => BaseEventCategory::DISABLED,
             'group' => 'event-group-category-0',
+        ],
+        'CE017' => [
+            'name' => 'Élections régionales',
+            'status' => BaseEventCategory::ENABLED,
+            'group' => 'event-group-category-4',
+        ],
+        'CE018' => [
+            'name' => 'Élections départementales',
+            'status' => BaseEventCategory::ENABLED,
+            'group' => 'event-group-category-4',
         ],
     ];
 

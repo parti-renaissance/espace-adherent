@@ -3,6 +3,7 @@
 namespace App\Form\TerritorialCouncil;
 
 use App\Form\AddressType;
+use App\Form\DateTimePickerType;
 use App\Form\GenderType;
 use App\Form\PurifiedTextareaType;
 use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
@@ -11,7 +12,6 @@ use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -20,6 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditDesignationType extends AbstractType
 {
+    private $meetingMaxStartDate;
+
+    public function __construct(int $meetingMaxStartDate)
+    {
+        $this->meetingMaxStartDate = $meetingMaxStartDate;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -37,22 +44,19 @@ class EditDesignationType extends AbstractType
                 'label' => false,
                 'required' => false,
             ])
-            ->add('meetingStartDate', DateTimeType::class, [
-                'html5' => true,
-                'widget' => 'single_text',
+            ->add('meetingStartDate', DateTimePickerType::class, [
+                'min_date' => new \DateTime('+7 days'),
+                'max_date' => (new \DateTime())->setTimestamp($this->meetingMaxStartDate),
             ])
-            ->add('meetingEndDate', DateTimeType::class, [
-                'html5' => true,
-                'widget' => 'single_text',
+            ->add('meetingEndDate', DateTimePickerType::class, [
+                'min_date' => new \DateTime('+7 days'),
             ])
-            ->add('voteStartDate', DateTimeType::class, [
-                'html5' => true,
-                'widget' => 'single_text',
-                'required' => true,
+            ->add('voteStartDate', DateTimePickerType::class, [
+                'min_date' => new \DateTime('+7 days'),
+                'max_date' => (new \DateTime())->setTimestamp($this->meetingMaxStartDate),
             ])
-            ->add('voteEndDate', DateTimeType::class, [
-                'html5' => true,
-                'widget' => 'single_text',
+            ->add('voteEndDate', DateTimePickerType::class, [
+                'min_date' => new \DateTime('+7 days'),
             ])
             ->add('description', PurifiedTextareaType::class, [
                 'attr' => ['maxlength' => 2000],

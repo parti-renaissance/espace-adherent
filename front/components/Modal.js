@@ -18,7 +18,8 @@ export default class Modal extends React.Component {
 
     render() {
         return (
-            <div className="em-modal" style={{ display: this.state.display ? 'block' : 'none' }}>
+            <div className={`em-modal ${this.props.side ? `em-modal--side-${this.props.side}` : ''}`}
+                 style={{ display: this.state.display ? 'block' : 'none' }}>
                 <div
                     className="modal-background"
                     {...(this.props.withClose ? { onClick: () => this.hideModal({ closed: true }) } : {})}
@@ -57,6 +58,7 @@ Modal.defaultProps = {
 
 Modal.propTypes = {
     content: PropTypes.string,
+    side: PropTypes.oneOf(['left', 'right']),
     display: PropTypes.bool,
     closeCallback: PropTypes.func,
     contentCallback: PropTypes.func,

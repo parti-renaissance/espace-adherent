@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class TerritorialCouncilCandidacyType extends AbstractType
@@ -26,12 +27,13 @@ class TerritorialCouncilCandidacyType extends AbstractType
             ->add('biography', DoubleNewlineTextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 500],
+                'constraints' => [new NotBlank(), new Length(['max' => 500])],
                 'filter_emojis' => true,
-                'constraints' => [new NotBlank()],
             ])
             ->add('faithStatement', DoubleNewlineTextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 2000],
+                'constraints' => [new NotBlank(), new Length(['max' => 2000])],
                 'filter_emojis' => true,
             ])
             ->add('isPublicFaithStatement', CheckboxType::class, [

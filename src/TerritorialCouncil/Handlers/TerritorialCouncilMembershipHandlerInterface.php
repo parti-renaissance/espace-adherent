@@ -10,5 +10,7 @@ interface TerritorialCouncilMembershipHandlerInterface
 
     public function handle(Adherent $adherent): void;
 
+    public function disableEventDispatching(): void;
+
     public function getPriority(): int;
 }

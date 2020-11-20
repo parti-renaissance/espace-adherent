@@ -5,6 +5,7 @@ namespace App\TerritorialCouncil\Filter;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ReferentTag;
+use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -72,9 +73,19 @@ class MembersListFilter
     private $emailSubscription;
 
     /**
+     * @var bool|null
+     */
+    private $isPoliticalCommitteeMember;
+
+    /**
      * @var TerritorialCouncil|null
      */
     private $territorialCouncil;
+
+    /**
+     * @var PoliticalCommittee|null
+     */
+    private $politicalCommittee;
 
     /**
      * @var string
@@ -205,6 +216,16 @@ class MembersListFilter
         $this->emailSubscription = $emailSubscription;
     }
 
+    public function isPoliticalCommitteeMember(): ?bool
+    {
+        return $this->isPoliticalCommitteeMember;
+    }
+
+    public function setIsPoliticalCommitteeMember(?bool $isPoliticalCommitteeMember): void
+    {
+        $this->isPoliticalCommitteeMember = $isPoliticalCommitteeMember;
+    }
+
     public function getSort(): string
     {
         return $this->sort;
@@ -223,6 +244,16 @@ class MembersListFilter
     public function setTerritorialCouncil(?TerritorialCouncil $territorialCouncil): void
     {
         $this->territorialCouncil = $territorialCouncil;
+    }
+
+    public function getPoliticalCommittee(): ?PoliticalCommittee
+    {
+        return $this->politicalCommittee;
+    }
+
+    public function setPoliticalCommittee(?PoliticalCommittee $politicalCommittee): void
+    {
+        $this->politicalCommittee = $politicalCommittee;
     }
 
     public function getOrder(): string
@@ -254,6 +285,7 @@ class MembersListFilter
                 return $referentTag->getId();
             }, $this->referentTags),
             'emailSubscription' => $this->emailSubscription,
+            'isPoliticalCommitteeMember' => $this->isPoliticalCommitteeMember,
             'sort' => $this->sort,
             'order' => $this->order,
         ];

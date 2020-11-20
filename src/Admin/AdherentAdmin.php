@@ -7,15 +7,25 @@ use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentTag;
+use App\Entity\BaseGroup;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
 use App\Entity\CitizenProjectMembership;
+use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Entity\Geo\Zone;
+use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\SubscriptionType;
+use App\Entity\TerritorialCouncil\PoliticalCommittee;
+use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Form\ActivityPositionType;
 use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
+use App\Form\Admin\CandidateManagedAreaType;
 use App\Form\Admin\CoordinatorManagedAreaType;
 use App\Form\Admin\LreAreaType;
 use App\Form\Admin\MunicipalChiefManagedAreaType;
@@ -40,6 +50,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -69,6 +80,10 @@ class AdherentAdmin extends AbstractAdmin
         'certify' => 'CERTIFY',
         'uncertify' => 'UNCERTIFY',
         'extract' => 'EXTRACT',
+    ];
+
+    protected $formOptions = [
+        'validation_groups' => ['Default', 'Admin'],
     ];
 
     private $dispatcher;
@@ -375,32 +390,9 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => false,
                     'required' => false,
                 ])
-                ->add('procurationManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'coordinator.label.codes',
-                    'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
-                ])
-                ->add('assessorManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'assessors_manager',
-                    'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
-                ])
                 ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
                     'label' => 'coordinator.label.codes.cp',
                     'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
-                ])
-                ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
-                    'label' => 'Candidat Municipales 2020 🇫🇷',
-                    'help' => <<<HELP
-Laisser vide si l'adhérent n'est pas chef municipal. 
-Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/> 
-Utiliser <strong>75100</strong> pour la ville de Paris, 
-<strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
-HELP
-,
-                ])
-                ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
-                    'label' => 'Candidat Sénatoriales 2020',
                 ])
                 ->add('lreArea', LreAreaType::class, [
                     'label' => 'La république ensemble',
@@ -415,6 +407,21 @@ HELP
                     'label' => 'Accès à "La maison des impressions"',
                     'required' => false,
                 ])
+            ->end()
+            ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
+                ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
+                    'label' => 'Candidat Municipales 2020 🇫🇷',
+                    'help' => <<<HELP
+        Laisser vide si l'adhérent n'est pas chef municipal. 
+        Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/> 
+        Utiliser <strong>75100</strong> pour la ville de Paris, 
+        <strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
+HELP
+                    ,
+                ])
+                ->add('senatorialCandidateManagedArea', SenatorialCandidateManagedAreaType::class, [
+                    'label' => 'Candidat Sénatoriales 2020',
+                ])
                 ->add('legislativeCandidateManagedDistrict', AvailableDistrictAutocompleteType::class, [
                     'label' => 'Candidat aux législatives',
                     'by_reference' => false,
@@ -422,8 +429,19 @@ HELP
                     'help' => 'Vous pouvez choisir uniquement parmi les circonscriptions non prises',
                     'callback' => [DistrictAdmin::class, 'prepareLegislativeCandidateAutocompleteFilterCallback'],
                 ])
-            ->end()
-            ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
+                ->add('candidateManagedArea', CandidateManagedAreaType::class, [
+                    'label' => 'Candidat',
+                ])
+                ->add('procurationManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'coordinator.label.codes',
+                    'required' => false,
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                ])
+                ->add('assessorManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'assessors_manager',
+                    'required' => false,
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                ])
                 ->add('electionResultsReporter', null, [
                     'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
                     'required' => false,
@@ -478,7 +496,7 @@ HELP
                         return $er
                             ->createQueryBuilder('tc')
                             ->andWhere('tc.enabled = 1')
-                        ;
+                            ;
                     },
                 ])
             ->end()
@@ -512,7 +530,6 @@ HELP
             ])
             ->add('certified', CallbackFilter::class, [
                 'label' => 'Certifié',
-                'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
@@ -545,7 +562,6 @@ HELP
             ])
             ->add('nickname', null, [
                 'label' => 'Pseudo',
-                'show_filter' => false,
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
@@ -553,6 +569,10 @@ HELP
             ])
             ->add('registeredAt', DateRangeFilter::class, [
                 'label' => 'Date d\'adhésion',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('lastLoggedAt', DateRangeFilter::class, [
+                'label' => 'Dernière connexion',
                 'field_type' => DateRangePickerType::class,
             ])
             ->add('city', CallbackFilter::class, [
@@ -814,9 +834,63 @@ HELP
                         $where->add('senatorialCandidateManagedArea IS NOT NULL');
                     }
 
+                    if ($candidateRoles = array_intersect(AdherentRoleEnum::getCandidates(), $value['value'])) {
+                        $qb
+                            ->leftJoin(sprintf('%s.candidateManagedArea', $alias), 'candidateManagedArea')
+                            ->leftJoin('candidateManagedArea.zone', 'candidate_zone')
+                            ->setParameter('candiate_zone_types', array_map(function (string $role) {
+                                switch ($role) {
+                                    case AdherentRoleEnum::CANDIDATE_REGIONAL_HEADED:
+                                        return Zone::REGION;
+                                    case AdherentRoleEnum::CANDIDATE_REGIONAL_LEADER:
+                                        return Zone::DEPARTMENT;
+                                    case AdherentRoleEnum::CANDIDATE_DEPARTMENTAL:
+                                        return Zone::CANTON;
+                                }
+                            }, $candidateRoles))
+                        ;
+
+                        $where->add('candidate_zone.type IN (:candiate_zone_types)');
+                    }
+
+                    if ($delegatedCandidateRoles = array_intersect(AdherentRoleEnum::getDelegatedCandidates(), $value['value'])) {
+                        if ($delegatedTypes = array_intersect(
+                            [
+                                AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_HEADED,
+                                AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_LEADER,
+                                AdherentRoleEnum::DELEGATED_CANDIDATE_DEPARTMENTAL,
+                            ],
+                            $value['value']
+                        )) {
+                            if (!\in_array('rda', $qb->getAllAliases(), true)) {
+                                $qb->leftJoin(\sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
+                            }
+                            $where->add('rda.type = :delegated_candidate');
+                            $qb->setParameter('delegated_candidate', DelegatedAccessEnum::TYPE_CANDIDATE);
+                        }
+
+                        $qb
+                            ->leftJoin('rda.delegator', 'delegator')
+                            ->leftJoin('delegator.candidateManagedArea', 'delegatorCandidateManagedArea')
+                            ->leftJoin('delegatorCandidateManagedArea.zone', 'delegator_candidate_zone')
+                            ->setParameter('delegator_candiate_zone_types', array_map(function (string $role) {
+                                switch ($role) {
+                                    case AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_HEADED:
+                                        return Zone::REGION;
+                                    case AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_LEADER:
+                                        return Zone::DEPARTMENT;
+                                    case AdherentRoleEnum::DELEGATED_CANDIDATE_DEPARTMENTAL:
+                                        return Zone::CANTON;
+                                }
+                            }, $delegatedCandidateRoles))
+                        ;
+
+                        $where->add('delegator_candidate_zone.type IN (:delegator_candiate_zone_types)');
+                    }
+
                     // thematic community chief
                     if (\in_array(AdherentRoleEnum::THEMATIC_COMMUNITY_CHIEF, $value['value'], true)) {
-                        $qb->leftJoin(sprintf('%s.thematicCommunities', $alias), 'tc');
+                        $qb->leftJoin(sprintf('%s.handledThematicCommunities', $alias), 'tc');
                         $where->add('tc IS NOT NULL');
                     }
 
@@ -828,8 +902,7 @@ HELP
                 },
             ])
             ->add('mandates', CallbackFilter::class, [
-                'label' => 'adherent.mandate.admin.label',
-                'show_filter' => true,
+                'label' => 'Mandat(s) (legacy)',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'choices' => Mandates::CHOICES,
@@ -848,6 +921,171 @@ HELP
                     }
 
                     $qb->andWhere($where);
+
+                    return true;
+                },
+            ])
+            ->add('elected_representative_mandates', CallbackFilter::class, [
+                'label' => 'Mandat(s) RNE',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => MandateTypeEnum::CHOICES,
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->leftJoin(ElectedRepresentative::class, 'er', Expr\Join::WITH, sprintf('%s.id = er.adherent', $alias))
+                        ->leftJoin('er.mandates', 'mandate')
+                        ->andWhere('mandate.finishAt IS NULL')
+                        ->andWhere('mandate.onGoing = 1')
+                        ->andWhere('mandate.isElected = 1')
+                        ->andWhere('mandate.type IN (:types)')
+                        ->setParameter('types', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('adherent_mandates', CallbackFilter::class, [
+                'label' => 'Mandat(s) internes',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => \array_merge(
+                        TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS,
+                        ['TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT]
+                    ),
+                    'choice_label' => function (string $choice) {
+                        if ('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT === $choice) {
+                            return 'territorial_council.membership.quality.elected_candidate_adherent';
+                        } else {
+                            return 'political_committee.membership.quality.'.$choice;
+                        }
+                    },
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $mandatesCondition = 'adherentMandate.quality IN (:qualities)';
+                    if (\in_array('TC_'.TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, $value['value'])) {
+                        $mandatesCondition = '(adherentMandate.quality IN (:qualities) OR adherentMandate.committee IS NOT NULL)';
+                    }
+
+                    $qb
+                        ->leftJoin("$alias.adherentMandates", 'adherentMandate')
+                        ->andWhere('adherentMandate.finishAt IS NULL')
+                        ->andWhere($mandatesCondition)
+                        ->setParameter('qualities', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('memberships.committee', CallbackFilter::class, [
+                'label' => 'Comité principal',
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'context' => 'filter',
+                    'class' => Committee::class,
+                    'multiple' => true,
+                    'property' => 'name',
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'callback' => function ($admin, $property, $value) {
+                        $datagrid = $admin->getDatagrid();
+                        $queryBuilder = $datagrid->getQuery();
+                        $queryBuilder
+                            ->andWhere($queryBuilder->getRootAlias().'.status = :approved')
+                            ->setParameter('approved', BaseGroup::APPROVED)
+                            ->orderBy($queryBuilder->getRootAlias().'.name', 'ASC')
+                        ;
+                        $datagrid->setValue($property, null, $value);
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.committee IN (:committees)")
+                        ->andWhere("$alias.enableVote = 1")
+                        ->setParameter('committees', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('territorialCouncilMembership.territorialCouncil', CallbackFilter::class, [
+                'label' => 'Conseil territorial',
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'context' => 'filter',
+                    'class' => TerritorialCouncil::class,
+                    'multiple' => true,
+                    'property' => [
+                        'name',
+                        'codes',
+                    ],
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.territorialCouncil IN (:tc)")
+                        ->setParameter('tc', $value['value'])
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('politicalCommitteeMembership.politicalCommittee', CallbackFilter::class, [
+                'label' => 'Comité politique',
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'context' => 'filter',
+                    'class' => PoliticalCommittee::class,
+                    'multiple' => true,
+                    'property' => 'name',
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'callback' => function ($admin, $property, $value) {
+                        $datagrid = $admin->getDatagrid();
+                        $queryBuilder = $datagrid->getQuery();
+                        $queryBuilder
+                            ->andWhere($queryBuilder->getRootAlias().'.isActive = 1')
+                            ->orderBy($queryBuilder->getRootAlias().'.name', 'ASC')
+                        ;
+                        $datagrid->setValue($property, null, $value);
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb
+                        ->andWhere("$alias.politicalCommittee IN (:pc)")
+                        ->setParameter('pc', $value['value'])
+                    ;
 
                     return true;
                 },
@@ -894,14 +1132,8 @@ HELP
                 'label' => 'ID',
             ])
             ->addIdentifier('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-            ])
-            ->add('certifiedAt', null, [
-                'label' => 'Certifié',
-                'template' => 'admin/adherent/list_certified.html.twig',
+                'label' => 'Nom Prénom',
+                'template' => 'admin/adherent/list_fullname_certified.html.twig',
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
@@ -910,32 +1142,39 @@ HELP
                 'label' => 'Téléphone',
                 'template' => 'admin/adherent/list_phone.html.twig',
             ])
-            ->add('postAddress.postalCode', null, [
-                'label' => 'Code postal',
-            ])
-            ->add('postAddress.cityName', null, [
-                'label' => 'Ville',
-            ])
-            ->add('postAddress.country', null, [
-                'label' => 'Pays',
+            ->add('postAddress', null, [
+                'label' => 'Ville (CP) Pays',
+                'template' => 'admin/adherent/list_postaddress.html.twig',
+                'header_style' => 'min-width: 75px',
             ])
             ->add('registeredAt', null, [
                 'label' => 'Date d\'adhésion',
             ])
-            ->add('type', null, [
-                'label' => 'Type',
-                'template' => 'admin/adherent/list_status.html.twig',
+            ->add('lastLoggedAt', null, [
+                'label' => 'Dernière connexion',
+            ])
+            ->add('instances', null, [
+                'label' => 'Instances de vote',
+                'virtual_field' => true,
+                'header_style' => 'min-width: 150px',
+                'template' => 'admin/adherent/list_vote_instances.html.twig',
             ])
             ->add('referentTags', null, [
                 'label' => 'Tags souscrits',
+                'associated_property' => 'code',
             ])
             ->add('managedAreaTags', null, [
                 'label' => 'Tags gérés',
                 'virtual_field' => true,
                 'template' => 'admin/adherent/list_managed_area_tags.html.twig',
             ])
-            ->add('mandates', null, [
-                'label' => 'adherent.mandate.admin.label',
+            ->add('type', null, [
+                'label' => 'Rôles',
+                'template' => 'admin/adherent/list_status.html.twig',
+            ])
+            ->add('allMandates', null, [
+                'label' => 'Mandats',
+                'virtual_field' => true,
                 'template' => 'admin/adherent/list_mandates.html.twig',
             ])
             ->add('_action', null, [

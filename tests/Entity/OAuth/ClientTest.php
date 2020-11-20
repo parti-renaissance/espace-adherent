@@ -22,12 +22,10 @@ class ClientTest extends TestCase
         self::assertTrue($client->isAskUserForAuthorization());
     }
 
-    /**
-     * @expectedException \DomainException
-     * @expectedExceptionMessage "dummy" is not a valid grant type. Use constants defined in App\OAuth\Model\GrantTypeEnum.
-     */
     public function testSetAllowedGrantThrowExceptionsWhenInvalidDataAreGiven(): void
     {
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('"dummy" is not a valid grant type. Use constants defined in App\OAuth\Model\GrantTypeEnum.');
         $client = $this->createClient();
         $client->setAllowedGrantTypes(['dummy']);
     }

@@ -22,6 +22,10 @@ class ElectionRepository extends ServiceEntityRepository
      */
     public function findAllForReferentTags(array $tags): array
     {
+        if (!$tags) {
+            return [];
+        }
+
         return $this->createQueryBuilder('election')
             ->innerJoin('election.territorialCouncil', 'council')
             ->innerJoin('council.referentTags', 'tag')

@@ -2,7 +2,7 @@
 
 {% block page_title 'Les membres du Conseil territorial' %}
 
-{% block territorial_council_sub_content %}
+{% block sub_content %}
     <section class="territorial-council__members">
         <h2 class="b__nudge--bottom-larger">Les membres du Conseil territorial</h2>
 
@@ -11,7 +11,7 @@
                 {% set adherent = membership.adherent %}
 
                 <div class="territorial-council__member">
-                    {% include 'territorial_council/partials/_member_identity_box.html.twig' with {
+                    {% include 'components/_member_identity_box.html.twig' with {
                         initials: adherent.initials,
                         full_name: adherent.fullName
                     } %}

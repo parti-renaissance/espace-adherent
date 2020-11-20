@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Referent\ReferentMessage;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -10,8 +9,6 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Table(name="referent_managed_users_message")
  * @ORM\Entity(repositoryClass="App\Repository\ReferentManagedUsersMessageRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ReferentManagedUsersMessage extends ManagedUsersMessage
 {

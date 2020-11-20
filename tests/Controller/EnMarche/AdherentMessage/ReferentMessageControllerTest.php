@@ -44,7 +44,7 @@ class ReferentMessageControllerTest extends WebTestCase
         self::assertCount(7, $crawler->filter('select#referent_filter_referentTags option[selected="selected"]'));
 
         $this->client->submit($crawler->selectButton('Filtrer')->form([
-            'referent_filter[referentTags]' => [14],
+            'referent_filter[referentTags]' => [16],
         ]));
 
         $this->assertMessageIsDispatched(AdherentMessageChangeCommand::class);
@@ -80,14 +80,14 @@ class ReferentMessageControllerTest extends WebTestCase
         self::assertSame(sprintf('/espace-referent/messagerie/%s/filtrer', $uuid), $buttons->eq(1)->attr('href'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

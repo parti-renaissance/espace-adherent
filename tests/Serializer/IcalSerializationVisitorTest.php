@@ -14,7 +14,7 @@ class IcalSerializationVisitorTest extends TestCase
      */
     protected $visitor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->propertyNamingStrategy = $this->createMock(PropertyNamingStrategyInterface::class);
 
@@ -39,6 +39,6 @@ class IcalSerializationVisitorTest extends TestCase
         $eventData = ['VEVENT' => []];
         $this->visitor->setRoot($eventData);
 
-        $this->assertInternalType('string', $this->visitor->getResult());
+        $this->assertIsString($this->visitor->getResult());
     }
 }

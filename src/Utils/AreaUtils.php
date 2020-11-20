@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Entity\District;
+use App\Entity\EntityPostAddressInterface;
 use App\Intl\FranceCitiesBundle;
 
 class AreaUtils
@@ -47,6 +48,113 @@ class AreaUtils
         '74093',
         '74182',
         '74217',
+    ];
+
+    public const METROPOLIS = [
+        '34M' => [
+            '34022',
+            '34027',
+            '34057',
+            '34058',
+            '34077',
+            '34087',
+            '34088',
+            '34090',
+            '34095',
+            '34116',
+            '34120',
+            '34123',
+            '34129',
+            '34134',
+            '34164',
+            '34169',
+            '34172',
+            '34179',
+            '34198',
+            '34202',
+            '34217',
+            '34227',
+            '34244',
+            '34249',
+            '34256',
+            '34259',
+            '34270',
+            '34295',
+            '34307',
+            '34327',
+            '34337',
+        ],
+        '69M' => [
+            '69003',
+            '69029',
+            '69033',
+            '69034',
+            '69040',
+            '69044',
+            '69046',
+            '69271',
+            '69063',
+            '69273',
+            '69068',
+            '69069',
+            '69071',
+            '69072',
+            '69275',
+            '69081',
+            '69276',
+            '69085',
+            '69087',
+            '69088',
+            '69089',
+            '69278',
+            '69091',
+            '69096',
+            '69100',
+            '69279',
+            '69116',
+            '69117',
+            '69123',
+            '69127',
+            '69282',
+            '69283',
+            '69284',
+            '69142',
+            '69143',
+            '69149',
+            '69152',
+            '69153',
+            '69163',
+            '69286',
+            '69168',
+            '69191',
+            '69194',
+            '69199',
+            '69204',
+            '69205',
+            '69207',
+            '69290',
+            '69233',
+            '69202',
+            '69292',
+            '69293',
+            '69296',
+            '69244',
+            '69250',
+            '69256',
+            '69259',
+            '69260',
+            '69266',
+            // Lyon district INSEE codes
+            '69381',
+            '69382',
+            '69383',
+            '69384',
+            '69385',
+            '69386',
+            '69387',
+            '69388',
+            '69389',
+        ],
     ];
 
     public static function getCodeFromPostalCode(?string $postalCode): ?string
@@ -103,6 +211,23 @@ class AreaUtils
         }
     }
 
+    public static function getMetropolisCode(EntityPostAddressInterface $entity): ?string
+    {
+        $metropolisCode = null;
+
+        if (self::CODE_FRANCE === $entity->getCountry()) {
+            foreach (self::METROPOLIS as $codeM => $codes) {
+                $metropolisCode = \in_array($entity->getInseeCode(), $codes) ? $codeM : null;
+
+                if ($metropolisCode) {
+                    break;
+                }
+            }
+        }
+
+        return $metropolisCode;
+    }
+
     public static function getRelatedCodes(string $code): array
     {
         $relatedCodes = [];
@@ -116,6 +241,19 @@ class AreaUtils
         }
 
         return $relatedCodes;
+    }
+
+    public static function getZone(EntityPostAddressInterface $entity): ?string
+    {
+        if (self::CODE_FRANCE === $entity->getCountry()) {
+            // for cities in the department starting by 0, the code contains only 4 figures
+            // but a zone in this case should start with 0
+            $inseeCode = $entity->getInseeCode();
+
+            return $inseeCode ? str_pad($inseeCode, 5, '0', \STR_PAD_LEFT) : null;
+        }
+
+        return $entity->getCountry();
     }
 
     private static function isParisCode(string $code): bool

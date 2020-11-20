@@ -2,7 +2,6 @@
 
 namespace App\Entity\TerritorialCouncil\ElectionPoll;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,8 +12,6 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\ElectionPoll\PollChoiceRepository")
  * @ORM\Table(name="territorial_council_election_poll_choice")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class PollChoice
 {

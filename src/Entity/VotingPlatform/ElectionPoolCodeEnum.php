@@ -11,8 +11,6 @@ class ElectionPoolCodeEnum extends Enum
     public const FEMALE = Genders::FEMALE;
     public const MALE = Genders::MALE;
 
-    public const ADDITIONALLY_ELECTED = 'additionally_elected';
-
     public const COMMITTEE_ADHERENT = [
         self::FEMALE,
         self::MALE,
@@ -23,7 +21,7 @@ class ElectionPoolCodeEnum extends Enum
         TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR,
         TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
         TerritorialCouncilQualityEnum::CITY_COUNCILOR,
-        TerritorialCouncilQualityEnum::CONSULAR_CONSELOR,
+        TerritorialCouncilQualityEnum::CONSULAR_COUNCILOR,
         TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
         TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
     ];

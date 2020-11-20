@@ -41,12 +41,10 @@ class UserAuthorizationTest extends TestCase
         self::assertFalse($authorization->belongsTo($this->createUser()));
     }
 
-    /**
-     * @expectedException \DomainException
-     * @expectedExceptionMessage Instance of App\OAuth\Model\Scope must be provided
-     */
     public function testSupportsScopesExceptionWhenScopeTypeIsNotValid(): void
     {
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Instance of App\OAuth\Model\Scope must be provided');
         $this->createUserAuthorization()->supportsScopes(['public']);
     }
 

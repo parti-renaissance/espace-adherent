@@ -4,12 +4,14 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\Entity\Geo\Zone;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentManagedUsersMessage;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use App\Mailer\Message\InstitutionalEventInvitationMessage;
 use App\Repository\ReferentManagedUsersMessageRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
@@ -112,16 +114,8 @@ class ReferentControllerTest extends WebTestCase
         $data = [];
         $data['committee_event']['name'] = 'premier événement';
         $data['committee_event']['category'] = $this->getEventCategoryIdForName('Événement innovant');
-        $data['committee_event']['beginAt']['date']['day'] = 14;
-        $data['committee_event']['beginAt']['date']['month'] = 6;
-        $data['committee_event']['beginAt']['date']['year'] = date('Y');
-        $data['committee_event']['beginAt']['time']['hour'] = preg_replace('/0/', '', date('H'), 1);
-        $data['committee_event']['beginAt']['time']['minute'] = 0;
-        $data['committee_event']['finishAt']['date']['day'] = 15;
-        $data['committee_event']['finishAt']['date']['month'] = 6;
-        $data['committee_event']['finishAt']['date']['year'] = date('Y');
-        $data['committee_event']['finishAt']['time']['hour'] = 23;
-        $data['committee_event']['finishAt']['time']['minute'] = 0;
+        $data['committee_event']['beginAt'] = '2023-06-14 16:15';
+        $data['committee_event']['finishAt'] = '2023-06-15 23:00';
         $data['committee_event']['address']['address'] = 'Pilgerweg 58';
         $data['committee_event']['address']['cityName'] = 'Kilchberg';
         $data['committee_event']['address']['postalCode'] = '8802';
@@ -151,16 +145,8 @@ class ReferentControllerTest extends WebTestCase
         $data = [];
         $data['institutional_event']['name'] = 'Un événement institutionnel en Suisse';
         $data['institutional_event']['category'] = $this->getInstitutionalEventCategoryIdByName('Comité politique');
-        $data['institutional_event']['beginAt']['date']['day'] = 14;
-        $data['institutional_event']['beginAt']['date']['month'] = 6;
-        $data['institutional_event']['beginAt']['date']['year'] = date('Y');
-        $data['institutional_event']['beginAt']['time']['hour'] = preg_replace('/0/', '', date('H'), 1);
-        $data['institutional_event']['beginAt']['time']['minute'] = 0;
-        $data['institutional_event']['finishAt']['date']['day'] = 15;
-        $data['institutional_event']['finishAt']['date']['month'] = 6;
-        $data['institutional_event']['finishAt']['date']['year'] = date('Y');
-        $data['institutional_event']['finishAt']['time']['hour'] = 23;
-        $data['institutional_event']['finishAt']['time']['minute'] = 0;
+        $data['institutional_event']['beginAt'] = '2023-06-14 16:00';
+        $data['institutional_event']['finishAt'] = '2023-06-15 23:00';
         $data['institutional_event']['address']['address'] = 'Pilgerweg 58';
         $data['institutional_event']['address']['cityName'] = 'Kilchberg';
         $data['institutional_event']['address']['postalCode'] = '8802';
@@ -183,7 +169,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Le nouvel événement institutionnel a bien été créé.',
             $this->client->getCrawler()->filter('div.flash--info')->html()
         );
@@ -240,50 +226,36 @@ class ReferentControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         self::assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
-        $data = [
-            'f' => [
-                'city' => 77,
-            ],
-        ];
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        /* @var ChoiceFormField $zonesField */
+        $zonesField = $form->get('f[zones]');
+        $zonesField->disableValidation()->setValue([
+            $this->getRepository(Zone::class)->findOneBy([
+                'type' => Zone::DEPARTMENT,
+                'code' => '77', // Seine-et-Marne
+            ])->getId(),
+        ]);
+
+        $this->client->submit($form);
         self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         self::assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
-        $data = [
-            'f' => [
-                'city' => 'Melun',
-            ],
-        ];
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        /* @var ChoiceFormField $zonesField */
+        $zonesField = $form->get('f[zones]');
+        $zonesField->disableValidation()->setValue([
+            $this->getRepository(Zone::class)->findOneBy([
+                'type' => Zone::CITY,
+                'code' => '77288', // Melun
+            ])->getId(),
+        ]);
+
+        $this->client->submit($form);
         self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $data = [
-            'f' => [
-                'city' => 'FR',
-            ],
-        ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $data = [
-            'f' => [
-                'city' => 13,
-            ],
-        ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $data = [
-            'f' => [
-                'city' => 59,
-            ],
-        ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Gender
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
@@ -327,17 +299,6 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         self::assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        // Managed Area
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $data = [
-            'f' => [
-                'referentTags' => 100,
-            ],
-        ];
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testFilterAdherents()
@@ -360,8 +321,8 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
-        $this->assertContains('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
 
         // filter supervisors
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -375,7 +336,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(0, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertContains('Brioul Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Brioul Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
 
         // filter newsletter subscriptions
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -388,8 +349,8 @@ class ReferentControllerTest extends WebTestCase
 
         $this->assertCount(5, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
 
         // exclude
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -402,8 +363,8 @@ class ReferentControllerTest extends WebTestCase
 
         $this->assertCount(3, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('8057', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('8057', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
 
         // filter adherents in no committee
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -418,11 +379,11 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
-        $this->assertContains('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('Brioul', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertContains('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertContains('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertStringContainsString('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('Brioul', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
 
         // filter adherents in committees
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -436,7 +397,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
-        $this->assertContains('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
 
         // filter adherents in CP
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
@@ -481,7 +442,7 @@ class ReferentControllerTest extends WebTestCase
         $crawler = $this->client->submit(
             $crawler->selectButton('Filtrer')->form([
                 'referent_filter' => [
-                    'referentTags' => 14,
+                    'referentTags' => 16,
                 ],
             ])
         );
@@ -523,7 +484,7 @@ class ReferentControllerTest extends WebTestCase
         return ucfirst(strtolower($formatter->format($date).'h00'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -534,7 +495,7 @@ class ReferentControllerTest extends WebTestCase
         $this->disableRepublicanSilence();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

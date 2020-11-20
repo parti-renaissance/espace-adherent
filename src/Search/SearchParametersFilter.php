@@ -4,7 +4,7 @@ namespace App\Search;
 
 use App\Geocoder\Coordinates;
 use App\Geocoder\Exception\GeocodingException;
-use App\Geocoder\GeocoderInterface;
+use App\Geocoder\Geocoder;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -72,7 +72,7 @@ class SearchParametersFilter
     private $referentEvents = false;
     private $cache;
 
-    public function __construct(GeocoderInterface $geocoder, AdapterInterface $cache)
+    public function __construct(Geocoder $geocoder, AdapterInterface $cache)
     {
         $this->geocoder = $geocoder;
         $this->cache = $cache;

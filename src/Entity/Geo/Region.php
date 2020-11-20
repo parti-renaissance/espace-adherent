@@ -2,37 +2,44 @@
 
 namespace App\Entity\Geo;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="geo_region")
- *
- * @Algolia\Index(autoIndex=false)
  */
-class Region implements CollectivityInterface
+class Region implements ZoneableInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
 
     /**
-     * @var Country|null
+     * @var Country
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Country")
      * @ORM\JoinColumn(nullable=false)
      */
     private $country;
 
+    /**
+     * @var Collection|Department[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Geo\Department", mappedBy="region")
+     */
+    private $departments;
+
     public function __construct(string $code, string $name, Country $country)
     {
         $this->code = $code;
         $this->name = $name;
         $this->country = $country;
+        $this->departments = new ArrayCollection();
     }
 
-    public function getCountry(): ?Country
+    public function getCountry(): Country
     {
         return $this->country;
     }
@@ -42,15 +49,24 @@ class Region implements CollectivityInterface
         $this->country = $country;
     }
 
+    /**
+     * @return Department[]
+     */
+    public function getDepartments(): array
+    {
+        return $this->departments->toArray();
+    }
+
     public function getParents(): array
     {
-        $parents = [];
+        return array_merge(
+            [$this->country],
+            $this->country->getParents(),
+        );
+    }
 
-        $parents[] = $country = $this->getCountry();
-        if ($country) {
-            $parents = array_merge($parents, $country->getParents());
-        }
-
-        return $this->sanitizeEntityList($parents);
+    public function getZoneType(): string
+    {
+        return Zone::REGION;
     }
 }

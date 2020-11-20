@@ -115,7 +115,7 @@ class TonMacronControllerTest extends WebTestCase
         $this->assertEquals($invitation->selfReasons, $currentInvitation->selfReasons);
         $this->assertNotEquals($invitation->messageContent, $currentInvitation->messageContent);
         foreach ($invitation->getArguments() as $choice) {
-            $this->assertContains($choice, $currentInvitation->messageContent);
+            $this->assertStringContainsString($choice, $currentInvitation->messageContent);
         }
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(self::INVITATION_PATH, $this->client);
@@ -140,7 +140,7 @@ class TonMacronControllerTest extends WebTestCase
         $mail = $mails[0];
 
         $this->assertSame('TonMacronFriendMessage', $mail->getMessageClass());
-        $this->assertContains('beatrice@example.org', $mail->getRecipientsAsString());
+        $this->assertStringContainsString('beatrice@example.org', $mail->getRecipientsAsString());
         $this->assertCount(1, $invitations = $this->tonMacronInvitationRepository->findAll());
 
         /** @var TonMacronFriendInvitation $invitationLog */
@@ -182,7 +182,7 @@ class TonMacronControllerTest extends WebTestCase
         $this->assertNull($this->client->getRequest()->getSession()->get(InvitationProcessorHandler::SESSION_KEY));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -193,7 +193,7 @@ class TonMacronControllerTest extends WebTestCase
         $this->emailRepository = $this->getEmailRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -2,24 +2,23 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityUserListDefinitionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ThematicCommunity\ThematicCommunityMembershipRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *     "contact": "App\Entity\ThematicCommunity\ContactMembership",
  *     "adherent": "App\Entity\ThematicCommunity\AdherentMembership",
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 abstract class ThematicCommunityMembership
 {
@@ -43,6 +42,9 @@ abstract class ThematicCommunityMembership
         self::MOTIVATION_ON_SPOT,
     ];
 
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_VERIFIED = 'verified';
+
     use EntityIdentityTrait;
     use EntityUserListDefinitionTrait;
 
@@ -64,22 +66,42 @@ abstract class ThematicCommunityMembership
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Assert\NotNull
+     */
+    private $hasJob = false;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $job;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Assert\NotNull
      */
     private $association = false;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $associationName;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Assert\NotBlank
      */
-    private $motivation;
+    private $motivations = [];
 
     /**
      * @var bool
@@ -89,7 +111,14 @@ abstract class ThematicCommunityMembership
     private $expert = false;
 
     /**
-     * @var Adherent
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $status = self::STATUS_PENDING;
+
+    /**
+     * @var Adherent|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -97,16 +126,16 @@ abstract class ThematicCommunityMembership
     protected $adherent;
 
     /**
-     * @var Contact
+     * @var Contact|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\ThematicCommunity\Contact", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $contact;
 
-    public function __construct()
+    public function __construct(UuidInterface $uuid = null)
     {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->joinedAt = new \DateTime();
         $this->userListDefinitions = new ArrayCollection();
     }
@@ -131,6 +160,26 @@ abstract class ThematicCommunityMembership
         $this->community = $community;
     }
 
+    public function hasJob(): bool
+    {
+        return $this->hasJob;
+    }
+
+    public function setHasJob(bool $hasJob): void
+    {
+        $this->hasJob = $hasJob;
+    }
+
+    public function getJob(): ?string
+    {
+        return $this->job;
+    }
+
+    public function setJob(?string $job): void
+    {
+        $this->job = $job;
+    }
+
     public function isAssociation(): bool
     {
         return $this->association;
@@ -151,14 +200,14 @@ abstract class ThematicCommunityMembership
         $this->associationName = $associationName;
     }
 
-    public function getMotivation(): ?string
+    public function getMotivations(): array
     {
-        return $this->motivation;
+        return $this->motivations;
     }
 
-    public function setMotivation(string $motivation): void
+    public function setMotivations(array $motivations): void
     {
-        $this->motivation = $motivation;
+        $this->motivations = $motivations;
     }
 
     public function isExpert(): bool
@@ -169,6 +218,21 @@ abstract class ThematicCommunityMembership
     public function setExpert(bool $expert): void
     {
         $this->expert = $expert;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function isPending(): bool
+    {
+        return self::STATUS_PENDING === $this->status;
     }
 
     public function getContact(): ?Contact
@@ -214,5 +278,32 @@ abstract class ThematicCommunityMembership
         }
 
         return sprintf('%s (%s)', $city, $zipcode);
+    }
+
+    public function getRoles(): string
+    {
+        if ($this->contact) {
+            return 'Contact';
+        }
+
+        $roles = [];
+
+        if ($this->adherent->isReferent()) {
+            $roles[] = 'Référent';
+        }
+
+        if ($this->adherent->isSupervisor()) {
+            $roles[] = 'Animateur local';
+        }
+
+        if ($this->adherent->isCitizenProjectAdministrator()) {
+            $roles[] = 'Porteur de projets citoyens';
+        }
+
+        if (!empty($roles)) {
+            return \implode(' / ', $roles);
+        }
+
+        return 'Adhérent';
     }
 }

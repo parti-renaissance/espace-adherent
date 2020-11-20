@@ -1,0 +1,84 @@
+{% extends 'committee/_candidacy_layout.html.twig' %}
+
+{% block page_title 'Candidats en binômes' %}
+
+{% block candidacy_content %}
+    <section class="l__wrapper b__nudge--bottom-huge">
+        <div class="b__nudge--top b__nudge--bottom">
+            <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
+        </div>
+
+        <h2 class="b__nudge--bottom-larger">Candidats en binômes</h2>
+
+        <p class="text--body text--gray text--small b__nudge--bottom-50">
+            Ne s'affichent ici que les candidatures confirmées, en binômes partitaires.
+        </p>
+
+        <div class="committee__candidacies b__nudge--bottom-larger">
+            {% for candidacy in candidacies if not candidacy.isTaken %}
+                <div class="territorial-council__candidacies l__row l__row--wrap">
+                    {% set first_candidacy = candidacy.isFemale ? candidacy : (candidacy.binome ? candidacy.binome : candidacy) %}
+
+                    {% set adherent = first_candidacy.committeeMembership.adherent %}
+
+                    {{ first_candidacy.take() }}
+                    <div class="territorial-council__candidate">
+                        {% include 'components/_member_identity_box.html.twig' with {
+                            initials: adherent.initials,
+                            image_path: first_candidacy.imagePath,
+                            full_name: adherent.fullName,
+                            details: '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.isFemale ? 'F' : 'H') ~ '</span>',
+                        } %}
+                    </div>
+
+                    {% if first_candidacy.binome %}
+                        {{ first_candidacy.binome.take() }}
+
+                        {% set adherent = first_candidacy.binome.committeeMembership.adherent %}
+
+                        <div class="territorial-council__candidate">
+                            {% include 'components/_member_identity_box.html.twig' with {
+                                initials: adherent.initials,
+                                image_path: first_candidacy.binome.imagePath,
+                                full_name: adherent.fullName,
+                                details: '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.binome.isFemale ? 'F' : 'H') ~ '</span>',
+                            } %}
+                        </div>
+                    {% endif %}
+
+                    <div>
+                        <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
+                           data-content-element="#candidate-biography-content-{{ first_candidacy.uuid }}"
+                           data-modal-side="right"
+                        > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>
+
+                        <div id="candidate-biography-content-{{ first_candidacy.uuid }}" class="hidden">
+                            <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentations</h3>
+
+                            <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.committeeMembership.fullName }}</h2>
+                            <p class="text--body text--dark">{{ first_candidacy.biography|nl2br }}</p>
+
+                            {% if first_candidacy.binome %}
+                                <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.binome.committeeMembership.fullName }}</h2>
+                                <p class="text--body text--dark">{{ first_candidacy.binome.biography|nl2br }}</p>
+                            {% endif %}
+
+                            <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
+
+                            {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or first_candidacy.isPublicFaithStatement %}
+                                <p class="text--body text--dark">{{ first_candidacy.faithStatement|nl2br }}</p>
+                            {% else %}
+                                <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text--center">
+                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" /><br/>
+                    Aucune candidature
+                </p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

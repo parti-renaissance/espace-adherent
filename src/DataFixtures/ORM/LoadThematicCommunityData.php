@@ -3,10 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ThematicCommunity\ThematicCommunity;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadThematicCommunityData extends AbstractFixture
+class LoadThematicCommunityData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
@@ -18,7 +18,7 @@ class LoadThematicCommunityData extends AbstractFixture
         $manager->persist($tc1);
 
         $tc2 = new ThematicCommunity();
-        $tc2->setName('Éducation');
+        $tc2->setName('Ecole');
         $tc2->setDescription('Une communtauté autour de l\'éducation');
 
         $this->addReference('tc-education', $tc2);

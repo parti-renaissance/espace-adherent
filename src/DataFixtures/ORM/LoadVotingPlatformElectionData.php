@@ -47,6 +47,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
      */
     private $manager;
     private $voters = [];
+    private $resultCalculator;
+
+    public function __construct(ResultCalculator $resultCalculator)
+    {
+        $this->resultCalculator = $resultCalculator;
+    }
 
     public function load(ObjectManager $manager)
     {
@@ -288,7 +294,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         $this->manager->flush();
 
-        $this->getResultCalculator()->computeElectionResult($electionRound->getElection());
+        $this->resultCalculator->computeElectionResult($electionRound->getElection());
     }
 
     private function loadTerritorialCouncilElectionCandidates(
@@ -350,15 +356,10 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         }
     }
 
-    private function getResultCalculator(): ResultCalculator
-    {
-        return $this->container->get(ResultCalculator::class);
-    }
-
     public function getDependencies()
     {
         return [
-            LoadAdherentData::class,
+            LoadCommitteeData::class,
             LoadCommitteeCandidacyData::class,
             LoadDesignationData::class,
             LoadTerritorialCouncilCandidacyData::class,

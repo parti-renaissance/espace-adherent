@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="voting_platform_vote", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_id", "election_round_id"}),
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Vote
 {
@@ -55,6 +52,11 @@ class Vote
         $this->votedAt = new \DateTime();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getVotedAt(): \DateTime
     {
         return $this->votedAt;
@@ -63,6 +65,11 @@ class Vote
     public function getVoter(): Voter
     {
         return $this->voter;
+    }
+
+    public function getElectionRound(): ElectionRound
+    {
+        return $this->electionRound;
     }
 
     public function getElection(): Election

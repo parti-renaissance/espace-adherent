@@ -6,7 +6,6 @@ use App\Entity\InstitutionalEventCategory;
 use App\Form\DataTransformer\EventDateTimeZoneTransformer;
 use App\Form\DataTransformer\StringToArrayTransformer;
 use App\InstitutionalEvent\InstitutionalEventCommand;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,14 +43,6 @@ class InstitutionalEventCommandType extends BaseEventCommandType
             ->add('timeZone', TimezoneType::class, [
                 'choices' => $this->getTimezones(),
             ])
-            ->add('beginAt', DateTimeType::class, [
-                'years' => $options['years'],
-                'minutes' => $options['minutes'],
-            ])
-            ->add('finishAt', DateTimeType::class, [
-                'years' => $options['years'],
-                'minutes' => $options['minutes'],
-            ])
             ->add('invitations', PurifiedTextareaType::class, [
                 'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
@@ -64,7 +55,7 @@ class InstitutionalEventCommandType extends BaseEventCommandType
             $command = $event->getData();
 
             if (null === $command->getBeginAt() || null === $command->getFinishAt()) {
-                $beginDate = $this->createBeginDate($event->getForm()->getConfig()->getOption('minutes'));
+                $beginDate = $this->createBeginDate();
 
                 $command->setBeginAt($beginDate);
                 $command->setFinishAt((clone $beginDate)->modify('+2 hours'));

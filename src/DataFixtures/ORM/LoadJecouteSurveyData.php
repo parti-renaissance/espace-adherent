@@ -10,9 +10,10 @@ use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Question;
 use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadJecouteSurveyData extends Fixture
+class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -27,6 +28,9 @@ class LoadJecouteSurveyData extends Fixture
 
         /** @var Administrator $administrator1 */
         $administrator1 = $this->getReference('administrator-1');
+
+        /** @var Administrator $administrator2 */
+        $administrator2 = $this->getReference('administrator-2');
 
         /**
          * Local Surveys
@@ -103,8 +107,23 @@ class LoadJecouteSurveyData extends Fixture
 
         $this->addReference('national-survey-1', $nationalSurvey1);
 
-        $this->addReference('national-survey-1-question-1', $surveyQuestion1);
-        $this->addReference('national-survey-1-question-2', $surveyQuestion2);
+        $this->addReference('national-survey-1-question-1', $nationalSurveyQuestion1);
+        $this->addReference('national-survey-1-question-2', $nationalSurveyQuestion2);
+
+        $nationalSurvey2 = new NationalSurvey($administrator2, 'Le deuxième questionnaire national', true);
+
+        /** @var Question $nationalQuestion3 */
+        $nationalQuestion3 = $this->getReference('national-question-3');
+
+        $nationalSurveyQuestion3 = new SurveyQuestion($nationalSurvey2, $nationalQuestion3);
+
+        $nationalSurvey2->addQuestion($nationalSurveyQuestion3);
+
+        $manager->persist($nationalSurvey2);
+
+        $this->addReference('national-survey-2', $nationalSurvey2);
+
+        $this->addReference('national-survey-2-question-1', $nationalSurveyQuestion3);
 
         $manager->flush();
     }

@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {{ object.type == 'territorial_council' ? 'CoTerr :' }}
+
+    <a href="{{ path(object.type == 'committee' ? 'admin_app_committee_list' : 'admin_app_territorialcouncil_territorialcouncil_list', {filter: {id: {value: object.election_entity.id}}}) }}">{{ object.election_entity.name }}</a>
+{% endblock %}

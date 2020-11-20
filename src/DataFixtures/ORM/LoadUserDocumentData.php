@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\UserDocument;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadUserDocumentData extends AbstractFixture
+class LoadUserDocumentData extends Fixture
 {
     public const USER_DOCUMENT_1_UUID = '5f279d90-712c-4335-a83b-a82851b43dfe';
     public const USER_DOCUMENT_2_UUID = 'd2abac78-6004-41cd-a88d-e3e1e83a6f65';

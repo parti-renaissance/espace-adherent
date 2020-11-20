@@ -10,26 +10,28 @@ use App\Entity\Media;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadFormationData extends Fixture
 {
     private $faker;
+    private $mediaFactory;
+    private $storage;
 
-    public function __construct()
+    public function __construct(MediaFactory $mediaFactory, FilesystemInterface $storage)
     {
+        $this->mediaFactory = $mediaFactory;
+        $this->storage = $storage;
         $this->faker = Factory::create('fr_FR');
     }
 
     public function load(ObjectManager $manager)
     {
-        $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get('app.storage');
-
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
-        $storage->put('images/espace-formation.jpg', file_get_contents($mediaFile->getPathname()));
-        $media = $mediaFactory->createFromFile('Image pour l\'espace formation', 'espace-formation.jpg', $mediaFile);
+        $this->storage->put('images/espace-formation.jpg', file_get_contents($mediaFile->getPathname()));
+        $media = $this->mediaFactory->createFromFile('Image pour l\'espace formation', 'espace-formation.jpg', $mediaFile);
 
         $manager->persist($path1 = $this->createPath('Parcours 1'));
         $manager->persist($path2 = $this->createPath('Parcours 2'));

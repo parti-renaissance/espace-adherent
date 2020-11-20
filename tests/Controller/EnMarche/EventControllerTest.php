@@ -89,7 +89,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
-        $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
+        $this->assertStringContainsString('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -136,7 +136,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
-        $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
+        $this->assertStringContainsString('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
@@ -146,7 +146,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->client->click($crawler->selectLink('Mes événements')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Réunion de réflexion parisienne', $this->client->getResponse()->getContent());
     }
 
     public function testCantRegisterToAFullEvent()
@@ -158,8 +158,8 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $headerText = $crawler->filter('.committee__event__header__cta')->text();
-        $this->assertContains('1 inscrit', $headerText);
-        $this->assertNotContains('JE VEUX PARTICIPER', $headerText);
+        $this->assertStringContainsString('1 inscrit', $headerText);
+        $this->assertStringNotContainsString('JE VEUX PARTICIPER', $headerText);
 
         $this->client->request('GET', $eventUrl.'/inscription');
 
@@ -198,7 +198,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
+        $this->assertStringContainsString('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
 
         // Invitation should have been saved
         $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
@@ -213,7 +213,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
         // Email should have been sent
         $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
-        $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
+        $this->assertStringContainsString(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
     /**
@@ -224,10 +224,10 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/2017-02-20-grand-meeting-de-paris');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('Les événements à proximité', $crawler->filter('.committee-event-nearby')->text());
+        $this->assertStringContainsString('Les événements à proximité', $crawler->filter('.committee-event-nearby')->text());
         self::assertSame(3, $crawler->filter('.committee-event-nearby ul li')->count());
-        $this->assertContains($name, $crawler->filter('.committee-event-nearby ul')->text());
-        $this->assertContains($cityName, $crawler->filter('.committee-event-nearby ul')->text());
+        $this->assertStringContainsString($name, $crawler->filter('.committee-event-nearby ul')->text());
+        $this->assertStringContainsString($cityName, $crawler->filter('.committee-event-nearby ul')->text());
     }
 
     public function dataProviderNearbyEvents(): iterable
@@ -266,7 +266,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
+        $this->assertStringContainsString('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
 
         // Invitation should have been saved
         $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
@@ -281,7 +281,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
         // Email should have been sent
         $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
-        $this->assertContains(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
+        $this->assertStringContainsString(str_replace('/', '\/', $eventUrl), $messages[0]->getRequestPayloadJson());
     }
 
     public function testInvitationSentWithoutRedirection()
@@ -388,7 +388,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $link = $crawler->filter('.list__links.list__links--row.list__links--default li a')->eq(0)->attr('href');
         $needle = 'text=Meeting%20%2311%20de%20Brooklyn';
 
-        $this->assertContains($needle, $link);
+        $this->assertStringContainsString($needle, $link);
     }
 
     public function testSearchCategoryForm()
@@ -411,7 +411,7 @@ class EventControllerTest extends AbstractEventControllerTest
         ++$countCategories; // add citizen_action
         $this->assertNotContains('Catégorie masquée', $labels);
         self::assertSame($countCategories, $options->count());
-        self::assertSame(3, $optgroup->count());
+        self::assertSame(4, $optgroup->count());
     }
 
     public function testAdherentCanUnregisterToEvent()
@@ -439,7 +439,7 @@ class EventControllerTest extends AbstractEventControllerTest
         self::assertSame('Je veux participer', trim($crawler->filter('.register-event')->text()));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -450,7 +450,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

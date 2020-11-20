@@ -2,7 +2,6 @@
 
 namespace App\Entity\Jecoute;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Jecoute\SurveyQuestionTypeEnum;
 use App\Validator\SurveyQuestionTypeChoice;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,8 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @SurveyQuestionTypeChoice
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Question
 {

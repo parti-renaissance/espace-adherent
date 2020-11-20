@@ -4,7 +4,7 @@
 
 {% block page_title 'Candidats aux élections' %}
 
-{% block territorial_council_sub_content %}
+{% block sub_content %}
     <section class="territorial-council__candidacies">
         <h2 class="b__nudge--bottom-larger">Candidats aux élections</h2>
 
@@ -20,7 +20,7 @@
                     </h4>
                 {% endif %}
 
-                <div class="territorial-council__candidacie l__row l__row--wrap">
+                <div class="territorial-council__candidacies l__row l__row--wrap">
                     {% set first_candidacy = candidacy.isFemale ? candidacy : (candidacy.binome ? candidacy.binome : candidacy) %}
 
                     {{ first_candidacy.take() }}
@@ -38,7 +38,8 @@
 
                     <div>
                         <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
-                           data-confirm-content-element="#candidate-biography-content-{{ first_candidacy.uuid }}"
+                           data-content-element="#candidate-biography-content-{{ first_candidacy.uuid }}"
+                           data-modal-side="right"
                         > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>
 
                         <div id="candidate-biography-content-{{ first_candidacy.uuid }}" class="hidden">
@@ -54,7 +55,7 @@
 
                             <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                            {% if election.isVotePeriodStarted or first_candidacy.isPublicFaithStatement %}
+                            {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or first_candidacy.isPublicFaithStatement %}
                                 <p class="text--body text--dark">{{ first_candidacy.faithStatement|nl2br }}</p>
                             {% else %}
                                 <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>

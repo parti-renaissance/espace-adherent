@@ -15,12 +15,13 @@ use App\Entity\ElectedRepresentative\PoliticalFunction;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\SocialLinkTypeEnum;
 use App\Entity\ElectedRepresentative\SocialNetworkLink;
+use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
-class LoadElectedRepresentativeData extends Fixture
+class LoadElectedRepresentativeData extends Fixture implements DependentFixtureInterface
 {
     public const ELECTED_REPRESENTATIVE_1_UUID = '34b0b236-b72e-4161-8f9f-7f23f935758f';
     public const ELECTED_REPRESENTATIVE_2_UUID = '4b8bb9fd-0645-47fd-bb9a-3515bf46618a';
@@ -69,6 +70,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2019-07-23')
         );
+        $mandate->setGeoZone($this->getReference('zone_city_community_200054781'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::OTHER_MEMBER,
             'Some precisions',
@@ -100,7 +102,7 @@ class LoadElectedRepresentativeData extends Fixture
             'female',
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
         );
-        $this->setPhoneNumber($erCityCouncilWithFinishedFunction, '0999887766');
+        $erCityCouncilWithFinishedFunction->setContactPhone(PhoneNumberUtils::create('+330999887766'));
         $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem'));
         $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-instances_member'));
         $label = new ElectedRepresentativeLabel(
@@ -119,6 +121,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2014-03-23')
         );
+        $mandate->setGeoZone($this->getReference('zone_city_92024'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::MAYOR,
             null,
@@ -186,6 +189,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2014-03-23')
         );
+        $mandate1->setGeoZone($this->getReference('zone_city_76540'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::DEPUTY_MAYOR,
             null,
@@ -204,6 +208,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2017-01-11')
         );
+        $mandate2->setGeoZone($this->getReference('zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::PRESIDENT_OF_EPCI,
             null,
@@ -246,6 +251,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2016-03-23')
         );
+        $mandate1->setGeoZone($this->getReference('zone_region_94'));
         $mandate2 = new Mandate(
             MandateTypeEnum::DEPUTY,
             true,
@@ -257,6 +263,7 @@ class LoadElectedRepresentativeData extends Fixture
             new \DateTime('2011-12-23'),
             new \DateTime('2015-02-23')
         );
+        $mandate2->setGeoZone($this->getReference('zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::OTHER_MEMBER,
             null,
@@ -328,6 +335,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2015-03-13')
         );
+        $mandate1->setGeoZone($this->getReference('zone_department_13'));
         $politicalFunction1 = new PoliticalFunction(
             PoliticalFunctionNameEnum::VICE_PRESIDENT_OF_EPCI,
             null,
@@ -346,6 +354,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2017-07-18')
         );
+        $mandate2->setGeoZone($this->getReference('zone_city_76540'));
         $politicalFunction2 = new PoliticalFunction(
             PoliticalFunctionNameEnum::MAYOR_ASSISTANT,
             null,
@@ -389,6 +398,7 @@ class LoadElectedRepresentativeData extends Fixture
             false,
             new \DateTime('2020-03-15')
         );
+        $mandate->setGeoZone($this->getReference('zone_region_94'));
         $erWithNotElectedMandate->addMandate($mandate);
 
         $manager->persist($erWithNotElectedMandate);
@@ -405,6 +415,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2019-03-15')
         );
+        $mandate->setGeoZone($this->getReference('zone_borough_75107'));
         $erParis->addMandate($mandate);
 
         $manager->persist($erParis);
@@ -421,6 +432,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2019-01-11')
         );
+        $mandate->setGeoZone($this->getReference('zone_district_75-8'));
         $erParis2->addMandate($mandate);
 
         $manager->persist($erParis2);
@@ -437,6 +449,7 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2018-01-11')
         );
+        $mandate->setGeoZone($this->getReference('zone_department_75'));
         $erParis3->addMandate($mandate);
 
         $manager->persist($erParis3);
@@ -452,19 +465,12 @@ class LoadElectedRepresentativeData extends Fixture
             true,
             new \DateTime('2018-01-11')
         );
+        $mandate->setGeoZone($this->getReference('zone_department_59'));
         $erDepartment59->addMandate($mandate);
 
         $manager->persist($erDepartment59);
 
         $manager->flush();
-    }
-
-    private function setPhoneNumber(ElectedRepresentative $er, string $phoneNumber): void
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode('33');
-        $phone->setNationalNumber($phoneNumber);
-        $er->setContactPhone($phone);
     }
 
     private function createElectedRepresentative(

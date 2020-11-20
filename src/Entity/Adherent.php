@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentProfile\AdherentProfile;
 use App\Collection\AdherentCharterCollection;
@@ -10,8 +9,13 @@ use App\Collection\CertificationRequestCollection;
 use App\Collection\CitizenProjectMembershipCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
+use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\Filesystem\FilePermissionEnum;
+use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
@@ -26,9 +30,11 @@ use App\Membership\MembershipRequest;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
+use App\Validator\UniqueMembership;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -76,12 +82,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"App\EntityListener\RevokeReferentTeamMemberRolesListener", "App\EntityListener\RevokeDelegatedAccessListener"})
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
+ * @UniqueMembership(groups={"Admin"})
  *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "lre_manager", "referent_jam"})
- *
- * @Algolia\Index(autoIndex=false)
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface, EquatableInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface
 {
     public const ENABLED = 'ENABLED';
     public const TO_DELETE = 'TO_DELETE';
@@ -93,6 +98,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityPostAddressTrait;
     use LazyCollectionTrait;
     use EntityReferentTagTrait;
+    use EntityZoneTrait;
 
     /**
      * @ORM\Column(length=25, unique=true, nullable=true)
@@ -158,7 +164,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $birthdate;
 
     /**
-     * @ORM\Column(length=20, nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $position;
 
@@ -419,11 +425,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $displayMedia = true;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -433,6 +443,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $facebookPageUrl;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -442,6 +454,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $twitterPageUrl;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -451,6 +465,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $linkedinPageUrl;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
@@ -459,20 +475,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $telegramPageUrl;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(nullable=true)
      */
     private $job;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(nullable=true)
      */
     private $activityArea;
 
     /**
+     * @var string|null
+     *
      * @ORM\Column(length=2, nullable=true)
      */
     private $nationality;
@@ -525,6 +543,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Valid
      */
     private $lreArea;
+
+    /**
+     * @var CandidateManagedArea|null
+     *
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity="App\Entity\ManagedArea\CandidateManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $candidateManagedArea;
 
     /**
      * Access to external services regarding printing
@@ -599,6 +625,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $handledThematicCommunities;
 
+    /**
+     * @var AbstractAdherentMandate[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\AbstractAdherentMandate", mappedBy="adherent", fetch="EXTRA_LAZY")
+     */
+    private $adherentMandates;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -606,10 +639,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->subscriptionTypes = new ArrayCollection();
         $this->ideas = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->zones = new ArrayCollection();
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
         $this->receivedDelegatedAccesses = new ArrayCollection();
         $this->handledThematicCommunities = new ArrayCollection();
+        $this->adherentMandates = new ArrayCollection();
     }
 
     public static function create(
@@ -828,6 +863,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_SENATORIAL_CANDIDATE';
         }
 
+        if ($this->isHeadedRegionalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_REGIONAL_HEADED';
+        }
+
+        if ($this->isLeaderRegionalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_REGIONAL_LEADER';
+        }
+
+        if ($this->isDepartmentalCandidate()) {
+            $roles[] = 'ROLE_CANDIDATE_DEPARTMENTAL';
+        }
+
         if ($this->isLre()) {
             $roles[] = 'ROLE_LRE';
         }
@@ -880,6 +927,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isElectionResultsReporter()
             || $this->isMunicipalManagerSupervisor()
             || $this->isSenatorialCandidate()
+            || $this->isHeadedRegionalCandidate()
+            || $this->isLeaderRegionalCandidate()
+            || $this->isDepartmentalCandidate()
+            || $this->isDelegatedCandidate()
             || $this->isLre()
             || $this->isLegislativeCandidate()
             || $this->isThematicCommunityChief()
@@ -969,6 +1020,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getAge(): ?int
     {
         return $this->birthdate ? $this->birthdate->diff(new \DateTime())->y : null;
+    }
+
+    public function isMinor(\DateTime $date = null): bool
+    {
+        return null === $this->birthdate || $this->birthdate->diff($date ?? new \DateTime())->y < 18;
     }
 
     public function getPosition(): ?string
@@ -1159,6 +1215,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->linkedinPageUrl = $adherentProfile->getLinkedinPageUrl();
         $this->job = $adherentProfile->getJob();
         $this->activityArea = $adherentProfile->getActivityArea();
+        $this->mandates = $adherentProfile->getMandates();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
@@ -1186,31 +1243,37 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * Joins a committee as a SUPERVISOR privileged person.
      */
-    public function superviseCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR, $subscriptionDate);
+    public function superviseCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_SUPERVISOR, $subscriptionDate ?? new \DateTime());
     }
 
     /**
      * Joins a committee as a HOST privileged person.
      */
-    public function hostCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate);
+    public function hostCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate ?? new \DateTime());
     }
 
     /**
      * Joins a committee as a simple FOLLOWER privileged person.
      */
-    public function followCommittee(Committee $committee, string $subscriptionDate = 'now'): CommitteeMembership
-    {
-        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate);
+    public function followCommittee(
+        Committee $committee,
+        \DateTimeInterface $subscriptionDate = null
+    ): CommitteeMembership {
+        return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate ?? new \DateTime());
     }
 
     private function joinCommittee(
         Committee $committee,
         string $privilege,
-        string $subscriptionDate
+        \DateTimeInterface $subscriptionDate
     ): CommitteeMembership {
         $committee->incrementMembersCount();
 
@@ -1499,6 +1562,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             && $this->territorialCouncilMembership->getTerritorialCouncil()->isActive();
     }
 
+    public function isTerritorialCouncilPresident(): bool
+    {
+        return $this->isTerritorialCouncilMember()
+            && $this->territorialCouncilMembership->isPresident();
+    }
+
     public function revokeTerritorialCouncilMembership(): void
     {
         if (!$this->territorialCouncilMembership) {
@@ -1526,6 +1595,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasPoliticalCommitteeMembership(): bool
     {
         return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership;
+    }
+
+    public function isPoliticalCommitteeMember(): bool
+    {
+        return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership
+            && $this->politicalCommitteeMembership->getPoliticalCommittee()->isActive();
     }
 
     public function revokePoliticalCommitteeMembership(): void
@@ -1683,6 +1758,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->memberships;
     }
 
+    public function hasVotingCommitteeMembership(): bool
+    {
+        return null !== $this->getMemberships()->getVotingCommitteeMembership();
+    }
+
     public function hasLoadedMemberships(): bool
     {
         return $this->isCollectionLoaded($this->memberships);
@@ -1735,6 +1815,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->isAdherent()
             && !$this->isHost()
+            && !$this->isCitizenProjectAdministrator()
             && !$this->isReferent()
             && !$this->isBoardMember()
             && !$this->isDeputy()
@@ -2042,8 +2123,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @Algolia\Attribute(algoliaName="address_city")
-     *
      * @JMS\Groups({"adherent_change_diff", "public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
@@ -2081,6 +2160,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isMunicipalChief()
             || $this->isSenator()
             || $this->isDelegatedSenator()
+            || $this->isDelegatedCandidate()
             || $this->isLegislativeCandidate()
         ;
     }
@@ -2346,6 +2426,74 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->senatorialCandidateManagedArea = $senatorialCandidateManagedArea;
     }
 
+    public function getCandidateManagedArea(): ?CandidateManagedArea
+    {
+        return $this->candidateManagedArea;
+    }
+
+    public function setCandidateManagedArea(?CandidateManagedArea $candidateManagedArea): void
+    {
+        $this->candidateManagedArea = $candidateManagedArea;
+    }
+
+    public function isHeadedRegionalCandidate(): bool
+    {
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isRegionalZone() : false;
+    }
+
+    public function isLeaderRegionalCandidate(): bool
+    {
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isDepartmentalZone() : false;
+    }
+
+    public function isDepartmentalCandidate(): bool
+    {
+        return $this->candidateManagedArea ? $this->candidateManagedArea->isCantonalZone() : false;
+    }
+
+    public function isCandidate(): bool
+    {
+        return $this->candidateManagedArea instanceof CandidateManagedArea;
+    }
+
+    public function isDelegatedCandidate(): bool
+    {
+        return \count($this->getReceivedDelegatedAccessOfType(DelegatedAccessEnum::TYPE_CANDIDATE)) > 0;
+    }
+
+    public function isDelegatedHeadedRegionalCandidate(): bool
+    {
+        foreach ($this->getReceivedDelegatedAccessOfType(DelegatedAccessEnum::TYPE_CANDIDATE) as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator()->isHeadedRegionalCandidate()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isDelegatedLeaderRegionalCandidate(): bool
+    {
+        foreach ($this->getReceivedDelegatedAccessOfType(DelegatedAccessEnum::TYPE_CANDIDATE) as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator()->isLeaderRegionalCandidate()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isDelegatedDepartmentalCandidate(): bool
+    {
+        foreach ($this->getReceivedDelegatedAccessOfType(DelegatedAccessEnum::TYPE_CANDIDATE) as $delegatedAccess) {
+            if ($delegatedAccess->getDelegator()->isDepartmentalCandidate()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getLreArea(): ?LreArea
     {
         return $this->lreArea;
@@ -2406,7 +2554,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->job;
     }
 
-    public function setJob(string $job): void
+    public function setJob(?string $job): void
     {
         $this->job = $job;
     }
@@ -2416,7 +2564,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->activityArea;
     }
 
-    public function setActivityArea(string $activityArea): void
+    public function setActivityArea(?string $activityArea): void
     {
         $this->activityArea = $activityArea;
     }
@@ -2456,5 +2604,39 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isThematicCommunityChief()
     {
         return $this->handledThematicCommunities->count() > 0;
+    }
+
+    public function getAdherentMandates(): Collection
+    {
+        return $this->adherentMandates;
+    }
+
+    public function getActiveAdherentMandates(): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->orderBy(['beginAt' => 'DESC'])
+        ;
+
+        return $this->adherentMandates->matching($criteria);
+    }
+
+    public function findMandatesForQuality(string $quality, bool $active = false): array
+    {
+        return $this->adherentMandates->filter(function (AbstractAdherentMandate $mandate) use ($quality, $active) {
+            return $mandate instanceof TerritorialCouncilAdherentMandate
+                && $mandate->getQuality() === $quality
+                && (false === $active || null === $mandate->getFinishAt())
+            ;
+        })->toArray();
+    }
+
+    public function getFilePermissions(): array
+    {
+        $roles = array_map(static function (string $role) {
+            return str_replace('role_', '', mb_strtolower($role));
+        }, $this->getRoles());
+
+        return array_values(array_intersect(FilePermissionEnum::toArray(), $roles));
     }
 }

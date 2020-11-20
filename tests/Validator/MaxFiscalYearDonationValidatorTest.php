@@ -181,7 +181,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         return $donationRequest;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

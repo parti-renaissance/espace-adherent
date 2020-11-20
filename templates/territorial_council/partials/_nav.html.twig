@@ -1,7 +1,11 @@
 <nav class="tabs-nav border-on b__nudge--bottom-larger">
     <ul>
-        <li class="{{ is_active_route(app.request, ['app_territorial_council_index', 'app_territorial_council_selected_index']) ? 'active' }}" id="tab-home">
-            <a href="{{ path("app_territorial_council#{route_part}_index", route_params) }}" class="tabs-nav__item">Accueil</a>
+        <li class="{{ is_active_route(app.request, ['app_territorial_council_index', 'app_territorial_council_selected_index']) ? 'active' }}" id="tab-messages-list">
+            <a href="{{ path("app_territorial_council#{route_part}_index", route_params|merge({'_fragment': 'tab-messages-list'})) }}" class="tabs-nav__item">Messages du référent</a>
+        </li>
+
+        <li class="{{ is_active_route(app.request, ['app_territorial_council_homepage', 'app_territorial_council_selected_homepage']) ? 'active' }}" id="tab-home">
+            <a href="{{ path("app_territorial_council#{route_part}_homepage", route_params) }}" class="tabs-nav__item">Accueil</a>
         </li>
 
         {% if is_canary_enabled() %}

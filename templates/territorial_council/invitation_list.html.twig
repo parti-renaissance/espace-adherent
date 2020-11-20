@@ -26,7 +26,7 @@
                         <p class="font-roboto text--bold b__nudge--bottom-large">Invitation envoyée</p>
 
                         <div class="b__nudge--bottom-large l__row l__row--wrap l__row--h-stretch">
-                            {% include 'territorial_council/partials/_member_identity_box.html.twig' with {
+                            {% include 'components/_member_identity_box.html.twig' with {
                                 initials: adherent.initials,
                                 full_name: adherent.fullName
                             } %}
@@ -66,7 +66,7 @@
                     <div class="text--center b__nudge--top-15 b__nudge--bottom-larger">
                         {% if app.user.isOtherGender() %}
                             <a href="#" class="btn btn--pink btn--no-wrap em-modal--trigger"
-                               data-confirm-content-element="#candidacy-gender-choice-content"
+                               data-content-element="#candidacy-gender-choice-content"
                             >Je candidate en binôme</a>
 
                             <div class="hidden" id="candidacy-gender-choice-content">

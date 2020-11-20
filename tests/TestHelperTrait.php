@@ -20,6 +20,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Email;
 use App\Entity\Event;
 use App\Entity\EventRegistration;
+use App\Entity\Filesystem\File;
 use App\Entity\IdeasWorkshop\Idea;
 use App\Entity\IdeasWorkshop\Thread;
 use App\Entity\IdeasWorkshop\ThreadComment;
@@ -39,7 +40,11 @@ use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\RepublicanSilence;
 use App\Entity\SubscriptionType;
 use App\Entity\Summary;
+use App\Entity\TerritorialCouncil\OfficialReport;
+use App\Entity\TerritorialCouncil\PoliticalCommittee;
+use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Entity\TerritorialCouncil\TerritorialCouncilFeedItem;
 use App\Entity\TonMacronChoice;
 use App\Entity\TonMacronFriendInvitation;
 use App\Entity\Transaction;
@@ -63,6 +68,7 @@ use App\Repository\EmailRepository;
 use App\Repository\EmailSubscriptionHistoryRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\EventRepository;
+use App\Repository\Filesystem\FileRepository;
 use App\Repository\IdeasWorkshop\IdeaRepository;
 use App\Repository\InstitutionalEventRepository;
 use App\Repository\InvitationRepository;
@@ -76,6 +82,10 @@ use App\Repository\ProcurationRequestRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Repository\SummaryRepository;
+use App\Repository\TerritorialCouncil\OfficialReportRepository;
+use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
+use App\Repository\TerritorialCouncil\PoliticalCommitteeRepository;
+use App\Repository\TerritorialCouncil\TerritorialCouncilFeedItemRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\Repository\ThreadCommentRepository;
 use App\Repository\ThreadRepository;
@@ -88,6 +98,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -134,7 +145,7 @@ trait TestHelperTrait
 
     public function getStorage(): Filesystem
     {
-        return $this->container->get('app.storage');
+        return $this->container->get(FilesystemInterface::class);
     }
 
     public function getGlide(): Server
@@ -347,9 +358,34 @@ trait TestHelperTrait
         return $this->getRepository(TerritorialCouncil::class);
     }
 
+    public function getPoliticalCommitteeRepository(): PoliticalCommitteeRepository
+    {
+        return $this->getRepository(PoliticalCommittee::class);
+    }
+
+    public function getTerritorialCouncilFeedItemRepository(): TerritorialCouncilFeedItemRepository
+    {
+        return $this->getRepository(TerritorialCouncilFeedItem::class);
+    }
+
+    public function getPoliticalCommitteeFeedItemRepository(): PoliticalCommitteeFeedItemRepository
+    {
+        return $this->getRepository(PoliticalCommitteeFeedItem::class);
+    }
+
+    public function getOfficialReportRepository(): OfficialReportRepository
+    {
+        return $this->getRepository(OfficialReport::class);
+    }
+
+    public function getFileRepository(): FileRepository
+    {
+        return $this->getRepository(File::class);
+    }
+
     public function getCommitteeFeedManager(): CommitteeFeedManager
     {
-        return $this->container->get('app.committee.feed_manager');
+        return $this->container->get(CommitteeFeedManager::class);
     }
 
     protected function getAdherent(string $uuid): ?Adherent

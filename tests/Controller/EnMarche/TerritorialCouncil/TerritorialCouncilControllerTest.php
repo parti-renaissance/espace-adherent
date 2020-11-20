@@ -2,7 +2,9 @@
 
 namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 
+use App\DataFixtures\ORM\LoadAdherentData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -37,22 +39,133 @@ class TerritorialCouncilControllerTest extends WebTestCase
 
         $crawler = $this->client->click($crawler->selectLink('Membres')->link());
         $members = $crawler->filter('.territorial-council__members .territorial-council__member');
-        self::assertCount(7, $members);
-        self::assertContains('Jacques Picard', $members->first()->text());
-        self::assertContains('Lucie Olivera', $members->eq(1)->text());
-        self::assertContains('Gisele Berthoux', $members->eq(2)->text());
+        self::assertCount(8, $members);
+        self::assertStringContainsString('Jacques Picard', $members->first()->text());
+        self::assertStringContainsString('Lucie Olivera', $members->eq(1)->text());
+        self::assertStringContainsString('Gisele Berthoux', $members->eq(2)->text());
 
         self::assertCount(1, $crawler->filter('.territorial-council__aside h5:contains("Président du Conseil territorial")'));
     }
 
-    protected function setUp()
+    public function testSeeMessages()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $messages = $crawler->filter('.territorial-council__feed__item');
+        $buttons = $crawler->filter('.territorial-council__feed__item .list__links--row');
+
+        self::assertCount(10, $messages);
+        self::assertCount(0, $buttons);
+    }
+
+    public function testSeeMessagesWithButtons()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent-75-77@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $messages = $crawler->filter('.territorial-council__feed__item');
+        $buttons = $crawler->filter('.territorial-council__feed__item .list__links--row');
+
+        self::assertCount(10, $messages);
+        self::assertCount(10, $buttons);
+    }
+
+    public function testDeleteEditMessageDenied()
+    {
+        $adherent = $this->getAdherent(LoadAdherentData::REFERENT_2_UUID);
+        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => $adherent], null, 1)[0];
+
+        $this->client->request(Request::METHOD_GET, '/conseil-territorial/messages/'.$message->getId().'/modifier');
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+
+        $this->client->request(Request::METHOD_GET, '/conseil-territorial/messages/'.$message->getId().'/supprimer');
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+
+        $this->client->request(Request::METHOD_DELETE, '/conseil-territorial/messages/'.$message->getId().'/supprimer');
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+    }
+
+    public function testEditMessage()
+    {
+        $adherent = $this->getAdherent(LoadAdherentData::REFERENT_2_UUID);
+        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
+
+        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => $adherent], null, 1, 2)[0];
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial/messages/'.$message->getId().'/modifier');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $form = $crawler->selectButton('feed_item_save')->form();
+        $this->assertSame($message->getContent(), $form->get('feed_item[content]')->getValue());
+
+        $form->setValues(['feed_item[content]' => $message->getContent().' test']);
+        $this->client->submit($form);
+        $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
+
+        $this->client->followRedirect();
+
+        self::assertStringContainsString($message->getContent().' test', $this->client->getResponse()->getContent());
+    }
+
+    public function testDeleteMessage()
+    {
+        $adherent = $this->getAdherent(LoadAdherentData::REFERENT_2_UUID);
+        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
+
+        $message = $this->getTerritorialCouncilFeedItemRepository()->findBy(['author' => $adherent], null, 1)[0];
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        self::assertStringContainsString($message->getContent(), $this->client->getResponse()->getContent());
+
+        $form = $crawler->selectButton('delete_entity_delete')->form();
+        $this->client->submit($form);
+        $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
+
+        $this->client->followRedirect();
+        self::assertStringNotContainsString($message->getContent(), $this->client->getResponse()->getContent());
+    }
+
+    public function testCanApply()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        self::assertCount(1, $crawler->filter('.btn:contains("Je candidate en binôme")'));
+        self::assertCount(0, $crawler->filter('.btn--disabled:contains("Je candidate en binôme")'));
+    }
+
+    public function testCannotApply()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/conseil-territorial');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        self::assertCount(1, $crawler->filter('.btn:contains("Je candidate en binôme")'));
+        self::assertCount(1, $crawler->filter('.btn--disabled:contains("Je candidate en binôme")'));
+    }
+
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

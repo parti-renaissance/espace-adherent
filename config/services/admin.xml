@@ -23,7 +23,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
 
             <call method="setGlide">
@@ -66,7 +66,7 @@
                 </argument>
             </call>
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
@@ -189,7 +189,7 @@
             <argument />
             <argument>App\Entity\Committee</argument>
             <argument />
-            <argument type="service" id="app.committee.manager" />
+            <argument type="service" id="App\Committee\CommitteeManager" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher"/>
         </service>
@@ -373,6 +373,14 @@
             </call>
         </service>
 
+        <service id="app.admin.jecoute.region" class="App\Admin\Jecoute\RegionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Régions" group="Territoire" />
+
+            <argument />
+            <argument>App\Entity\Jecoute\Region</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.report" class="App\Admin\ReportAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Territoire" />
 
@@ -388,6 +396,16 @@
             <argument />
             <argument>App\Entity\City</argument>
             <argument />
+        </service>
+
+        <service id="app.admin.file" class="App\Admin\Filesystem\FileAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Documents" group="Territoire" />
+
+            <argument />
+            <argument>App\Entity\Filesystem\File</argument>
+            <argument />
+            <argument type="service" id="App\Repository\Filesystem\FileRepository"/>
+            <argument type="service" id="App\Filesystem\FileManager"/>
         </service>
 
         <!--
@@ -415,7 +433,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.voting_platform.election" class="App\Admin\VotingPlatform\DesignationAdmin">
+        <service id="app.admin.voting_platform.designation" class="App\Admin\VotingPlatform\DesignationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Désignations statutaires" group="Instances" />
 
             <argument />
@@ -431,6 +449,13 @@
             <argument />
         </service>
 
+        <service id="app.admin.political_committee" class="App\Admin\TerritorialCouncil\PoliticalCommitteeAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\TerritorialCouncil\PoliticalCommittee</argument>
+            <argument />
+        </service>
         <!--
         ######################################################
         # Finances
@@ -752,7 +777,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
@@ -767,7 +792,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
@@ -817,6 +842,20 @@
 
         <!--
         ######################################################
+        # Geo
+        ######################################################
+        -->
+
+        <service id="app.admin.geo.zone" class="App\Admin\Geo\ZoneAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>App\Entity\Geo\Zone</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # Extension
         ######################################################
         -->
@@ -829,6 +868,10 @@
             <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
             <tag name="sonata.admin.extension" target="app.admin.chez_vous_city" />
+            <tag name="sonata.admin.extension" target="app.admin.custom_search_result" />
+            <tag name="sonata.admin.extension" target="app.admin.proposal" />
+            <tag name="sonata.admin.extension" target="app.admin.clarification" />
+            <tag name="sonata.admin.extension" target="app.admin.article" />
         </service>
 
         <service id="app.admin.empty_translation_remover_extension" class="App\Admin\Extension\EmptyTranslationRemoverAdminExtension">
@@ -903,7 +946,7 @@
             <argument>App\Entity\ApplicationRequest\RunningMateRequest</argument>
             <argument />
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
         </service>
 
@@ -939,7 +982,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
 
             <call method="setGlide">
@@ -1121,7 +1164,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
 
             <call method="setGlide">
@@ -1290,6 +1333,35 @@
                 <argument>edit</argument>
                 <argument>admin/thematic_community/member/edit.html.twig</argument>
             </call>
+        </service>
+
+        <!--
+        ######################################################
+        # Designation dashboards
+        ######################################################
+        -->
+        <service id="app.admin.designation.election" class="App\Admin\Designation\VotingPlatformElectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Elections" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Election</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.designation.candidature" class="App\Admin\Designation\CandidateAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Candidatures" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\Algolia\AlgoliaCandidature</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.designation.vote" class="App\Admin\Designation\VotingPlatformVoteAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Emargements" group="Instances" />
+
+            <argument />
+            <argument>App\Entity\VotingPlatform\Vote</argument>
+            <argument />
         </service>
     </services>
 </container>

@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
@@ -44,8 +43,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"App\EntityListener\VoteListener"})
  *
  * @UniqueEntity(fields={"idea", "author", "type"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Vote implements AuthorInterface
 {

@@ -23,10 +23,14 @@ class LoadEventGroupCategoryData extends Fixture
         $eventGroupCategory3 = new EventGroupCategory('projets', EventCategory::DISABLED);
         $this->addReference('event-group-category-3', $eventGroupCategory3);
 
+        $eventGroupCategory4 = new EventGroupCategory('Évènements de campagne');
+        $this->addReference('event-group-category-4', $eventGroupCategory4);
+
         $manager->persist($eventGroupCategory0);
         $manager->persist($eventGroupCategory1);
         $manager->persist($eventGroupCategory2);
         $manager->persist($eventGroupCategory3);
+        $manager->persist($eventGroupCategory4);
 
         $manager->flush();
     }

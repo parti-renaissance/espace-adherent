@@ -2,7 +2,6 @@
 
 namespace App\Entity\TerritorialCouncil;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Collection\TerritorialCouncilMembershipCollection;
 use App\Entity\EntityIdentityTrait;
@@ -30,10 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilRepository")
  *
  * @UniqueEntity("name")
- *
- * @Algolia\Index(autoIndex=false)
  */
-class TerritorialCouncil implements StaticSegmentInterface
+class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterface
 {
     use EntityIdentityTrait;
     use EntityReferentTagTrait;
@@ -83,7 +80,7 @@ class TerritorialCouncil implements StaticSegmentInterface
      * @var Collection|TerritorialCouncilMembership[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="TerritorialCouncilMembership",
+     *     targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership",
      *     cascade={"persist", "remove"},
      *     mappedBy="territorialCouncil",
      *     orphanRemoval=true

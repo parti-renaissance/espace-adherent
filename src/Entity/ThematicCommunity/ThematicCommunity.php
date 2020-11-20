@@ -2,29 +2,40 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityNameSlugTrait;
+use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
+ * @ORM\Entity(repositoryClass="App\Repository\ThematicCommunity\ThematicCommunityRepository")
  */
-class ThematicCommunity
+class ThematicCommunity implements ImageOwnerInterface
 {
+    public const COLORS = [
+        'sante' => '#FF4D89',
+        'ecole' => '#6F80FF',
+        'agriculture-et-alimentation' => '#208E73',
+        'europe' => '#1D5FD1',
+        'pme' => '#FF6955',
+        'ecologie' => '#61E9D5',
+    ];
+
     use EntityIdentityTrait;
+    use EntityNameSlugTrait;
+    use ImageTrait;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
@@ -57,11 +68,6 @@ class ThematicCommunity
         return $this->name;
     }
 
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -85,5 +91,10 @@ class ThematicCommunity
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getImagePath(): string
+    {
+        return sprintf('images/thematic_community/banner/%s', $this->getImageName());
     }
 }

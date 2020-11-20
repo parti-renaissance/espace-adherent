@@ -18,7 +18,7 @@ abstract class AbstractCertificationRequestModerationCommand
      */
     private $comment;
 
-    public function __construct(CertificationRequest $certificationRequest, Administrator $administrator)
+    public function __construct(CertificationRequest $certificationRequest, Administrator $administrator = null)
     {
         $this->certificationRequest = $certificationRequest;
         $this->administrator = $administrator;
@@ -29,7 +29,7 @@ abstract class AbstractCertificationRequestModerationCommand
         return $this->certificationRequest;
     }
 
-    public function getAdministrator(): Administrator
+    public function getAdministrator(): ?Administrator
     {
         return $this->administrator;
     }

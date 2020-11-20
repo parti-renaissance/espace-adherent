@@ -4,13 +4,17 @@ namespace App\AdherentMessage\Filter;
 
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
+use App\Entity\UserListDefinitionEnum;
 use App\Exception\InvalidAdherentMessageType;
+use App\Form\AdherentMessage\AdherentGeoZoneFilterType;
 use App\Form\AdherentMessage\AdherentZoneFilterType;
 use App\Form\AdherentMessage\CommitteeFilterType;
+use App\Form\AdherentMessage\ElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\MunicipalChiefFilterType;
 use App\Form\AdherentMessage\ReferentElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\ReferentFilterType;
-use App\Form\AdherentMessage\ReferentTerritorialCouncilFilterType;
+use App\Form\AdherentMessage\ReferentInstancesFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -59,12 +63,26 @@ class FilterFormFactory
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
                 return $this->formFactory->create(ReferentElectedRepresentativeFilterType::class, $data);
 
-            case AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL:
-                return $this->formFactory->create(ReferentTerritorialCouncilFilterType::class, $data);
+            case AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE:
+                return $this->formFactory->create(
+                    ElectedRepresentativeFilterType::class,
+                    $data,
+                    [
+                        'data_class' => LreManagerElectedRepresentativeFilter::class,
+                        'user_list_types' => [UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE, UserListDefinitionEnum::TYPE_LRE],
+                    ]
+                );
+
+            case AdherentMessageTypeEnum::REFERENT_INSTANCES:
+                return $this->formFactory->create(ReferentInstancesFilterType::class, $data);
 
             case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
                 return $this->formFactory->create(AdherentZoneFilterType::class, $data, [
                     'referent_tags' => [$adherent->getLegislativeCandidateManagedDistrict()->getReferentTag()],
+                ]);
+            case AdherentMessageTypeEnum::CANDIDATE:
+                return $this->formFactory->create(AdherentGeoZoneFilterType::class, $data, [
+                    'space_type' => AdherentMessageTypeEnum::CANDIDATE,
                 ]);
         }
 

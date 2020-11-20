@@ -279,6 +279,13 @@
                 margin-bottom: 40px;
             }
         }
+
+        .help__text {
+            color: $black--half;
+            font-style: italic;
+            font-size: 14px;
+            font-family: "Roboto", Helvetica, sans-serif;
+        }
     }
 
     #engagement,

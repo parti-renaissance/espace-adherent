@@ -5,6 +5,7 @@ namespace App\Repository\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\Entity\TerritorialCouncil\Election;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -28,7 +29,7 @@ class CandidacyInvitationRepository extends ServiceEntityRepository
             ->setParameters([
                 'membership' => $membership,
                 'election' => $election,
-                'pending' => CandidacyInvitation::STATUS_PENDING,
+                'pending' => CandidacyInvitationInterface::STATUS_PENDING,
             ])
             ->getQuery()
             ->getResult()

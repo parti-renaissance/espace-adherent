@@ -4,6 +4,7 @@ namespace App\Collection;
 
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
+use App\Entity\AdherentCharter\CandidateCharter;
 use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\LreCharter;
@@ -11,6 +12,7 @@ use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
 use App\Entity\AdherentCharter\SenatorialCandidateCharter;
+use App\Entity\AdherentCharter\ThematicCommunityChiefCharter;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AdherentCharterCollection extends ArrayCollection
@@ -64,6 +66,20 @@ class AdherentCharterCollection extends ArrayCollection
         });
     }
 
+    public function hasCandidateCharterAccepted(): bool
+    {
+        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
+            return $charter instanceof CandidateCharter;
+        });
+    }
+
+    public function hasThematicCommunityChiefCharterAccepted(): bool
+    {
+        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
+            return $charter instanceof ThematicCommunityChiefCharter;
+        });
+    }
+
     public function hasCharterAcceptedForType(string $type): bool
     {
         switch ($type) {
@@ -87,6 +103,12 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_LEGISLATIVE_CANDIDATE:
                 return $this->hasLegislativeCandidateCharterAccepted();
+
+            case AdherentCharterTypeEnum::TYPE_CANDIDATE:
+                return $this->hasCandidateCharterAccepted();
+
+            case AdherentCharterTypeEnum::TYPE_THEMATIC_COMMUNITY_CHIEF:
+                return $this->hasThematicCommunityChiefCharterAccepted();
         }
 
         return false;

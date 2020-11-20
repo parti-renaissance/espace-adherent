@@ -32,6 +32,11 @@ common.jecoute_manager: Accès J'écoute
 common.adherent.subscribed: Abonné(e)
 common.adherent.unsubscribed: Non-abonné(e)
 common.adherent.status_email: Statut (e-mail)
+common.message_edited: Votre message a bien été édité.
+common.message_deleted: Votre message a bien été supprimé.
+common.select_date: Choisissez une date
+common.territorial_council: Conseil territorial
+common.political_committee: Comité politique
 
 pending: En attente
 approved: Approuvé
@@ -60,6 +65,10 @@ adherent.activity_position.student: Étudiant
 adherent.activity_position.retired: Retraité
 adherent.activity_position.employed: En activité
 adherent.activity_position.unemployed: En recherche d'emploi
+adherent.activity_position.self_employed_and_liberal_professions: Indépendant / Profession libérale
+adherent.activity_position.worker: Ouvrier
+adherent.activity_position.intermediate_profession: Profession intermédiaire
+adherent.activity_position.executive: Cadre
 
 referent: référent
 coreferent: co-référent
@@ -87,9 +96,21 @@ municipal_manager_supervisor: Responsable attribution
 election_results_reporter: Rapporteur résultats
 print_privilege: Accès LMI
 senatorial_candidate: Candidat Sénatoriales 2020
+candidate_regional_headed: Tête de liste aux régionales
+candidate_regional_leader: Chef de file aux régionales
+candidate_departmental: Candidat aux départementales
+delegated_candidate_regional_headed: Tête de liste aux régionales délégué
+delegated_candidate_regional_leader: Chef de file aux régionales délégué
+delegated_candidate_departmental: Candidat aux départementales délégué
 lre: La République Ensemble (LRE)
 legislative_candidate: Candidat aux législatives
-thematic_community_chief: Responsable Communauté Thématiques
+thematic_community_chief: Responsable Thématique
+
+role_or_mandat.adherent: Adhérent
+role_or_mandat.supervisor: Animateur local
+role_or_mandat.citizen_project_admin: Porteur de projets citoyens
+role_or_mandat.referent: Référent
+role_or_mandat.contact: Contact
 
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !
@@ -190,11 +211,6 @@ dashboard.picture.update: Modifier ma photo
 committee.creation.success: Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.
 
 committee.update.success: Les informations du comité ont été mises à jour avec succès.
-
-committee.message_created: Votre message a bien été envoyé.
-committee.message_edited: Votre message a bien été édité.
-committee.message_deleted: Votre message a bien été supprimé.
-committee.message_published: Votre message a bien été publié.
 
 committee.members_count: '1 adhérent|%count% adhérents'
 event.participants_count: '1 inscrit|%count% inscrits'
@@ -318,6 +334,7 @@ referent.save: Enregistrer
 referent.territorial_council.committee: Comité
 referent.territorial_council.city: Ville
 referent.territorial_council.quality: Qualité
+referent.territorial_council.political_committee_member: Est au CoPol ?
 referent.zones: Zones gérées
 referent.territorial_council.filter.territorial_councils: Choisissez des zones gérées
 referent.territorial_council.filter.committees: Choisissez des comités
@@ -331,6 +348,13 @@ survey.create.success: Le questionnaire a bien été enregistré.
 survey.edit.success: Le questionnaire a bien été mis à jour.
 survey.duplicate.success: Le questionnaire a bien été dupliqué.
 survey.city.required: Vous devez spécifier une ville ou choisir "Département" comme zone concernée.
+survey.age_range.less_than_20: Moins de 20 ans
+survey.age_range.between_20_24: Entre 20 et 24 ans
+survey.age_range.between_25_39: Entre 25 et 39 ans
+survey.age_range.between_40_54: Entre 40 et 54 ans
+survey.age_range.between_55_64: Entre 55 et 64 ans
+survey.age_range.between_65_80: Entre 65 et 80 ans
+survey.age_range.greater_than_80: Plus de 80 ans
 
 #
 # Procuration
@@ -711,11 +735,13 @@ elected_representative.labels: Étiquettes
 elected_representative.mandates: Mandats
 elected_representative.political_functions: Fonctions
 elected_representative.cities: Villes
+elected_representative.zones: Zones
 elected_representative.user_list_definitions: Labels
 elected_representative.filter.labels: Choisissez des étiquettes
 elected_representative.filter.mandates: Choisissez des mandates
 elected_representative.filter.political_functions: Choisissez des fonctions
 elected_representative.filter.cities: Choisissez des villes
+elected_representative.filter.zones: Choisissez des zones
 elected_representative.filter.user_list_definitions: Choisissez des labels
 elected_representative.filter.contact_type.adherent: Adhérent
 elected_representative.filter.contact_type.contact: Contact
@@ -735,6 +761,7 @@ elected_representative:
         depute: "[M] Député(e)"
         senateur: "[M] Sénateur(rice)"
         euro_depute: "[M] Député(e) européen(ne)"
+        conseiller_d_arrondissement: "[M] Conseiller(ère) d'arrondissement"
         # PoliticalFunction
         mayor: "[F] Maire"
         deputy_mayor: "[F] Maire délégué(e)"
@@ -819,16 +846,25 @@ certification_request.status.pending: En attente
 certification_request.status.approved: Approuvée
 certification_request.status.refused: Refusée
 certification_request.status.blocked: Bloquée
+certification_request.status.pre_approved: Pré-approuvée
+certification_request.status.pre_refused: Pré-refusée
 
 certification_request.block_reason.identity_theft: Tentative d'usurpation d'identité
 certification_request.block_reason.false_document: Tentative de création de faux
 certification_request.block_reason.multi_account: Tentative de création de multi-comptes
 certification_request.block_reason.other: Autre (à préciser)
 
-certification_request.refusal_reason.document_not_in_conformity: La pièce fournie n'est pas conforme
-certification_request.refusal_reason.document_not_readable: La pièce fournie est illisible
-certification_request.refusal_reason.informations_not_matching: Les informations ne correspondent pas
-certification_request.refusal_reason.process_timeout: La demande n'a pas pu être traitée
+certification_request.refusal_reason.document_not_in_conformity: La pièce fournie n'est pas conforme.
+certification_request.refusal_reason.document_not_readable: La pièce fournie est illisible.
+certification_request.refusal_reason.informations_not_matching: Les informations ne correspondent pas.
+certification_request.refusal_reason.process_timeout: La demande n'a pas pu être traitée.
+certification_request.refusal_reason.birth_date_not_matching: La date de naissance indiquée ne correspond pas à celle figurant sur la pièce. Merci de modifier l’information avant de réitérer votre demande.
+certification_request.refusal_reason.unreadable_document: Merci de fournir un scan ou une photo de meilleure qualité car certaines informations sont illisibles.
+certification_request.refusal_reason.document_not_original: Merci de fournir un scan ou une photo du document original, en couleur et non d’une photocopie.
+certification_request.refusal_reason.reversed_first_and_last_name: Vos nom et prénom sont inversés. Merci de modifier l’information avant de réitérer votre demande.
+certification_request.refusal_reason.document_not_fully_visible: Merci de fournir un scan ou une photo où votre pièce d'identité figure dans son intégralité.
+certification_request.refusal_reason.document_not_front: Merci de fournir un scan ou une photo du recto de votre pièce d’identité.
+certification_request.refusal_reason.partial_first_name: Merci de renseigner votre prénom entier et pas une abréviation. Nous vous prions de modifier l’information avant de réitérer votre demande.
 certification_request.refusal_reason.other: Autre (à préciser)
 
 #
@@ -841,6 +877,7 @@ adherent_certification_history.action.uncertify: Annulation de certification
 # VotingPlatform
 #
 voting_platform.designation.type_committee_adherent: Comités-Adhérents
+voting_platform.designation.type_committee_supervisor: Comités-Animateurs
 voting_platform.designation.type_copol: Comité politique
 voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
@@ -854,17 +891,20 @@ designation.status.opened: Ouverte
 designation.status.in_progress: En cours
 designation.status.closed: Terminée
 designation.status.scheduled: Programmée
+designation.candidate.status.draft: Brouillon
+designation.candidate.status.confirmed: Confirmée
 
 #
 # Delegated access
 #
-delegated_access.form.access.messages: Mes messages
+delegated_access.form.access.messages: Messagerie
 delegated_access.form.access.events: Événements
 delegated_access.form.access.adherents: Adhérents
 delegated_access.form.access.committee: Comités
 delegated_access.form.access.jecoute: J'écoute
 delegated_access.form.access.citizen_projects: Projets citoyens
 delegated_access.form.access.elected_representatives: Élus
+delegated_access.form.access.files: Documents
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
 delegated_access.updated_successfully: L'accès délégué à votre espace a correctement été mis à jour
 delegated_access.deleted_successfully: L'accès délégué à votre espace a correctement été supprimé
@@ -884,6 +924,8 @@ lre.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_nume
 #
 # TerritorialCouncil
 #
+territorial_council.convocation.mode.online: 100% en ligne
+territorial_council.convocation.mode.meeting: En présentiel
 territorial_council.referent: Président du Conseil territorial (unique)
 territorial_council.lre_manager: Responsable LRE membre du Conseil territorial (unique)
 territorial_council.referent_jam: Référent JAM membre du Conseil territorial (unique)
@@ -905,7 +947,7 @@ territorial_council.membership.quality.regional_councilor: Conseiller(ère) rég
 territorial_council.membership.quality.department_councilor: Conseiller(ère) départemental(e)
 territorial_council.membership.quality.city_councilor: Conseiller(ère) municipal(e)
 territorial_council.membership.quality.borough_councilor: Conseiller(ère) d'arrondissement
-territorial_council.membership.quality.consular_conselor: Conseiller(ère) consulaire
+territorial_council.membership.quality.consular_councilor: Conseiller(ère) FDE
 territorial_council.membership.quality.committee_supervisor: Animateur(trice) local(e)
 territorial_council.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e)
 territorial_council.membership.qualities.referent: Présidents du Conseil territorial
@@ -922,7 +964,7 @@ territorial_council.membership.qualities.regional_councilor: Conseillers région
 territorial_council.membership.qualities.department_councilor: Conseillers départementaux
 territorial_council.membership.qualities.city_councilor: Conseillers municipaux
 territorial_council.membership.qualities.borough_councilor: Conseillers d'arrondissement
-territorial_council.membership.qualities.consular_conselor: Conseillers consulaires
+territorial_council.membership.qualities.consular_councilor: Conseillers FDE
 territorial_council.membership.qualities.committee_supervisor: Animateurs locaux
 territorial_council.membership.qualities.elected_candidate_adherent: Adhérents désignés
 territorial_council.adherent_has_no_membership: L'adhérent ({{ email }}) n'est pas un membre du Conseil territorial "{{ territorialCouncil }}"
@@ -951,9 +993,9 @@ political_committee.membership.quality.regional_councilor: Conseiller(ère) rég
 political_committee.membership.quality.department_councilor: Conseiller(ère) départemental(e) désigné(e)
 political_committee.membership.quality.city_councilor: Conseiller(ère) municipal(e) désigné(e)
 political_committee.membership.quality.borough_councilor: Conseiller(ère) d'arrondissement désigné(e)
-political_committee.membership.quality.consular_conselor: Conseiller(ère) consulaire désigné(e)
-political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e)
-political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e)
+political_committee.membership.quality.consular_councilor: Conseiller(ère) FDE désigné(e)
+political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e) au CoPol
+political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e) au CoPol
 political_committee.membership.adherent_has_already: L'adhérent ({{ email }}) est déjà un membre du Comité politique "{{ politicalCommittee }}"
 political_committee.membership.adherent_has_no_membership: L'adhérent ({{ email }}) en'est pas un membre du Comité politique du Conseil territorial "{{ territorialCouncil }}"
 political_committee.membership.has_max_number_of_mayor_and_leader: Vous ne pouvez nommer que {{ max }} maire ou président du groupe d'opposition LaREM dans le Comité politique "{{ politicalCommittee }}".
@@ -965,6 +1007,7 @@ adherent_commitment.commitmentActions.support_majority: Soutenir les réformes e
 adherent_commitment.commitmentActions.inform_me: M'informer sur les réformes et l'action publique
 adherent_commitment.commitmentActions.participate_militant_action: 'Participer à une action militante de terrain (ex : distribuer des tracts, faire un collage ou boitage)'
 adherent_commitment.commitmentActions.relay_social_content: Relayer des contenus sur les réseaux sociaux
+adherent_commitment.commitmentActions.appeal_campaign: Participer à des campagnes d’appel
 
 adherent_commitment.debateAndProposeIdeasActions.making_known_french_concerns: Contribuer à faire connaitre les préoccupations des Français
 adherent_commitment.debateAndProposeIdeasActions.be_consulted_on_reforms: Etre consulté(e) sur des réformes
@@ -1021,12 +1064,29 @@ adherent_mandate.euro_depute: "Député(e) européen(ne)"
 #
 # Thematic community
 #
-admin.thematic_community.membership.motivations.thinking: Réflexion
-admin.thematic_community.membership.motivations.information: Information
-admin.thematic_community.membership.motivations.on_spot: Terrain
+admin.thematic_community.membership.motivations.thinking: Vous impliquer dans des groupes de réflexion
+admin.thematic_community.membership.motivations.information: Vous informer sur l'actualité et les réformes
+admin.thematic_community.membership.motivations.on_spot: Participer à des actions de terrain
 admin.thematic_community_membership.type.adherent: Adhérent
 admin.thematic_community_membership.type.electedRepresentative: Élu
 admin.thematic_community_membership.type.contact: Contact
+
+thematic_community_chief.popup.title: Charte de bonne utilisation des outils numériques
+thematic_community_chief.popup.subtitle: à l’usage des Responsables Communautés Thématiques
+thematic_community_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_responsables_ct.pdf
+
+thematic_community.label.sante: Pour la santé
+thematic_community.label.ecole: Pour l'école
+thematic_community.label.ecologie: Pour la transition écologique
+thematic_community.label.pme: Pour les petites et moyennes entreprises
+thematic_community.label.agriculture-et-alimentation: Pour l'agriculture et l'alimentation
+thematic_community.label.europe: Pour l'Europe
+
+# this field label can change in function of the community
+thematic_community.userListDefinitions.label.ecole: Vous êtes
+thematic_community.userListDefinitions.label.ecologie: Vos thèmes d'intérêt
+thematic_community.userListDefinitions.label.pme: Quel est le secteur d'activité de votre entreprise ?
+thematic_community.userListDefinitions.label.agriculture-et-alimentation: Quelle est votre relation avec le monde de l'agriculture et/ou de l'alimentation ?
 
 #
 # Page
@@ -1034,3 +1094,38 @@ admin.thematic_community_membership.type.contact: Contact
 page.layout.default: Défaut avec titre (sans image d'en-tête)
 page.layout.default_with_header_image: Défaut avec image d'en tête (sans titre)
 page.layout.municipales: Municipales
+
+#
+# Geo Zone
+#
+
+geo_zone.zones: Zones
+geo_zone.country: Pays
+geo_zone.custom: Autres
+geo_zone.region: Région
+geo_zone.department: Départment
+geo_zone.district: Circonscriptions électorales
+geo_zone.city: Ville
+geo_zone.borough: Arrondissement
+geo_zone.city_community: Communauté de commune
+geo_zone.canton: Canton
+geo_zone.foreign_district: Circonscriptions de l'étranger
+geo_zone.consular_district: Circonscriptions consulaire
+
+#
+# Candidate
+#
+candidate.popup.title: Charte de bonne utilisation des outils numériques
+candidate.popup.subtitle: à l’usage des candidats
+candidate.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_candidats.pdf
+
+#
+# Filesystem
+#
+file_permission.all: Tous
+file_permission.candidate_regional_headed: Tête de liste aux régionales
+file_permission.candidate_regional_leader: Chef de file aux régionales
+file_permission.candidate_departmental: Candidat aux départementales
+file.type.directory: Dossier
+file.type.file: Fichier
+file.type.external_link: Lien externe

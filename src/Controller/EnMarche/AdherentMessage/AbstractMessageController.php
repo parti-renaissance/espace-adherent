@@ -29,6 +29,11 @@ abstract class AbstractMessageController extends Controller
     use AccessDelegatorTrait;
     use CanaryControllerTrait;
 
+    private $templates = [
+        'list' => 'message/list.html.twig',
+        'send_success' => 'message/send_success/default.html.twig',
+    ];
+
     /**
      * @Route(name="list", methods={"GET"})
      */
@@ -44,7 +49,7 @@ abstract class AbstractMessageController extends Controller
 
         $adherent = $this->getMainUser($request->getSession());
 
-        return $this->renderTemplate('message/list.html.twig', [
+        return $this->renderTemplate($this->getTemplate('list'), [
             'messages' => $paginator = $repository->findAllByAuthor(
                 $adherent,
                 $this->getMessageType(),
@@ -250,11 +255,25 @@ abstract class AbstractMessageController extends Controller
             $entityManager->flush();
 
             $this->addFlash('info', 'adherent_message.campaign_sent_successfully');
+
+            return $this->redirectToMessageRoute('send_success', ['uuid' => $message->getUuid()->toString()]);
         } else {
-            $this->addFlash('info', 'adherent_message.campaign_sent_failure');
+            $this->addFlash('error', 'adherent_message.campaign_sent_failure');
         }
 
         return $this->redirectToMessageRoute('list');
+    }
+
+    /**
+     * @Route("/{uuid}/confirmation", name="send_success", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")
+     */
+    public function sendSuccessAction(AbstractAdherentMessage $message): Response
+    {
+        $this->checkAccess();
+
+        return $this->renderTemplate($this->getTemplate('send_success'), ['message' => $message]);
     }
 
     /**
@@ -318,5 +337,15 @@ abstract class AbstractMessageController extends Controller
     protected function getMessageRecipients(AdherentMessageInterface $message): ?array
     {
         return null;
+    }
+
+    private function getTemplate(string $action): ?string
+    {
+        return $this->templates[$action] ?? null;
+    }
+
+    protected function setTemplate(string $action, string $template): void
+    {
+        $this->templates[$action] = $template;
     }
 }

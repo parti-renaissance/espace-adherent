@@ -3,7 +3,7 @@
 namespace App\Mailer\Message;
 
 use App\Entity\ProcurationRequest;
-use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyReminderMessage extends Message
@@ -32,10 +32,10 @@ final class ProcurationProxyReminderMessage extends Message
             'elections' => implode(', ', $request->getElectionRoundLabels()),
             'voter_first_name' => self::escape($proxy->getFirstNames()),
             'voter_last_name' => self::escape($proxy->getLastName()),
-            'voter_phone' => PhoneNumberFormatter::format($proxy->getPhone()),
+            'voter_phone' => PhoneNumberUtils::format($proxy->getPhone()),
             'mandant_first_name' => self::escape($request->getFirstNames()),
             'mandant_last_name' => self::escape($request->getLastName()),
-            'mandant_phone' => PhoneNumberFormatter::format($request->getPhone()),
+            'mandant_phone' => PhoneNumberUtils::format($request->getPhone()),
         ];
     }
 }

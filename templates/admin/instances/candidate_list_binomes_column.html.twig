@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.binome_ids is defined and object.binome_ids|length %}
+        <a href="{{ path('admin_app_algolia_algoliacandidature_list', {filter: {id: {value: object.binome_ids|merge([object.id])|join(',')}, territorialCouncil: {value: object.election_entity.id}}}) }}">{{ object.binome_ids is defined ? object.binome_ids|join }}</a>
+    {% endif %}
+{% endblock %}

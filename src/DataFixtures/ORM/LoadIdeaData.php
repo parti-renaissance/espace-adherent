@@ -5,12 +5,12 @@ namespace App\DataFixtures\ORM;
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use App\Entity\IdeasWorkshop\Idea;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
+class LoadIdeaData extends Fixture implements DependentFixtureInterface
 {
     public const IDEA_01_UUID = 'e4ac3efc-b539-40ac-9417-b60df432bdc5';
     public const IDEA_02_UUID = '3b1ea810-115f-4b2c-944d-34a55d7b7e4d';
@@ -170,7 +170,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            LoadAdherentData::class,
+            LoadCommitteeData::class,
             LoadIdeaNeedData::class,
             LoadIdeaCategoryData::class,
             LoadIdeaThemeData::class,

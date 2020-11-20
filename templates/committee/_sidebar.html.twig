@@ -1,4 +1,33 @@
 <aside class="committee__aside l__wrapper--aside">
+    {% if membership %}
+        <div class="font-roboto text--silver-gray b__nudge--bottom">Vous êtes membre de ce comité depuis le {{ membership.subscriptionDate|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy à HH:mm') }}</div>
+    {% endif %}
+
+    {% if has_role_adherent and committee.hasActiveElection and is_granted('ABLE_TO_CANDIDATE', committee) %}
+        {% set committee_election = committee.committeeElection %}
+
+        {# If the vote was started, hide box if 0 candidates #}
+        {% if committee_election.isBinomeDesignation and (not committee_election.isVotePeriodStarted or committee_election.countCandidacies > 0) %}
+            {% set candidacy = membership.committeeCandidacy(committee_election) %}
+
+            {% if not candidacy or candidacy.isDraft %}
+                <div class="committee__card">
+                    <h5>Candidature & invitations</h5>
+                    <div class="text--body">
+                        <p class="text--body text--dark b__nudge--bottom">
+                            Gérez, modifiez ou annulez votre candidature ou vos invitations.
+                        </p>
+                        <div>
+                            <a href="{{ path('app_committee_candidature_invitation_list', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap">
+                                Gérer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
     <div class="committee__card">
         <h5>À propos</h5>
         <div class="text--body" id="committee-description">{{ committee.description }}</div>
@@ -7,9 +36,11 @@
         <h5>
             Administration
         </h5>
+
         {% if not has_role_user %}
             <p class="text--summary text--gray b__nudge--bottom">Connectez-vous pour pouvoir contacter les responsables de comité.</p>
         {% endif %}
+
         <ul class="committee__hosts">
             {% for host in committee_hosts %}
                 <li class="committee-host text--body b__nudge--bottom">
@@ -54,15 +85,14 @@
     </div>
 
     {% if committee.socialNetworksLinks|length > 0 %}
-    <div class="committee__card">
-        <h5>Suivez notre comité</h5>
-        {% for key, link in committee.socialNetworksLinks %}
-            <a href="{{ link.url }}" target="_blank" rel="noopener" class="committee__social--{{ key }} btn btn--{{key}} b__nudge--bottom-tiny">
-                <i class="fa fa--auto fa-{{key}} text--medium"></i>
-                {{- link.label -}}
-            </a>
-        {% endfor %}
-    </div>
+        <div class="committee__card">
+            <h5>Suivez notre comité</h5>
+            {% for key, link in committee.socialNetworksLinks %}
+                <a href="{{ link.url }}" target="_blank" rel="noopener" class="committee__social--{{ key }} btn btn--{{key}} b__nudge--bottom-tiny">
+                    <i class="fa fa--auto fa-{{key}} text--medium"></i>
+                    {{- link.label -}}
+                </a>
+            {% endfor %}
+        </div>
     {% endif %}
-
 </aside>

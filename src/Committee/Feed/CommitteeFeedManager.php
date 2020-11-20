@@ -2,31 +2,16 @@
 
 namespace App\Committee\Feed;
 
-use App\Committee\CommitteeManager;
-use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
-use App\Mailer\MailerService;
-use App\Mailer\Message\CommitteeMessageNotificationMessage;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommitteeFeedManager
 {
     private $manager;
-    private $committeeManager;
-    private $mailer;
-    private $urlGenerator;
 
-    public function __construct(
-        ObjectManager $manager,
-        CommitteeManager $committeeManager,
-        MailerService $mailer,
-        UrlGeneratorInterface $urlGenerator
-    ) {
+    public function __construct(ObjectManager $manager)
+    {
         $this->manager = $manager;
-        $this->committeeManager = $committeeManager;
-        $this->mailer = $mailer;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function createEvent(CommitteeEvent $event): CommitteeFeedItem
@@ -57,30 +42,6 @@ class CommitteeFeedManager
         $this->manager->persist($item);
         $this->manager->flush();
 
-        if ($message->isSendNotification()) {
-            $this->sendMessageToFollowers($item, $message->getCommittee(), $message->getSubject());
-        }
-
         return $item;
-    }
-
-    private function sendMessageToFollowers(CommitteeFeedItem $message, Committee $committee, string $subject): void
-    {
-        foreach ($this->getOptinCommitteeFollowersChunks($committee) as $chunk) {
-            $this->mailer->sendMessage(CommitteeMessageNotificationMessage::create($chunk, $message, $subject));
-        }
-    }
-
-    private function getOptinCommitteeFollowersChunks(Committee $committee)
-    {
-        return array_chunk(
-            $this->committeeManager->getOptinCommitteeFollowers($committee)->toArray(),
-            MailerService::PAYLOAD_MAXSIZE
-        );
-    }
-
-    private function generateUrl(string $route, array $params = []): string
-    {
-        return $this->urlGenerator->generate($route, $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

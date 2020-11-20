@@ -71,6 +71,30 @@
         <span class="label label-primary" style="padding: 2px;">Candidats Sénatoriales 2020</span><br/>
     {% endif %}
 
+    {% if object.isHeadedRegionalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Tête de liste aux régionales</span><br/>
+    {% endif %}
+
+    {% if object.isLeaderRegionalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Chef de file aux régionales</span><br/>
+    {% endif %}
+
+    {% if object.isDepartmentalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Candidat aux départementales</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedHeadedRegionalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Tête de liste aux régionales délégué</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedLeaderRegionalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Chef de file aux régionales délégué</span><br/>
+    {% endif %}
+
+    {% if object.isDelegatedDepartmentalCandidate %}
+        <span class="label label-primary" style="padding: 2px;">Candidat aux départementales délégué</span><br/>
+    {% endif %}
+
     {% if object.isMunicipalManager %}
         <span class="label label-primary" style="padding: 2px;">Responsable communal</span><br/>
     {% endif %}
@@ -106,7 +130,7 @@
     {% endif %}
 
     {% if object.isThematicCommunityChief %}
-        <span class="label label-primary">Responsable CT</span>
+        <span class="label label-primary">Responsable Thématique</span>
     {% endif %}
 {% elseif object.isAdherent %}
     <span class="label label-primary">Adhérent</span>

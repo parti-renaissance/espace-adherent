@@ -2,9 +2,9 @@
 
 namespace App\Entity\TerritorialCouncil;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\UuidEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,10 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository")
  *
  * @UniqueEntity(fields={"adherent", "territorialCouncil"})
- *
- * @Algolia\Index(autoIndex=false)
  */
-class TerritorialCouncilMembership
+class TerritorialCouncilMembership implements UuidEntityInterface
 {
     use EntityIdentityTrait;
 
@@ -60,7 +58,7 @@ class TerritorialCouncilMembership
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      *
      * @Assert\NotNull
      */
@@ -172,6 +170,11 @@ class TerritorialCouncilMembership
         })->count() > 0;
     }
 
+    public function isPresident(): bool
+    {
+        return $this->hasQuality(TerritorialCouncilQualityEnum::REFERENT);
+    }
+
     public function containsQualities(array $names): bool
     {
         foreach ($this->qualities as $quality) {
@@ -249,7 +252,7 @@ class TerritorialCouncilMembership
         $qualities = $this->getQualityNames();
 
         $qualities = array_filter($qualities, function (string $quality) {
-            return !\in_array($quality, TerritorialCouncilQualityEnum::FORBIDDEN_TO_CANDIDATE, true);
+            return \in_array($quality, TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE, true);
         });
 
         if (false !== ($index = array_search(TerritorialCouncilQualityEnum::MAYOR, $qualities, true))) {
@@ -268,22 +271,12 @@ class TerritorialCouncilMembership
 
     public function getHighestQualityPriority(): int
     {
-        $qualities = $this->getQualities();
+        $priorities = array_intersect_key(
+            TerritorialCouncilQualityEnum::QUALITY_PRIORITIES,
+            array_fill_keys($this->getQualityNames(), true)
+        );
 
-        $priorities = \array_filter(TerritorialCouncilQualityEnum::QUALITY_PRIORITIES, function (int $priority, string $name) use ($qualities) {
-            $isPresent = false;
-            foreach ($qualities as $quality) {
-                if ($name === $quality->getName()) {
-                    $isPresent = true;
-
-                    break;
-                }
-            }
-
-            return $isPresent;
-        }, \ARRAY_FILTER_USE_BOTH);
-
-        return \count($priorities) > 0 ? max($priorities) : 1000;
+        return \count($priorities) > 0 ? min($priorities) : 1000;
     }
 
     public function getFullName(): string

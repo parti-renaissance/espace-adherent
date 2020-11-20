@@ -119,6 +119,13 @@
             padding: 5% 0;
         }
 
+        .help__text {
+            color: $black--half;
+            font-style: italic;
+            font-family: "Roboto", Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
         .form__checkbox {
             display: block;
         }

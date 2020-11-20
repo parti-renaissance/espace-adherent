@@ -1,0 +1,21 @@
+<div class="l__row identity">
+    <div class="avatar-initials avatar--{{ avatar_size ?? 'small' }} avatar--style-{{ avatar_style ?? '02' }} b__nudge--right-small">
+        {% if image_path is defined and image_path %}
+            <img src="{{ path('asset_url', {path: image_path}) }}" alt="photo" />
+        {% else %}
+            {{ initials }}
+        {% endif %}
+    </div>
+
+    <div class="{{ details is defined ? 'l__row' }} font-roboto">
+        <div class="text--default-large text--bold">{{ full_name }}</div>
+
+        {% if details is defined %}
+            <span class="b__nudge--left-small">{{ details|raw }}</span>
+        {% endif %}
+
+        {% if label is defined %}
+            <span class="text--normal text--gray b__nudge--bottom">{{ label }}</span>
+        {% endif %}
+    </div>
+</div>

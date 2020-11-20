@@ -2,8 +2,8 @@
 
 namespace Tests\App\Repository;
 
+use App\Entity\Geo\Zone;
 use App\Entity\Projection\ManagedUser;
-use App\Entity\ReferentTag;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Subscription\SubscriptionTypeEnum;
@@ -27,13 +27,13 @@ class ManagedUserRepositoryTest extends WebTestCase
     /**
      * @var ObjectRepository
      */
-    private $referentTagRepository;
+    private $zoneRepository;
 
     public function testSearch()
     {
         $filter = new ManagedUsersFilter(null, [
-            $this->referentTagRepository->findOneBy(['code' => 'ch']),
-            $this->referentTagRepository->findOneBy(['code' => '77']),
+            $this->zoneRepository->findOneBy(['code' => 'CH', 'type' => Zone::COUNTRY]),
+            $this->zoneRepository->findOneBy(['code' => '77', 'type' => Zone::DEPARTMENT]),
         ]);
 
         $this->assertCount(3, $this->managedUserRepository->searchByFilter($filter));
@@ -45,8 +45,8 @@ class ManagedUserRepositoryTest extends WebTestCase
     public function testSearchWithEmailSubscribersInevitably(?bool $onlyEmailSubscribers, int $count)
     {
         $filter = new ManagedUsersFilter(SubscriptionTypeEnum::REFERENT_EMAIL, [
-            $this->referentTagRepository->findOneBy(['code' => 'ch']),
-            $this->referentTagRepository->findOneBy(['code' => '77']),
+            $this->zoneRepository->findOneBy(['code' => 'CH', 'type' => Zone::COUNTRY]),
+            $this->zoneRepository->findOneBy(['code' => '77', 'type' => Zone::DEPARTMENT]),
         ]);
         $filter->setEmailSubscription($onlyEmailSubscribers);
 
@@ -60,21 +60,20 @@ class ManagedUserRepositoryTest extends WebTestCase
         yield [false, 2];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->container = $this->getContainer();
         $this->managedUserRepository = $this->getRepository(ManagedUser::class);
-        $this->referentTagRepository = $this->getRepository(ReferentTag::class);
+        $this->zoneRepository = $this->getRepository(Zone::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
         $this->managedUserRepository = null;
-        $this->referentTagRepository = null;
 
         parent::tearDown();
     }

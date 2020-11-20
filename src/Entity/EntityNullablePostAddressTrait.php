@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -22,9 +21,6 @@ trait EntityNullablePostAddressTrait
         return $this->postAddress;
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="address")
-     */
     public function getInlineFormattedAddress($locale = 'fr_FR'): string
     {
         return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
@@ -65,7 +61,6 @@ trait EntityNullablePostAddressTrait
     }
 
     /**
-     * @Algolia\Attribute(algoliaName="address_city")
      * @JMS\Groups({"public", "citizen_project_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
@@ -105,9 +100,6 @@ trait EntityNullablePostAddressTrait
         return $this->postAddress ? $this->postAddress->getLongitude() : null;
     }
 
-    /**
-     * @Algolia\IndexIf
-     */
     public function isGeocoded(): bool
     {
         return $this->getLatitude() && $this->getLongitude();
@@ -125,9 +117,6 @@ trait EntityNullablePostAddressTrait
         }
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="_geoloc")
-     */
     public function getGeolocalisation()
     {
         return [

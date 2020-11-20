@@ -5,9 +5,13 @@ namespace Tests\App\Entity;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\BoardMember\BoardMember;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectMembership;
 use App\Entity\CommitteeMembership;
+use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
+use App\Exception\AdherentAlreadyEnabledException;
 use App\Geocoder\Coordinates;
 use App\Membership\ActivityPositions;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -86,11 +90,9 @@ class AdherentTest extends TestCase
         $this->assertInstanceOf(\DateTime::class, $activationToken->getUsageDate());
     }
 
-    /**
-     * @expectedException \App\Exception\AdherentAlreadyEnabledException
-     */
     public function testActivateAdherentAccountTwice(): void
     {
+        $this->expectException(AdherentAlreadyEnabledException::class);
         $adherent = $this->createAdherent();
         $activationToken = AdherentActivationToken::generate($adherent);
 
@@ -143,13 +145,23 @@ class AdherentTest extends TestCase
 
         // Referent
         $adherent = $this->createAdherent();
-        $adherent->setReferent([new ReferentTag('06')], -1.6743, 48.112);
+        $adherent->setReferent([new ReferentTag('06', null, new Zone('', '', '06'))], -1.6743, 48.112);
 
         $this->assertFalse($adherent->isBasicAdherent());
 
         // BoardMember
         $adherent = $this->createAdherent();
         $adherent->setBoardMember(BoardMember::AREA_ABROAD, new ArrayCollection());
+
+        $this->assertFalse($adherent->isBasicAdherent());
+
+        // CitizenProject administrator
+        $adherent = $this->createAdherent();
+        $adherent->join();
+        $cpMemberships = $adherent->getCitizenProjectMemberships();
+        $cpMembership = $this->createMock(CitizenProjectMembership::class);
+        $cpMembership->expects($this->once())->method('canAdministrateCitizenProject')->willReturn(true);
+        $cpMemberships->add($cpMembership);
 
         $this->assertFalse($adherent->isBasicAdherent());
     }
@@ -195,7 +207,7 @@ class AdherentTest extends TestCase
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanupContainer($this->container);
 

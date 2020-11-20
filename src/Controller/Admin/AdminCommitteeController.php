@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Committee\CommitteeAdherentMandateManager;
+use App\Committee\CommitteeManagementAuthority;
+use App\Committee\CommitteeManager;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Committee\MultipleReferentsFoundException;
 use App\Entity\Adherent;
@@ -43,17 +45,19 @@ class AdminCommitteeController extends Controller
      * @Route("/{id}/approve", name="app_admin_committee_approve", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function approveAction(Committee $committee): Response
-    {
+    public function approveAction(
+        Committee $committee,
+        CommitteeManagementAuthority $committeeManagementAuthority
+    ): Response {
         try {
-            $this->get('app.committee.authority')->approve($committee);
+            $committeeManagementAuthority->approve($committee);
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
         } catch (BaseGroupException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be approved.', $committee->getId()), $exception);
         }
 
         try {
-            $this->get('app.committee.authority')->notifyReferentsForApproval($committee);
+            $committeeManagementAuthority->notifyReferentsForApproval($committee);
         } catch (MultipleReferentsFoundException $exception) {
             $this->addFlash('warning', sprintf(
                 'Attention, plusieurs référents (%s) ont été trouvés dans le département de ce nouveau comité. 
@@ -74,10 +78,12 @@ class AdminCommitteeController extends Controller
      * @Route("/{id}/refuse", name="app_admin_committee_refuse", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function refuseAction(Committee $committee): Response
-    {
+    public function refuseAction(
+        Committee $committee,
+        CommitteeManagementAuthority $committeeManagementAuthority
+    ): Response {
         try {
-            $this->get('app.committee.authority')->refuse($committee);
+            $committeeManagementAuthority->refuse($committee);
             $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
         } catch (BaseGroupException $exception) {
             throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);
@@ -90,10 +96,8 @@ class AdminCommitteeController extends Controller
      * @Route("/{id}/members", name="app_admin_committee_members", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function membersAction(Committee $committee): Response
+    public function membersAction(CommitteeManager $manager, Committee $committee): Response
     {
-        $manager = $this->get('app.committee.manager');
-
         return $this->render('admin/committee/members.html.twig', [
             'committee' => $committee,
             'memberships' => $memberships = $manager->getCommitteeMemberships($committee),
@@ -107,6 +111,7 @@ class AdminCommitteeController extends Controller
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function changePrivilegeAction(
+        CommitteeManager $manager,
         Request $request,
         Committee $committee,
         Adherent $adherent,
@@ -121,7 +126,7 @@ class AdminCommitteeController extends Controller
         }
 
         try {
-            $this->get('app.committee.manager')->changePrivilege($adherent, $committee, $privilege);
+            $manager->changePrivilege($adherent, $committee, $privilege);
         } catch (CommitteeMembershipException $e) {
             $this->addFlash('error', $e->getMessage());
         }

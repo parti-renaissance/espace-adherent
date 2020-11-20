@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -13,7 +14,9 @@ class ManagedTerritorialCouncilChoiceType extends AbstractConnectedUserFormType
     {
         $resolver->setDefaults([
             'query_builder' => function (TerritorialCouncilRepository $repository) {
-                return $repository->createQueryBuilderWithReferentTagsCondition($this->getReferentTags());
+                return $repository->createQueryBuilderWithReferentTagsCondition(
+                    $this->getFilteredReferentTags($this->getReferentTags())
+                );
             },
             'class' => TerritorialCouncil::class,
             'choice_label' => 'name',
@@ -23,5 +26,12 @@ class ManagedTerritorialCouncilChoiceType extends AbstractConnectedUserFormType
     public function getParent()
     {
         return EntityType::class;
+    }
+
+    private function getFilteredReferentTags(array $referentTags): array
+    {
+        return array_filter($referentTags, function (ReferentTag $referentTag) {
+            return !$referentTag->isCountryTag();
+        });
     }
 }

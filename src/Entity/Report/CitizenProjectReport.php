@@ -2,14 +2,11 @@
 
 namespace App\Entity\Report;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\CitizenProject;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CitizenProjectReport extends Report
 {

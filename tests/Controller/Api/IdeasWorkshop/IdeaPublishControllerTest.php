@@ -20,7 +20,7 @@ class IdeaPublishControllerTest extends WebTestCase
         self::assertSame(400, $this->client->getResponse()->getStatusCode());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->init();
         parent::setUp();

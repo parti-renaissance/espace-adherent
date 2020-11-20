@@ -12,10 +12,10 @@ class PictureUploader
     private $filesystem;
     private $cacheDir;
 
-    public function __construct(Facebook $facebook, Filesystem $filesystem, string $cacheDir)
+    public function __construct(Facebook $facebook, Filesystem $storage, string $cacheDir)
     {
         $this->facebook = $facebook;
-        $this->filesystem = $filesystem;
+        $this->filesystem = $storage;
         $this->cacheDir = $cacheDir;
     }
 

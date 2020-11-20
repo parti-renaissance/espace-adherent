@@ -30,8 +30,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     AdherentMessageTypeEnum::MUNICIPAL_CHIEF: "MunicipalChiefAdherentMessage",
  *     AdherentMessageTypeEnum::SENATOR: "SenatorAdherentMessage",
  *     AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE: "ReferentElectedRepresentativeMessage",
- *     AdherentMessageTypeEnum::REFERENT_TERRITORIAL_COUNCIL: "ReferentTerritorialCouncilMessage",
+ *     AdherentMessageTypeEnum::REFERENT_INSTANCES: "ReferentInstancesMessage",
  *     AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE: "LegislativeCandidateAdherentMessage",
+ *     AdherentMessageTypeEnum::LRE_MANAGER_ELECTED_REPRESENTATIVE: "LreManagerElectedRepresentativeMessage",
+ *     AdherentMessageTypeEnum::CANDIDATE: "CandidateAdherentMessage",
  * })
  *
  * @ApiResource(
@@ -128,6 +130,13 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @ORM\Column(type="integer", nullable=true)
      */
     private $recipientCount;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $sendToTimeline = false;
 
     public function __construct(UuidInterface $uuid, Adherent $author)
     {
@@ -320,5 +329,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function isMailchimp(): bool
     {
         return $this instanceof CampaignAdherentMessageInterface;
+    }
+
+    public function isSendToTimeline(): bool
+    {
+        return $this->sendToTimeline;
+    }
+
+    public function setSendToTimeline(bool $value): void
+    {
+        $this->sendToTimeline = $value;
     }
 }

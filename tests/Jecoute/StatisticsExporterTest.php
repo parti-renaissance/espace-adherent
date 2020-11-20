@@ -19,7 +19,7 @@ class StatisticsExporterTest extends TestCase
     /** @var MockObject|StatisticsExporter */
     private $statisticsExporter;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->dataAnswerRepository = $this->getMockBuilder(DataAnswerRepository::class)
             ->disableOriginalConstructor()

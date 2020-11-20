@@ -30,7 +30,7 @@ class AbstractMailerConsumerTest extends TestCase
      */
     private $entityManager;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $this->validator = $this->createMock(ValidatorInterface::class);
@@ -161,7 +161,7 @@ class AbstractMailerConsumerTest extends TestCase
         $emailClient
             ->expects($this->once())
             ->method('sendEmail')
-            ->willReturn(false)
+            ->willReturn('')
             ->with($messagePayloadEncoded)
         ;
 
@@ -228,14 +228,14 @@ class AbstractMailerConsumerTest extends TestCase
         $emailRepository
             ->expects($this->once())
             ->method('setDelivered')
-            ->with($email, true)
+            ->with($email, 'OK')
         ;
 
         $emailClient = $this->createMock(EmailClientInterface::class);
         $emailClient
             ->expects($this->once())
             ->method('sendEmail')
-            ->willReturn(true)
+            ->willReturn('OK')
             ->with($messagePayloadEncoded)
         ;
 
@@ -251,13 +251,14 @@ class AbstractMailerConsumerTest extends TestCase
         $abstractConsumer = $this
             ->getMockBuilder(self::CLASS_NAME)
             ->setConstructorArgs([$this->validator, $this->entityManager])
-            ->setMethods(['getEmailRepository', 'getEmailClient'])
+            ->setMethods(['getEmailRepository', 'getEmailClient', 'getLogger'])
             ->getMockForAbstractClass()
         ;
 
         $message = $this->createMock(AMQPMessage::class);
         $message->body = json_encode(['uuid' => $uuid]);
 
+        $abstractConsumer->expects($this->any())->method('getLogger')->willReturn($this->createMock(LoggerInterface::class));
         $abstractConsumer->expects($this->any())->method('getEmailRepository')->willReturn($emailRepository);
         $abstractConsumer->expects($this->once())->method('getEmailClient')->willReturn($emailClient);
         $this->expectOutputString($uuid.' | Delivering '.sprintf('%s from %s to %i recipients', $messageClass, $sender, \count($recipients)).\PHP_EOL);

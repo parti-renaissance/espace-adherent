@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EnabledInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,8 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="ideas_workshop_question")
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Question implements EnabledInterface
 {

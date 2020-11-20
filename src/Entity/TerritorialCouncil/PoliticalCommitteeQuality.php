@@ -2,7 +2,6 @@
 
 namespace App\Entity\TerritorialCouncil;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\TerritorialCouncil\Exception\TerritorialCouncilQualityException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  *
  * @UniqueEntity(fields={"politicalCommitteeMembership", "name"})
- *
- * @Algolia\Index(autoIndex=false)
  */
 class PoliticalCommitteeQuality
 {
@@ -44,7 +41,7 @@ class PoliticalCommitteeQuality
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      *
      * @Assert\NotNull
      */

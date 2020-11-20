@@ -3,6 +3,8 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
+use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
@@ -17,15 +19,16 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
     {
         return $filter instanceof ReferentUserFilter
             || $filter instanceof AdherentZoneFilter
+            || $filter instanceof AdherentGeoZoneFilter
             || $filter instanceof CommitteeFilter
             || ($filter instanceof MunicipalChiefFilter && !$filter->getContactNewsletter())
-            || $filter instanceof ReferentElectedRepresentativeFilter
+            || $filter instanceof AbstractElectedRepresentativeFilter
         ;
     }
 
     public function build(MailchimpCampaign $campaign): array
     {
-        /** @var MunicipalChiefFilter|ReferentUserFilter|AdherentZoneFilter|ReferentElectedRepresentativeFilter $filter */
+        /** @var MunicipalChiefFilter|ReferentUserFilter|AdherentZoneFilter|AdherentGeoZoneFilter|ReferentElectedRepresentativeFilter $filter */
         $filter = $campaign->getMessage()->getFilter();
 
         $conditions = [];

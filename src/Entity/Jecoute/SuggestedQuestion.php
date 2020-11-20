@@ -2,14 +2,11 @@
 
 namespace App\Entity\Jecoute;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="jecoute_suggested_question")
  * @ORM\Entity(repositoryClass="App\Repository\Jecoute\SuggestedQuestionRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class SuggestedQuestion extends Question
 {

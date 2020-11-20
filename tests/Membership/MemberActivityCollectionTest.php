@@ -137,7 +137,7 @@ class MemberActivityCollectionTest extends TestCase
     {
         $event = $this->getMockBuilder(BaseEvent::class)->disableOriginalConstructor()->getMock();
         $event->expects(static::any())->method('__toString')->willReturn($name);
-        $event->expects(static::any())->method('getCreatedAt')->willReturn($createdAt);
+        $event->expects(static::any())->method('getCreatedAt')->willReturn($createdAt ?? new \DateTime());
 
         return $event;
     }

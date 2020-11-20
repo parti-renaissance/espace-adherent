@@ -15,12 +15,17 @@ class LoadUserData extends Fixture
     public const USER_2_UUID = '413bd28f-57c9-efc8-8ab7-2106c8be9690';
     public const USER_3_UUID = '513bd28f-8ab7-57c9-efc8-2106c8be9690';
 
+    private $adherentFactory;
+
+    public function __construct(AdherentFactory $adherentFactory)
+    {
+        $this->adherentFactory = $adherentFactory;
+    }
+
     public function load(ObjectManager $manager)
     {
-        $adherentFactory = $this->getAdherentFactory();
-
         // Create adherent users list
-        $user1 = $adherentFactory->createFromArray([
+        $user1 = $this->adherentFactory->createFromArray([
             'uuid' => self::USER_1_UUID,
             'password' => LoadAdherentData::DEFAULT_PASSWORD,
             'email' => 'simple-user@example.ch',
@@ -32,7 +37,7 @@ class LoadUserData extends Fixture
         $key1 = AdherentActivationToken::generate($user1);
         $user1->activate($key1, '2017-01-25 19:34:02');
 
-        $user2 = $adherentFactory->createFromArray([
+        $user2 = $this->adherentFactory->createFromArray([
             'uuid' => self::USER_2_UUID,
             'password' => LoadAdherentData::DEFAULT_PASSWORD,
             'email' => 'simple-user-not-activated@example.ch',
@@ -41,7 +46,7 @@ class LoadUserData extends Fixture
             'address' => PostAddress::createForeignAddress('CH', '8057', null, ''),
             'isAdherent' => false,
         ]);
-        $user3 = $adherentFactory->createFromArray([
+        $user3 = $this->adherentFactory->createFromArray([
             'uuid' => self::USER_3_UUID,
             'password' => LoadAdherentData::DEFAULT_PASSWORD,
             'email' => 'simple-user-disabled@example.ch',
@@ -58,17 +63,5 @@ class LoadUserData extends Fixture
         $manager->persist($user2);
         $manager->persist($user3);
         $manager->flush();
-    }
-
-    private function getAdherentFactory(): AdherentFactory
-    {
-        return $this->container->get('app.membership.adherent_factory');
-    }
-
-    public function getDependencies()
-    {
-        return [
-            LoadAdherentData::class,
-        ];
     }
 }

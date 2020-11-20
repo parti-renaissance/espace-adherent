@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Intl\FranceCitiesBundle;
 use App\Utils\AreaUtils;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -17,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="procuration_proxies")
  * @ORM\Entity(repositoryClass="App\Repository\ProcurationProxyRepository")
-
- * @Algolia\Index(autoIndex=false)
  */
 class ProcurationProxy
 {
@@ -210,7 +207,13 @@ class ProcurationProxy
      * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"front"})
-     * @Assert\Range(max="-17 years", maxMessage="procuration.birthdate.minimum_required_age", groups={"front"})
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="-17 years",
+     *     minMessage="procuration.birthdate.maximum_required_age",
+     *     maxMessage="procuration.birthdate.minimum_required_age",
+     *     groups={"front"}
+     * )
      */
     private $birthdate;
 

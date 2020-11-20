@@ -5,27 +5,25 @@ namespace Tests\App\Validator;
 use App\Address\Address;
 use App\Entity\PostAddress;
 use App\Geocoder\GeocodableInterface;
+use App\Geocoder\Geocoder;
 use App\Validator\GeocodableAddress;
 use App\Validator\GeocodableAddressValidator;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use Tests\App\Test\Geocoder\DummyGeocoder;
 
 class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testUnsupportedValue()
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(12345, new GeocodableAddress());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testUnsupportedConstraint()
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(
             PostAddress::createFrenchAddress('92 bld Victor Hugo', '92110-92024'),
             new NotBlank()
@@ -84,6 +82,6 @@ class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
 
     protected function createValidator()
     {
-        return new GeocodableAddressValidator(new DummyGeocoder());
+        return new GeocodableAddressValidator(new Geocoder(new DummyGeocoder()));
     }
 }

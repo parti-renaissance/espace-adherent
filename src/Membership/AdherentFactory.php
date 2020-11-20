@@ -4,7 +4,7 @@ namespace App\Membership;
 
 use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
-use libphonenumber\PhoneNumber;
+use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
@@ -48,7 +48,7 @@ class AdherentFactory
     {
         $phone = null;
         if (isset($data['phone'])) {
-            $phone = $this->createPhone($data['phone']);
+            $phone = PhoneNumberUtils::create($data['phone']);
         }
 
         $adherent = Adherent::create(
@@ -78,24 +78,6 @@ class AdherentFactory
         }
 
         return $adherent;
-    }
-
-    /**
-     * Returns a PhoneNumber object.
-     *
-     * The format must be something like "33 0102030405"
-     *
-     * @param string $phoneNumber
-     */
-    private function createPhone($phoneNumber): PhoneNumber
-    {
-        list($country, $number) = explode(' ', $phoneNumber);
-
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($country);
-        $phone->setNationalNumber($number);
-
-        return $phone;
     }
 
     /**

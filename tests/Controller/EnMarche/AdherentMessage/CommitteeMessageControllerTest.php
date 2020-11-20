@@ -21,7 +21,7 @@ class CommitteeMessageControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-animateur/en-marche-suisse/messagerie/creer');
 
-        $this->client->submit($crawler->selectButton('Suivant →')->form(['committee_adherent_message' => [
+        $this->client->submit($crawler->selectButton('Suivant →')->form(['adherent_message' => [
             'label' => 'test',
             'subject' => 'subject',
             'content' => 'message content',
@@ -35,14 +35,14 @@ class CommitteeMessageControllerTest extends WebTestCase
         $this->assertResponseStatusCode(200, $this->client->getResponse());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

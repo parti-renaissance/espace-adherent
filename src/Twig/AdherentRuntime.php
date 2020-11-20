@@ -2,12 +2,14 @@
 
 namespace App\Twig;
 
+use App\Adherent\SessionModal\SessionModalActivatorListener;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentSpaceAccessInformation;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class AdherentRuntime implements RuntimeExtensionInterface
@@ -140,5 +142,16 @@ class AdherentRuntime implements RuntimeExtensionInterface
     public function getElectedRepresentative(Adherent $adherent): ?ElectedRepresentative
     {
         return $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
+    }
+
+    public function hasActiveParliamentaryMandate(Adherent $adherent): bool
+    {
+        return $this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent);
+    }
+
+    public function getSessionModalContext(Request $request): ?string
+    {
+        // get and remove session modal context if presents
+        return $request->getSession()->remove(SessionModalActivatorListener::SESSION_KEY);
     }
 }

@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\EventCategory;
+use App\Entity\EventGroupCategory;
 use App\Event\EventCommand;
+use App\Repository\EventCategoryRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,8 +21,16 @@ class EventCommandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('category', EventGroupCategoryType::class, [
+            ->add('category', EntityType::class, [
                 'class' => $options['event_category_class'],
+                'choice_label' => 'name',
+                'query_builder' => function (EventCategoryRepository $ecr) use ($options) {
+                    return $ecr->createQueryForAllEnabledOrderedByName($options['event_group_category']);
+                },
+                'group_by' => function ($category) {
+                    /** @var EventCategory $category */
+                    return $category->getEventGroupCategory()->getName();
+                },
             ])
         ;
     }
@@ -28,7 +40,9 @@ class EventCommandType extends AbstractType
         $resolver
             ->setDefaults([
                 'data_class' => EventCommand::class,
+                'event_group_category' => null,
             ])
+            ->setAllowedTypes('event_group_category', ['null', EventGroupCategory::class])
         ;
     }
 

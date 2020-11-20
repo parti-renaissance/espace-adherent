@@ -76,7 +76,7 @@ class EventRepositoryTest extends WebTestCase
         $this->assertSame(2, \count($this->repository->searchAllEvents($search)));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -85,7 +85,7 @@ class EventRepositoryTest extends WebTestCase
         $this->repository = $this->getEventRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

@@ -7,5 +7,7 @@ use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 
 interface ContentSectionBuilderInterface
 {
+    public function supports(AdherentMessageInterface $message): bool;
+
     public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void;
 }

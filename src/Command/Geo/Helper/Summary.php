@@ -2,7 +2,7 @@
 
 namespace App\Command\Geo\Helper;
 
-use App\Entity\Geo\CollectivityInterface;
+use App\Entity\Geo\GeoInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
@@ -61,7 +61,7 @@ final class Summary
     }
 
     /**
-     * @param CollectivityInterface[] $entities
+     * @param GeoInterface[] $entities
      */
     private function gather(iterable $entities): array
     {
@@ -83,7 +83,7 @@ final class Summary
                 $byType[$class]['new'][] = $entity;
             }
 
-            $byType[$class]['active'] += $entity instanceof CollectivityInterface
+            $byType[$class]['active'] += $entity instanceof GeoInterface
                 ? $entity->isActive()
                 : 1;
         }

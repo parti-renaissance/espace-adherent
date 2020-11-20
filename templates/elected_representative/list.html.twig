@@ -68,8 +68,9 @@
                         <div class="manager__filters__section">
                             <div class="manager__filters__group">
                                 <div class="filter__row">
-                                    <label class="filter__label">Villes</label>
-                                    {{ form_widget(form.cities, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'elected_representative.filter.cities'|trans}}) }}
+                                    <label class="filter__label">Zones</label>
+                                    {{ form_widget(form.zones) }}
+                                    {{ form_errors(form.zones) }}
                                 </div>
 
                                 <div class="filter__row">
@@ -152,7 +153,7 @@
                                     <td>
                                         {% for mandate in elected_representative.currentMandates %}
                                             <b>{{ mandate }}</b><br />
-                                            <i>{{ mandate.zone }}</i><br />
+                                            <i>{{ mandate.geoZone }}</i><br />
                                         {% endfor %}
                                     </td>
                                     <td>
@@ -234,6 +235,7 @@
 
     <script type="text/javascript" src="{{ asset('select2/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('select2/fr.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             $('.multi_select2').each(function () {
@@ -242,6 +244,10 @@
                     theme: 'default em-filters'
                 });
             });
+
+            $('.select2entity[data-autostart="false"]').select2entity({
+                theme: 'default em-filters'
+            })
 
             $('td.table-labels').on('click', '[id^="show_more_labels_"], [id^="show_less_labels_"]', function() {
                 let elementId = $(this).attr('id');

@@ -40,6 +40,10 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
 
         foreach ($this->getHandlers() as $handler) {
             if ($handler->supports($adherent)) {
+                if (!$command->isEventDispatchingEnabled()) {
+                    $handler->disableEventDispatching();
+                }
+
                 $handler->handle($adherent);
             }
         }
@@ -48,6 +52,9 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandler implements Messa
         $this->entityManager->clear();
     }
 
+    /**
+     * @return TerritorialCouncilMembershipHandlerInterface[]
+     */
     private function getHandlers(): array
     {
         $handlers = iterator_to_array($this->handlers);

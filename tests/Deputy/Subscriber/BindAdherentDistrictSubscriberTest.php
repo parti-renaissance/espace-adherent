@@ -5,6 +5,7 @@ namespace Tests\App\Deputy\Subscriber;
 use App\Deputy\Subscriber\BindAdherentDistrictSubscriber;
 use App\Entity\Adherent;
 use App\Entity\District;
+use App\Entity\Geo\Zone;
 use App\Entity\GeoData;
 use App\Entity\PostAddress;
 use App\Entity\ReferentTag;
@@ -85,8 +86,8 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         /** @var GeoData $geoData */
         $geoData = $this->createMock(GeoData::class);
 
-        $tag1 = new ReferentTag('1ère circonscription, Paris', 'CIRCO_75001');
-        $tag2 = new ReferentTag('Alpes-Maritimes, 1ère circonscription (06-01)', 'CIRCO_06001');
+        $tag1 = new ReferentTag('1ère circonscription, Paris', 'CIRCO_75001', new Zone('district', 'CIRCO_75001', '1ère circonscription, Paris'));
+        $tag2 = new ReferentTag('Alpes-Maritimes, 1ère circonscription (06-01)', 'CIRCO_06001', new Zone('district', 'CIRCO_06001', 'Alpes-Maritimes, 1ère circonscription (06-01)'));
         $district1 = new District(
             ['FR'], 'Ain', '01001', 1, 01, $geoData, $tag1
         );
@@ -105,7 +106,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         ];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -115,7 +116,7 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         $this->subscriber = new BindAdherentDistrictSubscriber($this->manager);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->manager = null;
         $this->districtRepository = null;

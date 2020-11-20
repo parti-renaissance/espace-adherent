@@ -26,4 +26,11 @@ class UserListDefinitionCollection extends ArrayCollection
                 throw new \InvalidArgumentException($type.' is not valid.');
         }
     }
+
+    public function toString(): string
+    {
+        return implode(', ', $this->map(static function (UserListDefinition $userListDefinition) {
+            return $userListDefinition->getLabel();
+        })->toArray());
+    }
 }

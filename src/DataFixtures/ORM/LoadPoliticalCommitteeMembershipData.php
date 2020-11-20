@@ -7,17 +7,23 @@ use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadPoliticalCommitteeMembershipData extends Fixture
+class LoadPoliticalCommitteeMembershipData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
         /** @var PoliticalCommittee $coPolParis */
         $coPolParis = $this->getReference('coPol_75');
 
+        $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-19'), new \DateTime('2020-01-01'));
+        $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::REFERENT));
+        $manager->persist($membership);
+
         $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-3'), new \DateTime('2020-06-06'));
         $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR));
+        $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::LEADER));
         $manager->persist($membership);
 
         $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-4'), new \DateTime('2020-07-07'));
@@ -30,10 +36,6 @@ class LoadPoliticalCommitteeMembershipData extends Fixture
 
         $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('deputy-75-1'), new \DateTime('2020-02-02'));
         $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::DEPUTY));
-        $manager->persist($membership);
-
-        $membership = new PoliticalCommitteeMembership($coPolParis, $this->getReference('adherent-12'), new \DateTime('2020-02-02'));
-        $membership->addQuality(new PoliticalCommitteeQuality(TerritorialCouncilQualityEnum::MAYOR));
         $manager->persist($membership);
 
         /** @var PoliticalCommittee $coPol92 */

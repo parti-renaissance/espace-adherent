@@ -2,15 +2,12 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  *
  * @ORM\Table(name="voting_platform_vote_choice")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class VoteChoice
 {

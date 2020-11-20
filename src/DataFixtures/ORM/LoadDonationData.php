@@ -8,18 +8,19 @@ use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\Transaction;
-use Cocur\Slugify\Slugify;
+use Cocur\Slugify\SlugifyInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadDonationData extends Fixture
+class LoadDonationData extends Fixture implements DependentFixtureInterface
 {
     private $slugify;
 
-    public function __construct()
+    public function __construct(SlugifyInterface $slugify)
     {
-        $this->slugify = Slugify::create();
+        $this->slugify = $slugify;
     }
 
     public function load(ObjectManager $manager)

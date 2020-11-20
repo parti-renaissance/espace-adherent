@@ -20,6 +20,7 @@
 /gcloud-service-key.json
 /npm-debug.log
 /phpunit.xml
+/.phpunit.result.cache
 /supervisord.log
 /supervisord.pid
 /yarn-error.log

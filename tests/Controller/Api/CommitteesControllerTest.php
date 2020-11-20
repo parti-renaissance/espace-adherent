@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\Api;
 
-use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +38,7 @@ class CommitteesControllerTest extends WebTestCase
 
     public function testGetCommitteeCandidacyReturnsNothingIfNonMemberOrAnonymous(): void
     {
-        $url = sprintf('/api/committees/%s/candidacies', LoadAdherentData::COMMITTEE_4_UUID);
+        $url = sprintf('/api/committees/%s/candidacies', LoadCommitteeData::COMMITTEE_4_UUID);
 
         $this->client->request(Request::METHOD_GET, $url);
         $this->assertResponseStatusCode(Response::HTTP_UNAUTHORIZED, $this->client->getResponse());
@@ -53,7 +53,7 @@ class CommitteesControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'assesseur@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, sprintf('/api/committees/%s/candidacies', LoadAdherentData::COMMITTEE_6_UUID));
+        $this->client->request(Request::METHOD_GET, sprintf('/api/committees/%s/candidacies', LoadCommitteeData::COMMITTEE_6_UUID));
         $this->isSuccessful($response = $this->client->getResponse());
 
         $data = \json_decode($response->getContent(), true);
@@ -84,14 +84,14 @@ class CommitteesControllerTest extends WebTestCase
         ], $data['candidacies'][1]);
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

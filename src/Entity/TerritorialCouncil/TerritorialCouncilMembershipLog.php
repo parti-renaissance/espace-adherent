@@ -2,15 +2,12 @@
 
 namespace App\Entity\TerritorialCouncil;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class TerritorialCouncilMembershipLog
 {
@@ -35,7 +32,7 @@ class TerritorialCouncilMembershipLog
     private $type;
 
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(length=500)
      */
     private $description;
 

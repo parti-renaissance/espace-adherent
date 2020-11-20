@@ -2,30 +2,32 @@
 
 namespace App\Normalizer;
 
-use App\Entity\Adherent;
 use App\Entity\IdeasWorkshop\Idea;
 use App\Repository\IdeasWorkshop\IdeaRepository;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class IdeaNormalizer implements NormalizerInterface
+class IdeaNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
-    private $normalizer;
-    private $tokenStorage;
-    private $ideaRepository;
+    use NormalizerAwareTrait;
 
-    public function __construct(
-        NormalizerInterface $normalizer,
-        IdeaRepository $ideaRepository,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->normalizer = $normalizer;
-        $this->tokenStorage = $tokenStorage;
+    private const ALREADY_CALLED = 'IDEA_NORMALIZER_ALREADY_CALLED';
+
+    private $ideaRepository;
+    private $security;
+
+    public function __construct(IdeaRepository $ideaRepository, Security $security)
+    {
+        $this->security = $security;
         $this->ideaRepository = $ideaRepository;
     }
 
     public function normalize($object, $format = null, array $context = [])
     {
+        $context[self::ALREADY_CALLED] = true;
+
         $data = $this->normalizer->normalize($object, $format, $context);
 
         if (\in_array('idea_list_read', $context['groups']) || \in_array('idea_read', $context['groups'])) {
@@ -34,7 +36,7 @@ class IdeaNormalizer implements NormalizerInterface
                 ['total' => $data['votes_count']]
             );
 
-            if ($loggedUser = $this->getCurrentUser()) {
+            if ($loggedUser = $this->security->getUser()) {
                 $data['votes_count']['my_votes'] = $this->ideaRepository->getAdherentVotesForIdea($object, $loggedUser);
             } else {
                 $loggedUser = null;
@@ -52,17 +54,8 @@ class IdeaNormalizer implements NormalizerInterface
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return $data instanceof Idea;
-    }
-
-    private function getCurrentUser(): ?Adherent
-    {
-        if (!($user = $this->tokenStorage->getToken()->getUser()) instanceof Adherent) {
-            return null;
-        }
-
-        return $user;
+        return !isset($context[self::ALREADY_CALLED]) && $data instanceof Idea;
     }
 }

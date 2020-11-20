@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform\ElectionResult;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
@@ -18,8 +17,6 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity
  * @ORM\Table(name="voting_platform_election_pool_result")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ElectionPoolResult
 {
@@ -173,12 +170,19 @@ class ElectionPoolResult
      */
     public function getElectedCandidateGroups(): array
     {
+        return array_map(function (CandidateGroupResult $result) {
+            return $result->getCandidateGroup();
+        }, $this->getElectedCandidateGroupResults());
+    }
+
+    /**
+     * @return CandidateGroupResult[]
+     */
+    public function getElectedCandidateGroupResults(): array
+    {
         return $this->candidateGroupResults
-            ->map(function (CandidateGroupResult $result) {
-                return $result->getCandidateGroup();
-            })
-            ->filter(function (CandidateGroup $candidateGroup) {
-                return $candidateGroup->isElected();
+            ->filter(function (CandidateGroupResult $candidateGroupResult) {
+                return $candidateGroupResult->getCandidateGroup()->isElected();
             })
             ->toArray()
         ;

@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ProgrammaticFoundation\SubApproach;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadSubApproachData extends AbstractFixture implements DependentFixtureInterface
+class LoadSubApproachData extends Fixture implements DependentFixtureInterface
 {
     private const DESCRIPTIONS = [
         "En ce qui concerne la baisse de confiance conjoncturelle, on se doit d'analyser systématiquement les ouvertures imaginables, avec toute la prudence requise.",

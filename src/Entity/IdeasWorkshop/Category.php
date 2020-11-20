@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EnabledInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,8 +30,6 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  * )
  *
  * @UniqueEntity("name")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Category implements EnabledInterface
 {

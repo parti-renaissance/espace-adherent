@@ -78,7 +78,7 @@ class AdminSecurityControllerTest extends WebTestCase
 
         $this->client->followRedirect();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
             $this->client->getResponse()->getContent()
         );
@@ -127,14 +127,14 @@ class AdminSecurityControllerTest extends WebTestCase
         ];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

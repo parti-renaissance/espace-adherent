@@ -2,7 +2,6 @@
 
 namespace App\Entity\ChezVous;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\ChezVous\MeasureChoiceLoader;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,15 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity("slug")
  * @UniqueEntity("inseeCode")
- *
- * @Algolia\Index(
- *     autoIndex=false,
- *     searchableAttributes={
- *         "name",
- *         "postalCodes",
- *         "inseeCode",
- *     }
- * )
  */
 class City implements AlgoliaIndexedEntityInterface
 {
@@ -45,8 +35,6 @@ class City implements AlgoliaIndexedEntityInterface
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Algolia\Attribute
      */
     private $name;
 
@@ -56,8 +44,6 @@ class City implements AlgoliaIndexedEntityInterface
      * @ORM\Column(type="json_array")
      *
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $postalCodes = [];
 
@@ -68,8 +54,6 @@ class City implements AlgoliaIndexedEntityInterface
      *
      * @Assert\NotBlank
      * @Assert\Length(max="10")
-     *
-     * @Algolia\Attribute
      */
     private $inseeCode;
 
@@ -98,8 +82,6 @@ class City implements AlgoliaIndexedEntityInterface
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Algolia\Attribute
      */
     private $slug;
 
@@ -108,8 +90,6 @@ class City implements AlgoliaIndexedEntityInterface
      *
      * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="cities", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Algolia\Attribute
      */
     private $department;
 
@@ -119,8 +99,6 @@ class City implements AlgoliaIndexedEntityInterface
      * @ORM\OneToMany(targetEntity=Measure::class, mappedBy="city", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      *
      * @Assert\Valid
-     *
-     * @Algolia\Attribute
      */
     private $measures;
 
@@ -130,8 +108,6 @@ class City implements AlgoliaIndexedEntityInterface
      * @ORM\OneToMany(targetEntity=Marker::class, mappedBy="city", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      *
      * @Assert\Valid
-     *
-     * @Algolia\Attribute
      */
     private $markers;
 
@@ -231,16 +207,6 @@ class City implements AlgoliaIndexedEntityInterface
         $this->longitude = $longitude;
     }
 
-    public function getDepartmentNumber(): ?string
-    {
-        return $this->departmentNumber;
-    }
-
-    public function setDepartmentNumber(?string $departmentNumber): void
-    {
-        $this->departmentNumber = $departmentNumber;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -313,9 +279,6 @@ class City implements AlgoliaIndexedEntityInterface
         return implode(', ', $this->postalCodes ?? []);
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="_geoloc")
-     */
     public function getCoordinates(): array
     {
         return [
@@ -327,5 +290,16 @@ class City implements AlgoliaIndexedEntityInterface
     public static function normalizeCode(string $inseeCode): string
     {
         return str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [
+            'searchableAttributes' => [
+                'name',
+                'postalCodes',
+                'inseeCode',
+            ],
+        ];
     }
 }

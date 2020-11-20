@@ -13,12 +13,12 @@ class MembershipRegistrationVoterTest extends TestCase
 {
     private $token;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->token = $this->createMock(TokenInterface::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->token = null;
     }

@@ -6,9 +6,10 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Designation\DesignationZoneEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadDesignationData extends Fixture
+class LoadDesignationData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -61,10 +62,13 @@ class LoadDesignationData extends Fixture
         $manager->persist($designation);
 
         // Committee designation with started CANDIDATURE period in FDE
-        $designation = new Designation('Désignation en cours à l\'étranger');
+        $designation = new Designation('Désignation "Comités-Animateurs" ouverte');
         $designation->setZones([DesignationZoneEnum::FDE]);
-        $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
+        $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
         $designation->setCandidacyStartDate(new \DateTime('-1 day'));
+        $designation->setCandidacyEndDate(new \DateTime('+5 days'));
+        $designation->setVoteStartDate(new \DateTime('+7 days'));
+        $designation->setVoteEndDate(new \DateTime('+2 weeks'));
 
         $this->setReference('designation-5', $designation);
         $manager->persist($designation);

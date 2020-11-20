@@ -2,55 +2,51 @@
 
 namespace Tests\App\Command;
 
+use App\Entity\Article;
+use App\Entity\ChezVous\City;
+use App\Entity\Clarification;
+use App\Entity\CustomSearchResult;
 use App\Entity\Event;
+use App\Entity\Proposal;
+use App\Entity\Timeline\Manifesto;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\Profile;
 use App\Entity\Timeline\Theme;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group command
  */
 class AlgoliaSynchronizeCommandTest extends WebTestCase
 {
-    use ControllerTestTrait;
-
     /**
      * @dataProvider dataProviderTestCommand
      */
-    public function testCommand(array $parameters, array $expectedOutputs)
+    public function testCommand(string $indexName, string $className, int $expected)
     {
-        $output = $this->runCommand('app:algolia:synchronize', $parameters);
+        $output = $this->runCommand('search:import', ['--indices' => $indexName]);
 
-        foreach ($expectedOutputs as $expectedOutput) {
-            $this->assertContains($expectedOutput, $output);
-        }
+        $this->assertStringContainsString('Done!', $output->getDisplay());
+
+        $indexer = static::$kernel->getContainer()->get('search.service');
+        self::assertSame($expected, $indexer->countForIndexByType($className));
     }
 
     public function dataProviderTestCommand(): array
     {
         return [
-            [
-                ['entityName' => Event::class],
-                ['Synchronizing entity App\Entity\Event ... done, 21 records indexed'],
-            ],
-            [
-                ['entityName' => Theme::class],
-                ['Synchronizing entity App\Entity\Timeline\Theme ... done, 5 records indexed'],
-            ],
-            [
-                [], // no parameters
-                [
-                    'Synchronizing entity App\Entity\Article ... done, 180 records indexed',
-                    'Synchronizing entity App\Entity\Proposal ... done, 3 records indexed',
-                    'Synchronizing entity App\Entity\Clarification ... done, 21 records indexed',
-                    'Synchronizing entity App\Entity\CustomSearchResult ... done, 2 records indexed',
-                    'Synchronizing entity App\Entity\Event ... done, 21 records indexed',
-                    'Synchronizing entity App\Entity\Timeline\Profile ... done, 5 records indexed',
-                    'Synchronizing entity App\Entity\Timeline\Manifesto ... done, 3 records indexed',
-                    'Synchronizing entity App\Entity\Timeline\Theme ... done, 5 records indexed',
-                    'Synchronizing entity App\Entity\Timeline\Measure ... done, 17 records indexed',
-                ],
-            ],
+            ['event', Event::class, 21],
+            ['article', Article::class, 180],
+            ['proposal', Proposal::class, 3],
+            ['clarification', Clarification::class, 21],
+            ['custom_search_result', CustomSearchResult::class, 2],
+            // Timeline
+            ['timeline_theme', Theme::class, 5],
+            ['timeline_profile', Profile::class, 5],
+            ['timeline_manifesto', Manifesto::class, 3],
+            ['timeline_measure', Measure::class, 17],
+            // ChezVous
+            ['chezvous_city', City::class, 3],
         ];
     }
 }

@@ -171,7 +171,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -180,7 +180,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends WebTestCase
         $this->disableRepublicanSilence();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

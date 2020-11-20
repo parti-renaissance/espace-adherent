@@ -3,21 +3,20 @@
 namespace Tests\App\Command;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group command
  */
 class ApiScheduleCommitteeCreationCommandTest extends WebTestCase
 {
-    use ControllerTestTrait;
-
     public function testCommand(): void
     {
         $output = $this->runCommand('app:sync:committees');
 
-        $this->assertContains('Starting synchronization.', $output);
-        $this->assertContains('11/11', $output);
-        $this->assertContains('Successfully scheduled for synchronization!', $output);
+        $output = $output->getDisplay();
+
+        $this->assertStringContainsString('Starting synchronization.', $output);
+        $this->assertStringContainsString('12/12', $output);
+        $this->assertStringContainsString('Successfully scheduled for synchronization!', $output);
     }
 }

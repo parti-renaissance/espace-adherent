@@ -12,7 +12,8 @@ export default function () {
 
             render(
                 <Modal
-                    content={dom(element.dataset.confirmContentElement).innerHTML}
+                    side={element.dataset.modalSide || null}
+                    content={dom(element.dataset.contentElement).innerHTML}
                     closeCallback={() => { modalWrapper.remove(); }}
                 />,
                 modalWrapper

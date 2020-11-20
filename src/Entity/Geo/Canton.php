@@ -2,7 +2,6 @@
 
 namespace App\Entity\Geo;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,10 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="geo_canton")
- *
- * @Algolia\Index(autoIndex=false)
  */
-class Canton implements CollectivityInterface
+class Canton implements ZoneableInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
@@ -53,22 +50,37 @@ class Canton implements CollectivityInterface
     }
 
     /**
-     * @return City[]|Collection
+     * @return City[]
      */
-    public function getCities(): Collection
+    public function getCities(): array
     {
-        return $this->cities;
+        return $this->cities->toArray();
+    }
+
+    public function addCity(City $city): void
+    {
+        if (!$this->cities->contains($city)) {
+            $this->cities->add($city);
+        }
+
+        $city->addCanton($this);
+    }
+
+    public function clearCities(): void
+    {
+        $this->cities->clear();
     }
 
     public function getParents(): array
     {
-        $parents = [];
+        return array_merge(
+            [$this->department],
+            $this->department->getParents(),
+        );
+    }
 
-        $parents[] = $department = $this->getDepartment();
-        if ($department) {
-            $parents = array_merge($parents, $department->getParents());
-        }
-
-        return $this->sanitizeEntityList($parents);
+    public function getZoneType(): string
+    {
+        return Zone::CANTON;
     }
 }

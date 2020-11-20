@@ -28,6 +28,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     protected $committeeMandateRepository;
     /** @var TerritorialCouncilAdherentMandateRepository */
     protected $tcMandateRepository;
+    private $eventDispatchingEnabled = true;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -52,6 +53,11 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     public function supports(Adherent $adherent): bool
     {
         return true;
+    }
+
+    public function disableEventDispatching(): void
+    {
+        $this->eventDispatchingEnabled = false;
     }
 
     public function getPriority(): int
@@ -141,7 +147,9 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         // if the adherent has a membership in the same territorial council, just add quality if it doesn't exist
         if ($territorialCouncil->getId() === $actualMembership->getTerritorialCouncil()->getId()) {
             $actualMembership->addQuality($quality);
-            $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+            if ($this->politicalCommitteeManager->canAddQuality($qualityName, $adherent)) {
+                $this->politicalCommitteeManager->addPoliticalCommitteeQuality($adherent, $qualityName);
+            }
             $this->em->flush();
 
             return;
@@ -156,7 +164,10 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         // we check if no quality with removing constraints
         $msg = '';
         foreach ($actualMembership->getQualities() as $quality) {
-            $msg .= $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+            $constraintMsg = $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+            if ('' !== $constraintMsg && false === strpos($msg, $constraintMsg)) {
+                $msg .= $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+            }
         }
 
         if ('' !== $msg) {
@@ -202,25 +213,21 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $adherent->setTerritorialCouncilMembership($membership);
 
         $this->em->persist($membership);
+        $this->em->flush();
 
         // add Political committee member
-        if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)
-            || (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
-                && $tcMandate = $this->tcMandateRepository->findActiveMandateWithQuality($adherent, $territorialCouncil, $qualityName))
-        ) {
+        if ($this->politicalCommitteeManager->canAddQuality($qualityName, $adherent)) {
             $pcMembership = $this->politicalCommitteeManager->createMembership(
                 $adherent,
                 $territorialCouncil->getPoliticalCommittee(),
                $qualityName
             );
-            $adherent->setPoliticalCommitteeMembership($pcMembership);
 
             $this->em->persist($pcMembership);
+            $this->em->flush();
         }
 
-        $this->em->flush();
-
-        $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE, new MembershipEvent($adherent, $territorialCouncil));
+        $this->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE, new MembershipEvent($adherent, $territorialCouncil));
     }
 
     protected function removeMembership(Adherent $adherent, TerritorialCouncil $council): void
@@ -229,7 +236,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         $adherent->revokePoliticalCommitteeMembership();
         $this->em->flush();
 
-        $this->dispatcher->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE, new MembershipEvent($adherent, $council));
+        $this->dispatch(Events::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE, new MembershipEvent($adherent, $council));
     }
 
     private function getRemovingConstraintsMsg(
@@ -290,5 +297,12 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
 
         $this->em->persist($log);
         $this->em->flush();
+    }
+
+    private function dispatch(string $eventName, MembershipEvent $event): void
+    {
+        if ($this->eventDispatchingEnabled) {
+            $this->dispatcher->dispatch($eventName, $event);
+        }
     }
 }

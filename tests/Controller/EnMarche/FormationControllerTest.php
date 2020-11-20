@@ -14,14 +14,14 @@ class FormationControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
@@ -49,11 +49,11 @@ class FormationControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld');
         $this->client->request(Request::METHOD_GET, '/espace-formation');
 
-        $this->assertContains('Première visite ?', $content = $this->client->getResponse()->getContent());
-        $this->assertContains('Premier article du premier axe', $content);
-        $this->assertContains('Deuxième article du premier axe', $content);
-        $this->assertContains('Premier article du deuxième axe', $content);
-        $this->assertContains('Deuxième article du deuxième axe', $content);
+        $this->assertStringContainsString('Première visite ?', $content = $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Premier article du premier axe', $content);
+        $this->assertStringContainsString('Deuxième article du premier axe', $content);
+        $this->assertStringContainsString('Premier article du deuxième axe', $content);
+        $this->assertStringContainsString('Deuxième article du deuxième axe', $content);
     }
 
     public function testMunicipalChiefCanAccessFormationSection(): void
@@ -77,6 +77,6 @@ class FormationControllerTest extends WebTestCase
 
         $this->client->click($link);
 
-        $this->assertContains('An exhibit of Markdown', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('An exhibit of Markdown', $this->client->getResponse()->getContent());
     }
 }

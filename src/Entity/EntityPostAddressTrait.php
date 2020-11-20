@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -23,12 +22,9 @@ trait EntityPostAddressTrait
         return $this->postAddress;
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="address")
-     */
     public function getInlineFormattedAddress($locale = 'fr_FR'): string
     {
-        return $this->postAddress->getInlineFormattedAddress($locale);
+        return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
     }
 
     /**
@@ -71,8 +67,6 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @Algolia\Attribute(algoliaName="address_city")
-     *
      * @JMS\Groups({"adherent_change_diff", "committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
@@ -89,7 +83,7 @@ trait EntityPostAddressTrait
         return $this->postAddress->getCity();
     }
 
-    public function getInseeCode()
+    public function getInseeCode(): ?string
     {
         return $this->postAddress->getInseeCode();
     }
@@ -118,9 +112,6 @@ trait EntityPostAddressTrait
         return $this->postAddress->getLongitude();
     }
 
-    /**
-     * @Algolia\IndexIf
-     */
     public function isGeocoded(): bool
     {
         return $this->getLatitude() && $this->getLongitude();
@@ -136,9 +127,6 @@ trait EntityPostAddressTrait
         $this->postAddress->updateCoordinates($coordinates);
     }
 
-    /**
-     * @Algolia\Attribute(algoliaName="_geoloc")
-     */
     public function getGeolocalisation()
     {
         return [
@@ -159,7 +147,7 @@ trait EntityPostAddressTrait
 
     public function updatePostAddress(PostAddress $postAddress): void
     {
-        if (!$this->postAddress->equals($postAddress)) {
+        if (!$this->postAddress || !$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
         }
     }

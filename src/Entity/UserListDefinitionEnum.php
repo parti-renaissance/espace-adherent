@@ -52,6 +52,15 @@ final class UserListDefinitionEnum extends Enum
         'user_list_definition.type.thematic_community_agriculture.label' => self::TYPE_THEMATIC_COMMUNITY_AGRICULTURE,
     ];
 
+    public const THEMATIC_COMMUNITY_CODES = [
+        self::TYPE_THEMATIC_COMMUNITY_HEALTH,
+        self::TYPE_THEMATIC_COMMUNITY_EDUCATION,
+        self::TYPE_THEMATIC_COMMUNITY_ECOLOGY,
+        self::TYPE_THEMATIC_COMMUNITY_EUROPE,
+        self::TYPE_THEMATIC_COMMUNITY_TPE_PME,
+        self::TYPE_THEMATIC_COMMUNITY_AGRICULTURE,
+    ];
+
     public static function getTypes(): array
     {
         return self::TYPES;

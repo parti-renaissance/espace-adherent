@@ -2,7 +2,6 @@
 
 namespace App\Entity\VotingPlatform;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,8 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="voting_platform_vote_result", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_key", "election_round_id"}),
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 class VoteResult
 {

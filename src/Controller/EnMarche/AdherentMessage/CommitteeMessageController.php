@@ -2,21 +2,23 @@
 
 namespace App\Controller\EnMarche\AdherentMessage;
 
+use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\AdherentMessageFactory;
 use App\AdherentMessage\AdherentMessageManager;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
-use App\AdherentMessage\CommitteeAdherentMessageDataObject;
 use App\AdherentMessage\Filter\FilterFormFactory;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
-use App\Form\AdherentMessage\CommitteeAdherentMessageType;
+use App\Form\AdherentMessage\AdherentMessageType;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -52,7 +54,7 @@ class CommitteeMessageController extends Controller
             throw new BadRequestHttpException('Invalid status');
         }
 
-        return $this->renderTemplate('message/list.html.twig', $committee, [
+        return $this->renderTemplate('message/list_committee.html.twig', $committee, [
             'messages' => $paginator = $repository->findAllCommitteeMessage(
                 $adherent,
                 $committee,
@@ -78,7 +80,7 @@ class CommitteeMessageController extends Controller
         AdherentMessageManager $manager
     ): Response {
         $form = $this
-            ->createForm(CommitteeAdherentMessageType::class)
+            ->createForm(AdherentMessageType::class)
             ->handleRequest($request)
         ;
 
@@ -106,7 +108,7 @@ class CommitteeMessageController extends Controller
             ]);
         }
 
-        return $this->renderTemplate('message/committee_create.html.twig', $committee, ['form' => $form->createView()]);
+        return $this->renderTemplate('message/create.html.twig', $committee, ['form' => $form->createView()]);
     }
 
     /**
@@ -125,10 +127,7 @@ class CommitteeMessageController extends Controller
         }
 
         $form = $this
-            ->createForm(
-                CommitteeAdherentMessageType::class,
-                $dataObject = CommitteeAdherentMessageDataObject::createFromEntity($message)
-            )
+            ->createForm(AdherentMessageType::class, $dataObject = AdherentMessageDataObject::createFromEntity($message))
             ->handleRequest($request)
         ;
 
@@ -150,7 +149,7 @@ class CommitteeMessageController extends Controller
             ]);
         }
 
-        return $this->renderTemplate('message/committee_update.html.twig', $committee, ['form' => $form->createView()]);
+        return $this->renderTemplate('message/update.html.twig', $committee, ['form' => $form->createView()]);
     }
 
     /**
@@ -261,21 +260,47 @@ class CommitteeMessageController extends Controller
 
         if ($manager->sendCampaign($message)) {
             $message->markAsSent();
-
-            if ($message->isSendToTimeline()) {
-                $entityManager->persist(CommitteeFeedItem::createMessage(
-                    $committee,
-                    $message->getAuthor(),
-                    $message->getContent()
-                ));
-            }
-
             $entityManager->flush();
 
             $this->addFlash('info', 'adherent_message.campaign_sent_successfully');
+
+            return $this->redirectToRoute('app_message_committee_send_success', ['committee_slug' => $committee->getSlug(), 'uuid' => $message->getUuid()->toString()]);
         } else {
-            $this->addFlash('info', 'adherent_message.campaign_sent_failure');
+            $this->addFlash('error', 'adherent_message.campaign_sent_failure');
         }
+
+        return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
+    }
+
+    /**
+     * @Route("/{uuid}/confirmation", name="send_success", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")
+     */
+    public function sendSuccessAction(AbstractAdherentMessage $message, Committee $committee): Response
+    {
+        return $this->renderTemplate('message/send_success/committee.html.twig', $committee, ['message' => $message]);
+    }
+
+    /**
+     * @Route("/{uuid}/publish", name="publish_message", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()")
+     */
+    public function publishMessageAction(
+        AbstractAdherentMessage $message,
+        EntityManagerInterface $manager,
+        Committee $committee
+    ): Response {
+        $message->setSendToTimeline(true);
+        $manager->persist(CommitteeFeedItem::createMessage(
+            $committee,
+            $message->getAuthor(),
+            $message->getContent()
+        ));
+        $manager->flush();
+
+        $this->addFlash('info', 'Le message a bien été publié.');
 
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }

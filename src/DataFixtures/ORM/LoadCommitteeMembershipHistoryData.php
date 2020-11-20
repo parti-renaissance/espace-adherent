@@ -9,9 +9,10 @@ use App\Entity\Reporting\CommitteeMembershipAction;
 use App\Entity\Reporting\CommitteeMembershipHistory;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadCommitteeMembershipHistoryData extends Fixture
+class LoadCommitteeMembershipHistoryData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -67,6 +68,8 @@ class LoadCommitteeMembershipHistoryData extends Fixture
 
     public function getDependencies()
     {
-        return [LoadAdherentData::class];
+        return [
+            LoadCommitteeData::class,
+        ];
     }
 }

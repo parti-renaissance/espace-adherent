@@ -2,9 +2,10 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
+use App\Entity\PostAddress;
+use App\Membership\ActivityPositions;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -13,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="thematic_community_contact")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Contact
 {
@@ -24,7 +23,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */
@@ -33,7 +32,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
      */
@@ -42,7 +41,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank
      * @Assert\Email
@@ -50,14 +49,14 @@ class Contact
     private $email;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      */
     private $gender;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(nullable=true)
      */
@@ -74,7 +73,10 @@ class Contact
     private $birthDate;
 
     /**
+     * @var PhoneNumber
+     *
      * @ORM\Column(type="phone_number", nullable=true)
+     *
      * @Assert\NotBlank
      */
     private $phone;
@@ -82,7 +84,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -91,7 +93,7 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
      */
@@ -100,15 +102,21 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
      */
     private $job;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private $position;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
+        $this->postAddress = PostAddress::createEmptyAddress();
     }
 
     public function getFirstName(): ?string
@@ -166,7 +174,7 @@ class Contact
         return $this->birthDate;
     }
 
-    public function setBirthDate(\DateTime $birthDate): void
+    public function setBirthDate(?\DateTime $birthDate): void
     {
         $this->birthDate = $birthDate;
     }
@@ -176,12 +184,12 @@ class Contact
         return $this->phone;
     }
 
-    public function setPhone(PhoneNumber $phone): void
+    public function setPhone(?PhoneNumber $phone): void
     {
         $this->phone = $phone;
     }
 
-    public function getActivityArea(): string
+    public function getActivityArea(): ?string
     {
         return $this->activityArea;
     }
@@ -191,7 +199,7 @@ class Contact
         $this->activityArea = $activityArea;
     }
 
-    public function getJobArea(): string
+    public function getJobArea(): ?string
     {
         return $this->jobArea;
     }
@@ -201,7 +209,7 @@ class Contact
         $this->jobArea = $jobArea;
     }
 
-    public function getJob(): string
+    public function getJob(): ?string
     {
         return $this->job;
     }
@@ -209,5 +217,19 @@ class Contact
     public function setJob(string $job): void
     {
         $this->job = $job;
+    }
+
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(string $position): void
+    {
+        if (!ActivityPositions::exists($position)) {
+            throw new \InvalidArgumentException(sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositions::ALL)));
+        }
+
+        $this->position = $position;
     }
 }

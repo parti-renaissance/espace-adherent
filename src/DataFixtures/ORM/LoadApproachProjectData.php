@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ProgrammaticFoundation\Project;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadApproachProjectData extends AbstractFixture implements DependentFixtureInterface
+class LoadApproachProjectData extends Fixture implements DependentFixtureInterface
 {
     private const CITIES = [
         'Lyon',

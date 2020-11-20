@@ -22,12 +22,12 @@ class CommitteeManagementAuthority
     public function __construct(
         CommitteeManager $manager,
         UrlGeneratorInterface $urlGenerator,
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         EventDispatcherInterface $dispatcher
     ) {
         $this->manager = $manager;
         $this->urlGenerator = $urlGenerator;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->dispatcher = $dispatcher;
     }
 

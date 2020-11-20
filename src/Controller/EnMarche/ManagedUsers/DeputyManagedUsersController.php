@@ -31,6 +31,7 @@ class DeputyManagedUsersController extends AbstractManagedUsersController
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
             'single_zone' => true,
+            'space_type' => $this->getSpaceType(),
         ]);
     }
 
@@ -42,7 +43,7 @@ class DeputyManagedUsersController extends AbstractManagedUsersController
 
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::DEPUTY_EMAIL,
-            [$adherent->getManagedDistrict()->getReferentTag()],
+            [$adherent->getManagedDistrict()->getReferentTag()->getZone()],
             $this->getRestrictedCommittees($session),
             $this->getRestrictedCities($session)
         );

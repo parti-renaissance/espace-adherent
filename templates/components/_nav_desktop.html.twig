@@ -43,9 +43,22 @@
                 </ul>
             </div>
         </div>
-        <li>
-            <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
-        </li>
+        <div class="l__row">
+            <div class="nav-dropdown nav-dropdown__mrg--0">
+                <p>
+                    Actualités
+                    <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
+                </p>
+                <ul class="nav-dropdown__item">
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'infocovid' }) }}">InfoCovid</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('articles_list', { category: 'tout' }) }}">Toutes nos actualités</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="l__row">
             <div class="nav-dropdown">
                 <p>
@@ -78,6 +91,11 @@
                     <li>
                         <a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a>
                     </li>
+                    {% if is_canary_enabled() %}
+                    <li>
+                        <a href="{{ path('app_thematic_community_index') }}">Communautés thématiques</a>
+                    </li>
+                    {% endif %}
                     <li>
                         <a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a>
                     </li>
@@ -183,10 +201,13 @@
     is_granted('ROLE_MUNICIPAL_MANAGER') or
     is_granted('ROLE_MUNICIPAL_MANAGER_SUPERVISOR') or
     is_granted('ROLE_SENATORIAL_CANDIDATE') or
+    is_granted('ROLE_CANDIDATE') or
     is_granted('ROLE_DELEGATED_REFERENT') or
     is_granted('ROLE_DELEGATED_DEPUTY') or
     is_granted('ROLE_DELEGATED_SENATOR') or
-    is_granted('ROLE_LRE')
+    is_granted('ROLE_DELEGATED_CANDIDATE') or
+    is_granted('ROLE_LRE') or
+    is_granted('ROLE_THEMATIC_COMMUNITY_CHIEF')
 %}
     {% set totalSections =
         (app.user.isSupervisor or app.user.isHost) +
@@ -205,11 +226,14 @@
         app.user.isMunicipalManager +
         app.user.isElectionResultsReporter +
         app.user.isSenatorialCandidate +
+        app.user.isCandidate +
         app.user.isLre +
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') +
         app.user.isDelegatedReferent +
         app.user.isDelegatedDeputy +
-        app.user.isDelegatedSenator
+        app.user.isDelegatedSenator +
+        app.user.isDelegatedCandidate +
+        app.user.isThematicCommunityChief
     %}
 
     <div class="background--darker l__hide--on-tablet">

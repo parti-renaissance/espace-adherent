@@ -26,8 +26,8 @@ class AssessorControllerTest extends WebTestCase
 
         // Step 1
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Informations personnelles', $crawler->filter('.title h1')->text());
-        $this->assertContains('1/3', $crawler->filter('span.step')->text());
+        $this->assertStringContainsString('Informations personnelles', $crawler->filter('.title h1')->text());
+        $this->assertStringContainsString('1/3', $crawler->filter('span.step')->text());
 
         $this->client->submit($crawler->filter('form[name="assessor_request"]')->form([
             'assessor_request' => [
@@ -42,11 +42,7 @@ class AssessorControllerTest extends WebTestCase
                 'officeNumber' => '001',
                 'birthCity' => 'Lille',
                 'emailAddress' => 'ernestino@bonsoirini.fr',
-                'birthdate' => [
-                    'year' => '1985',
-                    'month' => '10',
-                    'day' => '27',
-                ],
+                'birthdate' => '1985-10-27',
                 'phone' => [
                     'country' => 'FR',
                     'number' => '0620202020',
@@ -61,8 +57,8 @@ class AssessorControllerTest extends WebTestCase
 
         // Step 2
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Informations assesseur(e)', $crawler->filter('.title h1')->text());
-        $this->assertContains('2/3', $crawler->filter('span.step')->text());
+        $this->assertStringContainsString('Informations assesseur(e)', $crawler->filter('.title h1')->text());
+        $this->assertStringContainsString('2/3', $crawler->filter('span.step')->text());
 
         $form = $crawler->filter('form[name="assessor_request"]')->form();
         $form->getUri();
@@ -88,28 +84,28 @@ class AssessorControllerTest extends WebTestCase
 
         // Step 3
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains('Récapitulatif', $crawler->filter('.title h1')->text());
-        $this->assertContains('3/3', $crawler->filter('span.step')->text());
+        $this->assertStringContainsString('Récapitulatif', $crawler->filter('.title h1')->text());
+        $this->assertStringContainsString('3/3', $crawler->filter('span.step')->text());
 
-        $this->assertContains('Homme', $crawler->filter('.summary-bloc tr.gender td:last-child')->text());
-        $this->assertContains('Ernestino', $crawler->filter('.summary-bloc tr.firstname td:last-child')->text());
-        $this->assertContains('Bonsoirini', $crawler->filter('.summary-bloc tr.lastname td:last-child')->text());
-        $this->assertContains('39 rue du Welsh', $crawler->filter('.summary-bloc tr.address td:last-child')->text());
-        $this->assertContains('59290', $crawler->filter('.summary-bloc tr.postalcode td:last-child')->text());
-        $this->assertContains('Wasquehal', $crawler->filter('.summary-bloc tr.city td:last-child')->text());
-        $this->assertContains('Wasquehal', $crawler->filter('.summary-bloc tr.city td:last-child')->text());
-        $this->assertContains('001', $crawler->filter('.summary-bloc tr.office-number td:last-child')->text());
-        $this->assertContains('Lille', $crawler->filter('.summary-bloc tr.birthcity td:last-child')->text());
-        $this->assertContains('ernestino@bonsoirini.fr', $crawler->filter(
+        $this->assertStringContainsString('Homme', $crawler->filter('.summary-bloc tr.gender td:last-child')->text());
+        $this->assertStringContainsString('Ernestino', $crawler->filter('.summary-bloc tr.firstname td:last-child')->text());
+        $this->assertStringContainsString('Bonsoirini', $crawler->filter('.summary-bloc tr.lastname td:last-child')->text());
+        $this->assertStringContainsString('39 rue du Welsh', $crawler->filter('.summary-bloc tr.address td:last-child')->text());
+        $this->assertStringContainsString('59290', $crawler->filter('.summary-bloc tr.postalcode td:last-child')->text());
+        $this->assertStringContainsString('Wasquehal', $crawler->filter('.summary-bloc tr.city td:last-child')->text());
+        $this->assertStringContainsString('Wasquehal', $crawler->filter('.summary-bloc tr.city td:last-child')->text());
+        $this->assertStringContainsString('001', $crawler->filter('.summary-bloc tr.office-number td:last-child')->text());
+        $this->assertStringContainsString('Lille', $crawler->filter('.summary-bloc tr.birthcity td:last-child')->text());
+        $this->assertStringContainsString('ernestino@bonsoirini.fr', $crawler->filter(
             '.summary-bloc tr.email td:last-child')->text()
         );
-        $this->assertContains('Oui', $crawler->filter('.summary-bloc tr.reachable td:last-child')->text());
-        $this->assertContains('+33 6 20 20 20 20', $crawler->filter('.summary-bloc tr.phone td:last-child')->text());
-        $this->assertContains('France', $crawler->filter('.summary-bloc tr.assessor-country td:last-child')->text());
-        $this->assertContains('Lille', $crawler->filter('.summary-bloc tr.assessor-city td:last-child')->text());
-        $this->assertContains('59000', $crawler->filter('.summary-bloc tr.assessor-postalcode td:last-child')->text());
-        $this->assertContains('Titulaire', $crawler->filter('.summary-bloc tr.assessor-office td:last-child')->text());
-        $this->assertContains('Salle Polyvalente De Wazemmes', $crawler->filter(
+        $this->assertStringContainsString('Oui', $crawler->filter('.summary-bloc tr.reachable td:last-child')->text());
+        $this->assertStringContainsString('+33 6 20 20 20 20', $crawler->filter('.summary-bloc tr.phone td:last-child')->text());
+        $this->assertStringContainsString('France', $crawler->filter('.summary-bloc tr.assessor-country td:last-child')->text());
+        $this->assertStringContainsString('Lille', $crawler->filter('.summary-bloc tr.assessor-city td:last-child')->text());
+        $this->assertStringContainsString('59000', $crawler->filter('.summary-bloc tr.assessor-postalcode td:last-child')->text());
+        $this->assertStringContainsString('Titulaire', $crawler->filter('.summary-bloc tr.assessor-office td:last-child')->text());
+        $this->assertStringContainsString('Salle Polyvalente De Wazemmes', $crawler->filter(
             '.summary-bloc tr.assessor-vote-place-wishes td:last-child')->text()
         );
 
@@ -130,10 +126,10 @@ class AssessorControllerTest extends WebTestCase
 
     /**
      * @dataProvider provideFormError
-     * @expectedException \InvalidArgumentException
      */
     public function testAssessorRequestFormErrors(array $testedValue)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_REQUEST_PATH);
 
         $this->client->submit($crawler->filter('form[name="assessor_request"]')->form([
@@ -154,14 +150,14 @@ class AssessorControllerTest extends WebTestCase
         ]];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

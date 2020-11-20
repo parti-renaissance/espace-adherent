@@ -2,16 +2,14 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\PostAddress;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="thematic_community_membership_adherent")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AdherentMembership extends ThematicCommunityMembership
 {
@@ -50,14 +48,14 @@ class AdherentMembership extends ThematicCommunityMembership
         return $this->adherent ? $this->adherent->getPhone() : null;
     }
 
+    public function getPosition(): ?string
+    {
+        return $this->adherent ? $this->adherent->getPosition() : null;
+    }
+
     public function getPostAddress(): ?PostAddress
     {
         return $this->adherent->getPostAddressModel();
-    }
-
-    public function getJob(): ?string
-    {
-        return $this->adherent ? $this->adherent->getJob() : null;
     }
 
     public function getCityName(): ?string
@@ -68,5 +66,20 @@ class AdherentMembership extends ThematicCommunityMembership
     public function getPostalCode(): ?string
     {
         return $this->adherent ? $this->adherent->getPostalCode() : null;
+    }
+
+    public function hasSmsSubscriptionType(): bool
+    {
+        return $this->adherent ? $this->adherent->hasSmsSubscriptionType() : false;
+    }
+
+    public function hasEmailSubscriptionType(): bool
+    {
+        return $this->adherent ? $this->adherent->hasSubscriptionType(SubscriptionTypeEnum::THEMATIC_COMMUNITY_EMAIL) : false;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->adherent ? $this->adherent->isCertified() : false;
     }
 }

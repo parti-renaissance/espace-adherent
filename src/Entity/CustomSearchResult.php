@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,8 +20,6 @@ class CustomSearchResult implements EntityMediaInterface
      * @ORM\Column(type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue
-     *
-     * @Algolia\Attribute
      */
     private $id;
 
@@ -33,8 +30,6 @@ class CustomSearchResult implements EntityMediaInterface
      *
      * @Assert\Length(max=100)
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $title;
 
@@ -45,8 +40,6 @@ class CustomSearchResult implements EntityMediaInterface
      *
      * @Assert\Length(min=10, max=255)
      * @Assert\NotBlank
-     *
-     * @Algolia\Attribute
      */
     private $description;
 
@@ -56,8 +49,6 @@ class CustomSearchResult implements EntityMediaInterface
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
-     *
-     * @Algolia\Attribute
      */
     private $keywords;
 
@@ -65,8 +56,6 @@ class CustomSearchResult implements EntityMediaInterface
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @Algolia\Attribute
      */
     private $url;
 

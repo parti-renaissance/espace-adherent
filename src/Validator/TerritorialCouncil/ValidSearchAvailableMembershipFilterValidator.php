@@ -42,7 +42,7 @@ class ValidSearchAvailableMembershipFilterValidator extends ConstraintValidator
             TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR,
             TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
             TerritorialCouncilQualityEnum::CITY_COUNCILOR,
-            TerritorialCouncilQualityEnum::CONSULAR_CONSELOR,
+            TerritorialCouncilQualityEnum::CONSULAR_COUNCILOR,
             TerritorialCouncilQualityEnum::BOROUGH_COUNCILOR,
         ];
     }

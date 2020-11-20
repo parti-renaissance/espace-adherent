@@ -1,7 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
-
-{% block field %}
-    {% if object.isCertified %}
-        {% include('components/_certification_logo.html.twig') %}
-    {% endif %}
-{% endblock %}

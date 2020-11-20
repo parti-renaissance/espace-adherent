@@ -10,12 +10,14 @@ class DelegatedAccessEnum extends Enum
     public const TYPE_DEPUTY = 'deputy';
     public const TYPE_SENATOR = 'senator';
     public const TYPE_MUNICIPAL_CHIEF = 'municipal_chief';
+    public const TYPE_CANDIDATE = 'candidate';
 
     public const TYPES = [
         self::TYPE_REFERENT,
         self::TYPE_DEPUTY,
         self::TYPE_SENATOR,
         self::TYPE_MUNICIPAL_CHIEF,
+        self::TYPE_CANDIDATE,
     ];
 
     public static function getAccessesForType(string $type): array
@@ -32,19 +34,24 @@ class DelegatedAccessEnum extends Enum
             $accesses[] = DelegatedAccess::ACCESS_COMMITTEE;
         }
 
+        if (self::TYPE_CANDIDATE === $type) {
+            $accesses[] = DelegatedAccess::ACCESS_FILES;
+        }
+
         return $accesses;
     }
 
     public static function getDelegatedAccessRoutes(string $type): array
     {
         return [
+            DelegatedAccess::ACCESS_ADHERENTS => "app_{$type}_managed_users_list",
             DelegatedAccess::ACCESS_MESSAGES => "app_message_{$type}_list",
             DelegatedAccess::ACCESS_EVENTS => "app_{$type}_event_manager_events",
-            DelegatedAccess::ACCESS_ADHERENTS => "app_{$type}_managed_users_list",
             DelegatedAccess::ACCESS_COMMITTEE => "app_{$type}_committees",
             DelegatedAccess::ACCESS_CITIZEN_PROJECTS => "app_{$type}_citizen_projects_list",
             DelegatedAccess::ACCESS_JECOUTE => "app_jecoute_{$type}_local_surveys_list",
             DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES => "app_{$type}_elected_representatives_list",
+            DelegatedAccess::ACCESS_FILES => "app_{$type}_files_list",
         ];
     }
 
@@ -65,6 +72,7 @@ class DelegatedAccessEnum extends Enum
             'election_results_reporter_space_cities' => 'app_election_results_reporter_space_cities_list',
             'municipal_manager_municipal_manager_supervisor_attribution' => 'app_municipal_manager_municipal_manager_supervisor_attribution_form',
             'lre_elected_representatives' => 'app_lre_elected_representatives_list',
+            'thematic_community' => 'app_thematic_community_members_list',
         ][$type] ?? "app_{$type}_managed_users_list";
     }
 }

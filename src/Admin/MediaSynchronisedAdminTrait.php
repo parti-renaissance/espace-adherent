@@ -3,13 +3,13 @@
 namespace App\Admin;
 
 use App\Entity\EntityMediaInterface;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 
 trait MediaSynchronisedAdminTrait
 {
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     protected $storage;
 
@@ -18,7 +18,7 @@ trait MediaSynchronisedAdminTrait
      */
     protected $glide;
 
-    public function setStorage(Filesystem $storage): void
+    public function setStorage(FilesystemInterface $storage): void
     {
         $this->storage = $storage;
     }

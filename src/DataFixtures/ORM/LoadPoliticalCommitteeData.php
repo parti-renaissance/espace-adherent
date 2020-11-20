@@ -5,9 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Repository\ReferentTagRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadPoliticalCommitteeData extends Fixture
+class LoadPoliticalCommitteeData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -30,6 +31,9 @@ class LoadPoliticalCommitteeData extends Fixture
 
                     $this->createPoliticalCommittee($manager, 'CoPol de Paris', '75', true);
 
+                    break;
+                case '77':
+                    $this->createPoliticalCommittee($manager, "CoPol du département $department", $department, true);
                     break;
                 // does not exist
                 case '96':

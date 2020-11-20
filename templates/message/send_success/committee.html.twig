@@ -1,0 +1,9 @@
+{% extends 'message/send_success.html.twig' %}
+
+{% block message_send_success_sub_content %}
+    {% if not message.isSendToTimeline %}
+        <div class="l__wrapper--600 b__nudge--top-large">
+            <a href="{{ path('app_message_committee_publish_message', {committee_slug: committee.slug, uuid: message.uuid}) }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">Publier le message sur la page du comité</a>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Admin\ThematicCommunity;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ThematicCommunity\AdherentMembership;
 use App\Entity\ThematicCommunity\ContactMembership;
+use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Entity\ThematicCommunity\ThematicCommunityToUserListDefinitionEnum;
 use App\Entity\UserListDefinition;
@@ -129,10 +130,6 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     'disabled' => !$isContactMembership,
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 ])
-                ->add('job', TextType::class, [
-                    'label' => 'Métier',
-                    'disabled' => !$isContactMembership,
-                ])
                 ->add('postAddress.postalCode', TextType::class, [
                     'label' => 'Code postal',
                     'disabled' => !$isContactMembership,
@@ -163,6 +160,19 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         ;
                     },
                 ])
+                ->add('hasJob', ChoiceType::class, [
+                    'label' => 'Métier en lien avec la communauté ?',
+                    'choices' => [
+                        'Non' => 0,
+                        'Oui' => 1,
+                    ],
+                    'expanded' => true,
+                    'multiple' => false,
+                ])
+                ->add('job', TextType::class, [
+                    'label' => 'Métier ?',
+                    'required' => false,
+                ])
                 ->add('association', ChoiceType::class, [
                     'label' => 'Membre d\'une association',
                     'choices' => [
@@ -176,10 +186,11 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     'label' => 'Nom de l\'association',
                     'required' => false,
                 ])
-                ->add('motivation', ChoiceType::class, [
+                ->add('motivations', ChoiceType::class, [
+                    'label' => 'Modes d\'engagement',
                     'expanded' => false,
-                    'multiple' => false,
-                    'placeholder' => '-- Choisir une motivation --',
+                    'multiple' => true,
+                    'placeholder' => '-- Choisir un mode d\'engagement --',
                     'choices' => ThematicCommunityMembership::MOTIVATIONS,
                     'choice_label' => static function ($choice) {
                         return 'admin.thematic_community.membership.motivations.'.$choice;
@@ -251,6 +262,33 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     }
 
                     $qb->orWhere($or);
+
+                    return true;
+                },
+            ])
+            ->add('community', CallbackFilter::class, [
+                'label' => 'Communauté',
+                'show_filter' => true,
+                'field_type' => EntityType::class,
+                'field_options' => [
+                    'class' => ThematicCommunity::class,
+                    'multiple' => true,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('tc')
+                            ->where('tc.enabled = 1')
+                        ;
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    /** @var QueryBuilder $qb */
+                    $qb
+                        ->andWhere("$alias.community IN (:value)")
+                        ->setParameter('value', $value['value'])
+                    ;
 
                     return true;
                 },
@@ -382,17 +420,9 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    /** @var QueryBuilder $qb */
-                    $qb
-                        ->leftJoin("$alias.contact", 'contact')
-                        ->leftJoin("$alias.adherent", 'adherent')
+                    $qb->andWhere("$alias.hasJob = :with_job")
+                        ->setParameter('with_job', (bool) $value['value'])
                     ;
-
-                    if (0 === $value['value']) {
-                        $qb->andWhere('adherent.job IS NULL AND contact.job IS NULL');
-                    } else {
-                        $qb->andWhere('adherent.job IS NOT NULL OR contact.job IS NOT NULL');
-                    }
 
                     return true;
                 },
@@ -402,6 +432,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
+                    'multiple' => true,
                     'choices' => ThematicCommunityMembership::MOTIVATIONS,
                     'choice_label' => static function ($choice) {
                         return 'admin.thematic_community.membership.motivations.'.$choice;
@@ -412,8 +443,12 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $qb->andWhere(sprintf('%s.motivation', $alias).' = :motivation');
-                    $qb->setParameter('motivation', mb_strtolower($value['value']));
+                    $or = new Orx();
+                    foreach ($value['value'] as $i => $motivation) {
+                        $or->add(sprintf('FIND_IN_SET(:motivation_%d, %s.motivations) > 0', $i, $alias));
+                        $qb->setParameter(sprintf('motivation_%d', $i), mb_strtolower($motivation));
+                    }
+                    $qb->andWhere($or);
 
                     return true;
                 },

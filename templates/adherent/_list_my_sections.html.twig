@@ -75,6 +75,18 @@
         <a href="{{ path('app_access_delegation_unset', {type: 'senatorial_candidate_elected_representatives'}) }}">Espace Sénatoriales</a>
     </li>
 {% endif %}
+{% if app.user.isCandidate %}
+    <li>
+        <a href="{{ path('app_access_delegation_unset', {type: 'candidate'}) }}">Espace candidat</a>
+    </li>
+{% endif %}
+{% if app.user.isDelegatedCandidate %}
+    {% for delegated_access in app.user.receivedDelegatedAccessOfType('candidate') %}
+        <li>
+            <a href="{{ path('app_access_delegation_set', {uuid: delegated_access.uuid}) }}">Espace candidat partagé ({{ delegated_access.delegator.candidateManagedArea.zone.name }})</a>
+        </li>
+    {% endfor %}
+{% endif %}
 {% if app.user.isJecouteManager %}
     <li>
         <a href="{{ path('app_access_delegation_unset', {type: 'jecoute_manager_local_surveys'}) }}">Espace responsable J'écoute</a>
@@ -113,6 +125,13 @@
     <li>
         <a href="{{ path('app_access_delegation_unset', {type: 'legislative_candidate'}) }}">
             Espace Candidat aux législatives
+        </a>
+    </li>
+{% endif %}
+{% if app.user.isThematicCommunityChief %}
+    <li>
+        <a href="{{ path('app_access_delegation_unset', {type: 'thematic_community'}) }}">
+            Espace Responsable Communautés
         </a>
     </li>
 {% endif %}

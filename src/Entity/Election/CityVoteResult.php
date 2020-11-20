@@ -2,15 +2,12 @@
 
 namespace App\Entity\Election;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\City;
 use App\Entity\ElectionRound;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Election\CityVoteResultRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CityVoteResult extends BaseWithListCollectionResult
 {

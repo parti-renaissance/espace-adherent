@@ -17,11 +17,10 @@
 
         <!-- Algolia -->
         <service id="App\Algolia\AlgoliaIndexedEntityManager" />
-        <service id="App\Algolia\ManualIndexer" />
 
         <!-- Content -->
-        <service class="App\Content\ClarificationFactory" />
-        <service class="App\Content\MediaFactory" />
+        <service id="App\Content\ClarificationFactory" />
+        <service id="App\Content\MediaFactory" />
 
         <!-- CitizenProject -->
         <service id="App\CitizenProject\CitizenProjectAuthority" />
@@ -50,27 +49,14 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
-        <!-- Committee -->
-        <service id="App\Committee\CommitteeMergeCommandHandler" public="true" />
-
         <!-- TurnkeyProject -->
         <service id="App\TurnkeyProject\TurnkeyProjectManager">
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
             </call>
         </service>
-        <service id="App\Validator\UniqueTurnkeyProjectPinnedValidator" />
-        <service id="App\Validator\UniqueVotePlaceAssessorValidator" />
-        <service id="App\Validator\ValidAdherentCoReferentValidator" />
-
-        <!-- Biography -->
-        <service id="App\Validator\UniqueExecutiveOfficeMemberRoleValidator" />
 
         <!-- Donation -->
-        <service id="App\Validator\PayboxSubscriptionValidator" />
-        <service id="App\Validator\UniqueDonationSubscriptionValidator" />
-        <service id="App\Validator\MaxFiscalYearDonationValidator" />
-        <service id="App\Validator\MaxMonthDonationValidator" />
         <service id="App\Donation\DonationFactory" />
         <service id="App\Donation\PayboxPaymentUnsubscription">
             <argument type="service" key="$mailer" id="app.mailer.transactional" />
@@ -102,9 +88,6 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>
         <service id="App\Membership\EventListener\ChangeEmailFlashMessageSubscriber" />
-        <service id="App\Validator\BannedAdherentValidator">
-            <argument type="service" id="App\Repository\BannedAdherentRepository" />
-        </service>
         <service id="App\Membership\AdherentAccountActivationHandler" />
 
         <!-- Event -->
@@ -194,14 +177,7 @@
         <service id="App\Procuration\ProcurationRequestSerializer" />
         <service id="App\Procuration\ProcurationSession" />
 
-        <!-- Referent -->
-        <service id="App\Referent\ReferentTagManager" />
-        <service id="App\Referent\ManagedCommitteesExporter" />
-        <service id="App\Referent\ManagedCitizenProjectsExporter" />
-
         <!-- J'écoute -->
-        <service id="App\Validator\SurveyQuestionTypeChoiceValidator" />
-        <service id="App\Validator\DataSurveyAnswerTypeChoiceValidator" />
         <service id="App\Jecoute\DataSurveyNotifier">
             <argument type="service" id="app.mailer.transactional"/>
         </service>
@@ -240,32 +216,6 @@
         </service>
         <service id="App\Serializer\XlsxEncoder" />
 
-        <!-- Normalizer -->
-        <service id="App\Normalizer\ItemCollectionNormalizer" />
-        <service id="App\Normalizer\MunicipalEventNormalizer" />
-        <service id="App\Normalizer\ElectedRepresentativeNormalizer" />
-        <service id="App\Normalizer\IdeaNormalizer">
-            <argument type="service" id="api_platform.serializer.normalizer.item" />
-        </service>
-        <service id="App\Normalizer\IdeaDenormalizer" />
-        <service id="App\Normalizer\AuthorDenormalizer" />
-        <service id="App\Normalizer\AdherentSegmentDenormalizer" />
-        <service id="App\Normalizer\DptSiteNewsletterCommandDenormalizer" />
-        <service id="App\Normalizer\IdeaAuthorNicknameNormalizer">
-            <argument type="service" id="api_platform.serializer.normalizer.item"/>
-        </service>
-        <service id="App\Normalizer\IdeaThemeNormalizer">
-            <argument type="service" id="api_platform.serializer.normalizer.item"/>
-        </service>
-        <service id="App\Normalizer\IdeaThreadNormalizer">
-            <argument type="service" id="api_platform.serializer.normalizer.item"/>
-            <argument type="service" id="api_platform.metadata.resource.metadata_factory"/>
-        </service>
-        <service id="App\Normalizer\IdeaAnswerNormalizer">
-            <argument type="service" id="api_platform.serializer.normalizer.item"/>
-            <argument type="service" id="api_platform.metadata.resource.metadata_factory"/>
-        </service>
-
         <!-- Timeline -->
         <service id="App\Timeline\TimelineFactory" />
         <service id="App\Timeline\TimelineImageFactory" public="true">
@@ -289,10 +239,6 @@
         <service id="App\HTMLPurifier\Injector\ImageDimension">
             <argument>%image_max_length%</argument>
         </service>
-
-        <!-- Validators -->
-        <service id="App\Validator\DateRangeValidator" />
-        <service id="App\Validator\EventRegistrationValidator" />
 
         <!-- History -->
         <service id="App\History\EmailSubscriptionHistoryHandler" />
@@ -319,14 +265,6 @@
         <!-- User subscriber -->
         <service id="App\Membership\EventListener\UserSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-        </service>
-
-        <!-- Committee subscriber -->
-        <service id="App\Committee\EventListener\CommitteeSubscriber">
-            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
-        </service>
-        <service id="App\Committee\EventListener\SendEmailForNewFollowerListener">
-            <argument type="service" key="$mailer" id="app.mailer.transactional" />
         </service>
 
         <!-- Event subscriber -->
@@ -425,7 +363,6 @@
         <service id="App\Storage\ImageStorage" />
 
         <!-- Ideas Workshop -->
-        <service id="App\Validator\CommitteeMemberValidator" />
         <service id="App\IdeasWorkshop\Listener\IdeaPublishListener" />
         <service id="App\IdeasWorkshop\Listener\IdeaExtendListener" />
         <service id="App\IdeasWorkshop\Listener\ApproveThreadCommentListener" />
@@ -442,7 +379,6 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
             <tag name="messenger.message_handler"/>
         </service>
-        <service id="App\Validator\MandatoryQuestionValidator" />
 
         <service id="App\Logging\CurrentUserProcessor">
             <tag name="monolog.processor" method="processRecord" />
@@ -473,8 +409,6 @@
         </service>
 
         <!-- Mailchimp -->
-        <service id="App\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />
-        <service id="App\Mailchimp\Synchronisation\EventListener\ElectedRepresentativeEventSubscriber" />
         <service id="App\Mailchimp\Driver">
             <argument type="service" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
@@ -502,27 +436,6 @@
             <tag name="container.service_locator" />
         </service>
 
-        <prototype namespace="App\Mailchimp\Campaign\ContentSection\" resource="../../src/Mailchimp/Campaign/ContentSection/" />
-
-        <service id="app.mailchimp.content_section_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
-            <argument type="collection">
-                <argument key="App\Entity\AdherentMessage\CitizenProjectAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\CitizenProjectMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\CommitteeAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\DeputyAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\ReferentAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\ReferentTerritorialCouncilMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\MunicipalChiefAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\SenatorAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\SenatorMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\ElectedRepresentativeMessageSectionBuilder" />
-                <argument key="App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage" type="service" id="App\Mailchimp\Campaign\ContentSection\LegislativeCandidateMessageSectionBuilder" />
-            </argument>
-            <tag name="container.service_locator" />
-        </service>
-
-        <service id="App\Mailchimp\Campaign\CampaignContentRequestBuilder">
-            <argument type="service" key="$sectionBuildersLocator" id="app.mailchimp.content_section_builders_locator" />
-        </service>
-
         <service id="App\Mailchimp\Campaign\MailchimpObjectIdMapping">
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_NEWSLETTER_LIST_ID)%</argument>
@@ -540,12 +453,6 @@
 
         <service id="App\Mailchimp\Synchronisation\RequestBuilder" shared="false"/>
         <service id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" shared="false"/>
-        <service id="App\Mailchimp\Campaign\CampaignRequestBuilder" />
-        <service id="App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber" />
-        <service id="App\Mailchimp\Campaign\Listener\SynchroniseCampaignSegmentsSubscriber" />
-        <service id="App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber" />
-
-        <service id="App\Normalizer\UuidNormalizer" />
 
         <!-- Swagger -->
         <service id="App\Swagger\SwaggerDecorator"
@@ -585,7 +492,6 @@
         <service id="App\ChezVous\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
         </service>
-        <service id="App\Validator\ChezVous\MeasurePayloadValidator" />
 
         <service id="App\EventListener\AdministratorExportHistoryListener" />
 
@@ -595,8 +501,5 @@
                 <argument type="service" id="logger" />
             </call>
         </service>
-
-        <!-- TerritorialCouncil -->
-        <service class="App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator" />
     </services>
 </container>

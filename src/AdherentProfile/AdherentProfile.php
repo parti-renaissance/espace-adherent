@@ -4,11 +4,16 @@ namespace App\AdherentProfile;
 
 use App\Address\Address;
 use App\Entity\Adherent;
+use App\Membership\MembershipInterface;
+use App\Validator\UniqueMembership;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AdherentProfile
+/**
+ * @UniqueMembership
+ */
+class AdherentProfile implements MembershipInterface
 {
     /**
      * @var string|null
@@ -99,7 +104,12 @@ class AdherentProfile
      * @var \DateTime|null
      *
      * @Assert\NotBlank(message="adherent.birthdate.not_blank")
-     * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age")
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="-15 years",
+     *     minMessage="adherent.birthdate.maximum_required_age",
+     *     maxMessage="adherent.birthdate.minimum_required_age"
+     * )
      */
     private $birthdate;
 
@@ -141,6 +151,16 @@ class AdherentProfile
      */
     private $activityArea;
 
+    /**
+     * @var array
+     *
+     * @Assert\Choice(
+     *     callback={"App\Membership\Mandates", "all"},
+     *     multiple=true
+     * )
+     */
+    private $mandates = [];
+
     public function __construct()
     {
         $this->address = new Address();
@@ -165,6 +185,7 @@ class AdherentProfile
         $dto->telegramPageUrl = $adherent->getTelegramPageUrl();
         $dto->job = $adherent->getJob();
         $dto->activityArea = $adherent->getActivityArea();
+        $dto->mandates = $adherent->getMandates();
 
         return $dto;
     }
@@ -274,7 +295,7 @@ class AdherentProfile
         return $this->facebookPageUrl;
     }
 
-    public function setFacebookPageUrl(string $facebookPageUrl): void
+    public function setFacebookPageUrl(?string $facebookPageUrl): void
     {
         $this->facebookPageUrl = $facebookPageUrl;
     }
@@ -284,7 +305,7 @@ class AdherentProfile
         return $this->twitterPageUrl;
     }
 
-    public function setTwitterPageUrl(string $twitterPageUrl): void
+    public function setTwitterPageUrl(?string $twitterPageUrl): void
     {
         $this->twitterPageUrl = $twitterPageUrl;
     }
@@ -294,7 +315,7 @@ class AdherentProfile
         return $this->linkedinPageUrl;
     }
 
-    public function setLinkedinPageUrl(string $linkedinPageUrl): void
+    public function setLinkedinPageUrl(?string $linkedinPageUrl): void
     {
         $this->linkedinPageUrl = $linkedinPageUrl;
     }
@@ -304,7 +325,7 @@ class AdherentProfile
         return $this->telegramPageUrl;
     }
 
-    public function setTelegramPageUrl(string $telegramPageUrl): void
+    public function setTelegramPageUrl(?string $telegramPageUrl): void
     {
         $this->telegramPageUrl = $telegramPageUrl;
     }
@@ -314,7 +335,7 @@ class AdherentProfile
         return $this->job;
     }
 
-    public function setJob(string $job): void
+    public function setJob(?string $job): void
     {
         $this->job = $job;
     }
@@ -324,8 +345,18 @@ class AdherentProfile
         return $this->activityArea;
     }
 
-    public function setActivityArea(string $activityArea): void
+    public function setActivityArea(?string $activityArea): void
     {
         $this->activityArea = $activityArea;
+    }
+
+    public function getMandates(): ?array
+    {
+        return $this->mandates;
+    }
+
+    public function setMandates(?array $mandates): void
+    {
+        $this->mandates = $mandates;
     }
 }

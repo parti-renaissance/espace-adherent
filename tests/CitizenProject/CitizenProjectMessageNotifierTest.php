@@ -11,6 +11,7 @@ use App\Collection\AdherentCollection;
 use App\Committee\CommitteeManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCitizenProjectData;
+use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Mailer\MailerService;
@@ -111,7 +112,7 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
         $committeeManager = $this->createMock(CommitteeManager::class);
         $router = $this->createMock(RouterInterface::class);
-        $administrator = $this->createAdministrator(LoadAdherentData::COMMITTEE_1_UUID);
+        $administrator = $this->createAdministrator(LoadCommitteeData::COMMITTEE_1_UUID);
 
         $manager->expects($this->once())->method('getCitizenProjectAdministrators')->willReturn(new AdherentCollection([$administrator]));
         $mailer->expects($this->once())->method('sendMessage');
@@ -200,14 +201,14 @@ class CitizenProjectMessageNotifierTest extends TestCase
         return $manager;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->adherentRepository = $this->createMock(AdherentRepository::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->adherentRepository = null;
 

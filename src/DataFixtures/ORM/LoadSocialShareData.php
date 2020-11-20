@@ -5,29 +5,32 @@ namespace App\DataFixtures\ORM;
 use App\Content\MediaFactory;
 use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
-class LoadSocialShareData implements FixtureInterface, ContainerAwareInterface
+class LoadSocialShareData extends Fixture
 {
-    use ContainerAwareTrait;
+    private $mediaFactory;
+    private $storage;
+
+    public function __construct(MediaFactory $mediaFactory, FilesystemInterface $storage)
+    {
+        $this->mediaFactory = $mediaFactory;
+        $this->storage = $storage;
+    }
 
     public function load(ObjectManager $manager)
     {
-        $mediaFactory = $this->container->get(MediaFactory::class);
-        $storage = $this->container->get('app.storage');
-
         // Medias
         $medias = [];
 
         for ($i = 1; $i <= 4; ++$i) {
             $mediaFile = new File(__DIR__.'/../../../app/data/dist/social'.$i.'.jpg');
-            $storage->put('images/social'.$i.'.jpg', file_get_contents($mediaFile->getPathname()));
+            $this->storage->put('images/social'.$i.'.jpg', file_get_contents($mediaFile->getPathname()));
 
-            $manager->persist($media = $mediaFactory->createFromFile('Social image '.$i, 'social'.$i.'.jpg', $mediaFile));
+            $manager->persist($media = $this->mediaFactory->createFromFile('Social image '.$i, 'social'.$i.'.jpg', $mediaFile));
             $medias[] = $media;
         }
 

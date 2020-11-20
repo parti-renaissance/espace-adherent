@@ -4,10 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\UserListDefinition;
 use App\Entity\UserListDefinitionEnum;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadUserListDefinitionData extends AbstractFixture
+class LoadUserListDefinitionData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
@@ -34,6 +34,9 @@ class LoadUserListDefinitionData extends AbstractFixture
             'user-list-definition-'.UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER,
             $userListDefinitionInstancesMember
         );
+
+        $manager->persist(new UserListDefinition(UserListDefinitionEnum::TYPE_LRE, 'lre-label-1', 'LRE label 1'));
+        $manager->persist(new UserListDefinition(UserListDefinitionEnum::TYPE_LRE, 'lre-label-2', 'LRE label 2'));
 
         $manager->flush();
     }

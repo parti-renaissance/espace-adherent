@@ -4,16 +4,12 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\TurnkeyProject;
 use App\Entity\TurnkeyProjectFile;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadTurnkeyProjectData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadTurnkeyProjectData extends Fixture implements DependentFixtureInterface
 {
-    use ContainerAwareTrait;
-
     public function load(ObjectManager $manager)
     {
         $turnkeyProject1 = new TurnkeyProject(

@@ -2,7 +2,6 @@
 
 namespace App\Entity\Election;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\ElectionRound;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,8 +24,6 @@ use Doctrine\ORM\Mapping as ORM;
  *     "city": "CityVoteResult",
  *     "vote_place": "VotePlaceResult"
  * })
- *
- * @Algolia\Index(autoIndex=false)
  */
 abstract class BaseWithListCollectionResult extends BaseVoteResult
 {

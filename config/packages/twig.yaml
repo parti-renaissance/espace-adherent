@@ -28,3 +28,4 @@ twig:
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
         - 'SonataCoreBundle:Form:colorpicker.html.twig'
+        - 'TetranzSelect2EntityBundle:Form:fields.html.twig'

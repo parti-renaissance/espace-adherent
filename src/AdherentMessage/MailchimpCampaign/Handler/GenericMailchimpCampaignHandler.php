@@ -3,6 +3,7 @@
 namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 
@@ -10,6 +11,7 @@ class GenericMailchimpCampaignHandler implements MailchimpCampaignHandlerInterfa
 {
     private const SUPPORTED_CLASS = [
         CitizenProjectAdherentMessage::class,
+        CandidateAdherentMessage::class,
     ];
 
     public function handle(AdherentMessageInterface $message): void

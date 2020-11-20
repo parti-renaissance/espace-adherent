@@ -2,7 +2,6 @@
 
 namespace App\Entity\Report;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\Adherent;
 use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
@@ -36,8 +35,6 @@ use Ramsey\Uuid\Uuid;
  *         @ORM\Index(name="report_type_idx", columns="type")
  *     }
  * )
- *
- * @Algolia\Index(autoIndex=false)
  */
 abstract class Report
 {

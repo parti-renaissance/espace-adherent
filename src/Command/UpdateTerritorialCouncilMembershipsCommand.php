@@ -45,6 +45,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
+            ->addOption('disable-mailchimp-sync', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -58,6 +59,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
         $this->io->text('Start updating territorial council memberships');
 
         $limit = (int) $input->getOption('limit');
+        $disableMailchimpSync = $input->getOption('disable-mailchimp-sync');
 
         $paginator = $this->getAdherentsPaginator();
 
@@ -71,15 +73,16 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
 
         do {
             foreach ($paginator->getIterator() as $adherent) {
+                $command = new AdherentUpdateTerritorialCouncilMembershipsCommand(
+                    $adherent->getUuid(),
+                    !$disableMailchimpSync
+                );
                 try {
-                    $this->bus->dispatch(new AdherentUpdateTerritorialCouncilMembershipsCommand(
-                        $adherent->getUuid()
-                    ));
+                    $this->bus->dispatch($command);
                 } catch (\AMQPException $exception) {
-                    $this->bus->dispatch(new AdherentUpdateTerritorialCouncilMembershipsCommand(
-                        $adherent->getUuid()
-                    ));
+                    $this->bus->dispatch($command);
                 }
+
                 $this->io->progressAdvance();
                 ++$offset;
 

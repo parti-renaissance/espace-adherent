@@ -14,11 +14,6 @@
             <argument type="service" id="request_stack"/>
         </service>
 
-        <service id="app.validator.recaptcha" class="App\Validator\RecaptchaValidator">
-            <argument type="service" id="app.recaptcha.api_client"/>
-            <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
-        </service>
-
         <!-- Mailer (transactional) -->
         <service id="app.mailer.transactional" class="App\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>

@@ -3,8 +3,8 @@
 namespace App\Mailchimp\Campaign;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface;
@@ -67,7 +67,7 @@ class SegmentConditionsBuilder
                 return $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId();
             }
 
-            if ($filter instanceof ReferentElectedRepresentativeFilter) {
+            if ($filter instanceof AbstractElectedRepresentativeFilter) {
                 return $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
             }
         }

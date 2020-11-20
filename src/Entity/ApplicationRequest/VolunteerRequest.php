@@ -2,7 +2,6 @@
 
 namespace App\Entity\ApplicationRequest;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\ApplicationRequest\ApplicationRequestTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="application_request_volunteer")
  * @ORM\Entity(repositoryClass="App\Repository\ApplicationRequest\VolunteerRequestRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class VolunteerRequest extends ApplicationRequest
 {

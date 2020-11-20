@@ -2,7 +2,6 @@
 
 namespace App\Entity\IdeasWorkshop;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
@@ -33,8 +32,6 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *
  * @ORM\Table(name="ideas_workshop_answer")
  * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Answer implements UserDocumentInterface
 {

@@ -13,6 +13,7 @@ import noJsRecaptcha from './listeners/no-js-recaptcha';
 import alogliaSearch from './listeners/algolia-search';
 import confirmModal from './listeners/confirm-modal';
 import emModal from './listeners/em-modal';
+import emDateTimePicker from './listeners/em-datetime-picker';
 import AutocompletedAddressForm from './services/address/AutocompletedAddressForm';
 import AddressObject from './services/address/AddressObject';
 
@@ -29,6 +30,7 @@ class App {
             alogliaSearch,
             confirmModal,
             emModal,
+            emDateTimePicker,
         ];
     }
 
@@ -172,8 +174,8 @@ class App {
         });
     }
 
-    runProcurationThanks() {
-        System.import('pages/procuration_thanks').catch((error) => { throw error; }).then((module) => {
+    runCopyToClipboard() {
+        System.import('pages/copy_to_clipboard').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }
@@ -353,6 +355,12 @@ class App {
     runTerritorialCouncilCandidacy(qualityFieldSelector, membershipFieldSelector, submitButtonSelector, wrapperSelector) {
         System.import('pages/territorial_council_candidacy').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'), qualityFieldSelector, membershipFieldSelector, submitButtonSelector, wrapperSelector);
+        });
+    }
+
+    runCommitteeCandidacy(slug, membershipFieldSelector, submitButtonSelector, wrapperSelector) {
+        System.import('pages/committee_candidacy').catch((error) => { throw error; }).then((module) => {
+            module.default(this.get('api'), slug, membershipFieldSelector, submitButtonSelector, wrapperSelector);
         });
     }
 }

@@ -22,19 +22,19 @@ class LreElectedRepresentativeController extends AbstractElectedRepresentativeCo
         return 'lre';
     }
 
-    protected function getManagedTags(Adherent $adherent): array
+    protected function getManagedZones(Adherent $adherent): array
     {
         if ($adherent->getLreArea()->isAllTags()) {
             return [];
         }
 
-        return [$adherent->getLreArea()->getReferentTag()];
+        return [$adherent->getLreArea()->getReferentTag()->getZone()];
     }
 
-    protected function createFilterForm(array $managedTags, ListFilter $filter = null): FormInterface
+    protected function createFilterForm(ListFilter $filter = null): FormInterface
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
-            'referent_tags' => $managedTags,
+            'space_type' => $this->getSpaceType(),
             'user_list_definition_type' => [
                 UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
                 UserListDefinitionEnum::TYPE_LRE,

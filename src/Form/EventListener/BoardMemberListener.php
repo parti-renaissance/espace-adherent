@@ -2,6 +2,7 @@
 
 namespace App\Form\EventListener;
 
+use App\Entity\Adherent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -32,6 +33,7 @@ class BoardMemberListener implements EventSubscriberInterface
     public function onSubmit(FormEvent $event): void
     {
         $form = $event->getForm();
+        /** @var Adherent $adherent */
         $adherent = $form->getData();
 
         $area = $form->get('boardMemberArea')->getData();

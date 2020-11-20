@@ -4,7 +4,7 @@
     {% if object.managedArea %}
         {% for tag in object.managedArea.tags %}
             <a href="{{ path('admin_app_referenttag_edit', { id: tag.id }) }}">
-                {{- tag.name -}}
+                {{- tag.code -}}
             </a>
             {%- if not loop.last -%}, {%- endif -%}
         {% endfor %}

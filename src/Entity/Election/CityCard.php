@@ -2,7 +2,6 @@
 
 namespace App\Entity\Election;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\City;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,8 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @UniqueEntity("city")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class CityCard
 {

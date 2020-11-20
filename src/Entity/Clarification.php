@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Clarification implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface
+class Clarification implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
     use EntitySoftDeletableTrait;
@@ -36,5 +36,15 @@ class Clarification implements EntityMediaInterface, EntityContentInterface, Ent
     public function getId()
     {
         return $this->id;
+    }
+
+    public function isIndexable(): bool
+    {
+        return $this->isPublished() && $this->isNotDeleted();
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
     }
 }

@@ -2,17 +2,14 @@
 
 namespace App\Entity\Geo;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Geo\DepartmentRepository")
  * @ORM\Table(name="geo_department")
- *
- * @Algolia\Index(autoIndex=false)
  */
-class Department implements CollectivityInterface
+class Department implements ZoneableInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
@@ -20,7 +17,7 @@ class Department implements CollectivityInterface
     /**
      * @var Region
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Region")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Region", inversedBy="departments")
      * @ORM\JoinColumn(nullable=false)
      */
     private $region;
@@ -44,13 +41,14 @@ class Department implements CollectivityInterface
 
     public function getParents(): array
     {
-        $parents = [];
+        return array_merge(
+            [$this->region],
+            $this->region->getParents(),
+        );
+    }
 
-        $parents[] = $region = $this->getRegion();
-        if ($region) {
-            $parents = array_merge($parents, $region->getParents());
-        }
-
-        return $this->sanitizeEntityList($parents);
+    public function getZoneType(): string
+    {
+        return Zone::DEPARTMENT;
     }
 }

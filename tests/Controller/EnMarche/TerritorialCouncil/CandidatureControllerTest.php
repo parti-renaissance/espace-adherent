@@ -5,9 +5,9 @@ namespace Tests\App\Controller\EnMarche\TerritorialCouncil;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadTerritorialCouncilMembershipData;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Mailer\Message\TerritorialCouncilCandidacyInvitationAcceptedMessage;
-use App\Mailer\Message\TerritorialCouncilCandidacyInvitationCreatedMessage;
-use App\Mailer\Message\TerritorialCouncilCandidacyInvitationDeclinedMessage;
+use App\Mailer\Message\VotingPlatformCandidacyInvitationAcceptedMessage;
+use App\Mailer\Message\VotingPlatformCandidacyInvitationCreatedMessage;
+use App\Mailer\Message\VotingPlatformCandidacyInvitationDeclinedMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\Mandrill\MailAssertTrait;
@@ -27,7 +27,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $this->client->request('GET', '/conseil-territorial');
         $this->assertResponseStatusCode(200, $response = $this->client->getResponse());
-        $this->assertContains('Conseil territorial du département 92', $response->getContent());
+        $this->assertStringContainsString('Conseil territorial du département 92', $response->getContent());
     }
 
     public function testICannotModifyIfItIsNotCandidatePeriod(): void
@@ -38,7 +38,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/conseil-territorial');
         $this->assertResponseStatusCode(200, $response = $this->client->getResponse());
-        $this->assertContains('Conseil territorial de Paris', $crawler->filter('.territorial-council__infos li')->first()->text());
+        $this->assertStringContainsString('Conseil territorial de Paris', $crawler->filter('.territorial-council__infos li')->first()->text());
 
         /** @var Designation $designation */
         $designation = $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil()->getCurrentDesignation();
@@ -48,21 +48,21 @@ class CandidatureControllerTest extends WebTestCase
         $this->getEntityManager(Designation::class)->flush();
 
         $this->client->request('GET', '/conseil-territorial');
-        $this->assertNotContains('Modifier mes informations', $this->client->getResponse()->getContent());
+        $this->assertStringNotContainsString('Modifier mes informations', $this->client->getResponse()->getContent());
 
         $this->client->request('GET', '/conseil-territorial/candidature');
         $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
         $this->client->followRedirect();
 
-        $this->assertContains('Vous ne pouvez pas candidater pour cette désignation.', $content = $this->client->getResponse()->getContent());
-        $this->assertNotContains('Retirer ma pré-candidature', $content);
+        $this->assertStringContainsString('Vous ne pouvez pas candidater ou modifier votre candidature pour cette désignation.', $content = $this->client->getResponse()->getContent());
+        $this->assertStringNotContainsString('Retirer ma pré-candidature', $content);
 
         $this->client->request('GET', '/conseil-territorial/candidature/retirer');
 
         $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
         $this->client->followRedirect();
 
-        $this->assertContains('Vous ne pouvez pas retirer votre candidature.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Vous ne pouvez pas retirer votre candidature.', $this->client->getResponse()->getContent());
     }
 
     public function testICanRemoveMyCandidatureSuccessfully(): void
@@ -76,7 +76,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains('Votre candidature a bien été supprimée', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Votre candidature a bien été supprimée', $this->client->getResponse()->getContent());
         $this->assertSame('Je candidate en binôme', $crawler->filter('.instance__elections-box a.btn--pink')->text());
     }
 
@@ -107,7 +107,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $this->client->followRedirect();
 
-        $this->assertContains('Votre candidature a bien été enregistrée', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Votre candidature a bien été enregistrée', $this->client->getResponse()->getContent());
     }
 
     public function testICanCreateMyCandidatureAndInviteAnotherMembership(): void
@@ -119,10 +119,10 @@ class CandidatureControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/conseil-territorial');
         $crawler = $this->client->click($crawler->filter('.territorial-council__aside--section')->selectLink('Gérer')->link());
 
-        $this->assertSame('Pierre Kiroule', $crawler->filter('.l__row.identity .font-roboto')->text());
+        $this->assertSame('Pierre Kiroule', trim($crawler->filter('.l__row.identity .font-roboto')->text()));
 
-        $this->assertContains('Modifier ma demande de binôme', $content = $this->client->getResponse()->getContent());
-        $this->assertContains('Modifier mes informations', $content);
+        $this->assertStringContainsString('Modifier ma demande de binôme', $content = $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Modifier mes informations', $content);
 
         $this->client->click($crawler->selectLink('Retirer ma pré-candidature')->link());
         $crawler = $this->client->followRedirect();
@@ -150,7 +150,7 @@ class CandidatureControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         $form = $crawler->selectButton('Envoyer l\'invitation')->form();
 
-        $crawler = $this->client->submit($form, ['candidacy_quality[quality]' => 'consular_conselor']);
+        $crawler = $this->client->submit($form, ['candidacy_quality[quality]' => 'consular_councilor']);
 
         self::assertCount(1, $errors = $crawler->filter('.form__error'));
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
@@ -170,7 +170,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/choix-de-binome/fini', $this->client);
 
-        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationCreatedMessage::class, 'kiroule.p@blabla.tld');
+        $this->assertCountMails(1, VotingPlatformCandidacyInvitationCreatedMessage::class, 'kiroule.p@blabla.tld');
     }
 
     public function testICanDeclineAnInvitation(): void
@@ -188,9 +188,9 @@ class CandidatureControllerTest extends WebTestCase
         $this->client->click($crawler->selectLink('Décliner')->link());
         $this->client->followRedirect();
 
-        self::assertContains('Invitation a bien été déclinée', $this->client->getResponse()->getContent());
+        self::assertStringContainsString('Invitation a bien été déclinée', $this->client->getResponse()->getContent());
 
-        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationDeclinedMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, VotingPlatformCandidacyInvitationDeclinedMessage::class, 'gisele-berthoux@caramail.com');
     }
 
     public function testICanAcceptAnInvitation(): void
@@ -222,12 +222,12 @@ class CandidatureControllerTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/conseil-territorial', $this->client);
 
-        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationAcceptedMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(1, TerritorialCouncilCandidacyInvitationAcceptedMessage::class, 'kiroule.p@blabla.tld');
+        $this->assertCountMails(1, VotingPlatformCandidacyInvitationAcceptedMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, VotingPlatformCandidacyInvitationAcceptedMessage::class, 'kiroule.p@blabla.tld');
 
         $crawler = $this->client->followRedirect();
 
-        self::assertContains('Votre candidature a bien été enregistrée', $this->client->getResponse()->getContent());
+        self::assertStringContainsString('Votre candidature a bien été enregistrée', $this->client->getResponse()->getContent());
 
         $crawler = $this->client->click($crawler->selectLink('Modifier mes informations')->link());
         $form = $crawler->selectButton('Enregistrer')->form();
@@ -251,14 +251,14 @@ class CandidatureControllerTest extends WebTestCase
         self::assertArrayNotHasKey('territorial_council_candidacy[isPublicFaithStatement]', $values);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->init();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

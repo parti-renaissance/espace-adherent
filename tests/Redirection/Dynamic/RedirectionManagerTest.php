@@ -69,12 +69,12 @@ class RedirectionManagerTest extends WebTestCase
         self::assertSame($type, $redirection->getType());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->getContainer()->get('app.cache.redirection')->clear();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

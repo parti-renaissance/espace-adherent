@@ -6,10 +6,11 @@ use App\Assessor\AssessorRequestFactory;
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadAssessorRequestData extends Fixture
+class LoadAssessorRequestData extends Fixture implements DependentFixtureInterface
 {
     private const ASSESSOR_REQUEST_1_UUID = 'be61ba07-c8e7-4533-97e1-0ab215cd752c';
     private const ASSESSOR_REQUEST_2_UUID = '91b8d3a3-6757-4cf6-becc-5e3786bbbf5a';
@@ -44,7 +45,7 @@ class LoadAssessorRequestData extends Fixture
             'voteCity' => 'Lille',
             'officeNumber' => '59350_0108',
             'emailAddress' => 'adrienne.kepoura@example.fr',
-            'phoneNumber' => '33 612345678',
+            'phoneNumber' => '+33612345678',
             'assessorCity' => 'Lille',
             'assessorPostalCode' => '59350',
             'birthName' => 'Kepoura',
@@ -68,7 +69,7 @@ class LoadAssessorRequestData extends Fixture
             'voteCity' => 'Bobigny',
             'officeNumber' => '93008_0005',
             'emailAddress' => 'prosper.hytte@example.fr',
-            'phoneNumber' => '33 612345678',
+            'phoneNumber' => '+33612345678',
             'assessorCity' => 'Bobigny',
             'assessorPostalCode' => '93008',
             'birthName' => 'Hytté',
@@ -91,7 +92,7 @@ class LoadAssessorRequestData extends Fixture
             'voteCity' => 'Bobigny',
             'officeNumber' => '93008_0005',
             'emailAddress' => 'luc.ratif@example.fr',
-            'phoneNumber' => '33 612345678',
+            'phoneNumber' => '+33612345678',
             'assessorCity' => 'Bobigny',
             'assessorPostalCode' => '93008',
             'birthName' => 'Luc',
@@ -114,7 +115,7 @@ class LoadAssessorRequestData extends Fixture
             'voteCity' => 'Lille',
             'officeNumber' => '59350_0108',
             'emailAddress' => 'elise.coptere@example.fr',
-            'phoneNumber' => '33 612345678',
+            'phoneNumber' => '+33612345678',
             'assessorCity' => 'Lille',
             'assessorPostalCode' => '59000',
             'birthName' => 'Coptère',
@@ -137,7 +138,7 @@ class LoadAssessorRequestData extends Fixture
             'voteCity' => 'Lille',
             'officeNumber' => '59350_0108',
             'emailAddress' => 'aubin.sahalor@example.fr',
-            'phoneNumber' => '33 612345678',
+            'phoneNumber' => '+33612345678',
             'assessorCity' => 'Lille',
             'assessorPostalCode' => '59100',
             'birthName' => 'Sahalor',
@@ -157,7 +158,7 @@ class LoadAssessorRequestData extends Fixture
             'voteCity' => 'Angers',
             'officeNumber' => '49000_0108',
             'emailAddress' => 'gilles.parbal@example.fr',
-            'phoneNumber' => '33 612345678',
+            'phoneNumber' => '+33612345678',
             'assessorCity' => 'Angers',
             'assessorPostalCode' => '49000',
             'birthName' => 'Parbal',
@@ -177,7 +178,7 @@ class LoadAssessorRequestData extends Fixture
             'voteCity' => 'London',
             'officeNumber' => '99999_0108',
             'emailAddress' => 'henri.cochet@example.fr',
-            'phoneNumber' => '33 612345678',
+            'phoneNumber' => '+33612345678',
             'assessorCity' => 'London',
             'assessorPostalCode' => null,
             'birthName' => 'Cochet',
@@ -199,7 +200,7 @@ class LoadAssessorRequestData extends Fixture
             'voteCity' => 'Italie',
             'officeNumber' => '99999_0253',
             'emailAddress' => 'luigi.leonardo@example.it',
-            'phoneNumber' => '33 612345678',
+            'phoneNumber' => '+33612345678',
             'assessorCity' => 'Rome',
             'assessorPostalCode' => null,
             'birthName' => 'Luigi',

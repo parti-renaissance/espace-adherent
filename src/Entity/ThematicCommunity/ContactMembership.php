@@ -2,7 +2,8 @@
 
 namespace App\Entity\ThematicCommunity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Address\AddressInterface;
+use App\Address\PostAddressFactory;
 use App\Entity\PostAddress;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -10,8 +11,6 @@ use libphonenumber\PhoneNumber;
 /**
  * @ORM\Entity
  * @ORM\Table(name="thematic_community_membership_contact")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class ContactMembership extends ThematicCommunityMembership
 {
@@ -70,7 +69,7 @@ class ContactMembership extends ThematicCommunityMembership
         return $this->contact ? $this->contact->getBirthDate() : null;
     }
 
-    public function setBirthDate(\DateTime $birthDate): void
+    public function setBirthDate(?\DateTime $birthDate): void
     {
         $this->contact->setBirthDate($birthDate);
     }
@@ -80,24 +79,29 @@ class ContactMembership extends ThematicCommunityMembership
         return $this->contact ? $this->contact->getPhone() : null;
     }
 
-    public function setPhone(PhoneNumber $phone): void
+    public function setPhone(?PhoneNumber $phone): void
     {
         $this->contact->setPhone($phone);
     }
 
-    public function getJob(): ?string
+    public function getPosition(): ?string
     {
-        return $this->contact ? $this->contact->getJob() : null;
+        return $this->contact ? $this->contact->getPosition() : null;
     }
 
-    public function setJob(string $job): void
+    public function setPosition(string $position): void
     {
-        $this->contact->setJob($job);
+        $this->contact->setPosition($position);
     }
 
-    public function getPostAddress(): ?PostAddress
+    public function getPostAddress(): PostAddress
     {
-        return $this->contact->getPostAddressModel();
+        return $this->contact ? $this->contact->getPostAddressModel() : PostAddress::createEmptyAddress();
+    }
+
+    public function setPostAddress(AddressInterface $address): void
+    {
+        $this->contact->updatePostAddress((new PostAddressFactory())->createFromAddress($address));
     }
 
     public function getCityName(): ?string
@@ -108,5 +112,22 @@ class ContactMembership extends ThematicCommunityMembership
     public function getPostalCode(): ?string
     {
         return $this->contact ? $this->contact->getPostalCode() : null;
+    }
+
+    public function hasSmsSubscriptionType(): bool
+    {
+        // contact does not have sms or email notifications yet
+        return false;
+    }
+
+    public function hasEmailSubscriptionType(): bool
+    {
+        // contact does not have sms or email notifications yet
+        return false;
+    }
+
+    public function isCertified(): bool
+    {
+        return false;
     }
 }

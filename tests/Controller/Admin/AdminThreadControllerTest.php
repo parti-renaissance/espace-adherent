@@ -59,7 +59,7 @@ class AdminThreadControllerTest extends WebTestCase
         $this->assertTrue($thread->isEnabled());
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -68,7 +68,7 @@ class AdminThreadControllerTest extends WebTestCase
         $this->threadRepository = $this->getThreadRepository();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

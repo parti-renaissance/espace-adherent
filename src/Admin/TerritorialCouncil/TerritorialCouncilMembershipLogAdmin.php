@@ -3,7 +3,7 @@
 namespace App\Admin\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog;
-use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
+use App\Form\TerritorialCouncil\TerritorialCouncilQualityChoiceType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -49,13 +49,7 @@ class TerritorialCouncilMembershipLogAdmin extends AbstractAdmin
             ->add('qualityName', null, [
                 'show_filter' => true,
                 'label' => 'Qualité',
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => TerritorialCouncilQualityEnum::ALL,
-                    'choice_label' => function (string $choice) {
-                        return "territorial_council.membership.quality.$choice";
-                    },
-                ],
+                'field_type' => TerritorialCouncilQualityChoiceType::class,
             ])
             ->add('type', null, [
                 'show_filter' => true,

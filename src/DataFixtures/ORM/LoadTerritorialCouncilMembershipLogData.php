@@ -5,9 +5,10 @@ namespace App\DataFixtures\ORM;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadTerritorialCouncilMembershipLogData extends Fixture
+class LoadTerritorialCouncilMembershipLogData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

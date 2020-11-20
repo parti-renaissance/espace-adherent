@@ -7,11 +7,10 @@ use App\Entity\Projection\ManagedUser;
 use App\Intl\FranceCitiesBundle;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Repository\PaginatorTrait;
-use App\Repository\ReferentTagRepository;
 use App\Repository\ReferentTrait;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -57,7 +56,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        $this->withZoneCondition($qb, $filter->getReferentTags());
+        $zones = $filter->getZones() ?: $filter->getManagedZones();
+        $this->withZoneCondition($qb, $zones);
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();
@@ -197,17 +197,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (true === $filter->includeCommitteeSupervisors()) {
-            $and = new Andx();
-            $and->add('u.isCommitteeSupervisor = 1');
-
-            $supervisorExpression = $qb->expr()->orX();
-            foreach ($filter->getReferentTags() as $key => $code) {
-                $supervisorExpression->add(sprintf('FIND_IN_SET(:code_%s, u.supervisorTags) > 0', $key));
-                $qb->setParameter('code_'.$key, $code->getCode());
-            }
-
-            $and->add($supervisorExpression);
-            $typeExpression->add($and);
+            $typeExpression->add('u.isCommitteeSupervisor = 1');
         }
 
         if (true === $filter->includeCitizenProjectHosts()) {
@@ -241,6 +231,18 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if (null !== $filter->getSmsSubscription()) {
+            $subscriptionTypesCondition = 'FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) > 0';
+            if (false === $filter->getSmsSubscription()) {
+                $subscriptionTypesCondition = '(FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) = 0 OR u.subscriptionTypes IS NULL)';
+            }
+
+            $qb
+                ->andWhere($subscriptionTypesCondition)
+                ->setParameter('sms_subscription_type', SubscriptionTypeEnum::MILITANT_ACTION_SMS)
+            ;
+        }
+
         if (null !== $filter->getVoteInCommittee()) {
             $qb->andWhere(sprintf('u.voteCommitteeId %s NULL', $filter->getVoteInCommittee() ? 'IS NOT' : 'IS'));
         }
@@ -248,40 +250,50 @@ class ManagedUserRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function countManagedUsers(array $referentTags): int
+    public function countManagedUsers(array $zones = []): int
     {
+        if (empty($zones)) {
+            throw new \InvalidArgumentException('Zones could not be empty');
+        }
+
         $qb = $this
             ->createQueryBuilder('u')
             ->select('COUNT(u.id)')
         ;
 
-        return (int) $this
-            ->withZoneCondition($qb, $referentTags)
+        $this->withZoneCondition($qb, $zones);
+
+        return (int) $qb
             ->getQuery()
             ->getSingleScalarResult()
         ;
     }
 
-    private function withZoneCondition(QueryBuilder $qb, array $referentTags, string $alias = 'u'): QueryBuilder
+    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'u'): QueryBuilder
     {
-        if (1 === \count($referentTags) && ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === ($tag = current($referentTags))->getCode()) {
-            return $qb->andWhere("${alias}.country != 'FR'");
+        if (!$zones) {
+            return $qb;
         }
 
-        $tagsFilter = $qb->expr()->orX();
+        if (!\in_array('zone', $qb->getAllAliases(), true)) {
+            $qb->innerJoin("$alias.zone", 'zone');
+        }
 
-        foreach ($referentTags as $key => $tag) {
-            $tagsFilter->add("FIND_IN_SET(:tag_$key, $alias.subscribedTags) > 0");
-            $tagsFilter->add(
-                $qb->expr()->andX(
-                    "$alias.country = 'FR'",
-                    $qb->expr()->like("$alias.committeePostalCode", ":tag_prefix_$key")
+        if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {
+            $qb->innerJoin('zone.parents', 'zone_parent');
+        }
+
+        $ids = array_map(static function ($zone) {
+            return $zone->getId();
+        }, $zones);
+
+        return $qb
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->in('zone.id', $ids),
+                    $qb->expr()->in('zone_parent.id', $ids),
                 )
-            );
-            $qb->setParameter("tag_$key", $tag->getCode());
-            $qb->setParameter("tag_prefix_$key", $tag->getCode().'%');
-        }
-
-        return $qb->andWhere($tagsFilter);
+            )
+        ;
     }
 }

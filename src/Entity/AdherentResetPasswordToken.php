@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="adherent_reset_password_token_account_unique", columns={"value", "adherent_uuid"})
  * })
  * @ORM\Entity(repositoryClass="App\Repository\AdherentResetPasswordTokenRepository")
- *
- * @Algolia\Index(autoIndex=false)
  */
 class AdherentResetPasswordToken extends AdherentToken
 {

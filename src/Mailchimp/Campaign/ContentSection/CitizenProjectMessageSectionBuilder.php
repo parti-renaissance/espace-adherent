@@ -3,6 +3,7 @@
 namespace App\Mailchimp\Campaign\ContentSection;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Utils\StringCleaner;
@@ -15,6 +16,11 @@ class CitizenProjectMessageSectionBuilder implements ContentSectionBuilderInterf
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
+    }
+
+    public function supports(AdherentMessageInterface $message): bool
+    {
+        return $message instanceof CitizenProjectAdherentMessage;
     }
 
     public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void

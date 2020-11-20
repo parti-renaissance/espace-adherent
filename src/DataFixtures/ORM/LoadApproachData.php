@@ -3,11 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ProgrammaticFoundation\Approach;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadApproachData extends AbstractFixture implements DependentFixtureInterface
+class LoadApproachData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {

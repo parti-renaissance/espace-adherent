@@ -91,6 +91,11 @@ trait EntityDesignationTrait
         return $this->designation && $this->getVoteStartDate() && $this->getVoteStartDate() <= $now;
     }
 
+    public function isBinomeDesignation(): bool
+    {
+        return $this->designation->isBinomeDesignation();
+    }
+
     public function isResultPeriodActive(): bool
     {
         if (!$voteEndDate = $this->getVoteEndDate()) {
@@ -156,5 +161,10 @@ trait EntityDesignationTrait
         }
 
         return DesignationStatusEnum::CLOSED;
+    }
+
+    public function getDesignationType(): string
+    {
+        return $this->designation->getType();
     }
 }

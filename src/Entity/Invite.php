@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,8 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     since="24 hours",
  *     message="invitation.email.was_invited_recently"
  * )
- *
- * @Algolia\Index(autoIndex=false)
  */
 class Invite
 {

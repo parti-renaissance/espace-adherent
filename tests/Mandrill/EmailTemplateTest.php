@@ -9,12 +9,11 @@ use Tests\App\Test\Mailer\Message\DummyMessage;
 
 class EmailTemplateTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The email requires at least one recipient.
-     */
     public function testCreateEmailTemplateWithoutRecipients()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The email requires at least one recipient.');
+
         $email = new EmailTemplate(Uuid::uuid4(), '12345', 'Votre donation !', 'contact@en-marche.fr');
         $email->getBody();
     }

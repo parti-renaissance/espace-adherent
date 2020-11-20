@@ -18,6 +18,7 @@ class DelegatedAccessesVoter extends Voter
     private const HAS_DELEGATED_ACCESS_JECOUTE = 'HAS_DELEGATED_ACCESS_JECOUTE';
     private const HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS = 'HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS';
     private const HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES = 'HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES';
+    private const HAS_DELEGATED_ACCESS_FILES = 'HAS_DELEGATED_ACCESS_FILES';
 
     /** @var SessionInterface */
     private $session;
@@ -62,6 +63,8 @@ class DelegatedAccessesVoter extends Voter
                 return \in_array(DelegatedAccess::ACCESS_CITIZEN_PROJECTS, $delegatedAccess->getAccesses(), true);
             case self::HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES:
                 return \in_array(DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES, $delegatedAccess->getAccesses(), true);
+            case self::HAS_DELEGATED_ACCESS_FILES:
+                return \in_array(DelegatedAccess::ACCESS_FILES, $delegatedAccess->getAccesses(), true);
             default:
                 return false;
         }

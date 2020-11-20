@@ -78,7 +78,7 @@ class CertificationManagerTest extends WebTestCase
         yield ['thomas.leclerc@example.ch'];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -88,7 +88,7 @@ class CertificationManagerTest extends WebTestCase
         $this->certificationManager = $this->container->get(CertificationManager::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 

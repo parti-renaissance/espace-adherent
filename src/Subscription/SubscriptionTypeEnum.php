@@ -17,6 +17,7 @@ final class SubscriptionTypeEnum extends Enum
     public const SENATOR_EMAIL = 'senator_email';
     public const CITIZEN_PROJECT_HOST_EMAIL = 'citizen_project_host_email';
     public const CITIZEN_PROJECT_CREATION_EMAIL = 'subscribed_emails_citizen_project_creation';
+    public const THEMATIC_COMMUNITY_EMAIL = 'thematic_community_email';
 
     public const MILITANT_ACTION_SMS = 'militant_action_sms';
 

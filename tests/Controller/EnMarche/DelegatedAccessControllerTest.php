@@ -24,7 +24,7 @@ class DelegatedAccessControllerTest extends WebTestCase
         $this->assertFalse($this->client->getRequest()->getSession()->has('delegated_access_uuid'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -33,7 +33,7 @@ class DelegatedAccessControllerTest extends WebTestCase
         $this->client->followRedirects();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
