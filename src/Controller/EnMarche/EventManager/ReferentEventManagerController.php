@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\EventManager;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Event\EventManagerSpaceEnum;
 use App\Repository\EventRepository;
@@ -27,12 +28,12 @@ class ReferentEventManagerController extends AbstractEventManagerController
         return EventManagerSpaceEnum::REFERENT;
     }
 
-    protected function getEvents(Adherent $adherent, string $type = null): array
+    protected function getEventsPaginator(Adherent $adherent, string $type = null, int $page = 1): PaginatorInterface
     {
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            return $this->repository->findManagedBy($adherent->getManagedArea()->getTags()->toArray());
+            return $this->repository->findManagedByPaginator($adherent->getManagedArea()->getTags()->toArray(), $page);
         }
 
-        return $this->repository->findEventsByOrganizer($adherent);
+        return $this->repository->findEventsByOrganizerPaginator($adherent, $page);
     }
 }
