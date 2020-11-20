@@ -45,6 +45,7 @@
                     <argument>%env(GCLOUD_PROJECT_ID)%</argument>
                     <argument>%kernel.project_dir%/gcloud-service-key.json</argument>
                     <argument>%env(GCLOUD_BUCKET)%</argument>
+                    <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
                 </service>
             </argument>
         </service>

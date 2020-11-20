@@ -373,6 +373,14 @@
             </call>
         </service>
 
+        <service id="app.admin.jecoute.region" class="App\Admin\Jecoute\RegionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Régions" group="Territoire" />
+
+            <argument />
+            <argument>App\Entity\Jecoute\Region</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.report" class="App\Admin\ReportAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Territoire" />
 
