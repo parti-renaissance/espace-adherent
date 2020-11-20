@@ -38,6 +38,7 @@ Feature:
             "subtitle": "Bienvenue en Normandie",
             "description": "Description de la normandie",
             "primary_color": "#32cd32",
+            "external_link": "https://en-marche.fr",
             "slug": "normandie",
             "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
             "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg"
@@ -49,6 +50,7 @@ Feature:
             "subtitle": "Bienvenue en Hauts-de-France",
             "description": "Description des Hauts-de-France",
             "primary_color": "#dc143c",
+            "external_link": null,
             "slug": "hauts-de-france",
             "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
             "banner": null
@@ -80,6 +82,7 @@ Feature:
             "subtitle": "Bienvenue en Normandie",
             "description": "Description de la normandie",
             "primary_color": "#32cd32",
+            "external_link": "https://en-marche.fr",
             "slug": "normandie",
             "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
             "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg"
@@ -108,6 +111,7 @@ Feature:
             "subtitle": "Bienvenue en Hauts-de-France",
             "description": "Description des Hauts-de-France",
             "primary_color": "#dc143c",
+            "external_link": null,
             "slug": "hauts-de-france",
             "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
             "banner": null
@@ -134,6 +138,7 @@ Feature:
         "subtitle": "Bienvenue en Normandie",
         "description": "Description de la normandie",
         "primary_color": "#32cd32",
+        "external_link": "https://en-marche.fr",
         "slug": "normandie",
         "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
         "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg"

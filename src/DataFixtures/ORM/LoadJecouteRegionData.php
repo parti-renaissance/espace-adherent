@@ -25,7 +25,8 @@ class LoadJecouteRegionData extends Fixture
             'Description de la normandie',
             '#32cd32',
             'region-logo.jpg',
-            'region-banner.jpg'
+            'region-banner.jpg',
+            'https://en-marche.fr'
         ));
 
         $manager->persist($this->createRegion(
@@ -49,7 +50,8 @@ class LoadJecouteRegionData extends Fixture
         string $description,
         string $primaryColor,
         string $logo,
-        string $banner = null
+        string $banner = null,
+        string $externalLink = null
     ): Region {
         return new Region(
             Uuid::fromString($uuid),
@@ -59,7 +61,8 @@ class LoadJecouteRegionData extends Fixture
             $description,
             $primaryColor,
             $logo,
-            $banner
+            $banner,
+            $externalLink
         );
     }
 }

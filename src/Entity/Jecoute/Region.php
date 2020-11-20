@@ -71,6 +71,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     attributes={
  *         "normalization_context": {"groups": {"jecoute_region_read"}},
+ *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
  *         "order": {"code": "ASC"},
  *     },
  * )
@@ -91,6 +92,8 @@ class Region
 {
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
+
+    private const IMAGES_DIRECTORY = 'files/jemarche/regions';
 
     /**
      * @var int|null
@@ -177,6 +180,17 @@ class Region
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url
+     *
+     * @SymfonySerializer\Groups({"jecoute_region_read"})
+     */
+    protected $externalLink;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
      */
     private $banner;
 
@@ -221,7 +235,8 @@ class Region
         string $description = null,
         string $primaryColor = null,
         string $logo = null,
-        string $banner = null
+        string $banner = null,
+        string $externalLink = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
 
@@ -235,6 +250,7 @@ class Region
         $this->primaryColor = $primaryColor;
         $this->logo = $logo;
         $this->banner = $banner;
+        $this->externalLink = $externalLink;
     }
 
     public function __toString()
@@ -339,7 +355,7 @@ class Region
 
     public function getBannerPathWithDirectory(): string
     {
-        return sprintf('%s/%s', 'files/jemarche/regions', $this->banner);
+        return sprintf('%s/%s', self::IMAGES_DIRECTORY, $this->banner);
     }
 
     public function setBannerFromUploadedFile(): void
@@ -372,7 +388,7 @@ class Region
 
     public function getLogoPathWithDirectory(): string
     {
-        return sprintf('%s/%s', 'files/jemarche/regions', $this->logo);
+        return sprintf('%s/%s', self::IMAGES_DIRECTORY, $this->logo);
     }
 
     public function setLogoFromUploadedFile(): void
@@ -381,5 +397,15 @@ class Region
             md5(sprintf('%s@%s', $this->getUuid(), $this->logoFile->getClientOriginalName())),
             $this->logoFile->getClientOriginalExtension()
         );
+    }
+
+    public function getExternalLink(): ?string
+    {
+        return $this->externalLink;
+    }
+
+    public function setExternalLink(?string $externalLink): void
+    {
+        $this->externalLink = $externalLink;
     }
 }

@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RegionAdmin extends AbstractAdmin
@@ -53,19 +54,22 @@ class RegionAdmin extends AbstractAdmin
                         'class' => 'input-lg',
                     ],
                 ])
+                ->add('externalLink', UrlType::class, [
+                    'label' => 'Lien',
+                ])
             ->end()
             ->with('Fichiers', ['class' => 'col-md-6'])
                 ->add('logoFile', FileType::class, [
-                    'label' => 'Ajoutez un logo',
+                    'label' => 'Logo',
                     'help' => 'Le fichier ne doit pas dépasser 5 Mo.',
                 ])
                 ->add('bannerFile', FileType::class, [
                     'required' => false,
-                    'label' => 'Ajoutez une bannière',
+                    'label' => 'Bannière',
                     'help' => 'Le fichier ne doit pas dépasser 5 Mo.',
                 ])
                 ->add('removeBanner', CheckboxType::class, [
-                    'label' => 'Supprimer le fichier ?',
+                    'label' => 'Supprimer la bannière ?',
                     'required' => false,
                 ])
             ->end()
