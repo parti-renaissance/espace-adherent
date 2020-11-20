@@ -30,7 +30,7 @@
         "a2lix/translation-form-bundle": "2.4.1",
         "algolia/search-bundle": "4.1.1",
         "api-platform/api-pack": "1.1.0",
-        "api-platform/core": "2.2.10",
+        "api-platform/core": "2.5.7",
         "beberlei/doctrineextensions": "1.2.2",
         "cakephp/chronos": "1.1.4",
         "cocur/slugify": "3.2",
