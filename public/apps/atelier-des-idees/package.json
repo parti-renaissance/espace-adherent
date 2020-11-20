@@ -51,7 +51,7 @@
     "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
-    "@babel/core": "7.12.3",
+    "@babel/core": "7.12.7",
     "@storybook/addon-actions": "4.1.7",
     "@storybook/addon-jest": "4.1.7",
     "@storybook/addon-links": "4.1.7",
