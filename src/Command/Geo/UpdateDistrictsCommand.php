@@ -145,7 +145,7 @@ final class UpdateDistrictsCommand extends Command
             ?? self::DEPARTMENT_CODE[$codeDepartment]
             ?? $codeDepartment;
 
-        $codeCity = sprintf('%s%s', $codeDepartment, $codeCityPartial);
+        $codeCity = sprintf('%s%s', substr($codeDepartment, 0, 2), $codeCityPartial);
 
         $number = $row['CODE CIRC LEGISLATIVE'];
         $code = sprintf('%s-%d', $codeDepartment, $row['CODE CIRC LEGISLATIVE']);
