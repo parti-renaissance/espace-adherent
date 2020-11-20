@@ -109,8 +109,12 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $this->withActiveMandatesCondition($qb);
 
-        if ($filter->getManagesZones()) {
-            $this->withZoneCondition($qb, $filter->getManagesZones());
+        $zones = $filter->getZones() ?: $filter->getManagedZones();
+        if ($zones) {
+            $this->withZoneCondition($qb, $zones);
+        }
+
+        if ($filter->getManagedZones()) {
             $qb
                 ->orderBy('er.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
                 ->addOrderBy('mandate.number', 'ASC')
@@ -183,10 +187,6 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
                 ->andWhere('politicalFunction.finishAt IS NULL')
                 ->setParameter('politicalFunctions', $politicalFunctions)
             ;
-        }
-
-        if ($zones = $filter->getZones()) {
-            $this->withZoneCondition($qb, $zones);
         }
 
         if ($userListDefinitions = $filter->getUserListDefinitions()) {
