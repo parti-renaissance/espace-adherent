@@ -18,9 +18,6 @@ class AdminZoneController extends Controller
 {
     private const MAX_SUGGESTIONS = 10;
 
-    private const CORSICA_MANDATE_TYPE = 'CORSICA_ASSEMBLY_MEMBER';
-    private const CORSICA_REGION_CODE = '94';
-
     /**
      * @Route("/autocompletion",
      *     name="app_admin_zone_autocomplete",
@@ -33,12 +30,14 @@ class AdminZoneController extends Controller
         $term = $request->query->get('zone');
 
         $mandateType = $request->query->get('type');
-        $zoneTypes = MandateTypeEnum::ZONES_BY_MANDATE[$mandateType] ?? [];
-        $isCorsica = !$zoneTypes && self::CORSICA_MANDATE_TYPE === $mandateType;
+        $filter = MandateTypeEnum::ZONE_FILTER_BY_MANDATE[$mandateType] ?: [];
 
-        $zones = $isCorsica
-            ? $repository->findBy(['type' => Zone::REGION, 'code' => self::CORSICA_REGION_CODE])
-            : $repository->findForMandateAdminAutocomplete($term, $zoneTypes, self::MAX_SUGGESTIONS);
+        $zones = $repository->findForMandateAdminAutocomplete(
+            $term,
+            $filter['types'] ?? [],
+            $filter['codes'] ?? [],
+            self::MAX_SUGGESTIONS
+        );
 
         return $this->json(
             $zones,

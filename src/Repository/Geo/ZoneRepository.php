@@ -112,25 +112,40 @@ final class ZoneRepository extends ServiceEntityRepository
         return iterator_to_array($paginator->getIterator());
     }
 
-    public function findForMandateAdminAutocomplete(?string $term, array $types, int $limit): array
+    public function findForMandateAdminAutocomplete(?string $term, array $types, array $codes, int $limit): array
     {
-        if (!$term || !$types) {
+        if (!$types) {
             return [];
         }
 
         $qb = $this->createQueryBuilder('zone');
 
-        return $qb
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->like('zone.name', ':term'),
-                    $qb->expr()->like('zone.code', ':term'),
-                )
-            )
+        $qb
             ->andWhere($qb->expr()->in('zone.type', ':types'))
-            ->setParameter(':term', "$term%")
             ->setParameter(':types', $types)
             ->setMaxResults($limit)
+        ;
+
+        if ($term) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->like('zone.name', ':term'),
+                        $qb->expr()->like('zone.code', ':term'),
+                    )
+                )
+                ->setParameter(':term', "$term%")
+            ;
+        }
+
+        if ($codes) {
+            $qb
+                ->andWhere($qb->expr()->in('zone.code', ':codes'))
+                ->setParameter(':codes', $codes)
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->getResult()
         ;
