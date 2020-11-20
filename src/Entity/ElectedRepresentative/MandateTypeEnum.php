@@ -7,6 +7,8 @@ use MyCLabs\Enum\Enum;
 
 final class MandateTypeEnum extends Enum
 {
+    private const CORSICA_REGION_CODE = '94';
+
     public const CITY_COUNCIL = 'conseiller_municipal';
     public const EPCI_MEMBER = 'membre_EPCI';
     public const DEPARTMENTAL_COUNCIL = 'conseiller_departemental';
@@ -42,42 +44,37 @@ final class MandateTypeEnum extends Enum
         self::CONSULAR_COUNCIL_LABEL => self::CONSULAR_COUNCIL,
     ];
 
-    public const ZONES_BY_MANDATE = [
+    public const ZONE_FILTER_BY_MANDATE = [
+        self::BOROUGH_COUNCIL => [
+            'types' => [Zone::BOROUGH],
+        ],
         self::CITY_COUNCIL => [
-            Zone::CITY,
-            Zone::BOROUGH,
+            'types' => [Zone::BOROUGH, Zone::CITY],
         ],
         self::EPCI_MEMBER => [
-            Zone::CITY_COMMUNITY,
+            'types' => [Zone::CITY_COMMUNITY],
         ],
         self::DEPARTMENTAL_COUNCIL => [
-            Zone::DEPARTMENT,
+            'types' => [Zone::CANTON],
         ],
-        self::REGIONAL_COUNCIL => [
-            Zone::REGION,
-            Zone::DEPARTMENT,
-        ],
-        self::CORSICA_ASSEMBLY_MEMBER => [],
         self::DEPUTY => [
-            Zone::DISTRICT,
+            'types' => [Zone::DISTRICT],
         ],
         self::SENATOR => [
-            Zone::DISTRICT,
-            Zone::DEPARTMENT,
-            Zone::FOREIGN_DISTRICT,
+            'types' => [Zone::BOROUGH, Zone::DEPARTMENT, Zone::FOREIGN_DISTRICT, Zone::CUSTOM],
         ],
-        self::CONSULAR_COUNCIL => [
-            Zone::CONSULAR_DISTRICT,
+        self::REGIONAL_COUNCIL => [
+            'types' => [Zone::DEPARTMENT],
+        ],
+        self::CORSICA_ASSEMBLY_MEMBER => [
+            'types' => [Zone::REGION],
+            'codes' => [self::CORSICA_REGION_CODE],
         ],
         self::EURO_DEPUTY => [
-            Zone::CITY,
-            Zone::BOROUGH,
-            Zone::DEPARTMENT,
-            Zone::DISTRICT,
+            'types' => [Zone::DEPARTMENT, Zone::COUNTRY],
         ],
-        self::BOROUGH_COUNCIL => [
-            Zone::CITY,
-            Zone::BOROUGH,
+        self::CONSULAR_COUNCIL => [
+            'types' => [Zone::CONSULAR_DISTRICT],
         ],
     ];
 }
