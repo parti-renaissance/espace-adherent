@@ -1,5 +1,4 @@
 @api
-@debug
 Feature:
   In order to get all regions
   With a valid oauth token
@@ -54,6 +53,38 @@ Feature:
             "slug": "hauts-de-france",
             "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
             "banner": null
+          }
+        ]
+      }
+    """
+
+  Scenario: As an authenticated user I can get the regions configuration with a specific page size
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
+    When I send a "GET" request to "/api/jecoute/regions?page_size=1"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "metadata": {
+          "total_items": 2,
+          "items_per_page": 1,
+          "count": 1,
+          "current_page": 1,
+          "last_page": 2
+        },
+        "items": [
+          {
+            "uuid": "88275043-adb5-463a-8a62-5248fe7aacbf",
+            "name": "Normandie",
+            "code": "28",
+            "subtitle": "Bienvenue en Normandie",
+            "description": "Description de la normandie",
+            "primary_color": "#32cd32",
+            "external_link": "https://en-marche.fr",
+            "slug": "normandie",
+            "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
+            "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg"
           }
         ]
       }
