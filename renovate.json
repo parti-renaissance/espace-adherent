@@ -1,5 +1,16 @@
 {
   "groupName":"all",
-  "extends": ["config:base"],
-  "schedule": ["after 9pm on sunday"],
+  "extends": [
+    "config:base",
+    "schedule:earlyMondays"
+  ],
+  "packageRules": [
+    {
+      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "depTypeList": ["devDependencies"],
+      "datasources": ["docker"],
+      "labels": ["docker-update"]
+      "automerge": true
+    }
+  ]
 }
