@@ -31,7 +31,7 @@
         "algolia/search-bundle": "4.1.1",
         "api-platform/api-pack": "1.1.0",
         "api-platform/core": "2.5.7",
-        "beberlei/doctrineextensions": "1.2.2",
+        "beberlei/doctrineextensions": "1.2.9",
         "cakephp/chronos": "1.1.4",
         "cocur/slugify": "3.2",
         "creof/doctrine2-spatial": "1.2.0",
