@@ -10,7 +10,7 @@ references:
 
     configure_base: &configure_base
         environment:
-            - DOCKER_COMPOSE: "docker-compose -f docker-compose.yml -f docker-compose.ci.yml docker-composer update"
+            - DOCKER_COMPOSE: "docker-compose -f docker-compose.yml -f docker-compose.ci.yml"
             - EXEC: "$(DOCKER_COMPOSE) exec -T app"
         machine:
             enabled: true
