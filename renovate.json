@@ -4,6 +4,7 @@
     "config:base",
     "schedule:earlyMondays"
   ],
+"stabilityDays": 10,
   "packageRules": [
     {
       "updateTypes": ["minor", "patch", "pin", "digest"],
