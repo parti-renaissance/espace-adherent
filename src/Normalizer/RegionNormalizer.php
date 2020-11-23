@@ -5,7 +5,8 @@ namespace App\Normalizer;
 use App\Entity\Jecoute\Region;
 use App\Exception\InvalidUrlAdapterException;
 use App\Storage\UrlAdapterInterface;
-use League\Flysystem\Filesystem;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,9 +20,13 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /** @var UrlAdapterInterface */
     private $storageAdapter;
 
-    public function __construct(Filesystem $storage)
+    public function __construct(FilesystemInterface $storage)
     {
         $this->storageAdapter = $storage->getAdapter();
+
+        if ($this->storageAdapter instanceof CachedAdapter) {
+            $this->storageAdapter = $this->storageAdapter->getAdapter();
+        }
 
         if (!$this->storageAdapter instanceof UrlAdapterInterface) {
             throw new InvalidUrlAdapterException();
