@@ -9,8 +9,8 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-
+    runs-on: alpine:3.9
+    
     steps:
     - uses: actions/checkout@v2
 
