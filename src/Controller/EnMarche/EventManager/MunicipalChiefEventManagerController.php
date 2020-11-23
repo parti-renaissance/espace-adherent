@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\EventManager;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\MunicipalEvent;
 use App\Event\EventManagerSpaceEnum;
@@ -28,9 +29,9 @@ class MunicipalChiefEventManagerController extends AbstractEventManagerControlle
         return EventManagerSpaceEnum::MUNICIPAL_CHIEF;
     }
 
-    protected function getEvents(Adherent $adherent, string $type = null): array
+    protected function getEventsPaginator(Adherent $adherent, string $type = null, int $page = 1): PaginatorInterface
     {
-        return $this->repository->findEventsByOrganizer($adherent);
+        return $this->repository->findEventsByOrganizerPaginator($adherent, $page);
     }
 
     protected function getEventClassName(): string

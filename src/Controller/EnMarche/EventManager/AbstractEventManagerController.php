@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\EventManager;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
@@ -42,7 +43,11 @@ abstract class AbstractEventManagerController extends Controller
     public function eventsAction(Request $request, string $type): Response
     {
         return $this->renderTemplate('event_manager/events_list.html.twig', [
-            'events' => $this->getEvents($this->getMainUser($request->getSession()), $type),
+            'events' => $this->getEventsPaginator(
+                $this->getMainUser($request->getSession()),
+                $type,
+                $request->query->getInt('page', 1)
+            ),
         ]);
     }
 
@@ -84,7 +89,11 @@ abstract class AbstractEventManagerController extends Controller
 
     abstract protected function getSpaceType(): string;
 
-    abstract protected function getEvents(Adherent $adherent, string $type = null): array;
+    abstract protected function getEventsPaginator(
+        Adherent $adherent,
+        string $type = null,
+        int $page = 1
+    ): PaginatorInterface;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {

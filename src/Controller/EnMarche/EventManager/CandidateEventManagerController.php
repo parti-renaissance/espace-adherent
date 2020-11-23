@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\EventManager;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\EventGroupCategory;
 use App\Event\EventManagerSpaceEnum;
@@ -37,15 +38,16 @@ class CandidateEventManagerController extends AbstractEventManagerController
         return EventManagerSpaceEnum::CANDIDATE;
     }
 
-    protected function getEvents(Adherent $adherent, string $type = null): array
+    protected function getEventsPaginator(Adherent $adherent, string $type = null, int $page = 1): PaginatorInterface
     {
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            return $this->repository->findManagedBy(
-                $this->referentTagRepository->findByZones([$adherent->getCandidateManagedArea()->getZone()])
+            return $this->repository->findManagedByPaginator(
+                $this->referentTagRepository->findByZones([$adherent->getCandidateManagedArea()->getZone()]),
+                $page
             );
         }
 
-        return $this->repository->findEventsByOrganizerAndGroupCategory($adherent, EventGroupCategory::CAMPAIGN_EVENTS);
+        return $this->repository->findEventsByOrganizerAndGroupCategoryPaginator($adherent, EventGroupCategory::CAMPAIGN_EVENTS, $page);
     }
 
     protected function getEventGroupCategory(): ?EventGroupCategory

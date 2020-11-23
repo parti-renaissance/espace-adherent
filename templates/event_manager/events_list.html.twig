@@ -3,78 +3,26 @@
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runManagedList(
-                [
-                    {
-                        key: 'name',
-                        name: "Nom de l'événement",
-                        link: true,
-                        targetBlank: true,
-                    },
-                    {
-                        key: 'organizer',
-                        name: 'Organisateur',
-                        style: {
-                            width: 150
-                        },
-                    },
-                    {
-                        key: 'status',
-                        name: 'Statut'
-                    },
-                    {
-                        key: 'postalCode',
-                        name: 'Code postal',
-                        style: {
-                            width: 150
-                        },
-                    },
-                    {
-                        key: 'beginAt',
-                        name: 'Date',
-                        style: {
-                            width: 150
-                        },
-                    },
-                    {
-                        key: 'participants',
-                        name: 'Participants',
-                        className: 'datagrid__table__col--hide-mobile',
-                        style: {
-                            width: 100
-                        },
-                    },
-                    {
-                        key: 'menu',
-                        name: 'Actions',
-                        menu: true,
-                    },
-                ],
-                [
-                    {% for event in events %}
-                        {% include 'event_manager/_event_row.js.twig' %},
-                    {% endfor %}
-                ]
-            );
+            {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::CANDIDATE') %}
+                findAll(document, '.share-by-email').forEach(function (event) {
+                    event.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        var form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '{{ path("app_message_#{space_name}_create") }}';
+
+                        var messageElement = document.createElement('input');
+                        messageElement.name = 'message_content';
+                        messageElement.value = 'Inscrivez-vous à l\'événement <a href="' + e.target.dataset.url + '">ici</a>';
+
+                        form.appendChild(messageElement);
+                        document.body.appendChild(form);
+                        form.submit();
+                    });
+                });
+            {% endif %}
         });
-
-        {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::CANDIDATE') %}
-            document.sendEventLinkByMessage = function (event) {
-                event.preventDefault();
-
-                var form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '{{ path("app_message_#{space_name}_create") }}';
-
-                var messageElement = document.createElement('input');
-                messageElement.name = 'message_content';
-                messageElement.value = 'Inscrivez-vous à l\'événement <a href="' + event.target.dataset.url + '">ici</a>';
-
-                form.appendChild(messageElement);
-                document.body.appendChild(form);
-                form.submit();
-            }
-        {% endif %}
     </script>
 {% endblock %}
 
@@ -106,5 +54,90 @@
         </div>
     {% endif %}
 
-    <div id="datagrid"></div>
+    <div class="datagrid">
+        <div class="b__nudge--bottom-larger">
+            <div class="datagrid__table-container">
+                <table class="datagrid__table-manager">
+                    <thead>
+                    <tr>
+                        <th>Nom de l'événement</th>
+                        <th style="width: 150px;">Organisateur</th>
+                        <th>Statut</th>
+                        <th style="width: 150px;">Code postal</th>
+                        <th style="width: 150px;">Date</th>
+                        <th style="width: 100px;" class="datagrid__table__col--hide-mobile">Participants</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in events %}
+                        <tr class="referent__item">
+                            <td>
+                                <a href=" path('app_event_show', {slug: event.slug})" target="_blank">{{ event.name }}
+                            </td>
+                            <td>{{ event.organizer ? event.organizer.fullName : 'un ancien adhérent' }}</td>
+                            <td>{{ event.status|trans([], 'forms') }}</td>
+                            <td>{{ event.country == 'FR' ? event.postalCode : event.postalCode ~ ' (' ~ event.countryName ~ ')' }}</td>
+                            <td>{{ event.beginAt|date('d/m/Y H:i') }}</td>
+                            <td class="datagrid__table__col--hide-mobile">
+                                {{ event.participantsCount }}
+                            </td>
+                            <td>
+                                {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::CANDIDATE') %}
+                                    {% set items = [
+                                        {
+                                            label: 'Partager par e-mail',
+                                            linkAttr: {
+                                                class: 'row-action share-by-email',
+                                                'data-url': url('app_event_show', {slug: event.slug}),
+                                            }
+                                        }
+                                    ] %}
+                                {% else %}
+                                    {% set items = [] %}
+                                {% endif %}
+
+                                {% if is_granted('HOST_EVENT', event) %}
+                                    {% set items = items|merge([
+                                        {
+                                            label: 'Modifier',
+                                            href: path('app_event_edit', {slug: event.slug}),
+                                        },
+                                        {
+                                            label: 'Écrire aux participants',
+                                            href: path('app_event_members', {slug: event.slug}),
+                                        },
+                                        {
+                                            label: 'Annuler',
+                                            href: path('app_event_cancel', {slug: event.slug}),
+                                            linkAttr: {
+                                                class: 'row-action text--error'
+                                            },
+                                        },
+                                    ]) %}
+                                {% endif %}
+
+                                {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="text--center">
+                                <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                Aucun résultat
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% if events.count and events.lastPage != 1 %}
+            {% include 'components/_modern_pagination.html.twig' with {
+                current_page: events.currentPage,
+                total_pages: events.lastPage,
+            } %}
+        {% endif %}
+    </div>
 {% endblock %}

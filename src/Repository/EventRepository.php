@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\BaseEvent;
 use App\Entity\BaseEventCategory;
@@ -18,6 +19,7 @@ use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -27,6 +29,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class EventRepository extends ServiceEntityRepository
 {
+    use PaginatorTrait;
+
     public const TYPE_PAST = 'past';
     public const TYPE_UPCOMING = 'upcoming';
     public const TYPE_ALL = 'all';
@@ -190,11 +194,9 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param ReferentTag[] $referentTags
-     *
-     * @return Event[]
+     * @return Event[]|PaginatorInterface
      */
-    public function findManagedBy(array $referentTags): array
+    public function findManagedByPaginator(array $referentTags, int $page = 1, int $limit = 50): PaginatorInterface
     {
         $qb = $this->createQueryBuilder('e')
             ->select('e', 'a', 'c', 'o')
@@ -212,7 +214,17 @@ class EventRepository extends ServiceEntityRepository
 
         $this->applyGeoFilter($qb, $referentTags, 'e');
 
-        return $qb->getQuery()->getResult();
+        return $this->configurePaginator(
+            $qb,
+            $page,
+            $limit,
+            static function (Query $query) {
+                $query
+                    ->useResultCache(true)
+                    ->setResultCacheLifetime(1800)
+                ;
+            }
+        );
     }
 
     /**
@@ -273,20 +285,53 @@ class EventRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function findEventsByOrganizerAndGroupCategory(Adherent $organizer, string $groupSlug): array
-    {
-        return $this
-            ->createQueryBuilder('e')
-            ->innerJoin('e.category', 'category')
-            ->innerJoin('category.eventGroupCategory', 'groupCategory')
-            ->where('e.organizer = :organizer')
-            ->andWhere('groupCategory.slug = :groupSlug')
-            ->setParameter('organizer', $organizer)
-            ->setParameter('groupSlug', $groupSlug)
-            ->orderBy('e.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult()
-        ;
+    public function findEventsByOrganizerPaginator(
+        Adherent $organizer,
+        int $page = 1,
+        int $limit = 50
+    ): PaginatorInterface {
+        return $this->configurePaginator(
+            $this
+                ->createQueryBuilder('e')
+                ->andWhere('e.organizer = :organizer')
+                ->setParameter('organizer', $organizer)
+                ->orderBy('e.createdAt', 'DESC'),
+            $page,
+            $limit,
+            static function (Query $query) {
+                $query
+                    ->useResultCache(true)
+                    ->setResultCacheLifetime(1800)
+                ;
+            }
+        );
+    }
+
+    public function findEventsByOrganizerAndGroupCategoryPaginator(
+        Adherent $organizer,
+        string $groupSlug,
+        int $page = 1,
+        int $limit = 50
+    ): PaginatorInterface {
+        return $this->configurePaginator(
+            $this
+                ->createQueryBuilder('e')
+                ->innerJoin('e.category', 'category')
+                ->innerJoin('category.eventGroupCategory', 'groupCategory')
+                ->where('e.organizer = :organizer')
+                ->andWhere('groupCategory.slug = :groupSlug')
+                ->setParameter('organizer', $organizer)
+                ->setParameter('groupSlug', $groupSlug)
+                ->orderBy('e.createdAt', 'DESC'),
+            $page,
+            $limit,
+            static function (Query $query) {
+                $query
+                    ->useResultCache(true)
+                    ->setResultCacheLifetime(1800)
+                ;
+            }
+        );
     }
 
     private function createUpcomingEventsQueryBuilder(): QueryBuilder
