@@ -111,7 +111,7 @@ class SearchControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, '/tous-les-comites/1');
 
-        $this->assertSame(10, $crawler->filter('.search__committee__box')->count());
+        $this->assertSame(11, $crawler->filter('.search__committee__box')->count());
         $this->assertSame(0, $crawler->filter('meta[rel="prev"]')->count());
         $this->assertSame(0, $crawler->filter('meta[rel="next"]')->count());
         $this->assertSame(1, $crawler->filter('.listing__paginator li')->count());

@@ -889,6 +889,11 @@ voting_platform.designation.type_copol: Comité politique
 voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
 voting_platform.designation.zone_outre_mer: Outre-Mer
+voting_platform.vote.majority_vote_mention.excellent: Excellent
+voting_platform.vote.majority_vote_mention.very_good: Très bien
+voting_platform.vote.majority_vote_mention.good: Bien
+voting_platform.vote.majority_vote_mention.fair: Passable
+voting_platform.vote.majority_vote_mention.insufficient: Insuffisant
 designation.label.type_committee_adherent: Désignation des binômes d'adhérents
 designation.label.type_copol: Désignation des binômes au Copol
 designation.vote_mode.online: 100% en ligne

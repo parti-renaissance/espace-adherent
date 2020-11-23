@@ -62,8 +62,8 @@ class CommitteesControllerTest extends WebTestCase
 
         self::assertSame([
             'total' => 2,
-            'males' => 1,
-            'females' => 1,
+            'males' => 2,
+            'females' => 0,
         ], $data['metadata']);
 
         $this->assertArrayHasKey('candidacies', $data);
@@ -78,7 +78,7 @@ class CommitteesControllerTest extends WebTestCase
 
         self::assertArraySubset([
             'photo' => null,
-            'gender' => 'female',
+            'gender' => 'male',
             'first_name' => 'Carl',
             'last_name' => 'Mirabeau',
         ], $data['candidacies'][1]);

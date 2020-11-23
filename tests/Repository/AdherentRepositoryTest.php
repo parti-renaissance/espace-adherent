@@ -53,7 +53,7 @@ class AdherentRepositoryTest extends WebTestCase
 
     public function testCountActiveAdherents()
     {
-        self::assertSame(32, $this->adherentRepository->countActiveAdherents());
+        self::assertSame(40, $this->adherentRepository->countActiveAdherents());
     }
 
     public function testFindAllManagedBy()

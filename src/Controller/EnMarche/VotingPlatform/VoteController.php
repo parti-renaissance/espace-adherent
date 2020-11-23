@@ -37,7 +37,10 @@ class VoteController extends AbstractController
             ->createForm(
                 VotePoolCollectionType::class,
                 $voteCommand,
-                ['candidate_groups' => $candidateGroups = $currentPool->getCandidateGroups()]
+                [
+                    'candidate_groups' => $candidateGroups = $currentPool->getCandidateGroups(),
+                    'designation' => $election->getDesignation(),
+                ]
             )
             ->handleRequest($request)
         ;

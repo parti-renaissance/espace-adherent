@@ -46,6 +46,15 @@ class VoteChoice
     private $isBlank = false;
 
     /**
+     * For storing the mention on Majority Vote
+     *
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $mention;
+
+    /**
      * @var ElectionPool
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionPool")
@@ -86,5 +95,10 @@ class VoteChoice
     public function getElectionPool(): ElectionPool
     {
         return $this->electionPool;
+    }
+
+    public function setMention(?string $mention): void
+    {
+        $this->mention = $mention;
     }
 }

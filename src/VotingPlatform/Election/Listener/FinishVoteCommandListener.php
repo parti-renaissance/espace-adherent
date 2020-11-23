@@ -111,19 +111,36 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $voteResult = new VoteResult($electionRound, $voterKey);
 
         foreach ($command->getChoicesByPools() as $poolId => $choice) {
-            $voteChoice = new VoteChoice($this->entityManager->getPartialReference(ElectionPool::class, $poolId));
+            /** @var ElectionPool $pool */
+            $pool = $this->entityManager->getPartialReference(ElectionPool::class, $poolId);
 
-            if (VoteChoice::BLANK_VOTE_VALUE == $choice) {
-                $voteChoice->setIsBlank(true);
+            if ($command->isMajorityVote()) {
+                foreach ($choice as $candidateGroupUuid => $mention) {
+                    if (!$group = $this->candidateGroupRepository->findOneByUuid($candidateGroupUuid)) {
+                        throw new \RuntimeException(sprintf('Candidate group not found with uuid "%s"', $choice));
+                    }
+
+                    $voteChoice = new VoteChoice($pool);
+                    $voteChoice->setCandidateGroup($group);
+                    $voteChoice->setMention($mention);
+
+                    $voteResult->addVoteChoice($voteChoice);
+                }
             } else {
-                if (!$group = $this->candidateGroupRepository->findOneByUuid($choice)) {
-                    throw new \RuntimeException(sprintf('Candidate group not found with uuid "%s"', $choice));
+                $voteChoice = new VoteChoice($pool);
+
+                if (VoteChoice::BLANK_VOTE_VALUE == $choice) {
+                    $voteChoice->setIsBlank(true);
+                } else {
+                    if (!$group = $this->candidateGroupRepository->findOneByUuid($choice)) {
+                        throw new \RuntimeException(sprintf('Candidate group not found with uuid "%s"', $choice));
+                    }
+
+                    $voteChoice->setCandidateGroup($group);
                 }
 
-                $voteChoice->setCandidateGroup($group);
+                $voteResult->addVoteChoice($voteChoice);
             }
-
-            $voteResult->addVoteChoice($voteChoice);
         }
 
         return $voteResult;
