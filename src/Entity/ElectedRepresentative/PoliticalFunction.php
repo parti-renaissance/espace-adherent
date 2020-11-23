@@ -191,7 +191,11 @@ class PoliticalFunction
 
     public function getMandateZoneName(): string
     {
-        return $this->mandate && $this->mandate->getZone() ? $this->mandate->getZone()->getName() : '';
+        if (!$this->mandate || !($zone = $this->mandate->getGeoZone())) {
+            return '';
+        }
+
+        return $zone->isCity() ? $zone->getNameCode() : $zone->getName();
     }
 
     public function __toString(): string
