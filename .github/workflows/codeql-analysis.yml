@@ -24,7 +24,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: docker://alpine:latest
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
