@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: docker://alpine:latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
