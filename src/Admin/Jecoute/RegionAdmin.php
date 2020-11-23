@@ -142,10 +142,28 @@ class RegionAdmin extends AbstractAdmin
             return;
         }
 
-        $this->uploadFile($region);
+        $this->uploadLogo($region);
+        $this->uploadBanner($region);
     }
 
-    public function uploadFile(Region $region): void
+    public function uploadLogo(Region $region): void
+    {
+        $uploadedFile = $region->getLogoFile();
+
+        if (null === $uploadedFile) {
+            return;
+        }
+
+        if (!$uploadedFile instanceof UploadedFile) {
+            throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
+        }
+
+        $region->setLogoFromUploadedFile();
+
+        $this->storage->put($region->getLogoPathWithDirectory(), file_get_contents($uploadedFile->getPathname()));
+    }
+
+    public function uploadBanner(Region $region): void
     {
         $uploadedFile = $region->getBannerFile();
 
@@ -159,6 +177,6 @@ class RegionAdmin extends AbstractAdmin
 
         $region->setBannerFromUploadedFile();
 
-        $this->storage->put($region->getBannerPathWithDirectory(), file_get_contents($region->getBannerFile()->getPathname()));
+        $this->storage->put($region->getBannerPathWithDirectory(), file_get_contents($uploadedFile->getPathname()));
     }
 }
