@@ -458,7 +458,9 @@ class ManagedUsersFilter
                 'interests' => $this->interests,
                 'registeredSince' => $this->registeredSince ? $this->registeredSince->format('Y-m-d') : null,
                 'registeredUntil' => $this->registeredUntil ? $this->registeredUntil->format('Y-m-d') : null,
-                'zones' => 1 === \count($this->zones) ? current($this->zones)->getId() : null,
+                'zones' => array_map(static function (Zone $zone) {
+                    return $zone->getId();
+                }, $this->zones),
                 'managedZones' => 1 === \count($this->managedZones) ? current($this->managedZones)->getId() : null,
                 'smsSubscription' => $this->smsSubscription,
                 'emailSubscription' => $this->emailSubscription,

@@ -251,7 +251,9 @@ class ListFilter
             'userListDefinitions' => array_map(function (UserListDefinition $label) {
                 return $label->getId();
             }, $this->userListDefinitions),
-            'zones' => 1 === \count($this->zones) ? current($this->zones)->getId() : null,
+            'zones' => array_map(static function (Zone $zone) {
+                return $zone->getId();
+            }, $this->zones),
             'sort' => $this->sort,
             'order' => $this->order,
             'contactType' => $this->contactType,
