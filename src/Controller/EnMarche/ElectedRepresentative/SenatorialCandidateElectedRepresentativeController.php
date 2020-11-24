@@ -4,6 +4,7 @@ namespace App\Controller\EnMarche\ElectedRepresentative;
 
 use App\Entity\Adherent;
 use App\Entity\ReferentTag;
+use App\Geo\ManagedZoneProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,7 +16,7 @@ class SenatorialCandidateElectedRepresentativeController extends AbstractElected
 {
     protected function getSpaceType(): string
     {
-        return 'senatorial_candidate';
+        return ManagedZoneProvider::SENATORIAL_CANDIDATE;
     }
 
     protected function getManagedZones(Adherent $adherent): array

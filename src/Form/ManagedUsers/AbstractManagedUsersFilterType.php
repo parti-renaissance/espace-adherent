@@ -5,6 +5,7 @@ namespace App\Form\ManagedUsers;
 use App\Form\GenderType;
 use App\Form\ZoneAutoCompleteType;
 use App\ManagedUsers\ManagedUsersFilter;
+use App\Validator\ManagedZone;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -28,7 +29,12 @@ abstract class AbstractManagedUsersFilterType extends AbstractType
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
             ->add('zones', ZoneAutoCompleteType::class, [
-                'remote_params' => ['space' => $options['space_type']],
+                'remote_params' => [
+                    'space_type' => $options['space_type'],
+                ],
+                'constraints' => [
+                    new ManagedZone($options['space_type']),
+                ],
             ])
             ->add('emailSubscription', ChoiceType::class, [
                 'required' => false,
