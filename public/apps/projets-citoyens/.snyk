@@ -1,0 +1,61 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.19.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:extend:20180424':
+    - react-scripts > fsevents > node-pre-gyp > request > extend:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > request > extend:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > extend:
+        patched: '2020-11-24T11:10:17.791Z'
+  'npm:hoek:20180212':
+    - react-scripts > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > fsevents > node-pre-gyp > request > hawk > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > request > hawk > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack-dev-server > chokidar > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
+    - react-scripts > webpack > watchpack > chokidar > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2020-11-24T11:10:17.791Z'
