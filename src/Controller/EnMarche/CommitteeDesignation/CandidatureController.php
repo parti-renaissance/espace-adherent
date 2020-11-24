@@ -160,8 +160,11 @@ class CandidatureController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $invitation = $candidacy->getInvitation();
-            $this->candidatureManager->updateInvitation($invitation, $candidacy, $previouslyInvitedMembership ?? null);
+            $this->candidatureManager->updateInvitation(
+                $candidacy->getInvitation(),
+                $candidacy,
+                $previouslyInvitedMembership ?? null
+            );
 
             $this->addFlash('info', 'Votre invitation a bien été envoyée');
 
