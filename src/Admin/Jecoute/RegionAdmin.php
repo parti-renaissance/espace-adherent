@@ -3,6 +3,7 @@
 namespace App\Admin\Jecoute;
 
 use App\Entity\Jecoute\Region;
+use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -61,10 +62,12 @@ class RegionAdmin extends AbstractAdmin
             ->with('Fichiers', ['class' => 'col-md-6'])
                 ->add('logoFile', FileType::class, [
                     'label' => 'Logo',
+                    'attr' => ['accept' => 'image/*'],
                     'help' => 'Le fichier ne doit pas dépasser 5 Mo.',
                 ])
                 ->add('bannerFile', FileType::class, [
                     'required' => false,
+                    'attr' => ['accept' => 'image/*'],
                     'label' => 'Bannière',
                     'help' => 'Le fichier ne doit pas dépasser 5 Mo.',
                 ])
@@ -160,7 +163,11 @@ class RegionAdmin extends AbstractAdmin
 
         $region->setLogoFromUploadedFile();
 
-        $this->storage->put($region->getLogoPathWithDirectory(), file_get_contents($uploadedFile->getPathname()));
+        $this->storage->put(
+            $region->getLogoPathWithDirectory(),
+            file_get_contents($uploadedFile->getPathname()),
+            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+        );
     }
 
     public function uploadBanner(Region $region): void
@@ -177,6 +184,10 @@ class RegionAdmin extends AbstractAdmin
 
         $region->setBannerFromUploadedFile();
 
-        $this->storage->put($region->getBannerPathWithDirectory(), file_get_contents($uploadedFile->getPathname()));
+        $this->storage->put(
+            $region->getBannerPathWithDirectory(),
+            file_get_contents($uploadedFile->getPathname()),
+            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+        );
     }
 }
