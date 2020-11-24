@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use App\Entity\Adherent;
 use App\Entity\IdeasWorkshop\Idea;
 use App\Repository\IdeasWorkshop\IdeaRepository;
 use Symfony\Component\Security\Core\Security;
@@ -36,7 +37,7 @@ class IdeaNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 ['total' => $data['votes_count']]
             );
 
-            if ($loggedUser = $this->security->getUser()) {
+            if (($loggedUser = $this->security->getUser()) instanceof Adherent) {
                 $data['votes_count']['my_votes'] = $this->ideaRepository->getAdherentVotesForIdea($object, $loggedUser);
             } else {
                 $loggedUser = null;
