@@ -67,13 +67,31 @@ final class ZoneRepository extends ServiceEntityRepository
     /**
      * @return Zone[]
      */
-    public function searchByTermAndManagedZones(string $term, array $zones, int $max): array
-    {
+    public function searchByTermAndManagedZonesGroupedByType(
+        string $term,
+        array $zones,
+        array $types,
+        int $perType
+    ): array {
         if ('' === $term) {
             return [];
         }
 
+        $grouped = [];
+        foreach ($types as $type) {
+            $grouped[] = $this->doSearchByTermManagedZonesAndType($term, $zones, $type, $perType);
+        }
+
+        return array_merge(...$grouped);
+    }
+
+    private function doSearchByTermManagedZonesAndType(string $term, array $zones, string $type, int $max): array
+    {
         $qb = $this->createQueryBuilder('zone');
+        $qb
+            ->andWhere($qb->expr()->eq('zone.type', ':type'))
+            ->setParameter(':type', $type)
+        ;
 
         if ($zones) {
             $qb
