@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.1",
-    "history": "^4.7.2",
+    "history": "^4.10.1",
     "localforage": "^1.7.2",
     "lodash": "^4.17.20",
     "node-sass-chokidar": "^1.2.2",
