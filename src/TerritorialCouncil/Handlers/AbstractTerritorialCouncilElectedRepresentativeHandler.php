@@ -59,10 +59,9 @@ abstract class AbstractTerritorialCouncilElectedRepresentativeHandler extends Ab
 
     protected function getQualityZone(Adherent $adherent): string
     {
-        return $this->mandates[0]->getZone()
-            ? $this->mandates[0]->getZone()->getName()
-            : $this->mandates[0]->getGeoZone()->getNameCode()
-        ;
+        $zone = $this->mandates[0]->getGeoZone();
+
+        return $zone->isCity() ? $zone->getNameCode() : $zone->getName();
     }
 
     abstract protected function getMandateTypes(): array;
