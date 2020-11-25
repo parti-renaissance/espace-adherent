@@ -3,11 +3,13 @@
 
     function initBotmindChat() {
         if (botmindWidget !== undefined) {
-            botmindWidget.init({
-                token: '0f805b22-3f7f-42f3-945e-c2904c8b1c9e',
-                host: 'https://api.widget.botmind.io',
-                language: 'fr',
-            }).catch(function(error) {});
+            try {
+                botmindWidget.init({
+                    token: '0f805b22-3f7f-42f3-945e-c2904c8b1c9e',
+                    host: 'https://api.widget.botmind.io',
+                    language: 'fr',
+                }).catch(function (error) {});
+            } catch (error) {}
         }
     }
 
