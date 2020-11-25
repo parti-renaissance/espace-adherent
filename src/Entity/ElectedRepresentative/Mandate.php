@@ -46,11 +46,6 @@ class Mandate
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Zone", cascade={"merge", "detach"})
      * @ORM\JoinColumn
      *
-     * @Assert\Expression(
-     *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
-     *     message="Le périmètre géographique est obligatoire."
-     * )
-     *
      * @deprecated Will be replace by $geoZone
      */
     private $zone;
@@ -59,6 +54,11 @@ class Mandate
      * @var GeoZone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     *
+     * @Assert\Expression(
+     *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
+     *     message="Le périmètre géographique est obligatoire."
+     * )
      */
     private $geoZone;
 

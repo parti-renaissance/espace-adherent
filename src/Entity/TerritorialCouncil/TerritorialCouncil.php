@@ -6,6 +6,7 @@ use App\AdherentMessage\StaticSegmentInterface;
 use App\Collection\TerritorialCouncilMembershipCollection;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityReferentTagTrait;
+use App\Entity\EntityZoneTrait;
 use App\Entity\ReferentTag;
 use App\Entity\StaticSegmentTrait;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
@@ -35,6 +36,7 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
     use EntityIdentityTrait;
     use EntityReferentTagTrait;
     use EntityElectionHelperTrait;
+    use EntityZoneTrait;
     use StaticSegmentTrait;
 
     /**
