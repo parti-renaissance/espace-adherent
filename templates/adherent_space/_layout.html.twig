@@ -9,13 +9,15 @@
         <div class="manager-topbar__container">
             <a href="{{ path('homepage') }}" class="text--logo b__nudge--right-large">EM!</a>
 
-            <a href="#" class="manager-topbar__menu-mobile js-topbar-sidebar-mobile">
-                <div class="burger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </a>
+            {% block manager_topbar_menu_mobile %}
+                <a href="#" class="manager-topbar__menu-mobile js-topbar-sidebar-mobile">
+                    <div class="burger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+            {% endblock %}
 
             {% if is_granted('ROLE_SUPERVISOR') or
                 is_granted('ROLE_HOST') or
@@ -110,11 +112,14 @@
 
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            on(dom('.js-topbar-sidebar-mobile'), 'click', function(event) {
-                event.preventDefault();
+            var topbarSideBarMobile = dom('.js-topbar-sidebar-mobile');
+            var sidebar = dom('.manager-sidebar');
+            if (!topbarSideBarMobile || !sidebar) { return; }
 
-                var sidebar = dom('.manager-sidebar');
-                var body = dom('body');
+            var body = dom('body');
+
+            on(topbarSideBarMobile, 'click', function(event) {
+                event.preventDefault();
 
                 if (!sidebar.style.display || sidebar.style.display === 'none') {
                     show(sidebar);
