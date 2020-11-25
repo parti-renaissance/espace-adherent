@@ -1,0 +1,36 @@
+# dependabot.yml file with updates
+
+version: 2
+updates:
+  # Configuration for Dockerfile
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      # Disable all pull requests for Docker dependencies
+    open-pull-requests-limit: 0
+    labels:
+      - "docker"
+      - "dependencies"    
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    # Increase the version requirements for Composer
+    # only when required
+    versioning-strategy: increase-if-necessary
+    labels:
+      - "composer"
+      - "dependencies"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      # Check for npm updates on Sundays
+      day: "monday"
+    # Labels on pull requests for security and version updates
+    labels:
+      - "npm"
+      - "dependencies"
