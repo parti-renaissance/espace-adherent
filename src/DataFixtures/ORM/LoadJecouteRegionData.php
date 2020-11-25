@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\Jecoute\Region;
+use App\Jecoute\RegionColorEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
@@ -23,7 +24,7 @@ class LoadJecouteRegionData extends Fixture
             '28',
             'Bienvenue en Normandie',
             'Description de la normandie',
-            '#32cd32',
+            RegionColorEnum::RED,
             'region-logo.jpg',
             'region-banner.jpg',
             'https://en-marche.fr'
@@ -35,7 +36,7 @@ class LoadJecouteRegionData extends Fixture
             '32',
             'Bienvenue en Hauts-de-France',
             'Description des Hauts-de-France',
-            '#dc143c',
+            RegionColorEnum::GREEN,
             'region-logo.jpg'
         ));
 

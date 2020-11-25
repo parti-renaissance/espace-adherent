@@ -37,6 +37,13 @@ common.message_deleted: Votre message a bien été supprimé.
 common.select_date: Choisissez une date
 common.territorial_council: Conseil territorial
 common.political_committee: Comité politique
+common.blue: Bleu
+common.green: Vert
+common.red: Rouge
+common.orange: Orange
+common.purple: Violet
+common.yellow: Jaune
+common.pink: Rose
 
 pending: En attente
 approved: Approuvé
