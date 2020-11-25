@@ -18,6 +18,7 @@ class TerritorialCouncilQualityEnum extends Enum
     public const MAYOR = 'mayor';
     public const LEADER = 'leader';
     public const REGIONAL_COUNCILOR = 'regional_councilor';
+    public const CORSICA_ASSEMBLY_MEMBER = 'corsica_assembly_member';
     public const DEPARTMENT_COUNCILOR = 'department_councilor';
     public const CITY_COUNCILOR = 'city_councilor';
     public const BOROUGH_COUNCILOR = 'borough_councilor';
@@ -39,6 +40,7 @@ class TerritorialCouncilQualityEnum extends Enum
 
     public const ABLE_TO_CANDIDATE = [
         self::REGIONAL_COUNCILOR,
+        self::CORSICA_ASSEMBLY_MEMBER,
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
         self::BOROUGH_COUNCILOR,
@@ -59,12 +61,13 @@ class TerritorialCouncilQualityEnum extends Enum
         self::DEPARTMENTAL_COUNCIL_PRESIDENT => 8,
         self::MAYOR => 9,
         self::REGIONAL_COUNCILOR => 10,
-        self::DEPARTMENT_COUNCILOR => 11,
-        self::CITY_COUNCILOR => 12,
-        self::BOROUGH_COUNCILOR => 13,
-        self::CONSULAR_COUNCILOR => 14,
-        self::COMMITTEE_SUPERVISOR => 15,
-        self::ELECTED_CANDIDATE_ADHERENT => 16,
+        self::CORSICA_ASSEMBLY_MEMBER => 11,
+        self::DEPARTMENT_COUNCILOR => 12,
+        self::CITY_COUNCILOR => 13,
+        self::BOROUGH_COUNCILOR => 14,
+        self::CONSULAR_COUNCILOR => 15,
+        self::COMMITTEE_SUPERVISOR => 16,
+        self::ELECTED_CANDIDATE_ADHERENT => 17,
     ];
 
     public const ALL = [
@@ -79,6 +82,7 @@ class TerritorialCouncilQualityEnum extends Enum
         self::DEPARTMENTAL_COUNCIL_PRESIDENT,
         self::MAYOR,
         self::REGIONAL_COUNCILOR,
+        self::CORSICA_ASSEMBLY_MEMBER,
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
         self::BOROUGH_COUNCILOR,
@@ -100,6 +104,7 @@ class TerritorialCouncilQualityEnum extends Enum
         self::MAYOR,
         self::LEADER,
         self::REGIONAL_COUNCILOR,
+        self::CORSICA_ASSEMBLY_MEMBER,
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
         self::BOROUGH_COUNCILOR,
@@ -129,6 +134,7 @@ class TerritorialCouncilQualityEnum extends Enum
 
     public const POLITICAL_COMMITTEE_ELECTED_MEMBERS = [
         self::REGIONAL_COUNCILOR,
+        self::CORSICA_ASSEMBLY_MEMBER,
         self::DEPARTMENT_COUNCILOR,
         self::CITY_COUNCILOR,
         self::BOROUGH_COUNCILOR,
@@ -149,6 +155,7 @@ class TerritorialCouncilQualityEnum extends Enum
         'territorial_council.membership.quality.departmental_council_president' => self::DEPARTMENTAL_COUNCIL_PRESIDENT,
         'territorial_council.membership.quality.mayor' => self::MAYOR,
         'territorial_council.membership.quality.regional_councilor' => self::REGIONAL_COUNCILOR,
+        'territorial_council.membership.quality.corsica_assembly_member' => self::CORSICA_ASSEMBLY_MEMBER,
         'territorial_council.membership.quality.department_councilor' => self::DEPARTMENT_COUNCILOR,
         'territorial_council.membership.quality.city_councilor' => self::CITY_COUNCILOR,
         'territorial_council.membership.quality.borough_councilor' => self::BOROUGH_COUNCILOR,
@@ -157,6 +164,7 @@ class TerritorialCouncilQualityEnum extends Enum
         'territorial_council.membership.quality.elected_candidate_adherent' => self::ELECTED_CANDIDATE_ADHERENT,
         'political_committee.membership.quality.leader' => 'PC_'.self::LEADER,
         'political_committee.membership.quality.regional_councilor' => 'PC_'.self::REGIONAL_COUNCILOR,
+        'political_committee.membership.quality.corsica_assembly_member' => 'PC_'.self::CORSICA_ASSEMBLY_MEMBER,
         'political_committee.membership.quality.department_councilor' => 'PC_'.self::DEPARTMENT_COUNCILOR,
         'political_committee.membership.quality.city_councilor' => 'PC_'.self::CITY_COUNCILOR,
         'political_committee.membership.quality.borough_councilor' => 'PC_'.self::BOROUGH_COUNCILOR,

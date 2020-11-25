@@ -557,6 +557,7 @@ class PoliticalCommitteeManagerTest extends TestCase
     public function provideElectedMemberQualities(): iterable
     {
         yield [TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR];
+        yield [TerritorialCouncilQualityEnum::CORSICA_ASSEMBLY_MEMBER];
         yield [TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR];
         yield [TerritorialCouncilQualityEnum::CITY_COUNCILOR];
         yield [TerritorialCouncilQualityEnum::BOROUGH_COUNCILOR];
