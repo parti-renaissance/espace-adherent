@@ -6,6 +6,7 @@ use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\ElectedRepresentative\ElectedRepresentativeFilterType;
+use App\Geo\ManagedZoneProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ class LreElectedRepresentativeController extends AbstractElectedRepresentativeCo
 {
     protected function getSpaceType(): string
     {
-        return 'lre';
+        return ManagedZoneProvider::LRE;
     }
 
     protected function getManagedZones(Adherent $adherent): array

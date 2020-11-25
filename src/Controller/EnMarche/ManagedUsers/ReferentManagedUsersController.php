@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\ManagedUsers;
 
 use App\Form\ManagedUsers\ReferentManagedUsersFilterType;
+use App\Geo\ManagedZoneProvider;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -17,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ReferentManagedUsersController extends AbstractManagedUsersController
 {
-    private const SPACE_NAME = 'referent';
+    private const SPACE_NAME = ManagedZoneProvider::REFERENT;
 
     protected function getSpaceType(): string
     {

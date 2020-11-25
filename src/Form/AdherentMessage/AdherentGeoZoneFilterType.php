@@ -5,6 +5,7 @@ namespace App\Form\AdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Form\GenderType;
 use App\Form\ZoneAutoCompleteType;
+use App\Validator\ManagedZone;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,8 +27,13 @@ class AdherentGeoZoneFilterType extends AbstractType
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
             ->add('zone', ZoneAutoCompleteType::class, [
-                'remote_params' => ['space' => $options['space_type']],
                 'multiple' => false,
+                'remote_params' => [
+                    'space_type' => $options['space_type'],
+                ],
+                'constraints' => [
+                    new ManagedZone($options['space_type']),
+                ],
             ])
         ;
     }
