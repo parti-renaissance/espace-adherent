@@ -8,7 +8,7 @@ updates:
     schedule:
       interval: "weekly"
       # Disable all pull requests for Docker dependencies
-    open-pull-requests-limit: 0
+    #open-pull-requests-limit: 0
     labels:
       - "docker"
       - "dependencies"    
