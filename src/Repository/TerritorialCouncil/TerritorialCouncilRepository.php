@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\Mandate;
-use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -58,23 +57,16 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
     {
         $zones = [];
         array_walk($mandates, function (Mandate $mandate) use (&$zones) {
-            $zone = $mandate->getGeoZone();
-            $zones[] = $zone;
-
-            if ($zone->isConsularDistrict()) {
-                $zones = array_merge($zones, $zone->getParentsOfType(Zone::FOREIGN_DISTRICT));
-            }
-
-            if (\in_array($zone->getType(), [Zone::BOROUGH, Zone::CITY, Zone::CANTON, Zone::DISTRICT])) {
-                $zones = array_merge($zones, $zone->getParentsOfType(Zone::DEPARTMENT));
-            }
+            $zones[] = $mandate->getGeoZone();
         });
 
         return $this->createQueryBuilder('tc')
-            ->leftJoin('tc.referentTags', 'tag')
-            ->leftJoin('tag.zone', 'zone')
-            ->orWhere('zone IN (:zones)')
+            ->leftJoin('tc.zones', 'zone')
+            ->leftJoin('zone.children', 'child')
+            ->where('(zone IN (:zones) OR (zone.code NOT LIKE :paris AND zone.code NOT LIKE :paris_circo AND child IN (:zones)))')
             ->setParameter('zones', $zones)
+            ->setParameter('paris', '751%')
+            ->setParameter('paris_circo', '75-%')
             ->getQuery()
             ->getResult()
         ;

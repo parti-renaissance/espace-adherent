@@ -82,11 +82,6 @@ class Zone implements GeoInterface
         return $this->type;
     }
 
-    public function isConsularDistrict(): bool
-    {
-        return Zone::CONSULAR_DISTRICT === $this->type;
-    }
-
     public function isCity(): bool
     {
         return Zone::CITY === $this->type;
