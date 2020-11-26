@@ -37,6 +37,9 @@ class RegionAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var Region $region */
+        $region = $this->getSubject();
+
         $formMapper
             ->with('Informations', ['class' => 'col-md-6'])
                 ->add('name', TextType::class, [
@@ -65,6 +68,7 @@ class RegionAdmin extends AbstractAdmin
             ->with('Fichiers', ['class' => 'col-md-6'])
                 ->add('logoFile', FileType::class, [
                     'label' => 'Logo',
+                    'required' => !$region->hasLogoUploaded(),
                     'attr' => ['accept' => 'image/*'],
                     'help' => 'Le fichier ne doit pas dépasser 5 Mo.',
                 ])
