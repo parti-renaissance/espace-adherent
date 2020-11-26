@@ -82,14 +82,17 @@
                 Suivre ce comité
             </button>
         {% elseif not is_host and can_unfollow(committee) %}
-            <button role="button"
-                    class="btn btn--no-border committee-unfollow btn--no-wrap committee-action-button"
-                    id="committee-toggle-membership"
-                    data-action="quitter"
-                    data-csrf-token="{{ csrf_token('committee.unfollow') }}">
-                <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
-                Quitter ce comité
-            </button>
+            <div>
+                <button role="button"
+                        class="btn btn--no-border committee-unfollow btn--no-wrap committee-action-button"
+                        id="committee-toggle-membership"
+                        data-action="quitter"
+                        data-csrf-token="{{ csrf_token('committee.unfollow') }}">
+                    <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
+                    Quitter ce comité
+                </button>
+                <p class="error-label text--error"></p>
+            </div>
         {% elseif is_host %}
             <div class="committee-follow--anonymous">
                 {{ include('committee/_host_header.html.twig') }}
@@ -200,7 +203,7 @@
                             button.getAttribute('data-csrf-token'),
                             function (response) {
                                 if (response === null) {
-                                    button.parentNode.querySelector('.error-label').innerText = 'Vous ne pouvez pas candidater dans ce comité';
+                                    button.parentNode.querySelector('.error-label').innerText = 'Une erreur est survenue';
                                     addClass(find(button, '.btn-loader'), 'visually-hidden');
                                     button.disabled = false;
                                 } else {
