@@ -40,6 +40,7 @@ class ValidSearchAvailableMembershipFilterValidator extends ConstraintValidator
     {
         return [
             TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR,
+            TerritorialCouncilQualityEnum::CORSICA_ASSEMBLY_MEMBER,
             TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
             TerritorialCouncilQualityEnum::CITY_COUNCILOR,
             TerritorialCouncilQualityEnum::CONSULAR_COUNCILOR,

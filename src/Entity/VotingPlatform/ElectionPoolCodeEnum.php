@@ -19,6 +19,7 @@ class ElectionPoolCodeEnum extends Enum
     public const COPOL = [
         TerritorialCouncilQualityEnum::LEADER,
         TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR,
+        TerritorialCouncilQualityEnum::CORSICA_ASSEMBLY_MEMBER,
         TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
         TerritorialCouncilQualityEnum::CITY_COUNCILOR,
         TerritorialCouncilQualityEnum::CONSULAR_COUNCILOR,
