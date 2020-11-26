@@ -89,6 +89,21 @@
             </p>
             <div class="form__checkbox form__checkbox--large">
                 <div>
+                    {{ form_widget(form.id_processing) }}
+                    {% block _form_id_processing_label %}
+                        <label class="form" for="certification_request_id_processing">
+                            <span>
+                                La copie de la pièce d'identité que vous communiquez dans le cadre de votre demande de certification
+                                sera conservée pour une période de 14 jours durant laquelle votre demande sera traitée.
+                                A la fin de ce délai, la copie de votre pièce d’identité est supprimée automatiquement.
+                            </span>
+                        </label>
+                    {% endblock %}
+                </div>
+                {{ form_errors(form.id_processing) }}
+            </div>
+            <div class="form__checkbox form__checkbox--large">
+                <div>
                     {{ form_widget(form.cgu) }}
                     {% block _form_cgu_label %}
                         <label class="form" for="certification_request_cgu">
