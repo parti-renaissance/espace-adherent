@@ -19,6 +19,7 @@ class CertificationRequestType extends AbstractType
                 ],
             ])
             ->add('cgu', RequiredCheckboxType::class)
+            ->add('id_processing', RequiredCheckboxType::class)
         ;
     }
 
