@@ -169,7 +169,7 @@ class Region
      *
      * @ORM\Column
      *
-     * @Assert\Length(max=10)
+     * @Assert\Choice(callback={"App\Jecoute\RegionColorEnum", "all"})
      * @Assert\NotBlank
      *
      * @SymfonySerializer\Groups({"jecoute_region_read"})

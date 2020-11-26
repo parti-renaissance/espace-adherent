@@ -3,13 +3,14 @@
 namespace App\Admin\Jecoute;
 
 use App\Entity\Jecoute\Region;
+use App\Jecoute\RegionColorEnum;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ColorType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -50,10 +51,12 @@ class RegionAdmin extends AbstractAdmin
                 ->add('description', TextareaType::class, [
                     'label' => 'Description',
                 ])
-                ->add('primaryColor', ColorType::class, [
-                    'attr' => [
-                        'class' => 'input-lg',
-                    ],
+                ->add('primaryColor', ChoiceType::class, [
+                    'choices' => RegionColorEnum::all(),
+                    'choice_label' => function (string $choice) {
+                        return "common.$choice";
+                    },
+                    'label' => 'Couleur',
                 ])
                 ->add('externalLink', UrlType::class, [
                     'label' => 'Lien',
