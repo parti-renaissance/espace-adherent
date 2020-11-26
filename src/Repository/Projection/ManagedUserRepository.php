@@ -56,8 +56,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        $zones = $filter->getZones() ?: $filter->getManagedZones();
-        $this->withZoneCondition($qb, $zones);
+        $this->withZoneCondition($qb, $filter->getManagedZones());
+        $this->withZoneCondition($qb, $filter->getZones());
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();
@@ -271,6 +271,8 @@ class ManagedUserRepository extends ServiceEntityRepository
 
     private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'u'): QueryBuilder
     {
+        static $parentJoinCount = 0;
+
         if (!$zones) {
             return $qb;
         }
@@ -279,9 +281,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->innerJoin("$alias.zone", 'zone');
         }
 
-        if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {
-            $qb->innerJoin('zone.parents', 'zone_parent');
-        }
+        $parentAlias = 'zone_parent_'.$parentJoinCount++;
+        $qb->leftJoin('zone.parents', $parentAlias);
 
         $ids = array_map(static function ($zone) {
             return $zone->getId();
@@ -291,7 +292,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->in('zone.id', $ids),
-                    $qb->expr()->in('zone_parent.id', $ids),
+                    $qb->expr()->in("$parentAlias.id", $ids),
                 )
             )
         ;
