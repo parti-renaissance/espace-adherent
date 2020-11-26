@@ -109,10 +109,8 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $this->withActiveMandatesCondition($qb);
 
-        $zones = $filter->getZones() ?: $filter->getManagedZones();
-        if ($zones) {
-            $this->withZoneCondition($qb, $zones);
-        }
+        $this->withZoneCondition($qb, $filter->getManagedZones());
+        $this->withZoneCondition($qb, $filter->getZones());
 
         if ($filter->getManagedZones()) {
             $qb
@@ -245,6 +243,8 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
     private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'er'): QueryBuilder
     {
+        static $parentJoinCount = 0;
+
         if (!$zones) {
             return $qb;
         }
@@ -257,9 +257,8 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             $qb->innerJoin('mandate.geoZone', 'geo_zone');
         }
 
-        if (!\in_array('geo_zone_parent', $qb->getAllAliases(), true)) {
-            $qb->innerJoin('geo_zone.parents', 'geo_zone_parent');
-        }
+        $parentAlias = 'geo_zone_parent_'.$parentJoinCount++;
+        $qb->leftJoin('geo_zone.parents', $parentAlias);
 
         $ids = array_map(static function ($zone) {
             return $zone->getId();
@@ -269,7 +268,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->in('geo_zone.id', $ids),
-                    $qb->expr()->in('geo_zone_parent.id', $ids),
+                    $qb->expr()->in("$parentAlias.id", $ids),
                 )
             )
         ;
