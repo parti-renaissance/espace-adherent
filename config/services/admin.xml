@@ -381,6 +381,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.jecoute.news" class="App\Admin\Jecoute\NewsAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Actualités" group="Territoire" />
+
+            <argument />
+            <argument>App\Entity\Jecoute\News</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.report" class="App\Admin\ReportAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Territoire" />
 

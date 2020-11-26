@@ -5,7 +5,6 @@ namespace App\Entity\Jecoute;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\EntityNameSlugTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -81,7 +80,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "name": "partial",
  *     "code": "partial",
  * })
- * @ApiFilter(OrderFilter::class, properties={"code"})
  *
  * @ORM\Table(name="jecoute_region")
  * @ORM\Entity
