@@ -3,6 +3,7 @@
 namespace App\Deputy\Subscriber;
 
 use App\Entity\District;
+use App\Entity\Geo\Zone;
 use App\Membership\AdherentEvent;
 use App\Membership\AdherentEvents;
 use App\Repository\DistrictRepository;
@@ -33,13 +34,36 @@ class BindAdherentDistrictSubscriber implements EventSubscriberInterface
                 $adherent->getLongitude()
             );
             if (!empty($districts)) {
+                $zone = null;
+                $zoneTypes = [Zone::DISTRICT, Zone::FOREIGN_DISTRICT];
+
                 foreach ($districts as $district) {
                     if (!\in_array($adherent->getCountry(), $district->getCountries())) {
                         continue;
                     }
 
                     $adherent->addReferentTag($district->getReferentTag());
+
+                    if (!$zone) {
+                        $foundZone = $district->getReferentTag()->getZone();
+                        if (\in_array($foundZone->getType(), $zoneTypes, true)) {
+                            $zone = $foundZone;
+                        }
+                    } // else { @todo inconstancy }
                 }
+
+                if ($zone) {
+                    $zonesToRemove = $adherent->getZones()->filter(static function (Zone $zone) use ($zoneTypes): bool {
+                        return \in_array($zone->getType(), $zoneTypes, true);
+                    });
+
+                    foreach ($zonesToRemove as $toRemove) {
+                        $adherent->removeZone($toRemove);
+                    }
+
+                    $adherent->addZone($zone);
+                }
+
                 $this->em->flush();
             }
         }
