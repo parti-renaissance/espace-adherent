@@ -209,7 +209,7 @@ class Region
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $logo;
 
