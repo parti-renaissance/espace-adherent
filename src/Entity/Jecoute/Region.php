@@ -2,12 +2,8 @@
 
 namespace App\Entity\Jecoute;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Entity\EntityNameSlugTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\Geo\Region as GeoRegion;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -17,86 +13,19 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     collectionOperations={
- *         "get": {
- *             "path": "/jecoute/regions",
- *             "method": "GET",
- *             "swagger_context": {
- *                 "parameters": {
- *                     {
- *                         "name": "uuid",
- *                         "in": "query",
- *                         "type": "string",
- *                         "description": "Filter Regions by exact uuid.",
- *                         "example": "a046adbe-9c7b-56a9-a676-6151a6785dda",
- *                     },
- *                     {
- *                         "name": "name",
- *                         "in": "query",
- *                         "type": "string",
- *                         "description": "Filter Regions by partial name.",
- *                         "example": "Normandie",
- *                     },
- *                     {
- *                         "name": "code",
- *                         "in": "query",
- *                         "type": "string",
- *                         "description": "Filter Regions by exact code.",
- *                         "example": "28",
- *                     },
- *                 }
- *             }
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "method": "GET",
- *             "path": "/jecoute/regions/{id}",
- *             "swagger_context": {
- *                 "summary": "Retrieves a Region resource by UUID.",
- *                 "description": "Retrieves a Region resource by UUID.",
- *                 "parameters": {
- *                     {
- *                         "name": "code",
- *                         "in": "path",
- *                         "type": "string",
- *                         "description": "The code of the Region resource.",
- *                         "example": "28",
- *                     }
- *                 }
- *             }
- *         }
- *     },
- *     attributes={
- *         "normalization_context": {"groups": {"jecoute_region_read"}},
- *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
- *         "order": {"code": "ASC"},
- *     },
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "uuid": "exact",
- *     "name": "partial",
- *     "code": "partial",
- * })
- *
  * @ORM\Table(name="jecoute_region")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\RegionRepository")
  *
- * @UniqueEntity(fields={"code"})
+ * @UniqueEntity(fields={"geoRegion"})
  */
 class Region
 {
     use EntityTimestampableTrait;
-    use EntityNameSlugTrait;
 
     private const IMAGES_DIRECTORY = 'files/jemarche/regions';
 
     /**
      * @var int|null
-     *
-     * @ApiProperty(identifier=false)
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -112,32 +41,6 @@ class Region
      * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
     protected $uuid;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column
-     *
-     * @Assert\Length(max=120)
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
-     */
-    protected $name;
-
-    /**
-     * @var string|null
-     *
-     * @ApiProperty(identifier=true)
-     *
-     * @ORM\Column(unique=true)
-     *
-     * @Assert\Length(max=10)
-     * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
-     */
-    protected $code;
 
     /**
      * @var string|null
@@ -225,10 +128,19 @@ class Region
      */
     private $logoFile;
 
+    /**
+     * @var GeoRegion|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Geo\Region")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank
+     */
+    private $geoRegion;
+
     public function __construct(
         UuidInterface $uuid = null,
-        string $name = null,
-        string $code = null,
+        GeoRegion $geoRegion = null,
         string $subtitle = null,
         string $description = null,
         string $primaryColor = null,
@@ -237,12 +149,7 @@ class Region
         string $externalLink = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
-
-        if ($name) {
-            $this->setName($name);
-        }
-
-        $this->code = $code;
+        $this->geoRegion = $geoRegion;
         $this->subtitle = $subtitle;
         $this->description = $description;
         $this->primaryColor = $primaryColor;
@@ -253,7 +160,11 @@ class Region
 
     public function __toString()
     {
-        return sprintf('%s (%s)', $this->name, $this->code);
+        if ($this->geoRegion) {
+            return sprintf('%s (%s)', $this->geoRegion->getName(), $this->geoRegion->getCode());
+        }
+
+        return $this->uuid->toString();
     }
 
     public function getId(): ?int
@@ -266,16 +177,6 @@ class Region
         return $this->uuid;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -284,16 +185,6 @@ class Region
     public function setDescription(?string $description): void
     {
         $this->description = $description;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(?string $code): void
-    {
-        $this->code = $code;
     }
 
     public function getSubtitle(): ?string
@@ -405,5 +296,15 @@ class Region
     public function setExternalLink(?string $externalLink): void
     {
         $this->externalLink = $externalLink;
+    }
+
+    public function getGeoRegion(): ?GeoRegion
+    {
+        return $this->geoRegion;
+    }
+
+    public function setGeoRegion(?GeoRegion $geoRegion): void
+    {
+        $this->geoRegion = $geoRegion;
     }
 }

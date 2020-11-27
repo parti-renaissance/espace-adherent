@@ -2,6 +2,7 @@
 
 namespace App\Admin\Jecoute;
 
+use App\Entity\Geo\Region as GeoRegion;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
 use League\Flysystem\AdapterInterface;
@@ -9,6 +10,7 @@ use League\Flysystem\FilesystemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -42,11 +44,9 @@ class RegionAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Informations', ['class' => 'col-md-6'])
-                ->add('name', TextType::class, [
-                    'label' => 'Nom',
-                ])
-                ->add('code', TextType::class, [
-                    'label' => 'Code',
+                ->add('geoRegion', EntityType::class, [
+                    'label' => 'Région',
+                    'class' => GeoRegion::class,
                 ])
                 ->add('subtitle', TextType::class, [
                     'label' => 'Sous-titre',
@@ -90,10 +90,10 @@ class RegionAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('name', null, [
+            ->add('geoRegion.name', null, [
                 'label' => 'Nom',
             ])
-            ->add('code', 'color', [
+            ->add('geoRegion.code', 'color', [
                 'label' => 'Code',
             ])
             ->add('_action', null, [

@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class JecouteRegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -41,6 +41,11 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $context[self::ALREADY_CALLED] = true;
 
         $data = $this->normalizer->normalize($object, $format, $context);
+
+        $geoRegion = $object->getGeoRegion();
+
+        $data['name'] = $geoRegion->getName();
+        $data['code'] = $geoRegion->getCode();
 
         if (\in_array('jecoute_region_read', $context['groups'])) {
             $data['logo'] = $object->hasLogoUploaded() ? $this->getUrl($object->getLogoPathWithDirectory()) : null;
