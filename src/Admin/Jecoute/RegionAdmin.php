@@ -60,6 +60,7 @@ class RegionAdmin extends AbstractAdmin
                 ])
                 ->add('externalLink', UrlType::class, [
                     'label' => 'Lien',
+                    'required' => false,
                 ])
             ->end()
             ->with('Fichiers', ['class' => 'col-md-6'])

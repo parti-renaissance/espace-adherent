@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\DataFixtures\AutoIncrementResetter;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -16,8 +15,6 @@ class LoadJecouteRegionData extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_region');
-
         $manager->persist($this->createRegion(
             self::REGION_1_UUID,
             'Normandie',

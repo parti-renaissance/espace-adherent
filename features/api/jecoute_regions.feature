@@ -34,6 +34,7 @@ Feature:
             "uuid": "88275043-adb5-463a-8a62-5248fe7aacbf",
             "name": "Normandie",
             "code": "28",
+            "created_at": "@string@.isDateTime()",
             "subtitle": "Bienvenue en Normandie",
             "description": "Description de la normandie",
             "primary_color": "red",
@@ -46,6 +47,7 @@ Feature:
             "uuid": "c91391e9-4a08-4d14-8960-6c3508c1dddc",
             "name": "Hauts-de-France",
             "code": "32",
+            "created_at": "@string@.isDateTime()",
             "subtitle": "Bienvenue en Hauts-de-France",
             "description": "Description des Hauts-de-France",
             "primary_color": "green",
@@ -58,7 +60,7 @@ Feature:
       }
     """
 
-  Scenario: As an authenticated user I can get the regions configuration with a specific page size
+  Scenario: As an authenticated user I can get the regions configuration with a specific page size and page number
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
     When I send a "GET" request to "/api/jecoute/regions?page_size=1"
     Then the response status code should be 200
@@ -78,6 +80,7 @@ Feature:
             "uuid": "88275043-adb5-463a-8a62-5248fe7aacbf",
             "name": "Normandie",
             "code": "28",
+            "created_at": "@string@.isDateTime()",
             "subtitle": "Bienvenue en Normandie",
             "description": "Description de la normandie",
             "primary_color": "red",
@@ -85,6 +88,36 @@ Feature:
             "slug": "normandie",
             "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
             "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg"
+          }
+        ]
+      }
+    """
+    When I send a "GET" request to "/api/jecoute/regions?page_size=1&page=2"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "metadata": {
+          "total_items": 2,
+          "items_per_page": 1,
+          "count": 1,
+          "current_page": 2,
+          "last_page": 2
+        },
+        "items": [
+          {
+            "uuid": "c91391e9-4a08-4d14-8960-6c3508c1dddc",
+            "name": "Hauts-de-France",
+            "code": "32",
+            "created_at": "@string@.isDateTime()",
+            "subtitle": "Bienvenue en Hauts-de-France",
+            "description": "Description des Hauts-de-France",
+            "primary_color": "green",
+            "external_link": null,
+            "slug": "hauts-de-france",
+            "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
+            "banner": null
           }
         ]
       }
@@ -110,6 +143,7 @@ Feature:
             "uuid": "88275043-adb5-463a-8a62-5248fe7aacbf",
             "name": "Normandie",
             "code": "28",
+            "created_at": "@string@.isDateTime()",
             "subtitle": "Bienvenue en Normandie",
             "description": "Description de la normandie",
             "primary_color": "red",
@@ -139,6 +173,7 @@ Feature:
             "uuid": "c91391e9-4a08-4d14-8960-6c3508c1dddc",
             "name": "Hauts-de-France",
             "code": "32",
+            "created_at": "@string@.isDateTime()",
             "subtitle": "Bienvenue en Hauts-de-France",
             "description": "Description des Hauts-de-France",
             "primary_color": "green",
@@ -166,6 +201,7 @@ Feature:
         "uuid": "88275043-adb5-463a-8a62-5248fe7aacbf",
         "name": "Normandie",
         "code": "28",
+        "created_at": "@string@.isDateTime()",
         "subtitle": "Bienvenue en Normandie",
         "description": "Description de la normandie",
         "primary_color": "red",
