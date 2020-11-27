@@ -3,10 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Geo\Zone;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
-class ZoneAutoCompleteType extends AbstractConnectedUserFormType
+class ZoneAutoCompleteType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {

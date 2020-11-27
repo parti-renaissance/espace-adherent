@@ -4,7 +4,9 @@ namespace App\Validator;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
+use App\Entity\MyTeam\DelegatedAccess;
 use App\Geo\ManagedZoneProvider;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
@@ -23,10 +25,16 @@ class ManagedZoneValidator extends ConstraintValidator
      */
     private $security;
 
-    public function __construct(ManagedZoneProvider $managedZoneProvider, Security $security)
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    public function __construct(ManagedZoneProvider $managedZoneProvider, Security $security, SessionInterface $session)
     {
         $this->managedZoneProvider = $managedZoneProvider;
         $this->security = $security;
+        $this->session = $session;
     }
 
     public function validate($value, Constraint $constraint): void
@@ -41,8 +49,7 @@ class ManagedZoneValidator extends ConstraintValidator
 
         $zones = $this->valueAsZones($value);
 
-        $user = $this->getAuthenticatedUser();
-        if (!$user) {
+        if (!$user = $this->getAuthenticatedUser()) {
             throw new \InvalidArgumentException('No user provided');
         }
 
@@ -58,7 +65,7 @@ class ManagedZoneValidator extends ConstraintValidator
                     ->addViolation()
                 ;
 
-                break;
+                return;
             }
         }
     }
@@ -82,8 +89,13 @@ class ManagedZoneValidator extends ConstraintValidator
     private function getAuthenticatedUser(): ?Adherent
     {
         $user = $this->security->getUser();
+
         if (!$user instanceof Adherent) {
             return null;
+        }
+
+        if (($delegatedAccessUuid = $this->session->get(DelegatedAccess::ATTRIBUTE_KEY)) && ($access = $user->getReceivedDelegatedAccessByUuid($delegatedAccessUuid))) {
+            return $access->getDelegator();
         }
 
         return $user;
