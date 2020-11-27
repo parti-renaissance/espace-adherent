@@ -98,7 +98,6 @@ class CertificationRequestControllerTest extends WebTestCase
         $this->client->request('POST', '/espace-adherent/mon-compte/certification/demande', [
             'certification_request' => [
                 'cgu' => true,
-                'id_processing' => true,
                 '_token' => $form['certification_request[_token]']->getValue(),
             ],
         ], [
