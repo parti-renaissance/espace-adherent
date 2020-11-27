@@ -71,15 +71,15 @@
                             Partagez
                             <ul class="committee__socials text--white">
                                 <li role="button" aria-label="Partagez sur Facebook"
-                                    onclick="App.share('facebook', window.location.href, 'Rejoignez le comité : {{ committee.name }}')">
+                                    onclick="App.share('facebook', window.location.href, 'Rejoignez le comité : {{ committee.name|escape('js') }}')">
                                     <i class="fa fa-facebook-square"></i>
                                 </li>
                                 <li role="button" aria-label="Partagez via Twitter"
-                                    onclick="App.share('twitter', window.location.href, 'Rejoignez le comité : {{ committee.name }}')">
+                                    onclick="App.share('twitter', window.location.href, 'Rejoignez le comité : {{ committee.name|escape('js') }}')">
                                     <i class="fa fa-twitter"></i>
                                 </li>
                                 <li role="button" aria-label="Partagez via email"
-                                    onclick="App.share('email', window.location.href, 'Rejoignez le comité : {{ committee.name }}')">
+                                    onclick="App.share('email', window.location.href, 'Rejoignez le comité : {{ committee.name|escape('js') }}')">
                                     <i class="fa fa-envelope-o"></i>
                                 </li>
                             </ul>
