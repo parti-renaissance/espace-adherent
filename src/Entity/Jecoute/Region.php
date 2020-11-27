@@ -2,7 +2,6 @@
 
 namespace App\Entity\Jecoute;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Region as GeoRegion;
 use Doctrine\ORM\Mapping as ORM;
@@ -131,8 +130,6 @@ class Region
 
     /**
      * @var GeoRegion|null
-     *
-     * @ApiProperty(identifier=true)
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Geo\Region")
      * @ORM\JoinColumn(nullable=false)
