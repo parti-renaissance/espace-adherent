@@ -3,9 +3,11 @@
 namespace App\Command;
 
 use App\Entity\Adherent;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Repository\AdherentRepository;
 use App\TerritorialCouncil\Command\AdherentUpdateTerritorialCouncilMembershipsCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,6 +48,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
             ->addOption('disable-mailchimp-sync', null, InputOption::VALUE_NONE)
+            ->addOption('only-elected-representatives', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -60,8 +63,9 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
 
         $limit = (int) $input->getOption('limit');
         $disableMailchimpSync = $input->getOption('disable-mailchimp-sync');
+        $onlyElectedRepresentatives = $input->getOption('only-elected-representatives');
 
-        $paginator = $this->getAdherentsPaginator();
+        $paginator = $this->getAdherentsPaginator($onlyElectedRepresentatives);
 
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
@@ -100,7 +104,7 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
         $this->io->success('Done');
     }
 
-    private function getAdherentsPaginator(): Paginator
+    private function getAdherentsPaginator(bool $onlyElectedRepresentatives = false): Paginator
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
@@ -109,6 +113,13 @@ class UpdateTerritorialCouncilMembershipsCommand extends Command
             ->andWhere('adherent.adherent = true')
             ->setParameter('status', Adherent::ENABLED)
         ;
+
+        if ($onlyElectedRepresentatives) {
+            $queryBuilder
+                ->leftJoin(ElectedRepresentative::class, 'er', Join::WITH, 'er.adherent = adherent')
+                ->andWhere('er.id IS NOT NULL')
+            ;
+        }
 
         return new Paginator($queryBuilder->getQuery());
     }
