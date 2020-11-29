@@ -4,7 +4,9 @@ namespace App\OAuth;
 
 use App\OAuth\Model\ApiUser;
 use App\Repository\AdherentRepository;
+use App\Repository\DeviceRepository;
 use App\Security\Exception\BadCredentialsException;
+use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Ramsey\Uuid\Uuid;
@@ -24,15 +26,21 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
     private $resourceServer;
     private $diactorosFactory;
     private $adherentRepository;
+    private $deviceRepository;
+    private $entityManager;
 
     public function __construct(
         ResourceServer $resourceServer,
         DiactorosFactory $diactorosFactory,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
+        DeviceRepository $deviceRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->resourceServer = $resourceServer;
         $this->diactorosFactory = $diactorosFactory;
         $this->adherentRepository = $adherentRepository;
+        $this->deviceRepository = $deviceRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
@@ -63,6 +71,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
             'oauth_client_id' => $psrRequest->getAttribute('oauth_client_id'),
             'oauth_user_id' => $psrRequest->getAttribute('oauth_user_id'),
             'oauth_scopes' => $psrRequest->getAttribute('oauth_scopes'),
+            'oauth_device_id' => $psrRequest->getAttribute('oauth_device_id'),
         ];
     }
 
@@ -76,7 +85,10 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         // If user identifier is empty, it just means that the token is associated to an OAuth Client for
         // machine-to-machine communication only
         if (!$credentials['oauth_user_id']) {
-            return new ApiUser($credentials['oauth_client_id'], $roles);
+            $deviceUuid = $credentials['oauth_device_id'];
+            $device = $deviceUuid ? $this->deviceRepository->findOneByUuid($deviceUuid) : null;
+
+            return new ApiUser($credentials['oauth_client_id'], $roles, $device);
         }
 
         if (!$user = $this->adherentRepository->findByUuid(Uuid::fromString($credentials['oauth_user_id']))) {

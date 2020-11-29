@@ -2,9 +2,10 @@
 
 namespace App\OAuth;
 
+use App\OAuth\Grant\ClientCredentialsGrant;
+use App\Repository\DeviceRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
-use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -18,6 +19,7 @@ class AuthorizationServerFactory
 {
     private $accessTokenRepository;
     private $userRepository;
+    private $deviceRepository;
     private $clientRepository;
     private $scopeRepository;
     private $privateKey;
@@ -28,6 +30,7 @@ class AuthorizationServerFactory
     public function __construct(
         AccessTokenRepositoryInterface $accessTokenRepository,
         UserRepositoryInterface $userRepository,
+        DeviceRepository $deviceRepository,
         AuthCodeRepositoryInterface $authCodeRepository,
         ClientRepositoryInterface $clientRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
@@ -37,6 +40,7 @@ class AuthorizationServerFactory
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
         $this->userRepository = $userRepository;
+        $this->deviceRepository = $deviceRepository;
         $this->clientRepository = $clientRepository;
         $this->scopeRepository = $scopeRepository;
         $this->privateKey = $privateKey;
@@ -63,7 +67,9 @@ class AuthorizationServerFactory
             $accessTokenTtl
         );
 
-        $server->enableGrantType(new ClientCredentialsGrant(), $accessTokenTtl);
+        $clientCredentialsGrant = new ClientCredentialsGrant();
+        $clientCredentialsGrant->setDeviceRepository($this->deviceRepository);
+        $server->enableGrantType($clientCredentialsGrant, $accessTokenTtl);
 
         $refreshTokenGrant = new RefreshTokenGrant($this->refreshTokenRepository);
         $refreshTokenGrant->setRefreshTokenTTL($refreshTokenTtl);

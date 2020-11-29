@@ -64,7 +64,7 @@ class AccessTokenStore implements OAuthAccessTokenRepository
         return $token->isRevoked();
     }
 
-    private function findAccessToken(string $identifier): ?PersistentAccessToken
+    public function findAccessToken(string $identifier): ?PersistentAccessToken
     {
         return $this->accessTokenRepository->findAccessTokenByIdentifier($identifier);
     }

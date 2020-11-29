@@ -2,6 +2,7 @@
 
 namespace App\OAuth\AuthorizationValidators;
 
+use App\OAuth\Store\AccessTokenStore;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\ValidationData;
@@ -9,7 +10,6 @@ use League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\CryptTrait;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class JsonWebTokenValidator implements AuthorizationValidatorInterface
@@ -23,10 +23,8 @@ class JsonWebTokenValidator implements AuthorizationValidatorInterface
     private $accessTokenRepository;
     private $enableQueryStringTransport;
 
-    public function __construct(
-        AccessTokenRepositoryInterface $accessTokenRepository,
-        bool $enableQueryStringTransport = false
-    ) {
+    public function __construct(AccessTokenStore $accessTokenRepository, bool $enableQueryStringTransport = false)
+    {
         $this->accessTokenRepository = $accessTokenRepository;
         $this->enableQueryStringTransport = $enableQueryStringTransport;
     }
@@ -57,7 +55,8 @@ class JsonWebTokenValidator implements AuthorizationValidatorInterface
             }
 
             // Check if token has been revoked
-            if ($this->accessTokenRepository->isAccessTokenRevoked($token->getClaim('jti'))) {
+            $accessToken = $this->accessTokenRepository->findAccessToken($token->getClaim('jti'));
+            if (!$accessToken || $accessToken->isRevoked()) {
                 throw OAuthServerException::accessDenied('Access token has been revoked');
             }
 
@@ -67,6 +66,7 @@ class JsonWebTokenValidator implements AuthorizationValidatorInterface
                 ->withAttribute('oauth_client_id', $token->getClaim('aud'))
                 ->withAttribute('oauth_user_id', $token->getClaim('sub'))
                 ->withAttribute('oauth_scopes', $token->getClaim('scopes'))
+                ->withAttribute('oauth_device_id', $accessToken->getDevice()->getUuid()->toString())
             ;
         } catch (\InvalidArgumentException $exception) {
             // JWT couldn't be parsed so return the request as is
