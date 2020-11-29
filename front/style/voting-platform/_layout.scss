@@ -338,7 +338,8 @@
             .election-results .progress-bar__gauge .slider { background: $green--territory; }
         }
 
-        &__committee_adherent {
+        &__committee_adherent,
+        &__committee_supervisor {
             .candidate-names li::before { background-color: $blue; }
             .election-results .candidate__box.elected { border: solid 3px $blue; }
             .election-results .progress-bar__gauge .slider { background: $blue; }
@@ -432,6 +433,201 @@
                 }
             }
         }
+
+        &__committee_supervisor {
+            .election-vote {
+
+                &__boxes {
+                    margin: 0 -12px;
+                }
+
+                .candidate__box {
+                    flex-basis: 100%;
+                    padding: 0 12px;
+                    background: transparent;
+                    border: none;
+                    margin: 0 0 24px 0;
+
+                    @media (min-width: $mobile) {
+                        flex-basis: calc(50%);
+                    }
+
+                    @media (min-width: $tablet) {
+                        flex-basis: calc(33.33%);
+                    }
+
+                    .box__content {
+                        padding: 30px;
+                        background-color: $white;
+                        border: 1px solid $lines-grey;
+                    }
+                }
+            }
+
+            [id^=election_candidates_poolChoice] {
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 20px;
+
+                .form__radio {
+                    width: calc(33% - 4px);
+                    margin-bottom: 6px;
+
+                    &:nth-child(2),
+                    &:nth-child(5) {
+                        margin: 0 6px 6px;
+                    }
+
+                    label {
+                        justify-content: center;
+                        width: 100%;
+                        border: 1px solid $lines-grey;
+                        margin: 0;
+                        padding: 50px 0 10px 0;
+                        text-align: center;
+                        position: relative;
+                        border-radius: 3px;
+                        cursor: pointer;
+
+                        &:before {
+                            background: $white;
+                            border: 1px solid $lines-grey;
+                            border-radius: 50px;
+                            position: absolute;
+                            top: 20px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 6px;
+                            height: 6px;
+                            content: '';
+                            box-sizing: border-box;
+                            margin-right: 0;
+
+                        }
+                    }
+
+                    input[type='radio']:checked + label {
+                        font-weight: bold;
+
+                        &:before {
+                            border: 7px solid;
+                        }
+                    }
+
+                    input[value="excellent"][type='radio']:checked + label {
+                        border-color: $excellent;
+                        &:before {
+                            border-color: $excellent;
+                        }
+                    }
+
+                    input[value="very_good"][type='radio']:checked + label {
+                        border-color: $very-good;
+                        &:before {
+                            border-color: $very-good;
+                        }
+                    }
+
+                    input[value="good"][type='radio']:checked + label {
+                        border-color: $good;
+                        &:before {
+                            border-color: $good;
+                        }
+                    }
+
+                    input[value="fair"][type='radio']:checked + label {
+                        border-color: $fair;
+                        &:before {
+                            border-color: $fair;
+                        }
+                    }
+
+                    input[value="insufficient"][type='radio']:checked + label {
+                        border-color: $insufficient;
+                        &:before {
+                            border-color: $insufficient;
+                        }
+                    }
+                }
+            }
+
+            .pool {
+                &__name {
+                    align-items: baseline;
+                }
+            }
+
+            .ballot-paper-container {
+                margin: 0 -12px 50px -12px;;
+                padding: 0;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .ballot-paper {
+                width: 100%;
+                max-width: none;
+                padding: 0 12px;
+                margin: 0 0 24px 0;
+                min-height: auto;
+                background-color: transparent;
+                justify-content: flex-start;
+                box-shadow: none;
+
+                @media (min-width: $mobile) {
+                    width: 50%;
+                }
+
+                @media (min-width: $tablet) {
+                    width: 33.33%;
+                }
+
+                &__content {
+                    width: 100%;
+                    background-color: $white;
+                    padding: 30px;
+                    border-radius: 3px;
+                    border: 1px solid $lines-grey;
+                    justify-content: flex-start;
+                    text-align: left;
+
+                    .candidate-names {
+                        margin-bottom: 30px;
+
+                        li {
+                            position: relative;
+                            padding-left: 18px;
+                            font-size: 18px;
+                            margin: 10px 0;
+
+                            &::before {
+                                content: '';
+                                display: block;
+                                width: 8px;
+                                height: 8px;
+                                border-radius: 50%;
+                                position: absolute;
+                                left: 0;
+                                top: 10px;
+                            }
+                        }
+                    }
+
+                    .candidate-photo {
+                        border: 3px solid $white;
+                        box-sizing: border-box;
+
+                        &:not(:first-child) {
+                            margin-left: -10px;
+                        }
+                    }
+
+                    .ballot-paper__footer {
+                        justify-content: space-between;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -443,4 +639,29 @@
             font-weight: normal;
         }
     }
+}
+
+.candidate-mention {
+    font-size: 14px;
+    font-weight: bold;
+    color: $black;
+    background-color: $gray--lighter;
+    padding: 1px 8px;
+    border-radius: 50px;
+
+    &:before {
+        content: '';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+        border-radius: 20px;
+        background-color: $black;
+    }
+
+    &__excellent { &:before { background-color: $excellent; } }
+    &__very_good { &:before { background-color: $very-good; } }
+    &__good { &:before { background-color: $good; } }
+    &__fair { &:before { background-color: $fair; } }
+    &__insufficient { &:before { background-color: $insufficient; } }
 }

@@ -24,7 +24,7 @@ class VotingPlatformExtension extends AbstractExtension
 
     public function getElectionPoolTitleKey(ElectionPool $pool): string
     {
-        $key = '';
+        $key = 'voting_platform.pool_title.';
 
         switch ($pool->getElection()->getDesignationType()) {
             case DesignationTypeEnum::COPOL:
