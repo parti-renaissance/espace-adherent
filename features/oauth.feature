@@ -103,7 +103,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       "token_type":"Bearer",
       "expires_in":@integer@,
       "access_token":"@string@",
-      "grant_types": ["client_credentials", "refresh_token"],
+      "grant_types": ["password", "client_credentials", "refresh_token"],
       "scopes": ["jemarche_app"]
     }
     """
