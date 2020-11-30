@@ -1377,9 +1377,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("managedAreaTagCodes")
-     * @JMS\Groups({"referent"})
+     * @SymfonySerializer\Groups({"referent"})
      *
      * @return string[]
      */

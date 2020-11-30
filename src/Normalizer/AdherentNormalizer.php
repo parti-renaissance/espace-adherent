@@ -7,14 +7,24 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-abstract class AbstractAdherentNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
+
+    private const LEGACY_MAPPING = [
+        'email_address' => 'emailAddress',
+        'postal_code' => 'zipCode',
+        'first_name' => 'firstName',
+        'last_name' => 'lastName',
+        'managed_area_tag_codes' => 'managedAreaTagCodes',
+    ];
 
     protected const ALREADY_CALLED = 'ADHERENT_NORMALIZER_ALREADY_CALLED';
 
     /**
      * @param Adherent $object
+     *
+     * @return array
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -34,16 +44,10 @@ abstract class AbstractAdherentNormalizer implements NormalizerInterface, Normal
 
     protected function addBackwardCompatibilityFields(array $data): array
     {
-        if (\array_key_exists('postal_code', $data)) {
-            $data['zipCode'] = $data['postal_code'];
-        }
-
-        if (\array_key_exists('first_name', $data)) {
-            $data['firstName'] = $data['first_name'];
-        }
-
-        if (\array_key_exists('last_name', $data)) {
-            $data['lastName'] = $data['last_name'];
+        foreach (self::LEGACY_MAPPING as $newKey => $oldKey) {
+            if (\array_key_exists($newKey, $data)) {
+                $data[$oldKey] = $data[$newKey];
+            }
         }
 
         return $data;

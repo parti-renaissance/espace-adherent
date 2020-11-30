@@ -2,11 +2,10 @@
 
 namespace App\Normalizer;
 
-use App\Entity\Adherent;
 use App\Repository\Jecoute\DataSurveyRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 
-class JecouteAdherentNormalizer extends AbstractAdherentNormalizer
+class JecouteAdherentNormalizer extends AdherentNormalizer
 {
     use NormalizerAwareTrait;
 
@@ -20,7 +19,7 @@ class JecouteAdherentNormalizer extends AbstractAdherentNormalizer
     }
 
     /**
-     * @param Adherent $object
+     * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = [])
     {

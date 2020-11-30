@@ -153,6 +153,9 @@ services:
     App\Normalizer\JecouteAdherentNormalizer:
         tags: [{name: 'serializer.normalizer', priority: 1}]
 
+    App\Normalizer\AdherentNormalizer:
+        tags: [{name: 'serializer.normalizer', priority: 10}]
+
     App\Normalizer\JecouteRegionNormalizer:
         tags: [{name: 'serializer.normalizer', priority: 1}]
 
