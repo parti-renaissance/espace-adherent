@@ -26,7 +26,7 @@ class ManagedUserFactory
             $data['is_committee_host'],
             $data['is_committee_supervisor'],
             $data['subscription_types'],
-            $data['zone'] ?? null,
+            $data['zones'] ?? [],
             $data['subscribedTags'],
             $data['created_at'] instanceof \DateTime ?: new \DateTime($data['created_at']),
             $data['gender'] ?? null,
