@@ -20,6 +20,7 @@ class LoadClientData extends Fixture
     public const CLIENT_07_UUID = 'e7c07c65-bba1-4a05-8d9b-76de6e5145c6';
     public const CLIENT_08_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992b';
     public const CLIENT_09_UUID = '40bdd6db-e422-4153-819c-9973c09f9297';
+    public const CLIENT_10_UUID = '1931b955-560b-41b2-9eb9-c232157f1471';
 
     public function load(ObjectManager $manager)
     {
@@ -117,8 +118,6 @@ class LoadClientData extends Fixture
 
         $manager->persist($client8);
 
-        $manager->flush();
-
         $client9 = new Client(
             Uuid::fromString(self::CLIENT_09_UUID),
             'CRM Paris',
@@ -128,6 +127,19 @@ class LoadClientData extends Fixture
         );
         $client9->addSupportedScope(Scope::CRM_PARIS);
         $manager->persist($client9);
+
+        $client10 = new Client(
+            Uuid::fromString(self::CLIENT_10_UUID),
+            'JeMarche App',
+            'JeMarche App',
+            'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
+            [GrantTypeEnum::PASSWORD, GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::REFRESH_TOKEN],
+            ['http://client-oauth.docker:8000/client/receive_authcode']
+        );
+        $client10->setAskUserForAuthorization(false);
+        $client10->addSupportedScope(Scope::JEMARCHE_APP);
+
+        $manager->persist($client10);
 
         $manager->flush();
     }
