@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Address\Address;
 use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
@@ -21,6 +22,7 @@ use App\Entity\PostAddress;
 use App\Entity\ReferentTeamMember;
 use App\Entity\SenatorArea;
 use App\Entity\SenatorialCandidateManagedArea;
+use App\Jecoute\GenderEnum;
 use App\Membership\ActivityPositions;
 use App\Membership\AdherentFactory;
 use App\Subscription\SubscriptionTypeEnum;
@@ -28,6 +30,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ramsey\Uuid\Uuid;
 
 class LoadAdherentData extends Fixture implements DependentFixtureInterface
 {
@@ -777,6 +780,150 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $senatorialCandidate->setSenatorialCandidateManagedArea($senatorialCandidateManagedArea);
         $senatorialCandidate->certify();
         $this->addReference('senatorial-candidate', $senatorialCandidate);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-male-a@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Adrien',
+            'last_name' => 'Petit',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1961-02-03',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-21', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-female-a@en-marche-dev.fr',
+            'gender' => GenderEnum::FEMALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Agathe',
+            'last_name' => 'Petit',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1962-03-04',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-22', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-male-b@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Étienne',
+            'last_name' => 'Petit',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1961-02-03',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-23', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-female-b@en-marche-dev.fr',
+            'gender' => GenderEnum::FEMALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Denise',
+            'last_name' => 'Durand',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1962-03-04',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-24', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-male-c@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Léon',
+            'last_name' => 'Moreau',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1961-02-03',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-25', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-female-c@en-marche-dev.fr',
+            'gender' => GenderEnum::FEMALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Claire',
+            'last_name' => 'Moreau',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1962-03-04',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-26', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-male-d@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Alfred',
+            'last_name' => 'Leroy',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1961-02-03',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-27', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-female-d@en-marche-dev.fr',
+            'gender' => GenderEnum::FEMALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Geneviève',
+            'last_name' => 'Leroy',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1962-03-04',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-28', $adherent);
 
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);

@@ -73,87 +73,8 @@
                 padding: 30px;
             }
 
-            input[type='radio'] {
-                position: absolute;
-                z-index: -1;
-                opacity: 0;
-
-                &:checked + label {
-                    box-shadow: 0 0 0 5px rgba(29, 95, 209, 0.1);
-                    border: solid 1px $blue--dark;
-                }
-
-                &:checked + label:before {
-                    box-sizing: border-box;
-                    border: 8px solid $blue--dark;
-                    background: $white;
-                    content: '';
-                }
-
-                &:disabled + label {
-                    cursor: not-allowed;
-
-                    &:before {
-                        background-color: $pale-grey;
-
-                        &:hover {
-                            border-color: $lines-grey;
-                        }
-                    }
-                }
-            }
-
-            label {
-                display: inline-block;
-                cursor: pointer;
-                position: absolute;
-                left: 0;
-                right : 0;
-                top: 0;
-                bottom: 0;
-                margin: 0;
-                border-radius: 3px;
-                transition: all 0.2s;
-                -webkit-transition: all 0.2s;
-                border: solid 1px transparent;
-
-                &:hover {
-                    border: solid 1px $blue--dark;
-                }
-
-                &:before {
-                    box-sizing: border-box;
-                    content: ' ';
-                    width: 22px;
-                    height: 22px;
-                    min-width: 22px;
-                    min-height: 22px;
-                    background: $white;
-                    border: 2px solid $lines-grey;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    position: absolute;
-                    left: auto;
-                    bottom: auto;
-                    top: 33px;
-                    right: 30px;
-                    transition: all 0.2s;
-                    -webkit-transition: all 0.2s;
-                    border-radius: 50px;
-
-                    @media (min-width: $mobile) {
-                        left: auto;
-                        bottom: auto;
-                        top: 33px;
-                        right: 30px;
-                    }
-                }
-            }
-
             .box__content {
                 position: relative;
-                pointer-events: none;
 
                 .candidate-names {
                     margin-bottom: 30px;
@@ -421,6 +342,95 @@
             .candidate-names li::before { background-color: $blue; }
             .election-results .candidate__box.elected { border: solid 3px $blue; }
             .election-results .progress-bar__gauge .slider { background: $blue; }
+        }
+
+        &__committee_adherent,
+        &__copol {
+            .election-vote {
+                .candidate__box {
+                    .box__content {
+                        pointer-events: none;
+                    }
+
+                    input[type='radio'] {
+                        position: absolute;
+                        z-index: -1;
+                        opacity: 0;
+
+                        &:checked + label {
+                            box-shadow: 0 0 0 5px rgba(29, 95, 209, 0.1);
+                            border: solid 1px $blue--dark;
+                        }
+
+                        &:checked + label:before {
+                            box-sizing: border-box;
+                            border: 8px solid $blue--dark;
+                            background: $white;
+                            content: '';
+                        }
+
+                        &:disabled + label {
+                            cursor: not-allowed;
+
+                            &:before {
+                                background-color: $pale-grey;
+
+                                &:hover {
+                                    border-color: $lines-grey;
+                                }
+                            }
+                        }
+                    }
+
+                    label {
+                        display: inline-block;
+                        cursor: pointer;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        margin: 0;
+                        border-radius: 3px;
+                        transition: all 0.2s;
+                        -webkit-transition: all 0.2s;
+                        border: solid 1px transparent;
+
+                        &:hover {
+                            border: solid 1px $blue--dark;
+                        }
+
+                        &:before {
+                            box-sizing: border-box;
+                            content: ' ';
+                            width: 22px;
+                            height: 22px;
+                            min-width: 22px;
+                            min-height: 22px;
+                            background: $white;
+                            border: 2px solid $lines-grey;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            position: absolute;
+                            left: auto;
+                            bottom: auto;
+                            top: 33px;
+                            right: 30px;
+                            transition: all 0.2s;
+                            -webkit-transition: all 0.2s;
+                            border-radius: 50px;
+
+                            @media (min-width: $mobile) {
+                                left: auto;
+                                bottom: auto;
+                                top: 33px;
+                                right: 30px;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

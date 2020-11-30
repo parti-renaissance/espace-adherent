@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\CommitteeElection;
+use App\Entity\CommitteeMembership;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
@@ -85,7 +86,7 @@ class VotingPlatformConfigureCommand extends Command
         $this->io->progressStart();
 
         foreach ($designations as $designation) {
-            if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
+            if ($designation->isCommitteeType()) {
                 $this->configureCommitteeElections($designation);
             } elseif (DesignationTypeEnum::COPOL === $designation->getType()) {
                 $this->configureCopolElections($designation);
@@ -246,47 +247,94 @@ class VotingPlatformConfigureCommand extends Command
         $committee = $election->getElectionEntity()->getCommittee();
 
         // Create candidates groups
-        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $election->getDesignation());
+        $candidacies = $this->committeeCandidacyRepository->findConfirmedByCommittee($committee, $designation = $election->getDesignation());
 
-        $femalePool = new ElectionPool(ElectionPoolCodeEnum::FEMALE);
-        $malePool = new ElectionPool(ElectionPoolCodeEnum::MALE);
+        if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
+            $pools = [
+                $femalePool = new ElectionPool(ElectionPoolCodeEnum::FEMALE),
+                $malePool = new ElectionPool(ElectionPoolCodeEnum::MALE),
+            ];
 
-        foreach ($candidacies as $candidacy) {
-            $adherent = $candidacy->getCommitteeMembership()->getAdherent();
+            foreach ($candidacies as $candidacy) {
+                $adherent = $candidacy->getCommitteeMembership()->getAdherent();
 
-            $group = new CandidateGroup();
-            $group->addCandidate($candidate = new Candidate(
-                $adherent->getFirstName(),
-                $adherent->getLastName(),
-                $candidacy->getGender(),
-                $adherent
-            ));
+                $group = new CandidateGroup();
+                $group->addCandidate($candidate = new Candidate(
+                    $adherent->getFirstName(),
+                    $adherent->getLastName(),
+                    $candidacy->getGender(),
+                    $adherent
+                ));
 
-            $candidate->setImagePath($candidacy->getImagePath());
-            $candidate->setBiography($candidacy->getBiography());
+                $candidate->setImagePath($candidacy->getImagePath());
+                $candidate->setBiography($candidacy->getBiography());
 
-            if ($candidate->isFemale()) {
-                $femalePool->addCandidateGroup($group);
-            } else {
-                $malePool->addCandidateGroup($group);
+                if ($candidate->isFemale()) {
+                    $femalePool->addCandidateGroup($group);
+                } else {
+                    $malePool->addCandidateGroup($group);
+                }
+            }
+
+            $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
+        } elseif (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
+            $pools = [
+                $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
+            ];
+
+            foreach ($candidacies as $candidacy) {
+                if ($candidacy->isTaken()) {
+                    continue;
+                }
+
+                $adherent = $candidacy->getCommitteeMembership()->getAdherent();
+
+                $group = new CandidateGroup();
+                $group->addCandidate($candidate = new Candidate(
+                    $adherent->getFirstName(),
+                    $adherent->getLastName(),
+                    $candidacy->getGender(),
+                    $adherent
+                ));
+
+                $candidate->setImagePath($candidacy->getImagePath());
+                $candidate->setBiography($candidacy->getBiography());
+                $candidate->setFaithStatement($candidacy->getFaithStatement());
+
+                $pool->addCandidateGroup($group);
+                $candidacy->take();
+
+                if ($binome = $candidacy->getBinome()) {
+                    $adherent = $binome->getCommitteeMembership()->getAdherent();
+
+                    $group->addCandidate($candidate = new Candidate(
+                        $adherent->getFirstName(),
+                        $adherent->getLastName(),
+                        $binome->getGender(),
+                        $adherent
+                    ));
+
+                    $candidate->setImagePath($binome->getImagePath());
+                    $candidate->setBiography($binome->getBiography());
+                    $candidate->setFaithStatement($binome->getFaithStatement());
+
+                    $binome->take();
+                }
+            }
+
+            $memberships = $this->committeeMembershipRepository->findVotingForSupervisorMemberships($committee, \DateTimeImmutable::createFromMutable($designation->getVoteEndDate()));
+        }
+
+        foreach ($pools as $pool) {
+            if ($pool->getCandidateGroups()) {
+                $electionRound->addElectionPool($pool);
+                $election->addElectionPool($pool);
             }
         }
 
-        if ($femalePool->getCandidateGroups()) {
-            $electionRound->addElectionPool($femalePool);
-            $election->addElectionPool($femalePool);
-        }
-
-        if ($malePool->getCandidateGroups()) {
-            $electionRound->addElectionPool($malePool);
-            $election->addElectionPool($malePool);
-        }
-
-        $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
-
         $list = $this->createVoterList(
             $election,
-            array_map(function (TerritorialCouncilMembership $membership) { return $membership->getAdherent(); }, $memberships)
+            array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $memberships)
         );
 
         $this->entityManager->persist($list);
@@ -301,7 +349,10 @@ class VotingPlatformConfigureCommand extends Command
         $committee = $committeeElection->getCommittee();
 
         // validate voters
-        if (!$this->committeeMembershipRepository->committeeHasVoters($committee)) {
+        if (
+            (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType() && !$this->committeeMembershipRepository->committeeHasVoters($committee))
+            || (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType() && !$this->committeeMembershipRepository->committeeHasVotersForSupervisorElection($committee, \DateTimeImmutable::createFromMutable($designation->getVoteEndDate())))
+        ) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have any voters', $committee->getSlug()));
             }
@@ -310,9 +361,7 @@ class VotingPlatformConfigureCommand extends Command
         }
 
         // validate candidatures
-        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $designation);
-
-        if (0 === \count($candidacies)) {
+        if (!$this->committeeCandidacyRepository->hasConfirmedCandidacies($committee, $designation)) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have at least 1 candidate', $committee->getSlug()));
             }

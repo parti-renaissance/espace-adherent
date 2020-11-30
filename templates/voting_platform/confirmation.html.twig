@@ -13,35 +13,7 @@
 
 {% block voting_platform_content %}
     <div class="l__wrapper--narrow">
-        <div class="ballot-paper-container">
-            {% for pool in pools %}
-                {% set vote_choice = vote_command.getChoiceForPool(pool) %}
-                <div class="ballot-paper">
-                    <div class="ballot-paper__content text--center">
-                        <div class="b__nudge--bottom-small">
-                            <div class="text--uppercase text--gray b__nudge--bottom">
-                                {{ get_election_pool_title_key(pool)|trans }}
-                            </div>
-                            {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
-                            {% if candidate_group %}
-                                {% set candidates = candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
-
-                                {% for candidate in candidates %}
-                                <div class="b__nudge--bottom-small">
-                                    <h3 class="text--medium">{{ candidate.fullName }}<span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span></h3>
-                                </div>
-                                {% endfor %}
-                            {% else %}
-                                <h3 class="text--medium">Bulletin blanc</h3>
-                            {% endif %}
-                        </div>
-                        <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="text--body text--center link--no-decor link--blue--dark">
-                            Modifier mon choix
-                        </a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+        {% include 'voting_platform/confirmation/' ~ (vote_command.isMajorityVote ? '_majority_vote') ~ '_confirmation_block.html.twig' %}
     </div>
 
     {{ form_start(form) }}

@@ -29,9 +29,15 @@ class VoteCommand
      */
     private $electionUuid;
 
+    /**
+     * @var bool
+     */
+    private $isMajorityVote;
+
     public function __construct(Election $election)
     {
         $this->electionUuid = $election->getUuid()->toString();
+        $this->isMajorityVote = $election->getDesignation()->isMajorityType();
     }
 
     public function getState(): string
@@ -44,12 +50,12 @@ class VoteCommand
         $this->state = $state;
     }
 
-    public function getPoolChoice(): ?string
+    public function getPoolChoice()
     {
         return $this->poolChoice;
     }
 
-    public function setPoolChoice(string $poolChoice): void
+    public function setPoolChoice($poolChoice): void
     {
         $this->poolChoice = $poolChoice;
     }
@@ -81,6 +87,12 @@ class VoteCommand
 
     public function getCandidateGroupUuids(): array
     {
+        if ($this->isMajorityVote) {
+            return array_merge(...array_map(static function (array $pool) {
+                return array_keys($pool);
+            }, $this->choicesByPools));
+        }
+
         return array_filter($this->choicesByPools, static function (string $value) {
             return VoteChoice::BLANK_VOTE_VALUE !== $value;
         });
@@ -91,7 +103,7 @@ class VoteCommand
         return $this->choicesByPools;
     }
 
-    public function getChoiceForPool(ElectionPool $pool): ?string
+    public function getChoiceForPool(ElectionPool $pool)
     {
         return $this->choicesByPools[$pool->getId()] ?? null;
     }
@@ -136,5 +148,10 @@ class VoteCommand
         $this->poolChoice = array_pop($this->choicesByPools);
 
         return $this;
+    }
+
+    public function isMajorityVote(): bool
+    {
+        return $this->isMajorityVote;
     }
 }

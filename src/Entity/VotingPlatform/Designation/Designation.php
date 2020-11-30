@@ -375,4 +375,9 @@ class Designation
             DesignationTypeEnum::COPOL,
         ], true);
     }
+
+    public function isMajorityType(): bool
+    {
+        return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
+    }
 }

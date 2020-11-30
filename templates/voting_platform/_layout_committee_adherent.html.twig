@@ -1,24 +1,5 @@
-{% extends 'voting_platform/_layout_base.html.twig' %}
-
-{% block banner %}
-    <div class="space--10-0 background--blue">
-        <div class="l__wrapper--wide">
-            <a href="{{ path('app_committee_show', {slug: election.electionEntity.committee.slug}) }}"
-               class="text--body text--small text--white link--no-decor">
-                Retourner au comité <span class="text--bold">{{ election.electionEntity.committee.name }}</span> →
-            </a>
-        </div>
-    </div>
-{% endblock %}
+{% extends 'voting_platform/_layout_committee_base.html.twig' %}
 
 {% block vote_step_pool_title %}
-    Sélectionnez {{ pool.code|lower == 'female' ? 'une candidate Femme' : 'un candidat Homme' }}
-{% endblock %}
-
-{% block vote_finish_action_block %}
-    <div class="b__nudge--bottom-large b__nudge--top-large">
-        <a href="{{ path('app_committee_show', {slug: election.electionEntity.committee.slug}) }}" class="btn btn--blue">
-            Retour au comité
-        </a>
-    </div>
+    Étape {{ pool_index + 1 }} : Sélectionnez {{ pool.code|lower == 'female' ? 'une candidate Femme' : 'un candidat Homme' }}
 {% endblock %}
