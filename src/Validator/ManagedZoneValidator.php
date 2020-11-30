@@ -58,6 +58,11 @@ class ManagedZoneValidator extends ConstraintValidator
             return $zone->getId();
         }, $managedZones);
 
+        // No managed zones means user manage all of them
+        if (!$managedZonesIds) {
+            return;
+        }
+
         foreach ($zones as $zone) {
             if (!$this->zoneBelongsToSome($zone, $managedZonesIds)) {
                 $this->context
