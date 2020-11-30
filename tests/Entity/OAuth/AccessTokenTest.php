@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Entity;
+namespace Tests\App\Entity\OAuth;
 
 use App\Entity\Adherent;
 use App\Entity\OAuth\AccessToken;
@@ -55,7 +55,7 @@ class AccessTokenTest extends TestCase
             Uuid::fromString(self::UUID),
             $this->createMock(Adherent::class),
             self::IDENTIFIER,
-            \DateTime::createFromFormat('U', $time),
+            \DateTimeImmutable::createFromFormat('U', $time),
             $this->createMock(Client::class)
         );
         $token->addScope('public');

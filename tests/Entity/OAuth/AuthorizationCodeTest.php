@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Entity;
+namespace Tests\App\Entity\OAuth;
 
 use App\Entity\Adherent;
 use App\Entity\OAuth\AuthorizationCode;
@@ -53,7 +53,7 @@ class AuthorizationCodeTest extends TestCase
             Uuid::fromString(self::UUID),
             $this->createMock(Adherent::class),
             self::IDENTIFIER,
-            new \DateTime($expiryDateTime),
+            new \DateTimeImmutable($expiryDateTime),
             'https://my.app.com/oauth/callback',
             $this->createMock(Client::class)
         );

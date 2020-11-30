@@ -51,7 +51,8 @@ trait DeviceGrantTrait
         $accessToken->setClient($client);
         $accessToken->setUserIdentifier($userIdentifier);
         $accessToken->setDeviceIdentifier($deviceIdentifier);
-        $accessToken->setExpiryDateTime((new \DateTime())->add($accessTokenTTL));
+        $accessToken->setExpiryDateTime((new \DateTimeImmutable())->add($accessTokenTTL));
+        $accessToken->setPrivateKey($this->privateKey);
 
         foreach ($scopes as $scope) {
             $accessToken->addScope($scope);

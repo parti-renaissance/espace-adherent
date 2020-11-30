@@ -21,9 +21,9 @@ abstract class AbstractToken
     private $identifier;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $expiresAt;
 
@@ -41,7 +41,7 @@ abstract class AbstractToken
      */
     private $createdAt;
 
-    public function __construct(UuidInterface $uuid, string $identifier, \DateTime $expiryDateTime)
+    public function __construct(UuidInterface $uuid, string $identifier, \DateTimeImmutable $expiryDateTime)
     {
         $this->uuid = $uuid;
         $this->identifier = $identifier;
@@ -56,7 +56,7 @@ abstract class AbstractToken
 
     public function getExpiryDateTime(): \DateTimeImmutable
     {
-        return \DateTimeImmutable::createFromMutable($this->expiresAt);
+        return $this->expiresAt;
     }
 
     public function getExpiryTimestamp(): int
