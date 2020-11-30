@@ -2,7 +2,6 @@
 
 namespace App\OAuth\Model;
 
-use App\Entity\Device;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ApiUser implements UserInterface
@@ -22,12 +21,7 @@ class ApiUser implements UserInterface
      */
     private $username = 'oauth_client_user_';
 
-    /**
-     * @var Device|null
-     */
-    private $device;
-
-    public function __construct(string $uuid, array $roles, Device $device = null)
+    public function __construct(string $uuid, array $roles)
     {
         $this->uuid = $uuid;
         $this->username .= $uuid;
@@ -35,8 +29,6 @@ class ApiUser implements UserInterface
         foreach ($roles as $role) {
             $this->roles[] = $role;
         }
-
-        $this->device = $device;
     }
 
     public function getUuid(): string
@@ -66,15 +58,5 @@ class ApiUser implements UserInterface
 
     public function eraseCredentials()
     {
-    }
-
-    public function getDevice(): ?Device
-    {
-        return $this->device;
-    }
-
-    public function isDevice(): bool
-    {
-        return null !== $this->device;
     }
 }

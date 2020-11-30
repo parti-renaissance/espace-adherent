@@ -3,6 +3,7 @@
 namespace App\OAuth;
 
 use App\OAuth\Model\ApiUser;
+use App\OAuth\Model\DeviceApiUser;
 use App\Repository\AdherentRepository;
 use App\Repository\DeviceRepository;
 use App\Security\Exception\BadCredentialsException;
@@ -88,7 +89,15 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
             $deviceUuid = $credentials['oauth_device_id'];
             $device = $deviceUuid ? $this->deviceRepository->findOneByDeviceUuid($deviceUuid) : null;
 
-            return new ApiUser($credentials['oauth_client_id'], $roles, $device);
+            if ($deviceUuid = $credentials['oauth_device_id']) {
+                if (!$device = $this->deviceRepository->findOneByDeviceUuid($deviceUuid)) {
+                    throw new BadCredentialsException('Invalid credentials.', 0);
+                }
+
+                return new DeviceApiUser($credentials['oauth_client_id'], $roles, $device);
+            }
+
+            return new ApiUser($credentials['oauth_client_id'], $roles);
         }
 
         if (!$user = $this->adherentRepository->findByUuid(Uuid::fromString($credentials['oauth_user_id']))) {
