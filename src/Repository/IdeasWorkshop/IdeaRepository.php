@@ -225,7 +225,7 @@ SQL;
         $qb = $this->createQueryBuilder('idea');
         $categoryType = null;
 
-        if ($adherent->isLaREM()) {
+        if ($adherent->isLarem()) {
             $categoryType = AuthorCategoryEnum::QG;
         } elseif ($adherent->isElected()) {
             $categoryType = AuthorCategoryEnum::ELECTED;

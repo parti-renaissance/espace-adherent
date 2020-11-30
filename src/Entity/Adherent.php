@@ -107,16 +107,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Regex(pattern="/^[a-z0-9 _-]+$/i", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
      * @Assert\Regex(pattern="/^[a-zÀ-ÿ0-9 .!_-]+$/i", message="adherent.nickname.invalid_extended_syntax")
      *
-     * @JMS\Groups({"user_profile"})
-     *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "idea_thread_list_read", "idea_thread_comment_read", "idea_vote_read"})
+     * @SymfonySerializer\Groups({"user_profile", "idea_list_read", "idea_read", "idea_thread_list_read", "idea_thread_comment_read", "idea_vote_read"})
      */
     private $nickname;
 
     /**
-     * @JMS\Groups({"user_profile"})
-     * @JMS\SerializedName("use_nickname")
-     *
      * @ORM\Column(type="boolean", options={"default": 0})
      */
     private $nicknameUsed;
@@ -146,8 +141,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column
      *
-     * @JMS\Groups({"adherent_change_diff", "user_profile", "public"})
+     * @JMS\Groups({"adherent_change_diff", "public"})
      * @JMS\SerializedName("emailAddress")
+     *
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     private $emailAddress;
 
@@ -395,7 +392,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @JMS\Groups({"user_profile"})
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     private $commentsCguAccepted = false;
 
@@ -706,7 +703,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("uuid")
-     * @JMS\Groups({"user_profile", "public"})
+     * @JMS\Groups({"public"})
      */
     public function getUuidAsString(): string
     {
@@ -726,9 +723,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("elected")
-     * @JMS\Groups({"user_profile"})
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     public function isElected(): bool
     {
@@ -736,11 +731,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("larem")
-     * @JMS\Groups({"user_profile"})
+     * @SymfonySerializer\Groups({"user_profile"})
      */
-    public function isLaREM(): bool
+    public function isLarem(): bool
     {
         return $this->getTags()->filter(function (AdherentTag $tag) {
             return AdherentTagEnum::LAREM === $tag->getName();
@@ -1890,6 +1883,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->nicknameUsed;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"user_profile"})
+     */
+    public function getUseNickname(): bool
+    {
+        return $this->isNicknameUsed();
+    }
+
     public function setNicknameUsed(bool $nicknameUsed): void
     {
         $this->nicknameUsed = $nicknameUsed;
@@ -2188,8 +2189,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\Groups({"user_profile"})
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     public function getDetailedRoles(): array
     {

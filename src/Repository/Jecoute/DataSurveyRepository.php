@@ -2,10 +2,12 @@
 
 namespace App\Repository\Jecoute;
 
+use App\Entity\Adherent;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class DataSurveyRepository extends ServiceEntityRepository
@@ -40,6 +42,37 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->setParameter('survey', $survey)
             ->getQuery()
             ->iterate()
+        ;
+    }
+
+    public function countByAdherent(Adherent $adherent, \DateTimeInterface $minPostedAt = null): int
+    {
+        $qb = $this->createCountByAdherentQueryBuilder($adherent);
+
+        if ($minPostedAt) {
+            $qb
+                ->andWhere('data_survey.postedAt >= :min_posted_at')
+                ->setParameter('min_posted_at', $minPostedAt)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countByAdherentForLastMonth(Adherent $adherent): int
+    {
+        return $this->countByAdherent($adherent, (new \DateTime('now'))->modify('-1 month'));
+    }
+
+    private function createCountByAdherentQueryBuilder(Adherent $adherent): QueryBuilder
+    {
+        return $this->createQueryBuilder('data_survey')
+            ->select('COUNT(1)')
+            ->andWhere('data_survey.author = :adherent')
+            ->setParameter('adherent', $adherent)
         ;
     }
 }

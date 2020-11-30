@@ -150,6 +150,9 @@ services:
     App\Normalizer\IdeaThemeNormalizer:
         arguments: ['@api_platform.serializer.normalizer.item']
 
+    App\Normalizer\JecouteAdherentNormalizer:
+        tags: [{name: 'serializer.normalizer', priority: 1}]
+
     App\Normalizer\JecouteRegionNormalizer:
         tags: [{name: 'serializer.normalizer', priority: 1}]
 
