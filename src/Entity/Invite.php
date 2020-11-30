@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="invitations")
- * @ORM\Entity(repositoryClass="App\Repository\InvitationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\InviteRepository")
  *
  * @AssertWasNotInvitedRecently(
  *     emailField="email",

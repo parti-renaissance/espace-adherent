@@ -4,14 +4,14 @@ namespace App\Repository;
 
 use App\Entity\Media;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class MediaRepository extends ServiceEntityRepository
 {
     public const TYPE_IMAGE = 'image';
     public const TYPE_VIDEO = 'video';
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Media::class);
     }

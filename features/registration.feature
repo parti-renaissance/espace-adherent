@@ -447,6 +447,7 @@ Feature:
     Then I should be on "/adhesion"
     Given I fill in the following:
       | become_adherent[customGender] | Etre non binaire |
+    And I wait until I see "Lyon" in the "#become_adherent_address_city" element
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."

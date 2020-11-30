@@ -9,16 +9,16 @@ use App\Entity\Jecoute\SurveyQuestion;
 use App\Entity\ReferentTag;
 use App\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class LocalSurveyRepository extends ServiceEntityRepository
 {
     use ReferentTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LocalSurvey::class);
     }

@@ -12,15 +12,15 @@ use App\Repository\PaginatorTrait;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ThematicCommunity\ThematicCommunityMembershipFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ThematicCommunityMembershipRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ThematicCommunityMembership::class);
     }

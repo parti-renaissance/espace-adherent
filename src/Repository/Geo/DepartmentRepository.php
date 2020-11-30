@@ -6,18 +6,18 @@ use App\Entity\Geo\City;
 use App\Entity\Geo\Department;
 use App\Entity\Jecoute\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 final class DepartmentRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Department::class);
     }
 
     /**
-     * @return array<string, Department>
+     * @return Department[]
      */
     public function findAllGroupedByCode(): array
     {

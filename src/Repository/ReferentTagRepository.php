@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @deprecated
@@ -15,7 +15,7 @@ class ReferentTagRepository extends ServiceEntityRepository
 {
     public const FRENCH_OUTSIDE_FRANCE_TAG = 'FOF';
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ReferentTag::class);
     }

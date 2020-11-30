@@ -6,11 +6,11 @@ use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class NationalSurveyRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, NationalSurvey::class);
     }

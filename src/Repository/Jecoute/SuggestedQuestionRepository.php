@@ -4,11 +4,11 @@ namespace App\Repository\Jecoute;
 
 use App\Entity\Jecoute\SuggestedQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class SuggestedQuestionRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SuggestedQuestion::class);
     }

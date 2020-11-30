@@ -16,16 +16,16 @@ use App\TerritorialCouncil\Candidacy\SearchAvailableMembershipFilter;
 use App\TerritorialCouncil\Filter\MembersListFilter;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TerritorialCouncilMembership::class);
     }

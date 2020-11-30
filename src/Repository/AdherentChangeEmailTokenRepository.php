@@ -4,12 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class AdherentChangeEmailTokenRepository extends AbstractAdherentTokenRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AdherentChangeEmailToken::class);
     }

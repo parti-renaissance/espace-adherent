@@ -12,9 +12,9 @@ use App\Statistics\StatisticsParametersFilter;
 use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class EventRegistrationRepository extends ServiceEntityRepository
 {
@@ -22,7 +22,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
     use UuidEntityRepositoryTrait;
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, EventRegistration::class);
     }

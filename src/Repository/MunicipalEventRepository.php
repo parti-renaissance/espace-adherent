@@ -5,11 +5,11 @@ namespace App\Repository;
 use App\Entity\Adherent;
 use App\Entity\Event;
 use App\Entity\MunicipalEvent;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class MunicipalEventRepository extends EventRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MunicipalEvent::class);
     }

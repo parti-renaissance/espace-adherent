@@ -4,13 +4,13 @@ namespace App\Repository;
 
 use App\Entity\Adherent;
 use App\Entity\InstitutionalEvent;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class InstitutionalEventRepository extends EventRepository
 {
     use ReferentTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, InstitutionalEvent::class);
     }

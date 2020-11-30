@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="procuration_managed_areas")
- * @ORM\Entity(repositoryClass="App\Repository\ProcurationManagerRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProcurationManagedAreaRepository")
  */
 class ProcurationManagedArea extends ManagedArea
 {

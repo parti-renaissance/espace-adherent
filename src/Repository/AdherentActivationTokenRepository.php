@@ -3,11 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\AdherentActivationToken;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class AdherentActivationTokenRepository extends AbstractAdherentTokenRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AdherentActivationToken::class);
     }

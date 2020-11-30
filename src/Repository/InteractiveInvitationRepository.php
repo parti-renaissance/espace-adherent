@@ -2,9 +2,9 @@
 
 namespace App\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-abstract class InteractiveInvitationRepository extends EntityRepository
+abstract class InteractiveInvitationRepository extends ServiceEntityRepository
 {
     public function countForExport(): int
     {
