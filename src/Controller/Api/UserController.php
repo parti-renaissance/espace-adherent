@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Adherent;
-use App\OAuth\Model\ApiUser;
+use App\OAuth\Model\ClientApiUser;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function oauthShowMe(Serializer $serializer)
     {
-        if ($this->getUser() instanceof ApiUser) {
+        if ($this->getUser() instanceof ClientApiUser) {
             return OAuthServerException::accessDenied('API user does not have access to this route')
                 ->generateHttpResponse(new Response())
             ;

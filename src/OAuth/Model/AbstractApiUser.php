@@ -4,7 +4,7 @@ namespace App\OAuth\Model;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ApiUser implements UserInterface
+abstract class AbstractApiUser implements UserInterface
 {
     /**
      * @var string

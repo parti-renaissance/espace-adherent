@@ -2,7 +2,7 @@
 
 namespace App\OAuth;
 
-use App\OAuth\Model\ApiUser;
+use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
 use App\Repository\AdherentRepository;
 use App\Repository\DeviceRepository;
@@ -97,7 +97,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
                 return new DeviceApiUser($credentials['oauth_client_id'], $roles, $device);
             }
 
-            return new ApiUser($credentials['oauth_client_id'], $roles);
+            return new ClientApiUser($credentials['oauth_client_id'], $roles);
         }
 
         if (!$user = $this->adherentRepository->findByUuid(Uuid::fromString($credentials['oauth_user_id']))) {
