@@ -3,14 +3,14 @@
 namespace App\Repository\Jecoute;
 
 use App\Entity\Adherent;
+use App\Entity\Geo\City;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
-use App\Entity\ReferentTag;
 use App\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -45,20 +45,18 @@ class LocalSurveyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param ReferentTag[] $tags
-     *
      * @return LocalSurvey[]
      */
-    public function findAllByTagsWithStats(array $tags): array
+    public function findAllByZonesWithStats(array $zones): array
     {
-        $qb = $this
+        return $this
             ->createQueryBuilder('survey')
+            ->leftJoin('survey.zone', 'zone')
+            ->addSelect('zone')
             ->addSelect(sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
             ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
-        ;
-
-        return $qb
-            ->andWhere($this->createOrExpressionForSurveyTags($qb, $tags))
+            ->where('survey.zone IN (:zones)')
+            ->setParameter('zones', $zones)
             ->getQuery()
             ->getResult()
         ;
@@ -69,63 +67,69 @@ class LocalSurveyRepository extends ServiceEntityRepository
      */
     public function createSurveysForAdherentQueryBuilder(Adherent $adherent): QueryBuilder
     {
-        $qb = $this
+        return $this
             ->createQueryBuilder('survey')
-            ->addSelect('questions')
+            ->addSelect('questions', 'zone')
             ->innerJoin('survey.questions', 'questions')
-        ;
-
-        return $qb
-            ->where($this->createOrExpressionForSurveyTags($qb, $adherent->getReferentTagCodes()))
+            ->innerJoin('survey.zone', 'zone')
+            ->leftJoin('zone.children', 'child')
+            ->where('(zone IN (:zones) OR child IN (:zones))')
+            ->setParameter('zones', $adherent->getZones())
             ->andWhere('survey.published = true')
         ;
     }
 
     public function createSurveysForPostalCodeQueryBuilder(string $postalCode): QueryBuilder
     {
-        $qb = $this
-            ->createQueryBuilder('survey')
-            ->addSelect('questions')
-            ->innerJoin('survey.questions', 'questions')
-        ;
-
-        return $qb
-            ->where($this->createOrExpressionForSurveyPostalCode($qb, $postalCode))
-            ->andWhere('survey.published = true')
-            ;
-    }
-
-    public function createOrExpressionForSurveyTags(QueryBuilder $qb, array $tags): Orx
-    {
-        $expression = new Orx();
-
-        foreach ($tags as $key => $tag) {
-            $expression->add("FIND_IN_SET(:tags_$key, survey.tags) > 0");
-            $qb->setParameter("tags_$key", $tag);
-        }
-
-        return $expression;
-    }
-
-    public function createOrExpressionForSurveyPostalCode(QueryBuilder $qb, string $postalCode): Orx
-    {
-        $expression = new Orx();
-
-        $expression->add('FIND_IN_SET(:tags_postal_code, survey.tags) > 0');
-        $qb->setParameter('tags_postal_code', $postalCode);
-
         $department = substr($postalCode, 0, 2);
 
-        $expression->add('FIND_IN_SET(:tags_department, survey.tags) > 0');
-        $qb->setParameter('tags_department', $department);
+        if ('75' === $department) {
+            $qb = $this
+                ->createQueryBuilder('survey')
+            ;
 
-        return $expression;
+            return $qb
+                ->addSelect('questions', 'zone')
+                ->innerJoin('survey.questions', 'questions')
+                ->innerJoin('survey.zone', 'zone')
+                ->leftJoin('zone.children', 'child')
+                ->leftJoin(City::class, 'city', Join::WITH, 'city.code = 75056 AND (zone.code LIKE :paris OR child.code LIKE :paris)')
+                ->where(
+                    $qb->expr()->orX(
+                        'zone.code = :department',
+                        'child.code = :department',
+                        'city.postalCode LIKE :postal_code_1',
+                        'city.postalCode LIKE :postal_code_2'
+                    )
+                )
+                ->andWhere('survey.published = true')
+                ->setParameter('postal_code_1', $postalCode.'%')
+                ->setParameter('postal_code_2', '%,'.$postalCode.'%')
+                ->setParameter('paris', '75%')
+                ->setParameter('department', $department)
+            ;
+        }
+
+        return $this
+            ->createQueryBuilder('survey')
+            ->addSelect('questions', 'zone')
+            ->innerJoin('survey.questions', 'questions')
+            ->innerJoin('survey.zone', 'zone')
+            ->leftJoin('zone.children', 'child')
+            ->leftJoin(City::class, 'city', Join::WITH, 'zone.code = city.code OR child.code = city.code')
+            ->where('(zone.code = :department OR child.code = :department OR city.code = :postalCode )')
+            ->andWhere('survey.published = true')
+            ->setParameter('postalCode', '%'.$postalCode.'%')
+            ->setParameter('department', $department)
+        ;
     }
 
     public function findAllByAuthor(Adherent $adherent): array
     {
         return $this
             ->createQueryBuilder('survey')
+            ->leftJoin('survey.zone', 'zone')
+            ->addSelect('zone')
             ->addSelect(sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
             ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
             ->where('survey.author = :author')

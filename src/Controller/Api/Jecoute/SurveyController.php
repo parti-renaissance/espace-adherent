@@ -3,7 +3,6 @@
 namespace App\Controller\Api\Jecoute;
 
 use App\Entity\Adherent;
-use App\Entity\Device;
 use App\Form\Jecoute\DataSurveyFormType;
 use App\Jecoute\DataSurveyAnswerHandler;
 use App\Jecoute\SurveyTypeEnum;

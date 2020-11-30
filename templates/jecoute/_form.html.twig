@@ -4,23 +4,25 @@
     {{ form_widget(form.name, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'Entrez le nom du questionnaire (70 caractères max.)' } }) }}
 </div>
 
-
-{% if form.concernedAreaChoice is defined %}
+{% if form.zone is defined %}
     <div class="em-form__group em-form__checkbox--inline">
         <label class="em-form__label required">Zone concernée</label>
-        {{ form_widget(form.concernedAreaChoice, { attr: { class: 'form__radio' } }) }}
-        {{ form_widget(form.city, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Entrez la ville concernée" } }) }}
-        {{ form_errors(form.city) }}
+        {{ form_widget(form.zone, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Sélectionner une seule zone" } }) }}
+        {{ form_errors(form.zone) }}
     </div>
 {% endif %}
 
 {% if not form.vars.disabled %}
     <div class="em-form__group em-form__group--cgu">
-        <div class="em-form__label">Publication du questionnaire</div>
         <div class="form__checkbox">
             {{ form_errors(form.published) }}
             {{ form_widget(form.published, { attr: { class: 'committee_event__form__name' } }) }}
             {{ form_label(form.published, 'Publier le questionnaire') }}
+        </div>
+        <div class="form__checkbox">
+            {{ form_errors(form.blockedChanges) }}
+            {{ form_widget(form.blockedChanges, { attr: { class: 'committee_event__form__name' } }) }}
+            {{ form_label(form.blockedChanges, 'Bloquer la modification du questionnaire aux autres rôles') }}
         </div>
     </div>
 

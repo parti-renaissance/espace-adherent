@@ -4,6 +4,7 @@ namespace App\Entity\Jecoute;
 
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
+use App\Entity\Geo\Zone;
 use App\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -26,22 +27,40 @@ class LocalSurvey extends Survey implements AuthoredInterface
      * @Assert\Length(max=255)
      *
      * @SymfonySerializer\Groups("survey_list")
+     *
+     * @deprecated
      */
     private $city;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @deprecated
      */
     private $tags = [];
+
+    /**
+     * @var Zone|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     *
+     * @SymfonySerializer\Groups("survey_list")
+     */
+    private $zone;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $blockedChanges;
 
     public function __construct(
         ?Adherent $author = null,
         ?string $name = null,
-        ?string $city = null,
-        ?bool $published = false
+        ?bool $published = false,
+        ?bool $blockedChanges = false
     ) {
         $this->author = $author;
-        $this->city = $city;
+        $this->blockedChanges = $blockedChanges;
 
         parent::__construct($name, $published);
     }
@@ -56,21 +75,33 @@ class LocalSurvey extends Survey implements AuthoredInterface
         $this->author = $author;
     }
 
+    /**
+     * @deprecated
+     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    /**
+     * @deprecated
+     */
     public function setCity(?string $city): void
     {
         $this->city = $city;
     }
 
+    /**
+     * @deprecated
+     */
     public function getTags(): array
     {
         return $this->tags;
     }
 
+    /**
+     * @deprecated
+     */
     public function setTags(array $tags): void
     {
         $this->tags = $tags;
@@ -79,5 +110,25 @@ class LocalSurvey extends Survey implements AuthoredInterface
     public function getType(): string
     {
         return SurveyTypeEnum::LOCAL;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(Zone $zone): void
+    {
+        $this->zone = $zone;
+    }
+
+    public function hasBlockedChanges(): bool
+    {
+        return $this->blockedChanges;
+    }
+
+    public function setBlockedChanges(bool $blockedChanges): void
+    {
+        $this->blockedChanges = $blockedChanges;
     }
 }

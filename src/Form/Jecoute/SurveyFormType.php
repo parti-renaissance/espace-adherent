@@ -2,33 +2,19 @@
 
 namespace App\Form\Jecoute;
 
+use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\Survey;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class SurveyFormType extends AbstractType
 {
-    /** @var TranslatorInterface */
-    private $translator;
-
-    public const concernedAreaChoices = [
-        'Département' => self::DEPARTMENT_CHOICE,
-        'Ville' => self::CITY_CHOICE,
-    ];
-
-    public const DEPARTMENT_CHOICE = 'department';
-    public const CITY_CHOICE = 'city';
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -53,17 +39,13 @@ class SurveyFormType extends AbstractType
 
         if ($builder->getData() instanceof LocalSurvey) {
             $builder
-                ->add('concernedAreaChoice', ChoiceType::class, [
-                    'choices' => self::concernedAreaChoices,
-                    'expanded' => true,
-                    'mapped' => false,
+                ->add('zone', EntityType::class, [
+                    'class' => Zone::class,
+                    'choices' => $options['zones'],
                 ])
-                ->add('city', TextType::class, [
-                    'filter_emojis' => true,
+                ->add('blockedChanges', CheckboxType::class, [
                     'required' => false,
                 ])
-                ->addEventListener(FormEvents::POST_SET_DATA, [$this, 'postSetData'])
-                ->addEventListener(FormEvents::SUBMIT, [$this, 'validateCityByConcernedAreaChoice'])
             ;
         }
 
@@ -76,38 +58,13 @@ class SurveyFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('data_class', Survey::class);
-    }
-
-    public function postSetData(FormEvent $event): void
-    {
-        $form = $event->getForm();
-
-        if ($form->getData()->getCity()) {
-            $form->get('concernedAreaChoice')->setData(self::CITY_CHOICE);
-        } else {
-            $form->get('concernedAreaChoice')->setData(self::DEPARTMENT_CHOICE);
-        }
-    }
-
-    public function validateCityByConcernedAreaChoice(FormEvent $event): void
-    {
-        $form = $event->getForm();
-
-        if (
-            $form->has('city')
-            && null === $form->get('city')->getData()
-            && self::CITY_CHOICE === $form->get('concernedAreaChoice')->getData()
-        ) {
-            $form->get('city')->addError(new FormError($this->translator->trans('survey.city.required')));
-        }
-    }
-
-    /**
-     * @required
-     */
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
+        $resolver
+            ->setDefined('zones')
+            ->setAllowedTypes('zones', [Zone::class.'[]'])
+            ->setDefaults([
+                'data_class' => Survey::class,
+                'zones' => [],
+            ])
+        ;
     }
 }
