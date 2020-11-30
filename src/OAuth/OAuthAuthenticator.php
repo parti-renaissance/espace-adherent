@@ -86,7 +86,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         // machine-to-machine communication only
         if (!$credentials['oauth_user_id']) {
             $deviceUuid = $credentials['oauth_device_id'];
-            $device = $deviceUuid ? $this->deviceRepository->findOneByUuid($deviceUuid) : null;
+            $device = $deviceUuid ? $this->deviceRepository->findOneByDeviceUuid($deviceUuid) : null;
 
             return new ApiUser($credentials['oauth_client_id'], $roles, $device);
         }

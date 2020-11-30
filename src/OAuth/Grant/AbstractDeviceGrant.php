@@ -39,8 +39,8 @@ abstract class AbstractDeviceGrant extends AbstractGrant
             throw OAuthServerException::invalidRequest('Device id is not a valid UUID');
         }
 
-        if (!$device = $this->deviceRepository->findOneByUuid($deviceId)) {
-            $device = new Device(Uuid::fromString($deviceId));
+        if (!$device = $this->deviceRepository->findOneByDeviceUuid($deviceId)) {
+            $device = new Device(Uuid::uuid4(), Uuid::fromString($deviceId));
             $this->deviceRepository->save($device);
         }
 

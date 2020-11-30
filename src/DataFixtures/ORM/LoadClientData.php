@@ -133,7 +133,7 @@ class LoadClientData extends Fixture
             'JeMarche App',
             'JeMarche App',
             'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
-            [GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::REFRESH_TOKEN],
+            [GrantTypeEnum::PASSWORD, GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
         $client10->setAskUserForAuthorization(false);

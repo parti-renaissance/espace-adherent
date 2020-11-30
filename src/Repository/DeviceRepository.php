@@ -15,6 +15,13 @@ class DeviceRepository extends ServiceEntityRepository
         parent::__construct($registry, Device::class);
     }
 
+    public function findOneByDeviceUuid(string $deviceUuid): ?Device
+    {
+        self::validUuid($deviceUuid);
+
+        return $this->findOneBy(['deviceUuid' => $deviceUuid]);
+    }
+
     public function save(Device $device): void
     {
         $this->_em->persist($device);

@@ -17,20 +17,23 @@ class Device
     use EntityTimestampableTrait;
 
     /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid")
+     */
+    protected $deviceUuid;
+
+    /**
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastLoggedAt;
 
-    public function __construct(UuidInterface $uuid)
+    public function __construct(UuidInterface $uuid, UuidInterface $deviceUuid)
     {
         $this->uuid = $uuid;
-    }
-
-    public function getIdentifier(): string
-    {
-        return $this->uuid->toString();
+        $this->deviceUuid = $deviceUuid;
     }
 
     public function getLastLoggedAt(): ?\DateTimeInterface
@@ -41,5 +44,15 @@ class Device
     public function login(): void
     {
         $this->lastLoggedAt = new \DateTime('now');
+    }
+
+    public function getDeviceUuid(): UuidInterface
+    {
+        return $this->deviceUuid;
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->deviceUuid->toString();
     }
 }

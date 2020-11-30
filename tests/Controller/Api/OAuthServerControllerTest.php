@@ -79,7 +79,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
         self::assertCount(1, $devices = $this->deviceRepository->findAll());
-        self::assertSame('03274226-d263-43d4-ac48-60d8e8fd902b', $devices[0]->getUuid()->toString());
+        self::assertSame('03274226-d263-43d4-ac48-60d8e8fd902b', $devices[0]->getIdentifier());
 
         // 2nd request must be successful and not create a second device in database
         $this->client->request('POST', '/oauth/v2/token', [

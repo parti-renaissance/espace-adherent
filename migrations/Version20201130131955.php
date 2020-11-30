@@ -5,12 +5,13 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20201130122136 extends AbstractMigration
+final class Version20201130131955 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE devices (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
+          device_uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           last_logged_at DATETIME DEFAULT NULL, 
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           created_at DATETIME NOT NULL, 
