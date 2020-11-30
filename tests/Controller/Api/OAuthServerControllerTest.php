@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Api;
 
 use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\Device;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\AuthorizationCode;
 use App\OAuth\Model\Client;
@@ -28,6 +29,8 @@ class OAuthServerControllerTest extends WebTestCase
 
     /** @var CryptKey */
     private $privateCryptKey;
+
+    private $deviceRepository;
 
     public function testTryRequestSecuredResourceWithExpiredAccessToken(): void
     {
@@ -59,6 +62,36 @@ class OAuthServerControllerTest extends WebTestCase
         static::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
         static::assertSame('application/json', $response->headers->get('Content-type'));
         static::assertSame('{"message":"The resource owner or authorization server denied the request."}', $response->getContent());
+    }
+
+    public function testRequestAccessTokenWithDeviceId(): void
+    {
+        self::assertCount(0, $this->deviceRepository->findAll());
+
+        // 1st request with refresh token must be successful and create a device in database
+        $this->client->request('POST', '/oauth/v2/token', [
+            'client_id' => '1931b955-560b-41b2-9eb9-c232157f1471',
+            'client_secret' => 'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
+            'grant_type' => 'client_credentials',
+            'scope' => 'jemarche_app',
+            'device_id' => '03274226-d263-43d4-ac48-60d8e8fd902b',
+        ]);
+
+        $this->isSuccessful($this->client->getResponse());
+        self::assertCount(1, $devices = $this->deviceRepository->findAll());
+        self::assertSame('03274226-d263-43d4-ac48-60d8e8fd902b', $devices[0]->getUuid()->toString());
+
+        // 2nd request must be successful and not create a second device in database
+        $this->client->request('POST', '/oauth/v2/token', [
+            'client_id' => '1931b955-560b-41b2-9eb9-c232157f1471',
+            'client_secret' => 'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
+            'grant_type' => 'client_credentials',
+            'scope' => 'jemarche_app',
+            'device_id' => '03274226-d263-43d4-ac48-60d8e8fd902b',
+        ]);
+
+        $this->isSuccessful($this->client->getResponse());
+        self::assertCount(1, $this->deviceRepository->findAll());
     }
 
     public function testRequestAccessTokenWithValidAndInvalidRefreshToken(): void
@@ -426,10 +459,11 @@ class OAuthServerControllerTest extends WebTestCase
     {
         parent::setUp();
 
+        $this->init();
+
         $this->encryptionKey = $this->getContainer()->getParameter('ssl_encryption_key');
         $this->privateCryptKey = new CryptKey($this->getContainer()->getParameter('ssl_private_key'));
-
-        $this->init();
+        $this->deviceRepository = $this->getRepository(Device::class);
     }
 
     protected function tearDown(): void
@@ -438,6 +472,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         $this->privateCryptKey = null;
         $this->encryptionKey = null;
+        $this->deviceRepository = null;
 
         parent::tearDown();
     }

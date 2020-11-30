@@ -74,6 +74,40 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     }
     """
 
+  Scenario: Client credentials authentication with device id
+    Given I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr  |
+      | client_id     | 1931b955-560b-41b2-9eb9-c232157f1471         |
+      | grant_type    | client_credentials                           |
+      | scope         | jemarche_app                                 |
+      | device_id     | 03274226-d263-43d4-ac48-60d8e8fd902b         |
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "token_type":"Bearer",
+      "expires_in":"@integer@.lowerThan(3601).greaterThan(3595)",
+      "access_token":"@string@"
+    }
+    """
+
+    When I send a "GET" request to "/oauth/v2/tokeninfo" with the access token
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "token_type":"Bearer",
+      "expires_in":@integer@,
+      "access_token":"@string@",
+      "grant_types": ["client_credentials", "refresh_token"],
+      "scopes": ["jemarche_app"]
+    }
+    """
+
   Scenario: Grant type not allowed
     Given I add "Accept" header equal to "application/json"
     And I send a "POST" request to "/oauth/v2/token" with parameters:
