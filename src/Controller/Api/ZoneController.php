@@ -29,6 +29,7 @@ class ZoneController extends AbstractController
         Zone::DISTRICT,
         Zone::CITY_COMMUNITY,
         Zone::CANTON,
+        Zone::BOROUGH,
     ];
 
     use AccessDelegatorTrait;
