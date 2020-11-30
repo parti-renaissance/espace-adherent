@@ -59,7 +59,12 @@ class ClientCredentialsGrant extends BaseClientCredentialsGrant
         $finalizedScopes = $this->scopeRepository->finalizeScopes($scopes, $this->getIdentifier(), $client);
 
         // Issue and persist access token
-        $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $device->getUuid()->toString(), $finalizedScopes);
+        $accessToken = $this->issueAccessToken(
+            $accessTokenTTL,
+            $client,
+            $device ? $device->getUuid()->toString() : null,
+            $finalizedScopes
+        );
 
         // Inject access token into response type
         $responseType->setAccessToken($accessToken);

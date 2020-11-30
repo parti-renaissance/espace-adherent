@@ -6,7 +6,7 @@ use App\Entity\Device;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-final class DeviceRepository extends ServiceEntityRepository
+class DeviceRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
 

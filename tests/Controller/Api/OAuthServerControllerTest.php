@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Front;
+namespace App\Tests\Controller\Api;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\OAuth\AccessToken;

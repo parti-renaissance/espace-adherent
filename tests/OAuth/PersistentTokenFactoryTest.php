@@ -12,6 +12,7 @@ use App\OAuth\Model\RefreshToken as InMemoryRefreshToken;
 use App\OAuth\Model\Scope as InMemoryScope;
 use App\OAuth\PersistentTokenFactory;
 use App\Repository\AdherentRepository;
+use App\Repository\DeviceRepository;
 use App\Repository\OAuth\AccessTokenRepository;
 use App\Repository\OAuth\ClientRepository;
 use PHPUnit\Framework\TestCase;
@@ -35,6 +36,7 @@ class PersistentTokenFactoryTest extends TestCase
     private $accessTokenRepository;
     private $clientRepository;
     private $adherentRepository;
+    private $deviceRepository;
 
     public function testCreateAuthorizationCode(): void
     {
@@ -281,10 +283,12 @@ class PersistentTokenFactoryTest extends TestCase
         $this->accessTokenRepository = $this->createMock(AccessTokenRepository::class);
         $this->clientRepository = $this->createMock(ClientRepository::class);
         $this->adherentRepository = $this->createMock(AdherentRepository::class);
+        $this->deviceRepository = $this->createMock(DeviceRepository::class);
         $this->tokenFactory = new PersistentTokenFactory(
             $this->accessTokenRepository,
             $this->clientRepository,
-            $this->adherentRepository
+            $this->adherentRepository,
+            $this->deviceRepository
         );
     }
 
@@ -293,6 +297,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this->accessTokenRepository = null;
         $this->clientRepository = null;
         $this->adherentRepository = null;
+        $this->deviceRepository = null;
         $this->tokenFactory = null;
 
         parent::tearDown();
