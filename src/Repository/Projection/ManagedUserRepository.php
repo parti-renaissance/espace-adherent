@@ -276,7 +276,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (!\in_array('zone', $qb->getAllAliases(), true)) {
-            $qb->innerJoin("$alias.zone", 'zone');
+            $qb->innerJoin("$alias.zones", 'zone');
         }
 
         if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {

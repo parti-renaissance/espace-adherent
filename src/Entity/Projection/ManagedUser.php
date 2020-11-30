@@ -2,9 +2,11 @@
 
 namespace App\Entity\Projection;
 
+use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
@@ -18,9 +20,18 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\Index(name="projection_managed_users_search", columns={"status", "postal_code", "country"})
  * })
  * @ORM\Entity(readOnly=true, repositoryClass="App\Repository\Projection\ManagedUserRepository")
+ * @ORM\AssociationOverrides({
+ *     @ORM\AssociationOverride(name="zones",
+ *         joinTable=@ORM\JoinTable(
+ *             name="projection_managed_users_zone"
+ *         )
+ *     )
+ * })
  */
 class ManagedUser
 {
+    use EntityZoneTrait;
+
     public const STATUS_READY = 1;
     public const TYPE_ADHERENT = 'adherent';
 
@@ -226,11 +237,6 @@ class ManagedUser
      */
     private $voteCommitteeId;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     */
-    private $zone;
-
     public function __construct(
         int $status,
         string $type,
@@ -251,7 +257,7 @@ class ManagedUser
         int $isCommitteeHost = 0,
         int $isCommitteeSupervisor = 0,
         ?array $subscriptionTypes = [],
-        ?Zone $zone = null,
+        array $zones = [],
         string $subscribedTags = null,
         \DateTime $createdAt = null,
         string $gender = null,
@@ -288,7 +294,7 @@ class ManagedUser
         $this->citizenProjects = $citizenProjects;
         $this->citizenProjectsOrganizer = $citizenProjectsOrganizer;
         $this->voteCommitteeId = $voteCommitteeId;
-        $this->zone = $zone;
+        $this->zones = new ArrayCollection($zones);
     }
 
     public function getId(): int
@@ -495,10 +501,5 @@ class ManagedUser
     public function getVoteCommitteeId(): ?int
     {
         return $this->voteCommitteeId;
-    }
-
-    public function getZone(): ?Zone
-    {
-        return $this->zone;
     }
 }
