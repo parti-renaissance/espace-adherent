@@ -28,6 +28,11 @@ class Device
         $this->uuid = $uuid;
     }
 
+    public function getIdentifier(): string
+    {
+        return $this->uuid->toString();
+    }
+
     public function getLastLoggedAt(): ?\DateTimeInterface
     {
         return $this->lastLoggedAt;

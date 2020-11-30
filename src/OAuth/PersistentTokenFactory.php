@@ -54,7 +54,9 @@ class PersistentTokenFactory
             $device
         );
 
-        $device->login();
+        if ($device) {
+            $device->login();
+        }
 
         $accessToken->addScopes($this->extractScopes($token));
 

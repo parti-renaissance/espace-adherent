@@ -3,10 +3,11 @@
 namespace App\OAuth;
 
 use App\OAuth\Grant\ClientCredentialsGrant;
+use App\OAuth\Grant\PasswordGrant;
 use App\Repository\DeviceRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
-use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\Grant\GrantTypeInterface;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
@@ -67,19 +68,31 @@ class AuthorizationServerFactory
             $accessTokenTtl
         );
 
-        $clientCredentialsGrant = new ClientCredentialsGrant();
-        $clientCredentialsGrant->setDeviceRepository($this->deviceRepository);
-        $server->enableGrantType($clientCredentialsGrant, $accessTokenTtl);
-
-        $refreshTokenGrant = new RefreshTokenGrant($this->refreshTokenRepository);
-        $refreshTokenGrant->setRefreshTokenTTL($refreshTokenTtl);
-        $server->enableGrantType($refreshTokenGrant, $accessTokenTtl);
-
-        $passwordGrant = new PasswordGrant($this->userRepository, $this->refreshTokenRepository);
-
-        $passwordGrant->setRefreshTokenTTL($refreshTokenTtl);
-        $server->enableGrantType($passwordGrant, $accessTokenTtl);
+        $server->enableGrantType($this->createClientCredetialsGrant(), $accessTokenTtl);
+        $server->enableGrantType($this->createRefreshTokenGrant($refreshTokenTtl), $accessTokenTtl);
+        $server->enableGrantType($this->createPasswordGrant($refreshTokenTtl), $accessTokenTtl);
 
         return $server;
+    }
+
+    private function createClientCredetialsGrant(): GrantTypeInterface
+    {
+        return new ClientCredentialsGrant($this->deviceRepository);
+    }
+
+    private function createPasswordGrant(\DateInterval $refreshTokenTtl): GrantTypeInterface
+    {
+        $grant = new PasswordGrant($this->deviceRepository, $this->userRepository, $this->refreshTokenRepository);
+        $grant->setRefreshTokenTTL($refreshTokenTtl);
+
+        return $grant;
+    }
+
+    private function createRefreshTokenGrant(\DateInterval $refreshTokenTtl): GrantTypeInterface
+    {
+        $grant = new RefreshTokenGrant($this->refreshTokenRepository);
+        $grant->setRefreshTokenTTL($refreshTokenTtl);
+
+        return $grant;
     }
 }
