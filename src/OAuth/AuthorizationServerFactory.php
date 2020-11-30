@@ -77,12 +77,16 @@ class AuthorizationServerFactory
 
     private function createClientCredetialsGrant(): GrantTypeInterface
     {
-        return new ClientCredentialsGrant($this->deviceRepository);
+        $grant = new ClientCredentialsGrant();
+        $grant->setDeviceRepository($this->deviceRepository);
+
+        return $grant;
     }
 
     private function createPasswordGrant(\DateInterval $refreshTokenTtl): GrantTypeInterface
     {
-        $grant = new PasswordGrant($this->deviceRepository, $this->userRepository, $this->refreshTokenRepository);
+        $grant = new PasswordGrant($this->userRepository, $this->refreshTokenRepository);
+        $grant->setDeviceRepository($this->deviceRepository);
         $grant->setRefreshTokenTTL($refreshTokenTtl);
 
         return $grant;

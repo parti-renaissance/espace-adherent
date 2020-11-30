@@ -13,6 +13,7 @@ use App\Repository\AdherentRepository;
 use App\Repository\DeviceRepository;
 use App\Repository\OAuth\AccessTokenRepository;
 use App\Repository\OAuth\ClientRepository;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\TokenInterface;
@@ -38,12 +39,16 @@ class PersistentTokenFactory
         $this->deviceRepository = $deviceRepository;
     }
 
-    public function createAccessToken(DeviceAccessTokenInterface $token): AccessToken
+    public function createAccessToken(AccessTokenEntityInterface $token): AccessToken
     {
         // A user is not mandatory for the client credentials grant
         $user = $token->getUserIdentifier() ? $this->getUser($token->getUserIdentifier()) : null;
         $client = $this->getClient($token->getClient()->getIdentifier());
-        $device = $token->getDeviceIdentifier() ? $this->getDevice($token->getDeviceIdentifier()) : null;
+
+        $device = null;
+        if ($device instanceof DeviceAccessTokenInterface) {
+            $device = $token->getDeviceIdentifier() ? $this->getDevice($token->getDeviceIdentifier()) : null;
+        }
 
         $accessToken = new AccessToken(
             $this->createTokenUuid($token->getIdentifier()),

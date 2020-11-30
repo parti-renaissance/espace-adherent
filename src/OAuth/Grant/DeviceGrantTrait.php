@@ -8,21 +8,15 @@ use App\Repository\DeviceRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
-use League\OAuth2\Server\Grant\AbstractGrant;
 use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
 
-abstract class AbstractDeviceGrant extends AbstractGrant
+trait DeviceGrantTrait
 {
     /**
      * @var DeviceRepository
      */
-    private $deviceRepository;
-
-    public function __construct(DeviceRepository $deviceRepository)
-    {
-        $this->deviceRepository = $deviceRepository;
-    }
+    protected $deviceRepository;
 
     public function setDeviceRepository(DeviceRepository $deviceRepository): void
     {
@@ -50,8 +44,8 @@ abstract class AbstractDeviceGrant extends AbstractGrant
     protected function issueAccessTokenWithDevice(
         \DateInterval $accessTokenTTL,
         ClientEntityInterface $client,
-        $userIdentifier,
-        $deviceIdentifier,
+        ?string $userIdentifier,
+        ?string $deviceIdentifier,
         array $scopes = []
     ) {
         $maxGenerationAttempts = self::MAX_RANDOM_TOKEN_GENERATION_ATTEMPTS;

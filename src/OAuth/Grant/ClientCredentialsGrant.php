@@ -2,11 +2,14 @@
 
 namespace App\OAuth\Grant;
 
+use League\OAuth2\Server\Grant\ClientCredentialsGrant as BaseClientCredentialsGrant;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ClientCredentialsGrant extends AbstractDeviceGrant
+class ClientCredentialsGrant extends BaseClientCredentialsGrant
 {
+    use DeviceGrantTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -36,13 +39,5 @@ class ClientCredentialsGrant extends AbstractDeviceGrant
         $responseType->setAccessToken($accessToken);
 
         return $responseType;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifier()
-    {
-        return 'client_credentials';
     }
 }
