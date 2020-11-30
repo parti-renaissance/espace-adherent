@@ -14,9 +14,27 @@ use Ramsey\Uuid\UuidInterface;
 class Device
 {
     use EntityIdentityTrait;
+    use EntityTimestampableTrait;
+
+    /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLoggedAt;
 
     public function __construct(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
+    }
+
+    public function getLastLoggedAt(): ?\DateTimeInterface
+    {
+        return $this->lastLoggedAt;
+    }
+
+    public function login(): void
+    {
+        $this->lastLoggedAt = new \DateTime('now');
     }
 }
