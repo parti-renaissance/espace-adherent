@@ -258,7 +258,7 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         $qb = $this
             ->createQueryBuilder('u')
-            ->select('COUNT(u.id)')
+            ->select('COUNT(DISTINCT u.id)')
         ;
 
         $this->withZoneCondition($qb, $zones);
