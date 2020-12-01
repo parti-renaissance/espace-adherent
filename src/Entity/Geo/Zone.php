@@ -87,6 +87,14 @@ class Zone implements GeoInterface
         return Zone::CITY === $this->type;
     }
 
+    public function isCityGrouper(): bool
+    {
+        return \in_array($this->type, [
+            self::CANTON,
+            self::DISTRICT,
+        ], true);
+    }
+
     /**
      * @return self[]
      */

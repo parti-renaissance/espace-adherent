@@ -3,6 +3,7 @@
 namespace App\Repository\Projection;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use App\Entity\Geo\Zone;
 use App\Entity\Projection\ManagedUser;
 use App\Intl\FranceCitiesBundle;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -287,13 +288,19 @@ class ManagedUserRepository extends ServiceEntityRepository
             return $zone->getId();
         }, $zones);
 
-        return $qb
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->in('zone.id', $ids),
-                    $qb->expr()->in('zone_parent.id', $ids),
-                )
-            )
-        ;
+        $parentIds = array_filter(array_map(static function (Zone $zone) {
+            return $zone->isCityGrouper()
+                ? null
+                : $zone->getId()
+            ;
+        }, $zones));
+
+        $orX = $qb->expr()->orX();
+        $orX->add($qb->expr()->in('zone.id', $ids));
+        if ($parentIds) {
+            $orX->add($qb->expr()->in('zone_parent.id', $parentIds));
+        }
+
+        return $qb->andWhere($orX);
     }
 }
