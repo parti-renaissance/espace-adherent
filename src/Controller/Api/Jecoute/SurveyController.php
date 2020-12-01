@@ -3,9 +3,11 @@
 namespace App\Controller\Api\Jecoute;
 
 use App\Entity\Adherent;
+use App\Entity\Device;
 use App\Form\Jecoute\DataSurveyFormType;
 use App\Jecoute\DataSurveyAnswerHandler;
 use App\Jecoute\SurveyTypeEnum;
+use App\OAuth\Model\DeviceApiUser;
 use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -22,7 +24,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/jecoute/survey")
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))")
+ * @Security("(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))")
  */
 class SurveyController extends Controller
 {
@@ -30,16 +32,31 @@ class SurveyController extends Controller
      * @Route(name="api_surveys_list", methods={"GET"})
      */
     public function surveyListAction(
+        Request $request,
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
         SerializerInterface $serializer,
         UserInterface $user
     ): Response {
-        /** @var Adherent $user */
+        if ($user instanceof DeviceApiUser) {
+            if (!$postalCode = $request->get('postalCode')) {
+                throw new BadRequestHttpException('Parameter "postalCode" missing when using a Device token.');
+            }
+
+            if (!preg_match('/\d{5}/', $postalCode)) {
+                throw new BadRequestHttpException('Parameter "postalCode" must be 5 numbers.');
+            }
+        }
+
+        $localSurveys = $user instanceof Adherent
+            ? $localSurveyRepository->findAllByAdherent($user)
+            : $localSurveyRepository->findAllByPostalCode($postalCode)
+        ;
+
         return new JsonResponse(
             $serializer->serialize(
                 array_merge(
-                    $localSurveyRepository->findAllByAdherent($user),
+                    $localSurveys,
                     $nationalSurveyRepository->findAllPublished()
                 ),
                 'json',
