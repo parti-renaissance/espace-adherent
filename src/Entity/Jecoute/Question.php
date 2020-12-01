@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
 use Doctrine\ORM\Mapping\InheritanceType;
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -41,7 +41,7 @@ class Question
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
     private $content;
 
@@ -51,7 +51,7 @@ class Question
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Jecoute\SurveyQuestionTypeEnum", "all"})
      *
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
     private $type;
 
@@ -63,7 +63,7 @@ class Question
      *
      * @Assert\Valid
      *
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
     private $choices;
 

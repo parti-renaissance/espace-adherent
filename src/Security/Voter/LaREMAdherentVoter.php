@@ -14,6 +14,6 @@ class LaREMAdherentVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return $adherent->isLaREM();
+        return $adherent->isLarem();
     }
 }

@@ -290,12 +290,30 @@ class OAuthServerControllerTest extends WebTestCase
         ]);
         $this->isSuccessful($response = $this->client->getResponse());
         static::assertSame('application/json', $response->headers->get('Content-Type'));
-        static::assertSame(
-            '{"uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458","elected":false,"larem":false,"detailed_roles":[],'
-            .'"country":"FR","zipCode":"73100","nickname":"pont","use_nickname":false,'
-            .'"emailAddress":"carl999@example.fr","comments_cgu_accepted":false,"firstName":"Carl","lastName":"Mirabeau"}',
-            $response->getContent()
-        );
+
+        $data = \GuzzleHttp\json_decode($response->getContent(), true);
+
+        $expected = [
+            'uuid' => 'e6977a4d-2646-5f6c-9c82-88e58dca8458',
+            'email_address' => 'carl999@example.fr',
+            'first_name' => 'Carl',
+            'last_name' => 'Mirabeau',
+            'country' => 'FR',
+            'postal_code' => '73100',
+            'nickname' => 'pont',
+            'use_nickname' => false,
+            'comments_cgu_accepted' => false,
+            'elected' => false,
+            'larem' => false,
+            'emailAddress' => 'carl999@example.fr',
+            'firstName' => 'Carl',
+            'lastName' => 'Mirabeau',
+            'zipCode' => '73100',
+        ];
+        foreach ($data as $expectedKey => $expectedValue) {
+            static::assertArrayHasKey($expectedKey, $data);
+            static::assertSame($expectedValue, $data[$expectedKey]);
+        }
 
         // 8. The OAuth server remembers OAuth client authorizations so that the user can reconnect without providing authorization again
         $this->client->request(Request::METHOD_GET, $this->createAuthorizeUrl());

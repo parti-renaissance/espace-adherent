@@ -4,7 +4,7 @@ namespace App\OAuth\Model;
 
 use App\Entity\Device;
 
-class DeviceApiUser extends ApiUser
+class DeviceApiUser extends AbstractApiUser
 {
     private const DEVICE_ROLE = 'ROLE_OAUTH_DEVICE';
 

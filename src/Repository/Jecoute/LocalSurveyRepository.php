@@ -35,6 +35,15 @@ class LocalSurveyRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllByPostalCode(string $postalCode): array
+    {
+        return $this
+            ->createSurveysForPostalCodeQueryBuilder($postalCode)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * @param ReferentTag[] $tags
      *
@@ -72,6 +81,20 @@ class LocalSurveyRepository extends ServiceEntityRepository
         ;
     }
 
+    public function createSurveysForPostalCodeQueryBuilder(string $postalCode): QueryBuilder
+    {
+        $qb = $this
+            ->createQueryBuilder('survey')
+            ->addSelect('questions')
+            ->innerJoin('survey.questions', 'questions')
+        ;
+
+        return $qb
+            ->where($this->createOrExpressionForSurveyPostalCode($qb, $postalCode))
+            ->andWhere('survey.published = true')
+            ;
+    }
+
     public function createOrExpressionForSurveyTags(QueryBuilder $qb, array $tags): Orx
     {
         $expression = new Orx();
@@ -80,6 +103,21 @@ class LocalSurveyRepository extends ServiceEntityRepository
             $expression->add("FIND_IN_SET(:tags_$key, survey.tags) > 0");
             $qb->setParameter("tags_$key", $tag);
         }
+
+        return $expression;
+    }
+
+    public function createOrExpressionForSurveyPostalCode(QueryBuilder $qb, string $postalCode): Orx
+    {
+        $expression = new Orx();
+
+        $expression->add('FIND_IN_SET(:tags_postal_code, survey.tags) > 0');
+        $qb->setParameter('tags_postal_code', $postalCode);
+
+        $department = substr($postalCode, 0, 2);
+
+        $expression->add('FIND_IN_SET(:tags_department, survey.tags) > 0');
+        $qb->setParameter('tags_department', $department);
 
         return $expression;
     }

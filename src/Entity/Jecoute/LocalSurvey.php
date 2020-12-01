@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,7 +25,7 @@ class LocalSurvey extends Survey implements AuthoredInterface
      *
      * @Assert\Length(max=255)
      *
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
     private $city;
 

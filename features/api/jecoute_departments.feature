@@ -32,8 +32,8 @@ Feature:
         "description": "Description PACA",
         "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
         "banner": null,
-        "primaryColor": "blue",
-        "externalLink": null
+        "primary_color": "blue",
+        "external_link": null
       }
     }
     """
@@ -53,8 +53,8 @@ Feature:
         "description": "Description des Hauts-de-France",
         "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
         "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg",
-        "primaryColor": "green",
-        "externalLink": "https://en-marche.fr"
+        "primary_color": "green",
+        "external_link": "https://en-marche.fr"
       }
     }
     """

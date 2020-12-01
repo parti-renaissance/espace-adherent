@@ -108,17 +108,18 @@ Feature:
     """
     {
       "uuid": "2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf",
-      "managedAreaTagCodes": [
+      "email_address": "referent-75-77@en-marche-dev.fr",
+      "first_name": "Referent75and77",
+      "last_name": "Referent75and77",
+      "country": "FR",
+      "postal_code": "75001",
+      "managed_area_tag_codes": [
         "75008",
         "75009",
         "75",
         "77"
       ],
-      "country": "FR",
-      "zipCode": "75001",
-      "emailAddress": "referent-75-77@en-marche-dev.fr",
-      "firstName": "Referent75and77",
-      "lastName": "Referent75and77",
+      "nickname": null,
       "use_nickname": false,
       "elected": false,
       "larem": false,
@@ -136,6 +137,16 @@ Feature:
         {
           "label": "ROLE_PRINT_PRIVILEGE"
         }
+      ],
+      "emailAddress": "referent-75-77@en-marche-dev.fr",
+      "firstName": "Referent75and77",
+      "lastName": "Referent75and77",
+      "zipCode": "75001",
+      "managedAreaTagCodes": [
+        "75008",
+        "75009",
+        "75",
+        "77"
       ]
     }
     """
@@ -150,16 +161,20 @@ Feature:
     {
       "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
       "country":"FR",
-      "zipCode":"75008",
-      "emailAddress":"jacques.picard@en-marche.fr",
-      "firstName":"Jacques",
-      "lastName":"Picard",
+      "postal_code":"75008",
+      "email_address":"jacques.picard@en-marche.fr",
+      "first_name":"Jacques",
+      "last_name":"Picard",
       "nickname":"kikouslove",
       "use_nickname":true,
       "elected": false,
       "larem": true,
       "comments_cgu_accepted": false,
-      "detailed_roles": []
+      "detailed_roles": [],
+      "emailAddress":"jacques.picard@en-marche.fr",
+      "firstName":"Jacques",
+      "lastName":"Picard",
+      "zipCode":"75008"
     }
     """
 

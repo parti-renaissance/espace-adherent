@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,7 +20,7 @@ class Choice
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
     private $id;
 
@@ -38,7 +38,7 @@ class Choice
      * @Assert\NotBlank
      * @Assert\Length(max=80)
      *
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
     private $content;
 

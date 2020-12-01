@@ -40,7 +40,7 @@ class ElectedRepresentativeEventSubscriber implements EventSubscriberInterface
     public function postUpdate(ElectedRepresentativeEvent $event): void
     {
         $electedRepresentative = $event->getElectedRepresentative();
-        $emailBeforeUpdate = isset($this->beforeUpdate['emailAddress']) ? $this->beforeUpdate['emailAddress'] : null;
+        $emailBeforeUpdate = isset($this->beforeUpdate['email_address']) ? $this->beforeUpdate['email_address'] : null;
         $emailAfterUpdate = $electedRepresentative->getEmailAddress();
 
         if (!$emailAfterUpdate && $emailBeforeUpdate) {

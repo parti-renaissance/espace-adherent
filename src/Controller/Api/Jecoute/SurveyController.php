@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Jecoute;
 
 use App\Entity\Adherent;
+use App\Entity\Device;
 use App\Form\Jecoute\DataSurveyFormType;
 use App\Jecoute\DataSurveyAnswerHandler;
 use App\Jecoute\SurveyTypeEnum;
+use App\OAuth\Model\DeviceApiUser;
 use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -20,31 +20,47 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/jecoute")
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')")
+ * @Route("/jecoute/survey")
+ * @Security("(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))")
  */
-class JecouteSurveyController extends Controller
+class SurveyController extends Controller
 {
     /**
-     * @Route("/survey", name="api_surveys_list", methods={"GET"})
+     * @Route(name="api_surveys_list", methods={"GET"})
      */
     public function surveyListAction(
+        Request $request,
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
-        Serializer $serializer,
+        SerializerInterface $serializer,
         UserInterface $user
     ): Response {
-        /** @var Adherent $user */
+        if ($user instanceof DeviceApiUser) {
+            if (!$postalCode = $request->get('postalCode')) {
+                throw new BadRequestHttpException('Parameter "postalCode" missing when using a Device token.');
+            }
+
+            if (!preg_match('/\d{5}/', $postalCode)) {
+                throw new BadRequestHttpException('Parameter "postalCode" must be 5 numbers.');
+            }
+        }
+
+        $localSurveys = $user instanceof Adherent
+            ? $localSurveyRepository->findAllByAdherent($user)
+            : $localSurveyRepository->findAllByPostalCode($postalCode)
+        ;
+
         return new JsonResponse(
             $serializer->serialize(
                 array_merge(
-                    $localSurveyRepository->findAllByAdherent($user),
+                    $localSurveys,
                     $nationalSurveyRepository->findAllPublished()
                 ),
                 'json',
-                SerializationContext::create()->setGroups('survey_list')
+                ['groups' => ['survey_list']]
             ),
             JsonResponse::HTTP_OK,
             [],
@@ -53,7 +69,7 @@ class JecouteSurveyController extends Controller
     }
 
     /**
-     * @Route("/survey/reply", name="api_survey_reply", methods={"POST"})
+     * @Route("/reply", name="api_survey_reply", methods={"POST"})
      */
     public function surveyReplyAction(
         Request $request,

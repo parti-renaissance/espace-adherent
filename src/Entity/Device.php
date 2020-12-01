@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ORM\Table(name="devices", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="devices_uuid_unique", columns="uuid")
+ *     @ORM\UniqueConstraint(name="devices_uuid_unique", columns="uuid"),
+ *     @ORM\UniqueConstraint(name="devices_device_uuid_unique", columns="device_uuid")
  * })
  * @ORM\Entity(repositoryClass="App\Repository\DeviceRepository")
  */
@@ -19,7 +21,9 @@ class Device
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
+     *
+     * @SymfonySerializer\Groups("user_profile")
      */
     protected $deviceUuid;
 

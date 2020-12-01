@@ -1,6 +1,7 @@
 <?php
 
 use App\Entity\Adherent;
+use App\Entity\Device;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use App\OAuth\Model\AccessToken as AccessTokenModel;
@@ -39,6 +40,43 @@ class RestContext extends BehatchRestContext
         $this->httpCallResultPool = $httpCallResultPool;
         $this->entityManager = $entityManager;
         $this->privateCryptKey = new CryptKey($sslPrivateKey);
+    }
+
+    /**
+     * @Given I am logged with device :device_id via OAuth client :clientName with scope :scope
+     */
+    public function iAmLoggedWithDeviceViaOAuthWithClientAndScope(
+        string $deviceUuid,
+        string $clientName,
+        string $scope
+    ): void {
+        $identifier = uniqid();
+
+        /** @var AdherentRepository $adherentRepository */
+        $deviceRepository = $this->entityManager->getRepository(Device::class);
+        /** @var ClientRepository $clientRepository */
+        $clientRepository = $this->entityManager->getRepository(Client::class);
+
+        if (!$device = $deviceRepository->findOneByDeviceUuid($deviceUuid)) {
+            $device = new Device(Uuid::uuid4(), $deviceUuid);
+            $this->entityManager->persist($device);
+        }
+
+        $accessToken = new AccessToken(
+            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            null,
+            $identifier,
+            new \DateTime('+10 minutes'),
+            $clientRepository->findOneBy(['name' => $clientName]),
+            $device
+        );
+
+        $accessToken->addScope($scope);
+
+        $this->entityManager->persist($accessToken);
+        $this->entityManager->flush();
+
+        $this->accessToken = $this->getJwtFromAccessToken($accessToken);
     }
 
     /**
@@ -140,6 +178,7 @@ class RestContext extends BehatchRestContext
         $token->setIdentifier($accessToken->getIdentifier());
         $token->setExpiryDateTime(\DateTime::createFromFormat('U', $accessToken->getExpiryDateTime()->getTimestamp()));
         $token->setUserIdentifier($accessToken->getUserIdentifier());
+        $token->setDeviceIdentifier($accessToken->getDeviceIdentifier());
 
         foreach ($accessToken->getScopes() as $scope) {
             $token->addScope(new Scope($scope));
