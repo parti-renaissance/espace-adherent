@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class NewsAdmin extends AbstractAdmin
 {
@@ -26,6 +27,10 @@ class NewsAdmin extends AbstractAdmin
                 ])
                 ->add('text', TextareaType::class, [
                     'label' => 'Texte',
+                ])
+                ->add('externalLink', UrlType::class, [
+                    'label' => 'Lien',
+                    'required' => false,
                 ])
             ->end()
         ;

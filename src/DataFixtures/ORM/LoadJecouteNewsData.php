@@ -17,24 +17,26 @@ class LoadJecouteNewsData extends Fixture
         $manager->persist($this->createNews(
             self::NEWS_1_UUID,
             'Nouveau sondage disponible',
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.'
         ));
 
         $manager->persist($this->createNews(
             self::NEWS_2_UUID,
             'Rassemblement',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.',
+            'https://en-marche.fr'
         ));
 
         $manager->flush();
     }
 
-    private function createNews(string $uuid, string $title, string $text): News
+    private function createNews(string $uuid, string $title, string $text, string $externalLink = null): News
     {
         return new News(
             Uuid::fromString($uuid),
             $title,
-            $text
+            $text,
+            $externalLink
         );
     }
 }

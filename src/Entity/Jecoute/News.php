@@ -122,6 +122,17 @@ class News
      */
     protected $text;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url
+     *
+     * @SymfonySerializer\Groups({"jecoute_news_read"})
+     */
+    protected $externalLink;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
@@ -131,6 +142,7 @@ class News
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;
         $this->text = $text;
+        $this->externalLink = $externalLink;
     }
 
     public function __toString()
@@ -166,5 +178,15 @@ class News
     public function setText(?string $text): void
     {
         $this->text = $text;
+    }
+
+    public function getExternalLink(): ?string
+    {
+        return $this->externalLink;
+    }
+
+    public function setExternalLink(?string $externalLink): void
+    {
+        $this->externalLink = $externalLink;
     }
 }
