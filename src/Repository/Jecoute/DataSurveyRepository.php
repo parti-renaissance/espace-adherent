@@ -3,6 +3,7 @@
 namespace App\Repository\Jecoute;
 
 use App\Entity\Adherent;
+use App\Entity\Device;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -50,10 +51,7 @@ class DataSurveyRepository extends ServiceEntityRepository
         $qb = $this->createCountByAdherentQueryBuilder($adherent);
 
         if ($minPostedAt) {
-            $qb
-                ->andWhere('data_survey.postedAt >= :min_posted_at')
-                ->setParameter('min_posted_at', $minPostedAt)
-            ;
+            $this->applyMinPostedAt($qb, $minPostedAt);
         }
 
         return $qb
@@ -73,6 +71,42 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->select('COUNT(1)')
             ->andWhere('data_survey.author = :adherent')
             ->setParameter('adherent', $adherent)
+        ;
+    }
+
+    public function countByDevice(Device $device, \DateTimeInterface $minPostedAt = null): int
+    {
+        $qb = $this->createCountByDeviceQueryBuilder($device);
+
+        if ($minPostedAt) {
+            $this->applyMinPostedAt($qb, $minPostedAt);
+        }
+
+        return $qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function countByDeviceForLastMonth(Device $device): int
+    {
+        return $this->countByDevice($device, (new \DateTime('now'))->modify('-1 month'));
+    }
+
+    private function createCountByDeviceQueryBuilder(Device $device): QueryBuilder
+    {
+        return $this->createQueryBuilder('data_survey')
+            ->select('COUNT(1)')
+            ->andWhere('data_survey.device = :device')
+            ->setParameter('device', $device)
+        ;
+    }
+
+    private function applyMinPostedAt(QueryBuilder $qb, \DateTimeInterface $minPostedAt): void
+    {
+        $qb
+            ->andWhere('data_survey.postedAt >= :min_posted_at')
+            ->setParameter('min_posted_at', $minPostedAt)
         ;
     }
 }

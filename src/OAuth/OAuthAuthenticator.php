@@ -86,9 +86,6 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         // If user identifier is empty, it just means that the token is associated to an OAuth Client for
         // machine-to-machine communication only
         if (!$credentials['oauth_user_id']) {
-            $deviceUuid = $credentials['oauth_device_id'];
-            $device = $deviceUuid ? $this->deviceRepository->findOneByDeviceUuid($deviceUuid) : null;
-
             if ($deviceUuid = $credentials['oauth_device_id']) {
                 if (!$device = $this->deviceRepository->findOneByDeviceUuid($deviceUuid)) {
                     throw new BadCredentialsException('Invalid credentials.', 0);

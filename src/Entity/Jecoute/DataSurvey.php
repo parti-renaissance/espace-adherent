@@ -3,6 +3,7 @@
 namespace App\Entity\Jecoute;
 
 use App\Entity\Adherent;
+use App\Entity\Device;
 use App\Validator\DataSurveyConstraint;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,6 +31,12 @@ class DataSurvey
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Device")
+     * @ORM\JoinCOlumn(onDelete="SET NULL")
+     */
+    private $device;
 
     /**
      * @var \DateTime
@@ -144,6 +151,16 @@ class DataSurvey
     public function getAuthor(): ?Adherent
     {
         return $this->author;
+    }
+
+    public function setDevice(?Device $device): void
+    {
+        $this->device = $device;
+    }
+
+    public function getDevice(): ?Device
+    {
+        return $this->device;
     }
 
     public function getPostedAt(): ?\DateTime

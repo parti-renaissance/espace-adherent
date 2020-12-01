@@ -46,7 +46,7 @@ class PersistentTokenFactory
         $client = $this->getClient($token->getClient()->getIdentifier());
 
         $device = null;
-        if ($device instanceof DeviceAccessTokenInterface) {
+        if ($token instanceof DeviceAccessTokenInterface) {
             $device = $token->getDeviceIdentifier() ? $this->getDevice($token->getDeviceIdentifier()) : null;
         }
 
@@ -123,7 +123,7 @@ class PersistentTokenFactory
 
     private function getDevice(string $identifier): Device
     {
-        if (!$device = $this->deviceRepository->findOneByDeviceUuid(Uuid::fromString($identifier))) {
+        if (!$device = $this->deviceRepository->findOneByDeviceUuid($identifier)) {
             throw new \RuntimeException(sprintf('Unable to find %s entity by its identifier "%s".', Device::class, $identifier));
         }
 

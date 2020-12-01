@@ -68,7 +68,7 @@ class JsonWebTokenValidator implements AuthorizationValidatorInterface
                 ->withAttribute('oauth_client_id', $token->getClaim('aud'))
                 ->withAttribute('oauth_user_id', $token->getClaim('sub'))
                 ->withAttribute('oauth_scopes', $token->getClaim('scopes'))
-                ->withAttribute('oauth_device_id', $device ? $device->getUuid()->toString() : null)
+                ->withAttribute('oauth_device_id', $device ? $device->getIdentifier() : null)
             ;
         } catch (\InvalidArgumentException $exception) {
             // JWT couldn't be parsed so return the request as is

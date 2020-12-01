@@ -38,3 +38,20 @@ Feature:
         }
       }
     """
+
+  Scenario: As a logged-in device I can get my informations with additional informations based on granted scope
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "uuid": "@string@",
+        "device_uuid": "dd4SOCS-4UlCtO-gZiQGDA",
+        "surveys": {
+          "total": 0,
+          "last_month": 0
+        }
+      }
+    """

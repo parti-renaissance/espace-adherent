@@ -69,9 +69,14 @@ abstract class AbstractGrantToken extends AbstractToken
         return (string) $this->client->getUuid();
     }
 
-    public function getUserIdentifier(): string
+    public function getUserIdentifier(): ?string
     {
-        return (string) $this->user->getUuid();
+        return $this->user ? (string) $this->user->getUuid() : null;
+    }
+
+    public function getDeviceIdentifier(): ?string
+    {
+        return $this->device ? (string) $this->device->getIdentifier() : null;
     }
 
     public function getClient(): ?Client
