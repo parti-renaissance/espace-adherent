@@ -102,8 +102,11 @@ class SurveyController extends Controller
             );
         }
 
-        /** @var Adherent $user */
-        $dataSurveyHandler->handle($form->getData(), $user);
+        if ($user instanceof Adherent) {
+            $dataSurveyHandler->handle($form->getData(), $user);
+        } elseif ($user instanceof DeviceApiUser) {
+            $dataSurveyHandler->handleForDevice($form->getData(), $user->getDevice());
+        }
 
         return new JsonResponse(['status' => 'ok'], JsonResponse::HTTP_CREATED);
     }
