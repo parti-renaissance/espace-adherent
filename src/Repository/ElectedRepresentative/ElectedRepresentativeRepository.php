@@ -265,14 +265,20 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             return $zone->getId();
         }, $zones);
 
-        return $qb
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->in('geo_zone.id', $ids),
-                    $qb->expr()->in('geo_zone_parent.id', $ids),
-                )
-            )
-        ;
+        $parentIds = array_filter(array_map(static function (Zone $zone): ?int {
+            return $zone->isCityGrouper()
+                ? null
+                : $zone->getId()
+            ;
+        }, $zones));
+
+        $orX = $qb->expr()->orX();
+        $orX->add($qb->expr()->in('geo_zone.id', $ids));
+        if ($parentIds) {
+            $orX->add($qb->expr()->in('geo_zone_parent.id', $parentIds));
+        }
+
+        return $qb->andWhere($orX);
     }
 
     public function hasActiveParliamentaryMandate(Adherent $adherent): bool
