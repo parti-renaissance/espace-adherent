@@ -39,11 +39,9 @@ class Pager extends BasePager implements PagerInterface
         if (0 === $this->getPage() || 0 === $this->getMaxPerPage() || 0 === $this->getNbResults()) {
             $this->setLastPage(0);
         } else {
-            $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
-
             $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
 
-            $this->getQuery()->setFirstResult($offset);
+            $this->getQuery()->setFirstResult($this->getPage() - 1);
             $this->getQuery()->setMaxResults($this->getMaxPerPage());
         }
     }
