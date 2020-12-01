@@ -32,9 +32,6 @@ Feature:
         "elected": false,
         "larem": false,
         "detailed_roles": [],
-        "zipCode": "73100",
-        "firstName": "Carl",
-        "lastName": "Mirabeau",
         "surveys": {
           "total": 0,
           "last_month": 0

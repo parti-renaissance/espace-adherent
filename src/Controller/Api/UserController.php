@@ -57,11 +57,13 @@ class UserController extends Controller
 
     private function getGrantedNormalizationGroups(): array
     {
-        $groups = ['user_profile', 'legacy'];
+        $groups = ['legacy'];
 
         if ($this->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
-            return ['jemarche_user_profile'];
+            $groups = ['jemarche_user_profile'];
         }
+
+        $groups[] = 'user_profile';
 
         return $groups;
     }

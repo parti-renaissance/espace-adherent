@@ -282,9 +282,7 @@ Feature:
         "nickname": null,
         "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": "Jacques",
-        "last_name": "Picard",
-        "firstName": "Jacques",
-        "lastName": "Picard"
+        "last_name": "Picard"
     }
     """
 
@@ -307,8 +305,6 @@ Feature:
         "nickname": "ne-w nick_name",
         "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": null,
-        "last_name": null,
-        "firstName": null,
-        "lastName": null
+        "last_name": null
     }
     """
