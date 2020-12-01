@@ -32,7 +32,9 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        $data = $this->addBackwardCompatibilityFields($data);
+        if (\in_array('legacy', $context['groups'])) {
+            $data = $this->addBackwardCompatibilityFields($data);
+        }
 
         return $data;
     }

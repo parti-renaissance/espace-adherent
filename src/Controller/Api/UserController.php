@@ -41,7 +41,7 @@ class UserController extends Controller
     {
         /* @var Adherent $user */
         $user = $this->getUser();
-        $groups = ['user_profile'];
+        $groups = ['user_profile', 'legacy'];
 
         if ($user->isReferent()) {
             $groups[] = 'referent';
@@ -57,10 +57,12 @@ class UserController extends Controller
 
     private function getGrantedNormalizationGroups(): array
     {
+        $groups = ['user_profile', 'legacy'];
+
         if ($this->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
-            return ['user_profile', 'jemarche_user_profile'];
+            return ['jemarche_user_profile'];
         }
 
-        return ['user_profile'];
+        return $groups;
     }
 }
