@@ -148,7 +148,7 @@ abstract class Survey
             $this->setName($this->name.' (Copie)');
 
             $questions = new ArrayCollection();
-            foreach ($this->getAllQuestions() as $surveyQuestion) {
+            foreach ($this->getQuestions() as $surveyQuestion) {
                 $clonedSurveyQuestion = clone $surveyQuestion;
                 $clonedSurveyQuestion->setSurvey($this);
 
@@ -158,7 +158,7 @@ abstract class Survey
                 $questions->add($clonedSurveyQuestion);
             }
 
-            $this->setAllQuestions($questions);
+            $this->setQuestions($questions);
         }
     }
 

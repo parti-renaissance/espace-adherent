@@ -1,5 +1,4 @@
 @surveys
-  @debug
 Feature:
   As a Jecoute manager
   I can manage the local surveys and see the nationcal surveys
