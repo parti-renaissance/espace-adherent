@@ -85,7 +85,7 @@ class SurveyExporter
                 $row['Profession'] = $allowPersonalData && $dataSurvey->getProfession() ? $dataSurvey->getProfession() : null;
 
                 /** @var SurveyQuestion $surveyQuestion */
-                foreach ($survey->getQuestions() as $surveyQuestion) {
+                foreach ($survey->getAllQuestions() as $surveyQuestion) {
                     $questionName = $surveyQuestion->getQuestion()->getContent();
                     $row[$questionName] = '';
 

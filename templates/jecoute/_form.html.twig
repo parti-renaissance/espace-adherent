@@ -39,13 +39,13 @@
     <div class="or-separator"></div>
 
     <div class="b__nudge--top-large b__nudge--bottom-large">
-        <span data-collection="{{ form.questions.vars.id }}" class="{{ form.questions.vars.id }}-question-add {{ form.questions.vars.id }}-question-action btn btn--gray btn--large-and-full">Créer une nouvelle question libre</span>
+        <span data-collection="{{ form.allQuestions.vars.id }}" class="{{ form.allQuestions.vars.id }}-question-add {{ form.allQuestions.vars.id }}-question-action btn btn--gray btn--large-and-full">Créer une nouvelle question libre</span>
     </div>
 {% endif %}
 
 <div>
-    {{ form_errors(form.questions) }}
-    {{ form_widget(form.questions) }}
+    {{ form_errors(form.allQuestions) }}
+    {{ form_widget(form.allQuestions) }}
 </div>
 
 {% if not form.vars.disabled %}

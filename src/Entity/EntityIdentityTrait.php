@@ -20,7 +20,7 @@ trait EntityIdentityTrait
      *
      * @ApiProperty(identifier=false)
      *
-     * @SymfonySerializer\Groups({"autocomplete"})
+     * @SymfonySerializer\Groups({"autocomplete", "survey_list"})
      */
     protected $id;
 

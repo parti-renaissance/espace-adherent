@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Jecoute;
 
 use App\Entity\Adherent;
 use App\Form\Jecoute\DataSurveyFormType;
@@ -9,7 +9,6 @@ use App\Jecoute\SurveyTypeEnum;
 use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -20,20 +19,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @Route("/jecoute")
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')")
+ * @Route("/jecoute/survey")
+ * @Security("is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_OAUTH_DEVICE'))")
  */
-class JecouteSurveyController extends Controller
+class SurveyController extends Controller
 {
     /**
-     * @Route("/survey", name="api_surveys_list", methods={"GET"})
+     * @Route(name="api_surveys_list", methods={"GET"})
      */
     public function surveyListAction(
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
-        Serializer $serializer,
+        SerializerInterface $serializer,
         UserInterface $user
     ): Response {
         /** @var Adherent $user */
@@ -44,7 +44,7 @@ class JecouteSurveyController extends Controller
                     $nationalSurveyRepository->findAllPublished()
                 ),
                 'json',
-                SerializationContext::create()->setGroups('survey_list')
+                ['groups' => ['survey_list']]
             ),
             JsonResponse::HTTP_OK,
             [],
@@ -53,7 +53,7 @@ class JecouteSurveyController extends Controller
     }
 
     /**
-     * @Route("/survey/reply", name="api_survey_reply", methods={"POST"})
+     * @Route("/reply", name="api_survey_reply", methods={"POST"})
      */
     public function surveyReplyAction(
         Request $request,

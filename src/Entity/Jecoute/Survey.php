@@ -8,8 +8,8 @@ use App\Jecoute\SurveyTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,7 +33,7 @@ abstract class Survey
      * @Assert\NotBlank
      * @Assert\Length(max=70)
      *
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
     private $name;
 
@@ -88,12 +88,12 @@ abstract class Survey
         }
     }
 
-    public function getQuestions(): Collection
+    public function getAllQuestions(): Collection
     {
         return $this->questions;
     }
 
-    public function setQuestions(ArrayCollection $surveyQuestions): void
+    public function setAllQuestions(Collection $surveyQuestions): void
     {
         $this->questions = $surveyQuestions;
     }
@@ -120,31 +120,9 @@ abstract class Survey
     }
 
     /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("id"),
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
-    public function getExposedId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("type"),
-     * @JMS\Groups({"survey_list"})
-     */
-    public function getExposedType(): string
-    {
-        return $this->getType();
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("questions")
-     * @JMS\Groups({"survey_list"})
-     */
-    public function getQuestionsAsArray(): array
+    public function getQuestions(): array
     {
         return array_map(function (SurveyQuestion $surveyQuestion) {
             $question = $surveyQuestion->getQuestion();
@@ -173,6 +151,9 @@ abstract class Survey
         return SurveyTypeEnum::NATIONAL === $this->getType();
     }
 
+    /**
+     * @SymfonySerializer\Groups("survey_list")
+     */
     abstract public function getType(): string;
 
     public function __clone()
@@ -184,7 +165,7 @@ abstract class Survey
             $this->setName($this->name.' (Copie)');
 
             $questions = new ArrayCollection();
-            foreach ($this->getQuestions() as $surveyQuestion) {
+            foreach ($this->getAllQuestions() as $surveyQuestion) {
                 $clonedSurveyQuestion = clone $surveyQuestion;
                 $clonedSurveyQuestion->setSurvey($this);
 
@@ -194,7 +175,7 @@ abstract class Survey
                 $questions->add($clonedSurveyQuestion);
             }
 
-            $this->setQuestions($questions);
+            $this->setAllQuestions($questions);
         }
     }
 
