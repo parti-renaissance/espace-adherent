@@ -4,7 +4,6 @@ namespace App\Donation;
 
 use App\Entity\Donation;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request as LexikRequestHandler;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PayboxFormFactory
@@ -17,7 +16,7 @@ class PayboxFormFactory
     public function __construct(
         string $environment,
         LexikRequestHandler $requestHandler,
-        Router $router,
+        UrlGeneratorInterface $router,
         DonationRequestUtils $donationRequestUtils
     ) {
         $this->environment = $environment;

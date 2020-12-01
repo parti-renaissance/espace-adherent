@@ -28,7 +28,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -54,7 +54,7 @@ class DonationAdmin extends AbstractAdmin
         string $class,
         string $baseControllerName,
         FilesystemInterface $storage,
-        EventDispatcher $dispatcher
+        EventDispatcherInterface $dispatcher
     ) {
         parent::__construct($code, $class, $baseControllerName);
 

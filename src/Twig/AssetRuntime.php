@@ -6,25 +6,24 @@ use App\Entity\Media;
 use League\Glide\Signatures\SignatureFactory;
 use Symfony\Bridge\Twig\Extension\AssetExtension as BaseAssetExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class AssetRuntime implements RuntimeExtensionInterface
 {
-    private $router;
+    private $urlGenerator;
     private $symfonyAssetExtension;
     private $secret;
     private $env;
     private $hash;
 
     public function __construct(
-        RouterInterface $router,
+        UrlGeneratorInterface $urlGenerator,
         BaseAssetExtension $symfonyAssetExtension,
         string $secret,
         string $env,
         ?string $hash
     ) {
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
         $this->symfonyAssetExtension = $symfonyAssetExtension;
         $this->secret = $secret;
         $this->env = $env;
@@ -58,7 +57,7 @@ class AssetRuntime implements RuntimeExtensionInterface
             $parameters['mime_type'] = $media->getMimeType();
             $parameters['is_video'] = true;
 
-            return $this->router->generate('asset_url', $parameters, $referenceType);
+            return $this->urlGenerator->generate('asset_url', $parameters, $referenceType);
         } else {
             // No compression and no resizing if no compressed display
             if (!$media->isCompressedDisplay()) {
@@ -91,6 +90,6 @@ class AssetRuntime implements RuntimeExtensionInterface
         $parameters['s'] = SignatureFactory::create($this->secret)->generateSignature($path, $parameters);
         $parameters['path'] = $path;
 
-        return $this->router->generate('asset_url', $parameters, $referenceType);
+        return $this->urlGenerator->generate('asset_url', $parameters, $referenceType);
     }
 }
