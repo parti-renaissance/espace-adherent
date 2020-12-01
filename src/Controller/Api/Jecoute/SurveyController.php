@@ -40,11 +40,11 @@ class SurveyController extends Controller
     ): Response {
         if ($user instanceof DeviceApiUser) {
             if (!$postalCode = $request->get('postalCode')) {
-                throw new BadRequestHttpException('Parameter "postalCode" missing when using a Device token.');
+                return $this->json(['error' => 'Parameter "postalCode" missing when using a Device token.'], 400);
             }
 
             if (!preg_match('/\d{5}/', $postalCode)) {
-                throw new BadRequestHttpException('Parameter "postalCode" must be 5 numbers.');
+                return $this->json(['error' => 'Parameter "postalCode" must be 5 numbers.'], 400);
             }
         }
 
