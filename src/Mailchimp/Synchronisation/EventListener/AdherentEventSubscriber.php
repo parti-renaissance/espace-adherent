@@ -19,11 +19,12 @@ use App\Membership\UserEvents;
 use App\TerritorialCouncil\Event\MembershipEvent;
 use App\TerritorialCouncil\Events as TerritorialCouncilEvents;
 use App\Utils\ArrayUtils;
+use JMS\Serializer\ArrayTransformerInterface;
+use JMS\Serializer\SerializationContext;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AdherentEventSubscriber implements EventSubscriberInterface
 {
@@ -31,7 +32,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
     private $normalizer;
     private $bus;
 
-    public function __construct(NormalizerInterface $normalizer, MessageBusInterface $bus)
+    public function __construct(ArrayTransformerInterface $normalizer, MessageBusInterface $bus)
     {
         $this->normalizer = $normalizer;
         $this->bus = $bus;
@@ -100,8 +101,8 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         if ($changeFrom || $changeTo) {
             $this->dispatchAdherentChangeCommand(
                 $adherent->getUuid(),
-                $changeFrom['email_address'] ?? $adherent->getEmailAddress(),
-                isset($changeFrom['referent_tag_codes']) ? (array) $changeFrom['referent_tag_codes'] : []
+                $changeFrom['emailAddress'] ?? $adherent->getEmailAddress(),
+                isset($changeFrom['referentTagCodes']) ? (array) $changeFrom['referentTagCodes'] : []
             );
         }
     }
@@ -142,7 +143,10 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
     private function transformToArray(Adherent $adherent): array
     {
-        return $this->normalizer->normalize($adherent, 'array', ['groups' => 'adherent_change_diff']);
+        return $this->normalizer->toArray(
+            $adherent,
+            SerializationContext::create()->setGroups(['adherent_change_diff'])
+        );
     }
 
     private function dispatchAdherentChangeCommand(
