@@ -88,12 +88,12 @@ abstract class Survey
         }
     }
 
-    public function getAllQuestions(): Collection
+    public function getQuestions(): Collection
     {
         return $this->questions;
     }
 
-    public function setAllQuestions(Collection $surveyQuestions): void
+    public function setQuestions(Collection $surveyQuestions): void
     {
         $this->questions = $surveyQuestions;
     }
@@ -117,23 +117,6 @@ abstract class Survey
     public function questionsCount(): int
     {
         return \count($this->questions);
-    }
-
-    /**
-     * @SymfonySerializer\Groups("survey_list")
-     */
-    public function getQuestions(): array
-    {
-        return array_map(function (SurveyQuestion $surveyQuestion) {
-            $question = $surveyQuestion->getQuestion();
-
-            return [
-                'id' => $surveyQuestion->getId(),
-                'type' => $question->getType(),
-                'content' => $question->getContent(),
-                'choices' => $question->getChoices(),
-            ];
-        }, $this->questions->toArray());
     }
 
     public function getQuestionsCount(): int

@@ -8,7 +8,6 @@ use App\Jecoute\DataSurveyAnswerHandler;
 use App\Jecoute\SurveyTypeEnum;
 use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
-use JMS\Serializer\SerializationContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -23,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/jecoute/survey")
- * @Security("is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_OAUTH_DEVICE'))")
+ * @Security("is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))")
  */
 class SurveyController extends Controller
 {
