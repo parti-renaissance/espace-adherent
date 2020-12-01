@@ -17,8 +17,6 @@ class DeviceRepository extends ServiceEntityRepository
 
     public function findOneByDeviceUuid(string $deviceUuid): ?Device
     {
-        self::validUuid($deviceUuid);
-
         return $this->findOneBy(['deviceUuid' => $deviceUuid]);
     }
 
