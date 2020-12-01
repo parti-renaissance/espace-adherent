@@ -131,6 +131,9 @@ class CandidateAdmin extends AbstractAlgoliaAdmin
     protected function configureListFields(ListMapper $list)
     {
         $list
+            ->add('id', 'text', [
+                'label' => 'Id interne',
+            ])
             ->add('designation.label', 'text', [
                 'label' => 'Désignation',
                 'header_style' => 'max-width: 150px',
