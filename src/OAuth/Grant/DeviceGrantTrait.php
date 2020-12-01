@@ -6,7 +6,6 @@ use App\Entity\Device;
 use App\OAuth\Model\AccessToken;
 use App\Repository\DeviceRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
@@ -29,12 +28,8 @@ trait DeviceGrantTrait
             return null;
         }
 
-        if (!Uuid::isValid($deviceId)) {
-            throw OAuthServerException::invalidRequest('Device id is not a valid UUID');
-        }
-
         if (!$device = $this->deviceRepository->findOneByDeviceUuid($deviceId)) {
-            $device = new Device(Uuid::uuid4(), Uuid::fromString($deviceId));
+            $device = new Device(Uuid::uuid4(), $deviceId);
             $this->deviceRepository->save($device);
         }
 
