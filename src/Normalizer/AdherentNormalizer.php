@@ -32,6 +32,10 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
+        if (\in_array('adherent_change_diff', $context['groups'])) {
+            $data['city'] = $object->getCityName();
+        }
+
         if (\in_array('legacy', $context['groups'])) {
             $data = $this->addBackwardCompatibilityFields($data);
         }

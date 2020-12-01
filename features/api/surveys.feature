@@ -1,4 +1,5 @@
 @api
+  @debug
 Feature:
   In order to get all surveys
   As a non logged-in user
