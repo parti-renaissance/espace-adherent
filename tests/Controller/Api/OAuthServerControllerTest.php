@@ -74,12 +74,12 @@ class OAuthServerControllerTest extends WebTestCase
             'client_secret' => 'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
             'grant_type' => 'client_credentials',
             'scope' => 'jemarche_app',
-            'device_id' => '03274226-d263-43d4-ac48-60d8e8fd902b',
+            'device_id' => 'dd4SOCS-4UlCtO-gZiQGDA',
         ]);
 
         $this->isSuccessful($this->client->getResponse());
         self::assertCount(1, $devices = $this->deviceRepository->findAll());
-        self::assertSame('03274226-d263-43d4-ac48-60d8e8fd902b', $devices[0]->getIdentifier());
+        self::assertSame('dd4SOCS-4UlCtO-gZiQGDA', $devices[0]->getIdentifier());
 
         // 2nd request must be successful and not create a second device in database
         $this->client->request('POST', '/oauth/v2/token', [
@@ -87,7 +87,7 @@ class OAuthServerControllerTest extends WebTestCase
             'client_secret' => 'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
             'grant_type' => 'client_credentials',
             'scope' => 'jemarche_app',
-            'device_id' => '03274226-d263-43d4-ac48-60d8e8fd902b',
+            'device_id' => 'dd4SOCS-4UlCtO-gZiQGDA',
         ]);
 
         $this->isSuccessful($this->client->getResponse());

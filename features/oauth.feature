@@ -82,7 +82,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       | client_id     | 1931b955-560b-41b2-9eb9-c232157f1471         |
       | grant_type    | client_credentials                           |
       | scope         | jemarche_app                                 |
-      | device_id     | 03274226-d263-43d4-ac48-60d8e8fd902b         |
+      | device_id     | dd4SOCS-4UlCtO-gZiQGDA                       |
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
