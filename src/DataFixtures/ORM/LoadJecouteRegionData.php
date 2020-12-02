@@ -5,12 +5,11 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Geo\Region as GeoRegion;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadJecouteRegionData extends Fixture implements DependentFixtureInterface
+class LoadJecouteRegionData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const REGION_1_UUID = '88275043-adb5-463a-8a62-5248fe7aacbf';
     public const REGION_2_UUID = 'c91391e9-4a08-4d14-8960-6c3508c1dddc';
@@ -20,7 +19,7 @@ class LoadJecouteRegionData extends Fixture implements DependentFixtureInterface
     {
         $manager->persist($this->createRegion(
             self::REGION_1_UUID,
-            $this->getReference('geo_region_28'),
+            $this->getRegionEntity($manager, 7), // geo_region_28 - Normandie
             'Bienvenue en Normandie',
             'Description de la normandie',
             RegionColorEnum::RED,
@@ -31,7 +30,7 @@ class LoadJecouteRegionData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($this->createRegion(
             self::REGION_2_UUID,
-            $this->getReference('geo_region_32'),
+            $this->getRegionEntity($manager, 3), // geo_region_32 - Hauts-de-France
             'Bienvenue en Hauts-de-France',
             'Description des Hauts-de-France',
             RegionColorEnum::GREEN,
@@ -42,7 +41,7 @@ class LoadJecouteRegionData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($this->createRegion(
             self::REGION_3_UUID,
-            $this->getReference('geo_region_93'),
+            $this->getRegionEntity($manager, 4), // geo_region_93 - Provence-Alpes-Côte d'Azur
             'Bienvenue en PACA',
             'Description PACA',
             RegionColorEnum::BLUE,
@@ -54,9 +53,7 @@ class LoadJecouteRegionData extends Fixture implements DependentFixtureInterface
 
     public function getDependencies()
     {
-        return [
-            LoadGeoData::class,
-        ];
+        return [LoadGeoZoneData::class];
     }
 
     private function createRegion(

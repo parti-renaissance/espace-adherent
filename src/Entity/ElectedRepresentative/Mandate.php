@@ -44,7 +44,6 @@ class Mandate
      * @var Zone|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Zone", cascade={"merge", "detach"})
-     * @ORM\JoinColumn
      *
      * @deprecated Will be replace by $geoZone
      */

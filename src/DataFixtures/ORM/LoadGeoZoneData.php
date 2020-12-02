@@ -2,79 +2,41 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Geo\Borough;
-use App\Entity\Geo\Canton;
-use App\Entity\Geo\City;
-use App\Entity\Geo\CityCommunity;
-use App\Entity\Geo\ConsularDistrict;
-use App\Entity\Geo\Country;
-use App\Entity\Geo\CustomZone;
-use App\Entity\Geo\Department;
-use App\Entity\Geo\District;
-use App\Entity\Geo\ForeignDistrict;
-use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
-use App\Entity\Geo\ZoneableInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 
-class LoadGeoZoneData extends Fixture implements DependentFixtureInterface
+class LoadGeoZoneData extends Fixture
 {
-    private const ZONEABLES = [
-        Country::class,
-        Region::class,
-        Department::class,
-        District::class,
-        Canton::class,
-        CityCommunity::class,
-        City::class,
-        Borough::class,
-        CustomZone::class,
-        ForeignDistrict::class,
-        ConsularDistrict::class,
-    ];
+    public static $zoneCache;
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::ZONEABLES as $class) {
-            $zoneables = $manager->getRepository($class)->findAll();
-            foreach ($zoneables as $zoneable) {
-                $this->persistAsZone($manager, $zoneable);
-            }
-        }
-
-        $manager->flush();
+        /** @var Connection $conn */
+        $conn = $manager->getConnection();
+        $conn->exec(file_get_contents(__DIR__.'/../../../dump/all-geo-zone.sql'));
     }
 
-    private function persistAsZone(ObjectManager $manager, ZoneableInterface $zoneable): Zone
+    public static function getZoneReference(EntityManagerInterface $manager, string $reference): ?Zone
     {
-        $reference = sprintf('zone_%s_%s', $zoneable->getZoneType(), $zoneable->getCode());
+        static::initZoneCache();
 
-        if (!$this->hasReference($reference)) {
-            $repository = $manager->getRepository(Zone::class);
-            $zone = $repository->zoneableAsZone($zoneable);
-
-            $zone->clearParents();
-            foreach ($zoneable->getParents() as $zoneableParent) {
-                $zoneParent = $this->persistAsZone($manager, $zoneableParent);
-                $zone->addParent($zoneParent);
-            }
-
-            $manager->persist($zone);
-            $this->addReference($reference, $zone);
-        }
-
-        /* @var Zone $zone */
-        $zone = $this->getReference($reference);
-
-        return $zone;
+        return isset(static::$zoneCache[$reference]) ? $manager->getPartialReference(Zone::class, static::$zoneCache[$reference]) : null;
     }
 
-    public function getDependencies(): array
+    protected static function initZoneCache(): void
     {
-        return [
-            LoadGeoData::class,
-        ];
+        if (null === static::$zoneCache) {
+            $file = fopen(__DIR__.'/../geo/geo-zones.csv', 'rb');
+            $header = $row = fgetcsv($file, 0, ';');
+            static::$zoneCache = [];
+
+            while ($row = fgetcsv($file, 0, ';')) {
+                $row = array_combine($header, $row);
+                static::$zoneCache[$row['zone']] = (int) $row['id'];
+            }
+        }
     }
 }
