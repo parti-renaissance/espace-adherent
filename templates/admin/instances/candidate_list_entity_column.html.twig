@@ -3,5 +3,13 @@
 {% block field %}
     {{ object.type == 'territorial_council' ? 'CoTerr :' }}
 
-    <a href="{{ path(object.type == 'committee' ? 'admin_app_committee_list' : 'admin_app_territorialcouncil_territorialcouncil_list', {filter: {id: {value: object.election_entity.id}}}) }}">{{ object.election_entity.name }}</a>
+    {% if object.type in ['committee', 'committee_supervisor', 'territorial_council'] %}
+        <a href="{{ path(object.type in ['committee', 'committee_supervisor'] ? 'admin_app_committee_list' : 'admin_app_territorialcouncil_territorialcouncil_list', {filter: {id: {value: object.election_entity.id}}}) }}">
+    {% endif %}
+
+    {{ object.election_entity.name }}
+
+    {% if object.type in ['committee', 'committee_supervisor', 'territorial_council'] %}
+        </a>
+    {% endif %}
 {% endblock %}

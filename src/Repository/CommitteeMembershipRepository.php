@@ -326,7 +326,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('cm_src')
-            ->select('PARTIAL adherent.{id, uuid, emailAddress}')
+            ->select('PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}')
             ->addSelect('PARTIAL cm_src.{id, joinedAt}')
             ->innerJoin('cm_src.adherent', 'adherent')
             ->leftJoin(CommitteeMembership::class, 'cm_dest', Join::WITH, 'cm_dest.adherent = adherent AND cm_dest.committee = :dest_committee')
