@@ -167,7 +167,7 @@ class SummaryAdmin extends AbstractAdmin
                 [
                     'label' => 'Disponibilités',
                 ],
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => JobDuration::CHOICES,
                     'multiple' => true,
@@ -190,7 +190,7 @@ class SummaryAdmin extends AbstractAdmin
                 [
                     'label' => 'Souhait de contribution',
                 ],
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => Contribution::CHOICES,
                     'multiple' => true,
@@ -205,7 +205,7 @@ class SummaryAdmin extends AbstractAdmin
                 [
                     'label' => 'Situation',
                 ],
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => ActivityPositions::CHOICES,
                     'multiple' => true,
@@ -217,7 +217,7 @@ class SummaryAdmin extends AbstractAdmin
                 [
                     'label' => 'Lieu de travail',
                 ],
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => JobLocation::CHOICES,
                     'multiple' => true,
@@ -249,7 +249,7 @@ class SummaryAdmin extends AbstractAdmin
                 [
                     'label' => 'Centres d\'intérêt',
                 ],
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => array_flip($this->interests),
                     'multiple' => true,
