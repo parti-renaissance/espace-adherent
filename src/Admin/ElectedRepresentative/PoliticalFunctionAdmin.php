@@ -8,6 +8,7 @@ use App\Repository\ElectedRepresentative\MandateRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\Form\Type\DatePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -67,10 +68,10 @@ class PoliticalFunctionAdmin extends AbstractAdmin
                 'label' => 'En cours',
                 'required' => false,
             ])
-            ->add('beginAt', 'sonata_type_date_picker', [
+            ->add('beginAt', DatePickerType::class, [
                 'label' => 'Date de début',
             ])
-            ->add('finishAt', 'sonata_type_date_picker', [
+            ->add('finishAt', DatePickerType::class, [
                 'label' => 'Date de fin',
                 'required' => false,
                 'error_bubbling' => false,
