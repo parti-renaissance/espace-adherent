@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Email;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class EmailRepository extends ServiceEntityRepository
 {
@@ -12,7 +12,7 @@ class EmailRepository extends ServiceEntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Email::class);
     }

@@ -7,9 +7,9 @@ use App\Assessor\Filter\AssessorRequestFilters;
 use App\Entity\Adherent;
 use App\Entity\AssessorRequest;
 use App\Entity\VotePlace;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class AssessorRequestRepository extends AbstractAssessorRepository
 {
@@ -17,7 +17,7 @@ class AssessorRequestRepository extends AbstractAssessorRepository
 
     private const ALIAS = 'ar';
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AssessorRequest::class);
     }

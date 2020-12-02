@@ -6,8 +6,8 @@ use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class DonationRepository extends ServiceEntityRepository
 {
@@ -15,7 +15,7 @@ class DonationRepository extends ServiceEntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Donation::class);
     }

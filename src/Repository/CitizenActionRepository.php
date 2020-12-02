@@ -4,12 +4,12 @@ namespace App\Repository;
 
 use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CitizenActionRepository extends EventRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CitizenAction::class);
     }

@@ -5,12 +5,12 @@ namespace App\Repository\ChezVous;
 use App\Entity\ChezVous\City;
 use App\Entity\ChezVous\MeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CityRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, City::class);
     }

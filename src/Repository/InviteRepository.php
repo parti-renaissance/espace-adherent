@@ -2,10 +2,17 @@
 
 namespace App\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use App\Entity\Invite;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class InvitationRepository extends EntityRepository
+class InviteRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Invite::class);
+    }
+
     public function hasEmailAlreadyBeenInvitedRecently(string $email, string $since)
     {
         return $this->createQueryBuilder('i')

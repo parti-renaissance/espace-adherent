@@ -6,12 +6,12 @@ use App\Entity\Filesystem\File;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Filesystem\FileTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class FileRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, File::class);
     }

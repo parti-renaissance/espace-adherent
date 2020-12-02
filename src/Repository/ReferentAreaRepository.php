@@ -3,10 +3,16 @@
 namespace App\Repository;
 
 use App\Entity\ReferentArea;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class ReferentAreaRepository extends EntityRepository
+class ReferentAreaRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ReferentArea::class);
+    }
+
     public function findReferentArea(string $areaCode): ?ReferentArea
     {
         return $this->findOneBy(['areaCode' => $areaCode]);

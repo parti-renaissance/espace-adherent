@@ -2,12 +2,19 @@
 
 namespace App\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use App\Entity\Administrator;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class AdministratorRepository extends EntityRepository implements UserLoaderInterface
+class AdministratorRepository extends ServiceEntityRepository implements UserLoaderInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Administrator::class);
+    }
+
     /**
      * Loads the user for the given username.
      *

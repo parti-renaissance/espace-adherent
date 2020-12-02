@@ -6,12 +6,12 @@ use App\Entity\Adherent;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\UserAuthorization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class UserAuthorizationRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserAuthorization::class);
     }

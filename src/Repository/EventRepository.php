@@ -17,6 +17,7 @@ use App\Statistics\StatisticsParametersFilter;
 use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
@@ -25,7 +26,6 @@ use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class EventRepository extends ServiceEntityRepository
 {
@@ -42,7 +42,7 @@ class EventRepository extends ServiceEntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    public function __construct(RegistryInterface $registry, string $className = Event::class)
+    public function __construct(ManagerRegistry $registry, string $className = Event::class)
     {
         parent::__construct($registry, $className);
     }

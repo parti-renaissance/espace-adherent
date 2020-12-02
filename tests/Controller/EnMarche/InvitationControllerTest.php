@@ -4,7 +4,7 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Entity\Invite;
 use App\Mailer\Message\MovementInvitationMessage;
-use App\Repository\InvitationRepository;
+use App\Repository\InviteRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ class InvitationControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    /** @var InvitationRepository */
+    /** @var InviteRepository */
     private $invitationRepository;
 
     public function testInvite()

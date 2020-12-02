@@ -2,11 +2,18 @@
 
 namespace App\Repository;
 
+use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class SocialShareRepository extends EntityRepository
+class SocialShareRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, SocialShare::class);
+    }
+
     public function findForWall(SocialShareCategory $category = null)
     {
         $qb = $this->createQueryBuilder('s')

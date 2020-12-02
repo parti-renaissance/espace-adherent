@@ -3,11 +3,11 @@
 namespace App\Repository\ApplicationRequest;
 
 use App\Entity\ApplicationRequest\VolunteerRequest;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class VolunteerRequestRepository extends AbstractApplicationRequestRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, VolunteerRequest::class);
     }

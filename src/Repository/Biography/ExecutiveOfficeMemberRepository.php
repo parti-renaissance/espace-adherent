@@ -5,12 +5,12 @@ namespace App\Repository\Biography;
 use App\Collection\ExecutiveOfficeMemberCollection;
 use App\Entity\Biography\ExecutiveOfficeMember;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ExecutiveOfficeMember::class);
     }

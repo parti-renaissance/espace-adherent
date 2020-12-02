@@ -16,17 +16,17 @@ use App\Event\Filter\ListFilterObject;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CommitteeMembershipRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommitteeMembership::class);
     }

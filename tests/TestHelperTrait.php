@@ -71,7 +71,7 @@ use App\Repository\EventRepository;
 use App\Repository\Filesystem\FileRepository;
 use App\Repository\IdeasWorkshop\IdeaRepository;
 use App\Repository\InstitutionalEventRepository;
-use App\Repository\InvitationRepository;
+use App\Repository\InviteRepository;
 use App\Repository\JeMarcheReportRepository;
 use App\Repository\MyEuropeChoiceRepository;
 use App\Repository\MyEuropeInvitationRepository;
@@ -253,7 +253,7 @@ trait TestHelperTrait
         return $this->getRepository(Transaction::class);
     }
 
-    public function getInvitationRepository(): InvitationRepository
+    public function getInvitationRepository(): InviteRepository
     {
         return $this->getRepository(Invite::class);
     }

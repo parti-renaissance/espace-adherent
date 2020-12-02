@@ -13,9 +13,9 @@ use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ElectedRepresentativeRepository extends ServiceEntityRepository
 {
@@ -24,7 +24,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ElectedRepresentative::class);
     }
