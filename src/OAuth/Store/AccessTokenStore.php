@@ -28,7 +28,13 @@ class AccessTokenStore implements OAuthAccessTokenRepository
      */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
-        return new InMemoryAccessToken();
+        $token = new InMemoryAccessToken();
+        $token->setClient($clientEntity);
+        $token->setUserIdentifier($userIdentifier);
+
+        array_map([$token, 'addScope'], $scopes);
+
+        return $token;
     }
 
     /**

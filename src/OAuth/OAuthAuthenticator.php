@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,20 +25,20 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 class OAuthAuthenticator extends AbstractGuardAuthenticator
 {
     private $resourceServer;
-    private $diactorosFactory;
+    private $httpMessageFactory;
     private $adherentRepository;
     private $deviceRepository;
     private $entityManager;
 
     public function __construct(
         ResourceServer $resourceServer,
-        DiactorosFactory $diactorosFactory,
+        HttpMessageFactoryInterface $httpMessageFactory,
         AdherentRepository $adherentRepository,
         DeviceRepository $deviceRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->resourceServer = $resourceServer;
-        $this->diactorosFactory = $diactorosFactory;
+        $this->httpMessageFactory = $httpMessageFactory;
         $this->adherentRepository = $adherentRepository;
         $this->deviceRepository = $deviceRepository;
         $this->entityManager = $entityManager;
@@ -59,7 +59,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
 
     public function getCredentials(Request $request)
     {
-        $psrRequest = $this->diactorosFactory->createRequest($request);
+        $psrRequest = $this->httpMessageFactory->createRequest($request);
 
         try {
             $psrRequest = $this->resourceServer->validateAuthenticatedRequest($psrRequest);

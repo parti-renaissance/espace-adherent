@@ -8,7 +8,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     Given the following fixtures are loaded:
       | LoadClientData |
       | LoadAdminData  |
-      | LoadUserData  |
+      | LoadUserData   |
 
   Scenario: OAuth is not allowed for admin
     Given I am logged as "superadmin@en-marche-dev.fr" admin
@@ -24,6 +24,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
       {
         "error":"invalid_client",
+        "error_description":"Client authentication failed",
         "message":"Client authentication failed"
       }
     """
@@ -69,6 +70,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     {
       "error": "access_denied",
+      "error_description": "The resource owner or authorization server denied the request.",
       "message": "The resource owner or authorization server denied the request.",
       "hint": "API user does not have access to this route"
     }
@@ -121,6 +123,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     {
       "error":"invalid_client",
+      "error_description":"Client authentication failed",
       "message":"Client authentication failed"
     }
     """
@@ -139,6 +142,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     {
       "error":"invalid_scope",
+      "error_description":"The requested scope is invalid, unknown, or malformed",
       "message":"The requested scope is invalid, unknown, or malformed",
       "hint":"Check the `write:users` scope"
     }

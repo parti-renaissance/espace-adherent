@@ -132,7 +132,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         static::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
         static::assertSame('application/json', $response->headers->get('Content-type'));
-        static::assertSame('{"error":"invalid_request","message":"The refresh token is invalid.","hint":"Token has been revoked"}', $response->getContent());
+        static::assertSame('{"error":"invalid_request","error_description":"The refresh token is invalid.","hint":"Token has been revoked","message":"The refresh token is invalid."}', $response->getContent());
 
         // Test with an expired refresh token
         $encryptedRefreshToken2 = $this->expireRefreshToken($encryptedRefreshToken2);
@@ -146,7 +146,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         static::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
         static::assertSame('application/json', $response->headers->get('Content-type'));
-        static::assertSame('{"error":"invalid_request","message":"The refresh token is invalid.","hint":"Token has expired"}', $response->getContent());
+        static::assertSame('{"error":"invalid_request","error_description":"The refresh token is invalid.","hint":"Token has expired","message":"The refresh token is invalid."}', $response->getContent());
     }
 
     public function testRequestAccessTokenWithRevokedAuthorizationCode(): void
@@ -163,7 +163,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         static::assertSame('application/json', $response->headers->get('Content-type'));
-        static::assertSame('{"error":"invalid_request","message":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.","hint":"Authorization code has been revoked"}', $response->getContent());
+        static::assertSame('{"error":"invalid_request","error_description":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.","hint":"Authorization code has been revoked","message":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed."}', $response->getContent());
     }
 
     public function testRequestAccessTokenWithExpiredAuthorizationCode(): void
@@ -180,7 +180,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         static::assertSame('application/json', $response->headers->get('Content-type'));
-        static::assertSame('{"error":"invalid_request","message":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.","hint":"Authorization code has expired"}', $response->getContent());
+        static::assertSame('{"error":"invalid_request","error_description":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.","hint":"Authorization code has expired","message":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed."}', $response->getContent());
     }
 
     public function testSecondClientTriesToStealFirstClientAuthorizationCode(): void
@@ -199,7 +199,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         static::assertSame('application/json', $response->headers->get('Content-type'));
-        static::assertSame('{"error":"invalid_request","message":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.","hint":"Authorization code was not issued to this client"}', $response->getContent());
+        static::assertSame('{"error":"invalid_request","error_description":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed.","hint":"Authorization code was not issued to this client","message":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed."}', $response->getContent());
     }
 
     public function testRequestAccessTokenWithUngrantedScope(): void
@@ -230,7 +230,7 @@ class OAuthServerControllerTest extends WebTestCase
         $response = $this->client->getResponse();
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         static::assertSame('application/json', $response->headers->get('Content-Type'));
-        static::assertJsonStringEqualsJsonString('{"error":"invalid_scope","message":"The requested scope is invalid, unknown, or malformed","hint":"Check the `read:users` scope"}', $response->getContent());
+        static::assertJsonStringEqualsJsonString('{"error":"invalid_scope","error_description":"The requested scope is invalid, unknown, or malformed","hint":"Check the `read:users` scope","message":"The requested scope is invalid, unknown, or malformed"}', $response->getContent());
     }
 
     public function testOAuthAuthenticationIsSuccessful(): void
@@ -344,7 +344,7 @@ class OAuthServerControllerTest extends WebTestCase
         $response = $this->client->getResponse();
 
         $this->assertSame(401, $response->getStatusCode());
-        $this->assertSame('{"error":"invalid_client","message":"Client authentication failed"}', $response->getContent());
+        $this->assertSame('{"error":"invalid_client","error_description":"Client authentication failed","message":"Client authentication failed"}', $response->getContent());
     }
 
     public function testOAuthAuthenticationIsSuccessfulWithoutAskingUserAuthorization(): void
@@ -458,19 +458,20 @@ class OAuthServerControllerTest extends WebTestCase
             ->findAccessTokenByIdentifier($identifier)
         ;
 
-        $client = new Client($accessToken->getClient()->getUuid()->toString(), []);
+        $client = new Client($accessToken->getClientIdentifier(), []);
 
         $token = new \App\OAuth\Model\AccessToken();
         $token->setClient($client);
         $token->setIdentifier($identifier);
-        $token->setExpiryDateTime(\DateTime::createFromFormat('U', $accessToken->getExpiryDateTime()->getTimestamp()));
+        $token->setExpiryDateTime($accessToken->getExpiryDateTime());
         $token->setUserIdentifier($accessToken->getUserIdentifier());
+        $token->setPrivateKey($this->privateCryptKey);
 
         foreach ($accessToken->getScopes() as $scope) {
             $token->addScope(new Scope($scope));
         }
 
-        return $token->convertToJWT($this->privateCryptKey);
+        return (string) $token;
     }
 
     protected function setUp(): void

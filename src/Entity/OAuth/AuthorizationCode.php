@@ -24,7 +24,7 @@ class AuthorizationCode extends AbstractGrantToken
         UuidInterface $uuid,
         Adherent $user,
         string $identifier,
-        \DateTime $expiryDateTime,
+        \DateTimeImmutable $expiryDateTime,
         string $redirectUri,
         Client $client = null
     ) {
