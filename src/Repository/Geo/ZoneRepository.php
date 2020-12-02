@@ -32,6 +32,7 @@ class ZoneRepository extends ServiceEntityRepository
 
         $zone->activate($zoneable->isActive());
         $zone->setName($zoneable->getName());
+        $zone->setGeoData($zoneable->getGeoData());
 
         return $zone;
     }
