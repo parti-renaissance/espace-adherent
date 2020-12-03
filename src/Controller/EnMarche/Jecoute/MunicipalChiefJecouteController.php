@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-municipales-2020/jecoute", name="app_jecoute_municipal_chief_")
+ * @Route("/espace-municipales-2020/questionnaires", name="app_jecoute_municipal_chief_")
  *
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF') and user.municipalChiefManagedArea.hasJecouteAccess()")
  */

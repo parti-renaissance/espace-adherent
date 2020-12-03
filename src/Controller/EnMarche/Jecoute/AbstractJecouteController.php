@@ -10,6 +10,7 @@ use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Exporter\SurveyExporter;
 use App\Form\Jecoute\SurveyFormType;
+use App\Jecoute\JecouteSpaceEnum;
 use App\Jecoute\StatisticsProvider;
 use App\Jecoute\SurveyTypeEnum;
 use App\Repository\Geo\ZoneRepository;
@@ -58,7 +59,7 @@ abstract class AbstractJecouteController extends Controller
 
     /**
      * @Route(
-     *     path="/questionnaire/creer",
+     *     path="/creer",
      *     name="local_survey_create",
      *     methods={"GET|POST"},
      * )
@@ -69,6 +70,8 @@ abstract class AbstractJecouteController extends Controller
         SuggestedQuestionRepository $suggestedQuestionRepository,
         UserInterface $user
     ): Response {
+        $this->checkCreateAccess();
+
         /** @var Adherent $user */
         $localSurvey = new LocalSurvey($user);
         $zones = $this->getZones($this->getMainUser($request->getSession()));
@@ -248,5 +251,13 @@ abstract class AbstractJecouteController extends Controller
     protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_${subName}", $parameters);
+    }
+
+    protected function checkCreateAccess(): void
+    {
+        if (JecouteSpaceEnum::CANDIDATE_SPACE === $this->getSpaceName()
+            && $this->isGranted('ROLE_CANDIDATE_DEPARTMENTAL')) {
+            throw $this->createAccessDeniedException('You have no permission to create a survey');
+        }
     }
 }

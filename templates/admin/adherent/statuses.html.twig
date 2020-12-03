@@ -32,7 +32,7 @@
     {% endif %}
 
     {% if object.isJecouteManager %}
-        <span class="label label-primary" style="padding: 2px;">J'écoute</span><br/>
+        <span class="label label-primary" style="padding: 2px;">Responsable des questionnaires</span><br/>
     {% endif %}
 
     {% if object.isHostOnly %}
@@ -115,7 +115,7 @@
         <span class="label label-primary" style="padding: 2px;">
                 Candidat Municipales 2020 🇫🇷
                 {% if object.getMunicipalChiefManagedArea.hasJecouteAccess %}
-                    <span title="Accès J'écoute">&nbsp;☎️&nbsp;</span>
+                    <span title="Accès aux questionnaires">&nbsp;☎️&nbsp;</span>
                 {% endif %}
 
             {% if municipal_site_is_enabled(object) %}

@@ -28,7 +28,7 @@ common.citizen_projects_count: "%count% projet citoyen|%count% projets citoyens"
 common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
 common.all: Tous
-common.jecoute_manager: Accès J'écoute
+common.jecoute_manager: Accès aux questionnaires
 common.adherent.subscribed: Abonné(e)
 common.adherent.unsubscribed: Non-abonné(e)
 common.adherent.status_email: Statut (e-mail)
@@ -92,7 +92,7 @@ board_member: membre du conseil
 coordinator: coordinateur
 procuration_manager: responsable procuration
 assessor_manager: responsable assesseur
-jecoute_manager: Responsable J'écoute
+jecoute_manager: Responsable des questionnaires
 assessors_manager: Responsable assesseurs
 assessor: Assesseur
 user: utilisateur
@@ -331,7 +331,7 @@ referent.filter.interests: Choisissez des centres d'intérêt
 referent.managed_area: Zone gérée
 referent.radio.co_referent: "Donner un accès à l'onglet&nbsp;<i>Adhérents</i>"
 referent.radio.limited_co_referent: "Donner un accès restreint à l'onglet&nbsp;<i>Adhérents</i>&nbsp;:"
-referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>J'écoute</i>
+referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>Questionnaires</i>
 referent.checkbox.municipal_manager_supervisor: Donner un accès à l'onglet&nbsp;<i>Responsables Communaux</i>
 referent.coreferent_access: Accès adhérents
 referent.limited_coreferent_access: Accès adhérents (limité)
@@ -914,7 +914,7 @@ delegated_access.form.access.messages: Messagerie
 delegated_access.form.access.events: Événements
 delegated_access.form.access.adherents: Adhérents
 delegated_access.form.access.committee: Comités
-delegated_access.form.access.jecoute: J'écoute
+delegated_access.form.access.jecoute: Questionnaires
 delegated_access.form.access.citizen_projects: Projets citoyens
 delegated_access.form.access.elected_representatives: Élus
 delegated_access.form.access.files: Documents
