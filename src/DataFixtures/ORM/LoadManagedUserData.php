@@ -42,7 +42,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => [SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
             'zones' => [
-                $this->getReference('zone_country_CH'), // Suisse
+                LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'), // Suisse
             ],
             'created_at' => '2017-06-01 09:22:45',
             'gender' => 'male',
@@ -70,7 +70,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
             'zones' => [
-                $this->getReference('zone_country_CH'), // Suisse
+                LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'), // Suisse
             ],
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
@@ -98,8 +98,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => '92,59',
             'zones' => [
-                $this->getReference('zone_department_92'), // Hauts-de-Seine
-                $this->getReference('zone_department_59'), // Nord
+                LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'), // Hauts-de-Seine
+                LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'), // Nord
             ],
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
@@ -131,8 +131,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'subscription_types' => null,
             'subscribedTags' => '77,59',
             'zones' => [
-                $this->getReference('zone_district_77-1'), // Seine-et-Marne (1)
-                $this->getReference('zone_city_77288'), // Melun
+                LoadGeoZoneData::getZoneReference($manager, 'zone_district_77-1'), // Seine-et-Marne (1)
+                LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'), // Melun
             ],
             'created_at' => '2017-08-12 16:12:13',
             'gender' => 'male',

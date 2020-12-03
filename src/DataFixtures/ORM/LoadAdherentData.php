@@ -92,7 +92,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'birthdate' => '1972-11-23',
         ]);
         $adherent1->addReferentTag($this->getReference('referent_tag_ch'));
-        $adherent1->addZone($this->getReference('zone_country_CH'));
+        $adherent1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $this->addReference('adherent-1', $adherent1);
 
@@ -118,7 +118,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $roles->add($this->getReference('adherent'));
         $adherent2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent2->addReferentTag($this->getReference('referent_tag_73'));
-        $adherent2->addZone($this->getReference('zone_department_73'));
+        $adherent2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_73'));
         $this->addReference('adherent-2', $adherent2);
 
         $adherent3 = $this->adherentFactory->createFromArray([
@@ -140,12 +140,10 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent3->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent3->addReferentTag($this->getReference('referent_tag_75'));
         $adherent3->addReferentTag($this->getReference('referent_tag_75008'));
-        $adherent3->addZone($this->getReference('zone_city_75056'));
+        $adherent3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $adherent3->addTag($this->getReference('adherent_tag_at007'));
-        $zoneIDF = $this->getReference('zone_region_11');
-        $candidateManagedAreaRegion = new CandidateManagedArea();
-        $candidateManagedAreaRegion->setZone($zoneIDF);
-        $adherent3->setCandidateManagedArea($candidateManagedAreaRegion);
+        $adherent3->setCandidateManagedArea($candidateManagedAreaRegion = new CandidateManagedArea());
+        $candidateManagedAreaRegion->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));
         $adherent3->addCharter(new CandidateCharter());
         $this->addReference('adherent-3', $adherent3);
 
@@ -170,8 +168,8 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130, 91300');
         $adherent4->addReferentTag($this->getReference('referent_tag_75'));
         $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
-        $adherent4->addZone($this->getReference('zone_city_75056'));
-        $zoneDpt92 = $this->getReference('zone_department_92');
+        $adherent4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
+        $zoneDpt92 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92');
         $candidateManagedAreaDpt = new CandidateManagedArea();
         $candidateManagedAreaDpt->setZone($zoneDpt92);
         $adherent4->addZone($zoneDpt92);
@@ -198,7 +196,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
         $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms'));
         $adherent5->addReferentTag($this->getReference('referent_tag_92'));
-        $adherent5->addZone($this->getReference('zone_department_92'));
+        $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $this->adherentFactory->createFromArray([
@@ -221,7 +219,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent6->addTag($this->getReference('adherent_tag_at003'));
         $adherent6->addTag($this->getReference('adherent_tag_at007'));
         $adherent6->addReferentTag($this->getReference('referent_tag_13'));
-        $adherent6->addZone($this->getReference('zone_city_13055'));
+        $adherent6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_13055'));
         $this->addReference('adherent-6', $adherent6);
 
         $adherent7 = $this->adherentFactory->createFromArray([
@@ -240,8 +238,8 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]);
         $adherent7->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent7->addReferentTag($this->getReference('referent_tag_77'));
-        $adherent7->addZone($this->getReference('zone_city_77288'));
-        $zoneCanton7711 = $this->getReference('zone_canton_7711');
+        $adherent7->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
+        $zoneCanton7711 = LoadGeoZoneData::getZoneReference($manager, 'zone_canton_7711');
         $candidateManagedAreaCanton = new CandidateManagedArea();
         $candidateManagedAreaCanton->setZone($zoneCanton7711);
         $adherent7->setCandidateManagedArea($candidateManagedAreaCanton);
@@ -266,7 +264,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent9->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $adherent9->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent9->addReferentTag($this->getReference('referent_tag_76'));
-        $adherent9->addZone($this->getReference('zone_city_76540'));
+        $adherent9->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $this->addReference('adherent-9', $adherent9);
 
         $adherent10 = $this->adherentFactory->createFromArray([
@@ -288,7 +286,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent10->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent10->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent10->addReferentTag($this->getReference('referent_tag_de'));
-        $adherent10->addZone($this->getReference('zone_country_DE'));
+        $adherent10->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_DE'));
         $this->addReference('adherent-10', $adherent10);
 
         $adherent11 = $this->adherentFactory->createFromArray([
@@ -310,7 +308,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $roles->add($this->getReference('adherent'));
         $adherent11->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent11->addReferentTag($this->getReference('referent_tag_sg'));
-        $adherent11->addZone($this->getReference('zone_country_SG'));
+        $adherent11->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_SG'));
         $this->addReference('adherent-11', $adherent11);
 
         $adherent12 = $this->adherentFactory->createFromArray([
@@ -336,7 +334,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent12->getBoardMember()->addSavedBoardMember($adherent2->getBoardMember());
         $adherent12->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent12->addReferentTag($this->getReference('referent_tag_us'));
-        $adherent12->addZone($this->getReference('zone_country_US'));
+        $adherent12->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_US'));
         $this->addReference('adherent-12', $adherent12);
 
         $adherent13 = $this->adherentFactory->createFromArray([
@@ -351,7 +349,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]);
         $adherent13->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent13->addReferentTag($this->getReference('referent_tag_ch'));
-        $adherent13->addZone($this->getReference('zone_country_CH'));
+        $adherent13->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent13->setMandates(['european_deputy']);
         $adherent13->addHandledThematicCommunity($this->getReference('tc-sante'));
         $adherent13->addHandledThematicCommunity($this->getReference('tc-education'));
@@ -372,7 +370,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         ]);
         $adherent14->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent14->addReferentTag($this->getReference('referent_tag_ch'));
-        $adherent14->addZone($this->getReference('zone_country_CH'));
+        $adherent14->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
 
         // Non activated, enabled adherent
         $adherent15 = $this->adherentFactory->createFromArray([
@@ -389,7 +387,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent15->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent15->setStatus(Adherent::ENABLED);
         $adherent15->addReferentTag($this->getReference('referent_tag_ch'));
-        $adherent15->addZone($this->getReference('zone_country_CH'));
+        $adherent15->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $this->addReference('adherent-15', $adherent15);
 
         $adherent16 = $this->adherentFactory->createFromArray([
@@ -497,7 +495,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent->addReferentTag($this->getReference('referent_tag_77'));
-        $referent->addZone($this->getReference('zone_city_77288'));
+        $referent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $referent->addCharter(new ReferentCharter());
         $referent->setLreArea(new LreArea($this->getReference('referent_tag_76')));
         $this->addReference('adherent-8', $referent);
@@ -528,7 +526,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $referent75and77->setPrintPrivilege(true);
         $referent75and77->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
-        $referent75and77->addZone($this->getReference('zone_city_75056'));
+        $referent75and77->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $this->addReference('adherent-19', $referent75and77);
 
         $referentChild = $this->adherentFactory->createFromArray([
@@ -554,7 +552,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         );
         $referentChild->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referentChild->addReferentTag($this->getReference('referent_tag_77'));
-        $referentChild->addZone($this->getReference('zone_city_77288'));
+        $referentChild->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
 
         $coordinator = $this->adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_1_UUID,
@@ -572,7 +570,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $coordinator->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $coordinator->setCoordinatorCommitteeArea(new CoordinatorManagedArea(['FR'], CoordinatorAreaSectors::COMMITTEE_SECTOR));
         $coordinator->addReferentTag($this->getReference('referent_tag_94'));
-        $coordinator->addZone($this->getReference('zone_department_94'));
+        $coordinator->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_94'));
 
         $coordinatorCP = $this->adherentFactory->createFromArray([
             'uuid' => self::COORDINATOR_2_UUID,
@@ -591,7 +589,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $coordinatorCP->setCoordinatorCitizenProjectArea(new CoordinatorManagedArea(['US', '59290', '77'], CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR));
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75'));
         $coordinatorCP->addReferentTag($this->getReference('referent_tag_75008'));
-        $coordinatorCP->addZone($this->getReference('zone_city_75056'));
+        $coordinatorCP->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $this->addReference('adherent-17', $coordinatorCP);
 
         $deputy_75_1 = $this->adherentFactory->createFromArray([
@@ -611,7 +609,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
-        $deputy_75_1->addZone($this->getReference('zone_city_75056'));
+        $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $this->addReference('deputy-75-1', $deputy_75_1);
 
         $deputy_75_2 = $this->adherentFactory->createFromArray([
@@ -631,7 +629,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $deputy_75_2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $deputy_75_2->addReferentTag($this->getReference('referent_tag_75'));
         $deputy_75_2->addReferentTag($this->getReference('referent_tag_75002'));
-        $deputy_75_2->addZone($this->getReference('zone_city_75056'));
+        $deputy_75_2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $this->addReference('deputy-75-2', $deputy_75_2);
 
         $deputy_ch_li = $this->adherentFactory->createFromArray([
@@ -650,7 +648,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $deputy_ch_li->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $deputy_ch_li->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $deputy_ch_li->addReferentTag($this->getReference('referent_tag_ch'));
-        $deputy_ch_li->addZone($this->getReference('zone_country_CH'));
+        $deputy_ch_li->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $this->addReference('deputy-ch-li', $deputy_ch_li);
 
         // senator
