@@ -28,10 +28,7 @@ class VotePoolCollectionType extends AbstractType
             ]);
         }
 
-        $builder
-            ->add('confirm', SubmitType::class)
-            ->add('back', SubmitType::class)
-        ;
+        $builder->add('confirm', SubmitType::class);
     }
 
     private function getFilteredCandidates(array $candidateGroups): array

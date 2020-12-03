@@ -33,6 +33,17 @@ class VoteController extends AbstractController
 
         $currentPool = $voteCommand->updateForCurrentPool($pools, $currentPool);
 
+        if ($request->query->has('back')) {
+            // If `back` button was clicked, then need to redirect on the index page if 0 or 1 pool was already voted
+            if (0 === array_search($currentPool, $pools)) {
+                return $this->redirectToElectionRoute('app_voting_platform_index', $election);
+            }
+
+            $this->storage->save($voteCommand->removeLastChoice());
+
+            return $this->redirectToElectionRoute('app_voting_platform_vote_step', $election);
+        }
+
         $form = $this
             ->createForm(
                 VotePoolCollectionType::class,
@@ -45,32 +56,19 @@ class VoteController extends AbstractController
             ->handleRequest($request)
         ;
 
-        if ($form->isSubmitted()) {
-            if ($form->get('back')->isClicked()) {
-                // If `back` button was clicked, then need to redirect on the index page if 0 or 1 pool was already voted
-                if (0 === array_search($currentPool, $pools)) {
-                    return $this->redirectToElectionRoute('app_voting_platform_index', $election);
-                }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $voteCommand->updatePoolChoice($currentPool);
 
-                $this->storage->save($voteCommand->removeLastChoice());
+            // If all candidates pools are finished (voted) we can redirect to the confirm step
+            if (\count($voteCommand->getChoicesByPools()) === \count($pools)) {
+                $this->processor->doConfirm($voteCommand);
 
-                return $this->redirectToElectionRoute('app_voting_platform_vote_step', $election);
+                return $this->redirectToElectionRoute('app_voting_platform_confirm_step', $election);
             }
 
-            if ($form->isValid()) {
-                $voteCommand->updatePoolChoice($currentPool);
+            $this->storage->save($voteCommand);
 
-                // If all candidates pools are finished (voted) we can redirect to the confirm step
-                if (\count($voteCommand->getChoicesByPools()) === \count($pools)) {
-                    $this->processor->doConfirm($voteCommand);
-
-                    return $this->redirectToElectionRoute('app_voting_platform_confirm_step', $election);
-                }
-
-                $this->storage->save($voteCommand);
-
-                return $this->redirectToElectionRoute('app_voting_platform_vote_step', $election);
-            }
+            return $this->redirectToElectionRoute('app_voting_platform_vote_step', $election);
         }
 
         return $this->renderElectionTemplate(
