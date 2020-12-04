@@ -2,6 +2,7 @@
 
 namespace App\Entity\Geo;
 
+use App\Entity\GeoData;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
@@ -35,6 +36,13 @@ trait GeoTrait
      * @SymfonySerializer\Groups({"department_read", "survey_list"})
      */
     private $name;
+
+    /**
+     * @var GeoData|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\GeoData")
+     */
+    private $geoData;
 
     /**
      * @var bool
@@ -84,5 +92,15 @@ trait GeoTrait
     public function activate(bool $active = true): void
     {
         $this->active = $active;
+    }
+
+    public function getGeoData(): ?GeoData
+    {
+        return $this->geoData;
+    }
+
+    public function setGeoData(?GeoData $geoData): void
+    {
+        $this->geoData = $geoData;
     }
 }
