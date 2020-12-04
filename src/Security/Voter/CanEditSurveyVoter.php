@@ -8,9 +8,9 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Repository\Geo\ZoneRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class SurveyManagedAreaVoter extends AbstractAdherentVoter
+class CanEditSurveyVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'IS_SURVEY_MANAGER_OF';
+    public const PERMISSION = 'CAN_EDIT_SURVEY';
 
     /** @var SessionInterface */
     private $session;
@@ -33,20 +33,20 @@ class SurveyManagedAreaVoter extends AbstractAdherentVoter
         $surveyZone = $subject->getZone();
 
         if ($adherent->isReferent()) {
-            return $this->zoneRepository->isInJecouteZonesWithParents($adherent->getManagedArea()->getTags()->toArray(), $surveyZone);
+            return !$subject->hasBlockedChanges() && $this->zoneRepository->isInJecouteZones($adherent->getManagedArea()->getTags()->toArray(), $surveyZone);
         }
 
         if ($adherent->isJecouteManager()) {
             $managedZone = $adherent->getJecouteManagedArea()->getZone();
         }
 
-        if ($adherent->isCandidate()) {
+        if ($adherent->isLeaderRegionalCandidate() || $adherent->isHeadedRegionalCandidate()) {
             $managedZone = $adherent->getCandidateManagedArea()->getZone();
         }
 
         if (isset($managedZone)) {
             return $surveyZone === $managedZone
-                || ($managedZone->hasChild($surveyZone) || $managedZone->hasParent($surveyZone));
+                || (!$subject->hasBlockedChanges() && $managedZone->hasChild($surveyZone));
         }
 
         return false;

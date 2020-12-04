@@ -28,4 +28,21 @@ class SurveyRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findOnePublishedByUuid(string $uuid): ?Survey
+    {
+        return $this
+            ->createQueryBuilder('survey')
+            ->addSelect('surveyQuestion', 'question', 'choices')
+            ->leftJoin('survey.questions', 'surveyQuestion')
+            ->leftJoin('surveyQuestion.question', 'question')
+            ->leftJoin('question.choices', 'choices')
+            ->andWhere('survey.uuid = :uuid')
+            ->andWhere('survey.published = true')
+            ->setParameter('uuid', $uuid)
+            ->addOrderBy('surveyQuestion.position', 'ASC')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

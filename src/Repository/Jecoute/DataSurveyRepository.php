@@ -36,14 +36,25 @@ class DataSurveyRepository extends ServiceEntityRepository
         ;
     }
 
-    public function iterateForSurvey(Survey $survey): IterableResult
+    public function iterateForSurvey(Survey $survey, array $zones = []): IterableResult
     {
-        return $this->createQueryBuilder('jds')
+        $qb = $this->createQueryBuilder('jds')
             ->where('jds.survey = :survey')
             ->setParameter('survey', $survey)
-            ->getQuery()
-            ->iterate()
         ;
+
+        if ($zones) {
+            $qb
+                ->innerJoin('jds.author', 'adherent')
+                ->distinct()
+                ->innerJoin('adherent.zones', 'zone')
+                ->innerJoin('zone.parents', 'parent')
+                ->andWhere('zone IN (:zones) OR parent IN (:zones)')
+                ->setParameter('zones', $zones)
+            ;
+        }
+
+        return $qb->getQuery()->iterate();
     }
 
     public function countByAdherent(Adherent $adherent, \DateTimeInterface $minPostedAt = null): int

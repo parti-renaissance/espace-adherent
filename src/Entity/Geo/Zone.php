@@ -105,6 +105,20 @@ class Zone implements GeoInterface
         });
     }
 
+    public function hasChild(Zone $child): bool
+    {
+        return $this->children->filter(function (Zone $zone) use ($child) {
+            return $zone->getId() === $child->getId();
+        })->count() > 0;
+    }
+
+    public function hasParent(Zone $parent): bool
+    {
+        return $this->parents->filter(function (Zone $zone) use ($parent) {
+            return $zone->getId() === $parent->getId();
+        })->count() > 0;
+    }
+
     public function addParent(self $zone): void
     {
         $this->parents->contains($zone) || $this->parents->add($zone);
