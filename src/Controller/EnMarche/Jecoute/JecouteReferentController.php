@@ -21,11 +21,11 @@ class JecouteReferentController extends AbstractJecouteController
 
     protected function getLocalSurveys(Adherent $adherent): array
     {
-        return $this->localSurveyRepository->findAllByTagsWithStats($this->getSurveyTags($adherent));
+        return $this->localSurveyRepository->findAllByZonesWithStats($this->getZones($adherent));
     }
 
-    protected function getSurveyTags(Adherent $adherent): array
+    protected function getZones(Adherent $adherent): array
     {
-        return $adherent->getManagedAreaTagCodes();
+        return $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray());
     }
 }

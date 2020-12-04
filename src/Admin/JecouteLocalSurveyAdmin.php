@@ -2,22 +2,21 @@
 
 namespace App\Admin;
 
+use App\Entity\Geo\Zone;
 use App\Form\Admin\JecouteAdminSurveyQuestionFormType;
-use App\Form\Jecoute\SurveyFormType;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class JecouteLocalSurveyAdmin extends AbstractAdmin
@@ -32,6 +31,19 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
         '_sort_by' => 'createdAt',
     ];
 
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $query
+            ->addSelect('zone', 'question')
+            ->leftJoin('o.zone', 'zone')
+            ->leftJoin('o.questions', 'question')
+        ;
+
+        return $query;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -39,17 +51,6 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
                 ->add('name', TextType::class, [
                     'filter_emojis' => true,
                     'label' => 'Nom du questionnaire',
-                ])
-                ->add('concernedAreaChoice', ChoiceType::class, [
-                    'choices' => SurveyFormType::concernedAreaChoices,
-                    'expanded' => true,
-                    'mapped' => false,
-                    'label' => 'Zone concernée',
-                ])
-                ->add('city', TextType::class, [
-                    'filter_emojis' => true,
-                    'required' => false,
-                    'label' => 'Ville',
                 ])
                 ->add('questions', CollectionType::class, [
                     'entry_type' => JecouteAdminSurveyQuestionFormType::class,
@@ -65,32 +66,6 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-
-        $formMapper->getFormBuilder()
-            ->addEventListener(FormEvents::POST_SET_DATA, [$this, 'postSetData'])
-            ->addEventListener(FormEvents::SUBMIT, [$this, 'validateCityByConcernedAreaChoice'])
-        ;
-    }
-
-    public function postSetData(FormEvent $event): void
-    {
-        $form = $event->getForm();
-
-        if ($this->getSubject()->getCity()) {
-            $form->get('concernedAreaChoice')->setData(SurveyFormType::CITY_CHOICE);
-        } else {
-            $form->get('concernedAreaChoice')->setData(SurveyFormType::DEPARTMENT_CHOICE);
-        }
-    }
-
-    public function validateCityByConcernedAreaChoice(FormEvent $event): void
-    {
-        $form = $event->getForm();
-
-        if (null === $this->getSubject()->getCity() &&
-            SurveyFormType::CITY_CHOICE === $form->get('concernedAreaChoice')->getData()) {
-            $form->get('city')->addError(new FormError($this->trans('survey.city.required')));
-        }
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -105,16 +80,43 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
                 'label' => "Prénom de l'auteur",
                 'show_filter' => true,
             ])
-            ->add('tags', CallbackFilter::class, [
+            ->add('zone', CallbackFilter::class, [
                 'label' => 'Zones',
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'context' => 'filter',
+                    'class' => Zone::class,
+                    'multiple' => true,
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return false;
-                    }
+                    /* @var Collection|Zone[] $zones */
+                    $zones = $value['value'];
 
-                    $qb->andWhere("FIND_IN_SET(:tag, $alias.tags) > 0");
-                    $qb->setParameter('tag', $value['value']);
+                    if (\count($zones)) {
+                        $ids = $zones->map(static function (Zone $zone) {
+                            return $zone->getId();
+                        })->toArray();
+
+                        /* @var QueryBuilder $qb */
+                        $qb
+                            ->innerJoin('zone.parents', 'zone_parent')
+                            ->andWhere(
+                                $qb->expr()->orX(
+                                    $qb->expr()->in('zone.id', $ids),
+                                    $qb->expr()->in('zone_parent.id', $ids),
+                                )
+                            )
+                        ;
+                    }
 
                     return true;
                 },
@@ -134,11 +136,9 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
             ->add('getQuestionsCount', null, [
                 'label' => 'Nombre de questions',
             ])
-            ->add('tags', 'array', [
+            ->add('zone', null, [
                 'label' => 'Zone',
-            ])
-            ->add('city', null, [
-                'label' => 'Ville',
+                'template' => 'list_zone.html.twig',
             ])
             ->add('published', null, [
                 'label' => 'Publié',

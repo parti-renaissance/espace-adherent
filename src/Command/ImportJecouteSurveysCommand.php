@@ -159,7 +159,7 @@ class ImportJecouteSurveysCommand extends Command
 
     private function importSurveyFor(Adherent $referent): void
     {
-        $survey = new LocalSurvey($referent, "Formulaire prêt à l'emploi", null, false);
+        $survey = new LocalSurvey($referent, "Formulaire prêt à l'emploi", false);
 
         foreach (self::QUESTIONS as $questionDatas) {
             $question = new Question($questionDatas['content'], $questionDatas['type']);

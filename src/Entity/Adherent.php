@@ -13,6 +13,7 @@ use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Filesystem\FilePermissionEnum;
+use App\Entity\Geo\Zone;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
@@ -1709,32 +1710,23 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->coordinatorCommitteeArea && $this->coordinatorCommitteeArea->getCodes();
     }
 
-    public function getJecouteManagedAreaCodesAsString(): ?string
-    {
-        if (!$this->jecouteManagedArea) {
-            return '';
-        }
-
-        return $this->jecouteManagedArea->getCodesAsString();
-    }
-
     public function getJecouteManagedArea(): ?JecouteManagedArea
     {
         return $this->jecouteManagedArea;
     }
 
-    public function setJecouteManagedAreaCodesAsString(string $codes = null): void
+    public function setJecouteManagedZone(Zone $zone = null): void
     {
         if (!$this->jecouteManagedArea) {
             $this->jecouteManagedArea = new JecouteManagedArea();
         }
 
-        $this->jecouteManagedArea->setCodesAsString($codes);
+        $this->jecouteManagedArea->setZone($zone);
     }
 
     public function isJecouteManager(): bool
     {
-        return $this->jecouteManagedArea instanceof JecouteManagedArea && !empty($this->jecouteManagedArea->getCodes());
+        return $this->jecouteManagedArea instanceof JecouteManagedArea && $this->jecouteManagedArea->getZone();
     }
 
     /**

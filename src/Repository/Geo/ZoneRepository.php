@@ -4,8 +4,10 @@ namespace App\Repository\Geo;
 
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
+use App\Entity\ReferentTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -143,6 +145,37 @@ final class ZoneRepository extends ServiceEntityRepository
         }
 
         return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findForJecouteByReferentTags(array $referentTags): array
+    {
+        $qb = $this->createQueryBuilder('zone');
+
+        return $qb
+            ->leftJoin('zone.children', 'child')
+            ->leftJoin(ReferentTag::class, 'tag', Join::WITH, 'zone = tag.zone')
+            ->leftJoin(ReferentTag::class, 'child_tag', Join::WITH, 'child = child_tag.zone')
+            ->where($qb->expr()->orX(
+                'child.type = :country AND zone.type = :foreign_district',
+                'zone.type = :department AND zone.code != :paris_dpt',
+                'zone.type = :borough AND zone.name LIKE :paris',
+                'zone.type = :region AND zone.name = :corse'
+            ))
+            ->andWhere('(tag IN (:tags) OR child_tag IN (:tags))')
+            ->setParameters([
+                'tags' => $referentTags,
+                'borough' => Zone::BOROUGH,
+                'department' => Zone::DEPARTMENT,
+                'region' => Zone::REGION,
+                'country' => Zone::COUNTRY,
+                'foreign_district' => Zone::FOREIGN_DISTRICT,
+                'paris' => 'Paris %',
+                'paris_dpt' => '75',
+                'corse' => 'Corse',
+            ])
             ->getQuery()
             ->getResult()
         ;

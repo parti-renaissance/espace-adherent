@@ -23,7 +23,7 @@ trait GeoTrait
      *
      * @ORM\Column(unique=true)
      *
-     * @SymfonySerializer\Groups({"department_read"})
+     * @SymfonySerializer\Groups({"department_read", "survey_list"})
      */
     private $code;
 
@@ -32,7 +32,7 @@ trait GeoTrait
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"department_read"})
+     * @SymfonySerializer\Groups({"department_read", "survey_list"})
      */
     private $name;
 

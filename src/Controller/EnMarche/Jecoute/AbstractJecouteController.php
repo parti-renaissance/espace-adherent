@@ -12,6 +12,7 @@ use App\Exporter\SurveyExporter;
 use App\Form\Jecoute\SurveyFormType;
 use App\Jecoute\StatisticsProvider;
 use App\Jecoute\SurveyTypeEnum;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\DataAnswerRepository;
 use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
@@ -20,7 +21,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,14 +31,17 @@ abstract class AbstractJecouteController extends Controller
     use AccessDelegatorTrait;
 
     protected $localSurveyRepository;
+    protected $zoneRepository;
     private $nationalSurveyRepository;
 
     public function __construct(
         LocalSurveyRepository $localSurveyRepository,
-        NationalSurveyRepository $nationalSurveyRepository
+        NationalSurveyRepository $nationalSurveyRepository,
+        ZoneRepository $zoneRepository
     ) {
         $this->localSurveyRepository = $localSurveyRepository;
         $this->nationalSurveyRepository = $nationalSurveyRepository;
+        $this->zoneRepository = $zoneRepository;
     }
 
     /**
@@ -68,15 +71,17 @@ abstract class AbstractJecouteController extends Controller
     ): Response {
         /** @var Adherent $user */
         $localSurvey = new LocalSurvey($user);
+        $zones = $this->getZones($this->getMainUser($request->getSession()));
+        if (1 === \count($zones)) {
+            $localSurvey->setZone($zones[0]);
+        }
 
         $form = $this
-            ->createSurveyForm($localSurvey)
+            ->createForm(SurveyFormType::class, $localSurvey, ['zones' => $zones])
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $localSurvey->setTags($this->getSurveyTags($this->getMainUser($request->getSession())));
-
             $manager->persist($form->getData());
             $manager->flush();
 
@@ -107,8 +112,9 @@ abstract class AbstractJecouteController extends Controller
         ObjectManager $manager,
         SuggestedQuestionRepository $suggestedQuestionRepository
     ): Response {
+        $zones = $this->getZones($this->getMainUser($request->getSession()));
         $form = $this
-            ->createSurveyForm($survey)
+            ->createForm(SurveyFormType::class, $survey, ['zones' => $zones])
             ->handleRequest($request)
         ;
 
@@ -226,7 +232,7 @@ abstract class AbstractJecouteController extends Controller
      */
     abstract protected function getLocalSurveys(Adherent $adherent): array;
 
-    abstract protected function getSurveyTags(Adherent $adherent): array;
+    abstract protected function getZones(Adherent $adherent): array;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
@@ -242,10 +248,5 @@ abstract class AbstractJecouteController extends Controller
     protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_${subName}", $parameters);
-    }
-
-    protected function createSurveyForm(LocalSurvey $localSurvey): FormInterface
-    {
-        return $this->createForm(SurveyFormType::class, $localSurvey);
     }
 }

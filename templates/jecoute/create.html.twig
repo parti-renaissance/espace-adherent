@@ -108,24 +108,6 @@
 
                 suggestedQuestionsDialog.dialog('close');
             });
-
-            const selectConcernedZoneChoices = function (selectedInput) {
-                const cityField = $("input[name='survey_form[city]']");
-
-                if ('{{ constant('App\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}' === $(selectedInput).val()) {
-                    cityField.show();
-                } else {
-                    cityField.hide().val('');
-                }
-            };
-
-            $("input[name='survey_form[concernedAreaChoice]']").click(function() {
-                selectConcernedZoneChoices($(this));
-            });
-
-            $("input[name='survey_form[concernedAreaChoice]']:checked").each(function() {
-                selectConcernedZoneChoices($(this));
-            });
         });
     </script>
 {% endblock %}

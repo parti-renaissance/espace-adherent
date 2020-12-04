@@ -62,7 +62,7 @@
                             createdAt: survey.createdAt|date('d/m/Y'),
                             questionsCount: data.questions_count,
                             responsesCount: data.responses_count,
-                            zone: survey is instanceof('App\\Entity\\Jecoute\\LocalSurvey') ? survey.city : 'Département',
+                            zone: survey is instanceof('App\\Entity\\Jecoute\\LocalSurvey') ? survey.zone|trans : null,
                             publish: survey.published ? '<span class="status status__1">Publié</span>' :
                                 '<span class="status status__2">Non publié</span>',
                         } %}

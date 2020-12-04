@@ -27,6 +27,7 @@ use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
 use App\Form\Admin\CandidateManagedAreaType;
 use App\Form\Admin\CoordinatorManagedAreaType;
+use App\Form\Admin\JecouteManagedAreaType;
 use App\Form\Admin\LreAreaType;
 use App\Form\Admin\MunicipalChiefManagedAreaType;
 use App\Form\Admin\ReferentManagedAreaType;
@@ -240,7 +241,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('isJecouteManager', 'boolean', [
                     'label' => "Est responsable J'écoute ?",
                 ])
-                ->add('jecouteManagedAreaCodesAsString', null, [
+                ->add('jecouteManagedArea.zone', null, [
                     'label' => "Responsable J'écoute",
                 ])
             ->end()
@@ -400,10 +401,10 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'La république ensemble',
                     'required' => false,
                 ])
-                ->add('jecouteManagedAreaCodesAsString', TextType::class, [
+                ->add('jecouteManagedArea', JecouteManagedAreaType::class, [
                     'label' => 'jecoute_manager',
                     'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable J'écoute. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable J'écoute. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
                 ])
                 ->add('printPrivilege', null, [
                     'label' => 'Accès à "La maison des impressions"',
@@ -777,7 +778,7 @@ HELP
                     // J'écoute Manager
                     if (\in_array(AdherentRoleEnum::JECOUTE_MANAGER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.jecouteManagedArea', $alias), 'jecouteManagedArea');
-                        $where->add('jecouteManagedArea IS NOT NULL AND jecouteManagedArea.codes IS NOT NULL');
+                        $where->add('jecouteManagedArea IS NOT NULL AND jecouteManagedArea.zone IS NOT NULL');
                     }
 
                     // User

@@ -5,20 +5,22 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Repository\Geo\ZoneRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SurveyManagedAreaVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'IS_SURVEY_MANAGER_OF';
 
-    /**
-     * @var SessionInterface
-     */
+    /** @var SessionInterface */
     private $session;
+    /** @var ZoneRepository */
+    private $zoneRepository;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(SessionInterface $session, ZoneRepository $zoneRepository)
     {
         $this->session = $session;
+        $this->zoneRepository = $zoneRepository;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
@@ -27,12 +29,18 @@ class SurveyManagedAreaVoter extends AbstractAdherentVoter
             $adherent = $delegatedAccess->getDelegator();
         }
 
-        $tags = $adherent->isJecouteManager() ? $adherent->getJecouteManagedArea()->getCodes() :
-            $adherent->getManagedArea()->getReferentTagCodes()
-        ;
-
         /** @var LocalSurvey $subject */
-        return !empty(array_intersect($subject->getTags(), $tags));
+        if ($adherent->isJecouteManager()) {
+            return $subject->getZone() === $adherent->getJecouteManagedArea()->getZone();
+        }
+
+        if ($adherent->isReferent()) {
+            $zones = $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray());
+
+            return \in_array($subject->getZone(), $zones);
+        }
+
+        return false;
     }
 
     protected function supports($attribute, $subject)

@@ -14,7 +14,7 @@ Feature:
     Given I am logged as "damien.schmidt@example.ch"
     When I am on "/espace-responsable-jecoute"
     Then I should see "Mon espace J'écoute"
-    And I should see "Vous gérez : CH, ES, 92, 76, 77, 13, 59"
+    And I should see "Vous gérez : Seine-et-Marne (77)"
 
     # Create
     Given I am on "/espace-responsable-jecoute/questionnaire/creer"

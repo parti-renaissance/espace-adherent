@@ -1036,7 +1036,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         // For Organizational chart: adherent which is co-referent in another referent team
         $adherent4->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-19')));
 
-        $adherent14->setJecouteManagedAreaCodesAsString($referent->getManagedArea()->getReferentTagCodesAsString());
+        $adherent14->setJecouteManagedZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $this->addReference('adherent-14', $adherent14);
 
         $manager->persist($key1);

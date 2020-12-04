@@ -6,8 +6,8 @@
             <div class="datagrid__pre-table b__nudge--bottom">
                 <h3>
                     Procès-verbaux
-                    <a href="{{ path('app_instances_official_report_referent_create') }}" class="btn-secondary btn-secondary--blue">Créer un procès-verbal</a>
                 </h3>
+                <a href="{{ path('app_instances_official_report_referent_create') }}" class="btn-secondary btn-secondary--blue">Créer un procès-verbal</a>
 
                 <span class="datagrid__count">
                     <span>{{ paginator.totalItems|number_format(0, ',', ' ') }}</span> Procès-verba{{ paginator.totalItems > 1 ? 'ux' : 'l' }}

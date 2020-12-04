@@ -40,7 +40,7 @@ class RevokeManagedAreaSubscriber implements EventSubscriberInterface
             $adherent->revokeProcurationManager();
         }
 
-        if ($jecouteManagedArea && empty($jecouteManagedArea->getCodes())) {
+        if ($jecouteManagedArea && null === $jecouteManagedArea->getZone()) {
             $adherent->revokeJecouteManager();
         }
     }
