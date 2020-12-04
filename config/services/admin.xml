@@ -335,7 +335,7 @@
 
 
         <service id="app.admin.jecoute_suggested_question" class="App\Admin\JecouteSuggestedQuestionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questions panier" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires » Questions panier" group="Territoire" />
 
             <argument />
             <argument>App\Entity\Jecoute\SuggestedQuestion</argument>
@@ -348,7 +348,7 @@
         </service>
 
         <service id="app.admin.jecoute_local_survey" class="App\Admin\JecouteLocalSurveyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questionnaires locaux" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires » Questionnaires locaux" group="Territoire" />
 
             <argument />
             <argument>App\Entity\Jecoute\LocalSurvey</argument>
@@ -361,7 +361,7 @@
         </service>
 
         <service id="app.admin.jecoute_national_survey" class="App\Admin\JecouteNationalSurveyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questionnaires nationaux" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires » Questionnaires nationaux" group="Territoire" />
 
             <argument />
             <argument>App\Entity\Jecoute\NationalSurvey</argument>
@@ -374,7 +374,7 @@
         </service>
 
         <service id="app.admin.jecoute.region" class="App\Admin\Jecoute\RegionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Régions" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires » Régions" group="Territoire" />
 
             <argument />
             <argument>App\Entity\Jecoute\Region</argument>
@@ -382,7 +382,7 @@
         </service>
 
         <service id="app.admin.jecoute.news" class="App\Admin\Jecoute\NewsAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Actualités" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires » Actualités" group="Territoire" />
 
             <argument />
             <argument>App\Entity\Jecoute\News</argument>

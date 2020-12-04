@@ -9,4 +9,5 @@ class JecouteSpaceEnum extends Enum
     public const REFERENT_SPACE = 'referent';
     public const MANAGER_SPACE = 'manager';
     public const MUNICIPAL_CHIEF_SPACE = 'municipal_chief';
+    public const CANDIDATE_SPACE = 'candidate';
 }

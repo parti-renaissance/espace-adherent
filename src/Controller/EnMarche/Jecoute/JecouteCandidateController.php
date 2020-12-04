@@ -8,15 +8,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-responsable-des-questionnaires", name="app_jecoute_manager_")
+ * @Route("/espace-candidat/questionnaires", name="app_jecoute_candidate_")
  *
- * @Security("is_granted('ROLE_JECOUTE_MANAGER')")
+ * @Security("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_JECOUTE'))")
  */
-class JecouteManagerController extends AbstractJecouteController
+class JecouteCandidateController extends AbstractJecouteController
 {
     protected function getSpaceName(): string
     {
-        return JecouteSpaceEnum::MANAGER_SPACE;
+        return JecouteSpaceEnum::CANDIDATE_SPACE;
     }
 
     protected function getLocalSurveys(Adherent $adherent): array
@@ -26,6 +26,6 @@ class JecouteManagerController extends AbstractJecouteController
 
     protected function getZones(Adherent $adherent): array
     {
-        return [$adherent->getJecouteManagedArea()->getZone()];
+        return [$adherent->getCandidateManagedArea()->getZone()];
     }
 }

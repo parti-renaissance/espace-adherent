@@ -239,10 +239,10 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
                 ->add('isJecouteManager', 'boolean', [
-                    'label' => "Est responsable J'écoute ?",
+                    'label' => 'Est responsable des questionnaires ?',
                 ])
                 ->add('jecouteManagedArea.zone', null, [
-                    'label' => "Responsable J'écoute",
+                    'label' => 'Responsable des questionnaires',
                 ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-3'])
@@ -404,7 +404,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('jecouteManagedArea', JecouteManagedAreaType::class, [
                     'label' => 'jecoute_manager',
                     'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable J'écoute. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
                 ])
                 ->add('printPrivilege', null, [
                     'label' => 'Accès à "La maison des impressions"',

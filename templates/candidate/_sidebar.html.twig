@@ -32,6 +32,12 @@
                 <a href="{{ path('app_candidate_event_manager_events') }}">Événements</a>
             </li>
         {% endif %}
+
+        {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_JECOUTE') %}
+            <li class="{{ is_active_route(app.request, 'app_jecoute_candidate_*') ? 'active' }}">
+                <a href="{{ path('app_jecoute_candidate_local_surveys_list') }}">Questionnaires</a>
+            </li>
+        {% endif %}
     </ul>
 
     {% if isCandidate or is_granted('HAS_DELEGATED_ACCESS_FILES') %}

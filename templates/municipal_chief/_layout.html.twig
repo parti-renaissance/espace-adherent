@@ -62,7 +62,7 @@
 
                             {% if app.user.municipalChiefManagedArea.hasJecouteAccess() %}
                                 <li class="{{ is_active_route(app.request, 'app_jecoute_municipal_chief_*') ? 'active' }}">
-                                    <a href="{{ path('app_jecoute_municipal_chief_local_surveys_list') }}">J'écoute</a>
+                                    <a href="{{ path('app_jecoute_municipal_chief_local_surveys_list') }}">Questionnaires</a>
                                 </li>
                             {% endif %}
 

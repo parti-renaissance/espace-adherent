@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/jecoute")
+ * @Route("/questionnaires")
  */
 class AdminJecouteController
 {

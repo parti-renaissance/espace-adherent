@@ -12,12 +12,12 @@ Feature:
   @javascript
   Scenario: I can create a local survey, edit it and show the statistics page
     Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-responsable-jecoute"
-    Then I should see "Mon espace J'écoute"
+    When I am on "/espace-responsable-des-questionnaires"
+    Then I should see "Mon espace responsable des questionnaires"
     And I should see "Vous gérez : Seine-et-Marne (77)"
 
     # Create
-    Given I am on "/espace-responsable-jecoute/questionnaire/creer"
+    Given I am on "/espace-responsable-des-questionnaires/creer"
     And I press "OK"
     When I wait 10 seconds until I see "⟵ Retour"
     And I fill in the following:
@@ -50,7 +50,7 @@ Feature:
   @javascript
   Scenario: I can see the national surveys list and show the statistics
     Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-responsable-jecoute/questionnaires-nationaux"
+    When I am on "/espace-responsable-des-questionnaires/questionnaires-nationaux"
     And I should see "Questionnaires nationaux"
     And I should see "Questionnaire national numéro 1"
     Given I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
