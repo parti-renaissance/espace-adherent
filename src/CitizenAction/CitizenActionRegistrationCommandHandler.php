@@ -19,12 +19,12 @@ class CitizenActionRegistrationCommandHandler
     public function __construct(
         EventRegistrationFactory $factory,
         EventRegistrationManager $manager,
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
     }
 

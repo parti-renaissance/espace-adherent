@@ -7,6 +7,7 @@ use App\Form\Admin\Election\CityCandidateType;
 use App\Form\Admin\Election\CityPrevisionType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -58,14 +59,14 @@ class CityCardAdmin extends AbstractCityCardAdmin
                 'label' => 'Arbitrage national',
                 'required' => false,
             ])
-            ->add('partners', 'sonata_type_collection', [
+            ->add('partners', CollectionType::class, [
                 'by_reference' => false,
             ], [
                 'edit' => 'inline',
                 'inline' => 'table',
                 'admin_code' => 'app.admin.election_city_card_partner',
             ])
-            ->add('contacts', 'sonata_type_collection', [
+            ->add('contacts', CollectionType::class, [
                 'by_reference' => false,
             ], [
                 'edit' => 'inline',

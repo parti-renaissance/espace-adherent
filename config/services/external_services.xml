@@ -4,16 +4,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
-        <!-- Recaptcha -->
-        <service id="app.recaptcha.api_client" class="App\Recaptcha\RecaptchaApiClient" public="false">
-            <argument>%env(RECAPTCHA_PRIVATE_KEY)%</argument>
-            <argument type="collection">
-                <argument key="timeout">5.0</argument>
-                <argument key="environment">%kernel.environment%</argument>
-            </argument>
-            <argument type="service" id="request_stack"/>
-        </service>
-
         <!-- Mailer (transactional) -->
         <service id="app.mailer.transactional" class="App\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
@@ -58,14 +48,8 @@
             <argument>App\Mandrill\EmailTemplate</argument>
         </service>
 
-        <service id="App\Mailer\EventSubscriber\EmailPersisterEventSubscriber">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="App\Repository\EmailRepository"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
         <!-- Facebook API -->
-        <service id="app.facebook.api" class="Facebook\Facebook">
+        <service id="Facebook\Facebook">
             <argument type="collection">
                 <argument key="app_id">%env(FACEBOOK_APP_ID)%</argument>
                 <argument key="app_secret">%env(FACEBOOK_APP_SECRET)%</argument>

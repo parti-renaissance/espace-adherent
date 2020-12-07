@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContainingUserDocumentListener
 {
@@ -20,9 +19,9 @@ class ContainingUserDocumentListener
     private $patternUuid;
     private $documentUuidsToRemove;
 
-    public function __construct(ContainerInterface $container, string $patternUuid)
+    public function __construct(UserDocumentManager $documentManager, string $patternUuid)
     {
-        $this->documentManager = $container->get(UserDocumentManager::class);
+        $this->documentManager = $documentManager;
         $this->patternUuid = '/'.$patternUuid.'/';
     }
 

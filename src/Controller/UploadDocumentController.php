@@ -10,6 +10,7 @@ use League\Flysystem\FileNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +22,7 @@ class UploadDocumentController extends Controller
      * @Route("/upload/{type}", name="app_filebrowser_upload", methods={"POST"})
      * @Security("is_granted('FILE_UPLOAD', type)")
      */
-    public function filebrowserUploadAction(string $type, Request $request)
+    public function filebrowserUploadAction(string $type, Request $request, UserDocumentManager $manager): Response
     {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
             throw new NotFoundHttpException("File upload is not defined for type '$type'.");
@@ -33,7 +34,7 @@ class UploadDocumentController extends Controller
 
         $message = $this->get('translator')->trans('document.upload.success');
         try {
-            $document = $this->get(UserDocumentManager::class)->createAndSave($request->files->get('upload'), $type);
+            $document = $manager->createAndSave($request->files->get('upload'), $type);
             $url = $this->generateUrl('app_download_user_document', ['uuid' => $document->getUuid()->toString(), 'filename' => $document->getOriginalName()], UrlGeneratorInterface::ABSOLUTE_URL);
         } catch (\Exception $e) {
             $url = '';
@@ -77,14 +78,17 @@ class UploadDocumentController extends Controller
     /**
      * @Route("/documents-partages/{uuid}/{filename}", requirements={"uuid": "%pattern_uuid%"}, name="app_download_user_document", methods={"GET"})
      */
-    public function downloadDocumentAction(UserDocument $document, string $filename)
-    {
+    public function downloadDocumentAction(
+        UserDocument $document,
+        string $filename,
+        UserDocumentManager $manager
+    ): Response {
         if ($filename !== $document->getOriginalName()) {
             throw $this->createNotFoundException('Document not found');
         }
 
         try {
-            $documentContent = $this->get(UserDocumentManager::class)->getContent($document);
+            $documentContent = $manager->getContent($document);
         } catch (FileNotFoundException $e) {
             throw $this->createNotFoundException('Document not found', $e);
         }

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Membership\UnregistrationSerializer;
 use App\Repository\UnregistrationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -40,13 +41,16 @@ class AdminUnregistrationController extends Controller
      * @Route("/export/partial", name="app_admin_unregistration_export_partial", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_UNREGISTRATIONS')")
      */
-    public function exportUnregistrationsPartialAction(Request $request, UnregistrationRepository $repository): Response
-    {
+    public function exportUnregistrationsPartialAction(
+        Request $request,
+        UnregistrationRepository $repository,
+        UnregistrationSerializer $serializer
+    ): Response {
         $unregistrations = $repository->findPaginatedForExport($request->query->getInt('page', 1), self::PER_PAGE);
 
         return new JsonResponse([
             'count' => \count($unregistrations),
-            'lines' => $this->get('app.unregistration.serializer')->serialize($unregistrations),
+            'lines' => $serializer->serialize($unregistrations),
         ]);
     }
 }

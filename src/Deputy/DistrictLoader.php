@@ -5,7 +5,7 @@ namespace App\Deputy;
 use App\Entity\District;
 use App\Entity\GeoData;
 use App\Geo\GeometryFactory;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -17,15 +17,13 @@ class DistrictLoader
     private $em;
     private $logger;
     private $decoder;
-    private $doctrine;
     private $geoCountries;
     private $geoDistricts;
 
-    public function __construct(Registry $doctrine, LoggerInterface $logger)
+    public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
     {
         $this->logger = $logger;
-        $this->doctrine = $doctrine;
-        $this->em = $this->doctrine->getManager();
+        $this->em = $em;
         $this->decoder = new Serializer([new ObjectNormalizer()], [new JsonEncoder(), new CsvEncoder()]);
     }
 

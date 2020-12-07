@@ -17,11 +17,13 @@ use App\Entity\CitizenProject;
 use App\Entity\EventRegistration;
 use App\Event\EventCanceledHandler;
 use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationCommandHandler;
 use App\Exception\BadUuidRequestException;
 use App\Exception\InvalidUuidException;
 use App\Form\CitizenActionCommandType;
 use App\Form\ContactMembersType;
 use App\Repository\CitizenProjectMembershipRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -50,6 +52,13 @@ class CitizenActionManagerController extends Controller
         self::ACTION_PRINT,
     ];
 
+    private $manager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * @Route("/creer", name="app_citizen_action_manager_create", methods={"GET", "POST"})
      * @Security("is_granted('CREATE_CITIZEN_ACTION', project)")
@@ -58,18 +67,22 @@ class CitizenActionManagerController extends Controller
         Request $request,
         CitizenProject $project,
         CitizenProjectManager $citizenProjectManager,
-        GeoCoder $geoCoder
+        GeoCoder $geoCoder,
+        EventRegistrationCommandHandler $eventRegistrationCommandHandler,
+        CitizenActionCommandHandler $citizenActionCommandHandler
     ): Response {
         $command = new CitizenActionCommand($this->getUser(), $project);
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
-        $form = $this->createForm(CitizenActionCommandType::class, $command)
+
+        $form = $this
+            ->createForm(CitizenActionCommandType::class, $command)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $action = $this->get(CitizenActionCommandHandler::class)->handle($command);
+            $action = $citizenActionCommandHandler->handle($command);
 
-            $this->get('app.event.registration_handler')->handle(new EventRegistrationCommand($action, $this->getUser()), false);
+            $eventRegistrationCommandHandler->handle(new EventRegistrationCommand($action, $this->getUser()), false);
             $this->addFlash('info', 'citizen_action.creation.success');
 
             return $this->redirectToRoute('app_citizen_action_show', [
@@ -92,7 +105,8 @@ class CitizenActionManagerController extends Controller
         Request $request,
         CitizenProject $project,
         CitizenAction $action,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        CitizenActionCommandHandler $handler
     ): Response {
         $command = CitizenActionCommand::createFromCitizenAction($action);
         $form = $this->createForm(CitizenActionCommandType::class, $command)
@@ -100,7 +114,7 @@ class CitizenActionManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $action = $this->get(CitizenActionCommandHandler::class)->handleUpdate($command, $action);
+            $action = $handler->handleUpdate($command, $action);
 
             $this->addFlash('info', 'citizen_action.update.success');
 
@@ -155,7 +169,8 @@ class CitizenActionManagerController extends Controller
         CitizenAction $citizenAction,
         CitizenProject $project,
         CitizenActionManager $citizenActionManager,
-        CitizenProjectMembershipRepository $citizenProjectMembershipRepository
+        CitizenProjectMembershipRepository $citizenProjectMembershipRepository,
+        CitizenActionParticipantsExporter $exporter
     ): Response {
         $registrations = $this->getRegistrations($request, $citizenAction, self::ACTION_EXPORT);
 
@@ -171,7 +186,7 @@ class CitizenActionManagerController extends Controller
             $registrations,
             $citizenProjectMembershipRepository->findAdministrators($project)
         );
-        $exported = $this->get(CitizenActionParticipantsExporter::class)->export($participants);
+        $exported = $exporter->export($participants);
 
         return new SnappyResponse($exported, 'inscrits-a-l-action-citoyenne.csv', 'text/csv');
     }
@@ -184,7 +199,7 @@ class CitizenActionManagerController extends Controller
         Request $request,
         CitizenAction $citizenAction,
         CitizenProject $project,
-        CitizenActionManager $citizenActionManager
+        CitizenActionContactParticipantsCommandHandler $handler
     ): Response {
         $registrations = $this->getRegistrations($request, $citizenAction, self::ACTION_CONTACT);
 
@@ -198,13 +213,14 @@ class CitizenActionManagerController extends Controller
 
         $command = new CitizenActionContactParticipantsCommand($this->getUser(), $registrations->toArray());
 
-        $form = $this->createForm(ContactMembersType::class, $command, ['csrf_token_id' => 'citizen_action.contact_participants'])
+        $form = $this
+            ->createForm(ContactMembersType::class, $command, ['csrf_token_id' => 'citizen_action.contact_participants'])
             ->add('submit', SubmitType::class)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(CitizenActionContactParticipantsCommandHandler::class)->handle($command);
+            $handler->handle($command);
             $this->addFlash('info', 'citizen_action.contact.success');
 
             return $this->redirectToRoute('app_citizen_action_list_participants', [
@@ -277,7 +293,7 @@ class CitizenActionManagerController extends Controller
         }
 
         try {
-            $registrations = $this->getDoctrine()->getRepository(EventRegistration::class)->getByEventAndUuid($citizenAction, $uuids);
+            $registrations = $this->manager->getRepository(EventRegistration::class)->getByEventAndUuid($citizenAction, $uuids);
         } catch (InvalidUuidException $e) {
             throw new BadUuidRequestException($e);
         }

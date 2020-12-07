@@ -7,11 +7,15 @@ use App\Entity\Event;
 use App\Entity\EventRegistration;
 use App\Event\EventCanceledHandler;
 use App\Event\EventCommand;
+use App\Event\EventCommandHandler;
 use App\Event\EventContactMembersCommand;
+use App\Event\EventContactMembersCommandHandler;
+use App\Event\EventRegistrationExporter;
 use App\Exception\BadUuidRequestException;
 use App\Exception\InvalidUuidException;
 use App\Form\ContactMembersType;
 use App\Form\EventCommandType;
+use App\Repository\EventRegistrationRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -39,17 +43,24 @@ class EventManagerController extends Controller
         self::ACTION_PRINT,
     ];
 
+    private $eventRegistrationRepository;
+
+    public function __construct(EventRegistrationRepository $eventRegistrationRepository)
+    {
+        $this->eventRegistrationRepository = $eventRegistrationRepository;
+    }
+
     /**
      * @Route("/modifier", name="app_event_edit", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
-    public function editAction(Request $request, Event $event): Response
+    public function editAction(Request $request, Event $event, EventCommandHandler $handler): Response
     {
         $form = $this->createForm(EventCommandType::class, $command = EventCommand::createFromEvent($event));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.event.handler')->handleUpdate($event, $command);
+            $handler->handleUpdate($event, $command);
             $this->addFlash('info', 'committee.event.update.success');
 
             return $this->redirectToRoute('app_event_show', [
@@ -94,19 +105,17 @@ class EventManagerController extends Controller
      */
     public function membersAction(Event $event): Response
     {
-        $registrations = $this->getDoctrine()->getRepository(EventRegistration::class)->findByEvent($event);
-
         return $this->render('events/members.html.twig', [
             'event' => $event,
             'committee' => $event->getCommittee(),
-            'registrations' => $registrations,
+            'registrations' => $this->eventRegistrationRepository->findByEvent($event),
         ]);
     }
 
     /**
      * @Route("/inscrits/exporter", name="app_event_export_members", methods={"POST"})
      */
-    public function exportMembersAction(Request $request, Event $event): Response
+    public function exportMembersAction(Request $request, Event $event, EventRegistrationExporter $exporter): Response
     {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_EXPORT);
 
@@ -116,7 +125,7 @@ class EventManagerController extends Controller
             ]);
         }
 
-        $exported = $this->get('app.event.registration_exporter')->export($registrations);
+        $exported = $exporter->export($registrations);
 
         return new SnappyResponse($exported, 'inscrits-a-l-evenement.csv', 'text/csv');
     }
@@ -124,8 +133,11 @@ class EventManagerController extends Controller
     /**
      * @Route("/inscrits/contacter", name="app_event_contact_members", methods={"POST"})
      */
-    public function contactMembersAction(Request $request, Event $event): Response
-    {
+    public function contactMembersAction(
+        Request $request,
+        Event $event,
+        EventContactMembersCommandHandler $handler
+    ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_CONTACT);
 
         if (!$registrations) {
@@ -142,7 +154,7 @@ class EventManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.event.contact_members_handler')->handle($command);
+            $handler->handle($command);
             $this->addFlash('info', 'committee.event.contact.success');
 
             return $this->redirectToRoute('app_event_members', [
@@ -203,7 +215,7 @@ class EventManagerController extends Controller
         }
 
         try {
-            $registrations = $this->getDoctrine()->getRepository(EventRegistration::class)->findByEventAndUuid($event, $uuids);
+            $registrations = $this->eventRegistrationRepository->findByEventAndUuid($event, $uuids);
         } catch (InvalidUuidException $e) {
             throw new BadUuidRequestException($e);
         }

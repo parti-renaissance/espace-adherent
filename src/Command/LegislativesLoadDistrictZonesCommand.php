@@ -4,8 +4,10 @@ namespace App\Command;
 
 use App\Entity\LegislativeCandidate;
 use App\Entity\LegislativeDistrictZone;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Cocur\Slugify\SlugifyInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
+class LegislativesLoadDistrictZonesCommand extends Command
 {
     private const DISTRICTS_TOTAL = 577;
 
@@ -23,9 +25,19 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
     private const DISTRICT_LABEL = 3;
 
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
+
+    /**
+     * @var FilesystemInterface
+     */
+    private $storage;
+
+    /**
+     * @var SlugifyInterface
+     */
+    private $slugify;
 
     protected function configure()
     {
@@ -39,16 +51,13 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $fs = $this->getContainer()->get('filesystem');
-        if (!$fs->exists($csvPath = $input->getArgument('csv-file'))) {
+        if (!$this->storage->has($csvPath = $input->getArgument('csv-file'))) {
             throw new \RuntimeException(sprintf('File "%s" does not exists.', $csvPath));
         }
 
         if (1 !== \strlen($input->getOption('csv-delimiter'))) {
             throw new \RuntimeException('CSV delimiter must be one character only.');
         }
-
-        $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -57,7 +66,7 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
         $districts = [];
         $progress = new ProgressBar($output, self::DISTRICTS_TOTAL);
 
-        $handle = fopen($input->getArgument('csv-file'), 'rb');
+        $handle = $this->storage->readStream($input->getArgument('csv-file'));
         while (false !== ($data = fgetcsv($handle, 1000, $input->getOption('csv-delimiter')))) {
             if (5 !== \count($data)) {
                 continue;
@@ -113,9 +122,8 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
         string $areaNumber,
         array $data
     ): LegislativeCandidate {
-        $slugifier = $this->getContainer()->get('sonata.core.slugify.cocur');
-
         $position = ((int) $district->getZoneNumber()) * 100 + ((int) $areaNumber);
+
         if (!is_numeric($district->getZoneNumber())) {
             $position = 20 * 100 + ((int) $areaNumber);
         }
@@ -130,7 +138,7 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
         $candidate->setDescription('Notre candidat(e) dans cette circonscription sera prochainement annoncé(e).');
         $candidate->setGender('-');
         $candidate->setCareer('-');
-        $candidate->setSlug($slugifier->slugify($data[self::NAME].' - '.$data[self::DISTRICT_LABEL]));
+        $candidate->setSlug($this->slugify->slugify($data[self::NAME].' - '.$data[self::DISTRICT_LABEL]));
 
         return $candidate;
     }
@@ -142,5 +150,23 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
         }
 
         return LegislativeDistrictZone::createRegionZone($areaCode, $name);
+    }
+
+    /** @required */
+    public function setManager(EntityManagerInterface $manager): void
+    {
+        $this->manager = $manager;
+    }
+
+    /** @required */
+    public function setStorage(FilesystemInterface $storage): void
+    {
+        $this->storage = $storage;
+    }
+
+    /** @required */
+    public function setSlugify(SlugifyInterface $slugify): void
+    {
+        $this->slugify = $slugify;
     }
 }

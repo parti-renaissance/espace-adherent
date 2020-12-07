@@ -48,10 +48,10 @@ class AmpController extends Controller
     /**
      * @Route("/sitemap.xml", name="amp_sitemap", methods={"GET"})
      */
-    public function sitemapIndexAction(): Response
+    public function sitemapIndexAction(SitemapFactory $sitemapFactory): Response
     {
         return new Response(
-            $this->get(SitemapFactory::class)->createAmpSitemap(),
+            $sitemapFactory->createAmpSitemap(),
             Response::HTTP_OK,
             ['Content-type' => 'text/xml']
         );

@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\District;
-use CrEOF\Spatial\PHP\Types\Geometry\Point;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

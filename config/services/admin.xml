@@ -5,9 +5,7 @@
     <services>
         <defaults autowire="true" autoconfigure="true"/>
 
-        <service id="app.admin.administrator_factory" class="App\Admin\AdministratorFactory">
-            <argument type="service" id="security.encoder_factory" />
-        </service>
+        <service id="App\Admin\AdministratorFactory" />
 
         <!--
         ######################################################
@@ -27,7 +25,7 @@
             </call>
 
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -69,7 +67,7 @@
                 <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -397,6 +395,7 @@
             <argument />
             <argument type="service" id="App\Repository\ReportRepository" />
         </service>
+        <service id="App\Admin\ReportAdmin" alias="app.admin.report" />
 
         <service id="app.admin.city" class="App\Admin\CityAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Communes" group="Territoire" />
@@ -788,7 +787,7 @@
                 <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -803,7 +802,7 @@
                 <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -994,7 +993,7 @@
             </call>
 
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -1063,6 +1062,7 @@
                 <argument>admin/election/city_card/edit.html.twig</argument>
             </call>
         </service>
+        <service id="App\Admin\Election\CityCardAdmin" alias="app.admin.election_city_card" />
 
         <service id="app.admin.election_city_card_managers" class="App\Admin\Election\CityCardManagersAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Elections » Suivi / Pilotage" group="Politique" />
@@ -1176,7 +1176,7 @@
             </call>
 
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
 
             <call method="setAssetRuntime">

@@ -23,7 +23,8 @@ class SenatorialCandidateElectedRepresentativeControllerTest extends WebTestCase
 
         $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
         $this->assertStringContainsString('Nord Département', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertStringContainsString('Sénateur(rice) (RN)Nord (59)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertStringContainsString('Sénateur(rice) (RN)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertStringContainsString('Nord (59)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
     }
 
     protected function setUp(): void

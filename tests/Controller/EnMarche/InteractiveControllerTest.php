@@ -105,7 +105,7 @@ class InteractiveControllerTest extends WebTestCase
 
     private function getMyEuropeInvitationHandler(): MyEuropeProcessorHandler
     {
-        return $this->container->get('app.interactive.my_europe_processor_handler');
+        return $this->get(MyEuropeProcessorHandler::class);
     }
 
     private function getCurrentMyEurope(): MyEuropeProcessor

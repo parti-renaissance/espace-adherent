@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DoctrineQueryStringParamConverter extends DoctrineParamConverter
 {
+    public function supports(ParamConverter $configuration)
+    {
+        return 'querystring' === $configuration->getConverter() and parent::supports($configuration);
+    }
+
     public function apply(Request $request, ParamConverter $configuration)
     {
         $name = $configuration->getName();

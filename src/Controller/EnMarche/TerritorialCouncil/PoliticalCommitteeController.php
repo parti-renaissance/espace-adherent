@@ -11,6 +11,7 @@ use App\FeedItem\FeedItemTypeEnum;
 use App\Form\FeedItemType;
 use App\Repository\TerritorialCouncil\OfficialReportRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -71,15 +72,18 @@ class PoliticalCommitteeController extends Controller
      * @Route("/messages/{id}/modifier", name="edit_feed_item", methods={"GET", "POST"})
      * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
      */
-    public function feedItemEditAction(Request $request, PoliticalCommitteeFeedItem $feedItem): Response
-    {
+    public function feedItemEditAction(
+        EntityManagerInterface $manager,
+        Request $request,
+        PoliticalCommitteeFeedItem $feedItem
+    ): Response {
         $form = $this
             ->createForm(FeedItemType::class, $feedItem)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $manager->flush();
             $this->addFlash('info', 'common.message_edited');
 
             return $this->redirectToRoute('app_political_committee_index');
@@ -95,9 +99,12 @@ class PoliticalCommitteeController extends Controller
      * @Route("/messages/{id}/supprimer", name="delete_feed_item", methods={"DELETE"})
      * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
      */
-    public function deleteFeedItemAction(Request $request, PoliticalCommitteeFeedItem $feedItem): Response
-    {
-        $this->deleteFeedItem($request, $feedItem, FeedItemTypeEnum::POLITICAL_COMMITTEE);
+    public function deleteFeedItemAction(
+        EntityManagerInterface $em,
+        Request $request,
+        PoliticalCommitteeFeedItem $feedItem
+    ): Response {
+        $this->deleteFeedItem($em, $request, $feedItem, FeedItemTypeEnum::POLITICAL_COMMITTEE);
 
         return $this->redirectToRoute('app_political_committee_index');
     }

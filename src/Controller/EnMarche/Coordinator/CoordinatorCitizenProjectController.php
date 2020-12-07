@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\Coordinator;
 
+use App\CitizenProject\CitizenProjectManagementAuthority;
 use App\CitizenProject\CitizenProjectManager;
 use App\Coordinator\Filter\AbstractCoordinatorAreaFilter;
 use App\Coordinator\Filter\CitizenProjectFilter;
@@ -24,7 +25,7 @@ class CoordinatorCitizenProjectController extends Controller
     /**
      * @Route(path="/list", name="app_coordinator_citizen_project", methods={"GET"})
      */
-    public function listAction(Request $request): Response
+    public function listAction(Request $request, CitizenProjectManager $manager): Response
     {
         try {
             $filter = CitizenProjectFilter::fromQueryString($request);
@@ -32,7 +33,7 @@ class CoordinatorCitizenProjectController extends Controller
             throw new BadRequestHttpException('Unexpected Citizen Project status in the query string.', $e);
         }
 
-        $results = $this->get(CitizenProjectManager::class)->getCoordinatorCitizenProjects($this->getUser(), $filter);
+        $results = $manager->getCoordinatorCitizenProjects($this->getUser(), $filter);
 
         $forms = [];
         $citizenProjectStatus = $filter->getStatus();
@@ -61,8 +62,11 @@ class CoordinatorCitizenProjectController extends Controller
     /**
      * @Route("/{uuid}/{slug}/pre-valider", name="app_coordinator_citizen_project_validate", methods={"POST"})
      */
-    public function validateAction(Request $request, CitizenProject $project): Response
-    {
+    public function validateAction(
+        Request $request,
+        CitizenProject $project,
+        CitizenProjectManagementAuthority $authority
+    ): Response {
         $form = $this
             ->createForm(CoordinatorAreaType::class, $project, [
                 'data_class' => CitizenProject::class,
@@ -73,10 +77,10 @@ class CoordinatorCitizenProjectController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 if ($form->get('refuse')->isClicked()) {
-                    $this->get('app.citizen_project.authority')->preRefuse($project);
+                    $authority->preRefuse($project);
                     $this->addFlash('info', 'Merci. Votre appréciation a été transmise à nos équipes.');
                 } elseif ($form->get('accept')->isClicked()) {
-                    $this->get('app.citizen_project.authority')->preApprove($project);
+                    $authority->preApprove($project);
                     $this->addFlash('info', 'Merci. Votre appréciation a été transmise à nos équipes.');
                 }
             } catch (BaseGroupException $exception) {

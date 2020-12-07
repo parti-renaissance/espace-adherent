@@ -20,6 +20,7 @@ use App\Membership\MembershipRegistrationProcess;
 use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
 use App\Repository\NewsletterSubscriptionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -139,6 +140,7 @@ class DonationController extends Controller
         AdherentRepository $adherentRepository,
         NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
         Donation $donation,
+        DonationRequestUtils $donationRequestUtils,
         string $status
     ): Response {
         $retryUrl = null;
@@ -147,7 +149,7 @@ class DonationController extends Controller
         if (!$successful) {
             $retryUrl = $this->generateUrl(
                 'donation_informations',
-                $this->get(DonationRequestUtils::class)->createRetryPayload($donation, $request)
+                $donationRequestUtils->createRetryPayload($donation, $request)
             );
         }
 
@@ -177,6 +179,7 @@ class DonationController extends Controller
      * @Route("/mensuel/annuler", name="donation_subscription_cancel", methods={"GET", "POST"})
      */
     public function cancelSubscriptionAction(
+        EntityManagerInterface $manager,
         Request $request,
         DonationRepository $donationRepository,
         PayboxPaymentUnsubscription $payboxPaymentUnsubscription,
@@ -199,7 +202,7 @@ class DonationController extends Controller
                 foreach ($donations as $donation) {
                     try {
                         $payboxPaymentUnsubscription->unsubscribe($donation);
-                        $this->getDoctrine()->getManager()->flush();
+                        $manager->flush();
                         $payboxPaymentUnsubscription->sendConfirmationMessage($donation, $this->getUser());
                         $this->addFlash(
                             'success',

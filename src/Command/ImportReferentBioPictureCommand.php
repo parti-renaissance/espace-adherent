@@ -4,12 +4,11 @@ namespace App\Command;
 
 use App\Content\MediaFactory;
 use App\Entity\Media;
-use App\Entity\Referent;
 use App\Repository\MediaRepository;
 use App\Repository\ReferentRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,12 +17,13 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException as Htt
 use Symfony\Component\HttpFoundation\File\File;
 use ZipArchive;
 
-class ImportReferentBioPictureCommand extends ContainerAwareCommand
+class ImportReferentBioPictureCommand extends Command
 {
     const COMMAND_NAME = 'app:import:referent-bio-picture';
     const CSV_FILENAME = 'referents_bio_photo.csv';
+
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
@@ -43,7 +43,7 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
     private $mediaFactory;
 
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $storage;
 
@@ -59,15 +59,6 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
           ->addArgument('fileUrl', InputArgument::REQUIRED)
           ->setDescription('Import bio & picture for referent already in DB')
         ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->referentRepository = $this->em->getRepository(Referent::class);
-        $this->mediaRepository = $this->em->getRepository(Media::class);
-        $this->mediaFactory = $this->getContainer()->get(MediaFactory::class);
-        $this->storage = $this->getContainer()->get(FilesystemInterface::class);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -255,5 +246,35 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
 
             $this->storage->delete($imgePath);
         }
+    }
+
+    /** @required */
+    public function setStorage(FilesystemInterface $storage): void
+    {
+        $this->storage = $storage;
+    }
+
+    /** @required */
+    public function setEntityManager(EntityManagerInterface $em): void
+    {
+        $this->em = $em;
+    }
+
+    /** @required */
+    public function setReferentRepository(ReferentRepository $referentRepository): void
+    {
+        $this->referentRepository = $referentRepository;
+    }
+
+    /** @required */
+    public function setMediaRepository(MediaRepository $mediaRepository): void
+    {
+        $this->mediaRepository = $mediaRepository;
+    }
+
+    /** @required */
+    public function setMediaFactory(MediaFactory $mediaFactory): void
+    {
+        $this->mediaFactory = $mediaFactory;
     }
 }

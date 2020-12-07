@@ -30,14 +30,4 @@ class AdherentTerminateMembershipMessageTest extends TestCase
         $this->assertSame('Kévin CORNIL', $recipient->getFullName());
         $this->assertSame(['target_firstname' => 'Kévin'], $recipient->getVars());
     }
-
-    protected function tearDown(): void
-    {
-        $this->cleanupContainer($this->container);
-
-        $this->container = null;
-        $this->adherents = null;
-
-        parent::tearDown();
-    }
 }

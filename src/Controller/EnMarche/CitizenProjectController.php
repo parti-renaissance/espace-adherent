@@ -10,8 +10,10 @@ use App\Entity\Committee;
 use App\Entity\TurnkeyProjectFile;
 use App\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use App\Exception\CitizenProjectNotApprovedException;
+use App\Repository\CommitteeRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Storage\FileRequestHandler;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -65,9 +67,9 @@ class CitizenProjectController extends Controller
      * )
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function skillsAutocompleteAction(Request $request)
+    public function skillsAutocompleteAction(Request $request, EntityManagerInterface $entityManager): Response
     {
-        if (!$category = $this->getDoctrine()->getRepository(CitizenProjectCategory::class)->find($request->query->get('category'))) {
+        if (!$category = $entityManager->getRepository(CitizenProjectCategory::class)->find($request->query->get('category'))) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
@@ -96,7 +98,7 @@ class CitizenProjectController extends Controller
      * )
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function committeeAutocompleteAction(Request $request)
+    public function committeeAutocompleteAction(Request $request): Response
     {
         if (!$term = $request->query->get('term')) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
@@ -125,7 +127,8 @@ class CitizenProjectController extends Controller
     public function committeeSupportAction(
         Request $request,
         CitizenProject $citizenProject,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        CommitteeRepository $committeeRepository
     ): Response {
         $form = $this->createForm(FormType::class);
         $form->handleRequest($request);
@@ -133,7 +136,7 @@ class CitizenProjectController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $committeeUuid = $this->getUser()->getMemberships()->getCommitteeSupervisorMemberships()->last()->getCommitteeUuid();
             /* @var Committee $committee */
-            $committee = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($committeeUuid);
+            $committee = $committeeRepository->findOneByUuid($committeeUuid);
 
             try {
                 $citizenProjectManager->approveCommitteeSupport(

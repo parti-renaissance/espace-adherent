@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\TurnkeyProject;
 use App\TurnkeyProject\TurnkeyProjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ class AdminTurnkeyProjectController extends Controller
      * @Security("has_role('ROLE_ADMIN_TURNKEY_PROJECTS')")
      */
     public function removeImageAction(
+        EntityManagerInterface $manager,
         Request $request,
         TurnkeyProject $turnkeyProject,
         TurnkeyProjectManager $turnkeyProjectManager
@@ -31,7 +33,7 @@ class AdminTurnkeyProjectController extends Controller
 
         try {
             $turnkeyProjectManager->removeImage($turnkeyProject);
-            $this->getDoctrine()->getManager()->flush();
+            $manager->flush();
             $this->addFlash('sonata_flash_success',
                 sprintf('L\'image du projet clé en main « %s » a été supprimée avec succès.', $turnkeyProject->getName())
             );

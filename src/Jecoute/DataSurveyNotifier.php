@@ -16,11 +16,11 @@ class DataSurveyNotifier implements EventSubscriberInterface
     private $adherentRepository;
 
     public function __construct(
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         DataSurveyRepository $dataSurveyRepository,
         AdherentRepository $adherentRepository
     ) {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->dataSurveyRepository = $dataSurveyRepository;
         $this->adherentRepository = $adherentRepository;
     }

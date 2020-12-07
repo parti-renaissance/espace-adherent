@@ -3,20 +3,6 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <!-- Newsletter -->
-        <service id="app.newsletter_subscription.factory" class="App\Newsletter\NewsletterSubscriptionFactory" />
-
-        <service id="app.newsletter_subscription.handler" class="App\Newsletter\NewsletterSubscriptionHandler">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="event_dispatcher" />
-        </service>
-
-        <service id="app.newsletter_invitation.handler" class="App\Newsletter\NewsletterInvitationHandler">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailer.transactional" />
-            <argument type="service" id="router" />
-        </service>
-
         <!-- Invitation -->
         <service id="App\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
@@ -34,29 +20,8 @@
             <argument type="service" id="app.procuration.proxy_message_factory"/>
         </service>
 
-        <!-- Je Marche -->
-         <service id="app.je_marche_report_handler" class="App\JeMarche\JeMarcheReportHandler">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailer.transactional" />
-        </service>
-
-        <!-- Ton Macron -->
-         <service id="app.ton_macron.invitation_processor_handler" class="App\TonMacron\InvitationProcessorHandler">
-             <argument type="service" id="app.ton_macron.message_body_builder"/>
-             <argument type="service" id="doctrine.orm.entity_manager"/>
-             <argument type="service" id="app.mailer.campaign"/>
-             <argument type="service" id="state_machine.ton_macron_invitation"/>
-         </service>
-
-        <service id="app.ton_macron.message_body_builder" class="App\TonMacron\TonMacronMessageBodyBuilder">
-            <argument type="service" id="twig"/>
-            <argument type="service" id="App\Repository\TonMacronChoiceRepository"/>
-        </service>
-
-        <service id="app.ton_macron.serializer" class="App\TonMacron\TonMacronSerializer" />
-
         <!-- Interactives -->
-        <service id="app.interactive.my_europe_processor_handler" class="App\Interactive\MyEuropeProcessorHandler">
+        <service id="App\Interactive\MyEuropeProcessorHandler">
             <argument type="service" id="app.my_europe.message_body_builder"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailer.transactional"/>
@@ -68,41 +33,31 @@
             <argument type="service" id="App\Repository\MyEuropeChoiceRepository"/>
         </service>
 
-        <service id="app.my_europe.serializer" class="App\Interactive\MyEuropeSerializer" />
+        <service id="App\Interactive\MyEuropeSerializer" />
 
         <!-- Facebook filters -->
-        <service id="app.facebook.profile_importer" class="App\Facebook\ProfileImporter">
-            <argument type="service" id="app.facebook.api" />
-            <argument type="service" id="App\Repository\FacebookProfileRepository" />
-        </service>
-
-        <service id="app.facebook.picture_importer" class="App\Facebook\PictureImporter">
+        <service id="App\Facebook\PictureImporter">
             <argument type="service" id="csa_guzzle.client.facebook_graph_api" />
             <argument type="service" id="cache.app" />
         </service>
 
-        <service id="app.facebook.picture_filterer" class="App\Facebook\PictureFilterer">
+        <service id="App\Facebook\PictureFilterer">
             <argument type="service" id="app.imagine" />
         </service>
 
-        <service id="app.facebook.picture_uploader" class="App\Facebook\PictureUploader">
-            <argument type="service" id="app.facebook.api" />
+        <service id="App\Facebook\PictureUploader">
+            <argument type="service" id="Facebook\Facebook" />
             <argument type="service" id="filesystem" />
             <argument>%kernel.cache_dir%</argument>
-        </service>
-
-        <!-- Summary -->
-        <service id="App\Summary\SummaryFactory">
-            <argument type="service" id="cocur_slugify" />
         </service>
 
         <service id="App\Summary\SummaryManager">
             <argument type="service" id="App\Summary\SummaryFactory" />
             <argument type="service" id="App\Repository\SummaryRepository" />
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="router" />
+            <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
             <argument type="service" id="League\Flysystem\FilesystemInterface" />
-            <argument type="service" id="app.glide" />
+            <argument type="service" id="League\Glide\Server" />
             <argument>%kernel.secret%</argument>
         </service>
 

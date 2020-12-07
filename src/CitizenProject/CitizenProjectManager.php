@@ -21,10 +21,9 @@ use App\Repository\CitizenActionRepository;
 use App\Repository\CitizenProjectCommitteeSupportRepository;
 use App\Repository\CitizenProjectMembershipRepository;
 use App\Repository\CitizenProjectRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -32,7 +31,7 @@ class CitizenProjectManager
 {
     public const CITIZEN_PROJECT_DEFAULT_IMAGE_NAME = 'default.png';
 
-    private $registry;
+    private $entityManager;
     private $storage;
     private $projectAuthority;
     private $eventDispatcher;
@@ -43,19 +42,16 @@ class CitizenProjectManager
     private $glide;
 
     public function __construct(
-        RegistryInterface $registry,
+        EntityManagerInterface $entityManager,
         FilesystemInterface $storage,
         CitizenProjectAuthority $projectAuthority,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        Server $glide
     ) {
-        $this->registry = $registry;
+        $this->entityManager = $entityManager;
         $this->storage = $storage;
         $this->projectAuthority = $projectAuthority;
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function setGlide(Server $glide): void
-    {
         $this->glide = $glide;
     }
 
@@ -181,7 +177,7 @@ class CitizenProjectManager
         $membership->promote();
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -194,7 +190,7 @@ class CitizenProjectManager
         $membership->demote();
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -207,7 +203,7 @@ class CitizenProjectManager
         $this->projectAuthority->changePrivilege($creator, $citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -220,7 +216,7 @@ class CitizenProjectManager
         }
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -229,7 +225,7 @@ class CitizenProjectManager
         $citizenProject->preRefused();
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -238,17 +234,16 @@ class CitizenProjectManager
         $project->preApproved();
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
     }
 
     public function followCitizenProject(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
     {
-        $manager = $this->getManager();
-        $manager->persist($adherent->followCitizenProject($citizenProject));
+        $this->entityManager->persist($adherent->followCitizenProject($citizenProject));
 
         if ($flush) {
-            $manager->flush();
+            $this->entityManager->flush();
         }
 
         $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
@@ -261,13 +256,11 @@ class CitizenProjectManager
             return;
         }
 
-        $manager = $this->getManager();
-
-        $manager->remove($membership);
+        $this->entityManager->remove($membership);
         $citizenProject->decrementMembersCount();
 
         if ($flush) {
-            $manager->flush();
+            $this->entityManager->flush();
         }
 
         $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
@@ -294,7 +287,7 @@ class CitizenProjectManager
         $committeeSupport->approve();
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -307,10 +300,10 @@ class CitizenProjectManager
             throw new \RuntimeException('No CommitteeSupport found for committee '.$committee->getName());
         }
 
-        $this->getManager()->remove($committeeSupport);
+        $this->entityManager->remove($committeeSupport);
 
         if ($flush) {
-            $this->getManager()->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -387,34 +380,29 @@ class CitizenProjectManager
         }
     }
 
-    private function getManager(): ObjectManager
-    {
-        return $this->registry->getManager();
-    }
-
     private function getCitizenProjectRepository(): CitizenProjectRepository
     {
-        return $this->registry->getRepository(CitizenProject::class);
+        return $this->entityManager->getRepository(CitizenProject::class);
     }
 
     private function getCitizenProjectMembershipRepository(): CitizenProjectMembershipRepository
     {
-        return $this->registry->getRepository(CitizenProjectMembership::class);
+        return $this->entityManager->getRepository(CitizenProjectMembership::class);
     }
 
     private function getAdherentRepository(): AdherentRepository
     {
-        return $this->registry->getRepository(Adherent::class);
+        return $this->entityManager->getRepository(Adherent::class);
     }
 
     private function getCitizenProjectCommitteeSupportRepository(): CitizenProjectCommitteeSupportRepository
     {
-        return $this->registry->getRepository(CitizenProjectCommitteeSupport::class);
+        return $this->entityManager->getRepository(CitizenProjectCommitteeSupport::class);
     }
 
     private function getCitizenActionRepository(): CitizenActionRepository
     {
-        return $this->registry->getRepository(CitizenAction::class);
+        return $this->entityManager->getRepository(CitizenAction::class);
     }
 
     private function findCommitteeSupport(

@@ -24,7 +24,7 @@ class CoordinatorCommitteeController extends Controller
     /**
      * @Route("/list", name="app_coordinator_committees", methods={"GET"})
      */
-    public function committeesAction(Request $request): Response
+    public function committeesAction(Request $request, CommitteeManager $manager): Response
     {
         try {
             $filter = CommitteeFilter::fromQueryString($request);
@@ -32,7 +32,7 @@ class CoordinatorCommitteeController extends Controller
             throw new BadRequestHttpException('Unexpected committee request status in the query string.', $e);
         }
 
-        $committees = $this->get(CommitteeManager::class)->getCoordinatorCommittees($this->getUser(), $filter);
+        $committees = $manager->getCoordinatorCommittees($this->getUser(), $filter);
 
         $forms = [];
         foreach ($committees as $committee) {

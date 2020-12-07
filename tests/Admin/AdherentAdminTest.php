@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Controller\Admin;
+namespace Tests\App\Admin;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
@@ -15,7 +15,7 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class AdherentAdminTest extends WebTestCase
 {
-    private const ADHERENT_EDIT_URI_PATTERN = '/admin/app/adherent/%s/edit';
+    private const ADHERENT_EDIT_URI_PATTERN = '/admin/app/adherent/%d/edit';
 
     use ControllerTestTrait;
 
@@ -34,8 +34,8 @@ class AdherentAdminTest extends WebTestCase
         $this->assertEquals('Retourner à la liste', trim($navBar->getNode(1)->nodeValue));
         $this->assertEquals('Impersonnifier', trim($navBar->getNode(2)->nodeValue));
 
-        $this->client->request(Request::METHOD_GET, sprintf('/admin/adherent/%s/ban', $adherent->getId()));
-        $this->assertResponseStatusCode(404, $this->client->getResponse());
+        $this->client->request(Request::METHOD_GET, sprintf('/admin/app/adherent/%s/ban', $adherent->getId()));
+        $this->assertResponseStatusCode(403, $this->client->getResponse());
     }
 
     public function testEditBoardMemberInformations()

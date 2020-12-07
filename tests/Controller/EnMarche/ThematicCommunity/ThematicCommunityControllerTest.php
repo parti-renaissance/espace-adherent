@@ -34,7 +34,7 @@ class ThematicCommunityControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Je m\'inscris')->link());
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $this->assertNotContains('Informations personnelles', $crawler->filter('h2.subtitle')->text());
+        $this->assertStringNotContainsString('Informations personnelles', $crawler->filter('h2.subtitle')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Je m\'inscris')->form([
             'thematic_community_membership[hasJob]' => 1,
@@ -72,7 +72,7 @@ class ThematicCommunityControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/communautes-thematiques/adhesion/be8b1edb-b958-4054-bcc9-903ff39062dd/modifier');
-        $this->assertContains('Quitter cette communauté', $crawler->filter('#thematic-community')->text());
+        $this->assertStringContainsString('Quitter cette communauté', $crawler->filter('#thematic-community')->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/communautes-thematiques/adhesion/be8b1edb-b958-4054-bcc9-903ff39062dd/quitter');
 
@@ -103,8 +103,8 @@ class ThematicCommunityControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Je m\'inscris')->link());
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $this->assertContains('Vous êtes adhérent LaREM ?', $crawler->filter('#thematic-community article.account-block')->text());
-        $this->assertContains('Informations personnelles', $crawler->filter('h2.subtitle')->text());
+        $this->assertStringContainsString('Vous êtes adhérent LaREM ?', $crawler->filter('#thematic-community article.account-block')->text());
+        $this->assertStringContainsString('Informations personnelles', $crawler->filter('h2.subtitle')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Je m\'inscris')->form([
             'thematic_community_membership[lastName]' => 'Richard',

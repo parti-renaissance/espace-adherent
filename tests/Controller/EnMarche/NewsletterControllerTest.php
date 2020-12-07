@@ -117,7 +117,6 @@ class NewsletterControllerTest extends WebTestCase
         $subscription = $this->subscriptionsRepository->findOneByEmail('titouan.galopin@en-marche.fr');
 
         // Confirm subscription
-        $this->getEntityManager(NewsletterSubscription::class)->refresh($subscription);
         $token = $subscription->getToken();
         $confirmationUrl = sprintf('/newsletter/confirmation/%s/%s', $subscription->getUuid(), $token);
 
@@ -125,7 +124,7 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->getEntityManager(NewsletterSubscription::class)->refresh($subscription);
+        $subscription = $this->subscriptionsRepository->findOneByEmail('titouan.galopin@en-marche.fr');
 
         $this->assertSame($token->toString(), $subscription->getToken()->toString());
 
@@ -233,11 +232,11 @@ class NewsletterControllerTest extends WebTestCase
         // Email should have been sent
         $this->assertCountMails(1, NewsletterInvitationMessage::class, 'hugo.hamon@clichy-beach.com');
         $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite1->getEmail()));
-        $this->assertStringContainsString('/newsletter?mail=hugo.hamon%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
+        $this->assertStringContainsString('/newsletter?mail=hugo.hamon@clichy-beach.com', $messages[0]->getRequestPayloadJson());
 
         $this->assertCountMails(1, NewsletterInvitationMessage::class, 'jules.pietri@clichy-beach.com');
         $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite2->getEmail()));
-        $this->assertStringContainsString('/newsletter?mail=jules.pietri%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
+        $this->assertStringContainsString('/newsletter?mail=jules.pietri@clichy-beach.com', $messages[0]->getRequestPayloadJson());
     }
 
     public function testInvitationSentWithoutRedirection()

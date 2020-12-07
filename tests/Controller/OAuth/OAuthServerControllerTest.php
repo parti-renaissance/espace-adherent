@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Api;
+namespace Tests\App\Controller\OAuth;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Device;

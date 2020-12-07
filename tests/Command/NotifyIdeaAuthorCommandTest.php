@@ -20,7 +20,7 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
     {
         $this->updateIdeaFinalizedAt(LoadIdeaData::IDEA_04_UUID, '-10 minutes');
 
-        $this->runCommand('idea-workshop:notification:idea-author');
+        $this->runCommand('idea-workshop:notification:idea-author', [], true);
 
         $this->assertCountMails(1, IdeaFinalizeNotificationMessage::class, 'jacques.picard@en-marche.fr');
     }
@@ -29,7 +29,7 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
     {
         $this->updateIdeaFinalizedAt(LoadIdeaData::IDEA_04_UUID, '+3 days -10 minutes');
 
-        $this->runCommand('idea-workshop:notification:idea-author', ['--caution' => null]);
+        $this->runCommand('idea-workshop:notification:idea-author', ['--caution' => null], true);
 
         $this->assertCountMails(1, IdeaFinalizePreNotificationMessage::class, 'jacques.picard@en-marche.fr');
     }

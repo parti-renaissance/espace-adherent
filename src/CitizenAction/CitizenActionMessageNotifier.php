@@ -22,12 +22,12 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
     private $registrationRepository;
 
     public function __construct(
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         UrlGeneratorInterface $urlGenerator,
         CitizenProjectManager $citizenProjectManager,
         EventRegistrationRepository $registrationRepository
     ) {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
         $this->citizenProjectManager = $citizenProjectManager;
         $this->registrationRepository = $registrationRepository;

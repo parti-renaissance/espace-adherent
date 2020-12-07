@@ -6,7 +6,6 @@ use App\Controller\EntityControllerTrait;
 use App\Entity\MemberSummary\JobExperience;
 use App\Entity\MemberSummary\Language;
 use App\Entity\MemberSummary\Training;
-use App\Entity\Skill;
 use App\Form\JobExperienceType;
 use App\Form\LanguageType;
 use App\Form\SummaryType;
@@ -14,6 +13,7 @@ use App\Form\TrainingType;
 use App\Membership\MemberActivityTracker;
 use App\Repository\SkillRepository;
 use App\Summary\SummaryManager;
+use Cocur\Slugify\SlugifyInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,32 +27,37 @@ class SummaryManagerController extends Controller
 {
     use EntityControllerTrait;
 
+    private $summaryManager;
+
+    public function __construct(SummaryManager $summaryManager)
+    {
+        $this->summaryManager = $summaryManager;
+    }
+
     /**
      * @Route(name="app_summary_manager_index", methods={"GET"})
      */
-    public function indexAction()
+    public function indexAction(MemberActivityTracker $tracker): Response
     {
         $member = $this->getUser();
-        $manager = $this->get(SummaryManager::class);
-        $summary = $manager->getForAdherent($this->getUser());
-        $manager->setUrlProfilePicture($summary);
+        $summary = $this->summaryManager->getForAdherent($this->getUser());
+        $this->summaryManager->setUrlProfilePicture($summary);
 
         return $this->render('summary_manager/index.html.twig', [
             'summary' => $summary,
-            'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($member),
+            'recent_activities' => $tracker->getRecentActivitiesForAdherent($member),
         ]);
     }
 
     /**
      * @Route("/activites_recentes/cacher_afficher", name="app_summary_manager_toggle_showing_recent_activities", methods={"GET"})
      */
-    public function toggleShowingRecentActivitiesAction()
+    public function toggleShowingRecentActivitiesAction(): Response
     {
-        $manager = $this->get(SummaryManager::class);
-        $summary = $manager->getForAdherent($this->getUser());
+        $summary = $this->summaryManager->getForAdherent($this->getUser());
 
         $summary->toggleShowingRecentActivities();
-        $this->get(SummaryManager::class)->updateSummary($summary);
+        $this->summaryManager->updateSummary($summary);
         $this->addFlash('info', 'summary.step.success');
 
         return $this->redirectToRoute('app_summary_manager_index', ['slug' => $summary->getSlug()]);
@@ -61,10 +66,9 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/experience/{id}", defaults={"id": ""}, name="app_summary_manager_handle_experience", methods={"GET", "POST"})
      */
-    public function handleExperienceAction(Request $request, ?JobExperience $experience)
+    public function handleExperienceAction(Request $request, ?JobExperience $experience): Response
     {
-        $summaryManager = $this->get(SummaryManager::class);
-        $summary = $summaryManager->getForAdherent($this->getUser());
+        $summary = $this->summaryManager->getForAdherent($this->getUser());
         $form = $this->createForm(JobExperienceType::class, $experience, [
             'summary' => $summary,
             'collection' => $summary->getExperiences(),
@@ -72,7 +76,7 @@ class SummaryManagerController extends Controller
         ]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $summaryManager->updateExperiences($summary, $experience ?: $form->getData());
+            $this->summaryManager->updateExperiences($summary, $experience ?: $form->getData());
             $this->addFlash('info', 'summary.handle_experience.success');
 
             return $this->redirectToRoute('app_summary_manager_index');
@@ -86,7 +90,7 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/experience/{id}/supprimer", name="app_summary_manager_remove_experience", methods={"DELETE"})
      */
-    public function removeExperienceAction(Request $request, JobExperience $experience)
+    public function removeExperienceAction(Request $request, JobExperience $experience): Response
     {
         $form = $this->createDeleteForm('', SummaryManager::DELETE_EXPERIENCE_TOKEN, $request);
 
@@ -94,7 +98,7 @@ class SummaryManagerController extends Controller
             throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
         }
 
-        if ($this->get(SummaryManager::class)->removeExperience($this->getUser(), $experience)) {
+        if ($this->summaryManager->removeExperience($this->getUser(), $experience)) {
             $this->addFlash('info', 'summary.remove_experience.success');
         }
 
@@ -104,10 +108,9 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/formation/{id}", defaults={"id": ""}, name="app_summary_manager_handle_training", methods={"GET", "POST"})
      */
-    public function handleTrainingAction(Request $request, ?Training $training)
+    public function handleTrainingAction(Request $request, ?Training $training): Response
     {
-        $summaryManager = $this->get(SummaryManager::class);
-        $summary = $summaryManager->getForAdherent($this->getUser());
+        $summary = $this->summaryManager->getForAdherent($this->getUser());
         $form = $this->createForm(TrainingType::class, $training, [
             'summary' => $summary,
             'collection' => $summary->getTrainings(),
@@ -115,7 +118,7 @@ class SummaryManagerController extends Controller
         ]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $summaryManager->updateTrainings($summary, $training ?: $form->getData());
+            $this->summaryManager->updateTrainings($summary, $training ?: $form->getData());
             $this->addFlash('info', 'summary.handle_training.success');
 
             return $this->redirectToRoute('app_summary_manager_index');
@@ -129,7 +132,7 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/formation/{id}/supprimer", name="app_summary_manager_remove_training", methods={"DELETE"})
      */
-    public function removeTrainingAction(Request $request, Training $training)
+    public function removeTrainingAction(Request $request, Training $training): Response
     {
         $form = $this->createDeleteForm('', SummaryManager::DELETE_TRAINING_TOKEN, $request);
 
@@ -137,7 +140,7 @@ class SummaryManagerController extends Controller
             throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
         }
 
-        if ($this->get(SummaryManager::class)->removeTraining($this->getUser(), $training)) {
+        if ($this->summaryManager->removeTraining($this->getUser(), $training)) {
             $this->addFlash('info', 'summary.remove_training.success');
         }
 
@@ -147,12 +150,12 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/langue/{id}", defaults={"id": ""}, name="app_summary_manager_handle_language", methods={"GET", "POST"})
      */
-    public function handleLanguageAction(Request $request, ?Language $language)
+    public function handleLanguageAction(Request $request, ?Language $language): Response
     {
         $form = $this->createForm(LanguageType::class, $language);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get(SummaryManager::class)->updateLanguages($this->getUser(), $language ?: $form->getData());
+            $this->summaryManager->updateLanguages($this->getUser(), $language ?: $form->getData());
             $this->addFlash('info', 'summary.handle_language.success');
 
             return $this->redirectToRoute('app_summary_manager_index');
@@ -166,7 +169,7 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/langue/{id}/supprimer", name="app_summary_manager_remove_language", methods={"DELETE"})
      */
-    public function removeLanguageAction(Request $request, Language $language)
+    public function removeLanguageAction(Request $request, Language $language): Response
     {
         $form = $this->createDeleteForm('', SummaryManager::DELETE_LANGUAGE_TOKEN, $request);
 
@@ -174,7 +177,7 @@ class SummaryManagerController extends Controller
             throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
         }
 
-        if ($this->get(SummaryManager::class)->removeLanguage($this->getUser(), $language)) {
+        if ($this->summaryManager->removeLanguage($this->getUser(), $language)) {
             $this->addFlash('info', 'summary.remove_language.success');
         }
 
@@ -184,12 +187,11 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/publier", name="app_summary_manager_publish", methods={"GET"})
      */
-    public function publishAction()
+    public function publishAction(): Response
     {
-        $manager = $this->get(SummaryManager::class);
-        $summary = $manager->getForAdherent($this->getUser());
+        $summary = $this->summaryManager->getForAdherent($this->getUser());
 
-        $manager->publishSummary($summary);
+        $this->summaryManager->publishSummary($summary);
 
         $this->addFlash('info', 'summary.published.success');
 
@@ -199,9 +201,9 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/depublier", name="app_summary_manager_unpublish", methods={"GET"})
      */
-    public function unpublishAction()
+    public function unpublishAction(): Response
     {
-        if ($this->get(SummaryManager::class)->unpublishSummaryForAdherent($this->getUser())) {
+        if ($this->summaryManager->unpublishSummaryForAdherent($this->getUser())) {
             $this->addFlash('info', 'summary.unpublished.success');
         } else {
             $this->addFlash('info', 'summary.unpublished.error');
@@ -217,31 +219,34 @@ class SummaryManagerController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function skillsAutocompleteAction(Request $request)
-    {
-        $skills = $this->getDoctrine()->getRepository(Skill::class)->findAvailableSkillsFor(
-            $this->get('sonata.core.slugify.cocur')->slugify($request->query->get('term')),
-            $this->getUser(), SkillRepository::FIND_FOR_SUMMARY);
-
-        return new JsonResponse($skills);
+    public function skillsAutocompleteAction(
+        Request $request,
+        SlugifyInterface $slugify,
+        SkillRepository $repository
+    ): Response {
+        return new JsonResponse($repository->findAvailableSkillsFor(
+            $slugify->slugify($request->query->get('term')),
+            $this->getUser(),
+            SkillRepository::FIND_FOR_SUMMARY
+        ));
     }
 
     /**
      * @Route("/{step}", name="app_summary_manager_step", methods={"GET", "POST"})
      */
-    public function stepAction(Request $request, string $step)
+    public function stepAction(Request $request, string $step): Response
     {
         if (!SummaryType::stepExists($step)) {
             throw $this->createNotFoundException(sprintf('Invalid step "%s", known steps are "%s".', $step, implode('", "', SummaryType::STEPS)));
         }
 
-        $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
+        $summary = $this->summaryManager->getForAdherent($this->getUser());
         $form = $this->createForm(SummaryType::class, $summary, [
             'step' => $step,
         ]);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get(SummaryManager::class)->updateSummary($summary);
+            $this->summaryManager->updateSummary($summary);
             $this->addFlash('info', 'summary.step.success');
 
             return $this->redirectToRoute('app_summary_manager_index');
@@ -264,9 +269,9 @@ class SummaryManagerController extends Controller
             throw $this->createNotFoundException('Invalid token.');
         }
 
-        $summary = $this->get(SummaryManager::class)->getForAdherent($this->getUser());
+        $summary = $this->summaryManager->getForAdherent($this->getUser());
 
-        if ($this->get(SummaryManager::class)->removePhoto($summary)) {
+        if ($this->summaryManager->removePhoto($summary)) {
             $this->addFlash('info', 'summary.remove_photo.success');
         } else {
             $this->addFlash('error', 'summary.remove_photo.error');

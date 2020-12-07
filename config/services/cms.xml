@@ -7,11 +7,8 @@
         <!-- Markdown -->
         <service id="League\CommonMark\CommonMarkConverter" />
 
-        <!-- Content -->
-        <prototype namespace="App\Content\" resource="../../src/Content" />
-
         <!-- Feed -->
-        <service id="app.feed_generator.article" class="App\Feed\ArticleFeedGenerator">
+        <service id="App\Feed\ArticleFeedGenerator">
             <argument>%locale%</argument>
             <argument>%feed_ttl%</argument>
             <argument type="service" id="router" />
@@ -25,38 +22,12 @@
             <argument type="service" id="cache.app" />
         </service>
 
-        <!-- Documents -->
-        <service id="App\Documents\DocumentRepository" public="false">
-            <argument type="service" id="League\Flysystem\FilesystemInterface" />
-        </service>
-
-        <service id="app.document_manager" class="App\Documents\DocumentManager">
-            <argument type="service" id="App\Documents\DocumentRepository"/>
-            <argument type="service" id="App\Committee\CommitteeManager"/>
-        </service>
-
-        <!-- Filesystem -->
-        <service id="League\Flysystem\Filesystem">
-            <argument type="service">
-                <service class="League\Flysystem\Adapter\AdapterInterface">
-                    <factory class="App\Storage\FilesystemAdapterFactory" method="createAdapter" />
-                    <argument>%kernel.environment%</argument>
-                    <argument>%kernel.project_dir%/app/data</argument>
-                    <argument>%env(GCLOUD_PROJECT_ID)%</argument>
-                    <argument>%kernel.project_dir%/gcloud-service-key.json</argument>
-                    <argument>%env(GCLOUD_BUCKET)%</argument>
-                    <argument type="service" id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" />
-                </service>
-            </argument>
-        </service>
-        <service id="League\Flysystem\FilesystemInterface" alias="League\Flysystem\Filesystem" />
-
         <!-- Medias -->
         <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false" lazy="true">
             <argument type="service" id="snc_redis.default" />
         </service>
 
-        <service id="app.glide" class="League\Glide\Server">
+        <service id="League\Glide\Server">
             <factory class="League\Glide\ServerFactory" method="create" />
 
             <argument type="collection">
@@ -71,7 +42,5 @@
                 <argument key="max_image_size">4000000</argument>
             </argument>
         </service>
-        <service id="League\Glide\Server" alias="app.glide" />
-
     </services>
 </container>

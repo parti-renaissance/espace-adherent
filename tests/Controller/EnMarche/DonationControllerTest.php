@@ -203,10 +203,8 @@ class DonationControllerTest extends WebTestCase
         self::assertSame('OK', $this->simulateIpnCall($donation, '00000'));
 
         // Donation should have been completed
-        $this->getEntityManager(Donation::class)->refresh($donation);
-
+        $donation = $this->client->getContainer()->get(DonationRepository::class)->findAll()[0];
         $donator = $donation->getDonator();
-        $this->getEntityManager(Donator::class)->refresh($donator);
 
         $this->assertFalse($donation->hasError());
         if ($donation->hasSubscription()) {
@@ -343,7 +341,7 @@ class DonationControllerTest extends WebTestCase
         self::assertSame('OK', $this->simulateIpnCall($donation, '00001'));
 
         // Donation should have been aborted
-        $this->getEntityManager(Donation::class)->refresh($donation);
+        $donation = $this->client->getContainer()->get(DonationRepository::class)->findAll()[0];
         $this->assertTrue($donation->hasError());
         /** @var Transaction[] $transactions */
         $transactions = $this->transactionRepository->findBy(['donation' => $donation]);

@@ -3,13 +3,15 @@
 namespace App\Command;
 
 use App\Entity\ProcurationRequest;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\Procuration\ProcurationReminderHandler;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ProcurationSendReminderCommand extends ContainerAwareCommand
+class ProcurationSendReminderCommand extends Command
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -31,12 +33,6 @@ class ProcurationSendReminderCommand extends ContainerAwareCommand
             ->setDescription('Send a reminder to the procuration proxies.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm without sending any email and without persisting any data.')
         ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->reminder = $this->getContainer()->get('app.procuration.reminder_handler');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -79,5 +75,17 @@ class ProcurationSendReminderCommand extends ContainerAwareCommand
 
         $progress->finish();
         $output->writeln("\n".$totalCount.' reminders sent');
+    }
+
+    /** @required */
+    public function setManager(EntityManagerInterface $manager): void
+    {
+        $this->manager = $manager;
+    }
+
+    /** @required */
+    public function setReminder(ProcurationReminderHandler $reminder): void
+    {
+        $this->reminder = $reminder;
     }
 }

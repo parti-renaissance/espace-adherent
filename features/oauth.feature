@@ -193,7 +193,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
               },
               {
                 "name": "activation_link",
-                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
+                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@/@string@?redirect_uri=https:\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
               }
             ]
           }

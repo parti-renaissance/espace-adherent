@@ -30,8 +30,11 @@ class DeputyController extends Controller
     /**
      * @Route("/utilisateurs/message", name="users_message", methods={"GET", "POST"})
      */
-    public function usersSendMessageAction(Request $request, AdherentRepository $adherentRepository): Response
-    {
+    public function usersSendMessageAction(
+        Request $request,
+        AdherentRepository $adherentRepository,
+        DeputyMessageNotifier $notifier
+    ): Response {
         $currentUser = $this->getMainUser($request->getSession());
 
         $message = DeputyMessage::create($currentUser);
@@ -42,7 +45,7 @@ class DeputyController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(DeputyMessageNotifier::class)->sendMessage($message);
+            $notifier->sendMessage($message);
             $this->addFlash('info', 'deputy.message.success');
 
             return $this->redirectToRoute('app_deputy_users_message');

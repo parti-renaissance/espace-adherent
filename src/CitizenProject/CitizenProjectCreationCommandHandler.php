@@ -2,7 +2,6 @@
 
 namespace App\CitizenProject;
 
-use App\Entity\TurnkeyProject;
 use App\Events;
 use App\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;

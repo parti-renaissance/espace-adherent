@@ -7,7 +7,7 @@ use App\Normalizer\MoocNormalizer;
 use App\Repository\MoocRepository;
 use App\Sitemap\SitemapFactory;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\Serializer as JMSSerializer;
+use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +24,7 @@ class MoocController extends Controller
     /**
      * @Route("", name="api_mooc_landing", methods={"GET"})
      */
-    public function moocLandingPageAction(MoocRepository $moocRepository, JMSSerializer $serializer): Response
+    public function moocLandingPageAction(MoocRepository $moocRepository, SerializerInterface $serializer): Response
     {
         return new JsonResponse(
             $serializer->serialize(

@@ -12,10 +12,10 @@ class JeMarcheReportHandler
     private $entityManager;
     private $mailer;
 
-    public function __construct(ObjectManager $entityManager, MailerService $mailer)
+    public function __construct(ObjectManager $entityManager, MailerService $transactionalMailer)
     {
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
     }
 
     public function handle(JeMarcheReport $jeMarcheReport)

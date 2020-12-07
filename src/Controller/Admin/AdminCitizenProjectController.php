@@ -3,11 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\CitizenProject\CitizenProjectAuthority;
+use App\CitizenProject\CitizenProjectManagementAuthority;
 use App\CitizenProject\CitizenProjectManager;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Exception\BaseGroupException;
 use App\Exception\CitizenProjectMembershipException;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +23,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminCitizenProjectController extends Controller
 {
+    private $authority;
+
+    public function __construct(CitizenProjectManagementAuthority $authority)
+    {
+        $this->authority = $authority;
+    }
+
     /**
      * Approves the citizen project.
      *
@@ -29,7 +38,7 @@ class AdminCitizenProjectController extends Controller
     public function approveAction(CitizenProject $citizenProject): Response
     {
         try {
-            $this->get('app.citizen_project.authority')->approve($citizenProject);
+            $this->authority->approve($citizenProject);
             $this->addFlash('sonata_flash_success', sprintf('Le projet citoyen « %s » a été approuvé avec succès.', $citizenProject->getName()));
         } catch (BaseGroupException $exception) {
             throw $this->createNotFoundException(sprintf('CitizenProject %u must be pending in order to be approved.', $citizenProject->getId()), $exception);
@@ -46,7 +55,7 @@ class AdminCitizenProjectController extends Controller
     public function refuseAction(CitizenProject $citizenProject): Response
     {
         try {
-            $this->get('app.citizen_project.authority')->refuse($citizenProject);
+            $this->authority->refuse($citizenProject);
             $this->addFlash('sonata_flash_success', sprintf('Le projet citoyen « %s » a été refusé avec succès.', $citizenProject->getName()));
         } catch (BaseGroupException $exception) {
             throw $this->createNotFoundException(sprintf('CitizenProject %u must be pending in order to be refused.', $citizenProject->getId()), $exception);
@@ -70,6 +79,7 @@ class AdminCitizenProjectController extends Controller
      * @Route("/{citizenProject}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege", methods={"GET"})
      */
     public function changePrivilegeAction(
+        EntityManagerInterface $manager,
         Request $request,
         CitizenProject $citizenProject,
         Adherent $adherent,
@@ -82,7 +92,7 @@ class AdminCitizenProjectController extends Controller
 
         try {
             $authority->changePrivilege($adherent, $citizenProject, $privilege);
-            $this->getDoctrine()->getManager()->flush();
+            $manager->flush();
         } catch (CitizenProjectMembershipException $e) {
             $this->addFlash('error', $e->getMessage());
         }

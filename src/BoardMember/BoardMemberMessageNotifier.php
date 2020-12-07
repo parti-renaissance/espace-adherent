@@ -9,9 +9,9 @@ class BoardMemberMessageNotifier
 {
     private $mailer;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailerService $transactionalMailer)
     {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
     }
 
     public function sendMessage(BoardMemberMessage $message): void

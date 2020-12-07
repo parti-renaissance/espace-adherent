@@ -40,7 +40,7 @@ class MembershipRequestHandler
         AdherentFactory $adherentFactory,
         PostAddressFactory $addressFactory,
         CallbackManager $callbackManager,
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         ObjectManager $manager,
         ReferentTagManager $referentTagManager,
         ReferentZoneManager $referentZoneManager,
@@ -52,7 +52,7 @@ class MembershipRequestHandler
         $this->addressFactory = $addressFactory;
         $this->dispatcher = $dispatcher;
         $this->callbackManager = $callbackManager;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->manager = $manager;
         $this->referentTagManager = $referentTagManager;
         $this->referentZoneManager = $referentZoneManager;

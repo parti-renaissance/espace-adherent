@@ -14,9 +14,9 @@ class PayboxPaymentUnsubscription
     private $request;
     private $mailer;
 
-    public function __construct(MailerService $mailer, LexikRequest $request)
+    public function __construct(MailerService $transactionalMailer, LexikRequest $request)
     {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->request = $request;
     }
 

@@ -4,6 +4,8 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
+use App\Repository\SocialShareCategoryRepository;
+use App\Repository\SocialShareRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,14 +29,15 @@ class SocialShareController extends Controller
     /**
      * @Route("/jepartage/{slug}", name="app_social_share_show", methods={"GET"})
      */
-    public function showAction(SocialShareCategory $category): Response
-    {
-        $manager = $this->getDoctrine();
-
+    public function showAction(
+        SocialShareCategory $category,
+        SocialShareCategoryRepository $socialShareCategoryRepository,
+        SocialShareRepository $socialShareRepository
+    ): Response {
         return $this->render('social_share/wall.html.twig', [
             'currentCategory' => $category,
-            'socialShareCategories' => $manager->getRepository(SocialShareCategory::class)->findForWall(),
-            'socialShares' => $this->getDoctrine()->getRepository(SocialShare::class)->findForWall($category),
+            'socialShareCategories' => $socialShareCategoryRepository->findForWall(),
+            'socialShares' => $socialShareRepository->findForWall($category),
         ]);
     }
 

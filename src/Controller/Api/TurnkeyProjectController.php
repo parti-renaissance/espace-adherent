@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\TurnkeyProject;
 use App\Repository\TurnkeyProjectRepository;
 use JMS\Serializer\SerializationContext;
-use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +22,7 @@ class TurnkeyProjectController extends Controller
      */
     public function getApprovedTurnkeyProjectAction(
         TurnkeyProjectRepository $repository,
-        Serializer $serializer
+        SerializerInterface $serializer
     ): Response {
         return new JsonResponse(
             $serializer->serialize($repository->findApprovedOrdered(), 'json', SerializationContext::create()->setGroups(['turnkey_project_list'])),
@@ -48,7 +48,7 @@ class TurnkeyProjectController extends Controller
      */
     public function getPinnedTurnkeyProjectAction(
         TurnkeyProjectRepository $repository,
-        Serializer $serializer
+        SerializerInterface $serializer
     ): Response {
         return new JsonResponse(
             $serializer->serialize($repository->findPinned(), 'json', SerializationContext::create()->setGroups(['turnkey_project_read'])),
@@ -62,7 +62,7 @@ class TurnkeyProjectController extends Controller
      * @Route("/{slug}", name="api_turnkey_project", methods={"GET"})
      * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
      */
-    public function getTurnkeyProjectAction(TurnkeyProject $turnkeyProject, Serializer $serializer): Response
+    public function getTurnkeyProjectAction(TurnkeyProject $turnkeyProject, SerializerInterface $serializer): Response
     {
         return new JsonResponse(
             $serializer->serialize($turnkeyProject, 'json', SerializationContext::create()->setGroups(['turnkey_project_read'])),

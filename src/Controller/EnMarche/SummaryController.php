@@ -19,13 +19,13 @@ class SummaryController extends Controller
      * @Route(name="app_summary_index", methods={"GET"})
      * @Entity("summary", expr="repository.findOneBySlug(slug)")
      */
-    public function indexAction(Summary $summary): Response
+    public function indexAction(Summary $summary, SummaryManager $manager, MemberActivityTracker $tracker): Response
     {
-        $this->get(SummaryManager::class)->setUrlProfilePicture($summary);
+        $manager->setUrlProfilePicture($summary);
 
         return $this->render('summary/index.html.twig', [
             'summary' => $summary,
-            'recent_activities' => $this->get(MemberActivityTracker::class)->getRecentActivitiesForAdherent($summary->getMember()),
+            'recent_activities' => $tracker->getRecentActivitiesForAdherent($summary->getMember()),
         ]);
     }
 }

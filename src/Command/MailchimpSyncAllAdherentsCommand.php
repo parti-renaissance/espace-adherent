@@ -40,7 +40,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
     protected function configure()
     {
         $this
-            ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED)
             ->addOption('ref-tags', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('disabled-only', null, InputOption::VALUE_NONE)
             ->addOption('certified-only', null, InputOption::VALUE_NONE)
