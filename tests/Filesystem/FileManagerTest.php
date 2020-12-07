@@ -81,6 +81,6 @@ class FileManagerTest extends TestCase
         $this->assertSame('image.jpg', $file->getOriginalFilename());
         $this->assertSame('jpg', $file->getExtension());
         $this->assertSame('image/jpeg', $file->getMimeType());
-        $this->assertSame(631, $file->getSize());
+        $this->assertSame(285, $file->getSize());
     }
 }
