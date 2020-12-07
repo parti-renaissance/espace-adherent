@@ -2,6 +2,7 @@
 
 namespace App\Repository\Geo;
 
+use App\Entity\Geo\City;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use App\Entity\ReferentTag;
@@ -235,5 +236,24 @@ class ZoneRepository extends ServiceEntityRepository
         ;
 
         return \count($zones) > 0;
+    }
+
+    public function findByPostalCode(string $postalCode): array
+    {
+        $postalCode = str_pad($postalCode, 5, '0', \STR_PAD_LEFT);
+
+        return $this->createQueryBuilder('zone')
+            ->innerJoin(City::class, 'city', Join::WITH, 'zone.code = city.code')
+            ->leftJoin('zone.parents', 'parent')
+            ->where('(city.postalCode LIKE :postal_code_1 OR city.postalCode LIKE :postal_code_2)')
+            ->andWhere('parent.code = :dpt AND parent.type = :dpt_type AND zone.type = :city')
+            ->setParameter('postal_code_1', $postalCode.'%')
+            ->setParameter('postal_code_2', '%,'.$postalCode.'%')
+            ->setParameter('dpt', substr($postalCode, 0, 2))
+            ->setParameter('dpt_type', Zone::DEPARTMENT)
+            ->setParameter('city', Zone::CITY)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

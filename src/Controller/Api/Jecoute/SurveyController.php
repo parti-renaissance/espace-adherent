@@ -7,6 +7,7 @@ use App\Form\Jecoute\DataSurveyFormType;
 use App\Jecoute\DataSurveyAnswerHandler;
 use App\Jecoute\SurveyTypeEnum;
 use App\OAuth\Model\DeviceApiUser;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -34,6 +35,7 @@ class SurveyController extends Controller
         Request $request,
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
+        ZoneRepository $zoneRepository,
         SerializerInterface $serializer,
         UserInterface $user
     ): Response {
@@ -47,10 +49,13 @@ class SurveyController extends Controller
             }
         }
 
-        $localSurveys = $user instanceof Adherent
-            ? $localSurveyRepository->findAllByAdherent($user)
-            : $localSurveyRepository->findAllByPostalCode($postalCode)
-        ;
+        if ($user instanceof Adherent) {
+            $zones = $user->getZones()->toArray();
+        } else {
+            $zones = $zoneRepository->findByPostalCode($postalCode);
+        }
+
+        $localSurveys = $localSurveyRepository->findAllByZones($zones);
 
         return new JsonResponse(
             $serializer->serialize(
