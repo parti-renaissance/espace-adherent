@@ -86,7 +86,7 @@ class CityAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('department', null, [
-                'label' => 'Départment',
+                'label' => 'Département',
                 'show_filter' => true,
             ])
         ;
@@ -105,7 +105,7 @@ class CityAdmin extends AbstractAdmin
                 'label' => 'Code INSEE',
             ])
             ->add('department', null, [
-                'label' => 'Départment',
+                'label' => 'Département',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

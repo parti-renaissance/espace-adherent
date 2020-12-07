@@ -19,11 +19,6 @@ class JecouteManagerController extends AbstractJecouteController
         return JecouteSpaceEnum::MANAGER_SPACE;
     }
 
-    protected function getLocalSurveys(Adherent $adherent): array
-    {
-        return $this->localSurveyRepository->findAllByZonesWithStats($this->getZones($adherent));
-    }
-
     protected function getZones(Adherent $adherent): array
     {
         return [$adherent->getJecouteManagedArea()->getZone()];

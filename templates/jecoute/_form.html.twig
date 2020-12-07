@@ -19,11 +19,13 @@
             {{ form_widget(form.published, { attr: { class: 'committee_event__form__name' } }) }}
             {{ form_label(form.published, 'Publier le questionnaire') }}
         </div>
-        <div class="form__checkbox">
-            {{ form_errors(form.blockedChanges) }}
-            {{ form_widget(form.blockedChanges, { attr: { class: 'committee_event__form__name' } }) }}
-            {{ form_label(form.blockedChanges, 'Bloquer la modification du questionnaire aux autres rôles') }}
-        </div>
+        {% if form.blockedChanges is defined %}
+            <div class="form__checkbox">
+                {{ form_errors(form.blockedChanges) }}
+                {{ form_widget(form.blockedChanges, { attr: { class: 'committee_event__form__name' } }) }}
+                {{ form_label(form.blockedChanges, 'Bloquer la modification du questionnaire aux autres rôles') }}
+            </div>
+        {% endif %}
     </div>
 
     <div class="information__modal inf-modl--pale-blue b__nudge--top-50 b__nudge--bottom-large">

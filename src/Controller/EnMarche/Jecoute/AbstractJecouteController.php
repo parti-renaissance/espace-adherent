@@ -5,7 +5,6 @@ namespace App\Controller\EnMarche\Jecoute;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
-use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Exporter\SurveyExporter;
@@ -107,7 +106,7 @@ abstract class AbstractJecouteController extends Controller
      *     methods={"GET|POST"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")
+     * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('CAN_EDIT_SURVEY', survey)")
      */
     public function jecouteSurveyEditAction(
         Request $request,
@@ -115,9 +114,15 @@ abstract class AbstractJecouteController extends Controller
         ObjectManager $manager,
         SuggestedQuestionRepository $suggestedQuestionRepository
     ): Response {
-        $zones = $this->getZones($this->getMainUser($request->getSession()));
+        $author = $survey->getAuthor();
+        if ($editByAuthor = $author === $this->getMainUser($request->getSession())) {
+            $zones = $this->getZones($author);
+        } else {
+            $zones = [$survey->getZone()];
+        }
+
         $form = $this
-            ->createForm(SurveyFormType::class, $survey, ['zones' => $zones])
+            ->createForm(SurveyFormType::class, $survey, ['zones' => $zones, 'edit_by_author' => $editByAuthor])
             ->handleRequest($request)
         ;
 
@@ -138,21 +143,25 @@ abstract class AbstractJecouteController extends Controller
     /**
      * @Route(
      *     path="/questionnaire/{uuid}",
-     *     name="national_survey_show",
+     *     name="survey_show",
      *     requirements={"uuid": "%pattern_uuid%"},
      *     methods={"GET"}
      * )
      *
-     * @Entity("nationalSurvey", expr="repository.findOnePublishedByUuid(uuid)")
+     * @Entity("survey", expr="repository.findOnePublishedByUuid(uuid)")
      */
-    public function jecouteNationalSurveyShowAction(NationalSurvey $nationalSurvey): Response
+    public function jecouteSurveyShowAction(Survey $survey): Response
     {
-        $form = $this->createForm(
-            SurveyFormType::class, $nationalSurvey, ['disabled' => true]
+        $isLocalSurvey = $survey instanceof LocalSurvey;
+        $form = $this->createForm(SurveyFormType::class, $survey, [
+                'zones' => $isLocalSurvey ? [$survey->getZone()] : [],
+                'disabled' => true,
+            ]
         );
 
         return $this->renderTemplate('jecoute/show.html.twig', [
             'form' => $form->createView(),
+            'survey_type' => $isLocalSurvey ? 'local' : 'national',
         ]);
     }
 
@@ -175,6 +184,24 @@ abstract class AbstractJecouteController extends Controller
         SurveyExporter $exporter
     ): Response {
         if ($format = $request->query->get('export')) {
+            if ($survey instanceof LocalSurvey) {
+                $surveyZone = $survey->getZone();
+                $zones = $this->getZones($this->getMainUser($request->getSession()));
+                $isParentZone = false;
+
+                foreach ($zones as $zone) {
+                    if (\in_array($surveyZone, $zone->getParents())) {
+                        $isParentZone = true;
+
+                        break;
+                    }
+                }
+
+                if ($isParentZone) {
+                    return $exporter->export($survey, $format, false, $zones);
+                }
+            }
+
             return $exporter->export($survey, $format, false);
         }
 
@@ -230,12 +257,15 @@ abstract class AbstractJecouteController extends Controller
 
     abstract protected function getSpaceName(): string;
 
+    abstract protected function getZones(Adherent $adherent): array;
+
     /**
      * @return LocalSurvey[]
      */
-    abstract protected function getLocalSurveys(Adherent $adherent): array;
-
-    abstract protected function getZones(Adherent $adherent): array;
+    protected function getLocalSurveys(Adherent $adherent): array
+    {
+        return $this->localSurveyRepository->findAllByZonesWithStats($this->getZones($adherent));
+    }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {

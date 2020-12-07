@@ -52,10 +52,12 @@ class LocalSurveyRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('survey')
             ->leftJoin('survey.zone', 'zone')
+            ->leftJoin('zone.parents', 'parent')
+            ->leftJoin('zone.children', 'child')
             ->addSelect('zone')
             ->addSelect(sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
             ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
-            ->where('survey.zone IN (:zones)')
+            ->where('(zone IN (:zones) OR parent IN (:zones) OR child IN (:zones))')
             ->setParameter('zones', $zones)
             ->getQuery()
             ->getResult()

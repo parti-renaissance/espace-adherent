@@ -43,10 +43,15 @@ class SurveyFormType extends AbstractType
                     'class' => Zone::class,
                     'choices' => $options['zones'],
                 ])
-                ->add('blockedChanges', CheckboxType::class, [
-                    'required' => false,
-                ])
             ;
+
+            if (!$options['disabled'] && $options['edit_by_author']) {
+                $builder
+                    ->add('blockedChanges', CheckboxType::class, [
+                        'required' => false,
+                    ])
+                ;
+            }
         }
 
         if (!$options['disabled']) {
@@ -59,11 +64,13 @@ class SurveyFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefined('zones')
+            ->setDefined(['zones', 'edit_by_author'])
             ->setAllowedTypes('zones', [Zone::class.'[]'])
+            ->setAllowedTypes('edit_by_author', 'bool')
             ->setDefaults([
                 'data_class' => Survey::class,
                 'zones' => [],
+                'edit_by_author' => false,
             ])
         ;
     }

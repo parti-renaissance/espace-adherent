@@ -39,7 +39,7 @@ class SurveyExporter
         $this->translator = $translator;
     }
 
-    public function export(Survey $survey, string $format, bool $fromAdmin = false): StreamedResponse
+    public function export(Survey $survey, string $format, bool $fromAdmin = false, array $zones = []): StreamedResponse
     {
         return $this->exporter->getResponse(
             $format,
@@ -50,7 +50,7 @@ class SurveyExporter
                 (new \DateTime())->format('YmdHis'),
                 $format
             ),
-            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey), function (array $data) use ($survey, $fromAdmin) {
+            new IteratorCallbackSourceIterator($this->dataSurveyRepository->iterateForSurvey($survey, $zones), function (array $data) use ($survey, $fromAdmin) {
                 /** @var DataSurvey $dataSurvey */
                 $dataSurvey = $data[0];
 

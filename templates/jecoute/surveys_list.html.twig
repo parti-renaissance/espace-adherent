@@ -23,6 +23,9 @@
                     {
                         key: 'questionsCount',
                         name: 'Nombre de questions',
+                        style: {
+                            'width': 80,
+                        },
                     },
                     {
                         key: 'responsesCount',
@@ -32,8 +35,8 @@
                         key: 'zone',
                         name: 'Zone',
                         style: {
-                            'min-width': 125,
-                        }
+                            'minWidth': 200,
+                        },
                     },
                     {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                         {
@@ -45,8 +48,8 @@
                         key: 'publish',
                         name: "Publication",
                         style: {
-                            width: 100,
-                        }
+                            width: 70,
+                        },
                     },
                     {
                         key: 'menu',
@@ -73,14 +76,26 @@
                                 '<span class="status status__2">Non publié</span>',
                         } %}
 
+                        {% if is_granted('CAN_EDIT_SURVEY', survey) %}
+                            {% set menu = [
+                                {
+                                    label: 'Éditer',
+                                    url: path("app_jecoute_#{space_name}_local_survey_edit", {uuid: survey.uuid})
+                                }
+                            ] %}
+                        {% else %}
+                            {% set menu = [
+                                {
+                                    label: 'Voir',
+                                    url: path("app_jecoute_#{space_name}_survey_show", {uuid: survey.uuid})
+                                }
+                            ] %}
+                        {% endif %}
+
                         {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                             {% set row = row|merge({
                                 author: survey.author ? survey.author.fullName : 'Ancien adhérent',
-                                menu: [
-                                    {
-                                        label: 'Éditer',
-                                        url: path("app_jecoute_#{space_name}_local_survey_edit", {uuid: survey.uuid})
-                                    },
+                                menu: menu|merge([
                                     {
                                         label: 'Dupliquer',
                                         url: path("app_jecoute_#{space_name}_local_survey_duplicate", {uuid: survey.uuid})
@@ -93,15 +108,11 @@
                                         label: 'Télécharger les résultats',
                                         url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid, export: 'xls'})
                                     },
-                                ]
+                                ])
                             }) %}
                         {% else %}
                             {% set row = row|merge({
-                                menu: [
-                                    {
-                                        label: 'Voir',
-                                        url: path("app_jecoute_#{space_name}_national_survey_show", {uuid: survey.uuid})
-                                    },
+                                menu: menu|merge([
                                     {
                                         label: 'Statistiques',
                                         url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
@@ -110,7 +121,7 @@
                                         label: 'Télécharger les résultats',
                                         url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid, export: 'xls'})
                                     },
-                                ]
+                                ])
                             }) %}
                         {% endif %}
 

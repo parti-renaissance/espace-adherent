@@ -1119,7 +1119,7 @@ geo_zone.zones: Zones
 geo_zone.country: Pays
 geo_zone.custom: Autres
 geo_zone.region: Région
-geo_zone.department: Départment
+geo_zone.department: Département
 geo_zone.district: Circonscriptions électorales
 geo_zone.city: Ville
 geo_zone.borough: Arrondissement

@@ -26,6 +26,9 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         /** @var Adherent $referent2 */
         $referent2 = $this->getReference('adherent-19');
 
+        /** @var Adherent $headedRegionalCandidate */
+        $headedRegionalCandidate = $this->getReference('adherent-3');
+
         /** @var Administrator $administrator1 */
         $administrator1 = $this->getReference('administrator-1');
 
@@ -37,6 +40,8 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
          */
         $localSurvey1 = new LocalSurvey($referent1, 'Questionnaire numéro 1', true);
         $localSurvey2 = new LocalSurvey($referent2, 'Un deuxième questionnaire', true);
+        $localSurvey3 = new LocalSurvey($headedRegionalCandidate, 'Un questionnaire de la Région', true);
+        $localSurvey4 = new LocalSurvey($referent1, 'Un questionnaire avec modification bloquée', true, true);
 
         /** @var Question $question1 */
         $question1 = $this->getReference('question-1');
@@ -76,8 +81,13 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 
         $localSurvey2->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'));
 
+        $localSurvey3->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));
+        $localSurvey4->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+
         $manager->persist($localSurvey1);
         $manager->persist($localSurvey2);
+        $manager->persist($localSurvey3);
+        $manager->persist($localSurvey4);
 
         $this->addReference('survey-1', $localSurvey1);
 
