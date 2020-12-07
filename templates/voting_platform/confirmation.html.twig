@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block voting_platform_content %}
-    <div class="l__wrapper{{ vote_command.isMajorityVote ? '--medium' : '--slim' }}">
+    <div class="l__wrapper{{ vote_command.isMajorityVote ? '--medium' : '--narrow' }}">
         {% include 'voting_platform/confirmation/' ~ (vote_command.isMajorityVote ? '_majority_vote') ~ '_confirmation_block.html.twig' %}
     </div>
 
