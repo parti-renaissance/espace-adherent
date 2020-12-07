@@ -11,7 +11,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-final class ZoneRepository extends ServiceEntityRepository
+class ZoneRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -178,6 +178,34 @@ final class ZoneRepository extends ServiceEntityRepository
                 'paris_dpt' => '75',
                 'corse' => 'Corse',
             ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Finds zones by coordinates of the point.
+     *
+     * @return Zone[]
+     */
+    public function findByCoordinatesAndTypes(float $latitude, float $longitude, ?array $types): array
+    {
+        $qb = $this
+            ->createQueryBuilder('zone')
+            ->join('zone.geoData', 'geo_data')
+            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',:longitude,' ',:latitude,')')), geo_data.geoShape) = 1")
+            ->setParameter('latitude', $latitude)
+            ->setParameter('longitude', $longitude)
+        ;
+
+        if ($types) {
+            $qb
+                ->andWhere($qb->expr()->in('zone.type', ':types'))
+                ->setParameter('types', $types)
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->getResult()
         ;

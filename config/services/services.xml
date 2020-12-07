@@ -250,7 +250,10 @@
         <service id="App\Election\ElectionManager" />
 
         <!-- Deputy -->
-        <service id="App\Deputy\Subscriber\BindAdherentDistrictSubscriber" />
+        <service id="App\Deputy\Subscriber\BindAdherentDistrictSubscriber">
+            <deprecated>The "%service_id%" service is deprecated.</deprecated>
+        </service>
+        <service id="App\Deputy\Subscriber\BindAdherentZoneSubscriber" />
         <service id="App\Deputy\DistrictLoader" public="true" />
         <service id="App\Deputy\LightFileDistrictLoader" public="true" />
         <service id="App\Deputy\DeputyMessageNotifier" public="true">

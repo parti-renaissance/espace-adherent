@@ -18,6 +18,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @group legacy
+ */
 class BindAdherentDistrictSubscriberTest extends TestCase
 {
     private $manager;
