@@ -6799,10 +6799,10 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-select2@^4.0.6-rc.1:
-  version "4.0.11"
-  resolved "https://registry.yarnpkg.com/select2/-/select2-4.0.11.tgz#85c6243971947a798d96808ab608f75d5befa2d1"
-  integrity sha512-8Z/yd43F5EMOkz2Mo+aE7nOx2i8nSuxGZVFkbeyCklkU+WTwCa+xdZqG+IPgZ75lkEkLD+X+f8vEG9aKBxISqA==
+select2@^4.0.13:
+  version "4.0.13"
+  resolved "https://registry.yarnpkg.com/select2/-/select2-4.0.13.tgz#0dbe377df3f96167c4c1626033e924372d8ef44d"
+  integrity sha512-1JeB87s6oN/TDxQQYCvS5EFoQyvV6eYMZZ0AeA4tdFDYWN3BAGZ8npr17UBFddU0lgAt3H0yjX3X6/ekOj1yjw==
 
 select@^1.1.2:
   version "1.1.2"
