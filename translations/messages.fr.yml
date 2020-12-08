@@ -1117,16 +1117,16 @@ page.layout.municipales: Municipales
 
 geo_zone.zones: Zones
 geo_zone.country: Pays
-geo_zone.custom: Autres
+geo_zone.custom: Autre
 geo_zone.region: Région
 geo_zone.department: Département
-geo_zone.district: Circonscriptions électorales
+geo_zone.district: Circonscription électorale
 geo_zone.city: Ville
 geo_zone.borough: Arrondissement
 geo_zone.city_community: Communauté de commune
 geo_zone.canton: Canton
-geo_zone.foreign_district: Circonscriptions de l'étranger
-geo_zone.consular_district: Circonscriptions consulaire
+geo_zone.foreign_district: Circonscription FDE
+geo_zone.consular_district: Circonscription consulaire
 
 #
 # Candidate
