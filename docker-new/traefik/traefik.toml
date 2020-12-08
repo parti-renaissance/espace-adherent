@@ -1,0 +1,26 @@
+debug = false
+logLevel = "INFO"
+
+defaultEntryPoints = ["http", "https", "dashboard"]
+
+[api]
+entryPoint = "dashboard"
+dashboard = true
+debug = true
+
+[entryPoints]
+  [entryPoints.dashboard]
+    address = ":9000"
+  [entryPoints.http]
+    address = ":80"
+  [entryPoints.https]
+    address = ":443"
+    [entryPoints.https.tls]
+      [[entryPoints.https.tls.certificates]]
+        certFile = "/etc/ssl/local.crt"
+        keyFile = "/etc/ssl/local.key"
+
+[docker]
+domain = "vcap.me"
+watch = true
+exposedbydefault = false

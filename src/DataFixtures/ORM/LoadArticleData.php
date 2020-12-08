@@ -5,9 +5,11 @@ namespace App\DataFixtures\ORM;
 use App\Content\ArticleFactory;
 use App\Content\MediaFactory;
 use App\Entity\ArticleCategory;
+use Cocur\Slugify\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
+use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -120,8 +122,8 @@ class LoadArticleData extends Fixture
         foreach ([$newsCategory, $videosCategory, $speechCategory, $mediasCategory, $communiquesCategory, $opinionsCategory, $noDisplayCategory] as $category) {
             for ($i = 0; $i < 25; ++$i) {
                 $manager->persist($this->articleFactory->createFromArray([
-                    'title' => mb_substr($faker->sentence(), 0, 60),
-                    'slug' => $faker->slug(),
+                    'title' => $title = mb_substr($faker->sentence(), 0, 60),
+                    'slug' => Urlizer::urlize($title),
                     'description' => $faker->text(),
                     'media' => $media,
                     'displayMedia' => false,

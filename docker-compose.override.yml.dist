@@ -1,68 +1,51 @@
-version: "3.2"
+version: "3.7"
 
 # You can connect other docker app like api.en-marche.fr by setting up an external network.
 # First, create that network by running `docker network create enmarche`.
 # Then you can uncomment this section and specify networks required by each
 # container by also uncommenting services.app.networks section for example.
 # If you want to share the RabbitMQ container, make sure all your app are configured
-# with the right connection config.
-#
-#networks:
-#    enmarche:
-#        external:
-#            name: enmarche
+# with the right connection config.
 
+networks:
+    proxy:
+        external:
+            name: proxy
 
-#services:
-#    nginx-proxy:
-#        image: jwilder/nginx-proxy
-#        networks:
-#            - default
-#            - enmarche
-#        ports:
-#            - "80:80"
-#        volumes:
-#            - /var/run/docker.sock:/tmp/docker.sock:ro
-
-#    app:
-#        networks:
-#            default:
-#                aliases:
-#                    - test.enmarche.code
-#                    - enmarche.code
-#            enmarche:
-#                aliases:
-#                    - test.enmarche.code
-#                    - enmarche.code
-#        volumes:
-#            - "~/.composer:/home/enmarche/.composer"
-#        environment:
-#            - BLACKFIRE_CLIENT_ID
-#            - BLACKFIRE_CLIENT_TOKEN
-#            - VIRTUAL_HOST=enmarche.code,test.enmarche.code,legislatives.enmarche.code,m.enmarche.code,nous-reussirons.enmarche.code
-#            - VIRTUAL_PORT=80
+services:
+    nginx:
+        networks:
+            default:
+                aliases:
+                    - front.enmarche.code
+                    - test.enmarche.code
+                    - enmarche.code
+            proxy:
+                aliases:
+                    - front.enmarche.code
+                    - test.enmarche.code
+                    - enmarche.code
+        volumes:
+            - "~/.composer:/home/enmarche/.composer"
+        environment:
+            - VIRTUAL_HOST=front.enmarche.code,enmarche.code,test.enmarche.code,m.enmarche.code
+            - VIRTUAL_PORT=80
 
 #    rabbitmq:
 #        networks:
-#            - enmarche
+#            default: ~
+#            proxy:
+#                aliases:
+#                    - rabbitmq-enmarche
 #        environment:
 #            - VIRTUAL_HOST=rabbitmq.enmarche.code
 #            - VIRTUAL_PORT=15672
-
-#    pma:
-#        image: phpmyadmin/phpmyadmin
-#        depends_on:
-#            - db
-#        environment:
-#            PMA_HOST: db
-#            PMA_USER: root
-#            PMA_PASSWORD: root
-#            VIRTUAL_HOST: pma.enmarche.code
-#            VIRTUAL_PORT: 80
-
-#    db:
 #        ports:
-#            - "3306:3306"
+#            - '5672:5672'
+
+    db:
+        ports:
+            - "3306:3306"
 
 #    blackfire:
 #        image: blackfire/blackfire
@@ -70,7 +53,13 @@ version: "3.2"
 #            BLACKFIRE_LOG_LEVEL: 4
 #            BLACKFIRE_SERVER_ID:
 #            BLACKFIRE_SERVER_TOKEN:
+    redis:
+        ports:
+            - 6379:6379
 
 #    selenium:
+#        networks:
+#            - default
+#            - proxy
 #        ports:
 #            - 5900:5900

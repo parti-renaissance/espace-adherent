@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+
+if [ -n "${FPM_ENDPOINT}" ]; then
+    echo "Using ${FPM_ENDPOINT} as php-fpm endpoint"
+    echo "upstream php-upstream { server ${FPM_ENDPOINT}; }" > /etc/nginx/conf.d/upstream.conf
+fi
+
+nginx -t || true
+
+exec "$@"

@@ -1,0 +1,89 @@
+#!/usr/bin/env sh
+set -e
+
+uid=$(stat -c %u /app)
+gid=$(stat -c %g /app)
+
+#sed -i "s/user = www-data/user = enmarche/g" /usr/local/etc/php-fpm.conf
+#sed -i "s/group = www-data/group = enmarche/g" /etc/php/7.4/fpm/pool.d/www.conf
+sed -i -r "s/enmarche:x:[0-9]+:[0-9]+:/enmarche:x:$uid:$gid:/g" /etc/passwd
+sed -i -r "s/enmarche:x:[0-9]+:/enmarche:x:$gid:/g" /etc/group
+
+chown $uid:$gid /home/enmarche
+
+# If any command is provided, fall back to the default entrypoint
+if [ "$#" -ne 0 ]; then
+    exec su-exec enmarche "$@"
+fi
+
+PHP_FPM_PID='/var/run/php-fpm.pid'
+
+wait_for_pid () {
+    try=0
+
+    while test $try -lt 35 ; do
+        if [ ! -f "$1" ] ; then
+            try=''
+            break
+        fi
+
+        echo -n .
+        try=`expr $try + 1`
+        sleep 1
+    done
+}
+
+clean_up () {
+    echo "Killing $(cat $PHP_FPM_PID)"
+
+    kill -QUIT `cat $PHP_FPM_PID`
+    wait_for_pid $PHP_FPM_PID
+
+    echo "Done!"
+    exit 0
+}
+
+echo -e "\n===== Testing PHP config\n"
+php-fpm -v
+php-fpm -t
+
+if command -v nginx > /dev/null; then
+    echo -e "\n===== Testing NGINX config\n"
+    nginx -t
+fi
+
+mkdir -p var/cache var/logs
+# The www-data user has a random uid/guid
+#chown -R $(stat -c "%u" .):$(stat -c "%g" .) var
+#setfacl -R -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true # Can fail on OSx
+#setfacl -dR -m u:www-data:rwX -m u:"$(stat -c "%u" .)":rwX var 2>/dev/null || true
+
+##if [ -n "${INIT_DB}" ]; then
+##    if [ -n "${DANGEROUSLY_LOAD_FIXTURES}" ]; then
+##      echo -e "\n===== Init db and fixtures\n"
+##      bin/post-install-dev.sh || true
+##    else
+##      echo -e "\n===== Run migrations\n"
+##      bin/update-db.sh || true
+##    fi
+##fi
+#
+echo -e "\n===== Running FPM only for localhost\n"
+php-fpm -d listen=127.0.0.1:9000 -D
+
+echo -e "\n===== Sending a GET / request in order to warmup the symfony cache\n"
+(REDIRECT_STATUS=true SCRIPT_FILENAME=/app/public/index.php HTTP_HOST=127.0.0.1 REMOTE_ADDR=127.0.0.1 REQUEST_URI=/connexion REQUEST_METHOD=GET HTTP_USER_AGENT=probe cgi-fcgi -bind -connect 127.0.0.1:9000  | head -n 8) || (echo "Unable to run the GET / request" && true)
+killall -KILL php-fpm || true
+
+echo -e "\n===== Creating signal listener\n"
+trap clean_up QUIT TERM INT
+
+if command -v nginx > /dev/null; then
+    echo -e "\n===== Starting NGINX\n"
+    nginx
+fi
+
+echo -e "\n===== Starting FMP\n"
+exec php-fpm -F --pid $PHP_FPM_PID &
+
+while true; do sleep 1; done
