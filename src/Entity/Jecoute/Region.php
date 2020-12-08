@@ -37,8 +37,6 @@ class Region
      * @var UuidInterface
      *
      * @ORM\Column(type="uuid")
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
     protected $uuid;
 

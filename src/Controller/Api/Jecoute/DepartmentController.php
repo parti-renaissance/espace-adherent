@@ -36,7 +36,7 @@ class DepartmentController extends Controller
         }
 
         return new JsonResponse(
-            $serializer->serialize($department, 'json', ['groups' => ['department_read']]),
+            $serializer->serialize($department, 'json', ['groups' => ['department_read', 'jecoute_department_read']]),
             JsonResponse::HTTP_OK,
             [],
             true

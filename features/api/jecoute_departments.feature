@@ -25,15 +25,16 @@ Feature:
       "code": "06",
       "name": "Alpes-Maritimes",
       "region": {
-        "uuid": "62c6bf4c-72c9-4a29-bd5e-bf27b8ee2228",
         "code": "93",
         "name": "Provence-Alpes-Côte d'Azur",
-        "subtitle": "Bienvenue en PACA",
-        "description": "Description PACA",
-        "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
-        "banner": null,
-        "primary_color": "blue",
-        "external_link": null
+        "campaign" : {
+          "subtitle": "Bienvenue en PACA",
+          "description": "Description PACA",
+          "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
+          "banner": null,
+          "primary_color": "blue",
+          "external_link": null
+        }
       }
     }
     """
@@ -46,16 +47,33 @@ Feature:
       "code": "59",
       "name": "Nord",
       "region": {
-        "uuid": "c91391e9-4a08-4d14-8960-6c3508c1dddc",
         "code": "32",
         "name": "Hauts-de-France",
-        "subtitle": "Bienvenue en Hauts-de-France",
-        "description": "Description des Hauts-de-France",
-        "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
-        "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg",
-        "primary_color": "green",
-        "external_link": "https://en-marche.fr"
+        "campaign": {
+          "subtitle": "Bienvenue en Hauts-de-France",
+          "description": "Description des Hauts-de-France",
+          "logo": "http://test.enmarche.code/assets/files/jemarche/regions/region-logo.jpg",
+          "banner": "http://test.enmarche.code/assets/files/jemarche/regions/region-banner.jpg",
+          "primary_color": "green",
+          "external_link": "https://en-marche.fr"
+        }
       }
+    }
+    """
+
+    When I send a "GET" request to "/api/jecoute/departments/77700"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "region": {
+            "code": "11",
+            "name": "Île-de-France",
+            "campaign": null
+        },
+        "code": "77",
+        "name": "Seine-et-Marne"
     }
     """
 
