@@ -71,7 +71,7 @@ class FileManagerTest extends TestCase
         $file->setExtension(null);
         $file->setMimeType(null);
         $file->setSize(null);
-        $uploadedFile = new UploadedFile(__DIR__.'/../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, \UPLOAD_ERR_OK, true);
+        $uploadedFile = new UploadedFile(__DIR__.'/../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', \UPLOAD_ERR_OK, true);
         $file->setFile($uploadedFile);
 
         $this->fileManager->update($file);
