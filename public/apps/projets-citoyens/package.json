@@ -6,7 +6,7 @@
   "dependencies": {
     "axios": "^0.18.1",
     "history": "^4.7.2",
-    "localforage": "^1.7.2",
+    "localforage": "^1.9.0",
     "lodash": "^4.17.20",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
