@@ -4,7 +4,6 @@ namespace App\Repository\Geo;
 
 use App\Entity\Geo\City;
 use App\Entity\Geo\Department;
-use App\Entity\Jecoute\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
@@ -32,7 +31,6 @@ final class DepartmentRepository extends ServiceEntityRepository
             ->andWhere('city.postalCode LIKE :postal_code')
             ->setParameter('postal_code', '%'.$postalCode.'%')
             ->innerJoin('department.region', 'region')
-            ->innerJoin(Region::class, 'jecoute_region', Join::WITH, 'region = jecoute_region.geoRegion')
             ->getQuery()
             ->getOneOrNullResult()
         ;
