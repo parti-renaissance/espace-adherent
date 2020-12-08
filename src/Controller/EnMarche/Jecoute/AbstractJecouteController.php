@@ -79,7 +79,7 @@ abstract class AbstractJecouteController extends Controller
         }
 
         $form = $this
-            ->createForm(SurveyFormType::class, $localSurvey, ['zones' => $zones])
+            ->createForm(SurveyFormType::class, $localSurvey, ['zones' => $zones, 'edit_by_author' => true])
             ->handleRequest($request)
         ;
 
@@ -106,7 +106,7 @@ abstract class AbstractJecouteController extends Controller
      *     methods={"GET|POST"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('CAN_EDIT_SURVEY', survey)")
+     * @Security("is_granted('CAN_EDIT_SURVEY', survey)")
      */
     public function jecouteSurveyEditAction(
         Request $request,

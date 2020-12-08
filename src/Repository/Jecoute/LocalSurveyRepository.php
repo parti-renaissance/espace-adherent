@@ -47,6 +47,7 @@ class LocalSurveyRepository extends ServiceEntityRepository
             ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
             ->where('(zone IN (:zones) OR parent IN (:zones) OR child IN (:zones))')
             ->setParameter('zones', $zones)
+            ->orderBy('survey.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;

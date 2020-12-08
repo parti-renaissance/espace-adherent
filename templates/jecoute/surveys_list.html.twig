@@ -97,10 +97,6 @@
                                 author: survey.author ? survey.author.fullName : 'Ancien adhérent',
                                 menu: menu|merge([
                                     {
-                                        label: 'Dupliquer',
-                                        url: path("app_jecoute_#{space_name}_local_survey_duplicate", {uuid: survey.uuid})
-                                    },
-                                    {
                                         label: 'Statistiques',
                                         url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
                                     },

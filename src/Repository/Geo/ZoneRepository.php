@@ -241,15 +241,19 @@ class ZoneRepository extends ServiceEntityRepository
     public function findByPostalCode(string $postalCode): array
     {
         $postalCode = str_pad($postalCode, 5, '0', \STR_PAD_LEFT);
+        $dpt = substr($postalCode, 0, 2);
+        if (\in_array($dpt, [97, 98])) {
+            $dpt = substr($postalCode, 0, 3);
+        }
 
         return $this->createQueryBuilder('zone')
             ->innerJoin(City::class, 'city', Join::WITH, 'zone.code = city.code')
             ->leftJoin('zone.parents', 'parent')
             ->where('(city.postalCode LIKE :postal_code_1 OR city.postalCode LIKE :postal_code_2)')
-            ->andWhere('parent.code = :dpt AND parent.type = :dpt_type AND zone.type = :city')
+            ->andWhere('parent.type = :dpt_type AND parent.code = :dpt_code AND zone.type = :city')
             ->setParameter('postal_code_1', $postalCode.'%')
             ->setParameter('postal_code_2', '%,'.$postalCode.'%')
-            ->setParameter('dpt', substr($postalCode, 0, 2))
+            ->setParameter('dpt_code', $dpt)
             ->setParameter('dpt_type', Zone::DEPARTMENT)
             ->setParameter('city', Zone::CITY)
             ->getQuery()
