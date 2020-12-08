@@ -14,7 +14,7 @@ references:
             - EXEC: "$(DOCKER_COMPOSE) exec -T app"
         machine:
             enabled: true
-            image: circleci/classic:201711-01
+            image: ubuntu-1604:202010-01
 
     generate_docker_hashes: &generate_docker_hashes
         run: |
