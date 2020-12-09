@@ -42,7 +42,7 @@ export default class MessageStatusLoader extends React.Component {
                 this.setState(
                     state => ({
                         synchronized: data.synchronized,
-                        recipientCount: data.recipientCount,
+                        recipientCount: data.recipient_count,
                         calls: state.calls + 1,
                     })
                 );

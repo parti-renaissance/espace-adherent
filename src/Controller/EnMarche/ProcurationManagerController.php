@@ -204,16 +204,16 @@ class ProcurationManagerController extends Controller
      */
     public function requestAssociateAction(
         Request $sfRequest,
-        ProcurationRequest $request,
+        ProcurationRequest $procurationRequest,
         ProcurationProxy $proxy,
         ProcurationManager $procurationManager,
         ProcurationRequestRepository $procurationRequestRepository
     ): Response {
-        if (!$procurationRequestRepository->isManagedBy($this->getUser(), $request)) {
-            throw $this->createAccessDeniedException(sprintf('User is not allowed to manage the request with id %d.', $request->getId()));
+        if (!$procurationRequestRepository->isManagedBy($this->getUser(), $procurationRequest)) {
+            throw $this->createAccessDeniedException(sprintf('User is not allowed to manage the request with id %d.', $procurationRequest->getId()));
         }
 
-        if ($proxy->isDisabled() || !$proxy->matchesRequest($request)) {
+        if ($proxy->isDisabled() || !$proxy->matchesRequest($procurationRequest)) {
             throw $this->createNotFoundException('No proxy for this request.');
         }
 
@@ -222,20 +222,20 @@ class ProcurationManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->tryRedirectCatchingDeadLock(function () use ($request, $proxy, $procurationManager) {
-                $procurationManager->processProcurationRequest($request, $proxy, $this->getUser(), true);
+            return $this->tryRedirectCatchingDeadLock(function () use ($procurationRequest, $proxy, $procurationManager) {
+                $procurationManager->processProcurationRequest($procurationRequest, $proxy, $this->getUser(), true);
                 $this->addFlash('info', 'procuration_manager.associate.success');
 
-                return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
+                return $this->redirectToRoute('app_procuration_manager_request', ['id' => $procurationRequest->getId()]);
             }, 'app_procuration_manager_request_associate', [
-                'id' => $request->getId(),
+                'id' => $procurationRequest->getId(),
                 'proxyId' => $proxy->getId(),
             ]);
         }
 
         return $this->render('procuration_manager/associate.html.twig', [
             'form' => $form->createView(),
-            'request' => $request,
+            'request' => $procurationRequest,
             'proxy' => $proxy,
         ]);
     }
@@ -250,15 +250,15 @@ class ProcurationManagerController extends Controller
      */
     public function requestDessociateAction(
         Request $sfRequest,
-        ProcurationRequest $request,
+        ProcurationRequest $procurationRequest,
         ProcurationManager $procurationManager,
         ProcurationRequestRepository $repository
     ): Response {
-        if (!$request->hasFoundProxy()) {
+        if (!$procurationRequest->hasFoundProxy()) {
             throw $this->createNotFoundException('This request has no proxy.');
         }
 
-        if (!$repository->isManagedBy($this->getUser(), $request)) {
+        if (!$repository->isManagedBy($this->getUser(), $procurationRequest)) {
             throw $this->createNotFoundException('Request is not managed by the current user.');
         }
 
@@ -266,18 +266,18 @@ class ProcurationManagerController extends Controller
         $form->handleRequest($sfRequest);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->tryRedirectCatchingDeadLock(function () use ($request, $procurationManager) {
-                $procurationManager->unprocessProcurationRequest($request, $this->getUser(), true);
+            return $this->tryRedirectCatchingDeadLock(function () use ($procurationRequest, $procurationManager) {
+                $procurationManager->unprocessProcurationRequest($procurationRequest, $this->getUser(), true);
                 $this->addFlash('info', 'procuration_manager.deassociate.success');
 
-                return $this->redirectToRoute('app_procuration_manager_request', ['id' => $request->getId()]);
-            }, 'app_procuration_manager_request_deassociate', ['id' => $request->getId()]);
+                return $this->redirectToRoute('app_procuration_manager_request', ['id' => $procurationRequest->getId()]);
+            }, 'app_procuration_manager_request_deassociate', ['id' => $procurationRequest->getId()]);
         }
 
         return $this->render('procuration_manager/deassociate.html.twig', [
             'form' => $form->createView(),
-            'request' => $request,
-            'proxy' => $request->getFoundProxy(),
+            'request' => $procurationRequest,
+            'proxy' => $procurationRequest->getFoundProxy(),
         ]);
     }
 

@@ -3,9 +3,9 @@
 namespace App\Mailchimp\Exception;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use Symfony\Component\Messenger\Transport\AmqpExt\Exception\RejectMessageExceptionInterface;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
-class InvalidFilterException extends \InvalidArgumentException implements RejectMessageExceptionInterface
+class InvalidFilterException extends UnrecoverableMessageHandlingException
 {
     public function __construct(AdherentMessageInterface $message, string $description)
     {

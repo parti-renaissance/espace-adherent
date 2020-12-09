@@ -223,8 +223,8 @@ services:
     Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request: '@lexik_paybox.request_cancellation_handler'
     Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request: '@lexik_paybox.request_handler'
 
-    Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory: '@sensio_framework_extra.psr7.http_message_factory'
-    Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface: '@sensio_framework_extra.psr7.http_foundation_factory'
+    Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface: '@Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory'
+    Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface: '@Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory'
 
     League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface: '@App\OAuth\Store\AccessTokenStore'
     League\OAuth2\Server\Repositories\UserRepositoryInterface: '@App\OAuth\Repository\OAuthUserRepository'
