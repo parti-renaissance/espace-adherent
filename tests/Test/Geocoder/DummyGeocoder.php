@@ -113,6 +113,10 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.5278939,
             'longitude' => 2.6484923,
         ],
+        '122 rue de mouxy, 73100 mouxy, fr' => [
+            'latitude' => 45.6805667,
+            'longitude' => 5.9305124,
+        ],
     ];
 
     public function geocode(string $address): Collection

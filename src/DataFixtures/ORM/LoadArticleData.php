@@ -5,7 +5,6 @@ namespace App\DataFixtures\ORM;
 use App\Content\ArticleFactory;
 use App\Content\MediaFactory;
 use App\Entity\ArticleCategory;
-use Cocur\Slugify\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;

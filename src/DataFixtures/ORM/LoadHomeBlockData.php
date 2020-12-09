@@ -183,7 +183,7 @@ class LoadHomeBlockData extends Fixture
         [
             'positionName' => 'Bannière gauche sous la cover',
             'type' => 'banner',
-            'title' => "Je participe à un événement",
+            'title' => 'Je participe à un événement',
             'link' => '/evenements',
             'titleCta' => 'Voir la carte',
             'colorCta' => 'white',

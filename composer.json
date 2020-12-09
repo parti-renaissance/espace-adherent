@@ -27,6 +27,7 @@
         "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-zip": "*",
+        "ext-iconv": "*",
         "a2lix/translation-form-bundle": "^2.1",
         "algolia/search-bundle": "^4.1",
         "api-platform/api-pack": "^1.1",

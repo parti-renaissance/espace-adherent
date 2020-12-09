@@ -37,11 +37,11 @@ class UserControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
-        $crawler = $this->client->request('GET', '/parametres/mon-compte/modifier-email');
+        $crawler = $this->client->request('GET', '/parametres/mon-compte/modifier');
 
-        $this->client->submit($crawler->selectButton('Modifier')->form(), [
-            'adherent_change_email[email]' => 'new.mail@test.com',
-        ]);
+        $form = $crawler->selectButton('Enregistrer')->form();
+        $form->get('adherent_profile[emailAddress]')->setValue('new.mail@test.com');
+        $this->client->submit($form);
 
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/modifier', $this->client);
 
@@ -49,7 +49,8 @@ class UserControllerTest extends WebTestCase
 
         $this->assertStatusCode(200, $this->client);
 
-        $this->seeFlashMessage($crawler, 'Nous avons envoyé un e-mail à new.mail@test.com pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.');
+        $this->seeFlashMessage($crawler, 'Vos informations ont été mises à jour avec succès.');
+        self::assertStringContainsString('Nous avons envoyé un e-mail à new.mail@test.com pour vérifier votre adresse e-mail. Cliquez sur le lien qui y est présent pour valider le changement.', $this->client->getResponse()->getContent());
 
         $token = $this->getRepository(AdherentChangeEmailToken::class)->findLastUnusedByEmail('new.mail@test.com');
 

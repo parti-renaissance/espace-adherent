@@ -61,6 +61,9 @@ RUN set -eux; \
 
 COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
 
+RUN apk add gnu-libiconv --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
 RUN apk add --no-cache \
     nginx \
     wkhtmltopdf \

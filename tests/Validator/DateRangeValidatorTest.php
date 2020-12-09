@@ -91,7 +91,7 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         $this
             ->buildViolation('common.date_range.invalid_interval')
             ->atPath('property.path.endDate')
-            ->setParameter('{{ limit }}', '18 mai 2018 à 13:00') // in UTC
+            ->setParameter('{{ limit }}', '18 mai 2018 à 15:00')
             ->assertRaised()
         ;
     }
