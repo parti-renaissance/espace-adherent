@@ -3,25 +3,30 @@ parameters:
 
 framework:
     messenger:
+        serializer:
+            default_serializer: messenger.transport.symfony_serializer
+            symfony_serializer:
+                format: json
+                context: { }
         transports:
             default:
                 dsn: "%env(RABBITMQ_DSN)%"
                 options:
-                    exchange: { name: 'messenger-topic', type: topic }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.command' }
                     queues:
-                        default: { routing_key: 'async.command' }
+                        default: { binding_keys: ['async.command'] }
             mailchimp_sync:
                 dsn: "%env(RABBITMQ_DSN)%"
                 options:
-                    exchange: { name: 'messenger-topic', type: topic }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.sync' }
                     queues:
-                        mailchimp_sync: { routing_key: 'mailchimp.sync' }
+                        mailchimp_sync: { binding_keys: ['mailchimp.sync'] }
             mailchimp_campaign:
                 dsn: "%env(RABBITMQ_DSN)%"
                 options:
-                    exchange: { name: 'messenger-topic', type: topic }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.campaign' }
                     queues:
-                        mailchimp_campaign: { routing_key: 'mailchimp.campaign' }
+                        mailchimp_campaign: { binding_keys: ['mailchimp.campaign'] }
         routing:
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
