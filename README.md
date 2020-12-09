@@ -2,8 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master.svg?style=svg)](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master)
 ![CodeQL](https://github.com/EnMarche/en-marche.fr/workflows/CodeQL/badge.svg)
-![OSSAR](https://github.com/EnMarche/en-marche.fr/workflows/OSSAR/badge.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/enmarche/en-marche.fr/badge)](https://www.codefactor.io/repository/github/enmarche/en-marche.fr)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cb76935e4cd48d98e216023cab5f941)](https://www.codacy.com/gh/EnMarche/en-marche.fr/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EnMarche/en-marche.fr&amp;utm_campaign=Badge_Grade)
 > An English ReadMe is available after the French one.
 
 Ce repository est l'application [Symfony](http://symfony.com) qui propulse la plateforme [en-marche.fr](https://en-marche.fr).
