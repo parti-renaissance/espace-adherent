@@ -38,7 +38,7 @@
 
         {% block extra_link '' %}
 
-        <title>{% block title %}{% block page_title '' %} | {% block app_title 'La République En Marche !' %}{% endblock %}</title>
+        <title>{% block title %}{% spaceless %}{% block page_title '' %}{% endspaceless %} | {% block app_title 'La République En Marche !' %}{% endblock %}</title>
         {% if app.environment == 'prod' %}
             <!-- Google Tag Manager -->
             <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

@@ -84,7 +84,7 @@ export default class AdherentCommitteeList extends React.Component {
                             <div className="text--small text--silver-gray">
                                 <span className="text--bold">{this.getMembershipLabel(membership.privilege)} </span>
                                 depuis le {
-                                membership.subscriptionDate.split('T')[0].replace(
+                                membership.subscription_date.split('T')[0].replace(
                                     /([0-9]{4})-([0-9]{2})-([0-9]{2})/,
                                     '$3/$2/$1'
                                 )
