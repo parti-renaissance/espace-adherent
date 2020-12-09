@@ -75,7 +75,7 @@
         "ramsey/uuid-doctrine": "^1.2",
         "sabre/dav": "^3.2",
         "scheb/two-factor-bundle": "^4.11",
-        "sensio/framework-extra-bundle": "^5.6",
+        "sensio/framework-extra-bundle": "^4.0",
         "sensiolabs/security-checker": "^5.0",
         "sentry/sentry": "^1.6",
         "snc/redis-bundle": "^3.2",

@@ -2,8 +2,8 @@
 
 namespace App\Mailchimp\Exception;
 
-use Symfony\Component\Messenger\Transport\AmqpExt\Exception\RejectMessageExceptionInterface;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
-class StaticSegmentIdMissingException extends \InvalidArgumentException implements RejectMessageExceptionInterface
+class StaticSegmentIdMissingException extends UnrecoverableMessageHandlingException
 {
 }

@@ -8,17 +8,20 @@ framework:
                 dsn: "%env(RABBITMQ_DSN)%"
                 options:
                     exchange: { name: 'messenger-topic', type: topic }
-                    queue: { name: 'default', routing_key: 'async.command' }
+                    queues:
+                        default: { routing_key: 'async.command' }
             mailchimp_sync:
                 dsn: "%env(RABBITMQ_DSN)%"
                 options:
                     exchange: { name: 'messenger-topic', type: topic }
-                    queue: { name: 'mailchimp_sync', routing_key: 'mailchimp.sync' }
+                    queues:
+                        mailchimp_sync: { routing_key: 'mailchimp.sync' }
             mailchimp_campaign:
                 dsn: "%env(RABBITMQ_DSN)%"
                 options:
                     exchange: { name: 'messenger-topic', type: topic }
-                    queue: { name: 'mailchimp_campaign', routing_key: 'mailchimp.campaign' }
+                    queues:
+                        mailchimp_campaign: { routing_key: 'mailchimp.campaign' }
         routing:
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
