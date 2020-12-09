@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Entity;
+namespace Tests\App\Entity\OAuth;
 
 use App\Entity\OAuth\Client;
 use PHPUnit\Framework\TestCase;

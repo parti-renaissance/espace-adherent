@@ -20,6 +20,7 @@ final class Client implements ClientEntityInterface
     {
         $this->setIdentifier($identifier);
         $this->scopes = $scopes;
+        $this->isConfidential = true;
     }
 
     public function setName(string $name): void

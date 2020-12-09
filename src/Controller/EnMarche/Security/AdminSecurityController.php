@@ -8,6 +8,7 @@ use App\Security\QrCodeResponseFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @Route("/admin")
@@ -17,10 +18,8 @@ class AdminSecurityController extends Controller
     /**
      * @Route("/login", name="app_admin_login", methods={"GET"})
      */
-    public function loginAction(): Response
+    public function loginAction(AuthenticationUtils $securityUtils): Response
     {
-        $securityUtils = $this->get('security.authentication_utils');
-
         $form = $this->get('form.factory')->createNamed(
             '',
             LoginType::class,

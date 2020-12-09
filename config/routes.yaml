@@ -123,7 +123,7 @@ map_events:
 
 react_citizen_projects:
     host:     "%app_host%"
-    resource: "app.react_routing_loader:loadRoutes"
+    resource: "App\\React\\ReactAppRegistry:loadRoutes"
     type:     "service"
 
 app_enmarche:
@@ -156,7 +156,7 @@ app_desintox:
     defaults:
         slug: ~
         _controller: FrameworkBundle:Redirect:redirect
-        route: ~
+        route: ''
 
 #
 # Redirections

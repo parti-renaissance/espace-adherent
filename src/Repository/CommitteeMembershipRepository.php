@@ -16,17 +16,17 @@ use App\Event\Filter\ListFilterObject;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CommitteeMembershipRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommitteeMembership::class);
     }
@@ -326,7 +326,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('cm_src')
-            ->select('PARTIAL adherent.{id, uuid, emailAddress}')
+            ->select('PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}')
             ->addSelect('PARTIAL cm_src.{id, joinedAt}')
             ->innerJoin('cm_src.adherent', 'adherent')
             ->leftJoin(CommitteeMembership::class, 'cm_dest', Join::WITH, 'cm_dest.adherent = adherent AND cm_dest.committee = :dest_committee')
@@ -641,6 +641,26 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     /**
      * @return CommitteeMembership[]
      */
+    public function findVotingForSupervisorMemberships(Committee $committee, \DateTimeImmutable $refDate): array
+    {
+        return $this->createQueryBuilderForVotingMemberships($committee, $refDate)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function committeeHasVotersForSupervisorElection(Committee $committee, \DateTimeImmutable $refDate): bool
+    {
+        return (bool) $this->createQueryBuilderForVotingMemberships($committee, $refDate)
+            ->select('COUNT(1)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @return CommitteeMembership[]
+     */
     public function findAvailableMemberships(CommitteeCandidacy $candidacy, string $query): array
     {
         $membership = $candidacy->getCommitteeMembership();
@@ -672,6 +692,24 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->addOrderBy('adherent.firstName')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    private function createQueryBuilderForVotingMemberships(
+        Committee $committee,
+        \DateTimeImmutable $refDate
+    ): QueryBuilder {
+        return $this->createQueryBuilder('cm')
+            ->innerJoin('cm.adherent', 'a')
+            ->where('cm.committee = :committee')
+            ->andWhere('cm.joinedAt <= :joined_at_min')
+            ->andWhere('a.registeredAt <= :registered_at_min')
+            ->andWhere('a.certifiedAt IS NOT NULL')
+            ->setParameters([
+                'committee' => $committee,
+                'joined_at_min' => $refDate->modify('-30 days'),
+                'registered_at_min' => $refDate->modify('-3 months'),
+            ])
         ;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Api\CommitteeProvider;
 use App\Committee\Election\CandidacyManager;
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -26,9 +27,9 @@ class CommitteesController extends Controller
     /**
      * @Route("/committees", name="api_committees", methods={"GET"})
      */
-    public function getApprovedCommitteesAction(): Response
+    public function getApprovedCommitteesAction(CommitteeProvider $provider): Response
     {
-        return new JsonResponse($this->get('app.api.committee_provider')->getApprovedCommittees());
+        return new JsonResponse($provider->getApprovedCommittees());
     }
 
     /**
@@ -58,9 +59,10 @@ class CommitteesController extends Controller
     public function getMembersCommitteeCountAction(
         Request $request,
         Adherent $referent,
-        CommitteeMembershipHistoryHandler $committeeMembershipHistoryHandler
+        CommitteeMembershipHistoryHandler $committeeMembershipHistoryHandler,
+        CommitteeRepository $repository
     ): Response {
-        $filter = StatisticsParametersFilter::createFromRequest($request, $this->getDoctrine()->getRepository(Committee::class));
+        $filter = StatisticsParametersFilter::createFromRequest($request, $repository);
 
         return new JsonResponse(['committee_members' => $committeeMembershipHistoryHandler->queryCountByMonth($referent, 6, $filter)]);
     }

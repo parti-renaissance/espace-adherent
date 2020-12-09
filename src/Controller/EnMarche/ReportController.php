@@ -14,9 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\RouterInterface;
 
 class ReportController extends AbstractController
 {
+    private $router;
+
+    public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * @Route(
      *     "/report/{type}/{uuid}",
@@ -56,9 +64,8 @@ class ReportController extends AbstractController
             // see https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet
             // So here we only redirect URL that matches one of our route
             try {
-                $router = $this->container->get('router');
-                $router->setContext($router->getContext()->setMethod(Request::METHOD_GET));
-                $router->match($url);
+                $this->router->setContext($this->router->getContext()->setMethod(Request::METHOD_GET));
+                $this->router->match($url);
             } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
                 $url = '/';
             }

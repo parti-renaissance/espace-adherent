@@ -4,7 +4,6 @@ namespace App\Admin;
 
 use App\Form\Jecoute\ChoiceFormType;
 use App\Form\Jecoute\QuestionChoiceType;
-use App\Jecoute\SurveyQuestionTypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -56,8 +55,7 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
             ->add('content', null, [
                 'label' => 'Question',
             ])
-            ->add('type', 'choice', [
-                'choices' => array_flip(SurveyQuestionTypeEnum::all()),
+            ->add('type', null, [
                 'label' => 'Type de question',
             ])
             ->add('choices', 'array_list', [
@@ -75,8 +73,7 @@ class JecouteSuggestedQuestionAdmin extends AbstractAdmin
             ->addIdentifier('content', null, [
                 'label' => 'Question',
             ])
-            ->add('type', 'choice', [
-                'choices' => array_flip(SurveyQuestionTypeEnum::all()),
+            ->add('type', null, [
                 'label' => 'Type de question',
             ])
             ->add('choices', 'array_list', [

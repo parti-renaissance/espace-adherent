@@ -14,9 +14,9 @@ class AssessorRequestNotifier implements EventSubscriberInterface
     private $mailer;
     private $translator;
 
-    public function __construct(MailerService $mailer, TranslatorInterface $translator)
+    public function __construct(MailerService $transactionalMailer, TranslatorInterface $translator)
     {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->translator = $translator;
     }
 

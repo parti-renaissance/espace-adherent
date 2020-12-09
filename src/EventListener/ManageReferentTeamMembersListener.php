@@ -3,10 +3,12 @@
 namespace App\EventListener;
 
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Entity\MunicipalManagerSupervisorRole;
 use App\Entity\Referent;
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use App\Entity\ReferentTeamMember;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,6 +23,8 @@ class ManageReferentTeamMembersListener implements EventSubscriber
     private $manager;
     /** @var ReferentPersonLinkRepository */
     private $repository;
+    /** @var ZoneRepository */
+    private $zoneRepository;
 
     private $relatedPersonLinks = [];
 
@@ -265,9 +269,12 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         Adherent $currentReferent,
         Adherent $adherent
     ): void {
-        $adherent->setJecouteManagedAreaCodesAsString(
-            implode(',', $currentReferent->getManagedAreaTagCodes())
-        );
+        $this->zoneRepository = $this->manager->getRepository(Zone::class);
+        $zones = $this->zoneRepository->findForJecouteByReferentTags($currentReferent->getManagedArea()->getTags()->toArray());
+        if (\count($zones) > 1) {
+            throw new \InvalidArgumentException(\sprintf('Impossible to find only one geo zone for Jecoute for referent %s with id', $currentReferent->getId()));
+        }
+        $adherent->setJecouteManagedZone(\count($zones) > 0 ? $zones[0] : null);
 
         array_map(function (ReferentPersonLink $personLink) use ($adherent) {
             $personLink->setAdherent($adherent);

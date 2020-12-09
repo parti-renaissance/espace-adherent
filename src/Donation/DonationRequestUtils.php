@@ -12,10 +12,9 @@ use App\Exception\InvalidDonationPayloadException;
 use App\Exception\InvalidDonationStatusException;
 use App\Exception\InvalidPayboxPaymentSubscriptionValueException;
 use App\Membership\MembershipRegistrationProcess;
-use Cocur\Slugify\Slugify;
+use Cocur\Slugify\SlugifyInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -51,18 +50,24 @@ class DonationRequestUtils
     ];
     private const SESSION_KEY = 'donation_request';
 
-    private $locator;
+    private $validator;
+    private $session;
+    private $tokenManager;
     private $slugify;
     private $membershipRegistrationProcess;
     private $geocoder;
 
     public function __construct(
-        ServiceLocator $donationRequestUtilsLocator,
-        Slugify $slugify,
+        ValidatorInterface $validator,
+        SessionInterface $session,
+        CsrfTokenManagerInterface $tokenManager,
+        SlugifyInterface $slugify,
         MembershipRegistrationProcess $membershipRegistrationProcess,
         Geocoder $geocoder
     ) {
-        $this->locator = $donationRequestUtilsLocator;
+        $this->validator = $validator;
+        $this->session = $session;
+        $this->tokenManager = $tokenManager;
         $this->slugify = $slugify;
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->geocoder = $geocoder;
@@ -77,7 +82,7 @@ class DonationRequestUtils
         $amount = (float) $request->query->get('montant');
 
         /** @var DonationRequest $donation */
-        if ($donation = $this->getSession()->get(static::SESSION_KEY)) {
+        if ($donation = $this->session->get(static::SESSION_KEY)) {
             $donation->setDuration($duration);
             $donation->setAmount($amount);
 
@@ -125,17 +130,17 @@ class DonationRequestUtils
 
     public function startDonationRequest(DonationRequest $donationRequest): void
     {
-        $this->getSession()->set(static::SESSION_KEY, $donationRequest);
+        $this->session->set(static::SESSION_KEY, $donationRequest);
     }
 
     public function terminateDonationRequest(): void
     {
-        $this->getSession()->remove(static::SESSION_KEY);
+        $this->session->remove(static::SESSION_KEY);
     }
 
     public function buildCallbackParameters()
     {
-        return ['_callback_token' => $this->getTokenManager()->getToken(self::CALLBACK_TOKEN)];
+        return ['_callback_token' => $this->tokenManager->getToken(self::CALLBACK_TOKEN)];
     }
 
     public function extractPayboxResultFromCallback(Request $request, string $token): array
@@ -157,7 +162,7 @@ class DonationRequestUtils
         $this->validateCallbackStatus($request);
 
         $payload = $donation->getRetryPayload();
-        $payload['_retry_token'] = (string) $this->getTokenManager()->getToken(self::RETRY_TOKEN);
+        $payload['_retry_token'] = (string) $this->tokenManager->getToken(self::RETRY_TOKEN);
 
         return [
             self::RETRY_PAYLOAD => json_encode($payload),
@@ -176,7 +181,7 @@ class DonationRequestUtils
             'uuid' => $donationUuid,
             'is_registration' => $this->membershipRegistrationProcess->isStarted(),
             'status' => self::PAYBOX_SUCCESS === $code ? DonationController::RESULT_STATUS_EFFECTUE : DonationController::RESULT_STATUS_ERREUR,
-            '_status_token' => (string) $this->getTokenManager()->getToken(self::STATUS_TOKEN),
+            '_status_token' => (string) $this->tokenManager->getToken(self::STATUS_TOKEN),
         ];
     }
 
@@ -215,7 +220,7 @@ class DonationRequestUtils
 
     private function validateCallback(string $token): void
     {
-        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::CALLBACK_TOKEN, $token))) {
+        if ($this->tokenManager->isTokenValid(new CsrfToken(self::CALLBACK_TOKEN, $token))) {
             return;
         }
 
@@ -224,7 +229,7 @@ class DonationRequestUtils
 
     private function validateCallbackStatus(Request $request): void
     {
-        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::STATUS_TOKEN, $request->query->get('_status_token')))
+        if ($this->tokenManager->isTokenValid(new CsrfToken(self::STATUS_TOKEN, $request->query->get('_status_token')))
             && $this->isValidStatus($request->query->get('code'))) {
             return;
         }
@@ -234,8 +239,8 @@ class DonationRequestUtils
 
     private function validateRetryPayload(DonationRequest $retry, string $token): bool
     {
-        if ($this->getTokenManager()->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $token))) {
-            return 0 === \count($this->getValidator()->validate($retry));
+        if ($this->tokenManager->isTokenValid(new CsrfToken(self::RETRY_TOKEN, $token))) {
+            return 0 === \count($this->validator->validate($retry));
         }
 
         throw new InvalidDonationPayloadException();
@@ -244,20 +249,5 @@ class DonationRequestUtils
     private function isValidStatus(string $status)
     {
         return \in_array($status, self::PAYBOX_STATUSES, true);
-    }
-
-    private function getValidator(): ValidatorInterface
-    {
-        return $this->locator->get('validator');
-    }
-
-    private function getSession(): SessionInterface
-    {
-        return $this->locator->get('session');
-    }
-
-    private function getTokenManager(): CsrfTokenManagerInterface
-    {
-        return $this->locator->get('security.csrf.token_manager');
     }
 }

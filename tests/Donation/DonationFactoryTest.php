@@ -13,7 +13,9 @@ use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DonationFactoryTest extends TestCase
 {
@@ -68,7 +70,9 @@ class DonationFactoryTest extends TestCase
         return new DonationFactory(
             new PostAddressFactory(),
             new DonationRequestUtils(
-                $this->createMock(ServiceLocator::class),
+                $this->createMock(ValidatorInterface::class),
+                $this->createMock(SessionInterface::class),
+                $this->createMock(CsrfTokenManagerInterface::class),
                 Slugify::create(),
                 $this->createMock(MembershipRegistrationProcess::class),
                 $this->createMock(GeoCoder::class)

@@ -8,6 +8,7 @@ use App\Form\NewsletterInvitationType;
 use App\Form\NewsletterSubscriptionType;
 use App\Form\NewsletterUnsubscribeType;
 use App\Newsletter\Invitation;
+use App\Newsletter\NewsletterInvitationHandler;
 use App\Newsletter\NewsletterSubscriptionHandler;
 use App\Repository\NewsletterSubscriptionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -130,7 +131,7 @@ class NewsletterController extends Controller
     /**
      * @Route("/newsletter/invitation", name="app_newsletter_invitation", methods={"GET", "POST"})
      */
-    public function invitationAction(Request $request): Response
+    public function invitationAction(Request $request, NewsletterInvitationHandler $handler): Response
     {
         $form = $this->createForm(NewsletterInvitationType::class)
             ->handleRequest($request)
@@ -139,7 +140,7 @@ class NewsletterController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Invitation $invitation */
             $invitation = $form->getData();
-            $this->get('app.newsletter_invitation.handler')->handle($invitation, $request->getClientIp());
+            $handler->handle($invitation, $request->getClientIp());
             $request->getSession()->set('newsletter_invitations_count', \count($invitation->guests));
 
             return $this->redirectToRoute('app_newsletter_invitation_sent');

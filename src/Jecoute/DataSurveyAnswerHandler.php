@@ -3,6 +3,7 @@
 namespace App\Jecoute;
 
 use App\Entity\Adherent;
+use App\Entity\Device;
 use App\Entity\Jecoute\DataSurvey;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -22,6 +23,18 @@ class DataSurveyAnswerHandler
     {
         $dataSurvey->setAuthor($user);
 
+        $this->save($dataSurvey);
+    }
+
+    public function handleForDevice(DataSurvey $dataSurvey, Device $device): void
+    {
+        $dataSurvey->setDevice($device);
+
+        $this->save($dataSurvey);
+    }
+
+    private function save(DataSurvey $dataSurvey): void
+    {
         $this->manager->persist($dataSurvey);
         $this->manager->flush();
 

@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait CanaryControllerTrait
 {
-    abstract protected function getParameter($name);
+    abstract protected function getParameter(string $name);
 
     /**
      * @throws NotFoundHttpException When the canary is not enabled

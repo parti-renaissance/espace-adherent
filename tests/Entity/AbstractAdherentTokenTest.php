@@ -69,14 +69,4 @@ abstract class AbstractAdherentTokenTest extends TestCase
     {
         return \call_user_func([$this->tokenClass, 'generate'], $adherent, $lifetime);
     }
-
-    protected function tearDown(): void
-    {
-        $this->cleanupContainer($this->container);
-
-        $this->container = null;
-        $this->adherents = null;
-
-        parent::tearDown();
-    }
 }

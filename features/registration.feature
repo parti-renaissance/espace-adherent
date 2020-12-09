@@ -371,7 +371,7 @@ Feature:
     And I should see "Vous avez été détecté en tant que robot, pourriez-vous réessayer ?"
     And I should see "Le code postal doit contenir moins de 15 caractères"
     And I should see "Cette valeur n'est pas un code postal français valide."
-    And I should see "Cette valeur ne doit pas être vide."
+    And I should see "Votre prénom doit comporter au moins 2 caractères."
 
   Scenario: A new user should see personal message to help him to validate his account
     Given the following fixtures are loaded:
@@ -447,6 +447,7 @@ Feature:
     Then I should be on "/adhesion"
     Given I fill in the following:
       | become_adherent[customGender] | Etre non binaire |
+    And I wait until I see "Lyon" in the "#become_adherent_address_city" element
     When I press "Je rejoins La République En Marche"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."

@@ -71,7 +71,7 @@ class FileManagerTest extends TestCase
         $file->setExtension(null);
         $file->setMimeType(null);
         $file->setSize(null);
-        $uploadedFile = new UploadedFile(__DIR__.'/../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, \UPLOAD_ERR_OK, true);
+        $uploadedFile = new UploadedFile(__DIR__.'/../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', \UPLOAD_ERR_OK, true);
         $file->setFile($uploadedFile);
 
         $this->fileManager->update($file);
@@ -81,6 +81,6 @@ class FileManagerTest extends TestCase
         $this->assertSame('image.jpg', $file->getOriginalFilename());
         $this->assertSame('jpg', $file->getExtension());
         $this->assertSame('image/jpeg', $file->getMimeType());
-        $this->assertSame(631, $file->getSize());
+        $this->assertSame(285, $file->getSize());
     }
 }

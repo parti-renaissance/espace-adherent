@@ -36,6 +36,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     public const ELECTION_UUID6 = '071a3abc-fb4c-43c0-91b9-7cbeb1e02b92';
     public const ELECTION_UUID7 = 'b58e5538-c6e7-10a4-88c3-de59305e61a8';
     public const ELECTION_UUID8 = '138140c6-1dd2-11b2-b23f-2b71345a2be1';
+    public const ELECTION_UUID9 = '39949c8f-d233-1e20-905e-5e214c6a12f2';
 
     /**
      * @var \Faker\Generator
@@ -179,6 +180,20 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $this->loadTerritorialCouncilElectionCandidates($election, $coTerr);
 
         $this->manager->flush();
+
+        // -------------------------------------------
+
+        $election = new Election(
+            $this->getReference('designation-8'),
+            Uuid::fromString(self::ELECTION_UUID9),
+            [new ElectionRound()]
+        );
+        $this->manager->persist($election);
+        $election->setElectionEntity(new ElectionEntity($committee = $this->getReference('committee-13')));
+        $this->loadCommitteeSupervisorElectionCandidates($election);
+        $this->manager->persist($this->loadCommitteeSupervisorElectionVoters($election));
+
+        $this->manager->flush();
     }
 
     private function loadCommitteeAdherentElectionCandidates(Election $election): void
@@ -206,6 +221,61 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         }
     }
 
+    private function loadCommitteeSupervisorElectionCandidates(Election $election): void
+    {
+        $currentRound = $election->getCurrentRound();
+
+        $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR);
+        $currentRound->addElectionPool($pool);
+        $election->addElectionPool($pool);
+
+        foreach (range(5, 8) as $index) {
+            /** @var CommitteeCandidacy $committeeCandidacy */
+            $committeeCandidacy = $this->getReference('committee-candidacy-committee_supervisor-'.$index);
+
+            $group = new CandidateGroup();
+
+            $group->addCandidate($candidate = new Candidate(
+                $committeeCandidacy->getFirstName(),
+                $committeeCandidacy->getLastName(),
+                $committeeCandidacy->getGender(),
+                $committeeCandidacy->getAdherent()
+            ));
+            $candidate->setImagePath($committeeCandidacy->getImagePath());
+            $candidate->setBiography($committeeCandidacy->getBiography());
+            $candidate->setFaithStatement($committeeCandidacy->getFaithStatement());
+
+            if ($committeeCandidacy = $committeeCandidacy->getBinome()) {
+                $group->addCandidate($candidate = new Candidate(
+                    $committeeCandidacy->getFirstName(),
+                    $committeeCandidacy->getLastName(),
+                    $committeeCandidacy->getGender(),
+                    $committeeCandidacy->getAdherent()
+                ));
+                $candidate->setImagePath($committeeCandidacy->getImagePath());
+                $candidate->setBiography($committeeCandidacy->getBiography());
+                $candidate->setFaithStatement($committeeCandidacy->getFaithStatement());
+            }
+
+            $pool->addCandidateGroup($group);
+        }
+    }
+
+    private function loadCommitteeSupervisorElectionVoters(Election $election): VotersList
+    {
+        $list = new VotersList($election);
+
+        foreach ($election->getElectionPools() as $pool) {
+            foreach ($pool->getCandidateGroups() as $candidateGroup) {
+                foreach ($candidateGroup->getCandidates() as $candidate) {
+                    $list->addVoter(new Voter($candidate->getAdherent()));
+                }
+            }
+        }
+
+        return $list;
+    }
+
     /**
      * @return Candidate[]
      */
@@ -228,7 +298,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $candidate2->setBiography($this->faker->paragraph(10));
 
         /** @var CommitteeCandidacy $committeeCandidacy */
-        $committeeCandidacy = $this->getReference('committee-candidacy-1');
+        $committeeCandidacy = $this->getReference('committee-candidacy-committee_adherent-1');
 
         foreach ($candidates as $index => $candidate) {
             if (0 === $index % 2) {

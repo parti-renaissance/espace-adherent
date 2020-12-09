@@ -2,29 +2,28 @@
 
 namespace App\Command;
 
-use App\Entity\Adherent;
 use App\Entity\BoardMember\BoardMember;
-use App\Entity\BoardMember\Role;
 use App\Repository\AdherentRepository;
+use App\Repository\BoardMember\BoardMemberRepository;
+use App\Repository\BoardMember\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class ImportBoardMemberCommand extends ContainerAwareCommand
+class ImportBoardMemberCommand extends Command
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * @var EntityRepository
+     * @var BoardMemberRepository
      */
     private $boardMemberRepository;
 
@@ -34,11 +33,11 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
     private $adherentRepository;
 
     /**
-     * @var EntityRepository
+     * @var RoleRepository
      */
     private $roleRepository;
 
-    private $notFoundEmails;
+    private $notFoundEmails = [];
 
     protected function configure()
     {
@@ -48,15 +47,6 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
             ->addOption('othercsv', 'csv', InputArgument::OPTIONAL, 'URL of CSV File', null)
             ->setDescription('Import board member from CSV file')
         ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->boardMemberRepository = $this->em->getRepository(BoardMember::class);
-        $this->adherentRepository = $this->em->getRepository(Adherent::class);
-        $this->roleRepository = $this->em->getRepository(Role::class);
-        $this->notFoundEmails = [];
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -247,5 +237,28 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
         }
 
         return $roles;
+    }
+
+    public function setEntityManager(EntityManagerInterface $em): void
+    {
+        $this->em = $em;
+    }
+
+    /** @required */
+    public function setBoardMemberRepository(BoardMemberRepository $boardMemberRepository): void
+    {
+        $this->boardMemberRepository = $boardMemberRepository;
+    }
+
+    /** @required */
+    public function setAdherentRepository(AdherentRepository $adherentRepository): void
+    {
+        $this->adherentRepository = $adherentRepository;
+    }
+
+    /** @required */
+    public function setRoleRepository(RoleRepository $roleRepository): void
+    {
+        $this->roleRepository = $roleRepository;
     }
 }

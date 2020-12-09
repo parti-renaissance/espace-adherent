@@ -13,9 +13,9 @@ class SendMailForPublishedIdeaHandler implements MessageHandlerInterface
     private $mailer;
     private $urlGenerator;
 
-    public function __construct(MailerService $mailer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(MailerService $transactionalMailer, UrlGeneratorInterface $urlGenerator)
     {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
     }
 

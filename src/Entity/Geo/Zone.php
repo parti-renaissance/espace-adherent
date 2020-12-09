@@ -82,11 +82,6 @@ class Zone implements GeoInterface
         return $this->type;
     }
 
-    public function isConsularDistrict(): bool
-    {
-        return Zone::CONSULAR_DISTRICT === $this->type;
-    }
-
     public function isCity(): bool
     {
         return Zone::CITY === $this->type;
@@ -108,6 +103,20 @@ class Zone implements GeoInterface
         return array_filter($this->parents->toArray(), function (Zone $zone) use ($type) {
             return $type === $zone->getType();
         });
+    }
+
+    public function hasChild(Zone $child): bool
+    {
+        return $this->children->filter(function (Zone $zone) use ($child) {
+            return $zone->getId() === $child->getId();
+        })->count() > 0;
+    }
+
+    public function hasParent(Zone $parent): bool
+    {
+        return $this->parents->filter(function (Zone $zone) use ($parent) {
+            return $zone->getId() === $parent->getId();
+        })->count() > 0;
     }
 
     public function addParent(self $zone): void

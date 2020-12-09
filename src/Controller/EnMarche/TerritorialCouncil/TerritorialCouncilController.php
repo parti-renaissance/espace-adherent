@@ -16,6 +16,7 @@ use App\Repository\TerritorialCouncil\TerritorialCouncilFeedItemRepository;
 use App\Security\Voter\TerritorialCouncil\AccessVoter;
 use App\Security\Voter\TerritorialCouncil\ManageTerritorialCouncilVoter;
 use App\TerritorialCouncil\ElectionPoll\Manager;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -241,9 +242,12 @@ class TerritorialCouncilController extends Controller
      * @Route("/messages/{id}/supprimer", name="delete_feed_item", methods={"DELETE"})
      * @Security("is_granted('CAN_MANAGE_FEED_ITEM', feedItem)")
      */
-    public function deleteFeedItemAction(Request $request, TerritorialCouncilFeedItem $feedItem): Response
-    {
-        $this->deleteFeedItem($request, $feedItem, FeedItemTypeEnum::TERRITORIAL_COUNCIL);
+    public function deleteFeedItemAction(
+        EntityManagerInterface $em,
+        Request $request,
+        TerritorialCouncilFeedItem $feedItem
+    ): Response {
+        $this->deleteFeedItem($em, $request, $feedItem, FeedItemTypeEnum::TERRITORIAL_COUNCIL);
 
         return $this->redirectToRoute('app_territorial_council_index');
     }

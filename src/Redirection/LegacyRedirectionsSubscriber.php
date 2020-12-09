@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class LegacyRedirectionsSubscriber implements EventSubscriberInterface
 {
@@ -15,7 +16,7 @@ class LegacyRedirectionsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'kernel.exception' => 'onKernelException',
+            KernelEvents::EXCEPTION => 'onKernelException',
         ];
     }
 

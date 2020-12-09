@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -64,7 +65,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                     'label' => 'Téléphone',
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 ])
-                ->add('birthdate', 'sonata_type_date_picker', [
+                ->add('birthdate', DatePickerType::class, [
                     'label' => 'Date de naissance',
                 ])
                 ->add('country', UnitedNationsCountryType::class, [

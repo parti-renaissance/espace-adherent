@@ -5,9 +5,10 @@ namespace App\React;
 use App\Controller\ReactController;
 use App\React\App\CitizenProjectApp;
 use App\React\App\IdeasWorkshopApp;
+use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\RouteCollection;
 
-class ReactAppRegistry
+class ReactAppRegistry implements RouteLoaderInterface
 {
     /**
      * List of the apps in the project, in the form name => ReactAppInterface.

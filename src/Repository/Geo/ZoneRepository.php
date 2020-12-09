@@ -2,37 +2,19 @@
 
 namespace App\Repository\Geo;
 
-use App\Entity\Geo\Canton;
 use App\Entity\Geo\City;
-use App\Entity\Geo\CityCommunity;
-use App\Entity\Geo\ConsularDistrict;
-use App\Entity\Geo\Country;
-use App\Entity\Geo\Department;
-use App\Entity\Geo\District;
-use App\Entity\Geo\ForeignDistrict;
-use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
+use App\Entity\ReferentTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
-final class ZoneRepository extends ServiceEntityRepository
+class ZoneRepository extends ServiceEntityRepository
 {
-    private const TYPES = [
-        Country::class => Zone::COUNTRY,
-        Region::class => Zone::REGION,
-        Department::class => Zone::DEPARTMENT,
-        District::class => Zone::DISTRICT,
-        Canton::class => Zone::CANTON,
-        CityCommunity::class => Zone::CITY_COMMUNITY,
-        City::class => Zone::CITY,
-        ForeignDistrict::class => Zone::FOREIGN_DISTRICT,
-        ConsularDistrict::class => Zone::CONSULAR_DISTRICT,
-    ];
-
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Zone::class);
     }
@@ -67,13 +49,31 @@ final class ZoneRepository extends ServiceEntityRepository
     /**
      * @return Zone[]
      */
-    public function searchByTermAndManagedZones(string $term, array $zones, int $max): array
-    {
+    public function searchByTermAndManagedZonesGroupedByType(
+        string $term,
+        array $zones,
+        array $types,
+        int $perType
+    ): array {
         if ('' === $term) {
             return [];
         }
 
+        $grouped = [];
+        foreach ($types as $type) {
+            $grouped[] = $this->doSearchByTermManagedZonesAndType($term, $zones, $type, $perType);
+        }
+
+        return array_merge(...$grouped);
+    }
+
+    private function doSearchByTermManagedZonesAndType(string $term, array $zones, string $type, int $max): array
+    {
         $qb = $this->createQueryBuilder('zone');
+        $qb
+            ->andWhere($qb->expr()->eq('zone.type', ':type'))
+            ->setParameter(':type', $type)
+        ;
 
         if ($zones) {
             $qb
@@ -146,6 +146,116 @@ final class ZoneRepository extends ServiceEntityRepository
         }
 
         return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findForJecouteByReferentTags(array $referentTags): array
+    {
+        $qb = $this->createQueryBuilder('zone');
+
+        return $qb
+            ->leftJoin('zone.children', 'child')
+            ->leftJoin(ReferentTag::class, 'tag', Join::WITH, 'zone = tag.zone')
+            ->leftJoin(ReferentTag::class, 'child_tag', Join::WITH, 'child = child_tag.zone')
+            ->where($qb->expr()->orX(
+                'child.type = :country AND zone.type = :foreign_district',
+                'zone.type = :department AND zone.code != :paris_dpt',
+                'zone.type = :borough AND zone.name LIKE :paris',
+                'zone.type = :region AND zone.name = :corse'
+            ))
+            ->andWhere('(tag IN (:tags) OR child_tag IN (:tags))')
+            ->setParameters([
+                'tags' => $referentTags,
+                'borough' => Zone::BOROUGH,
+                'department' => Zone::DEPARTMENT,
+                'region' => Zone::REGION,
+                'country' => Zone::COUNTRY,
+                'foreign_district' => Zone::FOREIGN_DISTRICT,
+                'paris' => 'Paris %',
+                'paris_dpt' => '75',
+                'corse' => 'Corse',
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function isInJecouteZones(array $referentTags, Zone $zone): bool
+    {
+        $qb = $this->createQueryBuilder('zone');
+
+        $zones = $qb
+            ->select('COUNT(1)')
+            ->leftJoin('zone.children', 'child', Join::WITH, 'child = :zone')
+            ->leftJoin(ReferentTag::class, 'tag', Join::WITH, 'zone = tag.zone')
+            ->leftJoin(ReferentTag::class, 'child_tag', Join::WITH, 'child = child_tag.zone')
+            ->where($qb->expr()->orX(
+                'child.type = :country AND zone.type = :foreign_district',
+                'zone.type = :department AND zone.code != :paris_dpt',
+                'zone.type = :borough AND zone.name LIKE :paris',
+                'zone.type = :region AND zone.name = :corse'
+            ))
+            ->andWhere('(tag IN (:tags) OR child_tag IN (:tags))')
+            ->andWhere('(zone = :zone OR child IS NOT NULL)')
+            ->setParameters([
+                'tags' => $referentTags,
+                'borough' => Zone::BOROUGH,
+                'department' => Zone::DEPARTMENT,
+                'region' => Zone::REGION,
+                'country' => Zone::COUNTRY,
+                'foreign_district' => Zone::FOREIGN_DISTRICT,
+                'paris' => 'Paris %',
+                'paris_dpt' => '75',
+                'corse' => 'Corse',
+                'zone' => $zone,
+            ])
+            ->getQuery()
+            ->getSingleResult()
+        ;
+
+        return \count($zones) > 0;
+    }
+
+    public function isInJecouteZonesWithParents(array $referentTags, Zone $zone): bool
+    {
+        $zones = $this->createQueryBuilder('zone')
+            ->select('COUNT(1)')
+            ->leftJoin('zone.children', 'child', Join::WITH, 'child = :zone')
+            ->leftJoin('zone.parents', 'parent', Join::WITH, 'parent = :zone')
+            ->leftJoin(ReferentTag::class, 'tag', Join::WITH, 'zone = tag.zone')
+            ->leftJoin(ReferentTag::class, 'child_tag', Join::WITH, 'child = child_tag.zone')
+            ->leftJoin(ReferentTag::class, 'parent_tag', Join::WITH, 'parent = parent_tag.zone')
+            ->where('(tag IN (:tags) OR child_tag IN (:tags) OR parent_tag IN (:tags))')
+            ->andWhere('(zone = :zone OR child IS NOT NULL)')
+            ->setParameter('tags', $referentTags)
+            ->setParameter('zone', $zone)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+
+        return \count($zones) > 0;
+    }
+
+    public function findByPostalCode(string $postalCode): array
+    {
+        $postalCode = str_pad($postalCode, 5, '0', \STR_PAD_LEFT);
+        $dpt = substr($postalCode, 0, 2);
+        if (\in_array($dpt, [97, 98])) {
+            $dpt = substr($postalCode, 0, 3);
+        }
+
+        return $this->createQueryBuilder('zone')
+            ->innerJoin(City::class, 'city', Join::WITH, 'zone.code = city.code')
+            ->leftJoin('zone.parents', 'parent')
+            ->where('(city.postalCode LIKE :postal_code_1 OR city.postalCode LIKE :postal_code_2)')
+            ->andWhere('parent.type = :dpt_type AND parent.code = :dpt_code AND zone.type = :city')
+            ->setParameter('postal_code_1', $postalCode.'%')
+            ->setParameter('postal_code_2', '%,'.$postalCode.'%')
+            ->setParameter('dpt_code', $dpt)
+            ->setParameter('dpt_type', Zone::DEPARTMENT)
+            ->setParameter('city', Zone::CITY)
             ->getQuery()
             ->getResult()
         ;

@@ -2,28 +2,27 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\DataFixtures\AutoIncrementResetter;
+use App\Entity\Geo\Region as GeoRegion;
 use App\Entity\Jecoute\Region;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Jecoute\RegionColorEnum;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadJecouteRegionData extends Fixture
+class LoadJecouteRegionData extends AbstractFixtures implements DependentFixtureInterface
 {
     public const REGION_1_UUID = '88275043-adb5-463a-8a62-5248fe7aacbf';
     public const REGION_2_UUID = 'c91391e9-4a08-4d14-8960-6c3508c1dddc';
+    public const REGION_3_UUID = '62c6bf4c-72c9-4a29-bd5e-bf27b8ee2228';
 
     public function load(ObjectManager $manager)
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_region');
-
         $manager->persist($this->createRegion(
             self::REGION_1_UUID,
-            'Normandie',
-            '28',
+            $this->getRegionEntity($manager, 7), // geo_region_28 - Normandie
             'Bienvenue en Normandie',
             'Description de la normandie',
-            '#32cd32',
+            RegionColorEnum::RED,
             'region-logo.jpg',
             'region-banner.jpg',
             'https://en-marche.fr'
@@ -31,21 +30,35 @@ class LoadJecouteRegionData extends Fixture
 
         $manager->persist($this->createRegion(
             self::REGION_2_UUID,
-            'Hauts-de-France',
-            '32',
+            $this->getRegionEntity($manager, 3), // geo_region_32 - Hauts-de-France
             'Bienvenue en Hauts-de-France',
             'Description des Hauts-de-France',
-            '#dc143c',
+            RegionColorEnum::GREEN,
+            'region-logo.jpg',
+            'region-banner.jpg',
+            'https://en-marche.fr'
+        ));
+
+        $manager->persist($this->createRegion(
+            self::REGION_3_UUID,
+            $this->getRegionEntity($manager, 4), // geo_region_93 - Provence-Alpes-Côte d'Azur
+            'Bienvenue en PACA',
+            'Description PACA',
+            RegionColorEnum::BLUE,
             'region-logo.jpg'
         ));
 
         $manager->flush();
     }
 
+    public function getDependencies()
+    {
+        return [LoadGeoZoneData::class];
+    }
+
     private function createRegion(
         string $uuid,
-        string $name,
-        string $code,
+        GeoRegion $region,
         string $subtitle,
         string $description,
         string $primaryColor,
@@ -55,8 +68,7 @@ class LoadJecouteRegionData extends Fixture
     ): Region {
         return new Region(
             Uuid::fromString($uuid),
-            $name,
-            $code,
+            $region,
             $subtitle,
             $description,
             $primaryColor,

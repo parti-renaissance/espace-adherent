@@ -14,17 +14,17 @@ use App\Entity\IdeasWorkshop\VoteTypeEnum;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class IdeaRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Idea::class);
     }
@@ -225,7 +225,7 @@ SQL;
         $qb = $this->createQueryBuilder('idea');
         $categoryType = null;
 
-        if ($adherent->isLaREM()) {
+        if ($adherent->isLarem()) {
             $categoryType = AuthorCategoryEnum::QG;
         } elseif ($adherent->isElected()) {
             $categoryType = AuthorCategoryEnum::ELECTED;

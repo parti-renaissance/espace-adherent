@@ -17,13 +17,14 @@ use App\Form\UnregistrationType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Mailchimp\SignUp\SignUpHandler;
 use App\Membership\AdherentChangeEmailHandler;
+use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -93,12 +94,12 @@ class UserController extends Controller
      *
      * @Route("/changer-mot-de-passe", name="app_user_change_password", methods={"GET", "POST"})
      */
-    public function changePasswordAction(Request $request): Response
+    public function changePasswordAction(Request $request, AdherentChangePasswordHandler $handler): Response
     {
         $form = $this->createForm(AdherentChangePasswordType::class);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
-            $this->get('app.adherent_change_password_handler')->changePassword($this->getUser(), $form->get('password')->getData());
+            $handler->changePassword($this->getUser(), $form->get('password')->getData());
             $this->addFlash('info', 'adherent.update_password.success');
 
             return $this->redirectToRoute('app_user_change_password');
@@ -117,7 +118,7 @@ class UserController extends Controller
     public function setEmailNotificationsAction(
         Request $request,
         EmailSubscriptionHistoryHandler $historyManager,
-        EventDispatcher $dispatcher,
+        EventDispatcherInterface $dispatcher,
         SignUpHandler $signUpHandler
     ): Response {
         /** @var Adherent $adherent */
@@ -151,7 +152,7 @@ class UserController extends Controller
      * @Route("/desadherer", name="app_user_terminate_membership", methods={"GET", "POST"})
      * @Security("is_granted('UNREGISTER')")
      */
-    public function terminateMembershipAction(Request $request): Response
+    public function terminateMembershipAction(Request $request, MembershipRequestHandler $handler): Response
     {
         $adherent = $this->getUser();
         $unregistrationCommand = new UnregistrationCommand();
@@ -166,7 +167,7 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(MembershipRequestHandler::class)->terminateMembership($unregistrationCommand, $adherent);
+            $handler->terminateMembership($unregistrationCommand, $adherent);
             $this->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
 

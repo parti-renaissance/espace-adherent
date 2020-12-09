@@ -15,7 +15,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As a logged-in user I can get the surveys of my referent(s) and the national surveys
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 200
     And the response should be in JSON
@@ -70,7 +70,160 @@ Feature:
           }
         ],
         "name":"Questionnaire numéro 1",
-        "city":"Paris 1er"
+        "zone":{
+           "code":"77",
+           "name":"Seine-et-Marne"
+        },
+        "city":null
+      },
+      {
+        "id":1,
+        "type": "national",
+        "questions":[
+          {
+            "id":6,
+            "type":"simple_field",
+            "content":"Une première question du 1er questionnaire national ?",
+            "choices":[
+
+            ]
+          },
+          {
+            "id":7,
+            "type":"multiple_choice",
+            "content":"Une deuxième question du 1er questionnaire national ?",
+            "choices":[
+              {
+                "id":5,
+                "content":"Réponse nationale A"
+              },
+              {
+                "id":6,
+                "content":"Réponse nationale B"
+              },
+              {
+                "id":7,
+                "content":"Réponse nationale C"
+              },
+              {
+                "id":8,
+                "content":"Réponse nationale D"
+              }
+            ]
+          }
+        ],
+        "name":"Questionnaire national numéro 1"
+      },
+      {
+        "id":2,
+        "type":"national",
+        "questions":[
+          {
+            "id":8,
+            "type":"unique_choice",
+            "content":"La question du 2eme questionnaire national ?",
+            "choices":[
+              {
+                "id":9,
+                "content":"Réponse nationale E"
+              },
+              {
+                "id":10,
+                "content":"Réponse nationale F"
+              },
+              {
+                "id":11,
+                "content":"Réponse nationale G"
+              }
+            ]
+          }
+        ],
+        "name":"Le deuxième questionnaire national"
+      }
+    ]
+    """
+
+  Scenario: As a logged-in device I can not get the surveys with an invalid postal code
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/jecoute/survey"
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+      {
+        "error": "Parameter \"postalCode\" missing when using a Device token."
+      }
+    """
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/jecoute/survey?postalCode=76"
+    Then the response status code should be 400
+    And the JSON should be equal to:
+    """
+      {
+        "error": "Parameter \"postalCode\" must be 5 numbers."
+      }
+    """
+
+  Scenario: As a logged-in device I can get the surveys of my postal code and the national surveys
+    Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+    When I send a "GET" request to "/api/jecoute/survey?postalCode=77300"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      {
+        "id":3,
+        "type": "local",
+        "questions":[
+          {
+            "id":1,
+            "type":"simple_field",
+            "content":"Ceci est-il un champ libre ?",
+            "choices":[]
+          },
+          {
+            "id":2,
+            "type":"multiple_choice",
+            "content":"Est-ce une question à choix multiple ?",
+            "choices":[
+              {
+                "id":1,
+                "content":"Réponse A"
+              },
+              {
+                "id":2,
+                "content":"Réponse B"
+              }
+            ]
+          },
+          {
+            "id":3,
+            "type":"unique_choice",
+            "content":"Est-ce une question à choix unique ?",
+            "choices":[
+              {
+                "id":3,
+                "content":"Réponse unique 1"
+              },
+              {
+                "id":4,
+                "content":"Réponse unique 2"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "type": "simple_field",
+            "content": "Ceci est-il un champ libre d'une question suggérée ?",
+            "choices": []
+          }
+        ],
+        "name":"Questionnaire numéro 1",
+        "zone":{
+           "code":"77",
+           "name":"Seine-et-Marne"
+        },
+        "city":null
       },
       {
         "id":1,
@@ -207,7 +360,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can reply to a local survey
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
@@ -280,7 +433,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I can not reply to a survey that was no created by my referent(s)
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
@@ -315,7 +468,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot reply to a local survey with errors
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
@@ -387,7 +540,7 @@ Feature:
     """
 
   Scenario: As a logged-in user I cannot reply to a local survey with custom validations errors
-    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:

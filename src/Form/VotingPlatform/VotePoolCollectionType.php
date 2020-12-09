@@ -3,6 +3,7 @@
 namespace App\Form\VotingPlatform;
 
 use App\Entity\VotingPlatform\CandidateGroup;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use Symfony\Component\Form\AbstractType;
@@ -14,13 +15,20 @@ class VotePoolCollectionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('poolChoice', VoteChoiceType::class, [
+        /** @var Designation $designation */
+        $designation = $options['designation'];
+
+        if ($designation->isMajorityType()) {
+            $builder->add('poolChoice', MajorityVoteChoiceType::class, [
+                'candidate_groups' => $options['candidate_groups'],
+            ]);
+        } else {
+            $builder->add('poolChoice', VoteChoiceType::class, [
                 'choices' => $this->getFilteredCandidates($options['candidate_groups']),
-            ])
-            ->add('confirm', SubmitType::class)
-            ->add('back', SubmitType::class)
-        ;
+            ]);
+        }
+
+        $builder->add('confirm', SubmitType::class);
     }
 
     private function getFilteredCandidates(array $candidateGroups): array
@@ -38,9 +46,10 @@ class VotePoolCollectionType extends AbstractType
     {
         $resolver
             ->setDefaults(['data_class' => VoteCommand::class])
-            ->setDefined('candidate_groups')
-            ->setRequired('candidate_groups')
-            ->setAllowedTypes('candidate_groups', ['array'])
+            ->setDefined(['candidate_groups', 'designation'])
+            ->setRequired(['candidate_groups', 'designation'])
+            ->setAllowedTypes('candidate_groups', [CandidateGroup::class.'[]'])
+            ->setAllowedTypes('designation', [Designation::class])
         ;
     }
 

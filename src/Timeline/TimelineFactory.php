@@ -7,7 +7,7 @@ use App\Entity\Media;
 use App\Entity\Timeline\Profile;
 use App\Entity\Timeline\Theme;
 use App\Repository\MediaRepository;
-use Cocur\Slugify\Slugify;
+use Cocur\Slugify\SlugifyInterface;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -21,7 +21,7 @@ class TimelineFactory
     public function __construct(
         MediaFactory $mediaFactory,
         MediaRepository $mediaRepository,
-        Slugify $slugifier,
+        SlugifyInterface $slugifier,
         FilesystemInterface $storage
     ) {
         $this->mediaFactory = $mediaFactory;

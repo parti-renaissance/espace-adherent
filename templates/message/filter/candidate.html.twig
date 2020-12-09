@@ -100,7 +100,8 @@
             $('.select2entity').each(function () {
                 $(this).select2({
                     placeholder: this.dataset.placeholder || '',
-                    theme: 'default em-filters'
+                    theme: 'default em-filters',
+                    multiple: false,
                 });
             });
 

@@ -53,7 +53,7 @@ class TonMacronControllerTest extends WebTestCase
             'ton_macron_invitation[friendFirstName]' => $invitation->friendFirstName = 'Béatrice',
             'ton_macron_invitation[friendAge]' => '32',
             'ton_macron_invitation[friendGender]' => $invitation->friendGender = 'female',
-            'ton_macron_invitation[friendPosition]' => '4',
+            'ton_macron_invitation[friendPosition]' => 4,
         ]));
 
         $invitation->friendAge = 32;
@@ -206,7 +206,7 @@ class TonMacronControllerTest extends WebTestCase
 
     private function getTonMacronInvitationHandler(): InvitationProcessorHandler
     {
-        return $this->container->get('app.ton_macron.invitation_processor_handler');
+        return $this->get(InvitationProcessorHandler::class);
     }
 
     private function getCurrentInvitation(): InvitationProcessor

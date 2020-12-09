@@ -375,7 +375,6 @@ class AdherentControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/centres-d-interet', $this->client);
 
         /* @var Adherent $adherent */
-        $this->container->get('doctrine.orm.entity_manager')->clear();
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
 
         self::assertSame(array_values($chosenInterests), $adherent->getInterests());
@@ -795,7 +794,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $citizenProject->getProposedSolution());
         $this->assertSame('Mes actions.', $citizenProject->getRequiredMeans());
         $this->assertSame('Mouxy', $citizenProject->getDistrict());
-        $this->assertSame($turnkeyProject, $citizenProject->getTurnkeyProject());
+        $this->assertSame($turnkeyProject->getId(), $citizenProject->getTurnkeyProject()->getId());
 
         $this->logout($this->client);
 
@@ -833,7 +832,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Nous proposons d\'organiser des ateliers d\'art participatif associant des artistes aux citoyens', $citizenProject->getProposedSolution());
         $this->assertSame('Mes actions aussi.', $citizenProject->getRequiredMeans());
         $this->assertSame('Mon quartier', $citizenProject->getDistrict());
-        $this->assertSame($turnkeyProject, $citizenProject->getTurnkeyProject());
+        $this->assertSame($turnkeyProject->getId(), $citizenProject->getTurnkeyProject()->getId());
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(CitizenProjectCreationConfirmationMessage::class, 'referent@en-marche-dev.fr'));
     }
 

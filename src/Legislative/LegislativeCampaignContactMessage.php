@@ -33,14 +33,12 @@ final class LegislativeCampaignContactMessage
     private $emailAddress;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(min=2, max=50)
+     * @Assert\Length(min=2, max=50, allowEmptyString=false)
      */
     private $firstName;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(min=2, max=50)
+     * @Assert\Length(min=2, max=50, allowEmptyString=false)
      */
     private $lastName;
 

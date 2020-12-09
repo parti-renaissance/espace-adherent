@@ -37,7 +37,7 @@ class DataSurveyFormType extends AbstractType
                 ->add('survey', EntityType::class, [
                     'class' => LocalSurvey::class,
                     'query_builder' => function (LocalSurveyRepository $localSurveyRepository) {
-                        return $localSurveyRepository->createSurveysForAdherentQueryBuilder($this->user);
+                        return $localSurveyRepository->createSurveysByZonesQueryBuilder($this->user->getZones()->toArray());
                     },
                 ])
             ;

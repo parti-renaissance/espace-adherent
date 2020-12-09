@@ -5,9 +5,7 @@
     <services>
         <defaults autowire="true" autoconfigure="true"/>
 
-        <service id="app.admin.administrator_factory" class="App\Admin\AdministratorFactory">
-            <argument type="service" id="security.encoder_factory" />
-        </service>
+        <service id="App\Admin\AdministratorFactory" />
 
         <!--
         ######################################################
@@ -27,7 +25,7 @@
             </call>
 
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -69,7 +67,7 @@
                 <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -184,7 +182,7 @@
         -->
 
         <service id="app.admin.committee" class="App\Admin\CommitteeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Comités" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Comités" group="Territoires" />
 
             <argument />
             <argument>App\Entity\Committee</argument>
@@ -195,7 +193,7 @@
         </service>
 
         <service id="app.admin.reporting_committee_merge_history" class="App\Admin\CommitteeMergeHistoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Fusions de comités" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Fusions de comités" group="Territoires" />
 
             <argument />
             <argument>App\Entity\Reporting\CommitteeMergeHistory</argument>
@@ -203,7 +201,7 @@
         </service>
 
         <service id="app.admin.event" class="App\Admin\EventAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Événements" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Événements" group="Territoires" />
 
             <argument />
             <argument>App\Entity\Event</argument>
@@ -213,7 +211,7 @@
         </service>
 
         <service id="app.admin.institutional_event" class="App\Admin\InstitutionalEventAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Événements institutionnels" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Événements institutionnels" group="Territoires" />
 
             <argument />
             <argument>App\Entity\InstitutionalEvent</argument>
@@ -223,7 +221,7 @@
         </service>
 
         <service id="app.admin.event_category" class="App\Admin\EventCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements" group="Territoires" />
 
             <argument />
             <argument>App\Entity\EventCategory</argument>
@@ -231,7 +229,7 @@
         </service>
 
         <service id="app.admin.event_group_category" class="App\Admin\EventGroupCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Groupe de Catégories d'événements" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Groupe de Catégories d'événements" group="Territoires" />
 
             <argument />
             <argument>App\Entity\EventGroupCategory</argument>
@@ -239,7 +237,7 @@
         </service>
 
         <service id="app.admin.institutional_event_category" class="App\Admin\InstitutionalEventCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements institutionnels" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements institutionnels" group="Territoires" />
 
             <argument />
             <argument>App\Entity\InstitutionalEventCategory</argument>
@@ -247,7 +245,7 @@
         </service>
 
         <service id="app.admin.procuration_request" class="App\Admin\ProcurationRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Procurations » Demandes" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Procurations » Demandes" group="Territoires" />
 
             <argument />
             <argument>App\Entity\ProcurationRequest</argument>
@@ -255,7 +253,7 @@
         </service>
 
         <service id="app.admin.procuration_proxy" class="App\Admin\ProcurationProxyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Procurations » Propositions" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Procurations » Propositions" group="Territoires" />
 
             <argument />
             <argument>App\Entity\ProcurationProxy</argument>
@@ -263,7 +261,7 @@
         </service>
 
         <service id="app.admin.referent" class="App\Admin\ReferentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Trombi Référents" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Trombi Référents" group="Territoires" />
 
             <argument />
             <argument>App\Entity\Referent</argument>
@@ -276,7 +274,7 @@
         </service>
 
         <service id="app.admin.referent_area" class="App\Admin\ReferentAreaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Zone des référents" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Zone des référents" group="Territoires" />
 
             <argument />
             <argument>App\Entity\ReferentArea</argument>
@@ -284,7 +282,7 @@
         </service>
 
         <service id="app.admin.organizational_chart_item_admin" class="App\Admin\OrganizationalChartItemAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Équipe départementale" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Équipe départementale" group="Territoires" />
 
             <argument />
             <argument>App\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem</argument>
@@ -302,7 +300,7 @@
         </service>
 
         <service id="app.admin.district" class="App\Admin\DistrictAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Circonscriptions" group="Territoire" show_in_dashboard="false" />
+            <tag name="sonata.admin" manager-type="orm" label="Circonscriptions" group="Territoires" show_in_dashboard="false" />
 
             <argument />
             <argument>App\Entity\District</argument>
@@ -310,7 +308,7 @@
         </service>
 
         <service id="app.admin.vote_place_admin" class="App\Admin\VotePlaceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Bureaux de vote" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Bureaux de vote" group="Territoires" />
 
             <argument />
             <argument>App\Entity\VotePlace</argument>
@@ -318,7 +316,7 @@
         </service>
 
         <service id="app.admin.assessor_request_admin" class="App\Admin\AssessorRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Demandes" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Demandes" group="Territoires" />
 
             <argument />
             <argument>App\Entity\AssessorRequest</argument>
@@ -326,16 +324,64 @@
         </service>
 
         <service id="app.admin.election" class="App\Admin\ElectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Assesseurs » Élections" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Assesseurs » Élections" group="Territoires" />
 
             <argument />
             <argument>App\Entity\Election</argument>
             <argument />
         </service>
 
+        <service id="app.admin.report" class="App\Admin\ReportAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\Report\Report</argument>
+            <argument />
+            <argument type="service" id="App\Repository\ReportRepository" />
+        </service>
+        <service id="App\Admin\ReportAdmin" alias="app.admin.report" />
+
+        <service id="app.admin.city" class="App\Admin\CityAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Communes" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\City</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.file" class="App\Admin\Filesystem\FileAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Documents" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\Filesystem\File</argument>
+            <argument />
+            <argument type="service" id="App\Repository\Filesystem\FileRepository"/>
+            <argument type="service" id="App\Filesystem\FileManager"/>
+        </service>
+
+        <!--
+        ######################################################
+        # Je marche app
+        ######################################################
+        -->
+        <service id="app.admin.jecoute.news" class="App\Admin\Jecoute\NewsAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Notifications" group="Je marche app" />
+
+            <argument />
+            <argument>App\Entity\Jecoute\News</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.jecoute.region" class="App\Admin\Jecoute\RegionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Campagnes régionales" group="Je marche app" />
+
+            <argument />
+            <argument>App\Entity\Jecoute\Region</argument>
+            <argument />
+        </service>
 
         <service id="app.admin.jecoute_suggested_question" class="App\Admin\JecouteSuggestedQuestionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questions panier" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Questions paniers" group="Je marche app" />
 
             <argument />
             <argument>App\Entity\Jecoute\SuggestedQuestion</argument>
@@ -348,7 +394,7 @@
         </service>
 
         <service id="app.admin.jecoute_local_survey" class="App\Admin\JecouteLocalSurveyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questionnaires locaux" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires locaux" group="Je marche app" />
 
             <argument />
             <argument>App\Entity\Jecoute\LocalSurvey</argument>
@@ -361,7 +407,7 @@
         </service>
 
         <service id="app.admin.jecoute_national_survey" class="App\Admin\JecouteNationalSurveyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questionnaires nationaux" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires nationaux" group="Je marche app" />
 
             <argument />
             <argument>App\Entity\Jecoute\NationalSurvey</argument>
@@ -371,41 +417,6 @@
                 <argument>edit</argument>
                 <argument>admin/jecoute/survey_edit.html.twig</argument>
             </call>
-        </service>
-
-        <service id="app.admin.jecoute.region" class="App\Admin\Jecoute\RegionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Régions" group="Territoire" />
-
-            <argument />
-            <argument>App\Entity\Jecoute\Region</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.report" class="App\Admin\ReportAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Territoire" />
-
-            <argument />
-            <argument>App\Entity\Report\Report</argument>
-            <argument />
-            <argument type="service" id="App\Repository\ReportRepository" />
-        </service>
-
-        <service id="app.admin.city" class="App\Admin\CityAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Communes" group="Territoire" />
-
-            <argument />
-            <argument>App\Entity\City</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.file" class="App\Admin\Filesystem\FileAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Documents" group="Territoire" />
-
-            <argument />
-            <argument>App\Entity\Filesystem\File</argument>
-            <argument />
-            <argument type="service" id="App\Repository\Filesystem\FileRepository"/>
-            <argument type="service" id="App\Filesystem\FileManager"/>
         </service>
 
         <!--
@@ -780,7 +791,7 @@
                 <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -795,7 +806,7 @@
                 <argument type="service" id="League\Flysystem\FilesystemInterface" />
             </call>
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -986,7 +997,7 @@
             </call>
 
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
         </service>
 
@@ -1055,6 +1066,7 @@
                 <argument>admin/election/city_card/edit.html.twig</argument>
             </call>
         </service>
+        <service id="App\Admin\Election\CityCardAdmin" alias="app.admin.election_city_card" />
 
         <service id="app.admin.election_city_card_managers" class="App\Admin\Election\CityCardManagersAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Elections » Suivi / Pilotage" group="Politique" />
@@ -1168,7 +1180,7 @@
             </call>
 
             <call method="setGlide">
-                <argument type="service" id="app.glide" />
+                <argument type="service" id="League\Glide\Server" />
             </call>
 
             <call method="setAssetRuntime">

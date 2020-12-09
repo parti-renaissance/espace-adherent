@@ -233,7 +233,7 @@ class MembershipControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
         self::assertSame('Votre compte adhérent est maintenant actif.', $crawler->filter('.flash__inner')->text());
 
-        $this->manager->refresh($adherent);
+        $adherent = $this->getAdherentRepository()->findOneByEmail('simple-user@example.ch');
 
         self::assertCount(8, $adherent->getSubscriptionTypes());
     }

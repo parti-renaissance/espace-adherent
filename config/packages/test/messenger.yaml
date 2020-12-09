@@ -1,10 +1,6 @@
-parameters:
-    messenger.middleware:
-        - { id: App\Messenger\RecorderMiddleware }
-        - { id: send_message }
-        - { id: handle_message }
-
-services:
-    App\Messenger\MessageRecorder\MessageRecorderInterface:
-        alias: App\Messenger\MessageRecorder\MessageRecorder
-        public: true
+framework:
+    messenger:
+        buses:
+            messenger.bus.default:
+                middleware:
+                    - 'App\Messenger\RecorderMiddleware'

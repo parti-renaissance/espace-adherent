@@ -87,7 +87,7 @@
                     </li>
                     <li role="button" aria-label="Partagez via email"
                         class="btn btn--social btn--email"
-                        onclick="App.share('email', window.location.href, '{{ article.title }}')">
+                        onclick="App.share('email', window.location.href, '{{ article.title|escape('js') }}')">
                         <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
                     </li>
                 </ul>
@@ -125,7 +125,7 @@
             </li>
             <li role="button" aria-label="Partagez via email"
                 class="btn btn--social btn--email"
-                onclick="App.share('email', window.location.href, '{{ article.title }}')">
+                onclick="App.share('email', window.location.href, '{{ article.title|escape('js') }}')">
                 <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
             </li>
         </ul>

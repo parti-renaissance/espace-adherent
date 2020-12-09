@@ -4,11 +4,11 @@ namespace App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
-use App\Entity\HomeBlock;
-use App\Entity\LiveLink;
 use App\Entity\NewsletterSubscription;
 use App\Exception\SitemapException;
 use App\Form\NewsletterSubscriptionType;
+use App\Repository\HomeBlockRepository;
+use App\Repository\LiveLinkRepository;
 use App\Sitemap\SitemapFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +20,12 @@ class HomeController extends Controller
     /**
      * @Route("/", name="homepage", methods={"GET"})
      */
-    public function indexAction(Request $request, GeoCoder $geoCoder): Response
-    {
+    public function indexAction(
+        Request $request,
+        GeoCoder $geoCoder,
+        HomeBlockRepository $homeBlockRepository,
+        LiveLinkRepository $linkRepository
+    ): Response {
         if (($user = $this->getUser()) instanceof Adherent) {
             $newsletterSubscription = new NewsletterSubscription(
                 $user->getEmailAddress(),
@@ -33,8 +37,8 @@ class HomeController extends Controller
         }
 
         return $this->render('home/index.html.twig', [
-            'blocks' => $this->getDoctrine()->getRepository(HomeBlock::class)->findHomeBlocks(),
-            'live_links' => $this->getDoctrine()->getRepository(LiveLink::class)->findHomeLiveLinks(),
+            'blocks' => $homeBlockRepository->findHomeBlocks(),
+            'live_links' => $linkRepository->findHomeLiveLinks(),
             'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, $newsletterSubscription)->createView(),
         ]);
     }
@@ -42,9 +46,9 @@ class HomeController extends Controller
     /**
      * @Route("/sitemap.xml", name="app_sitemap_index", methods={"GET"})
      */
-    public function sitemapIndexAction(): Response
+    public function sitemapIndexAction(SitemapFactory $factory): Response
     {
-        return $this->createXmlResponse($this->get(SitemapFactory::class)->createSitemapIndex());
+        return $this->createXmlResponse($factory->createSitemapIndex());
     }
 
     /**
@@ -56,10 +60,10 @@ class HomeController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function sitemapAction(string $type, int $page): Response
+    public function sitemapAction(string $type, int $page, SitemapFactory $factory): Response
     {
         try {
-            return $this->createXmlResponse($this->get(SitemapFactory::class)->createSitemap($type, $page));
+            return $this->createXmlResponse($factory->createSitemap($type, $page));
         } catch (SitemapException $exception) {
             return $this->redirectToRoute('app_sitemap_index', [], Response::HTTP_MOVED_PERMANENTLY);
         }

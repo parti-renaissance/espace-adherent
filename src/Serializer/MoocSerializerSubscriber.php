@@ -7,15 +7,14 @@ use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 class MoocSerializerSubscriber implements EventSubscriberInterface
 {
-    private $router;
+    private $urlGenerator;
 
-    public function __construct(RouterInterface $router)
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public static function getSubscribedEvents(): array
@@ -34,7 +33,7 @@ class MoocSerializerSubscriber implements EventSubscriberInterface
             $event->getVisitor()->addData(
                 'image',
                 $mooc->getListImage()
-                    ? $this->router->generate('asset_url', ['path' => $mooc->getListImage()->getFilePath()], UrlGeneratorInterface::ABSOLUTE_URL)
+                    ? $this->urlGenerator->generate('asset_url', ['path' => $mooc->getListImage()->getFilePath()], UrlGeneratorInterface::ABSOLUTE_URL)
                     : $mooc->getYoutubeThumbnail()
             );
         }

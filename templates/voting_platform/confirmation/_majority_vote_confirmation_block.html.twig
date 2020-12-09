@@ -1,0 +1,42 @@
+{% import 'voting_platform/_macros.html.twig' as helper %}
+
+{% for pool in pools %}
+    <div class="pool__name l__row b__nudge--bottom-large b__nudge--top-50">
+        <h2 class="text--medium-large b__nudge--right-small">{{ get_election_pool_title_key(pool)|trans }}</h2>
+        <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid, s: loop.index}) }}" class="text--body text--center link--no-decor link--blue--dark">
+            Modifier mon choix
+        </a>
+    </div>
+
+    <div class="ballot-paper-container">
+        {% for candidate_group_uuid,mention in vote_command.getChoiceForPool(pool) %}
+            <div class="ballot-paper">
+                <div class="ballot-paper__content text--center">
+                    <ul class="candidate-names b__nudge--bottom-small">
+                        {% set candidate_group = candidate_groups|filter(group => candidate_group_uuid == group.uuid.toString)|first %}
+                        {% set candidates = candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+
+                        {% for candidate in candidates %}
+                            <li class="text--body">{{ candidate.fullName }}<span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span></li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="ballot-paper__footer l__row">
+                        <div class="left l__row">
+                            {% for candidate in candidate_group.candidates %}
+                                <div class="candidate-photo avatar-initials avatar--small avatar--style-01">
+                                    {{ helper.display_candidate_photo(candidate) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="right">
+                            <div class="candidate-mention candidate-mention__{{ mention }} text--body">
+                                {{ ('voting_platform.vote.majority_vote_mention.' ~ mention)|trans }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}

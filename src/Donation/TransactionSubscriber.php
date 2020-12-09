@@ -23,13 +23,13 @@ class TransactionSubscriber implements EventSubscriberInterface
     private $logger;
 
     public function __construct(
-        MailerService $mailer,
+        MailerService $transactionalMailer,
         ObjectManager $manager,
         TransactionRepository $transactionRepository,
         DonationRepository $donationRepository,
         LoggerInterface $logger
     ) {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->manager = $manager;
         $this->transactionRepository = $transactionRepository;
         $this->donationRepository = $donationRepository;

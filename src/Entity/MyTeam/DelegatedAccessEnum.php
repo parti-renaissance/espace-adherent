@@ -35,6 +35,7 @@ class DelegatedAccessEnum extends Enum
         }
 
         if (self::TYPE_CANDIDATE === $type) {
+            $accesses[] = DelegatedAccess::ACCESS_JECOUTE;
             $accesses[] = DelegatedAccess::ACCESS_FILES;
         }
 

@@ -10,16 +10,16 @@ use App\Repository\PaginatorTrait;
 use App\Repository\ReferentTrait;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ManagedUserRepository extends ServiceEntityRepository
 {
     use ReferentTrait;
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ManagedUser::class);
     }
@@ -258,7 +258,7 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         $qb = $this
             ->createQueryBuilder('u')
-            ->select('COUNT(u.id)')
+            ->select('COUNT(DISTINCT u.id)')
         ;
 
         $this->withZoneCondition($qb, $zones);
@@ -276,7 +276,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (!\in_array('zone', $qb->getAllAliases(), true)) {
-            $qb->innerJoin("$alias.zone", 'zone');
+            $qb->innerJoin("$alias.zones", 'zone');
         }
 
         if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {

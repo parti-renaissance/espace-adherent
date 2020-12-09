@@ -8,14 +8,14 @@ use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
 use App\Repository\AuthorTrait;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class PoliticalCommitteeFeedItemRepository extends ServiceEntityRepository
 {
     use AuthorTrait;
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, PoliticalCommitteeFeedItem::class);
     }

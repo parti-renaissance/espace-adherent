@@ -28,7 +28,7 @@ common.citizen_projects_count: "%count% projet citoyen|%count% projets citoyens"
 common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
 common.all: Tous
-common.jecoute_manager: Accès J'écoute
+common.jecoute_manager: Accès aux questionnaires
 common.adherent.subscribed: Abonné(e)
 common.adherent.unsubscribed: Non-abonné(e)
 common.adherent.status_email: Statut (e-mail)
@@ -37,6 +37,13 @@ common.message_deleted: Votre message a bien été supprimé.
 common.select_date: Choisissez une date
 common.territorial_council: Conseil territorial
 common.political_committee: Comité politique
+common.blue: Bleu
+common.green: Vert
+common.red: Rouge
+common.orange: Orange
+common.purple: Violet
+common.yellow: Jaune
+common.pink: Rose
 
 pending: En attente
 approved: Approuvé
@@ -85,7 +92,7 @@ board_member: membre du conseil
 coordinator: coordinateur
 procuration_manager: responsable procuration
 assessor_manager: responsable assesseur
-jecoute_manager: Responsable J'écoute
+jecoute_manager: Responsable des questionnaires
 assessors_manager: Responsable assesseurs
 assessor: Assesseur
 user: utilisateur
@@ -324,7 +331,7 @@ referent.filter.interests: Choisissez des centres d'intérêt
 referent.managed_area: Zone gérée
 referent.radio.co_referent: "Donner un accès à l'onglet&nbsp;<i>Adhérents</i>"
 referent.radio.limited_co_referent: "Donner un accès restreint à l'onglet&nbsp;<i>Adhérents</i>&nbsp;:"
-referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>J'écoute</i>
+referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>Questionnaires</i>
 referent.checkbox.municipal_manager_supervisor: Donner un accès à l'onglet&nbsp;<i>Responsables Communaux</i>
 referent.coreferent_access: Accès adhérents
 referent.limited_coreferent_access: Accès adhérents (limité)
@@ -882,6 +889,12 @@ voting_platform.designation.type_copol: Comité politique
 voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
 voting_platform.designation.zone_outre_mer: Outre-Mer
+voting_platform.vote.majority_vote_mention.excellent: Excellent
+voting_platform.vote.majority_vote_mention.very_good: Très bien
+voting_platform.vote.majority_vote_mention.good: Bien
+voting_platform.vote.majority_vote_mention.fair: Passable
+voting_platform.vote.majority_vote_mention.insufficient: Insuffisant
+voting_platform.pool_title.committee_supervisor: Animateurs Locaux
 designation.label.type_committee_adherent: Désignation des binômes d'adhérents
 designation.label.type_copol: Désignation des binômes au Copol
 designation.vote_mode.online: 100% en ligne
@@ -901,7 +914,7 @@ delegated_access.form.access.messages: Messagerie
 delegated_access.form.access.events: Événements
 delegated_access.form.access.adherents: Adhérents
 delegated_access.form.access.committee: Comités
-delegated_access.form.access.jecoute: J'écoute
+delegated_access.form.access.jecoute: Questionnaires
 delegated_access.form.access.citizen_projects: Projets citoyens
 delegated_access.form.access.elected_representatives: Élus
 delegated_access.form.access.files: Documents
@@ -944,6 +957,7 @@ territorial_council.membership.quality.regional_council_president: Président(e)
 territorial_council.membership.quality.departmental_council_president: Président(e) conseil départemental
 territorial_council.membership.quality.mayor: Maire
 territorial_council.membership.quality.regional_councilor: Conseiller(ère) régional(e)
+territorial_council.membership.quality.corsica_assembly_member: Membre de l'Assemblée de Corse
 territorial_council.membership.quality.department_councilor: Conseiller(ère) départemental(e)
 territorial_council.membership.quality.city_councilor: Conseiller(ère) municipal(e)
 territorial_council.membership.quality.borough_councilor: Conseiller(ère) d'arrondissement
@@ -961,6 +975,7 @@ territorial_council.membership.qualities.regional_council_president: Présidents
 territorial_council.membership.qualities.departmental_council_president: Présidents conseil départemental
 territorial_council.membership.qualities.mayor: Maires
 territorial_council.membership.qualities.regional_councilor: Conseillers régionaux
+territorial_council.membership.qualities.corsica_assembly_member: Membres de l'Assemblée de Corse
 territorial_council.membership.qualities.department_councilor: Conseillers départementaux
 territorial_council.membership.qualities.city_councilor: Conseillers municipaux
 territorial_council.membership.qualities.borough_councilor: Conseillers d'arrondissement
@@ -990,6 +1005,7 @@ political_committee.membership.quality.departmental_council_president: Présiden
 political_committee.membership.quality.mayor: Maire
 political_committee.membership.quality.leader: Président(e) du groupe d'opposition LaREM
 political_committee.membership.quality.regional_councilor: Conseiller(ère) régional(e) désigné(e)
+political_committee.membership.quality.corsica_assembly_member: Membre de l'Assemblée de Corse désigné
 political_committee.membership.quality.department_councilor: Conseiller(ère) départemental(e) désigné(e)
 political_committee.membership.quality.city_councilor: Conseiller(ère) municipal(e) désigné(e)
 political_committee.membership.quality.borough_councilor: Conseiller(ère) d'arrondissement désigné(e)
@@ -1101,16 +1117,16 @@ page.layout.municipales: Municipales
 
 geo_zone.zones: Zones
 geo_zone.country: Pays
-geo_zone.custom: Autres
+geo_zone.custom: Autre
 geo_zone.region: Région
-geo_zone.department: Départment
-geo_zone.district: Circonscriptions électorales
+geo_zone.department: Département
+geo_zone.district: Circonscription électorale
 geo_zone.city: Ville
 geo_zone.borough: Arrondissement
 geo_zone.city_community: Communauté de commune
 geo_zone.canton: Canton
-geo_zone.foreign_district: Circonscriptions de l'étranger
-geo_zone.consular_district: Circonscriptions consulaire
+geo_zone.foreign_district: Circonscription FDE
+geo_zone.consular_district: Circonscription consulaire
 
 #
 # Candidate

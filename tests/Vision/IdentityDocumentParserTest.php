@@ -153,7 +153,7 @@ TXT, 'Rémi', 'Gardien', '1988-11-27'];
 
         $this->init();
 
-        $this->parser = $this->get(IdentityDocumentParser::class);
+        $this->parser = $this->get('test.'.IdentityDocumentParser::class);
     }
 
     protected function tearDown(): void

@@ -6,19 +6,16 @@ use App\Entity\Adherent;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
-use App\Entity\ReferentTag;
 use App\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class LocalSurveyRepository extends ServiceEntityRepository
 {
     use ReferentTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LocalSurvey::class);
     }
@@ -26,68 +23,56 @@ class LocalSurveyRepository extends ServiceEntityRepository
     /**
      * @return LocalSurvey[]
      */
-    public function findAllByAdherent(Adherent $adherent): array
+    public function findAllByZones(array $zones): array
     {
         return $this
-            ->createSurveysForAdherentQueryBuilder($adherent)
+            ->createSurveysByZonesQueryBuilder($zones)
             ->getQuery()
             ->getResult()
         ;
     }
 
     /**
-     * @param ReferentTag[] $tags
-     *
      * @return LocalSurvey[]
      */
-    public function findAllByTagsWithStats(array $tags): array
+    public function findAllByZonesWithStats(array $zones): array
     {
-        $qb = $this
+        return $this
             ->createQueryBuilder('survey')
+            ->leftJoin('survey.zone', 'zone')
+            ->leftJoin('zone.parents', 'parent')
+            ->leftJoin('zone.children', 'child')
+            ->addSelect('zone')
             ->addSelect(sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
             ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
-        ;
-
-        return $qb
-            ->andWhere($this->createOrExpressionForSurveyTags($qb, $tags))
+            ->where('(zone IN (:zones) OR parent IN (:zones) OR child IN (:zones))')
+            ->setParameter('zones', $zones)
+            ->orderBy('survey.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
 
-    /**
-     * @param Adherent|UserInterface $adherent
-     */
-    public function createSurveysForAdherentQueryBuilder(Adherent $adherent): QueryBuilder
+    public function createSurveysByZonesQueryBuilder(array $zones): QueryBuilder
     {
-        $qb = $this
+        return $this
             ->createQueryBuilder('survey')
-            ->addSelect('questions')
+            ->addSelect('questions', 'zone')
             ->innerJoin('survey.questions', 'questions')
-        ;
-
-        return $qb
-            ->where($this->createOrExpressionForSurveyTags($qb, $adherent->getReferentTagCodes()))
+            ->innerJoin('survey.zone', 'zone')
+            ->leftJoin('zone.children', 'child')
+            ->where('(zone IN (:zones) OR child IN (:zones))')
+            ->setParameter('zones', $zones)
             ->andWhere('survey.published = true')
         ;
-    }
-
-    public function createOrExpressionForSurveyTags(QueryBuilder $qb, array $tags): Orx
-    {
-        $expression = new Orx();
-
-        foreach ($tags as $key => $tag) {
-            $expression->add("FIND_IN_SET(:tags_$key, survey.tags) > 0");
-            $qb->setParameter("tags_$key", $tag);
-        }
-
-        return $expression;
     }
 
     public function findAllByAuthor(Adherent $adherent): array
     {
         return $this
             ->createQueryBuilder('survey')
+            ->leftJoin('survey.zone', 'zone')
+            ->addSelect('zone')
             ->addSelect(sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
             ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
             ->where('survey.author = :author')

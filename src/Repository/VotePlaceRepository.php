@@ -9,9 +9,9 @@ use App\Entity\Adherent;
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\AssessorRequest;
 use App\Entity\VotePlace;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class VotePlaceRepository extends AbstractAssessorRepository
 {
@@ -20,7 +20,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
     public const ALIAS = 'vp';
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, VotePlace::class);
     }

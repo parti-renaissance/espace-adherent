@@ -132,7 +132,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
                 [
                     'label' => 'Type',
                 ],
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => array_combine(
                         array_map(

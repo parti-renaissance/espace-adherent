@@ -8,7 +8,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     Given the following fixtures are loaded:
       | LoadClientData |
       | LoadAdminData  |
-      | LoadUserData  |
+      | LoadUserData   |
 
   Scenario: OAuth is not allowed for admin
     Given I am logged as "superadmin@en-marche-dev.fr" admin
@@ -24,6 +24,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
       {
         "error":"invalid_client",
+        "error_description":"Client authentication failed",
         "message":"Client authentication failed"
       }
     """
@@ -69,8 +70,43 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     {
       "error": "access_denied",
+      "error_description": "The resource owner or authorization server denied the request.",
       "message": "The resource owner or authorization server denied the request.",
       "hint": "API user does not have access to this route"
+    }
+    """
+
+  Scenario: Client credentials authentication with device id
+    Given I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                        |
+      | client_secret | MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr  |
+      | client_id     | 1931b955-560b-41b2-9eb9-c232157f1471         |
+      | grant_type    | client_credentials                           |
+      | scope         | jemarche_app                                 |
+      | device_id     | dd4SOCS-4UlCtO-gZiQGDA                       |
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "token_type":"Bearer",
+      "expires_in":"@integer@.lowerThan(3601).greaterThan(3595)",
+      "access_token":"@string@"
+    }
+    """
+
+    When I send a "GET" request to "/oauth/v2/tokeninfo" with the access token
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "token_type":"Bearer",
+      "expires_in":@integer@,
+      "access_token":"@string@",
+      "grant_types": ["password", "client_credentials", "refresh_token"],
+      "scopes": ["jemarche_app"]
     }
     """
 
@@ -87,6 +123,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     {
       "error":"invalid_client",
+      "error_description":"Client authentication failed",
       "message":"Client authentication failed"
     }
     """
@@ -105,6 +142,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     """
     {
       "error":"invalid_scope",
+      "error_description":"The requested scope is invalid, unknown, or malformed",
       "message":"The requested scope is invalid, unknown, or malformed",
       "hint":"Check the `write:users` scope"
     }
@@ -155,7 +193,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
               },
               {
                 "name": "activation_link",
-                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
+                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@/@string@?redirect_uri=https:\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
               }
             ]
           }

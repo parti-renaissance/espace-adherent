@@ -6,11 +6,11 @@ use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\Election;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class CandidacyRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Candidacy::class);
     }

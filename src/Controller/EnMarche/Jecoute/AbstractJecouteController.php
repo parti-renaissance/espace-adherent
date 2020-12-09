@@ -5,13 +5,14 @@ namespace App\Controller\EnMarche\Jecoute;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\LocalSurvey;
-use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Exporter\SurveyExporter;
 use App\Form\Jecoute\SurveyFormType;
+use App\Jecoute\JecouteSpaceEnum;
 use App\Jecoute\StatisticsProvider;
 use App\Jecoute\SurveyTypeEnum;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\DataAnswerRepository;
 use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
@@ -20,7 +21,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,14 +31,17 @@ abstract class AbstractJecouteController extends Controller
     use AccessDelegatorTrait;
 
     protected $localSurveyRepository;
+    protected $zoneRepository;
     private $nationalSurveyRepository;
 
     public function __construct(
         LocalSurveyRepository $localSurveyRepository,
-        NationalSurveyRepository $nationalSurveyRepository
+        NationalSurveyRepository $nationalSurveyRepository,
+        ZoneRepository $zoneRepository
     ) {
         $this->localSurveyRepository = $localSurveyRepository;
         $this->nationalSurveyRepository = $nationalSurveyRepository;
+        $this->zoneRepository = $zoneRepository;
     }
 
     /**
@@ -55,7 +58,7 @@ abstract class AbstractJecouteController extends Controller
 
     /**
      * @Route(
-     *     path="/questionnaire/creer",
+     *     path="/creer",
      *     name="local_survey_create",
      *     methods={"GET|POST"},
      * )
@@ -66,17 +69,21 @@ abstract class AbstractJecouteController extends Controller
         SuggestedQuestionRepository $suggestedQuestionRepository,
         UserInterface $user
     ): Response {
+        $this->checkCreateAccess();
+
         /** @var Adherent $user */
         $localSurvey = new LocalSurvey($user);
+        $zones = $this->getZones($this->getMainUser($request->getSession()));
+        if (1 === \count($zones)) {
+            $localSurvey->setZone($zones[0]);
+        }
 
         $form = $this
-            ->createSurveyForm($localSurvey)
+            ->createForm(SurveyFormType::class, $localSurvey, ['zones' => $zones, 'edit_by_author' => true])
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $localSurvey->setTags($this->getSurveyTags($this->getMainUser($request->getSession())));
-
             $manager->persist($form->getData());
             $manager->flush();
 
@@ -99,7 +106,7 @@ abstract class AbstractJecouteController extends Controller
      *     methods={"GET|POST"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")
+     * @Security("is_granted('CAN_EDIT_SURVEY', survey)")
      */
     public function jecouteSurveyEditAction(
         Request $request,
@@ -107,8 +114,15 @@ abstract class AbstractJecouteController extends Controller
         ObjectManager $manager,
         SuggestedQuestionRepository $suggestedQuestionRepository
     ): Response {
+        $author = $survey->getAuthor();
+        if ($editByAuthor = $author === $this->getMainUser($request->getSession())) {
+            $zones = $this->getZones($author);
+        } else {
+            $zones = [$survey->getZone()];
+        }
+
         $form = $this
-            ->createSurveyForm($survey)
+            ->createForm(SurveyFormType::class, $survey, ['zones' => $zones, 'edit_by_author' => $editByAuthor])
             ->handleRequest($request)
         ;
 
@@ -129,21 +143,25 @@ abstract class AbstractJecouteController extends Controller
     /**
      * @Route(
      *     path="/questionnaire/{uuid}",
-     *     name="national_survey_show",
+     *     name="survey_show",
      *     requirements={"uuid": "%pattern_uuid%"},
      *     methods={"GET"}
      * )
      *
-     * @Entity("nationalSurvey", expr="repository.findOnePublishedByUuid(uuid)")
+     * @Entity("survey", expr="repository.findOnePublishedByUuid(uuid)")
      */
-    public function jecouteNationalSurveyShowAction(NationalSurvey $nationalSurvey): Response
+    public function jecouteSurveyShowAction(Survey $survey): Response
     {
-        $form = $this->createForm(
-            SurveyFormType::class, $nationalSurvey, ['disabled' => true]
+        $isLocalSurvey = $survey instanceof LocalSurvey;
+        $form = $this->createForm(SurveyFormType::class, $survey, [
+                'zones' => $isLocalSurvey ? [$survey->getZone()] : [],
+                'disabled' => true,
+            ]
         );
 
         return $this->renderTemplate('jecoute/show.html.twig', [
             'form' => $form->createView(),
+            'survey_type' => $isLocalSurvey ? 'local' : 'national',
         ]);
     }
 
@@ -166,6 +184,24 @@ abstract class AbstractJecouteController extends Controller
         SurveyExporter $exporter
     ): Response {
         if ($format = $request->query->get('export')) {
+            if ($survey instanceof LocalSurvey) {
+                $surveyZone = $survey->getZone();
+                $zones = $this->getZones($this->getMainUser($request->getSession()));
+                $isParentZone = false;
+
+                foreach ($zones as $zone) {
+                    if (\in_array($surveyZone, $zone->getParents())) {
+                        $isParentZone = true;
+
+                        break;
+                    }
+                }
+
+                if ($isParentZone) {
+                    return $exporter->export($survey, $format, false, $zones);
+                }
+            }
+
             return $exporter->export($survey, $format, false);
         }
 
@@ -221,12 +257,15 @@ abstract class AbstractJecouteController extends Controller
 
     abstract protected function getSpaceName(): string;
 
+    abstract protected function getZones(Adherent $adherent): array;
+
     /**
      * @return LocalSurvey[]
      */
-    abstract protected function getLocalSurveys(Adherent $adherent): array;
-
-    abstract protected function getSurveyTags(Adherent $adherent): array;
+    protected function getLocalSurveys(Adherent $adherent): array
+    {
+        return $this->localSurveyRepository->findAllByZonesWithStats($this->getZones($adherent));
+    }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
@@ -244,8 +283,11 @@ abstract class AbstractJecouteController extends Controller
         return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_${subName}", $parameters);
     }
 
-    protected function createSurveyForm(LocalSurvey $localSurvey): FormInterface
+    protected function checkCreateAccess(): void
     {
-        return $this->createForm(SurveyFormType::class, $localSurvey);
+        if (JecouteSpaceEnum::CANDIDATE_SPACE === $this->getSpaceName()
+            && $this->isGranted('ROLE_CANDIDATE_DEPARTMENTAL')) {
+            throw $this->createAccessDeniedException('You have no permission to create a survey');
+        }
     }
 }

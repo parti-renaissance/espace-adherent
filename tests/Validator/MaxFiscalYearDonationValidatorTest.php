@@ -12,8 +12,10 @@ use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxFiscalYearDonationValidator;
 use Cocur\Slugify\Slugify;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
 {
@@ -186,7 +188,9 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         parent::setUp();
 
         $this->donationRequestUtils = new DonationRequestUtils(
-            $this->createMock(ServiceLocator::class),
+            $this->createMock(ValidatorInterface::class),
+            $this->createMock(SessionInterface::class),
+            $this->createMock(CsrfTokenManagerInterface::class),
             $this->createMock(Slugify::class),
             $this->createMock(MembershipRegistrationProcess::class),
             $this->createMock(GeoCoder::class)

@@ -3,6 +3,10 @@ framework:
         ton_macron_invitation:
             type: state_machine
             supports: [App\TonMacron\InvitationProcessor]
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - 'marking'
             places:
                 - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INFO
                 - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT
@@ -34,6 +38,10 @@ framework:
         my_europe:
             type: state_machine
             supports: [App\Interactive\MyEuropeProcessor]
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - 'marking'
             places:
                 - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_INFO
                 - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
@@ -62,6 +70,10 @@ framework:
             type: state_machine
             initial_place: !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
             supports: [App\Assessor\AssessorRequestCommand]
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - 'marking'
             places:
                 - !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
                 - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO

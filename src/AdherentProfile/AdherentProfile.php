@@ -39,6 +39,7 @@ class AdherentProfile implements MembershipInterface
      * @Assert\Length(
      *     min=2,
      *     max=50,
+     *     allowEmptyString=true,
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length",
      * )
@@ -52,6 +53,7 @@ class AdherentProfile implements MembershipInterface
      * @Assert\Length(
      *     min=2,
      *     max=50,
+     *     allowEmptyString=true,
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length",
      * )

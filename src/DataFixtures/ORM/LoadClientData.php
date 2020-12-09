@@ -20,6 +20,7 @@ class LoadClientData extends Fixture
     public const CLIENT_07_UUID = 'e7c07c65-bba1-4a05-8d9b-76de6e5145c6';
     public const CLIENT_08_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992b';
     public const CLIENT_09_UUID = '40bdd6db-e422-4153-819c-9973c09f9297';
+    public const CLIENT_10_UUID = '1931b955-560b-41b2-9eb9-c232157f1471';
 
     public function load(ObjectManager $manager)
     {
@@ -49,7 +50,8 @@ class LoadClientData extends Fixture
             'En-Marche API !',
             'Plateforme Citoyenne de la République En-Marche !',
             'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA=',
-            [GrantTypeEnum::CLIENT_CREDENTIALS]
+            [GrantTypeEnum::CLIENT_CREDENTIALS],
+            ['https://en-marche.fr/callback']
         );
         $client3->addSupportedScope(Scope::READ_USERS);
         $manager->persist($client3);
@@ -59,7 +61,8 @@ class LoadClientData extends Fixture
             'Client Web Hook 1',
             'Plateforme Citoyenne de la République En-Marche !',
             'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx1omA=',
-            [GrantTypeEnum::CLIENT_CREDENTIALS]
+            [GrantTypeEnum::CLIENT_CREDENTIALS],
+            ['https://en-marche.fr/callback']
         );
         $client4->addSupportedScope(Scope::WEB_HOOK);
         $client4->addSupportedScope(Scope::READ_USERS);
@@ -71,7 +74,8 @@ class LoadClientData extends Fixture
             'Client Web Hook 2',
             'Plateforme Citoyenne de la République En-Marche !',
             'dALH/khq9BcjOS0GB6u5NaJ3R9k2yvSBq5wYUHx12T8=',
-            [GrantTypeEnum::CLIENT_CREDENTIALS]
+            [GrantTypeEnum::CLIENT_CREDENTIALS],
+            ['https://en-marche.fr/callback']
         );
         $client5->addSupportedScope(Scope::WEB_HOOK);
         $client5->addSupportedScope(Scope::READ_USERS);
@@ -86,7 +90,8 @@ class LoadClientData extends Fixture
             'Data En Marche',
             'Pour récupérer des données de typeforms par data-api.en-marche.fr!',
             'crOsk2OxtYb4CgnKoYvhb9wvO73QLYyccChiFrV9evE=',
-            [GrantTypeEnum::CLIENT_CREDENTIALS]
+            [GrantTypeEnum::CLIENT_CREDENTIALS],
+            ['https://en-marche.fr/callback']
         );
         $client6->addSupportedScope(Scope::READ_TYPEFORMS);
         $client6->addSupportedScope(Scope::READ_STATS);
@@ -99,7 +104,8 @@ class LoadClientData extends Fixture
             'API En-Marche !',
             'Plateforme Citoyenne de la République En-Marche !',
             'KsvrVu9maHRW21eiOsWVuUYC//zaglQw0s60NIj3TbA=',
-            [GrantTypeEnum::CLIENT_CREDENTIALS]
+            [GrantTypeEnum::CLIENT_CREDENTIALS],
+            ['https://en-marche.fr/callback']
         );
         $manager->persist($client7);
         $this->setReference('web_hook_client_api', $client7);
@@ -117,17 +123,29 @@ class LoadClientData extends Fixture
 
         $manager->persist($client8);
 
-        $manager->flush();
-
         $client9 = new Client(
             Uuid::fromString(self::CLIENT_09_UUID),
             'CRM Paris',
             'Pour récupérer des données sur les adhérents de Paris.',
             'cChiFrOxtYb4CgnKoYvV9evEcrOsk2hb9wvO73QLYyc=',
-            [GrantTypeEnum::CLIENT_CREDENTIALS]
+            [GrantTypeEnum::CLIENT_CREDENTIALS],
+            ['https://en-marche.fr/callback']
         );
         $client9->addSupportedScope(Scope::CRM_PARIS);
         $manager->persist($client9);
+
+        $client10 = new Client(
+            Uuid::fromString(self::CLIENT_10_UUID),
+            'JeMarche App',
+            'JeMarche App',
+            'MWFod6bOZb2mY3wLE=4THZGbOfHJvRHk8bHdtZP3BTr',
+            [GrantTypeEnum::PASSWORD, GrantTypeEnum::CLIENT_CREDENTIALS, GrantTypeEnum::REFRESH_TOKEN],
+            ['http://client-oauth.docker:8000/client/receive_authcode']
+        );
+        $client10->setAskUserForAuthorization(false);
+        $client10->addSupportedScope(Scope::JEMARCHE_APP);
+
+        $manager->persist($client10);
 
         $manager->flush();
     }

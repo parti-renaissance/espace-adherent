@@ -71,7 +71,7 @@ use App\Repository\EventRepository;
 use App\Repository\Filesystem\FileRepository;
 use App\Repository\IdeasWorkshop\IdeaRepository;
 use App\Repository\InstitutionalEventRepository;
-use App\Repository\InvitationRepository;
+use App\Repository\InviteRepository;
 use App\Repository\JeMarcheReportRepository;
 use App\Repository\MyEuropeChoiceRepository;
 use App\Repository\MyEuropeInvitationRepository;
@@ -102,21 +102,15 @@ use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait TestHelperTrait
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /** @var Adherent[] */
     protected $adherents;
 
     public function get($id)
     {
-        return $this->container->get($id);
+        return static::$container->get($id);
     }
 
     public function assertMailCountRecipients(int $count, ?Email $mail): void
@@ -140,17 +134,17 @@ trait TestHelperTrait
 
     public function getManagerRegistry(): ManagerRegistry
     {
-        return $this->container->get('doctrine');
+        return static::$container->get('doctrine');
     }
 
     public function getStorage(): Filesystem
     {
-        return $this->container->get(FilesystemInterface::class);
+        return static::$container->get(FilesystemInterface::class);
     }
 
     public function getGlide(): Server
     {
-        return $this->container->get('app.glide');
+        return static::$container->get(Server::class);
     }
 
     public function getEntityManager($class): ObjectManager
@@ -253,7 +247,7 @@ trait TestHelperTrait
         return $this->getRepository(Transaction::class);
     }
 
-    public function getInvitationRepository(): InvitationRepository
+    public function getInvitationRepository(): InviteRepository
     {
         return $this->getRepository(Invite::class);
     }
@@ -385,7 +379,7 @@ trait TestHelperTrait
 
     public function getCommitteeFeedManager(): CommitteeFeedManager
     {
-        return $this->container->get(CommitteeFeedManager::class);
+        return static::$container->get(CommitteeFeedManager::class);
     }
 
     protected function getAdherent(string $uuid): ?Adherent

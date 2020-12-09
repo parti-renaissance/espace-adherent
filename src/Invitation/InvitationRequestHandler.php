@@ -13,10 +13,10 @@ class InvitationRequestHandler
     private $entityManager;
     private $mailer;
 
-    public function __construct(EntityManagerInterface $entityManager, MailerService $mailer)
+    public function __construct(EntityManagerInterface $entityManager, MailerService $transactionalMailer)
     {
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
     }
 
     public function handle(Invite $invite, Request $request)

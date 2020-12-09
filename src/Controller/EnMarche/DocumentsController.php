@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
+use App\Documents\DocumentManager;
 use App\Documents\DocumentRepository;
 use App\Entity\Adherent;
 use League\Flysystem\FileNotFoundException;
@@ -14,13 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DocumentsController extends Controller
 {
+    private $documentManager;
+
+    public function __construct(DocumentManager $documentManager)
+    {
+        $this->documentManager = $documentManager;
+    }
+
     /**
      * @Route(name="app_documents_index", methods={"GET"})
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->render('documents/index.html.twig', [
-            'documents' => $this->get('app.document_manager')->listAdherentFiles($this->getUser()),
+            'documents' => $this->documentManager->listAdherentFiles($this->getUser()),
         ]);
     }
 
@@ -32,14 +40,14 @@ class DocumentsController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function directoryAction($type, $path)
+    public function directoryAction(string $type, string $path): Response
     {
         $this->checkDocumentTypeAccess($type);
 
         return $this->render('documents/directory.html.twig', [
             'type' => $type,
             'path' => $path,
-            'documents' => $this->get('app.document_manager')->listDirectory($type, $path),
+            'documents' => $this->documentManager->listDirectory($type, $path),
         ]);
     }
 
@@ -51,12 +59,12 @@ class DocumentsController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function fileAction($type, $path)
+    public function fileAction(string $type, string $path): Response
     {
         $this->checkDocumentTypeAccess($type);
 
         try {
-            $document = $this->get('app.document_manager')->readDocument($type, $path);
+            $document = $this->documentManager->readDocument($type, $path);
         } catch (FileNotFoundException $e) {
             throw $this->createNotFoundException('Document not found', $e);
         }

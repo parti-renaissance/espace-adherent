@@ -28,10 +28,10 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"adherent_change_diff", "user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"adherent_change_diff", "public", "committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"user_profile", "event_read"})
      */
     public function getCountry(): ?string
     {
@@ -59,7 +59,7 @@ trait EntityPostAddressTrait
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
      *
-     * @SymfonySerializer\Groups({"export", "event_read"})
+     * @SymfonySerializer\Groups({"user_profile", "export", "event_read"})
      */
     public function getPostalCode(): ?string
     {

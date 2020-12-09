@@ -57,7 +57,7 @@ class ProcurationReliabilityProcessorTest extends WebTestCase
 
         $this->init();
 
-        $this->procurationReliabilityProcessor = $this->get(ProcurationReliabilityProcessor::class);
+        $this->procurationReliabilityProcessor = new ProcurationReliabilityProcessor($this->getAdherentRepository());
     }
 
     protected function tearDown(): void

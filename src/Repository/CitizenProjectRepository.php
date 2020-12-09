@@ -8,14 +8,14 @@ use App\Entity\BaseGroup;
 use App\Entity\CitizenProject;
 use App\Geocoder\Coordinates;
 use App\Search\SearchParametersFilter;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CitizenProjectRepository extends AbstractGroupRepository
 {
     use NearbyTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CitizenProject::class);
     }

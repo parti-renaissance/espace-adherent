@@ -4,7 +4,7 @@ namespace App\Security;
 
 use App\Entity\Adherent;
 use App\Exception\AccountNotValidatedException;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
@@ -14,7 +14,7 @@ class UserChecker implements UserCheckerInterface
 {
     private $router;
 
-    public function __construct(Router $router)
+    public function __construct(UrlGeneratorInterface $router)
     {
         $this->router = $router;
     }

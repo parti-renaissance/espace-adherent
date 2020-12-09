@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Api\EventProvider;
 use App\Entity\Adherent;
 use App\Repository\CommitteeRepository;
 use App\Repository\EventRegistrationRepository;
@@ -21,9 +22,9 @@ class EventsController extends Controller
     /**
      * @Route("/events", name="api_committees_events", methods={"GET"})
      */
-    public function getUpcomingCommitteesEventsAction(Request $request): Response
+    public function getUpcomingCommitteesEventsAction(Request $request, EventProvider $provider): Response
     {
-        return new JsonResponse($this->get('app.api.event_provider')->getUpcomingEvents($request->query->getInt('type')));
+        return new JsonResponse($provider->getUpcomingEvents($request->query->getInt('type')));
     }
 
     /**

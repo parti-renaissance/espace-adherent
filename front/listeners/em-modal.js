@@ -7,14 +7,20 @@ export default function () {
         on(element, 'click', (event) => {
             event.preventDefault();
 
-            const modalWrapper = document.createElement('div');
-            element.parentNode.insertBefore(modalWrapper, element);
+            let modalWrapper = dom('#modal-wrapper');
+
+            if (!modalWrapper) {
+                modalWrapper = document.createElement('div');
+                element.parentNode.insertBefore(modalWrapper, element);
+            }
 
             render(
                 <Modal
                     side={element.dataset.modalSide || null}
                     content={dom(element.dataset.contentElement).innerHTML}
-                    closeCallback={() => { modalWrapper.remove(); }}
+                    closeCallback={() => {
+                        while (modalWrapper.firstChild) { modalWrapper.removeChild(modalWrapper.lastChild); }
+                    }}
                 />,
                 modalWrapper
             );

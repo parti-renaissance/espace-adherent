@@ -27,6 +27,7 @@ use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AvailableDistrictAutocompleteType;
 use App\Form\Admin\CandidateManagedAreaType;
 use App\Form\Admin\CoordinatorManagedAreaType;
+use App\Form\Admin\JecouteManagedAreaType;
 use App\Form\Admin\LreAreaType;
 use App\Form\Admin\MunicipalChiefManagedAreaType;
 use App\Form\Admin\ReferentManagedAreaType;
@@ -51,6 +52,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -58,6 +60,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -236,10 +239,10 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
                 ->add('isJecouteManager', 'boolean', [
-                    'label' => "Est responsable J'écoute ?",
+                    'label' => 'Est responsable des questionnaires ?',
                 ])
-                ->add('jecouteManagedAreaCodesAsString', null, [
-                    'label' => "Responsable J'écoute",
+                ->add('jecouteManagedArea.zone', null, [
+                    'label' => 'Responsable des questionnaires',
                 ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-3'])
@@ -286,7 +289,7 @@ class AdherentAdmin extends AbstractAdmin
                         'Désactivé' => Adherent::DISABLED,
                     ],
                 ])
-                ->add('tags', 'sonata_type_model', [
+                ->add('tags', ModelType::class, [
                     'label' => 'Tags admin',
                     'multiple' => true,
                     'by_reference' => false,
@@ -328,7 +331,7 @@ class AdherentAdmin extends AbstractAdmin
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                     'required' => false,
                 ])
-                ->add('birthdate', 'sonata_type_date_picker', [
+                ->add('birthdate', DatePickerType::class, [
                     'label' => 'Date de naissance',
                     'required' => false,
                 ])
@@ -398,10 +401,10 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'La république ensemble',
                     'required' => false,
                 ])
-                ->add('jecouteManagedAreaCodesAsString', TextType::class, [
+                ->add('jecouteManagedArea', JecouteManagedAreaType::class, [
                     'label' => 'jecoute_manager',
                     'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable J'écoute. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable des questionnaires. Choisissez un département, un arrondissement de Paris ou une circonscription des Français établis hors de France",
                 ])
                 ->add('printPrivilege', null, [
                     'label' => 'Accès à "La maison des impressions"',
@@ -477,7 +480,7 @@ HELP
                     'mapped' => false,
                     'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                 ])
-                ->add('boardMemberRoles', 'sonata_type_model', [
+                ->add('boardMemberRoles', ModelType::class, [
                     'expanded' => true,
                     'multiple' => true,
                     'btn_add' => false,
@@ -624,7 +627,7 @@ HELP
                 'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
             ->add('canaryTester')
-            ->add('status', null, ['label' => 'Etat du compte'], 'choice', [
+            ->add('status', null, ['label' => 'Etat du compte'], ChoiceType::class, [
                 'choices' => [
                     'Activé' => Adherent::ENABLED,
                     'Désactivé' => Adherent::DISABLED,
@@ -775,7 +778,7 @@ HELP
                     // J'écoute Manager
                     if (\in_array(AdherentRoleEnum::JECOUTE_MANAGER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.jecouteManagedArea', $alias), 'jecouteManagedArea');
-                        $where->add('jecouteManagedArea IS NOT NULL AND jecouteManagedArea.codes IS NOT NULL');
+                        $where->add('jecouteManagedArea IS NOT NULL AND jecouteManagedArea.zone IS NOT NULL');
                     }
 
                     // User

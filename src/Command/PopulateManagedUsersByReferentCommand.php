@@ -2,14 +2,15 @@
 
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PopulateManagedUsersByReferentCommand extends ContainerAwareCommand
+class PopulateManagedUsersByReferentCommand extends Command
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -19,11 +20,6 @@ class PopulateManagedUsersByReferentCommand extends ContainerAwareCommand
             ->setName('app:referent:populate')
             ->setDescription('Create managed users by referent from the datas of concerned tables.')
         ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->manager = $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -160,5 +156,11 @@ SQL;
         } catch (\Exception $e) {
             $output->writeln('The error occurred during execution : '.$e->getMessage());
         }
+    }
+
+    /** @required */
+    public function setManager(EntityManagerInterface $manager): void
+    {
+        $this->manager = $manager;
     }
 }

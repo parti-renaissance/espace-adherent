@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -237,7 +238,7 @@ class CommitteeAdmin extends AbstractAdmin
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
-                'field_type' => 'sonata_type_date_range_picker',
+                'field_type' => DateRangePickerType::class,
             ])
             ->add('hostOrCreatorFirstName', CallbackFilter::class, [
                 'label' => 'Prénom de l\'animateur/créateur',

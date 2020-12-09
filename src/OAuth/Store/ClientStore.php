@@ -2,6 +2,7 @@
 
 namespace App\OAuth\Store;
 
+use App\Entity\OAuth\Client as EntityClient;
 use App\OAuth\Model\Client as InMemoryClient;
 use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -18,28 +19,13 @@ class ClientStore implements OAuthClientRepositoryInterface
     }
 
     /**
-     * @param string      $clientIdentifier
-     * @param string      $grantType
-     * @param string|null $clientSecret
-     * @param bool        $mustValidateSecret
+     * @param string $clientIdentifier
      *
      * @return ClientEntityInterface|null
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
+    public function getClientEntity($clientIdentifier)
     {
-        if (!Uuid::isValid($clientIdentifier)) {
-            return null;
-        }
-
-        if (!$client = $this->clientRepository->findClientByUuid(Uuid::fromString($clientIdentifier))) {
-            return null;
-        }
-
-        if ($mustValidateSecret && !$client->verifySecret($clientSecret)) {
-            return null;
-        }
-
-        if (!$client->isAllowedGrantType($grantType)) {
+        if (!$client = $this->findClientEntity($clientIdentifier)) {
             return null;
         }
 
@@ -48,5 +34,31 @@ class ClientStore implements OAuthClientRepositoryInterface
         $oAuthClient->setRedirectUris($client->getRedirectUris());
 
         return $oAuthClient;
+    }
+
+    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    {
+        if (!$client = $this->findClientEntity($clientIdentifier)) {
+            return false;
+        }
+
+        if (!$client->verifySecret($clientSecret)) {
+            return false;
+        }
+
+        if (!$client->isAllowedGrantType($grantType)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function findClientEntity(string $identifier): ?EntityClient
+    {
+        if (!Uuid::isValid($identifier)) {
+            return null;
+        }
+
+        return $this->clientRepository->findClientByUuid(Uuid::fromString($identifier));
     }
 }

@@ -13,7 +13,7 @@ use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,8 +23,10 @@ class OAuthServerController extends Controller
     private $authorizationServer;
     private $httpFoundationFactory;
 
-    public function __construct(AuthorizationServer $authorizationServer, HttpFoundationFactory $httpFoundationFactory)
-    {
+    public function __construct(
+        AuthorizationServer $authorizationServer,
+        HttpFoundationFactoryInterface $httpFoundationFactory
+    ) {
         $this->authorizationServer = $authorizationServer;
         $this->httpFoundationFactory = $httpFoundationFactory;
     }

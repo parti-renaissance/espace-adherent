@@ -100,9 +100,9 @@ class DeputyMessageDispatcherConsumer extends AbstractConsumer
         }
     }
 
-    public function setMailer(MailerService $mailer): void
+    public function setMailer(MailerService $transactionalMailer): void
     {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
     }
 
     public function getMailer(): MailerService

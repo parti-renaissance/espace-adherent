@@ -23,6 +23,9 @@
                     {
                         key: 'questionsCount',
                         name: 'Nombre de questions',
+                        style: {
+                            'width': 80,
+                        },
                     },
                     {
                         key: 'responsesCount',
@@ -31,6 +34,9 @@
                     {
                         key: 'zone',
                         name: 'Zone',
+                        style: {
+                            'minWidth': 200,
+                        },
                     },
                     {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                         {
@@ -42,8 +48,8 @@
                         key: 'publish',
                         name: "Publication",
                         style: {
-                            width: 100,
-                        }
+                            width: 70,
+                        },
                     },
                     {
                         key: 'menu',
@@ -55,6 +61,7 @@
                 {%- spaceless %}
                     {% for data in surveys %}
                         {% set survey = data[0] %}
+                        {% set zone = survey is instanceof('App\\Entity\\Jecoute\\LocalSurvey') ? survey.zone %}
 
                         {% set row = {
                             id: survey.id,
@@ -62,41 +69,55 @@
                             createdAt: survey.createdAt|date('d/m/Y'),
                             questionsCount: data.questions_count,
                             responsesCount: data.responses_count,
-                            zone: survey is instanceof('App\\Entity\\Jecoute\\LocalSurvey') ? survey.city : 'Département',
+                            zone: survey is instanceof('App\\Entity\\Jecoute\\LocalSurvey')
+                                ? '<span class="adherent-dashboard-tag">'~('geo_zone.'~zone.type)|trans~'</span><br>'
+                                    ~"<div class=\"b__nudge--top-10\">#{zone.name} (#{zone.code})</span>",
                             publish: survey.published ? '<span class="status status__1">Publié</span>' :
                                 '<span class="status status__2">Non publié</span>',
                         } %}
 
+                        {% if is_granted('CAN_EDIT_SURVEY', survey) %}
+                            {% set menu = [
+                                {
+                                    label: 'Éditer',
+                                    url: path("app_jecoute_#{space_name}_local_survey_edit", {uuid: survey.uuid})
+                                }
+                            ] %}
+                        {% else %}
+                            {% set menu = [
+                                {
+                                    label: 'Voir',
+                                    url: path("app_jecoute_#{space_name}_survey_show", {uuid: survey.uuid})
+                                }
+                            ] %}
+                        {% endif %}
+
                         {% if type == constant('App\\Jecoute\\SurveyTypeEnum::LOCAL') %}
                             {% set row = row|merge({
                                 author: survey.author ? survey.author.fullName : 'Ancien adhérent',
-                                menu: [
-                                    {
-                                        label: 'Éditer',
-                                        url: path("app_jecoute_#{space_name}_local_survey_edit", {uuid: survey.uuid})
-                                    },
-                                    {
-                                        label: 'Dupliquer',
-                                        url: path("app_jecoute_#{space_name}_local_survey_duplicate", {uuid: survey.uuid})
-                                    },
+                                menu: menu|merge([
                                     {
                                         label: 'Statistiques',
                                         url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
                                     },
-                                ]
+                                    {
+                                        label: 'Télécharger les résultats',
+                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid, export: 'xls'})
+                                    },
+                                ])
                             }) %}
                         {% else %}
                             {% set row = row|merge({
-                                menu: [
-                                    {
-                                        label: 'Voir',
-                                        url: path("app_jecoute_#{space_name}_national_survey_show", {uuid: survey.uuid})
-                                    },
+                                menu: menu|merge([
                                     {
                                         label: 'Statistiques',
                                         url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
                                     },
-                                ]
+                                    {
+                                        label: 'Télécharger les résultats',
+                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid, export: 'xls'})
+                                    },
+                                ])
                             }) %}
                         {% endif %}
 
@@ -111,6 +132,15 @@
 
 {% block jecoute_content %}
     <div class="datagrid__table__tabs">
+        <div class="datagrid__pre-table b__nudge--bottom-larger">
+            <h3>Questionnaires</h3>
+            {% if not(space_name == constant('App\\Jecoute\\JecouteSpaceEnum::CANDIDATE_SPACE') and is_granted('ROLE_CANDIDATE_DEPARTMENTAL')) %}
+                <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-secondary btn-secondary--blue">
+                    + Créer un questionnaire local
+                </a>
+            {% endif %}
+        </div>
+
         <div class="alert alert--tips b__nudge--bottom-60">
             J’écoute vous permet de créer des questionnaires pour recueillir les impressions et les idées des citoyens sur la vie locale comme sur la politique nationale.
             Ils seront disponibles sur l'application mobile et consultables par les adhérent(e)s du territoire que vous gérez.
@@ -143,10 +173,6 @@
                 {% endif %}
             </ul>
         </nav>
-
-        <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-secondary btn-secondary--blue">
-            + Créer un questionnaire local
-        </a>
     </div>
 
     <div id="datagrid"></div>

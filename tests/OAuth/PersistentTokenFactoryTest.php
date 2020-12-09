@@ -12,6 +12,7 @@ use App\OAuth\Model\RefreshToken as InMemoryRefreshToken;
 use App\OAuth\Model\Scope as InMemoryScope;
 use App\OAuth\PersistentTokenFactory;
 use App\Repository\AdherentRepository;
+use App\Repository\DeviceRepository;
 use App\Repository\OAuth\AccessTokenRepository;
 use App\Repository\OAuth\ClientRepository;
 use PHPUnit\Framework\TestCase;
@@ -35,13 +36,14 @@ class PersistentTokenFactoryTest extends TestCase
     private $accessTokenRepository;
     private $clientRepository;
     private $adherentRepository;
+    private $deviceRepository;
 
     public function testCreateAuthorizationCode(): void
     {
         $token = $this->createAuthorizationCode();
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
-        $token->setExpiryDateTime($expectedDate = new \DateTime('+5 hours'));
+        $token->setExpiryDateTime($expectedDate = new \DateTimeImmutable('+5 hours'));
         $token->addScope($this->createScope('read:users'));
         $token->addScope($this->createScope('write:users'));
         $token->setRedirectUri('https://app.foo-bar.com/oauth');
@@ -82,7 +84,7 @@ class PersistentTokenFactoryTest extends TestCase
         $token = $this->createAuthorizationCode();
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
-        $token->setExpiryDateTime(new \DateTime('+5 hours'));
+        $token->setExpiryDateTime(new \DateTimeImmutable('+5 hours'));
         $token->addScope($this->createScope('read:users'));
         $token->addScope($this->createScope('write:users'));
 
@@ -111,7 +113,7 @@ class PersistentTokenFactoryTest extends TestCase
         $token = $this->createAuthorizationCode();
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
-        $token->setExpiryDateTime(new \DateTime('+5 hours'));
+        $token->setExpiryDateTime(new \DateTimeImmutable('+5 hours'));
         $token->addScope($this->createScope('read:users'));
         $token->addScope($this->createScope('write:users'));
 
@@ -141,7 +143,7 @@ class PersistentTokenFactoryTest extends TestCase
         $token = $this->createAccessToken();
         $token->setClient($this->createClient());
         $token->setUserIdentifier(self::USER_UUID);
-        $token->setExpiryDateTime($expectedDate = \DateTime::createFromFormat('U', time() + 5 * 60 * 60));
+        $token->setExpiryDateTime($expectedDate = \DateTimeImmutable::createFromFormat('U', time() + 5 * 60 * 60));
         $token->addScope($this->createScope('read:users'));
         $token->addScope($this->createScope('write:users'));
 
@@ -223,11 +225,10 @@ class PersistentTokenFactoryTest extends TestCase
 
     public function testCreateRefreshToken(): void
     {
-        $expirationDate = new \DateTime('+6 hours');
         $token = new InMemoryRefreshToken();
         $token->setIdentifier(self::REFRESH_TOKEN_IDENTIFIER);
         $token->setAccessToken($this->createAccessToken());
-        $token->setExpiryDateTime($expirationDate);
+        $token->setExpiryDateTime($expirationDate = new \DateTimeImmutable('+6 hours'));
 
         $this
             ->accessTokenRepository
@@ -281,10 +282,12 @@ class PersistentTokenFactoryTest extends TestCase
         $this->accessTokenRepository = $this->createMock(AccessTokenRepository::class);
         $this->clientRepository = $this->createMock(ClientRepository::class);
         $this->adherentRepository = $this->createMock(AdherentRepository::class);
+        $this->deviceRepository = $this->createMock(DeviceRepository::class);
         $this->tokenFactory = new PersistentTokenFactory(
             $this->accessTokenRepository,
             $this->clientRepository,
-            $this->adherentRepository
+            $this->adherentRepository,
+            $this->deviceRepository
         );
     }
 
@@ -293,6 +296,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this->accessTokenRepository = null;
         $this->clientRepository = null;
         $this->adherentRepository = null;
+        $this->deviceRepository = null;
         $this->tokenFactory = null;
 
         parent::tearDown();

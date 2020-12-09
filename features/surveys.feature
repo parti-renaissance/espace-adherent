@@ -1,7 +1,7 @@
 @surveys
 Feature:
   As a Jecoute manager
-  I can manage the local surveys and see the nationcal surveys
+  I can manage the local surveys and see the national surveys
 
   Background:
     Given the following fixtures are loaded:
@@ -10,14 +10,30 @@ Feature:
       | LoadJecouteDataAnswerData  |
 
   @javascript
-  Scenario: I can create a local survey, edit it and show the statistics page
+  Scenario: I can see local surveys and their actions
     Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-responsable-jecoute"
-    Then I should see "Mon espace J'écoute"
-    And I should see "Vous gérez : CH, ES, 92, 76, 77, 13, 59"
+    When I am on "/espace-responsable-des-questionnaires"
+    Then I should see "Mon espace responsable des questionnaires"
+    And I should see "Vous gérez : Seine-et-Marne (77)"
+    And I should see 2 "table.datagrid__table-manager tbody tr" elements
+    And I should see "Questionnaire numéro 1"
+    And I should see "Un questionnaire de la Région"
 
+    And I should see 1 "table.datagrid__table-manager tr:contains('Questionnaire numéro 1') .action-menu-oval:contains('Éditer')" elements
+    And I should see 0 "table.datagrid__table-manager tr:contains('Questionnaire numéro 1') .action-menu-oval:contains('Voir')" elements
+    And I should see 1 "table.datagrid__table-manager tr:contains('Questionnaire numéro 1') .action-menu-oval:contains('Statistiques')" elements
+    And I should see 1 "table.datagrid__table-manager tr:contains('Questionnaire numéro 1') .action-menu-oval:contains('Télécharger les résultats')" elements
+
+    And I should see 0 "table.datagrid__table-manager tr:contains('Un questionnaire de la Région') .action-menu-oval:contains('Éditer')" elements
+    And I should see 1 "table.datagrid__table-manager tr:contains('Un questionnaire de la Région') .action-menu-oval:contains('Voir')" elements
+    And I should see 1 "table.datagrid__table-manager tr:contains('Un questionnaire de la Région') .action-menu-oval:contains('Statistiques')" elements
+    And I should see 1 "table.datagrid__table-manager tr:contains('Un questionnaire de la Région') .action-menu-oval:contains('Télécharger les résultats')" elements
+
+  @javascript
+  Scenario: I can create a local survey, edit it and show the statistics page
     # Create
-    Given I am on "/espace-responsable-jecoute/questionnaire/creer"
+    Given I am logged as "damien.schmidt@example.ch"
+    And I am on "/espace-responsable-des-questionnaires/creer"
     And I press "OK"
     When I wait 10 seconds until I see "⟵ Retour"
     And I fill in the following:
@@ -48,9 +64,9 @@ Feature:
     And I should see "Aucune donnée n'est disponible pour le moment."
 
   @javascript
-  Scenario: I can see the national surveys list and show the statistics
+  Scenario: I can see the national surveys list and see the statistics
     Given I am logged as "damien.schmidt@example.ch"
-    When I am on "/espace-responsable-jecoute/questionnaires-nationaux"
+    When I am on "/espace-responsable-des-questionnaires/questionnaires-nationaux"
     And I should see "Questionnaires nationaux"
     And I should see "Questionnaire national numéro 1"
     Given I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"

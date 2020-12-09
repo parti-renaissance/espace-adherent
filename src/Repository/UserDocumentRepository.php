@@ -6,10 +6,16 @@ use App\Entity\CommitteeFeedItem;
 use App\Entity\Event;
 use App\Entity\IdeasWorkshop\Answer;
 use App\Entity\UserDocument;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class UserDocumentRepository extends EntityRepository
+class UserDocumentRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, UserDocument::class);
+    }
+
     public function checkIfDocumentIsUsed(UserDocument $document): bool
     {
         $event = $this

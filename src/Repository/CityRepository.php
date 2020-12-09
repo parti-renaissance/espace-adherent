@@ -8,8 +8,8 @@ use App\Entity\City;
 use App\Entity\MunicipalManagerRoleAssociation;
 use App\MunicipalManager\Filter\AssociationCityFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CityRepository extends ServiceEntityRepository
 {
@@ -18,7 +18,7 @@ class CityRepository extends ServiceEntityRepository
 
     private const ALIAS = 'city';
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, City::class);
     }

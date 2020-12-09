@@ -3,7 +3,6 @@
 namespace Tests\App\Controller\EnMarche\Security;
 
 use App\DataFixtures\ORM\LoadAdherentData;
-use App\Entity\Adherent;
 use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
 use App\Mailer\Message\AdherentResetPasswordMessage;
 use App\Repository\AdherentRepository;
@@ -180,7 +179,6 @@ class AdherentSecurityControllerTest extends WebTestCase
 
     public function testResetPasswordAction(): void
     {
-        $client = $this->makeClient(['HTTP_HOST' => $this->hosts['app']]);
         $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
         $token = $this->getFirstAdherentResetPasswordToken();
         $oldPassword = $adherent->getPassword();
@@ -188,13 +186,13 @@ class AdherentSecurityControllerTest extends WebTestCase
         $this->assertNull($token->getUsageDate());
 
         $resetPasswordUrl = sprintf('/changer-mot-de-passe/%s/%s', $adherent->getUuid(), $token->getValue());
-        $crawler = $client->request(Request::METHOD_GET, $resetPasswordUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $resetPasswordUrl);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $crawler->filter('input[name="adherent_reset_password[password][first]"]'));
         $this->assertCount(1, $crawler->filter('input[name="adherent_reset_password[password][second]"]'));
 
-        $client->submit($crawler->selectButton('adherent_reset_password[submit]')->form(), [
+        $this->client->submit($crawler->selectButton('adherent_reset_password[submit]')->form(), [
             'adherent_reset_password' => [
                 'password' => [
                     'first' => 'new password',
@@ -204,19 +202,16 @@ class AdherentSecurityControllerTest extends WebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $client);
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $this->client);
 
-        $client->followRedirect();
+        $this->client->followRedirect();
 
-        // Refresh the adherent
-        $this->getEntityManager(Adherent::class)->refresh($adherent);
-
-        $this->assertNotSame($adherent->getPassword(), $oldPassword);
+        $this->assertNotSame($this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch')->getPassword(), $oldPassword);
 
         // Reset password twice
-        $client->request(Request::METHOD_GET, $resetPasswordUrl);
+        $this->client->request(Request::METHOD_GET, $resetPasswordUrl);
 
-        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
     protected function setUp(): void

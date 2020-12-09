@@ -3,6 +3,7 @@
 namespace App\Controller\EnMarche\ManagedUsers;
 
 use App\Form\ManagedUsers\CandidateManagedUsersFilterType;
+use App\Geo\ManagedZoneProvider;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -17,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CandidateManagedUsersController extends AbstractManagedUsersController
 {
-    public const SPACE_NAME = 'candidate';
+    public const SPACE_NAME = ManagedZoneProvider::CANDIDATE;
 
     protected function getSpaceType(): string
     {

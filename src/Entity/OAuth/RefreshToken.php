@@ -24,7 +24,7 @@ class RefreshToken extends AbstractToken
         UuidInterface $uuid,
         AccessToken $accessToken,
         string $identifier,
-        \DateTime $expiryDateTime
+        \DateTimeImmutable $expiryDateTime
     ) {
         parent::__construct($uuid, $identifier, $expiryDateTime);
 

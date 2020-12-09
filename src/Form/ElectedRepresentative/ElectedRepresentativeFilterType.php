@@ -10,6 +10,7 @@ use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
 use App\Form\ZoneAutoCompleteType;
+use App\Validator\ManagedZone;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -78,7 +79,12 @@ class ElectedRepresentativeFilterType extends AbstractType
                 'multiple' => true,
             ])
             ->add('zones', ZoneAutoCompleteType::class, [
-                'remote_params' => ['space' => $options['space_type']],
+                'remote_params' => [
+                    'space_type' => $options['space_type'],
+                ],
+                'constraints' => [
+                    new ManagedZone($options['space_type']),
+                ],
             ])
             ->add('userListDefinitions', EntityType::class, [
                 'label' => 'elected_representative.user_list_definitions',

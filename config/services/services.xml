@@ -5,30 +5,10 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <defaults autowire="true" autoconfigure="true" public="false">
-            <bind key="$donationRequestUtilsLocator" type="service" id="app.donation_request.utils.locator" />
             <bind key="$environment">%kernel.environment%</bind>
         </defaults>
 
-        <!-- History -->
-        <prototype namespace="App\History\" resource="../../src/History/" />
-
-        <!-- Adherents -->
-        <service id="App\Membership\AdherentManager" />
-
-        <!-- Algolia -->
-        <service id="App\Algolia\AlgoliaIndexedEntityManager" />
-
-        <!-- Content -->
-        <service id="App\Content\ClarificationFactory" />
-        <service id="App\Content\MediaFactory" />
-
         <!-- CitizenProject -->
-        <service id="App\CitizenProject\CitizenProjectAuthority" />
-        <service id="App\CitizenProject\CitizenProjectManager">
-            <call method="setGlide">
-                <argument type="service" id="app.glide" />
-            </call>
-        </service>
         <service id="App\MediaGenerator\Pdf\CitizenProjectTractGenerator" public="true">
             <argument type="service" id="knp_snappy.pdf"/>
         </service>
@@ -36,101 +16,17 @@
             <argument type="service" id="knp_snappy.image"/>
         </service>
 
-        <service id="App\CitizenProject\CitizenProjectFactory" public="true" />
-
-        <!-- CitizenActions -->
-        <service id="App\CitizenAction\CitizenActionMessageNotifier">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
-        </service>
-
-        <service id="App\CitizenAction\CitizenActionParticipantsExporter" public="true" />
-
-        <service id="App\CitizenAction\CitizenActionContactParticipantsCommandHandler" public="true">
-            <argument type="service" id="app.mailer.campaign" />
-        </service>
-
-        <!-- TurnkeyProject -->
-        <service id="App\TurnkeyProject\TurnkeyProjectManager">
-            <call method="setGlide">
-                <argument type="service" id="app.glide" />
-            </call>
-        </service>
-
-        <!-- Donation -->
-        <service id="App\Donation\DonationFactory" />
-        <service id="App\Donation\PayboxPaymentUnsubscription">
-            <argument type="service" key="$mailer" id="app.mailer.transactional" />
-        </service>
-        <service id="App\Donation\TransactionSubscriber">
-            <argument type="service" key="$mailer" id="app.mailer.transactional" />
-        </service>
-        <service id="App\Donation\TransactionCallbackHandler"/>
-        <service id="App\Donation\DonationRequestHandler"/>
-
-        <service id="App\Donation\DonatorMergeCommandHandler" public="true" />
-        <service id="App\Donation\DonationRequestUtils" />
-
-        <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
-            <argument type="collection">
-                <argument key="validator" type="service" id="validator" />
-                <argument key="session" type="service" id="session" />
-                <argument key="security.csrf.token_manager" type="service" id="security.csrf.token_manager" />
-            </argument>
-            <tag name="container.service_locator" />
-        </service>
-
-        <service id="App\Donation\PayboxFormFactory" />
-        <service id="App\Donation\DonatorSubscriber" />
-
-        <!-- Membership -->
-        <service id="App\Membership\MembershipRegistrationProcess"/>
-        <service id="App\Membership\AdherentChangeEmailHandler">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
-        </service>
-        <service id="App\Membership\EventListener\ChangeEmailFlashMessageSubscriber" />
-        <service id="App\Membership\AdherentAccountActivationHandler" />
-
-        <!-- Event -->
-        <service id="App\Event\EventFactory" public="true" />
-        <service id="App\Event\EventCanceledHandler" />
-
-        <service id="App\Event\EventRegistrationSubscriber">
-            <argument type="service" id="app.mailer.transactional" />
-        </service>
-
-        <!-- Institutional Events -->
-        <service id="App\InstitutionalEvent\InstitutionalEventCommandHandler" />
-        <service id="App\InstitutionalEvent\InstitutionalEventMessageNotifier">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
-        </service>
-
         <!-- Assessor -->
-        <service id="App\Assessor\AssessorRequestFactory" />
-        <service id="App\Assessor\AssessorRole\AssessorAssociationManager" />
         <service id="App\Assessor\AssessorRequestHandler">
             <argument type="service" id="state_machine.assessor_request" />
         </service>
-        <service id="App\Assessor\AssessorRequestNotifier">
-            <argument type="service" id="app.mailer.transactional"/>
-        </service>
 
         <!-- ApplicationRequest -->
-        <service id="App\ApplicationRequest\ApplicationRequestHandler" />
-        <service id="App\ApplicationRequest\ApplicationRequestRepository" />
-        <service id="App\ApplicationRequest\Listener\UpdateAdherentRelationSubscriber" />
-        <service id="App\ApplicationRequest\Listener\HideDuplicateRequestsSubscriber" />
-        <service id="App\ApplicationRequest\Listener\SendConfirmationRequestSubscriber">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
-        </service>
         <service id="App\ApplicationRequest\Listener\ApplicationRequestChangeSubscriber">
             <tag name="doctrine.event_subscriber"/>
         </service>
 
         <!-- EventListener -->
-        <service id="App\EventListener\ProcurationMailerSubscriber">
-            <argument key="$mailer" type="service" id="app.mailer.transactional" />
-        </service>
-        <service id="App\EventListener\ProcurationReliabilitySubscriber"/>
         <service id="App\EventListener\ControllerListener">
             <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" priority="8" />
         </service>
@@ -150,18 +46,6 @@
             <tag name="doctrine.event_listener" event="preUpdate" lazy="true" />
             <tag name="doctrine.event_listener" event="postUpdate" lazy="true" />
         </service>
-        <service id="App\Security\EventListener\LastVisitedPageOnGetListener">
-            <argument key="$apiPathPrefix">%env(API_PATH_PREFIX)%</argument>
-        </service>
-        <service id="App\EventListener\RecordReferentLastVisitListener" />
-        <service id="App\EventListener\SendEventUpdateNotificationListener">
-            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
-        </service>
-        <!-- EventSubscriber -->
-        <service id="App\EventSubscriber\CommentsCguSubscriber"/>
-
-        <!-- Exporter -->
-        <prototype namespace="App\Exporter\" resource="../../src/Exporter/" />
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">
@@ -169,29 +53,10 @@
             <argument>%env(MAXMIND_LICENSE_KEY)%</argument>
         </service>
         <service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client"/>
-        <service id="App\Address\GeoCoder"/>
-
-        <!-- Procuration -->
-        <service id="App\Procuration\ProcurationManager" public="true" />
-        <service id="App\Procuration\ProcurationReliabilityProcessor" public="true" />
-        <service id="App\Procuration\ProcurationRequestSerializer" />
-        <service id="App\Procuration\ProcurationSession" />
-
-        <!-- J'écoute -->
-        <service id="App\Jecoute\DataSurveyNotifier">
-            <argument type="service" id="app.mailer.transactional"/>
-        </service>
-
-        <!-- Report -->
-        <service id="App\Report\ReportManager" />
-        <service id="App\Report\ReportCreationCommandHandler" />
-        <service id="App\Report\Listener\EnableSubjectForResolvingReportsListener" />
-
-        <!-- Repository -->
-        <prototype namespace="App\Repository\" resource="../../src/Repository/**" />
 
         <!-- Security -->
         <prototype namespace="App\Security\Voter\" resource="../../src/Security/Voter"/>
+
         <service id="App\Security\Http\AuthenticationFailureHandler"/>
         <service id="App\Security\Http\Session\AnonymousFollowerSession" public="true" />
         <service id="App\Security\LoginFormAuthenticator">
@@ -207,6 +72,11 @@
         <service id="App\Security\QrCodeResponseFactory"/>
         <service id="App\Security\Voter\AdherentMessageLimitVoter" />
 
+        <service id="App\Security\InactiveAdminListener">
+            <argument key="$maxIdleTime">%env(SESSION_MAX_IDLE_TIME)%</argument>
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+        </service>
+
         <!-- Serializer -->
         <service id="App\Serializer\CitizenProjectSerializerSubscriber">
             <tag name="jms_serializer.event_subscriber" />
@@ -214,17 +84,12 @@
         <service id="App\Serializer\MoocSerializerSubscriber">
             <tag name="jms_serializer.event_subscriber" />
         </service>
-        <service id="App\Serializer\XlsxEncoder" />
 
         <!-- Timeline -->
-        <service id="App\Timeline\TimelineFactory" />
-        <service id="App\Timeline\TimelineImageFactory" public="true">
+        <service id="App\Timeline\TimelineImageFactory">
             <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
             <argument key="$webDirectory">%kernel.project_dir%/public</argument>
         </service>
-
-        <!-- UserDocument -->
-        <service id="App\UserDocument\UserDocumentManager" public="true" />
 
         <!-- HTML Purifiers -->
         <service id="app.html_purifier.default" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
@@ -240,27 +105,11 @@
             <argument>%image_max_length%</argument>
         </service>
 
-        <!-- History -->
-        <service id="App\History\EmailSubscriptionHistoryHandler" />
-
-        <!-- Republican Silence -->
-        <service id="App\RepublicanSilence\CheckRepublicanSilenceListener" />
-        <service id="App\RepublicanSilence\RepublicanSilenceManager" />
-
-        <service id="App\Election\ElectionManager" />
-
         <!-- Deputy -->
-        <service id="App\Deputy\Subscriber\BindAdherentDistrictSubscriber" />
-        <service id="App\Deputy\DistrictLoader" public="true" />
-        <service id="App\Deputy\LightFileDistrictLoader" public="true" />
         <service id="App\Deputy\DeputyMessageNotifier" public="true">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="old_sound_rabbit_mq.deputy_message_dispatcher_producer" />
         </service>
-
-        <!-- Subscription -->
-        <service id="App\Subscription\SubscriptionListener" />
-        <service id="App\Subscription\SubscriptionHandler" public="true" />
 
         <!-- User subscriber -->
         <service id="App\Membership\EventListener\UserSubscriber">
@@ -272,8 +121,6 @@
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
         </service>
 
-        <service id="App\Event\EventListener\EventRegistrationNewsletterSubscriber" />
-
         <!-- CitizenProject subscriber -->
         <service id="App\CitizenProject\EventListener\CitizenProjectSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
@@ -283,8 +130,6 @@
         <service id="App\CitizenAction\EventListener\CitizenActionSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
         </service>
-
-        <service id="App\Statistics\Acquisition\Aggregator" />
 
         <!-- Statistics Calculators -->
         <prototype namespace="App\Statistics\Acquisition\Calculator\" resource="../../src/Statistics/Acquisition/Calculator/*Calculator.php">
@@ -356,28 +201,6 @@
 
         <service id="App\Adherent\Handler\UpdateReferentTagOnDistrictCommandHandler">
             <tag name="messenger.message_handler" />
-        </service>
-        <service id="App\Adherent\UnregistrationHandler" />
-
-        <!-- Storage -->
-        <service id="App\Storage\ImageStorage" />
-
-        <!-- Ideas Workshop -->
-        <service id="App\IdeasWorkshop\Listener\IdeaPublishListener" />
-        <service id="App\IdeasWorkshop\Listener\IdeaExtendListener" />
-        <service id="App\IdeasWorkshop\Listener\ApproveThreadCommentListener" />
-        <service id="App\IdeasWorkshop\Listener\EnableThreadListener" />
-        <service id="App\IdeasWorkshop\Handler\SendMailForApprovedThreadCommentHandler">
-            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
-            <tag name="messenger.message_handler"/>
-        </service>
-        <service id="App\IdeasWorkshop\Handler\SendMailForPublishedIdeaHandler">
-            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
-            <tag name="messenger.message_handler"/>
-        </service>
-        <service id="App\IdeasWorkshop\Handler\SendMailForExtendedIdeaHandler">
-            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
-            <tag name="messenger.message_handler"/>
         </service>
 
         <service id="App\Logging\CurrentUserProcessor">
@@ -479,21 +302,11 @@
                 <argument type="service" id="App\Repository\IdeasWorkshop\IdeaRepository" />
             </call>
         </service>
-        <service id="App\Filter\OrTextSearchFilter" />
-
-        <service id="App\Newsletter\Listener\MailchimpSyncSubscriber" />
-
-        <service id="App\Newsletter\Listener\SendWelcomeMailSubscriber">
-            <argument type="service" id="app.mailer.transactional" />
-        </service>
 
         <!-- ChezVous -->
-        <prototype namespace="App\ChezVous\" resource="../../src/ChezVous/*" />
         <service id="App\ChezVous\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
         </service>
-
-        <service id="App\EventListener\AdministratorExportHistoryListener" />
 
         <service id="App\MunicipalSite\ApiDriver">
             <argument type="service" id="csa_guzzle.client.dpt_api" />

@@ -51,7 +51,7 @@ class MailchimpSyncAllEventsCommand extends Command
     {
         $this
             ->addArgument('type', null, InputArgument::REQUIRED, implode('|', static::$allTypes))
-            ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED)
         ;
     }
 

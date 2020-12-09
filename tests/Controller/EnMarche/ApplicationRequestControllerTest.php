@@ -95,8 +95,7 @@ class ApplicationRequestControllerTest extends WebTestCase
                 'curriculum' => new UploadedFile(
                     __DIR__.'/../../../app/data/files/application_requests/curriculum/cv.pdf',
                     'cv.pdf',
-                    'application/pdf',
-                    1234
+                    'application/pdf'
                 ),
             ],
         ]);
@@ -106,7 +105,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         static::assertResponseStatusCode(200, $this->client->getResponse());
 
         /** @var RunningMateRequest $runningMateRequest */
-        $runningMateRequest = $this->runningMateRequestRepository->findOneBy(['emailAddress' => 'enzo@colistiers.com']);
+        $runningMateRequest = static::$container->get(RunningMateRequestRepository::class)->findOneBy(['emailAddress' => 'enzo@colistiers.com']);
 
         static::assertInstanceOf(RunningMateRequest::class, $runningMateRequest);
         static::assertSame('male', $runningMateRequest->getGender());
@@ -122,7 +121,8 @@ class ApplicationRequestControllerTest extends WebTestCase
         static::assertSame('FR', $runningMateRequest->getCountry());
         static::assertSame(['06088', '44109'], $runningMateRequest->getFavoriteCities());
         static::assertSame('developer', $runningMateRequest->getProfession());
-        static::assertSame([$theme1, $theme2], $runningMateRequest->getFavoriteThemes()->toArray());
+        static::assertSame($theme1->getId(), $runningMateRequest->getFavoriteThemes()->toArray()[0]->getId());
+        static::assertSame($theme2->getId(), $runningMateRequest->getFavoriteThemes()->toArray()[1]->getId());
         static::assertNull($runningMateRequest->getCustomFavoriteTheme());
         static::assertFalse($runningMateRequest->isLocalAssociationMember());
         static::assertNull($runningMateRequest->getLocalAssociationDomain());
@@ -213,9 +213,11 @@ class ApplicationRequestControllerTest extends WebTestCase
         static::assertSame('FR', $volunteerRequest->getCountry());
         static::assertSame(['06088', '44109'], $volunteerRequest->getFavoriteCities());
         static::assertSame('thief', $volunteerRequest->getProfession());
-        static::assertSame([$theme1, $theme2], $volunteerRequest->getFavoriteThemes()->toArray());
+        static::assertSame($theme1->getId(), $volunteerRequest->getFavoriteThemes()->toArray()[0]->getId());
+        static::assertSame($theme2->getId(), $volunteerRequest->getFavoriteThemes()->toArray()[1]->getId());
         static::assertNull($volunteerRequest->getCustomFavoriteTheme());
-        static::assertSame([$technicalSkill1, $technicalSkill2], $volunteerRequest->getTechnicalSkills()->toArray());
+        static::assertSame($technicalSkill1->getId(), $volunteerRequest->getTechnicalSkills()->toArray()[0]->getId());
+        static::assertSame($technicalSkill2->getId(), $volunteerRequest->getTechnicalSkills()->toArray()[1]->getId());
         static::assertNull($volunteerRequest->getCustomTechnicalSkills());
         static::assertFalse($volunteerRequest->isPreviousCampaignMember());
         static::assertNull($volunteerRequest->getPreviousCampaignDetails());

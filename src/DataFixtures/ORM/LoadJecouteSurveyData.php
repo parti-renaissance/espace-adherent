@@ -26,6 +26,9 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         /** @var Adherent $referent2 */
         $referent2 = $this->getReference('adherent-19');
 
+        /** @var Adherent $headedRegionalCandidate */
+        $headedRegionalCandidate = $this->getReference('adherent-3');
+
         /** @var Administrator $administrator1 */
         $administrator1 = $this->getReference('administrator-1');
 
@@ -35,8 +38,10 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         /**
          * Local Surveys
          */
-        $localSurvey1 = new LocalSurvey($referent1, 'Questionnaire numéro 1', 'Paris 1er', true);
-        $localSurvey2 = new LocalSurvey($referent2, 'Un deuxième questionnaire', 'Paris 8ème', true);
+        $localSurvey1 = new LocalSurvey($referent1, 'Questionnaire numéro 1', true);
+        $localSurvey2 = new LocalSurvey($referent2, 'Un deuxième questionnaire', true);
+        $localSurvey3 = new LocalSurvey($headedRegionalCandidate, 'Un questionnaire de la Région', true);
+        $localSurvey4 = new LocalSurvey($referent1, 'Un questionnaire avec modification bloquée', true, true);
 
         /** @var Question $question1 */
         $question1 = $this->getReference('question-1');
@@ -65,7 +70,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $localSurvey1->addQuestion($surveyQuestion3);
         $localSurvey1->addQuestion($surveyQuestion4);
 
-        $localSurvey1->setTags($referent1->getManagedArea()->getReferentTagCodes());
+        $localSurvey1->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
 
         /** @var Question $question4 */
         $question4 = $this->getReference('question-4');
@@ -74,10 +79,15 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
 
         $localSurvey2->addQuestion($localSurvey2Question1);
 
-        $localSurvey2->setTags($referent2->getManagedArea()->getReferentTagCodes());
+        $localSurvey2->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'));
+
+        $localSurvey3->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));
+        $localSurvey4->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
 
         $manager->persist($localSurvey1);
         $manager->persist($localSurvey2);
+        $manager->persist($localSurvey3);
+        $manager->persist($localSurvey4);
 
         $this->addReference('survey-1', $localSurvey1);
 

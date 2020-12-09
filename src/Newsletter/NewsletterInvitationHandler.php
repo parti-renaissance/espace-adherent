@@ -14,10 +14,13 @@ class NewsletterInvitationHandler
     private $mailer;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, MailerService $mailer, UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        ObjectManager $manager,
+        MailerService $transactionalMailer,
+        UrlGeneratorInterface $urlGenerator
+    ) {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
     }
 

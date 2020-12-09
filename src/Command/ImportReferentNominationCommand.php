@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Content\MediaFactory;
-use App\Entity\Media;
 use App\Entity\Referent;
 use App\Entity\ReferentArea;
 use App\Repository\MediaRepository;
@@ -11,6 +10,7 @@ use App\Repository\ReferentAreaRepository;
 use App\Repository\ReferentRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -83,16 +83,6 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
             'Import referent and referent area from file store in Google Storage'
           )
         ;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->referentAreaRepository = $this->em->getRepository(ReferentArea::class);
-        $this->referentRepository = $this->em->getRepository(Referent::class);
-        $this->mediaRepository = $this->em->getRepository(Media::class);
-        $this->mediaFactory = $this->getContainer()->get(MediaFactory::class);
-        $this->storage = $this->getContainer()->get(FilesystemInterface::class);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -262,5 +252,41 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
 
             $this->em->persist($referent);
         }
+    }
+
+    /** @required */
+    public function setEntityManager(EntityManagerInterface $em): void
+    {
+        $this->em = $em;
+    }
+
+    /** @required */
+    public function setReferentAreaRepository(ReferentAreaRepository $referentAreaRepository): void
+    {
+        $this->referentAreaRepository = $referentAreaRepository;
+    }
+
+    /** @required */
+    public function setReferentRepository(ReferentRepository $referentRepository): void
+    {
+        $this->referentRepository = $referentRepository;
+    }
+
+    /** @required */
+    public function setMediaRepository(MediaRepository $mediaRepository): void
+    {
+        $this->mediaRepository = $mediaRepository;
+    }
+
+    /** @required */
+    public function setMediaFactory(MediaFactory $mediaFactory): void
+    {
+        $this->mediaFactory = $mediaFactory;
+    }
+
+    /** @required */
+    public function setStorage(FilesystemInterface $storage): void
+    {
+        $this->storage = $storage;
     }
 }

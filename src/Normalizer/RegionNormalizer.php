@@ -2,11 +2,9 @@
 
 namespace App\Normalizer;
 
-use App\Entity\Jecoute\Region;
-use App\Exception\InvalidUrlAdapterException;
-use App\Storage\UrlAdapterInterface;
-use League\Flysystem\Cached\CachedAdapter;
-use League\Flysystem\FilesystemInterface;
+use App\Entity\Geo\Region;
+use App\Entity\Jecoute\Region as RegionCampaign;
+use App\Repository\Jecoute\RegionRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -17,20 +15,11 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
     private const ALREADY_CALLED = 'REGION_NORMALIZER_ALREADY_CALLED';
 
-    /** @var UrlAdapterInterface */
-    private $storageAdapter;
+    private $regionCampaignRepository;
 
-    public function __construct(FilesystemInterface $storage)
+    public function __construct(RegionRepository $regionCampaignRepository)
     {
-        $this->storageAdapter = $storage->getAdapter();
-
-        if ($this->storageAdapter instanceof CachedAdapter) {
-            $this->storageAdapter = $this->storageAdapter->getAdapter();
-        }
-
-        if (!$this->storageAdapter instanceof UrlAdapterInterface) {
-            throw new InvalidUrlAdapterException();
-        }
+        $this->regionCampaignRepository = $regionCampaignRepository;
     }
 
     /**
@@ -42,10 +31,14 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('jecoute_region_read', $context['groups'])) {
-            $data['logo'] = $object->hasLogoUploaded() ? $this->getUrl($object->getLogoPathWithDirectory()) : null;
-            $data['banner'] = $object->hasBannerUploaded() ? $this->getUrl($object->getBannerPathWithDirectory()) : null;
+        if (\in_array('jecoute_department_read', $context['groups'])) {
+            $regionCampaignData = null;
+            if ($regionCampaign = $this->findRegionCampaign($object)) {
+                $regionCampaignData = $this->normalizer->normalize($regionCampaign, $format, ['groups' => ['jecoute_region_read']]);
+            }
         }
+
+        $data['campaign'] = $regionCampaignData;
 
         return $data;
     }
@@ -55,8 +48,8 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return !isset($context[self::ALREADY_CALLED]) && $data instanceof Region;
     }
 
-    private function getUrl(string $path): string
+    private function findRegionCampaign(Region $region): ?RegionCampaign
     {
-        return $this->storageAdapter->getUrl($path);
+        return $this->regionCampaignRepository->findOneBy(['geoRegion' => $region]);
     }
 }

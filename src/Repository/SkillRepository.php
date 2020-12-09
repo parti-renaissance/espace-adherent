@@ -5,13 +5,13 @@ namespace App\Repository;
 use App\Entity\Adherent;
 use App\Entity\Skill;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class SkillRepository extends ServiceEntityRepository
 {
     const FIND_FOR_SUMMARY = 'summaries';
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Skill::class);
     }

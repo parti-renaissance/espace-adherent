@@ -6,6 +6,7 @@ use App\CitizenProject\CitizenProjectContactActorsCommand;
 use App\CitizenProject\CitizenProjectContactActorsCommandHandler;
 use App\CitizenProject\CitizenProjectManager;
 use App\CitizenProject\CitizenProjectUpdateCommand;
+use App\CitizenProject\CitizenProjectUpdateCommandHandler;
 use App\Entity\CitizenProject;
 use App\Form\CitizenProjectCommandType;
 use App\Form\CitizenProjectContactActorsType;
@@ -30,7 +31,8 @@ class CitizenProjectManagerController extends Controller
     public function editAction(
         Request $request,
         CitizenProject $citizenProject,
-        CitizenProjectManager $manager
+        CitizenProjectManager $manager,
+        CitizenProjectUpdateCommandHandler $handler
     ): Response {
         $command = CitizenProjectUpdateCommand::createFromCitizenProject($citizenProject);
         $form = $this->createForm(CitizenProjectCommandType::class, $command, [
@@ -40,7 +42,7 @@ class CitizenProjectManagerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.citizen_project.update_handler')->handle($command);
+            $handler->handle($command);
             $this->addFlash('info', 'citizen_project.update.success');
 
             return $this->redirectToRoute('app_citizen_project_manager_edit', [
@@ -79,7 +81,8 @@ class CitizenProjectManagerController extends Controller
     public function contactActorsAction(
         Request $request,
         CitizenProject $citizenProject,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        CitizenProjectContactActorsCommandHandler $handler
     ): Response {
         if (!$this->isCsrfTokenValid('citizen_project.contact_actors', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to contact actors.');
@@ -104,7 +107,7 @@ class CitizenProjectManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(CitizenProjectContactActorsCommandHandler::class)->handle($command);
+            $handler->handle($command);
             $this->addFlash('info', 'citizen_project.contact_actors.success');
 
             return $this->redirectToRoute('app_citizen_project_list_actors', [

@@ -1,6 +1,7 @@
 <?php
 
 use App\Entity\Adherent;
+use App\Entity\Device;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use App\OAuth\Model\AccessToken as AccessTokenModel;
@@ -42,6 +43,43 @@ class RestContext extends BehatchRestContext
     }
 
     /**
+     * @Given I am logged with device :device_id via OAuth client :clientName with scope :scope
+     */
+    public function iAmLoggedWithDeviceViaOAuthWithClientAndScope(
+        string $deviceUuid,
+        string $clientName,
+        string $scope
+    ): void {
+        $identifier = uniqid();
+
+        /** @var AdherentRepository $adherentRepository */
+        $deviceRepository = $this->entityManager->getRepository(Device::class);
+        /** @var ClientRepository $clientRepository */
+        $clientRepository = $this->entityManager->getRepository(Client::class);
+
+        if (!$device = $deviceRepository->findOneByDeviceUuid($deviceUuid)) {
+            $device = new Device(Uuid::uuid4(), $deviceUuid);
+            $this->entityManager->persist($device);
+        }
+
+        $accessToken = new AccessToken(
+            Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
+            null,
+            $identifier,
+            new \DateTimeImmutable('+10 minutes'),
+            $clientRepository->findOneBy(['name' => $clientName]),
+            $device
+        );
+
+        $accessToken->addScope($scope);
+
+        $this->entityManager->persist($accessToken);
+        $this->entityManager->flush();
+
+        $this->accessToken = $this->getJwtFromAccessToken($accessToken);
+    }
+
+    /**
      * @Given I am logged with :email via OAuth client :clientName with scope :scope
      */
     public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, string $scope): void
@@ -57,7 +95,7 @@ class RestContext extends BehatchRestContext
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
             $adherentRepository->findOneByEmail($email),
             $identifier,
-            new \DateTime('+10 minutes'),
+            new \DateTimeImmutable('+10 minutes'),
             $clientRepository->findOneBy(['name' => $clientName])
         );
 
@@ -138,13 +176,15 @@ class RestContext extends BehatchRestContext
         $token = new AccessTokenModel();
         $token->setClient($client);
         $token->setIdentifier($accessToken->getIdentifier());
-        $token->setExpiryDateTime(\DateTime::createFromFormat('U', $accessToken->getExpiryDateTime()->getTimestamp()));
+        $token->setExpiryDateTime($accessToken->getExpiryDateTime());
         $token->setUserIdentifier($accessToken->getUserIdentifier());
+        $token->setDeviceIdentifier($accessToken->getDeviceIdentifier());
+        $token->setPrivateKey($this->privateCryptKey);
 
         foreach ($accessToken->getScopes() as $scope) {
             $token->addScope(new Scope($scope));
         }
 
-        return $token->convertToJWT($this->privateCryptKey);
+        return (string) $token;
     }
 }

@@ -37,7 +37,7 @@ class CrmParisControllerTest extends WebTestCase
         self::assertSame('none', $response->headers->get('Content-Encoding'));
         self::assertSame('text/csv; charset=UTF-8', $response->headers->get('Content-Type'));
         self::assertRegExp(
-            '/^attachment; filename="[\d]{14}-adherents.csv"$/',
+            '/^attachment; filename=[\d]{14}-adherents.csv$/',
             $response->headers->get('Content-Disposition')
         );
 

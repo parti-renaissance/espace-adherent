@@ -11,20 +11,17 @@ class LoadReferentTagsZonesLinksData extends Fixture implements DependentFixture
 {
     public function load(ObjectManager $manager): void
     {
-        $referentTags = $manager->getRepository(ReferentTag::class)->findAll();
-        foreach ($referentTags as $referentTag) {
+        foreach ($manager->getRepository(ReferentTag::class)->findAll() as $referentTag) {
             $name = $referentTag->getName();
             $code = $referentTag->getCode();
             $type = $referentTag->getType();
-            $zoneReference = $this->determineZoneReference($name, $code, $type);
-            if (!$zoneReference) {
+
+            if (!$zoneReference = $this->determineZoneReference($name, $code, $type)) {
                 continue;
             }
 
-            $zone = $this->getReference($zoneReference);
-            if ($zone) {
+            if ($zone = LoadGeoZoneData::getZoneReference($manager, $zoneReference)) {
                 $referentTag->setZone($zone);
-                $manager->persist($referentTag);
             }
         }
 

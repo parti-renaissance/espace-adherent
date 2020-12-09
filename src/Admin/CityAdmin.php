@@ -70,7 +70,7 @@ class CityAdmin extends AbstractAdmin
                 'label' => 'Codes postaux',
             ])
             ->add('department', null, [
-                'label' => 'Départment',
+                'label' => 'Département',
             ])
             ->add('department.region', null, [
                 'label' => 'Région',
@@ -92,7 +92,7 @@ class CityAdmin extends AbstractAdmin
             'Nom' => 'name',
             'Code INSEE' => 'inseeCode',
             'Code postal' => 'postalCodes',
-            'Départment' => 'department',
+            'Département' => 'department',
             'Région' => 'department.region',
         ];
     }

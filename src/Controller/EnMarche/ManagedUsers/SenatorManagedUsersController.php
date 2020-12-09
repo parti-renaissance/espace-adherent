@@ -4,6 +4,7 @@ namespace App\Controller\EnMarche\ManagedUsers;
 
 use App\Entity\Adherent;
 use App\Form\ManagedUsers\ManagedUsersFilterType;
+use App\Geo\ManagedZoneProvider;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Subscription\SubscriptionTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SenatorManagedUsersController extends AbstractManagedUsersController
 {
-    private const SPACE_NAME = 'senator';
+    private const SPACE_NAME = ManagedZoneProvider::SENATOR;
 
     protected function getSpaceType(): string
     {

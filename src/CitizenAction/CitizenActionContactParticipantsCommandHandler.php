@@ -9,9 +9,9 @@ class CitizenActionContactParticipantsCommandHandler
 {
     private $mailer;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailerService $transactionalMailer)
     {
-        $this->mailer = $mailer;
+        $this->mailer = $transactionalMailer;
     }
 
     public function handle(CitizenActionContactParticipantsCommand $command): void

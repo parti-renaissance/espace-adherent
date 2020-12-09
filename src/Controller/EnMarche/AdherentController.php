@@ -3,17 +3,20 @@
 namespace App\Controller\EnMarche;
 
 use App\CitizenProject\CitizenProjectCreationCommand;
+use App\CitizenProject\CitizenProjectCreationCommandHandler;
 use App\CitizenProject\CitizenProjectPermissions;
 use App\Committee\CommitteeCreationCommand;
 use App\Committee\CommitteeCreationCommandHandler;
 use App\Committee\CommitteeManager;
 use App\Contact\ContactMessage;
+use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\Event;
 use App\Entity\TurnkeyProject;
+use App\Event\EventRegistrationManager;
 use App\Exception\BadUuidRequestException;
 use App\Exception\EventRegistrationException;
 use App\Exception\InvalidUuidException;
@@ -34,6 +37,7 @@ use App\Repository\SummaryRepository;
 use App\Search\SearchParametersFilter;
 use App\Search\SearchResultsProvidersManager;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -114,15 +118,18 @@ class AdherentController extends Controller
      *
      * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests", methods={"GET", "POST"})
      */
-    public function pinInterestsAction(Request $request, EventDispatcherInterface $dispatcher): Response
-    {
+    public function pinInterestsAction(
+        EntityManagerInterface $manager,
+        Request $request,
+        EventDispatcherInterface $dispatcher
+    ): Response {
         $form = $this
             ->createForm(AdherentInterestsFormType::class, $adherent = $this->getUser())
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $manager->flush();
             $this->addFlash('info', 'adherent.update_interests.success');
 
             $dispatcher->dispatch(UserEvents::USER_UPDATE_INTERESTS, new UserEvent($adherent));
@@ -166,8 +173,11 @@ class AdherentController extends Controller
      * @Route("/creer-mon-projet-citoyen/{slug}", defaults={"slug": null}, name="app_adherent_create_citizen_project", methods={"GET", "POST"})
      * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
      */
-    public function createCitizenProjectAction(Request $request, TurnkeyProject $turnkeyProject = null): Response
-    {
+    public function createCitizenProjectAction(
+        Request $request,
+        CitizenProjectCreationCommandHandler $handler,
+        TurnkeyProject $turnkeyProject = null
+    ): Response {
         if ($this->isGranted('IS_ANONYMOUS')
             && $authentication = $this->get(AnonymousFollowerSession::class)->start($request)
         ) {
@@ -189,7 +199,7 @@ class AdherentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.citizen_project.creation_handler')->handle($command, $turnkeyProject);
+            $handler->handle($command, $turnkeyProject);
             $this->addFlash('info', 'citizen_project.creation.success');
 
             return $this->redirectToRoute('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]);
@@ -214,10 +224,8 @@ class AdherentController extends Controller
     /**
      * @Route("/mes-evenements", name="app_adherent_events", methods={"GET"})
      */
-    public function eventsAction(Request $request): Response
+    public function eventsAction(Request $request, EventRegistrationManager $manager): Response
     {
-        $manager = $this->get('app.event.registration_manager');
-
         try {
             $registration = $manager->getAdherentRegistrations($this->getUser(), $request->query->get('type', 'upcoming'));
         } catch (EventRegistrationException $e) {
@@ -232,8 +240,12 @@ class AdherentController extends Controller
     /**
      * @Route("/contacter/{uuid}", name="app_adherent_contact", requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
      */
-    public function contactAction(Request $request, Adherent $adherent): Response
-    {
+    public function contactAction(
+        Request $request,
+        Adherent $adherent,
+        ContactMessageHandler $handler,
+        EntityManagerInterface $entityManager
+    ): Response {
         $fromType = $request->query->get('from');
         $fromId = $request->query->get('id');
         $from = null;
@@ -241,13 +253,13 @@ class AdherentController extends Controller
         try {
             if ($fromType && $fromId) {
                 if ('committee' === $fromType) {
-                    $from = $this->getDoctrine()->getRepository(Committee::class)->findOneByUuid($fromId);
+                    $from = $entityManager->getRepository(Committee::class)->findOneByUuid($fromId);
                 } elseif ('citizen_project' === $fromType) {
-                    $from = $this->getDoctrine()->getRepository(CitizenProject::class)->findOneByUuid($fromId);
+                    $from = $entityManager->getRepository(CitizenProject::class)->findOneByUuid($fromId);
                 } elseif ('territorial_council' === $fromType || 'political_committee' === $fromType) {
                     $from = true;
                 } else {
-                    $from = $this->getDoctrine()->getRepository(Event::class)->findOneByUuid($fromId);
+                    $from = $entityManager->getRepository(Event::class)->findOneByUuid($fromId);
                 }
             }
         } catch (InvalidUuidException $e) {
@@ -261,7 +273,7 @@ class AdherentController extends Controller
         try {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->get('app.adherent.contact_message_handler')->handle($message);
+                $handler->handle($message);
                 $this->addFlash('info', 'adherent.contact.success');
 
                 if ($from instanceof Committee) {

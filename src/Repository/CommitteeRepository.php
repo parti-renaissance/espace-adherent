@@ -19,12 +19,12 @@ use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationZoneEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CommitteeRepository extends ServiceEntityRepository
 {
@@ -39,7 +39,7 @@ class CommitteeRepository extends ServiceEntityRepository
     public const INCLUDE_UNAPPROVED = 2;
     public const DEFAULT_MAX_RESULTS_LIST = 3;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Committee::class);
     }

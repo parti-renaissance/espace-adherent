@@ -8,8 +8,8 @@ use App\Jecoute\SurveyTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,7 +33,7 @@ abstract class Survey
      * @Assert\NotBlank
      * @Assert\Length(max=70)
      *
-     * @JMS\Groups({"survey_list"})
+     * @SymfonySerializer\Groups("survey_list")
      */
     private $name;
 
@@ -93,7 +93,7 @@ abstract class Survey
         return $this->questions;
     }
 
-    public function setQuestions(ArrayCollection $surveyQuestions): void
+    public function setQuestions(Collection $surveyQuestions): void
     {
         $this->questions = $surveyQuestions;
     }
@@ -119,45 +119,6 @@ abstract class Survey
         return \count($this->questions);
     }
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("id"),
-     * @JMS\Groups({"survey_list"})
-     */
-    public function getExposedId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("type"),
-     * @JMS\Groups({"survey_list"})
-     */
-    public function getExposedType(): string
-    {
-        return $this->getType();
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("questions")
-     * @JMS\Groups({"survey_list"})
-     */
-    public function getQuestionsAsArray(): array
-    {
-        return array_map(function (SurveyQuestion $surveyQuestion) {
-            $question = $surveyQuestion->getQuestion();
-
-            return [
-                'id' => $surveyQuestion->getId(),
-                'type' => $question->getType(),
-                'content' => $question->getContent(),
-                'choices' => $question->getChoices(),
-            ];
-        }, $this->questions->toArray());
-    }
-
     public function getQuestionsCount(): int
     {
         return $this->questions->count();
@@ -173,6 +134,9 @@ abstract class Survey
         return SurveyTypeEnum::NATIONAL === $this->getType();
     }
 
+    /**
+     * @SymfonySerializer\Groups("survey_list")
+     */
     abstract public function getType(): string;
 
     public function __clone()

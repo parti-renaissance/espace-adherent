@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\App\Redirection\Dynamic;
+
 use App\Redirection\Dynamic\RedirectionsProvider;
 use PHPUnit\Framework\TestCase;
 

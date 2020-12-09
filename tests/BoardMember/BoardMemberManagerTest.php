@@ -93,7 +93,7 @@ class BoardMemberManagerTest extends WebTestCase
         $this->init();
 
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->boardMemberManager = $this->container->get('app.board_member.manager');
+        $this->boardMemberManager = $this->get(BoardMemberManager::class);
     }
 
     protected function tearDown(): void

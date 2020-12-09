@@ -10,16 +10,16 @@ use App\Entity\BaseGroup;
 use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectMembership;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CitizenProjectMembershipRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CitizenProjectMembership::class);
     }

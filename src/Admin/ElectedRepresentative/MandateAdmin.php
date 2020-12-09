@@ -9,6 +9,7 @@ use App\Form\Geo\ZoneType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -61,11 +62,11 @@ class MandateAdmin extends AbstractAdmin
                 'label' => 'En cours',
                 'required' => false,
             ])
-            ->add('beginAt', 'sonata_type_date_picker', [
+            ->add('beginAt', DatePickerType::class, [
                 'label' => 'Date de début de mandat',
                 'attr' => ['class' => 'width-140'],
             ])
-            ->add('finishAt', 'sonata_type_date_picker', [
+            ->add('finishAt', DatePickerType::class, [
                 'label' => 'Date de fin de mandat',
                 'required' => false,
                 'error_bubbling' => true,

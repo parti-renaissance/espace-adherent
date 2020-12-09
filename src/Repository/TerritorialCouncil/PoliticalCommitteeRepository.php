@@ -4,12 +4,12 @@ namespace App\Repository\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class PoliticalCommitteeRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, PoliticalCommittee::class);
     }

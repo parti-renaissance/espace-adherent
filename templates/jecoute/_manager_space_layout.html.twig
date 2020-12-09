@@ -1,6 +1,6 @@
 {% extends 'adherent_space/_layout.html.twig' %}
 
-{% block page_title "Mon espace J'écoute" %}
+{% block page_title "Mon espace responsable des questionnaires" %}
 
 {% block banner '' %}
 
@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block adherent_space_header_title %}
-    Vous gérez : <span class="text--black text--bold">{{ app.user.getJecouteManagedAreaCodesAsString }}</span>
+    Vous gérez : <span class="text--black text--bold">{{ app.user.jecouteManagedArea.zone }}</span>
 {% endblock %}
 
 {% block final_javascripts %}

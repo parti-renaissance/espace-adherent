@@ -125,10 +125,10 @@ Feature:
 
   Scenario: If I have JEcoute access I can view/create a local survey
     Given I am logged as "municipal-chief@en-marche-dev.fr"
-    When I am on "/espace-municipales-2020/jecoute"
-    Then I should see "J'écoute"
+    When I am on "/espace-municipales-2020/questionnaires"
+    Then I should see "Questionnaires"
 
-    Given I am on "/espace-municipales-2020/jecoute/questionnaire/creer"
+    Given I am on "/espace-municipales-2020/questionnaires/creer"
     And I press "OK"
     When I fill in the following:
       | survey_form[name]                            | Un questionnaire jecoute chef |

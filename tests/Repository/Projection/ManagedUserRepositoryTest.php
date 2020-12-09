@@ -3,8 +3,8 @@
 namespace Tests\App\Repository;
 
 use App\Entity\Geo\Zone;
-use App\Entity\Projection\ManagedUser;
 use App\ManagedUsers\ManagedUsersFilter;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -64,9 +64,9 @@ class ManagedUserRepositoryTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->container = $this->getContainer();
-        $this->managedUserRepository = $this->getRepository(ManagedUser::class);
-        $this->zoneRepository = $this->getRepository(Zone::class);
+        static::$container = $this->getContainer();
+        $this->managedUserRepository = $this->get(ManagedUserRepository::class);
+        $this->zoneRepository = $this->get(ZoneRepository::class);
     }
 
     protected function tearDown(): void
@@ -74,6 +74,7 @@ class ManagedUserRepositoryTest extends WebTestCase
         $this->kill();
 
         $this->managedUserRepository = null;
+        $this->zoneRepository = null;
 
         parent::tearDown();
     }
