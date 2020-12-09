@@ -1,0 +1,13 @@
+name: codacy-analysis-cli
+
+on: ["push"]
+
+jobs:
+  codacy-analysis-cli:
+    runs-on: ubuntu-latest
+    name: Codacy Analysis CLI
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Run codacy-analysis-cli
+        uses: codacy/codacy-analysis-cli-action@master
