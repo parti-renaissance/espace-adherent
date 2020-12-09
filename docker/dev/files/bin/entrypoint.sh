@@ -40,8 +40,7 @@ clean_up () {
 
 # If any command is provided, fall back to the default entrypoint
 if [ "$#" -ne 0 ]; then
-    exec docker-php-entrypoint "$@"
-#    exec su-exec enmarche "$@"
+    exec su-exec enmarche "$@"
 fi
 
 echo -e "\n===== Testing PHP config\n"
@@ -66,17 +65,3 @@ echo -e "\n===== Starting FMP\n"
 php-fpm -F --pid $PHP_FPM_PID &
 
 while true; do sleep 1; done
-
-#if [ $uid == 0 ] && [ $gid == 0 ]; then
-#    if [ $# -eq 0 ]; then
-#        supervisord -c /etc/supervisor/conf.d/supervisord.conf
-#    else
-#        exec "$@"
-#    fi
-#fi
-
-#if [ $# -eq 0 ]; then
-#    supervisord -c /etc/supervisor/conf.d/supervisord.conf
-#else
-#    exec gosu enmarche "$@"
-#fi

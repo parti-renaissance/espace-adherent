@@ -63,7 +63,15 @@ COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
 
 RUN apk add --no-cache \
     nginx \
-    wkhtmltopdf
+    wkhtmltopdf \
+    nodejs \
+    nodejs-npm \
+    yarn \
+    curl \
+    su-exec \
+    python3 \
+    make \
+    g++
 
 EXPOSE 80
 WORKDIR /app
@@ -129,13 +137,6 @@ WORKDIR /app
 #
 #    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \
 #
-#    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --1 && \
-#
-#    curl -L -o /tmp/nodejs.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz && \
-#    tar xfvz /tmp/nodejs.tar.gz -C /usr/local --strip-components=1 && \
-#    rm -f /tmp/nodejs.tar.gz && \
-#    npm install yarn -g && \
-#
 #    mkdir /run/php
 
 RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture) --output /usr/local/bin/gosu && \
@@ -146,13 +147,5 @@ RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gos
 RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 COPY ./files/. /
-
-#COPY php.ini /etc/php/7.3/cli/conf.d/50-setting.ini
-#COPY php.ini /etc/php/7.3/fpm/conf.d/50-setting.ini
-#COPY pool.conf /etc/php/7.3/fpm/pool.d/www.conf
-#COPY nginx.conf /etc/nginx/nginx.conf
-#COPY symfony.conf /etc/nginx/symfony.conf
-#COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-#COPY entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["entrypoint.sh"]

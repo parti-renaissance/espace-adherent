@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.2"
 
 services:
     ## en-marche.fr
@@ -30,14 +30,14 @@ services:
 
     ## testing
     ####################
-#    selenium:
-#        image: selenium/standalone-firefox-debug:2.53.1
-#        shm_size: 2g
+    selenium:
+        image: selenium/standalone-firefox-debug:2.53.1
+        shm_size: 2g
 
     ## common
     ####################
     rabbitmq:
-        image: rabbitmq:3-management
+        image: rabbitmq:3-management-alpine
 
 
 
