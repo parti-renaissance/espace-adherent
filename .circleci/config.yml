@@ -14,7 +14,7 @@ references:
             - EXEC: "$(DOCKER_COMPOSE) exec -T app entrypoint.sh"
         machine:
             enabled: true
-            image: ubuntu-1604:202010-01
+            image: ubuntu-2004:202010-01
 
     generate_docker_hashes: &generate_docker_hashes
         run: |
@@ -85,7 +85,10 @@ jobs:
                   paths:
                       - ./public/apps/projets-citoyens/node_modules
                   key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
-
+            - run: |
+                set -x
+                rm -rf ./public/apps/projets-citoyens/node_modules
+                rm -rf ./public/apps/atelier-des-idees/node_modules
             - persist_to_workspace:
                   root: ./
                   paths:
@@ -120,9 +123,9 @@ jobs:
                 mkdir -p ./phpunit
                 make tfp-rabbitmq tfp-db
 
-                $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --log-junit ./phpunit/junit.xml
-            - store_test_results:
-                path: ./phpunit
+                $DOCKER_COMPOSE exec app entrypoint.sh ./vendor/bin/phpunit -v
+#            - store_test_results:
+#                path: ./phpunit
 
     behat:
         <<: *working_directory
@@ -143,16 +146,16 @@ jobs:
 
                 case $CIRCLE_NODE_INDEX in
                     0)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@api,@republicansilence' -vvv --colors -f progress -o std -f junit -o ./behat --
+                        $DOCKER_COMPOSE exec app entrypoint.sh ./vendor/bin/behat --tags='@api,@republicansilence' -vvv --colors -f progress -o std -f junit -o ./behat --
                         ;;
                     1)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@donation,@oauth,@surveys,@admin,@procurationRequest,@committeeVote' -vvv --colors -f progress -o std -f junit -o ./behat --
+                        $DOCKER_COMPOSE exec app entrypoint.sh ./vendor/bin/behat --tags='@donation,@oauth,@surveys,@admin,@procurationRequest,@committeeVote' -vvv --colors -f progress -o std -f junit -o ./behat --
                         ;;
                     2)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='@registration,@popupchart,@municipalSpace,@procurationProxy' -vvv --colors -f progress -o std -f junit -o ./behat --
+                        $DOCKER_COMPOSE exec app entrypoint.sh ./vendor/bin/behat --tags='@registration,@popupchart,@municipalSpace,@procurationProxy' -vvv --colors -f progress -o std -f junit -o ./behat --
                         ;;
                     3)
-                        $DOCKER_COMPOSE exec app ./vendor/bin/behat --tags='~@api&&~@donation&&~@admin&&~@oauth&&~@registration&&~@popupchart&&~@republicansilence&&~@surveys&&~@committeeVote&&~@municipalSpace&&~@procurationRequest&&~@procurationProxy' -vvv --colors -f progress -o std -f junit -o ./behat --
+                        $DOCKER_COMPOSE exec app entrypoint.sh ./vendor/bin/behat --tags='~@api&&~@donation&&~@admin&&~@oauth&&~@registration&&~@popupchart&&~@republicansilence&&~@surveys&&~@committeeVote&&~@municipalSpace&&~@procurationRequest&&~@procurationProxy' -vvv --colors -f progress -o std -f junit -o ./behat --
                         ;;
                 esac
             - store_test_results:

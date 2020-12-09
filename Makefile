@@ -162,7 +162,7 @@ tfp-db: wait-for-db                                                             
 tj: node_modules                                                                                       ## Run the Javascript tests
 	$(EXEC) yarn test
 
-lint: ls ly lt lj phpcs                                                                                ## Run lint on Twig, YAML, PHP and Javascript files
+lint: ls lj phpcs                                                                                ## Run lint on Twig, YAML, PHP and Javascript files
 
 ls: ly lt                                                                                              ## Lint Symfony (Twig and YAML) files
 
