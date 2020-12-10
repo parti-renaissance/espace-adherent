@@ -61,6 +61,13 @@ class City implements ZoneableInterface
      */
     private $cityCommunity;
 
+    /**
+     * @var City|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\City")
+     */
+    private $replacement;
+
     public function __construct(string $code, string $name)
     {
         $this->code = $code;
@@ -148,24 +155,49 @@ class City implements ZoneableInterface
         $this->cityCommunity = $cityCommunity;
     }
 
+    public function getReplacement(): ?City
+    {
+        return $this->replacement;
+    }
+
+    public function setReplacement(?City $replacement): void
+    {
+        $this->replacement = $replacement;
+    }
+
     public function getParents(): array
     {
         $toMerge = [];
 
-        if ($this->department) {
-            $toMerge[] = [$this->department];
-            $toMerge[] = $this->department->getParents();
+        $reference = $this->findReferenceForParentalTree();
+
+        if ($reference !== $this) {
+            $toMerge[] = [$reference];
         }
 
-        $toMerge[] = $this->districts->toArray();
+        if ($reference->department) {
+            $toMerge[] = [$reference->department];
+            $toMerge[] = $reference->department->getParents();
+        }
 
-        $toMerge[] = $this->cantons->toArray();
+        $toMerge[] = $reference->districts->toArray();
 
-        if ($this->cityCommunity) {
-            $toMerge[] = [$this->cityCommunity];
+        $toMerge[] = $reference->cantons->toArray();
+
+        if ($reference->cityCommunity) {
+            $toMerge[] = [$reference->cityCommunity];
         }
 
         return $toMerge ? array_values(array_unique(array_merge(...$toMerge))) : [];
+    }
+
+    private function findReferenceForParentalTree(): City
+    {
+        if (!$this->replacement) {
+            return $this;
+        }
+
+        return $this->replacement->findReferenceForParentalTree();
     }
 
     public function getZoneType(): string

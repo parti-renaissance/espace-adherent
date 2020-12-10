@@ -32,6 +32,7 @@ class ZoneRepository extends ServiceEntityRepository
 
         $zone->activate($zoneable->isActive());
         $zone->setName($zoneable->getName());
+        $zone->setGeoData($zoneable->getGeoData());
 
         return $zone;
     }
@@ -93,11 +94,12 @@ class ZoneRepository extends ServiceEntityRepository
             $qb
                 ->andWhere(
                     $qb->expr()->orX(
-                        $qb->expr()->like('zone.name', ':term'),
-                        $qb->expr()->like('zone.code', ':term'),
+                        $qb->expr()->like("REPLACE(zone.name, '-', ' ')", ':term_name'),
+                        $qb->expr()->like('zone.code', ':term_code'),
                     )
                 )
-                ->setParameter(':term', "%$term%")
+                ->setParameter(':term_name', '%'.str_replace('-', ' ', $term).'%')
+                ->setParameter(':term_code', "%$term%")
             ;
         }
 
@@ -256,6 +258,34 @@ class ZoneRepository extends ServiceEntityRepository
             ->setParameter('dpt_code', $dpt)
             ->setParameter('dpt_type', Zone::DEPARTMENT)
             ->setParameter('city', Zone::CITY)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Finds zones by coordinates of the point.
+     *
+     * @return Zone[]
+     */
+    public function findByCoordinatesAndTypes(float $latitude, float $longitude, ?array $types): array
+    {
+        $qb = $this
+            ->createQueryBuilder('zone')
+            ->join('zone.geoData', 'geo_data')
+            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',:longitude,' ',:latitude,')')), geo_data.geoShape) = 1")
+            ->setParameter('latitude', $latitude)
+            ->setParameter('longitude', $longitude)
+        ;
+
+        if ($types) {
+            $qb
+                ->andWhere($qb->expr()->in('zone.type', ':types'))
+                ->setParameter('types', $types)
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->getResult()
         ;

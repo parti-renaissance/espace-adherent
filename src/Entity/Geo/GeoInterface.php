@@ -2,6 +2,8 @@
 
 namespace App\Entity\Geo;
 
+use App\Entity\GeoData;
+
 interface GeoInterface
 {
     public function getId(): ?int;
@@ -15,4 +17,8 @@ interface GeoInterface
     public function isActive(): bool;
 
     public function activate(bool $active = true): void;
+
+    public function getGeoData(): ?GeoData;
+
+    public function setGeoData(?GeoData $geoData): void;
 }
