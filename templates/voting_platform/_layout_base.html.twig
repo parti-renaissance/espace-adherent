@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% set designation = election.designation %}
+
 {% block title %}
-    {% block page_title '' %} | Désignation
+    {% block page_title '' %} | {{ designation.denomination|capitalize }}
 {% endblock %}
 
 {% block banner '' %}
 {% block designation_banner '' %}
-
-{% set designation = election.designation %}
 
 {% block header %}
     <header class="voting-platform__header voting-platform-theme__{{ designation_type }}">
@@ -15,7 +15,7 @@
             <div class="l__row space--20-0">
                 <a href="{{ path('homepage') }}" class="link--no-decor text--logo b__nudge--right-large">EM!</a>
                 {% block header_actions %}
-                    <a href="{{ path('app_voting_platform_index', {uuid: election.uuid}) }}" class="text--body link--no-decor">Revenir à l'accueil de la désignation</a>
+                    <a href="{{ path('app_voting_platform_index', {uuid: election.uuid}) }}" class="text--body link--no-decor">Revenir à l'accueil de {{ designation.getDenomination(true) }}</a>
                 {% endblock %}
             </div>
             <div class="anonymous l__row space--20-0">
@@ -41,10 +41,10 @@
         <div class="voting-platform__content">
             {% block voting_platform_header %}
                 <div class="l__wrapper{{ designation.isMajorityType ? '--medium' : '--slim' }}">
-                    <div class="introduction-header">
+                    <div class="introduction-header l__wrapper--slim">
                         <h1 class="text--larger b__nudge--bottom-large">{{ election.title }}</h1>
                         <p class="text--body text--default-large text--muted b__nudge--bottom-large">
-                            La désignation est ouverte du
+                            {{ designation.getDenomination(true)|capitalize }} est ouverte du
                             {% if election.isSecondRoundVotePeriodActive %}
                                 {{ election.voteEndDate|date('d/m/Y \à H:i') }} au {{ election.secondRoundEndDate|date('d/m/Y \à H:i') }}
                             {% else %}
