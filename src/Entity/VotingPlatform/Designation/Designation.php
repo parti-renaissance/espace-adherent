@@ -19,6 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Designation
 {
+    public const DENOMINATION_DESIGNATION = 'désignation';
+    public const DENOMINATION_ELECTION = 'élection';
+
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
@@ -126,6 +129,13 @@ class Designation
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $limited = false;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(options={"default": self::DENOMINATION_DESIGNATION})
+     */
+    private $denomination = self::DENOMINATION_DESIGNATION;
 
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
@@ -259,6 +269,8 @@ class Designation
         switch ($this->type) {
             case DesignationTypeEnum::COMMITTEE_ADHERENT:
                 return 'Désignation du binôme d’adhérents siégeant au Conseil territorial';
+            case DesignationTypeEnum::COMMITTEE_SUPERVISOR:
+                return 'Élection du binôme paritaire d\'Animateurs locaux';
         }
 
         return '';
@@ -379,5 +391,23 @@ class Designation
     public function isMajorityType(): bool
     {
         return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
+    }
+
+    public function getDenomination(bool $withDeterminer = false): string
+    {
+        if ($withDeterminer) {
+            if (self::DENOMINATION_ELECTION === $this->denomination) {
+                return 'l\''.$this->denomination;
+            }
+
+            return 'la '.$this->denomination;
+        }
+
+        return $this->denomination;
+    }
+
+    public function setDenomination(string $denomination): void
+    {
+        $this->denomination = $denomination;
     }
 }

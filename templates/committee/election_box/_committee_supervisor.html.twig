@@ -27,7 +27,11 @@
     </div>
 
     <p class="text--body text--bold b__nudge--top b__nudge--bottom-large instance__elections-box--text">
-        Le vote sera ouvert du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }} au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}.
+        {% if committee_election.isCandidacyPeriodActive %}
+            Les candidatures seront closes le {{ committee_election.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+        {% endif %}
+
+        Le vote {{ committee_election.isVotePeriodStarted ? 'est' : 'sera' }} ouvert du {{ committee_election.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }} au {{ committee_election.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/y à HH'h'mm") }}.
     </p>
 
     <hr/>
@@ -161,7 +165,7 @@
                             </div>
                         {% endif %}
 
-                        <div class="em-tooltip">
+                        <div class="em-tooltip b__nudge--top">
                             <span class="em-tooltip--trigger b__nudge--right btn btn--disabled">
                                 Je participe
                             </span>
@@ -170,7 +174,9 @@
                                 {% set ref_date = committee_election.getVoteEndDate ?? date() %}
                                 {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership() %}
 
-                                {% if app.user.registeredAt > ref_date|date_modify('-3 months') %}
+                                {% if my_vote %}
+                                    Vous avez déjà voté.
+                                {% elseif app.user.registeredAt > ref_date|date_modify('-3 months') %}
                                     Vous êtes adhérent{{ app.user.isFemale ? 'e' }} depuis moins de 3 mois.
                                 {% elseif membership.subscriptionDate > ref_date|date_modify('-30 days') %}
                                     Vous êtes membre de ce comité depuis moins de 30 jours.

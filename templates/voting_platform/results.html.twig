@@ -8,12 +8,12 @@
 {% set election_rounds = election.electionRounds %}
 {% set my_vote = get_my_vote_for_election(app.user, election_round) %}
 
-{% block page_title 'Résultats de la désignation' %}
+{% block page_title 'Résultats de ' ~ designation.getDenomination(true) %}
 
 {% block voting_platform_header %}
     <div class="l__wrapper--medium">
         <div class="has-voted-header b__nudge--bottom-50">
-            <h1 class="text--larger">Résultats de la désignation</h1>
+            <h1 class="text--larger">Résultats de {{ designation.getDenomination(true) }}</h1>
         </div>
 
         {% if election_rounds|length > 1 and not election.isSecondRoundVotePeriodActive %}
@@ -77,7 +77,7 @@
                                 <p class="text--body text--dark b__nudge--bottom">
                                     {% set bulletin_count = vote_results|length %}
 
-                                    Cette page recense la totalité de{{ bulletin_count > 1 ? 's'}} {{ bulletin_count }} bulletin{{ bulletin_count > 1 ? 's'}} dépouillé{{ bulletin_count > 1 ? 's'}} lors de cette désignations.<br /><br />
+                                    Cette page recense la totalité de{{ bulletin_count > 1 ? 's'}} {{ bulletin_count }} bulletin{{ bulletin_count > 1 ? 's'}} dépouillé{{ bulletin_count > 1 ? 's'}} lors de cette {{ designation.denomination }}.<br /><br />
                                     Retrouvez vos bulletins avec le N° anonyme qui vous a été transmis lors du versement de vos bulletins dans l'urne.
                                 </p>
                                 <div class="table--container">

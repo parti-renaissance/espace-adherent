@@ -1,12 +1,12 @@
 <aside class="election__aside">
     {% if my_vote is defined and my_vote %}
         <div class="election__participated space--30">
-            <p class="text--body text--white text--bold">Vous avez participé à cette désignation le {{ my_vote.votedAt|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/yyyy à HH'h'mm") }}.</p>
+            <p class="text--body text--white text--bold">Vous avez participé à cette {{ designation.denomination }} le {{ my_vote.votedAt|localizeddate('none', 'none', 'fr_FR', null, "dd/MM/yyyy à HH'h'mm") }}.</p>
         </div>
     {% endif %}
 
     <div class="election__stats space--30">
-        <h3 class="text--medium-large b__nudge--bottom-large">Les <span class="text--on-yellow">chiffres</span> de la désignation</h3>
+        <h3 class="text--medium-large b__nudge--bottom-large">Les <span class="text--on-yellow">chiffres</span> de {{ designation.getDenomination(true) }}</h3>
 
         <div class="el">
             <div class="title">Participants</div>

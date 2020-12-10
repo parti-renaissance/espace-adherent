@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
@@ -29,6 +30,13 @@ class DesignationAdmin extends AbstractAdmin
                 ->add('type', DesignationTypeType::class, [
                     'label' => 'Type d’élection',
                     'disabled' => !$this->isCreation(),
+                ])
+                ->add('denomination', ChoiceType::class, [
+                    'label' => 'Dénomination',
+                    'choices' => [
+                        Designation::DENOMINATION_DESIGNATION => Designation::DENOMINATION_DESIGNATION,
+                        Designation::DENOMINATION_ELECTION => Designation::DENOMINATION_ELECTION,
+                    ],
                 ])
             ->end()
             ->with('Zone 🌍', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
