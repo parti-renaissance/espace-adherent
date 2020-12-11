@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ZoneController extends AbstractController
 {
     private const SUGGESTIONS_PER_TYPE = 5;
+    private const ACTIVE_ONLY = true;
 
     private const TYPES = [
         Zone::CUSTOM,
@@ -47,13 +48,21 @@ class ZoneController extends AbstractController
         $term = (string) $request->query->get('q', '');
         $spaceType = (string) $request->query->get('space_type', '');
 
-        $max = (int) $request->query->get('page_limit', self::SUGGESTIONS_PER_TYPE);
+        $max = $request->query->getInt('page_limit', self::SUGGESTIONS_PER_TYPE);
         $max = min($max, self::SUGGESTIONS_PER_TYPE);
+
+        $activeOnly = $request->query->getBoolean('active_only', self::ACTIVE_ONLY);
 
         $user = $this->getMainUser($request->getSession());
         $managedZones = $managedZoneProvider->getManagedZones($user, $spaceType);
 
-        $zones = $repository->searchByTermAndManagedZonesGroupedByType($term, $managedZones, self::TYPES, $max);
+        $zones = $repository->searchByTermAndManagedZonesGroupedByType(
+            $term,
+            $managedZones,
+            self::TYPES,
+            $activeOnly,
+            $max
+        );
 
         $results = $this->normalizeZoneForSelect2($translator, $zones);
 

@@ -81,6 +81,7 @@ class ElectedRepresentativeFilterType extends AbstractType
             ->add('zones', ZoneAutoCompleteType::class, [
                 'remote_params' => [
                     'space_type' => $options['space_type'],
+                    'active_only' => false,
                 ],
                 'constraints' => [
                     new ManagedZone($options['space_type']),
