@@ -2,6 +2,8 @@
 
 namespace App\Admin\Jecoute;
 
+use App\Entity\Jecoute\News;
+use App\JeMarche\JeMarcheDeviceNotifier;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -17,6 +19,15 @@ class NewsAdmin extends AbstractAdmin
         '_sort_order' => 'ASC',
         '_sort_by' => 'label',
     ];
+
+    private $deviceNotifier;
+
+    public function __construct($code, $class, $baseControllerName, JeMarcheDeviceNotifier $deviceNotifier)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->deviceNotifier = $deviceNotifier;
+    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -53,5 +64,20 @@ class NewsAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    /**
+     * @param News $object
+     */
+    public function postPersist($object)
+    {
+        parent::postPersist($object);
+
+        $this->dispatchNotification($object);
+    }
+
+    private function dispatchNotification(News $news): void
+    {
+        $this->deviceNotifier->sendNotification($news);
     }
 }
