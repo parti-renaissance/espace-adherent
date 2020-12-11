@@ -237,6 +237,13 @@ class ManagedUser
      */
     private $voteCommitteeId;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $certifiedAt;
+
     public function __construct(
         int $status,
         string $type,
@@ -265,7 +272,8 @@ class ManagedUser
         array $citizenProjects = null,
         array $citizenProjectsOrganizer = null,
         UuidInterface $uuid = null,
-        int $voteCommitteeId = null
+        int $voteCommitteeId = null,
+        \DateTime $certifiedAt = null
     ) {
         $this->status = $status;
         $this->type = $type;
@@ -289,6 +297,7 @@ class ManagedUser
         $this->subscriptionTypes = $subscriptionTypes;
         $this->subscribedTags = $subscribedTags;
         $this->createdAt = $createdAt;
+        $this->certifiedAt = $certifiedAt;
         $this->gender = $gender;
         $this->supervisorTags = $supervisorTags;
         $this->citizenProjects = $citizenProjects;
@@ -501,5 +510,10 @@ class ManagedUser
     public function getVoteCommitteeId(): ?int
     {
         return $this->voteCommitteeId;
+    }
+
+    public function isCertified(): bool
+    {
+        return null !== $this->certifiedAt;
     }
 }

@@ -63,14 +63,9 @@ class ManagedUsersFilter
     private $registeredUntil;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    private $includeAdherentsNoCommittee = true;
-
-    /**
-     * @var bool
-     */
-    private $includeAdherentsInCommittee = true;
+    private $isCommitteeMember;
 
     /**
      * @var bool
@@ -152,6 +147,11 @@ class ManagedUsersFilter
      * @var bool|null
      */
     private $voteInCommittee;
+
+    /**
+     * @var bool|null
+     */
+    private $isCertified;
 
     public function __construct(
         string $subscriptionType = null,
@@ -266,24 +266,14 @@ class ManagedUsersFilter
         $this->registeredUntil = $registeredUntil;
     }
 
-    public function includeAdherentsNoCommittee(): bool
+    public function isCommitteeMember(): ?bool
     {
-        return $this->includeAdherentsNoCommittee;
+        return $this->isCommitteeMember;
     }
 
-    public function setIncludeAdherentsNoCommittee(bool $value): void
+    public function setIsCommitteeMember(?bool $value): void
     {
-        $this->includeAdherentsNoCommittee = $value;
-    }
-
-    public function includeAdherentsInCommittee(): bool
-    {
-        return $this->includeAdherentsInCommittee;
-    }
-
-    public function setIncludeAdherentsInCommittee(bool $value): void
-    {
-        $this->includeAdherentsInCommittee = $value;
+        $this->isCommitteeMember = $value;
     }
 
     public function includeCommitteeSupervisors(): ?bool
@@ -394,6 +384,16 @@ class ManagedUsersFilter
         $this->voteInCommittee = $voteInCommittee;
     }
 
+    public function getIsCertified(): ?bool
+    {
+        return $this->isCertified;
+    }
+
+    public function setIsCertified(?bool $isCertified): void
+    {
+        $this->isCertified = $isCertified;
+    }
+
     public function getSubscriptionType(): ?string
     {
         return $this->subscriptionType;
@@ -465,6 +465,8 @@ class ManagedUsersFilter
                 'smsSubscription' => $this->smsSubscription,
                 'emailSubscription' => $this->emailSubscription,
                 'voteInCommittee' => $this->voteInCommittee,
+                'isCommitteeMember' => $this->isCommitteeMember,
+                'isCertified' => $this->isCertified,
                 'sort' => $this->sort,
                 'order' => $this->order,
                 'committee' => $this->committee ? $this->committee->getUuidAsString() : null,
@@ -479,10 +481,6 @@ class ManagedUsersFilter
                     })
                 ),
             ],
-            array_filter([
-                'includeAdherentsNoCommittee' => $this->includeAdherentsNoCommittee,
-                'includeAdherentsInCommittee' => $this->includeAdherentsInCommittee,
-            ]),
         );
     }
 }

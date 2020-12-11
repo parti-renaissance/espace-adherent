@@ -671,6 +671,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $senatorArea = new SenatorArea();
         $senatorArea->setDepartmentTag($this->getReference('referent_tag_59'));
         $senator_59->setSenatorArea($senatorArea);
+        $senator_59->addCharter(new ReferentCharter());
         $this->addReference('senator-59', $senator_59);
 
         // municipal chief

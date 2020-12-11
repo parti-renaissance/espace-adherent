@@ -27,10 +27,13 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
 
     protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface
     {
+        $adherent = $this->getUser();
+
         return $this->createForm(ReferentManagedUsersFilterType::class, $filter, [
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
             'space_type' => $this->getSpaceType(),
+            'for_referent' => $adherent && $adherent->isReferent(),
         ]);
     }
 

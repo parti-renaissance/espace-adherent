@@ -16,7 +16,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
     private const ACCESS_UUID_4 = '411faa64-202d-4ff2-91ce-c98b29af28ef';
     private const ACCESS_UUID_5 = 'd2315289-a3fd-419c-a3dd-3e1ff71b754d';
     private const ACCESS_UUID_6 = '7fdf8fb0-1628-4500-b0b2-34c40cc27a2c';
-    private const ACCESS_UUID_7 = '08f40730-d807-4975-8773-69d8fae1da74';
+    public const ACCESS_UUID_7 = '08f40730-d807-4975-8773-69d8fae1da74';
     private const ACCESS_UUID_8 = '01ddb89b-25be-4ccb-a90f-8338c42e7e58';
 
     public function load(ObjectManager $manager)
@@ -87,6 +87,10 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $delegatedAccess7->setDelegator($this->getReference('adherent-8')); // referent@en-marche-dev.fr
         $delegatedAccess7->setRole('Collaborateur parlementaire');
         $delegatedAccess7->setType('referent');
+        $delegatedAccess7->setAccesses([
+            DelegatedAccess::ACCESS_ADHERENTS,
+            DelegatedAccess::ACCESS_MESSAGES,
+        ]);
 
         $manager->persist($delegatedAccess7);
 

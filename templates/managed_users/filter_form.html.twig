@@ -9,28 +9,40 @@
         <div class="manager__filters__row">
             <div class="manager__filters__section">
                 <div class="manager__filters__group">
-                    {% if form.managedZones is defined %}
+                    <div class="filter__row">
+                        <label class="filter__label">Zone géographique</label>
+                        {{ form_widget(form.zones) }}
+                        {{ form_errors(form.zones) }}
+                    </div>
+
+                    <div class="filter__row">
+                        <label class="filter__label">Date d'adhésion</label>
+                        <div class="filter__multi">
+                            <label style="width: 45%">
+                                {{ form_widget(form.registeredSince, {label: false, attr: {class: 'filter__field'}}) }}
+                            </label>
+                            à
+                            <label style="width: 45%">
+                                {{ form_widget(form.registeredUntil, {label: false, attr: {class: 'filter__field'}}) }}
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter__row">
+                        <label class="filter__label">Membre d'au moins un comité</label>
+                        {{ form_widget(form.isCommitteeMember, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
+                    </div>
+
+                    {% if form.committee is defined %}
                         <div class="filter__row">
-                            <label class="filter__label">Zones gérées</label>
-                            {{ form_widget(form.managedZones, {attr: {class: 'filter__field'}}) }}
-                            {{ form_errors(form.managedZones) }}
+                            <label class="filter__label">Membre du comité</label>
+                            {{ form_widget(form.committee, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'Choisissez un comité'}}) }}
                         </div>
                     {% endif %}
 
                     <div class="filter__row">
-                        <label class="filter__label">Adhérents</label>
-                        {{ form_row(form.includeAdherentsNoCommittee, {label: 'Adhérents ne faisant partie d\'aucun comité'}) }}
-                        {{ form_row(form.includeAdherentsInCommittee, {label: 'Adhérents faisant partie d\'au moins un comité (hors animateurs)'}) }}
-                    </div>
-
-                    <div class="filter__row">
-                        <label class="filter__label">Inclure les rôles</label>
-                        {{ form_row(form.includeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.excludeRoles.vars.id}}) }}
-                    </div>
-
-                    <div class="filter__row">
-                        <label class="filter__label">Exclure les rôles</label>
-                        {{ form_row(form.excludeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.includeRoles.vars.id}}) }}
+                        <label class="filter__label">À choisir son comité principale</label>
+                        {{ form_widget(form.voteInCommittee, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
                     </div>
                 </div>
             </div>
@@ -56,35 +68,6 @@
                     </div>
 
                     <div class="filter__row">
-                        <label class="filter__label">Date d'adhésion</label>
-                        <div class="filter__multi">
-                            <label style="width: 45%">
-                                {{ form_widget(form.registeredSince, {label: false, attr: {class: 'filter__field'}}) }}
-                            </label>
-                            à
-                            <label style="width: 45%">
-                                {{ form_widget(form.registeredUntil, {label: false, attr: {class: 'filter__field'}}) }}
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="filter__row">
-                        <label class="filter__label">Statut (E-mail)</label>
-                        {{ form_widget(form.emailSubscription, {attr: {class: 'filter__field'}}) }}
-                    </div>
-
-                    {% if form.committee is defined %}
-                        <div class="filter__row">
-                            <label class="filter__label">Comité</label>
-                            {{ form_widget(form.committee, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'Choisissez un comité'}}) }}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="manager__filters__section">
-                <div class="manager__filters__group">
-                    <div class="filter__row">
                         <label class="filter__label">Nom</label>
                         {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
                         {{ form_errors(form.lastName) }}
@@ -96,20 +79,35 @@
                         {{ form_errors(form.firstName) }}
                     </div>
 
+                    {% if form.isCertified is defined %}
+                        <div class="filter__row">
+                            <label class="filter__label">Certifié</label>
+                            {{ form_widget(form.isCertified, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="manager__filters__section">
+                <div class="manager__filters__group">
                     <div class="filter__row">
-                        <label class="filter__label">Zones</label>
-                        {{ form_widget(form.zones) }}
-                        {{ form_errors(form.zones) }}
+                        <label class="filter__label">Rôle</label>
+                        {{ form_row(form.includeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.excludeRoles.vars.id}}) }}
                     </div>
 
                     <div class="filter__row">
-                        <label class="filter__label">Centres d'intérêt</label>
+                        <label class="filter__label">N'a pas comme rôle</label>
+                        {{ form_row(form.excludeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.includeRoles.vars.id}}) }}
+                    </div>
+
+                    <div class="filter__row">
+                        <label class="filter__label">Centres d'intérêts</label>
                         {{ form_widget(form.interests, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'referent.filter.interests'|trans}}) }}
                     </div>
 
                     <div class="filter__row">
-                        <label class="filter__label">Vote dans un comité</label>
-                        {{ form_widget(form.voteInCommittee, {attr: {class: 'filter__field'}}) }}
+                        <label class="filter__label">Statut (E-mail)</label>
+                        {{ form_widget(form.emailSubscription, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
                     </div>
                 </div>
             </div>
