@@ -3,6 +3,24 @@ parameters:
 
 framework:
     messenger:
+        buses:
+            messenger.bus.default:
+                middleware:
+                    # each time a message is handled, the Doctrine connection
+                    # is "pinged" and reconnected if it's closed. Useful
+                    # if your workers run for a long time and the database
+                    # connection is sometimes lost
+                    - doctrine_ping_connection
+
+                    # After handling, the Doctrine connection is closed,
+                    # which can free up database connections in a worker,
+                    # instead of keeping them open forever
+                    - doctrine_close_connection
+
+                    # wraps all handlers in a single Doctrine transaction
+                    # handlers do not need to call flush() and an error
+                    # in any handler will cause a rollback
+                    - doctrine_transaction
         serializer:
             default_serializer: messenger.transport.symfony_serializer
             symfony_serializer:
@@ -11,18 +29,24 @@ framework:
         transports:
             default:
                 dsn: "%env(RABBITMQ_DSN)%"
+                retry_strategy:
+                    service: App\Messenger\AlwaysRetryStrategy
                 options:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.command' }
                     queues:
                         default: { binding_keys: ['async.command'] }
             mailchimp_sync:
                 dsn: "%env(RABBITMQ_DSN)%"
+                retry_strategy:
+                    service: App\Messenger\AlwaysRetryStrategy
                 options:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.sync' }
                     queues:
                         mailchimp_sync: { binding_keys: ['mailchimp.sync'] }
             mailchimp_campaign:
                 dsn: "%env(RABBITMQ_DSN)%"
+                retry_strategy:
+                    service: App\Messenger\AlwaysRetryStrategy
                 options:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.campaign' }
                     queues:
