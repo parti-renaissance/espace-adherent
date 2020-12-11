@@ -302,10 +302,8 @@ class RequestBuilder implements LoggerAwareInterface
         $count = \count($zones);
         if ($count > 1) {
             $this->logger->warning(\sprintf('Cannot find only one geo zone for Mailchimp for adherent with id "%s"', $adherent->getId()));
-            $this->teamCode = null;
-        } else {
-            $this->teamCode = 1 === $count ? $zones[0]->getTeamCode() : null;
         }
+        $this->teamCode = (1 === $count) ? current($zones)->getTeamCode() : null;
 
         return $this;
     }
