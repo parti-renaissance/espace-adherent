@@ -197,6 +197,9 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms'));
         $adherent5->addReferentTag($this->getReference('referent_tag_92'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
+        $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
+        $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-4'));
+        $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_canton_9209'));
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $this->adherentFactory->createFromArray([

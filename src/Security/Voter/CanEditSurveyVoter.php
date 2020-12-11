@@ -30,7 +30,7 @@ class CanEditSurveyVoter extends AbstractAdherentVoter
         }
 
         /** @var LocalSurvey $subject */
-        if ($subject->getAuthor()->equals($adherent)) {
+        if ($subject->getAuthor() && $subject->getAuthor()->equals($adherent)) {
             return true;
         }
 
