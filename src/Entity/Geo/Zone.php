@@ -45,9 +45,16 @@ class Zone implements GeoInterface
     /**
      * @var string
      *
-     * @ORM\Column(nullable=false)
+     * @ORM\Column
      */
     private $type;
+
+    /**
+     * @var ?string
+     *
+     * @ORM\Column(length=6, nullable=true)
+     */
+    private $teamCode;
 
     /**
      * @var Collection
@@ -80,6 +87,16 @@ class Zone implements GeoInterface
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function getTeamCode(): ?string
+    {
+        return $this->teamCode;
+    }
+
+    public function setTeamCode(?string $teamCode): void
+    {
+        $this->teamCode = $teamCode;
     }
 
     public function isCity(): bool

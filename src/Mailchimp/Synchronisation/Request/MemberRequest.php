@@ -27,6 +27,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_ZONE_DEPARTMENT = 'ZONE_DPT';
     public const MERGE_FIELD_ZONE_REGION = 'ZONE_REGIO';
     public const MERGE_FIELD_ZONE_COUNTRY = 'ZONE_CNTRY';
+    public const MERGE_FIELD_TEAM_CODE = 'TEAM_CODE';
 
     private $memberIdentifier;
 

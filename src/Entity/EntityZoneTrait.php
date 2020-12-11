@@ -58,4 +58,27 @@ trait EntityZoneTrait
 
         return false;
     }
+
+    /**
+     * @return Zone[]
+     */
+    public function getZonesOfType(string $type): array
+    {
+        return array_filter($this->zones->toArray(), function (Zone $zone) use ($type) {
+            return $type === $zone->getType();
+        });
+    }
+
+    /**
+     * @return Zone[]
+     */
+    public function getParentZonesOfType(string $type): array
+    {
+        $zones = [];
+        foreach ($this->zones as $zone) {
+            $zones = array_merge($zones, $zone->getParentsOfType($type));
+        }
+
+        return $zones;
+    }
 }

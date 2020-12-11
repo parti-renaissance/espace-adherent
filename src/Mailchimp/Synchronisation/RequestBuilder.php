@@ -17,9 +17,14 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\Collection;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-class RequestBuilder
+class RequestBuilder implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private $email;
     private $gender;
     private $firstName;
@@ -51,12 +56,15 @@ class RequestBuilder
     private $zoneRegion;
     private $zoneCountry;
 
+    private $teamCode;
+
     public function __construct(
         MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder
     ) {
         $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
         $this->electedRepresentativeTagsBuilder = $electedRepresentativeTagsBuilder;
+        $this->logger = new NullLogger();
     }
 
     public function updateFromAdherent(Adherent $adherent): self
@@ -76,6 +84,7 @@ class RequestBuilder
             ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
             ->setZones($adherent->getZones())
+            ->setTeamCode($adherent)
         ;
     }
 
@@ -282,6 +291,25 @@ class RequestBuilder
         }
     }
 
+    public function setTeamCode(Adherent $adherent): self
+    {
+        if ($adherent->isParisResident()) {
+            $zones = $adherent->getZonesOfType(Zone::BOROUGH);
+        } else {
+            $zones = $adherent->getParentZonesOfType($adherent->isForeignResident() ? Zone::FOREIGN_DISTRICT : Zone::DEPARTMENT);
+        }
+
+        $count = \count($zones);
+        if ($count > 1) {
+            $this->logger->warning(\sprintf('Cannot find only one geo zone for Mailchimp for adherent with id "%s"', $adherent->getId()));
+            $this->teamCode = null;
+        } else {
+            $this->teamCode = 1 === $count ? $zones[0]->getTeamCode() : null;
+        }
+
+        return $this;
+    }
+
     public function buildMemberRequest(string $memberIdentifier): MemberRequest
     {
         $request = new MemberRequest($memberIdentifier);
@@ -385,6 +413,10 @@ class RequestBuilder
 
         if ($this->zoneCountry) {
             $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCountry)] = (string) $this->zoneCountry;
+        }
+
+        if ($this->teamCode) {
+            $mergeFields[MemberRequest::MERGE_FIELD_TEAM_CODE] = (string) $this->teamCode;
         }
 
         return $mergeFields;

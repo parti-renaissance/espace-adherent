@@ -30,6 +30,7 @@ use App\Membership\MembershipInterface;
 use App\Membership\MembershipRequest;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Subscription\SubscriptionTypeEnum;
+use App\Utils\AreaUtils;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
 use App\Validator\UniqueMembership;
 use App\ValueObject\Genders;
@@ -990,7 +991,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isForeignResident(): bool
     {
-        return 'FR' !== strtoupper($this->getCountry());
+        return AreaUtils::CODE_FRANCE !== strtoupper($this->getCountry());
+    }
+
+    public function isParisResident(): bool
+    {
+        return AreaUtils::CODE_FRANCE === strtoupper($this->getCountry()) && AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS === substr($this->getPostalCode(), 0, 2);
     }
 
     public function isFemale(): bool
