@@ -54,6 +54,7 @@ class ZoneRepository extends ServiceEntityRepository
         string $term,
         array $zones,
         array $types,
+        bool $activeOnly,
         int $perType
     ): array {
         if ('' === $term) {
@@ -62,19 +63,31 @@ class ZoneRepository extends ServiceEntityRepository
 
         $grouped = [];
         foreach ($types as $type) {
-            $grouped[] = $this->doSearchByTermManagedZonesAndType($term, $zones, $type, $perType);
+            $grouped[] = $this->doSearchByTermManagedZonesAndType($term, $zones, $type, $activeOnly, $perType);
         }
 
         return array_merge(...$grouped);
     }
 
-    private function doSearchByTermManagedZonesAndType(string $term, array $zones, string $type, int $max): array
-    {
+    private function doSearchByTermManagedZonesAndType(
+        string $term,
+        array $zones,
+        string $type,
+        bool $activeOnly,
+        int $max
+    ): array {
         $qb = $this->createQueryBuilder('zone');
         $qb
             ->andWhere($qb->expr()->eq('zone.type', ':type'))
             ->setParameter(':type', $type)
         ;
+
+        if ($activeOnly) {
+            $qb
+                ->andWhere($qb->expr()->eq('zone.active', ':active'))
+                ->setParameter(':active', $activeOnly)
+            ;
+        }
 
         if ($zones) {
             $qb
