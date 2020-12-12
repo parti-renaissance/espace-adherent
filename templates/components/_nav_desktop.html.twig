@@ -19,6 +19,9 @@
                         <a href="{{ path('app_our_organization') }}">Notre organisation</a>
                     </li>
                     <li>
+                        <a href="{{ path('app_static_page', { slug: 'rejoignez-notre-equipe' }) }}">Recrutement</a>
+                    </li>
+                    <li>
                         <a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}">Notre fonctionnement</a>
                     </li>
                     <li>
@@ -30,15 +33,16 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ path('legislatives_homepage') }}">
-                            Nos députés
-                        </a>
+                        <a href="{{ path('legislatives_homepage') }}">Nos députés</a>
                     </li>
                     <li>
                         <a href="{{ path('app_static_page', { slug: 'nos-senateurs' }) }}">Nos sénateurs</a>
                     </li>
                     <li>
                         <a href="{{ path('app_static_page', { slug: 'elus' }) }}">Nos élus locaux</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'francais-de-l-etranger' }) }}">Français de l’Étranger</a>
                     </li>
                 </ul>
             </div>
@@ -55,6 +59,9 @@
                     </li>
                     <li>
                         <a href="{{ path('articles_list', { category: 'tout' }) }}">Toutes nos actualités</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'toutes-les-newsletters' }) }}">Notre Newsletter</a>
                     </li>
                 </ul>
             </div>
@@ -90,6 +97,12 @@
                     </li>
                     <li>
                         <a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'action-quartiers-action-ruralites' }) }}">Action Quartiers / Action Ruralités</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'toutes-politiques' }) }}">Toutes Politiques</a>
                     </li>
                     {% if is_canary_enabled() %}
                     <li>
