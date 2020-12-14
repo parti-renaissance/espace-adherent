@@ -48,6 +48,8 @@ class SignUpHandler implements LoggerAwareInterface
         } catch (ClientExceptionInterface | TransportExceptionInterface $e) {
             $this->logger->error($e->getMessage(), ['exception' => $e]);
         }
+
+        return false;
     }
 
     private function getFormData(Adherent $adherent)
