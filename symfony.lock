@@ -602,6 +602,9 @@
     "phpoption/phpoption": {
         "version": "1.5.0"
     },
+    "phpseclib/phpseclib": {
+        "version": "2.0.29"
+    },
     "phpspec/prophecy": {
         "version": "v1.10.3"
     },
