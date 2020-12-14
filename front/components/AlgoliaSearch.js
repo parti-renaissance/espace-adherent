@@ -1,4 +1,4 @@
-import algoliasearch from 'algoliasearch';
+import algoliasearch from 'algoliasearch/lite';
 import React, { PropTypes } from 'react';
 
 export default class AlgoliaSearch extends React.Component {
@@ -65,7 +65,7 @@ export default class AlgoliaSearch extends React.Component {
             return;
         }
 
-        const createResultsHandler = type => (err, content) => {
+        const createResultsHandler = type => (content) => {
             loaded += 1;
             nbHits += content.nbHits;
             hits[type] = content.hits.map((hit) => {
@@ -79,11 +79,11 @@ export default class AlgoliaSearch extends React.Component {
             }
         };
 
-        this.customResultsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('custom'));
-        this.proposalsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('proposal'));
-        this.clarificationsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('clarification'));
-        this.articlesIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('article'));
-        this.eventsIndex.search({ query: term, hitsPerPage: 15 }, createResultsHandler('event'));
+        this.customResultsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('custom'));
+        this.proposalsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('proposal'));
+        this.clarificationsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('clarification'));
+        this.articlesIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('article'));
+        this.eventsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('event'));
     }
 
     _searchCallback(nbHits, hits) {
