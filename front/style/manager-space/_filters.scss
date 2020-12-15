@@ -27,7 +27,6 @@
     font-family: $font-roboto;
     font-size: 14px;
     font-weight: normal;
-    line-height: normal;
     color: $dark;
     margin: 0;
     height: 40px;
@@ -38,6 +37,7 @@
     text-align: center;
     z-index: 2;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 @mixin filter-radio-input {
@@ -172,6 +172,7 @@
 
                 input[type='radio']:checked+label {
                     font-weight: bold;
+                    background: #f1f6ff;
                 }
             }
 
