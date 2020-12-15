@@ -41,6 +41,10 @@ class CandidacyManager
     ): void {
         // if UPDATE
         if ($candidacy->getId()) {
+            if ($binome = $candidacy->getBinome()) {
+                $binome->updateFromBinome();
+            }
+
             $this->entityManager->flush();
 
             $this->eventDispatcher->dispatch(VotingPlatformEvents::CANDIDACY_UPDATED, new BaseCandidacyEvent($candidacy));
