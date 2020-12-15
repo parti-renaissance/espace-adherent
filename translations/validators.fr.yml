@@ -184,6 +184,8 @@ adherent_message.filter.municipal_chief.empty_contact_type: Vous devez sélectio
 #
 # J'écoute
 #
+
+survey.unknown_id: Il n'existe aucun sondage correspondant à cet ID.
 survey.question.choice.invalid: Le type de cette question est incorrecte, un champ à choix multiples ou unique doit contenir plusieurs choix.
 survey.question.simple_field.invalid: Le type de cette question est incorrecte, un champ libre ne doit pas contenir de choix.
 

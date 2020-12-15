@@ -3,14 +3,10 @@
 namespace App\Form\Jecoute;
 
 use App\Entity\Jecoute\DataSurvey;
-use App\Entity\Jecoute\LocalSurvey;
-use App\Entity\Jecoute\NationalSurvey;
 use App\Jecoute\AgeRangeEnum;
 use App\Jecoute\GenderEnum;
 use App\Jecoute\ProfessionEnum;
 use App\Jecoute\SurveyTypeEnum;
-use App\Repository\Jecoute\LocalSurveyRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,24 +28,8 @@ class DataSurveyFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (SurveyTypeEnum::LOCAL === $options['type']) {
-            $builder
-                ->add('survey', EntityType::class, [
-                    'class' => LocalSurvey::class,
-                    'query_builder' => function (LocalSurveyRepository $localSurveyRepository) {
-                        return $localSurveyRepository->createSurveysByZonesQueryBuilder($this->user->getZones()->toArray());
-                    },
-                ])
-            ;
-        } else {
-            $builder
-                ->add('survey', EntityType::class, [
-                    'class' => NationalSurvey::class,
-                ])
-            ;
-        }
-
         $builder
+            ->add('survey', SurveyIdType::class)
             ->add('lastName', TextType::class, [
                 'required' => false,
             ])

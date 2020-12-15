@@ -432,41 +432,6 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I can not reply to a survey that was no created by my referent(s)
-    Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
-    And I add "Content-Type" header equal to "application/json"
-    And I add "Accept" header equal to "application/json"
-    When I send a "POST" request to "/api/jecoute/survey/reply" with body:
-    """
-    {
-      "survey":1,
-      "type": "local",
-      "lastName":"Bonsoirini",
-      "firstName":"Ernestino",
-      "emailAddress":"ernestino@bonsoirini.fr",
-      "agreedToStayInContact":true,
-      "answers":[
-        {
-          "surveyQuestion":4,
-          "textField":"Réponse libre"
-        }
-      ]
-    }
-    """
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "status":"error",
-      "errors":{
-        "survey":[
-          "Cette valeur n'est pas valide."
-        ]
-      }
-    }
-    """
-
   Scenario: As a logged-in user I cannot reply to a local survey with errors
     Given I am logged with "francis.brioul@yahoo.com" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
@@ -513,7 +478,7 @@ Feature:
       "status":"error",
       "errors":{
         "survey":[
-          "Cette valeur ne doit pas être vide."
+          "Il n'existe aucun sondage correspondant à cet ID."
         ],
         "emailAddress":[
           "Cette valeur n'est pas une adresse email valide."
