@@ -5,10 +5,13 @@ namespace App\CitizenProject;
 use App\Entity\CitizenProject;
 use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\GeocodableInterface;
+use App\Geocoder\GeoHashChangeAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
 
 class CitizenProjectEvent extends Event implements GeocodableEntityEventInterface
 {
+    use GeoHashChangeAwareTrait;
+
     private $citizenProject;
 
     public function __construct(CitizenProject $citizenProject = null)

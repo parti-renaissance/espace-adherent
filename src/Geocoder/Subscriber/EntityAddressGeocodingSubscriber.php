@@ -34,7 +34,10 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function updateGeocodableEntity(GeoPointInterface $geocodable): void
+    /**
+     * @return bool True if hash has changed, false otherwise
+     */
+    private function updateGeocodableEntity(GeoPointInterface $geocodable): bool
     {
         if ($geocodable->getGeocodableHash() !== $hash = md5($address = $geocodable->getGeocodableAddress())) {
             if ($coordinates = $this->geocode($address)) {
@@ -42,13 +45,19 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
                 $geocodable->setGeocodableHash($hash);
 
                 $this->manager->flush();
+
+                return true;
             }
         }
+
+        return false;
     }
 
     public function updateCoordinates(GeocodableEntityEventInterface $event): void
     {
-        $this->updateGeocodableEntity($event->getGeocodableEntity());
+        if ($this->updateGeocodableEntity($event->getGeocodableEntity())) {
+            $event->markAddressAsChanged();
+        }
     }
 
     private function geocode(string $address): ?Coordinates

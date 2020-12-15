@@ -92,6 +92,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 {
     use EntityPostAddressTrait;
     use EntityReferentTagTrait;
+    use EntityZoneTrait;
     use EntityElectionHelperTrait;
     use StaticSegmentTrait;
 
@@ -213,6 +214,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->citizenProjectSupports = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
+        $this->zones = new ArrayCollection();
         $this->committeeElections = new ArrayCollection();
 
         foreach ($citizenProjects as $citizenProject) {
