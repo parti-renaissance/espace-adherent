@@ -4,6 +4,7 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\DataFixtures\ORM\LoadDelegatedAccessData;
 use App\Entity\Geo\Zone;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentManagedUsersMessage;
@@ -311,8 +312,6 @@ class ReferentControllerTest extends WebTestCase
 
         // filter hosts
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeAdherentsNoCommittee]'] = false;
-        $form['f[includeAdherentsInCommittee]'] = false;
         $form['f[includeRoles]'] = ['CommitteeHosts'];
         $form['f[excludeRoles]'] = [];
 
@@ -326,8 +325,6 @@ class ReferentControllerTest extends WebTestCase
 
         // filter supervisors
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeAdherentsNoCommittee]'] = false;
-        $form['f[includeAdherentsInCommittee]'] = false;
         $form['f[includeRoles]'] = ['CommitteeSupervisors'];
         $form['f[excludeRoles]'] = [];
 
@@ -340,8 +337,6 @@ class ReferentControllerTest extends WebTestCase
 
         // filter newsletter subscriptions
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeAdherentsNoCommittee]'] = false;
-        $form['f[includeAdherentsInCommittee]'] = false;
         $form['f[includeRoles]'] = [];
         $form['f[excludeRoles]'] = [];
 
@@ -354,8 +349,6 @@ class ReferentControllerTest extends WebTestCase
 
         // exclude
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeAdherentsNoCommittee]'] = true;
-        $form['f[includeAdherentsInCommittee]'] = true;
         $form['f[includeRoles]'] = [];
         $form['f[excludeRoles]'] = ['CitizenProjectHosts', 'CommitteeSupervisors', 'CommitteeHosts'];
 
@@ -368,47 +361,53 @@ class ReferentControllerTest extends WebTestCase
 
         // filter adherents in no committee
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeAdherentsNoCommittee]'] = true;
-        $form['f[includeAdherentsInCommittee]'] = false;
+        $form['f[isCommitteeMember]'] = 0;
         $form['f[includeRoles]'] = [];
         $form['f[excludeRoles]'] = [];
 
         $this->client->submit($form);
 
-        $this->assertCount(3, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
-        $this->assertStringContainsString('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertStringContainsString('Brioul', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertCount(1, $this->client->getCrawler()->filter('.status.status__1'));
+        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertStringContainsString('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
 
         // filter adherents in committees
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeAdherentsNoCommittee]'] = false;
-        $form['f[includeAdherentsInCommittee]'] = true;
+        $form['f[isCommitteeMember]'] = 1;
         $form['f[includeRoles]'] = [];
         $form['f[excludeRoles]'] = [];
 
         $this->client->submit($form);
 
-        $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(4, $this->client->getCrawler()->filter('.status.status__1'));
+        $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
-        $this->assertStringContainsString('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertStringContainsString('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item--host')->first()->text());
+        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item--host')->eq(1)->text());
+        $this->assertStringContainsString('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item--adherent')->text());
 
         // filter adherents in CP
         $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeAdherentsNoCommittee]'] = false;
-        $form['f[includeAdherentsInCommittee]'] = false;
+        $form['f[isCommitteeMember]'] = '';
         $form['f[includeRoles]'] = ['CitizenProjectHosts'];
         $form['f[excludeRoles]'] = [];
 
         $this->client->submit($form);
 
         $this->assertCount(0, $this->client->getCrawler()->filter('.status.status__1'));
+
+        // filter certified adherents
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['f[includeRoles]'] = [];
+        $form['f[isCertified]'] = 1;
+
+        $this->client->submit($form);
+
+        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr .adherent-name > img'));
+        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
+        $this->assertStringContainsString('Dufour', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
     }
 
     public function testReferentCanCreateAdherentMessageSuccessfully(): void
@@ -449,6 +448,23 @@ class ReferentControllerTest extends WebTestCase
         $this->assertMessageIsDispatched(AdherentMessageChangeCommand::class);
 
         self::assertCount(0, $crawler->filter('.form .form__errors'));
+    }
+
+    public function testAdherentWithDelegatedAccessSeeAdherents()
+    {
+        $this->authenticateAsAdherent($this->client, 'senateur@en-marche-dev.fr');
+
+        $this->client->request(Request::METHOD_GET, \sprintf('/espace-partage/%s', LoadDelegatedAccessData::ACCESS_UUID_7));
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/espace-referent/utilisateurs', $this->client);
+
+        $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
+        $this->assertCount(0, $this->client->getCrawler()->filter('tbody tr .adherent-name > img'));
     }
 
     public function providePages()

@@ -31,7 +31,6 @@ class SenatorManagedUsersController extends AbstractManagedUsersController
         return $this->createForm(ManagedUsersFilterType::class, $filter, [
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
-            'single_zone' => true,
             'space_type' => $this->getSpaceType(),
         ]);
     }

@@ -182,15 +182,11 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere($restrictionsExpression);
         }
 
+        if (null !== $filter->isCommitteeMember()) {
+            $qb->andWhere(sprintf('u.isCommitteeMember = %s', $filter->isCommitteeMember() ? '1' : '0'));
+        }
+
         $typeExpression = $qb->expr()->orX();
-
-        if ($filter->includeAdherentsNoCommittee()) {
-            $typeExpression->add('u.isCommitteeMember = 0');
-        }
-
-        if ($filter->includeAdherentsInCommittee()) {
-            $typeExpression->add('u.isCommitteeMember = 1');
-        }
 
         // includes
         if (true === $filter->includeCommitteeHosts()) {
@@ -246,6 +242,10 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if (null !== $filter->getVoteInCommittee()) {
             $qb->andWhere(sprintf('u.voteCommitteeId %s NULL', $filter->getVoteInCommittee() ? 'IS NOT' : 'IS'));
+        }
+
+        if (null !== $filter->getIsCertified()) {
+            $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->getIsCertified() ? 'IS NOT' : 'IS'));
         }
 
         return $qb;

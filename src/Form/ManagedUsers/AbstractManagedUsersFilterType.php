@@ -38,6 +38,7 @@ abstract class AbstractManagedUsersFilterType extends AbstractType
             ])
             ->add('emailSubscription', ChoiceType::class, [
                 'required' => false,
+                'expanded' => true,
                 'choices' => [
                     'common.all' => null,
                     'common.adherent.subscribed' => true,

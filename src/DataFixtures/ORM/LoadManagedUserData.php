@@ -46,6 +46,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             ],
             'created_at' => '2017-06-01 09:22:45',
             'gender' => 'male',
+            'certified_at' => '2018-06-01 10:20:45',
         ]);
 
         $managedUser2 = $managedUserFactory->createFromArray([
@@ -92,7 +93,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'committees' => $committee1->getName(),
             'committee_uuids' => [$committee1->getUuid()->toString()],
             'phone' => PhoneNumberUtils::create('+33666666666'),
-            'is_committee_member' => 0,
+            'is_committee_member' => 1,
             'is_committee_host' => 1,
             'is_committee_supervisor' => 0,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
@@ -106,6 +107,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'citizenProjects' => [
                 '59-en-marche-projet-citoyen' => 'En marche - Projet Citoyen',
             ],
+            'certified_at' => '2018-06-02 10:20:45',
         ]);
 
         $managedUser4 = $managedUserFactory->createFromArray([
@@ -125,7 +127,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'committees' => implode('|', [$committee3->getName(), $committee4->getName(), $committee5->getName()]),
             'committee_uuids' => [$committee3->getUuid()->toString(), $committee4->getUuid()->toString(), $committee5->getUuid()->toString()],
             'vote_committee_id' => $committee3->getId(),
-            'is_committee_member' => 0,
+            'is_committee_member' => 1,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 1,
             'subscription_types' => null,

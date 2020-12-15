@@ -34,7 +34,8 @@ class ManagedUserFactory
             $data['citizenProjects'] ?? null,
             $data['citizenProjectsOrganizer'] ?? null,
             $data['uuid'] ?? null,
-            $data['vote_committee_id'] ?? null
+            $data['vote_committee_id'] ?? null,
+            isset($data['certified_at']) ? new \DateTime($data['certified_at']) : null
         );
     }
 

@@ -72,7 +72,7 @@ export default class AdherentCommitteeList extends React.Component {
                                    target="_blank"
                                 >
                                     {membership.committee.name}
-                                    {membership.votingCommittee ?
+                                    {membership.voting_committee ?
                                         <span className="b__nudge--left-nano">
                                             <img src={'/images/icons/icn_vote.svg'} alt={'vote icon'}
                                                  title={'Vote dans ce comité'} />
