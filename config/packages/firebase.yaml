@@ -1,0 +1,8 @@
+kreait_firebase:
+  projects:
+    jemarche_app:
+      credentials: '%kernel.project_dir%/gcloud-service-key.json'
+services:
+    App\Firebase\JeMarcheMessaging:
+      arguments:
+        $messaging: '@kreait_firebase.jemarche_app.messaging'

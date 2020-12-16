@@ -6,8 +6,12 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Entity\Administrator;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\Geo\Zone;
+use App\Validator\Jecoute\NewsTarget;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -72,6 +76,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="jecoute_news")
  * @ORM\Entity
+ *
+ * @NewsTarget
  */
 class News
 {
@@ -97,7 +103,7 @@ class News
      *
      * @SymfonySerializer\Groups({"jecoute_news_read"})
      */
-    protected $uuid;
+    private $uuid;
 
     /**
      * @var string|null
@@ -109,7 +115,7 @@ class News
      *
      * @SymfonySerializer\Groups({"jecoute_news_read"})
      */
-    protected $title;
+    private $title;
 
     /**
      * @var string|null
@@ -120,7 +126,7 @@ class News
      *
      * @SymfonySerializer\Groups({"jecoute_news_read"})
      */
-    protected $text;
+    private $text;
 
     /**
      * @var string|null
@@ -131,18 +137,52 @@ class News
      *
      * @SymfonySerializer\Groups({"jecoute_news_read"})
      */
-    protected $externalLink;
+    private $externalLink;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=false)
+     */
+    private $topic;
+
+    /**
+     * @var Zone|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $zone;
+
+    /**
+     * @var Administrator|null
+     *
+     * @Gedmo\Blameable(on="create")
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $createdBy;
+
+    /**
+     * @var bool
+     */
+    private $global = false;
 
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
         string $text = null,
-        string $externalLink = null
+        string $topic = null,
+        string $externalLink = null,
+        Zone $zone = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;
         $this->text = $text;
+        $this->topic = $topic;
         $this->externalLink = $externalLink;
+        $this->zone = $zone;
     }
 
     public function __toString()
@@ -188,5 +228,45 @@ class News
     public function setExternalLink(?string $externalLink): void
     {
         $this->externalLink = $externalLink;
+    }
+
+    public function getTopic(): ?string
+    {
+        return $this->topic;
+    }
+
+    public function setTopic(?string $topic): void
+    {
+        $this->topic = $topic;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(?Zone $zone): void
+    {
+        $this->zone = $zone;
+    }
+
+    public function getCreatedBy(): ?Administrator
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?Administrator $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    public function isGlobal(): bool
+    {
+        return $this->global;
+    }
+
+    public function setGlobal(bool $global): void
+    {
+        $this->global = $global;
     }
 }

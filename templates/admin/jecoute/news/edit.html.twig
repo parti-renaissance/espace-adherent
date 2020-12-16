@@ -1,0 +1,24 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var isGlobalCheckbox = $('input[name$="[isGlobal]"]');
+            var zoneSelect = $('select[name$="[zone]"]');
+            var zoneSelectContainer = zoneSelect.closest('.form-group');
+
+            isGlobalCheckbox.on('ifChanged change', function () {
+                var isGlobal = $(this).is(':checked');
+
+                if (isGlobal) {
+                    zoneSelectContainer.hide();
+                    zoneSelect.val('').change();
+                } else {
+                    zoneSelectContainer.show();
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -42,4 +42,5 @@ return [
     Exporter\Bridge\Symfony\Bundle\SonataExporterBundle::class => ['all' => true],
     Algolia\SearchBundle\AlgoliaSearchBundle::class => ['all' => true],
     Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle::class => ['all' => true],
+    Kreait\Firebase\Symfony\Bundle\FirebaseBundle::class => ['all' => true],
 ];
