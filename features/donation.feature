@@ -41,7 +41,6 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Given the following fixtures are loaded:
       | LoadDonatorIdentifierData |
     And I am on "/don"
-    And I press "OK"
     And wait 2 second until I see "Une fois"
     And I press "50 €"
     When I press "Je donne maintenant"
@@ -81,7 +80,6 @@ Feature: The goal is to donate one time or multiple time with a subscription
     Given the following fixtures are loaded:
       | LoadDonatorIdentifierData |
     And I am on "/don"
-    And I press "OK"
     And wait 2 second until I see "Une fois"
     When I click the "donation-monthly_label" element
     And I press "50 €"
@@ -155,7 +153,6 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | LoadDonatorIdentifierData |
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don"
-    And I press "OK"
     And wait 2 second until I see "Une fois"
     When I click the "donation-monthly_label" element
     And I press "50 €"
@@ -243,7 +240,6 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | LoadDonatorIdentifierData |
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don"
-    And I press "OK"
     And wait 2 second until I see "Une fois"
     When I click the "donation-monthly_label" element
     And I press "50 €"

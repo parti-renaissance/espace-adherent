@@ -9,9 +9,12 @@
         <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
         <link rel="stylesheet" href="{{ webpack_asset('app.css') }}" />
         {% block stylesheets '' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        {% if cookiebot_cbid %}
+            <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookiebot_cbid }}" data-blockingmode="auto" type="text/javascript"></script>
+        {% endif %}
     </head>
 
     <body>
@@ -30,7 +33,6 @@
         </section>
 
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
 
         {% block javascripts '' %}
 

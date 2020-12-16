@@ -5,7 +5,6 @@ import registerServices from './services';
 
 // Listeners
 import amountChooser from './listeners/amount-chooser';
-import cookiesConsent from './listeners/cookies-consent';
 import donationBanner from './listeners/donation-banner';
 import progressiveBackground from './listeners/progressive-background';
 import externalLinks from './listeners/external-links';
@@ -21,7 +20,6 @@ class App {
     constructor() {
         this._di = null;
         this._listeners = [
-            cookiesConsent,
             donationBanner,
             amountChooser,
             progressiveBackground,

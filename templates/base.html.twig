@@ -73,6 +73,10 @@
             <link rel="alternate" type="application/rss+xml" title="La République En Marche !" href="{{ url('articles_feed') }}" />
         {% endblock %}
 
+        {% if cookiebot_cbid %}
+            <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookiebot_cbid }}" data-blockingmode="auto" type="text/javascript"></script>
+        {% endif %}
+
         {% block json_ld %}
         <script type="application/ld+json">
             {
@@ -96,7 +100,6 @@
         {% block base_stylesheets %}
             <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}" />
             <link rel="stylesheet" type="text/css" href="{{ webpack_asset('app.css') }}" />
-            <link rel="stylesheet" type="text/css" href="{{ asset('css/cookieconsent.min.css') }}" />
         {% endblock %}
 
         {% block stylesheets '' %}
@@ -178,7 +181,6 @@
         <div id="modal-wrapper"></div>
 
         <script type="text/javascript" src="{{ webpack_asset('kernel.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/cookieconsent.min.js') }}"></script>
 
         {% block javascripts '' %}
 

@@ -129,7 +129,6 @@ Feature:
     Then I should see "Questionnaires"
 
     Given I am on "/espace-municipales-2020/questionnaires/creer"
-    And I press "OK"
     When I fill in the following:
       | survey_form[name]                            | Un questionnaire jecoute chef |
       | survey_form[questions][0][question][content] | Une question ?                |

@@ -34,7 +34,6 @@ Feature:
     # Create
     Given I am logged as "damien.schmidt@example.ch"
     And I am on "/espace-responsable-des-questionnaires/creer"
-    And I press "OK"
     When I wait 10 seconds until I see "⟵ Retour"
     And I fill in the following:
       | survey_form[name]                            | Un questionnaire jecoute manager |

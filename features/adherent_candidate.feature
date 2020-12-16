@@ -24,7 +24,6 @@ Feature:
     And I should see "Vous gérez : Île-de-France (11)"
     And I should see "Questionnaires locaux"
     And I wait until I see "Un questionnaire de la Région"
-    And I press "OK"
     And I should see 3 "table.datagrid__table-manager tbody tr" elements
     And I should see "Questionnaire numéro 1"
     And I should see "Un questionnaire de la Région"
@@ -50,7 +49,6 @@ Feature:
     And I should see "Questionnaires locaux"
     And I should not see "Créer un questionnaire local"
     And I wait until I see "Un questionnaire de la Région"
-    And I press "OK"
     And I should see 2 "table.datagrid__table-manager tbody tr" elements
     And I should see "Questionnaire numéro 1"
     And I should see "Un questionnaire de la Région"
