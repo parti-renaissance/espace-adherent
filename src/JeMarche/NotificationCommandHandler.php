@@ -21,7 +21,9 @@ class NotificationCommandHandler implements MessageHandlerInterface
 
     public function __invoke(NotificationCommand $command): void
     {
-        if (!$news = $this->getNews($command->getUuid())) {
+        $news = $this->getNews($command->getUuid());
+
+        if (!$news) {
             return;
         }
 
