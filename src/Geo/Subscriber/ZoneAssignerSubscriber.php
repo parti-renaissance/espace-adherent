@@ -3,8 +3,8 @@
 namespace App\Geo\Subscriber;
 
 use App\Committee\CommitteeEvent;
-use App\Entity\Geo\Zone;
 use App\Events;
+use App\Geo\ZoneMatcher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -15,9 +15,15 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
      */
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var ZoneMatcher
+     */
+    private $zoneMatcher;
+
+    public function __construct(EntityManagerInterface $em, ZoneMatcher $zoneMatcher)
     {
         $this->em = $em;
+        $this->zoneMatcher = $zoneMatcher;
     }
 
     public function assignZoneToCommittee(CommitteeEvent $event): void
@@ -27,12 +33,10 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $latitude = $committee->getLatitude();
-        $longitude = $committee->getLongitude();
-        $zones = $this->em
-            ->getRepository(Zone::class)
-            ->findByCoordinatesAndTypes($latitude, $longitude, [Zone::DISTRICT])
-        ;
+        $zones = $this->zoneMatcher->match($committee->getPostAddress());
+        if (!$zones) {
+            return;
+        }
 
         $committee->clearZones();
         foreach ($zones as $zone) {
