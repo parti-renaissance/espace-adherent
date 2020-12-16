@@ -4,7 +4,6 @@ namespace App\VotingPlatform\Listener;
 
 use App\Entity\VotingPlatform\ElectionResult\CandidateGroupResult;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOverEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,7 +19,9 @@ class AttributeAdditionalElectedPlacesListener implements EventSubscriberInterfa
 
     public static function getSubscribedEvents()
     {
-        return [Events::VOTE_CLOSE => 'onVoteClose'];
+        return [
+            VotingPlatformElectionVoteIsOverEvent::class => 'onVoteClose',
+        ];
     }
 
     public function onVoteClose(VotingPlatformElectionVoteIsOverEvent $event): void

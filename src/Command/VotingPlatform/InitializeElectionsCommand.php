@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\VotingPlatform;
 
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class VotingPlatformInitializeElectionsCommand extends Command
+class InitializeElectionsCommand extends Command
 {
     protected static $defaultName = 'app:voting-platform:step-1:initialize-elections';
 
