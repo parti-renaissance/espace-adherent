@@ -15,9 +15,9 @@ class JeMarcheMessaging
         $this->messaging = $messaging;
     }
 
-    public function sendNotification(string $title, string $body): void
+    public function sendNotification(string $topic, string $title, string $body): void
     {
-        $message = CloudMessage::new()
+        $message = CloudMessage::withTarget('topic', $topic)
             ->withNotification($this->createNotification($title, $body))
         ;
 

@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% set zone = object.zone %}
+
+    {{ zone is not null ? zone : 'Toute la France' }}
+{% endblock %}

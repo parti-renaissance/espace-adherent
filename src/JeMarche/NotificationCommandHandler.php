@@ -25,7 +25,7 @@ class NotificationCommandHandler implements MessageHandlerInterface
             return;
         }
 
-        $this->messaging->sendNotification($news->getTitle(), $news->getText());
+        $this->messaging->sendNotification($news->getTopic(), $news->getTitle(), $news->getText());
     }
 
     private function getNews(UuidInterface $uuid): ?News

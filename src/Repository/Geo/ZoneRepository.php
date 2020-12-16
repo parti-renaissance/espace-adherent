@@ -39,10 +39,20 @@ class ZoneRepository extends ServiceEntityRepository
 
     public function createSelectForCandidatesQueryBuilder(): QueryBuilder
     {
+        return $this->createTypesConditionQueryBuilder(Zone::CANDIDATE_TYPES);
+    }
+
+    public function createSelectForJeMarcheNotificationsQueryBuilder(): QueryBuilder
+    {
+        return $this->createTypesConditionQueryBuilder([Zone::REGION, Zone::DEPARTMENT]);
+    }
+
+    private function createTypesConditionQueryBuilder(array $types): QueryBuilder
+    {
         return $this->createQueryBuilder('zone')
             ->where('zone.type IN (:types)')
             ->setParameters([
-                'types' => Zone::CANDIDATE_TYPES,
+                'types' => $types,
             ])
         ;
     }

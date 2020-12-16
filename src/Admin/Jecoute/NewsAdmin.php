@@ -2,14 +2,26 @@
 
 namespace App\Admin\Jecoute;
 
+use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\JeMarche\JeMarcheDeviceNotifier;
+use App\JeMarche\NotificationTopicBuilder;
+use App\Repository\Geo\ZoneRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Security\Core\Security;
 
 class NewsAdmin extends AbstractAdmin
 {
@@ -20,13 +32,40 @@ class NewsAdmin extends AbstractAdmin
         '_sort_by' => 'label',
     ];
 
+    private $security;
+    private $zoneRepository;
     private $deviceNotifier;
+    private $topicBuilder;
 
-    public function __construct($code, $class, $baseControllerName, JeMarcheDeviceNotifier $deviceNotifier)
-    {
+    public function __construct(
+        $code,
+        $class,
+        $baseControllerName,
+        Security $security,
+        ZoneRepository $zoneRepository,
+        JeMarcheDeviceNotifier $deviceNotifier,
+        NotificationTopicBuilder $topicBuilder
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
+        $this->security = $security;
+        $this->zoneRepository = $zoneRepository;
         $this->deviceNotifier = $deviceNotifier;
+        $this->topicBuilder = $topicBuilder;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->clearExcept(['list', 'create']);
+    }
+
+    public function getTemplate($name)
+    {
+        if ('edit' === $name) {
+            return 'admin/jecoute/news/edit.html.twig';
+        }
+
+        return parent::getTemplate($name);
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -44,6 +83,60 @@ class NewsAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
+            ->with('Audience', ['class' => 'col-md-6'])
+                ->add('isGlobal', CheckboxType::class, [
+                    'label' => '⚠ Notification sur toute la France ⚠',
+                    'required' => false,
+                ])
+                ->add('zone', EntityType::class, [
+                    'class' => Zone::class,
+                    'query_builder' => $this->zoneRepository->createSelectForJeMarcheNotificationsQueryBuilder(),
+                    'required' => false,
+                    'group_by' => function (Zone $zone, $key, $value) {
+                        switch ($zone->getType()) {
+                            case Zone::DEPARTMENT:
+                                return 'Départements';
+                            case Zone::REGION:
+                                return 'Régions';
+                            default:
+                                return null;
+                        }
+                    },
+                ])
+            ->end()
+        ;
+
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
+    }
+
+    public function submit(FormEvent $event): void
+    {
+        /** @var News $news */
+        $news = $event->getData();
+
+        $topic = $this->topicBuilder->buildTopic($news->getZone());
+
+        $news->setTopic($topic);
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('createdAt', DateRangeFilter::class, [
+                'show_filter' => true,
+                'label' => 'Date',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('createdBy', null, [
+                'label' => 'Auteur',
+                'show_filter' => true,
+            ])
+            ->add('title', null, [
+                'label' => 'Titre',
+            ])
+            ->add('text', null, [
+                'label' => 'Texte',
+            ])
         ;
     }
 
@@ -51,17 +144,23 @@ class NewsAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('title', null, [
-                'label' => 'Nom',
+                'label' => 'Titre',
+            ])
+            ->add('text', null, [
+                'label' => 'Texte',
+            ])
+            ->add('externalLink', null, [
+                'label' => 'Lien',
+            ])
+            ->add('zone', null, [
+                'label' => 'Audience',
+                'template' => 'admin/jecoute/news/list_zone.html.twig',
             ])
             ->add('createdAt', null, [
-                'label' => 'Création',
+                'label' => 'Date',
             ])
-            ->add('_action', null, [
-                'virtual_field' => true,
-                'actions' => [
-                    'edit' => [],
-                    'delete' => [],
-                ],
+            ->add('createdBy', null, [
+                'label' => 'Auteur',
             ])
         ;
     }

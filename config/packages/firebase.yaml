@@ -1,7 +1,7 @@
 kreait_firebase:
   projects:
     jemarche_app:
-      credentials: '%kernel.project_dir%/jemarche-firebase-service-key.json'
+      credentials: '%kernel.project_dir%/gcloud-service-key.json'
 services:
     App\Firebase\JeMarcheMessaging:
       arguments:
