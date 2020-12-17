@@ -21,10 +21,7 @@ class ZoneRepository extends ServiceEntityRepository
 
     public function zoneableAsZone(ZoneableInterface $zoneable): Zone
     {
-        $zone = $this->findOneBy([
-            'code' => $zoneable->getCode(),
-            'type' => $zoneable->getZoneType(),
-        ]);
+        $zone = $this->findByZoneable($zoneable);
 
         if (!$zone) {
             $zone = new Zone($zoneable->getZoneType(), $zoneable->getCode(), $zoneable->getName());
@@ -312,5 +309,13 @@ class ZoneRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findByZoneable(ZoneableInterface $zoneable): ?Zone
+    {
+        return $this->findOneBy([
+            'code' => $zoneable->getCode(),
+            'type' => $zoneable->getZoneType(),
+        ]);
     }
 }

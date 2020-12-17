@@ -8,6 +8,7 @@ use App\Committee\CommitteeFactory;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\PostAddress;
+use App\Geo\ZoneMatcher;
 use App\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
@@ -53,7 +54,9 @@ class CommitteeFactoryTest extends TestCase
             ->method('assignReferentLocalTags')
         ;
 
-        $committeeFactory = new CommitteeFactory($referentTagManager);
+        $zoneMatcher = $this->createMock(ZoneMatcher::class);
+
+        $committeeFactory = new CommitteeFactory($referentTagManager, $zoneMatcher);
         $committee = $committeeFactory->createFromCommitteeCreationCommand($command);
 
         $this->assertInstanceOf(Committee::class, $committee);

@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Address\Address;
 use App\Collection\CommitteeCollection;
+use App\Committee\Filter\ListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -11,6 +13,7 @@ use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\Event;
+use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Geocoder\Coordinates;
 use App\Intl\FranceCitiesBundle;
@@ -28,6 +31,8 @@ use Ramsey\Uuid\UuidInterface;
 
 class CommitteeRepository extends ServiceEntityRepository
 {
+    use PaginatorTrait;
+
     use GeoFilterTrait;
     use NearbyTrait;
     use ReferentTrait;
@@ -201,48 +206,36 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function findReferentCommittees(Adherent $referent): array
+    /**
+     * @return Committee[]|PaginatorInterface
+     */
+    public function searchByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
     {
-        $qb = $this->createQueryBuilder('c')
-            ->select('c AS committee')
-            ->addSelect('SUM(IF(cm.enableVote = :true, 1, 0)) AS total_voters')
-            ->addSelect(sprintf('(%s) AS total_candidacy_male',
-                $this->getEntityManager()->createQueryBuilder()
-                    ->select('SUM(IF(candidacy1.id IS NOT NULL AND candidacy1.gender = :male, 1, 0))')
-                    ->from(CommitteeElection::class, 'election1')
-                    ->leftJoin('election1.candidacies', 'candidacy1')
-                    ->innerJoin('election1.designation', 'designation1')
-                    ->where('election1.committee = c AND designation1.candidacyStartDate <= :now')
-                    ->andWhere('(designation1.voteEndDate IS NULL OR :now <= designation1.voteEndDate)')
-                    ->getDQL()
-            ))
-            ->addSelect(sprintf('(%s) AS total_candidacy_female',
-                $this->getEntityManager()->createQueryBuilder()
-                    ->select('SUM(IF(candidacy2.id IS NOT NULL AND candidacy2.gender = :female, 1, 0))')
-                    ->from(CommitteeElection::class, 'election2')
-                    ->leftJoin('election2.candidacies', 'candidacy2')
-                    ->innerJoin('election2.designation', 'designation2')
-                    ->where('election2.committee = c AND designation2.candidacyStartDate <= :now')
-                    ->andWhere('(designation2.voteEndDate IS NULL OR :now <= designation2.voteEndDate)')
-                    ->getDQL()
-            ))
+        return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
+    }
+
+    /**
+     * @param Zone[] $zones
+     */
+    public function countForZones(array $zones): int
+    {
+        $qb = $this
+            ->createQueryBuilder('c')
+            ->select('COUNT(DISTINCT c.id)')
             ->where('c.status = :status')
-            ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, 'cm.committee = c')
             ->setParameters([
                 'status' => Committee::APPROVED,
-                'male' => Genders::MALE,
-                'female' => Genders::FEMALE,
-                'now' => new \DateTime(),
-                'true' => true,
             ])
-            ->orderBy('c.name', 'ASC')
-            ->orderBy('c.createdAt', 'DESC')
-            ->groupBy('c.id')
         ;
 
-        $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), 'c');
+        if ($zones) {
+            $this->withZoneCondition($qb, $zones);
+        }
 
-        return $qb->getQuery()->getResult();
+        return (int) $qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     public function findManagedBy(Adherent $referent): array
@@ -693,5 +686,84 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setParameter('tags', $referentTags)
             ->orderBy('committee.name')
         ;
+    }
+
+    private function createFilterQueryBuilder($filter): QueryBuilder
+    {
+        $qb = $this
+            ->createQueryBuilder('c')
+            ->select('c AS committee')
+            ->addSelect('SUM(IF(cm.enableVote = :true, 1, 0)) AS total_voters')
+            ->addSelect(sprintf('(%s) AS total_candidacy_male',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('SUM(IF(candidacy1.id IS NOT NULL AND candidacy1.gender = :male, 1, 0))')
+                    ->from(CommitteeElection::class, 'election1')
+                    ->leftJoin('election1.candidacies', 'candidacy1')
+                    ->innerJoin('election1.designation', 'designation1')
+                    ->where('election1.committee = c AND designation1.candidacyStartDate <= :now')
+                    ->andWhere('(designation1.voteEndDate IS NULL OR :now <= designation1.voteEndDate)')
+                    ->getDQL()
+            ))
+            ->addSelect(sprintf('(%s) AS total_candidacy_female',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('SUM(IF(candidacy2.id IS NOT NULL AND candidacy2.gender = :female, 1, 0))')
+                    ->from(CommitteeElection::class, 'election2')
+                    ->leftJoin('election2.candidacies', 'candidacy2')
+                    ->innerJoin('election2.designation', 'designation2')
+                    ->where('election2.committee = c AND designation2.candidacyStartDate <= :now')
+                    ->andWhere('(designation2.voteEndDate IS NULL OR :now <= designation2.voteEndDate)')
+                    ->getDQL()
+            ))
+            ->where('c.status = :status')
+            ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, 'cm.committee = c')
+            ->setParameters([
+                'status' => Committee::APPROVED,
+                'male' => Genders::MALE,
+                'female' => Genders::FEMALE,
+                'now' => new \DateTime(),
+                'true' => true,
+            ])
+            ->orderBy('c.name', 'ASC')
+            ->orderBy('c.createdAt', 'DESC')
+            ->groupBy('c.id')
+        ;
+
+        $zones = $filter->getZones() ?: $filter->getManagedZones();
+        if ($zones) {
+            $this->withZoneCondition($qb, $zones);
+        }
+
+        return $qb;
+    }
+
+    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'c'): QueryBuilder
+    {
+        if (!$zones) {
+            return $qb;
+        }
+
+        if (!\in_array('zone', $qb->getAllAliases(), true)) {
+            $qb->leftJoin($alias.'.zones', 'zone');
+        }
+
+        if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {
+            $qb->innerJoin('zone.parents', 'zone_parent');
+        }
+
+        $ids = array_map(static function ($zone) {
+            return $zone->getId();
+        }, $zones);
+
+        $parentIds = array_filter(array_map(static function (Zone $zone): ?int {
+            return $zone->isCityGrouper() ? null : $zone->getId();
+        }, $zones));
+
+        $orX = $qb->expr()->orX();
+        $orX->add($qb->expr()->in('zone.id', $ids));
+        if ($parentIds) {
+            $orX->add($qb->expr()->in('zone_parent.id', $parentIds));
+        }
+
+        return $qb->andWhere($orX);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Committee;
 
 use App\Address\PostAddressFactory;
 use App\Entity\Committee;
+use App\Geo\ZoneMatcher;
 use App\Referent\ReferentTagManager;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
@@ -11,11 +12,21 @@ use Ramsey\Uuid\Uuid;
 class CommitteeFactory
 {
     private $addressFactory;
+
+    /**
+     * @var ZoneMatcher
+     */
+    private $zoneMatcher;
+
     private $referentTagManager;
 
-    public function __construct(ReferentTagManager $referentTagManager, PostAddressFactory $addressFactory = null)
-    {
+    public function __construct(
+        ReferentTagManager $referentTagManager,
+        ZoneMatcher $zoneMatcher,
+        PostAddressFactory $addressFactory = null
+    ) {
         $this->referentTagManager = $referentTagManager;
+        $this->zoneMatcher = $zoneMatcher;
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
@@ -57,6 +68,11 @@ class CommitteeFactory
         }
 
         $this->referentTagManager->assignReferentLocalTags($committee);
+
+        $zones = $this->zoneMatcher->match($committee->getPostAddress());
+        foreach ($zones as $zone) {
+            $committee->addZone($zone);
+        }
 
         return $committee;
     }

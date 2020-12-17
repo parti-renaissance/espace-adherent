@@ -1,6 +1,56 @@
 {% extends base_template %}
 
 {% block committee_content %}
+
+    <div class="datagrid__pre-table b__nudge--bottom">
+
+        <h3>Comités</h3>
+
+        {% if total_count %}
+            <span class="datagrid__count">
+                <span>{{ committees.totalItems|number_format(0, ',', ' ') }}</span>
+                sur {{ total_count|number_format(0, ',', ' ') }}
+                comité{{ total_count > 1 ? 's' : '' }}
+            </span>
+        {% endif %}
+
+    </div>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+
+            {{ form_start(form) }}
+
+                <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+                {{ form_errors(form) }}
+
+                <div class="manager__filters__row">
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Zones</label>
+                                {{ form_widget(form.zones) }}
+                                {{ form_errors(form.zones) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__actions b__nudge--top">
+                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Appliquer</button>
+                    {% if form.vars.submitted %}
+                        <a href="{{ path("app_#{space_name}_committees") }}" class="btn btn--no-border b__nudge--bottom-medium">
+                            Réinitialiser les filtres
+                        </a>
+                    {% endif %}
+                </div>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
     <div class="datagrid__table-container">
         <table class="datagrid__table-manager">
             <thead>
@@ -16,7 +66,7 @@
             <tbody>
             {% for committee_row in committees %}
                 {% set committee = committee_row.committee %}
-                <tr>
+                <tr class="committee__item">
                     <td>
                         <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">
                             {{ committee.name }}
@@ -49,9 +99,22 @@
     </div>
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block final_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('select2/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('select2/fr.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
+            $('.select2entity[data-autostart="false"]').select2entity({
+                theme: 'default em-filters'
+            })
+
             App.runCandidacyModal('.candidacies-list-modal--trigger');
         });
     </script>
