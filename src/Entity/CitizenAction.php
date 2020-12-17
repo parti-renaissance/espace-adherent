@@ -51,6 +51,7 @@ class CitizenAction extends BaseEvent
         $this->finishAt = $finishAt;
         $this->status = self::STATUS_SCHEDULED;
         $this->referentTags = new ArrayCollection($referentTags);
+        $this->zones = new ArrayCollection();
         $this->timeZone = $timeZone;
     }
 

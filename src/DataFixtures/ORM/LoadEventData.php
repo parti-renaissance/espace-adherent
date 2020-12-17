@@ -101,6 +101,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'finish_at' => (new Chronos('+3 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 10,
         ]);
+        $eventHidden->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $eventHidden->setPublished(true);
 
         $event1 = $this->eventFactory->createFromArray([
@@ -116,6 +117,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'capacity' => 50,
             'is_for_legislatives' => true,
         ]);
+        $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event1->incrementParticipantsCount();
 
         $event2 = $this->eventFactory->createFromArray([
@@ -187,6 +189,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'finish_at' => (new Chronos('+60 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 50,
         ]);
+        $event6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event6->cancel();
         $event6->incrementParticipantsCount();
 
@@ -202,6 +205,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'finish_at' => '2017-02-20 19:30:00',
             'capacity' => 2000,
         ]);
+        $event7->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event7->incrementParticipantsCount();
 
         $event8 = $this->eventFactory->createFromArray([
@@ -230,6 +234,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'finish_at' => '2017-03-07 17:30:00',
             'capacity' => 20,
         ]);
+        $event9->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event9->incrementParticipantsCount();
 
         $event10 = $this->eventFactory->createFromArray([
@@ -244,6 +249,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'finish_at' => (new Chronos('yesterday'))->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
         ]);
+        $event10->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event10->incrementParticipantsCount();
 
         $event11 = $this->eventFactory->createFromArray([
@@ -332,6 +338,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'finish_at' => (new Chronos('now'))->format('Y-m-d').' 18:00:00',
             'capacity' => 15,
         ]);
+        $event16->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event16->setPublished(true);
 
         $event17 = $this->eventFactory->createFromArray([
@@ -346,6 +353,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'finish_at' => (new Chronos('-3 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
         ]);
+        $event17->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event17->setPublished(true);
 
         $event18 = $this->eventFactory->createFromArray([
@@ -360,6 +368,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
             'finish_at' => (new Chronos('-10 days'))->format('Y-m-d').' 19:00:00',
             'capacity' => 100,
         ]);
+        $event18->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event18->setPublished(true);
 
         $event19 = $this->eventFactory->createFromArray([
@@ -541,6 +550,7 @@ class LoadEventData extends Fixture implements DependentFixtureInterface
         return [
             LoadEventCategoryData::class,
             LoadCommitteeData::class,
+            LoadReferentTagsZonesLinksData::class,
         ];
     }
 }

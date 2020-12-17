@@ -65,6 +65,7 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface
         $this->updatedAt = new \DateTime($createdAt ?: 'now');
         $this->status = self::STATUS_SCHEDULED;
         $this->referentTags = new ArrayCollection($referentTags);
+        $this->zones = new ArrayCollection();
         $this->timeZone = $timeZone;
         $this->invitations = $invitations;
     }

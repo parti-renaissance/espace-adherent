@@ -10,6 +10,7 @@ use App\Entity\CitizenAction;
 use App\Entity\Committee;
 use App\Entity\District;
 use App\Entity\Event;
+use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Geocoder\Coordinates;
 use App\Search\SearchParametersFilter;
@@ -194,9 +195,11 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param Zone[] $zones
+     *
      * @return Event[]|PaginatorInterface
      */
-    public function findManagedByPaginator(array $referentTags, int $page = 1, int $limit = 50): PaginatorInterface
+    public function findManagedByPaginator(array $zones, int $page = 1, int $limit = 50): PaginatorInterface
     {
         $qb = $this->createQueryBuilder('e')
             ->select('e', 'a', 'c', 'o')
@@ -212,7 +215,7 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('published', true)
         ;
 
-        $this->applyGeoFilter($qb, $referentTags, 'e');
+        $this->withZoneCondition($qb, $zones);
 
         return $this->configurePaginator(
             $qb,
@@ -764,5 +767,39 @@ SQL;
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'e'): QueryBuilder
+    {
+        if (!$zones) {
+            return $qb;
+        }
+
+        if (!\in_array('zone', $qb->getAllAliases(), true)) {
+            $qb->innerJoin("$alias.zones", 'zone');
+        }
+
+        if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {
+            $qb->innerJoin('zone.parents', 'zone_parent');
+        }
+
+        $ids = array_map(static function (Zone $zone) {
+            return $zone->getId();
+        }, $zones);
+
+        $parentIds = array_filter(array_map(static function (Zone $zone) {
+            return $zone->isCityGrouper()
+                ? null
+                : $zone->getId()
+            ;
+        }, $zones));
+
+        $orX = $qb->expr()->orX();
+        $orX->add($qb->expr()->in('zone.id', $ids));
+        if ($parentIds) {
+            $orX->add($qb->expr()->in('zone_parent.id', $parentIds));
+        }
+
+        return $qb->andWhere($orX);
     }
 }

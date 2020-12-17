@@ -26,6 +26,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\Index(columns={"status"})
  *     }
  * )
+ * @ORM\AssociationOverrides({
+ *     @ORM\AssociationOverride(name="zones",
+ *         joinTable=@ORM\JoinTable(
+ *             name="event_zone"
+ *         )
+ *     )
+ * })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
@@ -57,6 +64,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
     use EntityCrudTrait;
     use EntityPostAddressTrait;
     use EntityReferentTagTrait;
+    use EntityZoneTrait;
     use EntityTimestampableTrait;
 
     /**
