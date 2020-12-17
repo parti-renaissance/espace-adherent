@@ -65,7 +65,6 @@ Feature:
     When I am on "/espace-referent/questionnaires"
     And I should see "Questionnaires locaux"
     And I wait until I see "Questionnaire numéro 1"
-    And I press "OK"
     And I should see "Un deuxième questionnaire"
 
     Given I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"

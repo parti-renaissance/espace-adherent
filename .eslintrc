@@ -34,7 +34,6 @@
     "hasClass": true,
     "toggleClass": true,
     "removeClass": true,
-    "cookieconsent": true,
     "App": true,
     "google": true,
     "getUrlParameter": true,
