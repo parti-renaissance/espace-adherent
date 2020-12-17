@@ -84,7 +84,7 @@ class NewsAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Audience', ['class' => 'col-md-6'])
-                ->add('isGlobal', CheckboxType::class, [
+                ->add('global', CheckboxType::class, [
                     'label' => '⚠ Notification sur toute la France ⚠',
                     'required' => false,
                 ])
