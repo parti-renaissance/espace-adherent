@@ -20,6 +20,10 @@
 -->
 <html lang="fr">
     <head>
+        {% if cookiebot_cbid %}
+            <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookiebot_cbid }}" data-blockingmode="auto" type="text/javascript"></script>
+        {% endif %}
+
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="msapplication-tap-highlight" content="no" />
@@ -72,10 +76,6 @@
         {% block meta_rss %}
             <link rel="alternate" type="application/rss+xml" title="La République En Marche !" href="{{ url('articles_feed') }}" />
         {% endblock %}
-
-        {% if cookiebot_cbid %}
-            <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookiebot_cbid }}" data-blockingmode="auto" type="text/javascript"></script>
-        {% endif %}
 
         {% block json_ld %}
         <script type="application/ld+json">
