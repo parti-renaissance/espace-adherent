@@ -45,6 +45,25 @@
 
                     <h2>Pour les territoires avec un nombre de membres supplémentaires voté par le Conseil territorial pour respecter la règle de parité au sein du Comité politique :</h2>
                     <p>A l’issue du vote des 5 binômes paritaires pour le Comité politique, seront élus individuellement (le(s) femme(s) ou le(es)’hommes(s)) figurant dans les binômes ayant obtenu le plus de voix en valeur absolue, tous types de binômes confondus, à la suite des binômes paritaires élus.</p>
+                {% elseif election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+                    <h2>Un choix innovant pour voter : le « jugement majoritaire »</h2>
+                    <p>Le jugement majoritaire est représentatif des valeurs que porte le Mouvement, il permet de favoriser le consensus et la bienveillance. </p>
+
+                    <p>Lors du vote, vous allez ainsi donner votre avis sur un ou plusieurs binômes candidats en leur attribuant cinq mentions : Excellent; Très bien; Bien ; Passable; Insuffisant.</p>
+
+                    <p>👉 Le binôme qui obtiendra le meilleur score auprès de 50% du corps électoral sera élu.</p>
+
+                    <h2>Retrouvez tous les détails expliqués par Justine Henry</h2>
+
+                    <p class="text--center">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/5M8Whm27tFc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </p>
+
+                    <h2>Mon choix est-il anonyme ?</h2>
+                    <p>Ici, vous êtes comme dans l’isoloir. Votre choix ne sera connu que de vous seul. Lors de votre vote, vous recevrez un numéro anonymisé qui vous permettra de retrouver votre choix lors de l’affichage des résultats dans l’espace de votre comité.</p>
+
+                    <h2>Quand et comment seront affichés les résultats ?</h2>
+                    <p>A la fin de la période de vote, vous recevrez un mail avec l’annonce des résultats. Ces informations seront également disponibles dans l’espace de votre comité.</p>
                 {% endif %}
             </div>
 

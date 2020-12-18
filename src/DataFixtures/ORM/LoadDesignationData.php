@@ -102,6 +102,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setCandidacyEndDate(new \DateTime('-2 days'));
         $designation->setVoteStartDate(new \DateTime('-1 day'));
         $designation->setVoteEndDate(new \DateTime('+2 weeks'));
+        $designation->setDenomination(Designation::DENOMINATION_ELECTION);
 
         $this->setReference('designation-8', $designation);
         $manager->persist($designation);
