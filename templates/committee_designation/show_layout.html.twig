@@ -46,25 +46,29 @@
 
         <div class="manager-overview" style="padding-bottom: 30px">
             <div class="manager-overview__row">
-                <div class="manager-overview__case">
-                    <span class="manager-overview__case--section">Inscrits</span>
-                    <span class="manager-overview__case--value"><span class="text--pink">{{ election_stats|first.voters_count }}</span></span>
-                    <h1 class="manager-overview__case--title">Inscrit{{ election_stats|first.voters_count > 1 ? 's' }}</h1>
-                </div>
+                {% if not designation.isMajorityType %}
+                    <div class="manager-overview__case">
+                        <span class="manager-overview__case--section">Inscrits</span>
+                        <span class="manager-overview__case--value"><span class="text--pink">{{ election_stats|first.voters_count }}</span></span>
+                        <h1 class="manager-overview__case--title">Inscrit{{ election_stats|first.voters_count > 1 ? 's' }}</h1>
+                    </div>
+                {% endif %}
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Participants</span>
                     <span class="manager-overview__case--value">
                         <span class="text--pink">{{ election_stats|first.votes_count }}</span>
-                        <span class="text--medium">
-                            ({{ election_stats|first.voters_count ? (election_stats|first.votes_count * 100 / election_stats|first.voters_count)|round(2) : 0 }}%)
-                        </span>
+                        {% if not designation.isMajorityType %}
+                            <span class="text--medium">
+                                ({{ election_stats|first.voters_count ? (election_stats|first.votes_count * 100 / election_stats|first.voters_count)|round(2) : 0 }}%)
+                            </span>
+                        {% endif %}
                     </span>
                     <h1 class="manager-overview__case--title">Participant{{ election_stats|first.votes_count > 1 ? 's' }}</h1>
                 </div>
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Candidatures</span>
                     <span class="manager-overview__case--value">
-                        {{ election_stats|map(stats_row => '<span class="text--pink">'~stats_row.candidate_group_count~'</span><span class="text--small text--uppercase">'~('common.'~stats_row.pool_code)|trans~'</span>')|join(' / ')|raw }}
+                        {{ election_stats|map(stats_row => '<span class="text--pink">'~stats_row.candidate_group_count~'</span><span class="text--small text--uppercase b__nudge--left-small">'~('designation.dashboard.stats.block_label.'~stats_row.pool_code)|trans~(stats_row.candidate_group_count > 1 ? 's')~'</span>')|join(' / ')|raw }}
                     </span>
                     <h1 class="manager-overview__case--title">Candidatures</h1>
                 </div>

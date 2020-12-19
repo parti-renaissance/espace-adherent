@@ -92,7 +92,7 @@ class CloseElectionCommand extends Command
                 $this->entityManager->flush();
 
                 $this->eventDispatcher->dispatch(new VotingPlatformElectionVoteIsOverEvent($election));
-            } else {
+            } elseif (!$election->getDesignation()->isMajorityType()) {
                 $election->startSecondRound($electionResult->getNotElectedPools($election->getCurrentRound()));
 
                 $this->entityManager->flush();

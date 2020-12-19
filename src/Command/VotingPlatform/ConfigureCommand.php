@@ -336,6 +336,15 @@ class ConfigureCommand extends Command
             array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $memberships)
         );
 
+        // Mark as Ghost voter adherent who can vote in many committees
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
+            foreach ($list->getVoters() as $voter) {
+                if (\count($voter->getVotersListsForDesignation($designation)) > 1) {
+                    $voter->markAsGhost();
+                }
+            }
+        }
+
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
         $this->entityManager->flush();
