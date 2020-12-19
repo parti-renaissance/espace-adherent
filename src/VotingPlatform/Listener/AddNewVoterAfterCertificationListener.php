@@ -59,10 +59,12 @@ class AddNewVoterAfterCertificationListener implements EventSubscriberInterface
                 continue;
             }
 
-            $voter = $this->votersListManager->addToElection(
-                $this->electionRepository->findOneForCommittee($committee, $committee->getCurrentDesignation()),
-                $membership->getAdherent()
-            );
+            if (!$votingPlatformElection = $this->electionRepository->findOneForCommittee($committee, $committee->getCurrentDesignation())) {
+                continue;
+            }
+
+            $voter = $this->votersListManager->addToElection($votingPlatformElection, $membership->getAdherent());
+
             ++$count;
         }
 
