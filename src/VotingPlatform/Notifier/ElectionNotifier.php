@@ -35,11 +35,15 @@ class ElectionNotifier
 
     public function notifyElectionVoteIsOpen(Election $election): void
     {
-        $this->mailer->sendMessage(VotingPlatformElectionVoteIsOpenMessage::create(
-            $election,
-            $this->getAdherentForElection($election),
-            $this->getUrl($election)
-        ));
+        $adherents = $this->getAdherentForElection($election);
+
+        if ($adherents) {
+            $this->mailer->sendMessage(VotingPlatformElectionVoteIsOpenMessage::create(
+                $election,
+                $adherents,
+                $this->getUrl($election)
+            ));
+        }
     }
 
     public function notifyCommitteeElectionCandidacyPeriodIsOver(
@@ -70,20 +74,28 @@ class ElectionNotifier
 
     public function notifyElectionVoteIsOver(Election $election): void
     {
-        $this->mailer->sendMessage(VotingPlatformElectionVoteIsOverMessage::create(
-            $election,
-            $this->getAdherentForElection($election),
-            $this->getUrl($election)
-        ));
+        $adherents = $this->getAdherentForElection($election);
+
+        if ($adherents) {
+            $this->mailer->sendMessage(VotingPlatformElectionVoteIsOverMessage::create(
+                $election,
+                $adherents,
+                $this->getUrl($election)
+            ));
+        }
     }
 
     public function notifyElectionSecondRound(Election $election): void
     {
-        $this->mailer->sendMessage(VotingPlatformElectionSecondRoundNotificationMessage::create(
-            $election,
-            $this->getAdherentForElection($election),
-            $this->getUrl($election)
-        ));
+        $adherents = $this->getAdherentForElection($election);
+
+        if ($adherents) {
+            $this->mailer->sendMessage(VotingPlatformElectionSecondRoundNotificationMessage::create(
+                $election,
+                $adherents,
+                $this->getUrl($election)
+            ));
+        }
     }
 
     /**
