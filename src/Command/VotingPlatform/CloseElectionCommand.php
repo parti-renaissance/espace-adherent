@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\VotingPlatform;
 
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
@@ -10,7 +10,6 @@ use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\ResultCalculator;
-use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOverEvent;
 use App\VotingPlatform\Notifier\Event\VotingPlatformSecondRoundNotificationEvent;
@@ -21,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class VotingPlatformCloseElectionCommand extends Command
+class CloseElectionCommand extends Command
 {
     protected static $defaultName = 'app:voting-platform:close-election';
 
@@ -92,13 +91,13 @@ class VotingPlatformCloseElectionCommand extends Command
 
                 $this->entityManager->flush();
 
-                $this->eventDispatcher->dispatch(Events::VOTE_CLOSE, new VotingPlatformElectionVoteIsOverEvent($election));
-            } else {
+                $this->eventDispatcher->dispatch(new VotingPlatformElectionVoteIsOverEvent($election));
+            } elseif (!$election->getDesignation()->isMajorityType()) {
                 $election->startSecondRound($electionResult->getNotElectedPools($election->getCurrentRound()));
 
                 $this->entityManager->flush();
 
-                $this->eventDispatcher->dispatch(Events::VOTE_SECOND_ROUND, new VotingPlatformSecondRoundNotificationEvent($election));
+                $this->eventDispatcher->dispatch(new VotingPlatformSecondRoundNotificationEvent($election));
             }
         }
 
@@ -130,7 +129,7 @@ class VotingPlatformCloseElectionCommand extends Command
                 $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee = $committeeElection->getCommittee());
 
                 foreach ($memberships as $membership) {
-                    $this->dispatcher->dispatch(Events::CANDIDACY_PERIOD_CLOSE, new CommitteeElectionCandidacyPeriodIsOverEvent(
+                    $this->dispatcher->dispatch(new CommitteeElectionCandidacyPeriodIsOverEvent(
                         $membership->getAdherent(),
                         $designation,
                         $committee

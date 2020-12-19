@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\VotingPlatform;
 
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
@@ -25,7 +25,6 @@ use App\Repository\VotingPlatform\DesignationRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -35,7 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class VotingPlatformConfigureCommand extends Command
+class ConfigureCommand extends Command
 {
     protected static $defaultName = 'app:voting-platform:configure';
 
@@ -238,7 +237,7 @@ class VotingPlatformConfigureCommand extends Command
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election));
+        $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
     }
 
     private function configureNewElectionForCommittee(Election $election): void
@@ -337,11 +336,20 @@ class VotingPlatformConfigureCommand extends Command
             array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $memberships)
         );
 
+        // Mark as Ghost voter adherent who can vote in many committees
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
+            foreach ($list->getVoters() as $voter) {
+                if (\count($voter->getVotersListsForDesignation($designation)) > 1) {
+                    $voter->markAsGhost();
+                }
+            }
+        }
+
         $this->entityManager->persist($list);
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(Events::VOTE_OPEN, new VotingPlatformElectionVoteIsOpenEvent($election));
+        $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
     }
 
     private function isValidCommitteeElection(CommitteeElection $committeeElection, Designation $designation): bool

@@ -651,7 +651,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
     public function committeeHasVotersForSupervisorElection(Committee $committee, \DateTimeImmutable $refDate): bool
     {
-        return (bool) $this->createQueryBuilderForVotingMemberships($committee, $refDate)
+        return (bool) $this->createQueryBuilderForVotingMemberships($committee, $refDate, false)
             ->select('COUNT(1)')
             ->getQuery()
             ->getSingleScalarResult()
@@ -697,14 +697,14 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
     private function createQueryBuilderForVotingMemberships(
         Committee $committee,
-        \DateTimeImmutable $refDate
+        \DateTimeImmutable $refDate,
+        bool $withCertified = true
     ): QueryBuilder {
         return $this->createQueryBuilder('cm')
             ->innerJoin('cm.adherent', 'a')
             ->where('cm.committee = :committee')
             ->andWhere('cm.joinedAt <= :joined_at_min')
-            ->andWhere('a.registeredAt <= :registered_at_min')
-            ->andWhere('a.certifiedAt IS NOT NULL')
+            ->andWhere('a.registeredAt <= :registered_at_min'.($withCertified ? ' AND a.certifiedAt IS NOT NULL' : ''))
             ->setParameters([
                 'committee' => $committee,
                 'joined_at_min' => $refDate->modify('-30 days'),

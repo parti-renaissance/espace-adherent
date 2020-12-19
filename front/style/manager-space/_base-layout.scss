@@ -665,7 +665,6 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        justify-content: space-between;
 
         @media (min-width: $tablet) {
             flex-direction: row;
@@ -681,10 +680,18 @@
         flex-basis: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        margin-right: 20px;
+
+        &:last-child {
+            margin-right: 0;
+        }
 
         @media (min-width: $tablet) {
             flex-basis: calc(33% - 12px);
+        }
+
+        @media (max-width: $tablet) {
+            margin-right: 0;
         }
 
         &--section {

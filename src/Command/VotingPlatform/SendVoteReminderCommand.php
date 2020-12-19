@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\VotingPlatform;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -10,7 +10,6 @@ use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Voter;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
-use App\VotingPlatform\Events;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteReminderEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class VotingPlatformSendVoteReminderCommand extends Command
+class SendVoteReminderCommand extends Command
 {
     protected static $defaultName = 'app:voting-platform:send-vote-reminder';
 
@@ -90,7 +89,7 @@ class VotingPlatformSendVoteReminderCommand extends Command
 
     private function sendVoteReminder(Election $election, Voter $voter): void
     {
-        $this->dispatcher->dispatch(Events::VOTE_REMIND, new CommitteeElectionVoteReminderEvent(
+        $this->dispatcher->dispatch(new CommitteeElectionVoteReminderEvent(
             $voter->getAdherent(),
             $election->getDesignation(),
             $election->getElectionEntity()->getCommittee()

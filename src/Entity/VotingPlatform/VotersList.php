@@ -22,9 +22,9 @@ class VotersList
     private $id;
 
     /**
-     * @var string
+     * @var Election
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\Election")
+     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="votersList")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $election;
@@ -56,5 +56,10 @@ class VotersList
     public function getVoters(): array
     {
         return $this->voters->toArray();
+    }
+
+    public function getElection(): Election
+    {
+        return $this->election;
     }
 }

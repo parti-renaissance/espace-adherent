@@ -92,6 +92,13 @@ class Election
      */
     private $additionalPlacesGender;
 
+    /**
+     * @var VotersList|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\VotersList", mappedBy="election")
+     */
+    private $votersList;
+
     public function __construct(
         Designation $designation,
         UuidInterface $uuid = null,
@@ -288,5 +295,10 @@ class Election
     public function setAdditionalPlacesGender(string $gender): void
     {
         $this->additionalPlacesGender = $gender;
+    }
+
+    public function getVotersList(): ?VotersList
+    {
+        return $this->votersList;
     }
 }

@@ -107,20 +107,4 @@ class VoterRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-    /**
-     * @return Voter[]|array
-     */
-    public function findVotersToNotifyForSecondRound(Election $election): array
-    {
-        return $this->createQueryBuilder('voter')
-            ->innerJoin('voter.votersLists', 'list')
-            ->innerJoin('list.election', 'election')
-            ->andWhere('list.election = :election')
-            ->andWhere('voter.adherent IS NOT NULL')
-            ->setParameter('election', $election)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }

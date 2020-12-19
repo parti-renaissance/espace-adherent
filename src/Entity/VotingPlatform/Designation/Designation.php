@@ -410,4 +410,9 @@ class Designation
     {
         $this->denomination = $denomination;
     }
+
+    public function equals(self $other): bool
+    {
+        return $this->uuid->equals($other->getUuid());
+    }
 }
