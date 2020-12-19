@@ -20,11 +20,11 @@ final class VotingPlatformElectionVoteIsOpenMessage extends Message
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            '[Désignations] La désignation est ouverte !',
+            sprintf('[%s] Le vote est ouvert !', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? 'Élections internes' : 'Désignations'),
             [
                 'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'name' => $election->getElectionEntity()->getName(),
-                'is_copol' => DesignationTypeEnum::COPOL === $election->getDesignationType(),
+                'election_type' => $election->getDesignationType(),
                 'page_url' => $url,
             ],
             [

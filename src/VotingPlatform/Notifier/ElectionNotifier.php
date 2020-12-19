@@ -102,6 +102,10 @@ class ElectionNotifier
             return $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
+            return $this->urlGenerator->generate('app_adherent_profile_activity', ['_fragment' => 'committees'], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
+
         return $this->urlGenerator->generate('app_committee_show', ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

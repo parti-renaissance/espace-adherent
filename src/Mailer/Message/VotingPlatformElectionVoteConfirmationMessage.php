@@ -17,12 +17,11 @@ final class VotingPlatformElectionVoteConfirmationMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            '[Désignations] A voté !',
+            sprintf('[%s] Félicitations, vos bulletins sont dans l\'urne !', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? 'Élections internes' : 'Désignations'),
             [
                 'first_name' => $adherent->getFirstName(),
                 'voter_key' => static::escape($voterKey),
-                'name' => static::escape($election->getElectionEntity()->getName()),
-                'is_copol' => DesignationTypeEnum::COPOL === $election->getDesignationType(),
+                'election_type' => $election->getDesignationType(),
                 'vote_end_date' => static::formatDate($election->getRealVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             ],
         );

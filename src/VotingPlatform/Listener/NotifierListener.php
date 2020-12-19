@@ -2,6 +2,7 @@
 
 namespace App\VotingPlatform\Listener;
 
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Notifier\ElectionNotifier;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionVoteReminderEvent;
@@ -33,7 +34,11 @@ class NotifierListener implements EventSubscriberInterface
 
     public function onVoteOpen(VotingPlatformElectionVoteIsOpenEvent $event): void
     {
-        $this->notifier->notifyElectionVoteIsOpen($event->getElection());
+        $election = $event->getElection();
+
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $election->getDesignationType()) {
+            $this->notifier->notifyElectionVoteIsOpen($election);
+        }
     }
 
     public function onCandidacyPeriodClose(CommitteeElectionCandidacyPeriodIsOverEvent $event): void
