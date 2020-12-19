@@ -12,5 +12,7 @@ interface ElectionEntityInterface
 
     public function getDesignationType(): string;
 
+    public function getVoteStartDate(): ?\DateTime;
+
     public function getVoteEndDate(): ?\DateTime;
 }
