@@ -57,9 +57,14 @@ class CommitteeElection extends AbstractElectionEntity
         $this->committee = $committee;
     }
 
-    public function countCandidacies(): int
+    public function countConfirmedCandidacies(): int
     {
-        return $this->candidacies->count();
+        return $this->candidacies
+            ->filter(function (CommitteeCandidacy $candidacy) {
+                return $candidacy->isConfirmed();
+            })
+            ->count()
+        ;
     }
 
     public function setAdherentNotified(bool $adherentNotified): void

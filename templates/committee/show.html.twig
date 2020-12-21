@@ -126,7 +126,7 @@
             {% set committee_election = committee.committeeElection %}
 
             {# If the vote was started, hide box if 0 candidates #}
-            {% if not committee_election.isVotePeriodStarted or committee_election.countCandidacies > 0 %}
+            {% if not committee_election.isVotePeriodStarted or committee_election.countConfirmedCandidacies > 0 %}
                 {% set designation = committee_election.designation %}
                 {% set candidacy = membership.committeeCandidacy(committee_election) %}
 
