@@ -71,6 +71,9 @@ class Voter
         return $this->adherent;
     }
 
+    /**
+     * @return VotersList[]
+     */
     public function getVotersListsForDesignation(Designation $designation): array
     {
         return $this->votersLists
@@ -81,8 +84,8 @@ class Voter
         ;
     }
 
-    public function markAsGhost(): void
+    public function setIsGhost(bool $isGhost): void
     {
-        $this->isGhost = true;
+        $this->isGhost = $isGhost;
     }
 }

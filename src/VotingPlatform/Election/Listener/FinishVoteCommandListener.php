@@ -84,6 +84,17 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         // 3. create vote result with unique key
         $voteResult = $this->createVoteResult($electionRound, $command, $voterKey);
 
+        // 4. delete voters from others voters lists for the same designation
+        $voter = $vote->getVoter();
+        foreach ($voter->getVotersListsForDesignation($election->getDesignation()) as $list) {
+            if ($list->getId() === $election->getVotersList()->getId()) {
+                continue;
+            }
+
+            $list->removeVoter($voter);
+        }
+        $voter->setIsGhost(false);
+
         $this->entityManager->persist($vote);
         $this->entityManager->persist($voteResult);
 
@@ -98,10 +109,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
     {
         /** @var Adherent $adherent */
         $adherent = $this->security->getUser();
-
-        if (!$voter = $this->voterRepository->findForAdherent($adherent)) {
-            $voter = new Voter($adherent);
-        }
+        $voter = $this->voterRepository->findForAdherent($adherent);
 
         return new Vote($voter, $electionRound);
     }

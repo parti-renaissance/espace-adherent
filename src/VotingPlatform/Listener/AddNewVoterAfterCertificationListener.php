@@ -69,7 +69,7 @@ class AddNewVoterAfterCertificationListener implements EventSubscriberInterface
         }
 
         if ($count > 1 && $voter) {
-            $voter->markAsGhost();
+            $voter->setIsGhost(true);
             $this->entityManager->flush();
         }
     }

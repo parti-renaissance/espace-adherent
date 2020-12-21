@@ -340,7 +340,7 @@ class ConfigureCommand extends Command
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
             foreach ($list->getVoters() as $voter) {
                 if (\count($voter->getVotersListsForDesignation($designation)) > 1) {
-                    $voter->markAsGhost();
+                    $voter->setIsGhost(true);
                 }
             }
         }

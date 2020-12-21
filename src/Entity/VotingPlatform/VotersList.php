@@ -43,6 +43,11 @@ class VotersList
         $this->voters = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function addVoter(Voter $voter): void
     {
         if (!$this->voters->contains($voter)) {
@@ -61,5 +66,10 @@ class VotersList
     public function getElection(): Election
     {
         return $this->election;
+    }
+
+    public function removeVoter(Voter $voter): void
+    {
+        $this->voters->removeElement($voter);
     }
 }
