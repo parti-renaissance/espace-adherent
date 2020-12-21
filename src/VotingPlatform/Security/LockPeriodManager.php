@@ -68,7 +68,7 @@ class LockPeriodManager
                 }
 
                 // unlock if 0 candidates
-                if (0 === $committeeElection->countCandidacies() && !$committeeElection->isCandidacyPeriodActive()) {
+                if (0 === $committeeElection->countConfirmedCandidacies() && !$committeeElection->isCandidacyPeriodActive()) {
                     return false;
                 }
             }
