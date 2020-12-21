@@ -172,6 +172,10 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         });
     }
 
+    setInputElementValue(value) {
+        this._input.value = this._address.getFullAddress();
+    }
+
     updateStateWithInput() {
         this._state.route = { long_name: this._input.value };
     }

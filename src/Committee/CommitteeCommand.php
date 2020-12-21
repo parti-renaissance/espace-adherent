@@ -7,7 +7,6 @@ use App\Entity\Committee;
 use App\Validator\UniqueCommittee as AssertUniqueCommittee;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,8 +39,11 @@ class CommitteeCommand
     protected $address;
 
     /**
-     * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber(defaultRegion="FR")
+     * @Assert\Expression(
+     *     expression="(value == null and this.getCommittee()) or (value != '' and value != null)",
+     *     message="common.phone_number.required"
+     * )
      */
     protected $phone;
 
@@ -56,16 +58,6 @@ class CommitteeCommand
      * @Assert\Regex("/^@?([a-zA-Z0-9_]){1,15}$/", message="common.twitter_nickname.invalid_format")
      */
     public $twitterNickname;
-
-    /**
-     * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png"},
-     * )
-     */
-    private $photo;
 
     protected function __construct(Address $address = null)
     {
@@ -113,15 +105,5 @@ class CommitteeCommand
     public function getAddress(): Address
     {
         return $this->address;
-    }
-
-    public function getPhoto(): ?UploadedFile
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(?UploadedFile $photo): void
-    {
-        $this->photo = $photo;
     }
 }

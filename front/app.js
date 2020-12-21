@@ -73,7 +73,8 @@ class App {
         countryFieldSelector,
         autocompleteWrapperSelector = '.address-autocomplete',
         addressBlockWrapperSelector = '.address-block',
-        helpMessageContainer = '#address-autocomplete-help-message'
+        helpMessageContainer = '#address-autocomplete-help-message',
+        showOnlyAutocomplete = false
     ) {
         const addressObject = new AddressObject(
             dom(addressFieldSelector),
@@ -87,7 +88,9 @@ class App {
             dom(autocompleteWrapperSelector),
             dom(addressBlockWrapperSelector),
             addressObject,
-            dom(helpMessageContainer)
+            dom(helpMessageContainer),
+            false,
+            showOnlyAutocomplete
         );
 
         autocompleteAddressForm.buildWidget();

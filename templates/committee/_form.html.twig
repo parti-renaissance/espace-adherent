@@ -6,7 +6,7 @@
     {{ form_widget(form.name, {
         'attr': {
             'class': 'form--full',
-            'placeholder': 'Nom du comité',
+            'placeholder': 'Choisissez un nom qui représente le territoire de votre comité',
         }
     }) }}
 </div>
@@ -17,77 +17,58 @@
     {{ form_widget(form.description, {
         'attr': {
             'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Description du comité (Max 140 caractères)',
+            'placeholder': 'Cette description sera visible dans le comité (Max 140 caractères)',
         }
     }) }}
 </div>
 
-<div id="committee-address">
-    {{ form_errors(form.address) }}
-    <div class="form__row" id="field-address">
-        {{ form_label(form.address.address, 'Adresse postale') }}
-        {{ form_widget(form.address.address, { attr: { placeholder: 'Adresse postale' } }) }}
-        {{ form_errors(form.address.address) }}
+<div id="committee-address" class="form__row">
+    <div class="form__row">
+        <div class="address-autocomplete form__row">
+            <label class="form form__label required">Adresse postale</label>
+            <div class="form__row">
+                {{ form_errors(form.address) }}
+                {{ form_errors(form.address.address) }}
+            </div>
+        </div>
+        <p class="text--error visually-hidden" id="address-autocomplete-help-message">
+            Nous n'avons pas reconnu votre adresse, veuillez <a href="#">cliquer ici</a> pour pouvoir la renseigner librement.
+        </p>
     </div>
 
-    <div class="form__group">
-        <div class="form__row" id="field-postal-code-city">
-            {{ form_label(form.address.postalCode, 'Code postal') }}
-            {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Code postal' } }) }}
-        </div>
-
+    <div class="address-block">
         <div class="form__row">
-            {{ form_label(form.address.city, 'Ville') }}
-            {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
-            {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
-            {{ form_errors(form.address.city) }}
-        </div>
-
-        <div class="form__row" id="field-country">
-            {{ form_label(form.address.country, 'Pays') }}
-            {{ form_widget(form.address.country) }}
-            {{ form_errors(form.address.country) }}
-        </div>
-    </div>
-
-    <div class="form__group form__tel">
-        <div class="form__row">
-            {{ form_label(form.phone, 'Téléphone') }}
-            {{ form_widget(form.phone.country) }}
+            {{ form_widget(form.address.address, {attr: {class: 'form--full', placeholder: 'Elle déterminera l\'affichage de votre comité sur la page'}}) }}
         </div>
         <div class="form__row">
-            {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+            {{ form_widget(form.address.postalCode, {attr: {placeholder: 'Code postal'}}) }}
+            {{ form_widget(form.address.city, {attr: {class: 'register__form__city'}}) }}
+            {{ form_widget(form.address.cityName, {attr: {class: 'register__form__city_name form--full', 'placeholder': 'Ville'}}) }}
         </div>
-        {{ form_errors(form.phone) }}
+        <div class="form__row">
+            {{ form_widget(form.address.country, {attr: {class: 'form--full', placeholder: 'Pays'}}) }}
+        </div>
     </div>
 </div>
 
-{% set committee = committee is defined ? committee : form.vars.data.committee %}
-{% if not committee or committee.isWaitingForApproval %}
-    <div class="form__row" id="field-photo">
-        {{ form_label(form.photo, 'Ajoutez votre pièce d’identité recto-verso (passeport, permis de conduire ou carte nationale d’identité)', { label_attr: { class: 'text--bold' } }) }}<br />
-        {% if committee and committee.hasPhotoUploaded %}
-            <img style="max-width: 100px" src="{{ path('asset_url', { path: committee.photoPath }) }}" />
-        {% endif %}
-        {{ form_errors(form.photo) }}
-        {{ form_widget(form.photo, { attr: { class: 'form--full' } }) }}
+{% if form.facebookPageUrl is defined %}
+    <div class="form__row" id="field-facebook-page-url">
+        {{ form_label(form.facebookPageUrl, 'Facebook') }}
+        {{ form_errors(form.facebookPageUrl) }}
+        {{ form_widget(form.facebookPageUrl, { 'attr': {
+            'class': 'form--full',
+            'placeholder': 'URL de la page Facebook de votre comité (si vous en avez une)'
+        } }) }}
     </div>
 {% endif %}
 
-<div class="form__row" id="field-facebook-page-url">
-    {{ form_label(form.facebookPageUrl, 'Facebook') }}
-    {{ form_errors(form.facebookPageUrl) }}
-    {{ form_widget(form.facebookPageUrl, { 'attr': {
-        'class': 'form--full',
-        'placeholder': 'URL de la page Facebook de votre comité (si vous en avez une)'
-    } }) }}
-</div>
-
-<div class="form__row" id="field-twitter-nickname">
-    {{ form_label(form.twitterNickname, 'Twitter') }}
-    {{ form_errors(form.twitterNickname) }}
-    {{ form_widget(form.twitterNickname, { 'attr': {
-        'class': 'form--full',
-        'placeholder': '@compte Twitter de votre comité (si vous en avez un)'
-    } }) }}
-</div>
+{% if form.twitterNickname is defined %}
+    <div class="form__row" id="field-twitter-nickname">
+        {{ form_label(form.twitterNickname, 'Twitter') }}
+        {{ form_errors(form.twitterNickname) }}
+        {{ form_widget(form.twitterNickname, { 'attr': {
+            'class': 'form--full',
+            'placeholder': '@compte Twitter de votre comité (si vous en avez un)'
+        } }) }}
+    </div>
+{% endif %}

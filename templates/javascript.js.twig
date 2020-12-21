@@ -14,13 +14,17 @@ App.createAddressSelector(
 );
 {% endmacro %}
 
-{% macro autocomlete_address(addressForm) %}
+{% macro autocomlete_address(addressForm, showOnlyAutocomplete = false) %}
     App.createAutocompleteAddress(
         '#{{ addressForm.address.vars.id }}',
         '#{{ addressForm.postalCode.vars.id }}',
         '#{{ addressForm.cityName.vars.id }}',
         {{ addressForm.region is defined ? '#'~addressForm.region.vars.id : 'null' }},
         '#{{ addressForm.country.vars.id }}',
+        '.address-autocomplete',
+        '.address-block',
+        '#address-autocomplete-help-message',
+        {{ showOnlyAutocomplete ? 'true' : 'false' }}
     );
 {% endmacro %}
 

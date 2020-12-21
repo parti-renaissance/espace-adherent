@@ -29,7 +29,6 @@ use App\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
@@ -839,15 +838,18 @@ class AdherentControllerTest extends WebTestCase
     /**
      * @dataProvider provideCommitteesHostsAdherentsCredentials
      */
-    public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(string $emailAddress): void
-    {
+    public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(
+        string $emailAddress,
+        string $warning
+    ): void {
         $this->authenticateAsAdherent($this->client, $emailAddress);
         $crawler = $this->client->request(Request::METHOD_GET, '/');
         $this->assertSame(0, $crawler->selectLink('Créer un comité')->count());
 
         // Try to cheat the system with a direct URL access.
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-comite');
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-comite');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertStringContainsString($warning, $crawler->filter('.committee__warning')->first()->text());
     }
 
     public function provideCommitteesHostsAdherentsCredentials(): array
@@ -855,9 +857,19 @@ class AdherentControllerTest extends WebTestCase
         return [
             'Jacques Picard is already the owner of an existing committee' => [
                 'jacques.picard@en-marche.fr',
+                'Les parlementaires et les animateurs ne peuvent pas créer de comité.',
             ],
-            'Gisèle Berthoux was promoted the host privilege of an existing committee' => [
+            'Gisèle Berthoux\'s profile is not certified' => [
                 'gisele-berthoux@caramail.com',
+                'Vous devez être certifié',
+            ],
+            'Deputy has an active parliamentary mandate' => [
+                'deputy@en-marche-dev.fr',
+                'Les parlementaires et les animateurs ne peuvent pas créer de comité.',
+            ],
+            'Lolodie Dutemps is minor' => [
+                'lolodie.dutemps@hotnix.tld',
+                'Vous devez être majeur pour créer un comité.',
             ],
         ];
     }
@@ -875,7 +887,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame($phone, $crawler->filter('#create_committee_phone_number')->attr('value'));
 
         // Submit the committee form with invalid data
-        $crawler = $this->client->submit($crawler->selectButton('Créer mon comité')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Envoyer ma demande')->form([
             'create_committee' => [
                 'name' => 'F',
                 'description' => 'F',
@@ -888,27 +900,22 @@ class AdherentControllerTest extends WebTestCase
                     'country' => 'FR',
                     'number' => '',
                 ],
-                'facebookPageUrl' => 'yo',
-                'twitterNickname' => '@!!',
             ],
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(10, $crawler->filter('#create-committee-form .form__errors > li')->count());
-        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
-        $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
-        $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('.form__tel .form__errors > li')->text());
-        $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
+        $this->assertSame(9, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#create_committee_address_errors > li.form__error')->eq(0)->text());
+        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#create_committee_address_errors > li.form__error')->eq(1)->text());
+        $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#create_committee_address_address_errors > li.form__error')->text());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('#create_committee_phone_errors > li.form__error')->text());
+        $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#create_committee_name_errors > li.form__error')->text());
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#field-description > .form__errors > li')->text());
-        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
-        $this->assertSame('Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.', $crawler->filter('#field-twitter-nickname > .form__errors > li')->text());
-        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
         $this->assertSame('Vous devez accepter les règles de confidentialité.', $crawler->filter('#field-confidentiality-terms > .form__errors > li')->text());
         $this->assertSame("Vous devez accepter d'être contacté(e) par la plateforme En Marche !", $crawler->filter('#field-contacting-terms > .form__errors > li')->text());
 
         // Submit the committee form with valid data to create committee
-        $crawler = $this->client->submit($crawler->selectButton('Créer mon comité')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Envoyer ma demande')->form([
             'create_committee[name]' => 'lyon est En Marche !',
             'create_committee[description]' => 'Comité français En Marche ! de la ville de Lyon',
             'create_committee[address][country]' => 'FR',
@@ -918,11 +925,8 @@ class AdherentControllerTest extends WebTestCase
             'create_committee[address][cityName]' => '',
             'create_committee[phone][country]' => 'FR',
             'create_committee[phone][number]' => '0478457898',
-            'create_committee[facebookPageUrl]' => 'https://www.facebook.com/EnMarcheLyon',
-            'create_committee[twitterNickname]' => '@enmarchelyon',
             'create_committee[acceptConfidentialityTerms]' => true,
             'create_committee[acceptContactingTerms]' => true,
-            'create_committee[photo]' => new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, \UPLOAD_ERR_OK, true),
         ]));
 
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
@@ -931,19 +935,17 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emailAddress));
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.');
+        $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès.
+Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soit pleinement opérationnel.');
         $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee_name')->attr('value'));
         $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee_description')->text());
-
-        $this->assertSame('04 78 45 78 98', $crawler->filter('#committee_phone_number')->attr('value'));
-        $this->assertSame(1, $crawler->filter('#field-photo img')->count());
     }
 
     public function provideRegularAdherentsCredentials(): array
     {
         return [
-            ['carl999@example.fr', '01 11 22 33 44'],
-            ['luciole1989@spambox.fr', '07 27 36 36 43'],
+            ['damien.schmidt@example.ch', '01 11 22 33 45'],
+            ['adherent-male-a@en-marche-dev.fr', '06 99 00 88 00'],
         ];
     }
 

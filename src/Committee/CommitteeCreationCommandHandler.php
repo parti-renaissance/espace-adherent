@@ -14,7 +14,6 @@ class CommitteeCreationCommandHandler
     private $factory;
     private $manager;
     private $mailer;
-    private $photoManager;
     private $referentTagManager;
 
     public function __construct(
@@ -22,14 +21,12 @@ class CommitteeCreationCommandHandler
         CommitteeFactory $factory,
         CommitteeManager $manager,
         MailerService $transactionalMailer,
-        PhotoManager $photoManager,
         ReferentTagManager $referentTagManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;
         $this->mailer = $transactionalMailer;
-        $this->photoManager = $photoManager;
         $this->referentTagManager = $referentTagManager;
     }
 
@@ -37,12 +34,11 @@ class CommitteeCreationCommandHandler
     {
         $adherent = $command->getAdherent();
         $committee = $this->factory->createFromCommitteeCreationCommand($command);
-        // Uploads an ID photo
-        $this->photoManager->addPhotoFromCommand($command, $committee);
 
         $this->referentTagManager->assignReferentLocalTags($committee);
 
         $command->setCommittee($committee);
+        $adherent->setPhone($command->getPhone());
 
         $this->manager->followCommittee($adherent, $committee);
 

@@ -215,7 +215,9 @@ dashboard.picture.update: Modifier ma photo
 #
 # Committee
 #
-committee.creation.success: Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.
+committee.creation.success: |
+    Votre comité a été créé avec succès.
+    Il ne manque plus que la validation d'un coordinateur régional pour qu'il soit pleinement opérationnel.
 
 committee.update.success: Les informations du comité ont été mises à jour avec succès.
 

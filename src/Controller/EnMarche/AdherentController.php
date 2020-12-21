@@ -8,8 +8,10 @@ use App\CitizenProject\CitizenProjectPermissions;
 use App\Committee\CommitteeCreationCommand;
 use App\Committee\CommitteeCreationCommandHandler;
 use App\Committee\CommitteeManager;
+use App\Committee\CommitteePermissions;
 use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;
+use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
@@ -40,7 +42,6 @@ use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,6 +55,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AdherentController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/accueil", name="app_adherent_home", methods={"GET"})
      */
@@ -146,15 +149,20 @@ class AdherentController extends Controller
      * This action enables an adherent to create a committee.
      *
      * @Route("/creer-mon-comite", name="app_adherent_create_committee", methods={"GET", "POST"})
-     * @Security("is_granted('CREATE_COMMITTEE')")
      */
     public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
+        $this->disableInProduction();
+
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CreateCommitteeCommandType::class, $command);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$this->isGranted(CommitteePermissions::CREATE)) {
+                throw $this->createAccessDeniedException();
+            }
+
             $commandHandler->handle($command);
             $this->addFlash('info', 'committee.creation.success');
 
