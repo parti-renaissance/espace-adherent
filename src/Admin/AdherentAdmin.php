@@ -993,7 +993,7 @@ HELP
                 },
             ])
             ->add('memberships.committee', CallbackFilter::class, [
-                'label' => 'Comité principal',
+                'label' => 'Comité de vote',
                 'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'model_manager' => $this->getModelManager(),

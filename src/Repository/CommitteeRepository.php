@@ -693,7 +693,13 @@ class CommitteeRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('c')
             ->select('c AS committee')
-            ->addSelect('SUM(IF(cm.enableVote = :true, 1, 0)) AS total_voters')
+            ->addSelect(sprintf('(%s) AS total_voters',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('COUNT(DISTINCT cm.id)')
+                    ->from(CommitteeMembership::class, 'cm')
+                    ->where('cm.committee = c AND cm.enableVote = :true')
+                    ->getDQL()
+            ))
             ->addSelect(sprintf('(%s) AS total_candidacy_male',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(candidacy1.id IS NOT NULL AND candidacy1.gender = :male, 1, 0))')
@@ -715,7 +721,6 @@ class CommitteeRepository extends ServiceEntityRepository
                     ->getDQL()
             ))
             ->where('c.status = :status')
-            ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, 'cm.committee = c')
             ->setParameters([
                 'status' => Committee::APPROVED,
                 'male' => Genders::MALE,

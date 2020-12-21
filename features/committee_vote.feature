@@ -123,8 +123,8 @@ Feature:
 
     When I am on "/espace-adherent/mes-comites"
     And I click the ".adherent__activity--committee:nth-child(3) .switch" selector
-    Then I should see "Changement du comité principal"
-    And I should see "Vous êtes sur le point de changer votre comité principal. Vous ne participerez plus aux désignations dans le comité En Marche - Comité de Rouen, êtes-vous sûr de vouloir maintenant participer aux désignations dans le comité En Marche - Comité de Berlin ?"
+    Then I should see "Changement du comité de vote"
+    And I should see "Vous êtes sur le point de changer votre comité de vote. Vous ne participerez plus aux désignations dans le comité En Marche - Comité de Rouen, êtes-vous sûr de vouloir maintenant participer aux désignations dans le comité En Marche - Comité de Berlin ?"
     And I should see "CONFIRMER"
 
     When I click the "button.btn.btn--blue" selector
