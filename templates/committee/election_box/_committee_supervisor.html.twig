@@ -1,4 +1,4 @@
-{% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE', committee) %}
+{% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE_IN_COMMITTEE', committee) %}
 
 <section class="instance__elections-box b__nudge--bottom-larger">
     <div class="l__row">
@@ -181,9 +181,11 @@
                                 {% elseif membership.subscriptionDate > ref_date|date_modify('-30 days') %}
                                     Vous êtes membre de ce comité depuis moins de 30 jours.
                                 {% elseif not app.user.isCertified %}
-                                    Vous devez certifier votre profil pour participer.
+                                    Vous devez <a href="{{ path('app_certification_request_home') }}" class="link--no-decor text--blue--dark">certifier votre profil</a> pour participer.
                                 {% elseif candidacy_membership and candidacy_membership != membership %}
                                     Vous êtes déjà candidat{{ app.user.isFemale ? 'e' }} dans le comité {{ candidacy_membership.committee.name }}.
+                                {% elseif has_voted_for_designation(app.user, voting_platform_election.designation) %}
+                                    Vous avez déjà voté dans un autre comité.
                                 {% endif %}
                             </div>
                         </div>
@@ -197,6 +199,10 @@
                         {% endif %}
                     </p>
                 {% endif %}
+            {% else %}
+                <p class="text--small text--dark instance__elections-box--text">
+                    Nous ouvrons le bureau de vote, encore quelques instants !
+                </p>
             {% endif %}
         {% endif %}
 

@@ -62,21 +62,24 @@
 
                 {% set committee_election = committee.getCurrentElection %}
 
-                {% if committee_election and committee_election.isOngoing and committee_election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+                {% if committee_election and committee_election.isOngoing and committee_election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') and committee_election.countConfirmedCandidacies() %}
                     <div class="activity-card__footer-note text--small space--20-30 font-roboto ">
-                        {% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE', committee) %}
+                        {% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE_IN_COMMITTEE', committee) %}
                         {% set help_link = '<a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark" target="_blank">En savoir plus</a>' %}
                         {% set help_text = null %}
+                        {% set main_text = null %}
 
-                        {% if able_to_candidate %}
+                        {% if able_to_candidate or is_granted('ABLE_TO_VOTE_IN_COMMITTEE', committee) %}
                             {% set image_url = '/images/icons/icn_vote-rose.svg' %}
+                            {% set committee_candidacy = membership.committeeCandidacy(committee_election) %}
 
-                            {% if membership.committeeCandidacy(committee_election) %}
-                                {% set main_text = 'Vous êtes candidat' ~ (app.user.isFemale ? 'e') ~ ' dans ce comité.' %}
+                            {% if committee_election.isCandidacyPeriodActive and committee_candidacy %}
+                                {% set main_text = 'Vous êtes ' ~ (committee_candidacy.isDraft ? 'pré-') ~ 'candidat' ~ (app.user.isFemale ? 'e') ~ ' dans ce comité.' ~ (committee_candidacy.isDraft() ?
+                                    ' Formez un binôme pour valider votre candidature.') %}
 
                                 {% if committee_election.isCandidacyPeriodActive %}
                                     {% set help_text = 'Vous pouvez modifier votre candidature jusqu\'au ' ~ (committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi')) ~ '.' %}
-                                {% elseif not committee_election.isCandidacyPeriodActive and committee_election.isVotePeriodStarted %}
+                                {% elseif not committee_election.isCandidacyPeriodActive and not committee_election.isVotePeriodStarted %}
                                     {% set help_text = 'Vous pourrez y voter à partir du ' ~ (committee_election.getVoteStartDate|date('d/m/Y H\\hi')) ~ '.' %}
                                 {% elseif committee_election.isVotePeriodActive %}
                                     {% set help_text = 'Vous pouvez y voter jusqu\'au ' ~ (committee_election.getVoteEndDate|date('d/m/Y H\\hi')) ~ '.' %}
@@ -86,7 +89,7 @@
 
                                 {% if committee_election.isCandidacyPeriodActive %}
                                     {% set help_text = 'Vous pouvez y candidater jusqu\'au ' ~ (committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi')) ~ '.' %}
-                                {% elseif not committee_election.isCandidacyPeriodActive and committee_election.isVotePeriodStarted %}
+                                {% elseif not committee_election.isCandidacyPeriodActive and not committee_election.isVotePeriodStarted %}
                                     {% set help_text = 'Vous pourrez y voter à partir du ' ~ (committee_election.getVoteStartDate|date('d/m/Y H\\hi')) ~ '.' %}
                                 {% elseif committee_election.isVotePeriodActive %}
                                     {% set help_text = 'Vous pouvez y voter jusqu\'au ' ~ (committee_election.getVoteEndDate|date('d/m/Y H\\hi')) ~ '.' %}
@@ -94,11 +97,11 @@
                             {% endif %}
                         {% else %}
                             {% set image_url = '/images/icons/icn_close-rose.svg' %}
-
                             {% set ref_date = committee_election.getVoteEndDate ?? date() %}
 
                             {% if candidacy_membership and candidacy_membership != membership %}
-                                {% set main_text = 'Vous ne pouvez ni candidater ni voter dans ce comité car vous êtes candidat' ~ (app.user.isFemale ? 'e') ~ ' dans le comité ' ~ candidacy_membership.committee.name ~ '.' %}
+                                {% set committee_candidacy = candidacy_membership.committeeCandidacy(candidacy_membership.committee.committeeElection) %}
+                                {% set main_text = 'Vous ne pouvez ni candidater ni voter dans ce comité car vous êtes ' ~ (committee_candidacy.isDraft ? 'pré-') ~ 'candidat' ~ (app.user.isFemale ? 'e') ~ ' dans le comité ' ~ candidacy_membership.committee.name ~ '.' %}
                             {% elseif app.user.isMinor(ref_date) %}
                                 {% set main_text = 'Les mineurs ne peuvent pas candidater à cette élection. Vous pourrez néanmoins y voter.' %}
 

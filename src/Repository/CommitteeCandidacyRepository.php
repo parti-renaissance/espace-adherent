@@ -51,7 +51,7 @@ class CommitteeCandidacyRepository extends ServiceEntityRepository
         return (bool) $this->createConfirmedCandidaciesQueryBuilder($committee, $designation)
             ->select('COUNT(1)')
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
         ;
     }
 

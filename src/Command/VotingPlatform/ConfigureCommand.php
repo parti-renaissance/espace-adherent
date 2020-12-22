@@ -321,7 +321,7 @@ class ConfigureCommand extends Command
                 }
             }
 
-            $memberships = $this->committeeMembershipRepository->findVotingForSupervisorMemberships($committee, \DateTimeImmutable::createFromMutable($designation->getVoteEndDate()));
+            $memberships = $this->committeeMembershipRepository->findVotingForSupervisorMemberships($committee, $designation);
         }
 
         foreach ($pools as $pool) {
@@ -359,7 +359,7 @@ class ConfigureCommand extends Command
         // validate voters
         if (
             (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType() && !$this->committeeMembershipRepository->committeeHasVoters($committee))
-            || (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType() && !$this->committeeMembershipRepository->committeeHasVotersForSupervisorElection($committee, \DateTimeImmutable::createFromMutable($designation->getVoteEndDate())))
+            || (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType() && !$this->committeeMembershipRepository->committeeHasVotersForSupervisorElection($committee, $designation))
         ) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have any voters', $committee->getSlug()));

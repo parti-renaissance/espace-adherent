@@ -12,6 +12,7 @@ use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\Event\Filter\ListFilterObject;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
@@ -641,17 +642,17 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     /**
      * @return CommitteeMembership[]
      */
-    public function findVotingForSupervisorMemberships(Committee $committee, \DateTimeImmutable $refDate): array
+    public function findVotingForSupervisorMemberships(Committee $committee, Designation $designation): array
     {
-        return $this->createQueryBuilderForVotingMemberships($committee, $refDate)
+        return $this->createQueryBuilderForVotingMemberships($committee, $designation)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function committeeHasVotersForSupervisorElection(Committee $committee, \DateTimeImmutable $refDate): bool
+    public function committeeHasVotersForSupervisorElection(Committee $committee, Designation $designation): bool
     {
-        return (bool) $this->createQueryBuilderForVotingMemberships($committee, $refDate, false)
+        return 0 < (int) $this->createQueryBuilderForVotingMemberships($committee, $designation, false)
             ->select('COUNT(1)')
             ->getQuery()
             ->getSingleScalarResult()
@@ -697,18 +698,37 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
     private function createQueryBuilderForVotingMemberships(
         Committee $committee,
-        \DateTimeImmutable $refDate,
+        Designation $designation,
         bool $withCertified = true
     ): QueryBuilder {
+        $refDate = \DateTimeImmutable::createFromMutable($designation->getVoteEndDate());
+
         return $this->createQueryBuilder('cm')
             ->innerJoin('cm.adherent', 'a')
             ->where('cm.committee = :committee')
             ->andWhere('cm.joinedAt <= :joined_at_min')
             ->andWhere('a.registeredAt <= :registered_at_min'.($withCertified ? ' AND a.certifiedAt IS NOT NULL' : ''))
+            ->andWhere('a.id NOT IN (:candidate_adherents)')
             ->setParameters([
                 'committee' => $committee,
                 'joined_at_min' => $refDate->modify('-30 days'),
                 'registered_at_min' => $refDate->modify('-3 months'),
+                'candidate_adherents' => array_column($this->getEntityManager()->createQueryBuilder()
+                    ->from(CommitteeCandidacy::class, 'candidacy')
+                    ->select('adherent.id as adherent_id, candidacy.id as candidacy_id')
+                    ->innerJoin('candidacy.committeeElection', 'election')
+                    ->innerJoin('candidacy.committeeMembership', 'membership')
+                    ->innerJoin('membership.adherent', 'adherent')
+                    ->innerJoin('adherent.memberships', 'other_membership', Join::WITH, 'other_membership.adherent = adherent AND other_membership.committee = :committee AND election.committee != :committee')
+                    ->where('election.designation = :designation')
+                    ->andWhere('candidacy.status = :status')
+                    ->setParameters([
+                          'committee' => $committee,
+                          'status' => CandidacyInterface::STATUS_CONFIRMED,
+                          'designation' => $designation,
+                      ])
+                    ->getQuery()
+                    ->getArrayResult(), 'adherent_id'),
             ])
         ;
     }

@@ -21,8 +21,8 @@ class MapControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("La carte des comités")')->count());
-        $this->assertStringContainsString('41 adhérents', $crawler->filter('#counter-adherents')->text());
-        $this->assertStringContainsString('11 comités', $crawler->filter('#counter-committees')->text());
+        $this->assertStringContainsString('44 adhérents', $crawler->filter('#counter-adherents')->text());
+        $this->assertStringContainsString('12 comités', $crawler->filter('#counter-committees')->text());
         $this->assertStringContainsString('19 événements', $crawler->filter('#counter-events')->text());
     }
 

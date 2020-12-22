@@ -22,6 +22,10 @@ class ElectionAuthorisationChecker
             return false;
         }
 
+        if (!$election->isCandidacyPeriodActive()) {
+            return false;
+        }
+
         $refDate = $election->getVoteEndDate() ?? new \DateTime();
 
         if (
@@ -85,6 +89,8 @@ class ElectionAuthorisationChecker
 
         if (
             ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership())
+            && ($candidacy = $candidateMembership->getCommitteeCandidacy($election))
+            && $candidacy->isConfirmed()
             && !$candidateMembership->getCommittee()->equals($committee)
         ) {
             return false;

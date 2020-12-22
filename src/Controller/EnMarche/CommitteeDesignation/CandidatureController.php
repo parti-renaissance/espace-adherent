@@ -12,7 +12,7 @@ use App\Form\VotingPlatform\Candidacy\CommitteeCandidacyType;
 use App\Form\VotingPlatform\Candidacy\CommitteeSupervisorCandidacyType;
 use App\Repository\CommitteeCandidacyInvitationRepository;
 use App\Repository\CommitteeCandidacyRepository;
-use App\Security\Voter\Committee\CommitteeCandidacyVoter;
+use App\Security\Voter\Committee\CommitteeElectionVoter;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -52,7 +52,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
+        $this->denyAccessUnlessGranted(CommitteeElectionVoter::PERMISSION_ABLE_TO_CANDIDATE, $committee);
 
         $candidacy = $this->candidatureManager->getCandidacy($adherent, $committee);
 
@@ -116,7 +116,7 @@ class CandidatureController extends AbstractController
             }
         }
 
-        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
+        $this->denyAccessUnlessGranted(CommitteeElectionVoter::PERMISSION_ABLE_TO_CANDIDATE, $committee);
 
         $this->candidatureManager->removeCandidacy($this->getUser(), $committee);
 
@@ -144,7 +144,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
+        $this->denyAccessUnlessGranted(CommitteeElectionVoter::PERMISSION_ABLE_TO_CANDIDATE, $committee);
 
         if ($candidacy->hasInvitation()) {
             if ($candidacy->getInvitation()->isAccepted()) {
@@ -217,7 +217,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
+        $this->denyAccessUnlessGranted(CommitteeElectionVoter::PERMISSION_ABLE_TO_CANDIDATE, $committee);
 
         return $this->render('committee/candidacy/invitation_list.html.twig', [
             'invitations' => $repository->findAllPendingForMembership($adherent->getMembershipFor($committee), $election),
@@ -246,7 +246,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
+        $this->denyAccessUnlessGranted(CommitteeElectionVoter::PERMISSION_ABLE_TO_CANDIDATE, $committee);
 
         $acceptedBy = $this->candidatureManager->getCandidacy($adherent, $committee, true);
 
@@ -294,7 +294,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        $this->denyAccessUnlessGranted(CommitteeCandidacyVoter::PERMISSION, $committee);
+        $this->denyAccessUnlessGranted(CommitteeElectionVoter::PERMISSION_ABLE_TO_CANDIDATE, $committee);
 
         if (!$invitation->isPending()) {
             $this->addFlash('error', 'Vous ne pouvez pas décliner cette invitation');
