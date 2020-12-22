@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche\EventManager;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Event\EventManagerSpaceEnum;
+use App\Geo\ManagedZoneProvider;
 use App\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,9 +19,15 @@ class DeputyEventManagerController extends AbstractEventManagerController
 {
     private $repository;
 
-    public function __construct(EventRepository $repository)
+    /**
+     * @var ManagedZoneProvider
+     */
+    private $managedZoneProvider;
+
+    public function __construct(EventRepository $repository, ManagedZoneProvider $managedZoneProvider)
     {
         $this->repository = $repository;
+        $this->managedZoneProvider = $managedZoneProvider;
     }
 
     protected function getSpaceType(): string
@@ -31,7 +38,9 @@ class DeputyEventManagerController extends AbstractEventManagerController
     protected function getEventsPaginator(Adherent $adherent, string $type = null, int $page = 1): PaginatorInterface
     {
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            return $this->repository->findManagedByPaginator([$adherent->getManagedDistrict()->getReferentTag()], $page);
+            $managedZones = $this->managedZoneProvider->getManagedZones($adherent, ManagedZoneProvider::DEPUTY);
+
+            return $this->repository->findManagedByPaginator($managedZones, $page);
         }
 
         return $this->repository->findEventsByOrganizerPaginator($adherent, $page);

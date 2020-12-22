@@ -71,9 +71,9 @@
                     </thead>
                     <tbody>
                     {% for event in events %}
-                        <tr class="referent__item">
+                        <tr class="event__item">
                             <td>
-                                <a href=" path('app_event_show', {slug: event.slug})" target="_blank">{{ event.name }}
+                                <a href="{{ path('app_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}
                             </td>
                             <td>{{ event.organizer ? event.organizer.fullName : 'un ancien adhérent' }}</td>
                             <td>{{ event.status|trans([], 'forms') }}</td>

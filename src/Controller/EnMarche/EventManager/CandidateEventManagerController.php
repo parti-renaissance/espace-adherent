@@ -6,9 +6,9 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\EventGroupCategory;
 use App\Event\EventManagerSpaceEnum;
+use App\Geo\ManagedZoneProvider;
 use App\Repository\EventGroupCategoryRepository;
 use App\Repository\EventRepository;
-use App\Repository\ReferentTagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,16 +20,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class CandidateEventManagerController extends AbstractEventManagerController
 {
     private $repository;
-    private $referentTagRepository;
+
+    /**
+     * @var ManagedZoneProvider
+     */
+    private $managedZoneProvider;
+
     private $eventGroupCategoryRepository;
 
     public function __construct(
         EventRepository $repository,
-        ReferentTagRepository $referentTagRepository,
+        ManagedZoneProvider $managedZoneProvider,
         EventGroupCategoryRepository $eventGroupCategoryRepository
     ) {
         $this->repository = $repository;
-        $this->referentTagRepository = $referentTagRepository;
+        $this->managedZoneProvider = $managedZoneProvider;
         $this->eventGroupCategoryRepository = $eventGroupCategoryRepository;
     }
 
@@ -41,10 +46,9 @@ class CandidateEventManagerController extends AbstractEventManagerController
     protected function getEventsPaginator(Adherent $adherent, string $type = null, int $page = 1): PaginatorInterface
     {
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            return $this->repository->findManagedByPaginator(
-                $this->referentTagRepository->findByZones([$adherent->getCandidateManagedArea()->getZone()]),
-                $page
-            );
+            $managedZones = $this->managedZoneProvider->getManagedZones($adherent, ManagedZoneProvider::CANDIDATE);
+
+            return $this->repository->findManagedByPaginator($managedZones, $page);
         }
 
         return $this->repository->findEventsByOrganizerAndGroupCategoryPaginator($adherent, EventGroupCategory::CAMPAIGN_EVENTS, $page);

@@ -92,6 +92,7 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         $this->type = $type;
         $this->documents = new ArrayCollection();
         $this->referentTags = new ArrayCollection($referentTags);
+        $this->zones = new ArrayCollection();
         $this->timeZone = $timeZone;
     }
 

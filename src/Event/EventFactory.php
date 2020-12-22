@@ -9,6 +9,7 @@ use App\Entity\CitizenAction;
 use App\Entity\Event;
 use App\Entity\InstitutionalEvent;
 use App\Entity\PostAddress;
+use App\Geo\ZoneMatcher;
 use App\InstitutionalEvent\InstitutionalEventCommand;
 use App\Referent\ReferentTagManager;
 use Ramsey\Uuid\Uuid;
@@ -16,11 +17,21 @@ use Ramsey\Uuid\Uuid;
 class EventFactory
 {
     private $addressFactory;
+
+    /**
+     * @var ZoneMatcher
+     */
+    private $zoneMatcher;
+
     private $referentTagManager;
 
-    public function __construct(ReferentTagManager $referentTagManager, PostAddressFactory $addressFactory = null)
-    {
+    public function __construct(
+        ReferentTagManager $referentTagManager,
+        ZoneMatcher $zoneMatcher,
+        PostAddressFactory $addressFactory = null
+    ) {
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
+        $this->zoneMatcher = $zoneMatcher;
         $this->referentTagManager = $referentTagManager;
     }
 
@@ -52,6 +63,11 @@ class EventFactory
         }
 
         $this->referentTagManager->assignReferentLocalTags($event);
+
+        $zones = $this->zoneMatcher->match($event->getPostAddressModel());
+        foreach ($zones as $zone) {
+            $event->addZone($zone);
+        }
 
         return $event;
     }
