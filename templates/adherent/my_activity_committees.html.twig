@@ -58,14 +58,14 @@
                                 >
                                 <span class="slider"></span>
                             </label>
-                            <span class="em-switch__label">Comité principal</span>
+                            <span class="em-switch__label">Comité de vote</span>
                         </div>
 
                         {% if committee_candidacy_membership is not null %}
                             {% if membership == committee_candidacy_membership %}
                                 <div class="legend active">Vous êtes candidat dans ce comité.</div>
                             {% else %}
-                                <div class="legend">Vous devez retirer votre candidature pour pouvoir changer de comité principal.</div>
+                                <div class="legend">Vous devez retirer votre candidature pour pouvoir changer de comité de vote.</div>
                             {% endif %}
                         {% endif %}
 
