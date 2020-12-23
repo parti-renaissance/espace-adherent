@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Committee\CommitteeEvent;
 use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
@@ -311,6 +312,16 @@ class CommitteeAdmin extends AbstractAdmin
 
                     return true;
                 },
+            ])
+            ->add('zones', ZoneAutocompleteFilter::class, [
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
+                ],
             ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',

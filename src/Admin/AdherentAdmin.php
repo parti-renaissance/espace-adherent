@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Adherent\AdherentRoleEnum;
 use App\Admin\Filter\ReferentTagAutocompleteFilter;
+use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentTag;
@@ -577,6 +578,16 @@ HELP
             ->add('lastLoggedAt', DateRangeFilter::class, [
                 'label' => 'Dernière connexion',
                 'field_type' => DateRangePickerType::class,
+            ])
+            ->add('zones', ZoneAutocompleteFilter::class, [
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
+                ],
             ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',

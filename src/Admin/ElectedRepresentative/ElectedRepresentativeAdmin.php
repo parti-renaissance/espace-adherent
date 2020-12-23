@@ -3,6 +3,7 @@
 namespace App\Admin\ElectedRepresentative;
 
 use App\Address\Address;
+use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\ElectedRepresentative\ElectedRepresentativeEvent;
 use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
@@ -12,23 +13,19 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\AdherentEmailType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
 use App\ValueObject\Genders;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -445,49 +442,16 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('mandates.geoZone', CallbackFilter::class, [
-                'label' => 'Périmètres géographiques',
-                'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+            ->add('mandates.geoZone', ZoneAutocompleteFilter::class, [
                 'field_options' => [
                     'model_manager' => $this->getModelManager(),
                     'admin_code' => $this->getCode(),
-                    'context' => 'filter',
-                    'class' => Zone::class,
-                    'multiple' => true,
                     'property' => [
                         'name',
                         'code',
                     ],
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    /* @var Collection|Zone[] $zones */
-                    $zones = $value['value'];
-
-                    if (\count($zones)) {
-                        $ids = $zones->map(static function (Zone $zone) {
-                            return $zone->getId();
-                        })->toArray();
-
-                        /* @var QueryBuilder $qb */
-                        $qb
-                            ->innerJoin('mandate.geoZone', 'geo_zone')
-                            ->innerJoin('geo_zone.parents', 'geo_zone_parent')
-                            ->andWhere(
-                                $qb->expr()->orX(
-                                    $qb->expr()->in('geo_zone.id', $ids),
-                                    $qb->expr()->in('geo_zone_parent.id', $ids),
-                                )
-                            )
-                        ;
-                    }
-
-                    return true;
-                },
             ])
-
             ->add('isAdherent', CallbackFilter::class, [
                 'label' => 'Est adhérent ?',
                 'show_filter' => true,

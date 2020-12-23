@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Event;
 use App\Event\EventEvent;
 use App\Events;
@@ -240,6 +241,16 @@ class EventAdmin extends AbstractAdmin
             ->add('organizer.lastName', null, [
                 'label' => 'Nom de l\'organisateur',
                 'show_filter' => true,
+            ])
+            ->add('zones', ZoneAutocompleteFilter::class, [
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'admin_code' => $this->getCode(),
+                    'property' => [
+                        'name',
+                        'code',
+                    ],
+                ],
             ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',

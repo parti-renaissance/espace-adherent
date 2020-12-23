@@ -2,18 +2,13 @@
 
 namespace App\Admin;
 
-use App\Entity\Geo\Zone;
+use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Form\Admin\JecouteAdminSurveyQuestionFormType;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -80,46 +75,15 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
                 'label' => "Prénom de l'auteur",
                 'show_filter' => true,
             ])
-            ->add('zone', CallbackFilter::class, [
-                'label' => 'Zones',
-                'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
+            ->add('zone', ZoneAutocompleteFilter::class, [
                 'field_options' => [
                     'model_manager' => $this->getModelManager(),
                     'admin_code' => $this->getCode(),
-                    'context' => 'filter',
-                    'class' => Zone::class,
-                    'multiple' => true,
                     'property' => [
                         'name',
                         'code',
                     ],
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    /* @var Collection|Zone[] $zones */
-                    $zones = $value['value'];
-
-                    if (\count($zones)) {
-                        $ids = $zones->map(static function (Zone $zone) {
-                            return $zone->getId();
-                        })->toArray();
-
-                        /* @var QueryBuilder $qb */
-                        $qb
-                            ->innerJoin('zone.parents', 'zone_parent')
-                            ->andWhere(
-                                $qb->expr()->orX(
-                                    $qb->expr()->in('zone.id', $ids),
-                                    $qb->expr()->in('zone_parent.id', $ids),
-                                )
-                            )
-                        ;
-                    }
-
-                    return true;
-                },
             ])
         ;
     }
