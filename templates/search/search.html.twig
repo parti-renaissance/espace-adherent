@@ -43,7 +43,7 @@
             on(city, 'onchange', fetchResults);
 
             // Category and referent event filter does not apply for committees
-            if (eventCategory) {
+            if (!!eventCategory) {
                 on(eventCategory, 'change', fetchResults);
                 on(referentEvents, 'change', fetchResults);
             } else {
