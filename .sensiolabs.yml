@@ -1,6 +1,0 @@
-ignore_branches:
-    - gh-pages
-
-commit_failure_conditions:
-    - "pr.severity.critical > 0"
-    - "pr.severity.major > 0"
