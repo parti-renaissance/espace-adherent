@@ -2,6 +2,7 @@
 
 namespace App\Geo;
 
+use App\Address\AddressInterface;
 use App\Entity\Geo\City;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
@@ -30,7 +31,7 @@ class ZoneMatcher
     /**
      * @return Zone[]
      */
-    public function match(PostAddress $address): array
+    public function match(AddressInterface $address): array
     {
         $zones = [];
 
@@ -45,16 +46,14 @@ class ZoneMatcher
             ;
 
             // Districts and cantons
-            $zones = array_merge($zones, $this->matchGeoPoint(
-                $address,
-                [Zone::DISTRICT, Zone::CANTON]
-            ));
+            if ($address instanceof GeoPointInterface) {
+                $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::DISTRICT, Zone::CANTON]));
+            }
         } else {
             // Foreign district
-            $zones = array_merge($zones, $this->matchGeoPoint(
-                $address,
-                [Zone::FOREIGN_DISTRICT]
-            ));
+            if ($address instanceof GeoPointInterface) {
+                $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::FOREIGN_DISTRICT]));
+            }
 
             // Country
             $zones[] = $this->repository->findOneBy([

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Address\AddressInterface;
 use App\Address\GeoCoder;
 use App\Entity\Report\ReportableInterface;
 use App\Geocoder\GeoPointInterface;
@@ -42,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "municipal_event": "App\Entity\MunicipalEvent",
  * })
  */
-abstract class BaseEvent implements GeoPointInterface, ReportableInterface, ReferentTaggableEntity
+abstract class BaseEvent implements GeoPointInterface, ReportableInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity
 {
     const EVENT_TYPE = 'event';
     const CITIZEN_ACTION_TYPE = 'citizen_action';
@@ -412,5 +413,10 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
     public function getUuidAsString(): string
     {
         return $this->getUuid()->toString();
+    }
+
+    public function getPostAddress(): ?AddressInterface
+    {
+        return $this->postAddress;
     }
 }
