@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="geo_zone",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="geo_zone_code_type_unique", columns={"code", "type"})
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="geo_zone_type_idx", columns="type")
  *     }
  * )
  * @ORM\AttributeOverrides({
