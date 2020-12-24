@@ -78,6 +78,14 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
                 'public_faith_statement' => true,
                 'with_photo' => true,
             ],
+            [
+                'adherent' => 'adherent-29',
+                'committee' => 'committee-14',
+                'binome' => 'adherent-30',
+                'confirmed' => true,
+                'public_faith_statement' => true,
+                'with_photo' => true,
+            ],
         ];
 
         foreach ($adherentCandidates as $i => $row) {
@@ -106,6 +114,7 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
                 if (!empty($row['confirmed'])) {
                     $candidacyBinome = $this->createCandidacy($committee, $invited, !empty($row['with_photo']));
                     $candidacy->setBinome($candidacyBinome);
+                    $candidacyBinome->setBinome($candidacy);
                     $candidacyBinome->updateFromBinome();
 
                     $candidacy->confirm();

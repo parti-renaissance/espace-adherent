@@ -25,7 +25,13 @@
                         <tr>
                             <td>{{ "designation.label.type_#{designation.type}"|trans }}</td>
                             <td>{{ designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}</td>
-                            <td>{{ data.voters_count ? (data.votes_count * 100 / data.voters_count)|round(2) : 0 }} %</td>
+                            <td>
+                                {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') and election.status == constant('App\\VotingPlatform\\Election\\ElectionStatusEnum::OPEN') %}
+                                    {{ data.votes_count }}
+                                {% else %}
+                                    {{ data.voters_count ? (data.votes_count * 100 / data.voters_count)|round(2) : 0 }} %
+                                {% endif %}
+                            </td>
                             <td>{{ data.woman_count }} F / {{ data.man_count }} H</td>
                             <td>
                                 {% if designation.voteStartDate > 'now'|date %}

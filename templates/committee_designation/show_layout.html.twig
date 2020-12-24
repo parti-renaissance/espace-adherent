@@ -46,7 +46,7 @@
 
         <div class="manager-overview" style="padding-bottom: 30px">
             <div class="manager-overview__row">
-                {% if not designation.isMajorityType %}
+                {% if not designation.isMajorityType or election_round.election.isClosed %}
                     <div class="manager-overview__case">
                         <span class="manager-overview__case--section">Inscrits</span>
                         <span class="manager-overview__case--value"><span class="text--pink">{{ election_stats|first.voters_count }}</span></span>

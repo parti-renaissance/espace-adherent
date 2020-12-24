@@ -374,6 +374,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent14->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent14->addReferentTag($this->getReference('referent_tag_ch'));
         $adherent14->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
+        $this->addReference('adherent-14', $adherent14);
 
         // Non activated, enabled adherent
         $adherent15 = $this->adherentFactory->createFromArray([
@@ -927,6 +928,60 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $manager->persist($adherent);
         $this->addReference('adherent-28', $adherent);
 
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-male-e@en-marche-dev.fr',
+            'gender' => GenderEnum::MALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Guillaume',
+            'last_name' => 'Richard',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1961-02-03',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-29', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-female-e@en-marche-dev.fr',
+            'gender' => GenderEnum::FEMALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Denise',
+            'last_name' => 'Richard',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1962-03-04',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-30', $adherent);
+
+        $adherent = $this->adherentFactory->createFromArray([
+            'uuid' => Uuid::uuid4(),
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'adherent-female-f@en-marche-dev.fr',
+            'gender' => GenderEnum::FEMALE,
+            'nationality' => Address::FRANCE,
+            'first_name' => 'Jeanne',
+            'last_name' => 'Simon',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1962-03-04',
+            'registered_at' => '2017-01-25 19:31:45',
+        ]);
+        $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $adherent->certify();
+        $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+        $manager->persist($adherent);
+        $this->addReference('adherent-31', $adherent);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -1041,7 +1096,6 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent4->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-19')));
 
         $adherent14->setJecouteManagedZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
-        $this->addReference('adherent-14', $adherent14);
 
         $manager->persist($key1);
         $manager->persist($key2);

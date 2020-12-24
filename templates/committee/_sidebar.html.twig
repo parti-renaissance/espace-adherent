@@ -3,7 +3,7 @@
         <div class="font-roboto text--silver-gray b__nudge--bottom">Vous êtes membre de ce comité depuis le {{ membership.subscriptionDate|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy à HH:mm') }}</div>
     {% endif %}
 
-    {% if has_role_adherent and committee.hasActiveElection and is_granted('ABLE_TO_CANDIDATE', committee) %}
+    {% if has_role_adherent and committee.hasActiveElection and is_granted('ABLE_TO_CANDIDATE_IN_COMMITTEE', committee) %}
         {% set committee_election = committee.committeeElection %}
 
         {# If the vote was started, hide box if 0 candidates #}

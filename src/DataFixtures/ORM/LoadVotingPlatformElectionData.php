@@ -37,6 +37,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     public const ELECTION_UUID7 = 'b58e5538-c6e7-10a4-88c3-de59305e61a8';
     public const ELECTION_UUID8 = '138140c6-1dd2-11b2-b23f-2b71345a2be1';
     public const ELECTION_UUID9 = '39949c8f-d233-1e20-905e-5e214c6a12f2';
+    public const ELECTION_UUID10 = '4095339f-3aad-18ba-924f-adffe2085cd6';
 
     /**
      * @var \Faker\Generator
@@ -179,8 +180,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $election->setElectionEntity(new ElectionEntity(null, $coTerr = $this->getReference('coTerr_92')));
         $this->loadTerritorialCouncilElectionCandidates($election, $coTerr);
 
-        $this->manager->flush();
-
         // -------------------------------------------
 
         $election = new Election(
@@ -189,7 +188,19 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
             [new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($committee = $this->getReference('committee-13')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-13')));
+        $this->loadCommitteeSupervisorElectionCandidates($election);
+        $this->manager->persist($this->loadCommitteeSupervisorElectionVoters($election));
+
+        // -------------------------------------------
+
+        $election = new Election(
+            $this->getReference('designation-8'),
+            Uuid::fromString(self::ELECTION_UUID10),
+            [new ElectionRound()]
+        );
+        $this->manager->persist($election);
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-14')));
         $this->loadCommitteeSupervisorElectionCandidates($election);
         $this->manager->persist($this->loadCommitteeSupervisorElectionVoters($election));
 
@@ -268,7 +279,8 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         foreach ($election->getElectionPools() as $pool) {
             foreach ($pool->getCandidateGroups() as $candidateGroup) {
                 foreach ($candidateGroup->getCandidates() as $candidate) {
-                    $list->addVoter(new Voter($candidate->getAdherent()));
+                    $adherent = $candidate->getAdherent();
+                    $list->addVoter($this->voters[$adherent->getId()] ?? $this->voters[$adherent->getId()] = new Voter($adherent));
                 }
             }
         }
@@ -379,7 +391,8 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $pools = [];
 
         foreach ($memberships as $membership) {
-            $voterList->addVoter(new Voter($membership->getAdherent()));
+            $adherent = $membership->getAdherent();
+            $voterList->addVoter($this->voters[$adherent->getId()] ?? $this->voters[$adherent->getId()] = new Voter($adherent));
 
             if ($candidacy = $membership->getCandidacyForElection($currentElection)) {
                 if ($candidacy->isConfirmed()) {
