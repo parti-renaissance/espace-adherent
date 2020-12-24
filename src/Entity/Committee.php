@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Address\AddressInterface;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
@@ -88,7 +89,7 @@ use Ramsey\Uuid\UuidInterface;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")
  */
-class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface
+class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity
 {
     use EntityPostAddressTrait;
     use EntityReferentTagTrait;
@@ -239,7 +240,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->coordinatorComment = $coordinatorComment;
     }
 
-    public function getPostAddress(): PostAddress
+    public function getPostAddress(): AddressInterface
     {
         return $this->postAddress;
     }
