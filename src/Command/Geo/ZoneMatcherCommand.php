@@ -88,11 +88,15 @@ class ZoneMatcherCommand extends Command
             foreach ($items as $entity) {
                 $postalAddress = $entity->getPostAddress();
                 if (!$postalAddress) {
+                    $this->io->progressAdvance();
+
                     continue;
                 }
 
                 $zones = $this->zoneMatcher->match($postalAddress);
                 if (0 === \count($zones)) {
+                    $this->io->progressAdvance();
+
                     continue;
                 }
 

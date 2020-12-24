@@ -12,6 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ZoneMatcher
 {
+    private const FDE_CODE = 'FDE';
+    private const FDE_TYPE = Zone::CUSTOM;
+
     /**
      * @var EntityManagerInterface
      */
@@ -21,6 +24,11 @@ class ZoneMatcher
      * @var ZoneRepository
      */
     private $repository;
+
+    /**
+     * @var Zone|null
+     */
+    private $fde;
 
     public function __construct(EntityManagerInterface $em, ZoneRepository $repository)
     {
@@ -47,12 +55,18 @@ class ZoneMatcher
 
             // Districts and cantons
             if ($address instanceof GeoPointInterface) {
-                $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::DISTRICT, Zone::CANTON]));
+                $departments = $this->extractDepartments($zones);
+                $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::DISTRICT, Zone::CANTON], $departments));
             }
         } else {
             // Foreign district
             if ($address instanceof GeoPointInterface) {
-                $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::FOREIGN_DISTRICT]));
+                $this->fde = $this->fde ?: $this->fde = $this->repository->findOneBy([
+                    'code' => self::FDE_CODE,
+                    'type' => self::FDE_TYPE,
+                ]);
+
+                $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::FOREIGN_DISTRICT], [$this->fde]));
             }
 
             // Country
@@ -66,9 +80,11 @@ class ZoneMatcher
     }
 
     /**
+     * @param Zone[] $parents
+     *
      * @return Zone[]
      */
-    private function matchGeoPoint(GeoPointInterface $geoPoint, array $types): array
+    private function matchGeoPoint(GeoPointInterface $geoPoint, array $types, array $parents): array
     {
         $latitude = $geoPoint->getLatitude();
         $longitude = $geoPoint->getLongitude();
@@ -76,7 +92,7 @@ class ZoneMatcher
             return [];
         }
 
-        return $this->repository->findByCoordinatesAndTypes($latitude, $longitude, $types);
+        return $this->repository->findByCoordinatesAndTypes($latitude, $longitude, $types, $parents);
     }
 
     private function matchPostalCode(?string $postalCode): ?Zone
@@ -98,5 +114,29 @@ class ZoneMatcher
         }
 
         return $this->repository->findByZoneable($cities[0]);
+    }
+
+    /**
+     * @param Zone[] $zones
+     *
+     * @return Zone[]
+     */
+    private function extractDepartments(array $zones): array
+    {
+        $zones = array_filter($zones);
+        if (!$zones) {
+            return [];
+        }
+
+        return array_values(array_unique(array_filter(
+            array_merge(
+                ...array_map(static function (Zone $zone): array {
+                    return $zone->getParents();
+                }, $zones)
+            ),
+            static function (Zone $zone): bool {
+                return Zone::DEPARTMENT === $zone->getType();
+            }
+        )));
     }
 }

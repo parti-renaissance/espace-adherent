@@ -288,11 +288,15 @@ class ZoneRepository extends ServiceEntityRepository
      *
      * @return Zone[]
      */
-    public function findByCoordinatesAndTypes(float $latitude, float $longitude, ?array $types): array
-    {
+    public function findByCoordinatesAndTypes(
+        float $latitude,
+        float $longitude,
+        ?array $types,
+        array $parents = []
+    ): array {
         $qb = $this
             ->createQueryBuilder('zone')
-            ->join('zone.geoData', 'geo_data')
+            ->innerJoin('zone.geoData', 'geo_data')
             ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',:longitude,' ',:latitude,')')), geo_data.geoShape) = 1")
             ->setParameter('latitude', $latitude)
             ->setParameter('longitude', $longitude)
@@ -302,6 +306,17 @@ class ZoneRepository extends ServiceEntityRepository
             $qb
                 ->andWhere($qb->expr()->in('zone.type', ':types'))
                 ->setParameter('types', $types)
+            ;
+        }
+
+        if ($parents) {
+            $parentIds = array_filter(array_map(static function (Zone $zone): ?int {
+                return $zone->getId();
+            }, $parents));
+
+            $qb
+                ->innerJoin('zone.parents', 'zone_parent')
+                ->andWhere($qb->expr()->in('zone_parent.id', $parentIds))
             ;
         }
 
