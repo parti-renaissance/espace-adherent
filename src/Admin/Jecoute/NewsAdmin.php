@@ -11,7 +11,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -52,11 +51,6 @@ class NewsAdmin extends AbstractAdmin
         $this->zoneRepository = $zoneRepository;
         $this->deviceNotifier = $deviceNotifier;
         $this->topicBuilder = $topicBuilder;
-    }
-
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->clearExcept(['list', 'create']);
     }
 
     public function getTemplate($name)
@@ -161,6 +155,13 @@ class NewsAdmin extends AbstractAdmin
             ])
             ->add('createdBy', null, [
                 'label' => 'Auteur',
+            ])
+            ->add('_action', null, [
+                'virtual_field' => true,
+                'actions' => [
+                    'edit' => [],
+                    'delete' => [],
+                ],
             ])
         ;
     }
