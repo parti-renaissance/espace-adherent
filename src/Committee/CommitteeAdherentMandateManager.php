@@ -6,6 +6,7 @@ use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
@@ -97,6 +98,48 @@ class CommitteeAdherentMandateManager
         $mandate->setReason(AbstractAdherentMandate::REASON_MANUAL);
 
         $this->entityManager->flush();
+    }
+
+    public function updateSupervisorMandate(Adherent $adherent, Committee $committee, bool $isProvisional = false): void
+    {
+        $this->checkGender($adherent);
+
+        $existingMandate = $committee->getSupervisorMandate($adherent->getGender(), $isProvisional);
+
+        if (null !== $existingMandate && $adherent === $existingMandate->getAdherent()) {
+            return;
+        }
+
+        $this->checkAdherentForSupervisorMandate($adherent);
+
+        $now = new \DateTime();
+
+        if (null !== $existingMandate && !$existingMandate->getFinishAt()) {
+            $existingMandate->end($now, 'switch_mandate');
+        }
+
+        $mandate = new CommitteeAdherentMandate(
+            $adherent,
+            $adherent->getGender(),
+            $committee,
+            $now,
+            CommitteeMandateQualityEnum::SUPERVISOR,
+            true
+        );
+
+        $committee->addAdherentMandate($mandate);
+
+        $this->entityManager->persist($mandate);
+        $this->entityManager->flush();
+    }
+
+    private function checkAdherentForSupervisorMandate(Adherent $adherent): void
+    {
+        if ($adherent->isMinor()
+            || $adherent->isSupervisor()
+            || $this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent)) {
+            $this->throwException('adherent_mandate.committee.provisional_supervisor.not_valid');
+        }
     }
 
     private function checkGender(Adherent $adherent): void

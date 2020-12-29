@@ -6,11 +6,11 @@ use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
 use App\Committee\Exception\CommitteeAdherentMandateException;
-use App\Committee\MultipleReferentsFoundException;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Exception\BaseGroupException;
 use App\Exception\CommitteeMembershipException;
+use App\Form\ConfirmActionType;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -40,56 +40,38 @@ class AdminCommitteeController extends Controller
     }
 
     /**
-     * Approves the committee.
-     *
-     * @Route("/{id}/approve", name="app_admin_committee_approve", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
-     */
-    public function approveAction(
-        Committee $committee,
-        CommitteeManagementAuthority $committeeManagementAuthority
-    ): Response {
-        try {
-            $committeeManagementAuthority->approve($committee);
-            $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
-        } catch (BaseGroupException $exception) {
-            throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be approved.', $committee->getId()), $exception);
-        }
-
-        try {
-            $committeeManagementAuthority->notifyReferentsForApproval($committee);
-        } catch (MultipleReferentsFoundException $exception) {
-            $this->addFlash('warning', sprintf(
-                'Attention, plusieurs référents (%s) ont été trouvés dans le département de ce nouveau comité. 
-                Aucun mail de notification pour la validation de ce comité ne leur a été envoyé. 
-                Nommez un seul référent pour permettre les notifications de ce type.',
-                implode(', ', array_map(function (Adherent $referent) {
-                    return $referent->getEmailAddress();
-                }, $exception->getReferents()->toArray()))
-            ));
-        }
-
-        return $this->redirectToRoute('admin_app_committee_list');
-    }
-
-    /**
      * Refuses the committee.
      *
-     * @Route("/{id}/refuse", name="app_admin_committee_refuse", methods={"GET"})
+     * @Route("/{id}/refuse", name="app_admin_committee_refuse", methods={"GET|POST"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function refuseAction(
+        Request $request,
         Committee $committee,
         CommitteeManagementAuthority $committeeManagementAuthority
     ): Response {
-        try {
-            $committeeManagementAuthority->refuse($committee);
-            $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
-        } catch (BaseGroupException $exception) {
-            throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);
+        $form = $this
+            ->createForm(ConfirmActionType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('allow')->isClicked()) {
+                try {
+                    $committeeManagementAuthority->refuse($committee);
+                    $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
+                } catch (BaseGroupException $exception) {
+                    throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);
+                }
+            }
+
+            return $this->redirectToRoute('admin_app_committee_list');
         }
 
-        return $this->redirectToRoute('admin_app_committee_list');
+        return $this->render('admin/committee/refuse.html.twig', [
+            'form' => $form->createView(),
+            'object' => $committee,
+        ]);
     }
 
     /**

@@ -2,10 +2,13 @@
 
 namespace Tests\App\Admin;
 
-use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\Committee\CommitteeAdherentMandateManager;
+use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Repository\CommitteeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
@@ -23,18 +26,29 @@ class CommitteeAdminTest extends WebTestCase
      */
     private $committeeRepository;
 
-    public function testCommitteeStaticSegmentCommandIsDispatchedWhenCommitteeIsApproved(): void
+    /**
+     * @dataProvider provideActions
+     */
+    public function testCannotChangeMandateIfCommitteeNotApprovedAction(string $action): void
     {
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
+        $adherent = $this->getAdherentRepository()->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
+
+        $this->assertFalse($committee->isApproved());
+
         $this->authenticateAsAdmin($this->client);
 
-        $this->client->enableProfiler();
-        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
+        $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/%s/members/%s/%s-mandate', $committee->getId(), $adherent->getId(), $action)
+        );
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+    }
 
-        $this->client->request('GET', sprintf('/admin/committee/%d/approve', $committee->getId()));
-
-        $this->assertClientIsRedirectedTo('/admin/app/committee/list', $this->client);
-
-        $this->assertMessageIsDispatched(CreateStaticSegmentCommand::class);
+    public function provideActions(): iterable
+    {
+        yield [CommitteeAdherentMandateManager::CREATE_ACTION];
+        yield [CommitteeAdherentMandateManager::FINISH_ACTION];
     }
 
     protected function setUp(): void

@@ -1,0 +1,44 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Refuser le comité <b>{{ object.name }}</b>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+                <div class="box box-solid box-warning">
+                    <div class="box-header">
+                        <h4 class="box-title">Refuser</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <h4 class="col-md-12">
+                                Le référent et l'animateur provisoire seront avertis par email que le comité a été refusé.
+                            </h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1">
+                                {{ form_widget(form.allow, { label: 'Confirmer', attr: { class: 'btn btn-warning' } }) }}
+                            </div>
+                            <div class="col-md-1 col-md-offset-10">
+                                {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-default' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

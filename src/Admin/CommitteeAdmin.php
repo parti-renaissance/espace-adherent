@@ -38,6 +38,10 @@ class CommitteeAdmin extends AbstractAdmin
         '_sort_by' => 'createdAt',
     ];
 
+    protected $accessMapping = [
+        'approve' => 'APPROVE',
+    ];
+
     private $manager;
     private $committeeMembershipRepository;
     private $cachedDatagrid;
@@ -92,6 +96,7 @@ class CommitteeAdmin extends AbstractAdmin
         $collection
             ->remove('create')
             ->remove('delete')
+            ->add('approve', $this->getRouterIdParameter().'/approve')
         ;
     }
 
@@ -204,19 +209,6 @@ class CommitteeAdmin extends AbstractAdmin
                 ])
                 ->add('postAddress.country', UnitedNationsCountryType::class, [
                     'label' => 'Pays',
-                ])
-            ->end()
-            ->with('Commentaire', ['class' => 'col-md-5'])
-                ->add('adminComment', TextareaType::class, [
-                    'label' => 'Commentaire sur l\'AL',
-                    'attr' => ['rows' => 5],
-                    'required' => false,
-                ])
-                ->add('coordinatorComment', TextareaType::class, [
-                    'label' => 'Commentaire sur l\'AL du coordinateur',
-                    'attr' => ['rows' => 5],
-                    'disabled' => true,
-                    'required' => false,
                 ])
             ->end()
         ;
@@ -411,11 +403,6 @@ class CommitteeAdmin extends AbstractAdmin
             ->add('status', TextType::class, [
                 'label' => 'Statut',
                 'template' => 'admin/committee/list_status.html.twig',
-            ])
-            ->add('photo', TextType::class, [
-                'virtual_field' => true,
-                'label' => "Photo d'identité",
-                'template' => 'admin/committee/photo.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

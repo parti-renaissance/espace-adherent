@@ -155,6 +155,15 @@ class Address implements AddressInterface, GeocodableInterface
         $this->region = $region;
     }
 
+    public function getFullAddress()
+    {
+        if ($this->address) {
+            return $this->address.', '.$this->postalCode.' '.$this->cityName.', '.$this->country;
+        }
+
+        return '';
+    }
+
     /**
      * Returns the french national INSEE code from the city code.
      */

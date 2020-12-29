@@ -36,9 +36,14 @@ class CommitteeManager
 
     private $entityManager;
     private $dispatcher;
+    private $mandateManager;
 
-    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        CommitteeAdherentMandateManager $mandateManager,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $dispatcher
+    ) {
+        $this->mandateManager = $mandateManager;
         $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
     }
@@ -230,21 +235,26 @@ class CommitteeManager
     }
 
     /**
-     * Approves one committee and transforms creator to supervisor.
+     * Approves one committee
      */
-    public function approveCommittee(Committee $committee, bool $flush = true): void
+    public function approveCommittee(Committee $committee): void
     {
         $committee->approved();
 
-        /** @var Adherent $creator */
-        $creator = $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy());
-        $this->changePrivilege($creator, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR, false);
+        foreach ($committee->getProvisionalSupervisors() as $provisionalSupervisor) {
+            $adherent = $provisionalSupervisor->getAdherent();
 
-        if ($flush) {
-            $this->entityManager->flush();
+            if ($adherent->getMembershipFor($committee)) {
+                continue;
+            }
+
+            $this->followCommittee($adherent, $committee);
         }
 
+        $this->entityManager->flush();
+
         $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_APPROVED);
     }
 
     /**

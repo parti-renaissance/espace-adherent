@@ -1,0 +1,78 @@
+{% extends 'admin/committee/approve/_layout.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block show %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">Infos</h4>
+                </div>
+                <div class="box-body">
+                    <div class="margin-bottom">Vous pouvez modifiez toute ou partie des informations avant d'approuver ce comité.</div>
+                    {{ form_errors(form) }}
+
+                    <div class="sonata-ba-collapsed-fields">
+                        {{ form_row(form.name, { label: 'Nom' }) }}
+                        {{ form_row(form.slug, { label: 'Slug' }) }}
+                        {{ form_row(form.description, { label: 'Description' }) }}
+                        {{ form_row(form.address.address, { placeholder: 'Elle déterminera l\'affichage du comité sur la page' }) }}
+                        {{ form_row(form.address.postalCode, { label: 'Code postale' }) }}
+                        {{ form_row(form.address.city, { label: 'Ville 2' }) }}
+                        {{ form_row(form.address.cityName, { label: 'Ville' }) }}
+                        {{ form_row(form.address.country, { label: 'Pays' }) }}
+                        {{ form_row(form.nameLocked, { label: 'Verrouiller les modifications' }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">Animation</h4>
+                </div>
+                <div class="table-responsive margin-bottom">
+                    {% include 'admin/committee/approve/_provisional_supervisors.html.twig'
+                        with { female: object.provisionalSupervisorFemale, male: object.provisionalSupervisorMale } %}
+                </div>
+                <div class="box-body">
+                    {{ form_errors(form) }}
+
+                    <div class="sonata-ba-collapsed-fields">
+                        {{ form_row(form.provisionalSupervisorFemale, {
+                            label: 'Animatrice provisoire',
+                            attr: { min: 1 },
+                            placeholder: 'Insérez un id d\'adhérente pour ajouter ou modifier l\'animatrice provisoire'
+                        }) }}
+                        {{ form_row(form.provisionalSupervisorMale, {
+                            label: 'Animateur provisoire',
+                            attr: { min: 1 },
+                            placeholder: 'Insérez un id d\'adhérent pour ajouter ou modifier l\'animateur provisoire'
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="sonata-ba-form-actions well well-small form-actions">
+                <div>
+                    <button type="submit" class="btn btn-success">Suivant</button>
+                    <a href="{{ path('admin_app_committee_list') }}" class="btn btn-danger">
+                        Retour à la liste des comités
+                    </a>
+                </div>
+                <span class="help-block sonata-ba-field-help">
+                    Un écran récapitulatif sur le comité.
+                </span>
+            </div>
+        </div>
+    </div>
+
+    {% do form.confirm.setRendered %}
+    {{ form_end(form) }}
+{% endblock %}

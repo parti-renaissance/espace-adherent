@@ -105,7 +105,7 @@ abstract class AbstractCommitteeController extends Controller
             $commandHandler->handle($command);
             $this->addFlash('info', 'committee.creation.success.referent');
 
-            return $this->redirectToRoute('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]);
+            return $this->redirectToRoute('app_'.$this->getSpaceType().'_committees_requests', ['slug' => $command->getCommittee()->getSlug()]);
         }
 
         return $this->renderTemplate($this->getSpaceType().'/committee/create.html.twig', [

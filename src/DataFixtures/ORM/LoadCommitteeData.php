@@ -294,8 +294,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($adherent4->followCommittee($committee1));
 
         // Committee 2
-        $manager->persist($adherent6->followCommittee($committee2));
-        $manager->persist($adherent4->followCommittee($committee2));
+        $committee2->addProvisionalSupervisor($adherent6);
 
         // Committee 3
         $manager->persist($membership = $adherent7->superviseCommittee($committee3, \DateTime::createFromFormat('Y-m-d H:i:s', '2017-01-26 16:08:24')));
@@ -381,6 +380,9 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         foreach (range(33, 50) as $index) {
             $manager->persist($this->getReference('adherent-'.$index)->followCommittee($committee15, new \DateTime('-2 months')));
         }
+
+        // Committee 16
+        $committee16->addProvisionalSupervisor($adherent4);
 
         $manager->flush();
     }

@@ -34,6 +34,7 @@ class CommitteeCommandType extends AbstractType
                 'disable_fields' => $committee ? $committee->isApproved() : false,
                 'child_error_bubbling' => false,
                 'data' => $builder->getData() ? Address::createFromAddress($builder->getData()->getAddress()) : null,
+                'disabled' => $committee ? $committee->isNameLocked() : false,
             ])
         ;
 
