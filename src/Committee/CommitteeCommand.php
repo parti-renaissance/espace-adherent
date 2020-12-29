@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Validator\CommitteeProvisionalSupervisor as AssertCommitteeProvisionalSupervisorValid;
 use App\Validator\UniqueCommittee as AssertUniqueCommittee;
+use App\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -94,6 +95,10 @@ class CommitteeCommand
         $dto->facebookPageUrl = $committee->getFacebookPageUrl();
         $dto->twitterNickname = $committee->getTwitterNickname();
         $dto->committee = $committee;
+        $provisionalSupervisorF = $committee->getProvisionalSupervisorByGender(Genders::FEMALE);
+        $provisionalSupervisorM = $committee->getProvisionalSupervisorByGender(Genders::MALE);
+        $dto->provisionalSupervisorFemale = $provisionalSupervisorF ? $provisionalSupervisorF->getAdherent() : null;
+        $dto->provisionalSupervisorMale = $provisionalSupervisorM ? $provisionalSupervisorM->getAdherent() : null;
 
         return $dto;
     }

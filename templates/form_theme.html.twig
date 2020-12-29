@@ -476,7 +476,7 @@
         <input type="text"
                value="{{ form.vars.label }}"
                id="{{ form.vars.id }}_autocomplete"
-               class="{{ attr.class }}"
+               class="{{ attr.class is defined ? attr.class }}"
                placeholder="{{ attr.placeholder is defined ? attr.placeholder }}"
         />
     </div>

@@ -50,19 +50,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertStringContainsString('/comites/en-marche-marseille-3/editer', $this->client->getRequest()->getUri());
     }
 
-    public function testCommitteeEditContainsWarningMessageWhenCommitteeIsPending(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3/editer');
-
-        $this->assertEquals(
-            1,
-            $crawler->filter(
-                'html div.committee__waiting-for-approval:contains("Votre comité est en attente de validation par les équipes d\'En Marche !")'
-            )->count()
-        );
-    }
-
     public function testRedirectionComiteFromOldUrl()
     {
         $this->client->request(Request::METHOD_GET, '/comites/'.LoadCommitteeData::COMMITTEE_3_UUID.'/en-marche-dammarie-les-lys');

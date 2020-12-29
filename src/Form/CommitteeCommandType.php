@@ -37,7 +37,7 @@ class CommitteeCommandType extends AbstractType
             ])
         ;
 
-        if ($committee) {
+        if ($options['with_social_networks']) {
             $builder
                 ->add('facebookPageUrl', UrlType::class, [
                     'required' => false,
@@ -68,8 +68,10 @@ class CommitteeCommandType extends AbstractType
         $resolver->setDefaults([
             'data_class' => CommitteeCommand::class,
             'with_provisional' => false,
+            'with_social_networks' => false,
         ])
             ->setAllowedTypes('with_provisional', ['bool'])
+            ->setAllowedTypes('with_social_networks', ['bool'])
         ;
     }
 

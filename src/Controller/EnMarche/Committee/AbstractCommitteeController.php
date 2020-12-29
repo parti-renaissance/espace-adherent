@@ -2,8 +2,11 @@
 
 namespace App\Controller\EnMarche\Committee;
 
+use App\Committee\CommitteeCommand;
 use App\Committee\CommitteeCreationCommand;
 use App\Committee\CommitteeCreationCommandHandler;
+use App\Committee\CommitteeManager;
+use App\Committee\CommitteeUpdateCommandHandler;
 use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Committee\Filter\CommitteeListFilter;
 use App\Controller\CanaryControllerTrait;
@@ -16,6 +19,7 @@ use App\Geo\ManagedZoneProvider;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeElectionRepository;
 use App\Repository\CommitteeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,7 +51,7 @@ abstract class AbstractCommitteeController extends Controller
             $filter = new CommitteeListFilter($managedZones);
         }
 
-        return $this->renderTemplate($this->getSpaceType().'/committees_list.html.twig', [
+        return $this->renderTemplate($this->getSpaceType().'/committee/list.html.twig', [
             'committees' => $committeeRepository->searchByFilter($filter),
             'pending_count' => $committeeRepository->countRequestsForZones($managedZones, Committee::PENDING),
             'form' => $form->createView(),
@@ -74,7 +78,7 @@ abstract class AbstractCommitteeController extends Controller
             $filter = new CommitteeListFilter($managedZones);
         }
 
-        return $this->renderTemplate($this->getSpaceType().'/committees_requests_list.html.twig', [
+        return $this->renderTemplate($this->getSpaceType().'/committee/requests_list.html.twig', [
             'committees' => $committeeRepository->searchRequestsByFilter($filter),
             'form' => $form->createView(),
             'total_count' => $committeeRepository->countRequestsForZones($managedZones),
@@ -104,7 +108,7 @@ abstract class AbstractCommitteeController extends Controller
             return $this->redirectToRoute('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]);
         }
 
-        return $this->renderTemplate($this->getSpaceType().'/create_committee.html.twig', [
+        return $this->renderTemplate($this->getSpaceType().'/committee/create.html.twig', [
             'form' => $form->createView(),
             'adherent' => $user,
         ]);
@@ -150,11 +154,60 @@ abstract class AbstractCommitteeController extends Controller
             $filter = new CommitteeDesignationsListFilter($managedZones);
         }
 
-        return $this->renderTemplate($this->getSpaceType().'/committees_designations_list.html.twig', [
+        return $this->renderTemplate($this->getSpaceType().'/committee/designations_list.html.twig', [
             'elections' => $committeeRepository->findElections($filter),
             'form' => $form->createView(),
             'filter' => $filter,
         ]);
+    }
+
+    /**
+     * @Route("/{slug}/pre-approuver", name="pre_approve", methods={"GET|POST"})
+     * @Security("is_granted('PRE_APPROVE_COMMITTEE', committee)")
+     */
+    public function preAcceptAction(
+        Request $request,
+        Committee $committee,
+        CommitteeManager $manager,
+        CommitteeUpdateCommandHandler $commandHandler
+    ): Response {
+        $command = CommitteeCommand::createFromCommittee($committee);
+        $form = $this->createForm(CommitteeCommandType::class, $command, [
+            'with_provisional' => $this->getWithProvisionalSupervisors(),
+            'validation_groups' => ['Default', 'with_provisional_supervisors'],
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commandHandler->handleForPreApprove($command);
+            $this->addFlash('info', 'committee.pre-approve.success');
+
+            return $this->redirectToRoute('app_'.$this->getSpaceType().'_committees_requests');
+        }
+
+        return $this->renderTemplate($this->getSpaceType().'/committee/pre_approve.html.twig', [
+            'form' => $form->createView(),
+            'committee' => $committee,
+            'committee_hosts' => $manager->getCommitteeHosts($committee),
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}/pre-refuser", name="pre_refuse", methods={"GET|POST"})
+     * @Security("is_granted('PRE_REFUSE_COMMITTEE', committee)")
+     */
+    public function preRefuseAction(Committee $committee, EntityManagerInterface $manager): Response
+    {
+        if ($committee->isPreRefused()) {
+            $this->addFlash('error', 'Le comité a déjà été pre-refusé.');
+        } else {
+            $committee->preRefused();
+            $manager->flush();
+
+            $this->addFlash('info', 'Le comité a bien été pre-refusé.');
+        }
+
+        return $this->redirectToRoute('app_'.$this->getSpaceType().'_committees_requests');
     }
 
     protected function renderTemplate(string $template, array $parameters = []): Response

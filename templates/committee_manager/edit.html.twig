@@ -21,16 +21,6 @@
 {% block committee_content %}
     <main>
         <section class="l__wrapper--slim">
-            {% if committee.isPending or committee.isPreApproved %}
-                <div class="committee__waiting-for-approval">
-                    Votre comité est en attente de validation par les équipes d'En Marche !
-                    Vous serez alerté{{ app.user.isFemale ? 'e' }} par e-mail quand il sera validé.
-                    <p>
-                        Une fois validé, vous pourrez contacter les adhérents suivant votre comité.
-                    </p>
-                </div>
-            {% endif %}
-
             <h3 class="text--medium">Mon comité</h3>
             {{ form_start(form, {attr: {'id': 'edit-committee-form', 'class': 'form committee-form b__nudge--top-40'}}) }}
                 {{ include('committee/_form.html.twig') }}
@@ -45,9 +35,11 @@
                 {{ form_rest(form) }}
             {{ form_end(form) }}
 
-            <div class="committee__warning b__nudge--top-40">
-                Vous pouvez démissionner à tout moment sur demande à l'adresse <a class="link--newblue" href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>.
-            </div>
+            {% if not app.user.isReferent %}
+                <div class="committee__warning b__nudge--top-40">
+                    Vous pouvez démissionner à tout moment sur demande à l'adresse <a class="link--newblue" href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>.
+                </div>
+            {% endif %}
         </section>
     </main>
 {% endblock %}

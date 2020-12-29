@@ -66,7 +66,7 @@ class CoordinatorControllerTest extends WebTestCase
 
         $data = [];
         $data['coordinator_area']['accept'] = null;
-        $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->eq(1)->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Pré-approuver')->eq(1)->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 

@@ -13,7 +13,6 @@ class CommitteeCreationCommandHandler
 {
     private $dispatcher;
     private $factory;
-    private $manager;
     private $entityManager;
     private $mailer;
     private $referentTagManager;
@@ -21,14 +20,12 @@ class CommitteeCreationCommandHandler
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CommitteeFactory $factory,
-        CommitteeManager $manager,
         EntityManagerInterface $entityManager,
         MailerService $transactionalMailer,
         ReferentTagManager $referentTagManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
-        $this->manager = $manager;
         $this->entityManager = $entityManager;
         $this->mailer = $transactionalMailer;
         $this->referentTagManager = $referentTagManager;
@@ -41,14 +38,14 @@ class CommitteeCreationCommandHandler
         if ($adherent->isReferent()) {
             $committee->preApproved();
             if ($adherentPSF = $command->getProvisionalSupervisorFemale()) {
-                $this->manager->updateProvisionalSupervisor($committee, $adherentPSF);
+                $committee->updateProvisionalSupervisor($adherentPSF);
             }
 
             if ($adherentPSM = $command->getProvisionalSupervisorMale()) {
-                $this->manager->updateProvisionalSupervisor($committee, $adherentPSM);
+                $committee->updateProvisionalSupervisor($adherentPSM);
             }
         } else {
-            $this->manager->updateProvisionalSupervisor($committee, $adherent);
+            $committee->updateProvisionalSupervisor($adherent);
         }
 
         $this->referentTagManager->assignReferentLocalTags($committee);
