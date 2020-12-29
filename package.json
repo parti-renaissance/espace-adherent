@@ -63,7 +63,7 @@
     "stackblur-canvas": "^1.4.0",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^2.3.6",
-    "webpack": "^4.31.0",
+    "webpack": "^5.0.0",
     "webpack-cli": "^3.3.2",
     "webpack-merge": "^4.2.1"
   }
