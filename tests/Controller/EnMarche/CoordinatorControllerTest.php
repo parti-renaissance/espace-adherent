@@ -60,11 +60,13 @@ class CoordinatorControllerTest extends WebTestCase
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertStringContainsString('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
+        $this->assertSame(2, $this->client->getCrawler()->filter('#committee-list tr')->count());
+        $this->assertStringContainsString('Une nouvelle demande', $this->client->getCrawler()->filter('#committee-list tr')->eq(0)->text());
+        $this->assertStringContainsString('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list tr')->eq(1)->text());
 
         $data = [];
         $data['coordinator_area']['accept'] = null;
-        $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Pré-accepter')->eq(1)->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
@@ -73,7 +75,7 @@ class CoordinatorControllerTest extends WebTestCase
 
         $this->assertSame(0, $crawler->filter('#committee-list .coordinator__item .form__error')->count());
         $this->seeFlashMessage($crawler, 'Merci. Votre appréciation a été transmise à nos équipes.');
-        $this->assertStringContainsString('Aucun comité ne répond à ce filtre', $crawler->filter('.manager-content__container')->text());
+        $this->assertSame(1, $this->client->getCrawler()->filter('#committee-list tr')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list?s=PRE_APPROVED');
 
@@ -90,11 +92,13 @@ class CoordinatorControllerTest extends WebTestCase
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertStringContainsString('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list')->text());
+        $this->assertSame(2, $this->client->getCrawler()->filter('#committee-list tr')->count());
+        $this->assertStringContainsString('Une nouvelle demande', $this->client->getCrawler()->filter('#committee-list tr')->eq(0)->text());
+        $this->assertStringContainsString('En Marche Marseille 3', $this->client->getCrawler()->filter('#committee-list tr')->eq(1)->text());
 
         $data = [];
         $data['coordinator_area']['refuse'] = null;
-        $this->client->submit($this->client->getCrawler()->selectButton('Pré-refuser')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Pré-refuser')->eq(1)->form(), $data);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
@@ -103,7 +107,7 @@ class CoordinatorControllerTest extends WebTestCase
 
         $this->assertSame(0, $crawler->filter('#committee-list .coordinator__item .form__error')->count());
         $this->seeFlashMessage($crawler, 'Merci. Votre appréciation a été transmise à nos équipes.');
-        $this->assertStringContainsString('Aucun comité ne répond à ce filtre', $this->client->getCrawler()->filter('.manager-content__container')->text());
+        $this->assertSame(1, $this->client->getCrawler()->filter('#committee-list tr')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-coordinateur/comites/list?s=PRE_REFUSED');
 

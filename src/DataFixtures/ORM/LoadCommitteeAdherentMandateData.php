@@ -27,7 +27,7 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
         $this->setReference('committee-mandate-male', $mandateMale1);
         $manager->persist($mandateMale1);
 
-        $mandateMale2 = new CommitteeAdherentMandate($jacques, Genders::MALE, $committee1, new \DateTime('2018-01-01'), new \DateTime('2019-12-31'));
+        $mandateMale2 = new CommitteeAdherentMandate($jacques, Genders::MALE, $committee1, new \DateTime('2018-01-01'), null, false, new \DateTime('2019-12-31'));
         $this->setReference('committee-mandate-male', $mandateMale2);
         $manager->persist($mandateMale2);
 

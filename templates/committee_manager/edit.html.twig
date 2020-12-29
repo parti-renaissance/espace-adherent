@@ -2,6 +2,10 @@
 
 {% block page_title 'Mon comité' %}
 
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+{% endblock %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
     {% if google_maps_api_key %}

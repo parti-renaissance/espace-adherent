@@ -3,7 +3,9 @@
 namespace App\Committee;
 
 use App\Address\Address;
+use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Validator\CommitteeProvisionalSupervisor as AssertCommitteeProvisionalSupervisorValid;
 use App\Validator\UniqueCommittee as AssertUniqueCommittee;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -59,6 +61,25 @@ class CommitteeCommand
      */
     public $twitterNickname;
 
+    /**
+     * @var Adherent|null
+     *
+     * @AssertCommitteeProvisionalSupervisorValid(gender="male", errorPath="provisionalSupervisorMale", groups={"with_provisional_supervisors"})
+     * @Assert\Expression(
+     *     expression="(value == null and this.getProvisionalSupervisorFemale() != null) or value != null",
+     *     message="committee.provisional_supervisor.empty",
+     * groups={"with_provisional_supervisors"})
+     * )
+     */
+    protected $provisionalSupervisorMale;
+
+    /**
+     * @var Adherent|null
+     *
+     * @AssertCommitteeProvisionalSupervisorValid(gender="female", errorPath="provisionalSupervisorFemale", groups={"with_provisional_supervisors"})
+     */
+    protected $provisionalSupervisorFemale;
+
     protected function __construct(Address $address = null)
     {
         $this->address = $address ?: new Address();
@@ -105,5 +126,25 @@ class CommitteeCommand
     public function getAddress(): Address
     {
         return $this->address;
+    }
+
+    public function setProvisionalSupervisorFemale(?Adherent $adherent): void
+    {
+        $this->provisionalSupervisorFemale = $adherent;
+    }
+
+    public function getProvisionalSupervisorFemale(): ?Adherent
+    {
+        return $this->provisionalSupervisorFemale;
+    }
+
+    public function setProvisionalSupervisorMale(?Adherent $adherent): void
+    {
+        $this->provisionalSupervisorMale = $adherent;
+    }
+
+    public function getProvisionalSupervisorMale(): ?Adherent
+    {
+        return $this->provisionalSupervisorMale;
     }
 }

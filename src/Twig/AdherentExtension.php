@@ -17,6 +17,7 @@ class AdherentExtension extends AbstractExtension
             new TwigFunction('get_elected_representative', [AdherentRuntime::class, 'getElectedRepresentative']),
             new TwigFunction('has_active_parliamentary_mandate', [AdherentRuntime::class, 'hasActiveParliamentaryMandate']),
             new TwigFunction('get_session_modal_context', [AdherentRuntime::class, 'getSessionModalContext']),
+            new TwigFunction('get_name_by_uuid', [AdherentRuntime::class, 'getNameByUuid']),
         ];
     }
 }

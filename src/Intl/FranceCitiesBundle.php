@@ -98,7 +98,7 @@ class FranceCitiesBundle
      *
      * @return string|null
      */
-    public static function getCity(string $postalCode, string $inseeCode)
+    public static function getCity(string $postalCode, ?string $inseeCode)
     {
         return self::$cities[$postalCode][$inseeCode] ?? self::$cities[$postalCode][ltrim($inseeCode, '0')] ?? null;
     }

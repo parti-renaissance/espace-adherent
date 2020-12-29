@@ -413,6 +413,15 @@ class CommitteeManager
         $this->entityManager->flush();
     }
 
+    public function updateProvisionalSupervisor(Committee $committee, Adherent $adherent): void
+    {
+        if ($ps = $committee->getProvisionalSupervisorByGender($adherent->getGender())) {
+            $committee->removeProvisionalSupervisor($ps);
+        }
+
+        $committee->addProvisionalSupervisor($adherent);
+    }
+
     private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void
     {
         $this->entityManager->remove($membership);

@@ -935,10 +935,8 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emailAddress));
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès.
-Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soit pleinement opérationnel.');
-        $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee_name')->attr('value'));
-        $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee_description')->text());
+        $this->assertEquals('http://'.$this->hosts['app'].'/parametres/mes-activites', $this->client->getRequest()->getUri());
+        $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès. Il ne manque plus que la validation d\'un référent.');
     }
 
     public function provideRegularAdherentsCredentials(): array

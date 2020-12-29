@@ -1,0 +1,37 @@
+{% extends "#{space_name}/committees_list.html.twig" %}
+
+{% block committee_table_content %}
+    <table class="datagrid__table-manager">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Demandeur</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for committee in committees %}
+            <tr class="committee__item">
+                <td>{{ committee.createdAt|date('d/m/Y') }}</td>
+                <td>
+                    <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">
+                        {{ committee.name }}
+                    </a>
+                </td>
+                <td>{{ committee.address }}, {{ committee.postalCode }} {{ committee.cityName }}, {{ committee.country }}</td>
+                <td>{{ get_name_by_uuid(committee.createdBy) }}</td>
+                <td><span class="status status__{{ committee.status|lower }}">{{ committee.status|lower|trans }}</span></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5" class="text--center">
+                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                    Aucun comité
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

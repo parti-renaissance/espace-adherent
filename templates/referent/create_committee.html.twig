@@ -1,0 +1,89 @@
+{% extends base_template %}
+
+{% block page_title 'Je crée un comité En Marche !' %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.autocomlete_address(form.address, true) }}
+        });
+    </script>
+{% endblock %}
+
+{% block committee_content %}
+    <main>
+        <section class="l__wrapper--slim">
+            <div class="b__nudge--top">
+                <a href="{{ path('app_referent_committees') }}" class="back-to-list icon--with-text text--summary">
+                    {{ include('components/caret--left.html.twig') }}
+                    Retour à la liste des comités de ma territoire</a>
+            </div>
+
+            <header class="space--30-0">
+                <h1 class="b__nudge--bottom-small text--large">
+                    Création de comité
+                </h1>
+            </header>
+
+            <div class="committee__warning">
+                La demande de création du comité doit émaner d'une décision du Copol.<br><br>
+                Elle est soumise à la validation du coordinateur de votre région. Un email lui est envoyé pour l'informer.<br><br>
+                Une fois la demande validée, vous en serez informé par email en même temps que le binôme d'Animateurs provisoire.
+                Ces derniers pourront administrer conjointement le comité depuis leurs comptes adhérents respectifs.<br><br>
+                Une désignation devra être lancée dans un délai de X mois pour les remplacer par un binôme d'animateurs élus.<br><br>
+                Le binôme d'animateurs provisoires ne pourra pas nommer de Co-Animateurs ou accéder aux données personnelles des adhérents.
+                Il ne sera pas non plus membre du Conseil territorial.<br><br>
+                Vous pouvez suivre le statut de vos demandes depuis votre espace Référent.
+            </div>
+
+            <div>
+                {{ form_start(form, { attr: { id: 'create-committee-form', class: 'form committee-form' } }) }}
+                    {{ include('committee/_form.html.twig') }}
+
+                    <hr>
+
+                    <p>Vous devez séléctionner au moins un Animateur provisoire parmi vos adhérents</p>
+
+                    {% if form.provisionalSupervisorFemale is defined %}
+                        <div class="form__row" id="field-provisional-supervisor-female">
+                            {{ form_label(form.provisionalSupervisorFemale, 'Animatrice provisoire') }}
+                            {{ form_errors(form.provisionalSupervisorFemale) }}
+                            {{ form_widget(form.provisionalSupervisorFemale, { 'attr': {
+                                'class': 'form--full form form__field',
+                                'placeholder': 'Rechercher parmi vos adhérents',
+                            }}) }}
+                        </div>
+                    {% endif %}
+
+                    {% if form.provisionalSupervisorMale is defined %}
+                        <div class="form__row" id="field-provisional-supervisor-male">
+                            {{ form_label(form.provisionalSupervisorMale, 'Animateur provisoire') }}
+                            {{ form_errors(form.provisionalSupervisorMale) }}
+                            {{ form_widget(form.provisionalSupervisorMale, { 'attr': {
+                                'class': 'form--full form form__field',
+                                'placeholder': 'Rechercher parmi vos adhérents',
+                            }}) }}
+                        </div>
+                    {% endif %}
+
+                    <div class="b__nudge--top-40  b__nudge--bottom-larger">
+                        <button type="submit" id="create-my-committee" class="btn btn--blue btn--large-and-full">
+                            Créer le comité
+                        </button>
+                    </div>
+
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
+        </section>
+    </main>
+{% endblock %}

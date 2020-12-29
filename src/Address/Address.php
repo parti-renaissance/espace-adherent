@@ -101,7 +101,7 @@ class Address implements AddressInterface, GeocodableInterface
         }
 
         if ($this->postalCode && $this->city) {
-            $this->cityName = FranceCitiesBundle::getCity($this->postalCode, static::getInseeCode($this->city));
+            $this->cityName = FranceCitiesBundle::getCity($this->postalCode, $this->getInseeCode());
         }
 
         return $this->cityName;
@@ -158,7 +158,20 @@ class Address implements AddressInterface, GeocodableInterface
     /**
      * Returns the french national INSEE code from the city code.
      */
-    private static function getInseeCode(string $cityCode): string
+    public function getInseeCode(): ?string
+    {
+        $inseeCode = null;
+        if ($this->city && 5 === strpos($this->city, '-')) {
+            list(, $inseeCode) = explode('-', $this->city);
+        }
+
+        return $inseeCode;
+    }
+
+    /**
+     * Returns the french national INSEE code from the city code.
+     */
+    private static function getInseeCodeFromCityCode(string $cityCode): string
     {
         [, $inseeCode] = explode('-', $cityCode);
 

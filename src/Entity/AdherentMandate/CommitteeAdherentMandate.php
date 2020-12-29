@@ -11,15 +11,34 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CommitteeAdherentMandate extends AbstractAdherentMandate
 {
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public $provisional = false;
+
     public function __construct(
         Adherent $adherent,
         string $gender,
         Committee $committee,
         \DateTime $beginAt,
+        string $quality = null,
+        bool $provisional = false,
         \DateTime $finishAt = null
     ) {
         parent::__construct($adherent, $gender, $beginAt, $finishAt);
 
         $this->committee = $committee;
+        $this->quality = $quality;
+        $this->provisional = $provisional;
+    }
+
+    public function isProvisional(): bool
+    {
+        return $this->provisional;
+    }
+
+    public function setProvisional(bool $provisional): void
+    {
+        $this->provisional = $provisional;
     }
 }

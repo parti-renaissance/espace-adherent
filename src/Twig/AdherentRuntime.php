@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ReferentSpaceAccessInformation;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
+use App\Repository\AdherentRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,16 +19,19 @@ class AdherentRuntime implements RuntimeExtensionInterface
     private $accessInformationRepository;
     private $electedRepresentativeRepository;
     private $committeeMandateRepository;
+    private $adherentRepository;
 
     public function __construct(
         ElectedRepresentativeRepository $electedRepresentativeRepository,
         ReferentSpaceAccessInformationRepository $accessInformationRepository,
         CommitteeAdherentMandateRepository $committeeMandateRepository,
+        AdherentRepository $adherentRepository,
         array $interests
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->accessInformationRepository = $accessInformationRepository;
         $this->committeeMandateRepository = $committeeMandateRepository;
+        $this->adherentRepository = $adherentRepository;
         $this->memberInterests = $interests;
     }
 
@@ -142,6 +146,13 @@ class AdherentRuntime implements RuntimeExtensionInterface
     public function getElectedRepresentative(Adherent $adherent): ?ElectedRepresentative
     {
         return $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
+    }
+
+    public function getNameByUuid(string $uuid): string
+    {
+        $adherent = $this->adherentRepository->findNameByUuid($uuid);
+
+        return \count($adherent) > 0 ? $adherent[0]['firstName'].' '.$adherent[0]['lastName'] : '';
     }
 
     public function hasActiveParliamentaryMandate(Adherent $adherent): bool

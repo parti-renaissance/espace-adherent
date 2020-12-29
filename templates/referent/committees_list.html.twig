@@ -2,9 +2,22 @@
 
 {% block committee_content %}
 
+    {% if pending_count is defined and pending_count > 0 %}
+        <div class="committee__info">
+            {{ 'committee.pending.count'|transchoice(pending_count) }}
+            <a class="btn btn--orange--light" href="{{ path("app_#{space_name}_committees_requests") }}">Voir</a>
+        </div>
+    {% endif %}
+
     <div class="datagrid__pre-table b__nudge--bottom">
 
         <h3>Comités</h3>
+
+        {% if is_canary_enabled() and is_granted('ROLE_REFERENT') %}
+            <a href="{{ path("app_referent_create_committee") }}" class="btn-secondary btn-secondary--blue">
+                + Créer un comité
+            </a>
+        {% endif %}
 
         {% if total_count %}
             <span class="datagrid__count">
@@ -40,7 +53,7 @@
                 <div class="manager__filters__actions b__nudge--top">
                     <button type="submit" class="btn btn--black b__nudge--bottom-medium">Appliquer</button>
                     {% if form.vars.submitted %}
-                        <a href="{{ path("app_#{space_name}_committees") }}" class="btn btn--no-border b__nudge--bottom-medium">
+                        <a href="{{ is_active_route(app.request, "app_#{space_name}_committees_requests") ? path("app_#{space_name}_committees_requests") : path("app_#{space_name}_committees") }}" class="btn btn--no-border b__nudge--bottom-medium">
                             Réinitialiser les filtres
                         </a>
                     {% endif %}
@@ -51,51 +64,81 @@
         </div>
     </div>
 
-    <div class="datagrid__table-container">
-        <table class="datagrid__table-manager">
-            <thead>
-                <tr>
-                    <th width="250">Nom</th>
-                    <th width="150">Ville (code postal)</th>
-                    <th width="20" class="text--center">Membre</th>
-                    <th width="20" class="text--center">Comité de vote</th>
-                    <th width="20" class="text--center">Candidates / Candidats</th>
-                    <th width="20" class="text--center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for committee_row in committees %}
-                {% set committee = committee_row.committee %}
-                <tr class="committee__item">
-                    <td>
-                        <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">
-                            {{ committee.name }}
-                        </a>
-                    </td>
-                    <td>{{ committee.cityName }} ({{ committee.postalCode }})</td>
-                    <td class="text--center">{{ committee.membersCount }}</td>
-                    <td class="text--center">{{ committee_row.total_voters }}</td>
-                    <td class="text--center">
-                        {% if committee_row.total_candidacy_female is not null %}
-                            <a href="#" class="link--no-decor text--blue--dark candidacies-list-modal--trigger" data-uuid="{{ committee.uuid }}">
-                                {{ committee_row.total_candidacy_female }} F / {{ committee_row.total_candidacy_male }} H
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td class="text--center">
-                        <a href="{{ path("app_referent_designations_list", {committee_slug: committee.slug}) }}" class="link--no-decor">Désignations</a>
-                    </td>
-                </tr>
+    <nav class="tabs-nav b__nudge--bottom-larger">
+        <ul>
+            {% if is_active_route(app.request, "app_#{space_name}_committees") %}
+                <li class="active">
+                    <span class="tabs-nav__item">
+                         Comités actifs
+                    </span>
+                </li>
+                <li>
+                    <a class="tabs-nav__item" href="{{ path("app_#{space_name}_committees_requests") }}">
+                        Demandes de créations
+                    </a>
+                </li>
             {% else %}
-                <tr>
-                    <td colspan="6" class="text--center">
-                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
-                        Aucun élément
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                <li>
+                    <a class="tabs-nav__item" href="{{ path("app_#{space_name}_committees") }}">
+                        Comités actifs
+                    </a>
+                </li>
+                <li class="active">
+                    <span class="tabs-nav__item">
+                        Demandes de créations
+                    </span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="datagrid__table-container">
+        {% block committee_table_content %}
+            <table class="datagrid__table-manager">
+                <thead>
+                    <tr>
+                        <th width="250">Nom</th>
+                        <th width="150">Ville (code postal)</th>
+                        <th width="20" class="text--center">Membre</th>
+                        <th width="20" class="text--center">Comité de vote</th>
+                        <th width="20" class="text--center">Candidates / Candidats</th>
+                        <th width="20" class="text--center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for committee_row in committees %}
+                    {% set committee = committee_row.committee %}
+                    <tr class="committee__item">
+                        <td>
+                            <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">
+                                {{ committee.name }}
+                            </a>
+                        </td>
+                        <td>{{ committee.cityName }} ({{ committee.postalCode }})</td>
+                        <td class="text--center">{{ committee.membersCount }}</td>
+                        <td class="text--center">{{ committee_row.total_voters }}</td>
+                        <td class="text--center">
+                            {% if committee_row.total_candidacy_female is not null %}
+                                <a href="#" class="link--no-decor text--blue--dark candidacies-list-modal--trigger" data-uuid="{{ committee.uuid }}">
+                                    {{ committee_row.total_candidacy_female }} F / {{ committee_row.total_candidacy_male }} H
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td class="text--center">
+                            <a href="{{ path("app_referent_designations_list", {committee_slug: committee.slug}) }}" class="link--no-decor">Désignations</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text--center">
+                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                            Aucun élément
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endblock %}
     </div>
 {% endblock %}
 

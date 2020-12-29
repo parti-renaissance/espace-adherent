@@ -638,6 +638,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $notifiedForElection = false;
 
+    /**
+     * @var ProvisionalSupervisor[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\ProvisionalSupervisor", mappedBy="adherent", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     */
+    private $provisionalSupervisors;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -651,6 +658,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->receivedDelegatedAccesses = new ArrayCollection();
         $this->handledThematicCommunities = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
+        $this->provisionalSupervisors = new ArrayCollection();
     }
 
     public static function create(
@@ -2656,5 +2664,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function notifyForElection(): void
     {
         $this->notifiedForElection = true;
+    }
+
+    public function getProvisionalSupervisors(): Collection
+    {
+        return $this->provisionalSupervisors;
+    }
+
+    public function isProvisionalSupervisor(): bool
+    {
+        return $this->provisionalSupervisors->count() > 0;
     }
 }

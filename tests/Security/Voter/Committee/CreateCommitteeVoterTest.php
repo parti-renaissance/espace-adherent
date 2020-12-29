@@ -128,6 +128,17 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::CREATE);
     }
 
+    public function testReferentCanCreate()
+    {
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->once())
+            ->method('isReferent')
+            ->willReturn(true)
+        ;
+
+        $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::CREATE);
+    }
+
     private function assertElectedRepresentativeRepositoryBehavior(
         bool $isCalled,
         Adherent $adherent = null,
