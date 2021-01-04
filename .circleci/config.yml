@@ -103,7 +103,7 @@ jobs:
             - run: |
                 set -x
 
-                make -j2 lint security-check
+                make -j2 lint
 
     phpunit:
         <<: *working_directory
