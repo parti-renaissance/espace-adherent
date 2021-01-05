@@ -10,14 +10,14 @@ use App\TerritorialCouncil\Convocation\Events;
 use App\TerritorialCouncil\Event\ConvocationEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class CreateTimelineFeedFromConvocationListener implements EventSubscriberInterface
 {
     private $entityManager;
     private $engine;
 
-    public function __construct(EntityManagerInterface $entityManager, EngineInterface $engine)
+    public function __construct(EntityManagerInterface $entityManager, Environment $engine)
     {
         $this->entityManager = $entityManager;
         $this->engine = $engine;

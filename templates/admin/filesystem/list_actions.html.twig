@@ -1,4 +1,4 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
     <a href="{{ path('admin_app_filesystem_file_edit', { id: object.id }) }}" class="btn btn-xs btn-default" title="Éditer">

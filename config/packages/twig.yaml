@@ -27,6 +27,6 @@ twig:
 
     form_themes:
         - 'form_theme.html.twig'
-        - 'SonataCoreBundle:Form:datepicker.html.twig'
-        - 'SonataCoreBundle:Form:colorpicker.html.twig'
-        - 'TetranzSelect2EntityBundle:Form:fields.html.twig'
+        - '@SonataCore/Form/datepicker.html.twig'
+        - '@SonataCore/Form/colorpicker.html.twig'
+        - '@TetranzSelect2Entity/Form/fields.html.twig'

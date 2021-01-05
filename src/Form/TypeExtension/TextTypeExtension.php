@@ -20,6 +20,11 @@ class TextTypeExtension extends AbstractTypeExtension
         return TextType::class;
     }
 
+    public static function getExtendedTypes()
+    {
+        return [TextType::class];
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver

@@ -65,7 +65,7 @@ class AdminTerritorialCouncilMembershipLogControllerTest extends WebTestCase
             \sprintf('/admin/territorial-council-membership-log/%s/%s', $membershipLog->getId(), $status)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
-        $this->assertStringContainsString($isResolved ? 'Ce log n&#039;est pas encore résolu.' : 'Ce log est déjà résolu.', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString($isResolved ? 'Ce log n\'est pas encore résolu.' : 'Ce log est déjà résolu.', $this->client->getResponse()->getContent());
     }
 
     /**

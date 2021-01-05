@@ -1,4 +1,4 @@
-{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+{% extends '@SonataAdmin/CRUD/base_list.html.twig' %}
 
 {% block list_table %}
     <div class="col-xs-12 col-md-12">
@@ -93,7 +93,7 @@
                                     <span class="progress-description">
                                     {% if not app.request.xmlHttpRequest %}
                                         <ul class="list-unstyled">
-                                        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+                                        {% include '@SonataAdmin/Button/create_button.html.twig' %}
                                     </ul>
                                     {% endif %}
                                 </span>

@@ -4,7 +4,7 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
 
@@ -24,7 +24,7 @@ final class CommentsCguSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function postDeserialize(GetResponseEvent $event)
+    public function postDeserialize(RequestEvent $event)
     {
         $route = $event->getRequest()->attributes->get('_route');
 
