@@ -8,10 +8,10 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class MeasureTypeAdmin extends AbstractAdmin
 {
@@ -103,11 +103,11 @@ class MeasureTypeAdmin extends AbstractAdmin
 
     public function postUpdate($object)
     {
-        $this->dispatcher->dispatch(Events::CHEZVOUS_MEASURE_TYPE_UPDATED, new MeasureTypeEvent($object));
+        $this->dispatcher->dispatch(new MeasureTypeEvent($object), Events::CHEZVOUS_MEASURE_TYPE_UPDATED);
     }
 
     public function postRemove($object)
     {
-        $this->dispatcher->dispatch(Events::CHEZVOUS_MEASURE_TYPE_DELETED, new MeasureTypeEvent($object));
+        $this->dispatcher->dispatch(new MeasureTypeEvent($object), Events::CHEZVOUS_MEASURE_TYPE_DELETED);
     }
 }

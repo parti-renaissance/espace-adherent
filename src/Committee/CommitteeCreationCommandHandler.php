@@ -6,7 +6,7 @@ use App\Events;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Referent\ReferentTagManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeCreationCommandHandler
 {
@@ -42,7 +42,7 @@ class CommitteeCreationCommandHandler
 
         $this->manager->followCommittee($adherent, $committee);
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_CREATED);
 
         $message = CommitteeCreationConfirmationMessage::create($adherent, $committee->getCityName());
         $this->mailer->sendMessage($message);

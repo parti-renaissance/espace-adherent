@@ -9,8 +9,8 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use App\Membership\UserEvents;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManagementAuthority
 {
@@ -86,6 +86,6 @@ class CommitteeManagementAuthority
     {
         $this->manager->followCommittee($adherent, $committee);
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new FollowCommitteeEvent($adherent, $committee));
+        $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent, $committee), UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE);
     }
 }

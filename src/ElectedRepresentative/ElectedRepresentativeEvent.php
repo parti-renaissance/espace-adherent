@@ -3,7 +3,7 @@
 namespace App\ElectedRepresentative;
 
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ElectedRepresentativeEvent extends Event
 {

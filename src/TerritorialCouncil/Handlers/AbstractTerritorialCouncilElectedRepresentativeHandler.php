@@ -11,7 +11,7 @@ use App\Repository\ElectedRepresentative\MandateRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractTerritorialCouncilElectedRepresentativeHandler extends AbstractTerritorialCouncilHandler
 {

@@ -8,11 +8,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/ideasworkshop-thread/{uuid}")
@@ -36,7 +36,7 @@ class AdminThreadController extends Controller
     ): Response {
         $thread->disable();
 
-        $dispatcher->dispatch(Events::THREAD_DISABLE, new GenericEvent($thread));
+        $dispatcher->dispatch(new GenericEvent($thread), Events::THREAD_DISABLE);
 
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le fil de discussion « %s » a été modéré avec succès.', $thread->getId()));
@@ -58,7 +58,7 @@ class AdminThreadController extends Controller
     ): Response {
         $thread->enable();
 
-        $dispatcher->dispatch(Events::THREAD_ENABLE, new GenericEvent($thread));
+        $dispatcher->dispatch(new GenericEvent($thread), Events::THREAD_ENABLE);
 
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le fil de discussion « %s » a été activé avec succès.', $thread->getId()));

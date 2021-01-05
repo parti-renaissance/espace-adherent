@@ -4,7 +4,7 @@ namespace App\Event;
 
 use App\Entity\Event;
 use App\Events;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventRegistrationCommandHandler
 {
@@ -39,18 +39,18 @@ class EventRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $this->dispatcher->dispatch(Events::EVENT_REGISTRATION_CREATED, new EventRegistrationEvent(
+        $this->dispatcher->dispatch(new EventRegistrationEvent(
             $registration,
             $event->getSlug(),
             $sendMail
-        ));
+        ), Events::EVENT_REGISTRATION_CREATED);
 
         if ($event instanceof Event) {
-            $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventEvent(
+            $this->dispatcher->dispatch(new EventEvent(
                 null,
                 $event,
                 $event->getCommittee()
-            ));
+            ), Events::EVENT_UPDATED);
         }
     }
 }

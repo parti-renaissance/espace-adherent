@@ -15,7 +15,7 @@ use App\Events;
 use App\Membership\UserEvent;
 use Behat\Behat\Context\Context;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SyncWithAPIContext implements Context
 {
@@ -35,7 +35,7 @@ class SyncWithAPIContext implements Context
     {
         $adherent = $this->doctrine->getRepository(Adherent::class)->findOneBy(['emailAddress' => $email]);
 
-        $this->dispatcher->dispatch($event, new UserEvent($adherent, true, true));
+        $this->dispatcher->dispatch(new UserEvent($adherent, true, true), $event);
     }
 
     /**
@@ -51,7 +51,7 @@ class SyncWithAPIContext implements Context
         }
         unset($subscriptions[0]);
 
-        $this->dispatcher->dispatch($event, new UserEvent($adherent, null, null, $subscriptions));
+        $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $subscriptions), $event);
     }
 
     /**
@@ -62,7 +62,7 @@ class SyncWithAPIContext implements Context
         /** @var Committee $committee */
         $committee = $this->doctrine->getRepository(Committee::class)->findOneBy(['name' => $committeeName]);
 
-        $this->dispatcher->dispatch($event, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), $event);
     }
 
     /**
@@ -73,7 +73,7 @@ class SyncWithAPIContext implements Context
         /** @var Event $committeeEvent */
         $committeeEvent = $this->doctrine->getRepository(Event::class)->findOneBy(['name' => $eventName]);
 
-        $this->dispatcher->dispatch($event, new EventEvent(null, $committeeEvent));
+        $this->dispatcher->dispatch(new EventEvent(null, $committeeEvent), $event);
     }
 
     /**
@@ -103,7 +103,7 @@ class SyncWithAPIContext implements Context
                 throw new \Exception("The event \"$event\" is not implemented for testing.");
         }
 
-        $this->dispatcher->dispatch($event, $citizenProjectEvent);
+        $this->dispatcher->dispatch($citizenProjectEvent, $event);
     }
 
     /**
@@ -114,6 +114,6 @@ class SyncWithAPIContext implements Context
         /** @var CitizenAction $citizenAction */
         $citizenAction = $this->doctrine->getRepository(CitizenAction::class)->findOneBy(['name' => $citizenActionName]);
 
-        $this->dispatcher->dispatch($event, new CitizenActionEvent($citizenAction));
+        $this->dispatcher->dispatch(new CitizenActionEvent($citizenAction), $event);
     }
 }

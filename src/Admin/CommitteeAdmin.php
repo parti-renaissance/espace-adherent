@@ -22,12 +22,12 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeAdmin extends AbstractAdmin
 {
@@ -161,7 +161,7 @@ class CommitteeAdmin extends AbstractAdmin
 
     public function postUpdate($object)
     {
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($object));
+        $this->dispatcher->dispatch(new CommitteeEvent($object), Events::COMMITTEE_UPDATED);
     }
 
     protected function configureFormFields(FormMapper $formMapper)

@@ -4,7 +4,7 @@ namespace App\Committee\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractCommitteeMembershipEvent extends Event implements CommitteeEventInterface
 {

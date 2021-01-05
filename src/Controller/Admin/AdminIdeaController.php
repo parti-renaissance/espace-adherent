@@ -10,11 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/ideasworkshop-idea")
@@ -67,7 +67,7 @@ class AdminIdeaController extends Controller
             $this->addFlash('warning', 'La proposition a déjà été démodérée.');
         } else {
             $idea->setEnabled(true);
-            $dispatcher->dispatch(Events::IDEA_ENABLE, new GenericEvent($idea));
+            $dispatcher->dispatch(new GenericEvent($idea), Events::IDEA_ENABLE);
             $manager->flush();
 
             $this->addFlash('success', 'La proposition a bien été démodérée.');
@@ -91,7 +91,7 @@ class AdminIdeaController extends Controller
             $this->addFlash('warning', 'La proposition a déjà été modérée.');
         } else {
             $idea->setEnabled(false);
-            $dispatcher->dispatch(Events::IDEA_DISABLE, new GenericEvent($idea));
+            $dispatcher->dispatch(new GenericEvent($idea), Events::IDEA_DISABLE);
             $manager->flush();
 
             $this->addFlash('success', 'La proposition a bien été modérée.');

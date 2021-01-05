@@ -10,7 +10,7 @@ use App\Entity\VotePlace;
 use App\Repository\AssessorRequestRepository;
 use App\Repository\VotePlaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AssessorManager
 {
@@ -37,10 +37,7 @@ class AssessorManager
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(
-            AssessorRequestEnum::REQUEST_ASSOCIATED,
-            new AssessorRequestEvent($assessorRequest)
-        );
+        $this->dispatcher->dispatch(new AssessorRequestEvent($assessorRequest), AssessorRequestEnum::REQUEST_ASSOCIATED);
     }
 
     public function unprocessAssessorRequest(AssessorRequest $assessorRequest): void

@@ -26,10 +26,10 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectAdmin extends AbstractAdmin
 {
@@ -105,7 +105,7 @@ class CitizenProjectAdmin extends AbstractAdmin
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($object));
+        $this->eventDispatcher->dispatch(new CitizenProjectWasUpdatedEvent($object), Events::CITIZEN_PROJECT_UPDATED);
     }
 
     protected function configureShowFields(ShowMapper $showMapper)

@@ -7,7 +7,7 @@ use App\Mailer\Event\MailerEvents;
 use App\Mailer\Exception\MailerException;
 use App\Mailer\Message\Message;
 use App\Mailer\Transport\TransportInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class MailerService
 {
@@ -36,12 +36,12 @@ class MailerService
         $email = $this->factory->createFromMessage($message);
 
         try {
-            $this->dispatcher->dispatch(MailerEvents::DELIVERY_MESSAGE, new MailerEvent($message, $email));
+            $this->dispatcher->dispatch(new MailerEvent($message, $email), MailerEvents::DELIVERY_MESSAGE);
             $this->transport->sendTemplateEmail($email);
-            $this->dispatcher->dispatch(MailerEvents::DELIVERY_SUCCESS, new MailerEvent($message, $email));
+            $this->dispatcher->dispatch(new MailerEvent($message, $email), MailerEvents::DELIVERY_SUCCESS);
         } catch (MailerException $exception) {
             $delivered = false;
-            $this->dispatcher->dispatch(MailerEvents::DELIVERY_ERROR, new MailerEvent($message, $email, $exception));
+            $this->dispatcher->dispatch(new MailerEvent($message, $email, $exception), MailerEvents::DELIVERY_ERROR);
         }
 
         return $delivered;

@@ -6,7 +6,7 @@ use App\Entity\InstitutionalEvent;
 use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoHashChangeAwareTrait;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class InstitutionalEventEvent extends Event implements GeocodableEntityEventInterface
 {

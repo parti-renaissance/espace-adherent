@@ -4,7 +4,7 @@ namespace App\Mailchimp\Event;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Mailchimp\Campaign\Request\EditCampaignRequest;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class RequestEvent extends Event
 {

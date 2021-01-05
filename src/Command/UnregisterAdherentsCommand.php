@@ -16,7 +16,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UnregisterAdherentsCommand extends Command
 {
@@ -144,7 +144,7 @@ class UnregisterAdherentsCommand extends Command
 
                 $this->handler->handle($adherent);
 
-                $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));
+                $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_DELETED);
             } catch (\Exception $ex) {
                 throw new \RuntimeException(\PHP_EOL.sprintf('An error occured while unregistering an adherent with email "%s".', $email), 0, $ex);
             }

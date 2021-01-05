@@ -8,11 +8,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/ideasworkshop-threadcomment/{uuid}")
@@ -36,7 +36,7 @@ class AdminThreadCommentController extends Controller
     ): Response {
         $comment->disable();
 
-        $dispatcher->dispatch(Events::THREAD_COMMENT_DISABLE, new GenericEvent($comment));
+        $dispatcher->dispatch(new GenericEvent($comment), Events::THREAD_COMMENT_DISABLE);
 
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le commentaire « %s » a été modéré avec succès.', $comment->getUuid()));
@@ -58,7 +58,7 @@ class AdminThreadCommentController extends Controller
     ): Response {
         $comment->enable();
 
-        $dispatcher->dispatch(Events::THREAD_COMMENT_ENABLE, new GenericEvent($comment));
+        $dispatcher->dispatch(new GenericEvent($comment), Events::THREAD_COMMENT_ENABLE);
 
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le commentaire « %s » a été activé avec succès.', $comment->getUuid()));

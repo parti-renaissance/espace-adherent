@@ -6,7 +6,7 @@ use App\Entity\CommitteeFeedItem;
 use App\Entity\Event;
 use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventCommandHandler
 {
@@ -33,28 +33,28 @@ class EventCommandHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::EVENT_CREATED, new EventEvent(
+        $this->dispatcher->dispatch(new EventEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()
-        ));
+        ), Events::EVENT_CREATED);
 
         return $event;
     }
 
     public function handleUpdate(Event $event, EventCommand $command)
     {
-        $this->dispatcher->dispatch(Events::EVENT_PRE_UPDATE, new EventEvent($command->getAuthor(), $event));
+        $this->dispatcher->dispatch(new EventEvent($command->getAuthor(), $event), Events::EVENT_PRE_UPDATE);
 
         $this->factory->updateFromEventCommand($event, $command);
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::EVENT_UPDATED, new EventEvent(
+        $this->dispatcher->dispatch(new EventEvent(
             $command->getAuthor(),
             $event,
             $command->getCommittee()
-        ));
+        ), Events::EVENT_UPDATED);
 
         return $event;
     }

@@ -34,12 +34,12 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\CollectionType as SonataCollectionType;
 use Sonata\Form\Type\DatePickerType;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ElectedRepresentativeAdmin extends AbstractAdmin
 {
@@ -537,7 +537,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         if (null === $this->userListDefinitionsBeforeUpdate) {
             $this->userListDefinitionsBeforeUpdate = $subject->getUserListDefinitions()->toArray();
 
-            $this->dispatcher->dispatch(ElectedRepresentativeEvents::BEFORE_UPDATE, new ElectedRepresentativeEvent($subject));
+            $this->dispatcher->dispatch(new ElectedRepresentativeEvent($subject), ElectedRepresentativeEvents::BEFORE_UPDATE);
         }
 
         parent::setSubject($subject);
@@ -560,7 +560,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         parent::postUpdate($object);
 
-        $this->dispatcher->dispatch(ElectedRepresentativeEvents::POST_UPDATE, new ElectedRepresentativeEvent($object));
+        $this->dispatcher->dispatch(new ElectedRepresentativeEvent($object), ElectedRepresentativeEvents::POST_UPDATE);
     }
 
     public function getExportFields()

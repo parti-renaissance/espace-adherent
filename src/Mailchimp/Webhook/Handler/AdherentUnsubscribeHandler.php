@@ -6,7 +6,7 @@ use App\Mailchimp\Webhook\EventTypeEnum;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Subscription\SubscriptionHandler;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentUnsubscribeHandler extends AbstractAdherentHandler
 {
@@ -22,7 +22,7 @@ class AdherentUnsubscribeHandler extends AbstractAdherentHandler
     public function handle(array $data): void
     {
         if ($adherent = $this->getAdherent($data['email'])) {
-            $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+            $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
 
             $adherent->setEmailUnsubscribed(true);
 
@@ -35,7 +35,7 @@ class AdherentUnsubscribeHandler extends AbstractAdherentHandler
 
             $this->subscriptionHandler->handleUpdateSubscription($adherent, $newSubscriptionTypes);
 
-            $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($adherent, null, null, $oldEmailsSubscriptions));
+            $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $oldEmailsSubscriptions), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
         }
     }
 

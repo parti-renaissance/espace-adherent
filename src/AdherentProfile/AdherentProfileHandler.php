@@ -13,7 +13,7 @@ use App\Membership\UserEvents;
 use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentProfileHandler
 {
@@ -58,7 +58,7 @@ class AdherentProfileHandler
 
     public function update(Adherent $adherent, AdherentProfile $adherentProfile): void
     {
-        $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
 
         if ($adherent->getEmailAddress() !== $adherentProfile->getEmailAddress()) {
             $this->emailHandler->handleRequest($adherent, $adherentProfile->getEmailAddress());
@@ -69,8 +69,8 @@ class AdherentProfileHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
+        $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($adherent), AdherentEvents::PROFILE_UPDATED);
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
     }
 
     private function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void

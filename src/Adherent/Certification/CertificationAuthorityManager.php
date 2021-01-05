@@ -8,7 +8,7 @@ use App\Entity\CertificationRequest;
 use App\Entity\Reporting\AdherentCertificationHistory;
 use App\Membership\AdherentEvent;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CertificationAuthorityManager
 {
@@ -42,7 +42,7 @@ class CertificationAuthorityManager
 
         $this->em->flush();
 
-        $this->eventDispatcher->dispatch(Events::ADHERENT_UNCERTIFIED, new AdherentEvent($adherent));
+        $this->eventDispatcher->dispatch(new AdherentEvent($adherent), Events::ADHERENT_UNCERTIFIED);
     }
 
     public function approve(
@@ -107,7 +107,7 @@ class CertificationAuthorityManager
         $this->em->persist(AdherentCertificationHistory::createCertify($adherent, $administrator));
         $this->em->flush();
 
-        $this->eventDispatcher->dispatch(Events::ADHERENT_CERTIFIED, new AdherentEvent($adherent));
+        $this->eventDispatcher->dispatch(new AdherentEvent($adherent), Events::ADHERENT_CERTIFIED);
     }
 
     private function removeDocument(CertificationRequest $certificationRequest): void

@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\Jecoute\DataSurvey;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DataSurveyAnswerHandler
 {
@@ -38,6 +38,6 @@ class DataSurveyAnswerHandler
         $this->manager->persist($dataSurvey);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(SurveyEvents::DATA_SURVEY_ANSWERED, new DataSurveyEvent($dataSurvey));
+        $this->dispatcher->dispatch(new DataSurveyEvent($dataSurvey), SurveyEvents::DATA_SURVEY_ANSWERED);
     }
 }

@@ -64,11 +64,11 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentAdmin extends AbstractAdmin
 {
@@ -1123,7 +1123,7 @@ HELP
 
     public function preUpdate($object)
     {
-        $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($this->beforeUpdate));
+        $this->dispatcher->dispatch(new UserEvent($this->beforeUpdate), UserEvents::USER_BEFORE_UPDATE);
     }
 
     /**
@@ -1135,8 +1135,8 @@ HELP
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $subscriptionTypes = $this->beforeUpdate->getSubscriptionTypes());
         $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($object, null, null, $subscriptionTypes));
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));
+        $this->dispatcher->dispatch(new UserEvent($object, null, null, $subscriptionTypes), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
+        $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED);
     }
 
     protected function configureListFields(ListMapper $listMapper)

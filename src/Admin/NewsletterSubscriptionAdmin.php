@@ -10,8 +10,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NewsletterSubscriptionAdmin extends AbstractAdmin
 {
@@ -91,12 +91,12 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
 
     public function postRemove($object)
     {
-        $this->eventDispatcher->dispatch(Events::UNSUBSCRIBE, new NewsletterEvent($object));
+        $this->eventDispatcher->dispatch(new NewsletterEvent($object), Events::UNSUBSCRIBE);
     }
 
     public function postUpdate($object)
     {
-        $this->eventDispatcher->dispatch(Events::UPDATE, new NewsletterEvent($object));
+        $this->eventDispatcher->dispatch(new NewsletterEvent($object), Events::UPDATE);
     }
 
     /**

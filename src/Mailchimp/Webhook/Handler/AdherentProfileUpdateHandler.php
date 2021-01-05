@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwareInterface
 {
@@ -43,14 +43,14 @@ class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements Lo
 
             $groups = $mergeFields['GROUPINGS'] ?? [];
 
-            $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+            $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
 
             $oldSubscriptionTypes = $adherent->getSubscriptionTypes();
 
             $this->updateSubscriptions($adherent, $this->findGroupById($groups, $this->mailchimpObjectIdMapping->getSubscriptionTypeInterestGroupId()));
             $this->updateInterests($adherent, $this->findGroupById($groups, $this->mailchimpObjectIdMapping->getMemberInterestInterestGroupId()));
 
-            $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($adherent, null, null, $oldSubscriptionTypes));
+            $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $oldSubscriptionTypes), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
         }
     }
 

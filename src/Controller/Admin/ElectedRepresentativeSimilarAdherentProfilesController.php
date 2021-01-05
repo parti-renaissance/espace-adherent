@@ -10,8 +10,8 @@ use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ElectedRepresentativeSimilarAdherentProfilesController extends Controller
 {
@@ -38,12 +38,12 @@ class ElectedRepresentativeSimilarAdherentProfilesController extends Controller
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $dispatcher
     ) {
-        $dispatcher->dispatch(ElectedRepresentativeEvents::BEFORE_UPDATE, new ElectedRepresentativeEvent($electedRepresentative));
+        $dispatcher->dispatch(new ElectedRepresentativeEvent($electedRepresentative), ElectedRepresentativeEvents::BEFORE_UPDATE);
 
         $electedRepresentative->setAdherent($adherent);
         $entityManager->flush();
 
-        $dispatcher->dispatch(ElectedRepresentativeEvents::POST_UPDATE, new ElectedRepresentativeEvent($electedRepresentative));
+        $dispatcher->dispatch(new ElectedRepresentativeEvent($electedRepresentative), ElectedRepresentativeEvents::POST_UPDATE);
 
         $this->addFlash('success', 'Le profil adhérent a bien été lié à l\'élu(e).');
 

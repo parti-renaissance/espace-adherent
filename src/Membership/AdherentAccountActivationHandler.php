@@ -5,7 +5,7 @@ namespace App\Membership;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Security\AuthenticationUtils;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentAccountActivationHandler
 {
@@ -27,7 +27,7 @@ class AdherentAccountActivationHandler
     {
         $this->adherentManager->activateAccount($adherent, $token);
 
-        $this->dispatcher->dispatch(UserEvents::USER_VALIDATED, new UserEvent($adherent));
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
 
         $this->authenticator->authenticateAdherent($adherent);
     }

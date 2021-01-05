@@ -4,7 +4,7 @@ namespace App\Membership;
 
 use App\Entity\Adherent;
 use App\Entity\SubscriptionType;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class UserEvent extends Event implements UserEventInterface
 {

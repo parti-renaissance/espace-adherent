@@ -6,7 +6,7 @@ use App\Entity\CitizenAction;
 use App\Event\EventFactory;
 use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CitizenActionCommandHandler
 {
@@ -28,20 +28,20 @@ class CitizenActionCommandHandler
         $this->manager->persist($action);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::CITIZEN_ACTION_CREATED, new CitizenActionEvent($action));
+        $this->dispatcher->dispatch(new CitizenActionEvent($action), Events::CITIZEN_ACTION_CREATED);
 
         return $action;
     }
 
     public function handleUpdate(CitizenActionCommand $command, CitizenAction $action): CitizenAction
     {
-        $this->dispatcher->dispatch(Events::CITIZEN_ACTION_PRE_UPDATE, new CitizenActionEvent($action));
+        $this->dispatcher->dispatch(new CitizenActionEvent($action), Events::CITIZEN_ACTION_PRE_UPDATE);
 
         $this->factory->updateFromCitizenActionCommand($command, $action);
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::CITIZEN_ACTION_UPDATED, new CitizenActionEvent($action));
+        $this->dispatcher->dispatch(new CitizenActionEvent($action), Events::CITIZEN_ACTION_UPDATED);
 
         return $action;
     }

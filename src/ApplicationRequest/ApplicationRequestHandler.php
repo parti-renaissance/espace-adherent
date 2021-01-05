@@ -9,8 +9,8 @@ use App\Referent\ReferentTagManager;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ApplicationRequestHandler
 {
@@ -42,7 +42,7 @@ class ApplicationRequestHandler
         $this->manager->persist($volunteerRequest);
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(Events::CREATED, new ApplicationRequestEvent($volunteerRequest));
+        $this->eventDispatcher->dispatch(new ApplicationRequestEvent($volunteerRequest), Events::CREATED);
     }
 
     public function handleRunningMateRequest(RunningMateRequest $runningMateRequest): void
@@ -55,7 +55,7 @@ class ApplicationRequestHandler
         $this->manager->persist($runningMateRequest);
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(Events::CREATED, new ApplicationRequestEvent($runningMateRequest));
+        $this->eventDispatcher->dispatch(new ApplicationRequestEvent($runningMateRequest), Events::CREATED);
     }
 
     public function uploadCurriculum(RunningMateRequest $runningMateRequest): void

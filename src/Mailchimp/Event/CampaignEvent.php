@@ -3,7 +3,7 @@
 namespace App\Mailchimp\Event;
 
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class CampaignEvent extends Event
 {

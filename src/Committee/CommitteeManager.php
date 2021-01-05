@@ -25,7 +25,7 @@ use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManager
 {
@@ -260,7 +260,7 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 
     /**
@@ -274,7 +274,7 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 
     /**
@@ -304,7 +304,7 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 
     /**
@@ -318,7 +318,7 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 
     public function isFollowingCommittee(Adherent $adherent, Committee $committee): bool
@@ -364,8 +364,8 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_NEW_FOLLOWER, new FollowCommitteeEvent($adherent, $committee));
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent, $committee), Events::COMMITTEE_NEW_FOLLOWER);
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 
     /**
@@ -422,11 +422,11 @@ class CommitteeManager
 
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
 
         $this->dispatcher->dispatch(
-            UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
-            new UnfollowCommitteeEvent($membership->getAdherent(), $committee)
+            new UnfollowCommitteeEvent($membership->getAdherent(), $committee),
+            UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
         );
     }
 
@@ -564,6 +564,6 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new FollowCommitteeEvent($adherent));
+        $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent), UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE);
     }
 }

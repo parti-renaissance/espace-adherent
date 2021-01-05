@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\NewsletterSubscription;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NewsletterSubscriptionHandler
 {
@@ -23,7 +23,7 @@ class NewsletterSubscriptionHandler
     {
         $adherent = $this->manager->getRepository(Adherent::class)->findOneActiveByEmail($subscription->getEmail());
         if ($adherent) {
-            $this->eventDispatcher->dispatch(Events::NOTIFICATION, new NewsletterEvent($subscription, $adherent));
+            $this->eventDispatcher->dispatch(new NewsletterEvent($subscription, $adherent), Events::NOTIFICATION);
 
             return;
         }
@@ -32,7 +32,7 @@ class NewsletterSubscriptionHandler
         $this->manager->persist($subscription);
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(Events::SUBSCRIBE, new NewsletterEvent($subscription));
+        $this->eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::SUBSCRIBE);
     }
 
     public function confirm(NewsletterSubscription $subscription): void
@@ -42,7 +42,7 @@ class NewsletterSubscriptionHandler
         $this->manager->persist($subscription);
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(Events::CONFIRMATION, new NewsletterEvent($subscription));
+        $this->eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::CONFIRMATION);
     }
 
     public function unsubscribe(?string $email): void
@@ -53,7 +53,7 @@ class NewsletterSubscriptionHandler
             $this->manager->remove($subscription);
             $this->manager->flush();
 
-            $this->eventDispatcher->dispatch(Events::UNSUBSCRIBE, new NewsletterEvent($subscription));
+            $this->eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::UNSUBSCRIBE);
         }
     }
 

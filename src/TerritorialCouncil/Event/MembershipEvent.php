@@ -4,7 +4,7 @@ namespace App\TerritorialCouncil\Event;
 
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MembershipEvent extends Event
 {

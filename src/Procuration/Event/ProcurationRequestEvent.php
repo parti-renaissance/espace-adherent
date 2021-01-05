@@ -4,7 +4,7 @@ namespace App\Procuration\Event;
 
 use App\Entity\Adherent;
 use App\Entity\ProcurationRequest;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ProcurationRequestEvent extends Event
 {

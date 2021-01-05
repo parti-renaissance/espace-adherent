@@ -7,7 +7,7 @@ use App\Donation\DonatorWasUpdatedEvent;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DonationListener
 {
@@ -56,6 +56,6 @@ class DonationListener
 
     private function dispatchDonatorUpdate(Donator $donator): void
     {
-        $this->eventDispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($donator));
+        $this->eventDispatcher->dispatch(new DonatorWasUpdatedEvent($donator), DonationEvents::DONATOR_UPDATED);
     }
 }

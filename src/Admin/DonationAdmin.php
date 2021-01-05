@@ -28,7 +28,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -36,6 +35,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DonationAdmin extends AbstractAdmin
 {
@@ -524,7 +524,7 @@ class DonationAdmin extends AbstractAdmin
 
         $this->handleFile($donation);
 
-        $this->dispatcher->dispatch(DonationEvents::CREATED, new DonationWasCreatedEvent($donation));
+        $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);
     }
 
     /**
@@ -536,7 +536,7 @@ class DonationAdmin extends AbstractAdmin
 
         $this->handleFile($donation);
 
-        $this->dispatcher->dispatch(DonationEvents::UPDATED, new DonationWasUpdatedEvent($donation));
+        $this->dispatcher->dispatch(new DonationWasUpdatedEvent($donation), DonationEvents::UPDATED);
     }
 
     /**
