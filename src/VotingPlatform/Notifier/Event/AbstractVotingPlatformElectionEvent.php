@@ -3,7 +3,7 @@
 namespace App\VotingPlatform\Notifier\Event;
 
 use App\Entity\VotingPlatform\Election;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractVotingPlatformElectionEvent extends Event
 {

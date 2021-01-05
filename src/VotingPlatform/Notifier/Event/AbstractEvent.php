@@ -4,7 +4,7 @@ namespace App\VotingPlatform\Notifier\Event;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class AbstractEvent extends Event implements ElectionNotifyEventInterface
 {
