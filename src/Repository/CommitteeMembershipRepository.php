@@ -642,9 +642,12 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     /**
      * @return CommitteeMembership[]
      */
-    public function findVotingForSupervisorMemberships(Committee $committee, Designation $designation): array
-    {
-        return $this->createQueryBuilderForVotingMemberships($committee, $designation)
+    public function findVotingForSupervisorMemberships(
+        Committee $committee,
+        Designation $designation,
+        bool $withCertified = true
+    ): array {
+        return $this->createQueryBuilderForVotingMemberships($committee, $designation, $withCertified)
             ->getQuery()
             ->getResult()
         ;

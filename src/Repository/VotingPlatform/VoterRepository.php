@@ -93,12 +93,13 @@ class VoterRepository extends ServiceEntityRepository
     public function findVotersToRemindForElection(Election $election): array
     {
         return $this->createQueryBuilder('voter')
+            ->addSelect('adherent')
             ->innerJoin('voter.votersLists', 'list')
             ->innerJoin('list.election', 'election')
+            ->innerJoin('voter.adherent', 'adherent')
             ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :current_round')
             ->andWhere('list.election = :election')
             ->andWhere('vote IS NULL')
-            ->andWhere('voter.adherent IS NOT NULL')
             ->setParameters([
                 'election' => $election,
                 'current_round' => $election->getCurrentRound(),

@@ -9,10 +9,10 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Voter;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeElectionCandidacyPeriodIsOverMessage;
-use App\Mailer\Message\CommitteeElectionVoteReminderMessage;
 use App\Mailer\Message\VotingPlatformElectionSecondRoundNotificationMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteIsOpenMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteIsOverMessage;
+use App\Mailer\Message\VotingPlatformVoteReminderMessage;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -59,16 +59,12 @@ class ElectionNotifier
         ));
     }
 
-    public function notifyCommitteeElectionVoteReminder(
-        Adherent $adherent,
-        Designation $designation,
-        Committee $committee
-    ): void {
-        $this->mailer->sendMessage(CommitteeElectionVoteReminderMessage::create(
+    public function notifyVotingPlatformVoteReminder(Election $election, Adherent $adherent): void
+    {
+        $this->mailer->sendMessage(VotingPlatformVoteReminderMessage::create(
+            $election,
             $adherent,
-            $committee,
-            $designation,
-            $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->getUrl($election)
         ));
     }
 

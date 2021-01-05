@@ -631,6 +631,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $adherentMandates;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $notifiedForElection = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -2639,5 +2646,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }, $this->getRoles());
 
         return array_values(array_intersect(FilePermissionEnum::toArray(), $roles));
+    }
+
+    public function isNotifiedForElection(): bool
+    {
+        return $this->notifiedForElection;
+    }
+
+    public function notifyForElection(): void
+    {
+        $this->notifiedForElection = true;
     }
 }
