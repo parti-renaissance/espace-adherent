@@ -6,7 +6,7 @@ use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class NationalSurveyRepository extends ServiceEntityRepository
 {

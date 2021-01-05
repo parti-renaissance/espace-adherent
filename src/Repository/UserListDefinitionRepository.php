@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\UserListDefinition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\Persistence\ManagerRegistry;
 
 class UserListDefinitionRepository extends ServiceEntityRepository
 {

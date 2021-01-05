@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AdherentChangeEmailTokenRepository extends AbstractAdherentTokenRepository
 {

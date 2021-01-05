@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\CitizenProjectCategory;
 use App\Entity\CitizenProjectCategorySkill;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CitizenProjectCategorySkillRepository extends ServiceEntityRepository
 {

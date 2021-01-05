@@ -4,7 +4,7 @@ namespace App\Repository\ThematicCommunity;
 
 use App\Entity\ThematicCommunity\ThematicCommunity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ThematicCommunityRepository extends ServiceEntityRepository
 {

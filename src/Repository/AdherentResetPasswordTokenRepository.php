@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\AdherentResetPasswordToken;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AdherentResetPasswordTokenRepository extends AbstractAdherentTokenRepository
 {

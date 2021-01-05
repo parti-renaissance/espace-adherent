@@ -6,8 +6,8 @@ use App\Entity\Adherent;
 use App\Entity\ProcurationRequest;
 use App\Procuration\Filter\ProcurationRequestFilters;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ProcurationRequestRepository extends ServiceEntityRepository
 {

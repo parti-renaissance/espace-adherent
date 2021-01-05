@@ -6,7 +6,7 @@ use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\Election;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ElectionRepository extends ServiceEntityRepository
 {

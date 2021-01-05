@@ -12,9 +12,9 @@ use App\Repository\PaginatorTrait;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ThematicCommunity\ThematicCommunityMembershipFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ThematicCommunityMembershipRepository extends ServiceEntityRepository
 {

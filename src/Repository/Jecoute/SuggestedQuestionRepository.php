@@ -4,7 +4,7 @@ namespace App\Repository\Jecoute;
 
 use App\Entity\Jecoute\SuggestedQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class SuggestedQuestionRepository extends ServiceEntityRepository
 {

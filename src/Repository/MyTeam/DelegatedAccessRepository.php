@@ -5,8 +5,8 @@ namespace App\Repository\MyTeam;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class DelegatedAccessRepository extends ServiceEntityRepository
 {

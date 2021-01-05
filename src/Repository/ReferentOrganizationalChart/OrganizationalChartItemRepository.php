@@ -4,8 +4,8 @@ namespace App\Repository\ReferentOrganizationalChart;
 
 use App\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 class OrganizationalChartItemRepository extends NestedTreeRepository implements ServiceEntityRepositoryInterface

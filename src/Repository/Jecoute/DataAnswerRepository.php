@@ -4,7 +4,7 @@ namespace App\Repository\Jecoute;
 
 use App\Entity\Jecoute\DataAnswer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
 class DataAnswerRepository extends ServiceEntityRepository

@@ -3,7 +3,7 @@
 namespace App\Repository\ApplicationRequest;
 
 use App\Entity\ApplicationRequest\VolunteerRequest;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class VolunteerRequestRepository extends AbstractApplicationRequestRepository
 {

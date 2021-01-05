@@ -4,8 +4,8 @@ namespace App\Repository\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PoliticalCommitteeRepository extends ServiceEntityRepository
 {

@@ -6,8 +6,8 @@ use App\Donation\PayboxPaymentSubscription;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class DonationRepository extends ServiceEntityRepository
 {

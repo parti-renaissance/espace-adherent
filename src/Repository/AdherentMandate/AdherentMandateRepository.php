@@ -5,7 +5,7 @@ namespace App\Repository\AdherentMandate;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AdherentMandateRepository extends ServiceEntityRepository
 {

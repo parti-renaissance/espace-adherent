@@ -3,7 +3,7 @@
 namespace App\Repository\ApplicationRequest;
 
 use App\Entity\ApplicationRequest\RunningMateRequest;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class RunningMateRequestRepository extends AbstractApplicationRequestRepository
 {

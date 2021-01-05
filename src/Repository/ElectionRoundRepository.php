@@ -6,8 +6,8 @@ use App\Entity\ElectionRound;
 use App\Procuration\ElectionContext;
 use App\Procuration\Exception\InvalidProcurationFlowException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ElectionRoundRepository extends ServiceEntityRepository
 {

@@ -5,7 +5,7 @@ namespace App\Repository\OAuth;
 use App\Entity\OAuth\AccessToken;
 use App\Entity\OAuth\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
 class AccessTokenRepository extends ServiceEntityRepository

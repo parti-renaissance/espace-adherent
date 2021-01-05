@@ -5,7 +5,7 @@ namespace App\Repository\VotingPlatform;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CandidateGroupRepository extends ServiceEntityRepository
 {

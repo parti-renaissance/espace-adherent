@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Election;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ElectionRepository extends ServiceEntityRepository
 {

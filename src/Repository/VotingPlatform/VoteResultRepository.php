@@ -5,7 +5,7 @@ namespace App\Repository\VotingPlatform;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\VoteResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class VoteResultRepository extends ServiceEntityRepository
 {

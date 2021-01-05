@@ -8,7 +8,7 @@ use App\Entity\BaseGroup;
 use App\Entity\CitizenProject;
 use App\Geocoder\Coordinates;
 use App\Search\SearchParametersFilter;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
 class CitizenProjectRepository extends AbstractGroupRepository

@@ -8,7 +8,7 @@ use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
 use App\Repository\AuthorTrait;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PoliticalCommitteeFeedItemRepository extends ServiceEntityRepository
 {

@@ -14,8 +14,8 @@ use App\Repository\UuidEntityRepositoryTrait;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ElectionRepository extends ServiceEntityRepository
 {

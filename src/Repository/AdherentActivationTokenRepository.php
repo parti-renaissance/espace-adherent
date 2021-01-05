@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\AdherentActivationToken;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AdherentActivationTokenRepository extends AbstractAdherentTokenRepository
 {

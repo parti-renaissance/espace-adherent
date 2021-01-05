@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class SocialShareRepository extends ServiceEntityRepository
 {

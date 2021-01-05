@@ -9,9 +9,9 @@ use App\Entity\ElectionRound;
 use App\Entity\VotePlace;
 use App\Repository\GeoFilterTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class VotePlaceResultRepository extends ServiceEntityRepository
 {

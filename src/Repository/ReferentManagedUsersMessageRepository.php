@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ReferentManagedUsersMessage;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ReferentManagedUsersMessageRepository extends ManagedUsersMessageRepository
 {

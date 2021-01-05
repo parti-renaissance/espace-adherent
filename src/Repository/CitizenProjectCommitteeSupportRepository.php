@@ -6,7 +6,7 @@ use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectCommitteeSupport;
 use App\Entity\Committee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CitizenProjectCommitteeSupportRepository extends ServiceEntityRepository
 {

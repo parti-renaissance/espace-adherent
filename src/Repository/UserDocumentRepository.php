@@ -7,7 +7,7 @@ use App\Entity\Event;
 use App\Entity\IdeasWorkshop\Answer;
 use App\Entity\UserDocument;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class UserDocumentRepository extends ServiceEntityRepository
 {

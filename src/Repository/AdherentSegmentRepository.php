@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\AdherentSegment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AdherentSegmentRepository extends ServiceEntityRepository
 {

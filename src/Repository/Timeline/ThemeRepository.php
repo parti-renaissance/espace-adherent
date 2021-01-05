@@ -5,7 +5,7 @@ namespace App\Repository\Timeline;
 use App\Entity\Timeline\Theme;
 use App\Repository\TranslatableRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ThemeRepository extends ServiceEntityRepository
 {

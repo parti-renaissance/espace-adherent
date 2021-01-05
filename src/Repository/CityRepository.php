@@ -8,8 +8,8 @@ use App\Entity\City;
 use App\Entity\MunicipalManagerRoleAssociation;
 use App\MunicipalManager\Filter\AssociationCityFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CityRepository extends ServiceEntityRepository
 {

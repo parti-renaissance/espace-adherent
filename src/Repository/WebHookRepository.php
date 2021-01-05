@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\WebHook\WebHook;
 use App\WebHook\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class WebHookRepository extends ServiceEntityRepository
 {

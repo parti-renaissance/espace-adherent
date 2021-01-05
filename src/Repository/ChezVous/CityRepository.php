@@ -5,8 +5,8 @@ namespace App\Repository\ChezVous;
 use App\Entity\ChezVous\City;
 use App\Entity\ChezVous\MeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CityRepository extends ServiceEntityRepository
 {

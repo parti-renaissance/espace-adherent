@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\Mandate;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class MandateRepository extends ServiceEntityRepository
 {

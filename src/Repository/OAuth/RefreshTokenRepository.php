@@ -5,7 +5,7 @@ namespace App\Repository\OAuth;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
 class RefreshTokenRepository extends ServiceEntityRepository

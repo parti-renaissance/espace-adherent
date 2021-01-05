@@ -4,7 +4,7 @@ namespace App\Repository\Timeline;
 
 use App\Entity\Timeline\Measure;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class MeasureRepository extends ServiceEntityRepository
 {

@@ -15,9 +15,9 @@ use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AdherentMessageRepository extends ServiceEntityRepository
 {
