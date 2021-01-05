@@ -26,6 +26,19 @@
         line-height: 20px;
     }
 
+    &__warning {
+        font-family: $font-roboto;
+        margin-bottom: 30px;
+        color: $dark;
+        background-color: $gray--lighter;
+        padding: 20px;
+        font-size: 15px;
+        max-width: 900px;
+        font-weight: normal;
+        line-height: 20px;
+        text-align: center;
+    }
+
     &__infos {
         display: flex;
         flex-direction: row;

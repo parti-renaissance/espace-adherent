@@ -974,6 +974,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->phone;
     }
 
+    public function setPhone(?PhoneNumber $phone = null): void
+    {
+        $this->phone = $phone;
+    }
+
     public function getGender(): ?string
     {
         return $this->gender;

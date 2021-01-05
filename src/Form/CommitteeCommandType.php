@@ -2,10 +2,9 @@
 
 namespace App\Form;
 
+use App\Address\Address;
 use App\Committee\CommitteeCommand;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -29,26 +28,21 @@ class CommitteeCommandType extends AbstractType
             ])
             ->add('address', AddressType::class, [
                 'disable_fields' => $committee ? $committee->isApproved() : false,
-            ])
-            ->add('phone', PhoneNumberType::class, [
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'default_region' => 'FR',
-                'preferred_country_choices' => ['FR'],
-            ])
-            ->add('facebookPageUrl', UrlType::class, [
-                'required' => false,
-                'default_protocol' => null,
-            ])
-            ->add('twitterNickname', TextType::class, [
-                'required' => false,
+                'child_error_bubbling' => false,
+                'data' => $builder->getData() ? Address::createFromAddress($builder->getData()->getAddress()) : null,
             ])
         ;
 
-        if (!$committee || $committee->isWaitingForApproval()) {
-            $builder->add('photo', FileType::class, [
-                'required' => $committee ? !$committee->hasPhotoUploaded() : true,
-                'label' => false,
-            ]);
+        if ($committee) {
+            $builder
+                ->add('facebookPageUrl', UrlType::class, [
+                    'required' => false,
+                    'default_protocol' => null,
+                ])
+                ->add('twitterNickname', TextType::class, [
+                    'required' => false,
+                ])
+            ;
         }
     }
 

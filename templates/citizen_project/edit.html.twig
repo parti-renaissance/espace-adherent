@@ -29,7 +29,7 @@
     {% elseif not citizen_project.isApproved %}
         <div class="alert alert--tips b__nudge--bottom-60">
             Votre projet citoyen est en attente de validation par nos équipes.
-            Vous serez alerté(e) par e-mail quand il sera validé.
+            Vous serez alerté{{ app.user.isFemale ? 'e' }} par e-mail quand il sera validé.
         </div>
     {% endif %}
     <h3 class="text--medium b__nudge--bottom-larger">Modifier mon projet citoyen</h3>

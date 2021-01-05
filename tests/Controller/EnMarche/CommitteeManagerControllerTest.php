@@ -84,8 +84,8 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(6, $crawler->filter('#edit-committee-form .form__errors > li')->count());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
-        $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
+        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee_address_errors > li.form__error')->text());
+        $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#committee_address_address_errors > li.form__error')->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#field-description > .form__errors > li')->text());
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
@@ -517,8 +517,14 @@ class CommitteeManagerControllerTest extends WebTestCase
     public function testAllowToCreateCommittee()
     {
         $this->authenticateAsAdherent($this->client, 'martine.lindt@gmail.com');
-        $this->client->request('GET', '/espace-adherent/creer-mon-comite');
-        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+        $crawler = $this->client->request('GET', '/espace-adherent/creer-mon-comite');
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertStringContainsString('Vous devez être certifiée', $crawler->filter('.committee__warning')->first()->text());
+
+        $this->client->request('POST', '/espace-adherent/creer-mon-comite');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->logout($this->client);
 

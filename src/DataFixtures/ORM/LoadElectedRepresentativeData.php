@@ -377,6 +377,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $er2Mandates2Functions->addPoliticalFunction($politicalFunction1);
         $er2Mandates2Functions->addPoliticalFunction($politicalFunction2);
         $er2Mandates2Functions->addPoliticalFunction($politicalFunction3);
+        $er2Mandates2Functions->setAdherent($this->getReference('deputy-75-1'));
 
         $manager->persist($er2Mandates2Functions);
 

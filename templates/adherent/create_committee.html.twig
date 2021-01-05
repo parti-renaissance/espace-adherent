@@ -4,21 +4,26 @@
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.address(form.address) }}
+            {{ js.autocomlete_address(form.address, true) }}
         });
     </script>
 {% endblock %}
 
 {% block content %}
     <main>
-        <section class="l__wrapper--medium b__nudge--bottom-huge">
-            <a href="{{ path('app_search_committees') }}" class="back-to-list icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à la liste des comités</a>
+        <section class="l__wrapper--narrow b__nudge--bottom-huge">
+            <div class="b__nudge--top">
+                <a href="{{ path('app_search_committees') }}" class="back-to-list icon--with-text text--summary">
+                    {{ include('components/caret--left.html.twig') }}
+                    Retour à la liste des comités</a>
+            </div>
 
-            <header class="space--30-0 l__wrapper--slim l__col l__col--center text--center">
+            <header class="space--30-0 l__wrapper--narrow l__col l__col--center text--center">
                 <h1 class="b__nudge--bottom-small text--large">
                     Je crée mon comité En Marche !
                 </h1>
@@ -29,48 +34,64 @@
                 </p>
             </header>
 
-            <div class="committee__form">
-                {{ form_start(form, { attr: { id: 'create-committee-form', class: 'form committee-form' } }) }}
-                    {{ include('committee/_form.html.twig') }}
+            {% if app.user.isMinor %}
+                <div class="committee__warning text--center">
+                    Vous devez être majeur pour créer un comité.
+                </div>
+            {% elseif not app.user.certified %}
+                <div class="committee__warning text--center">
+                    Vous devez être certifié{{ app.user.isFemale ? 'e' }} pour pouvoir faire une demande de création de comité.
+                    <div>
+                        <a href="{{ path('app_certification_request_form') }}" class="btn btn--blue b__nudge--top">Me certifier</a>
+                    </div>
+                </div>
+            {% elseif app.user.isSupervisor or has_active_parliamentary_mandate(app.user) %}
+                <div class="committee__warning text--center">
+                    Les parlementaires et les animateurs ne peuvent pas créer de comité.
+                </div>
+            {% else %}
+                <div class="committee__form em-form">
+                    {{ form_start(form, { attr: { id: 'create-committee-form', class: 'form committee-form' } }) }}
+                        {{ include('committee/_form.html.twig') }}
 
-                    <div class="space--20-30">
-                        <h3>Rappel de vos informations personnelles</h3>
-
-                        <div class="form__row" id="field-personal-information">
-                            <strong>Nom</strong> : {{ app.user.lastName|upper }}<br/>
-                            <strong>Prénom</strong> : {{ app.user.firstName|capitalize }}<br/>
-                            <strong>Adresse e-mail</strong> : {{ app.user.emailAddress }}<br/>
+                        <div class="form__row">
+                            {{ form_label(form.phone, 'Numéro de téléphone') }}
+                            {{ form_errors(form.phone) }}
+                            <div class="form--full">
+                                {{ form_widget(form.phone.country) }}
+                                {{ form_widget(form.phone.number, {attr: {placeholder: "Vous pourrez être contacté" ~ (app.user.isFemale ? 'e') ~ " pour l'approbation de votre comité"}}) }}
+                            </div>
+                        </div>
+                        <div class="form__group">
+                            {{ form_errors(form.phone) }}
                         </div>
 
-                        <p class="wrong-personal-infos">
-                            Ces informations ne sont pas justes ?
-                            <a href="{{ path('app_user_profile') }}">Éditez-les</a>.
-                        </p>
+                        <div class="form__row form__checkbox" id="field-confidentiality-terms">
+                            {{ form_widget(form.acceptConfidentialityTerms) }}
+                            {{ form_label(form.acceptConfidentialityTerms, "J'ai pris connaissance et j'accepte les règles de confidentialité en qualité de créateur de comité.") }}
+                            {{ form_errors(form.acceptConfidentialityTerms) }}
+                        </div>
 
-                        <div class="text--summary text--small text--gray b__nudge--top-10 b__nudge--bottom">Vos informations seront mises à disposition de notre équipe départementale LaREM qui pourra vous contacter. Elles ne seront pas visibles sur le site.</div>
-                    </div>
+                        <div class="form__row form__checkbox" id="field-contacting-terms">
+                            {{ form_widget(form.acceptContactingTerms) }}
+                            {{ form_label(form.acceptContactingTerms, "J'accepte d'être contacté" ~ (app.user.isFemale ? 'e') ~ " dans le cadre de la création de mon comité") }}
+                            {{ form_errors(form.acceptContactingTerms) }}
+                        </div>
 
-                    <div class="form__row form__checkbox" id="field-confidentiality-terms">
-                        {{ form_widget(form.acceptConfidentialityTerms) }}
-                        {{ form_label(form.acceptConfidentialityTerms, "J'ai pris connaissance et j'accepte les règles de confidentialité en qualité de créateur de comité.") }}
-                        {{ form_errors(form.acceptConfidentialityTerms) }}
-                    </div>
+                        <div class="committee__warning">
+                            La création de votre comité doit être approuvée par le CoPol de votre territoire avant d'être affective.
+                        </div>
 
-                    <div class="form__row form__checkbox" id="field-contacting-terms">
-                        {{ form_widget(form.acceptContactingTerms) }}
-                        {{ form_label(form.acceptContactingTerms, "J'accepte d'être contacté(e) depuis la plateforme En Marche !") }}
-                        {{ form_errors(form.acceptContactingTerms) }}
-                    </div>
+                        <div class="text--center">
+                            <button type="submit" class="btn btn--blue btn--medium" id="create-my-committee">
+                                Envoyer ma demande
+                            </button>
+                        </div>
 
-                    <div class="text--center">
-                        <button type="submit" class="btn btn--blue btn--medium" id="create-my-committee">
-                            Créer mon comité
-                        </button>
-                    </div>
-
-                    {{ form_rest(form) }}
-                {{ form_end(form) }}
-            </div>
+                        {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+            {% endif %}
         </section>
     </main>
 {% endblock %}

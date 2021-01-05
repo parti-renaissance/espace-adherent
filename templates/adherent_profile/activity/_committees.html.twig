@@ -147,4 +147,13 @@
             } %}
         {% endif %}
     {% endif %}
+    <div>
+        <p class="text--center text--body b__nudge--top-50">
+            <a class="link--no-decor text--blue--dark" href="{{ path('app_search_committees') }}">Voir tous les comités</a>
+            {% if is_canary_enabled() %}
+            -
+            <a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_create_committee') }}">Demander la création d'un comité</a>
+            {% endif %}
+        </p>
+    </div>
 </div>

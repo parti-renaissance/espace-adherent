@@ -24,7 +24,7 @@
                 {{ block('committee_block') }}
             {% endfor %}
 
-            {% if not app.user.isSupervisor %}
+            {% if is_canary_enabled() and not app.user.isSupervisor %}
                 <div class="pre-space__item-card">
                     <p class="text--gray">
                         <a href="{{ path('app_adherent_create_committee') }}">+ Créer un nouveau comité</a>

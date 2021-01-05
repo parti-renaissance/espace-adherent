@@ -4,8 +4,7 @@ namespace Tests\App\Security\Voter\Committee;
 
 use App\Committee\CommitteePermissions;
 use App\Entity\Adherent;
-use App\Entity\Committee;
-use App\Repository\CommitteeRepository;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\CreateCommitteeVoter;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
@@ -13,20 +12,20 @@ use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
 {
     /**
-     * @var CommitteeRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var ElectedRepresentativeRepository|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $committeeRepository;
+    private $electedRepresentativeRepository;
 
     protected function setUp(): void
     {
-        $this->committeeRepository = $this->createMock(CommitteeRepository::class);
+        $this->electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
 
         parent::setUp();
     }
 
     protected function tearDown(): void
     {
-        $this->committeeRepository = null;
+        $this->electedRepresentativeRepository = null;
 
         parent::tearDown();
     }
@@ -38,83 +37,111 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new CreateCommitteeVoter($this->committeeRepository);
+        return new CreateCommitteeVoter($this->electedRepresentativeRepository);
     }
 
-    public function testAdherentCannotCreateIfReferent()
+    public function testAdherentCannotCreateIfMinor()
     {
-        $adherent = $this->getAdherentMock(true);
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->once())
+            ->method('isMinor')
+            ->willReturn(true)
+        ;
 
-        $this->assertRepositoryBehavior(false);
+        $this->assertElectedRepresentativeRepositoryBehavior(false);
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::CREATE);
     }
 
-    public function testAdherentCannotCreateIfAlreadyHost()
+    public function testAdherentCannotCreateIfNotCertified()
     {
-        $adherent = $this->getAdherentMock(true, true);
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->once())
+            ->method('isMinor')
+            ->willReturn(false)
+        ;
+        $adherent->expects($this->once())
+            ->method('isCertified')
+            ->willReturn(false)
+        ;
 
-        $this->assertRepositoryBehavior(false);
+        $this->assertElectedRepresentativeRepositoryBehavior(false);
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::CREATE);
     }
 
-    public function testAdherentCannotCreateIfCommitteeIsPending()
+    public function testAdherentCannotCreateIfSupervisor()
     {
-        $adherent = $this->getAdherentMock(false);
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->once())
+            ->method('isMinor')
+            ->willReturn(false)
+        ;
+        $adherent->expects($this->once())
+            ->method('isCertified')
+            ->willReturn(true)
+        ;
+        $adherent->expects($this->once())
+            ->method('isSupervisor')
+            ->willReturn(true)
+        ;
 
-        $this->assertRepositoryBehavior(true, $adherent, false);
+        $this->assertElectedRepresentativeRepositoryBehavior(false);
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::CREATE);
     }
 
-    public function testAdherentCanCreate()
+    public function testAdherentCannotCreateIfHasActiveParliamentaryMandate()
     {
-        $adherent = $this->getAdherentMock(false);
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->once())
+            ->method('isMinor')
+            ->willReturn(false)
+        ;
+        $adherent->expects($this->once())
+            ->method('isCertified')
+            ->willReturn(true)
+        ;
+        $adherent->expects($this->once())
+            ->method('isSupervisor')
+            ->willReturn(false)
+        ;
 
-        $this->assertRepositoryBehavior(true, $adherent, true);
+        $this->assertElectedRepresentativeRepositoryBehavior(true, $adherent, false);
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::CREATE);
+    }
+
+    public function testAdherentWithCorrectConditionsCanCreate()
+    {
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->once())
+            ->method('isMinor')
+            ->willReturn(false)
+        ;
+        $adherent->expects($this->once())
+            ->method('isCertified')
+            ->willReturn(true)
+        ;
+        $adherent->expects($this->once())
+            ->method('isSupervisor')
+            ->willReturn(false)
+        ;
+
+        $this->assertElectedRepresentativeRepositoryBehavior(true, $adherent, true);
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::CREATE);
     }
 
-    /**
-     * @param bool|null $isReferent
-     *
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getAdherentMock(bool $isReferent, bool $isHost = false): Adherent
-    {
-        $adherent = $this->createAdherentMock();
-
-        $adherent->expects($this->once())
-            ->method('isReferent')
-            ->willReturn($isReferent)
-        ;
-
-        if ($isReferent) {
-            $adherent->expects($this->never())
-                ->method('isHost')
-            ;
-        } else {
-            $adherent->expects($this->once())
-                ->method('isHost')
-                ->willReturn($isHost)
-            ;
-        }
-
-        return $adherent;
-    }
-
-    private function assertRepositoryBehavior(
+    private function assertElectedRepresentativeRepositoryBehavior(
         bool $isCalled,
         Adherent $adherent = null,
         bool $allowedToCreate = false
     ): void {
         if ($isCalled) {
-            $this->committeeRepository->expects($this->once())
-                ->method('hasCommitteeInStatus')
-                ->with($adherent, Committee::STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER)
+            $this->electedRepresentativeRepository->expects($this->once())
+                ->method('hasActiveParliamentaryMandate')
+                ->with($adherent)
                 ->willReturn(!$allowedToCreate)
             ;
         } else {
-            $this->committeeRepository->expects($this->never())
-                ->method('hasCommitteeInStatus')
+            $this->electedRepresentativeRepository->expects($this->never())
+                ->method('hasActiveParliamentaryMandate')
             ;
         }
     }

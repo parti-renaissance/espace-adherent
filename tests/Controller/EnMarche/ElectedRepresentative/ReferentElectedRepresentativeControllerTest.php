@@ -22,7 +22,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus');
 
         $this->assertCount(5, $crawler->filter('tbody tr.referent__item'));
-        $this->assertCount(1, $crawler->filter('.status.status__1'));
+        $this->assertCount(2, $crawler->filter('.status.status__1'));
         $this->assertStringContainsString('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Conseiller(e) municipal(e) (NC)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Clichy (92024)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
@@ -127,7 +127,7 @@ class ReferentElectedRepresentativeControllerTest extends WebTestCase
 
         $crawler = $this->client->submit($form);
 
-        $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(3, $crawler->filter('tbody tr.referent__item'));
     }
 
     public function testListElectedRepresentativesForParis()

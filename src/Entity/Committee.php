@@ -97,13 +97,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     use EntityElectionHelperTrait;
     use StaticSegmentTrait;
 
-    public const STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER = [
-        self::PRE_REFUSED,
-        self::PRE_APPROVED,
-        self::PENDING,
-        self::REFUSED,
-    ];
-
     public const WAITING_STATUSES = [
         self::PENDING,
         self::PRE_APPROVED,
@@ -414,17 +407,13 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $links;
     }
 
-    public function update(string $name, string $description, PostAddress $address, PhoneNumber $phone): void
+    public function update(string $name, string $description, PostAddress $address): void
     {
         $this->setName($name);
         $this->description = $description;
 
         if (!$this->postAddress->equals($address)) {
             $this->postAddress = $address;
-        }
-
-        if (null === $this->phone || !$this->phone->equals($phone)) {
-            $this->phone = $phone;
         }
     }
 

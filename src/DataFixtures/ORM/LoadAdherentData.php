@@ -145,6 +145,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent3->setCandidateManagedArea($candidateManagedAreaRegion = new CandidateManagedArea());
         $candidateManagedAreaRegion->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));
         $adherent3->addCharter(new CandidateCharter());
+        $adherent3->certify();
         $this->addReference('adherent-3', $adherent3);
 
         $adherent4 = $this->adherentFactory->createFromArray([
@@ -301,7 +302,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'first_name' => 'Élodie',
             'last_name' => 'Dutemps',
             'address' => PostAddress::createForeignAddress('SG', '368645', 'Singapour', '47 Jln Mulia', null, 1.3329126, 103.8795163),
-            'birthdate' => '2002-07-13',
+            'birthdate' => '2004-07-13',
             'position' => 'employed',
             'phone' => '+6566888868',
             'registered_at' => '2017-04-10 14:08:12',
@@ -370,10 +371,12 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'last_name' => 'SCHMIDT',
             'address' => PostAddress::createForeignAddress('CH', '8802', 'Kilchberg', 'Seestrasse 204', null, 47.3180696, 8.552615),
             'birthdate' => '1988-04-13',
+            'phone' => '+33111223345',
         ]);
         $adherent14->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent14->addReferentTag($this->getReference('referent_tag_ch'));
         $adherent14->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
+        $adherent14->certify();
         $this->addReference('adherent-14', $adherent14);
 
         // Non activated, enabled adherent
@@ -614,6 +617,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75'));
         $deputy_75_1->addReferentTag($this->getReference('referent_tag_75008'));
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
+        $deputy_75_1->certify();
         $this->addReference('deputy-75-1', $deputy_75_1);
 
         $deputy_75_2 = $this->adherentFactory->createFromArray([
@@ -795,6 +799,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1961-02-03',
             'registered_at' => '2017-01-25 19:31:45',
+            'phone' => '+330699008800',
         ]);
         $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent->certify();
