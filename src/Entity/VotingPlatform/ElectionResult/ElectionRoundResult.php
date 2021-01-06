@@ -104,11 +104,18 @@ class ElectionRoundResult
 
     public function updateFromNewVoteResult(VoteResult $voteResult): void
     {
+        $expressedPoolIds = [];
+
         foreach ($voteResult->getVoteChoices() as $voteChoice) {
             $pool = $voteChoice->getElectionPool();
             $poolResult = $this->findElectedPoolResult($pool);
 
             $poolResult->updateFromNewVoteChoice($voteChoice);
+
+            if (!\in_array($pool->getId(), $expressedPoolIds)) {
+                $poolResult->incrementExpressed();
+                $expressedPoolIds[] = $pool->getId();
+            }
         }
     }
 

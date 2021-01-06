@@ -63,7 +63,7 @@
                     {% for pool_result in election_round_result.getElectionPoolResults %}
                         <div class="candidate-tab candidate-tab--{{ loop.index }}" {{ loop.index > 1 ? 'style="display: none;"' }}>
                             <div class="tab--container">
-                                {% include 'voting_platform/results/_candiates_list.html.twig' %}
+                                {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ '_candiates_list.html.twig' %}
 
                                 {% include 'voting_platform/results/_stats_block.html.twig' %}
                             </div>

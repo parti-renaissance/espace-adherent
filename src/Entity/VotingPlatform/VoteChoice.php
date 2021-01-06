@@ -101,4 +101,9 @@ class VoteChoice
     {
         $this->mention = $mention;
     }
+
+    public function getMention(): ?string
+    {
+        return $this->mention;
+    }
 }

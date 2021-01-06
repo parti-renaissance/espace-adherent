@@ -95,6 +95,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $this->setReference('designation-7', $designation);
         $manager->persist($designation);
 
+        // SUPERVISOR designation with started VOTE period
         $designation = new Designation('Désignation "Comités-Animateurs" vote ouvert');
         $designation->setZones([DesignationZoneEnum::FDE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
@@ -105,6 +106,19 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setDenomination(Designation::DENOMINATION_ELECTION);
 
         $this->setReference('designation-8', $designation);
+        $manager->persist($designation);
+
+        // SUPERVISOR designation with result period
+        $designation = new Designation('Désignation "Comités-Animateurs" resultats affichés');
+        $designation->setZones([DesignationZoneEnum::FDE]);
+        $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
+        $designation->setCandidacyStartDate(new \DateTime('-15 days'));
+        $designation->setCandidacyEndDate(new \DateTime('-10 days'));
+        $designation->setVoteStartDate(new \DateTime('-8 days'));
+        $designation->setVoteEndDate(new \DateTime('-1 day'));
+        $designation->setDenomination(Designation::DENOMINATION_ELECTION);
+
+        $this->setReference('designation-9', $designation);
         $manager->persist($designation);
 
         $manager->flush();

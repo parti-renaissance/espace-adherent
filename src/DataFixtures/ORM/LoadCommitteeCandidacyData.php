@@ -86,6 +86,30 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
                 'public_faith_statement' => true,
                 'with_photo' => true,
             ],
+            [
+                'adherent' => 'adherent-32',
+                'committee' => 'committee-15',
+                'binome' => 'adherent-33',
+                'confirmed' => true,
+                'public_faith_statement' => true,
+                'with_photo' => true,
+            ],
+            [
+                'adherent' => 'adherent-34',
+                'committee' => 'committee-15',
+                'binome' => 'adherent-35',
+                'confirmed' => true,
+                'public_faith_statement' => true,
+                'with_photo' => true,
+            ],
+            [
+                'adherent' => 'adherent-36',
+                'committee' => 'committee-15',
+                'binome' => 'adherent-37',
+                'confirmed' => true,
+                'public_faith_statement' => true,
+                'with_photo' => true,
+            ],
         ];
 
         foreach ($adherentCandidates as $i => $row) {

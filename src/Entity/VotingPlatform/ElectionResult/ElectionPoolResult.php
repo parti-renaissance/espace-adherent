@@ -92,14 +92,22 @@ class ElectionPoolResult
 
     public function updateFromNewVoteChoice(VoteChoice $voteChoice): void
     {
-        if ($voteChoice->isBlank()) {
-            ++$this->blank;
-        } else {
-            ++$this->expressed;
-
+        if ($this->electionPool->getElection()->getDesignation()->isMajorityType()) {
             $candidateGroupResult = $this->findCandidateGroupResult($voteChoice->getCandidateGroup());
-            $candidateGroupResult->increment();
+            $candidateGroupResult->incrementMention($voteChoice->getMention());
+        } else {
+            if ($voteChoice->isBlank()) {
+                ++$this->blank;
+            } else {
+                $candidateGroupResult = $this->findCandidateGroupResult($voteChoice->getCandidateGroup());
+                $candidateGroupResult->increment();
+            }
         }
+    }
+
+    public function incrementExpressed(): void
+    {
+        ++$this->expressed;
     }
 
     private function findCandidateGroupResult(CandidateGroup $candidateGroup): ?CandidateGroupResult
@@ -120,17 +128,25 @@ class ElectionPoolResult
 
     public function sync(): void
     {
-        $max = 0;
         $elected = null;
 
-        foreach ($this->candidateGroupResults as $result) {
-            $total = $result->getTotal();
+        if ($this->electionPool->getElection()->getDesignation()->isMajorityType()) {
+            foreach ($this->candidateGroupResults as $result) {
+                // TODO: update
+                $result->setMajorityMention(array_rand($result->getTotalMentions(), 1));
+            }
+        } else {
+            $max = 0;
 
-            if ($total > $max) {
-                $max = $total;
-                $elected = $result->getCandidateGroup();
-            } elseif ($max === $total) {
-                $elected = null;
+            foreach ($this->candidateGroupResults as $result) {
+                $total = $result->getTotal();
+
+                if ($total > $max) {
+                    $max = $total;
+                    $elected = $result->getCandidateGroup();
+                } elseif ($max === $total) {
+                    $elected = null;
+                }
             }
         }
 

@@ -15,6 +15,28 @@
                 @media (min-width: $tablet) {
                     margin-right: 40px;
                 }
+
+                .majority-vote {
+                    &--candidates-container {
+                        .majority-vote--progress {
+                            display: none;
+                        }
+
+                        &.majority-vote--detailed {
+                            .majority-vote--progress {
+                                display: block;
+                            }
+                        }
+                    }
+
+                    &--mention-bg {
+                        &__excellent { background-color: $excellent; }
+                        &__very_good { background-color: $very-good; }
+                        &__good { background-color: $good; }
+                        &__fair { background-color: $fair; }
+                        &__insufficient { background-color: $insufficient; }
+                    }
+                }
             }
 
             .election {
