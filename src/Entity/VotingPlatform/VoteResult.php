@@ -91,4 +91,15 @@ class VoteResult
 
         return implode('-', $matches);
     }
+
+    public function findVoteChoiceForCandidateGroup(CandidateGroup $candidateGroup): ?VoteChoice
+    {
+        foreach ($this->voteChoices as $voteChoice) {
+            if ($voteChoice->getCandidateGroup() === $candidateGroup) {
+                return $voteChoice;
+            }
+        }
+
+        return null;
+    }
 }

@@ -14,7 +14,7 @@
                 <div class="ballot-paper__content text--center">
                     <ul class="candidate-names b__nudge--bottom-small">
                         {% set candidate_group = candidate_groups|filter(group => candidate_group_uuid == group.uuid.toString)|first %}
-                        {% set candidates = candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+                        {% set candidates = candidate_group.getCandidatesSorted() %}
 
                         {% for candidate in candidates %}
                             <li class="text--body">{{ candidate.fullName }}<span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span></li>

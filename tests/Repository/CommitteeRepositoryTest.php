@@ -20,12 +20,12 @@ class CommitteeRepositoryTest extends WebTestCase
 
     public function testCountApprovedCommittees()
     {
-        $this->assertSame(12, $this->repository->countApprovedCommittees());
+        $this->assertSame(13, $this->repository->countApprovedCommittees());
     }
 
     public function testFindApprovedCommittees()
     {
-        $this->assertCount(12, $this->repository->findApprovedCommittees());
+        $this->assertCount(13, $this->repository->findApprovedCommittees());
     }
 
     protected function setUp(): void

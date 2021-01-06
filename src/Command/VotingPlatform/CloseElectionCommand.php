@@ -36,8 +36,6 @@ class CloseElectionCommand extends Command
     private $committeeElectionRepository;
     /** @var CommitteeMembershipRepository */
     private $committeeMembershipRepository;
-    /** @var EventDispatcherInterface */
-    private $dispatcher;
     /** @var ResultCalculator */
     private $resultManager;
     /** @var EventDispatcherInterface */
@@ -129,7 +127,7 @@ class CloseElectionCommand extends Command
                 $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee = $committeeElection->getCommittee());
 
                 foreach ($memberships as $membership) {
-                    $this->dispatcher->dispatch(new CommitteeElectionCandidacyPeriodIsOverEvent(
+                    $this->eventDispatcher->dispatch(new CommitteeElectionCandidacyPeriodIsOverEvent(
                         $membership->getAdherent(),
                         $designation,
                         $committee
@@ -175,12 +173,6 @@ class CloseElectionCommand extends Command
     public function setCommitteeMembershipRepository(CommitteeMembershipRepository $committeeMembershipRepository): void
     {
         $this->committeeMembershipRepository = $committeeMembershipRepository;
-    }
-
-    /** @required */
-    public function setDispatcher(EventDispatcherInterface $dispatcher): void
-    {
-        $this->dispatcher = $dispatcher;
     }
 
     /** @required */

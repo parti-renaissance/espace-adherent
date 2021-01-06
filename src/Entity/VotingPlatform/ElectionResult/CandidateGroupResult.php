@@ -4,6 +4,7 @@ namespace App\Entity\VotingPlatform\ElectionResult;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\VotingPlatform\CandidateGroup;
+use App\VotingPlatform\Designation\MajorityVoteMentionEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -38,6 +39,20 @@ class CandidateGroupResult
      */
     private $total = 0;
 
+    /**
+     * @var array|null
+     *
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $totalMentions;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $majorityMention;
+
     public function __construct(CandidateGroup $candidateGroup, UuidInterface $uuid = null)
     {
         $this->candidateGroup = $candidateGroup;
@@ -68,5 +83,43 @@ class CandidateGroupResult
     {
         return $this->electionPoolResult->getExpressed() < 1 ? 0 :
             $this->total * 100 / $this->electionPoolResult->getExpressed();
+    }
+
+    public function incrementMention(string $mention): void
+    {
+        $this->increment();
+
+        if (null === $this->totalMentions) {
+            $this->totalMentions = [];
+        }
+
+        if (!isset($this->totalMentions[$mention])) {
+            $this->totalMentions[$mention] = 0;
+        }
+
+        ++$this->totalMentions[$mention];
+    }
+
+    public function getTotalMentions(): ?array
+    {
+        if ($this->totalMentions) {
+            uksort($this->totalMentions, function (string $a, string $b) {
+                return array_search($a, MajorityVoteMentionEnum::ALL) <=> array_search($b, MajorityVoteMentionEnum::ALL);
+            });
+
+            return $this->totalMentions;
+        }
+
+        return $this->totalMentions;
+    }
+
+    public function getMajorityMention(): ?string
+    {
+        return $this->majorityMention;
+    }
+
+    public function setMajorityMention(?string $majorityMention): void
+    {
+        $this->majorityMention = $majorityMention;
     }
 }
