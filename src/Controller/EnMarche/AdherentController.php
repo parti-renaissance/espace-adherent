@@ -43,12 +43,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/espace-adherent")
@@ -135,7 +135,7 @@ class AdherentController extends Controller
             $manager->flush();
             $this->addFlash('info', 'adherent.update_interests.success');
 
-            $dispatcher->dispatch(UserEvents::USER_UPDATE_INTERESTS, new UserEvent($adherent));
+            $dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATE_INTERESTS);
 
             return $this->redirectToRoute('app_adherent_pin_interests');
         }

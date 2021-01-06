@@ -21,13 +21,13 @@ class MailerServiceTest extends TestCase
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $dispatcher->expects($this->at(0))->method('dispatch')->with(
+            $this->isInstanceOf(MailerEvent::class),
             $this->equalTo(MailerEvents::DELIVERY_MESSAGE),
-            $this->isInstanceOf(MailerEvent::class)
         );
 
         $dispatcher->expects($this->at(1))->method('dispatch')->with(
-            $this->equalTo(MailerEvents::DELIVERY_SUCCESS),
-            $this->isInstanceOf(MailerEvent::class)
+            $this->isInstanceOf(MailerEvent::class),
+            $this->equalTo(MailerEvents::DELIVERY_SUCCESS)
         );
 
         $service = new MailerService(
@@ -49,13 +49,13 @@ class MailerServiceTest extends TestCase
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $dispatcher->expects($this->at(0))->method('dispatch')->with(
-            $this->equalTo(MailerEvents::DELIVERY_MESSAGE),
-            $this->isInstanceOf(MailerEvent::class)
+            $this->isInstanceOf(MailerEvent::class),
+            $this->equalTo(MailerEvents::DELIVERY_MESSAGE)
         );
 
         $dispatcher->expects($this->at(1))->method('dispatch')->with(
-            $this->equalTo(MailerEvents::DELIVERY_ERROR),
-            $this->isInstanceOf(MailerEvent::class)
+            $this->isInstanceOf(MailerEvent::class),
+            $this->equalTo(MailerEvents::DELIVERY_ERROR)
         );
 
         $service = new MailerService(

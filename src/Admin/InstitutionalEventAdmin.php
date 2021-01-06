@@ -18,9 +18,9 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class InstitutionalEventAdmin extends AbstractAdmin
 {
@@ -113,9 +113,7 @@ class InstitutionalEventAdmin extends AbstractAdmin
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
-        $event = new InstitutionalEventEvent($object);
-
-        $this->dispatcher->dispatch(Events::INSTITUTIONAL_EVENT_UPDATED, $event);
+        $this->dispatcher->dispatch(new InstitutionalEventEvent($object), Events::INSTITUTIONAL_EVENT_UPDATED);
     }
 
     protected function configureFormFields(FormMapper $formMapper)

@@ -3,7 +3,7 @@
 namespace App\Procuration\Event;
 
 use App\Entity\ProcurationProxy;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ProcurationProxyEvent extends Event
 {

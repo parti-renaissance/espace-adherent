@@ -3,7 +3,7 @@
 namespace App\VotingPlatform\Event;
 
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class BaseCandidacyEvent extends Event
 {

@@ -3,7 +3,7 @@
 namespace App\TerritorialCouncil\Event;
 
 use App\Entity\TerritorialCouncil\Convocation;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ConvocationEvent extends Event
 {

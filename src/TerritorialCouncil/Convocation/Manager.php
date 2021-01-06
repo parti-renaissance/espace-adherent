@@ -7,7 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Convocation;
 use App\TerritorialCouncil\Event\ConvocationEvent;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Manager
 {
@@ -46,6 +46,6 @@ class Manager
         $this->entityManager->persist($convocation);
         $this->entityManager->flush();
 
-        $this->eventDispatcher->dispatch(Events::CONVOCATION_CREATED, new ConvocationEvent($convocation));
+        $this->eventDispatcher->dispatch(new ConvocationEvent($convocation), Events::CONVOCATION_CREATED);
     }
 }

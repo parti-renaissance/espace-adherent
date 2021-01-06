@@ -3,7 +3,7 @@
 namespace App\AdherentMessage;
 
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MessageEvent extends Event
 {

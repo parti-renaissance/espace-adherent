@@ -13,7 +13,7 @@ use App\Procuration\Filter\ProcurationRequestFilters;
 use App\Repository\ProcurationProxyRepository;
 use App\Repository\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ProcurationManager
 {
@@ -47,7 +47,7 @@ class ProcurationManager
             $this->manager->flush();
         }
 
-        $this->dispatcher->dispatch(ProcurationEvents::REQUEST_PROCESSED, new ProcurationRequestEvent($request, $notify));
+        $this->dispatcher->dispatch(new ProcurationRequestEvent($request, $notify), ProcurationEvents::REQUEST_PROCESSED);
     }
 
     public function unprocessProcurationRequest(
@@ -62,7 +62,7 @@ class ProcurationManager
             $this->manager->flush();
         }
 
-        $this->dispatcher->dispatch(ProcurationEvents::REQUEST_UNPROCESSED, new ProcurationRequestEvent($request, $notify, $referent));
+        $this->dispatcher->dispatch(new ProcurationRequestEvent($request, $notify, $referent), ProcurationEvents::REQUEST_UNPROCESSED);
     }
 
     public function enableProcurationProxy(ProcurationProxy $proxy, bool $flush = true): void
@@ -143,7 +143,7 @@ class ProcurationManager
         $this->manager->persist($proxy);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(ProcurationEvents::PROXY_REGISTRATION, new ProcurationProxyEvent($proxy));
+        $this->dispatcher->dispatch(new ProcurationProxyEvent($proxy), ProcurationEvents::PROXY_REGISTRATION);
     }
 
     public function createProcurationRequest(ProcurationRequest $request): void
@@ -151,6 +151,6 @@ class ProcurationManager
         $this->manager->persist($request);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(ProcurationEvents::REQUEST_REGISTRATION, new ProcurationRequestEvent($request));
+        $this->dispatcher->dispatch(new ProcurationRequestEvent($request), ProcurationEvents::REQUEST_REGISTRATION);
     }
 }

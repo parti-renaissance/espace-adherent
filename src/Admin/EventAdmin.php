@@ -20,10 +20,10 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventAdmin extends AbstractAdmin
 {
@@ -139,7 +139,7 @@ class EventAdmin extends AbstractAdmin
 
     public function preUpdate($object)
     {
-        $this->dispatcher->dispatch(Events::EVENT_PRE_UPDATE, new EventEvent($object->getOrganizer(), $object));
+        $this->dispatcher->dispatch(new EventEvent($object->getOrganizer(), $object), Events::EVENT_PRE_UPDATE);
     }
 
     public function postUpdate($object)
@@ -148,7 +148,7 @@ class EventAdmin extends AbstractAdmin
 
         $event = new EventEvent($object->getOrganizer(), $object);
 
-        $this->dispatcher->dispatch(Events::EVENT_UPDATED, $event);
+        $this->dispatcher->dispatch($event, Events::EVENT_UPDATED);
     }
 
     protected function configureFormFields(FormMapper $formMapper)

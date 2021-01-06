@@ -5,7 +5,7 @@ namespace App\CitizenProject;
 use App\Events;
 use App\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectCreationCommandHandler
 {
@@ -58,6 +58,6 @@ class CitizenProjectCreationCommandHandler
         $this->manager->persist($adherent->followCitizenProject($citizenProject));
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::CITIZEN_PROJECT_CREATED, new CitizenProjectWasCreatedEvent($citizenProject, $adherent));
+        $this->dispatcher->dispatch(new CitizenProjectWasCreatedEvent($citizenProject, $adherent), Events::CITIZEN_PROJECT_CREATED);
     }
 }

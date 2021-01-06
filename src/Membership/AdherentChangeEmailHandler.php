@@ -8,8 +8,8 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentChangeEmailMessage;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentChangeEmailHandler
 {
@@ -48,15 +48,15 @@ class AdherentChangeEmailHandler
 
     public function handleValidationRequest(Adherent $adherent, AdherentChangeEmailToken $token): void
     {
-        $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
 
         $oldEmail = $adherent->getEmailAddress();
 
         $adherent->changeEmail($token);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
-        $this->dispatcher->dispatch(UserEvents::USER_EMAIL_UPDATED, new UserEmailEvent($adherent, $oldEmail));
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
+        $this->dispatcher->dispatch(new UserEmailEvent($adherent, $oldEmail), UserEvents::USER_EMAIL_UPDATED);
     }
 
     public function sendValidationEmail(Adherent $adherent, AdherentChangeEmailToken $token): void

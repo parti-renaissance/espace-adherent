@@ -10,7 +10,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\TerritorialCouncil\Event\TerritorialCouncilEvent;
 use App\TerritorialCouncil\Events;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UpdateDesignationHandler
 {
@@ -63,7 +63,7 @@ class UpdateDesignationHandler
 
         $this->entityManager->flush();
 
-        $this->eventDispatcher->dispatch(Events::DESIGNATION_SWITCHED, new TerritorialCouncilEvent($coTerr));
+        $this->eventDispatcher->dispatch(new TerritorialCouncilEvent($coTerr), Events::DESIGNATION_SWITCHED);
     }
 
     private function createDesignationFromRequest(UpdateDesignationRequest $request, Election $election): Designation

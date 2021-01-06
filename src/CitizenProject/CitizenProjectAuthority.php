@@ -8,7 +8,7 @@ use App\Entity\CitizenProjectMembership;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\CitizenProjectMembershipRepository;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectAuthority
 {
@@ -61,7 +61,7 @@ class CitizenProjectAuthority
 
         $membership->setPrivilege($privilege);
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE, new UserEvent($adherent));
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE);
     }
 
     private function getCitizenProjectMembership(

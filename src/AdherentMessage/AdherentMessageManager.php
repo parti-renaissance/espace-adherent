@@ -7,7 +7,7 @@ use App\AdherentMessage\Sender\SenderInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentMessageManager
 {
@@ -28,7 +28,7 @@ class AdherentMessageManager
         if (!$message->getId()) {
             $this->em->persist($message);
 
-            $this->eventDispatcher->dispatch(Events::MESSAGE_PRE_CREATE, new MessageEvent($message));
+            $this->eventDispatcher->dispatch(new MessageEvent($message), Events::MESSAGE_PRE_CREATE);
         }
 
         $this->em->flush();
@@ -42,7 +42,7 @@ class AdherentMessageManager
 
         $message->setFilter($filter);
 
-        $this->eventDispatcher->dispatch(Events::MESSAGE_FILTER_PRE_EDIT, new MessageEvent($message));
+        $this->eventDispatcher->dispatch(new MessageEvent($message), Events::MESSAGE_FILTER_PRE_EDIT);
 
         $this->em->flush();
     }

@@ -3,7 +3,7 @@
 namespace App\Donation;
 
 use App\Entity\Donator;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class DonatorEvent extends Event
 {

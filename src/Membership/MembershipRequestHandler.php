@@ -18,8 +18,8 @@ use App\OAuth\CallbackManager;
 use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class MembershipRequestHandler
 {
@@ -72,12 +72,12 @@ class MembershipRequestHandler
         $this->sendEmailValidation($adherent);
 
         $this->dispatcher->dispatch(
-            UserEvents::USER_CREATED,
             new UserEvent(
                 $adherent,
                 $membershipRequest->getAllowEmailNotifications(),
                 false
-            )
+            ),
+            UserEvents::USER_CREATED
         );
         $this->emailSubscriptionHistoryHandler->handleSubscriptions($adherent);
 
@@ -121,17 +121,17 @@ class MembershipRequestHandler
         $this->sendEmailValidation($adherent);
 
         $this->dispatcher->dispatch(
-            UserEvents::USER_CREATED,
             new UserEvent(
                 $adherent,
                 $membershipRequest->getAllowEmailNotifications(),
                 $membershipRequest->getAllowMobileNotifications()
-            )
+            ),
+            UserEvents::USER_CREATED
         );
 
         $this->emailSubscriptionHistoryHandler->handleSubscriptions($adherent);
 
-        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($adherent, $membershipRequest));
+        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($adherent, $membershipRequest), AdherentEvents::REGISTRATION_COMPLETED);
     }
 
     public function join(Adherent $user, MembershipRequest $membershipRequest): void
@@ -139,11 +139,11 @@ class MembershipRequestHandler
         $user->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
         $user->join();
 
-        $this->dispatcher->dispatch(UserEvents::USER_SWITCH_TO_ADHERENT, new UserEvent(
+        $this->dispatcher->dispatch(new UserEvent(
             $user,
             $membershipRequest->getAllowEmailNotifications(),
             $membershipRequest->getAllowMobileNotifications()
-        ));
+        ), UserEvents::USER_SWITCH_TO_ADHERENT);
         $this->emailSubscriptionHistoryHandler->handleSubscriptions($user);
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($user);
 
@@ -151,8 +151,8 @@ class MembershipRequestHandler
 
         $this->sendConfirmationJoinMessage($user);
 
-        $this->dispatcher->dispatch(AdherentEvents::REGISTRATION_COMPLETED, new AdherentAccountWasCreatedEvent($user, $membershipRequest));
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($user));
+        $this->dispatcher->dispatch(new AdherentAccountWasCreatedEvent($user, $membershipRequest), AdherentEvents::REGISTRATION_COMPLETED);
+        $this->dispatcher->dispatch(new UserEvent($user), UserEvents::USER_UPDATED);
     }
 
     public function sendConfirmationJoinMessage(Adherent $user): void
@@ -162,7 +162,7 @@ class MembershipRequestHandler
 
     public function update(Adherent $adherent, MembershipRequest $membershipRequest): void
     {
-        $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
 
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
 
@@ -170,9 +170,9 @@ class MembershipRequestHandler
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
+        $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($adherent), AdherentEvents::PROFILE_UPDATED);
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
     }
 
     /**
@@ -210,6 +210,6 @@ class MembershipRequestHandler
             $this->mailer->sendMessage($message);
         }
 
-        $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_DELETED);
     }
 }

@@ -24,6 +24,6 @@ class ApiScheduleCommitteeCreationCommand extends ApiScheduleEntityCreationComma
 
     protected function scheduleCreation(SynchronizedEntity $committee): void
     {
-        $this->dispatcher->dispatch(Events::COMMITTEE_CREATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_CREATED);
     }
 }

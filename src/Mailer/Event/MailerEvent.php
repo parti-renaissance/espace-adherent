@@ -5,7 +5,7 @@ namespace App\Mailer\Event;
 use App\Mailer\AbstractEmailTemplate;
 use App\Mailer\Exception\MailerException;
 use App\Mailer\Message\Message;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MailerEvent extends Event
 {

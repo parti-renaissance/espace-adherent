@@ -4,7 +4,7 @@ namespace App\CitizenProject;
 
 use App\Entity\CitizenProject;
 use App\Events;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectManagementAuthority
 {
@@ -20,7 +20,7 @@ class CitizenProjectManagementAuthority
     public function approve(CitizenProject $citizenProject): void
     {
         $this->manager->approveCitizenProject($citizenProject);
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_APPROVED, new CitizenProjectWasApprovedEvent($citizenProject));
+        $this->eventDispatcher->dispatch(new CitizenProjectWasApprovedEvent($citizenProject), Events::CITIZEN_PROJECT_APPROVED);
         $this->dispatchUpdate($citizenProject);
     }
 
@@ -44,6 +44,6 @@ class CitizenProjectManagementAuthority
 
     private function dispatchUpdate(CitizenProject $citizenProject): void
     {
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
+        $this->eventDispatcher->dispatch(new CitizenProjectWasUpdatedEvent($citizenProject), Events::CITIZEN_PROJECT_UPDATED);
     }
 }

@@ -15,7 +15,7 @@ use App\TerritorialCouncil\Event\MembershipEvent;
 use App\TerritorialCouncil\Events;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMembershipHandlerInterface
 {
@@ -302,7 +302,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     private function dispatch(string $eventName, MembershipEvent $event): void
     {
         if ($this->eventDispatchingEnabled) {
-            $this->dispatcher->dispatch($eventName, $event);
+            $this->dispatcher->dispatch($event, $eventName);
         }
     }
 }

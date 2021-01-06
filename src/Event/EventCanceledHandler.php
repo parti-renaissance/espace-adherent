@@ -8,8 +8,8 @@ use App\Entity\CitizenAction;
 use App\Entity\Event as CommitteeEvent;
 use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventCanceledHandler
 {
@@ -35,8 +35,8 @@ class EventCanceledHandler
 
         if (\array_key_exists($className = \get_class($event), self::EVENTS_MAPPING)) {
             $this->dispatcher->dispatch(
+                $this->createDispatchedEvent($event),
                 self::EVENTS_MAPPING[$className],
-                $this->createDispatchedEvent($event)
             );
         }
 

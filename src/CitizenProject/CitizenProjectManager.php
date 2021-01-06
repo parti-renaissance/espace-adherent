@@ -24,8 +24,8 @@ use App\Repository\CitizenProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectManager
 {
@@ -246,8 +246,8 @@ class CitizenProjectManager
             $this->entityManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerChangeEvent($citizenProject, $adherent));
+        $this->eventDispatcher->dispatch(new CitizenProjectWasUpdatedEvent($citizenProject), Events::CITIZEN_PROJECT_UPDATED);
+        $this->eventDispatcher->dispatch(new CitizenProjectFollowerChangeEvent($citizenProject, $adherent), Events::CITIZEN_PROJECT_FOLLOWER_ADDED);
     }
 
     public function unfollowCitizenProject(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
@@ -263,8 +263,8 @@ class CitizenProjectManager
             $this->entityManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_REMOVED, new CitizenProjectFollowerChangeEvent($citizenProject, $adherent));
+        $this->eventDispatcher->dispatch(new CitizenProjectWasUpdatedEvent($citizenProject), Events::CITIZEN_PROJECT_UPDATED);
+        $this->eventDispatcher->dispatch(new CitizenProjectFollowerChangeEvent($citizenProject, $adherent), Events::CITIZEN_PROJECT_FOLLOWER_REMOVED);
     }
 
     public function approveCommitteeSupport(

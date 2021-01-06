@@ -3,7 +3,7 @@
 namespace App\Jecoute;
 
 use App\Entity\Jecoute\DataSurvey;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class DataSurveyEvent extends Event
 {

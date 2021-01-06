@@ -16,7 +16,7 @@ use App\VotingPlatform\Event\CandidacyInvitationEvent;
 use App\VotingPlatform\Event\CommitteeCandidacyEvent;
 use App\VotingPlatform\Events as VotingPlatformEvents;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CandidacyManager
 {
@@ -47,7 +47,7 @@ class CandidacyManager
 
             $this->entityManager->flush();
 
-            $this->eventDispatcher->dispatch(VotingPlatformEvents::CANDIDACY_UPDATED, new BaseCandidacyEvent($candidacy));
+            $this->eventDispatcher->dispatch(new BaseCandidacyEvent($candidacy), VotingPlatformEvents::CANDIDACY_UPDATED);
 
             return;
         }
@@ -59,13 +59,13 @@ class CandidacyManager
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
-            VotingPlatformEvents::CANDIDACY_CREATED,
             new CommitteeCandidacyEvent(
                 $candidacy,
                 $committee,
                 $adherent,
                 $this->committeeMembershipRepository->findSupervisor($committee)
-            )
+            ),
+            VotingPlatformEvents::CANDIDACY_CREATED
         );
     }
 
@@ -100,13 +100,13 @@ class CandidacyManager
             $this->entityManager->flush();
 
             $this->eventDispatcher->dispatch(
-                VotingPlatformEvents::CANDIDACY_REMOVED,
                 new CommitteeCandidacyEvent(
                     $candidacy,
                     $committee,
                     $adherent,
                     $this->committeeMembershipRepository->findSupervisor($committee)
-                )
+                ),
+                VotingPlatformEvents::CANDIDACY_REMOVED
             );
         }
     }
@@ -121,8 +121,8 @@ class CandidacyManager
         $this->updateCandidature($candidacy);
 
         $this->eventDispatcher->dispatch(
-            Events::CANDIDACY_INVITATION_UPDATE,
-            new CandidacyInvitationEvent($candidacy, $invitation, $previouslyInvitedMembership)
+            new CandidacyInvitationEvent($candidacy, $invitation, $previouslyInvitedMembership),
+            Events::CANDIDACY_INVITATION_UPDATE
         );
     }
 
@@ -139,8 +139,8 @@ class CandidacyManager
         $this->updateCandidature($acceptedBy, $membership->getAdherent(), $membership->getCommittee());
 
         $this->eventDispatcher->dispatch(
-            Events::CANDIDACY_INVITATION_ACCEPT,
-            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation)
+            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation),
+            Events::CANDIDACY_INVITATION_ACCEPT
         );
     }
 
@@ -151,8 +151,8 @@ class CandidacyManager
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
-            Events::CANDIDACY_INVITATION_DECLINE,
-            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation)
+            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation),
+            Events::CANDIDACY_INVITATION_DECLINE
         );
     }
 }

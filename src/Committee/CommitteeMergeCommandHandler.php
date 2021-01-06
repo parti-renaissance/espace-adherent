@@ -18,7 +18,7 @@ use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeMembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeMergeCommandHandler
 {
@@ -115,8 +115,8 @@ class CommitteeMergeCommandHandler
 
         foreach ($newFollowers as $follower) {
             $this->dispatcher->dispatch(
-                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
-                new FollowCommitteeEvent($follower->getAdherent(), $destinationCommittee)
+                new FollowCommitteeEvent($follower->getAdherent(), $destinationCommittee),
+                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
             );
         }
 
@@ -152,8 +152,8 @@ class CommitteeMergeCommandHandler
 
         foreach ($mergedMemberships as $membership) {
             $this->dispatcher->dispatch(
-                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
-                new UnfollowCommitteeEvent($membership->getAdherent(), $destinationCommittee)
+                new UnfollowCommitteeEvent($membership->getAdherent(), $destinationCommittee),
+                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
             );
         }
 
@@ -176,7 +176,7 @@ class CommitteeMergeCommandHandler
 
     private function dispatchCommitteeUpdate(Committee $committee): void
     {
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 
     private function transferVotingMemberships(Committee $committee, array $votingMemberships): void

@@ -24,6 +24,6 @@ class ApiScheduleEventCreationCommand extends ApiScheduleEntityCreationCommand
 
     protected function scheduleCreation(SynchronizedEntity $event): void
     {
-        $this->dispatcher->dispatch(Events::EVENT_CREATED, new EventEvent(null, $event));
+        $this->dispatcher->dispatch(new EventEvent(null, $event), Events::EVENT_CREATED);
     }
 }

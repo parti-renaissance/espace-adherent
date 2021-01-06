@@ -3,7 +3,7 @@
 namespace App\ChezVous;
 
 use App\Entity\ChezVous\MeasureType;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MeasureTypeEvent extends Event
 {

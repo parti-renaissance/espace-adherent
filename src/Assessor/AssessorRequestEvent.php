@@ -3,7 +3,7 @@
 namespace App\Assessor;
 
 use App\Entity\AssessorRequest;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class AssessorRequestEvent extends Event
 {

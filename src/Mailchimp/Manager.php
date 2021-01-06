@@ -22,7 +22,7 @@ use App\Newsletter\NewsletterValueObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Manager implements LoggerAwareInterface
 {
@@ -163,13 +163,13 @@ class Manager implements LoggerAwareInterface
     {
         $message = $campaign->getMessage();
 
-        $this->eventDispatcher->dispatch(Events::CAMPAIGN_FILTERS_PRE_BUILD, new CampaignEvent($campaign));
+        $this->eventDispatcher->dispatch(new CampaignEvent($campaign), Events::CAMPAIGN_FILTERS_PRE_BUILD);
 
         $requestBuilder = $this->requestBuildersLocator->get(CampaignRequestBuilder::class);
 
         $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($campaign);
 
-        $this->eventDispatcher->dispatch(Events::CAMPAIGN_PRE_EDIT, new RequestEvent($message, $editCampaignRequest));
+        $this->eventDispatcher->dispatch(new RequestEvent($message, $editCampaignRequest), Events::CAMPAIGN_PRE_EDIT);
 
         // When ExternalId does not exist, then it is Campaign creation
         if (!$campaignId = $campaign->getExternalId()) {

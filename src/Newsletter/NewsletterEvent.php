@@ -4,7 +4,7 @@ namespace App\Newsletter;
 
 use App\Entity\Adherent;
 use App\Entity\NewsletterSubscription;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class NewsletterEvent extends Event
 {

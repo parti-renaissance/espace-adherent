@@ -6,7 +6,7 @@ use App\Address\PostAddressFactory;
 use App\Events;
 use App\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeUpdateCommandHandler
 {
@@ -46,6 +46,6 @@ class CommitteeUpdateCommandHandler
         $this->manager->persist($committee);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 }

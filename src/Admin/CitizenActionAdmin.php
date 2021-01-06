@@ -19,10 +19,10 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CitizenActionAdmin extends AbstractAdmin
 {
@@ -283,16 +283,14 @@ class CitizenActionAdmin extends AbstractAdmin
 
     public function preUpdate($object)
     {
-        $this->eventDispatcher->dispatch(Events::CITIZEN_ACTION_PRE_UPDATE, new CitizenActionEvent($object, $object->getOrganizer()));
+        $this->eventDispatcher->dispatch(new CitizenActionEvent($object, $object->getOrganizer()), Events::CITIZEN_ACTION_PRE_UPDATE);
     }
 
     public function postUpdate($object)
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
-        $citizenAction = new CitizenActionEvent($object, $object->getOrganizer());
-
-        $this->eventDispatcher->dispatch(Events::CITIZEN_ACTION_UPDATED, $citizenAction);
+        $this->eventDispatcher->dispatch(new CitizenActionEvent($object, $object->getOrganizer()), Events::CITIZEN_ACTION_UPDATED);
     }
 
     /**

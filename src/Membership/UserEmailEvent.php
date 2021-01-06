@@ -3,7 +3,7 @@
 namespace App\Membership;
 
 use App\Entity\Adherent;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class UserEmailEvent extends Event
 {

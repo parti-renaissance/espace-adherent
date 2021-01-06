@@ -7,7 +7,7 @@ use App\Entity\CitizenProject;
 use App\Events;
 use App\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectUpdateCommandHandler
 {
@@ -59,7 +59,7 @@ class CitizenProjectUpdateCommandHandler
         $this->manager->persist($citizenProject);
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
+        $this->dispatcher->dispatch(new CitizenProjectWasUpdatedEvent($citizenProject), Events::CITIZEN_PROJECT_UPDATED);
     }
 
     private function doUpdateImage(CitizenProjectCommand $command, CitizenProject $citizenProject): void

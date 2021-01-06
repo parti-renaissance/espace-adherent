@@ -7,7 +7,7 @@ use App\Entity\Donator;
 use App\Repository\AdherentRepository;
 use App\Repository\DonatorRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DonationRequestHandler
 {
@@ -51,7 +51,7 @@ class DonationRequestHandler
 
         $donator->addDonation($donation);
 
-        $this->dispatcher->dispatch(DonationEvents::CREATED, new DonationWasCreatedEvent($donation));
+        $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);
 
         $this->manager->persist($donator);
         $this->manager->persist($donation);

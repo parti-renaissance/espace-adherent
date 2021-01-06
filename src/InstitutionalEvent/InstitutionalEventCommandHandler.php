@@ -6,7 +6,7 @@ use App\Entity\InstitutionalEvent;
 use App\Event\EventFactory;
 use App\Events;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class InstitutionalEventCommandHandler
 {
@@ -31,9 +31,7 @@ class InstitutionalEventCommandHandler
         $this->entityManager->persist($institutionalEvent);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(
-            Events::INSTITUTIONAL_EVENT_CREATED, new InstitutionalEventEvent($institutionalEvent)
-        );
+        $this->dispatcher->dispatch(new InstitutionalEventEvent($institutionalEvent), Events::INSTITUTIONAL_EVENT_CREATED);
 
         return $institutionalEvent;
     }
@@ -46,9 +44,7 @@ class InstitutionalEventCommandHandler
 
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(
-            Events::INSTITUTIONAL_EVENT_UPDATED, new InstitutionalEventEvent($institutionalEvent)
-        );
+        $this->dispatcher->dispatch(new InstitutionalEventEvent($institutionalEvent), Events::INSTITUTIONAL_EVENT_UPDATED);
 
         return $institutionalEvent;
     }
@@ -58,9 +54,7 @@ class InstitutionalEventCommandHandler
         $this->entityManager->remove($institutionalEvent);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(
-            Events::INSTITUTIONAL_EVENT_DELETED, new InstitutionalEventEvent($institutionalEvent)
-        );
+        $this->dispatcher->dispatch(new InstitutionalEventEvent($institutionalEvent), Events::INSTITUTIONAL_EVENT_DELETED);
 
         return $institutionalEvent;
     }

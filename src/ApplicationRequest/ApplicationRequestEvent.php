@@ -3,7 +3,7 @@
 namespace App\ApplicationRequest;
 
 use App\Entity\ApplicationRequest\ApplicationRequest;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ApplicationRequestEvent extends Event
 {
