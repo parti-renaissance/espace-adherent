@@ -120,9 +120,11 @@ jobs:
                 mkdir -p ./phpunit
                 make tfp-rabbitmq tfp-db
 
-                $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --log-junit ./phpunit/junit.xml
+                $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --log-junit ./phpunit/junit.xml --coverage-clover coverage.xml
             - store_test_results:
                 path: ./phpunit
+            - run: |
+                bash <(curl -s https://codecov.io/bash)
 
     behat:
         <<: *working_directory

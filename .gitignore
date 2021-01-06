@@ -32,3 +32,4 @@ node_modules
 /.env.local
 /.env.local.php
 /.env.*.local
+/coverage.xml

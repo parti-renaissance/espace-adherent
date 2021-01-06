@@ -56,8 +56,6 @@ RUN apt-get update -q && \
         wget \
         wkhtmltopdf && \
 
-    phpdismod xdebug && \
-
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
 
     sed -i -e "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<policy domain=\"coder\" rights=\"read|write\" pattern=\"PDF\" \/>/g" /etc/ImageMagick-6/policy.xml && \
