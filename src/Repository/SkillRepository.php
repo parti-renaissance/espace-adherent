@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Adherent;
 use App\Entity\Skill;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class SkillRepository extends ServiceEntityRepository
 {

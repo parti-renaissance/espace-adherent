@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\InstitutionalEventCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class InstitutionalEventCategoryRepository extends ServiceEntityRepository
 {

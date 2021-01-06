@@ -7,9 +7,9 @@ use App\Entity\Device;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class DataSurveyRepository extends ServiceEntityRepository
 {

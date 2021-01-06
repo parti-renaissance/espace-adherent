@@ -10,9 +10,9 @@ use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TerritorialCouncilRepository extends ServiceEntityRepository
 {

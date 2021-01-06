@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Adherent;
 use App\Entity\Event;
 use App\Entity\MunicipalEvent;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class MunicipalEventRepository extends EventRepository
 {

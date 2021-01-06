@@ -6,7 +6,7 @@ use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Repository\AdherentRepository;
 use App\Repository\DonatorRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DonationRequestHandler

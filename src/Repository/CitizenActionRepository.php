@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CitizenActionRepository extends EventRepository
 {

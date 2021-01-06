@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\TonMacronChoice;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TonMacronChoiceRepository extends ServiceEntityRepository
 {

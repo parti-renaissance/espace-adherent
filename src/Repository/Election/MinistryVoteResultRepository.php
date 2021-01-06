@@ -6,7 +6,7 @@ use App\Entity\City;
 use App\Entity\Election\MinistryVoteResult;
 use App\Entity\ElectionRound;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class MinistryVoteResultRepository extends ServiceEntityRepository
 {

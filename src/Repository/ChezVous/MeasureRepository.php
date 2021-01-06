@@ -6,7 +6,7 @@ use App\Entity\ChezVous\City;
 use App\Entity\ChezVous\Measure;
 use App\Entity\ChezVous\MeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class MeasureRepository extends ServiceEntityRepository
 {

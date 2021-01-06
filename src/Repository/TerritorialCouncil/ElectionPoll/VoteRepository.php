@@ -6,7 +6,7 @@ use App\Entity\TerritorialCouncil\ElectionPoll\Poll;
 use App\Entity\TerritorialCouncil\ElectionPoll\Vote;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class VoteRepository extends ServiceEntityRepository
 {

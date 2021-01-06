@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TerritorialCouncilAdherentMandateRepository extends ServiceEntityRepository
 {

@@ -10,9 +10,9 @@ use App\Entity\BaseGroup;
 use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectMembership;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
 class CitizenProjectMembershipRepository extends ServiceEntityRepository

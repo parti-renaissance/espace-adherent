@@ -4,7 +4,7 @@ namespace App\Repository\ChezVous;
 
 use App\Entity\ChezVous\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class RegionRepository extends ServiceEntityRepository
 {

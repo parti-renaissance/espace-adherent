@@ -6,7 +6,7 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\IdeasWorkshop\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class VoteRepository extends ServiceEntityRepository
 {

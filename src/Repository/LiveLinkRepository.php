@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\LiveLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class LiveLinkRepository extends ServiceEntityRepository
 {

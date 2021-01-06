@@ -7,7 +7,7 @@ use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\TerritorialCouncil\Filter\MembersListFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PoliticalCommitteeMembershipRepository extends ServiceEntityRepository
 {

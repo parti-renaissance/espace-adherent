@@ -8,8 +8,8 @@ use App\Entity\Jecoute\Survey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Jecoute\SurveyQuestionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\Persistence\ManagerRegistry;
 
 class QuestionRepository extends ServiceEntityRepository
 {

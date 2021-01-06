@@ -7,9 +7,9 @@ use App\Assessor\Filter\AssessorRequestFilters;
 use App\Entity\Adherent;
 use App\Entity\AssessorRequest;
 use App\Entity\VotePlace;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AssessorRequestRepository extends AbstractAssessorRepository
 {

@@ -7,7 +7,7 @@ use App\Entity\TerritorialCouncil\OfficialReport;
 use App\Entity\TerritorialCouncil\PoliticalCommittee;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class OfficialReportRepository extends ServiceEntityRepository
 {

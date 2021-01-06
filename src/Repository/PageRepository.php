@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Page;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PageRepository extends ServiceEntityRepository
 {

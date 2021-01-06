@@ -8,8 +8,8 @@ use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
 use App\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class LocalSurveyRepository extends ServiceEntityRepository
 {

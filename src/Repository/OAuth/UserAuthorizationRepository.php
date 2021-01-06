@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\OAuth\Client;
 use App\Entity\OAuth\UserAuthorization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
 class UserAuthorizationRepository extends ServiceEntityRepository

@@ -7,10 +7,10 @@ use App\Entity\Geo\Zone;
 use App\Entity\Geo\ZoneableInterface;
 use App\Entity\ReferentTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ZoneRepository extends ServiceEntityRepository
 {

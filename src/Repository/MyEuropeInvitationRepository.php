@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\MyEuropeInvitation;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class MyEuropeInvitationRepository extends InteractiveInvitationRepository
 {

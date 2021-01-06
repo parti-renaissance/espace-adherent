@@ -7,7 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Convocation;
 use App\Repository\PaginatorTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ConvocationRepository extends ServiceEntityRepository
 {

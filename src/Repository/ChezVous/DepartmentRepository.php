@@ -4,7 +4,7 @@ namespace App\Repository\ChezVous;
 
 use App\Entity\ChezVous\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class DepartmentRepository extends ServiceEntityRepository
 {

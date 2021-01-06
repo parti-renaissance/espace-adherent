@@ -4,7 +4,7 @@ namespace App\Repository\VotingPlatform;
 
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class DesignationRepository extends ServiceEntityRepository
 {

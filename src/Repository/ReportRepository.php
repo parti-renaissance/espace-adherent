@@ -7,7 +7,7 @@ use App\Entity\Report\Report;
 use App\Entity\Report\ReportStatusEnum;
 use App\Report\ReportType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ReportRepository extends ServiceEntityRepository
 {

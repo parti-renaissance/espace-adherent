@@ -4,8 +4,8 @@ namespace App\Repository\OAuth;
 
 use App\Entity\OAuth\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
 class ClientRepository extends ServiceEntityRepository

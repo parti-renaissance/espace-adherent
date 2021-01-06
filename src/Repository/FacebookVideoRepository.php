@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\FacebookVideo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class FacebookVideoRepository extends ServiceEntityRepository
 {

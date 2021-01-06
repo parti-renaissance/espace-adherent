@@ -5,8 +5,8 @@ namespace App\Repository\Geo;
 use App\Entity\Geo\City;
 use App\Entity\Geo\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\Persistence\ManagerRegistry;
 
 final class DepartmentRepository extends ServiceEntityRepository
 {

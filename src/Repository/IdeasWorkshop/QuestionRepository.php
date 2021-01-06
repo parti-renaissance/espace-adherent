@@ -4,7 +4,7 @@ namespace App\Repository\IdeasWorkshop;
 
 use App\Entity\IdeasWorkshop\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class QuestionRepository extends ServiceEntityRepository
 {

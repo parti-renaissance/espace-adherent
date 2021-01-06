@@ -5,8 +5,8 @@ namespace App\Repository\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\ElectedRepresentative\ZoneCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ZoneRepository extends ServiceEntityRepository
 {

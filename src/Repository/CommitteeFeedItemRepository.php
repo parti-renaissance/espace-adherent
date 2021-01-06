@@ -4,10 +4,10 @@ namespace App\Repository;
 
 use App\Entity\CommitteeFeedItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CommitteeFeedItemRepository extends ServiceEntityRepository
 {

@@ -4,8 +4,8 @@ namespace App\Repository\ApplicationRequest;
 
 use App\Entity\ApplicationRequest\Theme;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ThemeRepository extends ServiceEntityRepository
 {

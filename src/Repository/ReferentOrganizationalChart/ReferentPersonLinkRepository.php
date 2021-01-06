@@ -6,8 +6,8 @@ use App\Entity\Referent;
 use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ReferentPersonLinkRepository extends ServiceEntityRepository
 {

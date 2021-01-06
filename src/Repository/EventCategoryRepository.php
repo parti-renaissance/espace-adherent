@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Entity\EventCategory;
 use App\Entity\EventGroupCategory;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class EventCategoryRepository extends BaseEventCategoryRepository
 {

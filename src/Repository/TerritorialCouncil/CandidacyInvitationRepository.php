@@ -7,7 +7,7 @@ use App\Entity\TerritorialCouncil\Election;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CandidacyInvitationRepository extends ServiceEntityRepository
 {

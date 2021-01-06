@@ -5,7 +5,7 @@ namespace App\Security;
 use App\Repository\FailedLoginAttemptRepository;
 use App\Security\Exception\BadCredentialsException;
 use App\Security\Exception\MaxLoginAttemptException;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
