@@ -1,0 +1,51 @@
+<div class="l__col--wrap election__ballots-detail">
+    <div class="l__row">
+        {% for pool_result in election_round_result.getElectionPoolResults %}
+            <div class="l__col">
+                <h3>{{ get_election_pool_title_key(pool_result.electionPool)|trans }}</h3>
+                <table class="text--left">
+                    <thead class="b__nudge--bottom">
+                        <tr class="text--body">
+                            {% set election_pool = pool_result.electionPool %}
+                            {% set is_first_pool = loop.first %}
+
+                            {% if loop.first %}
+                                <th></th>
+                            {% endif %}
+
+                            {% for candidate_group in election_pool.candidateGroups %}
+                                <th>
+                                    {% for candidate in candidate_group.getCandidatesSorted() %}
+                                        {{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span><br/>
+                                    {% endfor %}
+                                </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for vote_result in vote_results %}
+                            <tr>
+                                {% if is_first_pool %}
+                                    <td>{{ vote_result.voterKey }}</td>
+                                {% endif %}
+
+                                {% for candidate_group in election_pool.candidateGroups %}
+                                    <td>
+                                        {% set vote_choice = vote_result.findVoteChoiceForCandidateGroup(candidate_group) %}
+
+                                        {% if vote_choice %}
+                                            <div class="candidate-mention candidate-mention__{{ vote_choice.mention }} text--body">
+                                                {{ ('voting_platform.vote.majority_vote_mention.' ~ vote_choice.mention)|trans }}
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+</div>

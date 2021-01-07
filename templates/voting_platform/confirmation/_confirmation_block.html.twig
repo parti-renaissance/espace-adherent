@@ -10,7 +10,7 @@
                     </div>
                     {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}
                     {% if candidate_group %}
-                        {% set candidates = candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+                        {% set candidates = candidate_group.getCandidatesSorted() %}
 
                         {% for candidate in candidates %}
                             <div class="b__nudge--bottom-small">

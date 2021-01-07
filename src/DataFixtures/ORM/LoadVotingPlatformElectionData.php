@@ -273,8 +273,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                 continue;
             }
 
-            // $committeeCandidacy = $this->getReference('committee-candidacy-committee_supervisor-'.$index);
-
             $group = new CandidateGroup();
 
             $group->addCandidate($candidate = new Candidate(
@@ -484,8 +482,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
     private function loadMajorityVotes(ElectionRound $electionRound, VotersList $votersList, array $votesData): void
     {
-        $pool = current($electionRound->getElectionPools());
-
         $voters = $votersList->getVoters();
         shuffle($voters);
 
@@ -495,10 +491,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
             $result = new VoteResult($electionRound, VoteResult::generateVoterKey());
 
-            foreach ($voteRow as $i => $mentionIndex) {
-                $result->addVoteChoice($choice = new VoteChoice($pool));
-                $choice->setMention(MajorityVoteMentionEnum::ALL[$mentionIndex]);
-                $choice->setCandidateGroup($pool->getCandidateGroups()[$i]);
+            foreach ($electionRound->getElectionPools() as $pool) {
+                foreach ($voteRow as $i => $mentionIndex) {
+                    $result->addVoteChoice($choice = new VoteChoice($pool));
+                    $choice->setMention(MajorityVoteMentionEnum::ALL[$mentionIndex]);
+                    $choice->setCandidateGroup($pool->getCandidateGroups()[$i]);
+                }
             }
 
             $this->manager->persist($result);

@@ -6,7 +6,7 @@
 
     <div class="box__content">
         {% if candidate_group %}
-            {% set candidates = candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+            {% set candidates = candidate_group.getCandidatesSorted() %}
             <ul class="candidate-names">
                 {% for candidate in candidates %}
                     <li class="text--body">{{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span></li>

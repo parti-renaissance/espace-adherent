@@ -10,7 +10,7 @@
 
             <div class="l__row {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
                 <div class="l__col">
-                    {% for candidate in candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+                    {% for candidate in candidate_group.getCandidatesSorted() %}
                         <p>
                             {{ candidate.fullName }}
                             <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>

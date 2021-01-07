@@ -199,7 +199,6 @@ class Election
             return null;
         }
 
-        dump($this->result);
         $winners = current($this->result);
 
         return 1 === \count($winners) ? current($winners) : null;

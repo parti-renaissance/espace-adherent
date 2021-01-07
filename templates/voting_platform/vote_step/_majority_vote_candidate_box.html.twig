@@ -2,7 +2,7 @@
 
 <div class="candidate__box l__row l__row--v-stretch b__nudge--bottom-medium">
     <div class="box__content">
-        {% set candidates = candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+        {% set candidates = candidate_group.getCandidatesSorted() %}
 
         <ul class="candidate-names">
             {% for candidate in candidates %}
