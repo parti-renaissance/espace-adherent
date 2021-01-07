@@ -17,19 +17,156 @@
                 }
 
                 .majority-vote {
-                    &--candidates-container {
-                        .majority-vote--progress {
-                            display: none;
+
+                    &--candidates-head {
+                        display: flex;
+                        align-items: baseline;
+                        background-color: $white;
+                        border-radius: 3px;
+                        padding: 16px 24px;
+                        margin-bottom: 24px;
+
+                        .el {
+                            flex: 1;
                         }
 
-                        &.majority-vote--detailed {
-                            .majority-vote--progress {
-                                display: block;
+                        .el-1 {
+                            @media (min-width: 1180px) {
+                                flex: 0 0 300px;
                             }
                         }
                     }
 
-                    &--mention-bg {
+                    &--candidates-container {
+
+                        .candidate__box {
+                            display: flex;
+                            flex-direction: column;
+                            min-height: 144px;
+                            box-sizing: border-box;
+
+                            @media (min-width: 1180px) {
+                                flex-direction: row;
+                                align-items: center;
+                            }
+
+                            .candidate-names {
+                                margin-bottom: 20px;
+
+                                @media (min-width: 1180px) {
+                                    flex: 0 0 300px;
+                                    margin: 0;
+                                }
+                            }
+                        }
+
+                        .majority-vote {
+
+                            &__detail {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                flex: auto;
+                                width: 100%;
+
+                                .candidate-mention {
+                                    align-self: center;
+
+                                    @media (min-width: 1180px) {
+                                        align-self: flex-start;
+                                    }
+
+                                    &.mention-data {
+                                        background: none;
+                                        padding: 0;
+                                        margin-right: 12px;
+                                        font-weight: 400;
+                                    }
+                                }
+                            }
+
+                            &__progress {
+                                display: none;
+
+                                &-container {
+                                    position: relative;
+
+                                    span.half {
+                                        position: absolute;
+                                        display: block;
+                                        width: 2px;
+                                        top: 0;
+                                        bottom: 0;
+                                        background-color: $black;
+                                        left: calc(50% - 3px);
+
+                                        &:before {
+                                            content: '';
+                                            width: 0;
+                                            height: 0;
+                                            top: -5px;
+                                            position: absolute;
+                                            left: -2px;
+                                            border-style: solid;
+                                            border-width: 6px 3px 0 3px;
+                                            border-color: $black transparent transparent transparent;
+                                        }
+
+                                        &:after {
+                                            content: '';
+                                            width: 0;
+                                            height: 0;
+                                            bottom: -5px;
+                                            position: absolute;
+                                            left: -2px;
+                                            border-style: solid;
+                                            border-width: 0 3px 6px 3px;
+                                            border-color: transparent transparent $black transparent;
+                                        }
+                                    }
+                                }
+
+                                &-parts {
+                                    display: flex;
+                                    margin: 14px 0 8px 0;
+                                    flex-wrap: wrap;
+
+                                    .majority-vote__mention {
+                                        height: 16px;
+
+                                        &:first-child {
+                                            border-radius: 50px 0 0 50px;
+                                        }
+
+                                        &:last-child {
+                                            border-radius: 0 50px 50px 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+
+                        &.majority-vote--detailed {
+                            .majority-vote {
+                                &__detail {
+                                    .candidate-mention {
+                                        align-self: center;
+                                    }
+
+                                    .align-self {
+                                        align-self: center;
+                                    }
+                                }
+                                &__progress {
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+
+                    &__mention--bg {
                         &__excellent { background-color: $excellent; }
                         &__very_good { background-color: $very-good; }
                         &__good { background-color: $good; }
@@ -94,6 +231,96 @@
                         table {
                             width: 100%;
                             min-width: 750px;
+                        }
+                    }
+
+                    &.majority-vote {
+                        background-color: $white;
+                        border-radius: 3px;
+                        border: 1px solid $lines-grey;
+
+                        .ballots-detail {
+                            &__container {
+                                overflow-x: auto;
+                                display: flex;
+                                padding: 40px;
+                                box-sizing: border-box;
+                                width: 100%;
+                            }
+
+                            &__pool {
+                                margin-right: 20px;
+                                &:not(:first-child) {
+                                    .ballots-detail__voter,
+                                    .ballots-detail__empty-space {
+                                        display: none;
+                                    }
+                                }
+                            }
+
+                            &__pool-name {
+                                display: inline-block;;
+                                background-color: $gray--lighter;
+                                text-transform: uppercase;
+                                font-size: 14px;
+                                color: $black;
+                                padding: 4px 0;
+                                text-align: center;
+                                width: 100%;
+                            }
+
+                            &__candidates {
+                                display: flex;
+                            }
+
+                            &__candidates-group {
+                                padding: 20px 40px 20px 20px;
+                                min-width: 240px;
+                                max-width: 240px;
+                                box-sizing: border-box;
+                                border-left: 1px solid $lines-grey;
+                                border-bottom: 1px solid $lines-grey;
+
+                                &:last-child { border-right: 1px solid $lines-grey; }
+
+                                &.elected {
+                                    min-width: 340px;
+                                    max-width: 340px;
+                                }
+                            }
+
+                            &__empty-space {
+                                width: 130px;
+                            }
+
+                            &__row {
+                                display: flex;
+                            }
+
+                            &__voter {
+                                width: 130px;
+                                padding-top: 20px;
+                                display: flex;
+                                align-items: center;
+                                font-size: 14px;
+                                color: $neutral-grey;
+                            }
+
+                            &__choices {
+                                display: flex;
+                                min-width: 240px;
+                                max-width: 240px;
+                                padding: 20px 40px 0 20px;
+                                box-sizing: border-box;
+                                border-left: 1px solid $lines-grey;
+
+                                &:last-child { border-right: 1px solid $lines-grey; }
+
+                                &.elected {
+                                    min-width: 340px;
+                                    max-width: 340px;
+                                }
+                            }
                         }
                     }
                 }

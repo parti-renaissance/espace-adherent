@@ -1,59 +1,56 @@
 <div class="candidates-block">
-    <div class="l__row">
-        <div class="l__col--half"><strong>Binômes</strong></div>
-        <div class="l__col--half"><strong>Résultats (médiane)</strong></div>
+    <div class="majority-vote--candidates-head text--body ">
+        <div class="el el-1 text--bold">Binômes</div>
+        <div class="el el-2 text--bold">Résultats (médiane)</div>
+        <a href="#" class="link--no-decor link--blue--dark text--small">Voir détails</a>
     </div>
 
-    <div class="b__nudge--top-40 majority-vote--candidates-container">
+    <div class="majority-vote--candidates-container">
         {% for candidate_group_result in pool_result.candidateGroupResultsSorted %}
             {% set candidate_group = candidate_group_result.candidateGroup %}
 
-            <div class="l__row {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
-                <div class="l__col">
+            <div class="candidate__box {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
+                <div class="candidate-names">
                     {% for candidate in candidate_group.getCandidatesSorted() %}
-                        <p>
+                        <div class="candidate text--body text--bold">
                             {{ candidate.fullName }}
                             <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
 
                             {% if pool_result.isElected and candidate_group.elected %}
                                 <span class="elected-tag text--body text--on-yellow text--bold b__nudge--left-small">Désigné{{ candidate.isFemale ? 'e' }}</span>
                             {% endif %}
-                        </p>
+                        </div>
                     {% endfor %}
                 </div>
 
-                <div class="l__col l__col--half">
-                    <div class="l__row">
+                <div class="majority-vote__detail">
+                    <a href="#" class="link--no-decor align-self" onclick="toggleClass(this.parentNode.parentNode.parentNode, 'majority-vote--detailed');return false;">
                         <div class="candidate-mention candidate-mention__{{ candidate_group_result.majorityMention }} text--body">
                             {{ ('voting_platform.vote.majority_vote_mention.' ~ candidate_group_result.majorityMention)|trans }}
                         </div>
-                    </div>
+                    </a>
+                    <div class="majority-vote__progress">
+                        <div class="majority-vote__progress-container">
+                            <div class="majority-vote__progress-parts">
+                                {% set cercles = [] %}
+                                {% for mention, value in candidate_group_result.totalMentions %}
+                                    {% set percent = value * 100.0 / candidate_group_result.total %}
+                                    {% set cercles = cercles|merge([{mention: mention, percent: percent}]) %}
 
-                    <div class="majority-vote--progress">
-                        <div class="l__row">
-                            {% set cercles = [] %}
-                            {% for mention, value in candidate_group_result.totalMentions %}
-                                {% set percent = value * 100.0 / candidate_group_result.total %}
-                                {% set cercles = cercles|merge([{mention: mention, percent: percent}]) %}
-
-                                <div class="l__col majority-vote--mention-bg__{{ mention }}" style="width: {{ percent }}%;"> </div>
-                            {% endfor %}
+                                    <div class="majority-vote__mention majority-vote__mention--bg__{{ mention }}" style="width: {{ percent }}%;"> </div>
+                                {% endfor %}
+                            </div>
+                            <span class="half"></span>
                         </div>
 
                         <div class="l__row">
                             {% for row in cercles %}
-                                <div class="candidate-mention candidate-mention__{{ row.mention }} text--body">
+                                <div class="candidate-mention mention-data candidate-mention__{{ row.mention }} text--body">
                                     {{ row.percent }} %
                                 </div>
                             {% endfor %}
                         </div>
                     </div>
-                </div>
-
-                <div class="l__col">
-                    <a href="#" class="text--body text--blue--dark b__nudge--none" onclick="toggleClass(this.parentNode.parentNode.parentNode, 'majority-vote--detailed');return false;">
-                        <img src="{{ asset('/images/icons/chevron-down.svg') }}" alt="Chevron" />
-                    </a>
                 </div>
             </div>
         {% endfor %}

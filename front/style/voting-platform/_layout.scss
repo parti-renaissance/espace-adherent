@@ -343,6 +343,7 @@
             .candidate-names li::before { background-color: $blue; }
             .election-results .candidate__box.elected { border: solid 3px $blue; }
             .election-results .progress-bar__gauge .slider { background: $blue; }
+            .election-results .ballots-detail__candidates-group.elected { border-left: solid 3px $blue !important; }
         }
 
         &__committee_adherent,
@@ -642,6 +643,7 @@
 }
 
 .candidate-mention {
+    display: inline-block;
     font-size: 14px;
     font-weight: bold;
     color: $black;

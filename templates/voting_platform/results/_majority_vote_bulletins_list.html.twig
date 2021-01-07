@@ -1,51 +1,103 @@
-<div class="l__col--wrap election__ballots-detail">
-    <div class="l__row">
-        {% for pool_result in election_round_result.getElectionPoolResults %}
-            <div class="l__col">
-                <h3>{{ get_election_pool_title_key(pool_result.electionPool)|trans }}</h3>
-                <table class="text--left">
-                    <thead class="b__nudge--bottom">
-                        <tr class="text--body">
-                            {% set election_pool = pool_result.electionPool %}
-                            {% set is_first_pool = loop.first %}
+<div class="l__col--wrap majority-vote election__ballots-detail">
+    <div class="ballots-detail__container text--body">
+        <div class="ballots-detail__pool">
+            {% for pool_result in election_round_result.getElectionPoolResults %}
+                <div class="l__row">
+                    {% set election_pool = pool_result.electionPool %}
+                    {% set is_first_pool = loop.first %}
 
-                            {% if loop.first %}
-                                <th></th>
+                    {% if loop.first %}
+                        <div class="ballots-detail__empty-space"></div>
+                    {% endif %}
+                    <div>
+                        <h3 class="ballots-detail__pool-name">{{ get_election_pool_title_key(pool_result.electionPool)|trans }}</h3>
+                        <div class="ballots-detail__candidates">
+                            {% for candidate_group in election_pool.candidateGroups %}
+                                <div class="ballots-detail__candidates-group {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
+                                    {% for candidate in candidate_group.getCandidatesSorted() %}
+                                        <div class="text--body text--bold">
+                                            {{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ballots-detail__results">
+                    {% for vote_result in vote_results %}
+                        <div class="ballots-detail__row">
+                            {% if is_first_pool %}
+                                <div class="ballots-detail__voter">{{ vote_result.voterKey }}</div>
                             {% endif %}
 
                             {% for candidate_group in election_pool.candidateGroups %}
-                                <th>
-                                    {% for candidate in candidate_group.getCandidatesSorted() %}
-                                        {{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span><br/>
-                                    {% endfor %}
-                                </th>
+                                <div class="ballots-detail__choices {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
+                                    {% set vote_choice = vote_result.findVoteChoiceForCandidateGroup(candidate_group) %}
+
+                                    {% if vote_choice %}
+                                        <div class="candidate-mention candidate-mention__{{ vote_choice.mention }} text--body">
+                                            {{ ('voting_platform.vote.majority_vote_mention.' ~ vote_choice.mention)|trans }}
+                                        </div>
+                                    {% endif %}
+                                </div>
                             {% endfor %}
-                        </tr>
-                    </thead>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
 
-                    <tbody>
-                        {% for vote_result in vote_results %}
-                            <tr>
-                                {% if is_first_pool %}
-                                    <td>{{ vote_result.voterKey }}</td>
-                                {% endif %}
 
-                                {% for candidate_group in election_pool.candidateGroups %}
-                                    <td>
-                                        {% set vote_choice = vote_result.findVoteChoiceForCandidateGroup(candidate_group) %}
+        <!-- below is exemple for a second pool - to delete is ok for you -->
+        <div class="ballots-detail__pool">
+            {% for pool_result in election_round_result.getElectionPoolResults %}
+                <div class="l__row">
+                    {% set election_pool = pool_result.electionPool %}
+                    {% set is_first_pool = loop.first %}
 
-                                        {% if vote_choice %}
-                                            <div class="candidate-mention candidate-mention__{{ vote_choice.mention }} text--body">
-                                                {{ ('voting_platform.vote.majority_vote_mention.' ~ vote_choice.mention)|trans }}
-                                            </div>
-                                        {% endif %}
-                                    </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% endfor %}
+                    {% if loop.first %}
+                        <div class="ballots-detail__empty-space"></div>
+                    {% endif %}
+                    <div>
+                        <h3 class="ballots-detail__pool-name">exemple 2eme pool</h3>
+                        <div class="ballots-detail__candidates">
+                            {% for candidate_group in election_pool.candidateGroups %}
+                                <div class="ballots-detail__candidates-group {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
+                                    {% for candidate in candidate_group.getCandidatesSorted() %}
+                                        <div class="text--body text--bold">
+                                            {{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ballots-detail__results">
+                    {% for vote_result in vote_results %}
+                        <div class="ballots-detail__row">
+                            {% if is_first_pool %}
+                                <div class="ballots-detail__voter">{{ vote_result.voterKey }}</div>
+                            {% endif %}
+
+                            {% for candidate_group in election_pool.candidateGroups %}
+                                <div class="ballots-detail__choices {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
+                                    {% set vote_choice = vote_result.findVoteChoiceForCandidateGroup(candidate_group) %}
+
+                                    {% if vote_choice %}
+                                        <div class="candidate-mention candidate-mention__{{ vote_choice.mention }} text--body">
+                                            {{ ('voting_platform.vote.majority_vote_mention.' ~ vote_choice.mention)|trans }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>

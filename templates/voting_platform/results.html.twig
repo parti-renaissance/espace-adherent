@@ -11,7 +11,7 @@
 {% block page_title 'Résultats de ' ~ designation.getDenomination(true) %}
 
 {% block voting_platform_header %}
-    <div class="l__wrapper--medium">
+    <div class="{{designation.isMajorityType ? 'l__wrapper' : 'l__wrapper--medium'}}">
         <div class="has-voted-header b__nudge--bottom-50">
             <h1 class="text--larger">Résultats de {{ designation.getDenomination(true) }}</h1>
         </div>
@@ -44,7 +44,7 @@
 {% block voting_platform_content %}
     <div class="voting-platform__results election-results">
         <div>
-            <div class="l__wrapper--medium">
+            <div class="{{designation.isMajorityType ? 'l__wrapper' : 'l__wrapper--medium'}}">
                 <nav class="tabs-nav border-on results__menu b__nudge--bottom-larger">
                     <ul>
                         {% for pool_result in election_round_result.getElectionPoolResults() %}
@@ -58,7 +58,7 @@
                 </nav>
             </div>
 
-            <div class="l__wrapper--medium">
+            <div class="{{designation.isMajorityType ? 'l__wrapper' : 'l__wrapper--medium'}}">
                 <div class="candidate-tabs--container">
                     {% for pool_result in election_round_result.getElectionPoolResults %}
                         <div class="candidate-tab candidate-tab--{{ loop.index }}" {{ loop.index > 1 ? 'style="display: none;"' }}>
