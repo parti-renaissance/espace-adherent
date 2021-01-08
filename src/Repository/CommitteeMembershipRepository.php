@@ -653,6 +653,21 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return CommitteeMembership[]
+     */
+    public function findVotingForSupervisorMembershipsToNotify(Committee $committee, Designation $designation): array
+    {
+        return $this->createQueryBuilderForVotingMemberships($committee, $designation, false)
+            ->innerJoin('a.subscriptionTypes', 'subscription_type', Join::WITH, 'subscription_type.code = :subscription_code')
+            ->andWhere('a.notifiedForElection = :false')
+            ->setParameter('subscription_code', SubscriptionTypeEnum::LOCAL_HOST_EMAIL)
+            ->setParameter('false', false)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function committeeHasVotersForSupervisorElection(Committee $committee, Designation $designation): bool
     {
         return 0 < (int) $this->createQueryBuilderForVotingMemberships($committee, $designation, false)
@@ -722,9 +737,10 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                     ->innerJoin('candidacy.committeeElection', 'election')
                     ->innerJoin('candidacy.committeeMembership', 'membership')
                     ->innerJoin('membership.adherent', 'adherent')
-                    ->innerJoin('adherent.memberships', 'other_membership', Join::WITH, 'other_membership.adherent = adherent AND other_membership.committee = :committee AND election.committee != :committee')
+                    ->innerJoin('adherent.memberships', 'other_membership', Join::WITH, 'other_membership.committee = :committee')
                     ->where('election.designation = :designation')
                     ->andWhere('candidacy.status = :status')
+                    ->andWhere('election.committee != :committee')
                     ->setParameters([
                           'committee' => $committee,
                           'status' => CandidacyInterface::STATUS_CONFIRMED,

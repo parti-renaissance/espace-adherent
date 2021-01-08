@@ -9,6 +9,7 @@ use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Election\ElectionStatusEnum;
 use App\VotingPlatform\Notifier\Event\VotingPlatformVoteReminderEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -70,7 +71,7 @@ class SendVoteReminderCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($designationId = (int) $input->getOption('designation-id')) {
-            $elections = $this->electionRepository->findBy(['designation' => $designationId]);
+            $elections = $this->electionRepository->findBy(['designation' => $designationId, 'status' => ElectionStatusEnum::OPEN]);
         } else {
             $days = (int) $input->getOption('date');
 
@@ -102,12 +103,8 @@ class SendVoteReminderCommand extends Command
             $voteRepository = $this->entityManager->getRepository(Vote::class);
             $committeeName = $election->getElectionEntity()->getCommittee()->getName();
 
-            foreach ($this->committeeMembershipRepository->findVotingForSupervisorMemberships($election->getElectionEntity()->getCommittee(), $election->getDesignation(), false) as $committeeMembership) {
+            foreach ($this->committeeMembershipRepository->findVotingForSupervisorMembershipsToNotify($election->getElectionEntity()->getCommittee(), $election->getDesignation()) as $committeeMembership) {
                 $adherent = $committeeMembership->getAdherent();
-
-                if ($adherent->isNotifiedForElection()) {
-                    continue;
-                }
 
                 if ($voteRepository->findVoteForDesignation($adherent, $election->getDesignation())) {
                     continue;

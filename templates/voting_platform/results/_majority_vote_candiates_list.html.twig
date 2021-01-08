@@ -1,9 +1,9 @@
 <div class="candidates-block">
     <div class="majority-vote--candidates-head text--body">
         <div class="el el-1 text--bold">Binômes</div>
-        <div class="el el-2 text--bold">Résultats (médiane)</div>
+        <div class="el el-2 text--bold">Résultats</div>
 
-        <a href="#" class="link--no-decor link--blue--dark text--small" onclick="toggleClass(dom('.majority-vote--candidates-container'), 'majority-vote--detailed');return false;">Voir détails</a>
+        <a href="#" class="link--no-decor link--blue--dark text--small" onclick="toggleClass(dom('.majority-vote--candidates-container'), 'majority-vote--detailed');this.textContent = this.textContent === 'Voir les détails' ? 'Masquer les détails' : 'Voir les détails';return false;">Voir les détails</a>
     </div>
 
     <div class="majority-vote--candidates-container">
