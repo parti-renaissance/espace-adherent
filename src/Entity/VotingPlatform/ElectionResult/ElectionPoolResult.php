@@ -230,6 +230,24 @@ class ElectionPoolResult
 
     public function getCandidateGroupResultsSorted(): array
     {
+        if ($this->electionPool->getElection()->getDesignation()->isMajorityType()) {
+            $candidateGroupResults = $this->candidateGroupResults->toArray();
+
+            usort($candidateGroupResults, function (CandidateGroupResult $a, CandidateGroupResult $b) {
+                if ($a->getCandidateGroup()->isElected()) {
+                    return -1;
+                }
+
+                if ($b->getCandidateGroup()->isElected()) {
+                    return 1;
+                }
+
+                return array_search($a->getMajorityMention(), MajorityVoteMentionEnum::ALL) <=> array_search($b->getMajorityMention(), MajorityVoteMentionEnum::ALL);
+            });
+
+            return $candidateGroupResults;
+        }
+
         return $this->candidateGroupResults->matching(Criteria::create()->orderBy(['total' => 'DESC']))->toArray();
     }
 
