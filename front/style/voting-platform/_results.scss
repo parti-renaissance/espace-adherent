@@ -72,7 +72,6 @@
 
                                 .candidate-mention {
                                     align-self: center;
-                                    white-space: nowrap;
 
                                     @media (min-width: 1180px) {
                                         align-self: flex-start;
@@ -100,7 +99,7 @@
                                         top: 0;
                                         bottom: 0;
                                         background-color: $black;
-                                        left: calc(50% - 3px);
+                                        left: 50%;
 
                                         &:before {
                                             content: '';
