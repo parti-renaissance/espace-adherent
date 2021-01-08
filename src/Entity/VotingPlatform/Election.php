@@ -267,10 +267,6 @@ class Election
             return false;
         }
 
-        if ($this->designation->isMajorityType()) {
-            return true;
-        }
-
         $roundResult = $this->electionResult->getElectionRoundResult($this->getCurrentRound());
 
         return $roundResult && $roundResult->hasOnlyElectedPool();

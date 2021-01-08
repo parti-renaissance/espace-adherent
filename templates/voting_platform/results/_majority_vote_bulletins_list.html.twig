@@ -1,0 +1,57 @@
+<div class="l__col--wrap majority-vote election__ballots-detail">
+    <div class="ballots-detail__container text--body">
+        {% for pool_result in election_round_result.getElectionPoolResults %}
+            <div class="ballots-detail__pool">
+                <div class="l__row">
+                    {% set election_pool = pool_result.electionPool %}
+                    {% set is_first_pool = loop.first %}
+
+                    {% if is_first_pool %}
+                        <div class="ballots-detail__empty-space"></div>
+                    {% endif %}
+
+                    <div>
+                        <h3 class="ballots-detail__pool-name">{{ get_election_pool_title_key(pool_result.electionPool)|trans }}</h3>
+                        <div class="ballots-detail__candidates">
+                            {% for candidate_group in election_pool.candidateGroups %}
+                                <div class="ballots-detail__candidates-group {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
+                                    {% for candidate in candidate_group.getCandidatesSorted() %}
+                                        <div class="text--body">
+                                            {{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
+
+                                            {% if pool_result.isElected and candidate_group.elected %}
+                                                <span class="elected-tag text--body text--on-yellow text--bold b__nudge--left-small">Désigné{{ candidate.isFemale ? 'e' }}</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ballots-detail__results">
+                    {% for vote_result in vote_results %}
+                        <div class="ballots-detail__row">
+                            {% if is_first_pool %}
+                                <div class="ballots-detail__voter">{{ vote_result.voterKey }}</div>
+                            {% endif %}
+
+                            {% for candidate_group in election_pool.candidateGroups %}
+                                <div class="ballots-detail__choices {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
+                                    {% set vote_choice = vote_result.findVoteChoiceForCandidateGroup(candidate_group) %}
+
+                                    {% if vote_choice %}
+                                        <div class="candidate-mention candidate-mention__{{ vote_choice.mention }} text--body">
+                                            {{ ('voting_platform.vote.majority_vote_mention.' ~ vote_choice.mention)|trans }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

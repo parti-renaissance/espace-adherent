@@ -1,0 +1,58 @@
+<div class="candidates-block">
+    <div class="majority-vote--candidates-head text--body">
+        <div class="el el-1 text--bold">Binômes</div>
+        <div class="el el-2 text--bold">Résultats (médiane)</div>
+
+        <a href="#" class="link--no-decor link--blue--dark text--small" onclick="toggleClass(dom('.majority-vote--candidates-container'), 'majority-vote--detailed');return false;">Voir détails</a>
+    </div>
+
+    <div class="majority-vote--candidates-container">
+        {% for candidate_group_result in pool_result.candidateGroupResultsSorted %}
+            {% set candidate_group = candidate_group_result.candidateGroup %}
+
+            <div class="candidate__box {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
+                <div class="candidate-names">
+                    {% for candidate in candidate_group.getCandidatesSorted() %}
+                        <div class="candidate text--body">
+                            {{ candidate.fullName }}
+                            <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
+
+                            {% if pool_result.isElected and candidate_group.elected %}
+                                <span class="elected-tag text--body text--on-yellow text--bold b__nudge--left-small">Désigné{{ candidate.isFemale ? 'e' }}</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="majority-vote__detail">
+                    <div class="candidate-mention candidate-mention__{{ candidate_group_result.majorityMention }} text--body">
+                        {{ ('voting_platform.vote.majority_vote_mention.' ~ candidate_group_result.majorityMention)|trans }}
+                    </div>
+
+                    <div class="majority-vote__progress">
+                        <div class="majority-vote__progress-container">
+                            <div class="majority-vote__progress-parts">
+                                {% set cercles = [] %}
+                                {% for mention, value in candidate_group_result.totalMentions %}
+                                    {% set percent = value * 100.0 / candidate_group_result.total %}
+                                    {% set cercles = cercles|merge([{mention: mention, percent: percent}]) %}
+
+                                    <div class="majority-vote__mention majority-vote__mention--bg__{{ mention }}" style="width: {{ percent }}%;"> </div>
+                                {% endfor %}
+                            </div>
+                            <span class="half"></span>
+                        </div>
+
+                        <div class="l__row">
+                            {% for row in cercles %}
+                                <div class="candidate-mention mention-data candidate-mention__{{ row.mention }} text--body text--center" style="width: {{ row.percent }}%;">
+                                    {{ row.percent }} %
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

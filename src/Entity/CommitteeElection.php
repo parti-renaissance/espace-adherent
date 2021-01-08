@@ -57,6 +57,14 @@ class CommitteeElection extends AbstractElectionEntity
         $this->committee = $committee;
     }
 
+    /**
+     * @return CommitteeCandidacy[]
+     */
+    public function getCandidacies(): array
+    {
+        return $this->candidacies->toArray();
+    }
+
     public function countConfirmedCandidacies(): int
     {
         return $this->candidacies

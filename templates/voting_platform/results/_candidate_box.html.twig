@@ -10,7 +10,7 @@
         </div>
 
         <ul class="candidate-names">
-            {% for candidate in candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+            {% for candidate in candidate_group.getCandidatesSorted() %}
                 <li class="text--body">{{ candidate.fullName }} <span class="candidate-gender l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
                     {% if (pool_result.isElected and candidate_group.elected) or candidate.additionallyElected %}
                         <span class="elected-tag text--body text--on-yellow text--bold b__nudge--left-small">Désigné{{ candidate.isFemale ? 'e' }}</span>

@@ -71,6 +71,20 @@ class CandidateGroup
         return $this->candidates->toArray();
     }
 
+    /**
+     * @return Candidate[]
+     */
+    public function getCandidatesSorted(): array
+    {
+        $candidates = $this->candidates->toArray();
+
+        usort($candidates, function (Candidate $a, Candidate $b) {
+            return $b->isFemale() <=> $a->isFemale();
+        });
+
+        return $candidates;
+    }
+
     public function isElected(): bool
     {
         return $this->elected;

@@ -27,9 +27,9 @@ class StatsControllerTest extends WebTestCase
         $data = \GuzzleHttp\json_decode($content, true);
 
         $this->assertArraySubset([
-            'userCount' => 44,
+            'userCount' => 63,
             'eventCount' => 19,
-            'committeeCount' => 12,
+            'committeeCount' => 13,
         ], $data);
     }
 

@@ -11,7 +11,7 @@
 {% block page_title 'Résultats de ' ~ designation.getDenomination(true) %}
 
 {% block voting_platform_header %}
-    <div class="l__wrapper--medium">
+    <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
         <div class="has-voted-header b__nudge--bottom-50">
             <h1 class="text--larger">Résultats de {{ designation.getDenomination(true) }}</h1>
         </div>
@@ -44,7 +44,7 @@
 {% block voting_platform_content %}
     <div class="voting-platform__results election-results">
         <div>
-            <div class="l__wrapper--medium">
+            <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
                 <nav class="tabs-nav border-on results__menu b__nudge--bottom-larger">
                     <ul>
                         {% for pool_result in election_round_result.getElectionPoolResults() %}
@@ -58,12 +58,12 @@
                 </nav>
             </div>
 
-            <div class="l__wrapper--medium">
+            <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
                 <div class="candidate-tabs--container">
                     {% for pool_result in election_round_result.getElectionPoolResults %}
                         <div class="candidate-tab candidate-tab--{{ loop.index }}" {{ loop.index > 1 ? 'style="display: none;"' }}>
                             <div class="tab--container">
-                                {% include 'voting_platform/results/_candiates_list.html.twig' %}
+                                {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ '_candiates_list.html.twig' %}
 
                                 {% include 'voting_platform/results/_stats_block.html.twig' %}
                             </div>
@@ -72,51 +72,7 @@
 
                     <div class="candidate-tab candidate-tab--{{ election_round_result.getElectionPoolResults|length + 1 }}" style="display: none;">
                         <div class="tab--container">
-                            <div class="l__col--wrap election__ballots-detail">
-                                <h3 class="text--default-large text--bold font-roboto b__nudge--bottom-small">Bulletins dépouillés</h3>
-                                <p class="text--body text--dark b__nudge--bottom">
-                                    {% set bulletin_count = vote_results|length %}
-
-                                    Cette page recense la totalité de{{ bulletin_count > 1 ? 's'}} {{ bulletin_count }} bulletin{{ bulletin_count > 1 ? 's'}} dépouillé{{ bulletin_count > 1 ? 's'}} lors de cette {{ designation.denomination }}.<br /><br />
-                                    Retrouvez vos bulletins avec le N° anonyme qui vous a été transmis lors du versement de vos bulletins dans l'urne.
-                                </p>
-                                <div class="table--container">
-                                    <table class="text--left">
-                                        <thead class="b__nudge--bottom">
-                                            <tr class="text--body">
-                                                <th class="space--10-0">N° anonyme</th>
-
-                                                {% for pool_result in election_round_result.getElectionPoolResults %}
-                                                    <th class="space--10-0">{{ get_election_pool_title_key(pool_result.electionPool)|trans }}</th>
-                                                {% endfor %}
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            {% for vote_result in vote_results %}
-                                                <tr class="text--body text--dark">
-                                                    <td>{{ vote_result.voterKey }}</td>
-
-                                                    {% for pool_result in election_round_result.getElectionPoolResults %}
-                                                        <td>
-                                                            {% for vote_choice in vote_result.voteChoices if vote_choice.electionPool == pool_result.electionPool %}
-                                                                {% if vote_choice.isBlank %}
-                                                                    ~
-                                                                {% else %}
-                                                                    {% for candidate in vote_choice.candidateGroup.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
-                                                                        {{ candidate.fullName }}
-                                                                        {% if loop.length > 1 %}<br/>{% endif %}
-                                                                    {% endfor %}
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                        </td>
-                                                    {% endfor %}
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ '_bulletins_list.html.twig' %}
                         </div>
                     </div>
                 </div>

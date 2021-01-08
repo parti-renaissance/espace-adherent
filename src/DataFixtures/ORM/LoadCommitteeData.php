@@ -26,6 +26,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
     public const COMMITTEE_12_UUID = '138140a5-1dd2-11b2-88c6-671b351502ee';
     public const COMMITTEE_13_UUID = '1381405c-1dd2-11b2-9a2f-bc94782bb639';
     public const COMMITTEE_14_UUID = 'bb256335-aa42-134a-8fba-525d3ea32b7d';
+    public const COMMITTEE_15_UUID = '13814081-1dd2-11b2-abfc-9a31f72792e5';
 
     private $committeeFactory;
 
@@ -222,6 +223,19 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $committee14->setCurrentElection(new CommitteeElection($this->getReference('designation-8')));
         $this->addReference('committee-14', $committee14);
 
+        $committee15 = $this->committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_15_UUID,
+            'created_by' => LoadAdherentData::REFERENT_1_UUID,
+            'created_at' => '2020-10-29 09:00:00',
+            'name' => 'En Marche - Allemagne 3',
+            'description' => 'En Marche Allemagne.',
+            'address' => PostAddress::createForeignAddress('DE', '10789', 'Berlin', 'Breitscheidplatz', null, 52.5065133, 13.1445545),
+            'phone' => '+33673654349',
+        ]);
+        $committee15->approved('2020-10-29 12:00:00');
+        $committee15->setCurrentElection(new CommitteeElection($this->getReference('designation-9')));
+        $this->addReference('committee-15', $committee15);
+
         $manager->persist($committee1);
         $manager->persist($committee2);
         $manager->persist($committee3);
@@ -236,6 +250,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($committee12);
         $manager->persist($committee13);
         $manager->persist($committee14);
+        $manager->persist($committee15);
 
         // Make adherents join committees
         $adherent2 = $this->getReference('adherent-2');
@@ -347,6 +362,12 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($this->getReference('adherent-29')->followCommittee($committee14, new \DateTime('-2 months')));
         $manager->persist($this->getReference('adherent-30')->followCommittee($committee14, new \DateTime('-2 months')));
         $manager->persist($this->getReference('adherent-31')->followCommittee($committee14, new \DateTime('-2 months')));
+
+        // Committee 15
+        $manager->persist($this->getReference('adherent-32')->superviseCommittee($committee15, new \DateTime('-2 months')));
+        foreach (range(33, 50) as $index) {
+            $manager->persist($this->getReference('adherent-'.$index)->followCommittee($committee15, new \DateTime('-2 months')));
+        }
 
         $manager->flush();
     }

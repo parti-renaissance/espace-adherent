@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,7 +24,11 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             ->addSelect('c')
             ->innerJoin('ce.committee', 'c')
             ->where('ce.designation = :designation')
-            ->setParameter('designation', $designation)
+            ->andWhere('c.status = :approved')
+            ->setParameters([
+                'designation' => $designation,
+                'approved' => Committee::APPROVED,
+            ])
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->getQuery()

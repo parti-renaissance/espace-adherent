@@ -987,6 +987,28 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $manager->persist($adherent);
         $this->addReference('adherent-31', $adherent);
 
+        foreach (range(32, 50) as $index) {
+            $gender = 0 === $index % 2 ? GenderEnum::FEMALE : GenderEnum::MALE;
+
+            $adherent = $this->adherentFactory->createFromArray([
+                'uuid' => Uuid::uuid4(),
+                'password' => self::DEFAULT_PASSWORD,
+                'email' => sprintf('adherent-%s-%d@en-marche-dev.fr', $gender, $index),
+                'gender' => $gender,
+                'nationality' => Address::FRANCE,
+                'first_name' => 'Adherent '.$index,
+                'last_name' => 'Fa'.$index.'ke',
+                'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+                'birthdate' => '1962-03-04',
+                'registered_at' => '2017-01-25 19:31:45',
+            ]);
+            $adherent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+            $adherent->certify();
+            $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
+            $manager->persist($adherent);
+            $this->addReference('adherent-'.$index, $adherent);
+        }
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
