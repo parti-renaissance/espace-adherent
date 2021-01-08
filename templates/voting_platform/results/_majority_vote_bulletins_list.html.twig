@@ -13,7 +13,9 @@
                     <div>
                         <h3 class="ballots-detail__pool-name">{{ get_election_pool_title_key(pool_result.electionPool)|trans }}</h3>
                         <div class="ballots-detail__candidates">
-                            {% for candidate_group in election_pool.candidateGroups %}
+                            {% for candidate_group_result in pool_result.getCandidateGroupResultsSorted() %}
+                                {% set candidate_group = candidate_group_result.getCandidateGroup() %}
+
                                 <div class="ballots-detail__candidates-group {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
                                     {% for candidate in candidate_group.getCandidatesSorted() %}
                                         <div class="text--body">
@@ -37,7 +39,8 @@
                                 <div class="ballots-detail__voter">{{ vote_result.voterKey }}</div>
                             {% endif %}
 
-                            {% for candidate_group in election_pool.candidateGroups %}
+                            {% for candidate_group_result in pool_result.getCandidateGroupResultsSorted() %}
+                                {% set candidate_group = candidate_group_result.getCandidateGroup() %}
                                 <div class="ballots-detail__choices {{ pool_result.isElected and candidate_group.elected ? 'elected' }}">
                                     {% set vote_choice = vote_result.findVoteChoiceForCandidateGroup(candidate_group) %}
 
