@@ -15,16 +15,9 @@ class Election
     private $candidates = [];
 
     /**
-     * @var Vote[]
-     */
-    private $votes = [];
-
-    /**
      * @var VotingProfile[]
      */
     private $votingProfiles = [];
-
-    private $hasElected = false;
 
     /**
      * @var array
@@ -42,17 +35,8 @@ class Election
 
     public function addMention(Mention $mention): void
     {
-//        if (isset($this->mentions[$mention->getIndex()])) {
-//            throw new \InvalidArgumentException('A mention with the same index already exists.');
-//        }
-
         $this->mentions[] = $mention;
         $mention->setIndex(\count($this->mentions) - 1);
-    }
-
-    public function hasElected(): bool
-    {
-        return $this->hasElected;
     }
 
     public function addCandidate(Candidate $candidate): void
@@ -60,18 +44,11 @@ class Election
         $this->candidates[] = $candidate;
     }
 
-    public function addVote(Vote $vote): void
-    {
-        $this->votes[] = $vote;
-    }
-
-    // to remove
     public function findMention(int $index): ?Mention
     {
         return $this->mentions[$index] ?? null;
     }
 
-    // to remove
     public function findCandidate(string $identifier): ?Candidate
     {
         foreach ($this->candidates as $candidate) {
@@ -92,52 +69,11 @@ class Election
     }
 
     /**
-     * @return Vote[]
-     */
-    public function getVotes(): array
-    {
-        return $this->votes;
-    }
-
-    /**
      * @return VotingProfile[]
      */
     public function getVotingProfiles(): array
     {
         return $this->votingProfiles;
-    }
-
-    /**
-     * @TODO to complete
-     */
-    public static function createWithVotes(array $mentions, array $candidateIdentifiers, array $votes): self
-    {
-        $election = new self($mentions);
-
-        // init candidates
-        foreach ($candidateIdentifiers as $identifier) {
-            $election->addCandidate(new Candidate($identifier));
-        }
-
-        // init votes
-        $total = null;
-        foreach ($votes as $candidateIdentifier => $mentionRow) {
-            if (null === $total) {
-                $total = array_sum($mentionRow);
-            } elseif ($total !== array_sum($mentionRow)) {
-                throw new \RuntimeException('Vote count is not identical between the candidates.');
-            }
-
-            $candidate = $election->findCandidate($candidateIdentifier);
-
-            foreach ($mentionRow as $mentionIndex => $count) {
-                for ($i = 1; $i <= $count; ++$i) {
-                    $election->addVote(new Vote($candidate, $election->findMention($mentionIndex)));
-                }
-            }
-        }
-
-        return $election;
     }
 
     /**
@@ -169,10 +105,6 @@ class Election
             $election->addVotingProfile($votingProfile = new VotingProfile($candidate));
 
             foreach ($mentionRow as $mentionIndex => $count) {
-                if ($count <= 0) {
-                    continue;
-                }
-
                 $votingProfile->addMerit(new Merit(
                     $election->findMention($mentionIndex),
                     $count * 100.0 / $total
@@ -199,8 +131,15 @@ class Election
             return null;
         }
 
-        $winners = current($this->result);
+        /** @var Candidate[] $majorityMentionCandidates */
+        $majorityMentionCandidates = current($this->result);
 
-        return 1 === \count($winners) ? current($winners) : null;
+        foreach ($majorityMentionCandidates as $candidate) {
+            if ($candidate->isElected()) {
+                return $candidate;
+            }
+        }
+
+        return null;
     }
 }

@@ -7,6 +7,10 @@ use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\VoteChoice;
+use App\MajorityJudgment\Election;
+use App\MajorityJudgment\Mention;
+use App\MajorityJudgment\Processor;
+use App\VotingPlatform\Designation\MajorityVoteMentionEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -131,9 +135,29 @@ class ElectionPoolResult
         $elected = null;
 
         if ($this->electionPool->getElection()->getDesignation()->isMajorityType()) {
+            $candidatesIdentifiers = $votingProfiles = [];
+
             foreach ($this->candidateGroupResults as $result) {
-                // TODO: update
-                $result->setMajorityMention(array_rand($result->getTotalMentions(), 1));
+                $candidatesIdentifiers[] = $id = $result->getCandidateGroup()->getId();
+                $votingProfiles[$id] = array_map(function (string $mention) use ($result) {
+                    return $result->getTotalMentions()[$mention] ?? 0;
+                }, MajorityVoteMentionEnum::ALL);
+            }
+
+            $election = Election::createWithVotingProfiles(
+                array_map(function (string $mention) { return new Mention($mention); }, MajorityVoteMentionEnum::ALL),
+                $candidatesIdentifiers,
+                $votingProfiles
+            );
+            Processor::process($election);
+
+            foreach ($this->candidateGroupResults as $result) {
+                $candidate = $election->findCandidate($result->getCandidateGroup()->getId());
+                $result->setMajorityMention($candidate->getMajorityMention()->getValue());
+
+                if ($candidate->isElected()) {
+                    $elected = $result->getCandidateGroup();
+                }
             }
         } else {
             $max = 0;

@@ -218,11 +218,11 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $this->loadCommitteeSupervisorElectionCandidates($election);
         $this->manager->persist($votersList = $this->loadCommitteeSupervisorElectionVoters($election));
         $this->loadMajorityVotes($round, $votersList, [
-            [0, 0, 0],
-            [1, 1, 1],
-            [2, 2, 2],
-            [3, 3, 3],
-            [4, 4, 4],
+            [4, 1, 1],
+            [4, 4, 0],
+            [1, 2, 3],
+            [4, 0, 1],
+            [2, 3, 4],
         ]);
         $this->resultCalculator->computeElectionResult($election);
 

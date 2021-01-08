@@ -4,6 +4,9 @@ namespace App\MajorityJudgment;
 
 class Mention
 {
+    /**
+     * @var int|null
+     */
     private $index;
     private $value;
 
@@ -20,5 +23,10 @@ class Mention
     public function setIndex(int $index): void
     {
         $this->index = $index;
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
     }
 }
