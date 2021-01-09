@@ -81,7 +81,9 @@ class VoterRepository extends ServiceEntityRepository
             ->innerJoin('voter.votersLists', 'list')
             ->innerJoin('voter.adherent', 'adherent')
             ->where('list.election = :election')
+            ->andWhere('voter.isGhost = :false')
             ->setParameter('election', $election)
+            ->setParameter('false', false)
             ->getQuery()
             ->getResult()
         ;
@@ -104,6 +106,24 @@ class VoterRepository extends ServiceEntityRepository
                 'election' => $election,
                 'current_round' => $election->getCurrentRound(),
             ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Voter[]
+     */
+    public function findVotedForElection(Election $election): array
+    {
+        return $this->createQueryBuilder('voter')
+            ->addSelect('adherent')
+            ->innerJoin('voter.adherent', 'adherent')
+            ->innerJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound IN (:election_rounds)')
+            ->setParameters([
+                'election_rounds' => $election->getElectionRounds(),
+            ])
+            ->groupBy('voter.id')
             ->getQuery()
             ->getResult()
         ;

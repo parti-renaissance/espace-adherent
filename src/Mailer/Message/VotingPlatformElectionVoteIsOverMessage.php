@@ -20,10 +20,10 @@ final class VotingPlatformElectionVoteIsOverMessage extends Message
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            '[Désignations] Les résultats sont disponibles',
+            sprintf('[%s] Les résultats sont disponibles', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? 'Élections internes' : 'Désignations'),
             [
+                'election_type' => $election->getDesignationType(),
                 'name' => static::escape($election->getElectionEntity()->getName()),
-                'is_copol' => DesignationTypeEnum::COPOL === $election->getDesignationType(),
                 'page_url' => $url,
             ],
             [
