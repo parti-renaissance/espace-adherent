@@ -4,6 +4,7 @@ namespace App\VotingPlatform\Notifier;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Voter;
@@ -13,6 +14,8 @@ use App\Mailer\Message\VotingPlatformElectionSecondRoundNotificationMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteIsOpenMessage;
 use App\Mailer\Message\VotingPlatformElectionVoteIsOverMessage;
 use App\Mailer\Message\VotingPlatformVoteReminderMessage;
+use App\Repository\CommitteeMembershipRepository;
+use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -22,15 +25,21 @@ class ElectionNotifier
     private $mailer;
     private $urlGenerator;
     private $voterRepository;
+    private $committeeMembershipRepository;
+    private $voteRepository;
 
     public function __construct(
         MailerService $transactionalMailer,
         UrlGeneratorInterface $urlGenerator,
-        VoterRepository $voterRepository
+        VoterRepository $voterRepository,
+        VoteRepository $voteRepository,
+        CommitteeMembershipRepository $committeeMembershipRepository
     ) {
         $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;
         $this->voterRepository = $voterRepository;
+        $this->voteRepository = $voteRepository;
+        $this->committeeMembershipRepository = $committeeMembershipRepository;
     }
 
     public function notifyElectionVoteIsOpen(Election $election): void
@@ -91,10 +100,26 @@ class ElectionNotifier
     public function notifyElectionSecondRound(Election $election): void
     {
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
-            return;
-        }
+            $committeeMemberships = $this->committeeMembershipRepository->findVotingForSupervisorMemberships(
+                $election->getElectionEntity()->getCommittee(),
+                $election->getDesignation(),
+                false
+            );
 
-        $adherents = $this->getAdherentForElection($election);
+            $adherents = array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, array_filter($committeeMemberships, function (CommitteeMembership $membership) use ($election) {
+                $votes = $this->voteRepository->findVoteForDesignation($membership->getAdherent(), $election->getDesignation());
+
+                foreach ($votes as $vote) {
+                    if ($vote->getElection()->getId() !== $election->getId()) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }));
+        } else {
+            $adherents = $this->getAdherentForElection($election);
+        }
 
         if ($adherents) {
             $this->mailer->sendMessage(VotingPlatformElectionSecondRoundNotificationMessage::create(
