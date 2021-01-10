@@ -70,7 +70,14 @@ class ElectionNotifier
 
     public function notifyElectionVoteIsOver(Election $election): void
     {
-        $adherents = $this->getAdherentForElection($election);
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
+            $adherents = array_map(
+                function (Voter $voter) { return $voter->getAdherent(); },
+                $this->voterRepository->findVotedForElection($election)
+            );
+        } else {
+            $adherents = $this->getAdherentForElection($election);
+        }
 
         if ($adherents) {
             $this->mailer->sendMessage(VotingPlatformElectionVoteIsOverMessage::create(
@@ -83,6 +90,10 @@ class ElectionNotifier
 
     public function notifyElectionSecondRound(Election $election): void
     {
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
+            return;
+        }
+
         $adherents = $this->getAdherentForElection($election);
 
         if ($adherents) {
@@ -111,6 +122,10 @@ class ElectionNotifier
         }
 
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
+            if ($election->isClosed()) {
+                return $this->urlGenerator->generate('app_committee_show', ['slug' => $election->getElectionEntity()->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+            }
+
             return $this->urlGenerator->generate('app_adherent_profile_activity', ['_fragment' => 'committees'], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 

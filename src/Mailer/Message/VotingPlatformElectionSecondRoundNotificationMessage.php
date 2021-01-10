@@ -22,11 +22,10 @@ final class VotingPlatformElectionSecondRoundNotificationMessage extends Message
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            "[Désignations] Vous avez ${daysLeft} jours pour voter à nouveau.",
+            sprintf('[%s] Vous avez %d jours pour voter à nouveau.', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? 'Élections internes' : 'Désignations', $daysLeft),
             [
-                'name' => static::escape($election->getElectionEntity()->getName()),
+                'election_type' => $election->getDesignationType(),
                 'days_left' => $daysLeft,
-                'is_copol' => DesignationTypeEnum::COPOL === $election->getDesignationType(),
                 'second_round_end_date' => static::formatDate($election->getSecondRoundEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'page_url' => $url,
             ],
