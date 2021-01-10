@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc210911edcc16ed9f41c0202d8614ca",
+    "content-hash": "cfb519e46f5f5e4a7d60fb8287b6d650",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -2946,6 +2946,40 @@
                 "symfony"
             ],
             "time": "2020-01-01T15:15:59+00:00"
+        },
+        {
+            "name": "enmarche/majority-judgment",
+            "version": "v0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EnMarche/majority-judgment.git",
+                "reference": "709414dfee55f1d4d0021b6db278923f0269dc4c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EnMarche/majority-judgment/zipball/709414dfee55f1d4d0021b6db278923f0269dc4c",
+                "reference": "709414dfee55f1d4d0021b6db278923f0269dc4c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EnMarche\\MajorityJudgment\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Majority judgment - the lib calculates the result of an election",
+            "homepage": "https://github.com/EnMarche/majority-judgment",
+            "time": "2021-01-10T17:43:23+00:00"
         },
         {
             "name": "exercise/htmlpurifier-bundle",

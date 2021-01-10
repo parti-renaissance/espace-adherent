@@ -7,14 +7,14 @@ use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\VoteChoice;
-use App\MajorityJudgment\Election;
-use App\MajorityJudgment\Mention;
-use App\MajorityJudgment\Processor;
 use App\VotingPlatform\Designation\MajorityVoteMentionEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use EnMarche\MajorityJudgment\Election;
+use EnMarche\MajorityJudgment\Mention;
+use EnMarche\MajorityJudgment\Processor;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

@@ -242,6 +242,9 @@
     "endroid/qr-code-bundle": {
         "version": "3.4.2"
     },
+    "enmarche/majority-judgment": {
+        "version": "v0.0.2"
+    },
     "exercise/htmlpurifier-bundle": {
         "version": "0.2",
         "recipe": {
