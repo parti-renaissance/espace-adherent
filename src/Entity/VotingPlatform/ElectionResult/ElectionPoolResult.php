@@ -153,7 +153,9 @@ class ElectionPoolResult
 
             foreach ($this->candidateGroupResults as $result) {
                 $candidate = $election->findCandidate($result->getCandidateGroup()->getId());
-                $result->setMajorityMention($candidate->getMajorityMention()->getValue());
+                if ($candidate->getMajorityMention()) {
+                    $result->setMajorityMention($candidate->getMajorityMention()->getValue());
+                }
 
                 if ($candidate->isElected()) {
                     $elected = $result->getCandidateGroup();

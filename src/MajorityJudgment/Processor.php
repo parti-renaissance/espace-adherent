@@ -42,6 +42,10 @@ final class Processor
 
         $election->setResult($result);
 
+        if (!$result) {
+            return;
+        }
+
         // 2. Find winner
         self::processWinner(current($result), $votingProfiles);
     }
