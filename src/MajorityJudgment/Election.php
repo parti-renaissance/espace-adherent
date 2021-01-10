@@ -107,7 +107,7 @@ class Election
             foreach ($mentionRow as $mentionIndex => $count) {
                 $votingProfile->addMerit(new Merit(
                     $election->findMention($mentionIndex),
-                    $count * 100.0 / $total
+                    $total > 0 ? $count * 100.0 / $total : 0.0
                 ));
             }
         }
