@@ -8,3 +8,4 @@ User-agent: *
 Disallow: */ical
 Disallow: /*anonymous_authentication_intention=/connexion
 Disallow: /*anonymous_authentication_intention=/adhesion
+Disallow: /documents-partages/*
