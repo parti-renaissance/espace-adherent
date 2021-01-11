@@ -48,8 +48,8 @@ class ZoneMatcher
         if ($isFrance) {
             // Borough or city
             $zones[] =
-                $this->repository->findOneBy(['code' => $address->getInseeCode(), 'type' => Zone::BOROUGH]) ?:
-                $this->repository->findOneBy(['code' => $address->getInseeCode(), 'type' => Zone::CITY]) ?:
+                $this->repository->findOneBy(['code' => $inseeCode = str_pad($address->getInseeCode(), 5, '0', \STR_PAD_LEFT), 'type' => Zone::BOROUGH]) ?:
+                $this->repository->findOneBy(['code' => $inseeCode, 'type' => Zone::CITY]) ?:
                 $this->matchPostalCode($address->getPostalCode())
             ;
 
