@@ -52,6 +52,16 @@
                                 </div>
                             {% endfor %}
                         </div>
+                    {% else %}
+                        <div class="ballots-detail__row">
+                            <div class="ballots-detail__voter"> </div>
+                            <div class="l__col--full">
+                                <p class="font-roboto text--center">
+                                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" /><br/>
+                                    Aucun vote
+                                </p>
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

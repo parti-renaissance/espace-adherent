@@ -25,32 +25,36 @@
                 </div>
 
                 <div class="majority-vote__detail">
-                    <div class="candidate-mention candidate-mention__{{ candidate_group_result.majorityMention }} text--body">
-                        {{ ('voting_platform.vote.majority_vote_mention.' ~ candidate_group_result.majorityMention)|trans }}
-                    </div>
+                    {% if candidate_group_result.majorityMention %}
+                        <div class="candidate-mention candidate-mention__{{ candidate_group_result.majorityMention }} text--body">
+                            {{ ('voting_platform.vote.majority_vote_mention.' ~ candidate_group_result.majorityMention)|trans }}
+                        </div>
 
-                    <div class="majority-vote__progress">
-                        <div class="majority-vote__progress-container">
-                            <div class="majority-vote__progress-parts">
-                                {% set cercles = [] %}
-                                {% for mention, value in candidate_group_result.totalMentions %}
-                                    {% set percent = value * 100.0 / candidate_group_result.total %}
-                                    {% set cercles = cercles|merge([{mention: mention, percent: percent}]) %}
+                        <div class="majority-vote__progress">
+                            <div class="majority-vote__progress-container">
+                                <div class="majority-vote__progress-parts">
+                                    {% set cercles = [] %}
+                                    {% for mention, value in candidate_group_result.totalMentions %}
+                                        {% set percent = value * 100.0 / candidate_group_result.total %}
+                                        {% set cercles = cercles|merge([{mention: mention, percent: percent}]) %}
 
-                                    <div class="majority-vote__mention majority-vote__mention--bg__{{ mention }}" style="width: {{ percent }}%;"> </div>
+                                        <div class="majority-vote__mention majority-vote__mention--bg__{{ mention }}" style="width: {{ percent }}%;"> </div>
+                                    {% endfor %}
+                                </div>
+                                <span class="half"></span>
+                            </div>
+
+                            <div class="l__row">
+                                {% for row in cercles %}
+                                    <div class="candidate-mention mention-data candidate-mention__{{ row.mention }} text--body text--center" style="width: {{ row.percent }}%;">
+                                        {{ '.00' in row.percent|number_format(2) ? row.percent|number_format(0) : row.percent|number_format(1, ',') }} %
+                                    </div>
                                 {% endfor %}
                             </div>
-                            <span class="half"></span>
                         </div>
-
-                        <div class="l__row">
-                            {% for row in cercles %}
-                                <div class="candidate-mention mention-data candidate-mention__{{ row.mention }} text--body text--center" style="width: {{ row.percent }}%;">
-                                    {{ '.00' in row.percent|number_format(2) ? row.percent|number_format(0) : row.percent|number_format(1, ',') }} %
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    {% else %}
+                        ~
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
