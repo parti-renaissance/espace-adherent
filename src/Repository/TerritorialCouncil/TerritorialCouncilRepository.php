@@ -3,8 +3,9 @@
 namespace App\Repository\TerritorialCouncil;
 
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\CommitteeAdherentMandate;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
-use App\Entity\CommitteeMembership;
 use App\Entity\ElectedRepresentative\Mandate;
 use App\Entity\ReferentTag;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
@@ -75,13 +76,13 @@ class TerritorialCouncilRepository extends ServiceEntityRepository
     public function findForSupervisor(Adherent $adherent): array
     {
         return $this->createQueryBuilder('tc')
-            ->leftJoin('tc.referentTags', 'tag')
-            ->leftJoin(Committee::class, 'committee', Join::WITH, 'tag MEMBER OF committee.referentTags')
-            ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, 'cm.committee = committee')
-            ->where('cm.adherent = :adherent')
-            ->andWhere('cm.privilege = :privilege')
+            ->innerJoin('tc.referentTags', 'tag')
+            ->innerJoin(Committee::class, 'committee', Join::WITH, 'tag MEMBER OF committee.referentTags')
+            ->innerJoin(CommitteeAdherentMandate::class, 'am', Join::WITH, 'committee = am.committee')
+            ->where('am.adherent = :adherent')
+            ->andWhere('am.committee IS NOT NULL AND am.quality = :supervisor AND am.finishAt IS NULL AND am.provisional = 0')
             ->setParameter('adherent', $adherent)
-            ->setParameter('privilege', CommitteeMembership::COMMITTEE_SUPERVISOR)
+            ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
             ->getQuery()
             ->getResult()
         ;

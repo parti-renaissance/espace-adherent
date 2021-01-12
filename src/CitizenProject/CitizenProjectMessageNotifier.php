@@ -2,7 +2,6 @@
 
 namespace App\CitizenProject;
 
-use App\Committee\CommitteeManager;
 use App\Coordinator\Filter\CitizenProjectFilter;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
@@ -23,7 +22,6 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
 {
     private $manager;
     private $mailer;
-    private $committeeManager;
     private $urlGenerator;
     private $adherentRepository;
 
@@ -31,13 +29,11 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         AdherentRepository $adherentRepository,
         CitizenProjectManager $manager,
         MailerService $transactionalMailer,
-        CommitteeManager $committeeManager,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->manager = $manager;
         $this->mailer = $transactionalMailer;
-        $this->committeeManager = $committeeManager;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -129,19 +125,17 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
     {
         $this->manager->injectCitizenProjectCreator([$citizenProject]);
         foreach ($citizenProject->getPendingCommitteeSupports() as $committeeSupport) {
-            if (!$committeeSupervisor = $this->committeeManager->getCommitteeSupervisor($committeeSupport->getCommittee())) {
-                continue;
+            foreach ($this->adherentRepository->findCommitteeSupervisors($committeeSupport->getCommittee()) as $supervisor) {
+                $this->mailer->sendMessage(
+                    CitizenProjectRequestCommitteeSupportMessage::create(
+                        $citizenProject,
+                        $supervisor,
+                        $this->generateUrl('app_citizen_project_committee_support', [
+                            'slug' => $citizenProject->getSlug(),
+                        ])
+                    )
+                );
             }
-
-            $this->mailer->sendMessage(
-                CitizenProjectRequestCommitteeSupportMessage::create(
-                    $citizenProject,
-                    $committeeSupervisor,
-                    $this->generateUrl('app_citizen_project_committee_support', [
-                        'slug' => $citizenProject->getSlug(),
-                    ])
-                )
-            );
         }
     }
 

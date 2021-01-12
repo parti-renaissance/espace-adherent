@@ -24,6 +24,7 @@ class ManagedUserFactory
             $data['committee_uuids'] ?? null,
             $data['is_committee_member'],
             $data['is_committee_host'],
+            $data['is_committee_provisional_supervisor'],
             $data['is_committee_supervisor'],
             $data['subscription_types'],
             $data['zones'] ?? [],

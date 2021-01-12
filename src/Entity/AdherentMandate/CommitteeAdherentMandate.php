@@ -11,11 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CommitteeAdherentMandate extends AbstractAdherentMandate
 {
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    public $provisional = false;
-
     public function __construct(
         Adherent $adherent,
         string $gender,

@@ -7,6 +7,7 @@ use App\Admin\Filter\ReferentTagAutocompleteFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentTag;
 use App\Entity\BaseGroup;
 use App\Entity\BoardMember\BoardMember;
@@ -706,18 +707,24 @@ HELP
                         $where->add('rtm.id IS NOT NULL');
                     }
 
-                    // Committee supervisor & host
-                    if ($committeeRoles = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_HOST], $value['value'])) {
-                        $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
-                        $where->add('ms.privilege IN (:committee_privileges)');
-                        if (\in_array(AdherentRoleEnum::COMMITTEE_SUPERVISOR, $committeeRoles, true)) {
-                            $privileges[] = CommitteeMembership::COMMITTEE_SUPERVISOR;
+                    // Committee supervisor
+                    if ($committeeMandates = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR], $value['value'])) {
+                        $qb->leftJoin(sprintf('%s.adherentMandates', $alias), 'am');
+                        $provisionalCondition = '';
+                        if (1 === \count($committeeMandates)
+                            && \in_array(AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR, $value['value'], true)) {
+                            $provisionalCondition = ' AND am.provisional = 1';
                         }
+                        $where->add('am.quality = :supervisor AND am.committee IS NOT NULL AND am.finishAt IS NULL'.$provisionalCondition);
 
-                        if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $committeeRoles, true)) {
-                            $privileges[] = CommitteeMembership::COMMITTEE_HOST;
-                        }
-                        $qb->setParameter('committee_privileges', $privileges);
+                        $qb->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR);
+                    }
+
+                    // Committee host
+                    if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
+                        $where->add('ms.privilege == :committee_privilege');
+                        $qb->setParameter('committee_privilege', CommitteeMembership::COMMITTEE_HOST);
                     }
 
                     // Deputy

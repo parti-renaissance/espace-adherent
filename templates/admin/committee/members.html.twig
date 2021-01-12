@@ -15,8 +15,8 @@
 {% endblock %}
 
 {% block sonata_admin_content %}
-    {% set committeeHasFemaleMandate = committee.hasFemaleMandate %}
-    {% set committeeHasMaleMandate = committee.hasMaleMandate %}
+    {% set committeehasFemaleAdherentMandate = committee.hasFemaleAdherentMandate %}
+    {% set committeehasMaleAdherentMandate = committee.hasMaleAdherentMandate %}
     {% block notice %}
         {{ parent() }}
     {% endblock %}
@@ -51,7 +51,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for membership in memberships|sort((a, b) => (b.isSupervisor ? 2 : (b.adherent.id in active_mandates_adherent_ids ? 1 : 0)) <=> (a.isSupervisor ? 2 : (a.adherent.id in active_mandates_adherent_ids ? 1 : 0))) if membership.canHostCommittee %}
+                        {% for membership in memberships|sort((a, b) => (b.isSupervisor ? 2 : (b.adherent.id in active_mandates_adherent_ids ? 1 : 0)) <=> (a.isSupervisor ? 2 : (a.adherent.id in active_mandates_adherent_ids ? 1 : 0))) if membership.isHostMember %}
                             {% set host = membership.adherent %}
                             {% set token = csrf_token('committee.change_privilege.' ~ host.id) %}
                             {% set mandateToken = csrf_token('committee.change_mandate.' ~ host.id) %}
@@ -81,21 +81,14 @@
                                             Transformer en membre normal
                                         </a>
 
-                                        {% if supervisors_count < 1 %}
-                                            <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: host.id, privilege: constant('COMMITTEE_SUPERVISOR', membership), token: token }) }}"
-                                               class="btn btn-default btn-sm">
-                                                Transformer en animateur principal
-                                            </a>
-                                        {% endif %}
-
                                         {% if is_granted('ROLE_ADMIN_COMMITTEE_DESIGNATION') %}
                                             {% if host.id in active_mandates_adherent_ids %}
                                                 <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
                                                 class="btn btn-default btn-sm">
                                                     Transformer en simple adhérent
                                                 </a>
-                                            {% elseif (host.gender is constant('App\\ValueObject\\Genders::MALE') and not committeeHasMaleMandate)
-                                                or (host.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeeHasFemaleMandate) %}
+                                            {% elseif (host.gender is constant('App\\ValueObject\\Genders::MALE') and not committeehasMaleAdherentMandate)
+                                                or (host.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeehasFemaleAdherentMandate) %}
                                                 <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
                                                    class="btn btn-default btn-sm">
                                                     Transformer en adhérent désigné
@@ -133,21 +126,14 @@
                                             Transformer en co-animateur
                                         </a>
 
-                                        {% if supervisors_count < 1 %}
-                                            <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_SUPERVISOR', membership), token: token }) }}"
-                                               class="btn btn-default btn-sm">
-                                                Transformer en animateur principal
-                                            </a>
-                                        {% endif %}
-
                                         {% if is_granted('ROLE_ADMIN_COMMITTEE_DESIGNATION') %}
                                             {% if member.id in active_mandates_adherent_ids %}
                                                 <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
                                                    class="btn btn-default btn-sm">
                                                     Transformer en simple adhérent
                                                 </a>
-                                            {% elseif (member.gender is constant('App\\ValueObject\\Genders::MALE') and not committeeHasMaleMandate)
-                                                or (member.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeeHasFemaleMandate) %}
+                                            {% elseif (member.gender is constant('App\\ValueObject\\Genders::MALE') and not committeehasMaleAdherentMandate)
+                                                or (member.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeehasFemaleAdherentMandate) %}
                                                 <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
                                                    class="btn btn-default btn-sm">
                                                     Transformer en adhérent désigné

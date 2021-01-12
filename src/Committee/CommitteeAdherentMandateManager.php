@@ -68,8 +68,8 @@ class CommitteeAdherentMandateManager
             );
         }
 
-        if ((Genders::FEMALE === $adherent->getGender() && $committee->hasFemaleMandate())
-            || (Genders::MALE === $adherent->getGender() && $committee->hasMaleMandate())) {
+        if ((Genders::FEMALE === $adherent->getGender() && $committee->hasFemaleAdherentMandate())
+            || (Genders::MALE === $adherent->getGender() && $committee->hasMaleAdherentMandate())) {
             $this->throwException(
                 'adherent_mandate.committee.committee_has_already_active_mandate',
                 [

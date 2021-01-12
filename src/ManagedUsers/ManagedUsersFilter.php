@@ -75,6 +75,11 @@ class ManagedUsersFilter
     /**
      * @var bool
      */
+    private $includeCommitteeProvisionalSupervisors;
+
+    /**
+     * @var bool
+     */
     private $includeCommitteeHosts;
 
     /**
@@ -286,6 +291,16 @@ class ManagedUsersFilter
         $this->includeCommitteeSupervisors = $value;
     }
 
+    public function includeCommitteeProvisionalSupervisors(): ?bool
+    {
+        return $this->includeCommitteeProvisionalSupervisors;
+    }
+
+    public function setIncludeCommitteeProvisionalSupervisors(?bool $value): void
+    {
+        $this->includeCommitteeProvisionalSupervisors = $value;
+    }
+
     public function includeCommitteeHosts(): ?bool
     {
         return $this->includeCommitteeHosts;
@@ -443,6 +458,7 @@ class ManagedUsersFilter
     {
         $roles = [
             'CommitteeSupervisors' => $this->includeCommitteeSupervisors,
+            'CommitteeProvisionalSupervisors' => $this->includeCommitteeProvisionalSupervisors,
             'CommitteeHosts' => $this->includeCommitteeHosts,
             'CitizenProjectHosts' => $this->includeCitizenProjectHosts,
         ];

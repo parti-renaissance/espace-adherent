@@ -35,12 +35,16 @@
         <span class="label label-primary" style="padding: 2px;">Responsable des questionnaires</span><br/>
     {% endif %}
 
-    {% if object.isHostOnly %}
+    {% if object.isHost %}
         <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Co-Animateur</span><br/>
     {% endif %}
 
-    {% if object.isSupervisor %}
+    {% if object.isSupervisor(false) %}
         <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur</span><br/>
+    {% endif %}
+
+    {% if object.isSupervisor(true) %}
+        <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Animateur provisiore</span><br/>
     {% endif %}
 
     {% if object.isCitizenProjectAdministrator %}

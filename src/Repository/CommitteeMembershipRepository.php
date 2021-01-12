@@ -6,6 +6,8 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\CommitteeAdherentMandate;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
@@ -19,6 +21,7 @@ use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
@@ -30,57 +33,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommitteeMembership::class);
-    }
-
-    /**
-     * Returns whether or not the given adherent is already an host of at least
-     * one committee.
-     */
-    public function hostCommittee(Adherent $adherent, Committee $committee = null): bool
-    {
-        $qb = $this->createQueryBuilder('cm');
-
-        $qb
-            ->select('COUNT(cm.uuid)')
-            ->where($qb->expr()->in('cm.privilege', CommitteeMembership::getHostPrivileges()))
-            ->andWhere('cm.adherent = :adherent')
-            ->setParameter('adherent', $adherent)
-        ;
-
-        if ($committee) {
-            $qb
-                ->andWhere('cm.committee = :committee')
-                ->setParameter('committee', $committee)
-            ;
-        }
-
-        return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
-    }
-
-    /**
-     * Returns whether or not the given adherent is already the supervisor of at
-     * least one committee.
-     */
-    public function superviseCommittee(Adherent $adherent, Committee $committee = null)
-    {
-        $qb = $this->createQueryBuilder('cm');
-
-        $qb
-            ->select('COUNT(cm.uuid)')
-            ->where('cm.privilege = :supervisor')
-            ->andWhere('cm.adherent = :adherent')
-            ->setParameter('adherent', $adherent)
-            ->setParameter('supervisor', CommitteeMembership::COMMITTEE_SUPERVISOR)
-        ;
-
-        if ($committee) {
-            $qb
-                ->andWhere('cm.committee = :committee')
-                ->setParameter('committee', $committee)
-            ;
-        }
-
-        return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
     }
 
     public function findActivityMemberships(Adherent $adherent, int $page = 1, int $limit = 5): PaginatorInterface
@@ -119,11 +71,14 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         $query = $this
             ->createQueryBuilder('cm')
             ->innerJoin('cm.committee', 'committee')
+            ->leftJoin(CommitteeAdherentMandate::class, 'am', Join::WITH, 'am.adherent = cm.adherent AND committee = am.committee')
             ->addSelect('committee')
             ->where('cm.adherent = :adherent')
             ->andWhere('committee.status = :status')
             ->setParameter('adherent', $adherent)
             ->setParameter('status', Committee::APPROVED)
+            ->orderBy('am.quality', 'DESC')
+            ->addOrderBy('am.provisional', 'ASC')
             ->addOrderBy('cm.privilege', 'DESC')
             ->getQuery()
         ;
@@ -176,19 +131,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * Returns the number of host members for the given committee.
-     */
-    public function countHostMembers(Committee $committee): int
-    {
-        return $this->countMembers($committee, CommitteeMembership::getHostPrivileges());
-    }
-
-    public function countSupervisorMembers(Committee $committee): int
-    {
-        return $this->countMembers($committee, [CommitteeMembership::COMMITTEE_SUPERVISOR]);
-    }
-
     public function countMembers(Committee $committee, array $privileges): int
     {
         return (int) $this->createQueryBuilder('cm')
@@ -210,56 +152,29 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return $this->findPrivilegedMemberships($committee, [CommitteeMembership::COMMITTEE_HOST]);
     }
 
-    public function findSupervisorMembership(Committee $committee): ?CommitteeMembership
+    public function findForHostEmail(Committee $committee): AdherentCollection
     {
-        return $this->findPrivilegedMemberships($committee, [CommitteeMembership::COMMITTEE_SUPERVISOR])->get(0);
-    }
-
-    public function findSupervisor(Committee $committee): ?Adherent
-    {
-        return $this->findPrivilegedMembers($committee, [CommitteeMembership::COMMITTEE_SUPERVISOR])->get(0);
-    }
-
-    /**
-     * Returns the list of all hosts memberships of a committee.
-     */
-    public function findHostMembers(Committee $committee): AdherentCollection
-    {
-        return $this->findPrivilegedMembers($committee, CommitteeMembership::getHostPrivileges());
-    }
-
-    /**
-     * Finds the list of all committee followers memberships.
-     *
-     * @param Committee $committee    The committee
-     * @param bool      $includeHosts Whether or not to include committee hosts as followers
-     */
-    public function findFollowerMemberships(
-        Committee $committee,
-        bool $includeHosts = true
-    ): CommitteeMembershipCollection {
-        $privileges = [CommitteeMembership::COMMITTEE_FOLLOWER];
-        if ($includeHosts) {
-            $privileges = array_merge($privileges, CommitteeMembership::getHostPrivileges());
-        }
-
-        return $this->findPrivilegedMemberships($committee, $privileges);
-    }
-
-    /**
-     * Finds the list of all committee followers.
-     *
-     * @param Committee $committee    The committee UUID
-     * @param bool      $includeHosts Whether or not to include committee hosts as followers
-     */
-    public function findFollowers(Committee $committee, bool $includeHosts = true): AdherentCollection
-    {
-        $privileges = [CommitteeMembership::COMMITTEE_FOLLOWER];
-        if ($includeHosts) {
-            $privileges = array_merge($privileges, CommitteeMembership::getHostPrivileges());
-        }
-
-        return $this->findPrivilegedMembers($committee, $privileges);
+        return $this->createAdherentCollection(
+            $this->createQueryBuilder('cm')
+                ->select('cm', 'adherent')
+                ->leftJoin('cm.adherent', 'adherent')
+                ->leftJoin('adherent.adherentMandates', 'am')
+                ->leftJoin('adherent.subscriptionTypes', 'st')
+                ->where('cm.committee = :committee')
+                ->andWhere((new Orx())
+                    ->add('cm.privilege = :host')
+                    ->add('am.committee = :committee AND am.quality = :supervisor AND am.finishAt IS NULL')
+                    ->add('st.code = :subscription_code')
+                )
+                ->orderBy('am.quality', 'DESC')
+                ->addOrderBy('cm.privilege', 'DESC')
+                ->addOrderBy('cm.joinedAt', 'ASC')
+                ->setParameter('committee', $committee)
+                ->setParameter('subscription_code', SubscriptionTypeEnum::LOCAL_HOST_EMAIL)
+                ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
+                ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
+                ->getQuery()
+        );
     }
 
     /**
@@ -281,30 +196,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
 
         return new CommitteeMembershipCollection($query->getResult());
-    }
-
-    /**
-     * Returns the list of all privileged members of a committee.
-     *
-     * @param Committee $committee  The committee
-     * @param array     $privileges An array of privilege constants (see {@link : CommitteeMembership}
-     */
-    private function findPrivilegedMembers(Committee $committee, array $privileges): AdherentCollection
-    {
-        $qb = $this->createQueryBuilder('cm');
-
-        $query = $qb
-            ->select('cm', 'adherent')
-            ->leftJoin('cm.adherent', 'adherent')
-            ->where('cm.committee = :committee')
-            ->andWhere($qb->expr()->in('cm.privilege', $privileges))
-            ->orderBy('cm.privilege', 'DESC')
-            ->addOrderBy('cm.joinedAt', 'ASC')
-            ->setParameter('committee', $committee)
-            ->getQuery()
-        ;
-
-        return $this->createAdherentCollection($query);
     }
 
     /**
@@ -461,6 +352,13 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
             if ($filter->getSort()) {
                 $qb->orderBy('cm.'.$filter->getSort(), $filter->getOrder() ?? 'ASC');
+            } else {
+                $qb
+                    ->leftJoin(CommitteeAdherentMandate::class, 'am', Join::WITH, 'am.adherent = cm.adherent AND cm.committee = am.committee')
+                    ->orderBy('am.quality', 'DESC')
+                    ->addOrderBy('am.provisional', 'ASC')
+                    ->addOrderBy('cm.privilege', 'DESC')
+                ;
             }
         }
 
@@ -513,9 +411,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      */
     public function findCommitteesUuidByHostFirstName(string $firstName): array
     {
-        return $this->findCommitteesUuid([
+        return $this->findCommitteesUuidByHost([
             'firstName' => $firstName,
-            'privileges' => CommitteeMembership::getHostPrivileges(),
         ]);
     }
 
@@ -524,9 +421,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      */
     public function findCommitteesUuidByHostLastName(string $lastName): array
     {
-        return $this->findCommitteesUuid([
+        return $this->findCommitteesUuidByHost([
             'lastName' => $lastName,
-            'privileges' => CommitteeMembership::getHostPrivileges(),
         ]);
     }
 
@@ -535,50 +431,48 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      */
     public function findCommitteesUuidByHostEmailAddress(string $emailAddress): array
     {
-        return $this->findCommitteesUuid([
+        return $this->findCommitteesUuidByHost([
             'emailAddress' => $emailAddress,
-            'privileges' => CommitteeMembership::getHostPrivileges(),
         ]);
     }
 
-    public function findCommitteesUuid(array $criteria): array
+    public function findCommitteesUuidByHost(array $criteria): array
     {
         $qb = $this
             ->createQueryBuilder('cm')
             ->select('c.uuid')
             ->innerJoin('cm.committee', 'c')
+            ->innerJoin('cm.adherent', 'a')
+            ->leftJoin('c.adherentMandates', 'am')
+            ->andWhere((new Orx())
+                ->add('cm.privilege = :host')
+                ->add('am.quality = :supervisor AND am.finishAt IS NULL')
+            )
+            ->setParameters([
+                'host' => CommitteeMembership::COMMITTEE_HOST,
+                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
+            ])
         ;
 
-        if (!empty($criteria['privileges'])) {
+        if (isset($criteria['firstName'])) {
             $qb
-                ->andWhere('cm.privilege IN (:privileges)')
-                ->setParameter('privileges', (array) $criteria['privileges'])
+                ->andWhere('a.firstName LIKE :firstName')
+                ->setParameter('firstName', '%'.$criteria['firstName'].'%')
             ;
         }
 
-        if (isset($criteria['firstName']) || isset($criteria['lastName']) || isset($criteria['emailAddress'])) {
-            $qb->innerJoin('cm.adherent', 'a');
+        if (isset($criteria['lastName'])) {
+            $qb
+                ->andWhere('a.lastName LIKE :lastName')
+                ->setParameter('lastName', '%'.$criteria['lastName'].'%')
+            ;
+        }
 
-            if (isset($criteria['firstName'])) {
-                $qb
-                    ->andWhere('a.firstName LIKE :firstName')
-                    ->setParameter('firstName', '%'.$criteria['firstName'].'%')
-                ;
-            }
-
-            if (isset($criteria['lastName'])) {
-                $qb
-                    ->andWhere('a.lastName LIKE :lastName')
-                    ->setParameter('lastName', '%'.$criteria['lastName'].'%')
-                ;
-            }
-
-            if (isset($criteria['emailAddress'])) {
-                $qb
-                    ->andWhere('a.emailAddress LIKE :emailAddress')
-                    ->setParameter('emailAddress', '%'.$criteria['emailAddress'].'%')
-                ;
-            }
+        if (isset($criteria['emailAddress'])) {
+            $qb
+                ->andWhere('a.emailAddress LIKE :emailAddress')
+                ->setParameter('emailAddress', '%'.$criteria['emailAddress'].'%')
+            ;
         }
 
         return array_map(function (UuidInterface $uuid) {

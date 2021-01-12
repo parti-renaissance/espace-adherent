@@ -130,7 +130,7 @@ class UnregisterAdherentsCommand extends Command
                     continue;
                 }
 
-                if ($adherent->isHost()) {
+                if ($adherent->isHost() || $adherent->isSupervisor()) {
                     $this->hosts[] = $email;
 
                     continue;

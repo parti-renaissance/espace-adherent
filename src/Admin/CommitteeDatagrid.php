@@ -26,7 +26,7 @@ class CommitteeDatagrid extends DatagridDecorator
             $results = $this->decorated->getResults();
 
             foreach ($results as $result) {
-                $result->hosts = $this->manager->getCommitteeHosts($result);
+                $result->hosts = $this->manager->getCommitteeHosts($result, true);
                 $result->creator = $this->manager->getCommitteeCreator($result);
             }
 

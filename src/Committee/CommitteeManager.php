@@ -54,7 +54,7 @@ class CommitteeManager
             return false;
         }
 
-        return $membership->isFollower();
+        return $membership->isPromotableHost();
     }
 
     public function isDemotableHost(Adherent $adherent, Committee $committee): bool
@@ -63,40 +63,7 @@ class CommitteeManager
             return false;
         }
 
-        return $membership->isHostMember();
-    }
-
-    public function isCommitteeHost(Adherent $adherent): bool
-    {
-        // Optimization to prevent a SQL query if the current adherent already
-        // has a loaded list of related committee memberships entities.
-        if ($adherent->hasLoadedMemberships() && $adherent->isHost()) {
-            return true;
-        }
-
-        return $this->getMembershipRepository()->hostCommittee($adherent);
-    }
-
-    public function hostCommittee(Adherent $adherent, Committee $committee): bool
-    {
-        // Optimization to prevent a SQL query if the current adherent already
-        // has a loaded list of related committee memberships entities.
-        if ($adherent->hasLoadedMemberships() && $adherent->isHostOf($committee)) {
-            return true;
-        }
-
-        return $this->getMembershipRepository()->hostCommittee($adherent, $committee);
-    }
-
-    public function superviseCommittee(Adherent $adherent, Committee $committee): bool
-    {
-        // Optimization to prevent a SQL query if the current adherent already
-        // has a loaded list of related committee memberships entities.
-        if ($adherent->hasLoadedMemberships() && $adherent->isSupervisorOf($committee)) {
-            return true;
-        }
-
-        return $this->getMembershipRepository()->superviseCommittee($adherent, $committee);
+        return $membership->isDemotableHost();
     }
 
     public function getTimeline(Committee $committee, int $limit = 30, int $firstResultIndex = 0): Paginator
@@ -107,19 +74,14 @@ class CommitteeManager
         ;
     }
 
-    public function countCommitteeHosts(Committee $committee): int
+    public function countCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): int
     {
-        return $this->getMembershipRepository()->countHostMembers($committee);
+        return $this->getAdherentRepository()->countCommitteeHosts($committee, $withoutSupervisors);
     }
 
-    public function countCommitteeSupervisors(Committee $committee): int
+    public function getCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): AdherentCollection
     {
-        return $this->getMembershipRepository()->countSupervisorMembers($committee);
-    }
-
-    public function getCommitteeHosts(Committee $committee): AdherentCollection
-    {
-        return $this->getMembershipRepository()->findHostMembers($committee);
+        return $this->getAdherentRepository()->findCommitteeHosts($committee, $withoutSupervisors);
     }
 
     public function getCommitteeCreator(Committee $committee): ?Adherent
@@ -132,21 +94,9 @@ class CommitteeManager
         return $this->getAdherentRepository()->findReferentsByCommittee($committee);
     }
 
-    public function getCommitteeFollowers(
-        Committee $committee,
-        bool $withHosts = self::INCLUDE_HOSTS
-    ): AdherentCollection {
-        return $this->getMembershipRepository()->findFollowers($committee, $withHosts);
-    }
-
     public function getOptinCommitteeFollowers(Committee $committee): AdherentCollection
     {
-        $followers = $this->getCommitteeFollowers($committee, self::EXCLUDE_HOSTS);
-
-        return $this
-            ->getCommitteeHosts($committee)
-            ->merge($followers->getCommitteesNotificationsSubscribers())
-        ;
+        return $this->getMembershipRepository()->findForHostEmail($committee);
     }
 
     /**
@@ -479,11 +429,6 @@ class CommitteeManager
         return $this->getCommitteeRepository()->hasCommitteeInStatus($adherent, $status);
     }
 
-    public function getCommitteeSupervisor(Committee $committee): ?Adherent
-    {
-        return $this->getMembershipRepository()->findSupervisor($committee);
-    }
-
     public function getCommitteesByCoordinatesAndCountry(
         Coordinates $coordinates,
         string $country,
@@ -524,32 +469,14 @@ class CommitteeManager
 
         $adherent = $membership->getAdherent();
 
-        if (CommitteeMembership::COMMITTEE_SUPERVISOR === $privilege) {
-            // We can't have more than 1 supervisors per committee
-            if ($this->countCommitteeSupervisors($committee = $membership->getCommittee())) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeException($membership->getUuid());
+        if (CommitteeMembership::COMMITTEE_HOST === $privilege) {
+            if ($adherent->isSupervisorOf($membership->getCommittee())) {
+                throw CommitteeMembershipException::createNotPromotableHostPrivilegeException($membership->getUuid());
             }
-
-            // Adherent can't be supervisor of multiple committees
-            if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForSupervisorException($membership->getUuid(), $adherent->getEmailAddress());
+            // We can't have more than 2 hosts per committee
+            if ($this->countCommitteeHosts($committee = $membership->getCommittee(), true) > 1) {
+                throw CommitteeMembershipException::createNotPromotableHostPrivilegeManyHostsException($membership->getUuid());
             }
-
-            // We can't add a supervisor if committee is not approved
-            if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException($membership->getUuid(), $committee->getName());
-            }
-
-            if ($adherent->getMemberships()->getCommitteeCandidacyMembership()) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForCandidateMember($membership->getUuid());
-            }
-
-            if ($votingMembership = $adherent->getMemberships()->getVotingCommitteeMembership()) {
-                $votingMembership->disableVote();
-                $this->entityManager->flush();
-            }
-
-            $membership->enableVote();
         }
 
         $membership->setPrivilege($privilege);

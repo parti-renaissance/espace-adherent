@@ -23,9 +23,9 @@ class FileUploadVoter extends AbstractAdherentVoter
                 return $adherent->isReferent();
             case UserDocument::TYPE_COMMITTEE_CONTACT:
             case UserDocument::TYPE_COMMITTEE_FEED:
-                return $adherent->isHost();
+                return $adherent->isSupervisor() || $adherent->isHost();
             case UserDocument::TYPE_EVENT:
-                return $adherent->isReferent() || $adherent->isHost();
+                return $adherent->isReferent() || $adherent->isSupervisor() || $adherent->isHost();
             case UserDocument::TYPE_ADHERENT_MESSAGE:
                 return $adherent->isAdherentMessageRedactor();
             case UserDocument::TYPE_TERRITORIAL_COUNCIL_FEED:

@@ -17,6 +17,7 @@ class AdherentRoleEnum extends Enum
     public const DELEGATED_SENATOR = 'delegated_senator';
 
     public const COMMITTEE_SUPERVISOR = 'committee_supervisor';
+    public const COMMITTEE_PROVISIONAL_SUPERVISOR = 'committee_provisional_supervisor';
     public const COMMITTEE_HOST = 'committee_host';
 
     public const CITIZEN_PROJECT_HOLDER = 'citizen_project_holder';

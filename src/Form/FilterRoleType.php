@@ -10,6 +10,7 @@ class FilterRoleType extends AbstractType
 {
     public const ROLES = [
         'CommitteeHosts',
+        'CommitteeProvisionalSupervisors',
         'CommitteeSupervisors',
         'CitizenProjectHosts',
     ];

@@ -183,6 +183,13 @@ class ManagedUser
     private $isCommitteeSupervisor;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $isCommitteeProvisionalSupervisor;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
@@ -262,6 +269,7 @@ class ManagedUser
         array $committeeUuids = null,
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
+        int $isCommitteeProvisionalSupervisor = 0,
         int $isCommitteeSupervisor = 0,
         ?array $subscriptionTypes = [],
         array $zones = [],
@@ -294,6 +302,7 @@ class ManagedUser
         $this->isCommitteeMember = $isCommitteeMember;
         $this->isCommitteeHost = $isCommitteeHost;
         $this->isCommitteeSupervisor = $isCommitteeSupervisor;
+        $this->isCommitteeProvisionalSupervisor = $isCommitteeProvisionalSupervisor;
         $this->subscriptionTypes = $subscriptionTypes;
         $this->subscribedTags = $subscribedTags;
         $this->createdAt = $createdAt;
@@ -323,7 +332,7 @@ class ManagedUser
 
     public function getStyleType(): string
     {
-        if ($this->isCommitteeHost || $this->isCommitteeSupervisor) {
+        if ($this->isCommitteeHost || $this->isCommitteeProvisionalSupervisor || $this->isCommitteeSupervisor) {
             return self::STYLE_TYPE_HOST;
         }
 
@@ -415,6 +424,11 @@ class ManagedUser
         return $this->isCommitteeSupervisor;
     }
 
+    public function isCommitteeProvisionalSupervisor(): bool
+    {
+        return $this->isCommitteeProvisionalSupervisor;
+    }
+
     public function getSubscribedTags(): string
     {
         return $this->subscribedTags;
@@ -495,6 +509,10 @@ class ManagedUser
 
             if ($this->isCommitteeSupervisor) {
                 $roles[] = 'Animateur local';
+            }
+
+            if ($this->isCommitteeProvisionalSupervisor) {
+                $roles[] = 'Animateur local provisoire';
             }
 
             if ($this->isCommitteeHost) {

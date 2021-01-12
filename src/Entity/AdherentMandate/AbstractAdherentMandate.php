@@ -103,6 +103,11 @@ abstract class AbstractAdherentMandate
      */
     private $reason;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public $provisional = false;
+
     public function __construct(Adherent $adherent, string $gender, \DateTime $beginAt, \DateTime $finishAt = null)
     {
         $this->uuid = Uuid::uuid4();

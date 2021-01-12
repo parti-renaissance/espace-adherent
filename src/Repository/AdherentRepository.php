@@ -7,6 +7,7 @@ use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
 use App\Coordinator\CoordinatorManagedAreaUtils;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\CitizenProject;
 use App\Entity\City;
@@ -24,6 +25,8 @@ use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -604,13 +607,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')
             ->join('adherent.memberships', 'membership')
             ->join('membership.committee', 'committee')
+            ->join('committee.adherentMandates', 'mandate')
             ->join('committee.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
             ->andWhere('committee.status = :status')
-            ->andWhere('membership.privilege = :supervisor')
+            ->andWhere('mandate.adherent = adherent AND mandate.committee IS NOT NULL AND mandate.quality = :supervisor AND mandate.finishAt IS NULL')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
             ->setParameter('status', Committee::APPROVED)
-            ->setParameter('supervisor', CommitteeMembership::COMMITTEE_SUPERVISOR)
+            ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
             ->groupBy('adherent.gender')
             ->getQuery()
             ->getArrayResult()
@@ -1049,6 +1053,105 @@ SQL;
             ->setParameter('uuid', $uuid)
             ->getQuery()
             ->getArrayResult()
+        ;
+    }
+
+    public function findCommitteeSupervisors(Committee $committee): array
+    {
+        return $this->createCommitteeSupervisorsQueryBuilder($committee)->getQuery()->getResult();
+    }
+
+    public function countCommitteeSupervisors(Committee $committee): int
+    {
+        return (int) $this->createCommitteeSupervisorsQueryBuilder($committee)
+            ->select('COUNT(DISTINCT a.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function findCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): AdherentCollection
+    {
+        return new AdherentCollection(
+            $this->createCommitteeHostsQueryBuilder($committee, $withoutSupervisors)
+                ->getQuery()
+                ->getResult()
+        );
+    }
+
+    public function countCommitteeHosts(Committee $committee, bool $withoutSupervisors = false): int
+    {
+        return (int) $this->createCommitteeHostsQueryBuilder($committee, $withoutSupervisors)
+            ->select('COUNT(DISTINCT a.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * Returns whether or not the given adherent is already an host of at least
+     * one committee.
+     */
+    public function hostCommittee(Adherent $adherent, Committee $committee = null): bool
+    {
+        $result = (int) $this->createCommitteeHostsQueryBuilder($committee)
+            ->select('COUNT(DISTINCT a.id)')
+            ->andWhere('a.id = :adherent_id')
+            ->setParameter('adherent_id', $adherent->getId())
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $result > 0;
+    }
+
+    private function createCommitteeSupervisorsQueryBuilder(Committee $committee): QueryBuilder
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.adherentMandates', 'am')
+            ->where('am.committee = :committee AND am.quality = :supervisor AND am.finishAt IS NULL')
+            ->setParameters([
+                'committee' => $committee,
+                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
+            ])
+        ;
+    }
+
+    private function createCommitteeHostsQueryBuilder(
+        ?Committee $committee = null,
+        bool $withoutSupervisors = false
+    ): QueryBuilder {
+        $qb = $this->createQueryBuilder('a');
+
+        $cmCondition = '';
+        $amCondition = '';
+        if ($committee) {
+            $cmCondition = 'cm.committee = :committee AND ';
+            $amCondition = 'am.committee = :committee AND ';
+            $qb->setParameter('committee', $committee);
+        }
+
+        if ($withoutSupervisors) {
+            return $qb
+                ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, $cmCondition.'cm.adherent = a')
+                ->where($cmCondition.'cm.privilege = :privilege')
+                ->addOrderBy('cm.privilege', 'ASC')
+                ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
+            ;
+        }
+
+        return $qb
+            ->leftJoin('a.adherentMandates', 'am', Join::WITH, $amCondition.'am.adherent = a')
+            ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, $cmCondition.'cm.adherent = a')
+            ->where((new Orx())
+                ->add('cm.privilege = :privilege')
+                ->add('am.quality = :supervisor AND am.finishAt IS NULL')
+            )
+            ->orderBy('am.quality', 'DESC')
+            ->addOrderBy('am.provisional', 'ASC')
+            ->addOrderBy('cm.privilege', 'DESC')
+            ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
+            ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
         ;
     }
 }

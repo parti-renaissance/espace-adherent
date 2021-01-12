@@ -19,10 +19,6 @@ class HostCommitteeVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $committee): bool
     {
-        if (!$committee->isApproved()) {
-            return $adherent->isSupervisorOf($committee) || $committee->isCreatedBy($adherent->getUuid());
-        }
-
-        return $adherent->isHostOf($committee);
+        return $adherent->isSupervisorOf($committee) || $adherent->isHostOf($committee);
     }
 }

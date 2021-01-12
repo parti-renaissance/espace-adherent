@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche;
 
 use App\Entity\Adherent;
-use App\Entity\CommitteeMembership;
 use App\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +23,7 @@ class CommitteeSpaceController extends AbstractController
     public function __invoke(UserInterface $adherent, CommitteeRepository $repository): Response
     {
         return $this->render('committee_manager/dashboard.html.twig', [
-            'committees' => $repository->findCommitteesByPrivilege($adherent, CommitteeMembership::getHostPrivileges()),
+            'committees' => $repository->findCommitteesForHost($adherent),
         ]);
     }
 }

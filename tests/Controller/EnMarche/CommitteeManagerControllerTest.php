@@ -161,32 +161,13 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame('Comité français En Marche !', $crawler->filter('#committee_description')->text());
     }
 
-    public function testCommitteeHostCanEditCompletelyAddressOfPendingCommittee()
+    public function testCommitteeHostCannotEditCompletelyAddressOfPendingCommittee()
     {
         $this->client->followRedirects();
 
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        // Submit the committee form with new address
-        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
-            'committee' => [
-                'address' => [
-                    'country' => 'CH',
-                    'address' => '12 Pilgerweg',
-                    'postalCode' => '8802',
-                    'cityName' => 'Kilchberg',
-                ],
-            ],
-        ]));
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        // Address has been changed totally
-        $this->assertSame('12 Pilgerweg', $crawler->filter('#committee_address_address')->attr('value'));
-        $this->assertSame('8802', $crawler->filter('#committee_address_postalCode')->attr('value'));
-        $this->assertSame('Kilchberg', $crawler->filter('#committee_address_cityName')->attr('value'));
-        $this->assertSame('Suisse', $crawler->filter('#committee_address_country option:selected')->text());
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()
@@ -439,31 +420,48 @@ class CommitteeManagerControllerTest extends WebTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideHostCredentials
-     */
-    public function testAuthenticatedHostCanSeeCommitteeMembers(string $username)
+    public function testAuthenticatedHostCanSeeCommitteeMembers()
     {
         // Authenticate as the committee supervisor
-        $this->authenticateAsAdherent($this->client, $username);
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
         $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
 
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
         $this->assertTrue($this->seeMembersList($crawler, 5));
-        self::assertSame('Jacques P.', $crawler->filter('.member-name')->eq(0)->text());
+        self::assertSame('Jacques P.', trim($crawler->filter('.member-name')->eq(0)->text()));
+        self::assertCount(0, $crawler->filter('.member-name img.b__nudge--left-nano'));
+        self::assertCount(0, $crawler->filter('.member-phone'));
         self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
         self::assertSame('Paris 8e', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
+        self::assertCount(1, $crawler->filter('.member-status .status__2 i.fa-envelope'));
+        self::assertCount(0, $crawler->filter('.member-status i.fa-inbox'));
     }
 
-    public function provideHostCredentials()
+    public function testAuthenticatedSupervisorCanSeeMoreInfoAboutCommitteeMembers()
     {
-        return [
-            'supervisor' => ['jacques.picard@en-marche.fr', 'changeme1337'],
-            'host' => ['gisele-berthoux@caramail.com', 'ILoveYouManu'],
-        ];
+        // Authenticate as the committee supervisor
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
+        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
+        $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertTrue($this->seeMembersList($crawler, 5));
+        self::assertSame('Jacques Picard', trim($crawler->filter('.member-name')->eq(0)->text()));
+        self::assertCount(1, $crawler->filter('.member-name img.b__nudge--left-nano'));
+        self::assertSame('+33 1 87 26 42 36', trim($crawler->filter('.member-phone')->eq(0)->text()));
+        self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
+        self::assertSame('Paris 8e', $crawler->filter('.member-city-name')->eq(0)->text());
+        self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
+        self::assertCount(1, $crawler->filter('.member-status .status__2 i.fa-envelope'));
+        self::assertCount(2, $crawler->filter('.member-status .status__2 i.fa-inbox'));
     }
 
     public function testAuthenticatedCommitteeSupervisorCanPromoteNewHostsAmongMembers()
@@ -474,6 +472,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
         $crawler = $this->client->click($crawler->filter('.promote-host-link')->link());
@@ -554,7 +554,7 @@ class CommitteeManagerControllerTest extends WebTestCase
     {
         return $this
             ->committeeMembershipRepository
-            ->findFollowers($committee)
+            ->findForHostEmail($committee)
             ->getCommitteesNotificationsSubscribers()
             ->count()
         ;

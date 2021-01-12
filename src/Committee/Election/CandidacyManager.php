@@ -9,7 +9,7 @@ use App\Entity\CommitteeCandidacyInvitation;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
-use App\Repository\CommitteeMembershipRepository;
+use App\Repository\AdherentRepository;
 use App\TerritorialCouncil\Events;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CandidacyInvitationEvent;
@@ -22,16 +22,16 @@ class CandidacyManager
 {
     private $entityManager;
     private $eventDispatcher;
-    private $committeeMembershipRepository;
+    private $adherentRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
-        CommitteeMembershipRepository $repository
+        AdherentRepository $repository
     ) {
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->committeeMembershipRepository = $repository;
+        $this->adherentRepository = $repository;
     }
 
     public function updateCandidature(
@@ -63,7 +63,7 @@ class CandidacyManager
                 $candidacy,
                 $committee,
                 $adherent,
-                $this->committeeMembershipRepository->findSupervisor($committee)
+                $this->adherentRepository->findCommitteeSupervisors($committee)
             ),
             VotingPlatformEvents::CANDIDACY_CREATED
         );
@@ -104,7 +104,7 @@ class CandidacyManager
                     $candidacy,
                     $committee,
                     $adherent,
-                    $this->committeeMembershipRepository->findSupervisor($committee)
+                    $this->adherentRepository->findCommitteeSupervisors($committee)
                 ),
                 VotingPlatformEvents::CANDIDACY_REMOVED
             );

@@ -17,6 +17,7 @@ use App\Event\Filter\ListFilterObject;
 use App\Form\CommitteeCommandType;
 use App\Form\CommitteeMemberFilterType;
 use App\Form\EventCommandType;
+use App\Repository\AdherentRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -121,6 +122,7 @@ class CommitteeManagerController extends Controller
         Request $request,
         Committee $committee,
         CommitteeMembershipRepository $repository,
+        AdherentRepository $adherentRepository,
         SerializerInterface $serializer
     ): Response {
         /** @var Adherent $adherent */
@@ -177,7 +179,7 @@ class CommitteeManagerController extends Controller
             'committee' => $committee,
             'filter' => $filter,
             'total_member_count' => $repository->countMembers($committee, CommitteeMembership::PRIVILEGES),
-            'committee_hosts' => $repository->findHostMembers($committee),
+            'committee_hosts' => $adherentRepository->findCommitteeHosts($committee),
             'members' => $repository->getCommitteeMembershipsPaginator(
                 $committee,
                 $filter,
