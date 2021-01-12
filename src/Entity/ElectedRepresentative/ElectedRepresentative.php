@@ -550,15 +550,15 @@ class ElectedRepresentative
 
     public function addSponsorship(Sponsorship $sponsorship): void
     {
-        if (!$this->sponsorship->contains($sponsorship)) {
+        if (!$this->sponsorships->contains($sponsorship)) {
             $sponsorship->setElectedRepresentative($this);
-            $this->sponsorship->add($sponsorship);
+            $this->sponsorships->add($sponsorship);
         }
     }
 
     public function removeSponsorship(Sponsorship $sponsorship): void
     {
-        $this->sponsorship->removeElement($sponsorship);
+        $this->sponsorships->removeElement($sponsorship);
     }
 
     private function initializeSponsorships(): void

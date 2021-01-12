@@ -226,8 +226,7 @@ class SummaryManagerController extends Controller
     ): Response {
         return new JsonResponse($repository->findAvailableSkillsFor(
             $slugify->slugify($request->query->get('term')),
-            $this->getUser(),
-            SkillRepository::FIND_FOR_SUMMARY
+            $this->getUser()
         ));
     }
 

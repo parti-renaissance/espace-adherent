@@ -61,7 +61,7 @@ class NewsletterInvite
 
     public static function create(string $firstName, string $lastName, string $email, string $clientIp): self
     {
-        $invite = new static();
+        $invite = new self();
 
         $invite->firstName = $firstName;
         $invite->lastName = $lastName;

@@ -6,11 +6,13 @@ use App\Entity\AssessorRequest;
 use App\Serializer\XlsxEncoder;
 use App\Utils\PhoneNumberUtils;
 use Symfony\Component\Intl\Intl;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssessorRequestExporter
 {
     public const FILE_NAME = 'bureaux-de-vote-demandes-assesseurs';
+
+    private $translator;
 
     public function __construct(TranslatorInterface $translator)
     {

@@ -6,10 +6,10 @@ use App\Membership\UserEvents;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static USER_CREATION()
- * @method static USER_MODIFICATION()
- * @method static USER_DELETION()
- * @method static USER_UPDATE_SUBSCRIPTIONS()
+ * @method static Event USER_CREATION()
+ * @method static Event USER_MODIFICATION()
+ * @method static Event USER_DELETION()
+ * @method static Event USER_UPDATE_SUBSCRIPTIONS()
  */
 class Event extends Enum
 {

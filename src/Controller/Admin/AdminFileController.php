@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
+use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -66,7 +67,7 @@ class AdminFileController extends Controller
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $this->getFilenameForDownload($file)
+            \sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension())
         );
 
         $response->headers->set('Content-Disposition', $disposition);

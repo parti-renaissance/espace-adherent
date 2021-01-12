@@ -26,6 +26,8 @@ abstract class AbstractTranslatableEntity
         ];
     }
 
+    abstract public function translate($locale = null, $fallbackToDefault = true);
+
     /** @return Collection */
     abstract public function getTranslations();
 

@@ -122,7 +122,7 @@ class Invite
         string $message,
         string $clientIp
     ): self {
-        $invite = new static(Uuid::uuid4());
+        $invite = new self(Uuid::uuid4());
         $invite->firstName = $firstName;
         $invite->lastName = $lastName;
         $invite->email = $email;

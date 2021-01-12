@@ -23,6 +23,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('FR_fr');
+        $message = null;
 
         foreach ($this->getMessageClasses() as $class) {
             for ($i = 1; $i <= 100; ++$i) {
@@ -69,11 +70,14 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     private function getAuthor(string $class): Adherent
     {
         switch ($class) {
-            case ReferentAdherentMessage::class: return $this->getReference('adherent-8');
-            case CommitteeAdherentMessage::class: return $this->getReference('adherent-8');
-            case DeputyAdherentMessage::class: return $this->getReference('deputy-75-1');
-            case CitizenProjectAdherentMessage::class: return $this->getReference('adherent-3');
+            case ReferentAdherentMessage::class:
+            case CommitteeAdherentMessage::class:
+                return $this->getReference('adherent-8');
+            case DeputyAdherentMessage::class:
+                return $this->getReference('deputy-75-1');
         }
+
+        return $this->getReference('adherent-3');
     }
 
     private function getFilter($class): ?AdherentMessageFilterInterface

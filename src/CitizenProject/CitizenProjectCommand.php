@@ -99,6 +99,11 @@ class CitizenProjectCommand
      */
     private $image;
 
+    /**
+     * @var Committee[]|ArrayCollection
+     */
+    private $committees;
+
     public function __construct(NullableAddress $address = null)
     {
         $this->address = $address;

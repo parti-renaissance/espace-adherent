@@ -122,6 +122,9 @@ class ImportMeasureTypesCommand extends Command
 
     private $em;
 
+    /** @var SymfonyStyle */
+    private $io;
+
     public function __construct(EntityManagerInterface $em)
     {
         parent::__construct();

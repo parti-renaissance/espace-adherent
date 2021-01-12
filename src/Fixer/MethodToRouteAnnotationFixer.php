@@ -95,14 +95,14 @@ public function helloWorldAction(){
         $routeLine = substr($content, $routeAnnotationStart, $routeAnnotationEnd - $routeAnnotationStart);
 
         $newRouteLine = substr_count($routeLine, "\n") > 1
-            ? $this->addMethodArgInMultiLineRoute($routeLine, $methodsToMove, $routeAnnotationEnd)
+            ? $this->addMethodArgInMultiLineRoute($routeLine, $methodsToMove)
             : $newRouteLine = $this->addMethodArgInSingleLineRoute($routeLine, $methodsToMove)
         ;
 
         return str_replace($routeLine, $newRouteLine, $content);
     }
 
-    private function addMethodArgInMultiLineRoute(string $routeLine, array $methodsToMove)
+    private function addMethodArgInMultiLineRoute(string $routeLine, array $methodsToMove): string
     {
         $lastLineBreak = strrpos($routeLine, "\n");
         $replacement = ",\n     *     methods={".implode(', ', $methodsToMove).'}';

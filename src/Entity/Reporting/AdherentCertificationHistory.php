@@ -111,11 +111,11 @@ class AdherentCertificationHistory
 
     public static function createCertify(Adherent $adherent, ?Administrator $administrator = null): self
     {
-        return new static($adherent, $administrator, self::ACTION_CERTIFY);
+        return new self($adherent, $administrator, self::ACTION_CERTIFY);
     }
 
     public static function createUncertify(Adherent $adherent, Administrator $administrator): self
     {
-        return new static($adherent, $administrator, self::ACTION_UNCERTIFY);
+        return new self($adherent, $administrator, self::ACTION_UNCERTIFY);
     }
 }

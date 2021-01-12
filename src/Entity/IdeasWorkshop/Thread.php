@@ -189,7 +189,7 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
         bool $approved = false,
         bool $enabled = true
     ): self {
-        $thread = new static($uuid);
+        $thread = new self($uuid);
         $thread->content = $content;
         $thread->author = $author;
         $thread->answer = $answer;

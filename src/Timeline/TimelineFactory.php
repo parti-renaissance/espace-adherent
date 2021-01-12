@@ -5,7 +5,9 @@ namespace App\Timeline;
 use App\Content\MediaFactory;
 use App\Entity\Media;
 use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\ProfileTranslation;
 use App\Entity\Timeline\Theme;
+use App\Entity\Timeline\ThemeTranslation;
 use App\Repository\MediaRepository;
 use Cocur\Slugify\SlugifyInterface;
 use League\Flysystem\FilesystemInterface;
@@ -34,12 +36,27 @@ class TimelineFactory
 
     public function createProfile(string $title, string $description): Profile
     {
-        return new Profile($title, $this->slugify($title), $description);
+        $profile = new Profile();
+        /** @var ProfileTranslation $translation */
+        $translation = $profile->translate('fr', false);
+
+        $translation->setTitle($title);
+        $translation->setSlug($this->slugify($title));
+        $translation->setDescription($description);
+
+        return $profile;
     }
 
     public function createTheme(string $title, string $description, string $imageUrl, bool $isFeatured = false): Theme
     {
-        $theme = new Theme($title, $this->slugify($title), $description, $isFeatured);
+        $theme = new Theme($isFeatured);
+
+        /** @var ThemeTranslation $translation */
+        $translation = $theme->translate('fr', false);
+
+        $translation->setTitle($title);
+        $translation->setSlug($this->slugify($title));
+        $translation->setDescription($description);
 
         $theme->setMedia($this->createMedia("Timeline - Thème $title", $imageUrl));
 

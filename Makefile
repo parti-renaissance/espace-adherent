@@ -164,7 +164,7 @@ tj: node_modules                                                                
 
 lint: ls lj phpcs                                                                                ## Run lint on Twig, YAML, PHP and Javascript files
 
-ls: ly lt lc                                                                                              ## Lint Symfony (Twig and YAML) files
+ls: ly lt lc phpstan                                                                                             ## Lint Symfony (Twig and YAML) files
 
 ly:
 	$(CONSOLE) lint:yaml config --parse-tags
@@ -186,6 +186,9 @@ phpcs: vendor                                                                   
 
 phpcsfix: vendor                                                                                       ## Lint and fix PHP code to follow the convention
 	$(PHPCSFIXER) fix
+
+phpstan: vendor
+	$(EXEC) vendor/bin/phpstan analyse
 
 security-check: vendor                                                                                 ## Check for vulnerable dependencies
 	$(EXEC) vendor/bin/security-checker security:check

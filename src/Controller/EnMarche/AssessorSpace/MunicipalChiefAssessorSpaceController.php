@@ -38,7 +38,7 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
         }
 
         if (!$postalCodes) {
-            throw new \InvalidArgumentException(sprintf('[MunicipalChief] City with insee code "%s" is not identified', $inseeCode));
+            throw new \InvalidArgumentException(sprintf('[MunicipalChief] City with insee code "%s" is not identified', implode(',', $inseeCodes)));
         }
 
         return new AssessorRequestExportFilter([], $postalCodes);

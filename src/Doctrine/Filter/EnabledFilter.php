@@ -3,7 +3,7 @@
 namespace App\Doctrine\Filter;
 
 use App\Entity\EnabledInterface;
-use Doctrine\ORM\Mapping\ClassMetaData;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 
 class EnabledFilter extends SQLFilter

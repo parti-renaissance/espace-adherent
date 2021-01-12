@@ -35,6 +35,8 @@ class AdherentManager
 
     public function countMembersByMonthManagedBy(Adherent $referent, int $months = 6): array
     {
+        $countByMonth = [];
+
         foreach (range(0, $months - 1) as $monthInterval) {
             $until = $monthInterval
                         ? (new Chronos("last day of -$monthInterval month"))->setTime(23, 59, 59, 999)

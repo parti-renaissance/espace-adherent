@@ -291,10 +291,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             0
         ));
 
-        $referent = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::REFERENT_1_UUID);
-
         $manager->persist($this->createProxyProposal(
-            $referent,
             'male',
             'Maxime',
             'Michaux',
@@ -315,7 +312,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ));
 
         $manager->persist($this->createProxyProposal(
-            $referent,
             'male',
             'Jean-Michel',
             'Carbonneau',
@@ -336,7 +332,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ));
 
         $manager->persist($proxy1 = $this->createProxyProposal(
-            $referent,
             'male',
             'Benjamin',
             'Robitaille',
@@ -359,7 +354,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ));
 
         $manager->persist($proxy2 = $this->createProxyProposal(
-            $referent,
             'male',
             'Romain',
             'Gentil',
@@ -387,7 +381,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ));
 
         $manager->persist($this->createProxyProposal(
-            $referent,
             'female',
             'Léa',
             'Bouquet',
@@ -410,7 +403,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ));
 
         $manager->persist($this->createProxyProposal(
-            $referent,
             'male',
             'Emmanuel',
             'Harquin',
@@ -433,7 +425,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ));
 
         $manager->persist($this->createProxyProposal(
-            $referent,
             'female',
             'Annie',
             'Versaire',
@@ -458,7 +449,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
         ));
 
         $manager->persist($this->createProxyProposal(
-            $referent,
             'male',
             'Jean-Marc',
             'Gastro',
@@ -562,7 +552,6 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
     }
 
     public function createProxyProposal(
-        Adherent $referent,
         string $gender,
         string $firstNames,
         string $lastName,
@@ -589,7 +578,7 @@ class LoadProcurationData extends Fixture implements DependentFixtureInterface
             $phone = PhoneNumberUtils::create($phone);
         }
 
-        $proxy = new ProcurationProxy($referent);
+        $proxy = new ProcurationProxy();
         $proxy->setGender($gender);
         $proxy->setFirstNames($firstNames);
         $proxy->setLastName($lastName);

@@ -120,12 +120,8 @@ class Administrator implements UserInterface, TwoFactorInterface
         return $this->password;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function eraseCredentials()
     {
-        $this->plainPassword = null;
     }
 
     public function getId()

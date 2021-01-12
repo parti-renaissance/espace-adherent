@@ -16,6 +16,7 @@ class UniqueEventNameHandler implements SlugHandlerWithUniqueCallbackInterface
 {
     private $initialSlug;
 
+    /** @phpstan-ignore-next-line */
     public function __construct(SluggableListener $sluggable)
     {
     }

@@ -200,7 +200,7 @@ SQL;
     private function parseCSV(string $filepath): array
     {
         if (false === ($handle = fopen($filepath, 'r'))) {
-            throw new FileNotFoundException(sprintf('File "%s" was not found', $filename));
+            throw new FileNotFoundException(sprintf('File "%s" was not found', $filepath));
         }
 
         $isFirstRow = true;

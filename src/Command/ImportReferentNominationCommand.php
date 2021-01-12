@@ -70,7 +70,7 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
     private $mediaFactory;
 
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $storage;
 
@@ -88,7 +88,7 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $rows = $this->parseCSV($input->getArgument('fileUrl'), 'r');
+            $rows = $this->parseCSV($input->getArgument('fileUrl'));
         } catch (FileNotFoundException $exception) {
             $output->writeln(
               sprintf('%s file not found', $input->getArgument('fileUrl'))
@@ -112,7 +112,7 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
     {
         $rows = [];
         if (false === ($handle = fopen($filename, 'r'))) {
-            throw new FileNotFoundException(sprintf('% not found', $filename));
+            throw new FileNotFoundException(sprintf('%s not found', $filename));
         }
 
         while (false !== ($data = fgetcsv($handle, 10000, ';'))) {

@@ -203,6 +203,7 @@ class AreaUtils
                 return ['FR', $district->getDepartmentCode()];
             }
         } else {
+            $codes = [];
             foreach ($district->getCountries() as $country) {
                 $codes[] = self::getCodeFromCountry($country);
             }

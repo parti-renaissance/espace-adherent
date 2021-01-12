@@ -157,7 +157,7 @@ final class MyEuropeProcessor
                     continue 2;
             }
 
-            foreach ($choices as $choice) {
+            foreach ($choices ?? [] as $choice) {
                 $arguments[] = $choice->getContent();
             }
         }

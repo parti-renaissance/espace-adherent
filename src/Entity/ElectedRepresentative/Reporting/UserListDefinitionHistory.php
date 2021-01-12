@@ -140,7 +140,7 @@ class UserListDefinitionHistory
         ElectedRepresentative $electedRepresentative,
         UserListDefinition $userListDefinition
     ): self {
-        return new static(self::ACTION_ADD, $electedRepresentative, $userListDefinition, $user);
+        return new self(self::ACTION_ADD, $electedRepresentative, $userListDefinition, $user);
     }
 
     public static function createRemove(
@@ -148,6 +148,6 @@ class UserListDefinitionHistory
         ElectedRepresentative $electedRepresentative,
         UserListDefinition $userListDefinition
     ): self {
-        return new static(self::ACTION_REMOVE, $electedRepresentative, $userListDefinition, $user);
+        return new self(self::ACTION_REMOVE, $electedRepresentative, $userListDefinition, $user);
     }
 }
