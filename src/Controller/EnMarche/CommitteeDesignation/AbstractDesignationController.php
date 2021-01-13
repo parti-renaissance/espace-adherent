@@ -180,8 +180,8 @@ abstract class AbstractDesignationController extends AbstractController
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('committee_designation/_base_%s.html.twig', $messageType = $this->getSpaceType()),
-                'space_type' => $messageType,
+                'base_template' => sprintf('committee_designation/_base_%s.html.twig', $spaceType = $this->getSpaceType()),
+                'space_type' => $spaceType,
                 'route_params' => $this->getRouteParameters($request),
             ]
         ));

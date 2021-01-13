@@ -60,6 +60,7 @@ doctrine:
                 json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonLength
                 substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
                 group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
+                concat_ws: DoctrineExtensions\Query\Mysql\ConcatWs
                 replace: DoctrineExtensions\Query\Mysql\Replace
                 if: DoctrineExtensions\Query\Mysql\IfElse
 

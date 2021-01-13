@@ -1,16 +1,14 @@
 {% extends base_template %}
 
 {% block committee_content %}
-
     {% if pending_count is defined and pending_count > 0 %}
         <div class="committee__info">
             {{ 'committee.pending.count'|transchoice(pending_count) }}
-            <a class="btn btn--orange--light" href="{{ path("app_#{space_name}_committees_requests") }}">Voir</a>
+            <a class="btn btn--orange--light" href="{{ path("app_#{space_type}_committees_requests") }}">Voir</a>
         </div>
     {% endif %}
 
     <div class="datagrid__pre-table b__nudge--bottom">
-
         <h3>Comités</h3>
 
         {% if is_canary_enabled() and is_granted('ROLE_REFERENT') %}
@@ -26,7 +24,6 @@
                 comité{{ total_count > 1 ? 's' : '' }}
             </span>
         {% endif %}
-
     </div>
 
     <div class="manager__filters">
@@ -53,44 +50,19 @@
                 <div class="manager__filters__actions b__nudge--top">
                     <button type="submit" class="btn btn--black b__nudge--bottom-medium">Appliquer</button>
                     {% if form.vars.submitted %}
-                        <a href="{{ is_active_route(app.request, "app_#{space_name}_committees_requests") ? path("app_#{space_name}_committees_requests") : path("app_#{space_name}_committees") }}" class="btn btn--no-border b__nudge--bottom-medium">
+                        <a href="{{ is_active_route(app.request, "app_#{space_type}_committees_requests") ? path("app_#{space_type}_committees_requests") : path("app_#{space_type}_committees") }}" class="btn btn--no-border b__nudge--bottom-medium">
                             Réinitialiser les filtres
                         </a>
                     {% endif %}
                 </div>
 
             {{ form_end(form) }}
-
         </div>
     </div>
 
-    <nav class="tabs-nav b__nudge--bottom-larger">
-        <ul>
-            {% if is_active_route(app.request, "app_#{space_name}_committees") %}
-                <li class="active">
-                    <span class="tabs-nav__item">
-                         Comités actifs
-                    </span>
-                </li>
-                <li>
-                    <a class="tabs-nav__item" href="{{ path("app_#{space_name}_committees_requests") }}">
-                        Demandes de créations
-                    </a>
-                </li>
-            {% else %}
-                <li>
-                    <a class="tabs-nav__item" href="{{ path("app_#{space_name}_committees") }}">
-                        Comités actifs
-                    </a>
-                </li>
-                <li class="active">
-                    <span class="tabs-nav__item">
-                        Demandes de créations
-                    </span>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
+    {% if block('sub_menu') is defined %}
+        {{ block('sub_menu') }}
+    {% endif %}
 
     <div class="datagrid__table-container">
         {% block committee_table_content %}

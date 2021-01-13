@@ -1,5 +1,39 @@
 {% extends 'referent/_layout.html.twig' %}
 
+{% block sub_menu %}
+    <nav class="tabs-nav b__nudge--bottom-larger">
+        <ul>
+            {% set sub_routes = [
+                {
+                    route_name: "app_#{space_type}_committees",
+                    url: path("app_#{space_type}_committees"),
+                    label: 'Comités actifs',
+                },
+                {
+                    route_name: "app_#{space_type}_committees_requests",
+                    url: path("app_#{space_type}_committees_requests"),
+                    label: 'Demandes de créations',
+                },
+                {
+                    route_name: "app_#{space_type}_committees_designations",
+                    url: path("app_#{space_type}_committees_designations"),
+                    label: 'Désignations',
+                },
+            ] %}
+
+            {% for route in sub_routes %}
+                <li class="{{ is_active_route(app.request, route.route_name) ? 'active' }}">
+                    {% if is_active_route(app.request, route.route_name) %}
+                        <span class="tabs-nav__item">{{ route.label }}</span>
+                    {% else %}
+                        <a class="tabs-nav__item" href="{{ route.url }}">{{ route.label }}</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}
+
 {% block referent_content %}
     {% block committee_content %}{% endblock %}
 {% endblock %}

@@ -2,14 +2,25 @@
 
 namespace App\Repository;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
+use App\Entity\Geo\Zone;
+use App\Entity\VotingPlatform\Candidate;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\ElectionEntity;
+use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CommitteeElectionRepository extends ServiceEntityRepository
 {
+    use PaginatorTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CommitteeElection::class);
@@ -56,5 +67,109 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findElections(
+        CommitteeDesignationsListFilter $filter,
+        int $page = 1,
+        int $limit = 50
+    ): PaginatorInterface {
+        $qb = $this
+            ->createQueryBuilder('committee_election')
+            ->addSelect('committee', 'designation')
+            ->addSelect(sprintf('(%s) AS total_confirmed_candidacy_male',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('SUM(IF(sub_committee_candidacy_1.id IS NOT NULL AND sub_committee_candidacy_1.gender = :male, 1, 0))')
+                    ->from(CommitteeCandidacy::class, 'sub_committee_candidacy_1')
+                    ->where('sub_committee_candidacy_1.committeeElection = committee_election')
+                    ->andWhere('sub_committee_candidacy_1.status = :confirmed')
+                    ->getDQL()
+            ))
+            ->addSelect(sprintf('(%s) AS total_confirmed_candidacy_female',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('SUM(IF(sub_committee_candidacy_2.id IS NOT NULL AND sub_committee_candidacy_2.gender = :female, 1, 0))')
+                    ->from(CommitteeCandidacy::class, 'sub_committee_candidacy_2')
+                    ->where('sub_committee_candidacy_2.committeeElection = committee_election')
+                    ->andWhere('sub_committee_candidacy_2.status = :confirmed')
+                    ->getDQL()
+            ))
+            ->addSelect(sprintf('(%s) AS total_draft_candidacy_male',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('SUM(IF(sub_committee_candidacy_3.id IS NOT NULL AND sub_committee_candidacy_3.gender = :male, 1, 0))')
+                    ->from(CommitteeCandidacy::class, 'sub_committee_candidacy_3')
+                    ->where('sub_committee_candidacy_3.committeeElection = committee_election')
+                    ->andWhere('sub_committee_candidacy_3.status = :draft')
+                    ->getDQL()
+            ))
+            ->addSelect(sprintf('(%s) AS total_draft_candidacy_female',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('SUM(IF(sub_committee_candidacy_4.id IS NOT NULL AND sub_committee_candidacy_4.gender = :female, 1, 0))')
+                    ->from(CommitteeCandidacy::class, 'sub_committee_candidacy_4')
+                    ->where('sub_committee_candidacy_4.committeeElection = committee_election')
+                    ->andWhere('sub_committee_candidacy_4.status = :draft')
+                    ->getDQL()
+            ))
+            ->addSelect(sprintf('(%s) AS winners',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('GROUP_CONCAT(CONCAT_WS(\'|\', sub_voting_platform_candidate.gender, sub_voting_platform_candidate.firstName, sub_voting_platform_candidate.lastName))')
+                    ->from(Candidate::class, 'sub_voting_platform_candidate')
+                    ->innerJoin('sub_voting_platform_candidate.candidateGroup', 'sub_candidate_group', Join::WITH, 'sub_candidate_group.elected = :true')
+                    ->innerJoin('sub_candidate_group.electionPool', 'sub_election_pool')
+                    ->innerJoin('sub_election_pool.election', 'sub_voting_platform_election')
+                    ->innerJoin('sub_voting_platform_election.electionEntity', 'sub_voting_platform_election_entity')
+                    ->andWhere('sub_voting_platform_election_entity.committee = committee')
+                    ->andWhere('sub_voting_platform_election.designation = designation')
+                    ->getDQL()
+            ))
+            ->addSelect('voting_platform_election.uuid as voting_platform_election_uuid')
+            ->innerJoin('committee_election.committee', 'committee')
+            ->innerJoin('committee_election.designation', 'designation')
+            ->leftJoin(ElectionEntity::class, 'voting_platform_election_entity', Join::WITH, 'voting_platform_election_entity.committee = committee')
+            ->leftJoin('voting_platform_election_entity.election', 'voting_platform_election')
+            ->where('committee.status = :approved')
+            ->andWhere('voting_platform_election.designation = designation')
+            ->setParameters([
+                'approved' => Committee::APPROVED,
+                'male' => Genders::MALE,
+                'female' => Genders::FEMALE,
+                'confirmed' => CandidacyInterface::STATUS_CONFIRMED,
+                'draft' => CandidacyInterface::STATUS_DRAFT,
+                'true' => true,
+            ])
+            ->orderBy('designation.voteStartDate', 'DESC')
+        ;
+
+        if ($filter->getCommitteeName()) {
+            $qb
+                ->andWhere('committee.name LIKE :committee_name')
+                ->setParameter('committee_name', '%'.$filter->getCommitteeName().'%')
+            ;
+        }
+
+        if ($filter->getZones()) {
+            $qb
+                ->leftJoin('committee.zones', 'zone')
+                ->innerJoin('zone.parents', 'zone_parent')
+            ;
+
+            $ids = array_map(static function ($zone) {
+                return $zone->getId();
+            }, $filter->getZones());
+
+            $parentIds = array_filter(array_map(static function (Zone $zone): ?int {
+                return $zone->isCityGrouper() ? null : $zone->getId();
+            }, $filter->getZones()));
+
+            $orX = $qb->expr()->orX();
+            $orX->add($qb->expr()->in('zone.id', $ids));
+
+            if ($parentIds) {
+                $orX->add($qb->expr()->in('zone_parent.id', $parentIds));
+            }
+
+            $qb->andWhere($orX);
+        }
+
+        return $this->configurePaginator($qb, $page, $limit);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Repository;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Address\Address;
 use App\Collection\CommitteeCollection;
-use App\Committee\Filter\ListFilter;
+use App\Committee\Filter\CommitteeListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\BaseGroup;
@@ -228,7 +228,7 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * @return Committee[]|PaginatorInterface
      */
-    public function searchByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
+    public function searchByFilter(CommitteeListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
     {
         return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
     }
@@ -236,8 +236,11 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * @return Committee[]|PaginatorInterface
      */
-    public function searchRequestsByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
-    {
+    public function searchRequestsByFilter(
+        CommitteeListFilter $filter,
+        int $page = 1,
+        int $limit = 100
+    ): PaginatorInterface {
         return $this->configurePaginator($this->createRequestsFilterQueryBuilder($filter), $page, $limit);
     }
 
@@ -797,7 +800,7 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    private function createRequestsFilterQueryBuilder(ListFilter $filter): QueryBuilder
+    private function createRequestsFilterQueryBuilder(CommitteeListFilter $filter): QueryBuilder
     {
         $qb = $this
             ->createQueryBuilder('c')
