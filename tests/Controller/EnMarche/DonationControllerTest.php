@@ -320,7 +320,7 @@ class DonationControllerTest extends WebTestCase
             $cancelUrlRegExp .= 'PBX_2MONT0000003000PBX_NBPAIE0'.$durationRegExp.'PBX_FREQ01PBX_QUAND00';
         }
         $cancelUrlRegExp .= '&result=00001'; // error code
-        $cancelUrlRegExp .= '&transaction=0&subscription=0&Sign=(.+)';
+        $cancelUrlRegExp .= '&transaction=0&amount=3000&subscription=0&Sign=(.+)';
 
         $this->assertRegExp('#'.$cancelUrlRegExp.'#', $cancelUrl);
 
