@@ -5,21 +5,23 @@ namespace App\Committee;
 use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Validator\CommitteeAddress as AssertCommitteeAddressValid;
 use App\Validator\UniqueCommittee as AssertUniqueCommittee;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertUniqueCommittee
+ * @AssertCommitteeAddressValid
  */
 class CommitteeCreationCommand extends CommitteeCommand
 {
     /**
-     * @Assert\IsTrue(message="committee.must_accept_confidentiality_terms")
+     * @Assert\IsTrue(message="committee.must_accept_confidentiality_terms", groups={"created_by_adherent"})
      */
     public $acceptConfidentialityTerms;
 
     /**
-     * @Assert\IsTrue(message="committee.must_accept_contacting_terms")
+     * @Assert\IsTrue(message="committee.must_accept_contacting_terms", groups={"created_by_adherent"})
      */
     public $acceptContactingTerms;
 

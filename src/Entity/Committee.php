@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\AddressInterface;
 use App\AdherentMessage\StaticSegmentInterface;
+use App\Committee\Exception\CommitteeProvisionalSupervisorException;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
@@ -165,6 +166,13 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $committeeElections;
 
     /**
+     * @var ProvisionalSupervisor[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\ProvisionalSupervisor", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
+     */
+    private $provisionalSupervisors;
+
+    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
@@ -210,6 +218,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->referentTags = new ArrayCollection();
         $this->zones = new ArrayCollection();
         $this->committeeElections = new ArrayCollection();
+        $this->provisionalSupervisors = new ArrayCollection();
 
         foreach ($citizenProjects as $citizenProject) {
             $this->addSupportOnCitizenProject($citizenProject);
@@ -531,5 +540,47 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
             })
             ->toArray()
         ;
+    }
+
+    public function getProvisionalSupervisors(): Collection
+    {
+        return $this->provisionalSupervisors;
+    }
+
+    public function hasProvisionalSupervisor(Adherent $adherent): bool
+    {
+        $found = $this->provisionalSupervisors->filter(function (ProvisionalSupervisor $ps) use ($adherent) {
+            return $ps->getAdherent() === $adherent;
+        });
+
+        return $found->count() > 0;
+    }
+
+    public function getProvisionalSupervisorByGender(string $gender): ?ProvisionalSupervisor
+    {
+        $found = $this->provisionalSupervisors->filter(function (ProvisionalSupervisor $ps) use ($gender) {
+            return $ps->getAdherent()->getGender() === $gender;
+        });
+
+        $count = $found->count();
+
+        if ($count > 1) {
+            throw new CommitteeProvisionalSupervisorException(\sprintf('More than one %s provisional supervisor has been found for committee with UUID "%s".', $this->getUuid(), $gender));
+        }
+
+        return $count > 0 ? $found->first() : null;
+    }
+
+    public function addProvisionalSupervisor(Adherent $adherent): void
+    {
+        if (!$this->hasProvisionalSupervisor($adherent)) {
+            $provisionalSupervisor = new ProvisionalSupervisor($adherent, $this);
+            $this->provisionalSupervisors->add($provisionalSupervisor);
+        }
+    }
+
+    public function removeProvisionalSupervisor(ProvisionalSupervisor $provisionalSupervisor): void
+    {
+        $this->provisionalSupervisors->removeElement($provisionalSupervisor);
     }
 }

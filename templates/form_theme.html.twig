@@ -470,3 +470,48 @@
     {% endif %}
     {{ block('date_widget') }}
 {%- endblock date_picker_widget %}
+
+{% block provisional_supervisor_widget -%}
+    <div class="form__row">
+        <input type="text"
+               value="{{ form.vars.label }}"
+               id="{{ form.vars.id }}_autocomplete"
+               class="{{ attr.class }}"
+               placeholder="{{ attr.placeholder is defined ? attr.placeholder }}"
+        />
+    </div>
+    {{ block('hidden_widget') }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#{{ id }}_autocomplete').change(function() {
+                if ($(this).val() === '') {
+                    $('#{{ id }}').val('');
+                }
+            });
+
+            $('#{{ id }}_autocomplete').autocomplete({
+                source: function(request, response) {
+                    var term = request.term.trim();
+
+                    $.get("{{ path('app_referent_provisional_supervisor_autocomplete')|raw }}?name=" + term + "{{ (form.vars.gender ? '&gender='~form.vars.gender)|raw }}", function(data) {
+                        response($.map(data, function(m) {
+                            var d = new Date(m.registeredAt);
+                            return {
+                                label: m.firstName+' '+m.lastName+', adhérent'+(m.gender === 'female' ? 'e' : '')+' depuis le '+d.toLocaleDateString(),
+                                value: m.id
+                            };
+                        }));
+                    });
+                },
+                minLength: 3,
+                select: function( event, ui ) {
+                    $(this).val(ui.item.label);
+                    $('#{{ id }}').val(ui.item.value);
+
+                    return false;
+                },
+            });
+        });
+    </script>
+{% endblock %}

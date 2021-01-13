@@ -8,6 +8,7 @@ use App\Collection\CommitteeCollection;
 use App\Committee\Filter\ListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
+use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
@@ -69,6 +70,24 @@ class CommitteeRepository extends ServiceEntityRepository
         $canonicalName = Committee::canonicalize($name);
 
         return $this->findOneBy(['canonicalName' => $canonicalName]);
+    }
+
+    public function findOneAcceptedByAddress(Address $address): ?Committee
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.postAddress.address = :address AND c.postAddress.postalCode = :postal_code')
+            ->andWhere('c.postAddress.cityName = :city_name AND c.postAddress.country = :country')
+            ->andWhere('c.status = :approved')
+            ->setParameters([
+                'address' => $address->getAddress(),
+                'postal_code' => $address->getPostalCode(),
+                'city_name' => $address->getCityName(),
+                'country' => $address->getCountry(),
+                'approved' => BaseGroup::APPROVED,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     public function findOneByUuid(string $uuid): ?Committee
@@ -212,6 +231,43 @@ class CommitteeRepository extends ServiceEntityRepository
     public function searchByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
     {
         return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
+    }
+
+    /**
+     * @return Committee[]|PaginatorInterface
+     */
+    public function searchRequestsByFilter(ListFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
+    {
+        return $this->configurePaginator($this->createRequestsFilterQueryBuilder($filter), $page, $limit);
+    }
+
+    /**
+     * @param Zone[] $zones
+     */
+    public function countRequestsForZones(array $zones, string $status = null): int
+    {
+        $qb = $this
+            ->createQueryBuilder('c')
+            ->select('COUNT(DISTINCT c.id)')
+            ->where('c.createdAt > :from')
+            ->setParameter('from', new \DateTime('2021-01-01'))
+        ;
+
+        if ($status) {
+            $qb
+                ->andWhere('c.status = :status')
+                ->setParameter('status', $status)
+            ;
+        }
+
+        if ($zones) {
+            $this->withZoneCondition($qb, $zones);
+        }
+
+        return (int) $qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     /**
@@ -729,6 +785,24 @@ class CommitteeRepository extends ServiceEntityRepository
                 'true' => true,
             ])
             ->orderBy('c.name', 'ASC')
+            ->orderBy('c.createdAt', 'DESC')
+            ->groupBy('c.id')
+        ;
+
+        $zones = $filter->getZones() ?: $filter->getManagedZones();
+        if ($zones) {
+            $this->withZoneCondition($qb, $zones);
+        }
+
+        return $qb;
+    }
+
+    private function createRequestsFilterQueryBuilder(ListFilter $filter): QueryBuilder
+    {
+        $qb = $this
+            ->createQueryBuilder('c')
+            ->where('c.createdAt > :from')
+            ->setParameter('from', new \DateTime('2021-01-01 00:00:00'))
             ->orderBy('c.createdAt', 'DESC')
             ->groupBy('c.id')
         ;

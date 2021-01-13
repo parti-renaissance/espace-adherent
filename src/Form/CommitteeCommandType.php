@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Address\Address;
 use App\Committee\CommitteeCommand;
+use App\Form\Committee\ProvisionalSupervisorType;
+use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,6 +26,8 @@ class CommitteeCommandType extends AbstractType
                 'disabled' => $committee ? $committee->isNameLocked() : false,
             ])
             ->add('description', TextareaType::class, [
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 140],
                 'filter_emojis' => true,
             ])
             ->add('address', AddressType::class, [
@@ -44,13 +48,29 @@ class CommitteeCommandType extends AbstractType
                 ])
             ;
         }
+
+        if ($options['with_provisional']) {
+            $builder
+                ->add('provisionalSupervisorMale', ProvisionalSupervisorType::class, [
+                    'gender' => Genders::MALE,
+                    'error_bubbling' => false,
+                ])
+                ->add('provisionalSupervisorFemale', ProvisionalSupervisorType::class, [
+                    'gender' => Genders::FEMALE,
+                    'error_bubbling' => false,
+                ])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => CommitteeCommand::class,
-        ]);
+            'with_provisional' => false,
+        ])
+            ->setAllowedTypes('with_provisional', ['bool'])
+        ;
     }
 
     public function getBlockPrefix()

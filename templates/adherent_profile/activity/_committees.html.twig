@@ -152,7 +152,10 @@
             <a class="link--no-decor text--blue--dark" href="{{ path('app_search_committees') }}">Voir tous les comités</a>
             {% if is_canary_enabled() %}
             -
-            <a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_create_committee') }}">Demander la création d'un comité</a>
+            <a class="link--no-decor text--blue--dark"
+               href="{{ app.user.isReferent ? path('app_referent_create_committee') : path('app_adherent_create_committee') }}">
+                Demander la création d'un comité
+            </a>
             {% endif %}
         </p>
     </div>

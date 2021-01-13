@@ -102,7 +102,7 @@ class NullableAddress implements AddressInterface, GeocodableInterface
         }
 
         if ($this->postalCode && $this->city) {
-            $this->cityName = FranceCitiesBundle::getCity($this->postalCode, static::getInseeCode($this->city));
+            $this->cityName = FranceCitiesBundle::getCity($this->postalCode, $this->getInseeCode());
         }
 
         return $this->cityName;
@@ -149,9 +149,12 @@ class NullableAddress implements AddressInterface, GeocodableInterface
     /**
      * Returns the french national INSEE code from the city code.
      */
-    private static function getInseeCode(string $cityCode): string
+    public function getInseeCode(): ?string
     {
-        list(, $inseeCode) = explode('-', $cityCode);
+        $inseeCode = null;
+        if ($this->city && 5 === strpos($this->city, '-')) {
+            list(, $inseeCode) = explode('-', $this->city);
+        }
 
         return $inseeCode;
     }

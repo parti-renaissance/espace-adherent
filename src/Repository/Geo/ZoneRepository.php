@@ -260,6 +260,21 @@ class ZoneRepository extends ServiceEntityRepository
         return \count($zones) > 0;
     }
 
+    public function isInZones(array $zones, array $parents): bool
+    {
+        $zones = $this->createQueryBuilder('zone')
+            ->select('COUNT(1)')
+            ->leftJoin('zone.parents', 'parent')
+            ->where('zone IN (:zones) AND parent IN (:parents)')
+            ->setParameter('zones', $zones)
+            ->setParameter('parents', $parents)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+
+        return \count($zones) > 0;
+    }
+
     public function findByPostalCode(string $postalCode): array
     {
         $postalCode = str_pad($postalCode, 5, '0', \STR_PAD_LEFT);

@@ -103,6 +103,11 @@ committee.merge.same_committees: Veuillez spécifier des comités différents.
 committee.merge.not_approved: Le comité "{{ committee_name }}" ({{ committee_id }}) doit être approuvé pour être fusionné.
 committee.unknown_id: Il n'existe aucun comité correspondant à cet ID.
 committee.canonical_name.not_unique: Ce nom de comité est déjà utilisé.
+committee.address.not_unique: Un comité actif existe déjà à l'adresse indiquée
+committee.address.not_in_zone: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez
+committee.provisional_supervisor.empty: Vous devez séléctionner au moins un Animateur provisoire parmi vos adhérents
+committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs
+committee.provisional_supervisor.gender.not_valid: Le genre de l'adhérent ne corresoind pas au genre demandé.
 
 committee.must_accept_confidentiality_terms: Vous devez accepter les règles de confidentialité.
 

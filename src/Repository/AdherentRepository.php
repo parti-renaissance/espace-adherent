@@ -987,4 +987,51 @@ SQL;
             ->getResult()
         ;
     }
+
+    public function findForProvisionalSupervisorAutocomplete(
+        string $name,
+        ?string $gender,
+        array $zones,
+        int $limit = 10
+    ): array {
+        if (!$zones || !$name) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('a')
+            ->select('DISTINCT a.id', 'a.firstName', 'a.lastName', 'a.gender', 'a.registeredAt')
+            ->innerJoin('a.zones', 'zone')
+            ->innerJoin('zone.parents', 'parent')
+            ->where('(zone IN (:zones) OR parent IN (:zones))')
+            ->andWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
+            ->andWhere('a.status = :status AND a.birthdate <= :dateMax')
+            ->setParameters([
+                'zones' => $zones,
+                'status' => Adherent::ENABLED,
+                'name' => '%'.strtolower($name).'%',
+                'dateMax' => new \DateTime('-18 years'),
+            ])
+            ->setMaxResults($limit)
+        ;
+
+        if ($gender) {
+            $qb
+                ->andWhere('a.gender = :gender')
+                ->setParameter('gender', $gender)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findNameByUuid(string $uuid): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.firstName', 'a.lastName')
+            ->where('a.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
 }

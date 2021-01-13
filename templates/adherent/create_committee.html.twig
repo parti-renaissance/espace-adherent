@@ -2,6 +2,11 @@
 
 {% block page_title 'Je crée mon comité En Marche !' %}
 
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+{% endblock %}
+
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
     {% if google_maps_api_key %}
@@ -16,7 +21,7 @@
 
 {% block content %}
     <main>
-        <section class="l__wrapper--narrow b__nudge--bottom-huge">
+        <section class="l__wrapper--slim">
             <div class="b__nudge--top">
                 <a href="{{ path('app_search_committees') }}" class="back-to-list icon--with-text text--summary">
                     {{ include('components/caret--left.html.twig') }}
@@ -49,8 +54,12 @@
                 <div class="committee__warning text--center">
                     Les parlementaires et les animateurs ne peuvent pas créer de comité.
                 </div>
+            {% elseif app.user.isProvisionalSupervisor() %}
+                <div class="committee__warning text--center">
+                    Vous avez déjà un comité en attente de validation.
+                </div>
             {% else %}
-                <div class="committee__form em-form">
+                <div>
                     {{ form_start(form, { attr: { id: 'create-committee-form', class: 'form committee-form' } }) }}
                         {{ include('committee/_form.html.twig') }}
 
@@ -78,12 +87,12 @@
                             {{ form_errors(form.acceptContactingTerms) }}
                         </div>
 
-                        <div class="committee__warning">
+                        <div class="committee__warning text--center">
                             La création de votre comité doit être approuvée par le CoPol de votre territoire avant d'être affective.
                         </div>
 
-                        <div class="text--center">
-                            <button type="submit" class="btn btn--blue btn--medium" id="create-my-committee">
+                        <div class="b__nudge--top-40  b__nudge--bottom-larger">
+                            <button type="submit" id="create-my-committee" class="btn btn--blue btn--large-and-full">
                                 Envoyer ma demande
                             </button>
                         </div>

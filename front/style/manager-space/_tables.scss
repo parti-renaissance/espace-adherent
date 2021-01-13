@@ -301,7 +301,7 @@
 
                 & span.status {
 
-                    &:before {
+                    &:before, &__pending:before, &__pre_approved:before, &__approved:before, &__pre_refused:before, &__refused:before {
                         content: '';
                         width: 7px;
                         height: 7px;
@@ -309,6 +309,46 @@
                         border-radius: 50%;
                         margin: 0 10px 1px 0;
                         box-sizing: border-box;
+                    }
+
+                    &__pending:before, &__pre_approved:before, &__approved:before, &__pre_refused:before, &__refused:before {
+                        width: 9px;
+                        height: 9px;
+                    }
+
+                    &__pending {
+                        &:before {
+                            color: $lines-hover-grey;
+                            background-color: $lines-hover-grey;
+                        }
+                    }
+
+                    &__pre_approved {
+                        &:before {
+                            color: $blue--softer;
+                            background-color: $blue--softer;
+                        }
+                    }
+
+                    &__approved {
+                        &:before {
+                            color: $green--softer;
+                            background-color: $green--softer;
+                        }
+                    }
+
+                    &__pre_refused {
+                        &:before {
+                            color: $orange--softer;
+                            background-color: $orange--softer;
+                        }
+                    }
+
+                    &__refused {
+                        &:before {
+                            color: $red--softer;
+                            background-color: $red--softer;
+                        }
                     }
 
                     &__1 {

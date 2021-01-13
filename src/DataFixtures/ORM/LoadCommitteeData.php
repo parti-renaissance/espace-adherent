@@ -27,6 +27,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
     public const COMMITTEE_13_UUID = '1381405c-1dd2-11b2-9a2f-bc94782bb639';
     public const COMMITTEE_14_UUID = 'bb256335-aa42-134a-8fba-525d3ea32b7d';
     public const COMMITTEE_15_UUID = '13814081-1dd2-11b2-abfc-9a31f72792e5';
+    public const COMMITTEE_16_UUID = '9640c5fc-c904-428f-8a79-2d90e555478a';
 
     private $committeeFactory;
 
@@ -236,6 +237,17 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $committee15->setCurrentElection(new CommitteeElection($this->getReference('designation-9')));
         $this->addReference('committee-15', $committee15);
 
+        $committee16 = $this->committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_16_UUID,
+            'created_by' => LoadAdherentData::REFERENT_1_UUID,
+            'created_at' => '2021-01-03 09:00:00',
+            'name' => 'Une nouvelle demande',
+            'description' => 'Nouveau dans l\'année 2021',
+            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
+            'phone' => '+33673654349',
+        ]);
+        $this->addReference('committee-16', $committee15);
+
         $manager->persist($committee1);
         $manager->persist($committee2);
         $manager->persist($committee3);
@@ -251,6 +263,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($committee13);
         $manager->persist($committee14);
         $manager->persist($committee15);
+        $manager->persist($committee16);
 
         // Make adherents join committees
         $adherent2 = $this->getReference('adherent-2');

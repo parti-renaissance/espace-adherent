@@ -226,6 +226,17 @@
     }
 }
 
+@mixin btn--orange--light {
+    color: white;
+    background: $orange--softer;
+    border-color: $orange--softer;
+
+    &:hover {
+        background-color: $orange--lighter;
+        border-color: $orange--lighter;
+    }
+}
+
 @mixin btn--blue {
     color: white;
     background: $blue--dark;
@@ -440,6 +451,10 @@ button.btn {
 
     &--blue {
         @include btn--blue;
+    }
+
+    &--orange--light {
+        @include btn--orange--light;
     }
 
     &--blue--sky {

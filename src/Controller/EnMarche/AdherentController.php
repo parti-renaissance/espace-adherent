@@ -155,7 +155,7 @@ class AdherentController extends Controller
         $this->disableInProduction();
 
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
-        $form = $this->createForm(CreateCommitteeCommandType::class, $command);
+        $form = $this->createForm(CreateCommitteeCommandType::class, $command, ['validation_groups' => ['Default', 'created_by_adherent']]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -164,9 +164,9 @@ class AdherentController extends Controller
             }
 
             $commandHandler->handle($command);
-            $this->addFlash('info', 'committee.creation.success');
+            $this->addFlash('info', 'committee.creation.success.adherent');
 
-            return $this->redirectToRoute('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]);
+            return $this->redirectToRoute('app_adherent_profile_activity', ['_fragment' => 'committees']);
         }
 
         return $this->render('adherent/create_committee.html.twig', [

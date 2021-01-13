@@ -47,6 +47,10 @@ common.pink: Rose
 
 pending: En attente
 approved: Approuvé
+refused: Refusé
+blocked: Bloqué
+pre_approved: Pré-approuvé
+pre_refused: Pré-refusé
 group: un groupe
 person: un membre
 global.yes: Oui
@@ -215,7 +219,9 @@ dashboard.picture.update: Modifier ma photo
 #
 # Committee
 #
-committee.creation.success: |
+committee.creation.success.adherent: |
+    Votre comité a été créé avec succès. Il ne manque plus que la validation d'un référent.
+committee.creation.success.referent: |
     Votre comité a été créé avec succès.
     Il ne manque plus que la validation d'un coordinateur régional pour qu'il soit pleinement opérationnel.
 
@@ -245,6 +251,8 @@ committee.demote_host.success: Le membre a été redéfini simple membre du comi
 
 committee.elected_candidate_adherent.female: Désignée
 committee.elected_candidate_adherent.male: Désigné
+
+committee.pending.count: Vous avez %count% demande de création de comité en attente de traitement.|Vous avez %count% demandes de création de comité en attente de traitement.
 
 my_committees: Mes comités
 
@@ -1069,6 +1077,7 @@ adherent_commitment.update_success: Votre engagement à bien été enregistré.
 #
 # AdherentMandate
 #
+adherent_mandate.committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs.
 adherent_mandate.committee.committee_not_approved: Comité doit être approuvé pour gérer les adhérents désignés.
 adherent_mandate.committee.not_valid_gender: Le genre "{{ gender }}" de l'adhérent ({{ email }}) n'est pas valide.
 adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({{ email }}) est déjà un adhérent désigné dans un comité "{{ committee }}".

@@ -36,7 +36,17 @@
         max-width: 900px;
         font-weight: normal;
         line-height: 20px;
-        text-align: center;
+    }
+
+    &__info {
+        font-family: $font-roboto;
+        margin-bottom: 30px;
+        color: $orange--softer;
+        background-color: $orange--pale;
+        padding: 20px;
+        font-size: 15px;
+        font-weight: normal;
+        line-height: 20px;
     }
 
     &__infos {
