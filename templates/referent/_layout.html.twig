@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% set hasCharterAccepted = app.user.charters.hasReferentCharterAccepted %}
+{% set isReferent = is_granted('ROLE_REFERENT') %}
 
 {% block stylesheets %}
     {% if not hasCharterAccepted %}
@@ -21,29 +22,20 @@
     {% endif %}
 {% endblock %}
 
-{% block content %}
-    {% set isReferent = is_granted('ROLE_REFERENT') %}
-    <main class="manager-space manager-body">
-        <aside class="manager-sidebar">
-            {{ include('referent/_sidebar.html.twig') }}
-        </aside>
+{% block manager_sidebar %}
+    {{ include('referent/_sidebar.html.twig') }}
+{% endblock %}
 
-        <section class="manager-content">
-            <div class="manager-content__container">
-                <div class="text--body">
-                    {% block referent_content %}{% endblock %}
-                </div>
-            </div>
-        </section>
+{% block manager_content %}
+    {% block referent_content %}{% endblock %}
 
-        {% if not hasCharterAccepted %}
-            {% include 'chart_dialog.html.twig' with {
-                'title': 'referent.popup.title'|trans,
-                'subtitle': 'referent.popup.subtitle'|trans,
-                'fileUrl': 'referent.popup.file_url'|trans
-            } %}
-        {% endif %}
-    </main>
+    {% if not hasCharterAccepted %}
+        {% include 'chart_dialog.html.twig' with {
+            'title': 'referent.popup.title'|trans,
+            'subtitle': 'referent.popup.subtitle'|trans,
+            'fileUrl': 'referent.popup.file_url'|trans
+        } %}
+    {% endif %}
 {% endblock %}
 
 {% block adherent_space_header_title %}
