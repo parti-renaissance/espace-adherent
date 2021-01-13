@@ -583,4 +583,13 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     {
         $this->provisionalSupervisors->removeElement($provisionalSupervisor);
     }
+
+    public function updateProvisionalSupervisor(Adherent $adherent): void
+    {
+        if ($ps = $this->getProvisionalSupervisorByGender($adherent->getGender())) {
+            $this->removeProvisionalSupervisor($ps);
+        }
+
+        $this->addProvisionalSupervisor($adherent);
+    }
 }

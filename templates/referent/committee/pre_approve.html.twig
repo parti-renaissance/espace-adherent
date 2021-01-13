@@ -1,0 +1,51 @@
+{% extends base_template %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.autocomlete_address(form.address, true) }}
+        });
+    </script>
+{% endblock %}
+
+{% block committee_content %}
+    <main>
+        <section class="l__wrapper--slim">
+            <header class="b__nudge--bottom-large">
+                <h1 class="text--large">
+                    Pré-approuver le comité
+                </h1>
+            </header>
+
+            <div class="committee__warning">
+                La demande pré-acceptée est soumise à la validation du coordinateur de votre région. Un email lui est envoyé pour l'informer.<br><br>
+                Une fois la demande validée, vous en serez informé par email en même temps que le binôme d'Animateurs provisoire. Ces derniers pourront administrer conjointement le comité depuis leurs comptes adhérents respectifs.<br><br>
+                Une désignation devra être lancée dans un délai de 6 mois pour les remplacer par un binôme d'animateurs élus.<br><br>
+                Le binôme d’animateurs provisoires ne pourra pas nommer de Co-Animateurs ou accéder aux données personnelles des adhérents. Il ne sera pas non plus membre du Conseil territorial.<br><br>
+                Vous pouvez suivre le statut de vos demandes depuis votre espace Référent.
+            </div>
+
+            {{ form_start(form, {attr: {'id': 'edit-committee-form', 'class': 'form committee-form b__nudge--top-40'}}) }}
+            {{ include('committee/_form.html.twig') }}
+            <div class="b__nudge--top-50">
+                <button type="submit" id="edit-committee" class="btn btn--blue btn--large-and-full">
+                    Pré-approuver
+                </button>
+                <a href="{{ path("app_#{space_type}_committees_requests") }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                    Annuler
+                </a>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </section>
+    </main>
+{% endblock %}

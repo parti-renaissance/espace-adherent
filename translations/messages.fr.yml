@@ -226,6 +226,7 @@ committee.creation.success.referent: |
     Il ne manque plus que la validation d'un coordinateur régional pour qu'il soit pleinement opérationnel.
 
 committee.update.success: Les informations du comité ont été mises à jour avec succès.
+committee.pre-approve.success: Le comité a été pré-approuvé.
 
 committee.members_count: '1 adhérent|%count% adhérents'
 event.participants_count: '1 inscrit|%count% inscrits'

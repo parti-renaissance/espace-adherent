@@ -52,7 +52,9 @@ class CommitteeManagerController extends Controller
         CommitteeUpdateCommandHandler $commandHandler
     ): Response {
         $command = CommitteeCommand::createFromCommittee($committee);
-        $form = $this->createForm(CommitteeCommandType::class, $command);
+        $form = $this->createForm(CommitteeCommandType::class, $command, [
+            'with_social_networks' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

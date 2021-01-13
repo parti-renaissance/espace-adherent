@@ -72,3 +72,29 @@
         } }) }}
     </div>
 {% endif %}
+
+{% if form.provisionalSupervisorFemale is defined %}
+    <hr>
+
+    <p>Vous devez séléctionner au moins un Animateur(trice) provisoire parmi vos adhérent(e)s</p>
+
+    <div class="form__row" id="field-provisional-supervisor-female">
+        {{ form_label(form.provisionalSupervisorFemale, 'Animatrice provisoire') }}
+        {{ form_errors(form.provisionalSupervisorFemale) }}
+        {{ form_widget(form.provisionalSupervisorFemale, { 'attr': {
+            'class': 'form--full form form__field',
+            'placeholder': 'Rechercher parmi vos adhérentes',
+        }}) }}
+    </div>
+{% endif %}
+
+{% if form.provisionalSupervisorMale is defined %}
+    <div class="form__row" id="field-provisional-supervisor-male">
+        {{ form_label(form.provisionalSupervisorMale, 'Animateur provisoire') }}
+        {{ form_errors(form.provisionalSupervisorMale) }}
+        {{ form_widget(form.provisionalSupervisorMale, { 'attr': {
+            'class': 'form--full form form__field',
+            'placeholder': 'Rechercher parmi vos adhérents',
+        }}) }}
+    </div>
+{% endif %}

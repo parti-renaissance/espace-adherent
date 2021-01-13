@@ -262,17 +262,17 @@ class ZoneRepository extends ServiceEntityRepository
 
     public function isInZones(array $zones, array $parents): bool
     {
-        $zones = $this->createQueryBuilder('zone')
+        $count = (int) $this->createQueryBuilder('zone')
             ->select('COUNT(1)')
-            ->leftJoin('zone.parents', 'parent')
-            ->where('zone IN (:zones) AND parent IN (:parents)')
+            ->innerJoin('zone.parents', 'parent')
+            ->where('zone IN (:parents) OR (zone IN (:zones) AND parent IN (:parents))')
             ->setParameter('zones', $zones)
             ->setParameter('parents', $parents)
             ->getQuery()
-            ->getSingleResult()
+            ->getSingleScalarResult()
         ;
 
-        return \count($zones) > 0;
+        return $count > 0;
     }
 
     public function findByPostalCode(string $postalCode): array

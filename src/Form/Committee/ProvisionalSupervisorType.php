@@ -34,12 +34,13 @@ class ProvisionalSupervisorType extends AbstractType implements DataTransformerI
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['label'] = ($data = $form->getData()) instanceof Adherent ? $data->getFullName() : '';
+        $view->vars['value'] = ($data = $form->getData()) instanceof Adherent ? $data->getId() : null;
         $view->vars['gender'] = $options['gender'];
     }
 
     public function transform($value)
     {
-        return $value instanceof Adherent ? $value->getId() : $value;
+        return $value;
     }
 
     public function reverseTransform($value)

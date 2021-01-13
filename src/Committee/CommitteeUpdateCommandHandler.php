@@ -48,4 +48,33 @@ class CommitteeUpdateCommandHandler
 
         $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
+
+    public function handleForPreApprove(CommitteeCommand $command)
+    {
+        if (!$committee = $command->getCommittee()) {
+            throw new \RuntimeException('A Committee instance is required.');
+        }
+
+        $committee->update(
+            $command->name,
+            $command->description,
+            $this->addressFactory->createFromAddress($command->getAddress())
+        );
+
+        if ($adherentPSF = $command->getProvisionalSupervisorFemale()) {
+            $committee->updateProvisionalSupervisor($adherentPSF);
+        }
+
+        if ($adherentPSM = $command->getProvisionalSupervisorMale()) {
+            $committee->updateProvisionalSupervisor($adherentPSM);
+        }
+
+        $this->referentTagManager->assignReferentLocalTags($committee);
+
+        $committee->preApproved();
+
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
+    }
 }
