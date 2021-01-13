@@ -2,18 +2,6 @@
 
 {% block banner '' %}
 
-{% block content %}
-    <main class="manager-space manager-body">
-        <aside class="manager-sidebar">
-            {{ include('committee_manager/_sidebar.html.twig') }}
-        </aside>
-
-        <section class="manager-content">
-            <div class="manager-content__container">
-                <div class="text--body">
-                    {{ parent() }}
-                </div>
-            </div>
-        </section>
-    </main>
+{% block manager_sidebar %}
+    {{ include('committee_manager/_sidebar.html.twig') }}
 {% endblock %}

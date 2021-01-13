@@ -4,20 +4,12 @@
 
 {% block banner '' %}
 
-{% block content %}
-    <main class="manager-space manager-body">
-        <aside class="manager-sidebar">
-            {{ include('jecoute/_sidebar.html.twig') }}
-        </aside>
+{% block manager_sidebar %}
+    {{ include('jecoute/_sidebar.html.twig') }}
+{% endblock %}
 
-        <section class="manager-content">
-            <div class="manager-content__container">
-                <div class="text--body">
-                    {% block jecoute_content %}{% endblock %}
-                </div>
-            </div>
-        </section>
-    </main>
+{% block manager_content %}
+    {% block jecoute_content %}{% endblock %}
 {% endblock %}
 
 {% block adherent_space_header_title %}

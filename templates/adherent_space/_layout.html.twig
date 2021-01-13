@@ -92,6 +92,7 @@
                     {{ include('components/user.html.twig') }}
                     {{ app.user.firstName }}
                 </span>
+
                 {{ include('components/_dropdown_user_desktop.html.twig') }}
             </div>
 
@@ -105,6 +106,30 @@
             </div>
         </div>
     </nav>
+{% endblock %}
+
+{% block content %}
+    <main class="manager-space manager-body">
+        {% block manager_sidebar_wrapper %}
+            <aside class="manager-sidebar">
+                {% block manager_sidebar '' %}
+            </aside>
+        {% endblock %}
+
+        <section class="manager-content">
+            <div class="manager-content__container">
+                <div class="text--body">
+                    {% block manager_content '' %}
+
+                    {% block manager_footer %}
+                        <div class="b__nudge--top-60">
+                            {% include 'components/_footer_cgu.html.twig' %}
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </section>
+    </main>
 {% endblock %}
 
 {% block final_javascripts %}

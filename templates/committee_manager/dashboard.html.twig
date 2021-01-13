@@ -4,7 +4,7 @@
 
 {% block manager_topbar_menu_mobile '' %}
 
-{% block committee_content %}
+{% block content %}
     <section class="manager-space b__nudge--bottom-huge adherent-space">
         <header class="manager-header b__nudge--bottom-large adherent-space-header">
             <div class="l__wrapper">
@@ -44,6 +44,8 @@
             </div>
         {% endif %}
     </div>
+
+    {{ block('manager_footer') }}
 {% endblock %}
 
 {% block committee_block %}

@@ -21,28 +21,20 @@
     {% endif %}
 {% endblock %}
 
-{% block content %}
-    <main class="manager-space manager-body">
-        <aside class="manager-sidebar">
-            {{ include('senator/_sidebar.html.twig') }}
-        </aside>
+{% block manager_sidebar %}
+    {{ include('senator/_sidebar.html.twig') }}
+{% endblock %}
 
-        <section class="manager-content">
-            <div class="manager-content__container">
-                <div class="text--body">
-                    {% block senator_content %}{% endblock %}
-                </div>
-            </div>
-        </section>
+{% block manager_content %}
+    {% block senator_content %}{% endblock %}
 
-        {% if not hasCharterAccepted %}
-            {% include 'chart_dialog.html.twig' with {
-                'title': 'senator.popup.title'|trans,
-                'subtitle': 'senator.popup.subtitle'|trans,
-                'fileUrl': 'senator.popup.file_url'|trans
-            } %}
-        {% endif %}
-    </main>
+    {% if not hasCharterAccepted %}
+        {% include 'chart_dialog.html.twig' with {
+            'title': 'senator.popup.title'|trans,
+            'subtitle': 'senator.popup.subtitle'|trans,
+            'fileUrl': 'senator.popup.file_url'|trans
+        } %}
+    {% endif %}
 {% endblock %}
 
 {% block adherent_space_header_title %}

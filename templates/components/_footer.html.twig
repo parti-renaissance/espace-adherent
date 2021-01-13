@@ -225,23 +225,8 @@
                         <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM_regles_de_fonctionnement.pdf" rel="noreferrer noopener">Statuts et Règlement Intérieur</a>
                     </li>
                 </ul>
-                <ul class="list__links list__links--row list__links--no-decor list__links--col-mobile">
-                    <li>
-                        <a href="https://donnees.en-marche.fr" rel="noopener noreferrer" target="_blank">Mes données personnelles</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('page_mentions_legales') }}">Mentions Légales</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('page_politique_cookies') }}">Politique de Cookies</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_static_page', { slug: 'politique-protection-donnees' }) }}" rel="noopener noreferrer" target="_blank">Politique de Protection des Données</a>
-                    </li>
-                    <li>
-                        <a href="https://www.bkms-system.com/bkwebanon/report/clientInfo?cin=Jp3wHD&c=-1&language=fre" rel="noopener noreferrer" target="_blank">Cellule d’alerte</a>
-                    </li>
-                </ul>
+
+                {% include 'components/_footer_cgu.html.twig' %}
 
                 <ul class="list__links text--gray">
                     <li>&copy; La République En Marche !</li>
