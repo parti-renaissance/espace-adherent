@@ -4,12 +4,12 @@ namespace App\Committee\Filter;
 
 use App\Entity\Geo\Zone;
 
-class ListFilter
+class CommitteeListFilter
 {
     /**
      * @var Zone[]
      */
-    private $managedZones = [];
+    private $managedZones;
 
     /**
      * @var Zone[]

@@ -9,9 +9,11 @@
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
+
     {% if google_maps_api_key %}
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
+
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.autocomlete_address(form.address, true) }}
@@ -25,7 +27,7 @@
             <div class="b__nudge--top">
                 <a href="{{ path('app_referent_committees') }}" class="back-to-list icon--with-text text--summary">
                     {{ include('components/caret--left.html.twig') }}
-                    Retour à la liste des comités de ma territoire</a>
+                    Retour à la liste des comités de mon territoire</a>
             </div>
 
             <header class="space--30-0">

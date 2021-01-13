@@ -1009,6 +1009,8 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             $this->addReference('adherent-'.$index, $adherent);
         }
 
+        $this->getReference('adherent-32')->setReferent([$this->getReference('referent_tag_de')]);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);

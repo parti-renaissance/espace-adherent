@@ -4,18 +4,20 @@ namespace App\Controller\EnMarche\Committee;
 
 use App\Committee\CommitteeCreationCommand;
 use App\Committee\CommitteeCreationCommandHandler;
-use App\Committee\Filter\ListFilter;
+use App\Committee\Filter\CommitteeDesignationsListFilter;
+use App\Committee\Filter\CommitteeListFilter;
 use App\Controller\CanaryControllerTrait;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Committee;
+use App\Form\Committee\CommitteeDesignationsListFilterType;
 use App\Form\Committee\CommitteeFilterType;
 use App\Form\CommitteeCommandType;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\AdherentRepository;
+use App\Repository\CommitteeElectionRepository;
 use App\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +29,7 @@ abstract class AbstractCommitteeController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("", name="committees")
+     * @Route("", name="committees", methods={"GET", "POST"})
      */
     public function committeesAction(
         Request $request,
@@ -35,19 +37,19 @@ abstract class AbstractCommitteeController extends Controller
         ManagedZoneProvider $managedZoneProvider
     ): Response {
         $managedZones = $managedZoneProvider->getManagedZones($this->getMainUser($request->getSession()), $this->getSpaceType());
-        $filter = new ListFilter($managedZones);
+        $filter = new CommitteeListFilter($managedZones);
 
-        $form = $this->createFilterForm($filter);
-        $form->handleRequest($request);
+        $form = $this->createForm(CommitteeFilterType::class, $filter, [
+            'space_type' => $this->getSpaceType(),
+        ])->handleRequest($request);
+
         if ($form->isSubmitted() && !$form->isValid()) {
-            $filter = new ListFilter($managedZones);
+            $filter = new CommitteeListFilter($managedZones);
         }
 
-        return $this->render($this->getSpaceType().'/committees_list.html.twig', [
+        return $this->renderTemplate($this->getSpaceType().'/committees_list.html.twig', [
             'committees' => $committeeRepository->searchByFilter($filter),
             'pending_count' => $committeeRepository->countRequestsForZones($managedZones, Committee::PENDING),
-            'base_template' => sprintf('committee/_base_%s.html.twig', $spaceName = $this->getSpaceType()),
-            'space_name' => $spaceName,
             'form' => $form->createView(),
             'total_count' => $committeeRepository->countForZones($managedZones),
         ]);
@@ -62,18 +64,18 @@ abstract class AbstractCommitteeController extends Controller
         ManagedZoneProvider $managedZoneProvider
     ): Response {
         $managedZones = $managedZoneProvider->getManagedZones($this->getMainUser($request->getSession()), $this->getSpaceType());
-        $filter = new ListFilter($managedZones);
+        $filter = new CommitteeListFilter($managedZones);
 
-        $form = $this->createFilterForm($filter);
-        $form->handleRequest($request);
+        $form = $this->createForm(CommitteeFilterType::class, $filter, [
+            'space_type' => $this->getSpaceType(),
+        ])->handleRequest($request);
+
         if ($form->isSubmitted() && !$form->isValid()) {
-            $filter = new ListFilter($managedZones);
+            $filter = new CommitteeListFilter($managedZones);
         }
 
-        return $this->render($this->getSpaceType().'/committees_requests_list.html.twig', [
+        return $this->renderTemplate($this->getSpaceType().'/committees_requests_list.html.twig', [
             'committees' => $committeeRepository->searchRequestsByFilter($filter),
-            'base_template' => sprintf('committee/_base_%s.html.twig', $spaceName = $this->getSpaceType()),
-            'space_name' => $spaceName,
             'form' => $form->createView(),
             'total_count' => $committeeRepository->countRequestsForZones($managedZones),
         ]);
@@ -102,9 +104,7 @@ abstract class AbstractCommitteeController extends Controller
             return $this->redirectToRoute('app_committee_show', ['slug' => $command->getCommittee()->getSlug()]);
         }
 
-        return $this->render($this->getSpaceType().'/create_committee.html.twig', [
-            'base_template' => sprintf('committee/_base_%s.html.twig', $spaceName = $this->getSpaceType()),
-            'space_name' => $spaceName,
+        return $this->renderTemplate($this->getSpaceType().'/create_committee.html.twig', [
             'form' => $form->createView(),
             'adherent' => $user,
         ]);
@@ -124,20 +124,48 @@ abstract class AbstractCommitteeController extends Controller
     ): JsonResponse {
         $adherents = $adherentRepository->findForProvisionalSupervisorAutocomplete(
             $request->query->get('name'),
-            $request->query->get('gender', null),
+            $request->query->get('gender'),
             $managedZoneProvider->getManagedZones($this->getMainUser($request->getSession()), $this->getSpaceType())
         );
 
         return $this->json($adherents, Response::HTTP_OK);
     }
 
-    protected function createFilterForm(ListFilter $filter): FormInterface
-    {
-        return $this->createForm(CommitteeFilterType::class, $filter, [
+    /**
+     * @Route("/designations", name="committees_designations", methods={"GET", "POST"})
+     */
+    public function committeesDesignationListAction(
+        Request $request,
+        ManagedZoneProvider $managedZoneProvider,
+        CommitteeElectionRepository $committeeRepository
+    ): Response {
+        $managedZones = $managedZoneProvider->getManagedZones($this->getMainUser($request->getSession()), $this->getSpaceType());
+        $filter = new CommitteeDesignationsListFilter($managedZones);
+
+        $form = $this->createForm(CommitteeDesignationsListFilterType::class, $filter, [
             'space_type' => $this->getSpaceType(),
-            'method' => Request::METHOD_GET,
-            'csrf_protection' => false,
+        ])->handleRequest($request);
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $filter = new CommitteeDesignationsListFilter($managedZones);
+        }
+
+        return $this->renderTemplate($this->getSpaceType().'/committees_designations_list.html.twig', [
+            'elections' => $committeeRepository->findElections($filter),
+            'form' => $form->createView(),
+            'filter' => $filter,
         ]);
+    }
+
+    protected function renderTemplate(string $template, array $parameters = []): Response
+    {
+        return $this->render($template, array_merge(
+            $parameters,
+            [
+                'base_template' => sprintf('committee/_base_%s.html.twig', $spaceName = $this->getSpaceType()),
+                'space_type' => $spaceName,
+            ]
+        ));
     }
 
     abstract protected function getSpaceType(): string;
