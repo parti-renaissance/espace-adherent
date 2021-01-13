@@ -46,7 +46,7 @@
     "mocha": "8.2.1",
     "mocha-webpack": "^0.7.0",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "randomatic": "^3.0.0",
     "raven-js": "^3.8.0",
