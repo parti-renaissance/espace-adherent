@@ -27,6 +27,8 @@ class WysiwygLengthValidator extends ConstraintValidator
 
         $stringValue = (string) $value;
 
+        $length = mb_strlen($stringValue, $constraint->charset);
+
         if (!$invalidCharset = !@mb_check_encoding($stringValue, $constraint->charset)) {
             $stringValueWithoutTags = preg_replace(self::REGEX_TAGS, '', preg_replace(self::REGEX_BEGIN_END_STRING_WHITESPACES, '', $stringValue));
             $length = mb_strlen($stringValueWithoutTags, $constraint->charset);
@@ -46,7 +48,7 @@ class WysiwygLengthValidator extends ConstraintValidator
 
         if (null !== $constraint->max && $length > $constraint->max) {
             $this->context->buildViolation($constraint->min == $constraint->max ? $constraint->exactMessage : $constraint->maxMessage)
-                ->setParameter('{{ value }}', $this->formatValue($stringValueWithoutTags))
+                ->setParameter('{{ value }}', $this->formatValue($stringValue))
                 ->setParameter('{{ limit }}', $constraint->max)
                 ->setInvalidValue($value)
                 ->setPlural((int) $constraint->max)
@@ -59,7 +61,7 @@ class WysiwygLengthValidator extends ConstraintValidator
 
         if (null !== $constraint->min && $length < $constraint->min) {
             $this->context->buildViolation($constraint->min == $constraint->max ? $constraint->exactMessage : $constraint->minMessage)
-                ->setParameter('{{ value }}', $this->formatValue($stringValueWithoutTags))
+                ->setParameter('{{ value }}', $this->formatValue($stringValue))
                 ->setParameter('{{ limit }}', $constraint->min)
                 ->setInvalidValue($value)
                 ->setPlural((int) $constraint->min)

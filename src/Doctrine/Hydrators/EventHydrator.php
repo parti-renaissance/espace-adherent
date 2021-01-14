@@ -34,6 +34,7 @@ class EventHydrator extends AbstractHydrator
             $addressEvent = $this->createForeignAddress($row['event_address_country'], $row['event_address_postal_code'], $row['event_address_city_name'], $row['event_address_address'], $row['event_address_latitude'], $row['event_address_longitude']);
         }
 
+        $addressCommittee = null;
         if ('FR' === $row['committee_address_country']) {
             $addressCommittee = $this->createFrenchAddress($row['committee_address_address'], $row['committee_address_city_insee'], $row['committee_address_latitude'], $row['committee_address_longitude']);
         } elseif ($row['committee_address_country']) {

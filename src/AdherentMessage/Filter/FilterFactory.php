@@ -39,6 +39,8 @@ abstract class FilterFactory
             case AdherentMessageTypeEnum::CANDIDATE:
                 return static::createCandidateFilter($user);
         }
+
+        throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
     }
 
     private static function createReferentFilter(Adherent $user): ReferentUserFilter

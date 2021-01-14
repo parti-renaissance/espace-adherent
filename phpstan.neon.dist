@@ -1,0 +1,7 @@
+parameters:
+    level: 1
+    tmpDir: var/phpstan-tmp
+    paths:
+        - src
+        - config
+        - migrations

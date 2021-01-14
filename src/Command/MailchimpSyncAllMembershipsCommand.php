@@ -86,17 +86,21 @@ class MailchimpSyncAllMembershipsCommand extends Command
         do {
             /** @var CommitteeMembership|CitizenProjectMembership|TerritorialCouncilMembership $membership */
             foreach ($paginator->getIterator() as $membership) {
+                $object = null;
+
                 switch ($type) {
                     case self::COMMITTEE_TYPE: $object = $membership->getCommittee(); break;
                     case self::CITIZEN_PROJECT_TYPE: $object = $membership->getCitizenProject(); break;
                     case self::TERRITORIAL_COUNCIL_TYPE: $object = $membership->getTerritorialCouncil(); break;
                 }
 
-                $this->bus->dispatch(new AddAdherentToStaticSegmentCommand(
-                    $membership->getAdherent()->getUuid(),
-                    $object->getUuid(),
-                    \get_class($object)
-                ));
+                if ($object) {
+                    $this->bus->dispatch(new AddAdherentToStaticSegmentCommand(
+                        $membership->getAdherent()->getUuid(),
+                        $object->getUuid(),
+                        \get_class($object)
+                    ));
+                }
 
                 $this->io->progressAdvance();
                 ++$offset;
@@ -121,6 +125,8 @@ class MailchimpSyncAllMembershipsCommand extends Command
 
     private function getQueryBuilder(string $type, int $objectId = null): QueryBuilder
     {
+        $qb = null;
+
         switch ($type) {
             case self::COMMITTEE_TYPE:
                 $qb = $this->entityManager

@@ -25,7 +25,7 @@ class CitizenProjectContactActorsCommand
      */
     private $message;
 
-    public function __construct(array $recipients, Adherent $sender, string $subject = null, string $message = null)
+    public function __construct(array $recipients, Adherent $sender, string $message = null)
     {
         $this->recipients = $recipients;
         $this->sender = $sender;

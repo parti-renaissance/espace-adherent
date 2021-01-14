@@ -39,6 +39,8 @@ class SurveyController extends Controller
         SerializerInterface $serializer,
         UserInterface $user
     ): Response {
+        $postalCode = null;
+
         if ($user instanceof DeviceApiUser) {
             if (!$postalCode = $request->get('postalCode')) {
                 return $this->json(['error' => 'Parameter "postalCode" missing when using a Device token.'], 400);

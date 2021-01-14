@@ -138,7 +138,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     private $sendToTimeline = false;
 
-    public function __construct(UuidInterface $uuid, Adherent $author)
+    final public function __construct(UuidInterface $uuid, Adherent $author)
     {
         $this->uuid = $uuid;
         $this->author = $author;

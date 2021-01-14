@@ -5,8 +5,8 @@ namespace App\Entity\Reporting;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static LEAVE()
- * @method static JOIN()
+ * @method static CommitteeMembershipAction LEAVE()
+ * @method static CommitteeMembershipAction JOIN()
  */
 class CommitteeMembershipAction extends Enum
 {

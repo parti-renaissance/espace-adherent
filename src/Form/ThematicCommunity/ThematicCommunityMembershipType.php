@@ -47,7 +47,6 @@ class ThematicCommunityMembershipType extends AbstractType
                 ->add('lastName', TextType::class, [
                     'label' => 'Nom',
                     'attr' => ['placeholder' => 'Nom'],
-                    'attr' => ['placeholder' => 'Prénom'],
                     'constraints' => [
                         new Constraints\NotBlank(),
                     ],

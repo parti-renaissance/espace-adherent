@@ -4,6 +4,7 @@ namespace App\Referent;
 
 use App\Entity\Adherent;
 use App\Entity\ReferentManagedUsersMessage;
+use App\ManagedUsers\ManagedUsersFilter;
 use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -62,7 +63,7 @@ class ReferentMessage
 
     public static function createFromMessage(ReferentManagedUsersMessage $savedMessage): self
     {
-        $message = new self($savedMessage->getUuid(), $savedMessage->getFrom(), ManagedUsersFilter::createFromMessage($savedMessage));
+        $message = new self($savedMessage->getUuid(), $savedMessage->getFrom(), new ManagedUsersFilter());
         $message->setSubject($savedMessage->getSubject());
         $message->setContent($savedMessage->getContent());
 

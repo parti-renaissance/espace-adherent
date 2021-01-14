@@ -256,7 +256,7 @@ class TimelineImportCommand extends Command
                 !empty($isGlobal)
             );
 
-            $measure->addTranslation(new MeasureTranslation('fr', $title));
+            $measure->translate('fr', false)->setTitle($title);
 
             $this->em->persist($measure);
 

@@ -11,6 +11,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 class ChangeIdeaAuthorCategoryListener
 {
     private $ideaRepository;
+    private $needChangeIdeaAuthorCategory;
 
     public function __construct(IdeaRepository $ideaRepository)
     {

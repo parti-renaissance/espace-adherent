@@ -212,8 +212,7 @@ class AddTerritorialCouncilMembershipCommand extends Command
                 $this->io->warning(\sprintf(
                     'Adherent ("%s") cannot be added as member of TerritorialCouncil "%s", because he is already its member',
                     $adherent->getEmailAddress(),
-                    $terco->getNameCodes(),
-                    $adherent->getTerritorialCouncilMembership()->getTerritorialCouncil()->getNameCodes()
+                    $terco->getNameCodes()
                 ));
 
                 return;

@@ -71,7 +71,7 @@ class ImportBoardMemberCommand extends Command
                 $otherCSVRows = $this->parseOtherCSV($fileNameOtherCSV);
             }
         } catch (FileNotFoundException $e) {
-            $output->writeln(sprintf('%s not found'), $e->getFile());
+            $output->writeln(sprintf('%s not found', $e->getFile()));
 
             return 1;
         }
@@ -98,7 +98,7 @@ class ImportBoardMemberCommand extends Command
     {
         $rows = [];
         if (false === ($handle = fopen($filename, 'r'))) {
-            throw new FileNotFoundException(sprintf('% not found', $filename));
+            throw new FileNotFoundException(sprintf('%s not found', $filename));
         }
 
         $isFirstRow = true;
@@ -135,7 +135,7 @@ class ImportBoardMemberCommand extends Command
     {
         $rows = [];
         if (false === ($handle = fopen($filename, 'r'))) {
-            throw new FileNotFoundException(sprintf('% not found', $filename));
+            throw new FileNotFoundException(sprintf('%s not found', $filename));
         }
 
         $isFirstRow = true;

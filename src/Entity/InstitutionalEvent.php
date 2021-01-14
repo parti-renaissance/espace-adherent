@@ -27,7 +27,7 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface
 
     public function getType(): ?string
     {
-        return $this->type ?? self::INSTITUTIONAL_EVENT_TYPE;
+        return self::INSTITUTIONAL_EVENT_TYPE;
     }
 
     public function getReportType(): string

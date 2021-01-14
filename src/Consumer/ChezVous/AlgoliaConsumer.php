@@ -67,7 +67,7 @@ class AlgoliaConsumer implements ConsumerInterface
 
                     break;
                 case AlgoliaProducer::KEY_MEASURE_TYPE_DELETED:
-                    $this->measureTypeDeleted($measureType);
+                    $this->measureTypeDeleted();
 
                     break;
             }
@@ -111,6 +111,24 @@ class AlgoliaConsumer implements ConsumerInterface
 
         foreach ($this->cityRepository->findAllByMeasureType($measureType) as $city) {
             $cities[] = current($city);
+
+            if (0 === (\count($cities) % 1000)) {
+                $this->algoliaIndexer->batch($cities);
+                $cities = [];
+            }
+        }
+
+        if (!empty($cities)) {
+            $this->algoliaIndexer->batch($cities);
+        }
+    }
+
+    private function measureTypeDeleted(): void
+    {
+        $cities = [];
+
+        foreach ($this->cityRepository->findAll() as $city) {
+            $cities[] = $city;
 
             if (0 === (\count($cities) % 1000)) {
                 $this->algoliaIndexer->batch($cities);

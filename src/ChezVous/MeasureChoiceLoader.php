@@ -80,7 +80,7 @@ class MeasureChoiceLoader
     {
         if (!\array_key_exists($code, $this->cachedMeasureTypes)) {
             if (!$measureType = $this->measureTypeRepository->findOneByCode($code)) {
-                throw new \InvalidArgumentException(sprintf('There is no MeasureType with code "%s" found in database.', $type));
+                throw new \InvalidArgumentException(sprintf('There is no MeasureType with code "%s" found in database.', $code));
             }
 
             $this->cachedMeasureTypes[$code] = $measureType;

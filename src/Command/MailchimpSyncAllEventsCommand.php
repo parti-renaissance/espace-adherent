@@ -137,5 +137,7 @@ class MailchimpSyncAllEventsCommand extends Command
                     ->select('PARTIAL council.{id, uuid}')
                 ;
         }
+
+        throw new \InvalidArgumentException('Invalid message type');
     }
 }

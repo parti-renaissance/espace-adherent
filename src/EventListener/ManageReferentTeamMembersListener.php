@@ -65,7 +65,7 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                             $uow->recomputeSingleEntityChangeSet($this->manager->getClassMetadata(ReferentPersonLink::class), $personLink);
                         } else {
                             $this->updateReferentTeamMemberFromPersonLink($teamMember = $adherent->getReferentTeamMember(), $personLink);
-                            array_map(function (ReferentPersonLink $otherPersonLink) use ($personLink, $teamMember) {
+                            array_map(function (ReferentPersonLink $otherPersonLink) use ($personLink) {
                                 if ($personLink === $otherPersonLink) {
                                     return;
                                 }

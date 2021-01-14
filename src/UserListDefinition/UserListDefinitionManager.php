@@ -62,7 +62,7 @@ class UserListDefinitionManager
     {
         $this->checkObjectClass($objectClass);
         $repository = $this->em->getRepository($objectClass);
-        $electedRepresentatives = [];
+        $electedRepresentatives = $oldUserListDefinitions = [];
 
         foreach ($userListDefinitions as $memberId => $lists) {
             if (!$member = $repository->find($memberId)) {

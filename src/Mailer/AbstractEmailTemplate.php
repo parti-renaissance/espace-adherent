@@ -24,7 +24,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
     private $httpRequestPayload;
     private $httpResponsePayload;
 
-    public function __construct(
+    final public function __construct(
         UuidInterface $uuid,
         string $template,
         string $subject,

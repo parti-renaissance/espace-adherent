@@ -5,7 +5,7 @@ namespace App\WebHook;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static MAILCHIMP()
+ * @method static Service MAILCHIMP()
  */
 final class Service extends Enum
 {

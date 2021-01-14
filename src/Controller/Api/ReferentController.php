@@ -47,7 +47,7 @@ class ReferentController extends Controller
         }
 
         if (!\in_array($type, self::AUTOCOMPLETE_TYPES, true)) {
-            throw new BadRequestHttpException(sprintf('Invalid parameter "type" "%" given.', $type));
+            throw new BadRequestHttpException(sprintf('Invalid parameter "type" "%s" given.', $type));
         }
 
         $value = $request->query->get('value');
@@ -63,5 +63,7 @@ class ReferentController extends Controller
             case self::AUTOCOMPLETE_TYPE_COUNTRY:
                 return new JsonResponse(['countries' => $referent->getManagedArea()->getOnlyManagedCountryCodes($value)]);
         }
+
+        return new JsonResponse('NOK', Response::HTTP_BAD_REQUEST);
     }
 }

@@ -247,6 +247,7 @@ class ConfigureCommand extends Command
 
         // Create candidates groups
         $candidacies = $this->committeeCandidacyRepository->findConfirmedByCommittee($committee, $designation = $election->getDesignation());
+        $pools = $memberships = [];
 
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
             $pools = [

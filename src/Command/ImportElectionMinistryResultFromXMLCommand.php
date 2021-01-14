@@ -157,6 +157,7 @@ class ImportElectionMinistryResultFromXMLCommand extends Command
         }
 
         if ('{}Listes' === $cityAttr['value'][9]['value'][0]['value'][7]['name']) {
+            $tmp = null;
             foreach ($cityAttr['value'][9]['value'][0]['value'][7]['value'] as $list) {
                 $listLabel = $this->getValueData('LibLisExt', $list['value'])['value'];
                 $listNuance = $this->getValueData('CodNuaListe', $list['value'])['value'];

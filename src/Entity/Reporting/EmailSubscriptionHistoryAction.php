@@ -5,8 +5,8 @@ namespace App\Entity\Reporting;
 use MyCLabs\Enum\Enum;
 
 /**
- * @method static SUBSCRIBE()
- * @method static UNSUBSCRIBE()
+ * @method static EmailSubscriptionHistoryAction SUBSCRIBE()
+ * @method static EmailSubscriptionHistoryAction UNSUBSCRIBE()
  */
 class EmailSubscriptionHistoryAction extends Enum
 {

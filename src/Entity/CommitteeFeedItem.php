@@ -101,7 +101,7 @@ class CommitteeFeedItem implements UserDocumentInterface
         bool $published = true,
         string $createdAt = 'now'
     ): self {
-        $item = new static(Uuid::uuid4(), self::MESSAGE, $committee, $author, $published, $createdAt);
+        $item = new self(Uuid::uuid4(), self::MESSAGE, $committee, $author, $published, $createdAt);
         $item->content = $content;
 
         return $item;
@@ -113,7 +113,7 @@ class CommitteeFeedItem implements UserDocumentInterface
         bool $published = true,
         string $createdAt = 'now'
     ): self {
-        $item = new static(
+        $item = new self(
             Uuid::uuid5(Uuid::NAMESPACE_OID, (string) $event->getUuid()),
             self::EVENT,
             $event->getCommittee(),

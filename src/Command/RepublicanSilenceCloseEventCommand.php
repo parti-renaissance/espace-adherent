@@ -40,7 +40,7 @@ class RepublicanSilenceCloseEventCommand extends Command
     {
         $this
             ->setDescription('This command closes each committee event or citizen action when it matches a republican silence criteria')
-            ->addArgument('interval', InputArgument::OPTIONAL, 'Number of minutes to remove from silence start date for closing the events [x] minutes before (default: 0)', 0)
+            ->addArgument('interval', InputArgument::OPTIONAL, 'Number of minutes to remove from silence start date for closing the events [x] minutes before (default: 0)', '0')
         ;
     }
 

@@ -67,6 +67,7 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
         $this->io->progressStart($count);
 
         foreach ($reader as $row) {
+            $command = null;
             $this->io->progressAdvance();
 
             $mail = current($row);

@@ -136,8 +136,8 @@ class Approach
 
     public function removeSubApproach(SubApproach $subApproach): void
     {
-        if ($this->approaches->contains($subApproach)) {
-            $this->approaches->removeElement($subApproach);
+        if ($this->subApproaches->contains($subApproach)) {
+            $this->subApproaches->removeElement($subApproach);
             if ($subApproach->getApproach() === $this) {
                 $subApproach->setApproach(null);
             }

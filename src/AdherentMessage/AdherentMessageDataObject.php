@@ -34,7 +34,7 @@ class AdherentMessageDataObject
 
     public static function createFromEntity(AdherentMessageInterface $message): self
     {
-        $dataObject = new static();
+        $dataObject = new self();
 
         $dataObject->setSubject($message->getSubject());
         $dataObject->setLabel($message->getLabel());

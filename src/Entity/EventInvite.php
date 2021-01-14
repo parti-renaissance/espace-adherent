@@ -65,7 +65,7 @@ class EventInvite
 
     public static function create(BaseEvent $event, EventInvitation $invitation): self
     {
-        $invite = new static($event);
+        $invite = new self($event);
         $invite->firstName = $invitation->firstName;
         $invite->lastName = $invitation->lastName;
         $invite->email = $invitation->email;

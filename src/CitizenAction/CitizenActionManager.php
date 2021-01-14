@@ -92,7 +92,7 @@ class CitizenActionManager
                 'postalCode' => $adherentFind->getPostalCode(),
                 'cityName' => $adherentFind->getCityName(),
                 'createdAt' => $registration->getCreatedAt(),
-                'administrator' => $citizenProjectAdministrators->contains($adherent),
+                'administrator' => $citizenProjectAdministrators->contains($adherentFind),
             ];
         }
 

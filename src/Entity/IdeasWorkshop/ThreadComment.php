@@ -162,7 +162,7 @@ class ThreadComment extends BaseComment implements AuthorInterface, ReportableIn
         bool $approved = false,
         bool $enabled = true
     ): self {
-        $threadComment = new static($uuid);
+        $threadComment = new self($uuid);
         $threadComment->content = $content;
         $threadComment->author = $author;
         $threadComment->thread = $thread;

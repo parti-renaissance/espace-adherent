@@ -66,7 +66,7 @@ class ImportVotePlacesCommand extends Command
     {
         $rows = [];
         if (false === ($handle = fopen($filename, 'r'))) {
-            throw new FileNotFoundException(sprintf('% not found', $filename));
+            throw new FileNotFoundException(sprintf('%s not found', $filename));
         }
 
         while (false !== ($data = fgetcsv($handle, 0, ';'))) {

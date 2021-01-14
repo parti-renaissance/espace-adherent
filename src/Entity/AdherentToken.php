@@ -52,7 +52,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
      */
     private $usedAt;
 
-    private function __construct(
+    final private function __construct(
         UuidInterface $uuid,
         UuidInterface $adherentUuid,
         \DateTime $createdAt,

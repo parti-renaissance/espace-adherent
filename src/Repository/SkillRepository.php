@@ -9,8 +9,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class SkillRepository extends ServiceEntityRepository
 {
-    const FIND_FOR_SUMMARY = 'summaries';
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Skill::class);
@@ -19,22 +17,14 @@ class SkillRepository extends ServiceEntityRepository
     /**
      * Finds all available skills for autocomplete.
      */
-    public function findAvailableSkillsFor(string $term, Adherent $user, string $module): array
+    public function findAvailableSkillsFor(string $term, Adherent $user): array
     {
-        switch ($module) {
-            case self::FIND_FOR_SUMMARY:
-                $joinedTable = 'summaries';
-                $fieldUser = 'member';
-
-                break;
-        }
-
         $qbUserSkills = $this
-                ->createQueryBuilder('us')
-                ->select('us.slug')
-                ->innerJoin(sprintf('us.%s', $joinedTable), 'cv')
-                ->andWhere(sprintf('cv.%s = :user', $fieldUser))
-            ;
+            ->createQueryBuilder('us')
+            ->select('us.slug')
+            ->innerJoin('us.summaries', 'cv')
+            ->andWhere('cv.member = :user')
+        ;
 
         $qb = $this->createQueryBuilder('s');
         $qb

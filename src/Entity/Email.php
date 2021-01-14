@@ -87,7 +87,7 @@ class Email
 
         $parts = explode('\\', \get_class($message));
 
-        return new static(
+        return new self(
             $message->getUuid(),
             end($parts),
             $message->getReplyTo() ?? 'EnMarche',
