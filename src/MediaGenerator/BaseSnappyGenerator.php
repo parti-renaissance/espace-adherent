@@ -3,14 +3,14 @@
 namespace App\MediaGenerator;
 
 use Knp\Snappy\GeneratorInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 abstract class BaseSnappyGenerator implements MediaGeneratorInterface
 {
     protected $mediaGenerator;
     protected $templateEngine;
 
-    public function __construct(GeneratorInterface $mediaGenerator, EngineInterface $templateEngine)
+    public function __construct(GeneratorInterface $mediaGenerator, Environment $templateEngine)
     {
         $this->mediaGenerator = $mediaGenerator;
         $this->templateEngine = $templateEngine;

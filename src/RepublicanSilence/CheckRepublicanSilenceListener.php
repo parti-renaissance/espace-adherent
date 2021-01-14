@@ -4,13 +4,14 @@ namespace App\RepublicanSilence;
 
 use App\Entity\Adherent;
 use App\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig\Environment;
 
 class CheckRepublicanSilenceListener implements EventSubscriberInterface
 {
@@ -57,7 +58,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
     public function __construct(
         TokenStorageInterface $tokenStorage,
         RepublicanSilenceManager $manager,
-        EngineInterface $engine
+        Environment $engine
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->republicanSilenceManager = $manager;
@@ -71,7 +72,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         ];
     }
 
-    public function onRequest(GetResponseEvent $event): void
+    public function onRequest(RequestEvent $event): void
     {
         if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
@@ -154,8 +155,8 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         return null;
     }
 
-    private function setResponse(GetResponseEvent $event): void
+    private function setResponse(RequestEvent $event): void
     {
-        $event->setResponse($this->templateEngine->renderResponse('republican_silence/landing.html.twig'));
+        $event->setResponse(new Response($this->templateEngine->render('republican_silence/landing.html.twig')));
     }
 }

@@ -5,7 +5,7 @@
 #}
 {% import 'admin/CRUD/base_array_macro.html.twig' as show %}
 
-{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field%}
     {{ show.render_array(value, field_description.options.inline|default(false)) }}

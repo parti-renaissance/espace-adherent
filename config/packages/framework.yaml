@@ -6,8 +6,6 @@ framework:
     serializer:
         enable_annotations: true
         name_converter: "serializer.name_converter.camel_case_to_snake_case"
-    templating:
-        engines: ['twig']
     trusted_hosts:   ~
     session:
         name:        enmarche

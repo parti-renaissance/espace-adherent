@@ -7,7 +7,7 @@ use App\MediaGenerator\MediaContent;
 use App\MediaGenerator\Pdf\CitizenProjectTractGenerator;
 use Knp\Snappy\GeneratorInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class CitizenProjectTractGeneratorTest extends TestCase
 {
@@ -15,7 +15,7 @@ class CitizenProjectTractGeneratorTest extends TestCase
     {
         $generator = new CitizenProjectTractGenerator(
             $this->createConfiguredMock(GeneratorInterface::class, ['getOutputFromHtml' => 'binary content']),
-            $this->createMock(EngineInterface::class)
+            $this->createMock(Environment::class)
         );
 
         $mediaContent = $generator->generate($this->createMock(CitizenProjectTractCommand::class));
