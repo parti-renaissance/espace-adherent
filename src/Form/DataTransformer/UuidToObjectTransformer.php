@@ -34,7 +34,7 @@ class UuidToObjectTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        if (Uuid::isValid($value) && $object = $this->repository->findOneByUuid($value)) {
+        if ($value && Uuid::isValid($value) && $object = $this->repository->findOneByUuid($value)) {
             return $object;
         }
 
