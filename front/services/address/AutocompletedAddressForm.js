@@ -66,6 +66,10 @@ export default class AutocompletedAddressForm extends EventEmitter {
 
         const removeAutocompleteLink = this._helpMessageBlock.getElementsByTagName('a')[0];
 
+        if (!removeAutocompleteLink) {
+            return;
+        }
+
         once(removeAutocompleteLink, 'click', (event) => {
             event.preventDefault();
 
