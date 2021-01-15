@@ -2,7 +2,13 @@
 
 {% block committee_content %}
     <div class="datagrid__pre-table b__nudge--bottom">
-        <h3>Désignations</h3>
+        <h3>Comités</h3>
+
+        {% if is_canary_enabled() and is_granted('ROLE_REFERENT') %}
+            <a href="{{ path("app_referent_create_committee") }}" class="btn-secondary btn-secondary--blue">
+                + Créer un comité
+            </a>
+        {% endif %}
     </div>
 
     <div class="manager__filters">

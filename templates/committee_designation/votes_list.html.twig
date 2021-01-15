@@ -26,8 +26,12 @@
                     {% for pool in election.electionPools %}
                         {% for candidate_group in pool.candidateGroups %}
                             <th>
-                                {% for candidate in candidate_group.candidates %}
-                                    {{ candidate.fullName }}<br/>
+                                {% for candidate in candidate_group.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+                                    {{ candidate.fullName }}
+                                    {% if candidate_group.isElected %}
+                                        <span class="elected-tag text--body text--on-yellow text--bold b__nudge--left-small">Élu{{ candidate.isFemale ? 'e' }}</span>
+                                    {% endif %}
+                                    <br/>
                                 {% endfor %}
                             </th>
                         {% endfor %}

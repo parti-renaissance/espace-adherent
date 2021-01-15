@@ -852,7 +852,7 @@ HELP
                         $qb
                             ->leftJoin(sprintf('%s.candidateManagedArea', $alias), 'candidateManagedArea')
                             ->leftJoin('candidateManagedArea.zone', 'candidate_zone')
-                            ->setParameter('candiate_zone_types', array_map(function (string $role) {
+                            ->setParameter('candidate_zone_types', array_map(function (string $role) {
                                 switch ($role) {
                                     case AdherentRoleEnum::CANDIDATE_REGIONAL_HEADED:
                                         return Zone::REGION;
@@ -864,7 +864,7 @@ HELP
                             }, $candidateRoles))
                         ;
 
-                        $where->add('candidate_zone.type IN (:candiate_zone_types)');
+                        $where->add('candidate_zone.type IN (:candidate_zone_types)');
                     }
 
                     if ($delegatedCandidateRoles = array_intersect(AdherentRoleEnum::getDelegatedCandidates(), $value['value'])) {
@@ -887,7 +887,7 @@ HELP
                             ->leftJoin('rda.delegator', 'delegator')
                             ->leftJoin('delegator.candidateManagedArea', 'delegatorCandidateManagedArea')
                             ->leftJoin('delegatorCandidateManagedArea.zone', 'delegator_candidate_zone')
-                            ->setParameter('delegator_candiate_zone_types', array_map(function (string $role) {
+                            ->setParameter('delegator_candidate_zone_types', array_map(function (string $role) {
                                 switch ($role) {
                                     case AdherentRoleEnum::DELEGATED_CANDIDATE_REGIONAL_HEADED:
                                         return Zone::REGION;
@@ -899,7 +899,7 @@ HELP
                             }, $delegatedCandidateRoles))
                         ;
 
-                        $where->add('delegator_candidate_zone.type IN (:delegator_candiate_zone_types)');
+                        $where->add('delegator_candidate_zone.type IN (:delegator_candidate_zone_types)');
                     }
 
                     // thematic community chief
