@@ -4,7 +4,6 @@ namespace App\Controller\EnMarche\CommitteeDesignation;
 
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Election;
-use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\VotingPlatform\ElectionResult\ElectionPoolResult;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\ElectionRepository;
@@ -124,14 +123,16 @@ abstract class AbstractDesignationController extends AbstractController
             return $this->redirectToSpaceRoute('dashboard', $committee, $election);
         }
 
+        $poolCode = $request->query->get('code');
+
         return $this->renderTemplate('committee_designation/results.html.twig', $request, [
             'committee' => $committee,
             'election_round' => $electionRound,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
             'election_pool_result' => current(array_filter(
                 $election->getElectionResult()->getElectionRoundResult($electionRound)->getElectionPoolResults(),
-                function (ElectionPoolResult $poolResult) use ($request) {
-                    return $poolResult->getElectionPool()->getCode() === ($request->query->has('femme') ? ElectionPoolCodeEnum::FEMALE : ElectionPoolCodeEnum::MALE);
+                function (ElectionPoolResult $poolResult) use ($poolCode) {
+                    return $poolResult->getElectionPool()->getCode() === $poolCode;
                 }
             )),
         ]);

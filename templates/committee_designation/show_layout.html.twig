@@ -81,17 +81,17 @@
                             <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_voters_list") ? 'active' }}"
                                href="{{ path("app_#{space_type}_designations_voters_list", link_params) }}">Liste d'émargement</a>
                         </h3>
+
                         <span class="separator"></span>
-                        <h3>
-                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('femme') ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_results", {femme: true}|merge(link_params)) }}">Résultats Femme</a>
-                        </h3>
-                        <span class="separator"></span>
-                        <h3>
-                            <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.has('homme') ? 'active' }}"
-                               href="{{ path("app_#{space_type}_designations_results", {homme: true}|merge(link_params)) }}">Résultats Homme</a>
-                        </h3>
-                        <span class="separator"></span>
+
+                        {% for pool in election.electionPools %}
+                            <h3>
+                                <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_results") and app.request.query.get('code') == pool.code ? 'active' }}"
+                                   href="{{ path("app_#{space_type}_designations_results", {code: pool.code}|merge(link_params)) }}">Résultats {{ get_election_pool_title_key(pool)|trans }}</a>
+                            </h3>
+                            <span class="separator"></span>
+                        {% endfor %}
+
                         <h3>
                             <a class="{{ is_active_route(app.request, "app_#{space_type}_designations_votes") ? 'active' }}"
                                href="{{ path("app_#{space_type}_designations_votes", link_params) }}">Bulletins dépouillés</a>

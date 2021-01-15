@@ -13,9 +13,27 @@
         <thead>
             <tr>
                 <th>Clé anonyme</th>
-                <th>Choix Femme</th>
-                <th>Choix Homme</th>
+
+                {% for pool in election.electionPools %}
+                    <th {{ (designation.isMajorityType ? 'colspan="' ~ pool.candidateGroups|length ~ '" class="text--center"')|raw }}>{{ get_election_pool_title_key(pool)|trans }}</th>
+                {% endfor %}
             </tr>
+
+            {% if designation.isMajorityType %}
+                <tr>
+                    <th></th>
+
+                    {% for pool in election.electionPools %}
+                        {% for candidate_group in pool.candidateGroups %}
+                            <th>
+                                {% for candidate in candidate_group.candidates %}
+                                    {{ candidate.fullName }}<br/>
+                                {% endfor %}
+                            </th>
+                        {% endfor %}
+                    {% endfor %}
+                </tr>
+            {% endif %}
         </thead>
 
         <tbody>
@@ -24,17 +42,35 @@
 
                 <tr>
                     <td>{{ vote.voterKey }}</td>
-                    {% for pool_code in constant('App\\ValueObject\\Genders::MALE_FEMALE') %}
-                        <td>
-                            {% for choice in choices if pool_code == choice.electionPool.code %}
-                                {% if choice.isBlank %}
-                                    ~
-                                {% else %}
-                                    {{ choice.candidateGroup.candidates|first.fullName }}
-                                {% endif %}
+
+                    {% if designation.isMajorityType %}
+                        {% for pool in election.electionPools %}
+                            {% for candidate_group in pool.candidateGroups %}
+                                <td>
+                                    {% set pool_choices = choices|filter(a => a.electionPool == pool) %}
+                                    {% set choice = pool_choices|filter(a => a.candidateGroup == candidate_group)|first %}
+
+                                    {% if choice %}
+                                        {{ ('voting_platform.vote.majority_vote_mention.' ~ choice.mention)|trans }}
+                                    {% else %}
+                                        ~
+                                    {% endif %}
+                                </td>
                             {% endfor %}
-                        </td>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        {% for pool_code in constant('App\\ValueObject\\Genders::MALE_FEMALE') %}
+                            <td>
+                                {% for choice in choices if pool_code == choice.electionPool.code %}
+                                    {% if choice.isBlank %}
+                                        ~
+                                    {% else %}
+                                        {{ choice.candidateGroup.candidates|first.fullName }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    {% endif %}
                 </tr>
             {% else %}
                 <tr>

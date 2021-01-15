@@ -76,7 +76,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Résultats Femme')->link());
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertRegExp('#/resultats/[\d\w-]{36}\?femme=1#', $crawler->getUri());
+        $this->assertRegExp('#/resultats/[\d\w-]{36}\?code=female#', $crawler->getUri());
 
         $this->assertStringContainsString('Résultats par scrutin : Femme', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
 
@@ -85,7 +85,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Résultats Homme')->link());
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertRegExp('#/resultats/[\d\w-]{36}\?homme=1#', $crawler->getUri());
+        $this->assertRegExp('#/resultats/[\d\w-]{36}\?code=male#', $crawler->getUri());
 
         $this->assertStringContainsString('Résultats par scrutin : Homme', $crawler->filter('.datagrid__pre-table')->eq(1)->text());
 
