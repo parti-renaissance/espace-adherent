@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Address\Address;
-use App\Collection\CommitteeCollection;
 use App\Committee\Filter\CommitteeListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
@@ -190,24 +189,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
 
         return $query->getSingleScalarResult();
-    }
-
-    public function findCommittees(array $uuids): CommitteeCollection
-    {
-        if (!$uuids) {
-            return new CommitteeCollection();
-        }
-
-        $qb = $this->createQueryBuilder('c');
-
-        $qb
-            ->where($qb->expr()->in('c.uuid', $uuids))
-            ->andWhere($qb->expr()->neq('c.status', ':status'))
-            ->setParameter('status', Committee::REFUSED)
-            ->orderBy('c.membersCount', 'DESC')
-        ;
-
-        return new CommitteeCollection($qb->getQuery()->getResult());
     }
 
     public function getQueryBuilderForTags(array $referentTags): QueryBuilder

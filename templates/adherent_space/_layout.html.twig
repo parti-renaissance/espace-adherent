@@ -4,7 +4,6 @@
 {% block footer '' %}
 
 {% block header %}
-    {% set is_certified = is_granted(constant('App\\Adherent\\Certification\\CertificationPermissions::CERTIFIED')) %}
     <nav class="manager-topbar">
         <div class="manager-topbar__container">
             <a href="{{ path('homepage') }}" class="text--logo b__nudge--right-large">EM!</a>

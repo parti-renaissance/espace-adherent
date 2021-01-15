@@ -78,19 +78,6 @@ class CommitteeRuntime implements RuntimeExtensionInterface
         return $this->authorizationChecker->isGranted(CommitteePermissions::SHOW, $committee);
     }
 
-    public function getCommitteeColorStatus(Adherent $adherent, Committee $committee): string
-    {
-        if ($adherent->isHostOf($committee)) {
-            return self::COLOR_STATUS_ADMINISTRATOR;
-        }
-
-        if ($committee->isWaitingForApproval()) {
-            return self::COLOR_STATUS_NOT_FINAL;
-        }
-
-        return '';
-    }
-
     public function isCandidate(Adherent $adherent, Committee $committee): bool
     {
         $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
