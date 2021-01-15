@@ -9,6 +9,7 @@ use App\Geocoder\Coordinates;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class CommitteeTest extends TestCase
 {
@@ -16,7 +17,7 @@ class CommitteeTest extends TestCase
     {
         $committee = $this->createCommittee();
 
-        $this->assertInstanceOf(Uuid::class, $committee->getUuid());
+        $this->assertInstanceOf(UuidInterface::class, $committee->getUuid());
         $this->assertSame('En Marche ! - Lyon 1', $committee->getName());
         $this->assertSame('69003-en-marche-lyon', $committee->getSlug());
         $this->assertSame('Le comité En Marche ! de Lyon village', $committee->getDescription());
