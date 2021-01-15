@@ -263,6 +263,9 @@
     "facebook/graph-sdk": {
         "version": "5.6.2"
     },
+    "fakerphp/faker": {
+        "version": "v1.13.0"
+    },
     "fig/http-message-util": {
         "version": "1.1.5"
     },
@@ -283,9 +286,6 @@
         "files": [
             ".php_cs.dist"
         ]
-    },
-    "fzaninotto/faker": {
-        "version": "v1.9.1"
     },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.35"
