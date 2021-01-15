@@ -28,7 +28,15 @@
         <tbody>
             {% for result in candidate_group_results %}
                 <tr>
-                    <td>{{ result.candidateGroup.candidates|first.fullName }}</td>
+                    <td>
+                        {% for candidate in result.candidateGroup.candidates|sort((a, b) => b.isFemale <=> a.isFemale) %}
+                            {{ candidate.fullName }}
+                            {% if result.candidateGroup.isElected %}
+                                <span class="elected-tag text--body text--on-yellow text--bold b__nudge--left-small">Élu{{ candidate.isFemale ? 'e' }}</span>
+                            {% endif %}
+                            <br/>
+                        {% endfor %}
+                    </td>
                     <td>
                         {% if designation.isMajorityType %}
                             <div class="majority-vote--candidates-container majority-vote--detailed">
