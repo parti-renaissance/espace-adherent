@@ -15,166 +15,6 @@
                 @media (min-width: $tablet) {
                     margin-right: 40px;
                 }
-
-                .majority-vote {
-                    &--candidates-head {
-                        display: flex;
-                        align-items: baseline;
-                        background-color: $white;
-                        border-radius: 3px;
-                        padding: 16px 24px;
-                        margin-bottom: 24px;
-
-                        .el {
-                            flex: 1;
-                        }
-
-                        .el-1 {
-                            @media (min-width: 1180px) {
-                                flex: 0 0 300px;
-                            }
-                        }
-                    }
-
-                    &--candidates-container {
-                        .candidate__box {
-                            display: flex;
-                            flex-direction: column;
-                            min-height: 148px;
-                            box-sizing: border-box;
-
-                            @media (min-width: 1180px) {
-                                flex-direction: row;
-                                align-items: center;
-                            }
-
-                            .candidate-names {
-                                margin-bottom: 20px;
-
-                                @media (min-width: 1180px) {
-                                    flex: 0 0 300px;
-                                    margin: 0;
-                                }
-                            }
-
-                            &.elected .candidate-names {
-                                font-weight: bold;
-                            }
-                        }
-
-                        .majority-vote {
-                            &__detail {
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: center;
-                                flex: auto;
-                                width: 100%;
-
-                                .candidate-mention {
-                                    align-self: center;
-
-                                    @media (min-width: 1180px) {
-                                        align-self: flex-start;
-                                    }
-
-                                    &.mention-data {
-                                        background: none;
-                                        padding: 0;
-                                        margin-right: 12px;
-                                        font-weight: 400;
-                                    }
-                                }
-                            }
-
-                            &__progress {
-                                display: none;
-
-                                &-container {
-                                    position: relative;
-
-                                    span.half {
-                                        position: absolute;
-                                        display: block;
-                                        width: 2px;
-                                        top: 0;
-                                        bottom: 0;
-                                        background-color: $black;
-                                        left: 50%;
-
-                                        &:before {
-                                            content: '';
-                                            width: 0;
-                                            height: 0;
-                                            top: -5px;
-                                            position: absolute;
-                                            left: -2px;
-                                            border-style: solid;
-                                            border-width: 6px 3px 0 3px;
-                                            border-color: $black transparent transparent transparent;
-                                        }
-
-                                        &:after {
-                                            content: '';
-                                            width: 0;
-                                            height: 0;
-                                            bottom: -5px;
-                                            position: absolute;
-                                            left: -2px;
-                                            border-style: solid;
-                                            border-width: 0 3px 6px 3px;
-                                            border-color: transparent transparent $black transparent;
-                                        }
-                                    }
-                                }
-
-                                &-parts {
-                                    display: flex;
-                                    margin: 14px 0 8px 0;
-                                    flex-wrap: wrap;
-
-                                    .majority-vote__mention {
-                                        height: 16px;
-
-                                        &:first-child {
-                                            border-top-left-radius: 50px;
-                                            border-bottom-left-radius: 50px;
-                                        }
-
-                                        &:last-child {
-                                            border-top-right-radius: 50px;
-                                            border-bottom-right-radius: 50px;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        &.majority-vote--detailed {
-                            .majority-vote {
-                                &__detail {
-                                    .candidate-mention {
-                                        align-self: center;
-                                    }
-
-                                    .align-self {
-                                        align-self: center;
-                                    }
-                                }
-                                &__progress {
-                                    display: block;
-                                }
-                            }
-                        }
-                    }
-
-                    &__mention--bg {
-                        &__excellent { background-color: $excellent; }
-                        &__very_good { background-color: $very-good; }
-                        &__good { background-color: $good; }
-                        &__fair { background-color: $fair; }
-                        &__insufficient { background-color: $insufficient; }
-                    }
-                }
             }
 
             .election {
@@ -360,5 +200,165 @@
 
     &--small {
         padding: 2px;
+    }
+}
+
+.majority-vote {
+    &--candidates-head {
+        display: flex;
+        align-items: baseline;
+        background-color: $white;
+        border-radius: 3px;
+        padding: 16px 24px;
+        margin-bottom: 24px;
+
+        .el {
+            flex: 1;
+        }
+
+        .el-1 {
+            @media (min-width: 1180px) {
+                flex: 0 0 300px;
+            }
+        }
+    }
+
+    &--candidates-container {
+        .candidate__box {
+            display: flex;
+            flex-direction: column;
+            min-height: 148px;
+            box-sizing: border-box;
+
+            @media (min-width: 1180px) {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .candidate-names {
+                margin-bottom: 20px;
+
+                @media (min-width: 1180px) {
+                    flex: 0 0 300px;
+                    margin: 0;
+                }
+            }
+
+            &.elected .candidate-names {
+                font-weight: bold;
+            }
+        }
+
+        .majority-vote {
+            &__detail {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                flex: auto;
+                width: 100%;
+
+                .candidate-mention {
+                    align-self: center;
+
+                    @media (min-width: 1180px) {
+                        align-self: flex-start;
+                    }
+
+                    &.mention-data {
+                        background: none;
+                        padding: 0;
+                        margin-right: 12px;
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            &__progress {
+                display: none;
+
+                &-container {
+                    position: relative;
+
+                    span.half {
+                        position: absolute;
+                        display: block;
+                        width: 2px;
+                        top: 0;
+                        bottom: 0;
+                        background-color: $black;
+                        left: 50%;
+
+                        &:before {
+                            content: '';
+                            width: 0;
+                            height: 0;
+                            top: -5px;
+                            position: absolute;
+                            left: -2px;
+                            border-style: solid;
+                            border-width: 6px 3px 0 3px;
+                            border-color: $black transparent transparent transparent;
+                        }
+
+                        &:after {
+                            content: '';
+                            width: 0;
+                            height: 0;
+                            bottom: -5px;
+                            position: absolute;
+                            left: -2px;
+                            border-style: solid;
+                            border-width: 0 3px 6px 3px;
+                            border-color: transparent transparent $black transparent;
+                        }
+                    }
+                }
+
+                &-parts {
+                    display: flex;
+                    margin: 14px 0 8px 0;
+                    flex-wrap: wrap;
+
+                    .majority-vote__mention {
+                        height: 16px;
+
+                        &:first-child {
+                            border-top-left-radius: 50px;
+                            border-bottom-left-radius: 50px;
+                        }
+
+                        &:last-child {
+                            border-top-right-radius: 50px;
+                            border-bottom-right-radius: 50px;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.majority-vote--detailed {
+            .majority-vote {
+                &__detail {
+                    .candidate-mention {
+                        align-self: center;
+                    }
+
+                    .align-self {
+                        align-self: center;
+                    }
+                }
+                &__progress {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    &__mention--bg {
+        &__excellent { background-color: $excellent; }
+        &__very_good { background-color: $very-good; }
+        &__good { background-color: $good; }
+        &__fair { background-color: $fair; }
+        &__insufficient { background-color: $insufficient; }
     }
 }

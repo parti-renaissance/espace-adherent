@@ -10,10 +10,10 @@
     {% endif %}
 
     <div class="datagrid__pre-table b__nudge--bottom-50">
-        <h3>Résultats par scrutin : <span class="text--pink">{{ app.request.query.has('femme') ? 'Femme' : 'Homme' }}</span></h3>
+        <h3>Résultats par scrutin : <span class="text--pink">{{ get_election_pool_title_key(election_pool_result.electionPool)|trans }}</span></h3>
 
         <span class="datagrid__count">
-            <span>{{ candidate_group_count|number_format(0, ',', ' ') }}</span> candidat{{ app.request.query.has('femme') ? 'e' }}{{ candidate_group_count > 1 ? 's' }}
+            <span>{{ candidate_group_count|number_format(0, ',', ' ') }}</span> candidat(e){{ candidate_group_count > 1 ? 's' }}
         </span>
     </div>
 
@@ -29,7 +29,46 @@
             {% for result in candidate_group_results %}
                 <tr>
                     <td>{{ result.candidateGroup.candidates|first.fullName }}</td>
-                    <td>{{ result.total }}</td>
+                    <td>
+                        {% if designation.isMajorityType %}
+                            <div class="majority-vote--candidates-container majority-vote--detailed">
+                                <div class="majority-vote__detail">
+                                    {% if result.majorityMention %}
+                                        <div class="candidate-mention candidate-mention__{{ result.majorityMention }} text--body text--center">
+                                            {{ ('voting_platform.vote.majority_vote_mention.' ~ result.majorityMention)|trans }}
+                                        </div>
+
+                                        <div class="majority-vote__progress">
+                                            <div class="majority-vote__progress-container">
+                                                <div class="majority-vote__progress-parts">
+                                                    {% set cercles = [] %}
+                                                    {% for mention, value in result.totalMentions %}
+                                                        {% set percent = value * 100.0 / result.total %}
+                                                        {% set cercles = cercles|merge([{mention: mention, percent: percent}]) %}
+
+                                                        <div class="majority-vote__mention majority-vote__mention--bg__{{ mention }}" style="width: {{ percent }}%;"> </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <span class="half"></span>
+                                            </div>
+
+                                            <div class="l__row">
+                                                {% for row in cercles %}
+                                                    <div class="candidate-mention mention-data candidate-mention__{{ row.mention }} text--body text--center" style="width: {{ row.percent }}%;">
+                                                        {{ '.00' in row.percent|number_format(2) ? row.percent|number_format(0) : row.percent|number_format(1, ',') }} %
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        ~
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            {{ result.total }}
+                        {% endif %}
+                    </td>
                 </tr>
             {% else %}
                 <tr>

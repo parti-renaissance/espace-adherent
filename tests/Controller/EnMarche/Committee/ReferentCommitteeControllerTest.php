@@ -151,6 +151,69 @@ class ReferentCommitteeControllerTest extends WebTestCase
         $this->assertResponseStatusCode($statusCode, $this->client->getResponse());
     }
 
+    public function testReferentCanSeeCommitteeElectionList()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/comites/designations');
+
+        $this->assertCount(2, $table = $crawler->filter('tbody tr'));
+
+        $this->assertStringContainsString('En Marche - Comité de Rouen', $table->eq(0)->text());
+        $this->assertStringContainsString('Programmée', $table->eq(0)->text());
+        $this->assertStringContainsString('2 candidatures', $table->eq(0)->text());
+        $this->assertStringContainsString('0 pré-candidature', $table->eq(0)->text());
+
+        $this->assertStringContainsString('Antenne En Marche de Fontainebleau', $table->eq(1)->text());
+        $this->assertStringContainsString('Terminée', $table->eq(1)->text());
+        $this->assertStringContainsString('Détails', $table->eq(1)->text());
+
+        $form = $crawler->selectButton('Appliquer')->form();
+        $crawler = $this->client->submit($form, ['f' => ['committeeName' => 'Fontainebleau']]);
+
+        $this->assertCount(1, $table = $crawler->filter('tbody tr'));
+
+        $crawler = $this->client->click($crawler->selectLink('Détails')->link());
+        $this->assertStringEndsWith('/espace-referent/comites/antenne-en-marche-de-fontainebleau/designations/b81c3585-c802-48f6-9dca-19d1d4e08c44', $crawler->getUri());
+    }
+
+    public function testReferentCanSeeCommitteeElectionDetails()
+    {
+        $this->authenticateAsAdherent($this->client, 'adherent-female-32@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/comites/designations');
+        $crawler = $this->client->click($crawler->selectLink('Détails')->link());
+
+        $this->assertStringEndsWith('/espace-referent/comites/en-marche-allemagne-3/designations/13814072-1dd2-11b2-9593-b97d988be702', $crawler->getUri());
+
+        $this->assertStringContainsString('Élection du binôme paritaire d\'Animateurs locaux', $crawler->filter('.datagrid__pre-table')->text());
+
+        $crawler = $this->client->click($crawler->selectLink('Liste d\'émargement')->link());
+
+        $this->assertCount(6, $table = $crawler->filter('tbody tr'));
+        $this->assertStringContainsString('Adherent 33 Fa33ke', $crawler->filter('table')->text());
+
+        $crawler = $this->client->click($crawler->selectLink('Résultats Animateurs Locaux')->link());
+        $this->assertStringContainsString('Résultats par scrutin : Animateurs Locaux', $crawler->filter('.datagrid__pre-table.b__nudge--bottom-50 h3')->text());
+
+        $tableContent = $crawler->filter('table')->text();
+        $this->assertStringContainsString('Très bien', $tableContent);
+        $this->assertStringContainsString('Bien', $tableContent);
+        $this->assertStringContainsString('Insuffisant', $tableContent);
+
+        $crawler = $this->client->click($crawler->selectLink('Bulletins dépouillés')->link());
+
+        $this->assertCount(5, $table = $crawler->filter('tbody tr'));
+
+        $tableHeader = $crawler->filter('thead')->text();
+        $this->assertStringContainsString('Adherent 32 Fa32ke', $tableHeader);
+        $this->assertStringContainsString('Adherent 33 Fa33ke', $tableHeader);
+        $this->assertStringContainsString('Adherent 34 Fa34ke', $tableHeader);
+        $this->assertStringContainsString('Adherent 35 Fa35ke', $tableHeader);
+        $this->assertStringContainsString('Adherent 36 Fa36ke', $tableHeader);
+        $this->assertStringContainsString('Adherent 37 Fa37ke', $tableHeader);
+    }
+
     public function provideAdherents()
     {
         return [
