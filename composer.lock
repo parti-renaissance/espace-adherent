@@ -158,16 +158,16 @@
         },
         {
             "name": "algolia/search-bundle",
-            "version": "4.1.1",
+            "version": "4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/algolia/search-bundle.git",
-                "reference": "acad5a642f519708bbc567feb2ed9af2ae79523e"
+                "reference": "d7abd9c9018163f1b278b317ac61ebde07119ef4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/algolia/search-bundle/zipball/acad5a642f519708bbc567feb2ed9af2ae79523e",
-                "reference": "acad5a642f519708bbc567feb2ed9af2ae79523e",
+                "url": "https://api.github.com/repos/algolia/search-bundle/zipball/d7abd9c9018163f1b278b317ac61ebde07119ef4",
+                "reference": "d7abd9c9018163f1b278b317ac61ebde07119ef4",
                 "shasum": ""
             },
             "require": {
@@ -216,7 +216,7 @@
                     "email": "support@algolia.com"
                 }
             ],
-            "time": "2020-04-23T12:34:31+00:00"
+            "time": "2021-01-18T13:13:46+00:00"
         },
         {
             "name": "api-platform/api-pack",
