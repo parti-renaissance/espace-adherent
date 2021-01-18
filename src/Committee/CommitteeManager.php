@@ -94,22 +94,6 @@ class CommitteeManager
         return $this->getMembershipRepository()->superviseCommittee($adherent, $committee);
     }
 
-    public function getAdherentCommittees(Adherent $adherent): array
-    {
-        // Prevent SQL query if the adherent doesn't follow any committees yet.
-        if (0 === \count($memberships = $adherent->getMemberships())) {
-            return [];
-        }
-
-        $committees = $this
-            ->getCommitteeRepository()
-            ->findCommittees($memberships->getCommitteeUuids())
-            ->getOrderedCommittees($adherent->getMemberships())
-        ;
-
-        return $committees->toArray();
-    }
-
     public function getTimeline(Committee $committee, int $limit = 30, int $firstResultIndex = 0): Paginator
     {
         return $this

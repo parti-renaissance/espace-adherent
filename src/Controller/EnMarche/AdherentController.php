@@ -15,7 +15,6 @@ use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Entity\CommitteeMembership;
 use App\Entity\Event;
 use App\Entity\TurnkeyProject;
 use App\Event\EventRegistrationManager;
@@ -31,8 +30,6 @@ use App\Membership\MemberActivityTracker;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Repository\AdherentRepository;
-use App\Repository\CitizenProjectRepository;
-use App\Repository\CommitteeRepository;
 use App\Repository\EmailRepository;
 use App\Repository\EventRepository;
 use App\Repository\SummaryRepository;
@@ -319,42 +316,6 @@ class AdherentController extends Controller
             'form' => $form->createView(),
             'fromType' => $fromType,
             'from' => $from,
-        ]);
-    }
-
-    public function listMyCommitteesAction(CommitteeManager $manager, string $noResultMessage = null): Response
-    {
-        return $this->render('adherent/list_my_committees.html.twig', [
-            'committees' => $manager->getAdherentCommittees($this->getUser()),
-            'no_result_message' => $noResultMessage,
-        ]);
-    }
-
-    public function listCommitteesAlAction(CommitteeRepository $repository): Response
-    {
-        return $this->render('adherent/list_my_committees_al.html.twig', [
-            'committees' => $repository->findCommitteesByPrivilege(
-                $this->getUser(),
-                CommitteeMembership::getHostPrivileges()
-            ),
-        ]);
-    }
-
-    public function listMyCitizenProjectsAction(
-        CitizenProjectRepository $citizenProjectRepository,
-        string $noResultMessage = null
-    ): Response {
-        return $this->render('adherent/list_my_citizen_projects.html.twig', [
-            'citizen_projects' => $citizenProjectRepository->findAllRegisteredCitizenProjectsForAdherent($this->getUser()),
-            'no_result_message' => $noResultMessage,
-        ]);
-    }
-
-    public function listMyAdministratedCitizenProjectsAction(
-        CitizenProjectRepository $citizenProjectRepository
-    ): Response {
-        return $this->render('adherent/list_my_administrated_citizen_projects.html.twig', [
-            'administrated_citizen_projects' => $citizenProjectRepository->findAllRegisteredCitizenProjectsForAdherent($this->getUser(), true),
         ]);
     }
 }
