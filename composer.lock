@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "504ab0450ff09dfb97e0035b022837fe",
+    "content-hash": "277f32bf924bcc550f067b6ee632a794",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3001,16 +3001,16 @@
         },
         {
             "name": "enmarche/majority-judgment",
-            "version": "v0.0.2",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EnMarche/majority-judgment.git",
-                "reference": "709414dfee55f1d4d0021b6db278923f0269dc4c"
+                "reference": "c3e5bdb3ac9c2d0485ae9539f1bc9cfc1841e71b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EnMarche/majority-judgment/zipball/709414dfee55f1d4d0021b6db278923f0269dc4c",
-                "reference": "709414dfee55f1d4d0021b6db278923f0269dc4c",
+                "url": "https://api.github.com/repos/EnMarche/majority-judgment/zipball/c3e5bdb3ac9c2d0485ae9539f1bc9cfc1841e71b",
+                "reference": "c3e5bdb3ac9c2d0485ae9539f1bc9cfc1841e71b",
                 "shasum": ""
             },
             "require": {
@@ -3031,7 +3031,7 @@
             ],
             "description": "Majority judgment - the lib calculates the result of an election",
             "homepage": "https://github.com/EnMarche/majority-judgment",
-            "time": "2021-01-10T17:43:23+00:00"
+            "time": "2021-01-19T09:15:55+00:00"
         },
         {
             "name": "exercise/htmlpurifier-bundle",
