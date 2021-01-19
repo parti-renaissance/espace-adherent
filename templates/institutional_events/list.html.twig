@@ -1,0 +1,55 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    <div class="alert alert--tips b__nudge--bottom-60">Les réunions privées ne font pas l'objet d'une page dédiée sur le site d'En Marche et ne sont connues que des personnes que vous y invitez. Cette option a été pensée pour vous permettre d'organiser des événements en comité restreint tels que les réunions d'équipe départementale, les réunions avec les animateurs locaux ou les comités politiques.</div>
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
+        <h3>Réunions privées</h3>
+        <a href="{{ path("app_#{space_name}_institutional_events_create") }}" class="btn-secondary btn-secondary--blue">
+            + Créer
+        </a>
+    </div>
+
+    <div id="datagrid">
+        <table class="datagrid__table-manager managed__list__table">
+            <thead>
+            <tr>
+                <th style="width: 250px;">Nom</th>
+                <th style="width: 150px;">Date</th>
+                <th style="width: 100px;">Code postal</th>
+                <th class="datagrid__table__col--hide-mobile" style="width: 150px;">Organisateur</th>
+                <th style="width: 25px;">Invitations</th>
+                <th style="width: 70px;">Editer</th>
+                <th style="width: 70px;">Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for institutional_event in institutional_events %}
+                <tr>
+                    <td style="width: 250px;">{{ institutional_event.name }}</td>
+                    <td style="width: 150px;">{{ institutional_event.beginAt|date('d/m/Y H:i') }}</td>
+                    <td style="width: 100px;">{{ institutional_event.postalCode }}</td>
+                    <td class="datagrid__table__col--hide-mobile" style="width: 150px;">{{ institutional_event.organizer }}</td>
+                    <td style="width: 25px;">{{ institutional_event.invitationsCount }}</td>
+                    <td style="width: 70px;">
+                        <a href="{{ path("app_#{space_name}_institutional_events_edit", {uuid: institutional_event.uuid}) }}">
+                            <span class="btn btn--default"><i class="fa fa-edit"></i></span>
+                        </a>
+                    </td>
+                    <td style="width: 70px;">
+                        <a href="{{ path("app_#{space_name}_institutional_events_delete", {uuid: institutional_event.uuid}) }}">
+                            <span class="btn btn--default"><i class="fa fa-remove"></i></span>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8" class="text--center">
+                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                        Aucun résultat
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

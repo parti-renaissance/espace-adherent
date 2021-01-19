@@ -70,6 +70,7 @@ class DelegatedAccess
     public const ACCESS_CITIZEN_PROJECTS = 'citizen_projects';
     public const ACCESS_ELECTED_REPRESENTATIVES = 'elected_representatives';
     public const ACCESS_FILES = 'files';
+    public const ACCESS_INSTITUTIONAL_EVENTS = 'institutional_events';
     public const ACCESSES = [
         self::ACCESS_MESSAGES,
         self::ACCESS_EVENTS,

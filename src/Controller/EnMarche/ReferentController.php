@@ -2,19 +2,12 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Address\GeoCoder;
 use App\Entity\Adherent;
-use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
-use App\Form\InstitutionalEventCommandType;
 use App\Form\ReferentPersonLinkType;
-use App\InstitutionalEvent\InstitutionalEventCommand;
-use App\InstitutionalEvent\InstitutionalEventCommandHandler;
 use App\Intl\FranceCitiesBundle;
-use App\Referent\ManagedInstitutionalEventsExporter;
 use App\Referent\OrganizationalChartManager;
 use App\Repository\CommitteeRepository;
-use App\Repository\InstitutionalEventRepository;
 use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use App\Repository\ReferentRepository;
@@ -32,115 +25,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ReferentController extends Controller
 {
-    /**
-     * @Route("/evenements-institutionnels", name="app_referent_institutional_events", methods={"GET"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function institutionalEventsAction(
-        InstitutionalEventRepository $institutionalEventRepository,
-        ManagedInstitutionalEventsExporter $exporter
-    ): Response {
-        return $this->render('referent/institutional_events/list.html.twig', [
-            'managedInstitutionalEventsJson' => $exporter->exportAsJson(
-                $institutionalEventRepository->findByOrganizer($this->getUser())
-            ),
-        ]);
-    }
-
-    /**
-     * @Route("/evenements-institutionnels/creer", name="app_referent_institutional_events_create", methods={"GET", "POST"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function institutionalEventsCreateAction(
-        Request $request,
-        InstitutionalEventCommandHandler $institutionalEventCommandHandler,
-        GeoCoder $geoCoder
-    ): Response {
-        $command = new InstitutionalEventCommand($this->getUser());
-        $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
-
-        $form = $this
-            ->createForm(InstitutionalEventCommandType::class, $command)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $institutionalEventCommandHandler->handle($command);
-
-            $this->addFlash('info', 'referent.institutional_event.create.success');
-
-            return $this->redirectToRoute('app_referent_institutional_events');
-        }
-
-        return $this->render('referent/institutional_events/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/evenements-institutionnels/{uuid}/editer",
-     *     name="app_referent_institutional_events_edit",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET", "POST"}
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', institutionalEvent)")
-     */
-    public function institutionalEventsEditAction(
-        Request $request,
-        InstitutionalEvent $institutionalEvent,
-        InstitutionalEventCommandHandler $institutionalEventCommandHandler
-    ): Response {
-        $form = $this
-            ->createForm(
-                InstitutionalEventCommandType::class,
-                $command = InstitutionalEventCommand::createFromInstitutionalEvent($institutionalEvent),
-                ['view' => InstitutionalEventCommandType::EDIT_VIEW]
-            )
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $institutionalEventCommandHandler->handleUpdate($command, $institutionalEvent);
-
-            $this->addFlash('info', 'referent.institutional_event.update.success');
-
-            return $this->redirectToRoute('app_referent_institutional_events');
-        }
-
-        return $this->render('referent/institutional_events/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/evenements-institutionnels/{uuid}/supprimer",
-     *     name="app_referent_institutional_events_delete",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"}
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', institutionalEvent)")
-     */
-    public function institutionalEventsDeleteAction(
-        InstitutionalEvent $institutionalEvent,
-        InstitutionalEventCommandHandler $institutionalEventCommandHandler
-    ): Response {
-        $institutionalEventCommandHandler->handleDelete($institutionalEvent);
-
-        $this->addFlash('info', 'referent.institutional_event.delete.success');
-
-        return $this->redirectToRoute('app_referent_institutional_events');
-    }
-
     /**
      * @Route("/mon-equipe", name="app_referent_organizational_chart", methods={"GET"})
      * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
