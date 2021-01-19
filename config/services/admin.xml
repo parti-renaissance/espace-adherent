@@ -186,7 +186,7 @@
 
             <argument />
             <argument>App\Entity\Committee</argument>
-            <argument />
+            <argument>App\Controller\Admin\AdminCommitteeCRUDController</argument>
             <argument type="service" id="App\Committee\CommitteeManager" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher"/>

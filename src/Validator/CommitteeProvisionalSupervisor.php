@@ -15,7 +15,7 @@ class CommitteeProvisionalSupervisor extends Constraint
     public $errorPath;
     public $gender;
     public $message = 'committee.provisional_supervisor.not_valid';
-    public $notValidGenderMessage = 'committee.provisional_supervisor.not_valid';
+    public $notValidGenderMessage = 'committee.provisional_supervisor.gender.not_valid';
 
     public function __construct($options = null)
     {

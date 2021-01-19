@@ -108,6 +108,23 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
+    /**
+     * Finds an active Adherent instance by its id.
+     */
+    public function findOneActiveById(int $id): ?Adherent
+    {
+        return $this->createQueryBuilder('adherent')
+            ->where('adherent.id = :id')
+            ->andWhere('adherent.status = :status')
+            ->setParameters([
+                'id' => $id,
+                'status' => Adherent::ENABLED,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function isAdherent(string $email): bool
     {
         return (bool) $this

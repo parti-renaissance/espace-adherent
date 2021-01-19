@@ -2,21 +2,36 @@
 
 namespace App\Mailer\Message;
 
-use App\Entity\Adherent;
+use App\Entity\ProvisionalSupervisor;
 use Ramsey\Uuid\Uuid;
 
 final class CommitteeApprovalConfirmationMessage extends Message
 {
-    public static function create(Adherent $host, string $committeeCityName, string $committeeUrl): self
+    public static function create(array $provisionalSupervisors, string $committeeCityName, string $committeeUrl): self
     {
-        return new self(
+        /** @var ProvisionalSupervisor[] $provisionalSupervisors */
+        $provisionalSupervisor = array_shift($provisionalSupervisors);
+        $adherent = $provisionalSupervisor->getAdherent();
+
+        $message = new self(
             Uuid::uuid4(),
-            $host->getEmailAddress(),
-            $host->getFullName(),
+            $adherent->getEmailAddress(),
+            $adherent->getFullName(),
             'Votre comité est validé, à vous de jouer',
             static::getTemplateVars($committeeCityName, $committeeUrl),
-            static::getRecipientVars($host->getFirstName())
+            static::getRecipientVars($adherent->getFirstName())
         );
+
+        foreach ($provisionalSupervisors as $provisionalSupervisor) {
+            $adherent = $provisionalSupervisor->getAdherent();
+            $message->addRecipient(
+                $adherent->getEmailAddress(),
+                $adherent->getFullName(),
+                static::getRecipientVars($adherent->getFirstName()),
+            );
+        }
+
+        return $message;
     }
 
     private static function getTemplateVars(string $committeeCityName, string $committeeUrl): array

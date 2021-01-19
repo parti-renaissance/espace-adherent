@@ -41,4 +41,10 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
     {
         $this->provisional = $provisional;
     }
+
+    public function end(\DateTime $now, string $reason = null): void
+    {
+        $this->finishAt = $now;
+        $this->setReason($reason);
+    }
 }

@@ -6,7 +6,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\AddressInterface;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Committee\Exception\CommitteeProvisionalSupervisorException;
+use App\Committee\Exception\CommitteeSupervisorException;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use App\Exception\CommitteeAlreadyApprovedException;
@@ -105,13 +107,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     ];
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $coordinatorComment;
-
-    /**
      * The group description.
      *
      * @ORM\Column(type="text")
@@ -133,13 +128,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $twitterNickname;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $adminComment;
-
-    /**
      * @var CitizenProjectCommitteeSupport|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\CitizenProjectCommitteeSupport", mappedBy="committee")
@@ -147,16 +135,11 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $citizenProjectSupports;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $nameLocked = false;
-
-    /**
-     * @var bool
+     * Is also used to block address modification.
      *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $photoUploaded = false;
+    private $nameLocked = false;
 
     /**
      * @var CommitteeElection[]
@@ -229,37 +212,9 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getCoordinatorComment(): ?string
-    {
-        return $this->coordinatorComment;
-    }
-
-    public function setCoordinatorComment(?string $coordinatorComment): void
-    {
-        $this->coordinatorComment = $coordinatorComment;
-    }
-
     public function getPostAddress(): AddressInterface
     {
         return $this->postAddress;
-    }
-
-    public function getPhotoPath(): string
-    {
-        return sprintf('images/committees/%s.jpg', $this->getUuid());
-    }
-
-    public function hasPhotoUploaded(): bool
-    {
-        return $this->photoUploaded;
-    }
-
-    public function setPhotoUploaded(bool $photoUploaded): void
-    {
-        $this->photoUploaded = $photoUploaded;
     }
 
     public function getCommitteeElection(): ?CommitteeElection
@@ -341,16 +296,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $this->twitterNickname;
     }
 
-    public function getAdminComment(): ?string
-    {
-        return $this->adminComment;
-    }
-
-    public function setAdminComment(string $adminComment): void
-    {
-        $this->adminComment = $adminComment;
-    }
-
     public function isNameLocked(): bool
     {
         return $this->nameLocked;
@@ -378,6 +323,11 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->status = self::APPROVED;
         $this->approvedAt = new \DateTime($timestamp);
         $this->refusedAt = null;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     public function setSocialNetworks(string $facebookPageUrl = null, string $twitterNickname = null)
@@ -542,6 +492,9 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         ;
     }
 
+    /**
+     * @return ProvisionalSupervisor[]|Collection
+     */
     public function getProvisionalSupervisors(): Collection
     {
         return $this->provisionalSupervisors;
@@ -591,5 +544,35 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         }
 
         $this->addProvisionalSupervisor($adherent);
+    }
+
+    public function getSupervisorMandate(string $gender, bool $isProvisional = false): ?CommitteeAdherentMandate
+    {
+        $mandates = $this->findSupervisorMandates($gender, $isProvisional);
+        $count = $mandates->count();
+
+        if ($count > 1) {
+            throw new CommitteeSupervisorException(\sprintf('More than one %s %s supervisor has been found for committee with UUID "%s".', $gender, $isProvisional ? 'provisional' : '', $this->getUuid()));
+        }
+
+        return $count > 0 ? $mandates->first() : null;
+    }
+
+    private function findSupervisorMandates(string $gender, bool $isProvisional = null): Collection
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('quality', CommitteeMandateQualityEnum::SUPERVISOR))
+            ->andWhere(Criteria::expr()->orX(
+                Criteria::expr()->isNull('finishAt'),
+                Criteria::expr()->gt('finishAt', new \DateTime())
+            ))
+            ->andWhere(Criteria::expr()->eq('gender', $gender))
+        ;
+
+        if (\is_bool($isProvisional)) {
+            $criteria->andWhere(Criteria::expr()->eq('provisional', $isProvisional));
+        }
+
+        return $this->adherentMandates->matching($criteria);
     }
 }

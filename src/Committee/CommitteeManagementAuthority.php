@@ -36,7 +36,7 @@ class CommitteeManagementAuthority
         $this->manager->approveCommittee($committee);
 
         $this->mailer->sendMessage(CommitteeApprovalConfirmationMessage::create(
-            $this->manager->getCommitteeCreator($committee),
+            $committee->getProvisionalSupervisors()->toArray(),
             $committee->getCityName(),
             $this->urlGenerator->generate('app_committee_show', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
         ));

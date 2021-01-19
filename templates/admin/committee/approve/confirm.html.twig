@@ -1,0 +1,85 @@
+{% extends 'admin/committee/merge/_layout.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block show %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">Infos</h4>
+                </div>
+                <div class="box-body">
+                    <div class="margin-bottom">Le référent et les animateurs provisoires seront avertis par email que le comité a été approuvé.</div>
+                    <div class="sonata-ba-collapsed-fields visually-hidden">
+                        {{ form_row(form.name, { label: 'Nom', attr: { readonly: true } }) }}
+                        {{ form_row(form.slug, { label: 'Slug', attr: { readonly: true } }) }}
+                        {{ form_row(form.description, { label: 'Description', attr: { readonly: true } }) }}
+                        {{ form_row(form.address.address, { attr: { readonly: true } }) }}
+                        {{ form_row(form.address.postalCode, { label: 'Code postale', attr: { readonly: true } }) }}
+                        {{ form_row(form.address.city, { attr: { readonly: true } }) }}
+                        {{ form_row(form.address.cityName, { label: 'Ville', attr: { readonly: true } }) }}
+                        {{ form_row(form.address.country, { label: 'Pays', attr: { readonly: true } }) }}
+                        {{ form_row(form.nameLocked, { label: 'Verrouiller les modifications', attr: { readonly: true } }) }}
+                    </div>
+                    <div class="table-responsive margin-bottom">
+                        {% set committeeCommand = form.vars.value %}
+                        <table class="table">
+                            <tbody>
+                                <tr class="sonata-ba-view-container">
+                                    <th>Nom</th>
+                                    <td>{{ committeeCommand.name }}</td>
+                                </tr>
+                                <tr class="sonata-ba-view-container">
+                                    <th>Slug</th>
+                                    <td>{{ committeeCommand.slug }}</td>
+                                </tr>
+                                <tr class="sonata-ba-view-container">
+                                    <th>Description</th>
+                                    <td>{{ committeeCommand.description }}</td>
+                                </tr>
+                                <tr class="sonata-ba-view-container">
+                                    <th>Adresse</th>
+                                    <td>{{ committeeCommand.address.fullAddress }}</td>
+                                </tr>
+                                <tr class="sonata-ba-view-container">
+                                    <th>Verrouiller les modifications</th>
+                                    <td>{{ (committeeCommand.isNameLocked ? 'global.yes' : 'global.no')|trans }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">Animation</h4>
+                </div>
+                <div class="table-responsive margin-bottom">
+                    {% include 'admin/committee/approve/_provisional_supervisors.html.twig'
+                        with { female: object.provisionalSupervisorFemale, male: object.provisionalSupervisorMale } %}
+                </div>
+                <div class="box-body">
+                    <div class="sonata-ba-collapsed-fields visually-hidden">
+                        {{ form_row(form.provisionalSupervisorFemale, { label: 'Animatrice provisoire', attr: { readonly: true } }) }}
+                        {{ form_row(form.provisionalSupervisorMale, { label: 'Animateur provisoire', attr: { readonly: true } }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="sonata-ba-form-actions well well-small form-actions">
+                {{ form_widget(form.confirm, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
+                <a href="{{ path('admin_app_committee_list') }}" class="btn btn-danger">Annuler</a>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

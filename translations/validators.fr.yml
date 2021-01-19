@@ -88,6 +88,8 @@ adherent.unregistration.reasons: Afin de confirmer la suppression de votre compt
 adherent.nickname.invalid_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres, et les caractères _ et -
 adherent.nickname.invalid_extended_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres (contenant des accents aussi), et les caractères _, -, ! et .
 
+adherent.unknown_id: Il n'existe aucun adhérent correspondant à cet ID.
+
 #
 # Adherent profile
 #

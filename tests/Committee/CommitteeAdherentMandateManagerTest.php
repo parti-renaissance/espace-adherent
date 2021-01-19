@@ -32,6 +32,8 @@ class CommitteeAdherentMandateManagerTest extends TestCase
     private $electedRepresentativeRepository;
     /** @var \PHPUnit_Framework_MockObject_MockObject|TranslatorInterface */
     private $translator;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|CommitteeAdherentMandateManager */
+    private $mandateManager;
 
     protected function setUp(): void
     {
@@ -39,6 +41,13 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $this->mandateRepository = $this->createMock(CommitteeAdherentMandateRepository::class);
         $this->electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
+
+        $this->mandateManager = new CommitteeAdherentMandateManager(
+            $this->entityManager,
+            $this->mandateRepository,
+            $this->electedRepresentativeRepository,
+            $this->translator
+        );
     }
 
     protected function tearDown(): void
@@ -47,6 +56,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $this->mandateRepository = null;
         $this->electedRepresentativeRepository = null;
         $this->translator = null;
+        $this->mandateManager = null;
     }
 
     public function testCannotCreateMandateIfIncorrectGender()
@@ -61,14 +71,8 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             ->method('trans')
             ->with('adherent_mandate.committee.not_valid_gender', $this->anything())
         ;
-        $mandateManager = new CommitteeAdherentMandateManager(
-            $this->entityManager,
-            $this->mandateRepository,
-            $this->electedRepresentativeRepository,
-            $this->translator
-        );
 
-        $mandateManager->createMandate($adherent, $committee);
+        $this->mandateManager->createMandate($adherent, $committee);
     }
 
     public function testCannotCreateMandateIfAdherentHasActiveMandate()
@@ -104,14 +108,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             ->willReturn($activeMandate)
         ;
 
-        $mandateManager = new CommitteeAdherentMandateManager(
-            $this->entityManager,
-            $this->mandateRepository,
-            $this->electedRepresentativeRepository,
-            $this->translator
-        );
-
-        $mandateManager->createMandate($adherent, $committee);
+        $this->mandateManager->createMandate($adherent, $committee);
     }
 
     public function testCannotCreateMandateIfAdherentIsMemberOfTerritorialCouncil()
@@ -134,14 +131,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $mandateManager = new CommitteeAdherentMandateManager(
-            $this->entityManager,
-            $this->mandateRepository,
-            $this->electedRepresentativeRepository,
-            $this->translator
-        );
-
-        $mandateManager->createMandate($adherent, $committee);
+        $this->mandateManager->createMandate($adherent, $committee);
     }
 
     /**
@@ -163,14 +153,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             ->with('adherent_mandate.committee.committee_has_already_active_mandate', $this->anything())
         ;
 
-        $mandateManager = new CommitteeAdherentMandateManager(
-            $this->entityManager,
-            $this->mandateRepository,
-            $this->electedRepresentativeRepository,
-            $this->translator
-        );
-
-        $mandateManager->createMandate($adherent, $committee);
+        $this->mandateManager->createMandate($adherent, $committee);
     }
 
     /**
@@ -188,14 +171,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         ;
         $this->entityManager->expects($this->once())->method('flush');
 
-        $mandateManager = new CommitteeAdherentMandateManager(
-            $this->entityManager,
-            $this->mandateRepository,
-            $this->electedRepresentativeRepository,
-            $this->translator
-        );
-
-        $mandateManager->createMandate($adherent, $committee);
+        $this->mandateManager->createMandate($adherent, $committee);
 
         $this->assertCount(1, $committee->getAdherentMandates());
         $this->assertInstanceOf(CommitteeAdherentMandate::class, $committee->getAdherentMandates()->first());
@@ -217,14 +193,7 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $mandateManager = new CommitteeAdherentMandateManager(
-            $this->entityManager,
-            $this->mandateRepository,
-            $this->electedRepresentativeRepository,
-            $this->translator
-        );
-
-        $mandateManager->endMandate($adherent, $committee);
+        $this->mandateManager->endMandate($adherent, $committee);
     }
 
     /**
@@ -245,16 +214,63 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             ->willReturn($mandate)
         ;
 
-        $mandateManager = new CommitteeAdherentMandateManager(
-            $this->entityManager,
-            $this->mandateRepository,
-            $this->electedRepresentativeRepository,
-            $this->translator
-        );
-
-        $mandateManager->endMandate($adherent, $committee);
+        $this->mandateManager->endMandate($adherent, $committee);
 
         $this->assertNotNull($mandate->getFinishAt());
+    }
+
+    public function testCannotUpdateSupervisorProvisionalMandateIfIncorrectGender()
+    {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
+        $adherent = $this->createAdherent(Genders::OTHER);
+        $committee = $this->createCommittee();
+
+        $this->translator
+            ->expects($this->once())
+            ->method('trans')
+            ->with('adherent_mandate.committee.not_valid_gender', $this->anything())
+        ;
+
+        $this->mandateManager->updateSupervisorMandate($adherent, $committee);
+    }
+
+    public function testCannotUpdateSupervisorProvisionalMandateIfMinor()
+    {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
+        $adherent = $this->createAdherent(Genders::MALE, '2005-04-04');
+        $committee = $this->createCommittee();
+
+        $this->translator
+            ->expects($this->once())
+            ->method('trans')
+            ->with('adherent_mandate.committee.provisional_supervisor.not_valid', $this->anything())
+        ;
+
+        $this->mandateManager->updateSupervisorMandate($adherent, $committee);
+    }
+
+    public function testCannotUpdateSupervisorProvisionalMandateIfHasActiveParliamentaryMandate()
+    {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
+        $adherent = $this->createAdherent(Genders::MALE);
+        $committee = $this->createCommittee();
+
+        $this->translator
+            ->expects($this->once())
+            ->method('trans')
+            ->with('adherent_mandate.committee.provisional_supervisor.not_valid', $this->anything())
+        ;
+        $this->electedRepresentativeRepository
+            ->expects($this->once())
+            ->method('hasActiveParliamentaryMandate')
+            ->with($adherent)
+            ->willReturn(true)
+        ;
+
+        $this->mandateManager->updateSupervisorMandate($adherent, $committee);
     }
 
     private function createAdherent(string $gender = Genders::MALE, string $birthday = null): Adherent

@@ -3,7 +3,7 @@
 {% block field %}
     <div style="width: 160px">
         {% if not object.isApproved %}
-            <a href="{{ path('app_admin_committee_approve', { id: object.id }) }}" class="btn btn-xs btn-default" title="Approuver">
+            <a href="{{ path('admin_app_committee_approve', { id: object.id }) }}" class="btn btn-xs btn-default" title="Approuver">
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Approuver
             </a>
