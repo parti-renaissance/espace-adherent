@@ -180,7 +180,9 @@ class City implements ZoneableInterface
             $toMerge[] = $reference->department->getParents();
         }
 
-        $toMerge[] = $reference->districts->toArray();
+        if (self::CITY_PARIS_CODE !== $this->code) {
+            $toMerge[] = $reference->districts->toArray();
+        }
 
         $toMerge[] = $reference->cantons->toArray();
 

@@ -21,11 +21,11 @@ use ZipArchive;
 
 final class UpdateCommunitiesCommand extends Command
 {
+    protected static $defaultName = 'app:geo:update-communities';
+
     private const SOURCE = 'https://www.insee.fr/fr/statistiques/fichier/2510634/Intercommunalite-Metropole_au_01-01-2020.zip';
     private const FILENAME = 'Intercommunalité - Métropole au 01-01-2020.xlsx';
     private const SHEET_NAME = 'Composition_communale';
-
-    protected static $defaultName = 'app:geo:update-communities';
 
     /**
      * @var HttpClientInterface

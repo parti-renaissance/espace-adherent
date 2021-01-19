@@ -85,6 +85,12 @@ class District implements ZoneableInterface
         $parents[] = $department = $this->getDepartment();
         if ($department) {
             $parents = array_merge($parents, $department->getParents());
+
+            if (self::DEPARTMENT_PARIS_CODE === $department->getCode()) {
+                $parents = array_merge($parents, $this->cities->filter(function (City $city) {
+                    return self::CITY_PARIS_CODE === $city->getCode();
+                })->toArray());
+            }
         }
 
         return array_values(array_unique(array_filter($parents)));

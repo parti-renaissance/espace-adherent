@@ -19,6 +19,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class UpdateCityReplacementsCommand extends Command
 {
+    protected static $defaultName = 'app:geo:update-city-replacements';
+
     private const SOURCES = [
         'https://www.insee.fr/fr/statistiques/fichier/2549968/communes_nouvelles_2015.xls',
         'https://www.insee.fr/fr/statistiques/fichier/2549968/communes_nouvelles_2016.xls',
@@ -26,8 +28,6 @@ final class UpdateCityReplacementsCommand extends Command
         'https://www.insee.fr/fr/statistiques/fichier/2549968/communes_nouvelles_2018.xls',
         'https://www.insee.fr/fr/statistiques/fichier/2549968/communes_nouvelles_2019.xls',
     ];
-
-    protected static $defaultName = 'app:geo:update-city-replacements';
 
     /**
      * @var HttpClientInterface

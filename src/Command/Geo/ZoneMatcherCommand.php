@@ -7,8 +7,6 @@ use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
 use App\Geo\ZoneMatcher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,11 +36,6 @@ class ZoneMatcherCommand extends Command
      */
     private $io;
 
-    /**
-     * @var Collection
-     */
-    private $entities;
-
     public function __construct(EntityManagerInterface $em, ZoneMatcher $zoneMatcher)
     {
         $this->em = $em;
@@ -68,7 +61,6 @@ class ZoneMatcherCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->entities = new ArrayCollection();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

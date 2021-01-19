@@ -29,6 +29,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class SyncZonesCommand extends Command
 {
+    protected static $defaultName = 'app:geo:sync-zones';
+
     private const CLASSES = [
         Country::class,
         Region::class,
@@ -42,8 +44,6 @@ final class SyncZonesCommand extends Command
         ForeignDistrict::class,
         ConsularDistrict::class,
     ];
-
-    protected static $defaultName = 'app:geo:sync-zones';
 
     /**
      * @var EntityManagerInterface
