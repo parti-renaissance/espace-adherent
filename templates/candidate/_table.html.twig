@@ -4,10 +4,8 @@
         {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
 
         <th>
-            <a
-                    href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
-                    class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
-            >
+            <a href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
+                class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}">
                 Identité
             </a>
         </th>
@@ -26,14 +24,15 @@
                 </div>
                 <div class="adherent-caracs">
                     {% if user.gender %}
-                    {% if 'male' == user.gender %}
-                        {{ 'common.gender.man'|trans }}
+                        {% if 'male' == user.gender %}
+                            {{ 'common.gender.man'|trans }}
+                        {% else %}
+                            {{ 'common.gender.woman'|trans }}
+                        {% endif %}
                     {% else %}
-                        {{ 'common.gender.woman'|trans }}
-                    {% endif %}
-                {% else %}
-                    ~
+                        ~
                     {% endif %},
+
                     {{ user.age ? user.age ~ ' ans' : '~'}}
                 </div>
             </td>

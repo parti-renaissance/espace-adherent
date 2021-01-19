@@ -247,16 +247,19 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         // if has a candidacy
         if (\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
             && ($election = $actualMembership->getTerritorialCouncil()->getCurrentElection())
+            && $election->isOngoing()
             && $actualMembership->getCandidacyForElection($election)) {
             return 'l\'adhérent a une candidature dans ce conseil territorial.';
         }
 
         // if has a committee mandate
-        if (TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT === $qualityName
+        if (
+            TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT === $qualityName
             && $adherent->hasTerritorialCouncilMembership()
             && $committeeMandate = $this->committeeMandateRepository->findActiveMandateInTerritorialCouncil(
                 $adherent,
-                $actualMembership->getTerritorialCouncil())
+                $actualMembership->getTerritorialCouncil()
+            )
         ) {
             return \sprintf(
                 'l\'adhérent a un mandat dans ce conseil territorial, dans le comité "%s".',
