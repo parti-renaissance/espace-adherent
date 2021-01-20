@@ -32,6 +32,7 @@ class DelegatedAccessEnum extends Enum
             $accesses[] = DelegatedAccess::ACCESS_CITIZEN_PROJECTS;
             $accesses[] = DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES;
             $accesses[] = DelegatedAccess::ACCESS_COMMITTEE;
+            $accesses[] = DelegatedAccess::ACCESS_INSTITUTIONAL_EVENTS;
         }
 
         if (self::TYPE_CANDIDATE === $type) {
@@ -53,6 +54,7 @@ class DelegatedAccessEnum extends Enum
             DelegatedAccess::ACCESS_JECOUTE => "app_jecoute_{$type}_local_surveys_list",
             DelegatedAccess::ACCESS_ELECTED_REPRESENTATIVES => "app_{$type}_elected_representatives_list",
             DelegatedAccess::ACCESS_FILES => "app_{$type}_files_list",
+            DelegatedAccess::ACCESS_INSTITUTIONAL_EVENTS => "app_{$type}_institutional_events_list",
         ];
     }
 

@@ -933,6 +933,7 @@ delegated_access.form.access.jecoute: Questionnaires
 delegated_access.form.access.citizen_projects: Projets citoyens
 delegated_access.form.access.elected_representatives: Élus
 delegated_access.form.access.files: Documents
+delegated_access.form.access.institutional_events: Mes réunions privées
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
 delegated_access.updated_successfully: L'accès délégué à votre espace a correctement été mis à jour
 delegated_access.deleted_successfully: L'accès délégué à votre espace a correctement été supprimé
