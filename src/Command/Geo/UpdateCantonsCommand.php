@@ -20,6 +20,8 @@ use ZipArchive;
 
 final class UpdateCantonsCommand extends Command
 {
+    protected static $defaultName = 'app:geo:update-cantons';
+
     private const CANTONS_SOURCE = 'https://www.insee.fr/fr/statistiques/fichier/4316069/canton2020-csv.zip';
     private const CANTONS_FILENAME = 'canton2020.csv';
 
@@ -28,8 +30,6 @@ final class UpdateCantonsCommand extends Command
 
     private const CANTON_TYPES = ['C', 'V'];
     private const CITY_TYPES = ['COM'];
-
-    protected static $defaultName = 'app:geo:update-cantons';
 
     /**
      * @var HttpClientInterface

@@ -20,6 +20,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class UpdateDistrictsCommand extends Command
 {
+    protected static $defaultName = 'app:geo:update-districts';
+
     private const SOURCE = 'https://www.data.gouv.fr/en/datasets/r/4d0b70e1-7757-43cc-882b-5c3b04fe38b4';
 
     private const IGNORED_DEPARTMENTS = [
@@ -42,8 +44,6 @@ final class UpdateDistrictsCommand extends Command
         'ZX-701' => '977', // Saint-Barthélémy
         'ZX-801' => '978', // Saint-Martin
     ];
-
-    protected static $defaultName = 'app:geo:update-districts';
 
     /**
      * @var HttpClientInterface

@@ -21,6 +21,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class UpdateFranceCommand extends Command
 {
+    protected static $defaultName = 'app:geo:update-france';
+
     private const API_PATH = '/communes?fields=code,nom,codesPostaux,population,departement,region';
 
     private const FRANCE_CODE = 'FR';
@@ -42,8 +44,6 @@ final class UpdateFranceCommand extends Command
         '988' => 'Nouvelle-Calédonie',
         '989' => 'Île de Clipperton',
     ];
-
-    protected static $defaultName = 'app:geo:update-france';
 
     /**
      * @var HttpClientInterface

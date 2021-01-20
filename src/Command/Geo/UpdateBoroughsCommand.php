@@ -20,6 +20,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class UpdateBoroughsCommand extends Command
 {
+    protected static $defaultName = 'app:geo:update-boroughs';
+
     private const BOROUGHS = [
         '75056' => [
             ['code' => '75101', 'postalCode' => '75001', 'name' => 'Paris 1er'],
@@ -74,8 +76,6 @@ final class UpdateBoroughsCommand extends Command
             ['code' => '69389', 'postalCode' => '69009', 'name' => 'Lyon 9ème'],
         ],
     ];
-
-    protected static $defaultName = 'app:geo:update-boroughs';
 
     /**
      * @var EntityManagerInterface
