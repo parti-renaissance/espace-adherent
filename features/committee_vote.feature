@@ -4,8 +4,10 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData           |
-      | LoadCommitteeCandidacyData |
+      | LoadAdherentData                  |
+      | LoadCommitteeData                 |
+      | LoadCommitteeCandidacyData        |
+      | LoadCommitteeAdherentMandateData  |
 
   @javascript
   Scenario: I can show a list of followed committees, then I can remove my candidacy and change the vote committee

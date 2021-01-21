@@ -5,9 +5,11 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadCitizenActionData     |
-      | LoadRepublicanSilenceData |
-      | LoadDistrictData          |
+      | LoadCitizenActionData             |
+      | LoadRepublicanSilenceData         |
+      | LoadDistrictData                  |
+      | LoadCommitteeData                 |
+      | LoadCommitteeAdherentMandateData  |
 
   Scenario Outline: As referent of department 92 I cannot communicate with adherent from my referent space.
     Given I am logged as "referent-child@en-marche-dev.fr"

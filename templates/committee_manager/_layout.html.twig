@@ -2,10 +2,43 @@
 
 {% block page_title 'Espace animateur' %}
 
+{% set hasCharterAccepted = app.user.charters.hasCommitteeHostCharterAccepted %}
+
+{% block stylesheets %}
+    {% if not hasCharterAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if not hasCharterAccepted %}
+        {% if js is not defined %}
+            {% import 'javascript.js.twig' as js %}
+        {% endif %}
+
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                {{ js.chart_acceptation('#chart_dialog', constant('App\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_COMMITTEE_HOST')) }}
+            } );
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block adherent_space_header_title %}
     {{ committee is defined ? committee.name }}
 {% endblock %}
 
 {% block manager_content %}
+    {% if not hasCharterAccepted %}
+        {% include 'chart_dialog.html.twig' with {
+            'title': 'committee_host.popup.title'|trans,
+            'subtitle': 'committee_host.popup.subtitle'|trans,
+            'fileUrl': 'committee_host.popup.file_url'|trans
+        } %}
+    {% endif %}
+
     {% block committee_content %}{% endblock %}
 {% endblock %}

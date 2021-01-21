@@ -225,7 +225,7 @@ class AdherentRepositoryTest extends WebTestCase
     {
         $this->assertSame(1, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
         $this->assertSame(1, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
-        $this->assertSame(1, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_7_UUID)));
+        $this->assertSame(2, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_7_UUID)));
     }
 
     public function testMemberIsCommitteeHost()

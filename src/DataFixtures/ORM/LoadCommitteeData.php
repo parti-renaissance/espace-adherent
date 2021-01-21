@@ -4,8 +4,6 @@ namespace App\DataFixtures\ORM;
 
 use App\Committee\CommitteeFactory;
 use App\DataFixtures\AutoIncrementResetter;
-use App\Entity\AdherentMandate\CommitteeAdherentMandate;
-use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\CommitteeElection;
 use App\Entity\PostAddress;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -288,8 +286,6 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $assessor = $this->getReference('assessor-1');
 
         // Committee 1
-        $supervisorMandate = new CommitteeAdherentMandate($adherent3, $adherent3->getGender(), $committee1, new \DateTime('2017-01-12 13:25:54'), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($membership = $adherent3->followCommittee($committee1, new \DateTime('2017-01-12 13:25:54')));
         $membership->enableVote();
         $manager->persist($membership = $adherent5->hostCommittee($committee1));
@@ -303,25 +299,17 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($adherent4->followCommittee($committee2));
 
         // Committee 3
-        $supervisorMandate = new CommitteeAdherentMandate($adherent7, $adherent7->getGender(), $committee3, new \DateTime('2017-01-26 16:08:24'), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($membership = $adherent7->followCommittee($committee3, new \DateTime('2017-01-26 16:08:24')));
         $membership->enableVote();
         $manager->persist($adherent3->hostCommittee($committee3));
 
         // Committee 4
-        $supervisorMandate = new CommitteeAdherentMandate($adherent7, $adherent7->getGender(), $committee4, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($adherent7->followCommittee($committee4));
         $manager->persist($adherent3->followCommittee($committee4));
         $manager->persist($adherent19->followCommittee($committee4));
 
         // Committee 5
-        $supervisorMandate = new CommitteeAdherentMandate($adherent7, $adherent7->getGender(), $committee5, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($adherent7->followCommittee($committee5));
-        $provisionalSupervisorMandate = new CommitteeAdherentMandate($adherent5, $adherent5->getGender(), $committee5, new \DateTime('-2 months'), CommitteeMandateQualityEnum::SUPERVISOR, true);
-        $manager->persist($provisionalSupervisorMandate);
         $manager->persist($adherent5->followCommittee($committee16, new \DateTime('-2 months')));
         $manager->persist($adherent3->followCommittee($committee5));
         $manager->persist($adherent22->followCommittee($committee5));
@@ -331,8 +319,6 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $membership->enableVote();
 
         // Committee 6
-        $supervisorMandate = new CommitteeAdherentMandate($adherent9, $adherent9->getGender(), $committee6, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($membership = $adherent9->followCommittee($committee6));
         $membership->enableVote();
         $manager->persist($adherent2->followCommittee($committee6));
@@ -340,32 +326,26 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($assessor->followCommittee($committee6));
 
         // Committee 7
-        $supervisorMandate = new CommitteeAdherentMandate($adherent10, $adherent10->getGender(), $committee7, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($membership = $adherent10->followCommittee($committee7));
+        $membership->enableVote();
+        $manager->persist($membership = $adherent20->followCommittee($committee7));
         $membership->enableVote();
         $manager->persist($adherent3->followCommittee($committee7));
         $manager->persist($assessor->followCommittee($committee7));
 
         // Committee 8
-        $supervisorMandate = new CommitteeAdherentMandate($adherent11, $adherent11->getGender(), $committee8, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($membership = $adherent11->followCommittee($committee8));
         $membership->enableVote();
         $manager->persist($adherent3->followCommittee($committee8));
         $manager->persist($assessor->followCommittee($committee8));
 
         // Committee 9
-        $supervisorMandate = new CommitteeAdherentMandate($adherent12, $adherent12->getGender(), $committee9, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($membership = $adherent12->followCommittee($committee9));
         $membership->enableVote();
         $manager->persist($adherent3->followCommittee($committee9));
         $manager->persist($adherent11->followCommittee($committee9));
 
         // Committee 10
-        $supervisorMandate = new CommitteeAdherentMandate($referent, $referent->getGender(), $committee10, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         $manager->persist($membership = $referent->followCommittee($committee10));
         $membership->enableVote();
         $manager->persist($adherent13->followCommittee($committee10));
@@ -376,8 +356,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($adherent14->followCommittee($committee11));
 
         // Committee 12
-        $supervisorMandate = new CommitteeAdherentMandate($adherent20, $adherent20->getGender(), $committee12, new \DateTime('-2 months'), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
+        $manager->persist($adherent10->hostCommittee($committee12, new \DateTime('-2 months')));
         $manager->persist($adherent20->followCommittee($committee12, new \DateTime('-2 months')));
         $manager->persist($adherent13->followCommittee($committee12));
         $manager->persist($adherent14->followCommittee($committee12));
@@ -396,8 +375,6 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($this->getReference('adherent-30')->followCommittee($committee13, new \DateTime('-2 months')));
         $adherent31 = $this->getReference('adherent-31');
         $manager->persist($adherent31->followCommittee($committee13, new \DateTime('-2 months')));
-        $supervisorMandate = new CommitteeAdherentMandate($adherent31, $adherent31->getGender(), $committee13, new \DateTime('-2 months'), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
 
         // Committee 14
         $manager->persist($this->getReference('adherent-21')->followCommittee($committee14, new \DateTime('-2 months')));
@@ -408,8 +385,6 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         // Committee 15
         $adherent32 = $this->getReference('adherent-32');
         $manager->persist($adherent32->followCommittee($committee15, new \DateTime('-2 months')));
-        $supervisorMandate = new CommitteeAdherentMandate($adherent32, $adherent32->getGender(), $committee15, new \DateTime('-2 months'), CommitteeMandateQualityEnum::SUPERVISOR);
-        $manager->persist($supervisorMandate);
         foreach (range(33, 50) as $index) {
             $manager->persist($this->getReference('adherent-'.$index)->followCommittee($committee15, new \DateTime('-2 months')));
         }

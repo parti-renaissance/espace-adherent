@@ -5,6 +5,7 @@ namespace App\Collection;
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentCharter\CandidateCharter;
+use App\Entity\AdherentCharter\CommitteeHostCharter;
 use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\LreCharter;
@@ -17,6 +18,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class AdherentCharterCollection extends ArrayCollection
 {
+    public function hasCommitteeHostCharterAccepted(): bool
+    {
+        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
+            return $charter instanceof CommitteeHostCharter;
+        });
+    }
+
     public function hasReferentCharterAccepted(): bool
     {
         return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
@@ -83,6 +91,9 @@ class AdherentCharterCollection extends ArrayCollection
     public function hasCharterAcceptedForType(string $type): bool
     {
         switch ($type) {
+            case AdherentCharterTypeEnum::TYPE_COMMITTEE_HOST:
+                return $this->hasCommitteeHostCharterAccepted();
+
             case AdherentCharterTypeEnum::TYPE_REFERENT:
                 return $this->hasReferentCharterAccepted();
 
