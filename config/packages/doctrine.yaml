@@ -9,6 +9,7 @@ doctrine:
         password:         "%env(DATABASE_PASSWORD)%"
         unix_socket:      "%env(DATABASE_SOCKET)%"
         schema_filter:    '#^(?!(public|topology|tiger))#'
+        server_version:   "13.1"
         platform_service: App\Doctrine\DBAL\Platform\PostgreSQLPlatform
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType

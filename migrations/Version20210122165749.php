@@ -5,280 +5,12 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20210122141206 extends AbstractMigration
+final class Version20210122165749 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE SEQUENCE donation_transactions_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE donators_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherents_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE donations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE donator_tags_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE donator_kinship_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE donator_identifier_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE board_member_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE roles_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE subscription_type_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE districts_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE referent_managed_areas_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE referent_team_member_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE coordinator_managed_areas_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE procuration_managed_areas_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE assessor_managed_areas_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE assessor_role_association_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE municipal_manager_role_association_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE municipal_manager_supervisor_role_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_managed_areas_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_membership_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE political_committee_membership_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committees_memberships_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE citizen_project_memberships_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committee_feed_item_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_tags_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_idea_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE medias_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE municipal_chief_areas_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE senatorial_candidate_areas_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE lre_area_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE candidate_managed_area_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_charter_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE senator_area_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE consular_managed_area_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE certification_request_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE my_team_delegated_access_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_commitment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE thematic_community_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_mandate_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committee_provisional_supervisor_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE referent_tags_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_zone_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE citizen_project_skills_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE referent_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE referent_area_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE referent_person_link_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE user_list_definition_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE je_marche_reports_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE invitations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE citizen_project_category_skills_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE referent_managed_users_message_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ton_macron_choices_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE summaries_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE live_links_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE facebook_profiles_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE organizational_chart_item_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE events_invitations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE thematic_community_membership_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE thematic_community_contact_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE events_registrations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE region_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE projection_managed_users_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE administrators_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_activation_keys_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE redirections_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_survey_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_region_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_question_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_choice_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_news_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_data_answer_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_survey_question_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE jecoute_data_survey_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE election_rounds_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE articles_categories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE social_shares_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE formation_paths_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE formation_files_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE formation_modules_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE formation_axes_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE citizen_projects_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE legislative_district_zones_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_region_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_consular_district_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_canton_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_district_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_borough_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_country_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_custom_zone_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_foreign_district_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_city_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_department_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_city_community_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE mooc_elements_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE mooc_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE mooc_attachment_link_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE mooc_chapter_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE mooc_attachment_file_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE order_sections_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE deputy_managed_users_message_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE assessor_requests_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elections_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE banned_adherent_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_idea_notification_dates_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_question_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_comment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_need_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_consultation_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_vote_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_guideline_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_theme_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_answer_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_consultation_report_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ideas_workshop_category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE home_blocks_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE consular_district_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE citizen_project_categories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE interactive_invitations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE interactive_choices_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE legislative_candidates_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE events_categories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE skills_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE designation_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_election_round_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_candidate_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_election_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_vote_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_voters_list_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_vote_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_candidate_group_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_voter_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_election_pool_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_election_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_candidate_group_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_election_pool_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_election_round_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_election_entity_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE voting_platform_vote_choice_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE events_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committee_election_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE user_documents_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE filesystem_file_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE filesystem_file_permission_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_change_email_token_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE proposals_themes_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE timeline_measures_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE timeline_theme_translations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE timeline_profiles_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE timeline_measure_translations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE timeline_manifestos_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE timeline_manifesto_translations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE timeline_themes_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE timeline_profile_translations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE biography_executive_office_member_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE event_group_category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committee_candidacy_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE reports_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_segment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_messages_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE mailchimp_campaign_report_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE mailchimp_campaign_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_message_filters_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE pages_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE procuration_proxies_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE vote_place_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE administrator_export_history_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_certification_histories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committee_merge_histories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_email_subscription_histories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committees_membership_histories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE user_authorizations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE oauth_refresh_tokens_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE oauth_access_tokens_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE oauth_clients_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE oauth_auth_codes_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE referent_space_access_information_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_convocation_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE political_committee_feed_item_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_official_report_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_membership_log_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_election_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE political_committee_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_feed_item_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_election_poll_choice_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_election_poll_vote_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_election_poll_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_official_report_document_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE political_committee_quality_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_quality_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_candidacy_invitation_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE territorial_council_candidacy_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE institutional_events_categories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_zone_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_political_function_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_social_network_link_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_zone_category_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_mandate_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_user_list_definition_history_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_sponsorship_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_label_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representative_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE newsletter_subscriptions_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE clarifications_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ton_macron_friend_invitations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE adherent_reset_password_tokens_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE facebook_videos_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committees_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE custom_search_results_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE donation_tags_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE turnkey_projects_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE application_request_volunteer_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE application_request_tag_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE application_request_technical_skill_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE application_request_theme_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE application_request_running_mate_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE committee_candidacy_invitation_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE emails_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE epci_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE citizen_project_committee_supports_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE chez_vous_measures_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE chez_vous_regions_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE chez_vous_markers_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE chez_vous_measure_types_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE chez_vous_cities_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE chez_vous_departments_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE procuration_requests_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE citizen_action_categories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE programmatic_foundation_measure_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE programmatic_foundation_tag_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE programmatic_foundation_approach_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE programmatic_foundation_project_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE programmatic_foundation_sub_approach_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE web_hooks_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE proposals_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE order_articles_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE turnkey_projects_files_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE articles_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE social_share_categories_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE mailchimp_segment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE unregistrations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE republican_silence_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE cities_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE geo_data_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE department_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE failed_login_attempt_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE image_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE newsletter_invitations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE member_summary_mission_types_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE member_summary_job_experiences_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE member_summary_trainings_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE member_summary_languages_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE vote_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE election_city_manager_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE election_city_candidate_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE vote_result_list_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE election_city_contact_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE election_city_card_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE vote_result_list_collection_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ministry_list_total_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE election_city_partner_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE election_city_prevision_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ministry_vote_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE list_total_result_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE elected_representatives_register_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE devices_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE donation_transactions (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           donation_id INT NOT NULL, 
           paybox_result_code VARCHAR(100) DEFAULT NULL, 
           paybox_authorization_code VARCHAR(100) DEFAULT NULL, 
@@ -296,7 +28,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN donation_transactions.paybox_date_time IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN donation_transactions.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE donators (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           last_successful_donation_id INT DEFAULT NULL, 
           reference_donation_id INT DEFAULT NULL, 
@@ -325,7 +57,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6BAEC28C831BACAF ON donator_donator_tag (donator_id)');
         $this->addSql('CREATE INDEX IDX_6BAEC28C71F026E6 ON donator_donator_tag (donator_tag_id)');
         $this->addSql('CREATE TABLE adherents (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           legislative_candidate_managed_district_id INT DEFAULT NULL, 
           managed_area_id INT DEFAULT NULL, 
           coordinator_citizen_project_area_id INT DEFAULT NULL, 
@@ -468,7 +200,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_1C14D08525F06C53 ON adherent_zone (adherent_id)');
         $this->addSql('CREATE INDEX IDX_1C14D0859F2C3FAB ON adherent_zone (zone_id)');
         $this->addSql('CREATE TABLE donations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           donator_id INT NOT NULL, 
           type VARCHAR(255) NOT NULL, 
           amount INT NOT NULL, 
@@ -518,14 +250,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F2D7087F4DC1279C ON donation_donation_tag (donation_id)');
         $this->addSql('CREATE INDEX IDX_F2D7087F790547EA ON donation_donation_tag (donation_tag_id)');
         $this->addSql('CREATE TABLE donator_tags (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           label VARCHAR(100) NOT NULL, 
           color VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX donator_tag_label_unique ON donator_tags (label)');
         $this->addSql('CREATE TABLE donator_kinship (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           donator_id INT NOT NULL, 
           related_id INT NOT NULL, 
           kinship VARCHAR(100) NOT NULL, 
@@ -534,12 +266,12 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E542211D831BACAF ON donator_kinship (donator_id)');
         $this->addSql('CREATE INDEX IDX_E542211D4162C001 ON donator_kinship (related_id)');
         $this->addSql('CREATE TABLE donator_identifier (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           identifier VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE board_member (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           area VARCHAR(50) NOT NULL, 
           PRIMARY KEY(id)
@@ -562,7 +294,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_32865A32FDCCD727 ON saved_board_members (board_member_owner_id)');
         $this->addSql('CREATE INDEX IDX_32865A324821D202 ON saved_board_members (board_member_saved_id)');
         $this->addSql('CREATE TABLE roles (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           code VARCHAR(20) NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           PRIMARY KEY(id)
@@ -570,7 +302,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX board_member_role_code_unique ON roles (code)');
         $this->addSql('CREATE UNIQUE INDEX board_member_role_name_unique ON roles (name)');
         $this->addSql('CREATE TABLE subscription_type (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           label VARCHAR(255) NOT NULL, 
           code VARCHAR(255) NOT NULL, 
           external_id VARCHAR(64) DEFAULT NULL, 
@@ -581,7 +313,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_BBE247379F75D7B0 ON subscription_type (external_id)');
         $this->addSql('CREATE INDEX IDX_BBE2473777153098 ON subscription_type (code)');
         $this->addSql('CREATE TABLE districts (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           geo_data_id INT NOT NULL, 
           referent_tag_id INT DEFAULT NULL, 
           countries TEXT NOT NULL, 
@@ -597,7 +329,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX district_referent_tag_unique ON districts (referent_tag_id)');
         $this->addSql('COMMENT ON COLUMN districts.countries IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE referent_managed_areas (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           marker_latitude DOUBLE PRECISION DEFAULT NULL, 
           marker_longitude DOUBLE PRECISION DEFAULT NULL, 
           PRIMARY KEY(id)
@@ -614,7 +346,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_8BE84DD56B99CC25 ON referent_managed_areas_tags (referent_managed_area_id)');
         $this->addSql('CREATE INDEX IDX_8BE84DD59C262DB3 ON referent_managed_areas_tags (referent_tag_id)');
         $this->addSql('CREATE TABLE referent_team_member (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           member_id INT NOT NULL, 
           referent_id INT NOT NULL, 
           limited BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -634,31 +366,31 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_EC89860BFE4CA267 ON referent_team_member_committee (referent_team_member_id)');
         $this->addSql('CREATE INDEX IDX_EC89860BED1A100B ON referent_team_member_committee (committee_id)');
         $this->addSql('CREATE TABLE coordinator_managed_areas (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           codes TEXT NOT NULL, 
           sector VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('COMMENT ON COLUMN coordinator_managed_areas.codes IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE procuration_managed_areas (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           codes TEXT DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('COMMENT ON COLUMN procuration_managed_areas.codes IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE assessor_managed_areas (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           codes TEXT DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('COMMENT ON COLUMN assessor_managed_areas.codes IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE assessor_role_association (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           vote_place_id INT DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B93395C2F3F90B30 ON assessor_role_association (vote_place_id)');
-        $this->addSql('CREATE TABLE municipal_manager_role_association (id INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE municipal_manager_role_association (id SERIAL NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE municipal_manager_role_association_cities (
           municipal_manager_role_association_id INT NOT NULL, 
           city_id INT NOT NULL, 
@@ -672,13 +404,13 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A713D9C28BAC62AF ON municipal_manager_role_association_cities (city_id)');
         $this->addSql('CREATE TABLE municipal_manager_supervisor_role (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           referent_id INT NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE INDEX IDX_F304FF35E47E35 ON municipal_manager_supervisor_role (referent_id)');
         $this->addSql('CREATE TABLE jecoute_managed_areas (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           zone_id INT DEFAULT NULL, 
           codes TEXT DEFAULT NULL, 
           PRIMARY KEY(id)
@@ -686,7 +418,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DF8531749F2C3FAB ON jecoute_managed_areas (zone_id)');
         $this->addSql('COMMENT ON COLUMN jecoute_managed_areas.codes IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE territorial_council_membership (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           territorial_council_id INT NOT NULL, 
           joined_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -697,7 +429,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2A998316AAA61A99 ON territorial_council_membership (territorial_council_id)');
         $this->addSql('COMMENT ON COLUMN territorial_council_membership.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE political_committee_membership (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           political_committee_id INT NOT NULL, 
           joined_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -709,7 +441,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_FD85437BC7A72 ON political_committee_membership (political_committee_id)');
         $this->addSql('COMMENT ON COLUMN political_committee_membership.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE committees_memberships (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           committee_id INT NOT NULL, 
           privilege VARCHAR(10) NOT NULL, 
@@ -725,7 +457,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX adherent_votes_in_committee ON committees_memberships (adherent_id, enable_vote)');
         $this->addSql('COMMENT ON COLUMN committees_memberships.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE citizen_project_memberships (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           citizen_project_id INT NOT NULL, 
           adherent_id INT NOT NULL, 
           privilege VARCHAR(15) NOT NULL, 
@@ -739,7 +471,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX adherent_has_joined_citizen_project ON citizen_project_memberships (adherent_id, citizen_project_id)');
         $this->addSql('COMMENT ON COLUMN citizen_project_memberships.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE committee_feed_item (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           committee_id INT DEFAULT NULL, 
           author_id INT DEFAULT NULL, 
           event_id INT DEFAULT NULL, 
@@ -763,10 +495,10 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_D269D0AABEF808A3 ON committee_feed_item_user_documents (committee_feed_item_id)');
         $this->addSql('CREATE INDEX IDX_D269D0AA6A24B1A2 ON committee_feed_item_user_documents (user_document_id)');
-        $this->addSql('CREATE TABLE adherent_tags (id INT NOT NULL, name VARCHAR(100) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE adherent_tags (id SERIAL NOT NULL, name VARCHAR(100) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX adherent_tag_name_unique ON adherent_tags (name)');
         $this->addSql('CREATE TABLE ideas_workshop_idea (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           category_id INT DEFAULT NULL, 
           author_id INT DEFAULT NULL, 
           committee_id INT DEFAULT NULL, 
@@ -810,7 +542,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_75CEB995B6FEF7D ON ideas_workshop_ideas_needs (idea_id)');
         $this->addSql('CREATE INDEX IDX_75CEB99624AF264 ON ideas_workshop_ideas_needs (need_id)');
         $this->addSql('CREATE TABLE medias (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           path VARCHAR(255) NOT NULL, 
           width INT NOT NULL, 
@@ -824,12 +556,12 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_12D2AF81B548B0F ON medias (path)');
         $this->addSql('CREATE TABLE municipal_chief_areas (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           insee_code VARCHAR(255) NOT NULL, 
           jecoute_access BOOLEAN DEFAULT \'false\' NOT NULL, 
           PRIMARY KEY(id)
         )');
-        $this->addSql('CREATE TABLE senatorial_candidate_areas (id INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE senatorial_candidate_areas (id SERIAL NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE senatorial_candidate_areas_tags (
           senatorial_candidate_area_id INT NOT NULL, 
           referent_tag_id INT NOT NULL, 
@@ -840,16 +572,20 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F83208FAA7BF84E8 ON senatorial_candidate_areas_tags (senatorial_candidate_area_id)');
         $this->addSql('CREATE INDEX IDX_F83208FA9C262DB3 ON senatorial_candidate_areas_tags (referent_tag_id)');
         $this->addSql('CREATE TABLE lre_area (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           referent_tag_id INT DEFAULT NULL, 
           all_tags BOOLEAN DEFAULT \'false\' NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE INDEX IDX_8D3B8F189C262DB3 ON lre_area (referent_tag_id)');
-        $this->addSql('CREATE TABLE candidate_managed_area (id INT NOT NULL, zone_id INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE candidate_managed_area (
+          id SERIAL NOT NULL, 
+          zone_id INT NOT NULL, 
+          PRIMARY KEY(id)
+        )');
         $this->addSql('CREATE INDEX IDX_C604D2EA9F2C3FAB ON candidate_managed_area (zone_id)');
         $this->addSql('CREATE TABLE adherent_charter (
-          id SMALLINT NOT NULL, 
+          id SMALLSERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           accepted_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           dtype VARCHAR(255) NOT NULL, 
@@ -858,19 +594,19 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D6F94F2B25F06C53 ON adherent_charter (adherent_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_D6F94F2B25F06C5370AAEA5 ON adherent_charter (adherent_id, dtype)');
         $this->addSql('CREATE TABLE senator_area (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           department_tag_id INT DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE INDEX IDX_D229BBF7AEC89CE1 ON senator_area (department_tag_id)');
         $this->addSql('CREATE TABLE consular_managed_area (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           consular_district_id INT DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE INDEX IDX_7937A51292CA96FD ON consular_managed_area (consular_district_id)');
         $this->addSql('CREATE TABLE certification_request (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           processed_by_id INT DEFAULT NULL, 
           found_duplicated_adherent_id INT DEFAULT NULL, 
@@ -896,7 +632,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6E7481A96EA98020 ON certification_request (found_duplicated_adherent_id)');
         $this->addSql('COMMENT ON COLUMN certification_request.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE my_team_delegated_access (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           delegator_id INT DEFAULT NULL, 
           delegated_id INT DEFAULT NULL, 
           role VARCHAR(255) NOT NULL, 
@@ -921,7 +657,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_C52A163FFD98FA7A ON my_team_delegate_access_committee (delegated_access_id)');
         $this->addSql('CREATE INDEX IDX_C52A163FED1A100B ON my_team_delegate_access_committee (committee_id)');
         $this->addSql('CREATE TABLE adherent_commitment (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           commitment_actions TEXT DEFAULT NULL, 
           debate_and_propose_ideas_actions TEXT DEFAULT NULL, 
@@ -938,7 +674,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN adherent_commitment.progressivism_actions IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN adherent_commitment.skills IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE thematic_community (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           description TEXT NOT NULL, 
           enabled BOOLEAN NOT NULL, 
@@ -950,7 +686,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('COMMENT ON COLUMN thematic_community.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE adherent_mandate (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           committee_id INT DEFAULT NULL, 
           territorial_council_id INT DEFAULT NULL, 
@@ -970,7 +706,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9C0C3D60AAA61A99 ON adherent_mandate (territorial_council_id)');
         $this->addSql('COMMENT ON COLUMN adherent_mandate.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE committee_provisional_supervisor (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           committee_id INT NOT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -980,7 +716,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E394C3D425F06C53 ON committee_provisional_supervisor (adherent_id)');
         $this->addSql('CREATE INDEX IDX_E394C3D4ED1A100B ON committee_provisional_supervisor (committee_id)');
         $this->addSql('CREATE TABLE referent_tags (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           zone_id INT DEFAULT NULL, 
           name VARCHAR(100) NOT NULL, 
           code VARCHAR(100) NOT NULL, 
@@ -992,7 +728,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX referent_tag_name_unique ON referent_tags (name)');
         $this->addSql('CREATE UNIQUE INDEX referent_tag_code_unique ON referent_tags (code)');
         $this->addSql('CREATE TABLE geo_zone (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           type VARCHAR(255) NOT NULL, 
           team_code VARCHAR(6) DEFAULT NULL, 
@@ -1014,7 +750,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_8E49B9DDD62C21B ON geo_zone_parent (child_id)');
         $this->addSql('CREATE INDEX IDX_8E49B9D727ACA70 ON geo_zone_parent (parent_id)');
         $this->addSql('CREATE TABLE citizen_project_skills (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           slug VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
@@ -1022,7 +758,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX citizen_project_skill_slug_unique ON citizen_project_skills (slug)');
         $this->addSql('CREATE UNIQUE INDEX citizen_project_skill_name_unique ON citizen_project_skills (name)');
         $this->addSql('CREATE TABLE referent (
-          id SMALLINT NOT NULL, 
+          id SMALLSERIAL NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           gender VARCHAR(6) NOT NULL, 
           email_address VARCHAR(100) DEFAULT NULL, 
@@ -1048,7 +784,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_75CEBC6C35E47E35 ON referent_areas (referent_id)');
         $this->addSql('CREATE INDEX IDX_75CEBC6CBD0F409C ON referent_areas (area_id)');
         $this->addSql('CREATE TABLE referent_area (
-          id SMALLINT NOT NULL, 
+          id SMALLSERIAL NOT NULL, 
           area_code VARCHAR(6) NOT NULL, 
           area_type VARCHAR(20) NOT NULL, 
           name VARCHAR(100) NOT NULL, 
@@ -1057,7 +793,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX referent_area_area_code_unique ON referent_area (area_code)');
         $this->addSql('CREATE TABLE referent_person_link (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           person_organizational_chart_item_id INT DEFAULT NULL, 
           referent_id SMALLINT DEFAULT NULL, 
           adherent_id INT DEFAULT NULL, 
@@ -1088,7 +824,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_1C97B2A5B3E4DE86 ON referent_person_link_committee (referent_person_link_id)');
         $this->addSql('CREATE INDEX IDX_1C97B2A5ED1A100B ON referent_person_link_committee (committee_id)');
         $this->addSql('CREATE TABLE user_list_definition (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           type VARCHAR(50) NOT NULL, 
           code VARCHAR(100) NOT NULL, 
           label VARCHAR(100) NOT NULL, 
@@ -1097,7 +833,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX user_list_definition_type_code_unique ON user_list_definition (type, code)');
         $this->addSql('CREATE TABLE je_marche_reports (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           type VARCHAR(30) NOT NULL, 
           email_address VARCHAR(255) NOT NULL, 
           postal_code VARCHAR(11) NOT NULL, 
@@ -1112,7 +848,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN je_marche_reports.convinced IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN je_marche_reports.almost_convinced IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE invitations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           first_name VARCHAR(50) NOT NULL, 
           last_name VARCHAR(50) NOT NULL, 
           email VARCHAR(255) NOT NULL, 
@@ -1124,7 +860,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('COMMENT ON COLUMN invitations.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE citizen_project_category_skills (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           category_id INT DEFAULT NULL, 
           skill_id INT DEFAULT NULL, 
           promotion BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -1133,7 +869,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_168C868A12469DE2 ON citizen_project_category_skills (category_id)');
         $this->addSql('CREATE INDEX IDX_168C868A5585C142 ON citizen_project_category_skills (skill_id)');
         $this->addSql('CREATE TABLE referent_managed_users_message (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           include_adherents_no_committee BOOLEAN DEFAULT \'false\' NOT NULL, 
           include_adherents_in_committee BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -1163,7 +899,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN referent_managed_users_message.interests IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN referent_managed_users_message.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE ton_macron_choices (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           step SMALLINT NOT NULL, 
           content_key VARCHAR(30) NOT NULL, 
           label VARCHAR(100) NOT NULL, 
@@ -1175,7 +911,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX ton_macron_choices_content_key_unique ON ton_macron_choices (content_key)');
         $this->addSql('COMMENT ON COLUMN ton_macron_choices.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE summaries (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           member_id INT DEFAULT NULL, 
           slug VARCHAR(255) NOT NULL, 
           current_profession VARCHAR(255) DEFAULT NULL, 
@@ -1213,7 +949,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2FD2B63C2AC2D45C ON summary_skills (summary_id)');
         $this->addSql('CREATE INDEX IDX_2FD2B63C5585C142 ON summary_skills (skill_id)');
         $this->addSql('CREATE TABLE live_links (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           position SMALLINT NOT NULL, 
           title VARCHAR(255) NOT NULL, 
           link VARCHAR(255) NOT NULL, 
@@ -1221,7 +957,7 @@ final class Version20210122141206 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE facebook_profiles (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           facebook_id VARCHAR(30) NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           email_address VARCHAR(255) DEFAULT NULL, 
@@ -1239,7 +975,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN facebook_profiles.age_range IS \'(DC2Type:json_array)\'');
         $this->addSql('COMMENT ON COLUMN facebook_profiles.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE organizational_chart_item (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           tree_root INT DEFAULT NULL, 
           parent_id INT DEFAULT NULL, 
           label VARCHAR(255) NOT NULL, 
@@ -1252,7 +988,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_29C1CBACA977936C ON organizational_chart_item (tree_root)');
         $this->addSql('CREATE INDEX IDX_29C1CBAC727ACA70 ON organizational_chart_item (parent_id)');
         $this->addSql('CREATE TABLE events_invitations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           event_id INT DEFAULT NULL, 
           email VARCHAR(255) NOT NULL, 
           message TEXT NOT NULL, 
@@ -1267,7 +1003,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN events_invitations.guests IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN events_invitations.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE thematic_community_membership (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           community_id INT DEFAULT NULL, 
           adherent_id INT DEFAULT NULL, 
           contact_id INT DEFAULT NULL, 
@@ -1301,7 +1037,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_58815EB9F74563E3 ON thematic_community_membership_user_list_definition (user_list_definition_id)');
         $this->addSql('CREATE TABLE thematic_community_contact (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           first_name VARCHAR(255) NOT NULL, 
           last_name VARCHAR(255) NOT NULL, 
           email VARCHAR(255) NOT NULL, 
@@ -1330,7 +1066,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN thematic_community_contact.address_latitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('COMMENT ON COLUMN thematic_community_contact.address_longitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('CREATE TABLE events_registrations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           event_id INT DEFAULT NULL, 
           email_address VARCHAR(255) NOT NULL, 
           postal_code VARCHAR(15) DEFAULT NULL, 
@@ -1348,7 +1084,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN events_registrations.adherent_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN events_registrations.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE region (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           code VARCHAR(10) NOT NULL, 
           country VARCHAR(2) NOT NULL, 
@@ -1356,7 +1092,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_F62F17677153098 ON region (code)');
         $this->addSql('CREATE TABLE projection_managed_users (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           status SMALLINT NOT NULL, 
           type VARCHAR(20) NOT NULL, 
           original_id BIGINT NOT NULL, 
@@ -1404,7 +1140,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E4D4ADCDC679DD78 ON projection_managed_users_zone (managed_user_id)');
         $this->addSql('CREATE INDEX IDX_E4D4ADCD9F2C3FAB ON projection_managed_users_zone (zone_id)');
         $this->addSql('CREATE TABLE administrators (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           email_address VARCHAR(255) NOT NULL, 
           password VARCHAR(255) NOT NULL, 
           google_authenticator_secret VARCHAR(255) DEFAULT NULL, 
@@ -1415,7 +1151,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX administrators_email_address_unique ON administrators (email_address)');
         $this->addSql('COMMENT ON COLUMN administrators.roles IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE adherent_activation_keys (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_uuid UUID NOT NULL, 
           value VARCHAR(40) NOT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -1429,7 +1165,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN adherent_activation_keys.adherent_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN adherent_activation_keys.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE redirections (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           url_from VARCHAR(255) NOT NULL, 
           url_to VARCHAR(255) NOT NULL, 
           type INT NOT NULL, 
@@ -1437,7 +1173,7 @@ final class Version20210122141206 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE jecoute_survey (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           author_id INT DEFAULT NULL, 
           zone_id INT DEFAULT NULL, 
           administrator_id INT DEFAULT NULL, 
@@ -1458,7 +1194,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN jecoute_survey.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN jecoute_survey.tags IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE jecoute_region (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           geo_region_id INT NOT NULL, 
           uuid UUID NOT NULL, 
           subtitle VARCHAR(255) NOT NULL, 
@@ -1474,14 +1210,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_4E74226F39192B5C ON jecoute_region (geo_region_id)');
         $this->addSql('COMMENT ON COLUMN jecoute_region.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE jecoute_question (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           content VARCHAR(255) NOT NULL, 
           type VARCHAR(255) NOT NULL, 
           discr VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE jecoute_choice (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           question_id INT DEFAULT NULL, 
           content VARCHAR(255) NOT NULL, 
           position SMALLINT NOT NULL, 
@@ -1494,7 +1230,7 @@ final class Version20210122141206 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE jecoute_news (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           zone_id INT DEFAULT NULL, 
           created_by_id INT DEFAULT NULL, 
           uuid UUID NOT NULL, 
@@ -1510,7 +1246,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_3436209B03A8386 ON jecoute_news (created_by_id)');
         $this->addSql('COMMENT ON COLUMN jecoute_news.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE jecoute_data_answer (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           survey_question_id INT DEFAULT NULL, 
           data_survey_id INT DEFAULT NULL, 
           text_field VARCHAR(255) DEFAULT NULL, 
@@ -1526,7 +1262,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_10DF117259C0831 ON jecoute_data_answer_selected_choices (data_answer_id)');
         $this->addSql('CREATE INDEX IDX_10DF117998666D1 ON jecoute_data_answer_selected_choices (choice_id)');
         $this->addSql('CREATE TABLE jecoute_survey_question (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           survey_id INT DEFAULT NULL, 
           question_id INT DEFAULT NULL, 
           position SMALLINT NOT NULL, 
@@ -1538,7 +1274,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A2FBFA811E27F6BF ON jecoute_survey_question (question_id)');
         $this->addSql('COMMENT ON COLUMN jecoute_survey_question.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE jecoute_data_survey (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           author_id INT DEFAULT NULL, 
           device_id INT DEFAULT NULL, 
           survey_id INT NOT NULL, 
@@ -1560,7 +1296,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6579E8E794A4C7D4 ON jecoute_data_survey (device_id)');
         $this->addSql('CREATE INDEX IDX_6579E8E7B3FE509D ON jecoute_data_survey (survey_id)');
         $this->addSql('CREATE TABLE election_rounds (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_id INT NOT NULL, 
           label VARCHAR(255) NOT NULL, 
           description VARCHAR(255) DEFAULT NULL, 
@@ -1569,7 +1305,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_37C02EA0A708DAFF ON election_rounds (election_id)');
         $this->addSql('CREATE TABLE articles_categories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           position SMALLINT NOT NULL, 
           name VARCHAR(50) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
@@ -1580,7 +1316,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_DE004A0E989D9B62 ON articles_categories (slug)');
         $this->addSql('CREATE TABLE social_shares (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           social_share_category_id BIGINT DEFAULT NULL, 
           media_id BIGINT DEFAULT NULL, 
           name VARCHAR(100) NOT NULL, 
@@ -1599,7 +1335,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_8E1413A085040FAD ON social_shares (social_share_category_id)');
         $this->addSql('CREATE INDEX IDX_8E1413A0EA9FDD75 ON social_shares (media_id)');
         $this->addSql('CREATE TABLE formation_paths (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           title VARCHAR(255) NOT NULL, 
           slug VARCHAR(255) NOT NULL, 
           description TEXT NOT NULL, 
@@ -1608,7 +1344,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_FD311864989D9B62 ON formation_paths (slug)');
         $this->addSql('CREATE TABLE formation_files (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           module_id BIGINT DEFAULT NULL, 
           title VARCHAR(255) NOT NULL, 
           slug VARCHAR(255) NOT NULL, 
@@ -1619,7 +1355,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_70BEDE2CAFC2B591 ON formation_files (module_id)');
         $this->addSql('CREATE UNIQUE INDEX formation_file_slug_extension ON formation_files (slug, extension)');
         $this->addSql('CREATE TABLE formation_modules (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           axe_id BIGINT DEFAULT NULL, 
           media_id BIGINT DEFAULT NULL, 
           title VARCHAR(255) NOT NULL, 
@@ -1635,7 +1371,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6B4806AC2E30CD41 ON formation_modules (axe_id)');
         $this->addSql('CREATE INDEX IDX_6B4806ACEA9FDD75 ON formation_modules (media_id)');
         $this->addSql('CREATE TABLE formation_axes (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           path_id INT NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           title VARCHAR(255) NOT NULL, 
@@ -1650,7 +1386,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7E652CB6D96C566B ON formation_axes (path_id)');
         $this->addSql('CREATE INDEX IDX_7E652CB6EA9FDD75 ON formation_axes (media_id)');
         $this->addSql('CREATE TABLE citizen_projects (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           category_id INT DEFAULT NULL, 
           turnkey_project_id INT DEFAULT NULL, 
           slug VARCHAR(255) NOT NULL, 
@@ -1716,7 +1452,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_73ED204AB3584533 ON citizen_project_referent_tag (citizen_project_id)');
         $this->addSql('CREATE INDEX IDX_73ED204A9C262DB3 ON citizen_project_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE legislative_district_zones (
-          id SMALLINT NOT NULL, 
+          id SMALLSERIAL NOT NULL, 
           area_code VARCHAR(4) NOT NULL, 
           area_type VARCHAR(20) NOT NULL, 
           rank SMALLINT NOT NULL, 
@@ -1726,7 +1462,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX legislative_district_zones_area_code_unique ON legislative_district_zones (area_code)');
         $this->addSql('CREATE TABLE geo_region (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           country_id INT NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           code VARCHAR(255) NOT NULL, 
@@ -1740,7 +1476,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A4B3C808F92F3E70 ON geo_region (country_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A4B3C80880E32C3E ON geo_region (geo_data_id)');
         $this->addSql('CREATE TABLE geo_consular_district (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           foreign_district_id INT DEFAULT NULL, 
           geo_data_id INT DEFAULT NULL, 
           cities TEXT NOT NULL, 
@@ -1757,7 +1493,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_BBFC552F80E32C3E ON geo_consular_district (geo_data_id)');
         $this->addSql('COMMENT ON COLUMN geo_consular_district.cities IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE geo_canton (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           department_id INT NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           code VARCHAR(255) NOT NULL, 
@@ -1771,7 +1507,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F04FC05FAE80F5DF ON geo_canton (department_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_F04FC05F80E32C3E ON geo_canton (geo_data_id)');
         $this->addSql('CREATE TABLE geo_district (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           department_id INT NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           number SMALLINT NOT NULL, 
@@ -1786,7 +1522,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DF782326AE80F5DF ON geo_district (department_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_DF78232680E32C3E ON geo_district (geo_data_id)');
         $this->addSql('CREATE TABLE geo_borough (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           city_id INT NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           postal_code TEXT DEFAULT NULL, 
@@ -1803,7 +1539,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_1449587480E32C3E ON geo_borough (geo_data_id)');
         $this->addSql('COMMENT ON COLUMN geo_borough.postal_code IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE geo_country (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           foreign_district_id INT DEFAULT NULL, 
           geo_data_id INT DEFAULT NULL, 
           code VARCHAR(255) NOT NULL, 
@@ -1817,7 +1553,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E465446472D24D35 ON geo_country (foreign_district_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E465446480E32C3E ON geo_country (geo_data_id)');
         $this->addSql('CREATE TABLE geo_custom_zone (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           code VARCHAR(255) NOT NULL, 
           name VARCHAR(255) NOT NULL, 
@@ -1829,7 +1565,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_ABE4DB5A77153098 ON geo_custom_zone (code)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_ABE4DB5A80E32C3E ON geo_custom_zone (geo_data_id)');
         $this->addSql('CREATE TABLE geo_foreign_district (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           custom_zone_id INT NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           number SMALLINT NOT NULL, 
@@ -1844,7 +1580,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_973BE1F198755666 ON geo_foreign_district (custom_zone_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_973BE1F180E32C3E ON geo_foreign_district (geo_data_id)');
         $this->addSql('CREATE TABLE geo_city (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           department_id INT DEFAULT NULL, 
           city_community_id INT DEFAULT NULL, 
           replacement_id INT DEFAULT NULL, 
@@ -1879,7 +1615,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A4AB64718BAC62AF ON geo_city_canton (city_id)');
         $this->addSql('CREATE INDEX IDX_A4AB64718D070D0B ON geo_city_canton (canton_id)');
         $this->addSql('CREATE TABLE geo_department (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           region_id INT NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           code VARCHAR(255) NOT NULL, 
@@ -1893,7 +1629,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B460660498260155 ON geo_department (region_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B460660480E32C3E ON geo_department (geo_data_id)');
         $this->addSql('CREATE TABLE geo_city_community (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           geo_data_id INT DEFAULT NULL, 
           code VARCHAR(255) NOT NULL, 
           name VARCHAR(255) NOT NULL, 
@@ -1914,7 +1650,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_1E2D6D066D3B1930 ON geo_city_community_department (city_community_id)');
         $this->addSql('CREATE INDEX IDX_1E2D6D06AE80F5DF ON geo_city_community_department (department_id)');
         $this->addSql('CREATE TABLE mooc_elements (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           chapter_id INT DEFAULT NULL, 
           image_id INT DEFAULT NULL, 
           title VARCHAR(255) NOT NULL, 
@@ -1955,7 +1691,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_88759A26B1828C9D ON mooc_element_attachment_file (base_mooc_element_id)');
         $this->addSql('CREATE INDEX IDX_88759A265B5E2CEA ON mooc_element_attachment_file (attachment_file_id)');
         $this->addSql('CREATE TABLE mooc (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           article_image_id INT DEFAULT NULL, 
           list_image_id INT DEFAULT NULL, 
           title VARCHAR(255) NOT NULL, 
@@ -1976,7 +1712,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_9D5D3B5543C8160D ON mooc (list_image_id)');
         $this->addSql('CREATE UNIQUE INDEX mooc_slug ON mooc (slug)');
         $this->addSql('CREATE TABLE mooc_attachment_link (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           title VARCHAR(255) NOT NULL, 
           link VARCHAR(255) NOT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -1984,7 +1720,7 @@ final class Version20210122141206 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE mooc_chapter (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           mooc_id INT DEFAULT NULL, 
           title VARCHAR(255) NOT NULL, 
           slug VARCHAR(255) NOT NULL, 
@@ -1996,7 +1732,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A3EDA0D1255EEB87 ON mooc_chapter (mooc_id)');
         $this->addSql('CREATE UNIQUE INDEX mooc_chapter_slug ON mooc_chapter (slug)');
         $this->addSql('CREATE TABLE mooc_attachment_file (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           title VARCHAR(255) NOT NULL, 
           slug VARCHAR(255) NOT NULL, 
           path VARCHAR(255) NOT NULL, 
@@ -2005,13 +1741,13 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX mooc_attachment_file_slug_extension ON mooc_attachment_file (slug, extension)');
         $this->addSql('CREATE TABLE order_sections (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(50) NOT NULL, 
           position SMALLINT NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE deputy_managed_users_message (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           district_id INT DEFAULT NULL, 
           adherent_id INT DEFAULT NULL, 
           subject VARCHAR(255) NOT NULL, 
@@ -2026,7 +1762,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_5AC419DD25F06C53 ON deputy_managed_users_message (adherent_id)');
         $this->addSql('COMMENT ON COLUMN deputy_managed_users_message.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE assessor_requests (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           vote_place_id INT DEFAULT NULL, 
           gender VARCHAR(6) NOT NULL, 
           last_name VARCHAR(50) NOT NULL, 
@@ -2067,7 +1803,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_1517FC131BD1903D ON assessor_requests_vote_place_wishes (assessor_request_id)');
         $this->addSql('CREATE INDEX IDX_1517FC13F3F90B30 ON assessor_requests_vote_place_wishes (vote_place_id)');
         $this->addSql('CREATE TABLE elections (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           introduction TEXT NOT NULL, 
           proposal_content TEXT DEFAULT NULL, 
@@ -2076,20 +1812,20 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_1BD26F335E237E06 ON elections (name)');
         $this->addSql('CREATE TABLE banned_adherent (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           uuid UUID NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('COMMENT ON COLUMN banned_adherent.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE ideas_workshop_idea_notification_dates (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           last_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
           caution_last_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE ideas_workshop_thread (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           answer_id INT NOT NULL, 
           author_id INT NOT NULL, 
           deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
@@ -2106,7 +1842,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX threads_uuid_unique ON ideas_workshop_thread (uuid)');
         $this->addSql('COMMENT ON COLUMN ideas_workshop_thread.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE ideas_workshop_question (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           guideline_id INT NOT NULL, 
           placeholder VARCHAR(255) NOT NULL, 
           position SMALLINT NOT NULL, 
@@ -2118,7 +1854,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_111C43E4CC0B46A8 ON ideas_workshop_question (guideline_id)');
         $this->addSql('CREATE TABLE ideas_workshop_comment (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           thread_id INT NOT NULL, 
           author_id INT NOT NULL, 
           deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
@@ -2135,14 +1871,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX threads_comments_uuid_unique ON ideas_workshop_comment (uuid)');
         $this->addSql('COMMENT ON COLUMN ideas_workshop_comment.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE ideas_workshop_need (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           enabled BOOLEAN NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX need_name_unique ON ideas_workshop_need (name)');
         $this->addSql('CREATE TABLE ideas_workshop_consultation (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           response_time SMALLINT NOT NULL, 
           started_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           ended_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -2153,7 +1889,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX consultation_enabled_unique ON ideas_workshop_consultation (enabled)');
         $this->addSql('CREATE TABLE ideas_workshop_vote (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           idea_id INT NOT NULL, 
           author_id INT NOT NULL, 
           type VARCHAR(10) NOT NULL, 
@@ -2162,14 +1898,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9A9B53535B6FEF7D ON ideas_workshop_vote (idea_id)');
         $this->addSql('CREATE INDEX IDX_9A9B5353F675F31B ON ideas_workshop_vote (author_id)');
         $this->addSql('CREATE TABLE ideas_workshop_guideline (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           enabled BOOLEAN NOT NULL, 
           position SMALLINT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE ideas_workshop_theme (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           enabled BOOLEAN NOT NULL, 
           image_name VARCHAR(255) NOT NULL, 
@@ -2178,7 +1914,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX theme_name_unique ON ideas_workshop_theme (name)');
         $this->addSql('CREATE TABLE ideas_workshop_answer (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           question_id INT NOT NULL, 
           idea_id INT NOT NULL, 
           content TEXT NOT NULL, 
@@ -2196,21 +1932,21 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_824E75E79C97E9FB ON ideas_workshop_answer_user_documents (ideas_workshop_answer_id)');
         $this->addSql('CREATE INDEX IDX_824E75E76A24B1A2 ON ideas_workshop_answer_user_documents (user_document_id)');
         $this->addSql('CREATE TABLE ideas_workshop_consultation_report (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           url VARCHAR(255) NOT NULL, 
           position SMALLINT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE ideas_workshop_category (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           enabled BOOLEAN NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX category_name_unique ON ideas_workshop_category (name)');
         $this->addSql('CREATE TABLE home_blocks (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           position SMALLINT NOT NULL, 
           position_name VARCHAR(30) NOT NULL, 
@@ -2233,7 +1969,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_3EE9FCC54DBB5058 ON home_blocks (position_name)');
         $this->addSql('CREATE INDEX IDX_3EE9FCC5EA9FDD75 ON home_blocks (media_id)');
         $this->addSql('CREATE TABLE consular_district (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           countries TEXT NOT NULL, 
           cities TEXT NOT NULL, 
           code VARCHAR(255) NOT NULL, 
@@ -2245,7 +1981,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN consular_district.countries IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN consular_district.cities IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE citizen_project_categories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
           status VARCHAR(10) DEFAULT \'ENABLED\' NOT NULL, 
@@ -2254,7 +1990,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX citizen_project_category_name_unique ON citizen_project_categories (name)');
         $this->addSql('CREATE UNIQUE INDEX citizen_project_category_slug_unique ON citizen_project_categories (slug)');
         $this->addSql('CREATE TABLE interactive_invitations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           friend_age SMALLINT NOT NULL, 
           friend_gender VARCHAR(6) NOT NULL, 
           friend_position VARCHAR(50) DEFAULT NULL, 
@@ -2278,7 +2014,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_31A811A2A35D7AF0 ON interactive_invitation_has_choices (invitation_id)');
         $this->addSql('CREATE INDEX IDX_31A811A2998666D1 ON interactive_invitation_has_choices (choice_id)');
         $this->addSql('CREATE TABLE interactive_choices (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           step SMALLINT NOT NULL, 
           content_key VARCHAR(30) NOT NULL, 
           label VARCHAR(100) NOT NULL, 
@@ -2291,7 +2027,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX interactive_choices_content_key_unique ON interactive_choices (content_key)');
         $this->addSql('COMMENT ON COLUMN interactive_choices.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE legislative_candidates (
-          id SMALLINT NOT NULL, 
+          id SMALLSERIAL NOT NULL, 
           district_zone_id SMALLINT DEFAULT NULL, 
           media_id BIGINT DEFAULT NULL, 
           position INT NOT NULL, 
@@ -2317,7 +2053,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_AE55AF9BEA9FDD75 ON legislative_candidates (media_id)');
         $this->addSql('CREATE UNIQUE INDEX legislative_candidates_slug_unique ON legislative_candidates (slug)');
         $this->addSql('CREATE TABLE events_categories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           event_group_category_id INT NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
@@ -2328,14 +2064,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX event_category_name_unique ON events_categories (name)');
         $this->addSql('CREATE UNIQUE INDEX event_category_slug_unique ON events_categories (slug)');
         $this->addSql('CREATE TABLE skills (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           slug VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX skill_slug_unique ON skills (slug)');
         $this->addSql('CREATE TABLE designation (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           label VARCHAR(255) DEFAULT NULL, 
           type VARCHAR(255) NOT NULL, 
           zones TEXT DEFAULT NULL, 
@@ -2363,7 +2099,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7538F35AFAC7D83F ON designation_referent_tag (designation_id)');
         $this->addSql('CREATE INDEX IDX_7538F35A9C262DB3 ON designation_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE voting_platform_election_round (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_id INT DEFAULT NULL, 
           uuid UUID NOT NULL, 
           is_active BOOLEAN DEFAULT \'true\' NOT NULL, 
@@ -2381,7 +2117,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E6665F19FCBF5E32 ON voting_platform_election_round_election_pool (election_round_id)');
         $this->addSql('CREATE INDEX IDX_E6665F19C1E98F21 ON voting_platform_election_round_election_pool (election_pool_id)');
         $this->addSql('CREATE TABLE voting_platform_candidate (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           candidate_group_id INT DEFAULT NULL, 
           adherent_id INT DEFAULT NULL, 
           first_name VARCHAR(255) NOT NULL, 
@@ -2398,7 +2134,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_3F426D6D25F06C53 ON voting_platform_candidate (adherent_id)');
         $this->addSql('COMMENT ON COLUMN voting_platform_candidate.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE voting_platform_election (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           designation_id INT DEFAULT NULL, 
           status VARCHAR(255) NOT NULL, 
           closed_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
@@ -2413,7 +2149,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_4E144C94FAC7D83F ON voting_platform_election (designation_id)');
         $this->addSql('COMMENT ON COLUMN voting_platform_election.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE voting_platform_vote_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_round_id INT DEFAULT NULL, 
           voter_key VARCHAR(255) NOT NULL, 
           voted_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -2422,7 +2158,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_62C86890FCBF5E32 ON voting_platform_vote_result (election_round_id)');
         $this->addSql('CREATE UNIQUE INDEX unique_vote_result ON voting_platform_vote_result (voter_key, election_round_id)');
         $this->addSql('CREATE TABLE voting_platform_voters_list (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_id INT DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
@@ -2435,7 +2171,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7CC26956FB0C8C84 ON voting_platform_voters_list_voter (voters_list_id)');
         $this->addSql('CREATE INDEX IDX_7CC26956EBB4B8AD ON voting_platform_voters_list_voter (voter_id)');
         $this->addSql('CREATE TABLE voting_platform_vote (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           voter_id INT DEFAULT NULL, 
           election_round_id INT DEFAULT NULL, 
           voted_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -2445,7 +2181,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DCBB2B7BFCBF5E32 ON voting_platform_vote (election_round_id)');
         $this->addSql('CREATE UNIQUE INDEX unique_vote ON voting_platform_vote (voter_id, election_round_id)');
         $this->addSql('CREATE TABLE voting_platform_candidate_group (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_pool_id INT DEFAULT NULL, 
           elected BOOLEAN DEFAULT \'false\' NOT NULL, 
           uuid UUID NOT NULL, 
@@ -2454,7 +2190,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2C1A353AC1E98F21 ON voting_platform_candidate_group (election_pool_id)');
         $this->addSql('COMMENT ON COLUMN voting_platform_candidate_group.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE voting_platform_voter (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           is_ghost BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -2462,14 +2198,14 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_AB02EC0225F06C53 ON voting_platform_voter (adherent_id)');
         $this->addSql('CREATE TABLE voting_platform_election_pool (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_id INT DEFAULT NULL, 
           code VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE INDEX IDX_7225D6EFA708DAFF ON voting_platform_election_pool (election_id)');
         $this->addSql('CREATE TABLE voting_platform_election_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_id INT DEFAULT NULL, 
           participated INT DEFAULT 0 NOT NULL, 
           uuid UUID NOT NULL, 
@@ -2478,7 +2214,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_67EFA0E4A708DAFF ON voting_platform_election_result (election_id)');
         $this->addSql('COMMENT ON COLUMN voting_platform_election_result.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE voting_platform_candidate_group_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           candidate_group_id INT DEFAULT NULL, 
           election_pool_result_id INT DEFAULT NULL, 
           total INT DEFAULT 0 NOT NULL, 
@@ -2491,7 +2227,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7249D537B5BA5CC5 ON voting_platform_candidate_group_result (election_pool_result_id)');
         $this->addSql('COMMENT ON COLUMN voting_platform_candidate_group_result.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE voting_platform_election_pool_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_pool_id INT DEFAULT NULL, 
           election_round_result_id INT DEFAULT NULL, 
           is_elected BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -2504,7 +2240,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_13C1C73F8FFC0F0B ON voting_platform_election_pool_result (election_round_result_id)');
         $this->addSql('COMMENT ON COLUMN voting_platform_election_pool_result.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE voting_platform_election_round_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_round_id INT DEFAULT NULL, 
           election_result_id INT DEFAULT NULL, 
           uuid UUID NOT NULL, 
@@ -2514,7 +2250,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F267096619FCFB29 ON voting_platform_election_round_result (election_result_id)');
         $this->addSql('COMMENT ON COLUMN voting_platform_election_round_result.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE voting_platform_election_entity (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           committee_id INT DEFAULT NULL, 
           territorial_council_id INT DEFAULT NULL, 
           election_id INT DEFAULT NULL, 
@@ -2524,7 +2260,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7AAD259FAAA61A99 ON voting_platform_election_entity (territorial_council_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7AAD259FA708DAFF ON voting_platform_election_entity (election_id)');
         $this->addSql('CREATE TABLE voting_platform_vote_choice (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           vote_result_id INT DEFAULT NULL, 
           candidate_group_id INT DEFAULT NULL, 
           election_pool_id INT DEFAULT NULL, 
@@ -2536,7 +2272,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B009F3115F0A9B94 ON voting_platform_vote_choice (candidate_group_id)');
         $this->addSql('CREATE INDEX IDX_B009F311C1E98F21 ON voting_platform_vote_choice (election_pool_id)');
         $this->addSql('CREATE TABLE events (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           organizer_id INT DEFAULT NULL, 
           committee_id INT DEFAULT NULL, 
           citizen_project_id INT DEFAULT NULL, 
@@ -2604,7 +2340,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_7D14491F71F7E88B ON event_user_documents (event_id)');
         $this->addSql('CREATE INDEX IDX_7D14491F6A24B1A2 ON event_user_documents (user_document_id)');
         $this->addSql('CREATE TABLE committee_election (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           committee_id INT NOT NULL, 
           designation_id INT DEFAULT NULL, 
           adherent_notified BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -2615,7 +2351,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2CA406E5FAC7D83F ON committee_election (designation_id)');
         $this->addSql('COMMENT ON COLUMN committee_election.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE user_documents (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           original_name VARCHAR(200) NOT NULL, 
           extension VARCHAR(10) NOT NULL, 
           size INT NOT NULL, 
@@ -2628,7 +2364,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX document_uuid_unique ON user_documents (uuid)');
         $this->addSql('COMMENT ON COLUMN user_documents.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE filesystem_file (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           created_by_id INT DEFAULT NULL, 
           updated_by_id INT DEFAULT NULL, 
           parent_id INT DEFAULT NULL, 
@@ -2654,7 +2390,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX filesystem_file_slug_unique ON filesystem_file (slug)');
         $this->addSql('COMMENT ON COLUMN filesystem_file.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE filesystem_file_permission (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           file_id INT NOT NULL, 
           name VARCHAR(50) NOT NULL, 
           PRIMARY KEY(id)
@@ -2662,7 +2398,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_BD623E4C93CB796C ON filesystem_file_permission (file_id)');
         $this->addSql('CREATE UNIQUE INDEX file_permission_unique ON filesystem_file_permission (file_id, name)');
         $this->addSql('CREATE TABLE adherent_change_email_token (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_uuid UUID NOT NULL, 
           value VARCHAR(40) NOT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -2676,13 +2412,13 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN adherent_change_email_token.adherent_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN adherent_change_email_token.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE proposals_themes (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(50) NOT NULL, 
           color VARCHAR(10) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE timeline_measures (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           manifesto_id BIGINT NOT NULL, 
           link VARCHAR(255) DEFAULT NULL, 
           status VARCHAR(50) NOT NULL, 
@@ -2706,7 +2442,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_EB8A7B0C5DA37D00 ON timeline_themes_measures (measure_id)');
         $this->addSql('CREATE INDEX IDX_EB8A7B0C59027487 ON timeline_themes_measures (theme_id)');
         $this->addSql('CREATE TABLE timeline_theme_translations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           translatable_id BIGINT DEFAULT NULL, 
           title VARCHAR(100) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
@@ -2716,9 +2452,9 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_F81F72932C2AC5D3 ON timeline_theme_translations (translatable_id)');
         $this->addSql('CREATE UNIQUE INDEX timeline_theme_translations_unique_translation ON timeline_theme_translations (translatable_id, locale)');
-        $this->addSql('CREATE TABLE timeline_profiles (id BIGINT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE timeline_profiles (id BIGSERIAL NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE timeline_measure_translations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           translatable_id BIGINT DEFAULT NULL, 
           title VARCHAR(100) NOT NULL, 
           locale VARCHAR(255) NOT NULL, 
@@ -2727,14 +2463,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_5C9EB6072C2AC5D3 ON timeline_measure_translations (translatable_id)');
         $this->addSql('CREATE UNIQUE INDEX timeline_measure_translations_unique_translation ON timeline_measure_translations (translatable_id, locale)');
         $this->addSql('CREATE TABLE timeline_manifestos (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           display_media BOOLEAN NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE INDEX IDX_C6ED4403EA9FDD75 ON timeline_manifestos (media_id)');
         $this->addSql('CREATE TABLE timeline_manifesto_translations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           translatable_id BIGINT DEFAULT NULL, 
           title VARCHAR(100) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
@@ -2745,7 +2481,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F7BD6C172C2AC5D3 ON timeline_manifesto_translations (translatable_id)');
         $this->addSql('CREATE UNIQUE INDEX timeline_manifesto_translations_unique_translation ON timeline_manifesto_translations (translatable_id, locale)');
         $this->addSql('CREATE TABLE timeline_themes (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           featured BOOLEAN DEFAULT \'false\' NOT NULL, 
           display_media BOOLEAN NOT NULL, 
@@ -2753,7 +2489,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_8ADDB8F6EA9FDD75 ON timeline_themes (media_id)');
         $this->addSql('CREATE TABLE timeline_profile_translations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           translatable_id BIGINT DEFAULT NULL, 
           title VARCHAR(100) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
@@ -2764,7 +2500,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_41B3A6DA2C2AC5D3 ON timeline_profile_translations (translatable_id)');
         $this->addSql('CREATE UNIQUE INDEX timeline_profile_translations_unique_translation ON timeline_profile_translations (translatable_id, locale)');
         $this->addSql('CREATE TABLE biography_executive_office_member (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           job VARCHAR(255) NOT NULL, 
           executive_officer BOOLEAN DEFAULT \'false\' NOT NULL, 
           deputy_general_delegate BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -2788,7 +2524,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX executive_office_member_slug_unique ON biography_executive_office_member (slug)');
         $this->addSql('COMMENT ON COLUMN biography_executive_office_member.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE event_group_category (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
           status VARCHAR(10) DEFAULT \'ENABLED\' NOT NULL, 
@@ -2797,7 +2533,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX event_group_category_name_unique ON event_group_category (name)');
         $this->addSql('CREATE UNIQUE INDEX event_group_category_slug_unique ON event_group_category (slug)');
         $this->addSql('CREATE TABLE committee_candidacy (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           committee_election_id INT NOT NULL, 
           committee_membership_id INT NOT NULL, 
           invitation_id INT DEFAULT NULL, 
@@ -2821,7 +2557,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_9A044548D4924C4 ON committee_candidacy (binome_id)');
         $this->addSql('COMMENT ON COLUMN committee_candidacy.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE reports (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           author_id INT DEFAULT NULL, 
           citizen_project_id INT DEFAULT NULL, 
           citizen_action_id INT DEFAULT NULL, 
@@ -2853,7 +2589,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN reports.reasons IS \'(DC2Type:json_array)\'');
         $this->addSql('COMMENT ON COLUMN reports.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE adherent_segment (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           author_id INT NOT NULL, 
           label VARCHAR(255) NOT NULL, 
           member_ids TEXT NOT NULL, 
@@ -2867,7 +2603,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN adherent_segment.member_ids IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN adherent_segment.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE adherent_messages (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           author_id INT DEFAULT NULL, 
           filter_id INT DEFAULT NULL, 
           label VARCHAR(255) NOT NULL, 
@@ -2887,7 +2623,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D187C183D395B25E ON adherent_messages (filter_id)');
         $this->addSql('COMMENT ON COLUMN adherent_messages.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE mailchimp_campaign_report (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           open_total INT NOT NULL, 
           open_unique INT NOT NULL, 
           open_rate INT NOT NULL, 
@@ -2904,7 +2640,7 @@ final class Version20210122141206 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE mailchimp_campaign (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           report_id INT DEFAULT NULL, 
           message_id INT DEFAULT NULL, 
           external_id VARCHAR(255) DEFAULT NULL, 
@@ -2931,7 +2667,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_901CE107828112CC ON mailchimp_campaign_mailchimp_segment (mailchimp_campaign_id)');
         $this->addSql('CREATE INDEX IDX_901CE107D21E482E ON mailchimp_campaign_mailchimp_segment (mailchimp_segment_id)');
         $this->addSql('CREATE TABLE adherent_message_filters (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_segment_id INT DEFAULT NULL, 
           committee_id INT DEFAULT NULL, 
           user_list_definition_id INT DEFAULT NULL, 
@@ -2991,7 +2727,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F2BB20FEEFAB50C4 ON referent_user_filter_referent_tag (referent_user_filter_id)');
         $this->addSql('CREATE INDEX IDX_F2BB20FE9C262DB3 ON referent_user_filter_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE pages (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           header_media_id BIGINT DEFAULT NULL, 
           media_id BIGINT DEFAULT NULL, 
           layout VARCHAR(255) DEFAULT \'default\' NOT NULL, 
@@ -3012,7 +2748,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2074E5755B42DC0F ON pages (header_media_id)');
         $this->addSql('CREATE INDEX IDX_2074E575EA9FDD75 ON pages (media_id)');
         $this->addSql('CREATE TABLE procuration_proxies (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           reliability SMALLINT NOT NULL, 
           reliability_description VARCHAR(30) DEFAULT NULL, 
           gender VARCHAR(6) NOT NULL, 
@@ -3052,7 +2788,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D075F5A9E15E419B ON procuration_proxies_to_election_rounds (procuration_proxy_id)');
         $this->addSql('CREATE INDEX IDX_D075F5A9FCBF5E32 ON procuration_proxies_to_election_rounds (election_round_id)');
         $this->addSql('CREATE TABLE vote_place (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           alias VARCHAR(255) DEFAULT NULL, 
           code VARCHAR(10) NOT NULL, 
@@ -3069,7 +2805,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_2574310677153098 ON vote_place (code)');
         $this->addSql('CREATE TABLE administrator_export_history (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           administrator_id INT NOT NULL, 
           route_name VARCHAR(255) NOT NULL, 
           parameters JSON NOT NULL, 
@@ -3078,7 +2814,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_10499F014B09E92C ON administrator_export_history (administrator_id)');
         $this->addSql('COMMENT ON COLUMN administrator_export_history.parameters IS \'(DC2Type:json_array)\'');
         $this->addSql('CREATE TABLE adherent_certification_histories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           administrator_id INT DEFAULT NULL, 
           action VARCHAR(20) NOT NULL, 
@@ -3090,7 +2826,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX adherent_certification_histories_date_idx ON adherent_certification_histories (date)');
         $this->addSql('COMMENT ON COLUMN adherent_certification_histories.date IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE committee_merge_histories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           source_committee_id INT NOT NULL, 
           destination_committee_id INT NOT NULL, 
           merged_by_id INT DEFAULT NULL, 
@@ -3116,7 +2852,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_CB8E336F9379ED92 ON committee_merge_histories_merged_memberships (committee_merge_history_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_CB8E336FFCC6DA91 ON committee_merge_histories_merged_memberships (committee_membership_id)');
         $this->addSql('CREATE TABLE adherent_email_subscription_histories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           subscription_type_id INT NOT NULL, 
           adherent_uuid UUID NOT NULL, 
           action VARCHAR(32) NOT NULL, 
@@ -3139,7 +2875,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6FFBE6E88FCB8132 ON adherent_email_subscription_history_referent_tag (email_subscription_history_id)');
         $this->addSql('CREATE INDEX IDX_6FFBE6E89C262DB3 ON adherent_email_subscription_history_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE committees_membership_histories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           committee_id INT DEFAULT NULL, 
           adherent_uuid UUID NOT NULL, 
           action VARCHAR(10) NOT NULL, 
@@ -3166,7 +2902,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_B6A8C7189C262DB3 ON committee_membership_history_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE user_authorizations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           user_id INT DEFAULT NULL, 
           client_id INT DEFAULT NULL, 
           scopes JSON NOT NULL, 
@@ -3178,7 +2914,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX user_authorizations_unique ON user_authorizations (user_id, client_id)');
         $this->addSql('COMMENT ON COLUMN user_authorizations.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE oauth_refresh_tokens (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           access_token_id INT DEFAULT NULL, 
           identifier VARCHAR(255) NOT NULL, 
           expires_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -3193,7 +2929,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN oauth_refresh_tokens.expires_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN oauth_refresh_tokens.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE oauth_access_tokens (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           client_id INT NOT NULL, 
           user_id INT DEFAULT NULL, 
           device_id INT DEFAULT NULL, 
@@ -3213,7 +2949,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN oauth_access_tokens.expires_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN oauth_access_tokens.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE oauth_clients (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           description VARCHAR(255) NOT NULL, 
           redirect_uris JSON NOT NULL, 
@@ -3232,7 +2968,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN oauth_clients.supported_scopes IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN oauth_clients.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE oauth_auth_codes (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           client_id INT NOT NULL, 
           user_id INT DEFAULT NULL, 
           device_id INT DEFAULT NULL, 
@@ -3253,7 +2989,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN oauth_auth_codes.expires_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN oauth_auth_codes.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE referent_space_access_information (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           previous_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
           last_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
@@ -3263,7 +2999,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN referent_space_access_information.previous_date IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN referent_space_access_information.last_date IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE territorial_council_convocation (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           territorial_council_id INT DEFAULT NULL, 
           political_committee_id INT DEFAULT NULL, 
           created_by_id INT DEFAULT NULL, 
@@ -3293,7 +3029,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN territorial_council_convocation.address_latitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('COMMENT ON COLUMN territorial_council_convocation.address_longitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('CREATE TABLE political_committee_feed_item (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           political_committee_id INT NOT NULL, 
           author_id INT DEFAULT NULL, 
           is_locked BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -3306,7 +3042,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_54369E83F675F31B ON political_committee_feed_item (author_id)');
         $this->addSql('COMMENT ON COLUMN political_committee_feed_item.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE territorial_council_official_report (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           political_committee_id INT NOT NULL, 
           author_id INT DEFAULT NULL, 
           created_by_id INT DEFAULT NULL, 
@@ -3323,7 +3059,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_8D80D385896DBBDE ON territorial_council_official_report (updated_by_id)');
         $this->addSql('COMMENT ON COLUMN territorial_council_official_report.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE territorial_council_membership_log (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT NOT NULL, 
           type VARCHAR(20) NOT NULL, 
           description VARCHAR(500) NOT NULL, 
@@ -3339,7 +3075,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN territorial_council_membership_log.actual_quality_names IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN territorial_council_membership_log.found_territorial_councils IS \'(DC2Type:simple_array)\'');
         $this->addSql('CREATE TABLE territorial_council_election (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           territorial_council_id INT DEFAULT NULL, 
           election_poll_id INT DEFAULT NULL, 
           designation_id INT DEFAULT NULL, 
@@ -3368,7 +3104,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN territorial_council_election.address_latitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('COMMENT ON COLUMN territorial_council_election.address_longitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('CREATE TABLE political_committee (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           territorial_council_id INT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           is_active BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -3379,7 +3115,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_39FAEE95AAA61A99 ON political_committee (territorial_council_id)');
         $this->addSql('COMMENT ON COLUMN political_committee.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE territorial_council_feed_item (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           territorial_council_id INT NOT NULL, 
           author_id INT DEFAULT NULL, 
           is_locked BOOLEAN DEFAULT \'false\' NOT NULL, 
@@ -3392,7 +3128,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_45241D62F675F31B ON territorial_council_feed_item (author_id)');
         $this->addSql('COMMENT ON COLUMN territorial_council_feed_item.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE territorial_council_election_poll_choice (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_poll_id INT NOT NULL, 
           value VARCHAR(255) NOT NULL, 
           uuid UUID NOT NULL, 
@@ -3401,7 +3137,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_63EBCF6B8649F5F1 ON territorial_council_election_poll_choice (election_poll_id)');
         $this->addSql('COMMENT ON COLUMN territorial_council_election_poll_choice.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE territorial_council_election_poll_vote (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           choice_id INT DEFAULT NULL, 
           membership_id INT NOT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -3410,14 +3146,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_BCDA0C15998666D1 ON territorial_council_election_poll_vote (choice_id)');
         $this->addSql('CREATE INDEX IDX_BCDA0C151FB354CD ON territorial_council_election_poll_vote (membership_id)');
         $this->addSql('CREATE TABLE territorial_council_election_poll (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           gender VARCHAR(255) NOT NULL, 
           uuid UUID NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('COMMENT ON COLUMN territorial_council_election_poll.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE territorial_council_official_report_document (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           created_by_id INT DEFAULT NULL, 
           report_id INT DEFAULT NULL, 
           filename VARCHAR(36) NOT NULL, 
@@ -3430,7 +3166,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_78C1161DB03A8386 ON territorial_council_official_report_document (created_by_id)');
         $this->addSql('CREATE INDEX IDX_78C1161D4BD2A4C0 ON territorial_council_official_report_document (report_id)');
         $this->addSql('CREATE TABLE territorial_council (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           current_designation_id INT DEFAULT NULL, 
           name VARCHAR(255) NOT NULL, 
           codes VARCHAR(50) NOT NULL, 
@@ -3461,7 +3197,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9467B41EAAA61A99 ON territorial_council_zone (territorial_council_id)');
         $this->addSql('CREATE INDEX IDX_9467B41E9F2C3FAB ON territorial_council_zone (zone_id)');
         $this->addSql('CREATE TABLE political_committee_quality (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           political_committee_membership_id INT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           joined_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -3471,7 +3207,7 @@ final class Version20210122141206 extends AbstractMigration
           political_committee_membership_id
         )');
         $this->addSql('CREATE TABLE territorial_council_quality (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           territorial_council_membership_id INT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           zone VARCHAR(255) NOT NULL, 
@@ -3482,7 +3218,7 @@ final class Version20210122141206 extends AbstractMigration
           territorial_council_membership_id
         )');
         $this->addSql('CREATE TABLE territorial_council_candidacy_invitation (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           membership_id INT NOT NULL, 
           status VARCHAR(255) NOT NULL, 
           accepted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
@@ -3495,7 +3231,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DA86009A1FB354CD ON territorial_council_candidacy_invitation (membership_id)');
         $this->addSql('COMMENT ON COLUMN territorial_council_candidacy_invitation.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE territorial_council_candidacy (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_id INT NOT NULL, 
           membership_id INT NOT NULL, 
           invitation_id INT DEFAULT NULL, 
@@ -3519,7 +3255,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_39885B68D4924C4 ON territorial_council_candidacy (binome_id)');
         $this->addSql('COMMENT ON COLUMN territorial_council_candidacy.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE institutional_events_categories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
           status VARCHAR(10) DEFAULT \'ENABLED\' NOT NULL, 
@@ -3528,7 +3264,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX institutional_event_category_name_unique ON institutional_events_categories (name)');
         $this->addSql('CREATE UNIQUE INDEX institutional_event_slug_unique ON institutional_events_categories (slug)');
         $this->addSql('CREATE TABLE elected_representative_zone (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           category_id INT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           code VARCHAR(255) DEFAULT NULL, 
@@ -3555,7 +3291,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_CECA906FDD62C21B ON elected_representative_zone_parent (child_id)');
         $this->addSql('CREATE INDEX IDX_CECA906F727ACA70 ON elected_representative_zone_parent (parent_id)');
         $this->addSql('CREATE TABLE elected_representative_political_function (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           elected_representative_id INT NOT NULL, 
           mandate_id INT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
@@ -3568,7 +3304,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_303BAF41D38DA5D3 ON elected_representative_political_function (elected_representative_id)');
         $this->addSql('CREATE INDEX IDX_303BAF416C1129CD ON elected_representative_political_function (mandate_id)');
         $this->addSql('CREATE TABLE elected_representative_social_network_link (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           elected_representative_id INT NOT NULL, 
           url VARCHAR(255) NOT NULL, 
           type VARCHAR(255) NOT NULL, 
@@ -3577,13 +3313,13 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_231377B5D38DA5D3 ON elected_representative_social_network_link (elected_representative_id)');
         $this->addSql('CREATE UNIQUE INDEX social_network_elected_representative_unique ON elected_representative_social_network_link (type, elected_representative_id)');
         $this->addSql('CREATE TABLE elected_representative_zone_category (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX elected_representative_zone_category_name_unique ON elected_representative_zone_category (name)');
         $this->addSql('CREATE TABLE elected_representative_mandate (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           zone_id INT DEFAULT NULL, 
           geo_zone_id INT DEFAULT NULL, 
           elected_representative_id INT NOT NULL, 
@@ -3601,7 +3337,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_38609146283AB2A9 ON elected_representative_mandate (geo_zone_id)');
         $this->addSql('CREATE INDEX IDX_38609146D38DA5D3 ON elected_representative_mandate (elected_representative_id)');
         $this->addSql('CREATE TABLE elected_representative_user_list_definition_history (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           elected_representative_id INT NOT NULL, 
           user_list_definition_id INT NOT NULL, 
           adherent_id INT DEFAULT NULL, 
@@ -3616,7 +3352,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_1ECF75664B09E92C ON elected_representative_user_list_definition_history (administrator_id)');
         $this->addSql('COMMENT ON COLUMN elected_representative_user_list_definition_history.date IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE elected_representative_sponsorship (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           elected_representative_id INT NOT NULL, 
           presidential_election_year INT NOT NULL, 
           candidate VARCHAR(255) DEFAULT NULL, 
@@ -3624,7 +3360,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_CA6D486D38DA5D3 ON elected_representative_sponsorship (elected_representative_id)');
         $this->addSql('CREATE TABLE elected_representative_label (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           elected_representative_id INT NOT NULL, 
           name VARCHAR(50) NOT NULL, 
           on_going BOOLEAN DEFAULT \'true\' NOT NULL, 
@@ -3634,7 +3370,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_D8143704D38DA5D3 ON elected_representative_label (elected_representative_id)');
         $this->addSql('CREATE TABLE elected_representative (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           uuid UUID NOT NULL, 
           last_name VARCHAR(50) NOT NULL, 
@@ -3662,7 +3398,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A9C53A24D38DA5D3 ON elected_representative_user_list_definition (elected_representative_id)');
         $this->addSql('CREATE INDEX IDX_A9C53A24F74563E3 ON elected_representative_user_list_definition (user_list_definition_id)');
         $this->addSql('CREATE TABLE newsletter_subscriptions (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           email VARCHAR(100) NOT NULL, 
           postal_code VARCHAR(11) DEFAULT NULL, 
           country VARCHAR(2) DEFAULT NULL, 
@@ -3681,7 +3417,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN newsletter_subscriptions.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN newsletter_subscriptions.token IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE clarifications (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -3700,7 +3436,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_2FAB8972989D9B62 ON clarifications (slug)');
         $this->addSql('CREATE INDEX IDX_2FAB8972EA9FDD75 ON clarifications (media_id)');
         $this->addSql('CREATE TABLE ton_macron_friend_invitations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           friend_first_name VARCHAR(50) NOT NULL, 
           friend_age SMALLINT NOT NULL, 
           friend_gender VARCHAR(6) NOT NULL, 
@@ -3725,7 +3461,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_BB3BCAEEA35D7AF0 ON ton_macron_friend_invitation_has_choices (invitation_id)');
         $this->addSql('CREATE INDEX IDX_BB3BCAEE998666D1 ON ton_macron_friend_invitation_has_choices (choice_id)');
         $this->addSql('CREATE TABLE adherent_reset_password_tokens (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_uuid UUID NOT NULL, 
           value VARCHAR(40) NOT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -3739,7 +3475,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN adherent_reset_password_tokens.adherent_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN adherent_reset_password_tokens.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE facebook_videos (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           facebook_url VARCHAR(255) NOT NULL, 
           twitter_url VARCHAR(255) DEFAULT NULL, 
           description VARCHAR(255) NOT NULL, 
@@ -3751,7 +3487,7 @@ final class Version20210122141206 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE committees (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           current_designation_id INT DEFAULT NULL, 
           description TEXT NOT NULL, 
           facebook_page_url VARCHAR(255) DEFAULT NULL, 
@@ -3806,7 +3542,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_37C5F224ED1A100B ON committee_zone (committee_id)');
         $this->addSql('CREATE INDEX IDX_37C5F2249F2C3FAB ON committee_zone (zone_id)');
         $this->addSql('CREATE TABLE custom_search_results (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           title VARCHAR(100) NOT NULL, 
           description VARCHAR(255) NOT NULL, 
@@ -3821,14 +3557,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE TABLE algolia_candidature (id UUID NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN algolia_candidature.id IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE donation_tags (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           label VARCHAR(100) NOT NULL, 
           color VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX donation_tag_label_unique ON donation_tags (label)');
         $this->addSql('CREATE TABLE turnkey_projects (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           category_id INT DEFAULT NULL, 
           name VARCHAR(255) NOT NULL, 
           canonical_name VARCHAR(255) NOT NULL, 
@@ -3857,7 +3593,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_67BF8377B5315DF4 ON turnkey_project_turnkey_project_file (turnkey_project_id)');
         $this->addSql('CREATE INDEX IDX_67BF83777D06E1CD ON turnkey_project_turnkey_project_file (turnkey_project_file_id)');
         $this->addSql('CREATE TABLE application_request_volunteer (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           gender VARCHAR(6) DEFAULT NULL, 
           displayed BOOLEAN DEFAULT \'true\' NOT NULL, 
@@ -3923,24 +3659,24 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_DA291742B8D6887 ON volunteer_request_referent_tag (volunteer_request_id)');
         $this->addSql('CREATE INDEX IDX_DA2917429C262DB3 ON volunteer_request_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE application_request_tag (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE application_request_technical_skill (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           display BOOLEAN DEFAULT \'true\' NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE application_request_theme (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           display BOOLEAN DEFAULT \'true\' NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE application_request_running_mate (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           gender VARCHAR(6) DEFAULT NULL, 
           displayed BOOLEAN DEFAULT \'true\' NOT NULL, 
@@ -4004,7 +3740,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_53AB4FABCEDF4387 ON running_mate_request_referent_tag (running_mate_request_id)');
         $this->addSql('CREATE INDEX IDX_53AB4FAB9C262DB3 ON running_mate_request_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE committee_candidacy_invitation (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           membership_id INT NOT NULL, 
           status VARCHAR(255) NOT NULL, 
           accepted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
@@ -4017,7 +3753,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_368B01611FB354CD ON committee_candidacy_invitation (membership_id)');
         $this->addSql('COMMENT ON COLUMN committee_candidacy_invitation.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE emails (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           message_class VARCHAR(55) DEFAULT NULL, 
           sender VARCHAR(100) NOT NULL, 
           recipients TEXT DEFAULT NULL, 
@@ -4032,7 +3768,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN emails.recipients IS \'(DC2Type:simple_array)\'');
         $this->addSql('COMMENT ON COLUMN emails.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE epci (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           status VARCHAR(255) NOT NULL, 
           surface DOUBLE PRECISION NOT NULL, 
           department_code VARCHAR(10) NOT NULL, 
@@ -4056,7 +3792,7 @@ final class Version20210122141206 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE citizen_project_committee_supports (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           citizen_project_id INT DEFAULT NULL, 
           committee_id INT DEFAULT NULL, 
           status VARCHAR(20) NOT NULL, 
@@ -4067,7 +3803,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F694C3BCB3584533 ON citizen_project_committee_supports (citizen_project_id)');
         $this->addSql('CREATE INDEX IDX_F694C3BCED1A100B ON citizen_project_committee_supports (committee_id)');
         $this->addSql('CREATE TABLE chez_vous_measures (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           city_id INT NOT NULL, 
           type_id INT NOT NULL, 
           payload JSON DEFAULT NULL, 
@@ -4078,14 +3814,14 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX chez_vous_measures_city_type_unique ON chez_vous_measures (city_id, type_id)');
         $this->addSql('COMMENT ON COLUMN chez_vous_measures.payload IS \'(DC2Type:json_array)\'');
         $this->addSql('CREATE TABLE chez_vous_regions (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           code VARCHAR(10) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A6C12FCC77153098 ON chez_vous_regions (code)');
         $this->addSql('CREATE TABLE chez_vous_markers (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           city_id INT NOT NULL, 
           type VARCHAR(255) NOT NULL, 
           latitude DOUBLE PRECISION NOT NULL, 
@@ -4096,7 +3832,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN chez_vous_markers.latitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('COMMENT ON COLUMN chez_vous_markers.longitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('CREATE TABLE chez_vous_measure_types (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           code VARCHAR(255) NOT NULL, 
           label VARCHAR(255) NOT NULL, 
           updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -4110,7 +3846,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B80D46F577153098 ON chez_vous_measure_types (code)');
         $this->addSql('CREATE TABLE chez_vous_cities (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           department_id INT NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           postal_codes JSON NOT NULL, 
@@ -4127,7 +3863,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN chez_vous_cities.latitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('COMMENT ON COLUMN chez_vous_cities.longitude IS \'(DC2Type:geo_point)\'');
         $this->addSql('CREATE TABLE chez_vous_departments (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           region_id INT NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           label VARCHAR(100) DEFAULT NULL, 
@@ -4137,7 +3873,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_29E7DD5777153098 ON chez_vous_departments (code)');
         $this->addSql('CREATE INDEX IDX_29E7DD5798260155 ON chez_vous_departments (region_id)');
         $this->addSql('CREATE TABLE procuration_requests (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           found_proxy_id INT DEFAULT NULL, 
           procuration_request_found_by_id INT DEFAULT NULL, 
           gender VARCHAR(6) NOT NULL, 
@@ -4180,7 +3916,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A47BBD53128D9C53 ON procuration_requests_to_election_rounds (procuration_request_id)');
         $this->addSql('CREATE INDEX IDX_A47BBD53FCBF5E32 ON procuration_requests_to_election_rounds (election_round_id)');
         $this->addSql('CREATE TABLE citizen_action_categories (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           slug VARCHAR(100) NOT NULL, 
           status VARCHAR(10) DEFAULT \'ENABLED\' NOT NULL, 
@@ -4189,7 +3925,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX citizen_action_category_name_unique ON citizen_action_categories (name)');
         $this->addSql('CREATE UNIQUE INDEX citizen_action_category_slug_unique ON citizen_action_categories (slug)');
         $this->addSql('CREATE TABLE programmatic_foundation_measure (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           sub_approach_id INT DEFAULT NULL, 
           position SMALLINT NOT NULL, 
           title VARCHAR(255) NOT NULL, 
@@ -4211,13 +3947,13 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F004297F5DA37D00 ON programmatic_foundation_measure_tag (measure_id)');
         $this->addSql('CREATE INDEX IDX_F004297FBAD26311 ON programmatic_foundation_measure_tag (tag_id)');
         $this->addSql('CREATE TABLE programmatic_foundation_tag (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           label VARCHAR(100) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_12127927EA750E8 ON programmatic_foundation_tag (label)');
         $this->addSql('CREATE TABLE programmatic_foundation_approach (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           position SMALLINT NOT NULL, 
           title VARCHAR(255) NOT NULL, 
           content TEXT DEFAULT NULL, 
@@ -4228,7 +3964,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('COMMENT ON COLUMN programmatic_foundation_approach.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE programmatic_foundation_project (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           measure_id INT DEFAULT NULL, 
           position SMALLINT NOT NULL, 
           title VARCHAR(255) NOT NULL, 
@@ -4250,7 +3986,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9F63872166D1F9C ON programmatic_foundation_project_tag (project_id)');
         $this->addSql('CREATE INDEX IDX_9F63872BAD26311 ON programmatic_foundation_project_tag (tag_id)');
         $this->addSql('CREATE TABLE programmatic_foundation_sub_approach (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           approach_id INT DEFAULT NULL, 
           position SMALLINT NOT NULL, 
           title VARCHAR(255) NOT NULL, 
@@ -4265,7 +4001,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_735C1D0115140614 ON programmatic_foundation_sub_approach (approach_id)');
         $this->addSql('COMMENT ON COLUMN programmatic_foundation_sub_approach.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE web_hooks (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           client_id INT NOT NULL, 
           event VARCHAR(64) NOT NULL, 
           service VARCHAR(64) DEFAULT NULL, 
@@ -4278,7 +4014,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX web_hook_event_client_id_unique ON web_hooks (event, client_id)');
         $this->addSql('COMMENT ON COLUMN web_hooks.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE proposals (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           position SMALLINT NOT NULL, 
           published BOOLEAN NOT NULL, 
@@ -4305,7 +4041,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6B80CE41F4792058 ON proposal_proposal_theme (proposal_id)');
         $this->addSql('CREATE INDEX IDX_6B80CE41B85948AF ON proposal_proposal_theme (proposal_theme_id)');
         $this->addSql('CREATE TABLE order_articles (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           media_id BIGINT DEFAULT NULL, 
           position SMALLINT NOT NULL, 
           published BOOLEAN NOT NULL, 
@@ -4334,7 +4070,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A956D4E4C14E7BC9 ON order_section_order_article (order_article_id)');
         $this->addSql('CREATE INDEX IDX_A956D4E46BF91E2F ON order_section_order_article (order_section_id)');
         $this->addSql('CREATE TABLE turnkey_projects_files (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           title VARCHAR(255) NOT NULL, 
           slug VARCHAR(255) NOT NULL, 
           path VARCHAR(255) NOT NULL, 
@@ -4343,7 +4079,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE UNIQUE INDEX turnkey_projects_file_slug_extension ON turnkey_projects_files (slug, extension)');
         $this->addSql('CREATE TABLE articles (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           category_id INT DEFAULT NULL, 
           media_id BIGINT DEFAULT NULL, 
           published_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -4372,21 +4108,21 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F6B9A2217294869C ON article_proposal_theme (article_id)');
         $this->addSql('CREATE INDEX IDX_F6B9A221B85948AF ON article_proposal_theme (proposal_theme_id)');
         $this->addSql('CREATE TABLE social_share_categories (
-          id BIGINT NOT NULL, 
+          id BIGSERIAL NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           slug VARCHAR(255) NOT NULL, 
           position SMALLINT DEFAULT 0 NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE mailchimp_segment (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           list VARCHAR(255) NOT NULL, 
           label VARCHAR(255) NOT NULL, 
           external_id VARCHAR(255) DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE unregistrations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           excluded_by_id INT DEFAULT NULL, 
           uuid UUID NOT NULL, 
           postal_code VARCHAR(15) DEFAULT NULL, 
@@ -4410,7 +4146,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_59B7AC414D824CA ON unregistration_referent_tag (unregistration_id)');
         $this->addSql('CREATE INDEX IDX_59B7AC49C262DB3 ON unregistration_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE republican_silence (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           begin_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           finish_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           PRIMARY KEY(id)
@@ -4425,7 +4161,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_543DED2612359909 ON republican_silence_referent_tag (republican_silence_id)');
         $this->addSql('CREATE INDEX IDX_543DED269C262DB3 ON republican_silence_referent_tag (referent_tag_id)');
         $this->addSql('CREATE TABLE cities (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           department_id INT DEFAULT NULL, 
           name VARCHAR(100) NOT NULL, 
           insee_code VARCHAR(10) NOT NULL, 
@@ -4435,11 +4171,11 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_D95DB16B15A3C1BC ON cities (insee_code)');
         $this->addSql('CREATE INDEX IDX_D95DB16BAE80F5DF ON cities (department_id)');
         $this->addSql('COMMENT ON COLUMN cities.postal_codes IS \'(DC2Type:simple_array)\'');
-        $this->addSql('CREATE TABLE geo_data (id INT NOT NULL, geo_shape Geometry NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE geo_data (id SERIAL NOT NULL, geo_shape Geometry NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX geo_data_geo_shape_idx ON geo_data USING GIST (geo_shape)');
         $this->addSql('COMMENT ON COLUMN geo_data.geo_shape IS \'(DC2Type:geometry)\'');
         $this->addSql('CREATE TABLE department (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           region_id INT NOT NULL, 
           name VARCHAR(100) NOT NULL, 
           label VARCHAR(100) DEFAULT NULL, 
@@ -4449,7 +4185,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_CD1DE18A77153098 ON department (code)');
         $this->addSql('CREATE INDEX IDX_CD1DE18A98260155 ON department (region_id)');
         $this->addSql('CREATE TABLE failed_login_attempt (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           signature VARCHAR(255) NOT NULL, 
           at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           extra JSON NOT NULL, 
@@ -4458,7 +4194,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('COMMENT ON COLUMN failed_login_attempt.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE image (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           uuid UUID NOT NULL, 
           extension VARCHAR(10) NOT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
@@ -4468,7 +4204,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_C53D045FD17F50A6 ON image (uuid)');
         $this->addSql('COMMENT ON COLUMN image.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE newsletter_invitations (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           first_name VARCHAR(50) NOT NULL, 
           last_name VARCHAR(50) NOT NULL, 
           email VARCHAR(255) NOT NULL, 
@@ -4479,13 +4215,13 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('COMMENT ON COLUMN newsletter_invitations.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE member_summary_mission_types (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE UNIQUE INDEX member_summary_mission_type_name_unique ON member_summary_mission_types (name)');
         $this->addSql('CREATE TABLE member_summary_job_experiences (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           summary_id INT DEFAULT NULL, 
           company VARCHAR(255) NOT NULL, 
           position VARCHAR(255) NOT NULL, 
@@ -4504,7 +4240,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_72DD8B7F2AC2D45C ON member_summary_job_experiences (summary_id)');
         $this->addSql('CREATE TABLE member_summary_trainings (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           summary_id INT DEFAULT NULL, 
           organization VARCHAR(255) NOT NULL, 
           diploma VARCHAR(255) NOT NULL, 
@@ -4519,7 +4255,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_C101987B2AC2D45C ON member_summary_trainings (summary_id)');
         $this->addSql('CREATE TABLE member_summary_languages (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           summary_id INT DEFAULT NULL, 
           code VARCHAR(255) NOT NULL, 
           level VARCHAR(255) NOT NULL, 
@@ -4527,7 +4263,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_70C88322AC2D45C ON member_summary_languages (summary_id)');
         $this->addSql('CREATE TABLE vote_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_round_id INT NOT NULL, 
           created_by_id INT DEFAULT NULL, 
           updated_by_id INT DEFAULT NULL, 
@@ -4552,14 +4288,14 @@ final class Version20210122141206 extends AbstractMigration
           vote_place_id, election_round_id
         )');
         $this->addSql('CREATE TABLE election_city_manager (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           phone VARCHAR(35) DEFAULT NULL, 
           PRIMARY KEY(id)
         )');
         $this->addSql('COMMENT ON COLUMN election_city_manager.phone IS \'(DC2Type:phone_number)\'');
         $this->addSql('CREATE TABLE election_city_candidate (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           gender VARCHAR(6) DEFAULT NULL, 
           email VARCHAR(255) DEFAULT NULL, 
@@ -4574,7 +4310,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('COMMENT ON COLUMN election_city_candidate.phone IS \'(DC2Type:phone_number)\'');
         $this->addSql('CREATE TABLE vote_result_list (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           list_collection_id INT DEFAULT NULL, 
           label VARCHAR(255) NOT NULL, 
           nuance VARCHAR(255) DEFAULT NULL, 
@@ -4588,7 +4324,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_677ED502DB567AF4 ON vote_result_list (list_collection_id)');
         $this->addSql('CREATE TABLE election_city_contact (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           city_id INT NOT NULL, 
           name VARCHAR(255) NOT NULL, 
           function VARCHAR(255) DEFAULT NULL, 
@@ -4601,7 +4337,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D04AFB68BAC62AF ON election_city_contact (city_id)');
         $this->addSql('COMMENT ON COLUMN election_city_contact.phone IS \'(DC2Type:phone_number)\'');
         $this->addSql('CREATE TABLE election_city_card (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           city_id INT NOT NULL, 
           first_candidate_id INT DEFAULT NULL, 
           headquarters_manager_id INT DEFAULT NULL, 
@@ -4628,7 +4364,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_EB01E8D1B86B270B ON election_city_card (national_prevision_id)');
         $this->addSql('CREATE UNIQUE INDEX city_card_city_unique ON election_city_card (city_id)');
         $this->addSql('CREATE TABLE vote_result_list_collection (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           city_id INT DEFAULT NULL, 
           election_round_id INT DEFAULT NULL, 
           PRIMARY KEY(id)
@@ -4636,7 +4372,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9C1DD9638BAC62AF ON vote_result_list_collection (city_id)');
         $this->addSql('CREATE INDEX IDX_9C1DD963FCBF5E32 ON vote_result_list_collection (election_round_id)');
         $this->addSql('CREATE TABLE ministry_list_total_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           ministry_vote_result_id INT DEFAULT NULL, 
           total INT DEFAULT 0 NOT NULL, 
           label VARCHAR(255) NOT NULL, 
@@ -4651,7 +4387,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_99D1332580711B75 ON ministry_list_total_result (ministry_vote_result_id)');
         $this->addSql('CREATE TABLE election_city_partner (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           city_id INT NOT NULL, 
           label VARCHAR(255) NOT NULL, 
           consensus VARCHAR(255) DEFAULT NULL, 
@@ -4659,7 +4395,7 @@ final class Version20210122141206 extends AbstractMigration
         )');
         $this->addSql('CREATE INDEX IDX_704D77988BAC62AF ON election_city_partner (city_id)');
         $this->addSql('CREATE TABLE election_city_prevision (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           strategy VARCHAR(255) DEFAULT NULL, 
           name VARCHAR(255) DEFAULT NULL, 
           alliances VARCHAR(255) DEFAULT NULL, 
@@ -4668,7 +4404,7 @@ final class Version20210122141206 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('CREATE TABLE ministry_vote_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           election_round_id INT NOT NULL, 
           city_id INT DEFAULT NULL, 
           created_by_id INT DEFAULT NULL, 
@@ -4687,7 +4423,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_B9F11DAE896DBBDE ON ministry_vote_result (updated_by_id)');
         $this->addSql('CREATE UNIQUE INDEX ministry_vote_result_city_round_unique ON ministry_vote_result (city_id, election_round_id)');
         $this->addSql('CREATE TABLE list_total_result (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           list_id INT DEFAULT NULL, 
           vote_result_id INT NOT NULL, 
           total INT DEFAULT 0 NOT NULL, 
@@ -4696,7 +4432,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A19B071E3DAE168B ON list_total_result (list_id)');
         $this->addSql('CREATE INDEX IDX_A19B071E45EB7186 ON list_total_result (vote_result_id)');
         $this->addSql('CREATE TABLE elected_representatives_register (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           adherent_id INT DEFAULT NULL, 
           department_id INT DEFAULT NULL, 
           commune_id INT DEFAULT NULL, 
@@ -4738,7 +4474,7 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_55314F9525F06C53 ON elected_representatives_register (adherent_id)');
         $this->addSql('COMMENT ON COLUMN elected_representatives_register.adherent_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('CREATE TABLE devices (
-          id INT NOT NULL, 
+          id SERIAL NOT NULL, 
           device_uuid VARCHAR(255) NOT NULL, 
           last_logged_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
           uuid UUID NOT NULL, 
@@ -7296,274 +7032,6 @@ final class Version20210122141206 extends AbstractMigration
         $this->addSql('ALTER TABLE jecoute_data_survey DROP CONSTRAINT FK_6579E8E794A4C7D4');
         $this->addSql('ALTER TABLE oauth_access_tokens DROP CONSTRAINT FK_CA42527C94A4C7D4');
         $this->addSql('ALTER TABLE oauth_auth_codes DROP CONSTRAINT FK_BB493F8394A4C7D4');
-        $this->addSql('DROP SEQUENCE donation_transactions_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE donators_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherents_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE donations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE donator_tags_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE donator_kinship_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE donator_identifier_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE board_member_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE roles_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE subscription_type_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE districts_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE referent_managed_areas_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE referent_team_member_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE coordinator_managed_areas_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE procuration_managed_areas_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE assessor_managed_areas_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE assessor_role_association_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE municipal_manager_role_association_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE municipal_manager_supervisor_role_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_managed_areas_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_membership_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE political_committee_membership_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committees_memberships_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE citizen_project_memberships_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committee_feed_item_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_tags_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_idea_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE medias_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE municipal_chief_areas_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE senatorial_candidate_areas_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE lre_area_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE candidate_managed_area_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_charter_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE senator_area_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE consular_managed_area_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE certification_request_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE my_team_delegated_access_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_commitment_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE thematic_community_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_mandate_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committee_provisional_supervisor_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE referent_tags_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_zone_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE citizen_project_skills_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE referent_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE referent_area_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE referent_person_link_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE user_list_definition_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE je_marche_reports_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE invitations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE citizen_project_category_skills_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE referent_managed_users_message_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ton_macron_choices_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE summaries_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE live_links_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE facebook_profiles_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE organizational_chart_item_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE events_invitations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE thematic_community_membership_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE thematic_community_contact_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE events_registrations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE region_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE projection_managed_users_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE administrators_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_activation_keys_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE redirections_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_survey_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_region_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_question_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_choice_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_news_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_data_answer_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_survey_question_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE jecoute_data_survey_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE election_rounds_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE articles_categories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE social_shares_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE formation_paths_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE formation_files_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE formation_modules_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE formation_axes_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE citizen_projects_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE legislative_district_zones_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_region_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_consular_district_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_canton_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_district_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_borough_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_country_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_custom_zone_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_foreign_district_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_city_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_department_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_city_community_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE mooc_elements_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE mooc_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE mooc_attachment_link_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE mooc_chapter_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE mooc_attachment_file_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE order_sections_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE deputy_managed_users_message_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE assessor_requests_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elections_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE banned_adherent_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_idea_notification_dates_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_thread_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_question_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_comment_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_need_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_consultation_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_vote_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_guideline_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_theme_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_answer_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_consultation_report_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ideas_workshop_category_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE home_blocks_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE consular_district_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE citizen_project_categories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE interactive_invitations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE interactive_choices_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE legislative_candidates_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE events_categories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE skills_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE designation_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_election_round_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_candidate_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_election_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_vote_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_voters_list_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_vote_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_candidate_group_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_voter_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_election_pool_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_election_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_candidate_group_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_election_pool_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_election_round_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_election_entity_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE voting_platform_vote_choice_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE events_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committee_election_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE user_documents_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE filesystem_file_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE filesystem_file_permission_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_change_email_token_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE proposals_themes_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE timeline_measures_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE timeline_theme_translations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE timeline_profiles_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE timeline_measure_translations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE timeline_manifestos_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE timeline_manifesto_translations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE timeline_themes_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE timeline_profile_translations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE biography_executive_office_member_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE event_group_category_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committee_candidacy_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE reports_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_segment_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_messages_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE mailchimp_campaign_report_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE mailchimp_campaign_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_message_filters_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE pages_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE procuration_proxies_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE vote_place_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE administrator_export_history_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_certification_histories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committee_merge_histories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_email_subscription_histories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committees_membership_histories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE user_authorizations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE oauth_refresh_tokens_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE oauth_access_tokens_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE oauth_clients_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE oauth_auth_codes_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE referent_space_access_information_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_convocation_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE political_committee_feed_item_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_official_report_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_membership_log_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_election_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE political_committee_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_feed_item_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_election_poll_choice_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_election_poll_vote_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_election_poll_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_official_report_document_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE political_committee_quality_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_quality_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_candidacy_invitation_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE territorial_council_candidacy_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE institutional_events_categories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_zone_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_political_function_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_social_network_link_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_zone_category_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_mandate_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_user_list_definition_history_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_sponsorship_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_label_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representative_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE newsletter_subscriptions_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE clarifications_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ton_macron_friend_invitations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE adherent_reset_password_tokens_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE facebook_videos_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committees_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE custom_search_results_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE donation_tags_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE turnkey_projects_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE application_request_volunteer_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE application_request_tag_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE application_request_technical_skill_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE application_request_theme_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE application_request_running_mate_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE committee_candidacy_invitation_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE emails_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE epci_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE citizen_project_committee_supports_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE chez_vous_measures_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE chez_vous_regions_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE chez_vous_markers_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE chez_vous_measure_types_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE chez_vous_cities_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE chez_vous_departments_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE procuration_requests_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE citizen_action_categories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE programmatic_foundation_measure_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE programmatic_foundation_tag_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE programmatic_foundation_approach_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE programmatic_foundation_project_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE programmatic_foundation_sub_approach_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE web_hooks_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE proposals_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE order_articles_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE turnkey_projects_files_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE articles_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE social_share_categories_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE mailchimp_segment_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE unregistrations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE republican_silence_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE cities_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE geo_data_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE department_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE failed_login_attempt_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE image_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE newsletter_invitations_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE member_summary_mission_types_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE member_summary_job_experiences_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE member_summary_trainings_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE member_summary_languages_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE vote_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE election_city_manager_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE election_city_candidate_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE vote_result_list_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE election_city_contact_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE election_city_card_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE vote_result_list_collection_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ministry_list_total_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE election_city_partner_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE election_city_prevision_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE ministry_vote_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE list_total_result_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE elected_representatives_register_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE devices_id_seq CASCADE');
         $this->addSql('DROP TABLE donation_transactions');
         $this->addSql('DROP TABLE donators');
         $this->addSql('DROP TABLE donator_donator_tag');
