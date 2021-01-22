@@ -190,11 +190,11 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         // includes
         if (true === $filter->includeCommitteeHosts()) {
-            $typeExpression->add('u.isCommitteeHost = 1');
+            $typeExpression->add('u.isCommitteeHost = true');
         }
 
         if (true === $filter->includeCommitteeSupervisors()) {
-            $typeExpression->add('u.isCommitteeSupervisor = 1');
+            $typeExpression->add('u.isCommitteeSupervisor = true');
         }
 
         if (true === $filter->includeCommitteeProvisionalSupervisors()) {
@@ -209,11 +209,11 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         // excludes
         if (false === $filter->includeCommitteeHosts()) {
-            $qb->andWhere('u.isCommitteeHost = 0');
+            $qb->andWhere('u.isCommitteeHost = false');
         }
 
         if (false === $filter->includeCommitteeSupervisors()) {
-            $qb->andWhere('u.isCommitteeSupervisor = 0');
+            $qb->andWhere('u.isCommitteeSupervisor = false');
         }
 
         if (false === $filter->includeCommitteeProvisionalSupervisors()) {
