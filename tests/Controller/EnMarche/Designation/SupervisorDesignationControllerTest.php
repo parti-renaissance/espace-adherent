@@ -4,6 +4,7 @@ namespace Tests\App\Controller\EnMarche\Designation;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -13,6 +14,30 @@ use Tests\App\Controller\ControllerTestTrait;
 class SupervisorDesignationControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+
+    public function testProvisionalSupervisorCannotSeeDesignationsOfHisCommittee(): void
+    {
+        self::authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-comite-de-evry/editer');
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $this->assertCount(0, $crawler->selectLink('Désignations'));
+
+        $this->client->request(Request::METHOD_GET, '/espace-animateur/en-marche-comite-de-evry/designations');
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
+
+    public function testProvisionalSupervisorCannotSeeDesignationsOfHisCommittee2(): void
+    {
+        self::authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
+
+        $this->client->request(Request::METHOD_GET, '/espace-animateur/en-marche-comite-de-evry/designations');
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
 
     public function testSupervisorCanSeeAllDesignationsOfHisCommittee(): void
     {

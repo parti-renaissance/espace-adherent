@@ -18,7 +18,7 @@
                 <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Mes messages</a>
             </li>
 
-            {% if is_supervisor(committee) %}
+            {% if app.user.supervisorOf(committee, false) %}
                 <li class="{{ is_active_route(app.request, 'app_supervisor_designations_*') ? 'active' }}">
                     <a href="{{ path('app_supervisor_designations_list', {committee_slug: committee.slug}) }}">Désignations</a>
                 </li>

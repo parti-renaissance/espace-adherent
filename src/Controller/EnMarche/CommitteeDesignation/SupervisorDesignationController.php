@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @ParamConverter("committee", options={"mapping": {"committee_slug": "slug"}})
  *
- * @Security("is_granted('SUPERVISE_COMMITTEE', committee) and committee.isApproved()")
+ * @Security("is_granted('MANAGE_COMMITTEE_DESIGNATIONS', committee) and committee.isApproved()")
  */
 class SupervisorDesignationController extends AbstractDesignationController
 {
