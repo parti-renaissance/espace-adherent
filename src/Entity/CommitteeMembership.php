@@ -40,7 +40,6 @@ class CommitteeMembership implements UuidEntityInterface
     public const PRIVILEGES = [
         self::COMMITTEE_HOST,
         self::COMMITTEE_FOLLOWER,
-        self::COMMITTEE_SUPERVISOR,
     ];
 
     use EntityIdentityTrait;
@@ -68,7 +67,7 @@ class CommitteeMembership implements UuidEntityInterface
     /**
      * The privilege given to the member in the committee.
      *
-     * Privilege is either HOST, FOLLOWER or SUPERVISOR
+     * Privilege is either HOST or FOLLOWER
      *
      * @var string
      *
@@ -132,19 +131,6 @@ class CommitteeMembership implements UuidEntityInterface
         return $this->uuid;
     }
 
-    final public static function getHostPrivileges(): array
-    {
-        return [self::COMMITTEE_SUPERVISOR, self::COMMITTEE_HOST];
-    }
-
-    public static function createForSupervisor(
-        Committee $committee,
-        Adherent $supervisor,
-        \DateTimeInterface $subscriptionDate
-    ): self {
-        return static::createForAdherent($committee, $supervisor, self::COMMITTEE_SUPERVISOR, $subscriptionDate);
-    }
-
     public static function createForHost(
         Committee $committee,
         Adherent $host,
@@ -183,7 +169,7 @@ class CommitteeMembership implements UuidEntityInterface
      */
     public function isSupervisor(): bool
     {
-        return self::COMMITTEE_SUPERVISOR === $this->privilege;
+        return $this->getAdherent()->isSupervisorOf($this->getCommittee());
     }
 
     /**
@@ -205,15 +191,6 @@ class CommitteeMembership implements UuidEntityInterface
     public function getPrivilege(): string
     {
         return $this->privilege;
-    }
-
-    /**
-     * Returns whether or not this membership enables the adherent to host a
-     * committee.
-     */
-    public function canHostCommittee(): bool
-    {
-        return \in_array($this->privilege, self::getHostPrivileges(), true);
     }
 
     public function getAdherent(): ?Adherent
@@ -306,7 +283,7 @@ class CommitteeMembership implements UuidEntityInterface
 
     public function isPromotableHost(): bool
     {
-        return $this->isFollower();
+        return $this->isFollower() && !$this->isSupervisor();
     }
 
     public function isDemotableHost(): bool

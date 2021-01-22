@@ -6,7 +6,7 @@ use App\Committee\CommitteePermissions;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use App\Repository\CommitteeMembershipRepository;
+use App\Repository\AdherentRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\FollowerCommitteeVoter;
 use Ramsey\Uuid\UuidInterface;
@@ -15,20 +15,20 @@ use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
 {
     /**
-     * @var CommitteeMembershipRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var AdherentRepository|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $membershipRepository;
+    private $adherentRepository;
 
     protected function setUp(): void
     {
-        $this->membershipRepository = $this->createMock(CommitteeMembershipRepository::class);
+        $this->adherentRepository = $this->createMock(AdherentRepository::class);
 
         parent::setUp();
     }
 
     protected function tearDown(): void
     {
-        $this->membershipRepository = null;
+        $this->adherentRepository = null;
 
         parent::tearDown();
     }
@@ -41,7 +41,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
 
     protected function getVoter(): AbstractAdherentVoter
     {
-        return new FollowerCommitteeVoter($this->membershipRepository);
+        return new FollowerCommitteeVoter($this->adherentRepository);
     }
 
     public function testAdherentCannotFollowCommitteeIfAlreadyFollowing()
@@ -227,14 +227,14 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     private function assertRepositoryBehavior(?bool $manyHost): void
     {
         if (null !== $manyHost) {
-            $this->membershipRepository->expects($this->once())
-                ->method('countHostMembers')
+            $this->adherentRepository->expects($this->once())
+                ->method('countCommitteeHosts')
                 ->with($this->isInstanceOf(Committee::class))
                 ->willReturn($manyHost ? 2 : 1)
             ;
         } else {
-            $this->membershipRepository->expects($this->never())
-                ->method('countHostMembers')
+            $this->adherentRepository->expects($this->never())
+                ->method('countCommitteeHosts')
             ;
         }
     }

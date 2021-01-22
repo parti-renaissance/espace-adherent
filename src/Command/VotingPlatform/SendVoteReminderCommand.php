@@ -101,6 +101,7 @@ class SendVoteReminderCommand extends Command
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
             /** @var VoteRepository $voteRepository */
             $voteRepository = $this->entityManager->getRepository(Vote::class);
+            // need to transform a Proxy class to a Committee one
             $committeeName = $election->getElectionEntity()->getCommittee()->getName();
 
             foreach ($this->committeeMembershipRepository->findVotingForSupervisorMembershipsToNotify($election->getElectionEntity()->getCommittee(), $election->getDesignation()) as $committeeMembership) {

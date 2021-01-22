@@ -17,28 +17,38 @@
 {% endmacro %}
 
 {% block field %}
-    {% if object.hosts|length %}
-        <p>Animateur:</p>
+    {% set supervisors = object.supervisors(false) %}
+    {% set provisionalSupervisors = object.supervisors(true) %}
+    {% if supervisors|length > 0 %}
+        <p>Animateur{{ supervisors|length > 1 ? 's' }}:</p>
         <ul>
-            {{ list_host.dislay_host_line(object.hosts.get(0)) }}
+            {% for supervisor in supervisors %}
+                {{ list_host.dislay_host_line(supervisor, true) }}
+            {% endfor %}
         </ul>
-        {% if object.activeAdherentMandates|length > 0 %}
-            <p>Adhérent(s) désigné(s) :</p>
-            <ul>
-                {% for mandate in object.activeAdherentMandates %}
-                    {{ list_host.dislay_host_line(mandate.adherent, true) }}
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% if object.hosts|length > 1 %}
-            <p>Co-Animateur{{ object.hosts|length > 2 ? 's' }}:</p>
-            <ul>
-                {% for host in object.hosts %}
-                    {% if not loop.first  %}
-                        {{ list_host.dislay_host_line(host) }}
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% endif %}
+    {% endif %}
+    {% if provisionalSupervisors|length > 0 %}
+        <p>Animateur{{ provisionalSupervisors|length > 1 ? 's' }} provisional{{ provisionalSupervisors|length > 1 ? 's' }}:</p>
+        <ul>
+            {% for provisionalSupervisor in provisionalSupervisors %}
+                {{ list_host.dislay_host_line(provisionalSupervisor, true) }}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if object.activeAdherentMandates|length > 0 %}
+        <p>Adhérent{{ object.activeAdherentMandates|length > 1 ? 's' }} désigné{{ object.activeAdherentMandates|length > 1 ? 's' }} :</p>
+        <ul>
+            {% for mandate in object.activeAdherentMandates %}
+                {{ list_host.dislay_host_line(mandate.adherent, true) }}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if object.hosts|length > 0 %}
+        <p>Co-Animateur{{ object.hosts|length > 1 ? 's' }}:</p>
+        <ul>
+            {% for host in object.hosts %}
+                {{ list_host.dislay_host_line(host) }}
+            {% endfor %}
+        </ul>
     {% endif %}
 {% endblock %}

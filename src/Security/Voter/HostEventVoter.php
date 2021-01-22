@@ -40,6 +40,6 @@ class HostEventVoter extends AbstractAdherentVoter
             return false;
         }
 
-        return $adherent->isHostOf($committee);
+        return $adherent->isSupervisorOf($committee) || $adherent->isHostOf($committee);
     }
 }

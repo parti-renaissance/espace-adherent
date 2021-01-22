@@ -10,19 +10,19 @@ class CommitteeCandidacyEvent extends BaseCandidacyEvent
 {
     private $committee;
     private $candidate;
-    private $supervisor;
+    private $supervisors;
 
     public function __construct(
         CommitteeCandidacy $candidacy,
         Committee $committee,
         Adherent $candidate,
-        Adherent $supervisor = null
+        array $supervisors = []
     ) {
         parent::__construct($candidacy);
 
         $this->committee = $committee;
         $this->candidate = $candidate;
-        $this->supervisor = $supervisor;
+        $this->supervisors = $supervisors;
     }
 
     public function getCommittee(): Committee
@@ -35,8 +35,8 @@ class CommitteeCandidacyEvent extends BaseCandidacyEvent
         return $this->candidate;
     }
 
-    public function getSupervisor(): ?Adherent
+    public function getSupervisors(): array
     {
-        return $this->supervisor;
+        return $this->supervisors;
     }
 }

@@ -82,10 +82,6 @@ class CommitteeMergeCommandHandler
                 })
             ;
 
-            if ($supervisorMembership = $this->committeeMembershipRepository->findSupervisorMembership($sourceCommittee)) {
-                $supervisorMembership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
-            }
-
             $sourceCommittee->refused();
 
             $this->em->persist($this->createCommitteeMergeHistory(

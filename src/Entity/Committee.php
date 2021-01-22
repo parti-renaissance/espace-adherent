@@ -442,17 +442,17 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->adherentMandates->removeElement($adherentMandate);
     }
 
-    public function hasMaleMandate(): bool
+    public function hasMaleAdherentMandate(): bool
     {
-        return $this->hasMandateWithGender(Genders::MALE);
+        return $this->hasAdherentMandateWithGender(Genders::MALE);
     }
 
-    public function hasFemaleMandate(): bool
+    public function hasFemaleAdherentMandate(): bool
     {
-        return $this->hasMandateWithGender(Genders::FEMALE);
+        return $this->hasAdherentMandateWithGender(Genders::FEMALE);
     }
 
-    public function hasMandateWithGender(string $gender): bool
+    public function hasAdherentMandateWithGender(string $gender): bool
     {
         if (0 === $this->adherentMandates->count()) {
             return false;
@@ -460,6 +460,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->andWhere(Criteria::expr()->eq('quality', null))
             ->andWhere(Criteria::expr()->eq('gender', $gender))
         ;
 
@@ -470,6 +471,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('finishAt', null))
+            ->andWhere(Criteria::expr()->eq('quality', null))
             ->orderBy(['gender' => 'ASC'])
         ;
 
@@ -480,6 +482,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('finishAt', null))
+            ->andWhere(Criteria::expr()->eq('quality', null))
             ->orderBy(['gender' => 'ASC'])
         ;
 
@@ -558,7 +561,14 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $count > 0 ? $mandates->first() : null;
     }
 
-    private function findSupervisorMandates(string $gender, bool $isProvisional = null): Collection
+    public function getSupervisors(bool $isProvisional = null): array
+    {
+        return array_map(function (CommitteeAdherentMandate $mandate) {
+            return $mandate->getAdherent();
+        }, $this->findSupervisorMandates(null, $isProvisional)->toArray());
+    }
+
+    private function findSupervisorMandates(?string $gender = null, bool $isProvisional = null): Collection
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('quality', CommitteeMandateQualityEnum::SUPERVISOR))
@@ -566,8 +576,11 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
                 Criteria::expr()->isNull('finishAt'),
                 Criteria::expr()->gt('finishAt', new \DateTime())
             ))
-            ->andWhere(Criteria::expr()->eq('gender', $gender))
         ;
+
+        if ($gender) {
+            $criteria->andWhere(Criteria::expr()->eq('gender', $gender));
+        }
 
         if (\is_bool($isProvisional)) {
             $criteria->andWhere(Criteria::expr()->eq('provisional', $isProvisional));

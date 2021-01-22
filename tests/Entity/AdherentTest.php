@@ -138,7 +138,7 @@ class AdherentTest extends TestCase
         $memberships = $adherent->getMemberships();
 
         $membership = $this->createMock(CommitteeMembership::class);
-        $membership->expects($this->once())->method('canHostCommittee')->willReturn(true);
+        $membership->expects($this->once())->method('isHostMember')->willReturn(true);
         $memberships->add($membership);
 
         $this->assertFalse($adherent->isBasicAdherent());

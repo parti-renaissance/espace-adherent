@@ -7,6 +7,7 @@ use App\Address\Address;
 use App\Committee\Filter\CommitteeListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
@@ -601,7 +602,7 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findCommitteesByPrivilege(Adherent $adherent, array $privilege): array
+    public function findCommitteesForHost(Adherent $adherent): array
     {
         // Prevent SQL query if the adherent doesn't follow any committees yet.
         if (0 === \count($adherent->getMemberships())) {
@@ -610,10 +611,15 @@ class CommitteeRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('c')
             ->innerJoin(CommitteeMembership::class, 'cm', Join::WITH, 'c = cm.committee')
-            ->where('cm.privilege IN (:privilege)')
+            ->leftJoin('c.adherentMandates', 'am')
+            ->where((new Orx())
+                ->add('cm.privilege = :privilege')
+                ->add('am.adherent = :adherent AND am.committee IS NOT NULL AND am.quality = :supervisor AND am.finishAt IS NULL')
+            )
             ->andWhere('cm.adherent = :adherent')
             ->setParameter('adherent', $adherent)
-            ->setParameter('privilege', $privilege)
+            ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
+            ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
             ->getQuery()
             ->getResult()
         ;

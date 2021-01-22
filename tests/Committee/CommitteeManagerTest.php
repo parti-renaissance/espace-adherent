@@ -38,35 +38,10 @@ class CommitteeManagerTest extends WebTestCase
         $this->assertCount(2, $hosts);
         $this->assertCount(2, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
         $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_4_UUID)));
-        $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_5_UUID)));
+        $this->assertCount(2, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_5_UUID)));
 
         // Unapproved committees
         $this->assertCount(0, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));
-    }
-
-    public function testGetCommitteeFollowers()
-    {
-        $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID);
-        $this->assertInstanceOf(AdherentCollection::class, $hosts = $this->committeeManager->getCommitteeFollowers($committee));
-
-        // Approved committees
-        $this->assertCount(4, $hosts);
-        $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
-
-        $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID);
-        $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($committee));
-        $this->assertCount(0, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
-
-        $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_4_UUID);
-        $this->assertCount(3, $this->committeeManager->getCommitteeFollowers($committee));
-        $this->assertCount(2, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
-
-        $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_5_UUID);
-        $this->assertCount(6, $this->committeeManager->getCommitteeFollowers($committee));
-        $this->assertCount(5, $this->committeeManager->getCommitteeFollowers($committee, CommitteeManager::EXCLUDE_HOSTS));
-
-        // Unapproved committees
-        $this->assertCount(0, $this->committeeManager->getCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));
     }
 
     public function testGetOptinCommitteeFollowers()
@@ -81,7 +56,7 @@ class CommitteeManagerTest extends WebTestCase
         $this->assertCount(5, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_5_UUID)));
 
         // Unapproved committees
-        $this->assertCount(0, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));
+        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));
     }
 
     public function testGetNearbyCommittees()
@@ -257,45 +232,73 @@ class CommitteeManagerTest extends WebTestCase
         $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID);
 
         $this->expectException(CommitteeMembershipException::class);
-        $this->expectExceptionMessage(sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege.', $adherent->getMembershipFor($committee)->getUuid()));
+        $this->expectExceptionMessage(sprintf('Committee membership "%s" cannot be promoted to the host privilege', $adherent->getMembershipFor($committee)->getUuid()));
 
-        $this->committeeManager->changePrivilege($adherent, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR);
+        $this->committeeManager->changePrivilege($adherent, $committee, CommitteeMembership::COMMITTEE_HOST);
     }
 
     public function testChangePrivilege()
     {
-        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_3_UUID);
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_5_UUID);
         $adherent2 = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
         $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID);
 
-        // Change privileges of the first member SUPERVISOR => FOLLOWER => HOST
-        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isSupervisor());
-        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+        // Change privileges of the a member HOST => FOLLOWER => HOST
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isHostMember());
         $this->assertEquals(false, $adherent->getMembershipFor($committee)->isFollower());
 
         $this->committeeManager->changePrivilege($adherent, $committee, CommitteeMembership::COMMITTEE_FOLLOWER);
 
         $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
-        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
         $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
 
         $this->committeeManager->changePrivilege($adherent, $committee, CommitteeMembership::COMMITTEE_HOST);
 
         $this->assertEquals(true, $adherent->getMembershipFor($committee)->isHostMember());
-        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
         $this->assertEquals(false, $adherent->getMembershipFor($committee)->isFollower());
 
-        // Change privileges of the second member: FOLLOWER => SUPERVISOR
+        // Change privileges of another member: FOLLOWER => HOST
         $this->assertEquals(true, $adherent2->getMembershipFor($committee)->isFollower());
-        $this->assertEquals(false, $adherent2->getMembershipFor($committee)->isSupervisor());
 
         $committee6 = $this->getCommittee(LoadCommitteeData::COMMITTEE_6_UUID);
         $adherent2->getMembershipFor($committee6)->removeCommitteeCandidacyForElection($committee6->getCommitteeElection());
 
-        $this->committeeManager->changePrivilege($adherent2, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR);
+        $this->committeeManager->changePrivilege($adherent2, $committee, CommitteeMembership::COMMITTEE_HOST);
 
-        $this->assertEquals(true, $adherent2->getMembershipFor($committee)->isSupervisor());
         $this->assertEquals(false, $adherent2->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(true, $adherent2->getMembershipFor($committee)->isHostMember());
+    }
+
+    public function testApproveRefuseCommittee()
+    {
+        // Creator of committee
+        $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_6_UUID);
+        $committee = $this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Approve committee
+        $this->committeeManager->approveCommittee($committee);
+
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Refuse approved committee
+        $this->committeeManager->refuseCommittee($committee);
+
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
+
+        // Reapprove committee
+        $this->committeeManager->approveCommittee($committee);
+
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isSupervisor());
+        $this->assertEquals(true, $adherent->getMembershipFor($committee)->isFollower());
+        $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
     }
 
     protected function setUp(): void

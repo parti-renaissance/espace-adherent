@@ -2,18 +2,15 @@
 
 namespace App\Documents;
 
-use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
 
 class DocumentManager
 {
     private $repository;
-    private $committeeManager;
 
-    public function __construct(DocumentRepository $repository, CommitteeManager $committeeManager)
+    public function __construct(DocumentRepository $repository)
     {
         $this->repository = $repository;
-        $this->committeeManager = $committeeManager;
     }
 
     public function listAdherentFiles(Adherent $adherent): array
@@ -21,7 +18,7 @@ class DocumentManager
         $documents = [];
         $documents['adherent'] = $this->repository->listAdherentDirectory('/');
 
-        if ($this->committeeManager->isCommitteeHost($adherent)) {
+        if ($adherent->isHost() || $adherent->isSupervisor()) {
             $documents['host'] = $this->repository->listHostDirectory('/');
             if ($adherent->isForeignResident()) {
                 $documents['foreign_host'] = $this->repository->listForeignHostDirectory('/');

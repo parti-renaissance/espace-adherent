@@ -2,7 +2,7 @@
 Feature:
   In order to get committees' information
   As a referent
-  I should be able to acces committees API data
+  I should be able to access committees API data
 
   Background:
     Given I freeze the clock to "2018-04-15"

@@ -79,7 +79,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
 
-        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
+        $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
 
         self::assertStringNotContainsString('Quitter ce comité', $response->getContent());
@@ -279,7 +279,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSeeHosts($crawler, [
             ['JP', 'Jacques Picard', 'animateur'],
-            ['GB', 'Gisele Berthoux', 'co-animateur'],
+            ['GB', 'Gisele Berthoux', 'co-animatrice'],
         ]);
         $this->assertSeeDesignedAdherents($crawler, [
             ['GB', 'Gisele Berthoux', 'Adhérente désignée'],
@@ -329,7 +329,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertTrue($this->seeMembersCount($crawler, 4), 'The host should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The host should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The host should see the other contact links');
-        $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux', 'co-animateur'), 'The host should see his own contact link');
+        $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux', 'co-animatrice'), 'The host should see his own contact link');
         $this->assertTrue($this->seeHostNav($crawler), 'The host should see the host navigation');
     }
 

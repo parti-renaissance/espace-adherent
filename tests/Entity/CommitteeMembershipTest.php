@@ -15,30 +15,6 @@ class CommitteeMembershipTest extends TestCase
     const ADHERENT_UUID = '0f5afdb8-09f6-4522-9e36-f0fd227a8442';
     const COMMITTEE_UUID = 'ebd9f0c8-4158-4939-8372-28505f6cf892';
 
-    public function testGetHostPrivileges()
-    {
-        $privileges = CommitteeMembership::getHostPrivileges();
-
-        $this->assertCount(2, $privileges);
-        $this->assertContains(CommitteeMembership::COMMITTEE_SUPERVISOR, $privileges);
-        $this->assertContains(CommitteeMembership::COMMITTEE_HOST, $privileges);
-    }
-
-    public function testCreateSupervisorMembership()
-    {
-        $membership = CommitteeMembership::createForSupervisor($this->createCommittee(), $adherent = $this->createAdherent(), new \DateTime());
-
-        $this->assertInstanceOf(CommitteeMembership::class, $membership);
-        $this->assertInstanceOf(UuidInterface::class, $membership->getUuid());
-        $this->assertSame($adherent, $membership->getAdherent());
-        $this->assertSame(self::ADHERENT_UUID, (string) $membership->getAdherentUuid());
-        $this->assertSame(self::COMMITTEE_UUID, $membership->getCommitteeUuid()->toString());
-        $this->assertTrue($membership->isSupervisor());
-        $this->assertFalse($membership->isHostMember());
-        $this->assertFalse($membership->isFollower());
-        $this->assertTrue($membership->canHostCommittee());
-    }
-
     public function testCreateHostMembership()
     {
         $membership = CommitteeMembership::createForHost($this->createCommittee(), $adherent = $this->createAdherent(), new \DateTime());
@@ -51,7 +27,6 @@ class CommitteeMembershipTest extends TestCase
         $this->assertFalse($membership->isSupervisor());
         $this->assertTrue($membership->isHostMember());
         $this->assertFalse($membership->isFollower());
-        $this->assertTrue($membership->canHostCommittee());
     }
 
     public function testCreateFollowerMembership()
@@ -66,26 +41,15 @@ class CommitteeMembershipTest extends TestCase
         $this->assertFalse($membership->isSupervisor());
         $this->assertFalse($membership->isHostMember());
         $this->assertTrue($membership->isFollower());
-        $this->assertFalse($membership->canHostCommittee());
     }
 
     public function testChangePrivileges()
     {
-        $membership = CommitteeMembership::createForSupervisor($this->createCommittee(), $this->createAdherent(), new \DateTime());
-
-        $this->assertTrue($membership->isSupervisor());
-        $this->assertFalse($membership->isHostMember());
-        $this->assertFalse($membership->isFollower());
-        $this->assertTrue($membership->canHostCommittee());
-        $this->assertFalse($membership->isPromotableHost());
-        $this->assertFalse($membership->isDemotableHost());
-
-        $membership->setPrivilege(CommitteeMembership::COMMITTEE_HOST);
+        $membership = CommitteeMembership::createForHost($this->createCommittee(), $this->createAdherent(), new \DateTime());
 
         $this->assertFalse($membership->isSupervisor());
         $this->assertTrue($membership->isHostMember());
         $this->assertFalse($membership->isFollower());
-        $this->assertTrue($membership->canHostCommittee());
         $this->assertFalse($membership->isPromotableHost());
         $this->assertTrue($membership->isDemotableHost());
 
@@ -94,7 +58,6 @@ class CommitteeMembershipTest extends TestCase
         $this->assertFalse($membership->isSupervisor());
         $this->assertFalse($membership->isHostMember());
         $this->assertTrue($membership->isFollower());
-        $this->assertFalse($membership->canHostCommittee());
         $this->assertTrue($membership->isPromotableHost());
         $this->assertFalse($membership->isDemotableHost());
     }

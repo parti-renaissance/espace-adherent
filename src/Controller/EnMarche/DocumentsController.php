@@ -80,7 +80,7 @@ class DocumentsController extends Controller
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        $isHost = $adherent->isHost();
+        $isHost = $adherent->isHost() || $adherent->isSupervisor();
         $isReferent = $adherent->isReferent();
 
         if (DocumentRepository::DIRECTORY_HOSTS === $type && !($isHost || $isReferent)) {

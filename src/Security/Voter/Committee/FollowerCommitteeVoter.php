@@ -5,16 +5,16 @@ namespace App\Security\Voter\Committee;
 use App\Committee\CommitteePermissions;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Repository\CommitteeMembershipRepository;
+use App\Repository\AdherentRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 
 class FollowerCommitteeVoter extends AbstractAdherentVoter
 {
-    private $repository;
+    private $adherentRepository;
 
-    public function __construct(CommitteeMembershipRepository $repository)
+    public function __construct(AdherentRepository $adherentRepository)
     {
-        $this->repository = $repository;
+        $this->adherentRepository = $adherentRepository;
     }
 
     protected function supports($attribute, $subject)
@@ -50,6 +50,6 @@ class FollowerCommitteeVoter extends AbstractAdherentVoter
 
         // Any basic follower of a committee can unfollow the committee at any point in time.
         // A host can only if another host is registered for that committee.
-        return $membership->isFollower() || 1 < $this->repository->countHostMembers($committee);
+        return $membership->isFollower() || 1 < $this->adherentRepository->countCommitteeHosts($committee);
     }
 }

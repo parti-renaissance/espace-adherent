@@ -89,6 +89,7 @@ delegated_deputy: député délégué
 senator: sénateur
 delegated_senator: sénateur délégué
 committee_supervisor: animateur
+committee_provisional_supervisor: animateur provisoire
 supervisor: animateur
 committee_host: co-animateur
 host: co-animateur
@@ -119,6 +120,7 @@ thematic_community_chief: Responsable Thématique
 
 role_or_mandat.adherent: Adhérent
 role_or_mandat.supervisor: Animateur local
+role_or_mandat.provisional_supervisor: Animateur local provisoire
 role_or_mandat.citizen_project_admin: Porteur de projets citoyens
 role_or_mandat.referent: Référent
 role_or_mandat.contact: Contact
@@ -647,6 +649,7 @@ adherent_message.limit.referent: référents
 adherent_message.limit.deputy: députés
 adherent_message.limit.senator: sénateurs
 adherent_message.filter.role.CommitteeHosts: 'Co-animateurs de comités locaux'
+adherent_message.filter.role.CommitteeProvisionalSupervisors: 'Animateurs provisoire de comités locaux'
 adherent_message.filter.role.CommitteeSupervisors: 'Animateurs de comités locaux'
 adherent_message.filter.role.CitizenProjectHosts: 'Porteurs de projets citoyens'
 draft: Brouillon

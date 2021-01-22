@@ -81,7 +81,7 @@ class CommitteeCandidacySendEmailsListener implements EventSubscriberInterface
      */
     private function notifySupervisor(CommitteeCandidacyEvent $event, string $messageClass): void
     {
-        if ($supervisor = $event->getSupervisor()) {
+        foreach ($event->getSupervisors() as $supervisor) {
             $this->mailer->sendMessage(
                 $messageClass::create(
                     $event->getCandidacy(),
