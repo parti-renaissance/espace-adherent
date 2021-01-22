@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20210122120150 extends AbstractMigration
+final class Version20210122141206 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -49,6 +49,7 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE adherent_commitment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE thematic_community_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE adherent_mandate_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE committee_provisional_supervisor_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE referent_tags_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE geo_zone_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE citizen_project_skills_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
@@ -112,6 +113,7 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE assessor_requests_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE elections_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE banned_adherent_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE ideas_workshop_idea_notification_dates_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE ideas_workshop_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE ideas_workshop_question_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE ideas_workshop_comment_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
@@ -957,6 +959,7 @@ final class Version20210122120150 extends AbstractMigration
           finish_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
           quality VARCHAR(255) DEFAULT NULL, 
           reason VARCHAR(255) DEFAULT NULL, 
+          provisional BOOLEAN DEFAULT \'false\' NOT NULL, 
           uuid UUID NOT NULL, 
           type VARCHAR(255) NOT NULL, 
           is_additionally_elected BOOLEAN DEFAULT \'false\', 
@@ -966,6 +969,16 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9C0C3D60ED1A100B ON adherent_mandate (committee_id)');
         $this->addSql('CREATE INDEX IDX_9C0C3D60AAA61A99 ON adherent_mandate (territorial_council_id)');
         $this->addSql('COMMENT ON COLUMN adherent_mandate.uuid IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE TABLE committee_provisional_supervisor (
+          id INT NOT NULL, 
+          adherent_id INT DEFAULT NULL, 
+          committee_id INT NOT NULL, 
+          created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+          updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+          PRIMARY KEY(id)
+        )');
+        $this->addSql('CREATE INDEX IDX_E394C3D425F06C53 ON committee_provisional_supervisor (adherent_id)');
+        $this->addSql('CREATE INDEX IDX_E394C3D4ED1A100B ON committee_provisional_supervisor (committee_id)');
         $this->addSql('CREATE TABLE referent_tags (
           id INT NOT NULL, 
           zone_id INT DEFAULT NULL, 
@@ -1363,6 +1376,7 @@ final class Version20210122120150 extends AbstractMigration
           is_committee_member BOOLEAN NOT NULL, 
           is_committee_host BOOLEAN NOT NULL, 
           is_committee_supervisor BOOLEAN NOT NULL, 
+          is_committee_provisional_supervisor BOOLEAN NOT NULL, 
           subscribed_tags TEXT DEFAULT NULL, 
           created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
           gender VARCHAR(6) DEFAULT NULL, 
@@ -2068,6 +2082,12 @@ final class Version20210122120150 extends AbstractMigration
           PRIMARY KEY(id)
         )');
         $this->addSql('COMMENT ON COLUMN banned_adherent.uuid IS \'(DC2Type:uuid)\'');
+        $this->addSql('CREATE TABLE ideas_workshop_idea_notification_dates (
+          id INT NOT NULL, 
+          last_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
+          caution_last_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
+          PRIMARY KEY(id)
+        )');
         $this->addSql('CREATE TABLE ideas_workshop_thread (
           id INT NOT NULL, 
           answer_id INT NOT NULL, 
@@ -2936,6 +2956,7 @@ final class Version20210122120150 extends AbstractMigration
           include_adherents_no_committee BOOLEAN DEFAULT NULL, 
           include_adherents_in_committee BOOLEAN DEFAULT NULL, 
           include_committee_supervisors BOOLEAN DEFAULT NULL, 
+          include_committee_provisional_supervisors BOOLEAN DEFAULT NULL, 
           include_committee_hosts BOOLEAN DEFAULT NULL, 
           include_citizen_project_hosts BOOLEAN DEFAULT NULL, 
           mandate VARCHAR(255) DEFAULT NULL, 
@@ -3732,13 +3753,10 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('CREATE TABLE committees (
           id INT NOT NULL, 
           current_designation_id INT DEFAULT NULL, 
-          coordinator_comment TEXT DEFAULT NULL, 
           description TEXT NOT NULL, 
           facebook_page_url VARCHAR(255) DEFAULT NULL, 
           twitter_nickname VARCHAR(255) DEFAULT NULL, 
-          admin_comment TEXT DEFAULT NULL, 
           name_locked BOOLEAN DEFAULT \'false\' NOT NULL, 
-          photo_uploaded BOOLEAN DEFAULT \'false\' NOT NULL, 
           status VARCHAR(20) NOT NULL, 
           approved_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
           refused_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
@@ -5141,6 +5159,14 @@ final class Version20210122120150 extends AbstractMigration
           adherent_mandate 
         ADD 
           CONSTRAINT FK_9C0C3D60AAA61A99 FOREIGN KEY (territorial_council_id) REFERENCES territorial_council (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE 
+          committee_provisional_supervisor 
+        ADD 
+          CONSTRAINT FK_E394C3D425F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE 
+          committee_provisional_supervisor 
+        ADD 
+          CONSTRAINT FK_E394C3D4ED1A100B FOREIGN KEY (committee_id) REFERENCES committees (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE 
           referent_tags 
         ADD 
@@ -6792,6 +6818,7 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('ALTER TABLE my_team_delegated_access DROP CONSTRAINT FK_421C13B9B7E7AE18');
         $this->addSql('ALTER TABLE adherent_commitment DROP CONSTRAINT FK_D239EF6F25F06C53');
         $this->addSql('ALTER TABLE adherent_mandate DROP CONSTRAINT FK_9C0C3D6025F06C53');
+        $this->addSql('ALTER TABLE committee_provisional_supervisor DROP CONSTRAINT FK_E394C3D425F06C53');
         $this->addSql('ALTER TABLE referent_person_link DROP CONSTRAINT FK_BC75A60A25F06C53');
         $this->addSql('ALTER TABLE referent_managed_users_message DROP CONSTRAINT FK_1E41AC6125F06C53');
         $this->addSql('ALTER TABLE summaries DROP CONSTRAINT FK_66783CCA7597D3FE');
@@ -7178,6 +7205,7 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('ALTER TABLE ideas_workshop_idea DROP CONSTRAINT FK_CA001C72ED1A100B');
         $this->addSql('ALTER TABLE my_team_delegate_access_committee DROP CONSTRAINT FK_C52A163FED1A100B');
         $this->addSql('ALTER TABLE adherent_mandate DROP CONSTRAINT FK_9C0C3D60ED1A100B');
+        $this->addSql('ALTER TABLE committee_provisional_supervisor DROP CONSTRAINT FK_E394C3D4ED1A100B');
         $this->addSql('ALTER TABLE referent_person_link_committee DROP CONSTRAINT FK_1C97B2A5ED1A100B');
         $this->addSql('ALTER TABLE voting_platform_election_entity DROP CONSTRAINT FK_7AAD259FED1A100B');
         $this->addSql('ALTER TABLE events DROP CONSTRAINT FK_5387574AED1A100B');
@@ -7308,6 +7336,7 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('DROP SEQUENCE adherent_commitment_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE thematic_community_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE adherent_mandate_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE committee_provisional_supervisor_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE referent_tags_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE geo_zone_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE citizen_project_skills_id_seq CASCADE');
@@ -7371,6 +7400,7 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('DROP SEQUENCE assessor_requests_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE elections_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE banned_adherent_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE ideas_workshop_idea_notification_dates_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE ideas_workshop_thread_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE ideas_workshop_question_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE ideas_workshop_comment_id_seq CASCADE');
@@ -7591,6 +7621,7 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('DROP TABLE adherent_commitment');
         $this->addSql('DROP TABLE thematic_community');
         $this->addSql('DROP TABLE adherent_mandate');
+        $this->addSql('DROP TABLE committee_provisional_supervisor');
         $this->addSql('DROP TABLE referent_tags');
         $this->addSql('DROP TABLE geo_zone');
         $this->addSql('DROP TABLE geo_zone_parent');
@@ -7671,6 +7702,7 @@ final class Version20210122120150 extends AbstractMigration
         $this->addSql('DROP TABLE assessor_requests_vote_place_wishes');
         $this->addSql('DROP TABLE elections');
         $this->addSql('DROP TABLE banned_adherent');
+        $this->addSql('DROP TABLE ideas_workshop_idea_notification_dates');
         $this->addSql('DROP TABLE ideas_workshop_thread');
         $this->addSql('DROP TABLE ideas_workshop_question');
         $this->addSql('DROP TABLE ideas_workshop_comment');
