@@ -65,8 +65,10 @@
                                     {{ host.emailAddress }}
                                 </td>
                                 <td>
-                                    {% if membership.isSupervisor %}
-                                        <span class="label label-primary">Animateur principal</span>
+                                    {% if membership.isSupervisor(false) %}
+                                        <span class="label label-primary">Animateur</span>
+                                    {% elseif membership.isSupervisor(true) %}
+                                        <span class="label label-primary">Animateur provisional</span>
                                     {% elseif membership.isHostMember %}
                                         <span class="label label-primary">Co-animateur</span>
                                     {% endif %}

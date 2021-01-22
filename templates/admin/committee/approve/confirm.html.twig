@@ -16,8 +16,8 @@
                         {{ form_row(form.name, { label: 'Nom', attr: { readonly: true } }) }}
                         {{ form_row(form.slug, { label: 'Slug', attr: { readonly: true } }) }}
                         {{ form_row(form.description, { label: 'Description', attr: { readonly: true } }) }}
-                        {{ form_row(form.address.address, { attr: { readonly: true } }) }}
-                        {{ form_row(form.address.postalCode, { label: 'Code postale', attr: { readonly: true } }) }}
+                        {{ form_row(form.address.address, { label: 'Adresse', attr: { readonly: true } }) }}
+                        {{ form_row(form.address.postalCode, { label: 'Code postal', attr: { readonly: true } }) }}
                         {{ form_row(form.address.city, { attr: { readonly: true } }) }}
                         {{ form_row(form.address.cityName, { label: 'Ville', attr: { readonly: true } }) }}
                         {{ form_row(form.address.country, { label: 'Pays', attr: { readonly: true } }) }}
@@ -72,10 +72,13 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="sonata-ba-form-actions well well-small form-actions">
+    <div class="box-body">
+        <div class="row sonata-ba-form-actions well well-small form-actions">
+            <div class="col-md-2">
                 {{ form_widget(form.confirm, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
+                <a href="{{ path('admin_app_committee_approve', { id: object.committee.id }) }}" class="btn btn-default">Retour</a>
+            </div>
+            <div class="col-md-1 col-md-offset-9">
                 <a href="{{ path('admin_app_committee_list') }}" class="btn btn-danger">Annuler</a>
             </div>
         </div>
