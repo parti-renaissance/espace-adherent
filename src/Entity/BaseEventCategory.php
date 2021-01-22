@@ -17,7 +17,7 @@ abstract class BaseEventCategory
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
      */
     protected $id;
 

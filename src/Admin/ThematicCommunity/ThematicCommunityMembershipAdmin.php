@@ -275,7 +275,7 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     'multiple' => true,
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('tc')
-                            ->where('tc.enabled = 1')
+                            ->where('tc.enabled = true')
                         ;
                     },
                 ],

@@ -591,7 +591,7 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
             ->innerJoin('d.geoData', 'gd')
-            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',c.postAddress.longitude,' ',c.postAddress.latitude,')')), gd.geoShape) = 1")
+            ->where("ST_Within(ST_GeomFromText(CONCAT('POINT(',c.postAddress.longitude,' ',c.postAddress.latitude,')')), gd.geoShape) = true")
             ->andWhere('c.status = :status')
             ->setParameter('district_id', $district->getId())
             ->setParameter('status', Committee::APPROVED)

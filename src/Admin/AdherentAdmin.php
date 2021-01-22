@@ -500,7 +500,7 @@ HELP
                     'query_builder' => function (EntityRepository $er) {
                         return $er
                             ->createQueryBuilder('tc')
-                            ->andWhere('tc.enabled = 1')
+                            ->andWhere('tc.enabled = true')
                             ;
                     },
                 ])

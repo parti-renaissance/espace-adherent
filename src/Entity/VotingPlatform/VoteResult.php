@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoteResultRepository")
  *
  * @ORM\Table(name="voting_platform_vote_result", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_key", "election_round_id"}),
+ *     @ORM\UniqueConstraint(name="unique_vote_result", columns={"voter_key", "election_round_id"}),
  * })
  */
 class VoteResult

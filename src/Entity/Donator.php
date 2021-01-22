@@ -26,7 +26,7 @@ class Donator
      *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
      */
     private $id;
 
