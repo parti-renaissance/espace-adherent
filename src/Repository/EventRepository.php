@@ -480,7 +480,7 @@ WHERE (events.address_latitude IS NOT NULL
     AND events.address_longitude IS NOT NULL 
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
     AND events.begin_at > :today 
-    AND events.published = :published
+    AND events.published = true
     AND events.status = :scheduled
     AND (event_category.id IS NOT NULL OR citizen_action_category.id IS NOT NULL)
     )
@@ -545,7 +545,6 @@ SQL;
         }
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
-        $query->setParameter('published', 1, \PDO::PARAM_INT);
         $query->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED);
         $query->setParameter('event_type', BaseEvent::EVENT_TYPE);
         $query->setParameter('citizen_action_type', BaseEvent::CITIZEN_ACTION_TYPE);
@@ -615,7 +614,7 @@ SQL;
 
         if ($value) {
             $qb
-                ->andWhere('event.postAddress.cityName LIKE :searchedCityName')
+                ->andWhere('ILIKE(event.postAddress.cityName, :searchedCityName) = true')
                 ->setParameter('searchedCityName', $value.'%')
             ;
         }
@@ -626,7 +625,7 @@ SQL;
     public function queryCountByMonth(Adherent $referent, int $months = 5): QueryBuilder
     {
         return $this->createQueryBuilder('event')
-            ->select('COUNT(DISTINCT event.id) AS count, YEAR_MONTH(event.beginAt) AS yearmonth')
+            ->select("COUNT(DISTINCT event.id) AS count, DATE_FORMAT(event.beginAt, 'YYYYMM') AS yearmonth")
             ->innerJoin('event.referentTags', 'tag')
             ->where('tag IN (:tags)')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
@@ -636,31 +635,6 @@ SQL;
             ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
             ->groupBy('yearmonth')
         ;
-    }
-
-    public function countParticipantsInReferentManagedAreaByMonthForTheLastSixMonths(Adherent $referent): array
-    {
-        $this->checkReferent($referent);
-
-        $eventsCount = $this->createQueryBuilder('event')
-            ->select('YEAR_MONTH(event.beginAt) AS yearmonth, event.participantsCount as count')
-            ->innerJoin('event.referentTags', 'tag')
-            ->where('tag IN (:tags)')
-            ->andWhere('event.committee IS NOT NULL')
-            ->andWhere("event.status = '".Event::STATUS_SCHEDULED."'")
-            ->andWhere('event.participantsCount > 0')
-            ->andWhere('event.beginAt >= :from')
-            ->andWhere('event.beginAt <= :until')
-            ->setParameter('from', (new Chronos('first day of -5 months'))->setTime(0, 0, 0, 000))
-            ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->groupBy('event.id')
-            ->getQuery()
-            ->useResultCache(true, 3600)
-            ->getArrayResult()
-        ;
-
-        return RepositoryUtils::aggregateCountByMonth($eventsCount);
     }
 
     public function countParticipantsInReferentManagedArea(Adherent $referent): int

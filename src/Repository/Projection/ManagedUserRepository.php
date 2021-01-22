@@ -198,7 +198,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (true === $filter->includeCommitteeProvisionalSupervisors()) {
-            $typeExpression->add('u.isCommitteeProvisionalSupervisor = 1');
+            $typeExpression->add('u.isCommitteeProvisionalSupervisor = true');
         }
 
         if (true === $filter->includeCitizenProjectHosts()) {
@@ -217,7 +217,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (false === $filter->includeCommitteeProvisionalSupervisors()) {
-            $qb->andWhere('u.isCommitteeProvisionalSupervisor = 0');
+            $qb->andWhere('u.isCommitteeProvisionalSupervisor = false');
         }
 
         if (false === $filter->includeCitizenProjectHosts()) {

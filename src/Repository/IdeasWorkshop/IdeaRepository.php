@@ -60,7 +60,7 @@ class IdeaRepository extends ServiceEntityRepository
             INNER JOIN ideas_workshop_thread thread ON thread.id = threadComment.thread_id
             INNER JOIN ideas_workshop_answer answer ON answer.id = thread.answer_id
             INNER JOIN ideas_workshop_idea idea ON idea.id = answer.idea_id
-            WHERE idea.id = :idea AND threadComment.enabled = true AND thread.enabled = 1
+            WHERE idea.id = :idea AND threadComment.enabled = true AND thread.enabled = true
             AND threadComment.deleted_at IS NULL AND thread.deleted_at IS NULL
         )
         UNION 
