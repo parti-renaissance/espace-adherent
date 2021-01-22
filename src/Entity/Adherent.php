@@ -2622,6 +2622,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->andWhere(Criteria::expr()->eq('quality', null))
             ->orderBy(['beginAt' => 'DESC'])
         ;
 

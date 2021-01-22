@@ -167,9 +167,9 @@ class CommitteeMembership implements UuidEntityInterface
     /**
      * Returns whether or not this membership is a supervisor privileged membership.
      */
-    public function isSupervisor(): bool
+    public function isSupervisor(bool $isProvisional = null): bool
     {
-        return $this->getAdherent()->isSupervisorOf($this->getCommittee());
+        return $this->getAdherent()->isSupervisorOf($this->getCommittee(), $isProvisional);
     }
 
     /**
