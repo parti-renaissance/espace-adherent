@@ -14,7 +14,7 @@ App.createAddressSelector(
 );
 {% endmacro %}
 
-{% macro autocomlete_address(addressForm, showOnlyAutocomplete = false) %}
+{% macro autocomplete_address(addressForm, showOnlyAutocomplete = false) %}
     App.createAutocompleteAddress(
         '#{{ addressForm.address.vars.id }}',
         '#{{ addressForm.postalCode.vars.id }}',

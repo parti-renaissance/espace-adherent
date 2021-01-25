@@ -12,11 +12,13 @@
     {% if google_maps_api_key %}
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            {{ js.autocomlete_address(form.address, true) }}
-        });
-    </script>
+    {% if is_granted('CREATE_COMMITTEE') %}
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                {{ js.autocomplete_address(form.address, true) }}
+            });
+        </script>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
