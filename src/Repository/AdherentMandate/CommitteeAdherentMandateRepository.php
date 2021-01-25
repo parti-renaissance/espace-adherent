@@ -79,7 +79,7 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
             ->select('adherent.id')
             ->leftJoin('mandate.adherent', 'adherent')
             ->where('mandate.committee = :committee')
-            ->andWhere('mandate.finishAt IS NULL')
+            ->andWhere('mandate.finishAt IS NULL AND mandate.quality IS NULL')
             ->setParameter('committee', $committee)
             ->getQuery()
             ->getScalarResult()

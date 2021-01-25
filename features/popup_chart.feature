@@ -95,3 +95,5 @@ Feature:
     And I should see "Charte de bonne utilisation des outils numériques - à l'usage des animateurs, animateurs provisoires et co-animateurs"
     When I press "J'ai lu et j'accepte"
     Then I should be on "/comites/en-marche-allemagne/membres"
+    When I am on "/comites/en-marche-allemagne/messagerie"
+    And I should not see "Charte de bonne utilisation des outils numériques - à l'usage des animateurs, animateurs provisoires et co-animateurs"

@@ -3,7 +3,8 @@
 {% block page_title 'Membres de mon comité' %}
 
 {% block committee_content %}
-    {% set is_supervisor = is_supervisor(committee) %}
+    {% set is_supervisor_or_provisional = is_supervisor(committee) %}
+    {% set is_supervisor = app.user.supervisorOf(committee, false) %}
 
     <section>
         <div class="datagrid__pre-table b__nudge--bottom">
@@ -138,8 +139,8 @@
                             class="sort-link sort-link--order-{{ filter.sort == 'joinedAt' ? (filter.order == 'DESC' ? 'd' : 'a') : 'a' }}"
                         >A rejoint le comité le</a>
                     </th>
-                    <th width="50px">Statut</th>
-                    {% if is_supervisor %}
+                    <th width="55px">Statut</th>
+                    {% if is_supervisor_or_provisional %}
                         <th style="min-width: 150px;">Actions</th>
                     {% endif %}
                 </tr>
@@ -196,17 +197,23 @@
                         <td class="member-subscription-date">{{ membership.subscriptionDate|date('d/m/Y') }}</td>
                         <td class="member-status">
                             {% if is_supervisor %}
-                                <span class="status__{{ membership.isVotingCommittee() ? '1' : '2' }}">
-                                    <i class="fa fa-inbox"></i>
-                                </span>
+                                <div class="em-tooltip">
+                                    {{ include('components/_vote_icon.svg.twig', {enabled: membership.isVotingCommittee}) }}
+                                    <div class="em-tooltip--content em-tooltip--content-small em-tooltip--content-reversed">
+                                        <p>{{ membership.isVotingCommittee ? 'Vote dans ce comité' : 'Ne vote pas dans ce comité' }}</p>
+                                    </div>
+                                </div>
                             {% endif %}
 
-                            <span class="status__{{ member.hasSubscribedLocalHostEmails ? '1' : '2' }}">
-                                <i class="fa fa-envelope"></i>
-                            </span>
+                            <div class="em-tooltip">
+                                {{ include('components/_email_icon.svg.twig', {enabled: member.hasSubscribedLocalHostEmails}) }}
+                                <div class="em-tooltip--content em-tooltip--content-small em-tooltip--content-reversed">
+                                    <p>{{ member.hasSubscribedLocalHostEmails ? 'Abonné' : 'Non abonné' }} Email</p>
+                                </div>
+                            </div>
                         </td>
 
-                        {% if is_supervisor %}
+                        {% if is_supervisor_or_provisional %}
                             <td>
                                 {% if is_promotable_host %}
                                     <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"

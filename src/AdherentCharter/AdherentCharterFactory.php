@@ -4,6 +4,7 @@ namespace App\AdherentCharter;
 
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentCharter\CandidateCharter;
+use App\Entity\AdherentCharter\CommitteeHostCharter;
 use App\Entity\AdherentCharter\DeputyCharter;
 use App\Entity\AdherentCharter\LegislativeCandidateCharter;
 use App\Entity\AdherentCharter\LreCharter;
@@ -18,6 +19,8 @@ abstract class AdherentCharterFactory
     public static function create(string $type): ?AdherentCharterInterface
     {
         switch ($type) {
+            case AdherentCharterTypeEnum::TYPE_COMMITTEE_HOST:
+                return new CommitteeHostCharter();
             case AdherentCharterTypeEnum::TYPE_REFERENT:
                 return new ReferentCharter();
             case AdherentCharterTypeEnum::TYPE_MUNICIPAL_CHIEF:
