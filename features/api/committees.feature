@@ -12,6 +12,8 @@ Feature:
       | LoadEventData                       |
       | LoadCommitteeMembershipHistoryData  |
       | LoadClientData                      |
+      | LoadCommitteeData                   |
+      | LoadCommitteeAdherentMandateData    |
 
   Scenario: As a non logged-in user I can not access the committee supervisors count managed by referent information
     When I am on "/api/statistics/committees/count-for-referent-area"

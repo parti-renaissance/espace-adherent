@@ -7,6 +7,7 @@ use App\Coordinator\CoordinatorAreaSectors;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentCharter\CandidateCharter;
+use App\Entity\AdherentCharter\CommitteeHostCharter;
 use App\Entity\AdherentCharter\MunicipalChiefCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentResetPasswordToken;
@@ -145,6 +146,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent3->setCandidateManagedArea($candidateManagedAreaRegion = new CandidateManagedArea());
         $candidateManagedAreaRegion->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'));
         $adherent3->addCharter(new CandidateCharter());
+        $adherent3->addCharter(new CommitteeHostCharter());
         $adherent3->certify();
         $this->addReference('adherent-3', $adherent3);
 
@@ -201,6 +203,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-4'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_canton_9209'));
+        $adherent5->addCharter(new CommitteeHostCharter());
         $this->addReference('adherent-5', $adherent5);
 
         $adherent6 = $this->adherentFactory->createFromArray([
@@ -247,6 +250,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $candidateManagedAreaCanton = new CandidateManagedArea();
         $candidateManagedAreaCanton->setZone($zoneCanton7711);
         $adherent7->setCandidateManagedArea($candidateManagedAreaCanton);
+        $adherent7->addCharter(new CommitteeHostCharter());
         $this->addReference('adherent-7', $adherent7);
 
         $adherent9 = $this->adherentFactory->createFromArray([
@@ -269,6 +273,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent9->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent9->addReferentTag($this->getReference('referent_tag_76'));
         $adherent9->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
+        $adherent9->addCharter(new CommitteeHostCharter());
         $this->addReference('adherent-9', $adherent9);
 
         $adherent10 = $this->adherentFactory->createFromArray([
@@ -504,6 +509,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $referent->addReferentTag($this->getReference('referent_tag_77'));
         $referent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $referent->addCharter(new ReferentCharter());
+        $referent->addCharter(new CommitteeHostCharter());
         $referent->setLreArea(new LreArea($this->getReference('referent_tag_76')));
         $this->addReference('adherent-8', $referent);
 

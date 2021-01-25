@@ -101,7 +101,7 @@ Feature: Merge committees from admin panel
       | ID du comité de destination | 10 |
     And I press "Fusionner"
     Then the response status code should be 200
-    And I should see "l'arrivée de 2 nouveau(x) membre(s) au sein du comité de destination En Marche - Suisse (10)"
+    And I should see "l'arrivée de 3 nouveau(x) membre(s) au sein du comité de destination En Marche - Suisse (10)"
     Then I press "Confirmer la fusion"
     And the response status code should be 200
     And I should be on "/admin/app/reporting-committeemergehistory/list"

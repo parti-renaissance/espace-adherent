@@ -70,16 +70,31 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     {
         $query = $this
             ->createQueryBuilder('cm')
-            ->innerJoin('cm.committee', 'committee')
-            ->leftJoin(CommitteeAdherentMandate::class, 'am', Join::WITH, 'am.adherent = cm.adherent AND committee = am.committee')
             ->addSelect('committee')
+            ->addSelect('CASE WHEN (am.quality = :supervisor AND am.provisional = :false) THEN 1 '
+                .'WHEN (am.quality = :supervisor AND am.provisional = :true) THEN 2 '
+                .'WHEN (cm.privilege = :host) THEN 3 '
+                .'WHEN (am.committee IS NOT NULL) THEN 4 '
+                .'ELSE 5 END '
+                .'AS HIDDEN score')
+            ->innerJoin('cm.committee', 'committee')
+            ->leftJoin(
+                CommitteeAdherentMandate::class,
+                'am',
+                Join::WITH,
+                'am.adherent = cm.adherent AND am.committee = cm.committee AND am.finishAt IS NULL'
+            )
             ->where('cm.adherent = :adherent')
             ->andWhere('committee.status = :status')
-            ->setParameter('adherent', $adherent)
-            ->setParameter('status', Committee::APPROVED)
-            ->orderBy('am.quality', 'DESC')
-            ->addOrderBy('am.provisional', 'ASC')
-            ->addOrderBy('cm.privilege', 'DESC')
+            ->orderBy('score', 'ASC')
+            ->setParameters([
+                'adherent' => $adherent,
+                'status' => Committee::APPROVED,
+                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
+                'host' => CommitteeMembership::COMMITTEE_HOST,
+                'true' => true,
+                'false' => false,
+            ])
             ->getQuery()
         ;
 
@@ -352,13 +367,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
             if ($filter->getSort()) {
                 $qb->orderBy('cm.'.$filter->getSort(), $filter->getOrder() ?? 'ASC');
-            } else {
-                $qb
-                    ->leftJoin(CommitteeAdherentMandate::class, 'am', Join::WITH, 'am.adherent = cm.adherent AND cm.committee = am.committee')
-                    ->orderBy('am.quality', 'DESC')
-                    ->addOrderBy('am.provisional', 'ASC')
-                    ->addOrderBy('cm.privilege', 'DESC')
-                ;
             }
         }
 
@@ -379,11 +387,26 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder($alias)
-            ->leftJoin($alias.'.adherent', 'a')
+            ->addSelect('CASE WHEN (am.quality = :supervisor AND am.provisional = :false) THEN 1 '
+                .'WHEN (am.quality = :supervisor AND am.provisional = :true) THEN 2 '
+                .'WHEN ('.$alias.'.privilege = :host) THEN 3 '
+                .'WHEN (am.committee IS NOT NULL) THEN 4 '
+                .'ELSE 5 END '
+                .'AS HIDDEN score')
+            ->innerJoin($alias.'.adherent', 'a')
+            ->leftJoin(
+                'a.adherentMandates',
+                'am',
+                Join::WITH,
+                $alias.'.committee = am.committee AND am.finishAt IS NULL'
+            )
             ->where($alias.'.committee = :committee')
-            ->orderBy($alias.'.privilege', 'DESC')
-            ->addOrderBy('a.firstName', 'ASC')
+            ->orderBy('score', 'ASC')
             ->setParameter('committee', $committee)
+            ->setParameter('host', CommitteeMembership::COMMITTEE_HOST)
+            ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
+            ->setParameter('true', true)
+            ->setParameter('false', false)
         ;
     }
 

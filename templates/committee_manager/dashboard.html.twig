@@ -5,6 +5,14 @@
 {% block manager_topbar_menu_mobile '' %}
 
 {% block content %}
+    {% if not hasCharterAccepted %}
+        {% include 'chart_dialog.html.twig' with {
+            'title': 'committee_host.popup.title'|trans,
+            'subtitle': 'committee_host.popup.subtitle'|trans,
+            'fileUrl': 'committee_host.popup.file_url'|trans
+        } %}
+    {% endif %}
+
     <section class="manager-space b__nudge--bottom-huge adherent-space">
         <header class="manager-header b__nudge--bottom-large adherent-space-header">
             <div class="l__wrapper">
