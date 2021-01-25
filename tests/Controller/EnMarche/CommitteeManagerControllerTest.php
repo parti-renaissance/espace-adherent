@@ -422,7 +422,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
     public function testAuthenticatedHostCanSeeCommitteeMembers()
     {
-        // Authenticate as the committee supervisor
+        // Authenticate as the committee host
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
         $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
@@ -438,8 +438,26 @@ class CommitteeManagerControllerTest extends WebTestCase
         self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
         self::assertSame('Paris 8e', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
-        self::assertCount(1, $crawler->filter('.member-status .status__2 i.fa-envelope'));
-        self::assertCount(0, $crawler->filter('.member-status i.fa-inbox'));
+        self::assertCount(4, $crawler->filter('.member-status .em-tooltip'));
+        self::assertSame('Abonné Email', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(0)->text());
+    }
+
+    public function testAuthenticatedProvisionalSupervisorCanSeeCommitteeMembers()
+    {
+        // Authenticate as the committee provisional supervisor
+        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-comite-de-evry/membres');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertTrue($this->seeMembersList($crawler, 7));
+        self::assertSame('Francis B.', trim($crawler->filter('.member-name')->eq(0)->text()));
+        self::assertCount(0, $crawler->filter('.member-name img.b__nudge--left-nano'));
+        self::assertCount(0, $crawler->filter('.member-phone'));
+        self::assertSame('77000', $crawler->filter('.member-postal-code')->eq(0)->text());
+        self::assertSame('Melun', $crawler->filter('.member-city-name')->eq(0)->text());
+        self::assertCount(6, $crawler->filter('.member-status .em-tooltip'));
+        self::assertSame('Abonné Email', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(0)->text());
     }
 
     public function testAuthenticatedSupervisorCanSeeMoreInfoAboutCommitteeMembers()
@@ -460,8 +478,9 @@ class CommitteeManagerControllerTest extends WebTestCase
         self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
         self::assertSame('Paris 8e', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
-        self::assertCount(1, $crawler->filter('.member-status .status__2 i.fa-envelope'));
-        self::assertCount(2, $crawler->filter('.member-status .status__2 i.fa-inbox'));
+        self::assertCount(8, $crawler->filter('.member-status .em-tooltip'));
+        self::assertSame('Vote dans ce comité', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(0)->text());
+        self::assertSame('Abonné Email', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(1)->text());
     }
 
     public function testAuthenticatedCommitteeSupervisorCanPromoteNewHostsAmongMembers()

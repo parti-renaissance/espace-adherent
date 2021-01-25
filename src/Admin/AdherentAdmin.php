@@ -710,12 +710,12 @@ HELP
                     // Committee supervisor
                     if ($committeeMandates = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR], $value['value'])) {
                         $qb->leftJoin(sprintf('%s.adherentMandates', $alias), 'am');
-                        $provisionalCondition = '';
-                        if (1 === \count($committeeMandates)
-                            && \in_array(AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR, $value['value'], true)) {
-                            $provisionalCondition = ' AND am.provisional = 1';
+                        $condition = '';
+                        if (1 === \count($committeeMandates)) {
+                            $condition = ' AND am.provisional = :provisional';
+                            $qb->setParameter('provisional', \in_array(AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR, $value['value'], true));
                         }
-                        $where->add('am.quality = :supervisor AND am.committee IS NOT NULL AND am.finishAt IS NULL'.$provisionalCondition);
+                        $where->add('am.quality = :supervisor AND am.committee IS NOT NULL AND am.finishAt IS NULL'.$condition);
 
                         $qb->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR);
                     }

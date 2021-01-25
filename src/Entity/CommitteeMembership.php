@@ -185,7 +185,7 @@ class CommitteeMembership implements UuidEntityInterface
      */
     public function isFollower(): bool
     {
-        return self::COMMITTEE_FOLLOWER === $this->privilege;
+        return self::COMMITTEE_FOLLOWER === $this->privilege && !$this->isSupervisor();
     }
 
     public function getPrivilege(): string
@@ -283,7 +283,7 @@ class CommitteeMembership implements UuidEntityInterface
 
     public function isPromotableHost(): bool
     {
-        return $this->isFollower() && !$this->isSupervisor();
+        return $this->isFollower();
     }
 
     public function isDemotableHost(): bool

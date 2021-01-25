@@ -51,57 +51,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for membership in memberships|sort((a, b) => (b.isSupervisor ? 2 : (b.adherent.id in active_mandates_adherent_ids ? 1 : 0)) <=> (a.isSupervisor ? 2 : (a.adherent.id in active_mandates_adherent_ids ? 1 : 0))) if membership.isHostMember %}
-                            {% set host = membership.adherent %}
-                            {% set token = csrf_token('committee.change_privilege.' ~ host.id) %}
-                            {% set mandateToken = csrf_token('committee.change_mandate.' ~ host.id) %}
-
-                            <tr>
-                                <td>
-                                    <a href="{{ path('admin_app_adherent_show', { id: host.id }) }}">
-                                        {{ host.fullName }}
-                                    </a>
-                                    <br />
-                                    {{ host.emailAddress }}
-                                </td>
-                                <td>
-                                    {% if membership.isSupervisor(false) %}
-                                        <span class="label label-primary">Animateur</span>
-                                    {% elseif membership.isSupervisor(true) %}
-                                        <span class="label label-primary">Animateur provisional</span>
-                                    {% elseif membership.isHostMember %}
-                                        <span class="label label-primary">Co-animateur</span>
-                                    {% endif %}
-                                    {% if host.id in active_mandates_adherent_ids %}
-                                        <span class="label label-warning">Adhérent désigné</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if committee.isApproved %}
-                                        <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: host.id, privilege: constant('COMMITTEE_FOLLOWER', membership), token: token }) }}"
-                                           class="btn btn-default btn-sm">
-                                            Transformer en membre normal
-                                        </a>
-
-                                        {% if is_granted('ROLE_ADMIN_COMMITTEE_DESIGNATION') %}
-                                            {% if host.id in active_mandates_adherent_ids %}
-                                                <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
-                                                class="btn btn-default btn-sm">
-                                                    Transformer en simple adhérent
-                                                </a>
-                                            {% elseif (host.gender is constant('App\\ValueObject\\Genders::MALE') and not committeehasMaleAdherentMandate)
-                                                or (host.gender is constant('App\\ValueObject\\Genders::FEMALE') and not committeehasFemaleAdherentMandate) %}
-                                                <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: host.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::CREATE_ACTION'), token: mandateToken }) }}"
-                                                   class="btn btn-default btn-sm">
-                                                    Transformer en adhérent désigné
-                                                </a>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        {% for membership in memberships|sort((a, b) => (b.adherent.id in active_mandates_adherent_ids ? 1 : 0) <=> (a.adherent.id in active_mandates_adherent_ids ? 1 : 0)) if membership.isFollower %}
+                        {% for membership in memberships|sort((a, b) => (b.isSupervisor ? 2 : (b.adherent.id in active_mandates_adherent_ids ? 1 : 0)) <=> (a.isSupervisor ? 2 : (a.adherent.id in active_mandates_adherent_ids ? 1 : 0))) %}
                             {% set member = membership.adherent %}
                             {% set token = csrf_token('committee.change_privilege.' ~ member.id) %}
                             {% set mandateToken = csrf_token('committee.change_mandate.' ~ member.id) %}
@@ -115,23 +65,35 @@
                                     {{ member.emailAddress }}
                                 </td>
                                 <td>
+                                    {% if membership.isSupervisor(false) %}
+                                        <span class="label label-primary">Animateur</span>
+                                    {% elseif membership.isSupervisor(true) %}
+                                        <span class="label label-primary">Animateur provisoire</span>
+                                    {% elseif membership.isHostMember %}
+                                        <span class="label label-primary">Co-animateur</span>
+                                    {% endif %}
                                     {% if member.id in active_mandates_adherent_ids %}
                                         <span class="label label-warning">Adhérent désigné</span>
-                                    {% else %}
-                                        <span class="label label-default">Membre</span>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if committee.isApproved %}
-                                        <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_HOST', membership), token: token }) }}"
-                                           class="btn btn-default btn-sm">
-                                            Transformer en co-animateur
-                                        </a>
+                                        {% if membership.isFollower %}
+                                            <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_HOST', membership), token: token }) }}"
+                                               class="btn btn-default btn-sm">
+                                                Transformer en co-animateur
+                                            </a>
+                                        {% elseif membership.isHostMember %}
+                                            <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_FOLLOWER', membership), token: token }) }}"
+                                               class="btn btn-default btn-sm">
+                                                Transformer en membre normal
+                                            </a>
+                                        {% endif %}
 
                                         {% if is_granted('ROLE_ADMIN_COMMITTEE_DESIGNATION') %}
                                             {% if member.id in active_mandates_adherent_ids %}
                                                 <a href="{{ path('app_admin_committee_change_mandate', { committee: committee.id, adherent: member.id, action: constant('App\\Committee\\CommitteeAdherentMandateManager::FINISH_ACTION'), token: mandateToken }) }}"
-                                                   class="btn btn-default btn-sm">
+                                                class="btn btn-default btn-sm">
                                                     Transformer en simple adhérent
                                                 </a>
                                             {% elseif (member.gender is constant('App\\ValueObject\\Genders::MALE') and not committeehasMaleAdherentMandate)
