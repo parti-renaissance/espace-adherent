@@ -1083,6 +1083,7 @@ SQL;
     {
         return (int) $this->createCommitteeHostsQueryBuilder($committee, $withoutSupervisors)
             ->select('COUNT(DISTINCT a.id)')
+            ->resetDQLPart('orderBy')
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -1096,6 +1097,7 @@ SQL;
     {
         $result = (int) $this->createCommitteeHostsQueryBuilder($committee)
             ->select('COUNT(DISTINCT a.id)')
+            ->resetDQLPart('orderBy')
             ->andWhere('a.id = :adherent_id')
             ->setParameter('adherent_id', $adherent->getId())
             ->getQuery()

@@ -24,7 +24,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('pr')
             ->where('LOWER(pr.emailAddress) = :emailAddress')
-            ->setParameter('emailAddress', mb_strtolower($emailAddress))
+            ->setParameter('emailAddress', mb_strtolower(trim($emailAddress)))
             ->getQuery()
             ->getResult()
         ;

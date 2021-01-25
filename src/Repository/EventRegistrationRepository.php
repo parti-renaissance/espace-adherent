@@ -113,8 +113,9 @@ class EventRegistrationRepository extends ServiceEntityRepository
     ): PaginatorInterface {
         $queryBuilder = $this->createAdherentEventRegistrationQueryBuilder($adherent->getUuidAsString())
             ->andWhere('e.published = true')
-            ->andWhere('e.beginAt >= CONVERT_TZ(NOW(), \'Europe/Paris\', e.timeZone)')
+            ->andWhere('e.beginAt >= AT_TIME_ZONE(:now, e.timeZone)')
             ->orderBy('e.beginAt', 'ASC')
+            ->setParameter('now', new \DateTime())
         ;
 
         return $this->configurePaginator($queryBuilder, $page, $limit);
@@ -154,8 +155,9 @@ class EventRegistrationRepository extends ServiceEntityRepository
         $queryBuilder = $this
             ->createAdherentEventRegistrationQueryBuilder($adherent->getUuidAsString())
             ->andWhere('e.published = true')
-            ->andWhere('e.finishAt < CONVERT_TZ(NOW(), \'Europe/Paris\', e.timeZone)')
+            ->andWhere('e.finishAt < AT_TIME_ZONE(:now, e.timeZone)')
             ->orderBy('e.finishAt', 'DESC')
+            ->setParameter('now', new \DateTime())
         ;
 
         return $this->configurePaginator($queryBuilder, $page, $limit);
