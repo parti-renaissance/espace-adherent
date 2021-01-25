@@ -227,7 +227,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {
             $subscriptionTypesCondition = ":subscription_type = ANY_OF(string_to_array(u.subscriptionTypes, ','))";
             if (false === $filter->getEmailSubscription()) {
-                $subscriptionTypesCondition = "(NOT(:subscription_type = ANY_OF(string_to_array(u.subscriptionTypes, ','))) OR u.subscriptionTypes IS NULL)";
+                $subscriptionTypesCondition = "u.subscriptionTypes IS NULL OR NOT(:subscription_type = ANY_OF(string_to_array(u.subscriptionTypes, ',')))";
             }
 
             $qb
@@ -239,7 +239,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         if (null !== $filter->getSmsSubscription()) {
             $subscriptionTypesCondition = ":sms_subscription_type = ANY_OF(string_to_array(u.subscriptionTypes, ','))";
             if (false === $filter->getSmsSubscription()) {
-                $subscriptionTypesCondition = "(NOT(:sms_subscription_type = ANY_OF(string_to_array(u.subscriptionTypes, ','))) OR u.subscriptionTypes IS NULL)";
+                $subscriptionTypesCondition = "u.subscriptionTypes IS NULL OR NOT(:sms_subscription_type = ANY_OF(string_to_array(u.subscriptionTypes, ',')))";
             }
 
             $qb
