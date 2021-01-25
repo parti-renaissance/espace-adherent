@@ -137,7 +137,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
             } else {
                 $voteChoice = new VoteChoice($pool);
 
-                if (VoteChoice::BLANK_VOTE_VALUE == $choice) {
+                if (VoteChoice::BLANK_VOTE_VALUE === $choice) {
                     $voteChoice->setIsBlank(true);
                 } else {
                     if (!$group = $this->candidateGroupRepository->findOneByUuid($choice)) {

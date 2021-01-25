@@ -3,7 +3,6 @@
 namespace App\Repository\VotingPlatform;
 
 use App\Entity\VotingPlatform\CandidateGroup;
-use App\Entity\VotingPlatform\VoteChoice;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,10 +21,6 @@ class CandidateGroupRepository extends ServiceEntityRepository
      */
     public function findByUuids(array $uuids): array
     {
-        if (false !== ($key = array_search(VoteChoice::BLANK_VOTE_VALUE, $uuids))) {
-            unset($uuids[$key]);
-        }
-
         return $this->createQueryBuilder('cg')
             ->addSelect('candidate')
             ->innerJoin('cg.candidates', 'candidate')

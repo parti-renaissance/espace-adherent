@@ -69,7 +69,9 @@ doctrine:
                 STRING_TO_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\StringToArray
                 ILIKE: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Ilike
                 UNACCENT: App\Doctrine\Query\Postgresql\Unaccent
+                STRING_AGG: DoctrineExtensions\Query\Postgresql\StringAgg
             datetime_functions:
+                AT_TIME_ZONE: DoctrineExtensions\Query\Postgresql\AtTimeZoneFunction
                 DATE_FORMAT: DoctrineExtensions\Query\Postgresql\DateFormat
         hydrators:
             EventHydrator: App\Doctrine\Hydrators\EventHydrator
