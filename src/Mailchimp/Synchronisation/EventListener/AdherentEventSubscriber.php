@@ -51,6 +51,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             UserEvents::USER_DELETED => 'onDelete',
 
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onCommitteePrivilegeChange',
+            Events::COMMITTEE_NEW_FOLLOWER => 'onCommitteePrivilegeChange',
             UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE => 'onCitizenProjectPrivilegeChange',
 
             Events::CITIZEN_PROJECT_FOLLOWER_ADDED => 'onCitizenProjectMembershipCreation',

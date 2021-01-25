@@ -485,6 +485,6 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent), UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE);
+        $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent, $membership->getCommittee()), UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE);
     }
 }
