@@ -10,20 +10,12 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Exception\BaseGroupException;
 use App\Form\Admin\ApproveCommitteeCommandType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class AdminCommitteeCRUDController extends CRUDController
 {
-    /**
-     * Approves the committee.
-     *
-     * @Route("/{id}/approve", name="app_admin_committee_approve", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
-     */
     public function approveAction(
         Request $request,
         Committee $committee,
