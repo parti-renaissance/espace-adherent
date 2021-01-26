@@ -52,7 +52,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
                 'pr.voteCity AS request_voteCity',
                 'pr.voteCityName AS request_voteCityName',
                 'pr.voteCountry AS request_voteCountry',
-                'GROUP_CONCAT(er.label SEPARATOR \'\\n\') AS request_electionRounds',
+                'STRING_AGG(er.label, \'\\n\') AS request_electionRounds',
                 'pr.reason AS request_reason',
                 'pr.processedAt AS request_processedAt',
 

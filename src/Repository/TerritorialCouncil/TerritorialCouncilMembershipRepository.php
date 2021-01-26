@@ -261,7 +261,7 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
         if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {
             $qb
                 ->leftJoin('adherent.subscriptionTypes', 'subscriptionType')
-                ->addSelect('GROUP_CONCAT(subscriptionType.code) AS HIDDEN st_codes')
+                ->addSelect("STRING_AGG(subscriptionType.code, ',') AS HIDDEN st_codes")
                 ->groupBy('adherent.id')
             ;
 

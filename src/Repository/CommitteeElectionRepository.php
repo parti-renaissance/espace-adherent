@@ -111,7 +111,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             ))
             ->addSelect(sprintf('(%s) AS winners',
                 $this->getEntityManager()->createQueryBuilder()
-                    ->select('GROUP_CONCAT(CONCAT_WS(\'|\', sub_voting_platform_candidate.gender, sub_voting_platform_candidate.firstName, sub_voting_platform_candidate.lastName))')
+                    ->select("STRING_AGG(CONCAT_WS('|', sub_voting_platform_candidate.gender, sub_voting_platform_candidate.firstName, sub_voting_platform_candidate.lastName), ',')")
                     ->from(Candidate::class, 'sub_voting_platform_candidate')
                     ->innerJoin('sub_voting_platform_candidate.candidateGroup', 'sub_candidate_group', Join::WITH, 'sub_candidate_group.elected = :true')
                     ->innerJoin('sub_candidate_group.electionPool', 'sub_election_pool')

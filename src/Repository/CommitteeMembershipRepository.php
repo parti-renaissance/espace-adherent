@@ -258,7 +258,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         $qb = $this
             ->createCommitteeMembershipsQueryBuilder($committee)
             ->addSelect('a')
-            ->addSelect('GROUP_CONCAT(st.code) AS HIDDEN st_codes')
+            ->addSelect("STRING_AGG(st.code, ',') AS HIDDEN st_codes")
             ->leftJoin('a.subscriptionTypes', 'st')
             ->groupBy('a.id')
         ;
