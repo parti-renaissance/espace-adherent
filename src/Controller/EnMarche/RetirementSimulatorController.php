@@ -3,14 +3,14 @@
 namespace App\Controller\EnMarche;
 
 use App\Form\RetirementSimulatorType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/retraite-interactif")
  */
-class RetirementSimulatorController extends Controller
+class RetirementSimulatorController extends AbstractController
 {
     /**
      * @Route(name="app_retirement_simulator_home", methods={"GET"})

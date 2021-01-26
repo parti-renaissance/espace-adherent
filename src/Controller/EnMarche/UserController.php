@@ -23,19 +23,20 @@ use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/parametres/mon-compte")
  */
-class UserController extends Controller
+class UserController extends AbstractController
 {
     private const UNREGISTER_TOKEN = 'unregister_token';
 
@@ -152,8 +153,11 @@ class UserController extends Controller
      * @Route("/desadherer", name="app_user_terminate_membership", methods={"GET", "POST"})
      * @Security("is_granted('UNREGISTER')")
      */
-    public function terminateMembershipAction(Request $request, MembershipRequestHandler $handler): Response
-    {
+    public function terminateMembershipAction(
+        Request $request,
+        MembershipRequestHandler $handler,
+        TokenStorageInterface $tokenStorage
+    ): Response {
         $adherent = $this->getUser();
         $unregistrationCommand = new UnregistrationCommand();
         $viewFolder = $adherent->isUser() ? 'user' : 'adherent';
@@ -168,7 +172,7 @@ class UserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $handler->terminateMembership($unregistrationCommand, $adherent);
-            $this->get('security.token_storage')->setToken(null);
+            $tokenStorage->setToken(null);
             $request->getSession()->invalidate();
 
             return $this->render(sprintf('%s/terminate_membership.html.twig', $viewFolder), [

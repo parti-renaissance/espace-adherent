@@ -7,7 +7,7 @@ use App\Repository\TurnkeyProjectRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/turnkey-projects")
  */
-class TurnkeyProjectController extends Controller
+class TurnkeyProjectController extends AbstractController
 {
     /**
      * @Route(name="api_approved_turnkey_projects", methods={"GET"})

@@ -5,12 +5,12 @@ namespace App\Controller\EnMarche;
 use App\Entity\JeMarcheReport;
 use App\Form\JeMarcheReportType;
 use App\JeMarche\JeMarcheReportHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class JeMarcheController extends Controller
+class JeMarcheController extends AbstractController
 {
     /**
      * @Route("/jagis", name="app_je_marche", methods={"GET"})

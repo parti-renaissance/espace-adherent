@@ -6,14 +6,14 @@ use App\Documents\DocumentManager;
 use App\Documents\DocumentRepository;
 use App\Entity\Adherent;
 use League\Flysystem\FileNotFoundException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-adherent/documents")
  */
-class DocumentsController extends Controller
+class DocumentsController extends AbstractController
 {
     private $documentManager;
 

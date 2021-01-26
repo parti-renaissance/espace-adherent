@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\ElectedRepresentative\MandateTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Repository\Geo\ZoneRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/zone")
  */
-class AdminZoneController extends Controller
+class AdminZoneController extends AbstractController
 {
     private const MAX_SUGGESTIONS = 10;
 

@@ -19,7 +19,7 @@ use App\TerritorialCouncil\ElectionPoll\Manager;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +30,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Security("is_granted('ROLE_ADHERENT')")
  */
-class TerritorialCouncilController extends Controller
+class TerritorialCouncilController extends AbstractController
 {
     use CanaryControllerTrait;
     use FeedItemControllerTrait;

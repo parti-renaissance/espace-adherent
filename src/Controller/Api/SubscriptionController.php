@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Subscription\SubscriptionHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/email-subscriptions/change", name="app_change_email_subscriptions_webhook", methods={"GET", "POST"})
  */
-class SubscriptionController extends Controller
+class SubscriptionController extends AbstractController
 {
     private $handler;
 
@@ -29,7 +29,7 @@ class SubscriptionController extends Controller
             throw new UnauthorizedHttpException('There is no secret');
         }
 
-        if ($secret !== $this->container->getParameter('webhook.email_subscriptions_secret')) {
+        if ($secret !== $this->getParameter('webhook.email_subscriptions_secret')) {
             throw new AccessDeniedHttpException('Wrong secret.');
         }
 

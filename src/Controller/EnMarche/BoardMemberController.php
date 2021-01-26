@@ -11,16 +11,17 @@ use App\Entity\BoardMember\BoardMember;
 use App\Form\BoardMemberMessageType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @Route("/espace-membres-conseil")
  * @Security("is_granted('ROLE_BOARD_MEMBER')")
  */
-class BoardMemberController extends Controller
+class BoardMemberController extends AbstractController
 {
     const TOKEN_ID = 'board_member_search';
 
@@ -35,8 +36,11 @@ class BoardMemberController extends Controller
     /**
      * @Route("/recherche", name="app_board_member_search", methods={"GET"})
      */
-    public function searchAction(Request $request, BoardMemberManager $manager): Response
-    {
+    public function searchAction(
+        Request $request,
+        BoardMemberManager $manager,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ): Response {
         $filter = new BoardMemberFilter();
         $filter->handleRequest($request);
 
@@ -46,7 +50,7 @@ class BoardMemberController extends Controller
 
         $results = $manager->paginateMembers($filter, $this->getUser());
 
-        $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
+        $filter->setToken($csrfTokenManager->getToken(self::TOKEN_ID));
 
         return $this->render('board_member/search.html.twig', [
             'filter' => $filter,

@@ -8,11 +8,11 @@ use App\Entity\OrderArticle;
 use App\Entity\Proposal;
 use App\Sitemap\SitemapFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AmpController extends Controller
+class AmpController extends AbstractController
 {
     use CanaryControllerTrait;
 

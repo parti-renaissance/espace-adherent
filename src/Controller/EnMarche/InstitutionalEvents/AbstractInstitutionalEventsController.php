@@ -10,12 +10,12 @@ use App\InstitutionalEvent\InstitutionalEventCommand;
 use App\InstitutionalEvent\InstitutionalEventCommandHandler;
 use App\Repository\InstitutionalEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractInstitutionalEventsController extends Controller
+abstract class AbstractInstitutionalEventsController extends AbstractController
 {
     use AccessDelegatorTrait;
 

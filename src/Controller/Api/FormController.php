@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use JMS\Serializer\SerializerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/form")
  */
-class FormController extends Controller
+class FormController extends AbstractController
 {
     /**
      * @Route("/validate/{formType}", name="api_form_validate", condition="request.isXmlHttpRequest()", methods={"POST"})

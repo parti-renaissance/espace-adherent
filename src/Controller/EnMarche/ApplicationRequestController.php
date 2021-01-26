@@ -9,7 +9,7 @@ use App\Form\ApplicationRequest\RunningMateRequestType;
 use App\Form\ApplicationRequest\VolunteerRequestType;
 use App\Intl\FranceCitiesBundle;
 use App\Utils\AreaUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/appel-a-engagement", name="app_application_request_")
  */
-class ApplicationRequestController extends Controller
+class ApplicationRequestController extends AbstractController
 {
     /**
      * @Route(name="request", methods={"GET", "POST"})

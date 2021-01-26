@@ -7,7 +7,7 @@ use App\Repository\AdherentRepository;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ROLE_OAUTH_SCOPE_CRM_PARIS')")
  */
-class CrmParisController extends Controller
+class CrmParisController extends AbstractController
 {
     private const CSV_DELIMITER = ';';
     private const CSV_OUTPUT_ENCODING = 'windows-1252';

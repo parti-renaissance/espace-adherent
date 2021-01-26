@@ -15,7 +15,7 @@ use App\Security\Http\Session\AnonymousFollowerSession;
 use App\ThematicCommunity\Handler\ThematicCommunityMembershipHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route("/communautes-thematiques", name="app_thematic_community_")
  */
-class ThematicCommunityController extends Controller
+class ThematicCommunityController extends AbstractController
 {
     use CanaryControllerTrait;
 

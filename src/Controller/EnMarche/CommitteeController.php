@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @Route("/comites/{slug}")
@@ -153,7 +154,8 @@ class CommitteeController extends AbstractController
     public function followAction(
         Request $request,
         Committee $committee,
-        CommitteeManagementAuthority $committeeManagementAuthority
+        CommitteeManagementAuthority $committeeManagementAuthority,
+        CsrfTokenManagerInterface $csrfTokenManager
     ): Response {
         if (!$this->isCsrfTokenValid('committee.follow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow committee.');
@@ -165,7 +167,7 @@ class CommitteeController extends AbstractController
             'button' => [
                 'label' => 'Quitter ce comité',
                 'action' => 'quitter',
-                'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('committee.unfollow'),
+                'csrf_token' => (string) $csrfTokenManager->getToken('committee.unfollow'),
             ],
         ]);
     }
@@ -174,8 +176,11 @@ class CommitteeController extends AbstractController
      * @Route("/quitter", name="app_committee_unfollow", condition="request.request.has('token')", methods={"POST"})
      * @Security("is_granted('UNFOLLOW_COMMITTEE', committee)")
      */
-    public function unfollowAction(Request $request, Committee $committee): Response
-    {
+    public function unfollowAction(
+        Request $request,
+        Committee $committee,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ): Response {
         if (!$this->isCsrfTokenValid('committee.unfollow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
         }
@@ -186,7 +191,7 @@ class CommitteeController extends AbstractController
             'button' => [
                 'label' => 'Suivre ce comité',
                 'action' => 'rejoindre',
-                'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('committee.unfollow'),
+                'csrf_token' => (string) $csrfTokenManager->getToken('committee.unfollow'),
             ],
         ]);
     }

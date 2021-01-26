@@ -14,7 +14,7 @@ use App\Membership\MemberActivityTracker;
 use App\Repository\SkillRepository;
 use App\Summary\SummaryManager;
 use Cocur\Slugify\SlugifyInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/espace-adherent/mon-profil")
  */
-class SummaryManagerController extends Controller
+class SummaryManagerController extends AbstractController
 {
     use EntityControllerTrait;
 

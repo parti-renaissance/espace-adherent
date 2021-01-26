@@ -12,13 +12,13 @@ use App\Newsletter\NewsletterInvitationHandler;
 use App\Newsletter\NewsletterSubscriptionHandler;
 use App\Repository\NewsletterSubscriptionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class NewsletterController extends Controller
+class NewsletterController extends AbstractController
 {
     /**
      * @Route("/newsletter", name="newsletter_subscription", methods={"GET", "POST"})

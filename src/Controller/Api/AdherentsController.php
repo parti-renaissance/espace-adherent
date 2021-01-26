@@ -9,7 +9,7 @@ use App\Membership\AdherentManager;
 use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
  */
-class AdherentsController extends Controller
+class AdherentsController extends AbstractController
 {
     /**
      * @Route("/count", name="app_adherents_count", methods={"GET"})

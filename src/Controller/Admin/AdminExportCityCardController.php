@@ -13,12 +13,12 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\ArraySourceIterator;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminExportCityCardController extends Controller
+class AdminExportCityCardController extends AbstractController
 {
     private const NUANCES_TO_EXPORT = [
         VoteListNuanceEnum::REM,

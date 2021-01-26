@@ -14,7 +14,7 @@ use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Security("is_granted('POLITICAL_COMMITTEE_MEMBER')")
  */
-class PoliticalCommitteeController extends Controller
+class PoliticalCommitteeController extends AbstractController
 {
     use CanaryControllerTrait;
     use FeedItemControllerTrait;

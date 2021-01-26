@@ -9,7 +9,7 @@ use App\Entity\Committee;
 use App\Exception\BaseGroupException;
 use App\Form\CoordinatorAreaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/espace-coordinateur/comites")
  * @Security("has_role('ROLE_COORDINATOR_COMMITTEE')")
  */
-class CoordinatorCommitteeController extends Controller
+class CoordinatorCommitteeController extends AbstractController
 {
     /**
      * @Route("/list", name="app_coordinator_committees", methods={"GET"})

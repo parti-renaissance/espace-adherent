@@ -6,7 +6,7 @@ use App\Form\CityFilterType;
 use App\MunicipalManager\Filter\AssociationCityFilter;
 use App\Repository\CityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ROLE_ELECTION_RESULTS_REPORTER')")
  */
-class ElectionResultsReporterController extends Controller
+class ElectionResultsReporterController extends AbstractController
 {
     /**
      * @Route("/communes", name="_cities_list", methods={"GET"})

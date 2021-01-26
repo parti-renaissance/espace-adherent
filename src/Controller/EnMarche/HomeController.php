@@ -10,12 +10,12 @@ use App\Form\NewsletterSubscriptionType;
 use App\Repository\HomeBlockRepository;
 use App\Repository\LiveLinkRepository;
 use App\Sitemap\SitemapFactory;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends Controller
+class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="homepage", methods={"GET"})

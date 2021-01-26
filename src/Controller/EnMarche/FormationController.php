@@ -7,7 +7,7 @@ use App\Entity\Page;
 use App\Repository\Formation\PathRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/espace-formation", name="app_formation_")
  * @Security("is_granted('ROLE_FORMATION_SPACE')")
  */
-class FormationController extends Controller
+class FormationController extends AbstractController
 {
     /**
      * @Route(name="home", methods="GET")

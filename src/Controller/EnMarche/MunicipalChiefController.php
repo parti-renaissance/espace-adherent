@@ -13,7 +13,7 @@ use App\Repository\MunicipalEventRepository;
 use App\Security\Voter\MunicipalChiefVoter;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
  */
-class MunicipalChiefController extends Controller
+class MunicipalChiefController extends AbstractController
 {
     /**
      * @Route(name="_home", methods={"GET"})

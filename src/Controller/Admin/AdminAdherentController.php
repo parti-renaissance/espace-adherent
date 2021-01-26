@@ -3,11 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Security\AuthenticationUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminAdherentController extends Controller
+class AdminAdherentController extends AbstractController
 {
     /**
      * Exit impersonation.

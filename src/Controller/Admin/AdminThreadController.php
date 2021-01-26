@@ -7,7 +7,7 @@ use App\IdeasWorkshop\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @Security("has_role('ROLE_ADMIN_IDEAS_WORKSHOP')")
  * @Entity("thread", expr="repository.findOneByUuid(uuid, true)")
  */
-class AdminThreadController extends Controller
+class AdminThreadController extends AbstractController
 {
     use RedirectToTargetTrait;
 

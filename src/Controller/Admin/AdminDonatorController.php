@@ -9,7 +9,7 @@ use App\Donation\DonatorMergeCommandHandler;
 use App\Form\Admin\DonatorMergeType;
 use App\Form\Admin\Extract\DonatorExtractType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("has_role('ROLE_ADMIN_FINANCE')")
  */
-class AdminDonatorController extends Controller
+class AdminDonatorController extends AbstractController
 {
     /**
      * @Route("/merge", name="app_admin_donator_merge", methods={"GET", "POST"})

@@ -5,11 +5,11 @@ namespace App\Controller\EnMarche;
 use App\Entity\Committee;
 use App\Entity\Event;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LegacyController extends Controller
+class LegacyController extends AbstractController
 {
     /**
      * @Route("/espaceperso/evenement/{id}-{slug}", requirements={"id": "\d+"}, methods={"GET"})

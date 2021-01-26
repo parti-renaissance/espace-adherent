@@ -4,14 +4,17 @@ namespace App\Controller;
 
 use App\React\ReactAppRegistry;
 use App\Security\Http\Session\AnonymousFollowerSession;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ReactController extends Controller
+class ReactController extends AbstractController
 {
-    public function __invoke(ReactAppRegistry $registry, Request $request): Response
-    {
+    public function __invoke(
+        ReactAppRegistry $registry,
+        Request $request,
+        AnonymousFollowerSession $anonymousFollowerSession
+    ): Response {
         $app = $registry->getApp($request->attributes->get('_react_app'));
 
         if (!$app) {
@@ -28,9 +31,7 @@ class ReactController extends Controller
             throw $this->createNotFoundException('Manifest not found, does the app exist and has been built?');
         }
 
-        if ($this->isGranted('IS_ANONYMOUS')
-            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
-        ) {
+        if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
             return $authenticate;
         }
 

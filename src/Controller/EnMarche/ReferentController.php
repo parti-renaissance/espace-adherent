@@ -12,7 +12,7 @@ use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository
 use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use App\Repository\ReferentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/espace-referent")
  */
-class ReferentController extends Controller
+class ReferentController extends AbstractController
 {
     /**
      * @Route("/mon-equipe", name="app_referent_organizational_chart", methods={"GET"})

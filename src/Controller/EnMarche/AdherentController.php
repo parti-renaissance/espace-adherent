@@ -39,18 +39,19 @@ use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/espace-adherent")
  */
-class AdherentController extends Controller
+class AdherentController extends AbstractController
 {
     use CanaryControllerTrait;
 
@@ -181,11 +182,10 @@ class AdherentController extends Controller
     public function createCitizenProjectAction(
         Request $request,
         CitizenProjectCreationCommandHandler $handler,
+        AnonymousFollowerSession $anonymousFollowerSession,
         TurnkeyProject $turnkeyProject = null
     ): Response {
-        if ($this->isGranted('IS_ANONYMOUS')
-            && $authentication = $this->get(AnonymousFollowerSession::class)->start($request)
-        ) {
+        if ($this->isGranted('IS_ANONYMOUS') && $authentication = $anonymousFollowerSession->start($request)) {
             return $authentication;
         }
 
@@ -249,7 +249,8 @@ class AdherentController extends Controller
         Request $request,
         Adherent $adherent,
         ContactMessageHandler $handler,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $translator
     ): Response {
         $fromType = $request->query->get('from');
         $fromId = $request->query->get('id');
@@ -308,7 +309,7 @@ class AdherentController extends Controller
                 return $this->redirectToRoute('homepage');
             }
         } catch (ConnectException $e) {
-            $this->addFlash('error_recaptcha', $this->get('translator')->trans('recaptcha.error'));
+            $this->addFlash('error_recaptcha', $translator->trans('recaptcha.error'));
         }
 
         return $this->render('adherent/contact.html.twig', [

@@ -6,7 +6,7 @@ use App\Entity\TurnkeyProject;
 use App\TurnkeyProject\TurnkeyProjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/turnkey_projects")
  */
-class AdminTurnkeyProjectController extends Controller
+class AdminTurnkeyProjectController extends AbstractController
 {
     /**
      * @Route("/{id}/remove-image", name="app_admin_turnkey_project_remove_image", methods={"GET"})

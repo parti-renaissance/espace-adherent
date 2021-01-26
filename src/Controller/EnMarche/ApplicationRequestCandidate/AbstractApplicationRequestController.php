@@ -9,12 +9,12 @@ use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Form\ApplicationRequest\ApplicationRequestListFilterType;
 use App\Form\ApplicationRequest\ApplicationRequestTagsType;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractApplicationRequestController extends Controller
+abstract class AbstractApplicationRequestController extends AbstractController
 {
     private $enableMunicipalSpace;
 

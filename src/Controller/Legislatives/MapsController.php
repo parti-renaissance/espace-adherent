@@ -3,11 +3,11 @@
 namespace App\Controller\Legislatives;
 
 use App\Repository\EventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MapsController extends Controller
+class MapsController extends AbstractController
 {
     /**
      * @Route("/la-carte", name="legislatives_map", methods={"GET"})

@@ -6,14 +6,14 @@ use App\Entity\Summary;
 use App\Membership\MemberActivityTracker;
 use App\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/membre/{slug}")
  */
-class SummaryController extends Controller
+class SummaryController extends AbstractController
 {
     /**
      * @Route(name="app_summary_index", methods={"GET"})

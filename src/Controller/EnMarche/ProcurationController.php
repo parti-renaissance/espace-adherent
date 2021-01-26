@@ -12,7 +12,7 @@ use App\Procuration\ElectionContext;
 use App\Procuration\ProcurationManager;
 use App\Procuration\ProcurationSession;
 use App\Repository\ElectionRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/procuration")
  */
-class ProcurationController extends Controller
+class ProcurationController extends AbstractController
 {
     /**
      * @Route(name="app_procuration_landing", methods={"GET"})

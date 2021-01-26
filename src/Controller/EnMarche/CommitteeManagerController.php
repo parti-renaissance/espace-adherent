@@ -22,7 +22,7 @@ use App\Repository\CommitteeMembershipRepository;
 use App\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @Route("/comites/{slug}")
  * @Security("is_granted('HOST_COMMITTEE', committee)")
  */
-class CommitteeManagerController extends Controller
+class CommitteeManagerController extends AbstractController
 {
     private $manager;
 

@@ -7,11 +7,11 @@ use App\Entity\Election\VotePlaceResult;
 use App\Entity\VotePlace;
 use App\Form\Election\VoteResultWithListsType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class AbstractVoteResultController extends Controller
+abstract class AbstractVoteResultController extends AbstractController
 {
     private $electionManager;
     private $entityManager;

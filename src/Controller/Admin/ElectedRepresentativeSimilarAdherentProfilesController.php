@@ -9,11 +9,11 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class ElectedRepresentativeSimilarAdherentProfilesController extends Controller
+class ElectedRepresentativeSimilarAdherentProfilesController extends AbstractController
 {
     /**
      * @Route("/elected-representative/{id}/adherent-similar-profiles", name="admin_app_electedrepresentative_adherent_similar_profiles", methods={"GET"})

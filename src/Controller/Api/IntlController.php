@@ -4,13 +4,13 @@ namespace App\Controller\Api;
 
 use App\Intl\FranceCitiesBundle;
 use App\Intl\VoteOfficeBundle;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IntlController extends Controller
+class IntlController extends AbstractController
 {
     /**
      * @Route("/postal-code/{postalCode}", name="api_postal_code", methods={"GET"})

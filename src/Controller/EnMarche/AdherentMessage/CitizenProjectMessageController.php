@@ -18,7 +18,7 @@ use App\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Security("is_granted('ADMINISTRATE_CITIZEN_PROJECT', citizenProject) and citizenProject.isApproved()")
  */
-class CitizenProjectMessageController extends Controller
+class CitizenProjectMessageController extends AbstractController
 {
     /**
      * @Route(name="list", methods={"GET"})

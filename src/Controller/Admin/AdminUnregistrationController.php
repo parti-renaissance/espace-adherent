@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Membership\UnregistrationSerializer;
 use App\Repository\UnregistrationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/unregistration")
  */
-class AdminUnregistrationController extends Controller
+class AdminUnregistrationController extends AbstractController
 {
     const PER_PAGE = 1000;
 

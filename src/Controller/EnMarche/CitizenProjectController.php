@@ -16,17 +16,18 @@ use App\Storage\FileRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @Route("/projets-citoyens")
  */
-class CitizenProjectController extends Controller
+class CitizenProjectController extends AbstractController
 {
     /**
      * @Route("/aide", name="app_citizen_project_help", methods={"GET", "POST"})
@@ -43,11 +44,10 @@ class CitizenProjectController extends Controller
     public function showAction(
         Request $request,
         CitizenProject $citizenProject,
-        CitizenProjectManager $citizenProjectManager
+        CitizenProjectManager $citizenProjectManager,
+        AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
-        if ($this->isGranted('IS_ANONYMOUS')
-            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
-        ) {
+        if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
             return $authenticate;
         }
 
@@ -179,7 +179,8 @@ class CitizenProjectController extends Controller
     public function followAction(
         Request $request,
         CitizenProject $citizenProject,
-        CitizenProjectManager $manager
+        CitizenProjectManager $manager,
+        CsrfTokenManagerInterface $csrfTokenManager
     ): Response {
         if (!$this->isCsrfTokenValid('citizen_project.follow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow citizen project.');
@@ -191,7 +192,7 @@ class CitizenProjectController extends Controller
             'button' => [
                 'label' => 'Quitter ce projet citoyen',
                 'action' => 'quitter',
-                'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('citizen_project.unfollow'),
+                'csrf_token' => (string) $csrfTokenManager->getToken('citizen_project.unfollow'),
             ],
         ]);
     }
@@ -203,7 +204,8 @@ class CitizenProjectController extends Controller
     public function unfollowAction(
         Request $request,
         CitizenProject $citizenProject,
-        CitizenProjectManager $manager
+        CitizenProjectManager $manager,
+        CsrfTokenManagerInterface $csrfTokenManager
     ): Response {
         if (!$this->isCsrfTokenValid('citizen_project.unfollow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow citizen project.');
@@ -215,7 +217,7 @@ class CitizenProjectController extends Controller
             'button' => [
                 'label' => 'Suivre ce projet citoyen',
                 'action' => 'rejoindre',
-                'csrf_token' => (string) $this->get('security.csrf.token_manager')->getToken('citizen_project.follow'),
+                'csrf_token' => (string) $csrfTokenManager->getToken('citizen_project.follow'),
             ],
         ]);
     }

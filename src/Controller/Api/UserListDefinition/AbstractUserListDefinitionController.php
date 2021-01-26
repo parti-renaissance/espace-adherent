@@ -4,13 +4,13 @@ namespace App\Controller\Api\UserListDefinition;
 
 use App\UserListDefinition\UserListDefinitionManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractUserListDefinitionController extends Controller
+abstract class AbstractUserListDefinitionController extends AbstractController
 {
     /**
      * @Route("/members/save",

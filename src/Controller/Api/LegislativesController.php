@@ -3,11 +3,11 @@
 namespace App\Controller\Api;
 
 use App\Api\LegislativeCandidateProvider;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LegislativesController extends Controller
+class LegislativesController extends AbstractController
 {
     /**
      * @Route("/candidates", name="api_legislatives_candidates", methods={"GET"})

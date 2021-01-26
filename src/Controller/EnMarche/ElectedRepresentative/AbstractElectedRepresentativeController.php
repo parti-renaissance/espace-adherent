@@ -10,13 +10,13 @@ use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinitionEnum;
 use App\Form\ElectedRepresentative\ElectedRepresentativeFilterType;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractElectedRepresentativeController extends Controller
+abstract class AbstractElectedRepresentativeController extends AbstractController
 {
     use AccessDelegatorTrait;
 

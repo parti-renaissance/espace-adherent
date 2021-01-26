@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -15,7 +15,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * @Route("/territorial-council-membership-log")
  */
-class AdminTerritorialCouncilMembershipLogController extends Controller
+class AdminTerritorialCouncilMembershipLogController extends AbstractController
 {
     public const STATUS_RESOLVED = 'resolved';
     public const STATUS_UNRESOLVED = 'unresolved';

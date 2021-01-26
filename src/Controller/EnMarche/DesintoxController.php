@@ -6,10 +6,10 @@ use App\Entity\Clarification;
 use App\Entity\Page;
 use App\Repository\ClarificationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DesintoxController extends Controller
+class DesintoxController extends AbstractController
 {
     /**
      * @Route("/desintox", name="desintox_list", methods={"GET"})

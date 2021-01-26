@@ -20,13 +20,13 @@ use App\Repository\VotePlaceRepository;
 use App\Security\Voter\ManageVotePlaceVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractAssessorSpaceController extends Controller
+abstract class AbstractAssessorSpaceController extends AbstractController
 {
     protected const PAGE_LIMIT = 10;
 

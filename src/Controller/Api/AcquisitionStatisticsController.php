@@ -5,13 +5,13 @@ namespace App\Controller\Api;
 use App\Statistics\Acquisition\Aggregator;
 use App\Statistics\Acquisition\StatisticsRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AcquisitionStatisticsController extends Controller
+class AcquisitionStatisticsController extends AbstractController
 {
     /**
      * @Route("/statistics/acquisition", name="api_acquisition_statistics", methods={"GET"})

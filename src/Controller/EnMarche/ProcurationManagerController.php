@@ -13,7 +13,7 @@ use App\Repository\ProcurationRequestRepository;
 use Doctrine\DBAL\Driver\DriverException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/espace-responsable-procuration")
  * @Security("is_granted('ROLE_PROCURATION_MANAGER')")
  */
-class ProcurationManagerController extends Controller
+class ProcurationManagerController extends AbstractController
 {
     /**
      * @Route(name="app_procuration_manager_requests", methods={"GET"})

@@ -6,7 +6,7 @@ use App\Entity\Donation;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("has_role('ROLE_ADMIN_FINANCE')")
  */
-class AdminDonationController extends Controller
+class AdminDonationController extends AbstractController
 {
     /**
      * @Route("/file/{id}", name="app_admin_donation_file", methods="GET")

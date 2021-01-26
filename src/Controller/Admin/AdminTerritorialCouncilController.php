@@ -7,7 +7,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/territorialcouncil")
  */
-class AdminTerritorialCouncilController extends Controller
+class AdminTerritorialCouncilController extends AbstractController
 {
     private $politicalCommitteeManager;
 

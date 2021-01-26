@@ -4,12 +4,12 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DelegatedAccessController extends Controller
+class DelegatedAccessController extends AbstractController
 {
     /**
      * @Route("/espace-partage/{uuid}", name="app_access_delegation_set", methods={"GET"})

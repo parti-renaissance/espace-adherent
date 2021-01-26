@@ -24,7 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,7 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/don")
  */
-class DonationController extends Controller
+class DonationController extends AbstractController
 {
     public const RESULT_STATUS_EFFECTUE = 'effectue';
     public const RESULT_STATUS_ERREUR = 'erreur';

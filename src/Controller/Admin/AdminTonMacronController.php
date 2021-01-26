@@ -7,7 +7,7 @@ use App\Repository\TonMacronFriendInvitationRepository;
 use App\TonMacron\TonMacronSerializer;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/tonmacron")
  */
-class AdminTonMacronController extends Controller
+class AdminTonMacronController extends AbstractController
 {
     const PER_PAGE = 1000;
 

@@ -6,11 +6,11 @@ use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
 use App\Repository\SocialShareCategoryRepository;
 use App\Repository\SocialShareRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SocialShareController extends Controller
+class SocialShareController extends AbstractController
 {
     /**
      * @Route("/jepartage", name="app_social_share_list", methods={"GET"})

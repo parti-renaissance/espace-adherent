@@ -5,7 +5,7 @@ namespace App\Controller\EnMarche;
 use App\Entity\Page;
 use App\Repository\FacebookVideoRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Each time you add or update a custom url with an hardcoded slug in the controller code, you must update the
  * App\Entity\Page::URLS constant and reindex algolia's page index.
  */
-class PageController extends Controller
+class PageController extends AbstractController
 {
     /**
      * @Route("/formation", name="page_campus", methods={"GET"})
