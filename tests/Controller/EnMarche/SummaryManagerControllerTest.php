@@ -843,9 +843,6 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->assertCount(1, $synthesis->filter('.summary-location:contains("À distance")'));
     }
 
-    /**
-     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
-     */
     public function testStepMissionsWithoutSummary()
     {
         $summariesCount = \count($this->getSummaryRepository()->findAll());
@@ -859,11 +856,13 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
-        $this->client->submit($crawler->filter('form[name=summary]')->form([
-            'summary[mission_type_wishes][5]' => '1',
-            'summary[mission_type_wishes][3]' => '3',
-            'summary[mission_type_wishes][1]' => '5',
-        ]));
+        $form = $crawler->filter('form[name=summary]')->form();
+
+        $form['summary[mission_type_wishes]'][0]->tick();
+        $form['summary[mission_type_wishes]'][2]->tick();
+        $form['summary[mission_type_wishes]'][4]->tick();
+
+        $this->client->submit($form);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
