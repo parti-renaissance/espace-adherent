@@ -95,9 +95,11 @@ class NotifyIdeaAuthorCommand extends Command
             ->findAll()
         ;
 
-        $dates = reset($ideasNotificationDates);
+        if (!$ideasNotificationDates) {
+            return new IdeaNotificationDates();
+        }
 
-        return $dates ?? new IdeaNotificationDates();
+        return reset($ideasNotificationDates);
     }
 
     private function sendMail(Idea $idea, bool $isCautionMode): void
@@ -134,6 +136,10 @@ class NotifyIdeaAuthorCommand extends Command
             $ideaNotificationDates->setCautionLastDate($lastDate);
         } else {
             $ideaNotificationDates->setLastDate($lastDate);
+        }
+
+        if (!$ideaNotificationDates->getId()) {
+            $this->entityManager->persist($ideaNotificationDates);
         }
 
         $this->entityManager->flush();
