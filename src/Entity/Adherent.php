@@ -2282,7 +2282,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function isEqualTo(UserInterface $user)
     {
-        return $this->id === $user->getId() && $this->roles === $user->getRoles();
+        return $this->id === $user->getId() && [] === array_diff($this->roles, $user->getRoles());
     }
 
     public function isElectionResultsReporter(): bool
