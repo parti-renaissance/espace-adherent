@@ -1864,6 +1864,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->adherentMandates->filter(static function (AbstractAdherentMandate $mandate) use ($committee, $isProvisional) {
             return $mandate instanceof CommitteeAdherentMandate
                 && $mandate->getCommittee() === $committee
+                && null === $mandate->getFinishAt()
                 && CommitteeMandateQualityEnum::SUPERVISOR === $mandate->getQuality()
                 && (null === $isProvisional || $mandate->isProvisional() === $isProvisional)
             ;
@@ -2674,6 +2675,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             return $mandate instanceof CommitteeAdherentMandate
                 && null !== $mandate->getCommittee()
                 && CommitteeMandateQualityEnum::SUPERVISOR === $mandate->getQuality()
+                && null === $mandate->getFinishAt()
                 && (null === $isProvisional || $mandate->isProvisional() === $isProvisional)
                 && (null === $gender || $mandate->getGender() === $gender)
             ;

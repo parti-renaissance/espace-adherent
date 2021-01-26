@@ -130,7 +130,7 @@ class CommitteeManagerController extends Controller
             ->createForm(CommitteeMemberFilterType::class, $filter = new ListFilterObject(), [
                 'method' => 'GET',
                 'csrf_protection' => false,
-                'is_supervisor' => $adherent->isSupervisorOf($committee),
+                'is_supervisor' => $adherent->isSupervisorOf($committee, false),
             ])
             ->handleRequest($request)
         ;

@@ -195,8 +195,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->seeMessageForContactHosts($crawler);
         $this->assertSeeHosts($crawler, [
-            ['FB', 'Francis B.', 'animateur'],
-            ['JP', 'Jacques P.', 'co-animateur'],
+            ['FB', 'Francis B.', 'Animateur'],
+            ['JP', 'Jacques P.', 'Co-animateur'],
         ], false);
         $this->assertSeeDesignedAdherents($crawler, [
             ['LO', 'Lucie O.', 'Adhérente désignée'],
@@ -233,6 +233,21 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
             ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !'],
             ['Jacques Picard', 'co-animateur', 'Lancement du comité !'],
         ]);
+    }
+
+    public function testAnyoneCanSeeSupervisorProvisionalOnCommitteePage()
+    {
+        $committeeUrl = '/comites/en-marche-comite-de-evry';
+
+        // Anonymous
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->seeMessageForContactHosts($crawler);
+        $this->assertSeeHosts($crawler, [
+            ['FB', 'Francis B.', 'Animateur'],
+            ['GB', 'Gisele B.', 'Animatrice provisoire'],
+        ], false);
     }
 
     public function testUnapprovedCommitteeIsViewableByItsCreator()
@@ -278,8 +293,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSeeHosts($crawler, [
-            ['JP', 'Jacques Picard', 'animateur'],
-            ['GB', 'Gisele Berthoux', 'co-animatrice'],
+            ['JP', 'Jacques Picard', 'Animateur'],
+            ['GB', 'Gisele Berthoux', 'Co-animatrice'],
         ]);
         $this->assertSeeDesignedAdherents($crawler, [
             ['GB', 'Gisele Berthoux', 'Adhérente désignée'],
@@ -329,7 +344,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertTrue($this->seeMembersCount($crawler, 4), 'The host should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The host should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The host should see the other contact links');
-        $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux', 'co-animatrice'), 'The host should see his own contact link');
+        $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux', 'Co-animatrice'), 'The host should see his own contact link');
         $this->assertTrue($this->seeHostNav($crawler), 'The host should see the host navigation');
     }
 

@@ -51,9 +51,15 @@
                         <div class="text--body text--bold">{{ has_role_adherent ? host.fullName : host.partialName }}</div>
                         <span class="text--normal text--gray b__nudge--bottom">
                             {% if host.female %}
-                                {{ host.isSupervisorOf(committee) ? 'animatrice' : 'co-animatrice' }}
+                                {{ host.isSupervisorOf(committee, false)
+                                    ? 'Animatrice'
+                                    : (host.isSupervisorOf(committee, true) ? 'Animatrice provisoire' : 'Co-animatrice')
+                                }}
                             {% else %}
-                                {{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}
+                                {{ host.isSupervisorOf(committee, false)
+                                    ? 'Animateur'
+                                    : (host.isSupervisorOf(committee, true) ? 'Animateur provisoire' : 'Co-animateur')
+                                }}
                             {% endif %}
                         </span>
                     </div>

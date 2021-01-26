@@ -28,7 +28,7 @@
         </ul>
     {% endif %}
     {% if provisionalSupervisors|length > 0 %}
-        <p>Animateur{{ provisionalSupervisors|length > 1 ? 's' }} provisional{{ provisionalSupervisors|length > 1 ? 's' }}:</p>
+        <p>Animateur{{ provisionalSupervisors|length > 1 ? 's' }} provisoire{{ provisionalSupervisors|length > 1 ? 's' }}:</p>
         <ul>
             {% for provisionalSupervisor in provisionalSupervisors %}
                 {{ list_host.dislay_host_line(provisionalSupervisor, true) }}
