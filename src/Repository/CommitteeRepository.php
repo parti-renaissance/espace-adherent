@@ -716,7 +716,7 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('committee')
             ->innerJoin('committee.adherentMandates', 'mandate')
             ->where('mandate.adherent = :adherent')
-            ->andWhere('mandate.finishAt IS NULL')
+            ->andWhere('mandate.quality IS NULL AND mandate.finishAt IS NULL')
             ->setParameter('adherent', $adherent)
             ->getQuery()
             ->getResult()
