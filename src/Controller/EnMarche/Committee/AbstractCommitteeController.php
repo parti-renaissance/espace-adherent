@@ -9,7 +9,6 @@ use App\Committee\CommitteeManager;
 use App\Committee\CommitteeUpdateCommandHandler;
 use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Committee\Filter\CommitteeListFilter;
-use App\Controller\CanaryControllerTrait;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Committee;
 use App\Form\Committee\CommitteeDesignationsListFilterType;
@@ -30,7 +29,6 @@ use Symfony\Component\Routing\Annotation\Route;
 abstract class AbstractCommitteeController extends Controller
 {
     use AccessDelegatorTrait;
-    use CanaryControllerTrait;
 
     /**
      * @Route("", name="committees", methods={"GET", "POST"})
@@ -92,8 +90,6 @@ abstract class AbstractCommitteeController extends Controller
      */
     public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
-        $this->disableInProduction();
-
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CommitteeCommandType::class, $command, [
             'with_provisional' => $this->getWithProvisionalSupervisors(),
