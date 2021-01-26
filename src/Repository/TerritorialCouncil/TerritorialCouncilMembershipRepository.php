@@ -164,14 +164,14 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
 
         if ($lastName = $filter->getLastName()) {
             $qb
-                ->andWhere('adherent.lastName LIKE :last_name')
+                ->andWhere('ILIKE(adherent.lastName, :last_name) = true')
                 ->setParameter('last_name', '%'.$lastName.'%')
             ;
         }
 
         if ($firstName = $filter->getFirstName()) {
             $qb
-                ->andWhere('adherent.firstName LIKE :first_name')
+                ->andWhere('ILIKE(adherent.firstName, :first_name) = true')
                 ->setParameter('first_name', '%'.$firstName.'%')
             ;
         }
