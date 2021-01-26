@@ -168,10 +168,11 @@ class EventRegistrationRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('r');
 
         $qb->update()
-            ->set('r.adherentUuid', $qb->expr()->literal(null))
+            ->set('r.adherentUuid', ':null')
             ->set('r.firstName', $qb->expr()->literal('Anonyme'))
             ->set('r.emailAddress', $qb->expr()->literal(null))
             ->where('r.adherentUuid = :uuid')
+            ->setParameter('null', null)
             ->setParameter(':uuid', $adherent->getUuid()->toString())
             ->getQuery()
             ->execute()

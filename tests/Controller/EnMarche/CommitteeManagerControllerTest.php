@@ -54,9 +54,6 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
-    /**
-     * @group debug
-     */
     public function testCommitteeHostCanEditCommitteeInformation()
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');

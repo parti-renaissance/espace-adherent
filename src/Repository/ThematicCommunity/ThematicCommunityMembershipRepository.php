@@ -58,7 +58,7 @@ class ThematicCommunityMembershipRepository extends ServiceEntityRepository
 
         if ('lastName' === $sort) {
             $qb
-                ->addSelect('IF(a.lastName IS NULL, c.lastName, a.lastName) as HIDDEN name')
+                ->addSelect('CASE WHEN a.lastName IS NULL THEN c.lastName ELSE a.lastName END as HIDDEN name')
                 ->orderBy('name', $order)
             ;
         } else {
