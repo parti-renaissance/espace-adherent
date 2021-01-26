@@ -35,7 +35,6 @@ class CommitteeMembership implements UuidEntityInterface
 {
     public const COMMITTEE_HOST = 'HOST';
     public const COMMITTEE_FOLLOWER = 'FOLLOWER';
-    public const COMMITTEE_SUPERVISOR = 'SUPERVISOR';
 
     public const PRIVILEGES = [
         self::COMMITTEE_HOST,

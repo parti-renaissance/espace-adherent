@@ -1,0 +1,172 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Mandats du comité "{{ committee.name }}"
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    <p>
+        <a href="{{ path('admin_app_committee_list') }}" class="btn btn-default">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            Retour à la liste
+        </a>
+        <a href="{{ path('admin_app_committee_edit', { id: committee.id }) }}" class="btn btn-default">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            Editer le comité
+        </a>
+    </p>
+
+    {% set mandates = committee.adherentMandates %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-8">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h4 class="box-title">Mandats actifs</h4>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped sonata-ba-list committee-adherents">
+                        <thead>
+                            <tr>
+                                <th width="30px">
+                                    Id
+                                </th>
+                                <th width="140px">
+                                    Type
+                                </th>
+                                <th width="75px">
+                                    Genre
+                                </th>
+                                <th>
+                                    Adhérent
+                                </th>
+                                <th width="120px">
+                                    Date de début
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for mandate in mandates|filter(mandate => mandate.finishAt is null)|sort((a, b) => (b.beginAt <=> a.beginAt)) %}
+                            {% set adherent = mandate.adherent %}
+                            <tr>
+                                <td>
+                                    {{ mandate.id }}
+                                </td>
+                                <td>
+                                    {% include('admin/committee/_mandate_type.html.twig') with { mandate: mandate } %}
+                                </td>
+                                <td>
+                                    {{ ('common.gender.'~mandate.gender)|trans }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('admin_app_adherent_show', { id: adherent.id }) }}">
+                                        {{ adherent.fullName }}
+                                    </a>
+                                    <br />
+                                    {{ adherent.emailAddress }}
+                                </td>
+                                <td>
+                                    {{ mandate.beginAt|date('d/m/Y') }}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text--center">
+                                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                    Pas de mandats
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-8">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h4 class="box-title">Mandats inactifs</h4>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped sonata-ba-list committee-adherents">
+                        <thead>
+                        <tr>
+                            <th width="30px">
+                                Id
+                            </th>
+                            <th width="140px">
+                                Type
+                            </th>
+                            <th width="75px">
+                                Genre
+                            </th>
+                            <th>
+                                Adhérent
+                            </th>
+                            <th width="120px">
+                                Date de début
+                            </th>
+                            <th width="120px">
+                                Date de fin
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for mandate in mandates|filter(mandate => mandate.finishAt is not null)|sort((a, b) => (b.finishAt > a.finishAt ? 1 : (b.finishAt == a.finishAt ? b.beginAt <=> a.beginAt : -1))) %}
+                            {% set adherent = mandate.adherent %}
+                            <tr>
+                                <td>
+                                    {{ mandate.id }}
+                                </td>
+                                <td>
+                                    {% include('admin/committee/_mandate_type.html.twig') with { mandate: mandate } %}
+                                </td>
+                                <td>
+                                    {{ ('common.gender.'~mandate.gender)|trans }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('admin_app_adherent_show', { id: adherent.id }) }}">
+                                        {{ adherent.fullName }}
+                                    </a>
+                                    <br />
+                                    {{ adherent.emailAddress }}
+                                </td>
+                                <td>
+                                    {{ mandate.beginAt|date('d/m/Y') }}
+                                </td>
+                                <td>
+                                    {{ mandate.finishAt|date('d/m/Y') }}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text--center">
+                                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                    Pas de mandats
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

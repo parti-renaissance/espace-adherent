@@ -1,0 +1,5 @@
+{% if mandate.quality is constant('App\\Entity\\AdherentMandate\\CommitteeMandateQualityEnum::SUPERVISOR') %}
+    Animateur {{ mandate.provisional ? 'provisoire' }}
+{% else %}
+    Adhérent désigné
+{% endif %}

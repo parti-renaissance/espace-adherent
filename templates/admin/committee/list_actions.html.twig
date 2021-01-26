@@ -27,6 +27,11 @@
             <i class="fa fa-users" aria-hidden="true"></i>
             Membres
         </a>
+
+        <a href="{{ path('app_admin_committee_mandates', { id: object.id }) }}" class="btn btn-xs btn-default" title="Mandats">
+            <i class="fa fa-id-badge" aria-hidden="true"></i>
+            Mandats
+        </a>
     </div>
 
     {% if object.isApproved %}
