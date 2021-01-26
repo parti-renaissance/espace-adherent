@@ -64,7 +64,8 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/experience/{id}", defaults={"id": ""}, name="app_summary_manager_handle_experience", methods={"GET", "POST"})
+     * @Route("/experience", name="app_summary_manager_handle_experience_new", methods={"GET", "POST"})
+     * @Route("/experience/{id}", name="app_summary_manager_handle_experience", methods={"GET", "POST"})
      */
     public function handleExperienceAction(Request $request, ?JobExperience $experience): Response
     {
@@ -106,7 +107,8 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/formation/{id}", defaults={"id": ""}, name="app_summary_manager_handle_training", methods={"GET", "POST"})
+     * @Route("/formation", name="app_summary_manager_handle_training_new", methods={"GET", "POST"})
+     * @Route("/formation/{id}", name="app_summary_manager_handle_training", methods={"GET", "POST"})
      */
     public function handleTrainingAction(Request $request, ?Training $training): Response
     {
@@ -148,7 +150,8 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/langue/{id}", defaults={"id": ""}, name="app_summary_manager_handle_language", methods={"GET", "POST"})
+     * @Route("/langue", name="app_summary_manager_handle_language_new", methods={"GET", "POST"})
+     * @Route("/langue/{id}", name="app_summary_manager_handle_language", methods={"GET", "POST"})
      */
     public function handleLanguageAction(Request $request, ?Language $language): Response
     {
