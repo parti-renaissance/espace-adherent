@@ -11,7 +11,6 @@ use App\Committee\CommitteeManager;
 use App\Committee\CommitteePermissions;
 use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;
-use App\Controller\CanaryControllerTrait;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
@@ -52,8 +51,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class AdherentController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/accueil", name="app_adherent_home", methods={"GET"})
      */
@@ -149,8 +146,6 @@ class AdherentController extends Controller
      */
     public function createCommitteeAction(Request $request, CommitteeCreationCommandHandler $commandHandler): Response
     {
-        $this->disableInProduction();
-
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CreateCommitteeCommandType::class, $command, ['validation_groups' => ['Default', 'created_by_adherent']]);
         $form->handleRequest($request);

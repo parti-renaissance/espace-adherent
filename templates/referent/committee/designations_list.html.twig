@@ -4,7 +4,7 @@
     <div class="datagrid__pre-table b__nudge--bottom">
         <h3>Comités</h3>
 
-        {% if is_canary_enabled() and is_granted('ROLE_REFERENT') %}
+        {% if is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_COMMITTEE')) %}
             <a href="{{ path("app_referent_create_committee") }}" class="btn-secondary btn-secondary--blue">
                 + Créer un comité
             </a>
