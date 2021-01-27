@@ -89,6 +89,17 @@ class AdminCommitteeController extends Controller
     }
 
     /**
+     * @Route("/{id}/mandates", name="app_admin_committee_mandates", methods={"GET"})
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     */
+    public function mandatesAction(Committee $committee): Response
+    {
+        return $this->render('admin/committee/mandates.html.twig', [
+            'committee' => $committee,
+        ]);
+    }
+
+    /**
      * @Route("/{committee}/members/{adherent}/set-privilege/{privilege}", name="app_admin_committee_change_privilege", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
