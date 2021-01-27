@@ -27,6 +27,18 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
         $this->provisional = $provisional;
     }
 
+    public static function createFromMandate(CommitteeAdherentMandate $mandate, Adherent $adherent): self
+    {
+        return new CommitteeAdherentMandate(
+            $adherent,
+            $mandate->getGender(),
+            $mandate->getCommittee(),
+            new \DateTime(),
+            $mandate->getQuality(),
+            $mandate->isProvisional()
+        );
+    }
+
     public function isProvisional(): bool
     {
         return $this->provisional;
@@ -41,5 +53,10 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
     {
         $this->finishAt = $now;
         $this->setReason($reason);
+    }
+
+    public function isSupervisor(): bool
+    {
+        return CommitteeMandateQualityEnum::SUPERVISOR === $this->quality;
     }
 }

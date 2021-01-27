@@ -1,0 +1,36 @@
+<table class="table">
+    <tbody>
+    {% if show_all is defined and show_all %}
+        <tr class="sonata-ba-view-container">
+            <th>Id mandat</th>
+            <td>{{ mandate.id }}</td>
+        </tr>
+    {% endif %}
+    <tr class="sonata-ba-view-container">
+        <th>Id adhérent</th>
+        <td>{{ mandate.adherent.id }}</td>
+    </tr>
+    <tr class="sonata-ba-view-container">
+        <th>Type</th>
+        <td>{% include('admin/committee/mandates/_type.html.twig') with { mandate: mandate } %}</td>
+    </tr>
+    <tr class="sonata-ba-view-container">
+        <th>Genre</th>
+        <td>{{ ('common.gender.'~mandate.gender)|trans }}</td>
+    </tr>
+    <tr class="sonata-ba-view-container">
+        <th>Adhérent</th>
+        <td>{{ mandate.adherent.fullName }}</td>
+    </tr>
+    <tr class="sonata-ba-view-container">
+        <th>Date de début</th>
+        <td>{{ mandate.beginAt|date('d/m/Y') }}</td>
+    </tr>
+    {% if show_all is defined and show_all %}
+        <tr class="sonata-ba-view-container">
+            <th>Date de fin</th>
+            <td>{{ (mandate.finishAt ?: 'now')|date('d/m/Y') }}</td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

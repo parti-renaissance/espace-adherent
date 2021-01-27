@@ -5,6 +5,7 @@ namespace Tests\App\Committee;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\BaseGroup;
 use App\Entity\Committee;
@@ -273,6 +274,84 @@ class CommitteeAdherentMandateManagerTest extends TestCase
         $this->mandateManager->updateSupervisorMandate($adherent, $committee);
     }
 
+    public function testCheckAdherentForMandateReplacementFailsIfAdherentHasInappropriateGender(): void
+    {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
+        $adherent = $this->createAdherent(Genders::MALE);
+
+        $this->translator
+            ->expects($this->once())
+            ->method('trans')
+            ->with('adherent_mandate.committee.inappropriate_gender')
+        ;
+
+        $this->mandateManager->checkAdherentForMandateReplacement($adherent, Genders::FEMALE);
+    }
+
+    public function testCheckAdherentForMandateReplacementFailsIfAdherentMinor(): void
+    {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
+        $adherent = $this->createAdherent(Genders::MALE, '2005-04-04');
+
+        $this->translator
+            ->expects($this->once())
+            ->method('trans')
+            ->with('adherent_mandate.committee.adherent.not_valid')
+        ;
+
+        $this->mandateManager->checkAdherentForMandateReplacement($adherent, Genders::MALE);
+    }
+
+    public function testCheckAdherentForMandateReplacementFailsIfAdherentHasActiveParliamentaryMandate(): void
+    {
+        $this->expectException(CommitteeAdherentMandateException::class);
+
+        $adherent = $this->createAdherent(Genders::MALE);
+
+        $this->electedRepresentativeRepository
+            ->expects($this->once())
+            ->method('hasActiveParliamentaryMandate')
+            ->with($adherent)
+            ->willReturn(true)
+        ;
+        $this->translator
+            ->expects($this->once())
+            ->method('trans')
+            ->with('adherent_mandate.committee.adherent.not_valid')
+        ;
+
+        $this->mandateManager->checkAdherentForMandateReplacement($adherent, Genders::MALE);
+    }
+
+    public function testCanReplaceMandate(): void
+    {
+        $adherent = $this->createAdherent(Genders::MALE);
+        $committee = $this->createCommittee();
+        $mandate = $this->createMandate(Genders::MALE, $committee);
+
+        $this->translator
+            ->expects($this->never())
+            ->method('trans')
+        ;
+        $this->entityManager
+            ->expects($this->once())
+            ->method('persist')
+            ->with($this->isInstanceOf(CommitteeAdherentMandate::class))
+        ;
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush')
+        ;
+
+        $this->mandateManager->replaceMandate($mandate, $adherent);
+
+        $this->assertNotNull($mandate->getFinishAt());
+        $this->assertSame(AbstractAdherentMandate::REASON_REPLACED, $mandate->getReason());
+        $this->assertSame(1, $committee->getMembersCount());
+    }
+
     private function createAdherent(string $gender = Genders::MALE, string $birthday = null): Adherent
     {
         return $adherent = Adherent::create(
@@ -299,6 +378,16 @@ class CommitteeAdherentMandateManagerTest extends TestCase
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69003-en-marche-lyon',
             BaseGroup::APPROVED
+        );
+    }
+
+    private function createMandate(string $gender, Committee $committee = null): CommitteeAdherentMandate
+    {
+        return new CommitteeAdherentMandate(
+            $this->createAdherent($gender),
+            $gender,
+            $committee ?? $this->createCommittee(),
+            new \DateTime()
         );
     }
 

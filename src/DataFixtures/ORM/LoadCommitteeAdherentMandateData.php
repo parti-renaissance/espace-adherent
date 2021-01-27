@@ -60,6 +60,8 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
         $manager->persist($mandateMale3);
 
         // Committee supervisors
+        $supervisorMandateC1Finished = new CommitteeAdherentMandate($gisele, $gisele->getGender(), $committee1, new \DateTime('2017-05-05 11:11:11'), CommitteeMandateQualityEnum::SUPERVISOR, true, new \DateTime('2018-05-05 12:12:12'));
+        $manager->persist($supervisorMandateC1Finished);
         $supervisorMandateC1 = new CommitteeAdherentMandate($jacques, $jacques->getGender(), $committee1, new \DateTime('2017-01-12 13:25:54'), CommitteeMandateQualityEnum::SUPERVISOR);
         $manager->persist($supervisorMandateC1);
         $supervisorMandateC3 = new CommitteeAdherentMandate($francis, $francis->getGender(), $committee3, new \DateTime('2017-01-26 16:08:24'), CommitteeMandateQualityEnum::SUPERVISOR);
@@ -72,9 +74,9 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
         $manager->persist($provisionalSupervisorMandateC5);
         $supervisorMandate = new CommitteeAdherentMandate($laura, $laura->getGender(), $committee6, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
         $manager->persist($supervisorMandate);
-        $supervisorMandateC7 = new CommitteeAdherentMandate($martine, $martine->getGender(), $committee7, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
+        $supervisorMandateC7 = new CommitteeAdherentMandate($martine, $martine->getGender(), $committee7, new \DateTime('2020-10-11 11:11:11'), CommitteeMandateQualityEnum::SUPERVISOR);
         $manager->persist($supervisorMandateC7);
-        $provisionalSupervisorMandateC7 = new CommitteeAdherentMandate($senatorialCandidate, $senatorialCandidate->getGender(), $committee7, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR, true);
+        $provisionalSupervisorMandateC7 = new CommitteeAdherentMandate($senatorialCandidate, $senatorialCandidate->getGender(), $committee7, new \DateTime('2020-10-10 10:10:10'), CommitteeMandateQualityEnum::SUPERVISOR, true);
         $manager->persist($provisionalSupervisorMandateC7);
         $supervisorMandateC8 = new CommitteeAdherentMandate($lolodie, $lolodie->getGender(), $committee8, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
         $manager->persist($supervisorMandateC8);

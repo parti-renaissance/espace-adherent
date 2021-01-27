@@ -38,6 +38,17 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllActiveMandates(Adherent $adherent): array
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.adherent = :adherent')
+            ->andWhere('m.finishAt IS NULL')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function hasActiveMandate(Adherent $adherent): bool
     {
         return $this->count(['finishAt' => null, 'adherent' => $adherent]) > 0;

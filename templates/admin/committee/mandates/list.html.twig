@@ -57,6 +57,9 @@
                                 <th width="120px">
                                     Date de début
                                 </th>
+                                <th width="120px">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,7 +70,7 @@
                                     {{ mandate.id }}
                                 </td>
                                 <td>
-                                    {% include('admin/committee/_mandate_type.html.twig') with { mandate: mandate } %}
+                                    {% include('admin/committee/mandates/_type.html.twig') with { mandate: mandate } %}
                                 </td>
                                 <td>
                                     {{ ('common.gender.'~mandate.gender)|trans }}
@@ -81,6 +84,12 @@
                                 </td>
                                 <td>
                                     {{ mandate.beginAt|date('d/m/Y') }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_admin_committee_replace_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default" title="Mandats">
+                                        <i class="fa fa-repeat" aria-hidden="true"></i>
+                                        Remplacer
+                                    </a>
                                 </td>
                             </tr>
                         {% else %}
@@ -136,7 +145,7 @@
                                     {{ mandate.id }}
                                 </td>
                                 <td>
-                                    {% include('admin/committee/_mandate_type.html.twig') with { mandate: mandate } %}
+                                    {% include('admin/committee/mandates/_type.html.twig') with { mandate: mandate } %}
                                 </td>
                                 <td>
                                     {{ ('common.gender.'~mandate.gender)|trans }}

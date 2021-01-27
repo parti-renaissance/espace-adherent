@@ -274,6 +274,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent9->addReferentTag($this->getReference('referent_tag_76'));
         $adherent9->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $adherent9->addCharter(new CommitteeHostCharter());
+        $adherent9->certify();
         $this->addReference('adherent-9', $adherent9);
 
         $adherent10 = $this->adherentFactory->createFromArray([

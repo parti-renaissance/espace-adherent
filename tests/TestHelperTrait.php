@@ -6,6 +6,7 @@ use App\Committee\Feed\CommitteeFeedManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
+use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentResetPasswordToken;
 use App\Entity\Administrator;
 use App\Entity\CitizenAction;
@@ -52,6 +53,7 @@ use App\Entity\TurnkeyProject;
 use App\Entity\UserListDefinition;
 use App\Membership\ActivityPositions;
 use App\Repository\AdherentActivationTokenRepository;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\AdherentResetPasswordTokenRepository;
 use App\Repository\AdministratorRepository;
@@ -390,6 +392,11 @@ trait TestHelperTrait
     protected function getCommittee(string $uuid): ?Committee
     {
         return $this->getCommitteeRepository()->findOneByUuid($uuid);
+    }
+
+    public function getCommitteeMandateRepository(): CommitteeAdherentMandateRepository
+    {
+        return $this->getRepository(CommitteeAdherentMandate::class);
     }
 
     protected function getCitizenProject(string $uuid): ?CitizenProject

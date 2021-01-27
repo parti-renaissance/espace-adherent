@@ -5,11 +5,15 @@ namespace App\Controller\Admin;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
+use App\Committee\CommitteeMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\CommitteeAdherentMandate;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
 use App\Exception\BaseGroupException;
 use App\Exception\CommitteeMembershipException;
+use App\Form\Admin\CommitteeMandateCommandType;
 use App\Form\ConfirmActionType;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -94,8 +98,70 @@ class AdminCommitteeController extends Controller
      */
     public function mandatesAction(Committee $committee): Response
     {
-        return $this->render('admin/committee/mandates.html.twig', [
+        return $this->render('admin/committee/mandates/list.html.twig', [
             'committee' => $committee,
+        ]);
+    }
+
+    /**
+     * @Route("/mandates/{id}/replace", name="app_admin_committee_replace_mandate", methods={"GET|POST"})
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     */
+    public function replaceMandateAction(
+        Request $request,
+        CommitteeAdherentMandate $mandate,
+        CommitteeAdherentMandateRepository $mandateRepository,
+        CommitteeAdherentMandateManager $mandateManager
+    ): Response {
+        if ($mandate->getFinishAt()) {
+            $this->addFlash('sonata_flash_error', sprintf('Le mandate (id %s) est inactif et ne peut pas être remplacé.', $mandate->getId()));
+
+            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
+        }
+
+        $newMandateCommand = CommitteeMandateCommand::createFromCommitteeMandate($mandate);
+        $form = $this->createForm(CommitteeMandateCommandType::class, $newMandateCommand);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('confirm')->isClicked()) {
+                try {
+                    $mandateManager->replaceMandate($mandate, $newMandateCommand->getAdherent());
+                    $this->addFlash('sonata_flash_success', \sprintf('Le mandat avec l\'id %s a été remplacé avec succès.', $mandate->getId()));
+                } catch (BaseGroupException $exception) {
+                    throw $this->createNotFoundException(\sprintf('Committee %d must not be approved in order to be approved.', $mandate->getId()), $exception);
+                }
+
+                return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
+            }
+
+            if ($mandates = $mandateRepository->findAllActiveMandates($newMandateCommand->getAdherent())) {
+                $msg = '';
+                /** @var CommitteeAdherentMandate $activeMandate */
+                array_walk($mandates, function (CommitteeAdherentMandate $activeMandate) use (&$msg) {
+                    $msg .= \sprintf(
+                        '%s dans le comité "%s", ',
+                        CommitteeMandateQualityEnum::SUPERVISOR === $activeMandate->getQuality()
+                            ? ($activeMandate->isProvisional() ? 'Animateur provisoire' : 'Animateur')
+                            : 'Adhérent désigné',
+                        $activeMandate->getCommittee()->getName());
+                });
+
+                $this->addFlash(
+                    'warning',
+                    substr_replace("Attention, cet adhérent est déjà $msg", '.', -2)
+                );
+            }
+
+            return $this->render('admin/committee/mandates/replace_confirm.html.twig', [
+                'form' => $form->createView(),
+                'mandate' => $mandate,
+            ]);
+        }
+
+        return $this->render('admin/committee/mandates/replace.html.twig', [
+            'form' => $form->createView(),
+            'mandate' => $mandate,
         ]);
     }
 

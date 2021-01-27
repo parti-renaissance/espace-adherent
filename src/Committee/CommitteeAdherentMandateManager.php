@@ -100,6 +100,29 @@ class CommitteeAdherentMandateManager
         $this->entityManager->flush();
     }
 
+    public function replaceMandate(CommitteeAdherentMandate $mandate, Adherent $adherent): void
+    {
+        $committee = $mandate->getCommittee();
+        $newMandate = new CommitteeAdherentMandate(
+            $adherent,
+            $mandate->getGender(),
+            $committee,
+            new \DateTime(),
+            $mandate->getQuality(),
+            $mandate->isSupervisor() ?: $mandate->isProvisional()
+        );
+
+        if (!$adherent->getMembershipFor($committee)) {
+            $adherent->followCommittee($committee);
+        }
+
+        $mandate->setFinishAt(new \DateTime());
+        $mandate->setReason(AbstractAdherentMandate::REASON_REPLACED);
+
+        $this->entityManager->persist($newMandate);
+        $this->entityManager->flush();
+    }
+
     public function updateSupervisorMandate(Adherent $adherent, Committee $committee, bool $isProvisional = false): void
     {
         $this->checkGender($adherent);
@@ -131,6 +154,18 @@ class CommitteeAdherentMandateManager
 
         $this->entityManager->persist($mandate);
         $this->entityManager->flush();
+    }
+
+    public function checkAdherentForMandateReplacement(Adherent $adherent, string $gender): void
+    {
+        if ($adherent->getGender() !== $gender) {
+            $this->throwException('adherent_mandate.committee.inappropriate_gender');
+        }
+
+        if ($adherent->isMinor()
+            || $this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent)) {
+            $this->throwException('adherent_mandate.committee.adherent.not_valid');
+        }
     }
 
     private function checkAdherentForSupervisorMandate(Adherent $adherent): void

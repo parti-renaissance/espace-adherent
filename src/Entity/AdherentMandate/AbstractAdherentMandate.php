@@ -26,6 +26,7 @@ abstract class AbstractAdherentMandate
     public const REASON_ELECTION = 'election';
     public const REASON_COMMITTEE_MERGE = 'committee_merge';
     public const REASON_MANUAL = 'manual';
+    public const REASON_REPLACED = 'replaced';
 
     use EntityIdentityTrait;
 
