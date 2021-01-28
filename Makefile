@@ -12,7 +12,7 @@ DOCKER_FILES=$(shell find ./docker/dev/ -type f -name '*')
 
 .DEFAULT_GOAL := help
 .PHONY: help start stop reset db db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
-.PHONY: lj build up perm deps cc phpcs phpcsfix tty tfp tfp-rabbitmq tfp-db test-behat test-phpunit-functional
+.PHONY: lj build up perm deps cc phpcs phpcsfix phplint tty tfp tfp-rabbitmq tfp-db test-behat test-phpunit-functional
 .PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock
 
 help:
@@ -189,6 +189,8 @@ phpcsfix: vendor                                                                
 
 phpstan: vendor
 	$(EXEC) vendor/bin/phpstan analyse
+
+phplint: phpcsfix phpstan
 
 security-check: vendor                                                                                 ## Check for vulnerable dependencies
 	$(EXEC) local-php-security-checker --path=/app

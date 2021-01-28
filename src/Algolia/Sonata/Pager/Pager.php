@@ -2,8 +2,8 @@
 
 namespace App\Algolia\Sonata\Pager;
 
+use Sonata\AdminBundle\Datagrid\Pager as BasePager;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\DatagridBundle\Pager\BasePager;
 
 class Pager extends BasePager implements PagerInterface
 {
