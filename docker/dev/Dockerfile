@@ -7,6 +7,7 @@ ENV LANG="en_US.UTF-8" \
     DEBIAN_FRONTEND="noninteractive" \
     NODE_VERSION=10.20.1 \
     GOSU_VERSION=1.11 \
+    PHP_SECURITY_CHECHER_VERSION=1.0.0 \
     COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 80
@@ -77,6 +78,9 @@ RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gos
     chmod +x /usr/local/bin/gosu && \
     addgroup enmarche && \
     adduser --home=/home/enmarche --shell=/bin/bash --ingroup=enmarche --disabled-password --quiet enmarche
+
+RUN curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SECURITY_CHECHER_VERSION}/local-php-security-checker_${PHP_SECURITY_CHECHER_VERSION}_linux_$(dpkg --print-architecture) --output /usr/local/bin/local-php-security-checker && \
+    chmod +x /usr/local/bin/local-php-security-checker
 
 # Blackfire
 RUN wget -O - https://packages.blackfire.io/gpg.key | apt-key add - \

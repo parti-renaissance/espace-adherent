@@ -548,18 +548,6 @@
     "ninsuo/symfony-collection": {
         "version": "2.1.30"
     },
-    "nyholm/psr7": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "7c0a9352a57376f04f5444e74565102c3a23d0c7"
-        },
-        "files": [
-            "config/packages/nyholm_psr7.yaml"
-        ]
-    },
     "ocramius/proxy-manager": {
         "version": "2.2.3"
     },

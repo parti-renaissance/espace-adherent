@@ -191,7 +191,7 @@ phpstan: vendor
 	$(EXEC) vendor/bin/phpstan analyse
 
 security-check: vendor                                                                                 ## Check for vulnerable dependencies
-	$(EXEC) vendor/bin/security-checker security:check
+	$(EXEC) local-php-security-checker --path=/app
 
 
 ##
