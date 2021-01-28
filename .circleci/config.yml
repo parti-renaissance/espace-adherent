@@ -110,7 +110,7 @@ jobs:
             - run: |
                 set -x
 
-                make -j2 lint
+                make -j2 lint security-check
             - save_cache:
                 paths:
                     - ./var/phpstan-tmp

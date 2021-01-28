@@ -6,13 +6,13 @@ use App\Entity\Adherent;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Nyholm\Psr7\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Zend\Diactoros\Response;
 
 class UserController extends AbstractController
 {
