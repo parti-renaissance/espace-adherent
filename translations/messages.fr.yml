@@ -1087,8 +1087,10 @@ adherent_commitment.update_success: Votre engagement à bien été enregistré.
 # AdherentMandate
 #
 adherent_mandate.committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs.
+adherent_mandate.committee.adherent.not_valid: L'adhérent ne doit pas être Parlementaire ou mineur.
 adherent_mandate.committee.committee_not_approved: Comité doit être approuvé pour gérer les adhérents désignés.
 adherent_mandate.committee.not_valid_gender: Le genre "{{ gender }}" de l'adhérent ({{ email }}) n'est pas valide.
+adherent_mandate.committee.inappropriate_gender: Le genre de l'adhérent ne correspond pas au genre du mandat.
 adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({{ email }}) est déjà un adhérent désigné dans un comité "{{ committee }}".
 adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{{ committee }}" a déjà un adhérent désigné ({{ gender }}).
 adherent_mandate.adherent_has_territorial_council_membership: L'adhérent ({{ email }}) est déjà membre du Conseil territorial "{{ territorialCouncil }}".

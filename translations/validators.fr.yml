@@ -124,6 +124,11 @@ committee.description.min_length: Votre texte de description est trop court. Il 
 committee.description.max_length: Votre texte de description est trop long. Il doit compter {{ limit }} caractères maximum.
 
 #
+# Mandate
+#
+adherent_mandate.adherent.empty: L'adhérent du mandat ne doit pas être vide.
+
+#
 # CitizenProject
 #
 citizen_project.description.min_length: Votre texte de description est trop court. Il doit compter {{ limit }} caractères minimum.

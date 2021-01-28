@@ -1,0 +1,55 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        {% block action_title '' %}
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+    {% block action_content %}
+        {{ form ? form_start(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h4 class="box-title">{% block action_title_left '' %}</h4>
+                    </div>
+                    <div class="box-body">
+                        {% block action_description '' %}
+                        {% block action_content_left '' %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h4 class="box-title">{% block action_title_right '' %}</h4>
+                    </div>
+                    <div class="box-body">
+                        {% block action_content_right '' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-body">
+            <div class="row sonata-ba-form-actions well well-small form-actions">
+                {% block action_buttons '' %}
+            </div>
+        </div>
+
+        {{ form ? form_end(form) }}
+    {% endblock %}
+{% endblock %}

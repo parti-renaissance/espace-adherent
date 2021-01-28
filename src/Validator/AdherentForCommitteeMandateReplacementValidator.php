@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Validator;
+
+use App\Committee\CommitteeAdherentMandateManager;
+use App\Committee\CommitteeMandateCommand;
+use App\Committee\Exception\CommitteeAdherentMandateException;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
+
+class AdherentForCommitteeMandateReplacementValidator extends ConstraintValidator
+{
+    private $mandateManager;
+
+    public function __construct(CommitteeAdherentMandateManager $mandateManager)
+    {
+        $this->mandateManager = $mandateManager;
+    }
+
+    public function validate($value, Constraint $constraint)
+    {
+        if (!$constraint instanceof AdherentForCommitteeMandateReplacement) {
+            throw new UnexpectedTypeException($constraint, CommitteeProvisionalSupervisor::class);
+        }
+
+        if (!$value) {
+            return;
+        }
+
+        if (!$value instanceof CommitteeMandateCommand) {
+            throw new UnexpectedValueException($value, CommitteeMandateCommand::class);
+        }
+
+        if ($value->getAdherent()) {
+            try {
+                $this->mandateManager->checkAdherentForMandateReplacement($value->getAdherent(), $value->getGender());
+            } catch (CommitteeAdherentMandateException $ex) {
+                $this
+                    ->context
+                    ->buildViolation($ex->getMessage())
+                    ->atPath($constraint->errorPath)
+                    ->addViolation()
+                ;
+            }
+        }
+    }
+}
