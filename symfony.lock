@@ -835,9 +835,6 @@
             "ref": "2f69bd1995730b73a5211a9707622fb25a925df7"
         }
     },
-    "sonata-project/datagrid-bundle": {
-        "version": "2.5.0"
-    },
     "sonata-project/doctrine-extensions": {
         "version": "1.5.1"
     },
