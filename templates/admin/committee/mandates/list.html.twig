@@ -28,12 +28,18 @@
             <i class="fa fa-pencil" aria-hidden="true"></i>
             Editer le comité
         </a>
+        {% if can_add_mandate %}
+            <a href="{{ path('app_admin_committee_add_mandate', { id: committee.id }) }}" class="btn btn-default">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Ajouter un mandat
+            </a>
+        {% endif %}
     </p>
 
     {% set mandates = committee.adherentMandates %}
 
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-8">
+        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
                     <h4 class="box-title">Mandats actifs</h4>
@@ -70,7 +76,7 @@
                                     {{ mandate.id }}
                                 </td>
                                 <td>
-                                    {% include('admin/committee/mandates/_type.html.twig') with { mandate: mandate } %}
+                                    {{ ('adherent_mandate.committee.'~mandate.type)|trans }}
                                 </td>
                                 <td>
                                     {{ ('common.gender.'~mandate.gender)|trans }}
@@ -86,7 +92,7 @@
                                     {{ mandate.beginAt|date('d/m/Y') }}
                                 </td>
                                 <td>
-                                    <a href="{{ path('app_admin_committee_replace_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default" title="Mandats">
+                                    <a href="{{ path('app_admin_committee_replace_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
                                         <i class="fa fa-repeat" aria-hidden="true"></i>
                                         Remplacer
                                     </a>
@@ -108,7 +114,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-8">
+        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
                     <h4 class="box-title">Mandats inactifs</h4>
@@ -145,7 +151,7 @@
                                     {{ mandate.id }}
                                 </td>
                                 <td>
-                                    {% include('admin/committee/mandates/_type.html.twig') with { mandate: mandate } %}
+                                    {{ ('adherent_mandate.committee.'~mandate.type)|trans }}
                                 </td>
                                 <td>
                                     {{ ('common.gender.'~mandate.gender)|trans }}

@@ -206,7 +206,7 @@ class AdherentRepositoryTest extends WebTestCase
     {
         // Approved committees
         $this->assertCount(2, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)), '1 supervisor + 1 host');
-        $this->assertCount(2, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)), '1 supervisor + 1 host');
+        $this->assertCount(4, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)), '1 supervisor + 1 host');
         $this->assertCount(1, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_4_UUID)), '1 supervisor');
         $this->assertCount(2, $this->adherentRepository->findCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_5_UUID)), '1 supervisor');
 
@@ -217,14 +217,14 @@ class AdherentRepositoryTest extends WebTestCase
     public function testCountHostMembersInCommittee()
     {
         $this->assertSame(2, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertSame(2, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
+        $this->assertSame(4, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
         $this->assertSame(1, $this->adherentRepository->countCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_4_UUID)));
     }
 
     public function testCountSupervisorMembersInCommittee()
     {
         $this->assertSame(1, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
-        $this->assertSame(1, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
+        $this->assertSame(3, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
         $this->assertSame(2, $this->adherentRepository->countCommitteeSupervisors($this->getCommittee(LoadCommitteeData::COMMITTEE_7_UUID)));
     }
 

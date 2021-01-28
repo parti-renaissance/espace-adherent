@@ -2,6 +2,8 @@
 
 namespace App\Entity\AdherentMandate;
 
+use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
+use App\Committee\CommitteeAdherentMandateCommand;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,15 +29,15 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
         $this->provisional = $provisional;
     }
 
-    public static function createFromMandate(CommitteeAdherentMandate $mandate, Adherent $adherent): self
+    public static function createFromCommand(CommitteeAdherentMandateCommand $command): self
     {
         return new CommitteeAdherentMandate(
-            $adherent,
-            $mandate->getGender(),
-            $mandate->getCommittee(),
+            $command->getAdherent(),
+            $command->getGender(),
+            $command->getCommittee(),
             new \DateTime(),
-            $mandate->getQuality(),
-            $mandate->isProvisional()
+            $command->getQuality(),
+            $command->isProvisional()
         );
     }
 
@@ -58,5 +60,26 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
     public function isSupervisor(): bool
     {
         return CommitteeMandateQualityEnum::SUPERVISOR === $this->quality;
+    }
+
+    public function getType(): ?string
+    {
+        if ($this->isSupervisor()) {
+            if ($this->isProvisional()) {
+                return $this->isFemale()
+                    ? CommitteeAdherentMandateTypeEnum::PROVISIONAL_SUPERVISOR_FEMALE
+                    : CommitteeAdherentMandateTypeEnum::PROVISIONAL_SUPERVISOR_MALE;
+            } else {
+                return $this->isFemale()
+                    ? CommitteeAdherentMandateTypeEnum::SUPERVISOR_FEMALE
+                    : CommitteeAdherentMandateTypeEnum::SUPERVISOR_MALE;
+            }
+        } elseif (!$this->getQuality()) {
+            return $this->isFemale()
+                ? CommitteeAdherentMandateTypeEnum::ELECTED_ADHERENT_FEMALE
+                : CommitteeAdherentMandateTypeEnum::ELECTED_ADHERENT_MALE;
+        }
+
+        return null;
     }
 }

@@ -32,16 +32,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="box box-success">
-                    <div class="box-header">
-                        <h4 class="box-title">{% block action_title_right '' %}</h4>
-                    </div>
-                    <div class="box-body">
-                        {% block action_content_right '' %}
+            {% block content_right %}
+                <div class="col-md-6">
+                    <div class="box box-success">
+                        <div class="box-header">
+                            <h4 class="box-title">{% block action_title_right '' %}</h4>
+                        </div>
+                        <div class="box-body">
+                            {% block action_content_right '' %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endblock %}
         </div>
 
         <div class="box-body">

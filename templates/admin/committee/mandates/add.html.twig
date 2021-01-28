@@ -1,0 +1,29 @@
+{% extends 'admin/committee/mandates/_layout_mandate_action.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block action_title 'Ajouter' %}
+{% block action_title_left %}
+    Nouveau mandat
+{% endblock %}
+
+{% block action_content_left %}
+    {{ form_errors(form) }}
+
+    <div class="sonata-ba-collapsed-fields">
+        {{ form_row(form.type, { label: 'Type', placeholder: 'Sélectionnez un type de mandat' }) }}
+        {{ form_row(form.adherent, { label: 'Adhérent', placeholder: 'Insérer un Id d\'adhérent' }) }}
+    </div>
+    {% do form.confirm.setRendered %}
+{% endblock %}
+
+{% block content_right '' %}
+
+{% block action_buttons %}
+    <div>
+        <button type="submit" class="btn btn-success">Suivant</button>
+        <a href="{{ path('app_admin_committee_mandates', { id: committee.id }) }}" class="btn btn-danger">
+            Retour à la liste des mandats
+        </a>
+    </div>
+{% endblock %}

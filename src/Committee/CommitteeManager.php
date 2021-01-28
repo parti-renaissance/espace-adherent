@@ -36,14 +36,9 @@ class CommitteeManager
 
     private $entityManager;
     private $dispatcher;
-    private $mandateManager;
 
-    public function __construct(
-        CommitteeAdherentMandateManager $mandateManager,
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher
-    ) {
-        $this->mandateManager = $mandateManager;
+    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher)
+    {
         $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
     }

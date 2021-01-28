@@ -1086,6 +1086,16 @@ adherent_commitment.update_success: Votre engagement à bien été enregistré.
 #
 # AdherentMandate
 #
+adherent_mandate.committee.with_gender.provisional_supervisor_female: Animatrice provisoire, femme
+adherent_mandate.committee.with_gender.provisional_supervisor_male: Animateur provisoire, homme
+adherent_mandate.committee.with_gender.elected_adherent_female: Adhérente désigné, femme
+adherent_mandate.committee.with_gender.elected_adherent_male: Adhérent désigné, homme
+adherent_mandate.committee.supervisor_female: Animatrice
+adherent_mandate.committee.supervisor_male: Animateur
+adherent_mandate.committee.provisional_supervisor_female: Animatrice provisoire
+adherent_mandate.committee.provisional_supervisor_male: Animateur provisoire
+adherent_mandate.committee.elected_adherent_female: Adhérente désigné
+adherent_mandate.committee.elected_adherent_male: Adhérent désigné
 adherent_mandate.committee.provisional_supervisor.not_valid: Les Animateurs provisoires ne peuvent pas déjà être Animateurs, Animateurs provisoires, Parlementaires ou mineurs.
 adherent_mandate.committee.adherent.not_valid: L'adhérent ne doit pas être Parlementaire ou mineur.
 adherent_mandate.committee.committee_not_approved: Comité doit être approuvé pour gérer les adhérents désignés.

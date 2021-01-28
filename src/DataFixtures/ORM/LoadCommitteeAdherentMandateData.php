@@ -66,6 +66,10 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
         $manager->persist($supervisorMandateC1);
         $supervisorMandateC3 = new CommitteeAdherentMandate($francis, $francis->getGender(), $committee3, new \DateTime('2017-01-26 16:08:24'), CommitteeMandateQualityEnum::SUPERVISOR);
         $manager->persist($supervisorMandateC3);
+        $provisionalSupervisorMandateC3 = new CommitteeAdherentMandate($senatorialCandidate, $senatorialCandidate->getGender(), $committee3, new \DateTime('2017-01-27 17:09:25'), CommitteeMandateQualityEnum::SUPERVISOR, true);
+        $manager->persist($provisionalSupervisorMandateC3);
+        $provisionalSupervisorMandateC3_2 = new CommitteeAdherentMandate($gisele, $gisele->getGender(), $committee3, new \DateTime('2017-01-27 17:09:25'), CommitteeMandateQualityEnum::SUPERVISOR, true);
+        $manager->persist($provisionalSupervisorMandateC3_2);
         $supervisorMandateC4 = new CommitteeAdherentMandate($francis, $francis->getGender(), $committee4, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
         $manager->persist($supervisorMandateC4);
         $supervisorMandateC5 = new CommitteeAdherentMandate($francis, $francis->getGender(), $committee5, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);

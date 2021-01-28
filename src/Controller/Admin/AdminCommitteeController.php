@@ -2,10 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
+use App\Committee\CommitteeAdherentMandateCommand;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
-use App\Committee\CommitteeMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/committee")
@@ -100,6 +101,51 @@ class AdminCommitteeController extends Controller
     {
         return $this->render('admin/committee/mandates/list.html.twig', [
             'committee' => $committee,
+            'can_add_mandate' => \count($this->getAvailableMandateTypesFor($committee)) > 0,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/mandates/add", name="app_admin_committee_add_mandate", methods={"GET|POST"})
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     */
+    public function addMandateAction(Request $request, Committee $committee): Response
+    {
+        $types = $this->getAvailableMandateTypesFor($committee);
+        if (!$types) {
+            $this->addFlash('sonata_flash_error', sprintf('Le comité "%s" n\'a pas de mandat disponible.', $committee->getName()));
+
+            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
+        }
+
+        $newMandateCommand = new CommitteeAdherentMandateCommand($committee);
+        $form = $this->createForm(CommitteeMandateCommandType::class, $newMandateCommand, ['types' => $types]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('confirm')->isClicked()) {
+                $mandate = $this->mandateManager->createMandateFromCommand($newMandateCommand);
+                $this->addFlash('sonata_flash_success', \sprintf(
+                    'Le mandate %s a été ajouté avec succès.',
+                    $this->translator->trans(''.$mandate->getType()))
+                );
+
+                return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
+            }
+
+            if ($mandates = $this->mandateRepository->findAllActiveMandatesForAdherent($newMandateCommand->getAdherent())) {
+                $this->addMandateAdherentWarning($mandates);
+            }
+
+            return $this->render('admin/committee/mandates/add_confirm.html.twig', [
+                'form' => $form->createView(),
+                'committee' => $committee,
+            ]);
+        }
+
+        return $this->render('admin/committee/mandates/add.html.twig', [
+            'form' => $form->createView(),
+            'committee' => $committee,
         ]);
     }
 
@@ -107,50 +153,28 @@ class AdminCommitteeController extends Controller
      * @Route("/mandates/{id}/replace", name="app_admin_committee_replace_mandate", methods={"GET|POST"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function replaceMandateAction(
-        Request $request,
-        CommitteeAdherentMandate $mandate,
-        CommitteeAdherentMandateRepository $mandateRepository,
-        CommitteeAdherentMandateManager $mandateManager
-    ): Response {
+    public function replaceMandateAction(Request $request, CommitteeAdherentMandate $mandate): Response
+    {
         if ($mandate->getFinishAt()) {
             $this->addFlash('sonata_flash_error', sprintf('Le mandate (id %s) est inactif et ne peut pas être remplacé.', $mandate->getId()));
 
             return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
         }
 
-        $newMandateCommand = CommitteeMandateCommand::createFromCommitteeMandate($mandate);
+        $newMandateCommand = CommitteeAdherentMandateCommand::createFromCommitteeMandate($mandate);
         $form = $this->createForm(CommitteeMandateCommandType::class, $newMandateCommand);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                try {
-                    $mandateManager->replaceMandate($mandate, $newMandateCommand->getAdherent());
-                    $this->addFlash('sonata_flash_success', \sprintf('Le mandat avec l\'id %s a été remplacé avec succès.', $mandate->getId()));
-                } catch (BaseGroupException $exception) {
-                    throw $this->createNotFoundException(\sprintf('Committee %d must not be approved in order to be approved.', $mandate->getId()), $exception);
-                }
+                $this->mandateManager->replaceMandate($mandate, $newMandateCommand);
+                $this->addFlash('sonata_flash_success', \sprintf('Le mandat avec l\'id %s a été remplacé avec succès.', $mandate->getId()));
 
                 return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
             }
 
-            if ($mandates = $mandateRepository->findAllActiveMandates($newMandateCommand->getAdherent())) {
-                $msg = '';
-                /** @var CommitteeAdherentMandate $activeMandate */
-                array_walk($mandates, function (CommitteeAdherentMandate $activeMandate) use (&$msg) {
-                    $msg .= \sprintf(
-                        '%s dans le comité "%s", ',
-                        CommitteeMandateQualityEnum::SUPERVISOR === $activeMandate->getQuality()
-                            ? ($activeMandate->isProvisional() ? 'Animateur provisoire' : 'Animateur')
-                            : 'Adhérent désigné',
-                        $activeMandate->getCommittee()->getName());
-                });
-
-                $this->addFlash(
-                    'warning',
-                    substr_replace("Attention, cet adhérent est déjà $msg", '.', -2)
-                );
+            if ($mandates = $this->mandateRepository->findAllActiveMandatesForAdherent($newMandateCommand->getAdherent())) {
+                $this->addMandateAdherentWarning($mandates);
             }
 
             return $this->render('admin/committee/mandates/replace_confirm.html.twig', [
@@ -230,5 +254,39 @@ class AdminCommitteeController extends Controller
         return $this->redirectToRoute('app_admin_committee_members', [
             'id' => $committee->getId(),
         ]);
+    }
+
+    private function addMandateAdherentWarning(array $mandates): void
+    {
+        $msg = '';
+        /** @var CommitteeAdherentMandate $activeMandate */
+        array_walk($mandates, function (CommitteeAdherentMandate $activeMandate) use (&$msg) {
+            $msg .= \sprintf(
+                '%s dans le comité "%s", ',
+                CommitteeMandateQualityEnum::SUPERVISOR === $activeMandate->getQuality()
+                    ? ($activeMandate->isProvisional() ? 'Animateur provisoire' : 'Animateur')
+                    : 'Adhérent désigné',
+                $activeMandate->getCommittee()->getName());
+        });
+
+        $this->addFlash(
+            'warning',
+            substr_replace("Attention, cet adhérent est déjà $msg", '.', -2)
+        );
+    }
+
+    private function getAvailableMandateTypesFor(Committee $committee): array
+    {
+        $mandates = $this->mandateRepository->findAllActiveMandatesForCommittee($committee);
+        $types = CommitteeAdherentMandateTypeEnum::getTypesForCreation();
+
+        /** @var CommitteeAdherentMandate $mandate */
+        array_walk($mandates, function (CommitteeAdherentMandate $mandate) use (&$types) {
+            if (false !== $key = array_search($mandate->getType(), $types)) {
+                unset($types[$key]);
+            }
+        });
+
+        return $types;
     }
 }

@@ -14,6 +14,7 @@ use App\Event\EventCommandHandler;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
 use App\Event\Filter\ListFilterObject;
+use App\Exception\CommitteeMembershipException;
 use App\Form\CommitteeCommandType;
 use App\Form\CommitteeMemberFilterType;
 use App\Form\EventCommandType;
@@ -203,8 +204,13 @@ class CommitteeManagerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->promote($member, $committee);
-            $this->addFlash('info', 'committee.promote_host.success');
+            try {
+                $this->manager->promote($member, $committee);
+
+                $this->addFlash('info', 'committee.promote_host.success');
+            } catch (CommitteeMembershipException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
 
             return $this->redirectToRoute('app_committee_manager_list_members', [
                 'slug' => $committee->getSlug(),

@@ -38,12 +38,23 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllActiveMandates(Adherent $adherent): array
+    public function findAllActiveMandatesForAdherent(Adherent $adherent): array
     {
         return $this->createQueryBuilder('m')
             ->where('m.adherent = :adherent')
             ->andWhere('m.finishAt IS NULL')
             ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAllActiveMandatesForCommittee(Committee $committee): array
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.committee = :committee')
+            ->andWhere('m.finishAt IS NULL')
+            ->setParameter('committee', $committee)
             ->getQuery()
             ->getResult()
         ;

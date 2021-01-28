@@ -207,4 +207,9 @@ abstract class AbstractAdherentMandate
     {
         $this->reason = $reason;
     }
+
+    public function isFemale(): bool
+    {
+        return Genders::FEMALE === $this->gender;
+    }
 }

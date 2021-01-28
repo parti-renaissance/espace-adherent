@@ -4,6 +4,7 @@ namespace App\Committee;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
 use App\Validator\AdherentForCommitteeMandateReplacement as AssertAdherentValid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @AssertAdherentValid(errorPath="adherent")
  */
-class CommitteeMandateCommand
+class CommitteeAdherentMandateCommand
 {
     /**
      * @var Adherent|null
@@ -40,13 +41,20 @@ class CommitteeMandateCommand
      */
     protected $quality;
 
+    /**
+     * @var bool
+     */
     public $provisional;
+
+    public function __construct(Committee $committee)
+    {
+        $this->committee = $committee;
+    }
 
     public static function createFromCommitteeMandate(CommitteeAdherentMandate $mandate): self
     {
-        $dto = new self();
+        $dto = new self($mandate->getCommittee());
         $dto->gender = $mandate->getGender();
-        $dto->committee = $mandate->getCommittee();
         $dto->quality = $mandate->getQuality();
         $dto->provisional = (bool) $mandate->isSupervisor();
         $dto->beginAt = new \DateTime();
@@ -69,12 +77,22 @@ class CommitteeMandateCommand
         return $this->gender;
     }
 
-    public function isProvisional(): bool
+    public function setGender(string $gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    public function isProvisional(): ?bool
     {
         return $this->provisional;
     }
 
-    public function getBeginAt(): \DateTime
+    public function setProvisional(bool $provisional): void
+    {
+        $this->provisional = $provisional;
+    }
+
+    public function getBeginAt(): ?\DateTime
     {
         return $this->beginAt;
     }
@@ -87,5 +105,15 @@ class CommitteeMandateCommand
     public function getQuality(): ?string
     {
         return $this->quality;
+    }
+
+    public function setQuality(?string $quality): void
+    {
+        $this->quality = $quality;
+    }
+
+    public function isSupervisor(): bool
+    {
+        return CommitteeMandateQualityEnum::SUPERVISOR === $this->quality;
     }
 }

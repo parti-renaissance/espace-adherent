@@ -2,8 +2,8 @@
 
 namespace App\Validator;
 
+use App\Committee\CommitteeAdherentMandateCommand;
 use App\Committee\CommitteeAdherentMandateManager;
-use App\Committee\CommitteeMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,8 +29,8 @@ class AdherentForCommitteeMandateReplacementValidator extends ConstraintValidato
             return;
         }
 
-        if (!$value instanceof CommitteeMandateCommand) {
-            throw new UnexpectedValueException($value, CommitteeMandateCommand::class);
+        if (!$value instanceof CommitteeAdherentMandateCommand) {
+            throw new UnexpectedValueException($value, CommitteeAdherentMandateCommand::class);
         }
 
         if ($value->getAdherent()) {
