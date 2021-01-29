@@ -1,0 +1,31 @@
+{% extends 'admin/committee/mandates/_layout_mandate_action.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block action_title 'Retirer' %}
+{% block action_title_left %}
+    Retirer
+{% endblock %}
+
+{% block action_description %}
+    <p>En confirmant, l'adhérent perdra son mandat. Il n'en sera pas informé par email.</p>
+    <p>Les animateurs élus et les adhérents désignés ne seront plus les membres du CoTerr à moins que ceux-ci soient
+        désignés au CoPol ou aient une candidature en cours. Dans ce cas une action supplémentaire est nécessaire.</p>
+{% endblock %}
+
+{% block action_content_left %}
+    <div class="table-responsive margin-bottom">
+        {% include('admin/committee/mandates/_mandate_as_table.html.twig') with { mandate: mandate, show_all: true } %}
+    </div>
+{% endblock %}
+
+{% block content_right '' %}
+
+{% block action_buttons %}
+    <div class="col-md-2">
+        {{ form_widget(form.allow, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
+    </div>
+    <div class="col-md-1 col-md-offset-9">
+        {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-danger' } }) }}
+    </div>
+{% endblock %}

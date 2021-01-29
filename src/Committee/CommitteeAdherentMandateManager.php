@@ -98,14 +98,15 @@ class CommitteeAdherentMandateManager
             throw new CommitteeAdherentMandateException(\sprintf('Adherent with id "%s" (%s) has no active mandate in committee "%s"', $adherent->getId(), $adherent->getEmailAddress(), $committee->getName()));
         }
 
-        $mandate->setFinishAt(new \DateTime());
-        $mandate->setReason(AbstractAdherentMandate::REASON_MANUAL);
+        $mandate->end(new \DateTime(), AbstractAdherentMandate::REASON_MANUAL);
 
         $this->entityManager->flush();
     }
 
-    public function replaceMandate(CommitteeAdherentMandate $mandate, CommitteeAdherentMandateCommand $command): void
-    {
+    public function replaceMandate(
+        CommitteeAdherentMandate $mandate,
+        CommitteeAdherentMandateCommand $command
+    ): CommitteeAdherentMandate {
         $adherent = $command->getAdherent();
         $committee = $command->getCommittee();
         $newMandate = CommitteeAdherentMandate::createFromCommand($command);
@@ -114,11 +115,12 @@ class CommitteeAdherentMandateManager
             $this->committeeManager->followCommittee($adherent, $committee);
         }
 
-        $mandate->setFinishAt(new \DateTime());
-        $mandate->setReason(AbstractAdherentMandate::REASON_REPLACED);
+        $mandate->end(new \DateTime(), AbstractAdherentMandate::REASON_REPLACED);
 
         $this->entityManager->persist($newMandate);
         $this->entityManager->flush();
+
+        return $newMandate;
     }
 
     public function createMandateFromCommand(CommitteeAdherentMandateCommand $mandateCommand): CommitteeAdherentMandate

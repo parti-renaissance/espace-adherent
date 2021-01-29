@@ -9,6 +9,7 @@ use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
@@ -17,6 +18,7 @@ use App\Exception\CommitteeMembershipException;
 use App\Form\Admin\CommitteeMandateCommandType;
 use App\Form\ConfirmActionType;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -125,10 +127,7 @@ class AdminCommitteeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
                 $mandate = $this->mandateManager->createMandateFromCommand($newMandateCommand);
-                $this->addFlash('sonata_flash_success', \sprintf(
-                    'Le mandate %s a été ajouté avec succès.',
-                    $this->translator->trans(''.$mandate->getType()))
-                );
+                $this->addFlashMsgForNewMandate($mandate);
 
                 return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
             }
@@ -167,8 +166,10 @@ class AdminCommitteeController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $this->mandateManager->replaceMandate($mandate, $newMandateCommand);
-                $this->addFlash('sonata_flash_success', \sprintf('Le mandat avec l\'id %s a été remplacé avec succès.', $mandate->getId()));
+                $newMandate = $this->mandateManager->replaceMandate($mandate, $newMandateCommand);
+
+                $this->addFlashMsgForClosedMandate($mandate);
+                $this->addFlashMsgForNewMandate($newMandate);
 
                 return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
             }
@@ -180,12 +181,53 @@ class AdminCommitteeController extends Controller
             return $this->render('admin/committee/mandates/replace_confirm.html.twig', [
                 'form' => $form->createView(),
                 'mandate' => $mandate,
+                'committee' => $mandate->getCommittee(),
             ]);
         }
 
         return $this->render('admin/committee/mandates/replace.html.twig', [
             'form' => $form->createView(),
             'mandate' => $mandate,
+            'committee' => $mandate->getCommittee(),
+        ]);
+    }
+
+    /**
+     * @Route("/mandates/{id}/close", name="app_admin_committee_close_mandate", methods={"GET|POST"})
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     */
+    public function closeMandateAction(
+        Request $request,
+        CommitteeAdherentMandate $mandate,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($mandate->getFinishAt()) {
+            $this->addFlash('sonata_flash_error', sprintf('Le mandate (id %s) est inactif et ne peut pas être retiré.', $mandate->getId()));
+
+            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
+        }
+
+        $form = $this
+            ->createForm(ConfirmActionType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('allow')->isClicked()) {
+                $mandate->end(new \DateTime(), AbstractAdherentMandate::REASON_MANUAL);
+
+                $entityManager->flush();
+
+                $this->addFlashMsgForClosedMandate($mandate);
+            }
+
+            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
+        }
+
+        return $this->render('admin/committee/mandates/close_confirm.html.twig', [
+            'form' => $form->createView(),
+            'mandate' => $mandate,
+            'committee' => $mandate->getCommittee(),
         ]);
     }
 
@@ -288,5 +330,24 @@ class AdminCommitteeController extends Controller
         });
 
         return $types;
+    }
+
+    private function addFlashMsgForNewMandate(CommitteeAdherentMandate $mandate): void
+    {
+        $this->addFlash('sonata_flash_success', \sprintf(
+            '%s est devenu%s %s.',
+            $mandate->getAdherent()->getFullName(),
+            $mandate->isFemale() ? 'e' : '',
+            $this->translator->trans('adherent_mandate.committee.'.$mandate->getType()))
+        );
+    }
+
+    private function addFlashMsgForClosedMandate(CommitteeAdherentMandate $mandate): void
+    {
+        $this->addFlash('sonata_flash_success', \sprintf(
+            '%s n\'est plus %s.',
+            $mandate->getAdherent()->getFullName(),
+            $this->translator->trans('adherent_mandate.committee.'.$mandate->getType()))
+        );
     }
 }
