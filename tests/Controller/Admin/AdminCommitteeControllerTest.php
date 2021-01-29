@@ -60,7 +60,11 @@ class AdminCommitteeControllerTest extends WebTestCase
             \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(\sprintf('/admin/committee/%s/mandates', $mandate->getCommittee()->getId()), $this->client);
+        $this->assertClientIsRedirectedTo(\sprintf('/admin/committee/%d/mandates', $mandate->getCommittee()->getId()), $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStringContainsString('est inactif et ne peut pas être remplacé.', $crawler->filter('.alert-danger')->text());
     }
 
     public function testCannotReplaceMandateWhenNoAdherent(): void
@@ -190,6 +194,17 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStringContainsString(
+            'Jean-Baptiste Fortin n\'est plus Animateur provisoire.',
+            $crawler->filter('.alert-success')->text()
+        );
+        $this->assertStringContainsString(
+            ' Francis Brioul est devenu Animateur provisoire.',
+            $crawler->filter('.alert-success')->text()
+        );
+
         $this->manager->clear();
 
         /** @var CommitteeAdherentMandate $newMandate */
@@ -288,7 +303,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertStringNotContainsString('Le comité "En Marche - Comité de Berlin" n\'a pas de mandat disponible', $crawler->filter('.alert-danger')->text());
+        $this->assertStringContainsString('Le comité "En Marche Dammarie-les-Lys" n\'a pas de mandat disponible.', $crawler->filter('.alert-danger')->text());
     }
 
     public function testCannotAddMandateWhenNoAdherent(): void
@@ -407,6 +422,12 @@ class AdminCommitteeControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Confirmer')->form());
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStringContainsString(
+            'Francis Brioul est devenu Adhérent désigné.',
+            $crawler->filter('.alert-success')->text()
+        );
 
         $this->manager->clear();
 
@@ -420,6 +441,65 @@ class AdminCommitteeControllerTest extends WebTestCase
         $this->assertFalse($newMandate->isProvisional());
         $this->assertNull($newMandate->getQuality());
         $this->assertSame(Genders::MALE, $newMandate->getGender());
+    }
+
+    public function testCannotCloseInactiveMandate(): void
+    {
+        /** @var CommitteeAdherentMandate $mandate */
+        $mandate = $this->committeeMandateRepository->findOneBy([
+            'finishAt' => new \DateTime('2018-05-05 12:12:12'),
+        ]);
+
+        $this->authenticateAsAdmin($this->client);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/mandates/%d/close', $mandate->getId())
+        );
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo(\sprintf('/admin/committee/%d/mandates', $mandate->getCommittee()->getId()), $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStringContainsString('est inactif et ne peut pas être retiré.', $crawler->filter('.alert-danger')->text());
+    }
+
+    public function testCanCloseMandate(): void
+    {
+        /** @var CommitteeAdherentMandate $newMandate */
+        $mandate = $this->committeeMandateRepository->findOneBy([
+            'beginAt' => new \DateTime('2017-01-26 16:08:24'),
+        ]);
+
+        $this->authenticateAsAdmin($this->client);
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/mandates/%d/close', $mandate->getId())
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->selectButton('Confirmer')->form());
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStringContainsString(
+            'Francis Brioul n\'est plus Animateur.',
+            $crawler->filter('.alert-success')->text()
+        );
+
+        $this->manager->clear();
+
+        /** @var CommitteeAdherentMandate $mandate */
+        $mandate = $this->committeeMandateRepository->findOneBy([
+            'beginAt' => new \DateTime('2017-01-26 16:08:24'),
+        ]);
+
+        $this->assertNotNull($mandate->getFinishAt());
+        $this->assertSame(AbstractAdherentMandate::REASON_MANUAL, $mandate->getReason());
     }
 
     public function provideActions(): iterable

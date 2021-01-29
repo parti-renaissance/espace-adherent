@@ -9,6 +9,7 @@
                         Mandats du comité "{{ committee.name }}"
                     </a>
                 </div>
+                {% include('admin/committee/_actions_menu_right.html.twig') with { object: committee } %}
             </div>
         </nav>
     </div>
@@ -23,10 +24,6 @@
         <a href="{{ path('admin_app_committee_list') }}" class="btn btn-default">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             Retour à la liste
-        </a>
-        <a href="{{ path('admin_app_committee_edit', { id: committee.id }) }}" class="btn btn-default">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            Editer le comité
         </a>
         {% if can_add_mandate %}
             <a href="{{ path('app_admin_committee_add_mandate', { id: committee.id }) }}" class="btn btn-default">
@@ -95,6 +92,10 @@
                                     <a href="{{ path('app_admin_committee_replace_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
                                         <i class="fa fa-repeat" aria-hidden="true"></i>
                                         Remplacer
+                                    </a>
+                                    <a href="{{ path('app_admin_committee_close_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
+                                        <i class="fa fa-close" aria-hidden="true"></i>
+                                        Retirer
                                     </a>
                                 </td>
                             </tr>
