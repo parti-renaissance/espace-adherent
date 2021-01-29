@@ -2,11 +2,11 @@
 
 namespace App\Controller\Api;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ReferentsController extends Controller
+class ReferentsController extends AbstractController
 {
     /**
      * @Route("/referents", name="api_referents", methods={"GET"})

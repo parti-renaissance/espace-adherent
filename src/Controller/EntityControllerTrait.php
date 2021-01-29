@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Form\DeleteEntityType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 trait EntityControllerTrait
@@ -39,9 +39,9 @@ trait EntityControllerTrait
         $this->getEntityManager()->flush();
     }
 
-    public function createDeleteForm(string $action, string $tokenId, Request $request = null): Form
+    public function createDeleteForm(string $action, string $tokenId, Request $request = null): FormInterface
     {
-        $form = $this->get('form.factory')->create(DeleteEntityType::class, null, [
+        $form = $this->createForm(DeleteEntityType::class, null, [
             'action' => $action,
             'csrf_token_id' => $tokenId,
         ]);

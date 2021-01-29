@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Report\Report;
 use App\Report\ReportManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/signalements")
  */
-class AdminReportController extends Controller
+class AdminReportController extends AbstractController
 {
     /**
      * @Route("/{id}/resolve", name="app_admin_report_resolve", methods={"GET"})

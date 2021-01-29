@@ -9,13 +9,13 @@ use App\Form\InvitationType;
 use App\Form\SimpleInvitationType;
 use App\Invitation\InvitationRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class InvitationController extends Controller
+class InvitationController extends AbstractController
 {
     use AccessDelegatorTrait;
 

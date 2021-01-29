@@ -4,12 +4,12 @@ namespace App\Controller\Legislatives;
 
 use App\Entity\LegislativeCandidate;
 use App\Entity\LegislativeDistrictZone;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends Controller
+class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="legislatives_homepage", methods={"GET"})

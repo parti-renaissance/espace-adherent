@@ -14,9 +14,10 @@ use App\Form\EventRegistrationType;
 use App\Repository\CitizenProjectMembershipRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityNotFoundException;
+use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @Route("/action-citoyenne")
  * @Entity("action", expr="repository.findOneCitizenActionBySlug(slug)")
  */
-class CitizenActionController extends Controller
+class CitizenActionController extends AbstractController
 {
     use EntityControllerTrait;
 
@@ -94,7 +95,8 @@ class CitizenActionController extends Controller
         Request $request,
         CitizenAction $citizenAction,
         ?UserInterface $adherent,
-        CitizenActionRegistrationCommandHandler $handler
+        CitizenActionRegistrationCommandHandler $handler,
+        AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
         if ($adherent) {
             return $this->redirectToRoute('app_citizen_action_attend_adherent', ['slug' => $citizenAction->getSlug()]);
@@ -114,10 +116,7 @@ class CitizenActionController extends Controller
             return $this->redirectToRoute('app_citizen_action_show', ['slug' => $citizenAction->getSlug()]);
         }
 
-        if (
-            $this->isGranted('IS_ANONYMOUS')
-            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
-        ) {
+        if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
             return $authenticate;
         }
 
@@ -201,10 +200,10 @@ class CitizenActionController extends Controller
     /**
      * @Route("/{slug}/ical", name="app_citizen_action_export_ical", methods={"GET"})
      */
-    public function exportIcalAction(CitizenAction $citizenAction): Response
+    public function exportIcalAction(CitizenAction $citizenAction, SerializerInterface $serializer): Response
     {
         $disposition = sprintf('%s; filename=%s.ics', ResponseHeaderBag::DISPOSITION_ATTACHMENT, $citizenAction->getSlug());
-        $response = new Response($this->get('jms_serializer')->serialize($citizenAction, 'ical'));
+        $response = new Response($serializer->serialize($citizenAction, 'ical'));
         $response->headers->set('Content-Type', 'text/calendar');
         $response->headers->set('Content-Disposition', $disposition);
 

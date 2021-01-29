@@ -27,14 +27,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MembershipController extends Controller
+class MembershipController extends AbstractController
 {
     private $membershipRequestHandler;
     private $authenticationUtils;
@@ -59,7 +61,8 @@ class MembershipController extends Controller
         Request $request,
         GeoCoder $geoCoder,
         AuthorizationCheckerInterface $authorizationChecker,
-        CallbackManager $callbackManager
+        CallbackManager $callbackManager,
+        TranslatorInterface $translator
     ): Response {
         if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $callbackManager->redirectToClientIfValid();
@@ -79,7 +82,7 @@ class MembershipController extends Controller
                 return $this->redirectToRoute('app_membership_complete');
             }
         } catch (ConnectException $e) {
-            $this->addFlash('error_recaptcha', $this->get('translator')->trans('recaptcha.error'));
+            $this->addFlash('error_recaptcha', $translator->trans('recaptcha.error'));
         }
 
         return $this->render('membership/register.html.twig', [
@@ -94,10 +97,16 @@ class MembershipController extends Controller
      *
      * @Route("/adhesion", name="app_membership_join", methods={"GET", "POST"})
      */
-    public function adhesionAction(Request $request, GeoCoder $geoCoder, AdherentRepository $repository): Response
-    {
+    public function adhesionAction(
+        Request $request,
+        GeoCoder $geoCoder,
+        AdherentRepository $repository,
+        TranslatorInterface $translator,
+        AnonymousFollowerSession $anonymousFollowerSession,
+        TokenStorageInterface $tokenStorage
+    ): Response {
         if ($this->isGranted('ROLE_USER')) {
-            return $this->joinAdherent($request, $repository);
+            return $this->joinAdherent($request, $repository, $anonymousFollowerSession, $tokenStorage);
         }
 
         $membership = MembershipRequest::createWithCaptcha(
@@ -118,7 +127,7 @@ class MembershipController extends Controller
                 return $this->redirectToRoute('app_membership_pin_interests');
             }
         } catch (ConnectException $e) {
-            $this->addFlash('error_recaptcha', $this->get('translator')->trans('recaptcha.error'));
+            $this->addFlash('error_recaptcha', $translator->trans('recaptcha.error'));
         }
 
         return $this->render('membership/join.html.twig', [
@@ -129,12 +138,14 @@ class MembershipController extends Controller
         ]);
     }
 
-    private function joinAdherent(Request $request, AdherentRepository $repository): Response
-    {
-        $followerSession = $this->get(AnonymousFollowerSession::class);
-
-        if ($followerSession->isStarted()) {
-            return $followerSession->follow($request->getPathInfo());
+    private function joinAdherent(
+        Request $request,
+        AdherentRepository $repository,
+        AnonymousFollowerSession $anonymousFollowerSession,
+        TokenStorageInterface $tokenStorage
+    ): Response {
+        if ($anonymousFollowerSession->isStarted()) {
+            return $anonymousFollowerSession->follow($request->getPathInfo());
         }
 
         /** @var Adherent $user */
@@ -155,7 +166,7 @@ class MembershipController extends Controller
 
             $this->entityManager->flush();
 
-            $this->get('security.token_storage')->setToken(null);
+            $tokenStorage->setToken(null);
             $request->getSession()->invalidate();
             $this->authenticationUtils->authenticateAdherent($user);
 
@@ -208,7 +219,8 @@ class MembershipController extends Controller
         Adherent $adherent,
         AdherentActivationToken $activationToken,
         CallbackManager $callbackManager,
-        AdherentAccountActivationHandler $accountActivationHandler
+        AdherentAccountActivationHandler $accountActivationHandler,
+        AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
         if ($this->getUser()) {
             $this->redirectToRoute('app_search_events');
@@ -224,8 +236,6 @@ class MembershipController extends Controller
 
                 // We need to handle anonymous session here because the user was logged through the handler above,
                 // bypassing the security success handler
-                $anonymousFollowerSession = $this->get(AnonymousFollowerSession::class);
-
                 if ($anonymousFollowerSession->isStarted()) {
                     return $anonymousFollowerSession->terminate();
                 }

@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use League\Flysystem\FilesystemInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * @Route("/profil-facebook")
  */
-class FacebookController extends Controller
+class FacebookController extends AbstractController
 {
     private $storage;
     private $pictureImporter;

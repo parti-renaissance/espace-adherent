@@ -12,7 +12,7 @@ use App\Form\CitizenProjectCommandType;
 use App\Form\CitizenProjectContactActorsType;
 use App\Utils\GroupUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/projets-citoyens/{slug}")
  * @Security("is_granted('ADMINISTRATE_CITIZEN_PROJECT', citizenProject)")
  */
-class CitizenProjectManagerController extends Controller
+class CitizenProjectManagerController extends AbstractController
 {
     /**
      * @Route("/editer", name="app_citizen_project_manager_edit", methods={"GET", "POST"})

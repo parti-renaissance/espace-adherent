@@ -14,9 +14,10 @@ use App\Form\EventInvitationType;
 use App\Form\EventRegistrationType;
 use App\Repository\EventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @Route("/evenements/{slug}")
  * @Entity("event", expr="repository.findOnePublishedBySlug(slug)")
  */
-class EventController extends Controller
+class EventController extends AbstractController
 {
     /**
      * @Route(name="app_event_show", methods={"GET"})
@@ -47,11 +48,11 @@ class EventController extends Controller
     /**
      * @Route("/ical", name="app_event_export_ical", methods={"GET"})
      */
-    public function exportIcalAction(Event $event): Response
+    public function exportIcalAction(Event $event, SerializerInterface $serializer): Response
     {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
 
-        $response = new Response($this->get('jms_serializer')->serialize($event, 'ical'), Response::HTTP_OK);
+        $response = new Response($serializer->serialize($event, 'ical'), Response::HTTP_OK);
         $response->headers->set('Content-Type', 'text/calendar');
         $response->headers->set('Content-Disposition', $disposition);
 
@@ -106,7 +107,8 @@ class EventController extends Controller
         Request $request,
         Event $event,
         ?UserInterface $adherent,
-        EventRegistrationCommandHandler $eventRegistrationCommandHandler
+        EventRegistrationCommandHandler $eventRegistrationCommandHandler,
+        AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
         if ($adherent) {
             return $this->redirectToRoute('app_event_attend_adherent', ['slug' => $event->getSlug()]);
@@ -122,10 +124,7 @@ class EventController extends Controller
             return $this->redirectToRoute('app_event_show', ['slug' => $event->getSlug()]);
         }
 
-        if (
-            $this->isGranted('IS_ANONYMOUS')
-            && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
-        ) {
+        if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
             return $authenticate;
         }
 

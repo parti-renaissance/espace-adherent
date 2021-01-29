@@ -19,7 +19,7 @@ use App\Repository\EventRegistrationRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/evenements/{slug}")
  * @Security("is_granted('HOST_EVENT', event)")
  */
-class EventManagerController extends Controller
+class EventManagerController extends AbstractController
 {
     use PrintControllerTrait;
 

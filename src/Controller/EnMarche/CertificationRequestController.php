@@ -6,7 +6,7 @@ use App\Adherent\Certification\CertificationManager;
 use App\Adherent\Certification\CertificationPermissions;
 use App\Entity\Adherent;
 use App\Form\CertificationRequestType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/espace-adherent/mon-compte/certification", name="app_certification_request_")
  */
-class CertificationRequestController extends Controller
+class CertificationRequestController extends AbstractController
 {
     /**
      * @Route(name="home", methods="GET")

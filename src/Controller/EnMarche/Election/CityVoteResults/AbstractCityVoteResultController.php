@@ -7,12 +7,12 @@ use App\Entity\City;
 use App\Entity\Election\CityVoteResult;
 use App\Form\Election\VoteResultWithListsType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractCityVoteResultController extends Controller
+abstract class AbstractCityVoteResultController extends AbstractController
 {
     private $electionManager;
     private $entityManager;

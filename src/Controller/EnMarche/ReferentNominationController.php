@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\Referent;
 use App\Entity\ReferentArea;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/le-mouvement/nos-referents")
  */
-class ReferentNominationController extends Controller
+class ReferentNominationController extends AbstractController
 {
     /**
      * @Route("", name="our_referents_homepage", methods={"GET"})

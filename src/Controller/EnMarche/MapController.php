@@ -6,10 +6,10 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event;
 use App\Entity\EventCategory;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MapController extends Controller
+class MapController extends AbstractController
 {
     /**
      * @Route("/le-mouvement/la-carte", name="map_committees", methods={"GET"})

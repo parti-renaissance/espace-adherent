@@ -5,11 +5,11 @@ namespace App\Controller\EnMarche;
 use App\Entity\Biography\ExecutiveOfficeMember;
 use App\Repository\Biography\ExecutiveOfficeMemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class BiographyController extends Controller
+class BiographyController extends AbstractController
 {
     /**
      * @Route("/le-mouvement/notre-organisation", name="app_our_organization", methods={"GET"})

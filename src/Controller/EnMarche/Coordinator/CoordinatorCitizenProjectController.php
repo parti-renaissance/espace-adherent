@@ -10,7 +10,7 @@ use App\Entity\CitizenProject;
 use App\Exception\BaseGroupException;
 use App\Form\CoordinatorAreaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/espace-coordinateur/projet-citoyen")
  * @Security("is_granted('ROLE_COORDINATOR_CITIZEN_PROJECT')")
  */
-class CoordinatorCitizenProjectController extends Controller
+class CoordinatorCitizenProjectController extends AbstractController
 {
     /**
      * @Route(path="/list", name="app_coordinator_citizen_project", methods={"GET"})

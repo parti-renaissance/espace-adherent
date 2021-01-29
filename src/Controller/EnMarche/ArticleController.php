@@ -7,14 +7,14 @@ use App\Entity\ArticleCategory;
 use App\Feed\ArticleFeedGenerator;
 use App\Repository\ArticleCategoryRepository;
 use App\Repository\ArticleRepository;
-use Psr\Cache\CacheItemPoolInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
 
-class ArticleController extends Controller
+class ArticleController extends AbstractController
 {
     const PER_PAGE = 12;
 
@@ -80,10 +80,11 @@ class ArticleController extends Controller
     /**
      * @Route("/feed.xml", name="articles_feed", methods={"GET"})
      */
-    public function feedAction(ArticleFeedGenerator $generator, ArticleRepository $repository): Response
-    {
-        /** @var CacheItemPoolInterface $cache */
-        $cache = $this->get('cache.app');
+    public function feedAction(
+        ArticleFeedGenerator $generator,
+        ArticleRepository $repository,
+        CacheInterface $cache
+    ): Response {
         $cachedRenderedFeed = $cache->getItem('rss_feed');
 
         if (!$cachedRenderedFeed->isHit()) {

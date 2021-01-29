@@ -27,19 +27,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/projets-citoyens/{project_slug}/actions")
  * @Entity("project", expr="repository.findOneApprovedBySlug(project_slug)")
  * @Entity("action", expr="repository.findOneCitizenActionBySlug(slug)")
  */
-class CitizenActionManagerController extends Controller
+class CitizenActionManagerController extends AbstractController
 {
     use PrintControllerTrait;
 
@@ -170,12 +171,13 @@ class CitizenActionManagerController extends Controller
         CitizenProject $project,
         CitizenActionManager $citizenActionManager,
         CitizenProjectMembershipRepository $citizenProjectMembershipRepository,
-        CitizenActionParticipantsExporter $exporter
+        CitizenActionParticipantsExporter $exporter,
+        TranslatorInterface $translator
     ): Response {
         $registrations = $this->getRegistrations($request, $citizenAction, self::ACTION_EXPORT);
 
         if (0 == $registrations->count()) {
-            $this->addFlash('error', $this->get('translator')->trans('citizen_action.export.none'));
+            $this->addFlash('error', $translator->trans('citizen_action.export.none'));
 
             return $this->redirectToRoute('app_citizen_action_list_participants', [
                 'slug' => $citizenAction->getSlug(),
@@ -199,12 +201,13 @@ class CitizenActionManagerController extends Controller
         Request $request,
         CitizenAction $citizenAction,
         CitizenProject $project,
-        CitizenActionContactParticipantsCommandHandler $handler
+        CitizenActionContactParticipantsCommandHandler $handler,
+        TranslatorInterface $translator
     ): Response {
         $registrations = $this->getRegistrations($request, $citizenAction, self::ACTION_CONTACT);
 
         if (0 == $registrations->count()) {
-            $this->addFlash('error', $this->get('translator')->trans('citizen_action.export.none'));
+            $this->addFlash('error', $translator->trans('citizen_action.export.none'));
 
             return $this->redirectToRoute('app_citizen_action_list_participants', [
                 'slug' => $citizenAction->getSlug(),

@@ -11,13 +11,13 @@ use App\Repository\EventGroupCategoryRepository;
 use App\Repository\EventRepository;
 use App\Search\SearchParametersFilter;
 use App\Search\SearchResultsProvidersManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class SearchController extends Controller
+class SearchController extends AbstractController
 {
     private $searchParametersFilter;
     private $searchResultsProvidersManager;

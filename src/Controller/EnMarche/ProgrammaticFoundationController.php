@@ -3,14 +3,14 @@
 namespace App\Controller\EnMarche;
 
 use App\Entity\ProgrammaticFoundation\Measure;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/projets-qui-marchent")
  */
-class ProgrammaticFoundationController extends Controller
+class ProgrammaticFoundationController extends AbstractController
 {
     /**
      * @Route(name="app_approaches", methods={"GET"})

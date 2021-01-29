@@ -9,7 +9,7 @@ use App\MediaGenerator\Image\CitizenProjectCoverGenerator;
 use App\MediaGenerator\Pdf\CitizenProjectTractGenerator;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ADMINISTRATE_CITIZEN_PROJECT', citizenProject)")
  */
-class CitizenProjectMediaGeneratorController extends Controller
+class CitizenProjectMediaGeneratorController extends AbstractController
 {
     /**
      * @Route("/images", name="app_citizen_project_image_generator", methods={"GET", "POST"})

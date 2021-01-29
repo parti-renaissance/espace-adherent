@@ -8,13 +8,13 @@ use App\Entity\Election\VoteResultListCollection;
 use App\Form\VoteResultListCollectionType;
 use App\Repository\Election\VoteResultListCollectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractVoteResultListController extends Controller
+abstract class AbstractVoteResultListController extends AbstractController
 {
     /** @var EntityManagerInterface */
     private $entityManager;

@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche;
 
 use App\Controller\CanaryControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ROLE_ADHERENT')")
  */
-class MyVoteController extends Controller
+class MyVoteController extends AbstractController
 {
     use CanaryControllerTrait;
 

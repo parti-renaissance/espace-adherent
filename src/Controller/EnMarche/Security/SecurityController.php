@@ -13,8 +13,9 @@ use App\Membership\AdherentResetPasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,20 +23,18 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /**
      * @Route("/connexion", name="app_user_login", methods={"GET"})
      */
-    public function loginAction(): Response
+    public function loginAction(AuthenticationUtils $securityUtils, FormFactoryInterface $formFactory): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_search_events');
         }
 
-        $securityUtils = $this->get('security.authentication_utils');
-
-        $form = $this->get('form.factory')->createNamed('', LoginType::class, [
+        $form = $formFactory->createNamed('', LoginType::class, [
             '_login_email' => $securityUtils->getLastUsername(),
         ]);
 

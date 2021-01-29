@@ -7,12 +7,12 @@ use App\Form\ReferentCityFilterType;
 use App\MunicipalManager\Filter\AssociationCityFilter;
 use App\MunicipalManager\MunicipalManagerRole\MunicipalManagerAssociationManager;
 use App\Repository\CityRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractMunicipalManagerAttributionController extends Controller
+abstract class AbstractMunicipalManagerAttributionController extends AbstractController
 {
     protected const PAGE_LIMIT = 10;
 

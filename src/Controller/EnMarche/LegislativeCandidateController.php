@@ -5,7 +5,7 @@ namespace App\Controller\EnMarche;
 use App\Form\LegislativeCampaignContactMessageType;
 use App\Legislative\LegislativeCampaignContactMessageHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/espace-candidat-legislatives")
  * @Security("is_granted('ROLE_LEGISLATIVE_CANDIDATE')")
  */
-class LegislativeCandidateController extends Controller
+class LegislativeCandidateController extends AbstractController
 {
     /**
      * @Route("", name="app_legislative_candidates_platform", methods={"GET"})

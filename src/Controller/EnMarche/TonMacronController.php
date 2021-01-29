@@ -5,12 +5,12 @@ namespace App\Controller\EnMarche;
 use App\Entity\TonMacronFriendInvitation;
 use App\Form\TonMacronInvitationType;
 use App\TonMacron\InvitationProcessorHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TonMacronController extends Controller
+class TonMacronController extends AbstractController
 {
     /**
      * @Route("/pourquoi-voter-macron", methods={"GET"})

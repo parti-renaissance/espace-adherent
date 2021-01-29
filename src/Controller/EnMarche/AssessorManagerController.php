@@ -16,7 +16,7 @@ use App\Repository\VotePlaceRepository;
 use App\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/espace-responsable-assesseur")
  * @Security("is_granted('ROLE_ASSESSOR_MANAGER')")
  */
-class AssessorManagerController extends Controller
+class AssessorManagerController extends AbstractController
 {
     /**
      * @Route(name="app_assessor_manager_requests", methods={"GET"})
