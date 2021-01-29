@@ -3,7 +3,6 @@
 namespace Tests\App\Committee;
 
 use App\Collection\AdherentCollection;
-use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeData;
@@ -36,7 +35,7 @@ class CommitteeManagerTest extends WebTestCase
         );
         // Approved committees
         $this->assertCount(2, $hosts);
-        $this->assertCount(2, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
+        $this->assertCount(4, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
         $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_4_UUID)));
         $this->assertCount(2, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeData::COMMITTEE_5_UUID)));
 
@@ -307,7 +306,6 @@ class CommitteeManagerTest extends WebTestCase
 
         static::$container = $this->getContainer();
         $this->committeeManager = new CommitteeManager(
-            $this->get(CommitteeAdherentMandateManager::class),
             $this->getEntityManager(Committee::class),
             $this->get('event_dispatcher')
         );

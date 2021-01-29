@@ -25,6 +25,8 @@ class CommitteeAdherentMandateManager
 
     /** @var EntityManagerInterface */
     private $entityManager;
+    /** @var CommitteeManager */
+    private $committeeManager;
     /** @var CommitteeAdherentMandateRepository */
     private $mandateRepository;
     /** @var ElectedRepresentativeRepository */
@@ -36,11 +38,13 @@ class CommitteeAdherentMandateManager
         EntityManagerInterface $entityManager,
         CommitteeAdherentMandateRepository $mandateRepository,
         ElectedRepresentativeRepository $electedRepresentativeRepository,
+        CommitteeManager $committeeManager,
         TranslatorInterface $translator
     ) {
         $this->entityManager = $entityManager;
         $this->mandateRepository = $mandateRepository;
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
+        $this->committeeManager = $committeeManager;
         $this->translator = $translator;
     }
 
@@ -100,20 +104,14 @@ class CommitteeAdherentMandateManager
         $this->entityManager->flush();
     }
 
-    public function replaceMandate(CommitteeAdherentMandate $mandate, Adherent $adherent): void
+    public function replaceMandate(CommitteeAdherentMandate $mandate, CommitteeAdherentMandateCommand $command): void
     {
-        $committee = $mandate->getCommittee();
-        $newMandate = new CommitteeAdherentMandate(
-            $adherent,
-            $mandate->getGender(),
-            $committee,
-            new \DateTime(),
-            $mandate->getQuality(),
-            $mandate->isSupervisor() ?: $mandate->isProvisional()
-        );
+        $adherent = $command->getAdherent();
+        $committee = $command->getCommittee();
+        $newMandate = CommitteeAdherentMandate::createFromCommand($command);
 
         if (!$adherent->getMembershipFor($committee)) {
-            $adherent->followCommittee($committee);
+            $this->committeeManager->followCommittee($adherent, $committee);
         }
 
         $mandate->setFinishAt(new \DateTime());
@@ -121,6 +119,22 @@ class CommitteeAdherentMandateManager
 
         $this->entityManager->persist($newMandate);
         $this->entityManager->flush();
+    }
+
+    public function createMandateFromCommand(CommitteeAdherentMandateCommand $mandateCommand): CommitteeAdherentMandate
+    {
+        $newMandate = CommitteeAdherentMandate::createFromCommand($mandateCommand);
+        $adherent = $mandateCommand->getAdherent();
+        $committee = $mandateCommand->getCommittee();
+
+        if (!$adherent->getMembershipFor($committee)) {
+            $this->committeeManager->followCommittee($adherent, $committee);
+        }
+
+        $this->entityManager->persist($newMandate);
+        $this->entityManager->flush();
+
+        return $newMandate;
     }
 
     public function updateSupervisorMandate(Adherent $adherent, Committee $committee, bool $isProvisional = false): void

@@ -2,12 +2,14 @@
 
 namespace Tests\App\Controller\Admin;
 
+use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
+use App\ValueObject\Genders;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +41,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/%s/members/%s/%s-mandate', $committee->getId(), $adherent->getId(), $action)
+            \sprintf('/admin/committee/%d/members/%d/%s-mandate', $committee->getId(), $adherent->getId(), $action)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
     }
@@ -55,7 +57,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%s/replace', $mandate->getId())
+            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo(\sprintf('/admin/committee/%s/mandates', $mandate->getCommittee()->getId()), $this->client);
@@ -72,7 +74,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%s/replace', $mandate->getId())
+            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -99,7 +101,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%s/replace', $mandate->getId())
+            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -129,7 +131,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%s/replace', $mandate->getId())
+            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -168,7 +170,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%s/replace', $mandate->getId())
+            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -228,7 +230,7 @@ class AdminCommitteeControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             Request::METHOD_GET,
-            \sprintf('/admin/committee/mandates/%s/replace', $mandate->getId())
+            \sprintf('/admin/committee/mandates/%d/replace', $mandate->getId())
         );
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -265,6 +267,159 @@ class AdminCommitteeControllerTest extends WebTestCase
         $this->assertNotNull($newMandate);
         $this->assertTrue($newMandate->isProvisional());
         $this->assertSame(CommitteeMandateQualityEnum::SUPERVISOR, $newMandate->getQuality());
+    }
+
+    public function testCannotAddMandateIfNoAvailableMandates(): void
+    {
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_3_UUID);
+
+        $this->authenticateAsAdmin($this->client);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $this->assertClientIsRedirectedTo(
+            \sprintf('/admin/committee/%d/mandates', $committee->getId()), $this->client
+        );
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertStringNotContainsString('Le comité "En Marche - Comité de Berlin" n\'a pas de mandat disponible', $crawler->filter('.alert-danger')->text());
+    }
+
+    public function testCannotAddMandateWhenNoAdherent(): void
+    {
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_7_UUID);
+
+        $this->authenticateAsAdmin($this->client);
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Suivant')->form());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $errors = $crawler->filter('.sonata-ba-field-error-messages li');
+
+        $this->assertCount(1, $errors);
+        $this->assertSame('L\'adhérent du mandat ne doit pas être vide.', trim($errors->first()->text()));
+    }
+
+    public function testCannotAddMandateWhenNotCorrectGender(): void
+    {
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_7_UUID);
+        $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_7_UUID);
+
+        $this->authenticateAsAdmin($this->client);
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Suivant')->form([
+            'committee_mandate_command[adherent]' => $adherent->getId(),
+            'committee_mandate_command[type]' => CommitteeAdherentMandateTypeEnum::ELECTED_ADHERENT_FEMALE,
+            'committee_mandate_command[_token]' => $crawler->filter('input[name="committee_mandate_command[_token]"]')->attr('value'),
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $errors = $crawler->filter('.sonata-ba-field-error-messages li');
+
+        $this->assertCount(1, $errors);
+        $this->assertSame('Le genre de l\'adhérent ne correspond pas au genre du mandat.', trim($errors->first()->text()));
+    }
+
+    public function testCannotAddMandateWhenAdherentIsMinor(): void
+    {
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_7_UUID);
+        $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_11_UUID);
+
+        $this->authenticateAsAdmin($this->client);
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Suivant')->form([
+            'committee_mandate_command[adherent]' => $adherent->getId(),
+            'committee_mandate_command[type]' => CommitteeAdherentMandateTypeEnum::ELECTED_ADHERENT_FEMALE,
+            'committee_mandate_command[_token]' => $crawler->filter('input[name="committee_mandate_command[_token]"]')->attr('value'),
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $errors = $crawler->filter('.sonata-ba-field-error-messages li');
+
+        $this->assertCount(1, $errors);
+        $this->assertSame('L\'adhérent ne doit pas être Parlementaire ou mineur.', trim($errors->first()->text()));
+    }
+
+    public function testCanAddMandateEvenAnotherSupervisor(): void
+    {
+        $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_7_UUID);
+        $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_7_UUID);
+
+        /** @var CommitteeAdherentMandate $newMandate */
+        $mandate = $this->committeeMandateRepository->findOneBy([
+            'adherent' => $adherent->getId(),
+            'committee' => $committee->getId(),
+        ]);
+
+        $this->assertNull($mandate);
+
+        $this->authenticateAsAdmin($this->client);
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Suivant')->form([
+            'committee_mandate_command[adherent]' => $adherent->getId(),
+            'committee_mandate_command[type]' => CommitteeAdherentMandateTypeEnum::ELECTED_ADHERENT_MALE,
+            'committee_mandate_command[_token]' => $crawler->filter('input[name="committee_mandate_command[_token]"]')->attr('value'),
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(0, $crawler->filter('.sonata-ba-field-error-messages li'));
+        $this->assertCount(1, $warning = $crawler->filter('.alert-warning'));
+        $this->assertStringContainsString('Attention, cet adhérent est déjà Animateur dans le comité', $warning->text());
+
+        $this->client->submit($crawler->selectButton('Confirmer')->form());
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $this->manager->clear();
+
+        /** @var CommitteeAdherentMandate $newMandate */
+        $newMandate = $this->committeeMandateRepository->findOneBy([
+            'adherent' => $adherent->getId(),
+            'committee' => $committee->getId(),
+        ]);
+
+        $this->assertNotNull($newMandate);
+        $this->assertFalse($newMandate->isProvisional());
+        $this->assertNull($newMandate->getQuality());
+        $this->assertSame(Genders::MALE, $newMandate->getGender());
     }
 
     public function provideActions(): iterable

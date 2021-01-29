@@ -1,0 +1,30 @@
+{% extends 'admin/committee/mandates/_layout_mandate_action.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block action_title 'Ajouter > Confirmation' %}
+{% block action_title_left %}
+    Nouveau mandat
+{% endblock %}
+
+{% block action_content_left %}
+    <div class="sonata-ba-collapsed-fields visually-hidden">
+        {{ form_row(form.type, { attr: { readonly: true } }) }}
+        {{ form_row(form.adherent, { attr: { readonly: true } }) }}
+    </div>
+    <div class="table-responsive margin-bottom">
+        {% include('admin/committee/mandates/_mandate_as_table.html.twig') with { mandate: form.vars.value } %}
+    </div>
+{% endblock %}
+
+{% block content_right '' %}
+
+{% block action_buttons %}
+    <div class="col-md-2">
+        {{ form_widget(form.confirm, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
+        <a href="{{ path('app_admin_committee_add_mandate', { id: committee.id }) }}" class="btn btn-default">Retour</a>
+    </div>
+    <div class="col-md-1 col-md-offset-9">
+        <a href="{{ path('app_admin_committee_mandates', { id: committee.id }) }}" class="btn btn-danger">Annuler</a>
+    </div>
+{% endblock %}

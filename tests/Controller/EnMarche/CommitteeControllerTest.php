@@ -196,6 +196,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->seeMessageForContactHosts($crawler);
         $this->assertSeeHosts($crawler, [
             ['FB', 'Francis B.', 'Animateur'],
+            ['GB', 'Gisele B.', 'Animatrice provisoire'],
+            ['JF', 'Jean-Baptiste F.', 'Animateur provisoire'],
             ['JP', 'Jacques P.', 'Co-animateur'],
         ], false);
         $this->assertSeeDesignedAdherents($crawler, [
