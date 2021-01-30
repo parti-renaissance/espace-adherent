@@ -33,7 +33,7 @@
     "eslint-config-airbnb": "^11.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.9.0",
-    "eslint-watch": "5.0.1",
+    "eslint-watch": "7.0.0",
     "events": "^3.0.0",
     "extend": "^3.0.2",
     "file-loader": "^3.0.1",
