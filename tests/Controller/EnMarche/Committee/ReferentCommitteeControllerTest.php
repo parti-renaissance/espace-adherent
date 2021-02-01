@@ -53,7 +53,7 @@ class ReferentCommitteeControllerTest extends WebTestCase
 
     public function testReferentCanCreateCommittee()
     {
-        $this->authenticateAsAdherent($this->client, 'referent-child@en-marche-dev.fr');
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
         $crawler = $this->client->request('GET', '/espace-referent/comites/creer');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -64,18 +64,17 @@ class ReferentCommitteeControllerTest extends WebTestCase
                 'name' => 'F',
                 'description' => 'F',
                 'address' => [
+                    'address' => '6 rue Neyret',
+                    'postalCode' => '69001',
+                    'city' => '69001-69381',
+                    'cityName' => 'Lyon 1er',
                     'country' => 'FR',
-                    'postalCode' => '99999',
-                    'city' => '10102-45029',
                 ],
             ],
         ]));
 
-        $this->assertSame(7, $crawler->filter('#create-committee-form .form__errors > li')->count());
-        $this->assertSame("L'adresse saisie ne fait pas partie de la zone géographique que vous gérez", $crawler->filter('#committee_address_errors > li')->eq(0)->text());
-        $this->assertSame("Cette valeur n'est pas un code postal français valide.", $crawler->filter('#committee_address_errors > li')->eq(1)->text());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee_address_errors > li')->eq(2)->text());
-        $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#committee_address_address_errors > li')->text());
+        $this->assertSame(4, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame("L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.", $crawler->filter('#committee_address_errors > li')->eq(0)->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#committee_name_errors > li.form__error')->text());
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#committee_description_errors > li')->text());
         $this->assertSame('Vous devez séléctionner au moins un Animateur provisoire parmi vos adhérents', $crawler->filter('#field-provisional-supervisor-female li')->text());
@@ -84,7 +83,7 @@ class ReferentCommitteeControllerTest extends WebTestCase
         $crawler = $this->client->submit($crawler->selectButton('Créer le comité')->form([
             'committee[name]' => 'Nouveau comité Dammarie-les-Lys',
             'committee[description]' => 'Comité français En Marche !',
-            'committee[address][address]' => '826 avenue du lys',
+            'committee[address][address]' => '824 avenue du lys',
             'committee[address][postalCode]' => '77190',
             'committee[address][city]' => '77190-77152',
             'committee[address][cityName]' => 'dammarie-les-lys',
@@ -106,6 +105,52 @@ class ReferentCommitteeControllerTest extends WebTestCase
 Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soit pleinement opérationnel.');
     }
 
+    public function testReferentCannotCreateCommitteeOnTheSameAddress()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+        $crawler = $this->client->request('GET', '/espace-referent/comites/creer');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $crawler = $this->client->submit($crawler->selectButton('Créer le comité')->form([
+            'committee[name]' => 'Nouveau comité Dammarie-les-Lys',
+            'committee[description]' => 'Comité français En Marche !',
+            'committee[address][address]' => '826 Avenue du Lys',
+            'committee[address][postalCode]' => '77190',
+            'committee[address][city]' => '77190-77152',
+            'committee[address][cityName]' => 'Dammarie-les-Lys',
+            'committee[address][country]' => 'FR',
+            'committee[provisionalSupervisorMale]' => $this->getAdherent(LoadAdherentData::ADHERENT_6_UUID)->getId(),
+        ]));
+
+        $errors = $crawler->filter('#create-committee-form .form__errors > li');
+        $this->assertSame(1, $errors->count());
+        $this->assertSame('Un comité actif existe déjà à l\'adresse indiquée.', $errors->eq(0)->text());
+    }
+
+    public function testReferentCannotCreateCommitteeWithTheSameName()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+        $crawler = $this->client->request('GET', '/espace-referent/comites/creer');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $crawler = $this->client->submit($crawler->selectButton('Créer le comité')->form([
+            'committee[name]' => 'En Marche Dammarie-les-Lys',
+            'committee[description]' => 'Comité français En Marche !',
+            'committee[address][address]' => '824 avenue du lys',
+            'committee[address][postalCode]' => '77190',
+            'committee[address][city]' => '77190-77152',
+            'committee[address][cityName]' => 'dammarie-les-lys',
+            'committee[address][country]' => 'FR',
+            'committee[provisionalSupervisorMale]' => $this->getAdherent(LoadAdherentData::ADHERENT_6_UUID)->getId(),
+        ]));
+
+        $errors = $crawler->filter('#create-committee-form .form__errors > li');
+        $this->assertSame(1, $errors->count());
+        $this->assertSame('Ce nom de comité est déjà utilisé.', $errors->eq(0)->text());
+    }
+
     public function testReferentCanSeeCommitteeRequests()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
@@ -113,13 +158,23 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertCount(1, $committees = $crawler->filter('table.datagrid__table-manager tbody tr'));
-        $fields = $committees->first()->filter('td');
+        $this->assertCount(2, $committees = $crawler->filter('table.datagrid__table-manager tbody tr'));
+
+        $fields = $committees->eq(0)->filter('td');
         $this->assertSame('03/01/2021', $fields->eq(0)->text());
         $this->assertStringContainsString('Une nouvelle demande', $fields->eq(1)->text());
+        $this->assertCount(0, $fields->eq(1)->filter('a'));
         $this->assertSame('824 Avenue du Lys, 77190 Dammarie-les-Lys, FR', $fields->eq(2)->text());
         $this->assertSame('Referent Referent', $fields->eq(3)->text());
-        $this->assertStringContainsString('En attente', $fields->eq(4)->text());
+        $this->assertStringContainsString('En attente', $fields->eq(4)->filter('.status__pending')->text());
+
+        $fields = $committees->eq(1)->filter('td');
+        $this->assertSame('02/01/2021', $fields->eq(0)->text());
+        $this->assertStringContainsString('En Marche - Suisse', $fields->eq(1)->text());
+        $this->assertCount(1, $fields->eq(1)->filter('a'));
+        $this->assertSame('32 Zeppelinstrasse, 8057 Zürich, CH', $fields->eq(2)->text());
+        $this->assertSame('Referent Referent', $fields->eq(3)->text());
+        $this->assertStringContainsString('Approuvé', $fields->eq(4)->filter('.status__approved')->text());
     }
 
     public function testAccessCommitteeRequestsList()
@@ -134,6 +189,41 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
 
         $this->assertEquals('http://'.$this->hosts['app'].'/espace-referent/comites/demandes', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
+    public function testCannotPreAcceptCommitteeRequestWhenNotValid()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/comites/demandes');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->checkCommitteeRequestStatus($crawler, 'En attente');
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            '/espace-referent/comites/une-nouvelle-demande/pre-approuver'
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->selectButton('Pré-approuver')->form([
+            'committee' => [
+                'address' => [
+                    'address' => '6 rue Neyret',
+                    'postalCode' => '69001',
+                    'city' => '69001-69381',
+                    'cityName' => 'Lyon 1er',
+                    'country' => 'FR',
+                ],
+            ],
+        ]));
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        $this->assertCount(2, $crawler->filter('.form__error'));
+        $this->assertSame('L\'adresse saisie ne fait pas partie de la zone géographique que vous gérez.', $crawler->filter('.form__error')->eq(0)->text());
+        $this->assertSame('Vous devez séléctionner au moins un Animateur provisoire parmi vos adhérents', $crawler->filter('.form__error')->eq(1)->text());
     }
 
     public function testPreAcceptCommitteeRequest()
@@ -282,13 +372,11 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
         ];
     }
 
-    private function checkCommitteeRequestStatus($crawler, string $status): void
+    private function checkCommitteeRequestStatus($crawler, string $status, int $position = 1): void
     {
         $requests = $crawler->filter('table.datagrid__table-manager tbody tr');
 
-        $this->assertCount(1, $requests);
-
-        $fields = $requests->first()->filter('td');
+        $fields = $requests->eq(--$position)->filter('td');
 
         $this->assertStringContainsString($status, $fields->eq(4)->text());
     }

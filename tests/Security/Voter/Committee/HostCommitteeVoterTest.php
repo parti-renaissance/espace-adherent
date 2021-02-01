@@ -22,9 +22,25 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
         return new HostCommitteeVoter();
     }
 
+    public function testSupervisorIsNotGrantedIfCommitteeIsBlocked()
+    {
+        $committee = $this->createCommitteeMock(true);
+        $adherent = $this->createAdherentMock();
+        $adherent->expects($this->never())
+            ->method('isSupervisorOf')
+            ->with($committee)
+        ;
+        $adherent->expects($this->never())
+            ->method('isHostOf')
+            ->with($committee)
+        ;
+
+        $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::HOST, $committee);
+    }
+
     public function testAdherentCanHostCommitteeIfSupervisor()
     {
-        $committee = $this->createMock(Committee::class);
+        $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, true);
 
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::HOST, $committee);
@@ -32,7 +48,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
 
     public function testAdherentCanHostCommitteeIfHost()
     {
-        $committee = $this->createMock(Committee::class);
+        $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, false, true);
 
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::HOST, $committee);
@@ -40,7 +56,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
 
     public function testAdherentCannotHostCommitteeIfNotHostAndNotSupervisor()
     {
-        $committee = $this->createMock(Committee::class);
+        $committee = $this->createCommitteeMock();
         $adherent = $this->getAdherentMock($committee, false, false);
 
         $this->assertGrantedForAdherent(false, true, $adherent, CommitteePermissions::HOST, $committee);
@@ -68,5 +84,19 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
         }
 
         return $adherent;
+    }
+
+    /**
+     * @return Committee|MockObject
+     */
+    private function createCommitteeMock(bool $isBlocked = false): Committee
+    {
+        $committee = $this->createMock(Committee::class);
+        $committee->expects($this->once())
+            ->method('isBlocked')
+            ->willReturn($isBlocked)
+        ;
+
+        return $committee;
     }
 }

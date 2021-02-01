@@ -1,11 +1,12 @@
 import EventEmitter from 'events';
 
 export default class GooglePlaceAutocomplete extends EventEmitter {
-    constructor(wrapper, address, inputClassNames = '') {
+    constructor(wrapper, address, inputClassNames = '', disabled = false) {
         super();
         this._wrapper = wrapper;
         this._address = address;
         this._inputClassNames = inputClassNames;
+        this._disabled = disabled;
         this._placeChanged = false;
         this._previousInputValue = null;
         this._interval = null;
@@ -115,6 +116,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         this._address.setCity(
             (this._state.locality && this._state.locality.long_name)
             || (this._state.sublocality_level_1 && this._state.sublocality_level_1.long_name)
+            || (this._state.postal_town && this._state.postal_town.long_name)
             || ''
         );
         this._address.setPostalCode(this._state.postal_code && this._state.postal_code.long_name || '');
@@ -139,6 +141,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             street_number: null,
             route: null,
             locality: null,
+            postal_town: null,
             sublocality_level_1: null,
             postal_code: null,
             country: null,
@@ -150,6 +153,9 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         this._input = document.createElement('input');
         this._input.placeholder = 'Adresse postale';
         this._input.className = this._inputClassNames;
+        if (this._disabled) {
+            this._input.disabled = 'disabled';
+        }
 
         this._wrapper.appendChild(this._input);
 

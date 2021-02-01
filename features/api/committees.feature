@@ -41,14 +41,14 @@ Feature:
     {
       "committees":4,
       "members": {
-        "female":2,
+        "female":3,
         "male":7,
-        "total":9
+        "total":10
       },
       "supervisors": {
-        "female":1,
+        "female":2,
         "male":2,
-        "total":3
+        "total":4
       }
     }
     """

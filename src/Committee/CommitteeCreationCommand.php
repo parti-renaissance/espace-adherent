@@ -5,14 +5,8 @@ namespace App\Committee;
 use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Validator\CommitteeAddress as AssertCommitteeAddressValid;
-use App\Validator\UniqueCommittee as AssertUniqueCommittee;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertUniqueCommittee
- * @AssertCommitteeAddressValid
- */
 class CommitteeCreationCommand extends CommitteeCommand
 {
     /**

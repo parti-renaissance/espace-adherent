@@ -2,9 +2,8 @@
 
 namespace App\Form;
 
-use App\Event\Filter\ListFilterObject;
+use App\Committee\Filter\ListFilterObject;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -27,14 +26,30 @@ class CommitteeMemberFilterType extends AbstractType
             ->add('joinedUntil', DatePickerType::class, ['required' => false])
             ->add('sort', HiddenType::class, ['required' => false])
             ->add('order', HiddenType::class, ['required' => false])
-            ->add('subscribed', ChoiceType::class, ['required' => false, 'placeholder' => 'common.all', 'choices' => [
-                'common.adherent.subscribed' => true,
-                'common.adherent.unsubscribed' => false,
-            ]])
+            ->add('subscribed', ChoiceType::class, [
+                'required' => false,
+                'expanded' => true,
+                'choices' => [
+                    'common.all' => null,
+                    'common.adherent.subscribed' => true,
+                    'common.adherent.unsubscribed' => false,
+                ],
+                'choice_value' => function ($choice) {
+                    return false === $choice ? '0' : (string) $choice;
+                },
+            ])
+            ->add('gender', GenderType::class, [
+                'placeholder' => 'Tous',
+                'expanded' => true,
+                'required' => false,
+            ])
         ;
 
         if (true === $options['is_supervisor']) {
-            $builder->add('votersOnly', CheckboxType::class, ['required' => false]);
+            $builder
+                ->add('votersOnly', BooleanChoiceType::class)
+                ->add('certified', BooleanChoiceType::class)
+            ;
         }
     }
 

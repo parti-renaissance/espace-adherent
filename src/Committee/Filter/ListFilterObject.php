@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Event\Filter;
+namespace App\Committee\Filter;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,6 +25,11 @@ class ListFilterObject
      * @var string|null
      */
     private $lastName;
+
+    /**
+     * @var string|null
+     */
+    private $gender;
 
     /**
      * @var string|null
@@ -75,6 +80,11 @@ class ListFilterObject
      */
     private $subscribed;
 
+    /**
+     * @var bool|null
+     */
+    private $certified;
+
     public function getAgeMin(): ?int
     {
         return $this->ageMin;
@@ -113,6 +123,16 @@ class ListFilterObject
     public function setLastName(?string $lastName): void
     {
         $this->lastName = $lastName;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 
     public function getCity(): ?string
@@ -203,6 +223,16 @@ class ListFilterObject
     public function setVotersOnly(?bool $votersOnly): void
     {
         $this->votersOnly = $votersOnly;
+    }
+
+    public function isCertified(): ?bool
+    {
+        return $this->certified;
+    }
+
+    public function setCertified(?bool $certified = null): void
+    {
+        $this->certified = $certified;
     }
 
     public static function getSortableFields(): array

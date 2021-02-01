@@ -2666,7 +2666,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isProvisionalSupervisor(): bool
     {
-        return $this->provisionalSupervisors->count() > 0;
+        return $this->provisionalSupervisors->filter(function (ProvisionalSupervisor $provisionalSupervisor) {
+            $committee = $provisionalSupervisor->getCommittee();
+
+            return $committee->isWaitingForApproval();
+        })->count() > 0;
     }
 
     public function getSupervisorMandates(bool $isProvisional = null, string $gender = null): Collection

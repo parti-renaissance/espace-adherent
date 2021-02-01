@@ -17,9 +17,13 @@
             <tr class="committee__item">
                 <td>{{ committee.createdAt|date('d/m/Y') }}</td>
                 <td>
-                    <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">
+                    {% if committee.isApproved %}
+                        <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">
+                            {{ committee.name }}
+                        </a>
+                    {% else %}
                         {{ committee.name }}
-                    </a>
+                    {% endif %}
                 </td>
                 <td>{{ committee.address }}, {{ committee.postalCode }} {{ committee.cityName }}, {{ committee.country }}</td>
                 <td>{{ get_name_by_uuid(committee.createdBy) }}</td>

@@ -19,6 +19,6 @@ class SuperviseCommitteeVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $committee): bool
     {
-        return $adherent->isSupervisorOf($committee);
+        return !$committee->isBlocked() && $adherent->isSupervisorOf($committee);
     }
 }

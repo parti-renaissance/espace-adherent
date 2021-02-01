@@ -3,11 +3,14 @@
 namespace App\Form;
 
 use App\Address\Address;
+use App\Intl\FranceCitiesBundle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddressType extends AbstractType
@@ -55,6 +58,23 @@ class AddressType extends AbstractType
         ));
 
         $builder->add($field);
+
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            /** @var Address $address */
+            $address = $event->getData();
+
+            if ($address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
+                $inseeCodes = FranceCitiesBundle::getPostalCodeCities($address->getPostalCode());
+
+                foreach ($inseeCodes as $inseeCode => $cityName) {
+                    if ($cityName === $address->getCityName() || 0 === strpos($cityName, $address->getCityName())) {
+                        $address->setCity(\sprintf('%s-%s', $address->getPostalCode(), $inseeCode));
+
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

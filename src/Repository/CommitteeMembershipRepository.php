@@ -5,6 +5,7 @@ namespace App\Repository;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
+use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
@@ -15,7 +16,6 @@ use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Event\Filter\ListFilterObject;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -295,6 +295,19 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                         ->setParameter('min_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $filter->getAgeMax()))))
                     ;
                 }
+            }
+
+            if ($gender = $filter->getGender()) {
+                $qb
+                    ->andWhere('a.gender = :gender')
+                    ->setParameter('gender', $gender)
+                ;
+            }
+
+            if (null !== $filter->isCertified()) {
+                $qb
+                    ->andWhere(\sprintf('a.certifiedAt IS %s NULL', $filter->isCertified() ? 'NOT' : ''))
+                ;
             }
 
             if (null !== $filter->isSubscribed()) {

@@ -93,6 +93,7 @@ abstract class AbstractCommitteeController extends AbstractController
         $command = CommitteeCreationCommand::createFromAdherent($user = $this->getUser());
         $form = $this->createForm(CommitteeCommandType::class, $command, [
             'with_provisional' => $this->getWithProvisionalSupervisors(),
+            'space_type' => $this->getSpaceType(),
             'validation_groups' => ['Default', 'with_provisional_supervisors'],
         ]);
         $form->handleRequest($request);
@@ -170,6 +171,7 @@ abstract class AbstractCommitteeController extends AbstractController
         $command = CommitteeCommand::createFromCommittee($committee);
         $form = $this->createForm(CommitteeCommandType::class, $command, [
             'with_provisional' => $this->getWithProvisionalSupervisors(),
+            'space_type' => $this->getSpaceType(),
             'validation_groups' => ['Default', 'with_provisional_supervisors'],
         ]);
         $form->handleRequest($request);

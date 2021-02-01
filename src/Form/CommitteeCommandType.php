@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Address\Address;
 use App\Committee\CommitteeCommand;
 use App\Form\Committee\ProvisionalSupervisorType;
+use App\Validator\AddressInManagedZones;
 use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -31,10 +32,12 @@ class CommitteeCommandType extends AbstractType
                 'filter_emojis' => true,
             ])
             ->add('address', AddressType::class, [
-                'disable_fields' => $committee ? $committee->isApproved() : false,
                 'child_error_bubbling' => false,
                 'data' => $builder->getData() ? Address::createFromAddress($builder->getData()->getAddress()) : null,
                 'disabled' => $committee ? $committee->isNameLocked() : false,
+                'constraints' => isset($options['space_type']) ? [
+                    new AddressInManagedZones($options['space_type']),
+                ] : [],
             ])
         ;
 
@@ -70,9 +73,11 @@ class CommitteeCommandType extends AbstractType
             'data_class' => CommitteeCommand::class,
             'with_provisional' => false,
             'with_social_networks' => false,
+            'space_type' => null,
         ])
             ->setAllowedTypes('with_provisional', ['bool'])
             ->setAllowedTypes('with_social_networks', ['bool'])
+            ->setAllowedTypes('space_type', ['string', 'null'])
         ;
     }
 

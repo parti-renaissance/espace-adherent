@@ -83,8 +83,10 @@ class CommitteeManagerControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(6, $crawler->filter('#edit-committee-form .form__errors > li')->count());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee_address_errors > li.form__error')->text());
+        $this->assertSame(8, $crawler->filter('#edit-committee-form .form__errors > li')->count());
+        $this->assertSame('Vous ne pouvez pas changer la ville de votre comité.', $crawler->filter('#committee_address_errors > li.form__error')->eq(0)->text());
+        $this->assertSame("Cette valeur n'est pas un code postal français valide.", $crawler->filter('#committee_address_errors > li.form__error')->eq(1)->text());
+        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee_address_errors > li.form__error')->eq(2)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#committee_address_address_errors > li.form__error')->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#field-description > .form__errors > li')->text());
@@ -92,20 +94,41 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame('Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.', $crawler->filter('#field-twitter-nickname > .form__errors > li')->text());
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
 
-        // Submit the committee form with valid data to create committee
-        $this->client->submit($crawler->selectButton('Enregistrer')->form([
+        // Submit the committee form with valid data to create committee, but with address in another city
+        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'committee' => [
                 'name' => 'clichy est En Marche !',
                 'description' => 'Comité français En Marche ! de la ville de Clichy',
                 'address' => [
                     'country' => 'FR',
-                    'address' => '12 Rue des Saussaies',
+                    'address' => '92-98 boulevard Victor Hugo',
                     'postalCode' => '92110',
                     'city' => '92110-92024',
                     'cityName' => '',
                 ],
                 'facebookPageUrl' => 'https://www.facebook.com/EnMarcheClichy',
-                'twitterNickname' => '@enmarcheclichy',
+                'twitterNickname' => '@nvenmarche',
+            ],
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertSame(1, $crawler->filter('#edit-committee-form .form__errors > li')->count());
+        $this->assertSame('Vous ne pouvez pas changer la ville de votre comité.', $crawler->filter('#committee_address_errors > li.form__error')->eq(0)->text());
+
+        // Submit the committee form with valid data to create committee
+        $this->client->submit($crawler->selectButton('Enregistrer')->form([
+            'committee' => [
+                'name' => 'Nouveau comité En Marche !',
+                'description' => 'Nouveau comité français En Marche !',
+                'address' => [
+                    'country' => 'FR',
+                    'address' => '62 avenue des Champs-Élysées',
+                    'postalCode' => '75008',
+                    'city' => '75008-75108',
+                    'cityName' => 'Paris 8e',
+                ],
+                'facebookPageUrl' => 'https://www.facebook.com/NouveauEnMarche',
+                'twitterNickname' => '@nvenmarche',
             ],
         ]));
 
@@ -115,13 +138,14 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'Les informations du comité ont été mises à jour avec succès.');
-        $this->assertSame('Clichy est En Marche !', $crawler->filter('#committee_name')->attr('value'));
-        // Address has been changed but not city and country because the committee is approved
-        $this->assertSame('12 Rue des Saussaies', $crawler->filter('#committee_address_address')->attr('value'));
+        $this->assertSame('Nouveau comité En Marche !', $crawler->filter('#committee_name')->attr('value'));
+        $this->assertSame('62 avenue des Champs-Élysées', $crawler->filter('#committee_address_address')->attr('value'));
         $this->assertSame('75008', $crawler->filter('#committee_address_postalCode')->attr('value'));
         $this->assertSame('75008-75108', $crawler->filter('#committee_address_city')->attr('value'));
         $this->assertSame('Paris 8e', $crawler->filter('#committee_address_cityName')->attr('value'));
         $this->assertSame('France', $crawler->filter('#committee_address_country option:selected')->text());
+        $this->assertSame('https://www.facebook.com/NouveauEnMarche', $crawler->filter('#committee_facebookPageUrl')->attr('value'));
+        $this->assertSame('nvenmarche', $crawler->filter('#committee_twitterNickname')->attr('value'));
     }
 
     public function testCommitteeHostCannotEditNoneditableCommitteeName()
@@ -458,6 +482,77 @@ class CommitteeManagerControllerTest extends WebTestCase
         self::assertSame('Melun', $crawler->filter('.member-city-name')->eq(0)->text());
         self::assertCount(6, $crawler->filter('.member-status .em-tooltip'));
         self::assertSame('Abonné Email', $crawler->filter('.member-status .em-tooltip .em-tooltip--content p')->eq(0)->text());
+    }
+
+    public function testAuthenticatedSupervisorCanFilterCommitteeMembers()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/membres');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(4, $crawler->filter('table tbody tr'));
+        $this->assertCount(1, $crawler->filter('.filter__row:contains("Certifié")'));
+        $this->assertCount(1, $crawler->filter('.filter__row:contains("A choisi son comité de vote")'));
+
+        // filter by gender
+        $crawler = $this->client->submit($crawler->selectButton('Filtrer')->form([
+            'filter[gender]' => 'female',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(2, $crawler->filter('table tbody tr'));
+        $this->assertSame('Gisele Berthoux', trim($crawler->filter('.member-name')->eq(0)->text()));
+        $this->assertSame('Lucie Olivera', trim($crawler->filter('.member-name')->eq(1)->text()));
+
+        // filter by subscribed
+        $crawler = $this->client->submit($crawler->selectButton('Filtrer')->form([
+            'filter[gender]' => '',
+            'filter[subscribed]' => 1,
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(3, $crawler->filter('table tbody tr'));
+        $this->assertSame('Jacques Picard', trim($crawler->filter('.member-name')->eq(0)->text()));
+        $this->assertSame('Gisele Berthoux', trim($crawler->filter('.member-name')->eq(1)->text()));
+        $this->assertSame('Lucie Olivera', trim($crawler->filter('.member-name')->eq(2)->text()));
+
+        // filter by certified
+        $crawler = $this->client->submit($crawler->selectButton('Filtrer')->form([
+            'filter[subscribed]' => '',
+            'filter[certified]' => 1,
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(1, $crawler->filter('table tbody tr'));
+        $this->assertSame('Jacques Picard', trim($crawler->filter('.member-name')->eq(0)->text()));
+
+        // filter by votersOnly
+        $crawler = $this->client->submit($crawler->selectButton('Filtrer')->form([
+            'filter[votersOnly]' => 1,
+            'filter[subscribed]' => '',
+            'filter[certified]' => '',
+        ]));
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(2, $crawler->filter('table tbody tr'));
+        $this->assertSame('Jacques Picard', trim($crawler->filter('.member-name')->eq(0)->text()));
+        $this->assertSame('Gisele Berthoux', trim($crawler->filter('.member-name')->eq(1)->text()));
+    }
+
+    public function testAuthenticatedProvisionalSupervisorDoesnotSeeSomeFilters()
+    {
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-dammarie-les-lys/membres');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(0, $crawler->filter('.filter__row:contains("Certifié")'));
+        $this->assertCount(0, $crawler->filter('.filter__row:contains("A choisi son comité de vote")'));
     }
 
     public function testAuthenticatedSupervisorCanSeeMoreInfoAboutCommitteeMembers()

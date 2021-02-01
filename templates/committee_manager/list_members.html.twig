@@ -29,28 +29,6 @@
                     <div class="manager__filters__section">
                         <div class="manager__filters__group">
                             <div class="filter__row">
-                                {{ form_label(form.firstName, 'Prénom', {label_attr: {class: 'filter__label'}}) }}
-                                {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
-                                {{ form_errors(form.firstName) }}
-                            </div>
-
-                            <div class="filter__row">
-                                {{ form_label(form.city, 'Ville ou code postal', {label_attr: {class: 'filter__label'}}) }}
-                                {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
-                                {{ form_errors(form.city) }}
-                            </div>
-
-                            {% if form.votersOnly is defined %}
-                                <div class="filter__row">
-                                    {{ form_row(form.votersOnly, {label: 'A choisi son comité de vote'}) }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="manager__filters__section">
-                        <div class="manager__filters__group">
-                            <div class="filter__row">
                                 {{ form_label(form.registeredSince, 'Date d\'adhésion', {label_attr: {class: 'filter__label'}}) }}
                                 <div class="filter__multi">
                                     <label style="width: 45%">
@@ -75,6 +53,35 @@
                                     </label>
                                 </div>
                             </div>
+
+
+                            <div class="filter__row">
+                                <label class="filter__label">Statut (E-mail)</label>
+                                {{ form_widget(form.subscribed, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                {{ form_label(form.firstName, 'Prénom', {label_attr: {class: 'filter__label'}}) }}
+                                {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                                {{ form_errors(form.firstName) }}
+                            </div>
+
+                            <div class="filter__row">
+                                {{ form_label(form.city, 'Ville ou code postal', {label_attr: {class: 'filter__label'}}) }}
+                                {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
+                                {{ form_errors(form.city) }}
+                            </div>
+
+                            {% if form.certified is defined %}
+                                <div class="filter__row">
+                                    <label class="filter__label">Certifié</label>
+                                    {{ form_widget(form.certified, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -94,9 +101,16 @@
                             </div>
 
                             <div class="filter__row">
-                                {{ form_label(form.subscribed, 'common.adherent.status_email', {label_attr: {class: 'filter__label'}}) }}
-                                {{ form_widget(form.subscribed, {attr: {class: 'filter__field'}}) }}
+                                <label class="filter__label">Genre</label>
+                                {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
                             </div>
+
+                            {% if form.votersOnly is defined %}
+                                <div class="filter__row">
+                                    <label class="filter__label">A choisi son comité de vote</label>
+                                    {{ form_widget(form.votersOnly, {attr: {class: 'filter__radio__tabs inputs--3'}}) }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -234,7 +248,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="{{ is_supervisor ? (is_canary_enabled ? 11 : 10) : 8 }}" class="text--center">
+                        <td colspan="{{ is_supervisor ? (is_canary_enabled() ? 11 : 10) : 8 }}" class="text--center">
                             <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                             La liste est vide
                         </td>

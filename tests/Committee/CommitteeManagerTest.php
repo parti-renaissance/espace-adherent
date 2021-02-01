@@ -50,7 +50,7 @@ class CommitteeManagerTest extends WebTestCase
 
         $this->assertInstanceOf(AdherentCollection::class, $followers = $this->committeeManager->getOptinCommitteeFollowers($committee));
         $this->assertCount(3, $followers, 'One follower has disabled the committees notifications');
-        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
+        $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_3_UUID)));
         $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_4_UUID)));
         $this->assertCount(5, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_5_UUID)));
 

@@ -106,6 +106,10 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         self::PRE_APPROVED,
         self::PRE_REFUSED,
     ];
+    public const BLOCKED_STATUSES = [
+        self::CLOSED,
+        self::REFUSED,
+    ];
 
     /**
      * The group description.
@@ -315,6 +319,11 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     public function isWaitingForApproval(): bool
     {
         return \in_array($this->status, self::WAITING_STATUSES, true) && !$this->approvedAt;
+    }
+
+    public function isBlocked(): bool
+    {
+        return \in_array($this->status, self::BLOCKED_STATUSES, true);
     }
 
     /**
