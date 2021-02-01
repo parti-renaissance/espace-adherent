@@ -45,7 +45,8 @@ class CommitteeCommand
      * @AssertPhoneNumber(defaultRegion="FR")
      * @Assert\Expression(
      *     expression="(value == null and this.getCommittee()) or (value != '' and value != null)",
-     *     message="common.phone_number.required"
+     *     message="common.phone_number.required",
+     *     groups={"created_by_adherent"}
      * )
      */
     protected $phone;

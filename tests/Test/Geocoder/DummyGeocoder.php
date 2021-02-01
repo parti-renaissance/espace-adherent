@@ -101,6 +101,10 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.5182194,
             'longitude' => 2.624205,
         ],
+        '826 avenue du lys, 77190 dammarie-les-lys, fr' => [
+            'latitude' => 48.5182193,
+            'longitude' => 2.624205,
+        ],
         '73100 mouxy, fr' => [
             'latitude' => 45.570898,
             'longitude' => 5.927206,
