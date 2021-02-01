@@ -50,7 +50,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "randomatic": "^3.0.0",
     "raven-js": "^3.8.0",
-    "react": "^15.3.2",
+    "react": "^15.7.0",
     "react-addons-test-utils": "^15.3.2",
     "react-csv": "^1.0.5",
     "react-data-grid": "^2.0.6",
