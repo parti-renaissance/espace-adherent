@@ -4,6 +4,7 @@ namespace Tests\App\Controller\EnMarche\Committee;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeData;
+use App\Entity\Committee;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +36,7 @@ class ReferentCommitteeControllerTest extends WebTestCase
         $this->assertStringContainsString('Antenne En Marche de Fontainebleau', $crawler->filter('tbody tr.committee__item')->eq(3)->text());
     }
 
-    public function testReferentCanCreateCommittee()
+    public function testReferentCanAccessCommitteeCreationPage()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
         $crawler = $this->client->request('GET', '/parametres/mes-activites#committees');
@@ -48,6 +49,61 @@ class ReferentCommitteeControllerTest extends WebTestCase
 
         $this->assertEquals('http://'.$this->hosts['app'].'/espace-referent/comites/creer', $this->client->getRequest()->getUri());
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
+    public function testReferentCanCreateCommittee()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent-child@en-marche-dev.fr');
+        $crawler = $this->client->request('GET', '/espace-referent/comites/creer');
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+
+        // Submit the committee form with invalid data
+        $crawler = $this->client->submit($crawler->selectButton('Créer le comité')->form([
+            'committee' => [
+                'name' => 'F',
+                'description' => 'F',
+                'address' => [
+                    'country' => 'FR',
+                    'postalCode' => '99999',
+                    'city' => '10102-45029',
+                ],
+            ],
+        ]));
+
+        $this->assertSame(7, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame("L'adresse saisie ne fait pas partie de la zone géographique que vous gérez", $crawler->filter('#committee_address_errors > li')->eq(0)->text());
+        $this->assertSame("Cette valeur n'est pas un code postal français valide.", $crawler->filter('#committee_address_errors > li')->eq(1)->text());
+        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee_address_errors > li')->eq(2)->text());
+        $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#committee_address_address_errors > li')->text());
+        $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#committee_name_errors > li.form__error')->text());
+        $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#committee_description_errors > li')->text());
+        $this->assertSame('Vous devez séléctionner au moins un Animateur provisoire parmi vos adhérents', $crawler->filter('#field-provisional-supervisor-female li')->text());
+
+        // Submit the committee form with valid data to create committee
+        $crawler = $this->client->submit($crawler->selectButton('Créer le comité')->form([
+            'committee[name]' => 'Nouveau comité Dammarie-les-Lys',
+            'committee[description]' => 'Comité français En Marche !',
+            'committee[address][address]' => '826 avenue du lys',
+            'committee[address][postalCode]' => '77190',
+            'committee[address][city]' => '77190-77152',
+            'committee[address][cityName]' => 'dammarie-les-lys',
+            'committee[address][country]' => 'FR',
+            'committee[provisionalSupervisorMale]' => $this->getAdherent(LoadAdherentData::ADHERENT_6_UUID)->getId(),
+        ]));
+
+        $this->assertSame(0, $crawler->filter('#create-committee-form .form__errors > li')->count());
+
+        $this->assertInstanceOf(Committee::class, $committee = $this->getCommitteeRepository()->findMostRecentCommittee());
+        $this->assertSame('Nouveau comité Dammarie-les-Lys', $committee->getName());
+        $this->assertTrue($committee->isWaitingForApproval());
+
+        $this->assertClientIsRedirectedTo('/espace-referent/comites/demandes', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès.
+Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soit pleinement opérationnel.');
     }
 
     public function testReferentCanSeeCommitteeRequests()
