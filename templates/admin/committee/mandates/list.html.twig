@@ -25,7 +25,7 @@
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             Retour à la liste
         </a>
-        {% if can_add_mandate %}
+        {% if can_add_mandate and not committee.isClosed %}
             <a href="{{ path('app_admin_committee_add_mandate', { id: committee.id }) }}" class="btn btn-default">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 Ajouter un mandat

@@ -82,7 +82,7 @@ class CommitteeMergeCommandHandler
                 })
             ;
 
-            $sourceCommittee->refused();
+            $sourceCommittee->close();
 
             $this->em->persist($this->createCommitteeMergeHistory(
                 $sourceCommittee,

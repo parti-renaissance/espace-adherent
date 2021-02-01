@@ -100,6 +100,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     use EntityElectionHelperTrait;
     use StaticSegmentTrait;
 
+    public const CLOSED = 'CLOSED';
     public const WAITING_STATUSES = [
         self::PENDING,
         self::PRE_APPROVED,
@@ -166,6 +167,11 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
      * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\CommitteeAdherentMandate", mappedBy="committee", fetch="EXTRA_LAZY")
      */
     private $adherentMandates;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $closedAt;
 
     public function __construct(
         UuidInterface $uuid,
@@ -566,6 +572,20 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return array_map(function (CommitteeAdherentMandate $mandate) {
             return $mandate->getAdherent();
         }, $this->findSupervisorMandates(null, $isProvisional)->toArray());
+    }
+
+    /**
+     * Marks this committee as closed.
+     */
+    public function close(): void
+    {
+        $this->status = self::CLOSED;
+        $this->closedAt = new \DateTime();
+    }
+
+    public function isClosed(): bool
+    {
+        return self::CLOSED === $this->status;
     }
 
     private function findSupervisorMandates(?string $gender = null, bool $isProvisional = null): Collection

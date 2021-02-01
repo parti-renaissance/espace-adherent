@@ -6,6 +6,8 @@
     <span class="label label-success">Accepté</span>
 {% elseif committee.isPreApproved %}
     <span class="label label-success"><i class="fa fa-check-circle"></i></span>
+{% elseif committee.isClosed %}
+    <span class="label label-default">Fermé</span>
 {% else %}
     <span class="label label-primary">En attente</span>
 {% endif %}

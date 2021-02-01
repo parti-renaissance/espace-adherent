@@ -31,6 +31,7 @@ class CommitteeTest extends TestCase
         $this->assertNull($committee->getTwitterNickname());
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
+        $this->assertFalse($committee->isClosed());
         $this->assertTrue($committee->isWaitingForApproval());
         $this->assertNull($committee->getApprovedAt());
     }
@@ -82,6 +83,7 @@ class CommitteeTest extends TestCase
         $this->assertTrue($committee->isPreApproved());
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
+        $this->assertFalse($committee->isClosed());
         $this->assertTrue($committee->isWaitingForApproval());
         $this->assertFalse($committee->isPreRefused());
         $this->assertEquals(null, $committee->getApprovedAt());
@@ -95,6 +97,7 @@ class CommitteeTest extends TestCase
         $this->assertTrue($committee->isPreRefused());
         $this->assertFalse($committee->isApproved());
         $this->assertFalse($committee->isRefused());
+        $this->assertFalse($committee->isClosed());
         $this->assertTrue($committee->isWaitingForApproval());
         $this->assertFalse($committee->isPreApproved());
         $this->assertEquals(null, $committee->getApprovedAt());
@@ -108,6 +111,7 @@ class CommitteeTest extends TestCase
 
         $this->assertTrue($committee->isApproved());
         $this->assertFalse($committee->isRefused());
+        $this->assertFalse($committee->isClosed());
         $this->assertFalse($committee->isWaitingForApproval());
         $this->assertFalse($committee->isPreApproved());
         $this->assertFalse($committee->isPreRefused());
@@ -121,6 +125,19 @@ class CommitteeTest extends TestCase
         $committee->approved();
 
         $committee->approved();
+    }
+
+    public function testCloseCommittee()
+    {
+        $committee = $this->createCommittee();
+        $committee->close();
+
+        $this->assertFalse($committee->isApproved());
+        $this->assertFalse($committee->isRefused());
+        $this->assertFalse($committee->isWaitingForApproval());
+        $this->assertFalse($committee->isPreApproved());
+        $this->assertFalse($committee->isPreRefused());
+        $this->assertTrue($committee->isClosed());
     }
 
     private function createCommittee(): Committee
