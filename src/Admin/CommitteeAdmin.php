@@ -140,6 +140,9 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('refusedAt', null, [
                     'label' => 'Date de refus',
                 ])
+                ->add('closedAt', null, [
+                    'label' => 'Date de fermeture',
+                ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', TextType::class, [
@@ -356,6 +359,7 @@ class CommitteeAdmin extends AbstractAdmin
                         'En attente' => Committee::PENDING,
                         'Accepté' => Committee::APPROVED,
                         'Refusé' => Committee::REFUSED,
+                        'Fermé' => Committee::CLOSED,
                         'Pré-approuvé' => Committee::PRE_APPROVED,
                         'Pré-refusé' => Committee::PRE_REFUSED,
                     ],

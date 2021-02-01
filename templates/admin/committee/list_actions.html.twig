@@ -1,27 +1,31 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    <div style="width: 160px">
-        {% if not object.isApproved %}
-            <a href="{{ path('admin_app_committee_approve', { id: object.id }) }}" class="btn btn-xs btn-default" title="Approuver">
-                <i class="fa fa-check" aria-hidden="true"></i>
-                Approuver
-            </a>
-        {% endif %}
+    {% if not object.isClosed %}
+        <div style="width: 160px">
+            {% if not object.isApproved %}
+                <a href="{{ path('admin_app_committee_approve', { id: object.id }) }}" class="btn btn-xs btn-default" title="Approuver">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Approuver
+                </a>
+            {% endif %}
 
-        {% if not object.isRefused %}
-            <a href="{{ path('app_admin_committee_refuse', { id: object.id }) }}" class="btn btn-xs btn-default view_link" title="Refuser">
-                <i class="fa fa-ban" aria-hidden="true"></i>
-                Refuser
-            </a>
-        {% endif %}
-    </div>
+            {% if not object.isRefused %}
+                <a href="{{ path('app_admin_committee_refuse', { id: object.id }) }}" class="btn btn-xs btn-default view_link" title="Refuser">
+                    <i class="fa fa-ban" aria-hidden="true"></i>
+                    Refuser
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
 
     <div style="width: 160px; margin-top: 5px;">
-        <a href="{{ path('admin_app_committee_edit', { id: object.id }) }}" class="btn btn-xs btn-default" title="Éditer">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            Éditer
-        </a>
+        {% if not object.isClosed %}
+            <a href="{{ path('admin_app_committee_edit', { id: object.id }) }}" class="btn btn-xs btn-default" title="Éditer">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                Éditer
+            </a>
+        {% endif %}
 
         <a href="{{ path('app_admin_committee_members', { id: object.id }) }}" class="btn btn-xs btn-default" title="Membres">
             <i class="fa fa-users" aria-hidden="true"></i>
