@@ -2,9 +2,9 @@
 
 namespace Tests\App\Controller\EnMarche;
 
+use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
-use App\DataFixtures\ORM\LoadEventData;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\EventContactMembersMessage;
 use App\Mailer\Message\EventUpdateMessage;
@@ -345,8 +345,8 @@ class EventManagerControllerTest extends WebTestCase
 
     public function testExportIcalForeignEvent()
     {
-        $uuid = LoadEventData::EVENT_12_UUID;
-        /** @var Event $event */
+        $uuid = LoadCommitteeEventData::EVENT_12_UUID;
+        /** @var CommitteeEvent $event */
         $event = $this->getEventRepository()->findOneBy(['uuid' => $uuid]);
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/ical', $event->getSlug()));

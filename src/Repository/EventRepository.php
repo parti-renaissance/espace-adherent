@@ -4,14 +4,14 @@ namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
-use App\Entity\BaseEvent;
-use App\Entity\BaseEventCategory;
-use App\Entity\CitizenAction;
 use App\Entity\Committee;
 use App\Entity\District;
-use App\Entity\Event;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\BaseEventCategory;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
+use App\Event\EventTypeEnum;
 use App\Geocoder\Coordinates;
 use App\Search\SearchParametersFilter;
 use App\Statistics\StatisticsParametersFilter;
@@ -43,7 +43,7 @@ class EventRepository extends ServiceEntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    public function __construct(ManagerRegistry $registry, string $className = Event::class)
+    public function __construct(ManagerRegistry $registry, string $className = CommitteeEvent::class)
     {
         parent::__construct($registry, $className);
     }
@@ -69,7 +69,7 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOneBySlug(string $slug): ?Event
+    public function findOneBySlug(string $slug): ?CommitteeEvent
     {
         $query = $this
             ->createQueryBuilder('e')
@@ -89,7 +89,7 @@ class EventRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findMostRecentEvent(): ?Event
+    public function findMostRecentEvent(): ?CommitteeEvent
     {
         $query = $this
             ->createQueryBuilder('ce')
@@ -122,7 +122,7 @@ class EventRepository extends ServiceEntityRepository
         return $this
             ->createSlugQueryBuilder($slug)
             ->andWhere('e.status IN (:statuses)')
-            ->setParameter('statuses', Event::ACTIVE_STATUSES)
+            ->setParameter('statuses', CommitteeEvent::ACTIVE_STATUSES)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -146,11 +146,11 @@ class EventRepository extends ServiceEntityRepository
             ->setParameters([
                 'start_date' => $startDate,
                 'end_date' => $endDate,
-                'status' => Event::STATUS_SCHEDULED,
+                'status' => BaseEvent::STATUS_SCHEDULED,
             ])
         ;
 
-        if (Event::class === $this->getEntityName()) {
+        if (CommitteeEvent::class === $this->getEntityName()) {
             $qb
                 ->leftJoin('event.committee', 'committee')
                 ->leftJoin('committee.referentTags', 'committeeReferentTags')
@@ -197,7 +197,7 @@ class EventRepository extends ServiceEntityRepository
     /**
      * @param Zone[] $zones
      *
-     * @return Event[]|PaginatorInterface
+     * @return CommitteeEvent[]|PaginatorInterface
      */
     public function findManagedByPaginator(array $zones, int $page = 1, int $limit = 50): PaginatorInterface
     {
@@ -252,7 +252,7 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Event[]
+     * @return CommitteeEvent[]
      */
     public function findUpcomingEvents(int $category = null): array
     {
@@ -347,7 +347,7 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.published = :published')
-            ->andWhere($qb->expr()->in('e.status', Event::ACTIVE_STATUSES))
+            ->andWhere($qb->expr()->in('e.status', BaseEvent::ACTIVE_STATUSES))
             ->andWhere('e.beginAt >= :today')
             ->andWhere('ec.status = :status')
             ->orderBy('e.beginAt', 'ASC')
@@ -396,7 +396,7 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Event[]
+     * @return CommitteeEvent[]
      */
     public function searchEvents(SearchParametersFilter $search): array
     {
@@ -472,10 +472,10 @@ LEFT JOIN adherents ON adherents.id = events.organizer_id
 LEFT JOIN committees ON committees.id = events.committee_id
 LEFT JOIN events_categories AS event_category
     ON event_category.id = events.category_id
-    AND events.type = :event_type
+    AND events.type = :committee_event_type
 LEFT JOIN citizen_action_categories AS citizen_action_category
     ON citizen_action_category.id = events.category_id
-    AND events.type = :citizen_action_type
+    AND events.type = :citizen_action_event_type
 WHERE (events.address_latitude IS NOT NULL 
     AND events.address_longitude IS NOT NULL 
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
@@ -541,14 +541,15 @@ SQL;
         }
 
         if (SearchParametersFilter::TYPE_CITIZEN_ACTIONS === $search->getType()) {
-            $query->setParameter('type', CitizenAction::CITIZEN_ACTION_TYPE);
+            $query->setParameter('type', EventTypeEnum::TYPE_CITIZEN_ACTION);
         }
+
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
         $query->setParameter('published', 1, \PDO::PARAM_INT);
         $query->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED);
-        $query->setParameter('event_type', BaseEvent::EVENT_TYPE);
-        $query->setParameter('citizen_action_type', BaseEvent::CITIZEN_ACTION_TYPE);
+        $query->setParameter('committee_event_type', EventTypeEnum::TYPE_COMMITTEE);
+        $query->setParameter('citizen_action_event_type', EventTypeEnum::TYPE_CITIZEN_ACTION);
         $query->setParameter('first_result', $search->getOffset(), \PDO::PARAM_INT);
         $query->setParameter('max_results', $search->getMaxResults(), \PDO::PARAM_INT);
 
@@ -647,7 +648,7 @@ SQL;
             ->innerJoin('event.referentTags', 'tag')
             ->where('tag IN (:tags)')
             ->andWhere('event.committee IS NOT NULL')
-            ->andWhere("event.status = '".Event::STATUS_SCHEDULED."'")
+            ->andWhere("event.status = '".BaseEvent::STATUS_SCHEDULED."'")
             ->andWhere('event.participantsCount > 0')
             ->andWhere('event.beginAt >= :from')
             ->andWhere('event.beginAt <= :until')
@@ -685,14 +686,14 @@ FROM (
         AND events.committee_id IS NOT NULL 
         AND events.status = ? 
         AND events.participants_count > 0) 
-        AND events.type IN ('event') 
+        AND events.type = ? 
     GROUP BY events.id
 ) AS events_count
 SQL;
 
         $results = $this->_em->getConnection()->executeQuery(
             $query,
-            [$referentTagIds, Event::STATUS_SCHEDULED],
+            [$referentTagIds, BaseEvent::STATUS_SCHEDULED, EventTypeEnum::TYPE_COMMITTEE],
             [Connection::PARAM_STR_ARRAY, \PDO::PARAM_STR]
         );
 
@@ -748,10 +749,13 @@ SQL;
     }
 
     /**
-     * @return Event[]
+     * @return CommitteeEvent[]
      */
-    public function findNearbyOf(Event $event, int $radius = SearchParametersFilter::RADIUS_10, int $max = 3): array
-    {
+    public function findNearbyOf(
+        CommitteeEvent $event,
+        int $radius = SearchParametersFilter::RADIUS_10,
+        int $max = 3
+    ): array {
         return $this
             ->createNearbyQueryBuilder(new Coordinates($event->getLatitude(), $event->getLongitude()))
             ->andWhere($this->getNearbyExpression().' < :distance_max')

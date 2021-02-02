@@ -2,7 +2,7 @@
 
 namespace App\Collection;
 
-use App\Entity\EventRegistration;
+use App\Entity\Event\EventRegistration;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class EventRegistrationCollection extends ArrayCollection

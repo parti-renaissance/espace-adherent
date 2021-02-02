@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\CitizenActionCategory;
+use App\Entity\Event\CitizenActionCategory;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CitizenActionCategoryRepository extends BaseEventCategoryRepository

@@ -2,7 +2,7 @@
 
 namespace App\Statistics\Acquisition\Calculator;
 
-use App\Entity\Event;
+use App\Entity\Event\BaseEvent;
 use App\Repository\EventRepository;
 use App\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use App\Statistics\Acquisition\StatisticsRequest;
@@ -36,7 +36,7 @@ class EventCalculator extends AbstractCalculator
             ->setParameters([
                 'start_date' => $request->getStartDateAsString(),
                 'end_date' => $request->getEndDateAsString(),
-                'status' => Event::STATUS_SCHEDULED,
+                'status' => BaseEvent::STATUS_SCHEDULED,
                 'tags' => $request->getTags(),
             ])
             ->groupBy('date')

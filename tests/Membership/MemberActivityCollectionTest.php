@@ -3,8 +3,8 @@
 namespace Tests\App\Membership;
 
 use App\Entity\Adherent;
-use App\Entity\BaseEvent;
-use App\Entity\EventRegistration;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\EventRegistration;
 use App\Membership\MemberActivityCollection;
 use PHPUnit\Framework\TestCase;
 

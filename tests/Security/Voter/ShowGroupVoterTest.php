@@ -10,6 +10,7 @@ use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\ShowGroupVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
 
 class ShowGroupVoterTest extends AbstractAdherentVoterTest
@@ -70,7 +71,7 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(bool $getUuidIsCalled): Adherent
     {
@@ -91,7 +92,7 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return BaseGroup|\PHPUnit_Framework_MockObject_MockObject
+     * @return BaseGroup|MockObject
      */
     private function getGroupMock(string $groupClass, bool $approved, bool $withCreator = null): BaseGroup
     {

@@ -2,7 +2,7 @@
 
 namespace App\Exception;
 
-use App\Entity\EventRegistration;
+use App\Entity\Event\EventRegistration;
 
 class EventRegistrationException extends \RuntimeException
 {

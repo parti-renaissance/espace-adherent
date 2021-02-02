@@ -6,10 +6,10 @@ use App\CitizenProject\CitizenProjectWasCreatedEvent;
 use App\CitizenProject\CitizenProjectWasUpdatedEvent;
 use App\Committee\CommitteeEvent;
 use App\Entity\Adherent;
-use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Entity\Event;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CommitteeEvent as CommitteeEventEntity;
 use App\Event\EventEvent;
 use App\Events;
 use App\Membership\UserEvent;
@@ -70,8 +70,8 @@ class SyncWithAPIContext implements Context
      */
     public function iDispatchEventEvent(string $event, string $eventName): void
     {
-        /** @var Event $committeeEvent */
-        $committeeEvent = $this->doctrine->getRepository(Event::class)->findOneBy(['name' => $eventName]);
+        /** @var CommitteeEventEntity $committeeEvent */
+        $committeeEvent = $this->doctrine->getRepository(CommitteeEventEntity::class)->findOneBy(['name' => $eventName]);
 
         $this->dispatcher->dispatch(new EventEvent(null, $committeeEvent), $event);
     }

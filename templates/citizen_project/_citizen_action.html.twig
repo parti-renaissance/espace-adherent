@@ -6,7 +6,7 @@
     </li>
 
     <li class="b__flex--1">
-        <a href="{{ path('app_citizen_action_show', {slug: action.slug}) }}"
+        <a href="{{ path('app_citizen_action_event_show', {slug: action.slug}) }}"
            class="{{ action.beginAt|date('U') < 'now'|date('U') ? 'text--gray ' : '' }}text--bold text--medium-small link--no-decor">{{ action.name }}</a>
         <div class="text--small text--gray">{{ action.participantsCount }} inscrit(s)</div>
     </li>
@@ -14,7 +14,7 @@
     <li>
         {% if date(action.beginAt) > date() %}
             <a class="newbtn--small btn--blue"
-               href="{{ path('app_citizen_action_attend', {slug: action.slug}) }}">
+               href="{{ path('app_citizen_action_event_attend', {slug: action.slug}) }}">
                 S'inscrire
             </a>
         {% endif %}

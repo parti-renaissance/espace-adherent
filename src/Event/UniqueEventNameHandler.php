@@ -2,7 +2,7 @@
 
 namespace App\Event;
 
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Gedmo\Sluggable\Handler\SlugHandlerWithUniqueCallbackInterface;
 use Gedmo\Sluggable\Mapping\Event\SluggableAdapter;
@@ -27,7 +27,7 @@ class UniqueEventNameHandler implements SlugHandlerWithUniqueCallbackInterface
     }
 
     /**
-     * @param Event $object
+     * @param CommitteeEvent $object
      */
     public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug)
     {

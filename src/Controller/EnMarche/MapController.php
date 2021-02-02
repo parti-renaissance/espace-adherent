@@ -4,8 +4,8 @@ namespace App\Controller\EnMarche;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event;
-use App\Entity\EventCategory;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventCategory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,7 +20,7 @@ class MapController extends AbstractController
 
         return $this->render('map/committees.html.twig', [
             'userCount' => $doctrine->getRepository(Adherent::class)->countAdherents(),
-            'eventCount' => $doctrine->getRepository(Event::class)->countElements(),
+            'eventCount' => $doctrine->getRepository(CommitteeEvent::class)->countElements(),
             'committeeCount' => $doctrine->getRepository(Committee::class)->countElements(),
         ]);
     }
@@ -31,7 +31,7 @@ class MapController extends AbstractController
         $doctrine = $this->getDoctrine();
 
         return $this->render('map/events.html.twig', [
-            'eventCount' => $doctrine->getRepository(Event::class)->countUpcomingEvents(),
+            'eventCount' => $doctrine->getRepository(CommitteeEvent::class)->countUpcomingEvents(),
             'categories' => $doctrine->getRepository(EventCategory::class)->findAllEnabledOrderedByName(),
         ]);
     }

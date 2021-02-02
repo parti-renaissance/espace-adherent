@@ -2,9 +2,9 @@
 
 namespace Tests\App\Serializer;
 
-use App\Entity\CitizenAction;
-use App\Entity\Event;
-use App\Entity\MunicipalEvent;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\MunicipalEvent;
 use App\Serializer\EventICalHandler;
 use App\Serializer\IcalSerializationVisitor;
 use JMS\Serializer\GraphNavigator;
@@ -30,7 +30,7 @@ class EventIcalHandlerTest extends TestCase
 
         $this->assertCount(3, $result);
 
-        $this->assertEquals(Event::class, $result[0]['type']);
+        $this->assertEquals(CommitteeEvent::class, $result[0]['type']);
         $this->assertEquals('ical', $result[0]['format']);
         $this->assertEquals(GraphNavigator::DIRECTION_SERIALIZATION, $result[0]['direction']);
         $this->assertEquals('serialize', $result[0]['method']);
@@ -52,7 +52,7 @@ class EventIcalHandlerTest extends TestCase
     public function testSerializeNoOrganizer()
     {
         $visitor = $this->createMock(IcalSerializationVisitor::class);
-        $committeeEvent = $this->createMock(Event::class);
+        $committeeEvent = $this->createMock(CommitteeEvent::class);
         $uuid = $this->createMock(UuidInterface::class);
         $type = [];
         $serializationContext = $this->createMock(SerializationContext::class);

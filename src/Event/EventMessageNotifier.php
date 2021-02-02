@@ -4,8 +4,8 @@ namespace App\Event;
 
 use App\Committee\CommitteeManager;
 use App\Entity\Adherent;
-use App\Entity\Event;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventRegistration;
 use App\Events;
 use App\Mailer\MailerService;
 use App\Mailer\Message\EventCancellationMessage;
@@ -74,7 +74,7 @@ class EventMessageNotifier implements EventSubscriberInterface
         }
     }
 
-    private function createMessage(array $followers, Event $event, Adherent $host): EventNotificationMessage
+    private function createMessage(array $followers, CommitteeEvent $event, Adherent $host): EventNotificationMessage
     {
         $params = [
             'slug' => $event->getSlug(),
@@ -84,15 +84,18 @@ class EventMessageNotifier implements EventSubscriberInterface
             $followers,
             $host,
             $event,
-            $this->generateUrl('app_event_show', $params),
+            $this->generateUrl('app_committee_event_show', $params),
             function (Adherent $adherent) {
                 return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }
         );
     }
 
-    private function createCancelMessage(array $registered, Event $event, Adherent $host): EventCancellationMessage
-    {
+    private function createCancelMessage(
+        array $registered,
+        CommitteeEvent $event,
+        Adherent $host
+    ): EventCancellationMessage {
         return EventCancellationMessage::create(
             $registered,
             $host,

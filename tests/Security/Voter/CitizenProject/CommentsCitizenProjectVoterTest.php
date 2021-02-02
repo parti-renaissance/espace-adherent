@@ -8,6 +8,7 @@ use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectMembership;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\CitizenProject\CommentsCitizenProjectVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class CommentsCitizenProjectVoterTest extends AbstractAdherentVoterTest
@@ -54,7 +55,7 @@ class CommentsCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     public function getAdherentMock(bool $membershipChecked, CitizenProject $project, bool $isMember): Adherent
     {
@@ -76,7 +77,7 @@ class CommentsCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return CitizenProject|\PHPUnit_Framework_MockObject_MockObject
+     * @return CitizenProject|MockObject
      */
     private function getCitizenProjectMock(bool $approved, bool $doubleChecked = false): CitizenProject
     {

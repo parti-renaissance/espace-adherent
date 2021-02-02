@@ -7,12 +7,13 @@ use App\Entity\Adherent;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\CreateCommitteeVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
 {
     /**
-     * @var ElectedRepresentativeRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var ElectedRepresentativeRepository|MockObject
      */
     private $electedRepresentativeRepository;
 

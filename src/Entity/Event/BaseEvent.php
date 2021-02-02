@@ -1,15 +1,30 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Event;
 
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
-use App\Entity\Report\ReportableInterface;
+use App\Entity\AddressHolderInterface;
+use App\Entity\Adherent;
+use App\Entity\AuthorInterface;
+use App\Entity\EntityCrudTrait;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityPostAddressTrait;
+use App\Entity\EntityReferentTagTrait;
+use App\Entity\EntityTimestampableTrait;
+use App\Entity\EntityZoneTrait;
+use App\Entity\ReferentTag;
+use App\Entity\ReferentTaggableEntity;
+use App\Entity\ZoneableEntity;
+use App\Event\EventTypeEnum;
 use App\Geocoder\GeoPointInterface;
+use App\Validator\DateRange;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,35 +44,36 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\AssociationOverrides({
  *     @ORM\AssociationOverride(name="zones",
- *         joinTable=@ORM\JoinTable(
- *             name="event_zone"
- *         )
+ *         joinTable=@ORM\JoinTable(name="event_zone")
  *     )
  * })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "event": "App\Entity\Event",
- *     "citizen_action": "App\Entity\CitizenAction",
- *     "institutional_event": "App\Entity\InstitutionalEvent",
- *     "municipal_event": "App\Entity\MunicipalEvent",
+ *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
+ *     EventTypeEnum::TYPE_CITIZEN_ACTION: "CitizenAction",
+ *     EventTypeEnum::TYPE_INSTITUTIONAL: "InstitutionalEvent",
+ *     EventTypeEnum::TYPE_MUNICIPAL: "MunicipalEvent",
  * })
+ *
+ * @DateRange(
+ *     startDateField="beginAt",
+ *     endDateField="finishAt",
+ *     interval="3 days",
+ *     message="committee.event.invalid_finish_date"
+ * )
  */
-abstract class BaseEvent implements GeoPointInterface, ReportableInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity
+abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface
 {
-    const EVENT_TYPE = 'event';
-    const CITIZEN_ACTION_TYPE = 'citizen_action';
-    const INSTITUTIONAL_EVENT_TYPE = 'institutional_event';
+    public const STATUS_SCHEDULED = 'SCHEDULED';
+    public const STATUS_CANCELLED = 'CANCELLED';
 
-    const STATUS_SCHEDULED = 'SCHEDULED';
-    const STATUS_CANCELLED = 'CANCELLED';
-
-    const STATUSES = [
+    public const STATUSES = [
         self::STATUS_SCHEDULED,
         self::STATUS_CANCELLED,
     ];
 
-    const ACTIVE_STATUSES = [
+    public const ACTIVE_STATUSES = [
         self::STATUS_SCHEDULED,
     ];
 
@@ -91,9 +107,10 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write"})
      *
-     * @Assert\Length(max=100)
+     * @Assert\NotBlank
+     * @Assert\Length(min=5, max=100)
      */
     protected $name;
 
@@ -102,6 +119,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @var string|null
      *
+     * @Assert\NotBlank
      * @ORM\Column(length=100)
      */
     protected $canonicalName;
@@ -127,7 +145,10 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @ORM\Column(type="text")
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(min=10)
      */
     protected $description;
 
@@ -139,9 +160,12 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("timeZone")
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     *
+     * @Assert\NotBlank
+     * @Assert\Timezone
      */
-    protected $timeZone;
+    protected $timeZone = GeoCoder::DEFAULT_TIME_ZONE;
 
     /**
      * @var \DateTimeInterface|null
@@ -151,7 +175,9 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("beginAt")
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     *
+     * @Assert\NotBlank
      */
     protected $beginAt;
 
@@ -163,7 +189,9 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("finishAt")
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     *
+     * @Assert\NotBlank
      */
     protected $finishAt;
 
@@ -172,6 +200,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="RESTRICT")
+     *
+     * @Assert\NotBlank
      */
     protected $organizer;
 
@@ -185,7 +215,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @SymfonySerializer\Groups({"event_read"})
      */
-    protected $participantsCount;
+    protected $participantsCount = 0;
 
     /**
      * @var string|null
@@ -196,7 +226,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @SymfonySerializer\Groups({"event_read"})
      */
-    protected $status;
+    protected $status = self::STATUS_SCHEDULED;
 
     /**
      * @var bool
@@ -212,7 +242,9 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     *
+     * @Assert\GreaterThan("0", message="committee.event.invalid_capacity")
      */
     protected $capacity;
 
@@ -222,6 +254,11 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @var BaseEventCategory|null
      */
     protected $category;
+
+    public function __construct(UuidInterface $uuid = null)
+    {
+        $this->uuid = $uuid ?? Uuid::uuid4();
+    }
 
     public function __toString(): string
     {
@@ -258,9 +295,19 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
         return $this->description;
     }
 
-    public function getBeginAt(): \DateTimeInterface
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getBeginAt(): ?\DateTimeInterface
     {
         return $this->beginAt;
+    }
+
+    public function setBeginAt(?\DateTimeInterface $beginAt): void
+    {
+        $this->beginAt = $beginAt;
     }
 
     public function getLocalBeginAt(): \DateTimeInterface
@@ -268,9 +315,14 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
         return (clone $this->beginAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
     }
 
-    public function getFinishAt(): \DateTimeInterface
+    public function getFinishAt(): ?\DateTimeInterface
     {
         return $this->finishAt;
+    }
+
+    public function setFinishAt(?\DateTimeInterface $finishAt): void
+    {
+        $this->finishAt = $finishAt;
     }
 
     public function getLocalFinishAt(): \DateTimeInterface
@@ -393,11 +445,11 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
         return $this->participantsCount >= $this->capacity;
     }
 
-    abstract public function getType();
+    abstract public function getType(): string;
 
     public function isCitizenAction(): bool
     {
-        return self::CITIZEN_ACTION_TYPE === $this->getType();
+        return EventTypeEnum::TYPE_CITIZEN_ACTION === $this->getType();
     }
 
     public function equals(self $other): bool
@@ -418,5 +470,15 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
     public function getPostAddress(): ?AddressInterface
     {
         return $this->postAddress;
+    }
+
+    public function setAuthor(Adherent $adherent): void
+    {
+        $this->organizer = $adherent;
+    }
+
+    public function getAuthor(): ?Adherent
+    {
+        return $this->organizer;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\Entity\EventRegistration;
+use App\Entity\Event\EventRegistration;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\Controller\ControllerTestTrait;

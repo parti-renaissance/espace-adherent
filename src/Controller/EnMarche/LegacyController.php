@@ -3,7 +3,7 @@
 namespace App\Controller\EnMarche;
 
 use App\Entity\Committee;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,9 +15,9 @@ class LegacyController extends AbstractController
      * @Route("/espaceperso/evenement/{id}-{slug}", requirements={"id": "\d+"}, methods={"GET"})
      * @Entity("event", expr="repository.find(id)")
      */
-    public function redirectEventAction(Event $event): Response
+    public function redirectEventAction(CommitteeEvent $event): Response
     {
-        return $this->redirectToRoute('app_event_show', [
+        return $this->redirectToRoute('app_committee_event_show', [
             'slug' => $event->getSlug(),
         ], Response::HTTP_MOVED_PERMANENTLY);
     }

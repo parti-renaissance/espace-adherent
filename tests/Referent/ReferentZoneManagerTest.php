@@ -5,6 +5,7 @@ namespace Tests\App\Referent;
 use App\Entity\Adherent;
 use App\Referent\ReferentZoneManager;
 use App\Repository\Geo\ZoneRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ReferentZoneManagerTest extends TestCase
@@ -36,7 +37,7 @@ class ReferentZoneManagerTest extends TestCase
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function createAdherent(string $country, ?string $inseeCode, array $zoneCodes): Adherent
     {

@@ -1,7 +1,7 @@
 {% extends 'citizen_action/_layout.html.twig' %}
 
 {% block page_title citizen_action.name %}
-{% block canonical_url url('app_citizen_action_show', {'slug': citizen_action.slug}) %}
+{% block canonical_url url('app_citizen_action_event_show', {'slug': citizen_action.slug}) %}
 
 {% block json_ld %}
     <script type="application/ld+json">
@@ -54,7 +54,7 @@
                 {% endif %}
 
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_citizen_action_list_participants', { slug: citizen_action.slug }) }}">
+                    <a href="{{ path('app_citizen_action_event_list_participants', { slug: citizen_action.slug }) }}">
                         <h3 class="text--medium event-attendees">{{ 'citizen_action.participants_count'|transchoice(participants|length) }}</h3>
                     </a>
                 {% endif %}

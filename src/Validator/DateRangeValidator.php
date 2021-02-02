@@ -36,6 +36,10 @@ class DateRangeValidator extends ConstraintValidator
         $startDate = $this->propertyAccessor->getValue($value, $constraint->startDateField);
         $endDate = $this->propertyAccessor->getValue($value, $constraint->endDateField);
 
+        if (null === $startDate || null === $endDate) {
+            return;
+        }
+
         if (!$startDate instanceof \DateTime) {
             throw new ConstraintDefinitionException('The start date field should be of type DateTime');
         }

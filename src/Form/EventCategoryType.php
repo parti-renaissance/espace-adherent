@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\EventCategory;
+use App\Entity\Event\EventCategory;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

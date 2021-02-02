@@ -75,7 +75,7 @@
                                 Se désinscrire
                             </button>
                         {% else %}
-                            <a class="newbtn newbtn--orange register-event" href="{{ path("app_citizen_action_attend", { slug: citizen_action.slug }) }}">S'inscrire</a>
+                            <a class="newbtn newbtn--orange register-event" href="{{ path("app_citizen_action_event_attend", { slug: citizen_action.slug }) }}">S'inscrire</a>
                         {% endif %}
                     </div>
                 </div>

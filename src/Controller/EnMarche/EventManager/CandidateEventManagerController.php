@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche\EventManager;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
-use App\Entity\EventGroupCategory;
+use App\Entity\Event\EventGroupCategory;
 use App\Event\EventManagerSpaceEnum;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\EventGroupCategoryRepository;

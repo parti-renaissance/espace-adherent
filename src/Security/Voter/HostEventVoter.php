@@ -3,7 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Adherent;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Event\EventPermissions;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -20,11 +20,11 @@ class HostEventVoter extends AbstractAdherentVoter
 
     protected function supports($attribute, $event)
     {
-        return EventPermissions::HOST === $attribute && $event instanceof Event;
+        return EventPermissions::HOST === $attribute && $event instanceof CommitteeEvent;
     }
 
     /**
-     * @param Event $event
+     * @param CommitteeEvent $event
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $event): bool
     {

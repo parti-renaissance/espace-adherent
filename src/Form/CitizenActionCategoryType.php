@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\CitizenActionCategory;
+use App\Entity\Event\CitizenActionCategory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

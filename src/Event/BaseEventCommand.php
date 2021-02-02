@@ -5,8 +5,8 @@ namespace App\Event;
 use App\Address\Address;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
-use App\Entity\BaseEvent;
-use App\Entity\BaseEventCategory;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\BaseEventCategory;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,6 +40,7 @@ class BaseEventCommand
 
     /**
      * @Assert\NotBlank
+     * @Assert\Timezone
      */
     private $timeZone;
 

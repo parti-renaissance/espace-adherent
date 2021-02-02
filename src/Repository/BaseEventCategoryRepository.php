@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\BaseEventCategory;
+use App\Entity\Event\BaseEventCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 abstract class BaseEventCategoryRepository extends ServiceEntityRepository

@@ -2,9 +2,9 @@
 
 namespace Tests\App\EventListener;
 
-use App\Entity\Event;
-use App\Entity\EventCategory;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventCategory;
+use App\Entity\Event\EventRegistration;
 use App\Entity\PostAddress;
 use App\Event\EventRegistrationEvent;
 use App\Event\EventRegistrationSubscriber;
@@ -45,7 +45,7 @@ class EventRegistrationSubscriberTest extends TestCase
         $this->urlGenerator
             ->expects($sendMail ? $this->once() : $this->never())
             ->method('generate')
-            ->with('app_event_show', ['slug' => self::EVENT_SLUG], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->with('app_committee_event_show', ['slug' => self::EVENT_SLUG], UrlGeneratorInterface::ABSOLUTE_URL)
             ->willReturn('/url')
         ;
 
@@ -70,9 +70,9 @@ class EventRegistrationSubscriberTest extends TestCase
         );
     }
 
-    private function createEvent(string $uuid): Event
+    private function createEvent(string $uuid): CommitteeEvent
     {
-        return new Event(
+        return new CommitteeEvent(
             Uuid::fromString($uuid),
             null,
             null,

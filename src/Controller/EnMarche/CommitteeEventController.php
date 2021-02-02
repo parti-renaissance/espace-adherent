@@ -2,7 +2,7 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Event\EventInvitation;
 use App\Event\EventInvitationHandler;
 use App\Event\EventRegistrationCommand;
@@ -28,15 +28,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/evenements/{slug}")
+ * @Route("/evenements/{slug}", name="app_committee_event")
  * @Entity("event", expr="repository.findOnePublishedBySlug(slug)")
  */
-class EventController extends AbstractController
+class CommitteeEventController extends AbstractController
 {
     /**
-     * @Route(name="app_event_show", methods={"GET"})
+     * @Route(name="_show", methods={"GET"})
      */
-    public function showAction(Event $event, EventRepository $eventRepository): Response
+    public function showAction(CommitteeEvent $event, EventRepository $eventRepository): Response
     {
         return $this->render('events/show.html.twig', [
             'event' => $event,
@@ -46,9 +46,9 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/ical", name="app_event_export_ical", methods={"GET"})
+     * @Route("/ical", name="_export_ical", methods={"GET"})
      */
-    public function exportIcalAction(Event $event, SerializerInterface $serializer): Response
+    public function exportIcalAction(CommitteeEvent $event, SerializerInterface $serializer): Response
     {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
 
@@ -60,13 +60,13 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/inscription-adherent", name="app_event_attend_adherent", methods={"GET"})
+     * @Route("/inscription-adherent", name="_attend_adherent", methods={"GET"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      *
      * @Security("is_granted('ROLE_ADHERENT')")
      */
     public function attendAdherentAction(
-        Event $event,
+        CommitteeEvent $event,
         UserInterface $adherent,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler
@@ -78,7 +78,7 @@ class EventController extends AbstractController
         if ($event->isFull()) {
             $this->addFlash('info', 'L\'événement est complet');
 
-            return $this->redirectToRoute('app_event_show', ['slug' => $event->getSlug()]);
+            return $this->redirectToRoute('app_committee_event_show', ['slug' => $event->getSlug()]);
         }
 
         $command = new EventRegistrationCommand($event, $adherent);
@@ -88,7 +88,7 @@ class EventController extends AbstractController
             $eventRegistrationCommandHandler->handle($command);
             $this->addFlash('info', 'committee.event.registration.success');
 
-            return $this->redirectToRoute('app_event_attend_confirmation', [
+            return $this->redirectToRoute('app_committee_event_attend_confirmation', [
                 'slug' => $event->getSlug(),
                 'registration' => (string) $command->getRegistrationUuid(),
             ]);
@@ -96,22 +96,22 @@ class EventController extends AbstractController
 
         $this->addFlash('info', $errors[0]->getMessage());
 
-        return $this->redirectToRoute('app_event_show', ['slug' => $event->getSlug()]);
+        return $this->redirectToRoute('app_committee_event_show', ['slug' => $event->getSlug()]);
     }
 
     /**
-     * @Route("/inscription", name="app_event_attend", methods={"GET", "POST"})
+     * @Route("/inscription", name="_attend", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
     public function attendAction(
         Request $request,
-        Event $event,
+        CommitteeEvent $event,
         ?UserInterface $adherent,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
         AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
         if ($adherent) {
-            return $this->redirectToRoute('app_event_attend_adherent', ['slug' => $event->getSlug()]);
+            return $this->redirectToRoute('app_committee_event_attend_adherent', ['slug' => $event->getSlug()]);
         }
 
         if ($event->isFinished()) {
@@ -121,7 +121,7 @@ class EventController extends AbstractController
         if ($event->isFull()) {
             $this->addFlash('info', 'L\'événement est complet');
 
-            return $this->redirectToRoute('app_event_show', ['slug' => $event->getSlug()]);
+            return $this->redirectToRoute('app_committee_event_show', ['slug' => $event->getSlug()]);
         }
 
         if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
@@ -137,7 +137,7 @@ class EventController extends AbstractController
             $eventRegistrationCommandHandler->handle($command);
             $this->addFlash('info', 'committee.event.registration.success');
 
-            return $this->redirectToRoute('app_event_attend_confirmation', [
+            return $this->redirectToRoute('app_committee_event_attend_confirmation', [
                 'slug' => $event->getSlug(),
                 'registration' => (string) $command->getRegistrationUuid(),
             ]);
@@ -153,14 +153,14 @@ class EventController extends AbstractController
     /**
      * @Route(
      *     path="/confirmation",
-     *     name="app_event_attend_confirmation",
+     *     name="_attend_confirmation",
      *     condition="request.query.has('registration')",
      *     methods={"GET"}
      * )
      */
     public function attendConfirmationAction(
         Request $request,
-        Event $event,
+        CommitteeEvent $event,
         EventRegistrationManager $manager
     ): Response {
         try {
@@ -183,9 +183,9 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/invitation", name="app_event_invite", methods={"GET", "POST"})
+     * @Route("/invitation", name="_invite", methods={"GET", "POST"})
      */
-    public function inviteAction(Request $request, Event $event, EventInvitationHandler $handler): Response
+    public function inviteAction(Request $request, CommitteeEvent $event, EventInvitationHandler $handler): Response
     {
         $eventInvitation = EventInvitation::createFromAdherent(
             $this->getUser(),
@@ -204,7 +204,7 @@ class EventController extends AbstractController
             $handler->handle($invitation, $event);
             $request->getSession()->set('event_invitations_count', \count($invitation->guests));
 
-            return $this->redirectToRoute('app_event_invitation_sent', [
+            return $this->redirectToRoute('app_committee_event_invitation_sent', [
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -216,12 +216,12 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/invitation/merci", name="app_event_invitation_sent", methods={"GET"})
+     * @Route("/invitation/merci", name="_invitation_sent", methods={"GET"})
      */
-    public function invitationSentAction(Request $request, Event $event): Response
+    public function invitationSentAction(Request $request, CommitteeEvent $event): Response
     {
         if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
-            return $this->redirectToRoute('app_event_invite', [
+            return $this->redirectToRoute('app_committee_event_invite', [
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -233,11 +233,11 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/desinscription", name="app_event_unregistration", condition="request.isXmlHttpRequest()", methods={"GET", "POST"})
+     * @Route("/desinscription", name="_unregistration", condition="request.isXmlHttpRequest()", methods={"GET", "POST"})
      */
     public function unregistrationAction(
         Request $request,
-        Event $event,
+        CommitteeEvent $event,
         EventRegistrationManager $eventRegistrationManager
     ): JsonResponse {
         if (!$this->isCsrfTokenValid('event.unregistration', $token = $request->request->get('token'))) {

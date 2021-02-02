@@ -65,7 +65,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadAdherentData      |
       | LoadEventCategoryData |
-      | LoadEventData         |
+      | LoadCommitteeEventData |
     And I clean the "api_sync" queue
     When I dispatch the "<event>" event event with "Réunion de réflexion parisienne"
     Then "api_sync" should have 1 message
@@ -81,7 +81,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadAdherentData      |
       | LoadEventCategoryData |
-      | LoadEventData         |
+      | LoadCommitteeEventData         |
     And I clean the "api_sync" queue
     When I dispatch the "event.deleted" event event with "Réunion de réflexion parisienne"
     Then "api_sync" should have 1 message

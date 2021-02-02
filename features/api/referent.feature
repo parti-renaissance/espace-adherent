@@ -8,7 +8,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadUserData      |
       | LoadAdherentData  |
-      | LoadEventData     |
+      | LoadCommitteeEventData |
       | LoadClientData    |
 
   Scenario: As a non logged-in user I can not get the committee, cities and countries managed by referent for autocomplete

@@ -2,7 +2,7 @@ Feature:
   Background:
     Given the following fixtures are loaded:
       | LoadAdherentData |
-      | LoadEventData    |
+      | LoadCommitteeEventData |
 
   Scenario: The search city is based on user's city
 

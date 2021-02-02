@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\Admin\Filter\ZoneAutocompleteFilter;
-use App\Entity\Event;
+use App\Entity\Event\BaseEvent;
 use App\Event\EventEvent;
 use App\Events;
 use App\Form\EventCategoryType;
@@ -178,7 +178,7 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Statut',
-                    'choices' => Event::STATUSES,
+                    'choices' => BaseEvent::STATUSES,
                     'choice_translation_domain' => 'forms',
                     'choice_label' => function (?string $choice) {
                         return $choice;

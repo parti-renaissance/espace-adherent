@@ -4,9 +4,9 @@ namespace App\CitizenAction;
 
 use App\Address\Address;
 use App\Entity\Adherent;
-use App\Entity\CitizenAction;
-use App\Entity\CitizenActionCategory;
 use App\Entity\CitizenProject;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CitizenActionCategory;
 use App\Event\BaseEventCommand;
 use App\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;

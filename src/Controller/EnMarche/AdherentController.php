@@ -14,7 +14,7 @@ use App\Contact\ContactMessageHandler;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\TurnkeyProject;
 use App\Event\EventRegistrationManager;
 use App\Exception\BadUuidRequestException;
@@ -260,7 +260,7 @@ class AdherentController extends AbstractController
                 } elseif ('territorial_council' === $fromType || 'political_committee' === $fromType) {
                     $from = true;
                 } else {
-                    $from = $entityManager->getRepository(Event::class)->findOneByUuid($fromId);
+                    $from = $entityManager->getRepository(CommitteeEvent::class)->findOneByUuid($fromId);
                 }
             }
         } catch (InvalidUuidException $e) {
@@ -289,8 +289,8 @@ class AdherentController extends AbstractController
                     ]);
                 }
 
-                if ($from instanceof Event) {
-                    return $this->redirectToRoute('app_event_show', [
+                if ($from instanceof CommitteeEvent) {
+                    return $this->redirectToRoute('app_committee_event_show', [
                         'slug' => $from->getSlug(),
                     ]);
                 }

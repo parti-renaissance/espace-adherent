@@ -8,7 +8,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\AdministrateCommitteeFeedItemVoter;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
@@ -72,7 +72,7 @@ class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(bool $isEqual = false): Adherent
     {

@@ -3,7 +3,7 @@
 namespace App\Event;
 
 use App\Entity\Adherent;
-use App\Entity\BaseEvent;
+use App\Entity\Event\BaseEvent;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\EventRegistration;
 use Ramsey\Uuid\Uuid;

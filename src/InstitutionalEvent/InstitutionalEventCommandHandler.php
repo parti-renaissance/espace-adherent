@@ -2,7 +2,7 @@
 
 namespace App\InstitutionalEvent;
 
-use App\Entity\InstitutionalEvent;
+use App\Entity\Event\InstitutionalEvent;
 use App\Event\EventFactory;
 use App\Events;
 use Doctrine\ORM\EntityManagerInterface;

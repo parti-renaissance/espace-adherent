@@ -5,7 +5,7 @@ namespace App\Sitemap;
 use App\Entity\Article;
 use App\Entity\ArticleCategory;
 use App\Entity\Committee;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\Media;
 use App\Entity\Mooc\Chapter;
 use App\Entity\Mooc\Mooc;
@@ -68,7 +68,7 @@ class SitemapFactory
             }
 
             // Events
-            $totalCount = $this->manager->getRepository(Event::class)->countSitemapEvents();
+            $totalCount = $this->manager->getRepository(CommitteeEvent::class)->countSitemapEvents();
             $pagesCount = ceil($totalCount / self::PER_PAGE);
 
             for ($i = 1; $i <= $pagesCount; ++$i) {
@@ -389,7 +389,7 @@ class SitemapFactory
 
     private function addEvents(Sitemap $sitemap, int $page, int $perPage): void
     {
-        $events = $this->manager->getRepository(Event::class)->findSitemapEvents($page, $perPage);
+        $events = $this->manager->getRepository(CommitteeEvent::class)->findSitemapEvents($page, $perPage);
 
         if (!$events) {
             throw new SitemapException('No event');
@@ -397,7 +397,7 @@ class SitemapFactory
 
         foreach ($events as $event) {
             $sitemap->add(
-                $this->generateUrl('app_event_show', [
+                $this->generateUrl('app_committee_event_show', [
                     'slug' => $event['slug'],
                 ]),
                 $event['updatedAt']->format(\DATE_ATOM),
@@ -406,7 +406,7 @@ class SitemapFactory
             );
 
             $sitemap->add(
-                $this->generateUrl('app_event_attend', [
+                $this->generateUrl('app_committee_event_attend', [
                     'slug' => $event['slug'],
                 ]),
                 $event['updatedAt']->format(\DATE_ATOM),
@@ -415,7 +415,7 @@ class SitemapFactory
             );
 
             $sitemap->add(
-                $this->generateUrl('app_event_invite', [
+                $this->generateUrl('app_committee_event_invite', [
                     'slug' => $event['slug'],
                 ]),
                 $event['updatedAt']->format(\DATE_ATOM),

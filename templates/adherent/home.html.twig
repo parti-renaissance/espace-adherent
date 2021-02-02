@@ -81,18 +81,20 @@
                     <div class="search__results__info l__col l__col--v-stretch l__col--left">
                         <div class="search__results__meta">
                             <div class="search__results__tag">
-                                    {% if event.isForLegislatives %}
-                                        <div class="tag tag--orange">Législatives</div>
-                                    {% endif %}
-                                    {% if event.type and event.isCitizenAction %}
-                                <div class="tag tag--orange">Action citoyenne</div>
-                                    {% else %}
-                                <div class="tag">{{ event.category }}</div>
-                                    {% endif %}
+                                {% if event.isForLegislatives %}
+                                    <div class="tag tag--orange">Législatives</div>
+                                {% endif %}
+
+                                {% if event.type and event.isCitizenAction %}
+                                    <div class="tag tag--orange">Action citoyenne</div>
+                                {% else %}
+                                    <div class="tag">{{ event.category }}</div>
+                                {% endif %}
                             </div>
+
                             <h2 class="text--body text--medium b__nudge--bottom-tiny text--breakword">
-                                <a class="link--no-decor" href="{{ path("app_#{event.type}_show", { slug: event.slug }) }}">
-                                {{ event.name }}
+                                <a class="link--no-decor" href="{{ path("app_#{event.type}_event_show", { slug: event.slug }) }}">
+                                    {{ event.name }}
                                 </a>
                             </h2>
                             <div class="text--body text--gray">Organisé par
@@ -116,7 +118,7 @@
                                     Cet événement est annulé
                                 </div>
                             {% elseif not event.full %}
-                                <a href="{{ path("app_#{event.type}_show", { slug: event.slug }) }}"
+                                <a href="{{ path("app_#{event.type}_event_show", { slug: event.slug }) }}"
                                    class="btn btn--blue" target="_blank" rel="noopener noreferrer">
                                     Participer
                                 </a>

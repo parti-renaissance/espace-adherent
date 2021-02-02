@@ -7,7 +7,7 @@ Feature:
       | LoadAdherentData      |
       | LoadDistrictData      |
       | LoadEventCategoryData |
-      | LoadEventData         |
+      | LoadCommitteeEventData |
 
   Scenario Outline: As anonymous I can not access deputy space pages.
     Given I go to "<uri>"

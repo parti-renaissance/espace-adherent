@@ -3,10 +3,10 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
-use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
-use App\Entity\Event;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\IdeasWorkshop\Idea;
 use App\Entity\IdeasWorkshop\Thread;
 use App\Entity\IdeasWorkshop\ThreadComment;
@@ -21,7 +21,7 @@ class ReportTest extends TestCase
         yield [CitizenAction::class];
         yield [CitizenProject::class];
         yield [Committee::class];
-        yield [Event::class];
+        yield [CommitteeEvent::class];
         yield [Idea::class];
         yield [Thread::class];
         yield [ThreadComment::class];

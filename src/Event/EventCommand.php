@@ -6,8 +6,8 @@ use App\Address\Address;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event;
-use App\Entity\EventCategory;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventCategory;
 use App\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,7 +45,7 @@ class EventCommand extends BaseEventCommand
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null,
         bool $isForLegislatives = false,
-        Event $event = null,
+        CommitteeEvent $event = null,
         string $timezone = GeoCoder::DEFAULT_TIME_ZONE
     ) {
         parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone);
@@ -54,7 +54,7 @@ class EventCommand extends BaseEventCommand
         $this->isForLegislatives = $isForLegislatives;
     }
 
-    public static function createFromEvent(Event $event): self
+    public static function createFromEvent(CommitteeEvent $event): self
     {
         $command = new self(
             $event->getOrganizer(),
@@ -104,7 +104,7 @@ class EventCommand extends BaseEventCommand
         return $this->committee;
     }
 
-    public function getEvent(): ?Event
+    public function getEvent(): ?CommitteeEvent
     {
         return $this->event;
     }

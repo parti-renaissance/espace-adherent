@@ -19,6 +19,7 @@ use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use libphonenumber\PhoneNumber;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -28,17 +29,17 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class CommitteeAdherentMandateManagerTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface */
+    /** @var MockObject|EntityManagerInterface */
     private $entityManager;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|CommitteeAdherentMandateRepository */
+    /** @var MockObject|CommitteeAdherentMandateRepository */
     private $mandateRepository;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|ElectedRepresentativeRepository */
+    /** @var MockObject|ElectedRepresentativeRepository */
     private $electedRepresentativeRepository;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|TranslatorInterface */
+    /** @var MockObject|TranslatorInterface */
     private $translator;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|CommitteeAdherentMandateManager */
+    /** @var MockObject|CommitteeAdherentMandateManager */
     private $mandateManager;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|CommitteeManager */
+    /** @var MockObject|CommitteeManager */
     private $committeeManager;
 
     protected function setUp(): void

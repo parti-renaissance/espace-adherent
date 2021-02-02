@@ -3,7 +3,7 @@
 namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
-use App\Entity\EventRegistration;
+use App\Entity\Event\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
 final class EventContactMembersMessage extends Message

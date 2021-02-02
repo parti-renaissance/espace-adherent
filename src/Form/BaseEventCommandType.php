@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\EventCategory;
+use App\Entity\Event\EventCategory;
 use App\Event\BaseEventCommand;
 use App\Form\DataTransformer\EventDateTimeZoneTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -41,6 +41,7 @@ class BaseEventCommandType extends AbstractType
             ])
             ->add('address', AddressType::class)
             ->add('timeZone', TimezoneType::class, [
+                'choice_loader' => null,
                 'choices' => $this->getTimezones(),
             ])
             ->add('beginAt', DateTimePickerType::class, $dateTimeOptions)

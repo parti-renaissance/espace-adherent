@@ -178,11 +178,11 @@
 
         <!-- Doctrine Listeners -->
         <service id="App\Entity\Listener\ContainingUserDocumentListener" public="true">
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event" event="prePersist" method="prePersistEvent"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event" event="preUpdate" method="preUpdateEvent"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event" event="postUpdate"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event" event="preRemove"/>
-            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event" event="postRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event\CommitteeEvent" event="prePersist" method="prePersistEvent"/>
+            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event\CommitteeEvent" event="preUpdate" method="preUpdateEvent"/>
+            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event\CommitteeEvent" event="postUpdate"/>
+            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event\CommitteeEvent" event="preRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="App\Entity\Event\CommitteeEvent" event="postRemove"/>
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\CommitteeFeedItem" event="prePersist" method="prePersistCommitteeFeed"/>
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\CommitteeFeedItem" event="preUpdate" method="preUpdateCommitteeFeed"/>
             <tag name="doctrine.orm.entity_listener" entity="App\Entity\CommitteeFeedItem" event="postUpdate"/>

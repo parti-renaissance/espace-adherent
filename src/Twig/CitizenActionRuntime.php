@@ -3,8 +3,8 @@
 namespace App\Twig;
 
 use App\CitizenAction\CitizenActionPermissions;
-use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
+use App\Entity\Event\CitizenAction;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 

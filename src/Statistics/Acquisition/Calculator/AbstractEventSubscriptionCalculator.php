@@ -2,7 +2,7 @@
 
 namespace App\Statistics\Acquisition\Calculator;
 
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Repository\EventRegistrationRepository;
 use App\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
 use App\Statistics\Acquisition\StatisticsRequest;
@@ -36,7 +36,7 @@ abstract class AbstractEventSubscriptionCalculator extends AbstractCalculator
         return (int) $this->repository
             ->createQueryBuilder('event_registration')
             ->select('COUNT(1) AS total')
-            ->innerJoin(Event::class, 'event', Join::WITH, 'event_registration.event = event')
+            ->innerJoin(CommitteeEvent::class, 'event', Join::WITH, 'event_registration.event = event')
             ->innerJoin('event.referentTags', 'tags')
             ->where('event_registration.createdAt < :date')
             ->andWhere(sprintf('event_registration.adherentUuid %s', $this->isAdherentOnly() ? 'IS NOT NULL' : 'IS NULL'))
@@ -56,7 +56,7 @@ abstract class AbstractEventSubscriptionCalculator extends AbstractCalculator
             ->createQueryBuilder('event_registration')
             ->select('COUNT(1) AS total')
             ->addSelect('YEAR_MONTH(event_registration.createdAt) AS date')
-            ->innerJoin(Event::class, 'event', Join::WITH, 'event_registration.event = event')
+            ->innerJoin(CommitteeEvent::class, 'event', Join::WITH, 'event_registration.event = event')
             ->innerJoin('event.referentTags', 'tags')
             ->where('event_registration.createdAt >= :start_date AND event_registration.createdAt <= :end_date')
             ->andWhere(sprintf('event_registration.adherentUuid %s', $this->isAdherentOnly() ? 'IS NOT NULL' : 'IS NULL'))

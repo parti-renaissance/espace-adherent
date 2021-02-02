@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\User;
+namespace Tests\App\OAuth;
 
 use App\Entity\Adherent;
 use App\Entity\OAuth\Client;
@@ -8,11 +8,12 @@ use App\Entity\OAuth\UserAuthorization;
 use App\OAuth\Model\Scope;
 use App\OAuth\OAuthAuthorizationManager;
 use App\Repository\OAuth\UserAuthorizationRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class OAuthAuthorizationManagerTest extends TestCase
 {
-    /** @var UserAuthorizationRepository|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var UserAuthorizationRepository|MockObject */
     private $userAuthorizationRepository;
 
     public function testIsAuthorizeReturnFalseWhenClientScopeIsSupported(): void

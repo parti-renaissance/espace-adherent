@@ -13,7 +13,7 @@ use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\District;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Geocoder\Coordinates;
@@ -633,7 +633,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
         $result = $this->createQueryBuilder('committee')
             ->select('committee.name, COUNT(event) AS events, SUM(event.participantsCount) as participants')
-            ->join(Event::class, 'event', Join::WITH, 'event.committee = committee.id')
+            ->join(CommitteeEvent::class, 'event', Join::WITH, 'event.committee = committee.id')
             ->join('committee.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
             ->andWhere('committee.status = :status')

@@ -2,11 +2,11 @@
 
 namespace App\Normalizer\Indexer;
 
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 
 class EventNormalizer extends AbstractIndexerNormalizer
 {
-    /** @param Event $object */
+    /** @param CommitteeEvent $object */
     public function normalize($object, $format = null, array $context = [])
     {
         $committee = $object->getCommittee();
@@ -50,6 +50,6 @@ class EventNormalizer extends AbstractIndexerNormalizer
 
     protected function getClassName(): string
     {
-        return Event::class;
+        return CommitteeEvent::class;
     }
 }

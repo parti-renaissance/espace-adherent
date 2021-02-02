@@ -3,8 +3,8 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
-use App\Entity\Event;
-use App\Entity\EventCategory;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventCategory;
 use App\Entity\PostAddress;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -18,7 +18,7 @@ class EventTest extends TestCase
     {
         $address = $this->createMock(PostAddress::class);
 
-        $event = new Event(
+        $event = new CommitteeEvent(
             $this->createMock(UuidInterface::class),
             $this->createMock(Adherent::class),
             null,
@@ -53,7 +53,7 @@ class EventTest extends TestCase
         $address = $this->createMock(PostAddress::class);
         $address->expects($this->any())->method('getCountry')->willReturn($country);
 
-        $event = new Event(
+        $event = new CommitteeEvent(
             $this->createMock(UuidInterface::class),
             $this->createMock(Adherent::class),
             null,
@@ -84,7 +84,7 @@ class EventTest extends TestCase
 
     public function testIsFull()
     {
-        $event = new Event(
+        $event = new CommitteeEvent(
             $this->createMock(UuidInterface::class),
             $this->createMock(Adherent::class),
             null,
@@ -108,7 +108,7 @@ class EventTest extends TestCase
         $event->incrementParticipantsCount();
         $this->assertTrue($event->isFull());
 
-        $event = new Event(
+        $event = new CommitteeEvent(
             $this->createMock(UuidInterface::class),
             $this->createMock(Adherent::class),
             null,

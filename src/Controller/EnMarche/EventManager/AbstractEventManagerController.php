@@ -6,8 +6,8 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
-use App\Entity\Event;
-use App\Entity\EventGroupCategory;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventGroupCategory;
 use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
 use App\Event\EventRegistrationCommand;
@@ -113,7 +113,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     protected function getEventClassName(): string
     {
-        return Event::class;
+        return CommitteeEvent::class;
     }
 
     protected function getEventGroupCategory(): ?EventGroupCategory

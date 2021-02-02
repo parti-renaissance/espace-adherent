@@ -11,6 +11,7 @@ use App\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
 use App\Procuration\ProcurationProxyMessageFactory;
 use App\Routing\RemoteUrlGenerator;
 use libphonenumber\PhoneNumberUtil;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,12 +20,12 @@ use PHPUnit\Framework\TestCase;
 class ProcurationProxyMessageFactoryTest extends TestCase
 {
     /**
-     * @var RemoteUrlGenerator|\PHPUnit_Framework_MockObject_MockObject
+     * @var RemoteUrlGenerator|MockObject
      */
     private $urlGenerator;
 
     /**
-     * @var ProcurationProxyMessageFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var ProcurationProxyMessageFactory|MockObject
      */
     private $factory;
 

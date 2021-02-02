@@ -3,7 +3,6 @@
 namespace App\Controller\EnMarche\InstitutionalEvents;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**

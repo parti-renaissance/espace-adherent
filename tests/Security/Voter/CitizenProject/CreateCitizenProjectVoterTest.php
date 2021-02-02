@@ -8,12 +8,13 @@ use App\Entity\CitizenProject;
 use App\Repository\CitizenProjectRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\CitizenProject\CreateCitizenProjectVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
 {
     /**
-     * @var CitizenProjectRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var CitizenProjectRepository|MockObject
      */
     private $projectRepository;
 
@@ -85,7 +86,7 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(bool $isAdherent): Adherent
     {

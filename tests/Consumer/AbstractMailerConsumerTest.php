@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -21,12 +22,12 @@ class AbstractMailerConsumerTest extends TestCase
     const CLASS_NAME = 'App\Consumer\AbstractMailerConsumer';
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ValidatorInterface
+     * @var MockObject|ValidatorInterface
      */
     private $validator;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     private $entityManager;
 

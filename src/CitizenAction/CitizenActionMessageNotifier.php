@@ -4,8 +4,8 @@ namespace App\CitizenAction;
 
 use App\CitizenProject\CitizenProjectManager;
 use App\Entity\Adherent;
-use App\Entity\CitizenAction;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\EventRegistration;
 use App\Events;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CitizenActionCancellationMessage;
@@ -86,7 +86,7 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
             $followers,
             $host,
             $citizenAction,
-            $this->generateUrl('app_citizen_action_attend', [
+            $this->generateUrl('app_citizen_action_event_attend', [
                 'slug' => $citizenAction->getSlug(),
             ])
         );

@@ -8,7 +8,7 @@ Feature:
       | LoadAdherentData        |
       | LoadTurnkeyProjectData  |
       | LoadCitizenProjectData  |
-      | LoadEventData           |
+      | LoadCommitteeEventData  |
 
   # Adherent
   Scenario: As an adherent, I can see information about me

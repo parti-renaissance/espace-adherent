@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Entity\BaseEventCategory;
+use App\Entity\Event\BaseEventCategory;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

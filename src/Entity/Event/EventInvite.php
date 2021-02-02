@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Event;
 
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityPersonNameTrait;
 use App\Event\EventInvitation;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -18,7 +20,7 @@ class EventInvite
     /**
      * @var BaseEvent|null
      *
-     * @ORM\ManyToOne(targetEntity="BaseEvent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\BaseEvent")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
      */
     private $event;

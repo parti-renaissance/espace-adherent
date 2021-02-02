@@ -1,8 +1,13 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Event;
 
 use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\PostAddress;
+use App\Entity\Report\ReportableInterface;
+use App\Event\EventTypeEnum;
 use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,15 +17,15 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CitizenActionRepository")
  */
-class CitizenAction extends BaseEvent
+class CitizenAction extends BaseEvent implements ReportableInterface
 {
     /**
-     * @ORM\ManyToOne(targetEntity="CitizenActionCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\CitizenActionCategory")
      */
     protected $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CitizenProject")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CitizenProject")
      */
     private $citizenProject;
 
@@ -38,7 +43,8 @@ class CitizenAction extends BaseEvent
         array $referentTags = [],
         string $timeZone = GeoCoder::DEFAULT_TIME_ZONE
     ) {
-        $this->uuid = $uuid;
+        parent::__construct($uuid);
+
         $this->organizer = $organizer;
         $this->citizenProject = $citizenProject;
         $this->setName($name);
@@ -49,7 +55,6 @@ class CitizenAction extends BaseEvent
         // We need a \DateTime object for now to work with Gedmo sluggable
         $this->beginAt = $beginAt instanceof \DateTimeImmutable ? new \DateTime($beginAt->format(\DATE_ATOM)) : $beginAt;
         $this->finishAt = $finishAt;
-        $this->status = self::STATUS_SCHEDULED;
         $this->referentTags = new ArrayCollection($referentTags);
         $this->zones = new ArrayCollection();
         $this->timeZone = $timeZone;
@@ -100,7 +105,7 @@ class CitizenAction extends BaseEvent
 
     public function getType(): string
     {
-        return self::CITIZEN_ACTION_TYPE;
+        return EventTypeEnum::TYPE_CITIZEN_ACTION;
     }
 
     public function getReportType(): string

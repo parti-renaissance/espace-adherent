@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Entity\BaseEventCategory;
+use App\Entity\Event\BaseEventCategory;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

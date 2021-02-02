@@ -2,7 +2,7 @@
 
 namespace App\Entity\Report;
 
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,9 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 class CommunityEventReport extends Report
 {
     /**
-     * @var Event
+     * @var CommitteeEvent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\CommitteeEvent")
      * @ORM\JoinColumn(name="community_event_id")
      */
     protected $subject;

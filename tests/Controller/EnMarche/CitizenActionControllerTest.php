@@ -4,8 +4,9 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCitizenActionData;
-use App\Entity\CitizenAction;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\EventRegistration;
+use App\Repository\EventRegistrationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CitizenActionControllerTest extends AbstractEventControllerTest
 {
     /**
-     * @var \App\Repository\EventRegistrationRepository
+     * @var EventRegistrationRepository
      */
     private $repository;
 

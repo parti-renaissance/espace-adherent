@@ -5,7 +5,7 @@ namespace App\Doctrine;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\MunicipalEvent;
+use App\Entity\Event\MunicipalEvent;
 use Doctrine\ORM\QueryBuilder;
 
 class MunicipalEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface

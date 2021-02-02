@@ -4,9 +4,9 @@ namespace App\Security\Voter;
 
 use App\CitizenAction\CitizenActionPermissions;
 use App\Entity\Adherent;
-use App\Entity\BaseEvent;
-use App\Entity\CitizenAction;
-use App\Entity\Event;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CommitteeEvent;
 use App\Event\EventPermissions;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -22,7 +22,7 @@ class AttendEventVoter extends AbstractAdherentVoter
 
     protected function supports($attribute, $subject)
     {
-        return $subject instanceof Event && \in_array($attribute, EventPermissions::ATTEND, true)
+        return $subject instanceof CommitteeEvent && \in_array($attribute, EventPermissions::ATTEND, true)
             || $subject instanceof CitizenAction && \in_array($attribute, CitizenActionPermissions::ATTEND, true)
         ;
     }

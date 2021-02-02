@@ -55,7 +55,7 @@
 
                     {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
 
-                    <a href="{{ path('app_citizen_action_list_participants', { slug: citizen_action.slug }) }}"
+                    <a href="{{ path('app_citizen_action_event_list_participants', { slug: citizen_action.slug }) }}"
                        class="btn">
                         Annuler
                     </a>

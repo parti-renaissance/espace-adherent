@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadCitizenActionData;
-use App\Entity\CitizenAction;
+use App\Entity\Event\CitizenAction;
 use App\Mailer\Message\CitizenActionCancellationMessage;
 use App\Mailer\Message\CitizenActionContactParticipantsMessage;
 use App\Mailer\Message\CitizenActionNotificationMessage;

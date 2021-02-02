@@ -101,7 +101,7 @@ class CommitteeManagerController extends AbstractController
 
             $this->addFlash('info', 'committee.event.creation.success');
 
-            return $this->redirectToRoute('app_event_show', [
+            return $this->redirectToRoute('app_committee_event_show', [
                 'slug' => $event->getSlug(),
             ]);
         }

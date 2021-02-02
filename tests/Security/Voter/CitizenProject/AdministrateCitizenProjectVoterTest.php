@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\CitizenProject\AdministrateCitizenProjectVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
@@ -54,7 +55,7 @@ class AdministrateCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(
         bool $getUuidIsCalled,
@@ -90,7 +91,7 @@ class AdministrateCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return CitizenProject|\PHPUnit_Framework_MockObject_MockObject
+     * @return CitizenProject|MockObject
      */
     private function getCitizenProjectMock(bool $approved, bool $withCreator = null): CitizenProject
     {

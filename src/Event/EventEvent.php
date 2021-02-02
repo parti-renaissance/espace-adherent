@@ -4,7 +4,7 @@ namespace App\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event as CommitteeEvent;
+use App\Entity\Event\CommitteeEvent;
 use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoHashChangeAwareTrait;

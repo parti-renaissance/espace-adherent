@@ -32,7 +32,7 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
 
         $this->mailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration(
             $event->getRegistration(),
-            $this->generateUrl('app_event_show', [
+            $this->generateUrl('app_committee_event_show', [
                 'slug' => $event->getSlug(),
             ])
         ));

@@ -2,7 +2,7 @@
 
 namespace App\InstitutionalEvent;
 
-use App\Entity\InstitutionalEvent;
+use App\Entity\Event\InstitutionalEvent;
 use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoHashChangeAwareTrait;

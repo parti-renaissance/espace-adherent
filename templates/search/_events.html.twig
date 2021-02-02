@@ -5,8 +5,8 @@
         <div class="text--body text--bold text--smallest text--uppercase b__nudge--bottom-medium b__nudge--top-large text--gray">
             {{ event.localBeginAt|localizeddate('none', 'none', 'fr_FR', false, 'cccc d MMMM') }}
         </div>
-
     {% endif %}
+
     <div class="search__results__row search__results__item l__row l__row--h-stretch l__row--top">
         <div class="search__results__date text--body text--bold text--smallest text--uppercase">
             {{ event.localBeginAt|localizeddate('none', 'none', 'fr_FR', false, 'ccc d') }}<br/>
@@ -19,6 +19,7 @@
                     {% if event.isForLegislatives %}
                         <div class="tag tag--orange">Législatives</div>
                     {% endif %}
+
                     {% if event.type and event.isCitizenAction %}
                         <div class="tag tag--orange">Action citoyenne</div>
                     {% else %}
@@ -27,7 +28,7 @@
                 </div>
                 <h2 class="text--body text--medium b__nudge--bottom-tiny text--breakword">
                     <a class="link--no-decor"
-                       href="{{ path("app_#{event.type}_show", { slug: event.slug }) }}">
+                       href="{{ path("app_#{event.type}_event_show", { slug: event.slug }) }}">
                         {{ event.name }}
                     </a>
                 </h2>
@@ -56,7 +57,7 @@
                         Cet événement est annulé
                     </div>
                 {% elseif not event.full %}
-                    <a href="{{ path("app_#{event.type}_show", { slug: event.slug }) }}"
+                    <a href="{{ path("app_#{event.type}_event_show", { slug: event.slug }) }}"
                        class="btn btn--blue" target="_blank" rel="noopener noreferrer">
                         Voir plus
                     </a>

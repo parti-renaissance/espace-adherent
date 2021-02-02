@@ -4,10 +4,11 @@ namespace Tests\App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Event\EventPermissions;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\HostEventVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -20,7 +21,7 @@ class HostEventVoterTest extends AbstractAdherentVoterTest
 
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, EventPermissions::HOST, $this->createMock(Event::class)];
+        yield [false, true, EventPermissions::HOST, $this->createMock(CommitteeEvent::class)];
     }
 
     public function testAdherentIsGrantedIfIsOrganizer()
@@ -58,7 +59,7 @@ class HostEventVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(
         bool $isOrganizer = false,
@@ -91,11 +92,14 @@ class HostEventVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Event|\PHPUnit_Framework_MockObject_MockObject
+     * @return CommitteeEvent|MockObject
      */
-    private function getEventMock(?Adherent $organizer, bool $committeeEvent = null, Committee $committee = null): Event
-    {
-        $event = $this->createMock(Event::class);
+    private function getEventMock(
+        ?Adherent $organizer,
+        bool $committeeEvent = null,
+        Committee $committee = null
+    ): CommitteeEvent {
+        $event = $this->createMock(CommitteeEvent::class);
 
         $event->expects($organizer ? $this->exactly(2) : $this->once())
             ->method('getOrganizer')
@@ -117,7 +121,7 @@ class HostEventVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Committee|\PHPUnit_Framework_MockObject_MockObject
+     * @return Committee|MockObject
      */
     private function getCommitteeMock(bool $uuidChecked = false): Committee
     {

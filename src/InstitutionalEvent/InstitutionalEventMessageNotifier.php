@@ -2,7 +2,7 @@
 
 namespace App\InstitutionalEvent;
 
-use App\Entity\InstitutionalEvent;
+use App\Entity\Event\InstitutionalEvent;
 use App\Events;
 use App\Mailer\MailerService;
 use App\Mailer\Message\InstitutionalEventInvitationMessage;

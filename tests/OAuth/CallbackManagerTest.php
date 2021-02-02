@@ -5,6 +5,7 @@ namespace Tests\App\OAuth;
 use App\Entity\OAuth\Client;
 use App\OAuth\CallbackManager;
 use App\Repository\OAuth\ClientRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\UuidInterface;
@@ -22,17 +23,17 @@ class CallbackManagerTest extends TestCase
     private $callbackManager;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface
+     * @var MockObject|LoggerInterface
      */
     private $logger;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClientRepository
+     * @var MockObject|ClientRepository
      */
     private $clientRepository;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|UrlGeneratorInterface
+     * @var MockObject|UrlGeneratorInterface
      */
     private $urlGenerator;
 

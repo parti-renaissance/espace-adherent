@@ -9,7 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Mailer\Message\CommitteeMessageNotificationMessage;
 use App\Mailer\Message\EventNotificationMessage;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
@@ -244,7 +244,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findOneBySlug('2022-03-02-debat-sur-lagriculture-ecologique'));
+        $this->assertInstanceOf(CommitteeEvent::class, $event = $this->committeeEventRepository->findOneBySlug('2022-03-02-debat-sur-lagriculture-ecologique'));
         $this->assertSame("Débat sur l'agriculture écologique", $event->getName());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
@@ -255,7 +255,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
-        $this->assertInstanceOf(Event::class, $eventItem->getEvent());
+        $this->assertInstanceOf(CommitteeEvent::class, $eventItem->getEvent());
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
@@ -305,7 +305,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertInstanceOf(Event::class, $event = $this->committeeEventRepository->findOneBySlug('2022-03-02-debat-sur-lagriculture-ecologique-a-singapore'));
+        $this->assertInstanceOf(CommitteeEvent::class, $event = $this->committeeEventRepository->findOneBySlug('2022-03-02-debat-sur-lagriculture-ecologique-a-singapore'));
         $this->assertSame("Débat sur l'agriculture écologique à Singapore", $event->getName());
         $this->assertSame('Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique.', $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
@@ -316,7 +316,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeData::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
-        $this->assertInstanceOf(Event::class, $eventItem->getEvent());
+        $this->assertInstanceOf(CommitteeEvent::class, $eventItem->getEvent());
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();

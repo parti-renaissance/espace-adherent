@@ -2,7 +2,7 @@
 
 namespace Tests\App\Mailer\Message;
 
-use App\Entity\EventRegistration;
+use App\Entity\Event\EventRegistration;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
 
 class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest

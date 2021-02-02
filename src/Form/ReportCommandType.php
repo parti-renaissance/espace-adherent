@@ -25,6 +25,7 @@ class ReportCommandType extends AbstractType
                 'expanded' => true,
             ])
             ->add('comment', TextareaType::class, [
+                'required' => false,
                 'filter_emojis' => true,
             ])
         ;

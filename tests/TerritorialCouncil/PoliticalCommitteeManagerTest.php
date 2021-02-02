@@ -21,21 +21,22 @@ use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\ValueObject\Genders;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class PoliticalCommitteeManagerTest extends TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface */
+    /** @var MockObject|EntityManagerInterface */
     private $entityManager;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|MandateRepository */
+    /** @var MockObject|MandateRepository */
     private $mandateRepository;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|PoliticalCommitteeMembershipRepository */
+    /** @var MockObject|PoliticalCommitteeMembershipRepository */
     private $membershipRepository;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|TerritorialCouncilAdherentMandateRepository */
+    /** @var MockObject|TerritorialCouncilAdherentMandateRepository */
     private $tcMandateRepository;
-    /** @var \PHPUnit_Framework_MockObject_MockObject|TranslatorInterface */
+    /** @var MockObject|TranslatorInterface */
     private $translator;
     /** @var PoliticalCommitteeManager */
     private $politicalCommitteeManager;

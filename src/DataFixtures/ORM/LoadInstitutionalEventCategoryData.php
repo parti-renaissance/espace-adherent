@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\InstitutionalEventCategory;
+use App\Entity\Event\InstitutionalEventCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

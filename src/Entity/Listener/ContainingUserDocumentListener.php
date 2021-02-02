@@ -3,7 +3,7 @@
 namespace App\Entity\Listener;
 
 use App\Entity\CommitteeFeedItem;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\IdeasWorkshop\Answer;
 use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
@@ -30,7 +30,7 @@ class ContainingUserDocumentListener
         $this->prePersist($args, $committeeFeedItem->getContent(), $committeeFeedItem);
     }
 
-    public function prePersistEvent(Event $event, LifecycleEventArgs $args): void
+    public function prePersistEvent(CommitteeEvent $event, LifecycleEventArgs $args): void
     {
         $this->prePersist($args, $event->getDescription(), $event);
     }
@@ -45,7 +45,7 @@ class ContainingUserDocumentListener
         $this->preUpdate($args, 'content', $committeeFeedItem);
     }
 
-    public function preUpdateEvent(Event $event, PreUpdateEventArgs $args): void
+    public function preUpdateEvent(CommitteeEvent $event, PreUpdateEventArgs $args): void
     {
         $this->preUpdate($args, 'description', $event);
     }

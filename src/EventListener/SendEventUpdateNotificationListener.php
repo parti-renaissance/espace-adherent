@@ -3,8 +3,8 @@
 namespace App\EventListener;
 
 use App\CitizenAction\CitizenActionEvent;
-use App\Entity\BaseEvent;
-use App\Entity\CitizenAction;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CitizenAction;
 use App\Entity\PostAddress;
 use App\Event\EventEvent;
 use App\Events;
@@ -99,12 +99,12 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
                 if ($event instanceof CitizenAction) {
                     $messageClass = CitizenActionUpdateMessage::class;
-                    $eventRoute = 'app_citizen_action_show';
-                    $icalEventRoute = 'app_citizen_action_export_ical';
+                    $eventRoute = 'app_citizen_action_event_show';
+                    $icalEventRoute = 'app_citizen_action_event_export_ical';
                 } else {
                     $messageClass = EventUpdateMessage::class;
-                    $eventRoute = 'app_event_show';
-                    $icalEventRoute = 'app_event_export_ical';
+                    $eventRoute = 'app_committee_event_show';
+                    $icalEventRoute = 'app_committee_event_export_ical';
                 }
 
                 foreach ($chunks as $recipient) {

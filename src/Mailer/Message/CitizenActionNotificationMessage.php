@@ -3,7 +3,7 @@
 namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
-use App\Entity\CitizenAction;
+use App\Entity\Event\CitizenAction;
 use Ramsey\Uuid\Uuid;
 
 final class CitizenActionNotificationMessage extends Message

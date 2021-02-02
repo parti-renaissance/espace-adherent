@@ -6,7 +6,7 @@ use App\Entity\Article;
 use App\Entity\ChezVous\City;
 use App\Entity\Clarification;
 use App\Entity\CustomSearchResult;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\Proposal;
 use App\Entity\Timeline\Manifesto;
 use App\Entity\Timeline\Measure;
@@ -35,7 +35,7 @@ class AlgoliaSynchronizeCommandTest extends WebTestCase
     public function dataProviderTestCommand(): array
     {
         return [
-            ['event', Event::class, 21],
+            ['event', CommitteeEvent::class, 21],
             ['article', Article::class, 180],
             ['proposal', Proposal::class, 3],
             ['clarification', Clarification::class, 21],

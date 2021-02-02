@@ -6,7 +6,7 @@ Feature:
     Given the following fixtures are loaded:
       | LoadAdherentData  |
       | LoadArticleData   |
-      | LoadEventData     |
+      | LoadCommitteeEventData |
       | LoadHomeBlockData |
       | LoadPageData      |
 

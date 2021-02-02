@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\InstitutionalEventCategory;
+use App\Entity\Event\InstitutionalEventCategory;
 use App\Form\DataTransformer\EventDateTimeZoneTransformer;
 use App\Form\DataTransformer\StringToArrayTransformer;
 use App\InstitutionalEvent\InstitutionalEventCommand;

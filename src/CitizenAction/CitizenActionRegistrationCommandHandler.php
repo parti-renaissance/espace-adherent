@@ -43,7 +43,7 @@ class CitizenActionRegistrationCommandHandler
 
         $this->manager->create($registration = $this->factory->createFromCommand($command));
 
-        $citizenActionCalendarLink = $this->generateUrl('app_citizen_action_export_ical', [
+        $citizenActionCalendarLink = $this->generateUrl('app_citizen_action_event_export_ical', [
             'slug' => $command->getEvent()->getSlug(),
         ]);
 

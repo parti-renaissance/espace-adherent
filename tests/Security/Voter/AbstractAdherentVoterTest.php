@@ -4,6 +4,7 @@ namespace Tests\App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Security\Voter\AbstractAdherentVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -99,7 +100,7 @@ abstract class AbstractAdherentVoterTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|TokenInterface
+     * @return MockObject|TokenInterface
      */
     protected function createTokenMock(?UserInterface $adherent, bool $adherentInstanceChecked): TokenInterface
     {
@@ -120,7 +121,7 @@ abstract class AbstractAdherentVoterTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Adherent
+     * @return MockObject|Adherent
      */
     protected function createAdherentMock(): Adherent
     {

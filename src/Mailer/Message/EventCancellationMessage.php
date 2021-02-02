@@ -3,8 +3,8 @@
 namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
-use App\Entity\BaseEvent;
-use App\Entity\EventRegistration;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
 final class EventCancellationMessage extends Message

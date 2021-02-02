@@ -7,6 +7,7 @@ use App\Entity\UserListDefinitionEnum;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\ManageUserListDefinitionsForTypeVoter;
 use App\UserListDefinition\UserListDefinitionPermissions;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTest
 {
@@ -75,7 +76,7 @@ class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTes
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(bool $isReferent = true): Adherent
     {

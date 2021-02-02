@@ -9,13 +9,14 @@ use App\Entity\CommitteeMembership;
 use App\Repository\AdherentRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\FollowerCommitteeVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\UuidInterface;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
 {
     /**
-     * @var AdherentRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var AdherentRepository|MockObject
      */
     private $adherentRepository;
 
@@ -126,7 +127,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(
         Committee $committee = null,
@@ -152,7 +153,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return CommitteeMembership|\PHPUnit_Framework_MockObject_MockObject|null
+     * @return CommitteeMembership|\MockObject|null
      */
     private function getMembershipMock(
         ?bool $isFollower,
@@ -193,7 +194,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     /**
      * @param bool $approved
      *
-     * @return Committee|\PHPUnit_Framework_MockObject_MockObject
+     * @return Committee|MockObject
      */
     private function getCommitteeMock(bool $approved = null): Committee
     {
