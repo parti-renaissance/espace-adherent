@@ -2,7 +2,7 @@
 
 {% block content %}
     <section class="l__wrapper">
-        <a href="{{ path("app_#{event.type}_show", {slug: event.slug}) }}"
+        <a href="{{ path("app_#{event.type}_event_show", {slug: event.slug}) }}"
            class="previous-link icon--with-text text--summary">
             {{ include('components/caret--left.html.twig') }}
             Retour à la page de l'événement
@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li role="button" aria-label="{{ 'committee.event.show.share.download_ical'|trans }}">
-                        <a href="{{ path("app_#{event.type}_export_ical", {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}">
+                        <a href="{{ path("app_#{event.type}_event_export_ical", {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}">
                             Apple
                             <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
                         </a>

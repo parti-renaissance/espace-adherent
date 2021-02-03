@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Entity\InstitutionalEvent;
+use App\Entity\Event\InstitutionalEvent;
 use App\Events;
 use App\Form\InstitutionalEventCategoryType;
 use App\Form\UnitedNationsCountryType;

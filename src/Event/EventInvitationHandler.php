@@ -2,8 +2,8 @@
 
 namespace App\Event;
 
-use App\Entity\Event;
-use App\Entity\EventInvite;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventInvite;
 use App\Mailer\MailerService;
 use App\Mailer\Message\EventInvitationMessage;
 use App\Routing\RemoteUrlGenerator;
@@ -25,11 +25,11 @@ class EventInvitationHandler
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function handle(EventInvitation $invitation, Event $event)
+    public function handle(EventInvitation $invitation, CommitteeEvent $event)
     {
         $invite = EventInvite::create($event, $invitation);
 
-        $url = $this->urlGenerator->generateRemoteUrl('app_event_show', [
+        $url = $this->urlGenerator->generateRemoteUrl('app_committee_event_show', [
             'slug' => $event->getSlug(),
         ]);
 

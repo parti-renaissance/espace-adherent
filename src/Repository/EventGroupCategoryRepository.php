@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\BaseEventCategory;
-use App\Entity\EventGroupCategory;
+use App\Entity\Event\BaseEventCategory;
+use App\Entity\Event\EventGroupCategory;
 use Doctrine\Persistence\ManagerRegistry;
 
 class EventGroupCategoryRepository extends BaseEventCategoryRepository

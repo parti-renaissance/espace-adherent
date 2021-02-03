@@ -8,6 +8,7 @@ use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectMembership;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\CitizenProject\FollowerCitizenProjectVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class FollowerCitizenProjectVoterTest extends AbstractAdherentVoterTest
@@ -66,7 +67,7 @@ class FollowerCitizenProjectVoterTest extends AbstractAdherentVoterTest
     /**
      * @param CitizenProject|null $project
      *
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(
         CitizenProject $project,
@@ -85,7 +86,7 @@ class FollowerCitizenProjectVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return CitizenProjectMembership|\PHPUnit_Framework_MockObject_MockObject|null
+     * @return CitizenProjectMembership|\MockObject|null
      */
     private function getMembershipMock(bool $isFollower, ?bool $isAdministrator): ?CitizenProjectMembership
     {
@@ -119,7 +120,7 @@ class FollowerCitizenProjectVoterTest extends AbstractAdherentVoterTest
     /**
      * @param bool $approved
      *
-     * @return CitizenProject|\PHPUnit_Framework_MockObject_MockObject
+     * @return CitizenProject|MockObject
      */
     private function getCitizenProjectMock(bool $approved = null): CitizenProject
     {

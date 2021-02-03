@@ -2,8 +2,8 @@
 
 namespace App\Mailer\Message;
 
-use App\Entity\CitizenAction;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
 final class CitizenActionRegistrationConfirmationMessage extends Message

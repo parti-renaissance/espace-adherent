@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche\InstitutionalEvents;
 
 use App\Address\GeoCoder;
 use App\Controller\EnMarche\AccessDelegatorTrait;
-use App\Entity\InstitutionalEvent;
+use App\Entity\Event\InstitutionalEvent;
 use App\Form\InstitutionalEventCommandType;
 use App\InstitutionalEvent\InstitutionalEventCommand;
 use App\InstitutionalEvent\InstitutionalEventCommandHandler;

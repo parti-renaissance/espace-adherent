@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\Committee\HostCommitteeVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class HostCommitteeVoterTest extends AbstractAdherentVoterTest
@@ -46,7 +47,7 @@ class HostCommitteeVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(Committee $committee, bool $isSupervisor, bool $isHost = null): Adherent
     {

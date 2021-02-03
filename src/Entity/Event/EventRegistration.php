@@ -1,7 +1,11 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Event;
 
+use App\Entity\Adherent;
+use App\Entity\EntityCrudTrait;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityPersonNameTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -19,7 +23,7 @@ class EventRegistration
     use EntityPersonNameTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\BaseEvent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\BaseEvent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $event;

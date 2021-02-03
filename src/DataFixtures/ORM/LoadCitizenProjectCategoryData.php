@@ -3,7 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\CitizenProjectCategory;
-use App\Entity\EventCategory;
+use App\Entity\Event\EventCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

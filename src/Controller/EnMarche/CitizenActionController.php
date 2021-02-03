@@ -5,7 +5,7 @@ namespace App\Controller\EnMarche;
 use App\CitizenAction\CitizenActionManager;
 use App\CitizenAction\CitizenActionRegistrationCommandHandler;
 use App\Controller\EntityControllerTrait;
-use App\Entity\CitizenAction;
+use App\Entity\Event\CitizenAction;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationManager;
 use App\Exception\BadUuidRequestException;
@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/action-citoyenne")
+ * @Route("/action-citoyenne/{slug}", name="app_citizen_action_event")
  * @Entity("action", expr="repository.findOneCitizenActionBySlug(slug)")
  */
 class CitizenActionController extends AbstractController
@@ -35,7 +35,7 @@ class CitizenActionController extends AbstractController
     use EntityControllerTrait;
 
     /**
-     * @Route("/{slug}", name="app_citizen_action_show", methods={"GET"})
+     * @Route(name="_show", methods={"GET"})
      */
     public function showAction(CitizenAction $action, CitizenActionManager $citizenActionManager): Response
     {
@@ -46,7 +46,7 @@ class CitizenActionController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/inscription-adherent", name="app_citizen_action_attend_adherent", methods={"GET"})
+     * @Route("/inscription-adherent", name="_attend_adherent", methods={"GET"})
      *
      * @Security("is_granted('ROLE_ADHERENT')")
      */
@@ -67,7 +67,7 @@ class CitizenActionController extends AbstractController
         if ($citizenAction->isFull()) {
             $this->addFlash('info', 'L\'événement est complet');
 
-            return $this->redirectToRoute('app_citizen_action_show', ['slug' => $citizenAction->getSlug()]);
+            return $this->redirectToRoute('app_citizen_action_event_show', ['slug' => $citizenAction->getSlug()]);
         }
 
         $command = new EventRegistrationCommand($citizenAction, $adherent);
@@ -77,7 +77,7 @@ class CitizenActionController extends AbstractController
             $handler->handle($command);
             $this->addFlash('info', 'citizen_action.registration.success');
 
-            return $this->redirectToRoute('app_citizen_action_attend_confirmation', [
+            return $this->redirectToRoute('app_citizen_action_event_attend_confirmation', [
                 'slug' => $citizenAction->getSlug(),
                 'registration' => (string) $command->getRegistrationUuid(),
             ]);
@@ -85,11 +85,11 @@ class CitizenActionController extends AbstractController
 
         $this->addFlash('info', $errors[0]->getMessage());
 
-        return $this->redirectToRoute('app_citizen_action_show', ['slug' => $citizenAction->getSlug()]);
+        return $this->redirectToRoute('app_citizen_action_event_show', ['slug' => $citizenAction->getSlug()]);
     }
 
     /**
-     * @Route("/{slug}/inscription", name="app_citizen_action_attend", methods={"GET", "POST"})
+     * @Route("/inscription", name="_attend", methods={"GET", "POST"})
      */
     public function attendAction(
         Request $request,
@@ -99,7 +99,7 @@ class CitizenActionController extends AbstractController
         AnonymousFollowerSession $anonymousFollowerSession
     ): Response {
         if ($adherent) {
-            return $this->redirectToRoute('app_citizen_action_attend_adherent', ['slug' => $citizenAction->getSlug()]);
+            return $this->redirectToRoute('app_citizen_action_event_attend_adherent', ['slug' => $citizenAction->getSlug()]);
         }
 
         if ($citizenAction->isFinished()) {
@@ -113,7 +113,7 @@ class CitizenActionController extends AbstractController
         if ($citizenAction->isFull()) {
             $this->addFlash('info', 'L\'événement est complet');
 
-            return $this->redirectToRoute('app_citizen_action_show', ['slug' => $citizenAction->getSlug()]);
+            return $this->redirectToRoute('app_citizen_action_event_show', ['slug' => $citizenAction->getSlug()]);
         }
 
         if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
@@ -129,7 +129,7 @@ class CitizenActionController extends AbstractController
             $handler->handle($command);
             $this->addFlash('info', 'citizen_action.registration.success');
 
-            return $this->redirectToRoute('app_citizen_action_attend_confirmation', [
+            return $this->redirectToRoute('app_citizen_action_event_attend_confirmation', [
                 'slug' => $citizenAction->getSlug(),
                 'registration' => (string) $command->getRegistrationUuid(),
             ]);
@@ -142,7 +142,7 @@ class CitizenActionController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/desinscription", name="app_citizen_action_unregistration", condition="request.isXmlHttpRequest()", methods={"GET", "POST"})
+     * @Route("/desinscription", name="_unregistration", condition="request.isXmlHttpRequest()", methods={"GET", "POST"})
      * @Security("is_granted('UNREGISTER_CITIZEN_ACTION', citizenAction)")
      */
     public function unregistrationAction(
@@ -168,8 +168,8 @@ class CitizenActionController extends AbstractController
 
     /**
      * @Route(
-     *     path="/{slug}/confirmation",
-     *     name="app_citizen_action_attend_confirmation",
+     *     path="/confirmation",
+     *     name="_attend_confirmation",
      *     condition="request.query.has('registration')",
      *     methods={"GET"}
      * )
@@ -198,7 +198,7 @@ class CitizenActionController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/ical", name="app_citizen_action_export_ical", methods={"GET"})
+     * @Route("/ical", name="_export_ical", methods={"GET"})
      */
     public function exportIcalAction(CitizenAction $citizenAction, SerializerInterface $serializer): Response
     {
@@ -211,7 +211,7 @@ class CitizenActionController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/participants", name="app_citizen_action_list_participants", methods={"GET"})
+     * @Route("/participants", name="_list_participants", methods={"GET"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function listParticipantsAction(

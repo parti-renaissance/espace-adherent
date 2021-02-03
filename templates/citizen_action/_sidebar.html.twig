@@ -7,7 +7,7 @@
     </div>
 
     <div class="citizen_action__card b__nudge--bottom">
-        {% set event_url = url('app_citizen_action_show', { slug: citizen_action.slug }) %}
+        {% set event_url = url('app_citizen_action_event_show', { slug: citizen_action.slug }) %}
         <ul class="list__links list__links--default list__links--svgs list__links--svgs--small">
             <li class="text--body">Partager</li>
             <li role="button" aria-label="Partager sur Facebook"
@@ -29,7 +29,7 @@
         <h3>Quand</h3>
         <div>{{ citizen_action.beginAt|localizeddate('full', 'none')|capitalize }}</div>
         <div>De {{ citizen_action.beginAt|date('G\\hi') }} à {{ citizen_action.finishAt|date('G\\hi') }}</div>
-        <a href="{{ path('app_citizen_action_export_ical', {slug: citizen_action.slug}) }}" class="link--no-decor text--blue--dark text--normal text--summary">Ajouter au calendrier</a>
+        <a href="{{ path('app_citizen_action_event_export_ical', {slug: citizen_action.slug}) }}" class="link--no-decor text--blue--dark text--normal text--summary">Ajouter au calendrier</a>
     </div>
 
     <div class="citizen_action__card b__nudge--top-large">

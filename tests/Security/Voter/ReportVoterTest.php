@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Report\ReportPermissions;
 use App\Security\Voter\ReportVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -19,7 +20,7 @@ class ReportVoterTest extends TestCase
     private $voter;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|AuthorizationCheckerInterface
+     * @var MockObject|AuthorizationCheckerInterface
      */
     private $authorizationChecker;
 

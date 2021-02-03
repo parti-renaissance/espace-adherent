@@ -7,7 +7,7 @@ use App\Committee\Feed\CommitteeFeedManager;
 use App\Committee\Feed\CommitteeMessage;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event as EntityEvent;
+use App\Entity\Event\CommitteeEvent as EntityEvent;
 use App\Entity\PostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
@@ -17,7 +17,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadEventData extends Fixture implements DependentFixtureInterface
+class LoadCommitteeEventData extends Fixture implements DependentFixtureInterface
 {
     public const EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
     public const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';

@@ -3,7 +3,7 @@
 namespace App\Membership;
 
 use App\Entity\Adherent;
-use App\Entity\EventRegistration;
+use App\Entity\Event\EventRegistration;
 
 class MemberActivityCollection
 {

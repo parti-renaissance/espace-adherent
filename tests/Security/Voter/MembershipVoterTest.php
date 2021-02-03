@@ -5,10 +5,11 @@ namespace Tests\App\Security\Voter;
 use App\Repository\AdherentMandate\AdherentMandateRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\MembershipVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class MembershipVoterTest extends AbstractAdherentVoterTest
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject|AdherentMandateRepository */
+    /** @var MockObject|AdherentMandateRepository */
     private $adherentMandateRepository;
 
     protected function getVoter(): AbstractAdherentVoter

@@ -4,7 +4,7 @@ namespace App\Twig;
 
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -18,7 +18,7 @@ class EventRuntime implements RuntimeExtensionInterface
         $this->eventRegistrationRepository = $eventRegistrationRepository;
     }
 
-    public function isEventAlreadyParticipating(Event $event, ?UserInterface $user): bool
+    public function isEventAlreadyParticipating(CommitteeEvent $event, ?UserInterface $user): bool
     {
         if (!$user instanceof Adherent) {
             return false;

@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 class GeoCoder
 {
     public const DEFAULT_TIME_ZONE = 'Europe/Paris';
+
     private $provider;
     private $logger;
     /**

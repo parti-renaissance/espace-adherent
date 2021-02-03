@@ -5,9 +5,9 @@ namespace App\Repository;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
-use App\Entity\BaseEvent;
-use App\Entity\Event;
-use App\Entity\EventRegistration;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventRegistration;
 use App\Statistics\StatisticsParametersFilter;
 use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
@@ -235,12 +235,12 @@ class EventRegistrationRepository extends ServiceEntityRepository
     ): QueryBuilder {
         return $this->createQueryBuilder('eventRegistrations')
             ->select('DISTINCT eventRegistrations.emailAddress, COUNT(DISTINCT eventRegistrations) AS count, YEAR_MONTH(event.beginAt) as yearmonth')
-            ->join(Event::class, 'event', Join::WITH, 'eventRegistrations.event = event.id')
+            ->join(CommitteeEvent::class, 'event', Join::WITH, 'eventRegistrations.event = event.id')
             ->join('event.referentTags', 'tag')
             ->where('tag IN (:tags)')
             ->andWhere('event.beginAt >= :from')
             ->andWhere('event.beginAt <= :until')
-            ->andWhere("event.status = '".Event::STATUS_SCHEDULED."'")
+            ->andWhere("event.status = '".BaseEvent::STATUS_SCHEDULED."'")
             ->andWhere('event.committee IS NOT NULL')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
             ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))

@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\BaseEventCategory;
-use App\Entity\EventCategory;
+use App\Entity\Event\BaseEventCategory;
+use App\Entity\Event\EventCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

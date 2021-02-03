@@ -73,7 +73,7 @@
                     {% for event in events %}
                         <tr class="event__item">
                             <td>
-                                <a href="{{ path('app_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}
+                                <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}" target="_blank">{{ event.name }}
                             </td>
                             <td>{{ event.organizer ? event.organizer.fullName : 'un ancien adhérent' }}</td>
                             <td>{{ event.status|trans([], 'forms') }}</td>
@@ -89,7 +89,7 @@
                                             label: 'Partager par e-mail',
                                             linkAttr: {
                                                 class: 'row-action share-by-email',
-                                                'data-url': url('app_event_show', {slug: event.slug}),
+                                                'data-url': url('app_committee_event_show', {slug: event.slug}),
                                             }
                                         }
                                     ] %}
@@ -101,15 +101,15 @@
                                     {% set items = items|merge([
                                         {
                                             label: 'Modifier',
-                                            href: path('app_event_edit', {slug: event.slug}),
+                                            href: path('app_committee_event_edit', {slug: event.slug}),
                                         },
                                         {
                                             label: 'Écrire aux participants',
-                                            href: path('app_event_members', {slug: event.slug}),
+                                            href: path('app_committee_event_members', {slug: event.slug}),
                                         },
                                         {
                                             label: 'Annuler',
-                                            href: path('app_event_cancel', {slug: event.slug}),
+                                            href: path('app_committee_event_cancel', {slug: event.slug}),
                                             linkAttr: {
                                                 class: 'row-action text--error'
                                             },

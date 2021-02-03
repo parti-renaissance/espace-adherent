@@ -12,9 +12,9 @@ use App\CitizenAction\CitizenActionParticipantsExporter;
 use App\CitizenProject\CitizenProjectManager;
 use App\Collection\EventRegistrationCollection;
 use App\Controller\PrintControllerTrait;
-use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\EventRegistration;
 use App\Event\EventCanceledHandler;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
@@ -86,7 +86,7 @@ class CitizenActionManagerController extends AbstractController
             $eventRegistrationCommandHandler->handle(new EventRegistrationCommand($action, $this->getUser()), false);
             $this->addFlash('info', 'citizen_action.creation.success');
 
-            return $this->redirectToRoute('app_citizen_action_show', [
+            return $this->redirectToRoute('app_citizen_action_event_show', [
                 'slug' => $action->getSlug(),
             ]);
         }
@@ -119,7 +119,7 @@ class CitizenActionManagerController extends AbstractController
 
             $this->addFlash('info', 'citizen_action.update.success');
 
-            return $this->redirectToRoute('app_citizen_action_show', [
+            return $this->redirectToRoute('app_citizen_action_event_show', [
                 'slug' => $action->getSlug(),
             ]);
         }
@@ -149,7 +149,7 @@ class CitizenActionManagerController extends AbstractController
             $eventCanceledHandler->handle($action);
             $this->addFlash('info', 'citizen_action.cancel.success');
 
-            return $this->redirectToRoute('app_citizen_action_show', [
+            return $this->redirectToRoute('app_citizen_action_event_show', [
                 'slug' => $action->getSlug(),
             ]);
         }
@@ -179,7 +179,7 @@ class CitizenActionManagerController extends AbstractController
         if (0 == $registrations->count()) {
             $this->addFlash('error', $translator->trans('citizen_action.export.none'));
 
-            return $this->redirectToRoute('app_citizen_action_list_participants', [
+            return $this->redirectToRoute('app_citizen_action_event_list_participants', [
                 'slug' => $citizenAction->getSlug(),
             ]);
         }
@@ -209,7 +209,7 @@ class CitizenActionManagerController extends AbstractController
         if (0 == $registrations->count()) {
             $this->addFlash('error', $translator->trans('citizen_action.export.none'));
 
-            return $this->redirectToRoute('app_citizen_action_list_participants', [
+            return $this->redirectToRoute('app_citizen_action_event_list_participants', [
                 'slug' => $citizenAction->getSlug(),
             ]);
         }
@@ -226,7 +226,7 @@ class CitizenActionManagerController extends AbstractController
             $handler->handle($command);
             $this->addFlash('info', 'citizen_action.contact.success');
 
-            return $this->redirectToRoute('app_citizen_action_list_participants', [
+            return $this->redirectToRoute('app_citizen_action_event_list_participants', [
                 'slug' => $citizenAction->getSlug(),
             ]);
         }
@@ -257,7 +257,7 @@ class CitizenActionManagerController extends AbstractController
         $registrations = $this->getRegistrations($request, $citizenAction, self::ACTION_PRINT);
 
         if (0 == $registrations->count()) {
-            return $this->redirectToRoute('app_citizen_action_list_participants', [
+            return $this->redirectToRoute('app_citizen_action_event_list_participants', [
                 'slug' => $citizenAction->getSlug(),
             ]);
         }

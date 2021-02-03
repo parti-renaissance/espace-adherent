@@ -9,7 +9,7 @@ Feature:
     And the following fixtures are loaded:
       | LoadUserData                        |
       | LoadAdherentData                    |
-      | LoadEventData                       |
+      | LoadCommitteeEventData              |
       | LoadCommitteeMembershipHistoryData  |
       | LoadClientData                      |
       | LoadCommitteeData                   |

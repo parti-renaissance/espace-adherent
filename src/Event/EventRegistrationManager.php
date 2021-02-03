@@ -3,8 +3,8 @@
 namespace App\Event;
 
 use App\Entity\Adherent;
-use App\Entity\BaseEvent;
-use App\Entity\EventRegistration;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\EventRegistration;
 use App\Exception\EventRegistrationException;
 use App\Repository\EventRegistrationRepository;
 use Doctrine\Common\Persistence\ObjectManager;

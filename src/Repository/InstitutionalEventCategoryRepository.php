@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\InstitutionalEventCategory;
+use App\Entity\Event\InstitutionalEventCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

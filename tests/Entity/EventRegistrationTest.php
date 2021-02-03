@@ -3,8 +3,8 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Adherent;
-use App\Entity\Event;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventRegistration;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -86,7 +86,7 @@ class EventRegistrationTest extends TestCase
         $uuid = Uuid::fromString($uuid);
 
         $event = $this
-            ->getMockBuilder(Event::class)
+            ->getMockBuilder(CommitteeEvent::class)
             ->setMethodsExcept(['equals'])
             ->disableOriginalConstructor()
             ->getMock()

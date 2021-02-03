@@ -1,8 +1,13 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Event;
 
 use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\AuthoredInterface;
+use App\Entity\PostAddress;
+use App\Entity\Report\ReportableInterface;
+use App\Event\EventTypeEnum;
 use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,10 +16,10 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InstitutionalEventRepository")
  */
-class InstitutionalEvent extends BaseEvent implements AuthoredInterface
+class InstitutionalEvent extends BaseEvent implements AuthoredInterface, ReportableInterface
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\InstitutionalEventCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\InstitutionalEventCategory")
      */
     protected $category;
 
@@ -25,9 +30,9 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface
      */
     private $invitations;
 
-    public function getType(): ?string
+    public function getType(): string
     {
-        return self::INSTITUTIONAL_EVENT_TYPE;
+        return EventTypeEnum::TYPE_INSTITUTIONAL;
     }
 
     public function getReportType(): string
@@ -50,7 +55,8 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface
         array $referentTags = [],
         string $timeZone = GeoCoder::DEFAULT_TIME_ZONE
     ) {
-        $this->uuid = $uuid;
+        parent::__construct($uuid);
+
         $this->organizer = $organizer;
         $this->setName($name);
         $this->slug = $slug;
@@ -63,7 +69,6 @@ class InstitutionalEvent extends BaseEvent implements AuthoredInterface
         $this->finishAt = new \DateTime($finishAt);
         $this->createdAt = new \DateTime($createdAt ?: 'now');
         $this->updatedAt = new \DateTime($createdAt ?: 'now');
-        $this->status = self::STATUS_SCHEDULED;
         $this->referentTags = new ArrayCollection($referentTags);
         $this->zones = new ArrayCollection();
         $this->timeZone = $timeZone;

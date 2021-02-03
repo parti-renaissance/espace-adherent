@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\CitizenAction\CitizenActionEvent;
-use App\Entity\CitizenAction;
+use App\Entity\Event\CitizenAction;
 use App\Events;
 use App\Form\CitizenActionCategoryType;
 use App\Form\UnitedNationsCountryType;

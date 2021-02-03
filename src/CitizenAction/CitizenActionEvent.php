@@ -3,7 +3,7 @@
 namespace App\CitizenAction;
 
 use App\Entity\Adherent;
-use App\Entity\CitizenAction;
+use App\Entity\Event\CitizenAction;
 use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoHashChangeAwareTrait;

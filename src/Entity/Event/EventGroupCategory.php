@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +23,7 @@ class EventGroupCategory extends BaseEventCategory
     const CAMPAIGN_EVENTS = 'evenements-de-campagne';
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\EventCategory", mappedBy="eventGroupCategory", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event\EventCategory", mappedBy="eventGroupCategory", fetch="EAGER")
      * @ORM\OrderBy({"name": "ASC"})
      */
     private $eventCategories;

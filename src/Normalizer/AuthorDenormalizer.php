@@ -2,8 +2,9 @@
 
 namespace App\Normalizer;
 
+use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -14,11 +15,11 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
     private const ALREADY_CALLED = 'AUTHOR_DENORMALIZER_ALREADY_CALLED';
 
-    private $tokenStorage;
+    private $security;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(Security $security)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -28,7 +29,7 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
 
         if (!$data->getId()) {
-            $data->setAuthor($this->tokenStorage->getToken()->getUser());
+            $data->setAuthor($this->security->getUser());
         }
 
         return $data;
@@ -41,7 +42,6 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
             return false;
         }
 
-        return is_a($type, AuthorInterface::class, true)
-            && \is_object($this->tokenStorage->getToken()->getUser());
+        return is_a($type, AuthorInterface::class, true) && $this->security->getUser() instanceof Adherent;
     }
 }

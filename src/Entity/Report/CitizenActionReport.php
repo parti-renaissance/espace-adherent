@@ -2,7 +2,7 @@
 
 namespace App\Entity\Report;
 
-use App\Entity\CitizenAction;
+use App\Entity\Event\CitizenAction;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,7 +13,7 @@ class CitizenActionReport extends Report
     /**
      * @var CitizenAction
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CitizenAction")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\CitizenAction")
      * @ORM\JoinColumn(name="citizen_action_id")
      */
     protected $subject;

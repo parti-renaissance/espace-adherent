@@ -4,8 +4,8 @@ namespace App\Doctrine\Hydrators;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event;
-use App\Entity\EventCategory;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventCategory;
 use App\Entity\PostAddress;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Ramsey\Uuid\Uuid;
@@ -71,7 +71,7 @@ class EventHydrator extends AbstractHydrator
             );
         }
 
-        $event = new Event(
+        $event = new CommitteeEvent(
             $uuidEvent,
             $organizer,
             $committee,

@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\CitizenAction\CitizenActionCommand;
-use App\Entity\CitizenActionCategory;
+use App\Entity\Event\CitizenActionCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;

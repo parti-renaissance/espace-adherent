@@ -4,7 +4,7 @@
     <div class="committee-event-details">
         <div>
             <h4 class="text--medium text--normal b__nudge--bottom-tiny">
-                <a href="{{ path("app_#{item.event.type}_show", {slug: item.event.slug}) }}"
+                <a href="{{ path("app_#{item.event.type}_event_show", {slug: item.event.slug}) }}"
                    class="link--no-decor text--breakword" target="_blank" rel="noopener noreferrer">
                     {{ item.event.name }}
                 </a>
@@ -21,7 +21,7 @@
                 {% elseif item.event.cancelled %}
                     Cet événement est annulé
                 {% elseif not item.event.full %}
-                    <a href="{{ path("app_#{item.event.type}_show", {slug: item.event.slug}) }}"
+                    <a href="{{ path("app_#{item.event.type}_event_show", {slug: item.event.slug}) }}"
                        class="btn btn--blue committee-event-more" target="_blank" rel="noopener noreferrer">En savoir plus</a>
                 {% else %}
                     Cet événement est complet

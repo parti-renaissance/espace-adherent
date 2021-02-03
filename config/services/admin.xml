@@ -204,7 +204,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Événements" group="Territoires" />
 
             <argument />
-            <argument>App\Entity\Event</argument>
+            <argument>App\Entity\Event\CommitteeEvent</argument>
             <argument />
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="App\Referent\ReferentTagManager"/>
@@ -214,7 +214,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Événements institutionnels" group="Territoires" />
 
             <argument />
-            <argument>App\Entity\InstitutionalEvent</argument>
+            <argument>App\Entity\Event\InstitutionalEvent</argument>
             <argument />
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="App\Referent\ReferentTagManager"/>
@@ -224,7 +224,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements" group="Territoires" />
 
             <argument />
-            <argument>App\Entity\EventCategory</argument>
+            <argument>App\Entity\Event\EventCategory</argument>
             <argument />
         </service>
 
@@ -232,7 +232,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Groupe de Catégories d'événements" group="Territoires" />
 
             <argument />
-            <argument>App\Entity\EventGroupCategory</argument>
+            <argument>App\Entity\Event\EventGroupCategory</argument>
             <argument />
         </service>
 
@@ -240,7 +240,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements institutionnels" group="Territoires" />
 
             <argument />
-            <argument>App\Entity\InstitutionalEventCategory</argument>
+            <argument>App\Entity\Event\InstitutionalEventCategory</argument>
             <argument />
         </service>
 
@@ -606,7 +606,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Actions citoyennes" group="Projets citoyens" />
 
             <argument />
-            <argument>App\Entity\CitizenAction</argument>
+            <argument>App\Entity\Event\CitizenAction</argument>
             <argument />
         </service>
 
@@ -622,7 +622,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Catégories des actions " group="Projets citoyens" />
 
             <argument />
-            <argument>App\Entity\CitizenActionCategory</argument>
+            <argument>App\Entity\Event\CitizenActionCategory</argument>
             <argument />
         </service>
 

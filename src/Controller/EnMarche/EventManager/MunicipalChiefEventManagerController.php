@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche\EventManager;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Adherent;
-use App\Entity\MunicipalEvent;
+use App\Entity\Event\MunicipalEvent;
 use App\Event\EventManagerSpaceEnum;
 use App\Repository\MunicipalEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

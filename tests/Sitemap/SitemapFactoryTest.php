@@ -15,6 +15,7 @@ use App\Repository\OrderArticleRepository;
 use App\Repository\PageRepository;
 use App\Sitemap\SitemapFactory;
 use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -24,17 +25,17 @@ use Tackk\Cartographer\Sitemap;
 class SitemapFactoryTest extends TestCase
 {
     /**
-     * @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectManager|MockObject
      */
     private $objectManager;
 
     /**
-     * @var RouterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RouterInterface|MockObject
      */
     private $router;
 
     /**
-     * @var CacheItemPoolInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var CacheItemPoolInterface|MockObject
      */
     private $cache;
 

@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use App\Entity\Event;
+use App\Entity\Event\BaseEvent;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
@@ -19,7 +19,7 @@ class Version20170321155653 extends AbstractMigration
         /** @var Connection $connection */
         $connection = $this->connection;
 
-        $connection->executeUpdate('UPDATE events e SET e.status = :status', ['status' => Event::STATUS_SCHEDULED], ['status' => \PDO::PARAM_STR]);
+        $connection->executeUpdate('UPDATE events e SET e.status = :status', ['status' => BaseEvent::STATUS_SCHEDULED], ['status' => \PDO::PARAM_STR]);
     }
 
     public function down(Schema $schema)

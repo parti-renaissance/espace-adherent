@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
+use App\Entity\Event\CitizenAction;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 

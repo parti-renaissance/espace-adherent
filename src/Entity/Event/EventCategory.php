@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Event;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EventCategory extends BaseEventCategory
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\EventGroupCategory", inversedBy="eventCategories")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventGroupCategory", inversedBy="eventCategories")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      */

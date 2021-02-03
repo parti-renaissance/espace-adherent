@@ -3,8 +3,8 @@
 namespace Tests\App\Controller;
 
 use App\Entity\Adherent;
-use App\Entity\EventCategory;
-use App\Entity\InstitutionalEventCategory;
+use App\Entity\Event\EventCategory;
+use App\Entity\Event\InstitutionalEventCategory;
 use App\Entity\ReferentTag;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use Doctrine\ORM\EntityManagerInterface;

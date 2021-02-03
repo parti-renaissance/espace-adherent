@@ -3,17 +3,18 @@
 namespace Tests\App\Security\Voter;
 
 use App\CitizenAction\CitizenActionPermissions;
-use App\Entity\CitizenAction;
-use App\Entity\Event;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CommitteeEvent;
 use App\Event\EventPermissions;
 use App\Repository\EventRegistrationRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\AttendEventVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class AttendEventVoterTest extends AbstractAdherentVoterTest
 {
     /**
-     * @var EventRegistrationRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventRegistrationRepository|MockObject
      */
     private $registrationRepository;
 
@@ -39,7 +40,7 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
     public function provideAnonymousCases(): iterable
     {
         yield [false, true, CitizenActionPermissions::UNREGISTER, $this->createMock(CitizenAction::class)];
-        yield [false, true, EventPermissions::UNREGISTER, $this->createMock(Event::class)];
+        yield [false, true, EventPermissions::UNREGISTER, $this->createMock(CommitteeEvent::class)];
     }
 
     /**
@@ -67,7 +68,7 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
     public function provideRegisteredEventCases(): iterable
     {
         $action = $this->createMock(CitizenAction::class);
-        $event = $this->createMock(Event::class);
+        $event = $this->createMock(CommitteeEvent::class);
 
         yield [true, CitizenActionPermissions::UNREGISTER, $action];
         yield [false, CitizenActionPermissions::UNREGISTER, $action];

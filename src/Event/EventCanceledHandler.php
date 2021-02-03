@@ -3,9 +3,9 @@
 namespace App\Event;
 
 use App\CitizenAction\CitizenActionEvent;
-use App\Entity\BaseEvent;
-use App\Entity\CitizenAction;
-use App\Entity\Event as CommitteeEvent;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CommitteeEvent;
 use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Contracts\EventDispatcher\Event;

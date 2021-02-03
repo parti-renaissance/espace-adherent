@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CommitteeFeedItem;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\IdeasWorkshop\Answer;
 use App\Entity\UserDocument;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,7 +20,7 @@ class UserDocumentRepository extends ServiceEntityRepository
     {
         $event = $this
             ->getEntityManager()->createQueryBuilder()
-            ->from(Event::class, 'event')
+            ->from(CommitteeEvent::class, 'event')
             ->select('event.id')
             ->join('event.documents', 'documents')
             ->where('documents.id = :documentId')

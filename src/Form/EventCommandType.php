@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\EventCategory;
-use App\Entity\EventGroupCategory;
+use App\Entity\Event\EventCategory;
+use App\Entity\Event\EventGroupCategory;
 use App\Event\EventCommand;
 use App\Repository\EventCategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

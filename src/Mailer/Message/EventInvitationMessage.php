@@ -2,13 +2,13 @@
 
 namespace App\Mailer\Message;
 
-use App\Entity\Event;
-use App\Entity\EventInvite;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventInvite;
 use Ramsey\Uuid\Uuid;
 
 final class EventInvitationMessage extends Message
 {
-    public static function createFromInvite(EventInvite $invite, Event $event, string $eventUrl): self
+    public static function createFromInvite(EventInvite $invite, CommitteeEvent $event, string $eventUrl): self
     {
         $message = new self(
             Uuid::uuid4(),

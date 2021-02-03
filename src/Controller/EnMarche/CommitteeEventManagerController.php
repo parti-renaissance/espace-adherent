@@ -3,8 +3,8 @@
 namespace App\Controller\EnMarche;
 
 use App\Controller\PrintControllerTrait;
-use App\Entity\Event;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventRegistration;
 use App\Event\EventCanceledHandler;
 use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/evenements/{slug}")
  * @Security("is_granted('HOST_EVENT', event)")
  */
-class EventManagerController extends AbstractController
+class CommitteeEventManagerController extends AbstractController
 {
     use PrintControllerTrait;
 
@@ -51,10 +51,10 @@ class EventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/modifier", name="app_event_edit", methods={"GET", "POST"})
+     * @Route("/modifier", name="app_committee_event_edit", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
-    public function editAction(Request $request, Event $event, EventCommandHandler $handler): Response
+    public function editAction(Request $request, CommitteeEvent $event, EventCommandHandler $handler): Response
     {
         $form = $this->createForm(EventCommandType::class, $command = EventCommand::createFromEvent($event));
         $form->handleRequest($request);
@@ -63,7 +63,7 @@ class EventManagerController extends AbstractController
             $handler->handleUpdate($event, $command);
             $this->addFlash('info', 'committee.event.update.success');
 
-            return $this->redirectToRoute('app_event_show', [
+            return $this->redirectToRoute('app_committee_event_show', [
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -76,11 +76,14 @@ class EventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/annuler", name="app_event_cancel", methods={"GET", "POST"})
+     * @Route("/annuler", name="app_committee_event_cancel", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
-    public function cancelAction(Request $request, Event $event, EventCanceledHandler $eventCanceledHandler): Response
-    {
+    public function cancelAction(
+        Request $request,
+        CommitteeEvent $event,
+        EventCanceledHandler $eventCanceledHandler
+    ): Response {
         $form = $this->createForm(FormType::class);
         $form->handleRequest($request);
 
@@ -88,7 +91,7 @@ class EventManagerController extends AbstractController
             $eventCanceledHandler->handle($event);
             $this->addFlash('info', 'committee.event.cancel.success');
 
-            return $this->redirectToRoute('app_event_show', [
+            return $this->redirectToRoute('app_committee_event_show', [
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -101,9 +104,9 @@ class EventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/inscrits", name="app_event_members", methods={"GET"})
+     * @Route("/inscrits", name="app_committee_event_members", methods={"GET"})
      */
-    public function membersAction(Event $event): Response
+    public function membersAction(CommitteeEvent $event): Response
     {
         return $this->render('events/members.html.twig', [
             'event' => $event,
@@ -113,14 +116,17 @@ class EventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/inscrits/exporter", name="app_event_export_members", methods={"POST"})
+     * @Route("/inscrits/exporter", name="app_committee_event_export_members", methods={"POST"})
      */
-    public function exportMembersAction(Request $request, Event $event, EventRegistrationExporter $exporter): Response
-    {
+    public function exportMembersAction(
+        Request $request,
+        CommitteeEvent $event,
+        EventRegistrationExporter $exporter
+    ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_EXPORT);
 
         if (!$registrations) {
-            return $this->redirectToRoute('app_event_members', [
+            return $this->redirectToRoute('app_committee_event_members', [
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -131,17 +137,17 @@ class EventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/inscrits/contacter", name="app_event_contact_members", methods={"POST"})
+     * @Route("/inscrits/contacter", name="app_committee_event_contact_members", methods={"POST"})
      */
     public function contactMembersAction(
         Request $request,
-        Event $event,
+        CommitteeEvent $event,
         EventContactMembersCommandHandler $handler
     ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_CONTACT);
 
         if (!$registrations) {
-            return $this->redirectToRoute('app_event_members', [
+            return $this->redirectToRoute('app_committee_event_members', [
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -157,7 +163,7 @@ class EventManagerController extends AbstractController
             $handler->handle($command);
             $this->addFlash('info', 'committee.event.contact.success');
 
-            return $this->redirectToRoute('app_event_members', [
+            return $this->redirectToRoute('app_committee_event_members', [
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -175,14 +181,14 @@ class EventManagerController extends AbstractController
     }
 
     /**
-     * @Route("/inscrits/imprimer", name="app_event_print_members", methods={"POST"})
+     * @Route("/inscrits/imprimer", name="app_committee_event_print_members", methods={"POST"})
      */
-    public function printMembersAction(Request $request, Event $event): Response
+    public function printMembersAction(Request $request, CommitteeEvent $event): Response
     {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_PRINT);
 
         if (!$registrations) {
-            return $this->redirectToRoute('app_event_members', [
+            return $this->redirectToRoute('app_committee_event_members', [
                 'slug' => $event->getSlug(),
             ]);
         }
@@ -196,7 +202,7 @@ class EventManagerController extends AbstractController
         );
     }
 
-    private function getRegistrations(Request $request, Event $event, string $action): array
+    private function getRegistrations(Request $request, CommitteeEvent $event, string $action): array
     {
         if (!\in_array($action, self::ACTIONS)) {
             throw new \InvalidArgumentException("Action '$action' is not allowed.");

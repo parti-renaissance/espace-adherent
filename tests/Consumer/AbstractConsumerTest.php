@@ -5,6 +5,7 @@ namespace Tests\App\Consumer;
 use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -19,12 +20,12 @@ class AbstractConsumerTest extends TestCase
     const CLASS_NAME = 'App\Consumer\AbstractConsumer';
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ValidatorInterface
+     * @var MockObject|ValidatorInterface
      */
     private $validator;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     private $entityManager;
 

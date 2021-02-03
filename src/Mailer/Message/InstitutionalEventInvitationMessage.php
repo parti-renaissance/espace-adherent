@@ -2,7 +2,7 @@
 
 namespace App\Mailer\Message;
 
-use App\Entity\InstitutionalEvent;
+use App\Entity\Event\InstitutionalEvent;
 use Ramsey\Uuid\Uuid;
 
 final class InstitutionalEventInvitationMessage extends Message

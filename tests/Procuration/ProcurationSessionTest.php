@@ -6,6 +6,7 @@ use App\Entity\ProcurationRequest;
 use App\Procuration\ElectionContext;
 use App\Procuration\Exception\InvalidProcurationFlowException;
 use App\Procuration\ProcurationSession;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
  */
 class ProcurationSessionTest extends TestCase
 {
-    /** @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var SessionInterface|MockObject */
     private $session;
 
     protected function setUp(): void

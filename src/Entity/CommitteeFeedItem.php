@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CommitteeEvent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,9 +39,9 @@ class CommitteeFeedItem implements UserDocumentInterface
     private $author;
 
     /**
-     * @var Event
+     * @var CommitteeEvent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\BaseEvent", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\BaseEvent", fetch="EAGER")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
      */
     private $event;
@@ -108,7 +110,7 @@ class CommitteeFeedItem implements UserDocumentInterface
     }
 
     public static function createEvent(
-        Event $event,
+        CommitteeEvent $event,
         Adherent $author,
         bool $published = true,
         string $createdAt = 'now'
@@ -128,7 +130,7 @@ class CommitteeFeedItem implements UserDocumentInterface
 
     public function getContent(): ?string
     {
-        if (!$this->content && $this->event instanceof Event) {
+        if (!$this->content && $this->event instanceof CommitteeEvent) {
             return $this->event->getDescription();
         }
 

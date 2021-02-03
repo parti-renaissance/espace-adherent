@@ -8,11 +8,12 @@ use App\Entity\CitizenProject;
 use App\Repository\CitizenProjectMembershipRepository;
 use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\ManageCitizenActionVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
 {
     /**
-     * @var CitizenProjectMembershipRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var CitizenProjectMembershipRepository|MockObject
      */
     private $membershipRepository;
 
@@ -128,7 +129,7 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(
         bool $uuidChecked = false,
@@ -172,7 +173,7 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
     }
 
     /**
-     * @return CitizenProject|\PHPUnit_Framework_MockObject_MockObject
+     * @return CitizenProject|MockObject
      */
     private function getCitizenProjectMock(bool $approved, bool $fromCreator = false): CitizenProject
     {

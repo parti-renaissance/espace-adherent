@@ -2,32 +2,29 @@
 
 namespace Tests\App\Controller\Api;
 
+use App\DataFixtures\ORM\LoadClientData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
 class CrmParisControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use ApiControllerTestTrait;
 
     public function testExportAdherentsCsv(): void
     {
-        // The OAuth client asks for an access token
-        $this->client->request('POST', '/oauth/v2/token', [
-            'client_id' => '40bdd6db-e422-4153-819c-9973c09f9297',
-            'client_secret' => 'cChiFrOxtYb4CgnKoYvV9evEcrOsk2hb9wvO73QLYyc=',
-            'grant_type' => 'client_credentials',
-            'scope' => 'crm_paris',
-        ]);
-        $response = $this->client->getResponse();
-        $this->isSuccessful($response);
-
-        $data = json_decode($response->getContent(), true);
-        $acessToken = $data['access_token'];
+        $accessToken = $this->getAccessToken(
+            LoadClientData::CLIENT_09_UUID,
+            'cChiFrOxtYb4CgnKoYvV9evEcrOsk2hb9wvO73QLYyc=',
+            'client_credentials',
+            'crm_paris'
+        );
 
         ob_start();
         $this->client->request(Request::METHOD_GET, '/api/crm-paris/adherents', [], [], [
-            'HTTP_AUTHORIZATION' => "Bearer $acessToken",
+            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
 
         $responseContent = ob_get_clean();

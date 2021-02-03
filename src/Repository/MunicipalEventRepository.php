@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Adherent;
-use App\Entity\Event;
-use App\Entity\MunicipalEvent;
+use App\Entity\Event\BaseEvent;
+use App\Entity\Event\MunicipalEvent;
 use Doctrine\Persistence\ManagerRegistry;
 
 class MunicipalEventRepository extends EventRepository
@@ -21,7 +21,7 @@ class MunicipalEventRepository extends EventRepository
             ->where('e.status = :status')
             ->andWhere('e.organizer = :organizer')
             ->setParameter('organizer', $organizer)
-            ->setParameter('status', Event::STATUS_SCHEDULED)
+            ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -34,7 +34,7 @@ class MunicipalEventRepository extends EventRepository
             ->innerJoin('event.category', 'category')
             ->where('event.status = :scheduled')
             ->andWhere('event.finishAt > :now')
-            ->setParameter('scheduled', MunicipalEvent::STATUS_SCHEDULED)
+            ->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED)
             ->setParameter('now', new \DateTime())
             ->orderBy('category.name', 'ASC')
             ->getQuery()
@@ -53,7 +53,7 @@ class MunicipalEventRepository extends EventRepository
             ->andWhere('event.finishAt > :now')
             ->andWhere('event.postAddress.postalCode IN (:codes)')
             ->setParameters([
-                'scheduled' => MunicipalEvent::STATUS_SCHEDULED,
+                'scheduled' => BaseEvent::STATUS_SCHEDULED,
                 'now' => new \DateTime(),
                 'codes' => $postalCodes,
             ])

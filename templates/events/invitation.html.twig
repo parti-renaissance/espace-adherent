@@ -1,7 +1,7 @@
 {% extends 'events/_layout.html.twig' %}
 
 {% block page_title "Invitation pour #{event.name} - #{event.cityName}, #{event.beginAt|date('d/m/Y')}" %}
-{% block canonical_url url('app_event_invite', { slug: event.slug }) %}
+{% block canonical_url url('app_committee_event_invite', { slug: event.slug }) %}
 {% block meta_description "Envoyer une invitation pour #{event.name} qui est un événement local du mouvement La République En Marche ! organisé par #{event.organizer} le #{event.beginAt|date('d/m/Y')} à #{event.beginAt|date('G\\hi')}, dans la ville de #{event.cityName}." %}
 
 {% block javascripts %}

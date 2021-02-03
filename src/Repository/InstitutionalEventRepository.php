@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Adherent;
-use App\Entity\InstitutionalEvent;
+use App\Entity\Event\InstitutionalEvent;
 use Doctrine\Persistence\ManagerRegistry;
 
 class InstitutionalEventRepository extends EventRepository

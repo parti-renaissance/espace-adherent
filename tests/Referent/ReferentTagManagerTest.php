@@ -8,6 +8,7 @@ use App\Entity\ReferentTag;
 use App\Referent\ReferentTagManager;
 use App\Repository\ReferentTagRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Tests\App\Controller\ControllerTestTrait;
 
 /**
@@ -98,7 +99,7 @@ class ReferentTagManagerTest extends WebTestCase
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function createAdherent(string $postalCode, array $referentCodes): Adherent
     {

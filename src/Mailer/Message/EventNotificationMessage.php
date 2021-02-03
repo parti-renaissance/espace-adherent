@@ -3,7 +3,7 @@
 namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use Ramsey\Uuid\Uuid;
 
 final class EventNotificationMessage extends Message
@@ -18,7 +18,7 @@ final class EventNotificationMessage extends Message
     public static function create(
         array $recipients,
         Adherent $host,
-        Event $event,
+        CommitteeEvent $event,
         string $eventLink,
         \Closure $recipientVarsGenerator
     ): self {

@@ -3,7 +3,7 @@
 namespace Tests\App\Api;
 
 use App\Api\EventProvider;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Repository\EventRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -91,7 +91,7 @@ class EventProviderTest extends TestCase
         float $longitude = null,
         $withOrganizer = false
     ) {
-        $event = $this->createMock(Event::class);
+        $event = $this->createMock(CommitteeEvent::class);
         $event->expects($this->any())->method('isGeocoded')->willReturn($latitude && $longitude);
         $event->expects($this->any())->method('getUuid')->willReturn(Uuid::fromString($uuid));
         $event->expects($this->any())->method('getSlug')->willReturn($slug);

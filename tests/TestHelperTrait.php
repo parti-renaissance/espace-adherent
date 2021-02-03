@@ -9,7 +9,6 @@ use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentResetPasswordToken;
 use App\Entity\Administrator;
-use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
@@ -19,13 +18,14 @@ use App\Entity\Donator;
 use App\Entity\DonatorIdentifier;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Email;
-use App\Entity\Event;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\EventRegistration;
+use App\Entity\Event\InstitutionalEvent;
 use App\Entity\Filesystem\File;
 use App\Entity\IdeasWorkshop\Idea;
 use App\Entity\IdeasWorkshop\Thread;
 use App\Entity\IdeasWorkshop\ThreadComment;
-use App\Entity\InstitutionalEvent;
 use App\Entity\Invite;
 use App\Entity\JeMarcheReport;
 use App\Entity\MyEuropeChoice;
@@ -201,7 +201,7 @@ trait TestHelperTrait
 
     public function getEventRepository(): EventRepository
     {
-        return $this->getRepository(Event::class);
+        return $this->getRepository(CommitteeEvent::class);
     }
 
     public function getInstitutionalEventRepository(): InstitutionalEventRepository

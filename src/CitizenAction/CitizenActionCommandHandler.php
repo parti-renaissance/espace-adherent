@@ -2,7 +2,7 @@
 
 namespace App\CitizenAction;
 
-use App\Entity\CitizenAction;
+use App\Entity\Event\CitizenAction;
 use App\Event\EventFactory;
 use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;

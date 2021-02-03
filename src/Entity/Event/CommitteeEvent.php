@@ -1,8 +1,18 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Event;
 
 use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\IndexableEntityInterface;
+use App\Entity\PostAddress;
+use App\Entity\Report\ReportableInterface;
+use App\Entity\SynchronizedEntity;
+use App\Entity\UserDocument;
+use App\Entity\UserDocumentInterface;
+use App\Entity\UserDocumentTrait;
+use App\Event\EventTypeEnum;
 use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,14 +22,15 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
+ *
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  */
-class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface
+class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity, IndexableEntityInterface, ReportableInterface
 {
     use UserDocumentTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\EventCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
      */
     protected $category;
 
@@ -73,7 +84,8 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         array $referentTags = [],
         string $timeZone = GeoCoder::DEFAULT_TIME_ZONE
     ) {
-        $this->uuid = $uuid;
+        parent::__construct($uuid);
+
         $this->organizer = $organizer;
         $this->committee = $committee;
         $this->setName($name);
@@ -87,7 +99,6 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         $this->finishAt = new \DateTime($finishAt);
         $this->createdAt = new \DateTime($createdAt ?: 'now');
         $this->updatedAt = new \DateTime($createdAt ?: 'now');
-        $this->status = self::STATUS_SCHEDULED;
         $this->isForLegislatives = $isForLegislatives;
         $this->type = $type;
         $this->documents = new ArrayCollection();
@@ -131,9 +142,9 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
         return $this->category;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
-        return $this->type ?? self::EVENT_TYPE;
+        return $this->type ?? EventTypeEnum::TYPE_COMMITTEE;
     }
 
     public function getCommittee(): ?Committee

@@ -4,8 +4,8 @@ namespace App\CitizenAction;
 
 use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
-use App\Entity\CitizenAction;
-use App\Entity\EventRegistration;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\EventRegistration;
 use App\Event\EventRegistrationManager;
 use App\Repository\AdherentRepository;
 use App\Repository\CitizenActionRepository;

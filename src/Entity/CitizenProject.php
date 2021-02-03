@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Collection\AdherentCollection;
+use App\Entity\Event\CitizenAction;
 use App\Exception\CitizenProjectAlreadyApprovedException;
 use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;

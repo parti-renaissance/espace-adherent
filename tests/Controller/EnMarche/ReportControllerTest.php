@@ -5,7 +5,7 @@ namespace Tests\App\Controller\EnMarche;
 use App\DataFixtures\ORM\LoadCitizenActionData;
 use App\DataFixtures\ORM\LoadCitizenProjectData;
 use App\DataFixtures\ORM\LoadCommitteeData;
-use App\DataFixtures\ORM\LoadEventData;
+use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\Entity\Report\CitizenActionReport;
 use App\Entity\Report\CitizenProjectReport;
 use App\Entity\Report\CommitteeReport;
@@ -59,7 +59,7 @@ class ReportControllerTest extends WebTestCase
         yield 'Event' => [
             CommunityEventReport::class,
             sprintf('/evenements/%s-reunion-de-reflexion-marseillaise', \date('Y-m-d', strtotime('+17 days'))),
-            LoadEventData::EVENT_5_UUID,
+            LoadCommitteeEventData::EVENT_5_UUID,
         ];
     }
 

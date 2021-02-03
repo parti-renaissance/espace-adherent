@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -22,12 +23,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DeputyMessageDispatcherConsumerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ValidatorInterface
+     * @var MockObject|ValidatorInterface
      */
     private $validator;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @var MockObject|EntityManagerInterface
      */
     private $entityManager;
 

@@ -9,6 +9,7 @@ use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Mailer\MailerService;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class PayboxPaymentUnsubscriptionTest extends WebTestCase
 {
@@ -28,7 +29,7 @@ class PayboxPaymentUnsubscriptionTest extends WebTestCase
 
     public function testUnsubscribSuccess(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Donation $donation */
+        /** @var MockObject|Donation $donation */
         $donation = $this->createMock(Donation::class);
         $donation->expects($this->once())->method('stopSubscription');
 

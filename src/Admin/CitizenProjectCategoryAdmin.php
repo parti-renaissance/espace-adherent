@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Entity\BaseEventCategory;
+use App\Entity\Event\BaseEventCategory;
 use App\Form\CitizenProjectCategorySkillType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;

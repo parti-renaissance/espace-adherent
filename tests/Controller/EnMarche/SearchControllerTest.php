@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Search\SearchParametersFilter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -58,7 +58,7 @@ class SearchControllerTest extends WebTestCase
     public function testListAllEvents()
     {
         /** @var Paginator $evenets */
-        $events = $this->getRepository(Event::class)->paginate();
+        $events = $this->getRepository(CommitteeEvent::class)->paginate();
 
         $this->client->request(Request::METHOD_GET, '/tous-les-evenements/3');
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());

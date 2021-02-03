@@ -5,9 +5,9 @@ namespace App\Event;
 use App\Address\Address;
 use App\Address\PostAddressFactory;
 use App\CitizenAction\CitizenActionCommand;
-use App\Entity\CitizenAction;
-use App\Entity\Event;
-use App\Entity\InstitutionalEvent;
+use App\Entity\Event\CitizenAction;
+use App\Entity\Event\CommitteeEvent;
+use App\Entity\Event\InstitutionalEvent;
 use App\Entity\PostAddress;
 use App\Geo\ZoneMatcher;
 use App\InstitutionalEvent\InstitutionalEventCommand;
@@ -35,7 +35,7 @@ class EventFactory
         $this->referentTagManager = $referentTagManager;
     }
 
-    public function createFromArray(array $data): Event
+    public function createFromArray(array $data): CommitteeEvent
     {
         foreach (['uuid', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
             if (empty($data[$key])) {
@@ -45,7 +45,7 @@ class EventFactory
 
         $uuid = Uuid::fromString($data['uuid']);
 
-        $event = new Event(
+        $event = new CommitteeEvent(
             $uuid,
             $data['organizer'] ?? null,
             $data['committee'] ?? null,
@@ -58,14 +58,14 @@ class EventFactory
             $data['capacity'],
             $data['is_for_legislatives'] ?? false
         );
+
         if (!empty($data['time_zone'])) {
             $event->setTimeZone($data['time_zone']);
         }
 
         $this->referentTagManager->assignReferentLocalTags($event);
 
-        $zones = $this->zoneMatcher->match($event->getPostAddressModel());
-        foreach ($zones as $zone) {
+        foreach ($this->zoneMatcher->match($event->getPostAddressModel()) as $zone) {
             $event->addZone($zone);
         }
 
@@ -131,13 +131,13 @@ class EventFactory
         return $citizenAction;
     }
 
-    public function createFromEventCommand(EventCommand $command, string $eventClass): Event
+    public function createFromEventCommand(EventCommand $command, string $eventClass): CommitteeEvent
     {
-        if (!is_a($eventClass, Event::class, true)) {
+        if (!is_a($eventClass, CommitteeEvent::class, true)) {
             throw new \InvalidArgumentException(sprintf('Invalid Event type: "%s"', $eventClass));
         }
 
-        /** @var Event $event */
+        /** @var CommitteeEvent $event */
         $event = new $eventClass(
             $command->getUuid(),
             $command->getAuthor(),
@@ -195,7 +195,7 @@ class EventFactory
         );
     }
 
-    public function updateFromEventCommand(Event $event, EventCommand $command): Event
+    public function updateFromEventCommand(CommitteeEvent $event, EventCommand $command): CommitteeEvent
     {
         $event->update(
             $command->getName(),

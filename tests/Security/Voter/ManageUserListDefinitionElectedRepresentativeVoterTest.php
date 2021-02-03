@@ -12,12 +12,13 @@ use App\Security\Voter\AbstractAdherentVoter;
 use App\Security\Voter\ManageUserListDefinitionElectedRepresentativeVoter;
 use App\UserListDefinition\UserListDefinitionPermissions;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdherentVoterTest
 {
     /**
-     * @var ElectedRepresentativeRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var ElectedRepresentativeRepository|MockObject
      */
     private $electedRepresentativeRepository;
 
@@ -114,7 +115,7 @@ class ManageUserListDefinitionElectedRepresentativeVoterTest extends AbstractAdh
     }
 
     /**
-     * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
+     * @return Adherent|MockObject
      */
     private function getAdherentMock(
         bool $isReferentCalled = true,

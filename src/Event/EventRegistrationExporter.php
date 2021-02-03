@@ -2,7 +2,7 @@
 
 namespace App\Event;
 
-use App\Entity\EventRegistration;
+use App\Entity\Event\EventRegistration;
 use App\Exception\EventException;
 
 class EventRegistrationExporter

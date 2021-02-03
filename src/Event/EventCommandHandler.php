@@ -3,7 +3,7 @@
 namespace App\Event;
 
 use App\Entity\CommitteeFeedItem;
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -21,7 +21,7 @@ class EventCommandHandler
         $this->manager = $manager;
     }
 
-    public function handle(EventCommand $command, string $eventClass = Event::class): Event
+    public function handle(EventCommand $command, string $eventClass = CommitteeEvent::class): CommitteeEvent
     {
         $event = $this->factory->createFromEventCommand($command, $eventClass);
 
@@ -42,7 +42,7 @@ class EventCommandHandler
         return $event;
     }
 
-    public function handleUpdate(Event $event, EventCommand $command)
+    public function handleUpdate(CommitteeEvent $event, EventCommand $command)
     {
         $this->dispatcher->dispatch(new EventEvent($command->getAuthor(), $event), Events::EVENT_PRE_UPDATE);
 

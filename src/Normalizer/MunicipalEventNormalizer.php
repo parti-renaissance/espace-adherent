@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use App\Entity\MunicipalEvent;
+use App\Entity\Event\MunicipalEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -28,7 +28,7 @@ class MunicipalEventNormalizer implements NormalizerInterface, NormalizerAwareIn
         $data = $this->normalizer->normalize($object, $format, $context);
 
         if (isset($data['slug'])) {
-            $data['url'] = $this->urlGenerator->generate('app_event_show', ['slug' => $data['slug']], UrlGeneratorInterface::ABSOLUTE_URL);
+            $data['url'] = $this->urlGenerator->generate('app_committee_event_show', ['slug' => $data['slug']], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         return $data;

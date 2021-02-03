@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\App\Controller\Api;
+namespace Tests\App\Controller\Api\Event;
 
 use App\DataFixtures\ORM\LoadEventCategoryData;
-use App\Entity\EventCategory;
+use App\Entity\Event\EventCategory;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

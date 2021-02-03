@@ -4,7 +4,7 @@ namespace App\Committee\Feed;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Event as EntityEvent;
+use App\Entity\Event\CommitteeEvent as EntityEvent;
 
 class CommitteeEvent
 {

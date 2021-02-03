@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Event;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\SynchronizedEntity;
 use App\Event\EventEvent;
 use App\Events;
@@ -19,7 +19,7 @@ class ApiScheduleEventCreationCommand extends ApiScheduleEntityCreationCommand
 
     protected function getEntityClassname(): string
     {
-        return Event::class;
+        return CommitteeEvent::class;
     }
 
     protected function scheduleCreation(SynchronizedEntity $event): void

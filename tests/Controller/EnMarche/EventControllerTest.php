@@ -3,10 +3,10 @@
 namespace Tests\App\Controller\EnMarche;
 
 use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
-use App\DataFixtures\ORM\LoadEventData;
-use App\Entity\EventInvite;
-use App\Entity\EventRegistration;
+use App\Entity\Event\EventInvite;
+use App\Entity\Event\EventRegistration;
 use App\Entity\NewsletterSubscription;
 use App\Mailer\Message\EventInvitationMessage;
 use App\Mailer\Message\EventRegistrationConfirmationMessage;
@@ -82,7 +82,7 @@ class EventControllerTest extends AbstractEventControllerTest
             ],
         ]));
 
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'paupau75@example.org'));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'paupau75@example.org'));
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
@@ -129,7 +129,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->client->followRedirect();
 
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
+        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
 
         $crawler = $this->client->followRedirect();
@@ -174,7 +174,7 @@ class EventControllerTest extends AbstractEventControllerTest
     public function testAdherentCanInviteToEvent()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_3_UUID);
         $eventUrl = sprintf('/evenements/%s', $slug = $event->getSlug());
 
         $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
@@ -239,7 +239,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAnonymousCanInviteToEvent()
     {
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_3_UUID);
         $eventUrl = sprintf('/evenements/%s', $slug = $event->getSlug());
 
         $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
@@ -286,7 +286,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testInvitationSentWithoutRedirection()
     {
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_1_UUID);
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/invitation/merci', $event->getSlug()));
 
@@ -295,14 +295,14 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAttendConfirmationWithoutRegistration()
     {
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_1_UUID);
 
         $this->assertRedirectionEventNotPublishTest(sprintf('/evenements/%s/confirmation', $event->getSlug()));
     }
 
     public function testAttendConfirmationWithWrongRegistration()
     {
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_1_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_1_UUID);
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/confirmation', $event->getSlug()), [
             'registration' => 'wrong_uuid',
@@ -313,8 +313,8 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testAttendConfirmationAsAnonymous()
     {
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
-        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_3_UUID);
+        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadCommitteeEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/confirmation', $event->getSlug()), [
             'registration' => $registration->getUuid()->toString(),
@@ -327,8 +327,8 @@ class EventControllerTest extends AbstractEventControllerTest
     {
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
-        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_3_UUID);
+        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadCommitteeEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/confirmation', $event->getSlug()), [
             'registration' => $registration->getUuid()->toString(),
@@ -339,7 +339,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testUnpublishedEventNotFound()
     {
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_13_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_13_UUID);
         $eventUrl = sprintf('/evenements/%s', $event->getSlug());
 
         $this->assertRedirectionEventNotPublishTest($eventUrl);
@@ -352,7 +352,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testRedirectionEventFromOldUrl()
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.LoadEventData::EVENT_5_UUID.'/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise');
+        $this->client->request(Request::METHOD_GET, '/evenements/'.LoadCommitteeEventData::EVENT_5_UUID.'/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise');
 
         $this->assertClientIsRedirectedTo(
             '/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise',
@@ -379,7 +379,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testEventWithSpecialCharInTitle()
     {
-        $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_14_UUID);
+        $event = $this->getEventRepository()->findOneByUuid(LoadCommitteeEventData::EVENT_14_UUID);
         $eventUrl = sprintf('/evenements/%s/inscription', $event->getSlug());
         $crawler = $this->client->request('GET', $eventUrl);
 
