@@ -233,7 +233,7 @@ class AdminCommitteeController extends AbstractController
 
     /**
      * @Route("/{committee}/members/{adherent}/set-privilege/{privilege}", name="app_admin_committee_change_privilege", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES') and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")
      */
     public function changePrivilegeAction(
         CommitteeManager $manager,

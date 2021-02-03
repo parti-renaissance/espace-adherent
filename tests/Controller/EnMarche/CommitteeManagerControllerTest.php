@@ -495,13 +495,26 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
+        $this->assertSame(1, $crawler->filter('.demote-host-link')->count());
+
         $crawler = $this->client->click($crawler->filter('.promote-host-link')->link());
 
         $this->client->submit($crawler->selectButton("Oui, promouvoir l'adhérent")->form());
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(1, $crawler->filter('.promote-host-link')->count());
+        // no more available places for a new host, that's why no link to promote
+        $this->assertSame(0, $crawler->filter('.promote-host-link')->count());
+        $this->assertSame(2, $crawler->filter('.demote-host-link')->count());
         $this->seeFlashMessage($crawler, 'Le membre a été promu animateur du comité avec succès.');
+
+        $crawler = $this->client->click($crawler->filter('.demote-host-link')->link());
+
+        $this->client->submit($crawler->selectButton('Oui, définir comme simple membre')->form());
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
+        $this->assertSame(1, $crawler->filter('.demote-host-link')->count());
+        $this->seeFlashMessage($crawler, 'Le membre a été redéfini simple membre du comité avec succès.');
     }
 
     public function testAuthenticatedCommitteeHostCannotPromoteNewHostsAmongMembers()
