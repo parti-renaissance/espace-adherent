@@ -141,6 +141,8 @@ services:
 
     App\Normalizer\AdherentNormalizer:
         tags: [{name: 'serializer.normalizer', priority: 10}]
+        arguments:
+            $adherentInterests: '%adherent_interests%'
 
     App\Normalizer\JecouteDeviceNormalizer:
         tags: [{name: 'serializer.normalizer', priority: 1}]

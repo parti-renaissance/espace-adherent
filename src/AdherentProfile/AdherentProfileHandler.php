@@ -4,6 +4,7 @@ namespace App\AdherentProfile;
 
 use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
+use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentEvents;
@@ -12,31 +13,20 @@ use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
+use App\Repository\SubscriptionTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentProfileHandler
 {
-    /** @var EventDispatcherInterface */
     private $dispatcher;
-
-    /** @var EntityManagerInterface */
     private $manager;
-
-    /** @var PostAddressFactory */
     private $addressFactory;
-
-    /** @var AdherentChangeEmailHandler */
     private $emailHandler;
-
-    /** @var ReferentTagManager */
     private $referentTagManager;
-
-    /** @var ReferentZoneManager */
     private $referentZoneManager;
-
-    /** @var EmailSubscriptionHistoryHandler */
     private $emailSubscriptionHistoryHandler;
+    private $subscriptionTypeRepository;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -45,7 +35,8 @@ class AdherentProfileHandler
         AdherentChangeEmailHandler $emailHandler,
         ReferentTagManager $referentTagManager,
         ReferentZoneManager $referentZoneManager,
-        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
+        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
+        SubscriptionTypeRepository $subscriptionTypeRepository
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
@@ -54,6 +45,7 @@ class AdherentProfileHandler
         $this->referentTagManager = $referentTagManager;
         $this->referentZoneManager = $referentZoneManager;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
+        $this->subscriptionTypeRepository = $subscriptionTypeRepository;
     }
 
     public function update(Adherent $adherent, AdherentProfile $adherentProfile): void
@@ -65,6 +57,8 @@ class AdherentProfileHandler
         }
 
         $adherent->updateProfile($adherentProfile, $this->addressFactory->createFromAddress($adherentProfile->getAddress()));
+
+        $adherent->setSubscriptionTypes($this->findSubscriptionTypes($adherentProfile->getSubscriptionTypes()));
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($adherent);
 
         $this->manager->flush();
@@ -84,5 +78,15 @@ class AdherentProfileHandler
         if ($this->referentZoneManager->isUpdateNeeded($adherent)) {
             $this->referentZoneManager->assignZone($adherent);
         }
+    }
+
+    /**
+     * @param string[]|array $subscriptionTypeCodes
+     *
+     * @return SubscriptionType[]|array
+     */
+    private function findSubscriptionTypes(array $subscriptionTypeCodes): array
+    {
+        return $this->subscriptionTypeRepository->findByCodes($subscriptionTypeCodes);
     }
 }

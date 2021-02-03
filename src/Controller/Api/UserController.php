@@ -2,17 +2,23 @@
 
 namespace App\Controller\Api;
 
+use App\AdherentProfile\AdherentProfile;
+use App\AdherentProfile\AdherentProfileHandler;
 use App\Entity\Adherent;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Nyholm\Psr7\Response;
+use Nyholm\Psr7\Response as OAuthResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
@@ -23,7 +29,7 @@ class UserController extends AbstractController
     {
         if ($user instanceof ClientApiUser) {
             return OAuthServerException::accessDenied('API user does not have access to this route')
-                ->generateHttpResponse(new Response())
+                ->generateHttpResponse(new OAuthResponse())
             ;
         }
 
@@ -37,6 +43,45 @@ class UserController extends AbstractController
             [],
             true
         );
+    }
+
+    /**
+     * @Route("/v3/users/{uuid}", name="app_api_user_update_profile", methods={"PUT"})
+     *
+     * @Security("user == adherent")
+     */
+    public function updateProfile(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        AdherentProfileHandler $handler,
+        Adherent $adherent
+    ): Response {
+        $json = $request->getContent();
+
+        $adherentProfile = AdherentProfile::createFromAdherent($adherent);
+
+        $groups = ['profile_update'];
+        if (!$adherent->isCertified()) {
+            $groups[] = 'uncertified_profile_update';
+        }
+
+        $serializer->deserialize($json, AdherentProfile::class, 'json', [
+            AbstractNormalizer::OBJECT_TO_POPULATE => $adherentProfile,
+            'groups' => $groups,
+        ]);
+
+        $violations = $validator->validate($adherentProfile);
+
+        if (0 === $violations->count()) {
+            $handler->update($adherent, $adherentProfile);
+
+            return new JsonResponse(null, Response::HTTP_OK);
+        }
+
+        $errors = $serializer->serialize($violations, 'jsonproblem');
+
+        return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**

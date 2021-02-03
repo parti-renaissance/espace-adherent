@@ -75,7 +75,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 }
  *             }
  *         }
- *     },
+ *     }
  * )
  *
  * @ORM\Table(name="adherents", uniqueConstraints={
@@ -214,6 +214,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var SubscriptionType[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="SubscriptionType", cascade={"persist"})
+     *
+     * @SymfonySerializer\Groups({"user_profile"})
      */
     private $subscriptionTypes;
 
@@ -1240,6 +1242,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->job = $adherentProfile->getJob();
         $this->activityArea = $adherentProfile->getActivityArea();
         $this->mandates = $adherentProfile->getMandates();
+        $this->interests = $adherentProfile->getInterests();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;

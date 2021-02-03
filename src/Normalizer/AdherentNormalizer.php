@@ -11,6 +11,13 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 {
     use NormalizerAwareTrait;
 
+    private $adherentInterests;
+
+    public function __construct(array $adherentInterests)
+    {
+        $this->adherentInterests = $adherentInterests;
+    }
+
     private const LEGACY_MAPPING = [
         'email_address' => 'emailAddress',
         'postal_code' => 'zipCode',
@@ -39,6 +46,16 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         if (\in_array('legacy', $context['groups'])) {
             $data = $this->addBackwardCompatibilityFields($data);
         }
+
+        $interests = [];
+        foreach ($object->getInterests() as $interest) {
+            $interests[] = [
+                'label' => $this->adherentInterests[$interest],
+                'code' => $interest,
+            ];
+        }
+
+        $data['interests'] = $interests;
 
         return $data;
     }
