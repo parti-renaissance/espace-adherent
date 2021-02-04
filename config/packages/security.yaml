@@ -413,6 +413,7 @@ security:
             context: main_context
             pattern: ^/admin
             provider: admins_db
+            switch_user: true
             anonymous:
                 secret: '%env(SECRET)%'
             form_login:
@@ -443,8 +444,7 @@ security:
             stateless: false
             # No pattern means every path is behind this firewall
             provider: users_db
-            switch_user:
-                provider: users_db
+            switch_user: true
             anonymous:
                 secret: '%env(SECRET)%'
             logout:
@@ -468,7 +468,6 @@ security:
         - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
-        - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
         - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_FULLY] }
         - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }

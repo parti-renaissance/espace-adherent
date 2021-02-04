@@ -11,7 +11,7 @@ class HealthController extends AbstractController
     /**
      * @Route("/health", name="health", methods={"GET"})
      */
-    public function healthAction()
+    public function healthAction(): Response
     {
         return new Response('Healthy');
     }

@@ -57,7 +57,7 @@ class UploadDocumentController extends AbstractController
      * @Route("/ck-upload/{type}", name="app_filebrowser_upload_ckeditor5", methods={"POST"})
      * @Security("is_granted('FILE_UPLOAD', type)")
      */
-    public function ckFileUploadAction(string $type, Request $request, UserDocumentManager $manager)
+    public function ckFileUploadAction(string $type, Request $request, UserDocumentManager $manager): Response
     {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
             throw new NotFoundHttpException("File upload is not defined for type '$type'.");
