@@ -44,6 +44,7 @@ trait EntityIdentityTrait
      *     "coalition_read",
      *     "cause_read",
      *     "zone_read",
+     *     "profile_read",
      * })
      *
      * @ApiProperty(

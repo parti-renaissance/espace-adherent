@@ -6,6 +6,7 @@ use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
 use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
+use App\Mailchimp\SignUp\SignUpHandler;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentEvents;
 use App\Membership\AdherentProfileWasUpdatedEvent;
@@ -27,6 +28,7 @@ class AdherentProfileHandler
     private $referentZoneManager;
     private $emailSubscriptionHistoryHandler;
     private $subscriptionTypeRepository;
+    private $signUpHandler;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -36,7 +38,8 @@ class AdherentProfileHandler
         ReferentTagManager $referentTagManager,
         ReferentZoneManager $referentZoneManager,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
-        SubscriptionTypeRepository $subscriptionTypeRepository
+        SubscriptionTypeRepository $subscriptionTypeRepository,
+        SignUpHandler $signUpHandler
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
@@ -46,11 +49,14 @@ class AdherentProfileHandler
         $this->referentZoneManager = $referentZoneManager;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
         $this->subscriptionTypeRepository = $subscriptionTypeRepository;
+        $this->signUpHandler = $signUpHandler;
     }
 
     public function update(Adherent $adherent, AdherentProfile $adherentProfile): void
     {
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
+
+        $this->updateSubscriptions($adherent, $adherentProfile->getSubscriptionTypes());
 
         if ($adherent->getEmailAddress() !== $adherentProfile->getEmailAddress()) {
             $this->emailHandler->handleRequest($adherent, $adherentProfile->getEmailAddress());
@@ -58,13 +64,26 @@ class AdherentProfileHandler
 
         $adherent->updateProfile($adherentProfile, $this->addressFactory->createFromAddress($adherentProfile->getAddress()));
 
-        $adherent->setSubscriptionTypes($this->findSubscriptionTypes($adherentProfile->getSubscriptionTypes()));
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($adherent);
 
         $this->manager->flush();
 
         $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($adherent), AdherentEvents::PROFILE_UPDATED);
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
+    }
+
+    private function updateSubscriptions(Adherent $adherent, array $subscriptionTypeCodes): void
+    {
+        $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
+
+        $adherent->setSubscriptionTypes($this->findSubscriptionTypes($subscriptionTypeCodes));
+
+        if ($adherent->isEmailUnsubscribed() && array_diff($adherent->getSubscriptionTypes(), $oldEmailsSubscriptions)) {
+            $adherent->setEmailUnsubscribed(!$this->signUpHandler->signUpAdherent($adherent));
+        }
+
+        $this->emailSubscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
+        $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $oldEmailsSubscriptions), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
     }
 
     private function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void

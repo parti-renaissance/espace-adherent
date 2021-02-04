@@ -32,7 +32,7 @@ class SubscriptionType
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @SymfonySerializer\Groups({"user_profile"})
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $label;
 
@@ -44,7 +44,7 @@ class SubscriptionType
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      *
-     * @SymfonySerializer\Groups({"user_profile"})
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $code;
 

@@ -47,7 +47,7 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
             $data = $this->addBackwardCompatibilityFields($data);
         }
 
-        if (\in_array('user_profile', $context['groups'])) {
+        if (\in_array('profile_read', $context['groups'])) {
             $interests = [];
             foreach ($object->getInterests() as $interest) {
                 $interests[] = [

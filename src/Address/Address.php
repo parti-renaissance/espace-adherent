@@ -8,6 +8,7 @@ use App\Validator\Address as AssertValidAddress;
 use App\Validator\FrenchZipCode;
 use App\Validator\GeocodableAddress as AssertGeocodableAddress;
 use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,6 +22,8 @@ class Address implements AddressInterface, GeocodableInterface
     /**
      * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update"})
      * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update"})
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $address;
 
@@ -32,28 +35,38 @@ class Address implements AddressInterface, GeocodableInterface
      * )
      * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update"})
      * @FrenchZipCode(groups={"Default", "Registration", "Update"})
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $postalCode;
 
     /**
      * @Assert\Length(max=15, groups={"Default", "Update"})
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $city;
 
     /**
      * @Assert\Length(max=255, groups={"Default", "Update"})
      * @Assert\Expression(expression="(this.getCountry() === constant('App\\Address\\Address::FRANCE') and this.getCity()) or value", message="common.city_name.not_blank", groups={"Update"})
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $cityName;
 
     /**
      * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "Registration", "Update"})
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $country;
 
     /**
      * @Assert\Length(max=255)
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $region;
 
