@@ -2,6 +2,7 @@
 
 namespace App\Entity\Event;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
 use App\Entity\AddressHolderInterface;
@@ -13,11 +14,14 @@ use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityReferentTagTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
+use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageTrait;
 use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
 use App\Entity\ZoneableEntity;
 use App\Event\EventTypeEnum;
 use App\Geocoder\GeoPointInterface;
+use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -51,6 +55,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
+ *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
  *     EventTypeEnum::TYPE_CITIZEN_ACTION: "CitizenAction",
  *     EventTypeEnum::TYPE_INSTITUTIONAL: "InstitutionalEvent",
  *     EventTypeEnum::TYPE_MUNICIPAL: "MunicipalEvent",
@@ -62,8 +67,43 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     interval="3 days",
  *     message="committee.event.invalid_finish_date"
  * )
+ *
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context": {
+ *             "groups": {"event_read"}
+ *         },
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/events/{id}",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *         },
+ *         "put": {
+ *             "path": "/v3/events/{id}",
+ *             "access_control": "object.getAuthor() == user",
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/events",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "normalization_context": {
+ *                 "groups": {"event_list_read"}
+ *             },
+ *         },
+ *         "post": {
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
+ *             "path": "/v3/events",
+ *             "validation_groups": {"Default", "api_put_validation"},
+ *             "denormalization_context": {
+ *                 "groups": {"event_write"}
+ *             },
+ *         },
+ *     },
+ * )
  */
-abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface
+abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ImageOwnerInterface
 {
     public const STATUS_SCHEDULED = 'SCHEDULED';
     public const STATUS_CANCELLED = 'CANCELLED';
@@ -83,6 +123,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityTimestampableTrait;
+    use ImageTrait;
 
     /**
      * @var Collection|ReferentTag[]
@@ -107,7 +148,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Length(min=5, max=100)
@@ -134,7 +175,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      *     handlers={@Gedmo\SlugHandler(class="App\Event\UniqueEventNameHandler")}
      * )
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read", "citizen_action_read", "event_list_read"})
      *
      * @SymfonySerializer\Groups({"event_read"})
      */
@@ -222,7 +263,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      *
      * @ORM\Column(length=20)
      *
-     * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"public", "event_read", "citizen_action_read", "event_list_read"})
      *
      * @SymfonySerializer\Groups({"event_read"})
      */
@@ -242,7 +283,7 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\GreaterThan("0", message="committee.event.invalid_capacity")
      */
@@ -254,6 +295,24 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
      * @var BaseEventCategory|null
      */
     protected $category;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url
+     *
+     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     */
+    private $visioUrl;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @SymfonySerializer\Groups({"event_write"})
+     *
+     * @AdherentInterestsConstraint
+     */
+    private $interests = [];
 
     public function __construct(UuidInterface $uuid = null)
     {

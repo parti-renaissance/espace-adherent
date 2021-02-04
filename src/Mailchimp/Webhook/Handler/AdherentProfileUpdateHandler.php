@@ -25,13 +25,13 @@ class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements Lo
     public function __construct(
         ObjectManager $manager,
         SubscriptionHandler $subscriptionHandler,
-        array $interests,
+        array $adherentInterests,
         LoggerInterface $logger,
         EventDispatcherInterface $dispatcher
     ) {
         $this->manager = $manager;
         $this->subscriptionHandler = $subscriptionHandler;
-        $this->interests = $interests;
+        $this->interests = $adherentInterests;
         $this->logger = $logger;
         $this->dispatcher = $dispatcher;
     }

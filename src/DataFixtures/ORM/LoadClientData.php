@@ -21,6 +21,7 @@ class LoadClientData extends Fixture
     public const CLIENT_08_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992b';
     public const CLIENT_09_UUID = '40bdd6db-e422-4153-819c-9973c09f9297';
     public const CLIENT_10_UUID = '1931b955-560b-41b2-9eb9-c232157f1471';
+    public const CLIENT_11_UUID = '138140b3-1dd2-11b2-ad7e-2348ad4fef66';
 
     public function load(ObjectManager $manager)
     {
@@ -146,6 +147,19 @@ class LoadClientData extends Fixture
         $client10->addSupportedScope(Scope::JEMARCHE_APP);
 
         $manager->persist($client10);
+
+        $client11 = new Client(
+            Uuid::fromString(self::CLIENT_11_UUID),
+            'Coalition App',
+            'Coalition App',
+            'Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ',
+            [GrantTypeEnum::PASSWORD, GrantTypeEnum::REFRESH_TOKEN],
+            ['http://client-oauth.docker:8000/client/receive_authcode']
+        );
+        $client11->setAskUserForAuthorization(false);
+        $client11->addSupportedScope(Scope::WRITE_EVENT);
+
+        $manager->persist($client11);
 
         $manager->flush();
     }

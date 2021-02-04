@@ -52,6 +52,7 @@ services:
             $geoGouvApiClient: '@app.http_client.geo_gouv'
             $tonMacronInvitationStateMachine: '@state_machine.ton_macron_invitation'
             $patternUuid: '%pattern_uuid%'
+            $adherentInterests: '%adherent_interests%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -169,10 +170,6 @@ services:
                 default: '@app.html_purifier.default'
                 enrich_content: '@app.html_purifier.enrich_content'
                 basic_content: '@app.html_purifier.basic_content'
-
-    App\Form\MemberInterestsChoiceType:
-        arguments:
-            - '%adherent_interests%'
 
     App\Form\TerritorialCouncil\EditDesignationType:
         arguments:

@@ -26,13 +26,13 @@ class AdherentRuntime implements RuntimeExtensionInterface
         ReferentSpaceAccessInformationRepository $accessInformationRepository,
         CommitteeAdherentMandateRepository $committeeMandateRepository,
         AdherentRepository $adherentRepository,
-        array $interests
+        array $adherentInterests
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->accessInformationRepository = $accessInformationRepository;
         $this->committeeMandateRepository = $committeeMandateRepository;
         $this->adherentRepository = $adherentRepository;
-        $this->memberInterests = $interests;
+        $this->memberInterests = $adherentInterests;
     }
 
     public function getMemberInterestLabel(string $interest)

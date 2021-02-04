@@ -402,7 +402,7 @@ security:
             security: false
 
         api_oauth:
-            pattern: ^/api/(me|webhooks|statistics/|jecoute/|crm-paris/)
+            pattern: ^/api/(me|webhooks|statistics/|jecoute/|crm-paris/|v3/)
             stateless: true
             provider: users_db
             guard:

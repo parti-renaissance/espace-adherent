@@ -6,9 +6,6 @@ use App\Committee\CommitteeMergeCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-/**
- * @Annotation
- */
 class MergeableCommitteesValidator extends ConstraintValidator
 {
     public function validate($committeeMergeCommand, Constraint $constraint)
