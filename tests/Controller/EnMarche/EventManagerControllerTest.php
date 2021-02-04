@@ -360,7 +360,7 @@ class EventManagerControllerTest extends WebTestCase
         $icalRegex = <<<CONTENT
 BEGIN\:VCALENDAR
 VERSION\:2\.0
-PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.1\.6\/\/EN
+PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.3\.3\/\/EN
 CALSCALE\:GREGORIAN
 ORGANIZER\:Pierre KIROULE
 BEGIN\:VEVENT
