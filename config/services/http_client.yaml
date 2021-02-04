@@ -12,7 +12,8 @@ services:
         factory:
             - Symfony\Component\HttpClient\HttpClient
             - create
-        arguments: [base_uri: '%env(MAILCHIMP_SIGNUP_HOST)%']
+        arguments:
+            - {base_uri: '%env(MAILCHIMP_SIGNUP_HOST)%', timeout: 15}
 
     app.http_client.geo_gouv:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
