@@ -40,8 +40,8 @@ class IdeaPageHeader extends React.Component {
                                             this.props.ideaTitle
                                         }" faite sur l’Atelier des idées de La République En Marche !`}
                                     />
-                                    {this.props.isAuthenticated &&
-                    (!this.props.isAuthor && (
+                                    {this.props.isAuthenticated
+                    && (!this.props.isAuthor && (
                         <Dropdown
                             className="idea-page-header__report"
                             onSelect={this.props.onReportClicked}

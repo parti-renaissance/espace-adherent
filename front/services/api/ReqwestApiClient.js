@@ -5,38 +5,38 @@ export default class ReqwestApiClient {
 
     getPostalCodeCities(postalCode, callback) {
         this._createRequest(callback, {
-            url: '/api/postal-code/'+postalCode,
+            url: `/api/postal-code/${postalCode}`,
             type: 'json'
         });
     }
 
     getCountryConsulates(country, callback) {
         this._createRequest(callback, {
-            url: '/api/vote-offices/'+country,
+            url: `/api/vote-offices/${country}`,
             type: 'json'
         });
     }
 
     getCommitteeTimelineFeed(committeeSlug, offset, callback) {
         this._createRequest(callback, {
-            url: '/comites/'+committeeSlug+'/timeline?offset='+offset,
+            url: `/comites/${committeeSlug}/timeline?offset=${offset}`,
             type: 'html'
         });
     }
 
     getSearchResults(query, radius, city, type, offset, eventCategory, referentEvents, callback) {
-        var url = '/recherche?q='+query+'&r='+radius+'&c='+city+'&t='+type+'&offset='+offset;
+        let url = `/recherche?q=${query}&r=${radius}&c=${city}&t=${type}&offset=${offset}`;
 
         if (eventCategory) {
-            url += '&ec='+eventCategory;
+            url += `&ec=${eventCategory}`;
         }
 
         if (referentEvents) {
-            url += '&re='+referentEvents;
+            url += `&re=${referentEvents}`;
         }
 
-        let request = this._reqwest({
-            url: url,
+        const request = this._reqwest({
+            url,
             type: 'html'
         });
 
@@ -79,42 +79,42 @@ export default class ReqwestApiClient {
 
     getProcurationRequests(queryString, page, callback) {
         this._createRequest(callback, {
-            url: '/espace-responsable-procuration/plus?page='+page+'&'+queryString,
+            url: `/espace-responsable-procuration/plus?page=${page}&${queryString}`,
             type: 'html'
         });
     }
 
     getProcurationProposals(queryString, page, callback) {
         this._createRequest(callback, {
-            url: '/espace-responsable-procuration/mandataires/plus?page='+page+'&'+queryString,
+            url: `/espace-responsable-procuration/mandataires/plus?page=${page}&${queryString}`,
             type: 'html'
         });
     }
 
     getUpcomingEvents(callback) {
-        var url = '/api/events';
-        var type = dom('#map-config').getAttribute('data-event-type');
+        let url = '/api/events';
+        const type = dom('#map-config').getAttribute('data-event-type');
 
         if ('' !== type) {
-            url = url + '?type=' + type;
+            url = `${url}?type=${type}`;
         }
 
         this._createRequest(callback, {
-            url:  url,
+            url,
             type: 'json'
         });
     }
 
     getFacebookPicture(url, callback) {
         this._createRequest(callback, {
-            url:  url,
+            url,
             type: 'text'
         });
     }
 
     toggleCommitteeMembership(committeeSlug, action, token, callback) {
-        let request = this._reqwest({
-            url: '/comites/'+committeeSlug+'/'+action,
+        const request = this._reqwest({
+            url: `/comites/${committeeSlug}/${action}`,
             type: 'html',
             method: 'post',
             data: {
@@ -132,8 +132,8 @@ export default class ReqwestApiClient {
     }
 
     toggleCitizenProjectMembership(committeeSlug, action, token, callback) {
-        let request = this._reqwest({
-            url: '/projets-citoyens/'+committeeSlug+'/'+action,
+        const request = this._reqwest({
+            url: `/projets-citoyens/${committeeSlug}/${action}`,
             type: 'html',
             method: 'post',
             data: {
@@ -151,8 +151,8 @@ export default class ReqwestApiClient {
     }
 
     unregisterFromCitizenAction(citizenActionSlug, token, callback) {
-        let request = this._reqwest({
-            url: '/action-citoyenne/'+citizenActionSlug+'/desinscription',
+        const request = this._reqwest({
+            url: `/action-citoyenne/${citizenActionSlug}/desinscription`,
             type: 'html',
             method: 'post',
             data: {
@@ -170,8 +170,8 @@ export default class ReqwestApiClient {
     }
 
     unregisterEvent(eventSlug, token, callback) {
-        let request = this._reqwest({
-            url: '/evenements/'+eventSlug+'/desinscription',
+        const request = this._reqwest({
+            url: `/evenements/${eventSlug}/desinscription`,
             type: 'html',
             method: 'post',
             data: {
@@ -189,7 +189,7 @@ export default class ReqwestApiClient {
     }
 
     _createRequest(callback, parameters) {
-        let request = this._reqwest(parameters);
+        const request = this._reqwest(parameters);
 
         request.then((response) => {
             callback(response);
@@ -202,7 +202,7 @@ export default class ReqwestApiClient {
 
     deleteBoardMemberOnList(boardMemberId) {
         return this._reqwest({
-            url: '/espace-membres-conseil/list/boardmember/' + boardMemberId,
+            url: `/espace-membres-conseil/list/boardmember/${boardMemberId}`,
             type: 'json',
             method: 'delete',
         });
@@ -221,28 +221,28 @@ export default class ReqwestApiClient {
 
     getMessageStatus(messageId, callback, errorCallback) {
         this._reqwest({
-            url: '/api/adherent_messages/' + messageId,
+            url: `/api/adherent_messages/${messageId}`,
             type: 'json',
-        }).then(response => callback(response)).fail((response) => errorCallback(response));
+        }).then((response) => callback(response)).fail((response) => errorCallback(response));
     }
 
     getAssessorRequests(queryString, page, callback) {
         this._createRequest(callback, {
-            url: '/espace-responsable-assesseur/plus?page='+page+'&'+queryString,
+            url: `/espace-responsable-assesseur/plus?page=${page}&${queryString}`,
             type: 'html'
         });
     }
 
     getVotePlaces(queryString, page, callback) {
         this._createRequest(callback, {
-            url: '/espace-responsable-assesseur/vote-places/plus?page='+page+'&'+queryString,
+            url: `/espace-responsable-assesseur/vote-places/plus?page=${page}&${queryString}`,
             type: 'html'
         });
     }
 
     getMessageStatistics(uuid, callback) {
         this._createRequest(callback, {
-            url: '/adherent-message/' + uuid + '/statistics',
+            url: `/adherent-message/${uuid}/statistics`,
             type: 'json',
         });
     }
@@ -260,7 +260,7 @@ export default class ReqwestApiClient {
 
     getAdherentCommittees(uuid, callback) {
         this._createRequest(callback, {
-            url: '/api/adherents/' + uuid + '/committees',
+            url: `/api/adherents/${uuid}/committees`,
             type: 'json',
         });
     }
@@ -269,9 +269,9 @@ export default class ReqwestApiClient {
         this._reqwest({
             method: 'post',
             type: 'json',
-            url: `/comites/${slug}/${ enabled ? '' : 'ne-plus-' }voter`,
-            data: {token: token},
-        }).then(callback).fail(response => callback(JSON.parse(response.responseText)));
+            url: `/comites/${slug}/${enabled ? '' : 'ne-plus-'}voter`,
+            data: { token },
+        }).then(callback).fail((response) => callback(JSON.parse(response.responseText)));
     }
 
     getCommitteeCandidacies(uuid, callback) {
@@ -286,7 +286,7 @@ export default class ReqwestApiClient {
             method: 'post',
             type: 'json',
             url: `/api/${memberType}/user-list-definitions/members/save`,
-            data: data,
+            data,
         });
     }
 
@@ -295,7 +295,7 @@ export default class ReqwestApiClient {
             method: 'post',
             type: 'json',
             url: `/api/${memberType}/user-list-definitions/${type}/members`,
-            data: data,
+            data,
         });
     }
 
@@ -303,26 +303,26 @@ export default class ReqwestApiClient {
         this._reqwest({
             url: `/api/territorial-council/candidacy/available-memberships?quality=${quality || ''}${query ? `&query=${query}` : ''}`,
             type: 'json',
-        }).then(response => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
+        }).then((response) => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
     }
 
     getCommitteeAvailableMemberships({ slug, query }, callback, errorCallback) {
         this._reqwest({
             url: `/api/committee/${slug}/candidacy/available-memberships?${query ? `query=${query}` : ''}`,
             type: 'json',
-        }).then(response => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
+        }).then((response) => callback(response)).fail((response) => errorCallback(JSON.parse(response.response)));
     }
 
     getTerritorialCouncilFeed(territorialCouncilUuid, page, callback) {
         this._createRequest(callback, {
-            url: '/conseil-territorial?page='+page,
+            url: `/conseil-territorial?page=${page}`,
             type: 'html'
         });
     }
 
     getPoliticalCommitteeFeed(politicalCommitteeUuid, page, callback) {
         this._createRequest(callback, {
-            url: '/comite-politique?page='+page,
+            url: `/comite-politique?page=${page}`,
             type: 'html'
         });
     }

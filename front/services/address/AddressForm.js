@@ -10,7 +10,7 @@ export default class AddressForm {
         this._initialCity = this._city.value;
         this._initialCityName = this._cityName.value;
 
-        this._cityNameRequired = typeof cityNameRequired === 'undefined' ? true : cityNameRequired;
+        this._cityNameRequired = 'undefined' === typeof cityNameRequired ? true : cityNameRequired;
 
         this._state = {
             country: this._country.value,
@@ -62,7 +62,7 @@ export default class AddressForm {
         // Display City name field if the country is not FR or the zip code is unknown
         if ('FR' !== this._state.country || Array.isArray(this._state.cities) && 0 === this._state.cities.length) {
             show(this._cityName);
-            if (this._region !== null) {
+            if (null !== this._region) {
                 show(this._region);
             }
             this._cityName.required = this._cityNameRequired;
@@ -70,7 +70,7 @@ export default class AddressForm {
             return;
         }
 
-        if (this._region !== null) {
+        if (null !== this._region) {
             hide(this._region);
         }
 
@@ -88,8 +88,8 @@ export default class AddressForm {
             return;
         }
 
-        for (let inseeCode in this._state.cities) {
-            const value = this._state.postalCode+'-'+inseeCode;
+        for (const inseeCode in this._state.cities) {
+            const value = `${this._state.postalCode}-${inseeCode}`;
             const option = this.createOption(value, this._state.cities[inseeCode]);
 
             if (value === this._initialCity) {

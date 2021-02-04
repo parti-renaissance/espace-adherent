@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { ideaStatus } from '../../../../constants/api';
-import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
+import icn_toggle_content from "../../../../img/icn_toggle_content-blue-yonder.svg";
 import Pagination from '../../../Pagination';
 
 const { DRAFT, PENDING, FINALIZED } = ideaStatus;
@@ -66,8 +66,7 @@ class MyIdeas extends React.Component {
                     const categoryHeader = cat.ideas.length ? (
                         <button
                             className="my-ideas__category__button"
-                            onClick={() =>
-                                this.setState(prevState => ({
+                            onClick={() => this.setState((prevState) => ({
                                     [cat.showCat]: !prevState[cat.showCat],
                                 }))
                             }
@@ -89,8 +88,7 @@ class MyIdeas extends React.Component {
                             {categoryHeader}
                             {cat.ideas.length ? (
                                 cat.ideas.map(
-                                    (idea, j) =>
-                                        this.state[cat.showCat] && (
+                                    (idea, j) => this.state[cat.showCat] && (
                                             <div className="my-ideas__category__idea" key={j}>
                                                 <p className="my-ideas__category__idea__date">
                           Créée le {new Date(idea.created_at).toLocaleDateString()}
@@ -123,7 +121,7 @@ class MyIdeas extends React.Component {
                                 <Pagination
                                     nextPage={() => this.paginate(page + 1, status, cat.el)}
                                     prevPage={() => this.paginate(page - 1, status, cat.el)}
-                                    goTo={p => this.paginate(p, status, cat.el)}
+                                    goTo={(p) => this.paginate(p, status, cat.el)}
                                     total={total}
                                     currentPage={page}
                                     pageSize={5}

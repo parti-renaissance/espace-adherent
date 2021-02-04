@@ -1,5 +1,5 @@
 import React from 'react';
-import proposeIdeaImg from './../../../img/propose-your-idea.svg';
+import proposeIdeaImg from "../../../img/propose-your-idea.svg";
 
 class PreProposal extends React.PureComponent {
     componentDidMount() {

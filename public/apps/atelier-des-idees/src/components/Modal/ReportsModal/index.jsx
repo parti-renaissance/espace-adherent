@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import pdf_preview from './../../../img/pdf_preview.svg';
+import pdf_preview from "../../../img/pdf_preview.svg";
 
 function ReportsModal(props) {
     return (

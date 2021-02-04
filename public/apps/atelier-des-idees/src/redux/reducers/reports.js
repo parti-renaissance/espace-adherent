@@ -15,4 +15,4 @@ const reportsReducer = (state = initialState, action) => {
 
 export default reportsReducer;
 
-export const getReports = state => state;
+export const getReports = (state) => state;

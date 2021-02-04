@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react';
 import Modal from './Modal';
 import Loader from './Loader';
-import successImage from './../../public/images/icons/icn_success.svg';
+import successImage from "../../public/images/icons/icn_success.svg";
 import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
 const STORAGE_KEY = 'su';
 
 export default class UserSegmentManager extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -74,7 +73,7 @@ export default class UserSegmentManager extends React.Component {
     }
 
     render() {
-        const length = this.state.checked.length;
+        const { length } = this.state.checked;
 
         if (this.state.displayModal) {
             return <Modal contentCallback={this.getModalContentCallback} closeCallback={this.handleCloseModal} />;
@@ -90,8 +89,8 @@ export default class UserSegmentManager extends React.Component {
                     ({0 < length ? <span>{this.getCreateButtonCounter(length)}</span> : '0'})
                 </a>
 
-                {0 < length ?
-                    <a href="#" className="btn-secondary btn-secondary--black b__nudge--left-small"
+                {0 < length
+                    ? <a href="#" className="btn-secondary btn-secondary--black b__nudge--left-small"
                        onClick={this.handleResetClick}>Effacer la sélection</a> : ''}
             </div>
         );
@@ -257,7 +256,7 @@ export default class UserSegmentManager extends React.Component {
             });
         } else {
             this.setState((state) => {
-                const checked = state.checked.filter(value => -1 === changed.indexOf(value));
+                const checked = state.checked.filter((value) => -1 === changed.indexOf(value));
 
                 return { checked };
             });

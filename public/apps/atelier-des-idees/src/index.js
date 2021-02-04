@@ -5,7 +5,7 @@ import { Router } from 'react-router-dom';
 
 import './App.css';
 import App from './App';
-import store from './redux/store/.';
+import store from "./redux/store";
 import history from './history';
 import registerServiceWorker from './registerServiceWorker';
 

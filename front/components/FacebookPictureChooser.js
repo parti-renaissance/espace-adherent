@@ -28,7 +28,7 @@ export default class FacebookPictureChooser extends React.Component {
     componentDidMount() {
         this.props.urls.forEach((url) => {
             this.api.getFacebookPicture(url.data, (data) => {
-                const pictures = this.state.pictures;
+                const { pictures } = this.state;
                 for (const i in pictures) {
                     if (pictures[i].dataUrl === url.data) {
                         pictures[i].loading = false;

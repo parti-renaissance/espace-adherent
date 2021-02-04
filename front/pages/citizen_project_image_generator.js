@@ -1,4 +1,4 @@
-export default(api) => {
+export default (api) => {
     const emojiCanvas = dom('#profil-emoji');
 
     if (!emojiCanvas) {
@@ -65,7 +65,6 @@ export const previewHandler = () => {
             reader.readAsDataURL(target.files[0]);
         }
     };
-
 
     on(imageUpload, 'change', imagePreview);
 };

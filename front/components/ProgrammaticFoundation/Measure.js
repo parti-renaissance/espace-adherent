@@ -1,6 +1,6 @@
-import React, {PropTypes} from 'react';
-import Project from './Project';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import Project from './Project';
 
 export default class Measure extends React.Component {
     render() {
@@ -40,7 +40,7 @@ export default class Measure extends React.Component {
 
     scrollToMyRef() {
         setTimeout(() => {
-            ReactDOM.findDOMNode(this).scrollIntoView({behavior: "smooth"});
+            ReactDOM.findDOMNode(this).scrollIntoView({ behavior: "smooth" });
         }, 200);
     }
 
@@ -48,12 +48,10 @@ export default class Measure extends React.Component {
         return (
             <div className="programmatic-foundation__children programmatic-foundation__projects">
                 <div className="programmatic-foundation__items-type">Projets illustratifs</div>
-                {this.props.measure.projects.map((project, index) => {
-                    return <Project
-                        key={index+project.uuid}
+                {this.props.measure.projects.map((project, index) => <Project
+                        key={index + project.uuid}
                         project={project}
-                    />
-                })}
+                    />)}
             </div>
         );
     }
@@ -75,15 +73,15 @@ export default class Measure extends React.Component {
     }
 
     getMeasureUrl(absolute = false) {
-        return `${absolute ? window.location.href : window.location.pathname}/mesures/${this.props.measure.uuid}`
+        return `${absolute ? window.location.href : window.location.pathname}/mesures/${this.props.measure.uuid}`;
     }
 
     toggleActiveMeasure(event) {
         if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
-            let items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
+            const items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
                 .getElementsByClassName('programmatic-foundation__measure');
 
-            for (var i=0; i<items.length; ++i) {
+            for (let i = 0; i < items.length; ++i) {
                 if (hasClass(items[i], 'expanded')) {
                     removeClass(items[i], 'expanded');
                 }

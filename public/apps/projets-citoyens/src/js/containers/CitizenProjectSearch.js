@@ -10,7 +10,7 @@ import {
     loadMore,
 } from '../actions/citizen-projects';
 
-import CitizenProjectItem from './../components/CitizenProjectItem';
+import CitizenProjectItem from "../components/CitizenProjectItem";
 
 const NoProjects = () => (
     <div>
@@ -59,8 +59,8 @@ class CitizenProjectSearch extends Component {
         } = this;
 
         const hasDiffs = Object.keys(nextFilter)
-            .filter(key => 'filterPending' !== key)
-            .filter(key => 'page' !== key)
+            .filter((key) => 'filterPending' !== key)
+            .filter((key) => 'page' !== key)
             .reduce((vals, key) => {
                 vals.push([prevFilter[key], nextFilter[key]]);
                 return vals;
@@ -92,7 +92,7 @@ class CitizenProjectSearch extends Component {
                     <Select
                         value={filter.category}
                         onChange={this.filterCategory}
-                        options={categories.map(cat => ({
+                        options={categories.map((cat) => ({
                             label: cat,
                             value: cat,
                         }))}
@@ -105,7 +105,7 @@ class CitizenProjectSearch extends Component {
                         inputValue={filter.city}
                         onChange={this.filterCity}
                         onInputChange={this.filterCity}
-                        options={locales.cities.map(city => ({
+                        options={locales.cities.map((city) => ({
                             label: city,
                             value: city,
                         }))}
@@ -156,7 +156,7 @@ class CitizenProjectSearch extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     projects: state.citizen.projects,
     moreItems: state.citizen.moreItems,
     loadingMore: state.citizen.loadingMore,

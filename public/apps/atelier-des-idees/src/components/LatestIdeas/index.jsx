@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-import IdeaCard from './../IdeaCard';
+import IdeaCard from "../IdeaCard";
 
 function LatestIdeas(props) {
     // Get all finalized ideas;
-    const finalized = undefined !== props.ideas.finalized ? props.ideas.finalized.items.map(idea => idea) : '';
-    const pending = undefined !== props.ideas.pending ? props.ideas.pending.items.map(idea => idea) : '';
+    const finalized = undefined !== props.ideas.finalized ? props.ideas.finalized.items.map((idea) => idea) : '';
+    const pending = undefined !== props.ideas.pending ? props.ideas.pending.items.map((idea) => idea) : '';
 
     // / Merge and mix all the finalized and pending ideas;
     const allIdeas = [...finalized, ...pending];

@@ -12,14 +12,14 @@ function cancelCallback(event) {
 function contentCallback(element) {
     return (
         <div className="font-roboto">
-            {element.dataset.confirmTitle ?
-                <div className="text--bold text--default-large">{element.dataset.confirmTitle}</div> : ''
+            {element.dataset.confirmTitle
+                ? <div className="text--bold text--default-large">{element.dataset.confirmTitle}</div> : ''
             }
             <p className="b__nudge--top-15 b__nudge--bottom-large text--dark">
                 {element.dataset.confirmContent || 'Êtes-vous sûr ?'}
             </p>
             <div>
-                <a href={'#'} onClick={event => cancelCallback(event)}
+                <a href={'#'} onClick={(event) => cancelCallback(event)}
                    className="btn btn--ghosting--blue toggleModal b__nudge--right-small"
                 >
                     Annuler

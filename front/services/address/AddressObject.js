@@ -44,14 +44,14 @@ export default class AddressObject {
     }
 
     setRegion(region) {
-        if(this._region !== null) {
+        if (null !== this._region) {
             this._region.value = region;
         }
     }
 
     getFullAddress() {
         if (this._address.value) {
-            return this._address.value + ', ' + this._postalCode.value + ' ' + this._city.value + ', ' + this._country.value;
+            return `${this._address.value}, ${this._postalCode.value} ${this._city.value}, ${this._country.value}`;
         }
 
         return '';
@@ -67,7 +67,7 @@ export default class AddressObject {
         this._city.required = value;
         this._country.required = value;
 
-        if (this._region !== null) {
+        if (null !== this._region) {
             this._region.required = value;
         }
     }
@@ -78,7 +78,7 @@ export default class AddressObject {
         this._city.required = this._cityOptions.required;
         this._country.required = this._countryOptions.required;
 
-        if (this._region !== null) {
+        if (null !== this._region) {
             this._region.required = this._regionOptions.required;
         }
     }

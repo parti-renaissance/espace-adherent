@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 export default class SearchBar extends React.Component {
     render() {
@@ -9,7 +9,7 @@ export default class SearchBar extends React.Component {
                         type="text"
                         className="em-form__field"
                         placeholder="Mesure, projet ou thématique"
-                        onChange={event => this.props.onFilterTextChange(event.target.value)}
+                        onChange={(event) => this.props.onFilterTextChange(event.target.value)}
                         value={this.props.filterText}
                     />
                 </div>
@@ -17,7 +17,7 @@ export default class SearchBar extends React.Component {
                 <div className="em-form__group city-search">
                     <select
                         className="em-form__field"
-                        onChange={event => this.props.onFilterCityChange(event.target.value)}
+                        onChange={(event) => this.props.onFilterCityChange(event.target.value)}
                         value={this.props.filterCity}
                     >
                         {this.getCities()}

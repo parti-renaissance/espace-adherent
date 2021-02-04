@@ -1,7 +1,7 @@
 export default class DateFieldsSynchronizer {
     sync(referenceDateFieldName, targetDateFieldName) {
-        findAll(document, `select[name^="${referenceDateFieldName}"]`).forEach(function (select) {
-            on(select, 'change', function () {
+        findAll(document, `select[name^="${referenceDateFieldName}"]`).forEach((select) => {
+            on(select, 'change', () => {
                 const date = new Date(
                     dom(`select[name="${referenceDateFieldName}[date][year]"]`).value,
                     dom(`select[name="${referenceDateFieldName}[date][month]"]`).value - 1,

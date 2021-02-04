@@ -1,7 +1,7 @@
 import React from 'react';
-import { NotMobile, Mobile } from '../../helpers/responsive';
 import Slider from 'react-slick';
-import hpMainIllustration from './../../img/hp-main-illustration.svg';
+import { NotMobile, Mobile } from '../../helpers/responsive';
+import hpMainIllustration from "../../img/hp-main-illustration.svg";
 
 import CondensedChapter from './CondensedChapter';
 

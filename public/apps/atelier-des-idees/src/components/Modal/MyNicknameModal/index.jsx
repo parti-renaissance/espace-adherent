@@ -62,8 +62,7 @@ class MyNicknameModal extends React.Component {
                                 id="nickname"
                                 inputClassName="my-nickname-modal__form__field"
                                 maxLength={25}
-                                onChange={value =>
-                                    this.setState({
+                                onChange={(value) => this.setState({
                                         nickname: value,
                                         error: !value.length ? this.emptyMsg : '',
                                     })
@@ -76,8 +75,7 @@ class MyNicknameModal extends React.Component {
                                 <span className="my-nickname-modal__form__label">Utiliser le pseudo</span>
                                 <Switch
                                     defaultChecked={this.state.useNickname}
-                                    onChange={() =>
-                                        this.setState(prevState => ({ useNickname: !prevState.useNickname }))
+                                    onChange={() => this.setState((prevState) => ({ useNickname: !prevState.useNickname }))
                                     }
                                 />
                             </div>
@@ -90,8 +88,8 @@ class MyNicknameModal extends React.Component {
                         </form>
                     </React.Fragment>
                 )}
-                {hasSubmit &&
-                    (this.props.isSubmitSuccess ? (
+                {hasSubmit
+                    && (this.props.isSubmitSuccess ? (
                         <SuccessModal text="Vos informations ont bien été enregistrées" />
                     ) : (
                         <ErrorModal submitAgain={this.handleSubmit} />

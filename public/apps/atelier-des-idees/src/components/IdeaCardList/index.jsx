@@ -18,7 +18,7 @@ const IdeaCardList = (props) => {
             })}
         >
             <ReactTooltip />
-            {props.ideas.map(idea => (
+            {props.ideas.map((idea) => (
                 <div className="idea-card-list__wrapper" key={idea.uuid}>
                     <IdeaCard
                         {...idea}

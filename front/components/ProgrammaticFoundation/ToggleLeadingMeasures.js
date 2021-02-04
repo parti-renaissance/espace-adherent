@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 
 export default class ToggleLeadingMeasures extends React.Component {
     render() {
@@ -9,7 +9,7 @@ export default class ToggleLeadingMeasures extends React.Component {
                         type="checkbox"
                         name="toggle-leading-measures"
                         id="toggle-leading-measures"
-                        onChange={event => this.props.onToggleChange(event.target.checked)}
+                        onChange={(event) => this.props.onToggleChange(event.target.checked)}
                         checked={this.props.value}
                     />
                     <label htmlFor="toggle-leading-measures" className="form__label">Mesures phares uniquement</label>

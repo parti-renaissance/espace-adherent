@@ -5,4 +5,4 @@ export const createRequest = (requestName, id = '') => action(requestName.REQUES
 export const createRequestSuccess = (requestName, id = '') => action(requestName.SUCCESS, { id });
 export const createRequestFailure = (requestName, id = '', error = '') => action(requestName.FAILURE, { id, error });
 export const resetLoading = () => action(RESET_LOADING);
-export const resetLoadingState = requestName => action(RESET_LOADING_STATE, { requestName });
+export const resetLoadingState = (requestName) => action(RESET_LOADING_STATE, { requestName });

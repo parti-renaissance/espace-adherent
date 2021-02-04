@@ -2,7 +2,7 @@ export default class TaxReturnProvider {
     getAmountAfterTaxReturn(amount) {
         amount = parseInt(amount);
 
-        if (!amount || amount <= 0) {
+        if (!amount || 0 >= amount) {
             return '0,00';
         }
 

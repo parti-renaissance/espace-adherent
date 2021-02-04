@@ -24,7 +24,7 @@ class Input extends React.Component {
                         id={this.props.id}
                         maxLength={this.props.maxLength}
                         name={this.props.name}
-                        onChange={e => this.handleChange(e.target.value)}
+                        onChange={(e) => this.handleChange(e.target.value)}
                         placeholder={this.props.placeholder}
                         value={this.props.value}
                     />

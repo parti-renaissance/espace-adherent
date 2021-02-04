@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import IdeaCardList from '../../IdeaCardList';
 
-const LatestIdeasPane = props => (
+const LatestIdeasPane = (props) => (
     <div className="latest-ideas__pane">
         <IdeaCardList
             ideas={props.ideas}

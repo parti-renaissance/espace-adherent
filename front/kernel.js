@@ -10,35 +10,35 @@ window.Kernel = class {
         Kernel.release = release;
         Kernel.sentryDsn = sentryDsn;
 
-        let app = false,
-            vendor = false;
+        let app = false;
+            let vendor = false;
 
-        let runIfReady = () => {
+        const runIfReady = () => {
             if (app && vendor) {
-                let sentryDsn = Kernel.sentryDsn;
-                let release = Kernel.release;
-                let listeners = Kernel.listeners;
+                const { sentryDsn } = Kernel;
+                const { release } = Kernel;
+                const { listeners } = Kernel;
 
                 if (sentryDsn) {
-                    Raven.config(sentryDsn, { release: release }).install();
+                    Raven.config(sentryDsn, { release }).install();
                 }
 
-                for (let i in listeners) {
+                for (const i in listeners) {
                     App.addListener(listeners[i]);
                 }
 
                 App.run({
-                    sentryDsn: sentryDsn,
-                    release: release,
-                    environment: environment,
-                    algoliaAppId: algoliaAppId,
-                    algoliaAppPublicKey: algoliaAppPublicKey,
+                    sentryDsn,
+                    release,
+                    environment,
+                    algoliaAppId,
+                    algoliaAppPublicKey,
                     algoliaBlacklist: Base64.decode(algoliaBlacklist).split(','),
                 });
             }
         };
 
-        let handleError = (error) => {
+        const handleError = (error) => {
             throw error;
         };
 

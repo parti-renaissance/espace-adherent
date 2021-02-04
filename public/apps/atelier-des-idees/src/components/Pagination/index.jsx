@@ -45,6 +45,7 @@ class Pagination extends Component {
             range,
         };
     }
+
     render() {
         const { nextPage, prevPage, goTo, total, currentPage, pageSize, pagesToShow } = this.props;
         const totalPages = Math.ceil(total / pageSize);
@@ -86,11 +87,10 @@ class Pagination extends Component {
             });
         }
 
-
         return (
             <div className="pagination">
-                {1 !== currentPage &&
-                  <button
+                {1 !== currentPage
+                  && <button
                       className="pagination__prev button button--transparent"
                       onClick={prevPage}>
                       Préc.
@@ -99,8 +99,8 @@ class Pagination extends Component {
 
                 {pages.map((page, i) => <PageNumber key={i} goTo={goTo} page={page} />)}
 
-                {currentPage !== totalPages &&
-                  <button
+                {currentPage !== totalPages
+                  && <button
                       className="pagination__next button button--transparent"
                       onClick={nextPage}>
                           Suiv.

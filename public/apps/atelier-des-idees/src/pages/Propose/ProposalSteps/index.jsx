@@ -1,11 +1,11 @@
 import React from 'react';
 import Steps from './Steps';
-import contributeImg from './../../../img/contribute_img_step.svg';
-import proposeImg from './../../../img/propose_img_step.svg';
-import voteImg from './../../../img/vote_img_step.svg';
-import contributePicto from './../../../img/contribute_picto_step.svg';
-import proposePicto from './../../../img/propose_picto_step.svg';
-import votePicto from './../../../img/vote_picto_step.svg';
+import contributeImg from "../../../img/contribute_img_step.svg";
+import proposeImg from "../../../img/propose_img_step.svg";
+import voteImg from "../../../img/vote_img_step.svg";
+import contributePicto from "../../../img/contribute_picto_step.svg";
+import proposePicto from "../../../img/propose_picto_step.svg";
+import votePicto from "../../../img/vote_picto_step.svg";
 
 const steps = [
     {
@@ -41,6 +41,7 @@ class ProposalSteps extends React.PureComponent {
     componentDidMount() {
         window.scrollTo(0, 0);
     }
+
     render() {
         return (
             <div className="proposal--steps">

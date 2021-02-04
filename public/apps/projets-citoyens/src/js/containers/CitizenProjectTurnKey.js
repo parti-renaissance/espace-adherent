@@ -4,18 +4,17 @@ import MediaQuery from 'react-responsive';
 import Select from 'react-select';
 
 import { getTurnkeyDetail, getTurnkeyProjects } from '../actions/turnkey-projects';
-import TurnkeyProjectDetail from './../components/TurnkeyProjectDetail';
-import TurnkeyProjectListItem from './../components/TurnkeyProjectListItem';
+import TurnkeyProjectDetail from "../components/TurnkeyProjectDetail";
+import TurnkeyProjectListItem from "../components/TurnkeyProjectListItem";
 
-const TurnkeyProjectDropdown = ({ projects, active, dispatch }) =>
-    <div className="turnkey__project__dropdown">
+const TurnkeyProjectDropdown = ({ projects, active, dispatch }) => <div className="turnkey__project__dropdown">
         <Select
             simpleValue
             searchable={false}
             clearable={false}
-            onChange={slug => dispatch(getTurnkeyDetail(slug))}
+            onChange={(slug) => dispatch(getTurnkeyDetail(slug))}
             value={{ label: active.title, value: active.slug }}
-            options={projects.map(p => ({
+            options={projects.map((p) => ({
                 label: p.title,
                 value: p.slug,
             }))}
@@ -90,8 +89,8 @@ class CitizenProjectTurnKey extends Component {
                     </div>
                     <div className="turnkey__project__list">
                         <MediaQuery maxWidth={650}>
-                            {(project && projects.length) ?
-                                <TurnkeyProjectDropdown
+                            {(project && projects.length)
+                                ? <TurnkeyProjectDropdown
                                     projects={projects}
                                     active={project}
                                     dispatch={dispatch}
@@ -115,7 +114,7 @@ class CitizenProjectTurnKey extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     all: state.turnkey.all,
     detail: state.turnkey.detail,
 });

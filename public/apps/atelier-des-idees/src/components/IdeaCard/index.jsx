@@ -1,16 +1,15 @@
 import React from 'react';
-import { ideaStatus } from '../../constants/api';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import { ideaStatus , AUTHOR_CATEGORIES } from '../../constants/api';
 
 import VotingFooter from './VotingFooter';
 import ContributingFooter from './ContributingFooter';
 import { getUserDisplayName } from '../../helpers/entities';
-import { AUTHOR_CATEGORIES } from '../../constants/api';
 
-import icn_20px_contributors from './../../img/icn_20px_contributors.svg';
-import icn_20px_comments from './../../img/icn_20px_comments.svg';
+import icn_20px_contributors from "../../img/icn_20px_contributors.svg";
+import icn_20px_comments from "../../img/icn_20px_comments.svg";
 
 const VOTES_NAMES = {
     important: 'Essentielle',
@@ -20,8 +19,8 @@ const VOTES_NAMES = {
 
 function formatVotes(votesCount) {
     return Object.keys(votesCount)
-        .filter(key => Object.keys(VOTES_NAMES).includes(key))
-        .map(key => ({
+        .filter((key) => Object.keys(VOTES_NAMES).includes(key))
+        .map((key) => ({
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
@@ -55,7 +54,7 @@ class IdeaCard extends React.Component {
             const isOutofCard = !this.cardRef.current.contains(event.target);
             if (isOutofCard) {
                 // change state.votesState to force render the VotingFooter
-                this.setState(prevState => ({ votesState: !prevState.votesState }));
+                this.setState((prevState) => ({ votesState: !prevState.votesState }));
                 document.removeEventListener('mouseover', this.handleHoverOutside);
             }
         }
@@ -193,7 +192,7 @@ class IdeaCard extends React.Component {
                         key={`voting-footer__${this.state.votesState}`}
                         totalVotes={this.props.votes_count.total}
                         votes={formatVotes(this.props.votes_count)}
-                        onSelected={vote => this.props.onVote(this.props.uuid, vote)}
+                        onSelected={(vote) => this.props.onVote(this.props.uuid, vote)}
                         onToggleVotePanel={this.toggleOutsideHover}
                         hasUserVoted={
                             this.props.votes_count.my_votes && !!Object.keys(this.props.votes_count.my_votes).length

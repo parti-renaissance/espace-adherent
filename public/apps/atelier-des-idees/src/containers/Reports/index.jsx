@@ -12,5 +12,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { onReportBtnClicked: reports => showModal(REPORTS_MODAL, { reports }) }
+    { onReportBtnClicked: (reports) => showModal(REPORTS_MODAL, { reports }) }
 )(Reports);

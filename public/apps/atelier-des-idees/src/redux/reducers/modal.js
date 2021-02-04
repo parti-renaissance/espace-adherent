@@ -25,4 +25,4 @@ function modalReducer(state = initialState, action) {
 export default modalReducer;
 
 // getters
-export const getModalData = state => state;
+export const getModalData = (state) => state;

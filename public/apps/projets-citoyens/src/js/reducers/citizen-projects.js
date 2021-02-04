@@ -22,7 +22,7 @@ const INTITIAL_STATE = {
 };
 
 export default function citizenProjectReducer(state = INTITIAL_STATE, action) {
-    let { metadata } = (action.payload || {});
+    const { metadata } = (action.payload || {});
     switch (action.type) {
     case `${CITIZEN_PROJECTS}_PENDING`:
         return {

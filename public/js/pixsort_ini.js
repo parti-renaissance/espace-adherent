@@ -1,9 +1,9 @@
-$(function() {
+$(() => {
     $('.sonata-ba-list').draggableTable();
 });
 
-$.fn.draggableTable = function() {
-    $(this).each(function (index, item) {
+$.fn.draggableTable = function () {
+    $(this).each((index, item) => {
         item = $(item);
         if (!item.data('DraggableTable')) {
             item.data('DraggableTable', new DraggableTable(item));
@@ -11,24 +11,24 @@ $.fn.draggableTable = function() {
     });
 };
 
-var DraggableTable = function(element) {
-    var movers = element.find('.js-sortable-move');
-    if (movers.length <= 1) return;
+var DraggableTable = function (element) {
+    const movers = element.find('.js-sortable-move');
+    if (1 >= movers.length) return;
 
-    var $document = $(document);
-    var $body = $(document.body);
+    const $document = $(document);
+    const $body = $(document.body);
 
-    var first = parseInt(movers.first().attr('data-current-position'));
-    var last = parseInt(movers.last().attr('data-current-position'));
-    var direction = first <= last ? 1 : -1;
+    const first = parseInt(movers.first().attr('data-current-position'));
+    const last = parseInt(movers.last().attr('data-current-position'));
+    const direction = first <= last ? 1 : -1;
 
     element.find('tbody').sortable({
         'handle': '.js-sortable-move',
-        'start': function() {
+        'start': function () {
             $body.addClass('is-dragging');
         },
-        'stop': function() {
-            setTimeout(function() {
+        'stop': function () {
+            setTimeout(() => {
                 $body.removeClass('is-dragging');
             }, 100);
         },
@@ -38,21 +38,21 @@ var DraggableTable = function(element) {
         'revert': 100,
         'cursor': 'move',
         'zIndex': 1,
-        'helper': function(e, ui) {
+        'helper': function (e, ui) {
             ui.css('width', '100%');
-            ui.children().each(function() {
-                var item = $(this);
+            ui.children().each(function () {
+                const item = $(this);
                 item.width(item.width());
             });
             return ui;
         },
-        'update': function(event, ui) {
-            element.find('.js-sortable-move').each(function(index, item) {
+        'update': function (event, ui) {
+            element.find('.js-sortable-move').each((index, item) => {
                 $(item).attr('data-current-position', first + (index * direction));
             });
 
-            var moved = $(ui.item).find('.js-sortable-move');
-            var newPosition = moved.attr('data-current-position');
+            const moved = $(ui.item).find('.js-sortable-move');
+            const newPosition = moved.attr('data-current-position');
 
             $document.trigger('pixSortableBehaviorBundle.update', [event, ui]);
 
@@ -60,13 +60,13 @@ var DraggableTable = function(element) {
                 'type': 'GET',
                 'url': moved.attr('data-url').replace('NEW_POSITION', newPosition),
                 'dataType': 'json',
-                'error': function(data) {
+                'error': function (data) {
                     $document.trigger('pixSortableBehaviorBundle.error', [data]);
                 },
-                'success': function(data) {
+                'success': function (data) {
                     $document.trigger('pixSortableBehaviorBundle.success', [data]);
                 },
-                'complete': function() {
+                'complete': function () {
                     $document.trigger('pixSortableBehaviorBundle.complete');
                 }
             });

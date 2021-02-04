@@ -7,7 +7,7 @@ export function fetchAuthUser() {
         dispatch(createRequest(FETCH_AUTH_USER));
         return axios
             .get('/api/users/me')
-            .then(res => res.data)
+            .then((res) => res.data)
             .then((data) => {
                 dispatch(setAuthUser(data));
                 dispatch(createRequestSuccess(FETCH_AUTH_USER));
@@ -33,7 +33,7 @@ export function setNickname(nickname, useNickname) {
                 const { response } = error;
                 if (400 === response.status) {
                     // get error message from response format and add it to the failure payload
-                    const violation = response.data.violations.find(v => 'nickname' === v.propertyPath);
+                    const violation = response.data.violations.find((v) => 'nickname' === v.propertyPath);
                     dispatch(createRequestFailure(SET_NICKNAME, null, violation && violation.message));
                 } else {
                     dispatch(createRequestFailure(SET_NICKNAME));

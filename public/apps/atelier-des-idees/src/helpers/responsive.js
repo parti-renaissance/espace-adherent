@@ -18,25 +18,25 @@ export default function Breakpoint(props) {
     );
 }
 
-export const Desktop = props => (
+export const Desktop = (props) => (
     <Breakpoint {...props} name="desktop">
         {props.children}
     </Breakpoint>
 );
 
-export const Tablet = props => (
+export const Tablet = (props) => (
     <Breakpoint {...props} name="tablet">
         {props.children}
     </Breakpoint>
 );
 
-export const NotMobile = props => (
+export const NotMobile = (props) => (
     <Breakpoint {...props} name="notMobile">
         {props.children}
     </Breakpoint>
 );
 
-export const Mobile = props => (
+export const Mobile = (props) => (
     <Breakpoint {...props} name="mobile">
         {props.children}
     </Breakpoint>

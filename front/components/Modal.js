@@ -25,8 +25,8 @@ export default class Modal extends React.Component {
                     {...(this.props.withClose ? { onClick: () => this.hideModal({ closed: true }) } : {})}
                 ></div>
                 <div className="modal-content">
-                    {this.props.withClose ?
-                        <span className="close" onClick={() => this.hideModal({ closed: true })}/>
+                    {this.props.withClose
+                        ? <span className="close" onClick={() => this.hideModal({ closed: true })}/>
                         : ''
                     }
                     {this.renderContent()}

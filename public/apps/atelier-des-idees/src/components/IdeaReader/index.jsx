@@ -6,7 +6,7 @@ class IdeaReader extends React.PureComponent {
         return (
             <div className="idea-reader">
                 <div className="idea-reader__content">
-                    {this.props.paragraphs.map(paragraph => (
+                    {this.props.paragraphs.map((paragraph) => (
                         <div
                             className="idea-reader__content__paragraph"
                             dangerouslySetInnerHTML={{ __html: paragraph }}

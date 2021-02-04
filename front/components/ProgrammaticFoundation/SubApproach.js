@@ -1,6 +1,6 @@
-import React, {PropTypes} from 'react';
-import Measure from './Measure';
+import React, { PropTypes } from 'react';
 import ReactDOM from "react-dom";
+import Measure from './Measure';
 
 export default class SubApproach extends React.Component {
     render() {
@@ -26,12 +26,10 @@ export default class SubApproach extends React.Component {
 
                     <div className="programmatic-foundation__children programmatic-foundation__measures">
                         <div className="programmatic-foundation__items-type">Mesures</div>
-                        {this.props.subApproach.measures.map(measure => {
-                            return <Measure
-                                key={measure.position+measure.uuid}
+                        {this.props.subApproach.measures.map((measure) => <Measure
+                                key={measure.position + measure.uuid}
                                 measure={measure}
-                            />
-                          })}
+                            />)}
                     </div>
                 </div>
             </div>
@@ -40,16 +38,16 @@ export default class SubApproach extends React.Component {
 
     scrollToMyRef() {
         setTimeout(() => {
-            ReactDOM.findDOMNode(this).scrollIntoView({behavior: "smooth"});
+            ReactDOM.findDOMNode(this).scrollIntoView({ behavior: "smooth" });
         }, 200);
     }
 
     toggleActiveSubApproach(event) {
         if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
-            let items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
+            const items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
                 .getElementsByClassName('programmatic-foundation__sub-approach');
 
-            for (var i=0; i<items.length; ++i) {
+            for (let i = 0; i < items.length; ++i) {
                 if (hasClass(items[i], 'expanded')) {
                     removeClass(items[i], 'expanded');
                 }

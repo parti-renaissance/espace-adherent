@@ -88,7 +88,7 @@ class CitizenProject extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     count: state.citizen.count,
     pinned: state.turnkey.pinned,
 });

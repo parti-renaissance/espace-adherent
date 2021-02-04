@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import hpIllustrationRapports from './../../img/hp-illustration-rapports.svg';
+import hpIllustrationRapports from "../../img/hp-illustration-rapports.svg";
 
 class Reports extends React.PureComponent {
     render() {

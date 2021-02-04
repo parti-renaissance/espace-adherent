@@ -1,25 +1,25 @@
-export default class Slugifier
-{
+export default class Slugifier {
     constructor() {
         this.latinMap = _latinMap();
     }
 
     latinise(string) {
-        return string.replace(/[^A-Za-z0-9\[\] ]/g, (x) => { return this.latinMap[x] || x; });
+        return string.replace(/[^A-Za-z0-9\[\] ]/g, (x) => this.latinMap[x] || x);
     }
 
     dasherize(string) {
-        return trim(string).replace(/[_\s\,]+/g, '-').replace(/([A-Z])/g, '-$1').replace(/-+/g, '-').toLowerCase();
+        return trim(string).replace(/[_\s\,]+/g, '-').replace(/([A-Z])/g, '-$1').replace(/-+/g, '-')
+.toLowerCase();
     }
 
     slugify(string) {
-        if (typeof string != 'string') {
+        if ('string' !== typeof string) {
             throw new Error('Invalid type for argument provided to slugify (string expected).');
         }
 
         string = this.dasherize(this.latinise(string).replace(/[^\w\s-\,]/g, '').toLowerCase());
 
-        if (string.charAt(0) === '-') {
+        if ('-' === string.charAt(0)) {
             string = string.substr(1);
         }
 
@@ -27,9 +27,7 @@ export default class Slugifier
     }
 
     extractKeywords(string) {
-        return this.slugify(string).split('-').filter((keyword) => {
-            return keyword.length > 0;
-        });
+        return this.slugify(string).split('-').filter((keyword) => 0 < keyword.length);
     }
 }
 

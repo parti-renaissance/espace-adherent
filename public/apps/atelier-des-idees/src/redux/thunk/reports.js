@@ -7,7 +7,7 @@ export function fetchReports() {
         dispatch(createRequest(FETCH_REPORTS));
         return axios
             .get('/api/ideas-workshop/consultation_reports')
-            .then(res => res.data)
+            .then((res) => res.data)
             .then(({ items, metadata }) => {
                 dispatch(setReports(items));
                 dispatch(createRequestSuccess(FETCH_REPORTS));

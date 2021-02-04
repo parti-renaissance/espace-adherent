@@ -35,7 +35,7 @@ Home.propTypes = {
     setIdeas: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ ideas: state.ideas });
+const mapStateToProps = (state) => ({ ideas: state.ideas });
 
 export default connect(
     mapStateToProps,

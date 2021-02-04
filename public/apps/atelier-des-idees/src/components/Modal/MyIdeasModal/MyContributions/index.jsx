@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Pagination from '../../../Pagination';
 
-import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
+import icn_toggle_content from "../../../../img/icn_toggle_content-blue-yonder.svg";
 
 class MyContributions extends React.Component {
     constructor(props) {
@@ -35,8 +35,7 @@ class MyContributions extends React.Component {
                 {ideas.length ? (
                     <button
                         className="my-contributions__category__button"
-                        onClick={() =>
-                            this.setState(prevState => ({
+                        onClick={() => this.setState((prevState) => ({
                                 showList: !prevState.showList,
                             }))
                         }
@@ -55,8 +54,7 @@ class MyContributions extends React.Component {
                 )}
                 {ideas.length ? (
                     ideas.map(
-                        (idea, i) =>
-                            this.state.showList && (
+                        (idea, i) => this.state.showList && (
                                 <div className="my-contributions__category__idea" key={i}>
                                     <p className="my-contributions__category__idea__date">
                     Créée le {new Date(idea.created_at).toLocaleDateString()}
@@ -80,7 +78,7 @@ class MyContributions extends React.Component {
                     <Pagination
                         nextPage={() => this.paginate(page + 1)}
                         prevPage={() => this.paginate(page - 1)}
-                        goTo={p => this.paginate(p)}
+                        goTo={(p) => this.paginate(p)}
                         total={total}
                         currentPage={page}
                         pageSize={5}

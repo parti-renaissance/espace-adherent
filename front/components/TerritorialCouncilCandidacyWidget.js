@@ -79,8 +79,7 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
                                     </div>
                                 </div>
                             </label>
-                        </div>)
-                        )}
+                        </div>))}
                 </div>
             );
         }
@@ -103,7 +102,7 @@ export default class TerritorialCouncilCandidacyWidget extends React.Component {
     }
 
     loadMemberships() {
-        const quality = this.state.quality;
+        const { quality } = this.state;
         const query = this.state.searchQuery;
 
         this.props.api.getTerritorialCouncilAvailableMemberships(

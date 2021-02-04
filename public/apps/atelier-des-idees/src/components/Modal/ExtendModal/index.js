@@ -25,7 +25,7 @@ class ExtendPeriod extends React.Component {
                             className="extend-modal__section__mentions__checkbox__input"
                             type="checkbox"
                             checked={this.state.isChecked}
-                            onChange={e => this.setState(prevState => ({ isChecked: !prevState.isChecked }))}
+                            onChange={(e) => this.setState((prevState) => ({ isChecked: !prevState.isChecked }))}
                         />
                         <span className="extend-modal__section__mentions__checkbox__checkmark">
                             <img src={icn_checklist} alt="Checklist" />
@@ -43,7 +43,7 @@ class ExtendPeriod extends React.Component {
 
                 {this.state.isChecked && (
                     <Button
-                        onClick={e => this.props.onExtendPeriod()}
+                        onClick={(e) => this.props.onExtendPeriod()}
                         type="submit"
                         className="button button--primary extend-modal__button"
                         label="Confirmer"

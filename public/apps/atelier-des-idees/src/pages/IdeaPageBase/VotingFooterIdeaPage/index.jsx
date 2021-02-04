@@ -12,8 +12,8 @@ const VOTES_NAMES = {
 
 function formatVotes(votesCount) {
     return Object.keys(votesCount)
-        .filter(key => Object.keys(VOTES_NAMES).includes(key))
-        .map(key => ({
+        .filter((key) => Object.keys(VOTES_NAMES).includes(key))
+        .map((key) => ({
             id: key,
             name: VOTES_NAMES[key],
             count: votesCount[key],
@@ -47,5 +47,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { onVote: typeVote => voteCurrentIdea(typeVote) }
+    { onVote: (typeVote) => voteCurrentIdea(typeVote) }
 )(VotingFooterIdeaPage);

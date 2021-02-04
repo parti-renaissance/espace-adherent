@@ -95,8 +95,8 @@ class IdeaPageTitle extends React.Component {
                                 </span>
                             )}
                             <ul>
-                                {this.props.themes &&
-                                    this.props.themes.map((theme, i) => (
+                                {this.props.themes
+                                    && this.props.themes.map((theme, i) => (
                                         <li key={i} className="idea-page-title__tags__item">
                                             {theme.name}
                                         </li>

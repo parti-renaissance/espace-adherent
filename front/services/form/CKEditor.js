@@ -27,7 +27,7 @@ function createCKEditor(element, customOptions = {}) {
     return ClassicEditor.create(element, _.mergeWith(
         defaultOptions,
         customOptions,
-        (objValue, srcValue) => { if (_.isArray(objValue)) { return objValue.concat(srcValue);}}
+        (objValue, srcValue) => { if (_.isArray(objValue)) { return objValue.concat(srcValue); } }
     ));
 }
 
@@ -36,10 +36,10 @@ export default function createCKEditorWithUpload(elementSelector, uploadUrl, cus
 
     return createCKEditor(element, _.merge(customOptions, {
         ckfinder: {
-            uploadUrl: uploadUrl,
+            uploadUrl,
         },
         wordCount: getWordCountConfig(element, elementSelector),
-    }))
+    }));
 }
 
 function getWordCountConfig(element, elementSelector) {

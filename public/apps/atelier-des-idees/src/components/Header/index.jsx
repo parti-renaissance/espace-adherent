@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import arrowDown from './../../img/icn_arrow_down.svg';
-import SubMenu from './../SubMenu';
+import arrowDown from "../../img/icn_arrow_down.svg";
+import SubMenu from "../SubMenu";
 
 class Header extends React.PureComponent {
     render() {
@@ -38,7 +38,7 @@ class Header extends React.PureComponent {
                             <SubMenu
                                 className="header__item"
                                 options={myWorkShopRoutes}
-                                onSelect={key => myWorkShopRoutes[key].onClick()}
+                                onSelect={(key) => myWorkShopRoutes[key].onClick()}
                                 label={[
                                     'Mon atelier',
                                     <img src={arrowDown} key="mon-atelier" alt="ouvrir le sous-menu" />,

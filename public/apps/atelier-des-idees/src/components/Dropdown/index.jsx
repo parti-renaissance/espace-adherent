@@ -10,7 +10,7 @@ import moreIcn from '../../img/icn_20px_more.svg';
 function Dropdown(props) {
     const menu = (
         <Menu onClick={({ key }) => props.onSelect(key)} selectable={false}>
-            {props.options.map(option => (
+            {props.options.map((option) => (
                 <MenuItem
                     key={option.value}
                     className={classNames('dropdown-menu__item', {

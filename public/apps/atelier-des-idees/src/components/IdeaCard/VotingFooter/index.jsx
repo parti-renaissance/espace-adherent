@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Mobile from './../../../helpers/responsive';
-import icnThumbWhite from './../../../img/icn_20px_thumb.svg';
-import icnThumbGreen from './../../../img/icn_20px_thumb_green.svg';
+import Mobile from "../../../helpers/responsive";
+import icnThumbWhite from "../../../img/icn_20px_thumb.svg";
+import icnThumbGreen from "../../../img/icn_20px_thumb_green.svg";
 import VoteButton from '../../VoteButton';
 
 class VotingFooter extends React.Component {
@@ -58,8 +58,8 @@ class VotingFooter extends React.Component {
                 <div className="voting-footer__container">
                     {/* MOBILE ELEMENTS */}
                     <Mobile>
-                        {this.state.toggleVotes &&
-                            (0 < this.props.totalVotes ? (
+                        {this.state.toggleVotes
+                            && (0 < this.props.totalVotes ? (
                                 <p className="voting-footer__total-votes">
                                     {this.props.totalVotes} vote{1 < this.props.totalVotes ? 's' : ''}
                                 </p>
@@ -70,9 +70,8 @@ class VotingFooter extends React.Component {
 
                     <button
                         className="voting-footer__container__action-vote--mobile"
-                        onClick={() =>
-                            this.setState(
-                                prevState => ({
+                        onClick={() => this.setState(
+                                (prevState) => ({
                                     toggleVotes: !prevState.toggleVotes,
                                 }),
                                 () => {
@@ -93,16 +92,16 @@ class VotingFooter extends React.Component {
                         />
                     </button>
 
-                    {!this.state.toggleVotes &&
-                        (0 < this.props.totalVotes ? (
+                    {!this.state.toggleVotes
+                        && (0 < this.props.totalVotes ? (
                             <p className="voting-footer__total-votes">
                                 {this.props.totalVotes} vote{1 < this.props.totalVotes ? 's' : ''}
                             </p>
                         ) : (
                             <p />
                         ))}
-                    {!this.props.condensed &&
-                        (!this.state.toggleVotes ? (
+                    {!this.props.condensed
+                        && (!this.state.toggleVotes ? (
                             <div className="voting-footer__container__action-vote">
                                 <button
                                     className={classnames(
@@ -112,8 +111,7 @@ class VotingFooter extends React.Component {
                                             'voting-footer__action-vote__btn--active': this.props.hasUserVoted,
                                         }
                                     )}
-                                    onClick={() =>
-                                        this.setState({ toggleVotes: true, toggleFadeout: true }, () => {
+                                    onClick={() => this.setState({ toggleVotes: true, toggleFadeout: true }, () => {
                                             this.props.onToggleVotePanel(true);
                                             this.resetTimeout();
                                         })
@@ -132,8 +130,8 @@ class VotingFooter extends React.Component {
                 </div>
 
                 {/* VOTES BUTTONS */}
-                {this.state.toggleVotes &&
-                    this.props.votes.map((vote, index) => (
+                {this.state.toggleVotes
+                    && this.props.votes.map((vote, index) => (
                         <VoteButton
                             vote={vote}
                             index={index}

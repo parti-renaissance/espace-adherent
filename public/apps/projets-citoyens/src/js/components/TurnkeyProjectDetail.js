@@ -11,7 +11,7 @@ const Title = ({ title, subtitle }) => (
     </div>
 );
 
-const TurnkeyProjectDetail = props => {
+const TurnkeyProjectDetail = (props) => {
     const {
         video_id,
         title,
@@ -49,7 +49,7 @@ const TurnkeyProjectDetail = props => {
 
             <p style={{ width: `${props.textSize}` }}>{description}</p>
 
-            <div className="solution" style={{ width: `${props.textSize}` }} dangerouslySetInnerHTML={{__html: solution}} />
+            <div className="solution" style={{ width: `${props.textSize}` }} dangerouslySetInnerHTML={{ __html: solution }} />
 
             {renderCTA && renderCTA()}
 

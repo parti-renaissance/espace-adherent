@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import ReactTooltip from 'react-tooltip'
+import ReactTooltip from 'react-tooltip';
 import Dropdown from '../../Dropdown';
 import { getUserDisplayName } from '../../../helpers/entities';
-import icn_checklist from './../../../img/icn_checklist-white.svg';
+import icn_checklist from "../../../img/icn_checklist-white.svg";
 
 function Comment(props) {
     return (

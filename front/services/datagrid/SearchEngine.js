@@ -1,25 +1,24 @@
-export default class SearchEngine
-{
+export default class SearchEngine {
     constructor(slugifier) {
         this.slugifier = slugifier;
     }
 
     search(columns, items, orderBy, term) {
-        let keywords = this.slugifier.extractKeywords(term);
+        const keywords = this.slugifier.extractKeywords(term);
 
-        if (keywords.length === 0) {
+        if (0 === keywords.length) {
             return [];
         }
 
-        let results = [];
+        const results = [];
 
-        for (let i in items) {
-            let item = items[i];
+        for (const i in items) {
+            const item = items[i];
             item.score = 0;
 
-            for (let j in columns) {
+            for (const j in columns) {
                 const columnKey = columns[j].key;
-                const resultColumnKeywords = this.slugifier.extractKeywords(item[columnKey]+'');
+                const resultColumnKeywords = this.slugifier.extractKeywords(`${item[columnKey]}`);
 
                 // Priority to the first keyword
                 if (startsWith(resultColumnKeywords[0], keywords[0])) {
@@ -27,9 +26,9 @@ export default class SearchEngine
                 }
 
                 // Then priority to any keyword
-                for (let k in keywords) {
-                    if (k != 0) {
-                        for (let l in resultColumnKeywords) {
+                for (const k in keywords) {
+                    if (0 != k) {
+                        for (const l in resultColumnKeywords) {
                             if (startsWith(resultColumnKeywords[l], keywords[k])) {
                                 item.score += 2;
                             }
@@ -39,7 +38,7 @@ export default class SearchEngine
             }
 
             // Keeping only matching results
-            if (item.score > 0) {
+            if (0 < item.score) {
                 results.push(item);
             }
         }
@@ -48,7 +47,7 @@ export default class SearchEngine
         results.sort((item1, item2) => {
             if (item1.score > item2.score) {
                 return -1;
-            } else if (item1.score < item2.score) {
+            } if (item1.score < item2.score) {
                 return 1;
             }
 

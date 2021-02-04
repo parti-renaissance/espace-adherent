@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import icn_20px_left_arrow from './../../../img/icn_20px_left_arrow.svg';
+import icn_20px_left_arrow from "../../../img/icn_20px_left_arrow.svg";
 
 function CondensedChapter(props) {
     return (

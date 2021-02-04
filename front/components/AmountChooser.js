@@ -58,7 +58,7 @@ export default class AmountChooser extends React.Component {
             <div className="amount-chooser">
                 <input type="hidden" name={this.props.name} value={state} key={`selected_amount_${state}`}/>
 
-                {this.props.amounts.map(amount => (
+                {this.props.amounts.map((amount) => (
                     <button className={`amount-chooser__button ${amount === state ? classSelected : ''}`}
                             type="button"
                             onClick={() => this.handleButtonClicked(amount)}

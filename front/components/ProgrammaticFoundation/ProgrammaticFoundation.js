@@ -1,13 +1,13 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import _ from 'lodash';
+import ReactDOM from "react-dom";
 import ReqwestApiClient from '../../services/api/ReqwestApiClient';
 import Content from './Content';
 import SearchBar from './SearchBar';
-import icnClose from './../../../public/images/icons/icn_close.svg';
-import logoPQM from './../../../public/images/projets-qui-marchent-logo-horizontal.svg';
+import icnClose from "../../../public/images/icons/icn_close.svg";
+import logoPQM from "../../../public/images/projets-qui-marchent-logo-horizontal.svg";
 import Breadcrumbs from './Breadcrumbs';
 import Loader from '../Loader';
-import ReactDOM from "react-dom";
 
 export default class ProgrammaticFoundation extends React.Component {
     constructor(props) {
@@ -58,7 +58,7 @@ export default class ProgrammaticFoundation extends React.Component {
                             <img
                                 src={icnClose}
                                 className="icn-close"
-                                onClick={event => hide(event.target.parentNode)}
+                                onClick={(event) => hide(event.target.parentNode)}
                                 alt="close icon"
                             />
                         </div>
@@ -87,10 +87,10 @@ export default class ProgrammaticFoundation extends React.Component {
                             </div>
                         </div>
 
-                        {this.state.isLoading ?
-                            <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/> :
+                        {this.state.isLoading
+                            ? <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/>
 
-                            <div>
+                            : <div>
                                 <Breadcrumbs isSearching={isSearching} onExitClick={this.handleSearchExit}/>
 
                                 <Content
@@ -121,55 +121,44 @@ export default class ProgrammaticFoundation extends React.Component {
 
     scrollToMyRef() {
         setTimeout(() => {
-            ReactDOM.findDOMNode(this).scrollIntoView({behavior: "smooth"});
+            ReactDOM.findDOMNode(this).scrollIntoView({ behavior: "smooth" });
         }, 200);
     }
 
     handleFilterTextChange(text) {
-        this.setState({filterText: text});
+        this.setState({ filterText: text });
 
         this.scrollToMyRef();
     }
 
     handleFilterCityChange(text) {
-        this.setState({filterCity: text});
+        this.setState({ filterCity: text });
 
         this.scrollToMyRef();
     }
 
     handleLeadingMeasuresChange(value) {
-        this.setState({filterIsLeading: value});
+        this.setState({ filterIsLeading: value });
 
         this.scrollToMyRef();
     }
 
     extractAllCities() {
-        return _.uniq(_.flatMap(this.initialApproaches, (approach) => {
-            return _.flatMap(approach.sub_approaches, (subApproaches) => {
-                return _.flatMap(subApproaches.measures, (measure) => {
-                    return _.flatMap(measure.projects, (project) => {
-                        return project.city;
-                    });
-                });
-            });
-        })).sort((a, b) => a.localeCompare(b)).sort(function(a,b) {
-            var importantResults = {
+        return _.uniq(_.flatMap(this.initialApproaches, (approach) => _.flatMap(approach.sub_approaches, (subApproaches) => _.flatMap(subApproaches.measures, (measure) => _.flatMap(measure.projects, (project) => project.city))))).sort((a, b) => a.localeCompare(b)).sort((a,b) => {
+            const importantResults = {
                 'Petite commune': 1,
                 'Ville moyenne': 2,
                 'Métropole': 3,
                 'Autre': 4,
             };
 
-            var importantA = importantResults[a],
-                importantB = importantResults[b],
-                ret;
+            const importantA = importantResults[a];
+                const importantB = importantResults[b];
+                let ret;
 
-            if (importantA && !importantB) {ret = -1}
-            else if (importantB && !importantA) {ret = 1}
-            else if (importantA && importantB) {ret = importantA - importantB}
-            else {ret = 0}
+            if (importantA && !importantB) { ret = -1; } else if (importantB && !importantA) { ret = 1; } else if (importantA && importantB) { ret = importantA - importantB; } else { ret = 0; }
 
-            return(ret);
+            return (ret);
         });
     }
 
@@ -184,7 +173,7 @@ export default class ProgrammaticFoundation extends React.Component {
             filterText: '',
             filterCity: '',
             filterIsLeading: false,
-        })
+        });
     }
 }
 

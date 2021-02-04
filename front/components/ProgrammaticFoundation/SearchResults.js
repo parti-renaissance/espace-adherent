@@ -1,13 +1,13 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Measure from './Measure';
 import Project from './Project';
 
 export default class SearchResults extends React.Component {
     render() {
         return <div className="programmatic-foundation__search-results">
-            {(this.props.measures.length || this.props.projects.length) ?
-                this.renderResultContent() :
-                this.renderEmptyResultMessage()
+            {(this.props.measures.length || this.props.projects.length)
+                ? this.renderResultContent()
+                : this.renderEmptyResultMessage()
             }
         </div>;
     }
@@ -27,13 +27,11 @@ export default class SearchResults extends React.Component {
             <div className="measures">
                 <div className="programmatic-foundation__items-type">Mesures</div>
                 <div className="programmatic-foundation__children programmatic-foundation__measures">
-                    {this.props.measures.map((measure, index) => {
-                        return <Measure
-                            key={index+measure.uuid}
+                    {this.props.measures.map((measure, index) => <Measure
+                            key={index + measure.uuid}
                             measure={measure}
                             preventAutoExpand={true}
-                        />
-                    })}
+                        />)}
                 </div>
             </div>
         );
@@ -44,13 +42,11 @@ export default class SearchResults extends React.Component {
             <div className="projects">
                 <div className="programmatic-foundation__items-type">Projets illustratifs</div>
                 <div className="programmatic-foundation__children programmatic-foundation__projects">
-                    {this.props.projects.map((project, index) => {
-                        return <Project
-                            key={index+project.uuid}
+                    {this.props.projects.map((project, index) => <Project
+                            key={index + project.uuid}
                             project={project}
                             preventAutoExpand={true}
-                        />
-                    })}
+                        />)}
                 </div>
             </div>
         );

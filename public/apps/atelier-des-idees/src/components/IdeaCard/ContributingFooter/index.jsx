@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import hourglassIcnGreen from './../../../img/icn_hourglass_green.svg';
+import hourglassIcnGreen from "../../../img/icn_hourglass_green.svg";
 import greenCheckIcn from '../../../img/icn_checklist.svg';
 
 class ContributingFooter extends React.PureComponent {

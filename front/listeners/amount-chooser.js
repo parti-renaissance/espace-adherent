@@ -7,7 +7,7 @@ import AmountChooser from '../components/AmountChooser';
  */
 export default () => {
     findAll(document, '.amount-chooser').forEach((element) => {
-        const name = element.name;
+        const { name } = element;
         const value = parseFloat(element.value);
         const chooser = document.createElement('div');
 

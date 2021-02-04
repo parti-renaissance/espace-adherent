@@ -17,7 +17,7 @@ export default (ChildComponent) => {
             return <ChildComponent {...this.props} />;
         }
     }
-    const withoutHeader = props => <ChildComponent {...props} />;
+    const withoutHeader = (props) => <ChildComponent {...props} />;
 
     withoutHeader.propTypes = {
         showHeader: PropTypes.func.isRequired,

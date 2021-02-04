@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-const PageNumber = ({page, goTo}) => {
-  let dots = [];
+const PageNumber = ({ page, goTo }) => {
+  const dots = [];
   if (page.dots) {
     dots.push(
       <span key={`dots-${page.page}`} className="pagination__dots">
@@ -16,19 +16,18 @@ const PageNumber = ({page, goTo}) => {
         {page.page}
       </span>
     );
-  } else {
+  }
     return dots.concat(
       <button
         key={page.page}
         className="pagination__number"
         onClick={() => goTo(page.page)}>{page.page}</button>
     );
-  }
-}
+};
 
 export default class Pagination extends Component {
   getBounds(totalPages, pagesToShow, centerPage) {
-    let range = Math.floor(pagesToShow / 2);
+    const range = Math.floor(pagesToShow / 2);
 
     if (totalPages < pagesToShow) {
       return {
@@ -36,29 +35,29 @@ export default class Pagination extends Component {
         upper: totalPages,
         range
       };
-    } else {
-      let pagesToShowIsEven = pagesToShow % 2 === 0;
+    }
+      const pagesToShowIsEven = 0 === pagesToShow % 2;
 
       return {
         lower: centerPage - (pagesToShowIsEven ? range - 1 : range),
         upper: (centerPage + range) > totalPages ? totalPages : centerPage + range,
         range
       };
-    }
   }
+
   render() {
-    let { nextPage, prevPage, goTo, total, currentPage, pageSize, pagesToShow } = this.props;
-    let totalPages = Math.ceil(total / pageSize);
+    const { nextPage, prevPage, goTo, total, currentPage, pageSize, pagesToShow } = this.props;
+    const totalPages = Math.ceil(total / pageSize);
 
-    let minCenterPage = Math.ceil(pagesToShow / 2);
-    let centerPage = currentPage >= minCenterPage ? currentPage : minCenterPage;
+    const minCenterPage = Math.ceil(pagesToShow / 2);
+    const centerPage = currentPage >= minCenterPage ? currentPage : minCenterPage;
 
-    if (totalPages <= 1) {
+    if (1 >= totalPages) {
       return null;
     }
 
-    let bounds = this.getBounds(totalPages, pagesToShow, centerPage);
-    let pages = [];
+    const bounds = this.getBounds(totalPages, pagesToShow, centerPage);
+    const pages = [];
     for (let i = bounds.lower; i <= bounds.upper; i++) {
       pages.push({
         page: i,
@@ -68,11 +67,11 @@ export default class Pagination extends Component {
 
     // only add dots if the lower boundary is more than
     // on away from the first page, i.e. is it greater than 2
-    if (bounds.lower > 2) {
+    if (2 < bounds.lower) {
       pages[0].dots = true;
     }
 
-    if (bounds.lower !== 1) {
+    if (1 !== bounds.lower) {
       pages.unshift({
         page: 1,
       });
@@ -83,21 +82,20 @@ export default class Pagination extends Component {
         page: totalPages,
         // only add dots if the upper boundary is more
         // than one away from the totalPages
-        dots: (totalPages - bounds.upper) > 1
+        dots: 1 < (totalPages - bounds.upper)
       });
     }
 
-
     return (
       <div className="pagination">
-        {currentPage !== 1 &&
-          <button className="pagination__prev" onClick={prevPage}>&lsaquo; Précédent</button>
+        {1 !== currentPage
+          && <button className="pagination__prev" onClick={prevPage}>&lsaquo; Précédent</button>
         }
 
-        {pages.map((page, i) => <PageNumber key={i} goTo={goTo} page={page} /> )}
+        {pages.map((page, i) => <PageNumber key={i} goTo={goTo} page={page} />)}
 
-        {currentPage !== totalPages.length &&
-          <button className="pagination__next" onClick={nextPage}>Suivant &rsaquo;</button>
+        {currentPage !== totalPages.length
+          && <button className="pagination__next" onClick={nextPage}>Suivant &rsaquo;</button>
         }
       </div>
     );

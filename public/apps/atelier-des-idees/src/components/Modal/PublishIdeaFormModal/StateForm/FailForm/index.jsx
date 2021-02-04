@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import icn_state_fail from './../../../../../img/icn_state_fail.svg';
+import icn_state_fail from "../../../../../img/icn_state_fail.svg";
 
 class FailForm extends React.PureComponent {
     componentDidMount() {
         window.scrollTo(0, 0);
     }
+
     render() {
         return (
             <div className="fail-form">

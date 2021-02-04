@@ -9,8 +9,7 @@ function MyIdeasModal(props) {
     const panes = [
         {
             title: 'Mes propositions',
-            component: () =>
-                <MyIdeas
+            component: () => <MyIdeas
                     ideas={props.my_ideas}
                     onDeleteIdea={props.onDeleteIdea}
                     getMyIdeas={props.getMyIdeas}
@@ -18,8 +17,7 @@ function MyIdeasModal(props) {
         },
         {
             title: 'Mes contributions',
-            component: () =>
-                <MyContributions
+            component: () => <MyContributions
                     ideas={props.my_contribs}
                     getMyContribs={props.getMyContribs}
                 />,

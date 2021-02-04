@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import CondensedChapter from '.';
-import icn_close from './../../../img/icn_20px_comments.svg';
+import icn_close from "../../../img/icn_20px_comments.svg";
 
 const props = {
     title: [<span className="underline">Rédiger</span>, <br />, 'une propostion'],

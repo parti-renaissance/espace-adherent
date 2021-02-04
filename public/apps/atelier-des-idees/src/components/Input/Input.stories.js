@@ -10,7 +10,7 @@ class ControlledInput extends React.Component {
     }
 
     render() {
-        return <Input {...this.props} onChange={value => this.setState({ value })} value={this.state.value} />;
+        return <Input {...this.props} onChange={(value) => this.setState({ value })} value={this.state.value} />;
     }
 }
 

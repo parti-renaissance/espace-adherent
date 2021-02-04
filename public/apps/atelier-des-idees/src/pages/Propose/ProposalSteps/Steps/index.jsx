@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import icn_20px_left_arrow from './../../../../img/icn_20px_left_arrow.svg';
+import icn_20px_left_arrow from "../../../../img/icn_20px_left_arrow.svg";
 
-const Steps = props => (
+const Steps = (props) => (
     <div className="proposal--step ">
         <div className="l__wrapper">
             <div className="left">

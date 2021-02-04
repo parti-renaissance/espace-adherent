@@ -7,7 +7,7 @@ export function fetchConsultationPinned() {
         dispatch(createRequest(FETCH_CONSULTATION_PINNED));
         return axios
             .get('/api/ideas-workshop/consultations')
-            .then(res => res.data)
+            .then((res) => res.data)
             .then(({ items, metadata }) => {
                 if (items.length) {
                     dispatch(showConsultationPinned(items[0]));

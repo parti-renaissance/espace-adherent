@@ -4,6 +4,7 @@ class ProposalCriteria extends React.PureComponent {
     componentDidMount() {
         window.scrollTo(0, 0);
     }
+
     render() {
         return (
             <article className="l__wrapper">

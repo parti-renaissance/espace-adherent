@@ -23,7 +23,7 @@ class Collapse extends React.Component {
             >
                 <button
                     className="collapse__container"
-                    onClick={() => this.setState(prevState => ({ isCollapsed: !prevState.isCollapsed }))}
+                    onClick={() => this.setState((prevState) => ({ isCollapsed: !prevState.isCollapsed }))}
                 >
                     {'function' === typeof Component ? <Component /> : Component}
                     <div

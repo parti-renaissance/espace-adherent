@@ -31,9 +31,9 @@ const DEFAULT_FILTER = {
 function filterProjects(options = DEFAULT_FILTER, action) {
     let query = { ...DEFAULT_FILTER, ...options };
     query = Object.keys(query)
-        .filter(key => query[key])
-        .map(key => {
-            if (typeof query[key] === 'object') {
+        .filter((key) => query[key])
+        .map((key) => {
+            if ('object' === typeof query[key]) {
                 return Object.entries(query[key]).map(([subKey, value]) => `${key}[${subKey}]=${value}`).join('&');
             }
 

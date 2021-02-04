@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FacebookShareButton, TwitterShareButton, TelegramShareButton } from 'react-share';
-import { FacebookIcon, TwitterIcon } from 'react-share';
+import { FacebookShareButton, TwitterShareButton, TelegramShareButton , FacebookIcon, TwitterIcon } from 'react-share';
 
 class ShareButtons extends React.PureComponent {
     render() {

@@ -47,7 +47,7 @@ class IdeaContent extends React.Component {
                             {guideline.questions.map(
                                 ({ id, name, category, required, placeholder, position }, index) => {
                                     const content = this.props.values[id];
-                                    const fullAnswer = this.props.fullAnswers.find(a => a.question.id === id);
+                                    const fullAnswer = this.props.fullAnswers.find((a) => a.question.id === id);
                                     // only show question with answer in reading mode
                                     if (this.props.isReading && !content) {
                                         return null;

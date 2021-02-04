@@ -26,7 +26,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
 
         // Avoid form submit action when `Enter` (13) key is pressed in autocomplete select
         google.maps.event.addDomListener(this._input, 'keydown', (event) => {
-            if (event.keyCode === 13) {
+            if (13 === event.keyCode) {
                 event.preventDefault();
             }
         });
@@ -54,7 +54,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
                         return;
                     }
 
-                    if (++countOfCheck <= 2) {
+                    if (2 >= ++countOfCheck) {
                         return;
                     }
 
@@ -122,7 +122,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         if (this._state.country && this._state.country.short_name) {
             this._address.setCountry(this._state.country.short_name);
 
-            if (this._state.country.short_name !== 'FR') {
+            if ('FR' !== this._state.country.short_name) {
                 this._address.setRegion(
                     this._state.administrative_area_level_1 && this._state.administrative_area_level_1.long_name || ''
                 );

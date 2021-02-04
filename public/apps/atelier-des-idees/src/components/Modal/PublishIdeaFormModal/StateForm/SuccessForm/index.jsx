@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import icn_state_success from './../../../../../img/icn_state_success.svg';
-import how_to_approve from './../../../../../img/how-to-approve.svg';
+import icn_state_success from "../../../../../img/icn_state_success.svg";
+import how_to_approve from "../../../../../img/how-to-approve.svg";
 
 class SuccessForm extends React.PureComponent {
     componentDidMount() {
         window.scrollTo(0, 0);
     }
+
     render() {
         return (
             <div className="success-form">

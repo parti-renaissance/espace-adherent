@@ -13,7 +13,7 @@ class ControlledTextArea extends React.Component {
         return (
             <TextArea
                 {...this.props}
-                onChange={value => this.setState({ value })}
+                onChange={(value) => this.setState({ value })}
                 value={this.state.value}
             />
         );

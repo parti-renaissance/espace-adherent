@@ -3,8 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import TextEditor from '.';
 
-const content =
-    '<p><strong>Mes courses :</strong></p><ul><li>Tomates</li><li>Riz</li><li>Mousse au chocolat</li></ul><p style="text-align: center">Centré</p>';
+const content = '<p><strong>Mes courses :</strong></p><ul><li>Tomates</li><li>Riz</li><li>Mousse au chocolat</li></ul><p style="text-align: center">Centré</p>';
 
 storiesOf('TextEditor', module)
     .addParameters({ jest: ['TextEditor'] })

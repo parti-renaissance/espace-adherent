@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Interweave from 'interweave';
-import { ideaStatus } from './../../constants/api';
-import icn_20px_contributors from './../../img/icn_20px_contributors.svg';
-import icn_20px_comments from './../../img/icn_20px_comments.svg';
-import icn_20px_link_to from './../../img/icn_20px_link_to.svg';
-import icn_20px_close_autocomplete from './../../img/icn_20px_close_autocomplete.svg';
+import { ideaStatus } from "../../constants/api";
+import icn_20px_contributors from "../../img/icn_20px_contributors.svg";
+import icn_20px_comments from "../../img/icn_20px_comments.svg";
+import icn_20px_link_to from "../../img/icn_20px_link_to.svg";
+import icn_20px_close_autocomplete from "../../img/icn_20px_close_autocomplete.svg";
 
-import { keyPressed } from './../../helpers/navigation';
+import { keyPressed } from "../../helpers/navigation";
 
 function conjugation(nb) {
     if (0 === nb) {
         return;
-    } else if (1 === nb) {
+    } if (1 === nb) {
         return 'vote';
     }
     return 'votes';
@@ -39,11 +39,11 @@ function AutoComplete(props) {
                                     : 'Une propositon pourrait vous intéresser'
                             }
                         />
-                        <img src={icn_20px_close_autocomplete} alt="close" onClick={e => props.onClick(e)} />
+                        <img src={icn_20px_close_autocomplete} alt="close" onClick={(e) => props.onClick(e)} />
                     </div>
                 )}
-                {props.options &&
-                    props.options.items.map((items, i) => (
+                {props.options
+                    && props.options.items.map((items, i) => (
                         <Link
                             target="_blank"
                             to={`/atelier-des-idees/proposition/${items.uuid}`}

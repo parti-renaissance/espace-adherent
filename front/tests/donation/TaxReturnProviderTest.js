@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import TaxReturnProvider from '../../services/donation/TaxReturnProvider';
 
 describe('TaxReturnProvider', () => {
-    let provider = new TaxReturnProvider();
+    const provider = new TaxReturnProvider();
 
     it('returns valid output for valid amount', () => {
         assert.equal('3.40', provider.getAmountAfterTaxReturn(10));
