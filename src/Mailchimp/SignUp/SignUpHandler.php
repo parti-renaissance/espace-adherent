@@ -42,6 +42,10 @@ class SignUpHandler implements LoggerAwareInterface
                     'id' => $this->listId,
                 ],
                 'body' => $this->getFormData($adherent),
+                'headers' => [
+                    'origin' => 'https://en-marche.fr',
+                    'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15',
+                ],
             ]);
 
             return 200 === $response->getStatusCode();
@@ -61,7 +65,7 @@ class SignUpHandler implements LoggerAwareInterface
 
         foreach ($this->subscriptionIds as $code => $id) {
             if ($adherent->hasSubscriptionType($code)) {
-                $formData[sprintf('group[%d][%d]', $this->subscriptionGroupId, $id)] = true;
+                $formData[sprintf('group[%d][%d]', $this->subscriptionGroupId, $id)] = $id;
             }
         }
 
