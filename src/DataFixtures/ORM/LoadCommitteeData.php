@@ -74,7 +74,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name' => 'En Marche Dammarie-les-Lys',
             'slug' => 'en-marche-dammarie-les-lys',
             'description' => 'Les jeunes avec En Marche !',
-            'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
+            'address' => PostAddress::createFrenchAddress('826 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
             'phone' => '+33673654349',
             'name_locked' => true,
         ]);
@@ -162,13 +162,13 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $committee10 = $this->committeeFactory->createFromArray([
             'uuid' => self::COMMITTEE_10_UUID,
             'created_by' => LoadAdherentData::REFERENT_1_UUID,
-            'created_at' => '2017-05-09 12:18:22',
+            'created_at' => '2021-01-02 12:18:22',
             'name' => 'En Marche - Suisse',
             'description' => 'En Marche pour la France et nos partenaires en Suisse.',
             'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
             'phone' => '+33673654349',
         ]);
-        $committee10->approved('2017-05-09 13:17:42');
+        $committee10->approved('2021-01-02 13:17:42');
         $committee10->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
         $this->addReference('committee-10', $committee10);
 
@@ -246,7 +246,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('824 Avenue du Lys', '77190-77152', null, 48.5182194, 2.6220158),
             'phone' => '+33673654349',
         ]);
-        $this->addReference('committee-16', $committee15);
+        $this->addReference('committee-16', $committee16);
 
         $manager->persist($committee1);
         $manager->persist($committee2);
@@ -302,6 +302,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($membership = $adherent7->followCommittee($committee3, new \DateTime('2017-01-26 16:08:24')));
         $membership->enableVote();
         $manager->persist($adherent3->hostCommittee($committee3));
+        $manager->persist($adherent5->followCommittee($committee3));
 
         // Committee 4
         $manager->persist($adherent7->followCommittee($committee4));
@@ -352,6 +353,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($adherent14->followCommittee($committee10));
 
         // Committee 11
+        $committee11->addProvisionalSupervisor($adherent13);
         $manager->persist($adherent13->followCommittee($committee11));
         $manager->persist($adherent14->followCommittee($committee11));
 

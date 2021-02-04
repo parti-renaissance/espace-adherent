@@ -5,6 +5,7 @@ namespace App\Committee;
 use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Validator\ApprovedCommitteeAddress as AssertApprovedCommitteeAddress;
 use App\Validator\CommitteeProvisionalSupervisor as AssertCommitteeProvisionalSupervisorValid;
 use App\Validator\UniqueCommittee as AssertUniqueCommittee;
 use App\ValueObject\Genders;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertUniqueCommittee
+ * @AssertApprovedCommitteeAddress(groups="edit")
  */
 class CommitteeCommand
 {

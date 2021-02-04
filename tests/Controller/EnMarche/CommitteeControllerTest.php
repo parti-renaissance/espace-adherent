@@ -145,7 +145,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('2 adhérents', $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString('3 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -164,7 +164,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('3 adhérents', $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString('4 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -179,7 +179,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('2 adhérents', $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString('3 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));

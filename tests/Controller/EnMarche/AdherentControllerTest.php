@@ -838,10 +838,8 @@ class AdherentControllerTest extends WebTestCase
     /**
      * @dataProvider provideCommitteesHostsAdherentsCredentials
      */
-    public function testCommitteesAdherentsHostsAreNotAllowedToCreateNewCommittees(
-        string $emailAddress,
-        string $warning
-    ): void {
+    public function testAdherentsNotAllowedToCreateNewCommittees(string $emailAddress, string $warning): void
+    {
         $this->authenticateAsAdherent($this->client, $emailAddress);
         $crawler = $this->client->request(Request::METHOD_GET, '/');
         $this->assertSame(0, $crawler->selectLink('Créer un comité')->count());
@@ -852,9 +850,28 @@ class AdherentControllerTest extends WebTestCase
         $this->assertStringContainsString($warning, $crawler->filter('.committee__warning')->first()->text());
     }
 
+    public function testProvisionalSupervisorOfRefusedCommitteeCanCreateAnotherOne(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
+
+        $this->assertSame(0, $crawler->selectLink('Créer un comité')->count());
+
+        $this->client->request(Request::METHOD_GET, '/espace-adherent/creer-mon-comite');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(0, $crawler->filter('.committee__warning'));
+    }
+
     public function provideCommitteesHostsAdherentsCredentials(): array
     {
         return [
+            'Benjamin Duroc is a provisional supervisor of a pending committee' => [
+                'benjyd@aol.com',
+                'Vous avez déjà un comité en attente de validation.',
+            ],
             'Jacques Picard is already the owner of an existing committee' => [
                 'jacques.picard@en-marche.fr',
                 'Les parlementaires et les animateurs ne peuvent pas créer de comité.',

@@ -97,6 +97,14 @@ class DummyGeocoder implements Geocoder
             'latitude' => 48.8713699,
             'longitude' => 2.318119,
         ],
+        '62 avenue des champs-élysées, 75008 paris 8e, fr' => [
+            'latitude' => 48.870590,
+            'longitude' => 2.305370,
+        ],
+        '92-98 boulevard victor hugo, 92110 clichy, fr' => [
+            'latitude' => 48.901170,
+            'longitude' => 2.316960,
+        ],
         '824 avenue du lys, 77190 dammarie-les-lys, fr' => [
             'latitude' => 48.5182194,
             'longitude' => 2.624205,

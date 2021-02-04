@@ -29,6 +29,7 @@
             <div class="form__row">
                 {{ form_errors(form.address) }}
                 {{ form_errors(form.address.address) }}
+                {{ form_errors(form.address.postalCode) }}
             </div>
         </div>
         <p class="text--error visually-hidden" id="address-autocomplete-help-message">
@@ -76,7 +77,7 @@
 {% if form.provisionalSupervisorFemale is defined %}
     <hr>
 
-    <p>Vous devez séléctionner au moins un Animateur(trice) provisoire parmi vos adhérent(e)s</p>
+    <p>Vous devez séléctionner au moins un(e) Animateur(trice) provisoire parmi vos adhérent(e)s</p>
 
     <div class="form__row" id="field-provisional-supervisor-female">
         {{ form_label(form.provisionalSupervisorFemale, 'Animatrice provisoire') }}

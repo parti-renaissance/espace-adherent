@@ -25,7 +25,9 @@ export default class AutocompletedAddressForm extends EventEmitter {
             const autocomplete = new GooglePlaceAutocomplete(
                 this._autocompleteWrapper,
                 this._address,
-                'form form--full form__field em-form__field'
+                'form form--full form__field em-form__field',
+                typeof this._address._address.attributes.disabled !== 'undefined'
+                    && this._address._address.attributes.disabled.value === 'disabled'
             );
 
             autocomplete.build();

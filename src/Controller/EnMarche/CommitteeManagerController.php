@@ -6,6 +6,7 @@ use App\Address\GeoCoder;
 use App\Committee\CommitteeCommand;
 use App\Committee\CommitteeManager;
 use App\Committee\CommitteeUpdateCommandHandler;
+use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
@@ -13,7 +14,6 @@ use App\Event\EventCommand;
 use App\Event\EventCommandHandler;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
-use App\Event\Filter\ListFilterObject;
 use App\Exception\CommitteeMembershipException;
 use App\Form\CommitteeCommandType;
 use App\Form\CommitteeMemberFilterType;
@@ -56,6 +56,7 @@ class CommitteeManagerController extends AbstractController
         $command = CommitteeCommand::createFromCommittee($committee);
         $form = $this->createForm(CommitteeCommandType::class, $command, [
             'with_social_networks' => true,
+            'validation_groups' => ['Default', 'edit'],
         ]);
         $form->handleRequest($request);
 

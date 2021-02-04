@@ -2,8 +2,8 @@
 
 namespace App\Form\ManagedUsers;
 
+use App\Form\BooleanChoiceType;
 use App\Form\MyReferentCommitteeChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,18 +16,7 @@ class ReferentManagedUsersFilterType extends ManagedUsersFilterType
         $builder->add('committee', MyReferentCommitteeChoiceType::class, ['required' => false]);
 
         if ($options['for_referent']) {
-            $builder->add('isCertified', ChoiceType::class, [
-                'required' => false,
-                'expanded' => true,
-                'choices' => [
-                    'common.all' => null,
-                    'global.yes' => true,
-                    'global.no' => false,
-                ],
-                'choice_value' => function ($choice) {
-                    return false === $choice ? '0' : (string) $choice;
-                },
-            ]);
+            $builder->add('isCertified', BooleanChoiceType::class);
         }
     }
 

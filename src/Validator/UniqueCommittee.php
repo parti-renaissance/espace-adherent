@@ -12,14 +12,10 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueCommittee extends Constraint
 {
-    public $errorPath = 'name';
-    public $message = 'committee.canonical_name.not_unique';
-    public $service = UniqueCommitteeValidator::class;
-
-    public function validatedBy()
-    {
-        return $this->service;
-    }
+    public $errorPathName = 'name';
+    public $errorPathAddress = 'address';
+    public $messageName = 'committee.canonical_name.not_unique';
+    public $messageAddress = 'committee.address.not_unique';
 
     public function getTargets()
     {

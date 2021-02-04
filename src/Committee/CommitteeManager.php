@@ -226,7 +226,7 @@ class CommitteeManager
 
         $memberships = $this->getCommitteeMemberships($committee);
         foreach ($memberships as $membership) {
-            if ($membership->isSupervisor() || $membership->isHostMember()) {
+            if ($membership->isHostMember()) {
                 $committee = $this->getCommitteeRepository()->findOneByUuid($membership->getCommittee()->getUuidAsString());
                 $this->changePrivilege($membership->getAdherent(), $committee, CommitteeMembership::COMMITTEE_FOLLOWER, false);
             }

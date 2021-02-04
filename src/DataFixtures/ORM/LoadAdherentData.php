@@ -227,6 +227,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent6->addTag($this->getReference('adherent_tag_at007'));
         $adherent6->addReferentTag($this->getReference('referent_tag_13'));
         $adherent6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_13055'));
+        $adherent6->certify();
         $this->addReference('adherent-6', $adherent6);
 
         $adherent7 = $this->adherentFactory->createFromArray([
@@ -366,6 +367,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $lreArea = new LreArea();
         $lreArea->setAllTags(true);
         $adherent13->setLreArea($lreArea);
+        $adherent13->certify();
         $this->addReference('adherent-13', $adherent13);
 
         $adherent14 = $this->adherentFactory->createFromArray([

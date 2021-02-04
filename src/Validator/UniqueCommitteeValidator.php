@@ -8,6 +8,7 @@ use App\Repository\CommitteeRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class UniqueCommitteeValidator extends ConstraintValidator
 {
@@ -25,26 +26,29 @@ class UniqueCommitteeValidator extends ConstraintValidator
         }
 
         if (!$value instanceof CommitteeCommand) {
-            throw new UnexpectedTypeException($value, CommitteeCommand::class);
-        }
-
-        $found = $this->repository->findOneByName($value->name);
-        if (!$found instanceof Committee) {
-            return;
+            throw new UnexpectedValueException($value, CommitteeCommand::class);
         }
 
         $committee = $value->getCommittee();
 
-        if ($committee instanceof Committee && $committee->equals($found)) {
-            return;
+        $found = $this->repository->findOneByName($value->name);
+        if ($found instanceof Committee && (null === $committee || !$committee->equals($found))) {
+            $this
+                ->context
+                ->buildViolation($constraint->messageName)
+                ->atPath($constraint->errorPathName)
+                ->addViolation()
+            ;
         }
 
-        $this
-            ->context
-            ->buildViolation($constraint->message)
-            ->setParameter('{{ name }}', $value->name)
-            ->atPath($constraint->errorPath)
-            ->addViolation()
-        ;
+        $found = $this->repository->findOneApprovedByAddress($value->getAddress());
+        if ($found instanceof Committee && (null === $committee || !$committee->equals($found))) {
+            $this
+                ->context
+                ->buildViolation($constraint->messageAddress)
+                ->atPath($constraint->errorPathAddress)
+                ->addViolation()
+            ;
+        }
     }
 }

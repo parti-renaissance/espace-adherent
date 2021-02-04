@@ -174,7 +174,7 @@
                                 $.get("{{ path('app_admin_zone_autocomplete')|raw }}?zone=" + term + "&type=" + type, function(data) {
                                     response($.map(data, function(m) {
                                         return {
-                                            label: m.nameCode,
+                                            label: m.name_code,
                                             value: m.id
                                         };
                                     }));
