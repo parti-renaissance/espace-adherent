@@ -9,6 +9,7 @@ use App\Entity\Proposal;
 use App\Geocoder\Coordinates;
 use App\Map\StaticMapProviderInterface;
 use App\Timeline\TimelineImageFactory;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Glide\Filesystem\FileNotFoundException;
@@ -43,7 +44,7 @@ class AssetsController extends AbstractController
      * @Route("/assets/{path}", requirements={"path": ".+"}, name="asset_url", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
-    public function assetAction(Server $glide, FilesystemInterface $storage, string $path, Request $request)
+    public function assetAction(Server $glide, FilesystemInterface $storage, string $path, Request $request): Response
     {
         $parameters = $request->query->all();
 
@@ -94,7 +95,7 @@ class AssetsController extends AbstractController
         StaticMapProviderInterface $mapProvider,
         string $latitude,
         string $longitude
-    ) {
+    ): Response {
         $coordinates = new Coordinates($latitude, $longitude);
         $size = $request->query->has('algolia') ? self::WIDTH.'x'.self::HEIGHT : null;
 
@@ -109,7 +110,7 @@ class AssetsController extends AbstractController
      * @Route("/video/homepage.{format}", requirements={"format": "mov|mp4"}, name="homepage_video_url", methods={"GET"})
      * @Cache(maxage=60, smaxage=60)
      */
-    public function videoAction(FilesystemInterface $storage, string $format)
+    public function videoAction(FilesystemInterface $storage, string $format): Response
     {
         return new Response(
             $storage->read('static/videos/homepage.'.$format),
@@ -122,7 +123,7 @@ class AssetsController extends AbstractController
      * @Route("/algolia/{type}/{slug}", requirements={"type": "proposal|custom|article|clarification"}, methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
-    public function algoliaAction(Server $glide, Request $request, string $type, string $slug)
+    public function algoliaAction(Server $glide, Request $request, string $type, string $slug): Response
     {
         $glide->setResponseFactory(new SymfonyResponseFactory($request));
 
@@ -157,7 +158,7 @@ class AssetsController extends AbstractController
         return 'images/'.$entity->getMedia()->getPath();
     }
 
-    private function getTypeRepository(string $type)
+    private function getTypeRepository(string $type): ServiceEntityRepositoryInterface
     {
         if ('proposal' === $type) {
             return $this->manager->getRepository(Proposal::class);
