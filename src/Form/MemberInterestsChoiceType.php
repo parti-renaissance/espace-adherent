@@ -13,9 +13,9 @@ class MemberInterestsChoiceType extends AbstractType
 {
     private $interestsChoices;
 
-    public function __construct(array $interests)
+    public function __construct(array $adherentInterests)
     {
-        $this->interestsChoices = $interests;
+        $this->interestsChoices = $adherentInterests;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

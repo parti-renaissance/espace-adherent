@@ -8,9 +8,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-/**
- * @Annotation
- */
 class WasNotInvitedRecentlyValidator extends ConstraintValidator
 {
     private $invitationRepository;

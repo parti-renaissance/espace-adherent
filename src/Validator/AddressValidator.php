@@ -8,9 +8,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * @Annotation
- */
 class AddressValidator extends ConstraintValidator
 {
     public function validate($address, Constraint $constraint)
