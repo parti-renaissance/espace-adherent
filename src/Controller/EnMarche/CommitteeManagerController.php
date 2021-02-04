@@ -191,7 +191,7 @@ class CommitteeManagerController extends AbstractController
 
     /**
      * @Route("/promouvoir-suppleant/{member_uuid}", name="app_committee_promote_host", methods={"GET", "POST"})
-     * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
+     * @Security("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
     public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response

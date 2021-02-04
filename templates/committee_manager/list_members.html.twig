@@ -147,12 +147,13 @@
             </thead>
             <tbody>
                 {% set adherentIds = committee.activeAdherentMandateAdherentIds %}
+                {% set can_add_host = is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee) %}
                 {% for membership in members %}
                     {% set member = membership.adherent %}
                     {% set member_is_supervisor = membership.adherent.isSupervisorOf(committee) %}
                     {% set member_is_supervisor_p = membership.adherent.isSupervisorOf(committee, true) %}
                     {% set member_is_host = membership.adherent.isHostOf(committee) %}
-                    {% set is_promotable_host = membership.promotableHost %}
+                    {% set is_promotable_host = membership.promotableHost and can_add_host %}
                     {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
 
                     <tr{{ member_is_supervisor or member_is_host ? ' class="host-member"' : '' }}>

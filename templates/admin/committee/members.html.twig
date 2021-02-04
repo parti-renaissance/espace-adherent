@@ -17,6 +17,7 @@
 {% block sonata_admin_content %}
     {% set committeehasFemaleAdherentMandate = committee.hasFemaleAdherentMandate %}
     {% set committeehasMaleAdherentMandate = committee.hasMaleAdherentMandate %}
+    {% set can_add_host = is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee) %}
     {% block notice %}
         {{ parent() }}
     {% endblock %}
@@ -104,7 +105,7 @@
                                 </td>
                                 <td>
                                     {% if committee.isApproved %}
-                                        {% if membership.isFollower %}
+                                        {% if membership.isFollower and can_add_host %}
                                             <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_HOST', membership), token: token }) }}"
                                                class="btn btn-default btn-sm">
                                                 Transformer en co-animateur
