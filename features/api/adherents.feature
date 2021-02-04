@@ -147,6 +147,41 @@ Feature:
         "75009",
         "75",
         "77"
+      ],
+      "interests": [],
+      "subscription_types": [
+        {
+            "label": "Recevoir les e-mails nationaux",
+            "code": "subscribed_emails_movement_information"
+        },
+        {
+            "label": "Recevoir la newsletter hebdomadaire nationale",
+            "code": "subscribed_emails_weekly_letter"
+        },
+        {
+            "label": "Recevoir les e-mails de mes candidat(e)s LaREM",
+            "code": "candidate_email"
+        },
+        {
+            "label": "Recevoir les e-mails de mon/ma député(e)",
+            "code": "deputy_email"
+        },
+        {
+            "label": "Recevoir les e-mails de mon animateur(trice) local(e) de comité",
+            "code": "subscribed_emails_local_host"
+        },
+        {
+            "label": "Recevoir les e-mails de mon/ma référent(e) territorial(e)",
+            "code": "subscribed_emails_referents"
+        },
+        {
+            "label": "Recevoir les e-mails de mon porteur de projet",
+            "code": "citizen_project_host_email"
+        },
+        {
+            "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+            "code": "senator_email"
+        }
       ]
     }
     """
@@ -174,7 +209,42 @@ Feature:
       "emailAddress":"jacques.picard@en-marche.fr",
       "firstName":"Jacques",
       "lastName":"Picard",
-      "zipCode":"75008"
+      "zipCode":"75008",
+      "interests": [],
+      "subscription_types": [
+        {
+            "label": "Recevoir les e-mails nationaux",
+            "code": "subscribed_emails_movement_information"
+        },
+        {
+            "label": "Recevoir la newsletter hebdomadaire nationale",
+            "code": "subscribed_emails_weekly_letter"
+        },
+        {
+            "label": "Recevoir les e-mails de mes candidat(e)s LaREM",
+            "code": "candidate_email"
+        },
+        {
+            "label": "Recevoir les e-mails de mon/ma député(e)",
+            "code": "deputy_email"
+        },
+        {
+            "label": "Recevoir les e-mails de mon animateur(trice) local(e) de comité",
+            "code": "subscribed_emails_local_host"
+        },
+        {
+            "label": "Recevoir les e-mails de mon/ma référent(e) territorial(e)",
+            "code": "subscribed_emails_referents"
+        },
+        {
+            "label": "Recevoir les e-mails de mon porteur de projet",
+            "code": "citizen_project_host_email"
+        },
+        {
+            "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+            "code": "senator_email"
+        }
+      ]
     }
     """
 

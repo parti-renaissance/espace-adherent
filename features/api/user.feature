@@ -35,7 +35,38 @@ Feature:
         "surveys": {
           "total": 0,
           "last_month": 0
-        }
+        },
+        "interests": [],
+        "subscription_types": [
+          {
+              "label": "Recevoir les e-mails nationaux",
+              "code": "subscribed_emails_movement_information"
+          },
+          {
+              "label": "Recevoir la newsletter hebdomadaire nationale",
+              "code": "subscribed_emails_weekly_letter"
+          },
+          {
+              "label": "Recevoir les e-mails de mes candidat(e)s LaREM",
+              "code": "candidate_email"
+          },
+          {
+              "label": "Recevoir les e-mails de mon/ma député(e)",
+              "code": "deputy_email"
+          },
+          {
+              "label": "Recevoir les e-mails de mon/ma référent(e) territorial(e)",
+              "code": "subscribed_emails_referents"
+          },
+          {
+              "label": "Recevoir les e-mails de mon porteur de projet",
+              "code": "citizen_project_host_email"
+          },
+          {
+              "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+              "code": "senator_email"
+          }
+        ]
       }
     """
 
