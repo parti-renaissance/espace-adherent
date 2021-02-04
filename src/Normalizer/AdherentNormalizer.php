@@ -47,15 +47,17 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
             $data = $this->addBackwardCompatibilityFields($data);
         }
 
-        $interests = [];
-        foreach ($object->getInterests() as $interest) {
-            $interests[] = [
-                'label' => $this->adherentInterests[$interest],
-                'code' => $interest,
-            ];
-        }
+        if (\in_array('user_profile', $context['groups'])) {
+            $interests = [];
+            foreach ($object->getInterests() as $interest) {
+                $interests[] = [
+                    'label' => $this->adherentInterests[$interest],
+                    'code' => $interest,
+                ];
+            }
 
-        $data['interests'] = $interests;
+            $data['interests'] = $interests;
+        }
 
         return $data;
     }
