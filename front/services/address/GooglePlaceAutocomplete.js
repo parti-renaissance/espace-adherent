@@ -119,7 +119,11 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             || (this._state.postal_town && this._state.postal_town.long_name)
             || ''
         );
-        this._address.setPostalCode(this._state.postal_code && this._state.postal_code.long_name || '');
+        this._address.setPostalCode(
+            (this._state.postal_code && this._state.postal_code.long_name)
+            || (this._state.postal_code_prefix && this._state.postal_code_prefix.long_name)
+            || ''
+        );
 
         if (this._state.country && this._state.country.short_name) {
             this._address.setCountry(this._state.country.short_name);
@@ -144,6 +148,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             postal_town: null,
             sublocality_level_1: null,
             postal_code: null,
+            postal_code_prefix: null,
             country: null,
             administrative_area_level_1: null,
         };
