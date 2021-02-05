@@ -26,7 +26,7 @@
     {{ form_errors(form) }}
 
     <div class="sonata-ba-collapsed-fields">
-        {{ form_row(form.adherent, { label: new_mandate_name, placeholder: 'Insérer un Id d\'adhérent' }) }}
+        {{ form_row(form.adherent, { label: new_mandate_name, attr: { placeholder: 'Insérer un Id d\'adhérent' } }) }}
     </div>
     {% do form.confirm.setRendered %}
 {% endblock %}

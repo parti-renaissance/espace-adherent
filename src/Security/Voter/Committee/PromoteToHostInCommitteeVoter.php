@@ -4,11 +4,11 @@ namespace App\Security\Voter\Committee;
 
 use App\Committee\CommitteeManager;
 use App\Committee\CommitteePermissions;
-use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Security\Voter\AbstractAdherentVoter;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class PromoteToHostInCommitteeVoter extends AbstractAdherentVoter
+class PromoteToHostInCommitteeVoter extends Voter
 {
     /** @var CommitteeManager */
     private $committeeManager;
@@ -26,8 +26,8 @@ class PromoteToHostInCommitteeVoter extends AbstractAdherentVoter
     /**
      * @param Committee $committee
      */
-    protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $committee): bool
+    protected function voteOnAttribute($attribute, $committee, TokenInterface $token)
     {
-        return $this->committeeManager->countCommitteeHosts($committee, true) < 2;
+        return $committee->isApproved() && $this->committeeManager->countCommitteeHosts($committee, true) < 2;
     }
 }

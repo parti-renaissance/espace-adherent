@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block final_javascripts %}
+    {{ parent() }}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
 

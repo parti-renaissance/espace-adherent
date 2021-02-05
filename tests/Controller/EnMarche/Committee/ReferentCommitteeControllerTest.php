@@ -26,9 +26,11 @@ class ReferentCommitteeControllerTest extends WebTestCase
         $this->assertCount(4, $crawler->filter('tbody tr.committee__item'));
 
         $this->assertStringContainsString('En Marche - Suisse', $crawler->filter('tbody tr.committee__item')->eq(0)->text());
+        $this->assertStringContainsString('Suisse CH', $crawler->filter('tbody tr.committee__item')->eq(0)->text());
         $this->assertStringContainsString('0 F / 0 H', $crawler->filter('tbody tr.committee__item')->eq(0)->text());
 
         $this->assertStringContainsString('En Marche - Comité de Rouen', $crawler->filter('tbody tr.committee__item')->eq(1)->text());
+        $this->assertStringContainsString('Rouen 76540', $crawler->filter('tbody tr.committee__item')->eq(1)->text());
         $this->assertStringContainsString('0 F / 2 H', $crawler->filter('tbody tr.committee__item')->eq(1)->text());
 
         $this->assertStringContainsString('En Marche Dammarie-les-Lys', $crawler->filter('tbody tr.committee__item')->eq(2)->text());
@@ -165,16 +167,18 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
         $this->assertStringContainsString('Une nouvelle demande', $fields->eq(1)->text());
         $this->assertCount(0, $fields->eq(1)->filter('a'));
         $this->assertSame('824 Avenue du Lys, 77190 Dammarie-les-Lys, FR', $fields->eq(2)->text());
-        $this->assertSame('Referent Referent', $fields->eq(3)->text());
-        $this->assertStringContainsString('En attente', $fields->eq(4)->filter('.status__pending')->text());
+        $this->assertSame('Dammarie-les-Lys 77152', $fields->eq(3)->text());
+        $this->assertSame('Referent Referent', $fields->eq(4)->text());
+        $this->assertStringContainsString('En attente', $fields->eq(5)->filter('.status__pending')->text());
 
         $fields = $committees->eq(1)->filter('td');
         $this->assertSame('02/01/2021', $fields->eq(0)->text());
         $this->assertStringContainsString('En Marche - Suisse', $fields->eq(1)->text());
         $this->assertCount(1, $fields->eq(1)->filter('a'));
         $this->assertSame('32 Zeppelinstrasse, 8057 Zürich, CH', $fields->eq(2)->text());
-        $this->assertSame('Referent Referent', $fields->eq(3)->text());
-        $this->assertStringContainsString('Approuvé', $fields->eq(4)->filter('.status__approved')->text());
+        $this->assertSame('Suisse CH', $fields->eq(3)->text());
+        $this->assertSame('Referent Referent', $fields->eq(4)->text());
+        $this->assertStringContainsString('Approuvé', $fields->eq(5)->filter('.status__approved')->text());
     }
 
     public function testAccessCommitteeRequestsList()
@@ -378,7 +382,7 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
 
         $fields = $requests->eq(--$position)->filter('td');
 
-        $this->assertStringContainsString($status, $fields->eq(4)->text());
+        $this->assertStringContainsString($status, $fields->eq(5)->text());
     }
 
     protected function setUp(): void

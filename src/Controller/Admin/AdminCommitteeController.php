@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Committee\CommitteeAdherentMandateCommand;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManagementAuthority;
@@ -103,25 +102,22 @@ class AdminCommitteeController extends AbstractController
     {
         return $this->render('admin/committee/mandates/list.html.twig', [
             'committee' => $committee,
-            'can_add_mandate' => \count($this->getAvailableMandateTypesFor($committee)) > 0,
         ]);
     }
 
     /**
      * @Route("/{id}/mandates/add", name="app_admin_committee_add_mandate", methods={"GET|POST"})
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES') and is_granted('ADD_MANDATE_TO_COMMITTEE', committee)")
      */
-    public function addMandateAction(Request $request, Committee $committee): Response
-    {
-        $types = $this->getAvailableMandateTypesFor($committee);
-        if (!$types) {
-            $this->addFlash('sonata_flash_error', sprintf('Le comité "%s" n\'a pas de mandat disponible.', $committee->getName()));
-
-            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
-        }
-
+    public function addMandateAction(
+        Request $request,
+        Committee $committee,
+        CommitteeManager $committeeManager
+    ): Response {
         $newMandateCommand = new CommitteeAdherentMandateCommand($committee);
-        $form = $this->createForm(CommitteeMandateCommandType::class, $newMandateCommand, ['types' => $types]);
+        $form = $this->createForm(CommitteeMandateCommandType::class, $newMandateCommand, [
+            'types' => $committeeManager->getAvailableMandateTypesFor($committee),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -150,14 +146,15 @@ class AdminCommitteeController extends AbstractController
 
     /**
      * @Route("/mandates/{id}/replace", name="app_admin_committee_replace_mandate", methods={"GET|POST"})
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")
      */
     public function replaceMandateAction(Request $request, CommitteeAdherentMandate $mandate): Response
     {
+        $committee = $mandate->getCommittee();
         if ($mandate->getFinishAt()) {
             $this->addFlash('sonata_flash_error', sprintf('Le mandate (id %s) est inactif et ne peut pas être remplacé.', $mandate->getId()));
 
-            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
+            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
         }
 
         $newMandateCommand = CommitteeAdherentMandateCommand::createFromCommitteeMandate($mandate);
@@ -171,7 +168,7 @@ class AdminCommitteeController extends AbstractController
                 $this->addFlashMsgForClosedMandate($mandate);
                 $this->addFlashMsgForNewMandate($newMandate);
 
-                return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
+                return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
             }
 
             if ($mandates = $this->mandateRepository->findAllActiveMandatesForAdherent($newMandateCommand->getAdherent())) {
@@ -181,30 +178,31 @@ class AdminCommitteeController extends AbstractController
             return $this->render('admin/committee/mandates/replace_confirm.html.twig', [
                 'form' => $form->createView(),
                 'mandate' => $mandate,
-                'committee' => $mandate->getCommittee(),
+                'committee' => $committee,
             ]);
         }
 
         return $this->render('admin/committee/mandates/replace.html.twig', [
             'form' => $form->createView(),
             'mandate' => $mandate,
-            'committee' => $mandate->getCommittee(),
+            'committee' => $committee,
         ]);
     }
 
     /**
      * @Route("/mandates/{id}/close", name="app_admin_committee_close_mandate", methods={"GET|POST"})
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())")
      */
     public function closeMandateAction(
         Request $request,
         CommitteeAdherentMandate $mandate,
         EntityManagerInterface $entityManager
     ): Response {
+        $committee = $mandate->getCommittee();
         if ($mandate->getFinishAt()) {
             $this->addFlash('sonata_flash_error', sprintf('Le mandate (id %s) est inactif et ne peut pas être retiré.', $mandate->getId()));
 
-            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
+            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
         }
 
         $form = $this
@@ -221,13 +219,13 @@ class AdminCommitteeController extends AbstractController
                 $this->addFlashMsgForClosedMandate($mandate);
             }
 
-            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $mandate->getCommittee()->getId()]);
+            return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
         }
 
         return $this->render('admin/committee/mandates/close_confirm.html.twig', [
             'form' => $form->createView(),
             'mandate' => $mandate,
-            'committee' => $mandate->getCommittee(),
+            'committee' => $committee,
         ]);
     }
 
@@ -315,21 +313,6 @@ class AdminCommitteeController extends AbstractController
             'warning',
             substr_replace("Attention, cet adhérent est déjà $msg", '.', -2)
         );
-    }
-
-    private function getAvailableMandateTypesFor(Committee $committee): array
-    {
-        $mandates = $this->mandateRepository->findAllActiveMandatesForCommittee($committee);
-        $types = CommitteeAdherentMandateTypeEnum::getTypesForCreation();
-
-        /** @var CommitteeAdherentMandate $mandate */
-        array_walk($mandates, function (CommitteeAdherentMandate $mandate) use (&$types) {
-            if (false !== $key = array_search($mandate->getType(), $types)) {
-                unset($types[$key]);
-            }
-        });
-
-        return $types;
     }
 
     private function addFlashMsgForNewMandate(CommitteeAdherentMandate $mandate): void

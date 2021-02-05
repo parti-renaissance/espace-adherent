@@ -62,6 +62,11 @@ class CommitteeMergeCommandHandler
         try {
             $this->em->beginTransaction();
 
+            $oldHostMemberships = $this->committeeMembershipRepository->findHostMemberships($destinationCommittee);
+            foreach ($oldHostMemberships as $membership) {
+                $membership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
+            }
+
             $newFollowers = $this->committeeMembershipRepository->findMembersToMerge($sourceCommittee, $destinationCommittee);
 
             $mergedMemberships = [];
@@ -92,6 +97,7 @@ class CommitteeMergeCommandHandler
             ));
 
             $this->mandateRepository->closeCommitteeMandate($sourceCommittee, AbstractAdherentMandate::REASON_COMMITTEE_MERGE);
+            $this->mandateRepository->closeCommitteeMandate($destinationCommittee, AbstractAdherentMandate::REASON_COMMITTEE_MERGE);
 
             $this->em->flush();
 
@@ -112,6 +118,13 @@ class CommitteeMergeCommandHandler
         foreach ($newFollowers as $follower) {
             $this->dispatcher->dispatch(
                 new FollowCommitteeEvent($follower->getAdherent(), $destinationCommittee),
+                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
+            );
+        }
+
+        foreach ($oldHostMemberships as $membership) {
+            $this->dispatcher->dispatch(
+                new FollowCommitteeEvent($membership->getAdherent(), $destinationCommittee),
                 UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
             );
         }

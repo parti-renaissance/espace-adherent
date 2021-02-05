@@ -33,7 +33,7 @@ class AdminCommitteeControllerTest extends WebTestCase
     public function testCannotChangeMandateIfCommitteeNotApprovedAction(string $action): void
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadCommitteeData::COMMITTEE_2_UUID);
-        $adherent = $this->getAdherentRepository()->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
 
         $this->assertFalse($committee->isApproved());
 
@@ -44,6 +44,27 @@ class AdminCommitteeControllerTest extends WebTestCase
             \sprintf('/admin/committee/%d/members/%d/%s-mandate', $committee->getId(), $adherent->getId(), $action)
         );
         $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $this->client->getResponse());
+    }
+
+    /**
+     * @dataProvider provideMandateActions
+     */
+    public function testCannotChangeMandateIfCommitteeNotApproved(string $action): void
+    {
+        $mandate = $this->committeeMandateRepository->findOneBy([
+            'beginAt' => new \DateTime('2021-01-01 01:01:01'),
+        ]);
+
+        $this->assertFalse($mandate->getCommittee()->isApproved());
+
+        $this->authenticateAsAdmin($this->client);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/mandates/%s/%s', $mandate->getId(), $action)
+        );
+
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     public function testCannotReplaceInactiveMandate(): void
@@ -295,15 +316,24 @@ class AdminCommitteeControllerTest extends WebTestCase
             \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
         );
 
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
+    }
 
-        $this->assertClientIsRedirectedTo(
-            \sprintf('/admin/committee/%d/mandates', $committee->getId()), $this->client
+    /**
+     * @dataProvider provideMandateUuid
+     */
+    public function testCannotAddMandateIfNoAccepted(string $uuid): void
+    {
+        $committee = $this->committeeRepository->findOneByUuid($uuid);
+
+        $this->authenticateAsAdmin($this->client);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            \sprintf('/admin/committee/%d/mandates/add', $committee->getId())
         );
 
-        $crawler = $this->client->followRedirect();
-
-        $this->assertStringContainsString('Le comité "En Marche Dammarie-les-Lys" n\'a pas de mandat disponible.', $crawler->filter('.alert-danger')->text());
+        $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
 
     public function testCannotAddMandateWhenNoAdherent(): void
@@ -506,6 +536,18 @@ class AdminCommitteeControllerTest extends WebTestCase
     {
         yield [CommitteeAdherentMandateManager::CREATE_ACTION];
         yield [CommitteeAdherentMandateManager::FINISH_ACTION];
+    }
+
+    public function provideMandateActions(): iterable
+    {
+        yield ['close'];
+        yield ['replace'];
+    }
+
+    public function provideMandateUuid(): iterable
+    {
+        yield [LoadCommitteeData::COMMITTEE_11_UUID]; // REFUSED
+        yield [LoadCommitteeData::COMMITTEE_16_UUID]; // PENDING
     }
 
     protected function setUp(): void

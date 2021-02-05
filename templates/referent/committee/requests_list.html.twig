@@ -7,6 +7,7 @@
                 <th>Date</th>
                 <th>Nom</th>
                 <th>Adresse</th>
+                <th>Zones</th>
                 <th>Demandeur</th>
                 <th>Statut</th>
                 <th>Actions</th>
@@ -26,6 +27,7 @@
                     {% endif %}
                 </td>
                 <td>{{ committee.address }}, {{ committee.postalCode }} {{ committee.cityName }}, {{ committee.country }}</td>
+                <td>{{ committee.zones|map(p => p.nameCode)|join('<br>')|raw }}</td>
                 <td>{{ get_name_by_uuid(committee.createdBy) }}</td>
                 <td><span class="status status__{{ committee.status|lower }}">{{ committee.status|lower|trans }}</span></td>
                 <td>
@@ -64,7 +66,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6" class="text--center">
+                <td colspan="7" class="text--center">
                     <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                     Aucun comité
                 </td>

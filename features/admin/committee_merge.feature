@@ -3,9 +3,10 @@ Feature: Merge committees from admin panel
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdminData              |
-      | LoadCommitteeData          |
-      | LoadCommitteeCandidacyData |
+      | LoadAdminData                     |
+      | LoadCommitteeData                 |
+      | LoadCommitteeCandidacyData        |
+      | LoadCommitteeAdherentMandateData  |
 
   Scenario: A committee can not be merged if it is not approved
     Given I am logged as "superadmin@en-marche-dev.fr" admin
@@ -50,9 +51,17 @@ Feature: Merge committees from admin panel
     Given I am logged as "superadmin@en-marche-dev.fr" admin
     And I am on "/admin/committee/1/members"
     Then I should see 4 ".committee-members tbody tr" elements
+    And I should see 1 ".label-primary:contains('Co-animateur')" elements
     And I should not see "francis.brioul@yahoo.com"
-    Given I am on "/admin/app/reporting-committeemergehistory/merge"
-    When I fill in the following:
+    When I am on "/admin/committee/3/mandates"
+    Then I should see 5 ".committee-active-mandates tbody tr" elements
+    And I should see 1 ".committee-inactive-mandates tbody tr" elements
+    And I should see "Pas de mandats" in the ".committee-inactive-mandates tbody tr" element
+    When I am on "/admin/committee/1/mandates"
+    Then I should see 3 ".committee-active-mandates tbody tr" elements
+    And I should see 2 ".committee-inactive-mandates tbody tr" elements
+    When I am on "/admin/app/reporting-committeemergehistory/merge"
+    And I fill in the following:
       | ID du comité source         | 3 |
       | ID du comité de destination | 1 |
     Then I clean the "api_sync" queue
@@ -71,9 +80,18 @@ Feature: Merge committees from admin panel
     Then I am on "/admin/app/committee/3/members"
     And I should not see "Animateur principal"
     And I should not see "Co-animateur"
-    Then I am on "/admin/committee/1/members"
-    And I should see 5 ".committee-members tbody tr" elements
+    When I am on "/admin/committee/3/mandates"
+    And I should see "Pas de mandats" in the ".committee-active-mandates tbody tr" element
+    Then I should see 1 ".committee-active-mandates tbody tr" elements
+    And I should see 5 ".committee-inactive-mandates tbody tr" elements
+    When I am on "/admin/committee/1/members"
+    Then I should see 5 ".committee-members tbody tr" elements
     And I should see "francis.brioul@yahoo.com"
+    And I should see 0 ".label-primary:contains('Co-animateur')" elements
+    When I am on "/admin/committee/1/mandates"
+    And I should see "Pas de mandats" in the ".committee-active-mandates tbody tr" element
+    Then I should see 1 ".committee-active-mandates tbody tr" elements
+    And I should see 5 ".committee-inactive-mandates tbody tr" elements
 
     Given I clean the queues
     And I am on "/admin/app/reporting-committeemergehistory/list"

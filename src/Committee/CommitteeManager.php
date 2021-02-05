@@ -2,6 +2,7 @@
 
 namespace App\Committee;
 
+use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Committee\Event\FollowCommitteeEvent;
@@ -19,6 +20,7 @@ use App\Exception\CommitteeMembershipException;
 use App\Geocoder\Coordinates;
 use App\Intl\FranceCitiesBundle;
 use App\Membership\UserEvents;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
@@ -36,11 +38,16 @@ class CommitteeManager
 
     private $entityManager;
     private $dispatcher;
+    private $mandateRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $dispatcher,
+        CommitteeAdherentMandateRepository $mandateRepository
+    ) {
         $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
+        $this->mandateRepository = $mandateRepository;
     }
 
     public function isPromotableHost(Adherent $adherent, Committee $committee): bool
@@ -446,6 +453,20 @@ class CommitteeManager
     public function getLastApprovedCommitteesAndMembers(int $count = self::COMMITTEE_PROPOSALS_COUNT): array
     {
         return $this->getCommitteeRepository()->findLastApprovedCommittees($count);
+    }
+
+    public function getAvailableMandateTypesFor(Committee $committee): array
+    {
+        return array_diff(
+            CommitteeAdherentMandateTypeEnum::getTypesForCreation(),
+            array_map(function (CommitteeAdherentMandate $mandate) {
+                return $mandate->getType();
+            }, $this->mandateRepository->findAllActiveMandatesForCommittee($committee)));
+    }
+
+    public function hasAvailableMandateTypesFor(Committee $committee): bool
+    {
+        return \count($this->getAvailableMandateTypesFor($committee)) > 0;
     }
 
     private function createCommitteeMembershipHistory(

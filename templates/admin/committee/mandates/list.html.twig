@@ -25,7 +25,7 @@
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             Retour à la liste
         </a>
-        {% if can_add_mandate and not committee.isClosed %}
+        {% if is_granted('ADD_MANDATE_TO_COMMITTEE', committee) %}
             <a href="{{ path('app_admin_committee_add_mandate', { id: committee.id }) }}" class="btn btn-default">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 Ajouter un mandat
@@ -34,6 +34,7 @@
     </p>
 
     {% set mandates = committee.adherentMandates %}
+    {% set can_change_mandate = is_granted('CHANGE_MANDATE_OF_COMMITTEE', committee) %}
 
     <div class="row">
         <div class="col-md-12">
@@ -42,7 +43,7 @@
                     <h4 class="box-title">Mandats actifs</h4>
                 </div>
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-bordered table-striped sonata-ba-list committee-adherents">
+                    <table class="table table-bordered table-striped sonata-ba-list committee-active-mandates">
                         <thead>
                             <tr>
                                 <th width="30px">
@@ -86,17 +87,19 @@
                                     {{ adherent.emailAddress }}
                                 </td>
                                 <td>
-                                    {{ mandate.beginAt|date('d/m/Y') }}
+                                    {{ mandate.beginAt|date('d/m/Y H:i') }}
                                 </td>
                                 <td>
-                                    <a href="{{ path('app_admin_committee_replace_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
-                                        <i class="fa fa-repeat" aria-hidden="true"></i>
-                                        Remplacer
-                                    </a>
-                                    <a href="{{ path('app_admin_committee_close_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
-                                        <i class="fa fa-close" aria-hidden="true"></i>
-                                        Retirer
-                                    </a>
+                                    {% if can_change_mandate %}
+                                        <a href="{{ path('app_admin_committee_replace_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
+                                            <i class="fa fa-repeat" aria-hidden="true"></i>
+                                            Remplacer
+                                        </a>
+                                        <a href="{{ path('app_admin_committee_close_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
+                                            <i class="fa fa-close" aria-hidden="true"></i>
+                                            Retirer
+                                        </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% else %}
@@ -121,7 +124,7 @@
                     <h4 class="box-title">Mandats inactifs</h4>
                 </div>
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-bordered table-striped sonata-ba-list committee-adherents">
+                    <table class="table table-bordered table-striped sonata-ba-list committee-inactive-mandates">
                         <thead>
                         <tr>
                             <th width="30px">

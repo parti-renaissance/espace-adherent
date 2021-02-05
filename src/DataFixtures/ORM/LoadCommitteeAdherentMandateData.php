@@ -22,6 +22,7 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
         $committee8 = $this->getReference('committee-8');
         $committee9 = $this->getReference('committee-9');
         $committee10 = $this->getReference('committee-10');
+        $committee11 = $this->getReference('committee-11');
         $committee12 = $this->getReference('committee-12');
         $committee13 = $this->getReference('committee-13');
         $committee15 = $this->getReference('committee-15');
@@ -88,6 +89,8 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
         $manager->persist($supervisorMandateC9);
         $supervisorMandate = new CommitteeAdherentMandate($referent, $referent->getGender(), $committee10, new \DateTime(), CommitteeMandateQualityEnum::SUPERVISOR);
         $manager->persist($supervisorMandate);
+        $provisionalSupervisorMandateC11 = new CommitteeAdherentMandate($lolodie, $lolodie->getGender(), $committee11, new \DateTime('2021-01-01 01:01:01'), CommitteeMandateQualityEnum::SUPERVISOR, true);
+        $manager->persist($provisionalSupervisorMandateC11);
         $supervisorMandate = new CommitteeAdherentMandate($senatorialCandidate, $senatorialCandidate->getGender(), $committee12, new \DateTime('-2 months'), CommitteeMandateQualityEnum::SUPERVISOR);
         $manager->persist($supervisorMandate);
         $supervisorMandate = new CommitteeAdherentMandate($adherent31, $adherent31->getGender(), $committee13, new \DateTime('-2 months'), CommitteeMandateQualityEnum::SUPERVISOR);
