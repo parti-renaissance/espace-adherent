@@ -13,6 +13,7 @@ use App\Entity\ReferentTag;
 use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Exception\CommitteeMembershipException;
 use App\Geocoder\Coordinates;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -307,7 +308,8 @@ class CommitteeManagerTest extends WebTestCase
         static::$container = $this->getContainer();
         $this->committeeManager = new CommitteeManager(
             $this->getEntityManager(Committee::class),
-            $this->get('event_dispatcher')
+            $this->get('event_dispatcher'),
+            $this->get(CommitteeAdherentMandateRepository::class)
         );
     }
 

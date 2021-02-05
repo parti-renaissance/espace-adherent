@@ -12,7 +12,7 @@
 
     <div class="sonata-ba-collapsed-fields">
         {{ form_row(form.type, { label: 'Type', placeholder: 'Sélectionnez un type de mandat' }) }}
-        {{ form_row(form.adherent, { label: 'Adhérent', placeholder: 'Insérer un Id d\'adhérent' }) }}
+        {{ form_row(form.adherent, { label: 'Adhérent', attr: { placeholder: 'Insérer un Id d\'adhérent' } }) }}
     </div>
     {% do form.confirm.setRendered %}
 {% endblock %}

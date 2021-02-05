@@ -377,14 +377,12 @@ class CommitteeAdmin extends AbstractAdmin
             ->addIdentifier('name', null, [
                 'label' => 'Nom',
             ])
-            ->add('postAddress.postalCode', null, [
-                'label' => 'Code postal',
+            ->add('postAddress', null, [
+                'label' => 'Adresse',
+                'template' => 'admin/list_address.html.twig',
             ])
-            ->add('postAddress.cityName', null, [
-                'label' => 'Ville',
-            ])
-            ->add('postAddress.country', null, [
-                'label' => 'Pays',
+            ->add('zones', null, [
+                'label' => 'Zones',
             ])
             ->add('phone', null, [
                 'label' => 'Téléphone',
