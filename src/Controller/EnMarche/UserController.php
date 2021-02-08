@@ -14,13 +14,12 @@ use App\Form\AdherentChangePasswordType;
 use App\Form\AdherentEmailSubscriptionType;
 use App\Form\AdherentProfileType;
 use App\Form\UnregistrationType;
-use App\History\EmailSubscriptionHistoryHandler;
-use App\Mailchimp\SignUp\SignUpHandler;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
+use App\Subscription\SubscriptionHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -118,9 +117,8 @@ class UserController extends AbstractController
      */
     public function setEmailNotificationsAction(
         Request $request,
-        EmailSubscriptionHistoryHandler $historyManager,
         EventDispatcherInterface $dispatcher,
-        SignUpHandler $signUpHandler
+        SubscriptionHandler $subscriptionHandler
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -134,12 +132,7 @@ class UserController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($adherent->isEmailUnsubscribed() && array_diff($adherent->getSubscriptionTypes(), $oldEmailsSubscriptions)) {
-                $adherent->setEmailUnsubscribed(!$signUpHandler->signUpAdherent($adherent));
-            }
-
-            $historyManager->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
-            $dispatcher->dispatch(new UserEvent($adherent, null, null, $oldEmailsSubscriptions), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
+            $subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
 
             $this->addFlash('info', 'adherent.set_emails_notifications.success');
 

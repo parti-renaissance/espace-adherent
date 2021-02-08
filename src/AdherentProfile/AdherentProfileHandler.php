@@ -6,7 +6,6 @@ use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
 use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
-use App\Mailchimp\SignUp\SignUpHandler;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentEvents;
 use App\Membership\AdherentProfileWasUpdatedEvent;
@@ -15,6 +14,7 @@ use App\Membership\UserEvents;
 use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
 use App\Repository\SubscriptionTypeRepository;
+use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -28,7 +28,7 @@ class AdherentProfileHandler
     private $referentZoneManager;
     private $emailSubscriptionHistoryHandler;
     private $subscriptionTypeRepository;
-    private $signUpHandler;
+    private $subscriptionHandler;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -39,7 +39,7 @@ class AdherentProfileHandler
         ReferentZoneManager $referentZoneManager,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
         SubscriptionTypeRepository $subscriptionTypeRepository,
-        SignUpHandler $signUpHandler
+        SubscriptionHandler $subscriptionHandler
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
@@ -49,7 +49,7 @@ class AdherentProfileHandler
         $this->referentZoneManager = $referentZoneManager;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
         $this->subscriptionTypeRepository = $subscriptionTypeRepository;
-        $this->signUpHandler = $signUpHandler;
+        $this->subscriptionHandler = $subscriptionHandler;
     }
 
     public function update(Adherent $adherent, AdherentProfile $adherentProfile): void
@@ -78,12 +78,7 @@ class AdherentProfileHandler
 
         $adherent->setSubscriptionTypes($this->findSubscriptionTypes($subscriptionTypeCodes));
 
-        if ($adherent->isEmailUnsubscribed() && array_diff($adherent->getSubscriptionTypes(), $oldEmailsSubscriptions)) {
-            $adherent->setEmailUnsubscribed(!$this->signUpHandler->signUpAdherent($adherent));
-        }
-
-        $this->emailSubscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
-        $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $oldEmailsSubscriptions), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
+        $this->subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
     }
 
     private function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void
