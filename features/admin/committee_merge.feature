@@ -80,6 +80,8 @@ Feature: Merge committees from admin panel
     Then I am on "/admin/app/committee/3/members"
     And I should not see "Animateur principal"
     And I should not see "Co-animateur"
+    And I should not see "Transformer en"
+    And I should see 0 ".label-primary:contains('Co-animateur')" elements
     When I am on "/admin/committee/3/mandates"
     And I should see "Pas de mandats" in the ".committee-active-mandates tbody tr" element
     Then I should see 1 ".committee-active-mandates tbody tr" elements

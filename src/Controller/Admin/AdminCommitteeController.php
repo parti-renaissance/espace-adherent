@@ -12,6 +12,7 @@ use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
 use App\Exception\BaseGroupException;
 use App\Exception\CommitteeMembershipException;
 use App\Form\Admin\CommitteeMandateCommandType;
@@ -231,7 +232,7 @@ class AdminCommitteeController extends AbstractController
 
     /**
      * @Route("/{committee}/members/{adherent}/set-privilege/{privilege}", name="app_admin_committee_change_privilege", methods={"GET"})
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES') and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function changePrivilegeAction(
         CommitteeManager $manager,
@@ -240,8 +241,9 @@ class AdminCommitteeController extends AbstractController
         Adherent $adherent,
         string $privilege
     ): Response {
-        if (!$committee->isApproved()) {
-            throw new BadRequestHttpException('Committee must be approved to change member privileges.');
+        if (CommitteeMembership::COMMITTEE_HOST === $privilege
+            && !$this->isGranted('PROMOTE_TO_HOST_IN_COMMITTEE', $committee)) {
+            $this->createAccessDeniedException('Cannot promote an adherent');
         }
 
         if (!$this->isCsrfTokenValid(sprintf('committee.change_privilege.%s', $adherent->getId()), $request->query->get('token'))) {

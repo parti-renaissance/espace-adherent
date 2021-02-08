@@ -2,7 +2,6 @@
 
 namespace App\Committee;
 
-use App\Committee\Event\FollowCommitteeEvent;
 use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\Administrator;
@@ -62,8 +61,13 @@ class CommitteeMergeCommandHandler
         try {
             $this->em->beginTransaction();
 
-            $oldHostMemberships = $this->committeeMembershipRepository->findHostMemberships($destinationCommittee);
-            foreach ($oldHostMemberships as $membership) {
+            // demote host memberships to normal member for both committees
+            $sourceHostMemberships = $this->committeeMembershipRepository->findHostMemberships($sourceCommittee);
+            foreach ($sourceHostMemberships as $membership) {
+                $membership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
+            }
+            $destinationHostMemberships = $this->committeeMembershipRepository->findHostMemberships($destinationCommittee);
+            foreach ($destinationHostMemberships as $membership) {
                 $membership->setPrivilege(CommitteeMembership::COMMITTEE_FOLLOWER);
             }
 
@@ -116,17 +120,15 @@ class CommitteeMergeCommandHandler
         }
 
         foreach ($newFollowers as $follower) {
-            $this->dispatcher->dispatch(
-                new FollowCommitteeEvent($follower->getAdherent(), $destinationCommittee),
-                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
-            );
+            $this->dispatchUpdateCommitteePrivilege($follower, $destinationCommittee);
         }
 
-        foreach ($oldHostMemberships as $membership) {
-            $this->dispatcher->dispatch(
-                new FollowCommitteeEvent($membership->getAdherent(), $destinationCommittee),
-                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
-            );
+        foreach ($sourceHostMemberships as $membership) {
+            $this->dispatchUpdateCommitteePrivilege($membership, $sourceCommittee);
+        }
+
+        foreach ($destinationHostMemberships as $membership) {
+            $this->dispatchUpdateCommitteePrivilege($membership, $destinationCommittee);
         }
 
         $this->dispatchCommitteeUpdate($sourceCommittee);
@@ -251,5 +253,13 @@ class CommitteeMergeCommandHandler
 
             $this->em->flush();
         }
+    }
+
+    private function dispatchUpdateCommitteePrivilege(CommitteeMembership $membership, Committee $committee): void
+    {
+        $this->dispatcher->dispatch(
+            new UnfollowCommitteeEvent($membership->getAdherent(), $committee),
+            UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
+        );
     }
 }
