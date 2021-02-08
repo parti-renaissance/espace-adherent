@@ -1,0 +1,102 @@
+{% extends '@SonataAdmin/CRUD/show.html.twig' %}
+
+{% block show %}
+
+    <div class="sonata-ba-view">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Informations générales</h4>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">ID</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.id }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">UUID</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.uuid }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Créé par</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            <a href="{{ path('admin_app_administrator_edit', { id: object.createdBy.id }) }}">
+                                                {{ object.createdBy }}
+                                            </a>
+                                        {% else %}
+                                            {{ object.createdBy }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Date de création</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.createdAt|localizeddate('medium', 'medium') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Date de fin</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.finishAt|localizeddate('medium', 'medium') }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Résultats</h4>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Question</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.question }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Choix</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {% set result = object.result %}
+                                        {% for choice in result.choices %}
+                                            <strong>{{ choice.choice }}</strong><span class="pull-right">{{ choice.percentage }}% ({{ choice.count }} vote{{ choice.count > 1 ? 's' }})</span>
+                                            <div class="progress progress-info active">
+                                                <div class="progress-bar" role="progressbar"
+                                                     style="width: {{ choice.percentage }}%"
+                                                     aria-valuenow="{{ choice.percentage }}"
+                                                     aria-valuemin="0" aria-valuemax="100"
+                                                ></div>
+                                            </div>
+                                            {% if not loop.last %}<br>{% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Total</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ result.total }} vote{{ result.total > 1 ? 's' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
