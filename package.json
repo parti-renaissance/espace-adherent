@@ -60,7 +60,7 @@
     "sass-loader": "^7.1.0",
     "select2": "^4.0.13",
     "sshpk": "1.16.1",
-    "stackblur-canvas": "^1.4.0",
+    "stackblur-canvas": "^2.4.0",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^2.3.6",
     "webpack": "^4.31.0",
