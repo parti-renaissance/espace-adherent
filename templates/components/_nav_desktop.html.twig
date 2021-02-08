@@ -21,6 +21,7 @@
                     <li><a href="{{ path('app_static_page', { slug: 'nos-senateurs' }) }}">Nos sénateurs</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'elus' }) }}">Nos élus locaux</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'francais-de-l-etranger' }) }}">Français de l’Étranger</a></li>
+                    <li><a href="{{ path('app_static_page', { slug: 'communaute' }) }}">Communautés LaREM</a></li>
                 </ul>
             </div>
         </div>
@@ -56,6 +57,7 @@
                     <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
                 </p>
                 <ul class="nav-dropdown__item">
+                    <li><a href="{{ path('app_static_page', { slug: 'engagement-larem' }) }}">S'engager à LaREM</a></li>
                     <li><a href="{{ path('app_search_events') }}">Événements</a></li>
                     <li><a href="{{ path('app_search_committees') }}">Comités</a></li>
                     <li><a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a></li>
@@ -66,7 +68,6 @@
                     {% endif %}
                     <li><a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a></li>
                     <li><a href="{{ mooc_host }}">Formation</a></li>
-                    <li><a href="{{ mooc_host }}/sengager-a-la-republique-en-marche">S'engager à LaREM</a></li>
                     <li><a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a></li>
                     <li><a href="{{ path('donation_index') }}">Faire un don</a></li>
                 </ul>

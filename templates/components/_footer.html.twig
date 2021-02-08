@@ -65,13 +65,24 @@
                     <a href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a>
                 </li>
                 <li>
+                    <a href="{{ path('app_static_page', { slug: 'rejoignez-notre-equipe' }) }}" target="_blank">Recrutement</a>
+                </li>
+                <li>
                     <a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}">Notre fonctionnement</a>
                 </li>
                 <li>
                     <a href="{{ path('our_referents_homepage') }}">Nos référents</a>
                 </li>
                 <li>
+                    <a href="https://dpt.en-marche.fr" rel="noopener noreferrer" target="_blank">
+                        Nos sites départementaux
+                    </a>
+                </li>
+                <li>
                     <a href="{{ path('legislatives_homepage') }}">Nos députés</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'delegation-renaissance' }) }}">Les eurodéputés Renaissance</a>
                 </li>
                 <li>
                     <a href="{{ path('app_static_page', { slug: 'nos-senateurs' }) }}">Nos sénateurs</a>
@@ -80,153 +91,128 @@
                     <a href="{{ path('app_static_page', { slug: 'elus' }) }}">Nos élus locaux</a>
                 </li>
                 <li>
-                    <a href="https://dpt.en-marche.fr" rel="noopener noreferrer" target="_blank">
-                        Nos sites départementaux
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path('app_search_all_committees') }}">Tous les comités</a>
-                </li>
-                <li>
-                    <a href="{{ path('app_search_all_events') }}">Tous les événements</a>
-                </li>
-                <li>
-                    <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                    <a href="{{ path('app_static_page', { slug: 'francais-de-l-etranger' }) }}">Français de l'Etranger</a>
                 </li>
             </ul>
             <ul class="list__links list__links--col list__links--no-decor">
                 <li>
                     <h4>
-                        <a href="{{ mooc_host }}" class="text--bold text--medium-small">Formation</a>
+                        <a href="{{ path('articles_list', { category: 'tout' }) }}" class="text--bold text--medium-small">Actualités</a>
                     </h4>
                 </li>
                 <li>
-                    <a href="https://touspolitiques.fr" rel="noopener noreferrer" target="_blank">
-                        L'institut de formation
-                        <em>Tous Politiques !</em>
+                    <a href="{{ path('articles_list', { category: 'tout' }) }}">Toutes nos actualités</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'toutes-les-newsletters' }) }}">Notre newsletter</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'nos-videos' }) }}">Nos vidéos</a>
+                </li>
+            </ul>
+            <ul class="list__links list__links--col list__links--no-decor">
+                <li>
+                    <h4>
+                        <a href="{{ path('app_static_page', { slug: 'engagement-larem' }) }}" class="text--bold text--medium-small">S'engager</a>
+                    </h4>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'engagement-larem' }) }}">S'engager à LaREM</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_membership_join') }}">Adhérer en ligne</a>
+                </li>
+                <li>
+                    <a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_search_committees') }}">Rejoindre un comité</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_search_events') }}">S'inscrire à un événement</a>
+                </li>
+                <li>
+                    <a href="{{ path('react_app_citizen_projects_home') }}">Projets Citoyens</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'action-quartiers-action-ruralites' }) }}">
+                        Action Quartiers / Action Ruralités
                     </a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'toutes-politiques' }) }}">Toutes Politiques</a>
+                </li>
+                <li>
+                    <a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a>
                 </li>
                 <li>
                     <a href="{{ mooc_host }}" rel="noopener noreferrer" target="_blank">
                         Les formations du mouvement
                     </a>
                 </li>
+                <li><a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a></li>
+                <li>
+                    <a href="{{ path('invitation_form') }}">Inviter une connaissance</a>
+                </li>
             </ul>
-                <ul class="list__links list__links--col list__links--no-decor">
-                    <li>
-                        <h4>
-                            <a href="{{ path('articles_list', { category: 'tout' }) }}" class="text--bold text--medium-small">Actualités</a>
-                        </h4>
-                    </li>
-                    <li>
-                        <a href="{{ path('articles_list', { category: 'tout' }) }}">Toute l'actualité</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('articles_list', { category: 'actualites' }) }}">Articles</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('articles_list', { category: 'videos' }) }}">Vidéos</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('articles_list', { category: 'discours' }) }}">Discours</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('articles_list', { category: 'medias' }) }}">Médias</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('articles_list', { category: 'communiques' }) }}">Communiqués</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('articles_list', { category: 'opinions' }) }}">Opinions</a>
-                    </li>
-                </ul>
-                <ul class="list__links list__links--col list__links--no-decor">
-                    <li>
-                        <h4>
-                            <a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a>
-                        </h4>
-                    </li>
-                    <li>
-                        <a href="{{ mooc_host }}/sengager-a-la-republique-en-marche">S'engager à LaREM</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_membership_join') }}">Adhérer en ligne</a>
-                    </li>
-                    <li>
-                        <a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('donation_index') }}">Donner en ligne</a>
-                    </li>
-                    <li>
-                        <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Donner par chèque</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_search_committees') }}">Rejoindre un comité</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_search_events') }}">S'inscrire à un événement</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('invitation_form') }}">Inviter une connaissance</a>
-                    </li>
-                    <li>
-                        <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
-                            Connexion
-                        </a>
-                    </li>
-                </ul>
-                <ul class="list__links list__links--col list__links--no-decor">
-                    <li>
-                        <h4>
-                            <a class="text--bold text--medium-small" href="https://twitter.com/hashtag/TousEnMarche" rel="noopener noreferrer" target="_blank">#TousEnMarche</a>
-                        </h4>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_facebook_index') }}">Filtre photo Facebook</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('page_elles_marchent') }}">Elles Marchent</a>
-                    </li>
-                    <li>
-                        <a href="https://lesjam.fr/" rel="noopener noreferrer" target="_blank">Les Jeunes avec Macron</a>
-                    </li>
-                </ul>
-                <ul class="list__links list__links--col list__links--no-decor"></ul>
-            </div>
-            <div class="l__col l__col--center">
-                <div class="donate-mail">
-                    Vous pouvez
-                    <a href="{{ path('donation_index') }}" class="text--bold">donner en ligne</a>
-                    ou en
-                    <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" rel="noopener noreferrer" target="_blank">téléchargeant ce bulletin</a>.
-                </div>
-                <ul class="list__links list__links--row list__links--no-decor list__links--col-mobile">
-                    <li>
-                        <a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank">Aide</a>
-                    </li>
-                    <li>
-                        <a href="https://contact.en-marche.fr" rel="noopener noreferrer" target="_blank">Contactez-nous</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('articles_list', { category: 'communiques' }) }}">Presse</a>
-                    </li>
-                    <li>
-                        <a href="https://jobs.zenploy.io/la-r%C3%A9publique-en-marche/jobs" rel="noopener noreferrer" target="_blank">Recrutement</a>
-                    </li>
-                    <li>
-                        <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf" rel="noopener noreferrer">Charte des valeurs</a>
-                    </li>
-                    <li>
-                        <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM_regles_de_fonctionnement.pdf" rel="noreferrer noopener">Statuts et Règlement Intérieur</a>
-                    </li>
-                </ul>
-
-                {% include 'components/_footer_cgu.html.twig' %}
-
-                <ul class="list__links text--gray">
-                    <li>&copy; La République En Marche !</li>
-                </ul>
-            </div>
+            <ul class="list__links list__links--col list__links--no-decor">
+                <li>
+                    <h4>
+                        <a class="text--bold text--medium-small" href="{{ path('app_static_page', { slug: 'communaute' }) }}">Communautés</a>
+                    </h4>
+                </li>
+                <li>
+                    <a href="https://reneweuropegroup.eu/fr/qui-sommes-nous/" rel="noopener noreferrer" target="_blank">
+                        Renew Europe
+                    </a>
+                </li>
+                <li>
+                    <a href="https://lesjam.fr/" rel="noopener noreferrer" target="_blank">Les Jeunes avec Macron</a>
+                </li>
+                <li>
+                    <a href="https://touspolitiques.fr/" rel="noopener noreferrer" target="_blank">
+                        L'institut de formation <em>Tous Politiques !</em>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://la-republique-ensemble.fr/" rel="noopener noreferrer" target="_blank">La République Ensemble</a>
+                </li>
+            </ul>
+            <ul class="list__links list__links--col list__links--no-decor"></ul>
         </div>
-    </footer>
+        <div class="l__col l__col--center">
+            <div class="donate-mail">
+                Vous pouvez
+                <a href="{{ path('donation_index') }}" class="text--bold">donner en ligne</a>
+                ou en
+                <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" rel="noopener noreferrer" target="_blank">téléchargeant ce bulletin</a>.
+            </div>
+            <ul class="list__links list__links--row list__links--no-decor list__links--col-mobile">
+                <li>
+                    <a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank">Aide</a>
+                </li>
+                <li>
+                    <a href="https://contact.en-marche.fr" rel="noopener noreferrer" target="_blank">Contactez-nous</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'espace-presse' }) }}">Presse</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'rejoignez-notre-equipe' }) }}" target="_blank">Recrutement</a>
+                </li>
+                <li>
+                    <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf" rel="noopener noreferrer">Charte des valeurs</a>
+                </li>
+                <li>
+                    <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM_regles_de_fonctionnement.pdf" rel="noreferrer noopener">Statuts et Règlement Intérieur</a>
+                </li>
+            </ul>
+
+            {% include 'components/_footer_cgu.html.twig' %}
+
+            <ul class="list__links text--gray">
+                <li>&copy; La République En Marche !</li>
+            </ul>
+        </div>
+    </div>
+</footer>
