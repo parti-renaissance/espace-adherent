@@ -64,14 +64,10 @@ class AddressType extends AbstractType
             $address = $event->getData();
 
             if ($address && $address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
-                $inseeCodes = FranceCitiesBundle::getPostalCodeCities($address->getPostalCode());
+                $inseeCode = FranceCitiesBundle::getCityInseeCode($address->getPostalCode(), $address->getCityName());
 
-                foreach ($inseeCodes as $inseeCode => $cityName) {
-                    if ($cityName === $address->getCityName() || 0 === strpos($cityName, $address->getCityName())) {
-                        $address->setCity(\sprintf('%s-%s', $address->getPostalCode(), $inseeCode));
-
-                        break;
-                    }
+                if ($inseeCode) {
+                    $address->setCity(\sprintf('%s-%s', $address->getPostalCode(), $inseeCode));
                 }
             }
         });
