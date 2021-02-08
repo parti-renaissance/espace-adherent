@@ -52,7 +52,7 @@ class SubscriptionHandler
         }
 
         $this->subscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
-        $dispatcher->dispatch(new UserEvent($adherent, null, null, $oldEmailsSubscriptions), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
+        $this->dispatcher->dispatch(new UserEvent($adherent, null, null, $oldEmailsSubscriptions), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
     }
 
     public function changeSubscription(string $type, string $email, string $listId): void
