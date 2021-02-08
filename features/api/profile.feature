@@ -1,5 +1,4 @@
 @api
-@debug
 Feature:
   As a logged-in user
   I should be able to retrieve and edit my profile information
@@ -36,7 +35,10 @@ Feature:
             "region": null,
             "country": "FR"
         },
-        "phone": "+33111223344",
+        "phone": {
+          "country": "FR",
+          "number": "01 11 22 33 44"
+        },
         "birthdate": "1950-07-08T00:00:00+01:00",
         "facebook_page_url": null,
         "twitter_page_url": null,
@@ -84,9 +86,36 @@ Feature:
     """
     {
       "address": {
+          "address": "10 rue inconnue",
+          "postal_code": "12345",
+          "city_name": "Ville inconnue",
+          "country": "FR"
+      }
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "address",
+          "message": "Cette valeur n'est pas un code postal français valide."
+        },
+        {
+          "propertyPath": "address",
+          "message": "Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte."
+        }
+      ]
+    }
+    """
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "address": {
           "address": "50 rue de la villette",
           "postal_code": "69003",
-          "city": "69003-69383",
           "city_name": "Lyon 3e",
           "country": "FR"
       }
@@ -110,6 +139,26 @@ Feature:
     """
 
     # Update gender
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "gender": "unknown_gender",
+      "custom_gender": null
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "gender",
+          "message": "Ce sexe n'est pas valide."
+        }
+      ]
+    }
+    """
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
@@ -153,6 +202,78 @@ Feature:
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
+      "first_name": "J",
+      "last_name": "D"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "first_name",
+          "message": "Votre prénom doit comporter au moins 2 caractères."
+        },
+        {
+          "propertyPath": "last_name",
+          "message": "Votre prénom doit comporter au moins 2 caractères."
+        }
+      ]
+    }
+    """
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "first_name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "last_name": "Suspendisse facilisis non leo id maximus. Fusce quis ligula quam."
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "first_name",
+          "message": "Votre prénom ne peut pas dépasser 50 caractères."
+        },
+        {
+          "propertyPath": "last_name",
+          "message": "Votre prénom ne peut pas dépasser 50 caractères."
+        }
+      ]
+    }
+    """
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "first_name": "",
+      "last_name": ""
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "first_name",
+          "message": "Cette valeur ne doit pas être vide."
+        },
+        {
+          "propertyPath": "last_name",
+          "message": "Cette valeur ne doit pas être vide."
+        }
+      ]
+    }
+    """
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
       "first_name": "John",
       "last_name": "Doe"
     }
@@ -170,6 +291,27 @@ Feature:
     """
 
     # Update interests
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "interests": [
+        "unknown_interest_code"
+      ]
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "interests",
+          "message": "Valeur d'intérêt n'est pas valide"
+        }
+      ]
+    }
+    """
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
@@ -204,6 +346,27 @@ Feature:
     """
     {
       "subscription_types": [
+        "unknown_subscription_code"
+      ]
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "subscription_types",
+          "message": "Une ou plusieurs des valeurs soumises sont invalides."
+        }
+      ]
+    }
+    """
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "subscription_types": [
         "militant_action_sms",
         "subscribed_emails_movement_information"
       ]
@@ -233,6 +396,35 @@ Feature:
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
+      "position": "unknown_position_code",
+      "job": "unknown_job",
+      "activity_area": "unknown_activity_area"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "position",
+          "message": "Le statut d'activité n'est pas valide."
+        },
+        {
+          "propertyPath": "job",
+          "message": "Le métier n'est pas valide."
+        },
+        {
+          "propertyPath": "activity_area",
+          "message": "Le secteur d'activité n'est pas valide."
+        }
+      ]
+    }
+    """
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
       "position": "employed",
       "job": "Ingénieurs",
       "activity_area": "Informatique et électronique"
@@ -252,6 +444,25 @@ Feature:
     """
 
     # Update nationality
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "nationality": "AA"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "nationality",
+          "message": "Cette nationalité n'est pas valide."
+        }
+      ]
+    }
+    """
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
@@ -291,7 +502,32 @@ Feature:
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
-      "phone": "+330123456789"
+      "phone": {
+        "country": "FR",
+        "number": "12345678900000000"
+      }
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "phone",
+          "message": "Cette valeur n'est pas un numéro de téléphone valide."
+        }
+      ]
+    }
+    """
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "phone": {
+        "country": "FR",
+        "number": "0987654321"
+      }
     }
     """
     Then the response status code should be 200
@@ -301,11 +537,48 @@ Feature:
     And the JSON should be a superset of:
     """
     {
-      "phone": "+33123456789"
+      "phone": {
+        "country": "FR",
+        "number": "09 87 65 43 21"
+      }
     }
     """
 
     # Update social links
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "facebook_page_url": "https://not-facebook.com/johndoe",
+      "twitter_page_url": "https://not-twitter.com/johndoe",
+      "linkedin_page_url": "https://not-linkedin.com/johndoe",
+      "telegram_page_url": "https://not-t.me/johndoe"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+        {
+          "propertyPath": "facebook_page_url",
+          "message": "Cette URL ne semble pas être une URL Facebook valide."
+        },
+        {
+          "propertyPath": "twitter_page_url",
+          "message": "Cette URL ne semble pas être une URL Twitter valide."
+        },
+        {
+          "propertyPath": "linkedin_page_url",
+          "message": "Cette URL ne semble pas être une URL LinkedIn valide."
+        },
+        {
+          "propertyPath": "telegram_page_url",
+          "message": "Cette URL ne semble pas être une URL Telegram valide."
+        }
+      ]
+    }
+    """
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
@@ -330,6 +603,25 @@ Feature:
     """
 
     # Update email address
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "email_address": "invalid_email"
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "violations": [
+          {
+              "propertyPath": "email_address",
+              "message": "Ceci n'est pas une adresse e-mail valide."
+          }
+      ]
+    }
+    """
     Given I should have 0 email
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
@@ -466,7 +758,7 @@ Feature:
           "label": "Vie publique & institutions"
         }
       ],
-      "subscriptionTypes": [
+      "subscription_types": [
         {
           "code": "militant_action_sms",
           "label": "Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS"

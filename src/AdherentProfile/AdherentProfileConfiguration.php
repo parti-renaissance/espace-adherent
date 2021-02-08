@@ -34,7 +34,7 @@ class AdherentProfileConfiguration
                     'label' => $label,
                 ];
             }, array_keys($this->adherentInterests), $this->adherentInterests),
-            'subscriptionTypes' => array_map(function (SubscriptionType $subscriptionType) {
+            'subscription_types' => array_map(function (SubscriptionType $subscriptionType) {
                 return [
                     'code' => $subscriptionType->getCode(),
                     'label' => $subscriptionType->getLabel(),
