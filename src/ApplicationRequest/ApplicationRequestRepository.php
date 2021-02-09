@@ -4,8 +4,6 @@ namespace App\ApplicationRequest;
 
 use App\ApplicationRequest\Filter\ListFilter;
 use App\Entity\Adherent;
-use App\Entity\ApplicationRequest\ApplicationRequest;
-use App\Entity\ApplicationRequest\RunningMateRequest;
 use App\Repository\ApplicationRequest\RunningMateRequestRepository;
 use App\Repository\ApplicationRequest\VolunteerRequestRepository;
 
@@ -62,15 +60,6 @@ class ApplicationRequestRepository
     {
         $this->runningMateRepository->updateAdherentRelation($email, $adherent);
         $this->volunteerRepository->updateAdherentRelation($email, $adherent);
-    }
-
-    public function hideDuplicates(ApplicationRequest $request): void
-    {
-        if ($request instanceof RunningMateRequest) {
-            $this->runningMateRepository->hideDuplicates($request);
-        } else {
-            $this->volunteerRepository->hideDuplicates($request);
-        }
     }
 
     public function countCandidates(array $inseeCodes): int
