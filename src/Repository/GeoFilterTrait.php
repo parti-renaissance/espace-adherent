@@ -42,6 +42,22 @@ trait GeoFilterTrait
                 );
 
                 $qb->setParameter("code_$key", "$code%");
+            } elseif (AreaUtils::CODE_NOUVEAU_RHONE === $code) {
+                // all zones of the department 69, except of the metropolis of Lyon
+                $inseeCodeExpression = $qb->expr()->andX();
+                foreach (AreaUtils::METROPOLIS[AreaUtils::CODE_METROPOLIS_LYON] as $key => $inseeCode) {
+                    $inseeCodeExpression->add("$alias.postAddress.city NOT LIKE :inseeCode_69_$code$key");
+                    $qb->setParameter("inseeCode_69_$code$key", "%-$inseeCode");
+                }
+
+                $codesFilter->add(
+                    $qb->expr()->andX(
+                        "$countryColumn = 'FR'",
+                        $qb->expr()->like("$postalCodeColumn", ':dpt_69'),
+                        $inseeCodeExpression
+                    )
+                );
+                $qb->setParameter('dpt_69', '69%');
             } elseif ($tag->isMetropolisTag() && \array_key_exists($code, AreaUtils::METROPOLIS)) {
                 $inseeCodeExpression = $qb->expr()->orX();
                 foreach (AreaUtils::METROPOLIS[$code] as $key => $inseeCode) {
