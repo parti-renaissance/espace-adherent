@@ -106,11 +106,11 @@
                 Aucun comité en soutien pour l'instant
             {% endfor %}
         </ul>
-        {% if is_granted('ROLE_SUPERVISOR') %}
+        {% if citizen_project.isApproved and is_granted('ROLE_SUPERVISOR') %}
             <form method="post" id="committee-confirm-support-form" class="form" action="{{ path('app_citizen_project_committee_support', {slug: citizen_project.slug}) }}">
                 {{ form_widget(form_committee_support) }}
                 <div>
-                    {% set has_support = citizen_project.isSupportedByCommitteeUuid(app.user.supervisorMandates(false).last.committee.uuid.toString) %}
+                    {% set has_support = citizen_project.isSupportedByCommitteeUuid(app.user.supervisorMandates().last.committee.uuid.toString) %}
                     <button type="submit" id="committee-confirm-support" class="{{ has_support ? 'btn--as-link text--body text--blue--dark' : 'newbtn--small btn--blue' }} b__nudge--top">
                         {% if has_support %}
                             Retirer mon soutien à ce projet

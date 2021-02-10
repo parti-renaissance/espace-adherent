@@ -199,7 +199,7 @@ class AdherentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $handler->handle($command, $turnkeyProject);
+            $handler->handle($command);
             $this->addFlash('info', 'citizen_project.creation.success');
 
             return $this->redirectToRoute('app_citizen_project_show', ['slug' => $command->getCitizenProject()->getSlug()]);
