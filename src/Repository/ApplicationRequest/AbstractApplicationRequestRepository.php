@@ -108,21 +108,6 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         ;
     }
 
-    public function hideDuplicates(ApplicationRequest $request): void
-    {
-        $this->_em->createQueryBuilder()
-            ->update($this->_entityName, 'candidate')
-            ->where('candidate.id != :id')
-            ->andWhere('candidate.emailAddress = :email')
-            ->andWhere('candidate.displayed = true')
-            ->set('candidate.displayed', 0)
-            ->setParameter('id', $request->getId())
-            ->setParameter('email', $request->getEmailAddress())
-            ->getQuery()
-            ->execute()
-        ;
-    }
-
     private function createListQueryBuilder(string $alias, ListFilter $filter = null): QueryBuilder
     {
         $qb = $this->createQueryBuilder($alias)
