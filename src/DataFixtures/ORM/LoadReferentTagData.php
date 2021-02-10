@@ -51,6 +51,7 @@ class LoadReferentTagData extends Fixture
 
         $this->createReferentTag($manager, 'Français de l\'Étranger', ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG);
         $this->createReferentTag($manager, 'Métropole de Lyon (69M)', '69M', ReferentTag::TYPE_METROPOLIS);
+        $this->createReferentTag($manager, 'Nouveau Rhône (69D)', '69D', ReferentTag::TYPE_DEPARTMENT);
         $this->createReferentTag($manager, 'Métropole de Montpellier (34M)', '34M', ReferentTag::TYPE_METROPOLIS);
 
         $manager->flush();

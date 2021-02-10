@@ -10,6 +10,9 @@ class AreaUtils
 {
     public const CODE_CORSICA_A = '2A';
     public const CODE_CORSICA_B = '2B';
+    public const CODE_NOUVEAU_RHONE = '69D';
+    public const CODE_METROPOLIS_MONTPELLIER = '34M';
+    public const CODE_METROPOLIS_LYON = '69M';
     public const CODE_FRANCE = 'FR';
     public const CODE_MONACO = 'MC';
     public const CODE_SAINT_BARTHELEMY = '97133';
@@ -51,7 +54,7 @@ class AreaUtils
     ];
 
     public const METROPOLIS = [
-        '34M' => [
+        self::CODE_METROPOLIS_MONTPELLIER => [
             '34022',
             '34027',
             '34057',
@@ -84,7 +87,7 @@ class AreaUtils
             '34327',
             '34337',
         ],
-        '69M' => [
+        self::CODE_METROPOLIS_LYON => [
             '69003',
             '69029',
             '69033',
