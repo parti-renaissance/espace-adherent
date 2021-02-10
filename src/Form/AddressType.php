@@ -63,7 +63,7 @@ class AddressType extends AbstractType
             /** @var Address $address */
             $address = $event->getData();
 
-            if ($address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
+            if ($address && $address->getCityName() && $address->getPostalCode() && Address::FRANCE === $address->getCountry()) {
                 $inseeCodes = FranceCitiesBundle::getPostalCodeCities($address->getPostalCode());
 
                 foreach ($inseeCodes as $inseeCode => $cityName) {
