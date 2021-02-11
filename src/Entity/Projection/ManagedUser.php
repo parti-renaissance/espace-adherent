@@ -3,7 +3,6 @@
 namespace App\Entity\Projection;
 
 use App\Entity\EntityZoneTrait;
-use App\Entity\Geo\Zone;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
