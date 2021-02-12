@@ -41,6 +41,7 @@ trait EntityIdentityTrait
      *     "approach_list_read",
      *     "event_read",
      *     "event_list_read",
+     *     "coalition_read",
      * })
      *
      * @ApiProperty(

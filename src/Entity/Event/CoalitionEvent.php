@@ -11,15 +11,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoalitionEvent extends BaseEvent
 {
-    public function getType(): string
-    {
-        return EventTypeEnum::TYPE_COALITION;
-    }
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="events")
      */
     private $coalition;
+
+    public function getType(): string
+    {
+        return EventTypeEnum::TYPE_COALITION;
+    }
 
     public function getCoalition(): ?Coalition
     {
