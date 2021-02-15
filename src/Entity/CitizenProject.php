@@ -279,7 +279,8 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
     public function isSupportedByCommitteeUuid(string $committeeUuid): bool
     {
         foreach ($this->committeeSupports as $committeeSupport) {
-            if ($committeeSupport->isApproved() && $committeeSupport->getCommittee()->uuid->toString() === $committeeUuid) {
+            $committee = $committeeSupport->getCommittee();
+            if ($committeeSupport->isApproved() && !$committee->isBlocked() && $committee->uuid->toString() === $committeeUuid) {
                 return true;
             }
         }
@@ -298,7 +299,7 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
     public function getApprovedCommitteeSupports(): Collection
     {
         return $this->committeeSupports->filter(function (CitizenProjectCommitteeSupport $c) {
-            return $c->isApproved();
+            return $c->isApproved() && !$c->getCommittee()->isBlocked();
         });
     }
 
