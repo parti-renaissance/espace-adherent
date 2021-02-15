@@ -723,7 +723,7 @@ HELP
                     // Committee host
                     if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
-                        $where->add('ms.privilege == :committee_privilege');
+                        $where->add('ms.privilege = :committee_privilege');
                         $qb->setParameter('committee_privilege', CommitteeMembership::COMMITTEE_HOST);
                     }
 
