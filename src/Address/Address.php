@@ -25,7 +25,11 @@ class Address implements AddressInterface, GeocodableInterface
     private $address;
 
     /**
-     * @Assert\NotBlank(message="common.postal_code.not_blank", groups={"Default", "Registration", "Update"})
+     * @Assert\Expression(
+     *     expression="value or 'FR' != this.getCountry()",
+     *     message="common.postal_code.not_blank",
+     *     groups={"Default", "Registration", "Update"}
+     * )
      * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update"})
      * @FrenchZipCode(groups={"Default", "Registration", "Update"})
      */
