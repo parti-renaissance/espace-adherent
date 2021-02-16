@@ -4,6 +4,7 @@ namespace App\Entity\Event;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,6 +27,8 @@ abstract class BaseEventCategory
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $name = '';
 

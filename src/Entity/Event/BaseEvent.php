@@ -23,6 +23,7 @@ use App\Event\EventTypeEnum;
 use App\Geocoder\GeoPointInterface;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -317,6 +318,9 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+
+        $this->referentTags = new ArrayCollection();
+        $this->zones = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -387,6 +391,11 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     public function getLocalFinishAt(): \DateTimeInterface
     {
         return (clone $this->finishAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
+    }
+
+    public function setOrganizer(?Adherent $organizer): void
+    {
+        $this->organizer = $organizer;
     }
 
     public function getOrganizer(): ?Adherent
