@@ -3,9 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Coalition\Coalition;
+use App\Image\ImageManagerInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadCoalitionData extends Fixture
 {
@@ -52,10 +54,17 @@ class LoadCoalitionData extends Fixture
         'Villes et quartiers',
     ];
 
+    private $imageManager;
+
+    public function __construct(ImageManagerInterface $imageManager)
+    {
+        $this->imageManager = $imageManager;
+    }
+
     public function load(ObjectManager $manager)
     {
         foreach (self::NAMES as $key => $name) {
-            $coalition = $this->createCoalition(++$key, $name);
+            $coalition = $this->createCoalition(++$key, $name, true, 1 === $key);
             $manager->persist($coalition);
         }
 
@@ -65,16 +74,29 @@ class LoadCoalitionData extends Fixture
         $manager->flush();
     }
 
-    public function createCoalition(int $id, string $name, bool $enabled = true): Coalition
+    public function createCoalition(int $id, string $name, bool $enabled = true, bool $withImage = false): Coalition
     {
         $c = "COALITION_${id}_UUID";
+        $uuid = Uuid::fromString(\constant('self::'.$c));
 
         $coalition = new Coalition(
-            Uuid::fromString(\constant('self::'.$c)),
+            $uuid,
             $name,
             "Description de la coalition '$name'",
             $enabled
         );
+        if ($withImage) {
+            $coalition->setImage(new UploadedFile(
+                __DIR__.'/../coalitions/default.png',
+                'image.png',
+                'image/png',
+                null,
+                null,
+                true
+            ));
+            $this->imageManager->saveImage($coalition);
+        }
+
         $this->addReference(\sprintf('coalition-%s', mb_strtolower($name)), $coalition);
 
         return $coalition;

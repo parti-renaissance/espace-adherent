@@ -2,6 +2,7 @@
 
 namespace App\Entity\Coalition;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Event\CoalitionEvent;
@@ -14,9 +15,32 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "pagination_client_items_per_page": true,
+ *         "order": {"name": "ASC"}
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/coalitions",
+ *             "normalization_context": {
+ *                 "groups": {"coalition_read"}
+ *             },
+ *         },
+ *     },
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/coalitions/{id}",
+ *             "normalization_context": {"groups": {"coalition_read"}},
+ *             "requirements": {"id": "%pattern_uuid%"}
+ *         }
+ *     },
+ * )
+ *
  * @ORM\Table(
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="coalition_uuid_unique", columns="uuid"),
@@ -45,6 +69,8 @@ class Coalition implements ImageOwnerInterface
      * @var string
      *
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups({"coalition_read"})
      */
     private $name;
 
@@ -52,6 +78,8 @@ class Coalition implements ImageOwnerInterface
      * @var string
      *
      * @ORM\Column(type="text")
+     *
+     * @SymfonySerializer\Groups({"coalition_read"})
      */
     private $description;
 
@@ -132,7 +160,7 @@ class Coalition implements ImageOwnerInterface
 
     public function getImagePath(): string
     {
-        return sprintf('images/coalitions/%s', $this->getImageName());
+        return $this->imageName ? \sprintf('images/coalitions/%s', $this->getImageName()) : '';
     }
 
     public function getEvents(): Collection
