@@ -70,7 +70,7 @@ class Coalition implements ImageOwnerInterface
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"coalition_read"})
+     * @SymfonySerializer\Groups({"coalition_read", "cause_read"})
      */
     private $name;
 

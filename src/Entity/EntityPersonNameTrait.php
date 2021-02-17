@@ -11,7 +11,16 @@ trait EntityPersonNameTrait
     /**
      * @ORM\Column(length=50)
      *
-     * @SymfonySerializer\Groups({"user_profile", "export", "idea_list_read", "idea_read", "idea_thread_list_read", "idea_thread_comment_read", "idea_vote_read"})
+     * @SymfonySerializer\Groups({
+     *     "user_profile",
+     *     "export",
+     *     "idea_list_read",
+     *     "idea_read",
+     *     "idea_thread_list_read",
+     *     "idea_thread_comment_read",
+     *     "idea_vote_read",
+     *     "cause_read"
+     * })
      *
      * @JMS\Groups({"adherent_change_diff", "public"})
      * @JMS\SerializedName("firstName")
@@ -57,7 +66,7 @@ trait EntityPersonNameTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"export"})
+     * @SymfonySerializer\Groups({"export", "cause_read"})
      */
     public function getLastNameInitial(bool $padWithDot = true): string
     {

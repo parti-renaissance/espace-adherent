@@ -15,31 +15,45 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 3,
-            "items_per_page": 2,
-            "count": 2,
-            "current_page": 1,
-            "last_page": 2
+      "metadata": {
+        "total_items": 3,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 2
+      },
+      "items": [
+        {
+          "author": {
+            "first_name": "Jacques",
+            "last_name_initial": "P.",
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
+          },
+          "coalition": {
+            "name": "Education",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+          },
+          "name": "Cause pour l'education",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "image_url": "http://test.enmarche.code/assets/images/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8.png"
         },
-        "items": [
-            {
-                "author": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "coalition": "fff11d8d-5cb5-4075-b594-fea265438d65",
-                "name": "Cause pour l'education",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-                "image_url": "http://test.enmarche.code/assets/images/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8.png"
-            },
-            {
-                "author": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-                "coalition": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
-                "name": "Cause pour la culture",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
-                "image_url": "http://test.enmarche.code/assets/images/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2.png"
-            }
-        ]
+        {
+          "author": {
+            "first_name": "Michelle",
+            "last_name_initial": "D.",
+            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697"
+          },
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+          },
+          "name": "Cause pour la culture",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
+          "image_url": "http://test.enmarche.code/assets/images/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2.png"
+        }
+      ]
     }
     """
 
@@ -51,23 +65,30 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 3,
-            "items_per_page": 2,
-            "count": 1,
-            "current_page": 2,
-            "last_page": 2
-        },
-        "items": [
-            {
-                "author": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "coalition": "5b8db218-4da6-4f7f-a53e-29a7a349d45c",
-                "name": "Cause pour la justice",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "uuid": "44249b1d-ea10-41e0-b288-5eb74fa886ba",
-                "image_url": null
-            }
-        ]
+      "metadata": {
+        "total_items": 3,
+        "items_per_page": 2,
+        "count": 1,
+        "current_page": 2,
+        "last_page": 2
+      },
+      "items": [
+        {
+          "author": {
+            "first_name": "Jacques",
+            "last_name_initial": "P.",
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
+          },
+          "coalition": {
+            "name": "Justice",
+            "uuid": "5b8db218-4da6-4f7f-a53e-29a7a349d45c"
+          },
+          "name": "Cause pour la justice",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "uuid": "44249b1d-ea10-41e0-b288-5eb74fa886ba",
+          "image_url": null
+        }
+      ]
     }
     """
 
@@ -79,39 +100,60 @@ Feature:
     And the JSON should be equal to:
     """
     {
-        "metadata": {
-            "total_items": 3,
-            "items_per_page": 5,
-            "count": 3,
-            "current_page": 1,
-            "last_page": 1
+      "metadata": {
+        "total_items": 3,
+        "items_per_page": 5,
+        "count": 3,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "author": {
+            "first_name": "Jacques",
+            "last_name_initial": "P.",
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
+          },
+          "coalition": {
+            "name": "Education",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+          },
+          "name": "Cause pour l'education",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "image_url": "http://test.enmarche.code/assets/images/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8.png"
         },
-        "items": [
-            {
-                "author": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "coalition": "fff11d8d-5cb5-4075-b594-fea265438d65",
-                "name": "Cause pour l'education",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-                "image_url": "http://test.enmarche.code/assets/images/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8.png"
-            },
-            {
-                "author": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
-                "coalition": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
-                "name": "Cause pour la culture",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
-                "image_url": "http://test.enmarche.code/assets/images/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2.png"
-            },
-            {
-                "author": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "coalition": "5b8db218-4da6-4f7f-a53e-29a7a349d45c",
-                "name": "Cause pour la justice",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "uuid": "44249b1d-ea10-41e0-b288-5eb74fa886ba",
-                "image_url": null
-            }
-        ]
+        {
+          "author": {
+            "first_name": "Michelle",
+            "last_name_initial": "D.",
+            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697"
+          },
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+          },
+          "name": "Cause pour la culture",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
+          "image_url": "http://test.enmarche.code/assets/images/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2.png"
+        },
+        {
+          "author": {
+            "first_name": "Jacques",
+            "last_name_initial": "P.",
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
+          },
+          "coalition": {
+            "name": "Justice",
+            "uuid": "5b8db218-4da6-4f7f-a53e-29a7a349d45c"
+          },
+          "name": "Cause pour la justice",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "uuid": "44249b1d-ea10-41e0-b288-5eb74fa886ba",
+          "image_url": null
+        }
+      ]
     }
     """
 
@@ -123,12 +165,19 @@ Feature:
     And the JSON should be equal to:
     """
       {
-          "author": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "coalition": "fff11d8d-5cb5-4075-b594-fea265438d65",
-          "name": "Cause pour l'education",
-          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-          "image_url": "http://test.enmarche.code/assets/images/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8.png"
+        "author": {
+          "first_name": "Jacques",
+          "last_name_initial": "P.",
+          "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda"
+        },
+        "coalition": {
+          "name": "Education",
+          "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+        },
+        "name": "Cause pour l'education",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+        "image_url": "http://test.enmarche.code/assets/images/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8.png"
       }
     """
 

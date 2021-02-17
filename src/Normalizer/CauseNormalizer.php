@@ -34,9 +34,6 @@ class CauseNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 ['path' => $object->getImagePath()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             ) : null;
-
-            $data['coalition'] = $object->getCoalition() ? $object->getCoalition()->getUuid()->toString() : null;
-            $data['author'] = $object->getAuthor() ? $object->getAuthor()->getUuid()->toString() : null;
         }
 
         return $data;
