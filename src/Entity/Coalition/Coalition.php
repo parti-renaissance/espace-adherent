@@ -123,7 +123,7 @@ class Coalition implements ImageOwnerInterface
      *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Coalition\Cause",
-     *     mappedBy="cause",
+     *     mappedBy="coalition",
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
