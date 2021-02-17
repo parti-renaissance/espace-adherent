@@ -5,7 +5,7 @@ namespace App\Entity\Coalition;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\Event\CoalitionEvent;
+use App\Entity\Event\CauseEvent;
 use App\Entity\ImageOwnerInterface;
 use App\Entity\ImageTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,16 +26,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     collectionOperations={
  *         "get": {
- *             "path": "/coalitions",
+ *             "path": "/causes",
  *             "normalization_context": {
- *                 "groups": {"coalition_read"}
+ *                 "groups": {"cause_read"}
  *             },
  *         },
  *     },
  *     itemOperations={
  *         "get": {
- *             "path": "/coalitions/{id}",
- *             "normalization_context": {"groups": {"coalition_read"}},
+ *             "path": "/causes/{id}",
+ *             "normalization_context": {"groups": {"cause_read"}},
  *             "requirements": {"id": "%pattern_uuid%"}
  *         }
  *     },
@@ -43,13 +43,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="coalition_uuid_unique", columns="uuid"),
- *         @ORM\UniqueConstraint(name="coalition_name_unique", columns="name")
+ *         @ORM\UniqueConstraint(name="cause_uuid_unique", columns="uuid"),
+ *         @ORM\UniqueConstraint(name="cause_name_unique", columns="name")
  *     }
  * )
  * @ORM\Entity
  */
-class Coalition implements ImageOwnerInterface
+class Cause implements ImageOwnerInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
@@ -66,84 +66,69 @@ class Coalition implements ImageOwnerInterface
     protected $image;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"coalition_read"})
+     * @SymfonySerializer\Groups({"cause_read"})
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="text")
      *
-     * @SymfonySerializer\Groups({"coalition_read"})
+     * @SymfonySerializer\Groups({"cause_read"})
      */
     private $description;
 
     /**
-     * @var bool
+     * @var Coalition|null
      *
-     * @ORM\Column(type="boolean", options={"default": true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="causes")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @SymfonySerializer\Groups({"cause_read"})
      */
-    private $enabled = true;
+    private $coalition;
 
     /**
-     * @var CoalitionEvent[]|Collection
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @SymfonySerializer\Groups({"cause_read"})
+     */
+    private $author;
+
+    /**
+     * @var CauseEvent[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Event\CoalitionEvent",
-     *     mappedBy="coalition",
+     *     targetEntity="App\Entity\Event\CauseEvent",
+     *     mappedBy="cause",
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
      */
     private $events;
 
-    /**
-     * @var Collection|Adherent[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinTable(
-     *     name="coalition_follower",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="coalition_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="adherent_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
-     */
-    protected $followers;
-
-    /**
-     * @var Cause[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Coalition\Cause",
-     *     mappedBy="cause",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     */
-    private $causes;
-
     public function __construct(
         UuidInterface $uuid = null,
         string $name = null,
         string $description = null,
-        bool $enabled = true
+        Coalition $coalition = null,
+        Adherent $author = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;
         $this->description = $description;
-        $this->enabled = $enabled;
+        $this->coalition = $coalition;
+        $this->author = $author;
 
         $this->events = new ArrayCollection();
-        $this->followers = new ArrayCollection();
-        $this->causes = new ArrayCollection();
     }
 
     public function getName(): string
@@ -161,6 +146,11 @@ class Coalition implements ImageOwnerInterface
         return $this->description;
     }
 
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
     public function setImageName(?UploadedFile $image): void
     {
         $this->imageName = null === $image ? null :
@@ -173,7 +163,7 @@ class Coalition implements ImageOwnerInterface
 
     public function getImagePath(): string
     {
-        return $this->imageName ? \sprintf('images/coalitions/%s', $this->getImageName()) : '';
+        return $this->imageName ? \sprintf('images/causes/%s', $this->getImageName()) : '';
     }
 
     public function getEvents(): Collection
@@ -181,51 +171,36 @@ class Coalition implements ImageOwnerInterface
         return $this->events;
     }
 
-    public function addEvent(CoalitionEvent $event): void
+    public function addEvent(CauseEvent $event): void
     {
         if (!$this->events->contains($event)) {
-            $event->setCoalition($this);
+            $event->setCause($this);
             $this->events->add($event);
         }
     }
 
-    public function removeEvent(CoalitionEvent $event): void
+    public function removeEvent(CauseEvent $event): void
     {
         $this->events->removeElement($event);
     }
 
-    public function getFollowers(): Collection
+    public function getCoalition(): ?Coalition
     {
-        return $this->followers;
+        return $this->coalition;
     }
 
-    public function addFollower(Adherent $follower): void
+    public function setCoalition(Coalition $coalition): void
     {
-        if (!$this->followers->contains($follower)) {
-            $this->followers->add($follower);
-        }
+        $this->coalition = $coalition;
     }
 
-    public function removeFollower(Adherent $follower): void
+    public function getAuthor(): ?Adherent
     {
-        $this->followers->remove($follower);
+        return $this->author;
     }
 
-    public function getCauses(): Collection
+    public function setAuthor(Adherent $author): void
     {
-        return $this->causes;
-    }
-
-    public function addCause(Cause $cause): void
-    {
-        if (!$this->causes->contains($cause)) {
-            $cause->setCoalition($this);
-            $this->causes->add($cause);
-        }
-    }
-
-    public function removeCause(Cause $cause): void
-    {
-        $this->causes->removeElement($cause);
+        $this->author = $author;
     }
 }

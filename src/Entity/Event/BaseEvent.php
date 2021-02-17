@@ -54,6 +54,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
+ *     EventTypeEnum::TYPE_CAUSE: "CauseEvent",
  *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
  *     EventTypeEnum::TYPE_COALITION: "CoalitionEvent",
  *     EventTypeEnum::TYPE_CITIZEN_ACTION: "CitizenAction",
