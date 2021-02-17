@@ -6,6 +6,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ReferentTag;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
+use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -136,6 +137,13 @@ class Designation
      * @ORM\Column(options={"default": self::DENOMINATION_DESIGNATION})
      */
     private $denomination = self::DENOMINATION_DESIGNATION;
+
+    /**
+     * @var array|null
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $pools;
 
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
@@ -414,5 +422,42 @@ class Designation
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->getUuid());
+    }
+
+    public function getPools(): ?array
+    {
+        return $this->pools;
+    }
+
+    public function setPools(?array $pools): void
+    {
+        $this->pools = $pools;
+    }
+
+    public static function createPartialFromCommand(CreatePartialDesignationCommand $command): self
+    {
+        $designation = new self();
+
+        $designation->setType($command->getDesignationType());
+
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
+            $designation->setDenomination(Designation::DENOMINATION_ELECTION);
+        }
+
+        if ($command->getPool()) {
+            $designation->setPools([$command->getPool()]);
+        }
+
+        $designation->setCandidacyStartDate(new \DateTime());
+        $designation->setCandidacyEndDate((clone $command->getVoteStartDate())->modify('-2 hours'));
+
+        $designation->setVoteStartDate($command->getVoteStartDate());
+        $designation->setVoteEndDate($command->getVoteEndDate());
+
+        $designation->setLabel('[Partielle] '.$command->getCommittee()->getName());
+
+        $designation->markAsLimited();
+
+        return $designation;
     }
 }

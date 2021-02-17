@@ -11,7 +11,7 @@ trait EntityDesignationTrait
     /**
      * @var Designation
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", cascade={"persist"}, fetch="EAGER")
      */
     protected $designation;
 

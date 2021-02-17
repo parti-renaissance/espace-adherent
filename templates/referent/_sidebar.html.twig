@@ -57,7 +57,7 @@
         {% endif %}
 
         {% if isReferent or is_granted('HAS_DELEGATED_ACCESS_COMMITTEE') %}
-            <li class="{{ is_active_route(app.request, ['app_referent_committees*', 'app_referent_designations_*']) ? 'active' }}">
+            <li class="{{ is_active_route(app.request, ['app_referent_committees*', 'app_referent_designations_*', 'app_referent_create_committee']) ? 'active' }}">
                 <a href="{{ path('app_referent_committees') }}">Comités</a>
             </li>
         {% endif %}

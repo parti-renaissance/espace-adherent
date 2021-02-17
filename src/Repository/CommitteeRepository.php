@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Address\Address;
+use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Committee\Filter\CommitteeListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
@@ -33,16 +34,14 @@ use Ramsey\Uuid\UuidInterface;
 class CommitteeRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
-
     use GeoFilterTrait;
     use NearbyTrait;
     use ReferentTrait;
+    use GeoZoneTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
 
-    public const ONLY_APPROVED = 1;
-    public const INCLUDE_UNAPPROVED = 2;
     public const DEFAULT_MAX_RESULTS_LIST = 3;
 
     public function __construct(ManagerRegistry $registry)
@@ -814,24 +813,54 @@ class CommitteeRepository extends ServiceEntityRepository
             $qb->leftJoin($alias.'.zones', 'zone');
         }
 
-        if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {
-            $qb->innerJoin('zone.parents', 'zone_parent');
+        return $this->withGeoZones($qb, $zones);
+    }
+
+    public function findAvailableForPartials(
+        CommitteeDesignationsListFilter $filter,
+        int $page = 1,
+        int $limit = 100
+    ): array {
+        $qb = $this->createQueryBuilder('committee')
+            ->addSelect('SUM(CASE WHEN mandate.quality IS NULL THEN 1 ELSE 0 END) AS total_designed_adherents')
+            ->addSelect('SUM(CASE WHEN mandate.quality IS NULL AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_designed_adherents_female')
+            ->addSelect('SUM(CASE WHEN mandate.quality IS NULL AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_designed_adherents_male')
+            ->addSelect('SUM(CASE WHEN mandate.quality = :supervisor AND mandate.provisional = :false THEN 1 ELSE 0 END) AS total_supervisors')
+            ->addSelect('SUM(CASE WHEN mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_supervisors_female')
+            ->addSelect('SUM(CASE WHEN mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_supervisors_male')
+            ->leftJoin('committee.adherentMandates', 'mandate', Join::WITH, 'mandate.finishAt IS NULL')
+            ->leftJoin('committee.currentDesignation', 'designation')
+            ->where('committee.status = :status')
+            ->andWhere('(designation IS NULL OR designation.voteEndDate < :now)')
+            ->groupBy('committee.id')
+            ->orderBy('committee.membersCount', 'DESC')
+            ->setParameters([
+                'female' => Genders::FEMALE,
+                'male' => Genders::MALE,
+                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
+                'false' => false,
+                'status' => Committee::APPROVED,
+                'now' => new \DateTime(),
+            ])
+            ->having('total_designed_adherents < 2 OR total_supervisors < 2')
+        ;
+
+        if ($filter->getCommitteeName()) {
+            $qb
+                ->andWhere('committee.name LIKE :committee_name')
+                ->setParameter('committee_name', '%'.$filter->getCommitteeName().'%')
+            ;
         }
 
-        $ids = array_map(static function ($zone) {
-            return $zone->getId();
-        }, $zones);
-
-        $parentIds = array_filter(array_map(static function (Zone $zone): ?int {
-            return $zone->isCityGrouper() ? null : $zone->getId();
-        }, $zones));
-
-        $orX = $qb->expr()->orX();
-        $orX->add($qb->expr()->in('zone.id', $ids));
-        if ($parentIds) {
-            $orX->add($qb->expr()->in('zone_parent.id', $parentIds));
+        if ($filter->getZones()) {
+            $this->withGeoZones($qb->innerJoin('committee.zones', 'zone'), $filter->getZones());
         }
 
-        return $qb->andWhere($orX);
+        return $qb
+            ->setMaxResults($limit)
+            ->setFirstResult(($page - 1) * $limit)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

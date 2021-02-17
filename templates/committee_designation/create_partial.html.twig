@@ -1,0 +1,76 @@
+{% extends 'committee_designation/_layout.html.twig' %}
+
+{% block designation_content %}
+    <section class="l__wrapper b__nudge--bottom-huge">
+        {{ form_start(form, {attr: {class: 'em-form'}}) }}
+        <div class="b__nudge--bottom">
+            <div class="{{ step == 'form' ? 'hidden' }}">
+                {{ form_widget(form.back, { label: '⟵ Retour', defaultClass: false, attr: {class: 'btn--as-link text--body text--blue--dark'} }) }}
+            </div>
+
+            {% if step == 'form' %}
+                <a href="{{ path("app_#{space_type}_committees_designations_partials") }}" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
+            {% endif %}
+        </div>
+
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom{{ not command.pool ? '-large' }} b__nudge--top-50">{{ ('designation.label.type_' ~ command.designationType)|trans }} (partielle)</h2>
+
+            {% if command.pool %}
+                <h4 class="font-roboto b__nudge--bottom-large">Genre : {{ ('common.' ~ command.pool)|trans }}</h4>
+            {% endif %}
+
+            <div class="{{ step == 'confirm' ? 'hidden' }}">
+                {{ form_errors(form) }}
+
+                <div class="em-form__group">
+                    {{ form_label(form.voteStartDate, 'Début du vote', {label_attr: {class: 'em-form__label'}}) }}
+                    {{ form_errors(form.voteStartDate) }}
+                    {{ form_widget(form.voteStartDate, { attr: { class: 'em-form__field' } }) }}
+                </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.voteEndDate, 'Fin du vote', {label_attr: {class: 'em-form__label'}}) }}
+                    {{ form_errors(form.voteEndDate) }}
+                    {{ form_widget(form.voteEndDate, { attr: { class: 'em-form__field' } }) }}
+                </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.message, 'Message', {label_attr: {class: 'em-form__label'}}) }}
+                    {{ form_errors(form.message) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.message, { attr: { class: 'em-form__field' } }) }}
+                    </div>
+                </div>
+
+                {{ form_widget(form.next, { label: 'Suivant →', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-50'} }) }}
+            </div>
+
+            <div class="{{ step == 'form' ? 'hidden' }}">
+                {% if message_content %}
+                    <iframe srcdoc="{{ message_content }}" width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;"></iframe>
+                {% endif %}
+
+                {{ form_widget(form.confirm, { label: 'Confirmer', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-50'} }) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+{% endblock %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.microCkeditor('partial_designation_message', 300, 5000) }}
+        });
+    </script>
+{% endblock %}

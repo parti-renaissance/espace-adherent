@@ -6,27 +6,24 @@
             {% set sub_routes = [
                 {
                     route_name: "app_#{space_type}_committees",
-                    url: path("app_#{space_type}_committees"),
                     label: 'Comités actifs',
                 },
                 {
                     route_name: "app_#{space_type}_committees_requests",
-                    url: path("app_#{space_type}_committees_requests"),
                     label: 'Demandes de créations',
                 },
                 {
                     route_name: "app_#{space_type}_committees_designations",
-                    url: path("app_#{space_type}_committees_designations"),
                     label: 'Désignations',
                 },
             ] %}
 
             {% for route in sub_routes %}
-                <li class="{{ is_active_route(app.request, route.route_name) ? 'active' }}">
+                <li {{ is_active_route(app.request, route.route_name) ? 'class="active"' }}>
                     {% if is_active_route(app.request, route.route_name) %}
                         <span class="tabs-nav__item">{{ route.label }}</span>
                     {% else %}
-                        <a class="tabs-nav__item" href="{{ route.url }}">{{ route.label }}</a>
+                        <a class="tabs-nav__item" href="{{ path(route.route_name) }}">{{ route.label }}</a>
                     {% endif %}
                 </li>
             {% endfor %}

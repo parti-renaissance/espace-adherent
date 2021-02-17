@@ -63,4 +63,25 @@ class ManagedZoneProvider
 
         throw new \InvalidArgumentException(sprintf('Invalid "%s" space type', $spaceType));
     }
+
+    public function getManagedZonesIds(Adherent $adherent, string $spaceType): array
+    {
+        return array_map(
+            static function (Zone $zone) { return $zone->getId(); },
+            $this->getManagedZones($adherent, $spaceType)
+        );
+    }
+
+    public function zoneBelongsToSome(Zone $zone, array $managedIds): bool
+    {
+        $ids = array_map(static function (Zone $zone): int {
+            return $zone->getId();
+        }, $zone->getParents());
+
+        $ids[] = $zone->getId();
+
+        $intersect = array_intersect($ids, $managedIds);
+
+        return \count($intersect) > 0;
+    }
 }

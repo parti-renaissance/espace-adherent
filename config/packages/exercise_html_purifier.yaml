@@ -12,4 +12,4 @@ exercise_html_purifier:
         AutoFormat.Custom:
             - '@App\HTMLPurifier\Injector\ImageDimension'
     basic_content:
-        HTML.AllowedElements: p, ol,ul,li,br
+        HTML.AllowedElements: p,ol,ul,li,br

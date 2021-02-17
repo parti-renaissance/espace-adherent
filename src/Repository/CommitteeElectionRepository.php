@@ -7,7 +7,6 @@ use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
-use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -20,6 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class CommitteeElectionRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -147,27 +147,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
         }
 
         if ($filter->getZones()) {
-            $qb
-                ->leftJoin('committee.zones', 'zone')
-                ->innerJoin('zone.parents', 'zone_parent')
-            ;
-
-            $ids = array_map(static function ($zone) {
-                return $zone->getId();
-            }, $filter->getZones());
-
-            $parentIds = array_filter(array_map(static function (Zone $zone): ?int {
-                return $zone->isCityGrouper() ? null : $zone->getId();
-            }, $filter->getZones()));
-
-            $orX = $qb->expr()->orX();
-            $orX->add($qb->expr()->in('zone.id', $ids));
-
-            if ($parentIds) {
-                $orX->add($qb->expr()->in('zone_parent.id', $parentIds));
-            }
-
-            $qb->andWhere($orX);
+            $this->withGeoZones($qb->innerJoin('committee.zones', 'zone'), $filter->getZones());
         }
 
         return $this->configurePaginator($qb, $page, $limit);

@@ -133,12 +133,12 @@ abstract class AbstractCommitteeController extends AbstractController
     }
 
     /**
-     * @Route("/designations", name="committees_designations", methods={"GET", "POST"})
+     * @Route("/designations", name="committees_designations", methods={"GET"})
      */
     public function committeesDesignationListAction(
         Request $request,
         ManagedZoneProvider $managedZoneProvider,
-        CommitteeElectionRepository $committeeRepository
+        CommitteeElectionRepository $committeeElectionRepository
     ): Response {
         $managedZones = $managedZoneProvider->getManagedZones($this->getMainUser($request->getSession()), $this->getSpaceType());
         $filter = new CommitteeDesignationsListFilter($managedZones);
@@ -152,7 +152,36 @@ abstract class AbstractCommitteeController extends AbstractController
         }
 
         return $this->renderTemplate($this->getSpaceType().'/committee/designations_list.html.twig', [
-            'elections' => $committeeRepository->findElections($filter),
+            'elections' => $committeeElectionRepository->findElections($filter, $request->query->getInt('page', 1)),
+            'form' => $form->createView(),
+            'filter' => $filter,
+        ]);
+    }
+
+    /**
+     * @Route("/designations/partielles", name="committees_designations_partials", methods={"GET"})
+     */
+    public function listAvailableCommitteePartialAction(
+        Request $request,
+        ManagedZoneProvider $managedZoneProvider,
+        CommitteeRepository $committeeRepository
+    ): Response {
+        $managedZones = $managedZoneProvider->getManagedZones(
+            $this->getMainUser($request->getSession()),
+            $this->getSpaceType()
+        );
+        $filter = new CommitteeDesignationsListFilter($managedZones);
+
+        $form = $this->createForm(CommitteeDesignationsListFilterType::class, $filter, [
+            'space_type' => $this->getSpaceType(),
+        ])->handleRequest($request);
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $filter = new CommitteeDesignationsListFilter($managedZones);
+        }
+
+        return $this->renderTemplate($this->getSpaceType().'/committee/available_committees_for_partials.html.twig', [
+            'committees' => $committeeRepository->findAvailableForPartials($filter, $request->query->getInt('page', 1)),
             'form' => $form->createView(),
             'filter' => $filter,
         ]);
