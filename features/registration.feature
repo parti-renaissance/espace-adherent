@@ -182,18 +182,38 @@ Feature:
     And I should not see "L'un des champs du formulaire est mal renseigné."
 
     And I fill in the following:
-      | become_adherent[address][address]    |  |
-      | become_adherent[address][cityName]   |  |
-      | become_adherent[address][postalCode] |  |
-      | become_adherent[gender]              |  |
-      | become_adherent[phone][number]       |  |
-      | become_adherent[birthdate][day]      |  |
-      | become_adherent[birthdate][month]    |  |
-      | become_adherent[birthdate][year]     |  |
+      | become_adherent[address][address]    |    |
+      | become_adherent[address][cityName]   |    |
+      | become_adherent[address][postalCode] |    |
+      | become_adherent[address][country]    | FR |
+      | become_adherent[gender]              |    |
+      | become_adherent[phone][number]       |    |
+      | become_adherent[birthdate][day]      |    |
+      | become_adherent[birthdate][month]    |    |
+      | become_adherent[birthdate][year]     |    |
     When I press "Je rejoins La République En Marche"
     Then I should see 6 ".form__error" elements
     And I should see "L'adresse est obligatoire."
     And I should see "Veuillez renseigner un code postal."
+    And I should see "Veuillez renseigner une ville."
+    And I should see "Veuillez renseigner un genre."
+    And I should see "Vous devez spécifier votre date de naissance."
+    And I should see "Vous devez accepter la charte."
+    And I should see "L'un des champs du formulaire est mal renseigné."
+
+    And I fill in the following:
+      | become_adherent[address][address]    |    |
+      | become_adherent[address][cityName]   |    |
+      | become_adherent[address][postalCode] |    |
+      | become_adherent[address][country]    | RU |
+      | become_adherent[gender]              |    |
+      | become_adherent[phone][number]       |    |
+      | become_adherent[birthdate][day]      |    |
+      | become_adherent[birthdate][month]    |    |
+      | become_adherent[birthdate][year]     |    |
+    When I press "Je rejoins La République En Marche"
+    Then I should see 5 ".form__error" elements
+    And I should see "L'adresse est obligatoire."
     And I should see "Veuillez renseigner une ville."
     And I should see "Veuillez renseigner un genre."
     And I should see "Vous devez spécifier votre date de naissance."
