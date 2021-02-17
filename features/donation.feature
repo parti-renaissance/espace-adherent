@@ -66,13 +66,14 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I fill in the following:
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
+    And I press "pbx-card-button-choice1"
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
-    And I should see "Paiement accepté"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click on the "2" "img" element
     Then I should see "Continuons à transformer notre pays ensemble !"
 
   @javascript
@@ -108,10 +109,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
-    And I should see "Paiement accepté"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click on the "2" "img" element
     And I simulate IPN call with "00000" code for the last donation of "jean.dupont@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
@@ -174,10 +175,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
-    And I should see "Paiement accepté"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click on the "2" "img" element
     And I simulate IPN call with "00000" code for the last donation of "jacques.picard@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
@@ -227,10 +228,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
-    And I should see "Paiement accepté"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click on the "2" "img" element
     Then I should see "Continuons à transformer notre pays ensemble !"
 
   @javascript
@@ -269,11 +270,12 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I fill in the following:
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
+    And I press "pbx-card-button-choice1"
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
-    And I should see "Paiement accepté"
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "1" "img" element
+    When I click on the "2" "img" element
     Then I should see "Continuons à transformer notre pays ensemble !"
