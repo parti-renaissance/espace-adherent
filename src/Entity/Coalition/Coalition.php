@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Event\CoalitionEvent;
+use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageOwnerInterface;
 use App\Entity\ImageTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,14 +29,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/coalitions",
  *             "normalization_context": {
- *                 "groups": {"coalition_read"}
+ *                 "groups": {"coalition_read", "exposed_image_owner"}
  *             },
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/coalitions/{id}",
- *             "normalization_context": {"groups": {"coalition_read"}},
+ *             "normalization_context": {"groups": {"coalition_read", "exposed_image_owner"}},
  *             "requirements": {"id": "%pattern_uuid%"}
  *         }
  *     },
@@ -49,7 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity
  */
-class Coalition implements ImageOwnerInterface
+class Coalition implements ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;

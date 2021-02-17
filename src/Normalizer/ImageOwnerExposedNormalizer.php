@@ -2,17 +2,18 @@
 
 namespace App\Normalizer;
 
-use App\Entity\Coalition\Coalition;
+use App\Entity\ExposedImageOwnerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CoalitionNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'COALITION_NORMALIZER_ALREADY_CALLED';
+    public const NORMALIZATION_GROUP = 'image_owner_exposed';
+    private const ALREADY_CALLED = 'IMAGE_OWNER_EXPOSED_NORMALIZER_ALREADY_CALLED';
 
     private $urlGenerator;
 
@@ -25,10 +26,10 @@ class CoalitionNormalizer implements NormalizerInterface, NormalizerAwareInterfa
     {
         $context[self::ALREADY_CALLED] = true;
 
-        /** @var Coalition $object */
+        /** @var ExposedImageOwnerInterface $object */
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('coalition_read', $context['groups'])) {
+        if (\in_array(self::NORMALIZATION_GROUP, $context['groups'])) {
             $data['image_url'] = $object->getImageName() ? $this->urlGenerator->generate(
                 'asset_url',
                 ['path' => $object->getImagePath()],
@@ -41,6 +42,6 @@ class CoalitionNormalizer implements NormalizerInterface, NormalizerAwareInterfa
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof Coalition;
+        return !isset($context[self::ALREADY_CALLED]) && $data instanceof ExposedImageOwnerInterface;
     }
 }

@@ -6,7 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Event\CauseEvent;
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,14 +28,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/causes",
  *             "normalization_context": {
- *                 "groups": {"cause_read"}
+ *                 "groups": {"cause_read", "exposed_image_owner"}
  *             },
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/causes/{id}",
- *             "normalization_context": {"groups": {"cause_read"}},
+ *             "normalization_context": {"groups": {"cause_read", "exposed_image_owner"}},
  *             "requirements": {"id": "%pattern_uuid%"}
  *         }
  *     },
@@ -49,7 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity
  */
-class Cause implements ImageOwnerInterface
+class Cause implements ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
