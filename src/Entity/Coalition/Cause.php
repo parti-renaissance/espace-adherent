@@ -88,8 +88,6 @@ class Cause implements ImageOwnerInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="causes")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @SymfonySerializer\Groups({"cause_read"})
      */
     private $coalition;
 
@@ -98,8 +96,6 @@ class Cause implements ImageOwnerInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @SymfonySerializer\Groups({"cause_read"})
      */
     private $author;
 
