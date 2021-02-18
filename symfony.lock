@@ -64,6 +64,9 @@
     "behatch/contexts": {
         "version": "2.8.1"
     },
+    "bex/behat-skip-tests": {
+        "version": "1.2.0"
+    },
     "brick/math": {
         "version": "0.9.1"
     },

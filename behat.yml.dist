@@ -43,3 +43,4 @@ default:
                             version: ''
                         wd_host: http://selenium:4444/wd/hub
         Behatch\Extension: ~
+        Bex\Behat\SkipTestsExtension: ~
