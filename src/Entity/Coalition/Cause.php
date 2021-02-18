@@ -7,11 +7,8 @@ use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\Event\CauseEvent;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
@@ -103,18 +100,6 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
      */
     private $coalition;
 
-    /**
-     * @var CauseEvent[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Event\CauseEvent",
-     *     mappedBy="cause",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     */
-    private $events;
-
     public function __construct(
         UuidInterface $uuid = null,
         string $name = null,
@@ -127,8 +112,6 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
         $this->description = $description;
         $this->coalition = $coalition;
         $this->author = $author;
-
-        $this->events = new ArrayCollection();
     }
 
     public function getName(): string
@@ -164,24 +147,6 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
     public function getImagePath(): string
     {
         return $this->imageName ? \sprintf('images/causes/%s', $this->getImageName()) : '';
-    }
-
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(CauseEvent $event): void
-    {
-        if (!$this->events->contains($event)) {
-            $event->setCause($this);
-            $this->events->add($event);
-        }
-    }
-
-    public function removeEvent(CauseEvent $event): void
-    {
-        $this->events->removeElement($event);
     }
 
     public function getCoalition(): ?Coalition

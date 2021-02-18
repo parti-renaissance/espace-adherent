@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20210218143353 extends AbstractMigration
+final class Version20210218145850 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -33,19 +33,10 @@ final class Version20210218143353 extends AbstractMigration
           cause 
         ADD 
           CONSTRAINT FK_F0DA7FBFF675F31B FOREIGN KEY (author_id) REFERENCES adherents (id)');
-        $this->addSql('ALTER TABLE events ADD cause_id INT UNSIGNED DEFAULT NULL');
-        $this->addSql('ALTER TABLE 
-          events 
-        ADD 
-          CONSTRAINT FK_5387574A66E2221E FOREIGN KEY (cause_id) REFERENCES cause (id)');
-        $this->addSql('CREATE INDEX IDX_5387574A66E2221E ON events (cause_id)');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A66E2221E');
         $this->addSql('DROP TABLE cause');
-        $this->addSql('DROP INDEX IDX_5387574A66E2221E ON events');
-        $this->addSql('ALTER TABLE events DROP cause_id');
     }
 }
