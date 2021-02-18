@@ -134,16 +134,6 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
         $this->description = $description;
     }
 
-    public function setImageName(?UploadedFile $image): void
-    {
-        $this->imageName = null === $image ? null :
-            sprintf('%s.%s',
-                $this->uuid,
-                $image->getClientOriginalExtension()
-            )
-        ;
-    }
-
     public function getImagePath(): string
     {
         return $this->imageName ? \sprintf('images/causes/%s', $this->getImageName()) : '';

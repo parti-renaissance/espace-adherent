@@ -27,7 +27,7 @@ Feature:
                 "name": "Culture",
                 "description": "Description de la coalition 'Culture'",
                 "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
-                "image_url": "http://test.enmarche.code/assets/images/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315.png"
+                "image_url": "http://test.enmarche.code/assets/images/coalitions/5cd98b474069115622f2f5816014d204.png"
             },
             {
                 "name": "Démocratie",
@@ -132,7 +132,7 @@ Feature:
         "name": "Culture",
         "description": "Description de la coalition 'Culture'",
         "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
-        "image_url": "http://test.enmarche.code/assets/images/coalitions/d5289058-2a35-4cf0-8f2f-a683d97d8315.png"
+        "image_url": "http://test.enmarche.code/assets/images/coalitions/5cd98b474069115622f2f5816014d204.png"
     }
     """
 
