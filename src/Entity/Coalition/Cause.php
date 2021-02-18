@@ -30,14 +30,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/causes",
  *             "normalization_context": {
- *                 "groups": {"cause_read", "exposed_image_owner"}
+ *                 "groups": {"cause_read", "image_owner_exposed"}
  *             },
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/causes/{id}",
- *             "normalization_context": {"groups": {"cause_read", "exposed_image_owner"}},
+ *             "normalization_context": {"groups": {"cause_read", "image_owner_exposed"}},
  *             "requirements": {"id": "%pattern_uuid%"}
  *         }
  *     },
