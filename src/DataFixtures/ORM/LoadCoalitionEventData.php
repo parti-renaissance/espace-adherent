@@ -102,8 +102,8 @@ class LoadCoalitionEventData extends Fixture implements DependentFixtureInterfac
             'Événement culturel 3',
             'Nous allons échanger encore autour de différents sujets culturels',
             PostAddress::createForeignAddress('US', '10019', 'New York', '226 W 52nd St', 'New York', 40.7625289, -73.9859927),
-            (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+10 hours')->format('Y-m-d H:00:00'),
-            (new Chronos('now', new \DateTimeZone('America/New_York')))->modify('+13 hours')->format('Y-m-d H:00:00')
+            (new Chronos('+1 days'))->format('Y-m-d').' 10:00:00',
+            (new Chronos('+1 days'))->format('Y-m-d').' 18:00:00'
         );
 
         $eventCulture4 = $this->createEvent(
@@ -138,8 +138,8 @@ class LoadCoalitionEventData extends Fixture implements DependentFixtureInterfac
             'Événement culturel 6',
             'Du bonheur pour tout le monde, gratuitement, et que personne ne reparte lésé ! ',
             PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            (new Chronos('now'))->modify('-30 minutes')->format('Y-m-d H:i:00'),
-            (new Chronos('now'))->format('Y-m-d').' 18:00:00'
+            (new Chronos('now'))->modify('+30 minutes')->format('Y-m-d H:i:00'),
+            (new Chronos('now'))->modify('+3 hours')->format('Y-m-d H:i:00'),
         );
 
         $eventCultureCancelled = $this->createEvent(
