@@ -47,13 +47,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ORM\Entity
- * @ORM\AssociationOverrides({
- *     @ORM\AssociationOverride(name="author",
- *         joinColumns={
- *             @ORM\JoinColumn(nullable=false)
- *         }
- *     )
- * })
  */
 class Cause implements ExposedImageOwnerInterface, AuthoredInterface
 {

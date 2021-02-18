@@ -5,14 +5,14 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20210218145850 extends AbstractMigration
+final class Version20210218154910 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE cause (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           coalition_id INT UNSIGNED NOT NULL, 
-          author_id INT UNSIGNED NOT NULL, 
+          author_id INT UNSIGNED DEFAULT NULL, 
           name VARCHAR(255) NOT NULL, 
           description LONGTEXT NOT NULL, 
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
