@@ -6,7 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Event\CoalitionEvent;
-use App\Entity\ImageOwnerInterface;
+use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,14 +28,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/coalitions",
  *             "normalization_context": {
- *                 "groups": {"coalition_read"}
+ *                 "groups": {"coalition_read", "image_owner_exposed"}
  *             },
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/coalitions/{id}",
- *             "normalization_context": {"groups": {"coalition_read"}},
+ *             "normalization_context": {"groups": {"coalition_read", "image_owner_exposed"}},
  *             "requirements": {"id": "%pattern_uuid%"}
  *         }
  *     },
@@ -49,7 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity
  */
-class Coalition implements ImageOwnerInterface
+class Coalition implements ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
@@ -70,7 +70,7 @@ class Coalition implements ImageOwnerInterface
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"coalition_read"})
+     * @SymfonySerializer\Groups({"coalition_read", "cause_read"})
      */
     private $name;
 
@@ -118,6 +118,18 @@ class Coalition implements ImageOwnerInterface
      */
     protected $followers;
 
+    /**
+     * @var Cause[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Coalition\Cause",
+     *     mappedBy="coalition",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $causes;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $name = null,
@@ -131,6 +143,7 @@ class Coalition implements ImageOwnerInterface
 
         $this->events = new ArrayCollection();
         $this->followers = new ArrayCollection();
+        $this->causes = new ArrayCollection();
     }
 
     public function getName(): string
@@ -146,16 +159,6 @@ class Coalition implements ImageOwnerInterface
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function setImageName(?UploadedFile $image): void
-    {
-        $this->imageName = null === $image ? null :
-            sprintf('%s.%s',
-                $this->uuid,
-                $image->getClientOriginalExtension()
-            )
-        ;
     }
 
     public function getImagePath(): string
@@ -196,5 +199,23 @@ class Coalition implements ImageOwnerInterface
     public function removeFollower(Adherent $follower): void
     {
         $this->followers->remove($follower);
+    }
+
+    public function getCauses(): Collection
+    {
+        return $this->causes;
+    }
+
+    public function addCause(Cause $cause): void
+    {
+        if (!$this->causes->contains($cause)) {
+            $cause->setCoalition($this);
+            $this->causes->add($cause);
+        }
+    }
+
+    public function removeCause(Cause $cause): void
+    {
+        $this->causes->removeElement($cause);
     }
 }

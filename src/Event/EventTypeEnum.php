@@ -11,4 +11,5 @@ class EventTypeEnum extends Enum
     public const TYPE_INSTITUTIONAL = 'institutional';
     public const TYPE_MUNICIPAL = 'municipal';
     public const TYPE_COALITION = 'coalition';
+    public const TYPE_CAUSE = 'cause';
 }
