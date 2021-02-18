@@ -13,7 +13,8 @@ class DateRange extends Constraint
     public $startDateField;
     public $endDateField;
     public $interval;
-    public $message = 'common.date_range.invalid_interval';
+    public $messageDate = 'common.date_range.invalid_date';
+    public $messageInterval = 'common.date_range.invalid_interval';
 
     public function getRequiredOptions()
     {

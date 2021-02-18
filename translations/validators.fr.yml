@@ -54,7 +54,8 @@ common.recaptcha.invalid_message: Vous avez été détecté en tant que robot, p
 
 common.twitter_nickname.invalid_format: Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.
 
-common.date_range.invalid_interval: La date de fin ne doit pas dépasser le {{ limit }}.
+common.date_range.invalid_date: La date de fin ne doit pas dépasser le {{ limit }}.
+common.date_range.invalid_interval: La date de fin doit être incluse entre {{ dateMin }} et {{ dateMax }}.
 
 common.repeated: Les valeurs ne correspondent pas.
 

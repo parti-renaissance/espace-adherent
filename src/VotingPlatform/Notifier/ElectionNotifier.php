@@ -100,7 +100,7 @@ class ElectionNotifier
     public function notifyElectionSecondRound(Election $election): void
     {
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
-            $committeeMemberships = $this->committeeMembershipRepository->findVotingForSupervisorMemberships(
+            $committeeMemberships = $this->committeeMembershipRepository->findVotingForElectionMemberships(
                 $election->getElectionEntity()->getCommittee(),
                 $election->getDesignation(),
                 false

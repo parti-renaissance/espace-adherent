@@ -247,7 +247,7 @@ class ConfigureCommand extends Command
 
         // Create candidates groups
         $candidacies = $this->committeeCandidacyRepository->findConfirmedByCommittee($committee, $designation = $election->getDesignation());
-        $pools = $memberships = [];
+        $pools = [];
 
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
             $pools = [
@@ -275,8 +275,6 @@ class ConfigureCommand extends Command
                     $malePool->addCandidateGroup($group);
                 }
             }
-
-            $memberships = $this->committeeMembershipRepository->findVotingMemberships($committee);
         } elseif (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType()) {
             $pools = [
                 $pool = new ElectionPool(ElectionPoolCodeEnum::COMMITTEE_SUPERVISOR),
@@ -321,8 +319,6 @@ class ConfigureCommand extends Command
                     $binome->take();
                 }
             }
-
-            $memberships = $this->committeeMembershipRepository->findVotingForSupervisorMemberships($committee, $designation);
         }
 
         foreach ($pools as $pool) {
@@ -331,6 +327,8 @@ class ConfigureCommand extends Command
                 $election->addElectionPool($pool);
             }
         }
+
+        $memberships = $this->committeeMembershipRepository->findVotingForElectionMemberships($committee, $designation);
 
         $list = $this->createVoterList(
             $election,
@@ -358,10 +356,7 @@ class ConfigureCommand extends Command
         $committee = $committeeElection->getCommittee();
 
         // validate voters
-        if (
-            (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType() && !$this->committeeMembershipRepository->committeeHasVoters($committee))
-            || (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType() && !$this->committeeMembershipRepository->committeeHasVotersForSupervisorElection($committee, $designation))
-        ) {
+        if (!$this->committeeMembershipRepository->committeeHasVotersForElection($committee, $designation)) {
             if ($this->io->isDebug()) {
                 $this->io->warning(sprintf('Committee "%s" does not have any voters', $committee->getSlug()));
             }

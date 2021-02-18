@@ -15,36 +15,39 @@ final class VotingPlatformPartialElectionIsOpenMessage extends Message
     public static function create(
         Designation $designation,
         string $messageContent,
-        string $name,
-        array $adherents
+        array $adherents,
+        string $url = ''
     ): self {
         $first = array_shift($adherents);
 
         $params = [
+            'candidature_end_date' => static::formatDate($designation->getCandidacyEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
+            'vote_start_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             'vote_end_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
-            'name' => $name,
-            'election_type' => $designation->getType(),
+            'election_type' => mb_strtoupper(mb_substr($designation->getDenomination(), 0, 1)).mb_substr($designation->getDenomination(), 1).'s',
+            'mail_subject' => $designation->isCommitteeType() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !',
             'message_content' => $messageContent,
+            'page_url' => $url,
         ];
 
         $message = new self(
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            sprintf('[%s] Vous pouvez candidater !', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType() ? 'Élections internes' : 'Désignations'),
+            sprintf(
+                '[%s] %s',
+                DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType() ? 'Élections partielles' : 'Désignations partielles',
+                $designation->isCommitteeType() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !'
+            ),
             $params,
-            [
-                'first_name' => $first->getFirstName(),
-            ],
+            [],
             null,
             null,
             $params
         );
 
         foreach ($adherents as $adherent) {
-            $message->addRecipient($adherent->getEmailAddress(), $adherent->getFullName(), [
-                'first_name' => $adherent->getFirstName(),
-            ]);
+            $message->addRecipient($adherent->getEmailAddress(), $adherent->getFullName());
         }
 
         return $message;

@@ -48,14 +48,33 @@ class DateRangeValidator extends ConstraintValidator
             throw new ConstraintDefinitionException('The start date field should be of type DateTime');
         }
 
-        $interval = \DateInterval::createFromDateString($constraint->interval);
+        $intervals = explode('|', $constraint->interval, 2);
 
-        if (($maxEndDate = (clone $startDate)->add($interval)) < $endDate) {
+        $maxEndDate = (clone $startDate)->add(\DateInterval::createFromDateString($intervals[0]));
+
+        if (1 === \count($intervals)) {
+            if ($maxEndDate < $endDate) {
+                $this
+                    ->context
+                    ->buildViolation($constraint->messageDate)
+                    ->atPath($constraint->endDateField)
+                    ->setParameter('{{ limit }}', $this->formatValue($maxEndDate, self::PRETTY_DATE))
+                    ->addViolation()
+                ;
+            }
+
+            return;
+        }
+
+        $maxEndDateB = (clone $startDate)->add(\DateInterval::createFromDateString($intervals[1]));
+
+        if ($endDate < $maxEndDate || $endDate > $maxEndDateB) {
             $this
                 ->context
-                ->buildViolation($constraint->message)
+                ->buildViolation($constraint->messageInterval)
                 ->atPath($constraint->endDateField)
-                ->setParameter('{{ limit }}', $this->formatValue($maxEndDate, self::PRETTY_DATE))
+                ->setParameter('{{ dateMin }}', $this->formatValue($maxEndDate, self::PRETTY_DATE))
+                ->setParameter('{{ dateMax }}', $this->formatValue($maxEndDateB, self::PRETTY_DATE))
                 ->addViolation()
             ;
         }

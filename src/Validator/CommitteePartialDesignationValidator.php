@@ -3,6 +3,8 @@
 namespace App\Validator;
 
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\Repository\CommitteeMembershipRepository;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Symfony\Component\Validator\Constraint;
@@ -12,6 +14,13 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class CommitteePartialDesignationValidator extends ConstraintValidator
 {
+    private $committeeMembershipRepository;
+
+    public function __construct(CommitteeMembershipRepository $committeeMembershipRepository)
+    {
+        $this->committeeMembershipRepository = $committeeMembershipRepository;
+    }
+
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof CommitteePartialDesignation) {
@@ -63,6 +72,16 @@ class CommitteePartialDesignationValidator extends ConstraintValidator
         if (1 === \count($genders) && (!$value->getPool() || \in_array($value->getPool(), $genders, true))) {
             $this->context
                 ->buildViolation($constraint->errorPoolMessage)
+                ->addViolation()
+            ;
+
+            return;
+        }
+
+        // Check if committee has a voters
+        if (!$this->committeeMembershipRepository->committeeHasVotersForElection($committee, Designation::createPartialFromCommand($value))) {
+            $this->context
+                ->buildViolation($constraint->errorVotersMessage)
                 ->addViolation()
             ;
 

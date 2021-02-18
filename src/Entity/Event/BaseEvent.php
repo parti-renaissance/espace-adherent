@@ -66,7 +66,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     startDateField="beginAt",
  *     endDateField="finishAt",
  *     interval="3 days",
- *     message="committee.event.invalid_finish_date"
+ *     messageDate="committee.event.invalid_finish_date"
  * )
  *
  * @ApiResource(

@@ -12,17 +12,20 @@ class PartialDesignationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $dateTimeOptions = [
-            'min_date' => new \DateTime(),
-            'minute_increment' => 15,
-        ];
-
         $builder
-            ->add('voteStartDate', DateTimePickerType::class, $dateTimeOptions)
-            ->add('voteEndDate', DateTimePickerType::class, $dateTimeOptions)
+            ->add('voteStartDate', DateTimePickerType::class, [
+                'min_date' => new \DateTime('+2 weeks'),
+                'max_date' => new \DateTime('+4 weeks'),
+                'minute_increment' => 15,
+            ])
+            ->add('voteEndDate', DateTimePickerType::class, [
+                'min_date' => new \DateTime('+3 weeks'),
+                'max_date' => new \DateTime('+6 weeks'),
+                'minute_increment' => 15,
+            ])
             ->add('message', PurifiedTextareaType::class, [
                 'attr' => [
-                    'maxlength' => 5000,
+                    'maxlength' => 2000,
                 ],
                 'filter_emojis' => true,
                 'purifier_type' => 'basic_content',

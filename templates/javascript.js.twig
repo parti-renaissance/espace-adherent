@@ -100,7 +100,7 @@ CKEDITOR.replace('{{ element }}', {
 {% endmacro %}
 
 {% macro ckeditorMaxlength(element, maxLength) %}
-var maxlength_{{ element }} = $('#{{ element }}').attr("maxlength");
+var maxlength_{{ element }} = parseInt($('#{{ element }}').attr("maxlength"));
 var text_length_{{ element }} = decodeHtml(CKEDITOR.instances['{{ element }}'].getData().replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, '').replace(/^\s+|\s+$/g, '').replace(/\n/g, ' ')).length;
 $('#{{ element }}_counter').html(text_length_{{ element }}  + '/' + maxlength_{{ element }});
 

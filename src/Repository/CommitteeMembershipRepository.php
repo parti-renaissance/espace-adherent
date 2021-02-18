@@ -555,24 +555,10 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    public function committeeHasVoters(Committee $committee): bool
-    {
-        return (bool) $this->createQueryBuilder('cm')
-            ->select('COUNT(1)')
-            ->where('cm.committee = :committee AND cm.enableVote = :true')
-            ->setParameters([
-                'committee' => $committee,
-                'true' => true,
-            ])
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     /**
      * @return CommitteeMembership[]
      */
-    public function findVotingForSupervisorMemberships(
+    public function findVotingForElectionMemberships(
         Committee $committee,
         Designation $designation,
         bool $withCertified = true
@@ -598,7 +584,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    public function committeeHasVotersForSupervisorElection(Committee $committee, Designation $designation): bool
+    public function committeeHasVotersForElection(Committee $committee, Designation $designation): bool
     {
         return 0 < (int) $this->createQueryBuilderForVotingMemberships($committee, $designation, false)
             ->select('COUNT(1)')
@@ -663,30 +649,32 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ])
         ;
 
-        $forbiddenAdherents = array_column($this->getEntityManager()->createQueryBuilder()
-            ->from(CommitteeCandidacy::class, 'candidacy')
-            ->select('adherent.id as adherent_id, candidacy.id as candidacy_id')
-            ->innerJoin('candidacy.committeeElection', 'election')
-            ->innerJoin('candidacy.committeeMembership', 'membership')
-            ->innerJoin('membership.adherent', 'adherent')
-            ->innerJoin('adherent.memberships', 'other_membership', Join::WITH, 'other_membership.committee = :committee')
-            ->where('election.designation = :designation')
-            ->andWhere('candidacy.status = :status')
-            ->andWhere('election.committee != :committee')
-            ->setParameters([
-                'committee' => $committee,
-                'status' => CandidacyInterface::STATUS_CONFIRMED,
-                'designation' => $designation,
-            ])
-            ->getQuery()
-            ->getArrayResult(), 'adherent_id')
-        ;
+        if (!$designation->isLimited()) {
+            $forbiddenAdherents = array_column($this->getEntityManager()->createQueryBuilder()
+                ->from(CommitteeCandidacy::class, 'candidacy')
+                ->select('adherent.id as adherent_id, candidacy.id as candidacy_id')
+                ->innerJoin('candidacy.committeeElection', 'election')
+                ->innerJoin('candidacy.committeeMembership', 'membership')
+                ->innerJoin('membership.adherent', 'adherent')
+                ->innerJoin('adherent.memberships', 'other_membership', Join::WITH, 'other_membership.committee = :committee')
+                ->where('election.designation = :designation')
+                ->andWhere('candidacy.status = :status')
+                ->andWhere('election.committee != :committee')
+                ->setParameters([
+                    'committee' => $committee,
+                    'status' => CandidacyInterface::STATUS_CONFIRMED,
+                    'designation' => $designation,
+                ])
+                ->getQuery()
+                ->getArrayResult(), 'adherent_id'
+            );
 
-        if ($forbiddenAdherents) {
-            $qb
-                ->andWhere('adherent.id NOT IN (:candidate_adherents)')
-                ->setParameter('candidate_adherents', $forbiddenAdherents)
-            ;
+            if ($forbiddenAdherents) {
+                $qb
+                    ->andWhere('adherent.id NOT IN (:candidate_adherents)')
+                    ->setParameter('candidate_adherents', $forbiddenAdherents)
+                ;
+            }
         }
 
         return $qb;
