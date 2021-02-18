@@ -4,6 +4,8 @@ namespace App\Entity\Coalition;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
+use App\Entity\AuthoredInterface;
+use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Event\CauseEvent;
 use App\Entity\ExposedImageOwnerInterface;
@@ -48,12 +50,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ORM\Entity
+ * @ORM\AssociationOverrides({
+ *     @ORM\AssociationOverride(name="author",
+ *         joinColumns={
+ *             @ORM\JoinColumn(nullable=false)
+ *         }
+ *     )
+ * })
  */
-class Cause implements ExposedImageOwnerInterface
+class Cause implements ExposedImageOwnerInterface, AuthoredInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
     use ImageTrait;
+    use AuthoredTrait;
 
     /**
      * @var UploadedFile|null
@@ -92,16 +102,6 @@ class Cause implements ExposedImageOwnerInterface
      * @SymfonySerializer\Groups({"cause_read"})
      */
     private $coalition;
-
-    /**
-     * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @SymfonySerializer\Groups({"cause_read"})
-     */
-    private $author;
 
     /**
      * @var CauseEvent[]|Collection
@@ -192,15 +192,5 @@ class Cause implements ExposedImageOwnerInterface
     public function setCoalition(Coalition $coalition): void
     {
         $this->coalition = $coalition;
-    }
-
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(Adherent $author): void
-    {
-        $this->author = $author;
     }
 }

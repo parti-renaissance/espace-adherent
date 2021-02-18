@@ -7,7 +7,6 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Event\CoalitionEvent;
 use App\Entity\ExposedImageOwnerInterface;
-use App\Entity\ImageOwnerInterface;
 use App\Entity\ImageTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

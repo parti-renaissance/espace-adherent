@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait AuthoredTrait
 {
@@ -10,6 +11,8 @@ trait AuthoredTrait
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
+     *
+     * @SymfonySerializer\Groups({"cause_read"})
      */
     private $author;
 
