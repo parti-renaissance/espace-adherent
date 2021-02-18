@@ -17,6 +17,12 @@
             </a>
         {% endif %}
 
+        {% if is_granted('ROLE_REFERENT') %}
+            <a href="{{ path("app_#{space_type}_committees_designations_partials") }}" class="btn-secondary btn-secondary--blue b__nudge--left-small">
+                + Créer une partielle
+            </a>
+        {% endif %}
+
         {% if total_count %}
             <span class="datagrid__count">
                 <span>{{ committees.totalItems|number_format(0, ',', ' ') }}</span>
@@ -28,7 +34,6 @@
 
     <div class="manager__filters">
         <div class="manager__filters__form">
-
             {{ form_start(form) }}
 
                 <h4 class="manager__filters__subtitle">Filtrer par</h4>

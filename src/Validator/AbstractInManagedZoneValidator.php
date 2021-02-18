@@ -42,18 +42,12 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
             throw new \InvalidArgumentException('No user provided');
         }
 
-        $managedZones = $this->managedZoneProvider->getManagedZones($user, $constraint->spaceType);
-
-        $managedZonesIds = array_map(static function (Zone $zone) {
-            return $zone->getId();
-        }, $managedZones);
-
-        if (!$managedZonesIds) {
+        if (!$managedZonesIds = $this->managedZoneProvider->getManagedZonesIds($user, $constraint->spaceType)) {
             return;
         }
 
         foreach ($zones as $zone) {
-            if (!$this->zoneBelongsToSome($zone, $managedZonesIds)) {
+            if (!$this->managedZoneProvider->zoneBelongsToSome($zone, $managedZonesIds)) {
                 $this->context
                     ->buildViolation($constraint->message)
                     ->addViolation()
@@ -93,21 +87,5 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
         }
 
         return $user;
-    }
-
-    /**
-     * @param Zone[] $managedIds
-     */
-    protected function zoneBelongsToSome(Zone $zone, array $managedIds): bool
-    {
-        $ids = array_map(static function (Zone $zone): int {
-            return $zone->getId();
-        }, $zone->getParents());
-
-        $ids[] = $zone->getId();
-
-        $intersect = array_intersect($ids, $managedIds);
-
-        return \count($intersect) > 0;
     }
 }

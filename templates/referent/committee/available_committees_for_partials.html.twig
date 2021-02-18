@@ -1,0 +1,141 @@
+{% extends base_template %}
+
+{% block committee_content %}
+    <div class="datagrid__pre-table b__nudge--bottom">
+        <h3>Comités</h3>
+
+        {% if is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_COMMITTEE')) %}
+            <a href="{{ path("app_referent_create_committee") }}" class="btn-secondary btn-secondary--blue">
+                + Créer un comité
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form) }}
+                <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+                {{ form_errors(form) }}
+
+                <div class="manager__filters__row">
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Zones</label>
+                                {{ form_widget(form.zones) }}
+                                {{ form_errors(form.zones) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="filter__row">
+                            <label class="filter__label">Nom de comité</label>
+                            {{ form_widget(form.committeeName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom de comité'}}) }}
+                            {{ form_errors(form.committeeName) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__actions b__nudge--top">
+                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Appliquer</button>
+                    {% if form.vars.submitted %}
+                        <a href="{{ path("app_#{space_type}_committees_designations_partials") }}" class="btn btn--no-border b__nudge--bottom-medium">
+                            Réinitialiser les filtres
+                        </a>
+                    {% endif %}
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    {% if block('sub_menu') is defined %}
+        {{ block('sub_menu') }}
+    {% endif %}
+
+    <div class="datagrid__table-container">
+        <table class="datagrid__table-manager">
+            <thead>
+                <tr>
+                    <th width="300">Comité</th>
+                    <th width="150" class="text--center">Membres</th>
+                    <th width="150" class="text--center">Adresse</th>
+                    <th width="500">Partielles</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in committees %}
+                    {% set committee = row[0] %}
+
+                    <tr>
+                        <td>
+                            <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank">
+                                {{ committee.name }}
+                            </a>
+                        </td>
+
+                        <td class="text--center">{{ committee.membersCount }}</td>
+                        <td>{{ committee.address }}, {{ committee.postalCode }} {{ committee.cityName }}, {{ committee.country }}</td>
+                        <td>
+                            {% if row['total_designed_adherents'] < 2 %}
+                                {% set route_params = {committee_slug: committee.slug, type: constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_ADHERENT')} %}
+
+                                {% if row['total_designed_adherents'] == 0 %}
+                                    <a href="{{ path('app_referent_designations_create_partial', route_params) }}">Lancer une partielle Binôme d'adhérents</a>
+                                {% else %}
+                                    <a href="{{ path('app_referent_designations_create_partial', route_params|merge({pool: row['total_designed_adherents_female'] < 1 ? constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::FEMALE') : constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::MALE')})) }}">
+                                        Lancer une partielle Binôme d'adhérents pour {{ row['total_designed_adherents_female'] < 1 ? 'Femme' : 'Homme' }}
+                                    </a>
+                                {% endif %}
+
+                                <br/>
+                            {% endif %}
+
+                            {% if row['total_supervisors'] < 2 %}
+                                {% set route_params = {committee_slug: committee.slug, type: constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR')} %}
+
+                                {% if row['total_supervisors'] == 0 %}
+                                    <a href="{{ path('app_referent_designations_create_partial', route_params) }}" class="btn--as-link">Lancer une partielle Binôme d'animateurs locaux</a>
+                                {% else %}
+                                    <a href="{{ path('app_referent_designations_create_partial', route_params|merge({pool: row['total_supervisors_female'] < 1 ? constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::FEMALE') : constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::MALE')})) }}">
+                                        Lancer une partielle Binôme d'animateurs locaux pour {{ row['total_supervisors_female'] < 1 ? 'Femme' : 'Homme' }}
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text--center">
+                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                            Aucun élément
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('select2/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('select2/fr.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.select2entity[data-autostart="false"]').select2entity({
+                theme: 'default em-filters'
+            })
+
+            App.runCandidacyModal('.candidacies-list-modal--trigger');
+        });
+    </script>
+{% endblock %}

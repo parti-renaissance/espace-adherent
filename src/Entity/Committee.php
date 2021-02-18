@@ -482,6 +482,9 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $this->adherentMandates->matching($criteria)->count() > 0;
     }
 
+    /**
+     * @return CommitteeAdherentMandate[]|Collection
+     */
     public function getActiveAdherentMandates(): Collection
     {
         $criteria = Criteria::create()
@@ -576,6 +579,9 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $count > 0 ? $mandates->first() : null;
     }
 
+    /**
+     * @return Adherent[]
+     */
     public function getSupervisors(bool $isProvisional = null): array
     {
         return array_map(function (CommitteeAdherentMandate $mandate) {
@@ -597,7 +603,10 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return self::CLOSED === $this->status;
     }
 
-    private function findSupervisorMandates(?string $gender = null, bool $isProvisional = null): Collection
+    /**
+     * @return CommitteeAdherentMandate[]|Collection
+     */
+    public function findSupervisorMandates(?string $gender = null, bool $isProvisional = null): Collection
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('quality', CommitteeMandateQualityEnum::SUPERVISOR))

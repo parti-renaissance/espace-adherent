@@ -10,6 +10,7 @@ services:
             $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
             $enableMunicipalSpace: '%env(bool:ENABLE_MUNICIPAL_SPACE)%'
             $timelineMaxItems: '%timeline_max_messages%'
+            $transactionalMailer: '@app.mailer.transactional'
 
     App\Controller\:
         resource: ../../src/Controller/

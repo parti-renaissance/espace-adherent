@@ -30,12 +30,12 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class EventRepository extends ServiceEntityRepository
 {
-    use PaginatorTrait;
-
     public const TYPE_PAST = 'past';
     public const TYPE_UPCOMING = 'upcoming';
     public const TYPE_ALL = 'all';
 
+    use PaginatorTrait;
+    use GeoZoneTrait;
     use GeoFilterTrait;
     use NearbyTrait;
     use ReferentTrait;
@@ -783,27 +783,6 @@ SQL;
             $qb->innerJoin("$alias.zones", 'zone');
         }
 
-        if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {
-            $qb->innerJoin('zone.parents', 'zone_parent');
-        }
-
-        $ids = array_map(static function (Zone $zone) {
-            return $zone->getId();
-        }, $zones);
-
-        $parentIds = array_filter(array_map(static function (Zone $zone) {
-            return $zone->isCityGrouper()
-                ? null
-                : $zone->getId()
-            ;
-        }, $zones));
-
-        $orX = $qb->expr()->orX();
-        $orX->add($qb->expr()->in('zone.id', $ids));
-        if ($parentIds) {
-            $orX->add($qb->expr()->in('zone_parent.id', $parentIds));
-        }
-
-        return $qb->andWhere($orX);
+        return $this->withGeoZones($qb, $zones);
     }
 }

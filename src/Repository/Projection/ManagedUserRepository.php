@@ -3,10 +3,10 @@
 namespace App\Repository\Projection;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use App\Entity\Geo\Zone;
 use App\Entity\Projection\ManagedUser;
 use App\Intl\FranceCitiesBundle;
 use App\ManagedUsers\ManagedUsersFilter;
+use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\ReferentTrait;
 use App\Subscription\SubscriptionTypeEnum;
@@ -19,6 +19,7 @@ class ManagedUserRepository extends ServiceEntityRepository
 {
     use ReferentTrait;
     use PaginatorTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -288,27 +289,6 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->innerJoin("$alias.zones", 'zone');
         }
 
-        if (!\in_array('zone_parent', $qb->getAllAliases(), true)) {
-            $qb->innerJoin('zone.parents', 'zone_parent');
-        }
-
-        $ids = array_map(static function ($zone) {
-            return $zone->getId();
-        }, $zones);
-
-        $parentIds = array_filter(array_map(static function (Zone $zone) {
-            return $zone->isCityGrouper()
-                ? null
-                : $zone->getId()
-            ;
-        }, $zones));
-
-        $orX = $qb->expr()->orX();
-        $orX->add($qb->expr()->in('zone.id', $ids));
-        if ($parentIds) {
-            $orX->add($qb->expr()->in('zone_parent.id', $parentIds));
-        }
-
-        return $qb->andWhere($orX);
+        return $this->withGeoZones($qb, $zones);
     }
 }
