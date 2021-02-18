@@ -67,7 +67,6 @@ class ReferentDesignationController extends AbstractDesignationController
                         $command->getMessage(),
                         $committee->getName(),
                         [$adherent],
-                        ''
                     ));
                 } elseif ($form->get('confirm')->isClicked()) {
                     $committee->setCurrentElection(new CommitteeElection($designation));

@@ -145,6 +145,13 @@ class Designation
      */
     private $pools;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
     public function __construct(string $label = null, UuidInterface $uuid = null)
     {
         $this->label = $label;
@@ -434,6 +441,16 @@ class Designation
         $this->pools = $pools;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
     public static function createPartialFromCommand(CreatePartialDesignationCommand $command): self
     {
         $designation = new self();
@@ -455,6 +472,7 @@ class Designation
         $designation->setVoteEndDate($command->getVoteEndDate());
 
         $designation->setLabel('[Partielle] '.$command->getCommittee()->getName());
+        $designation->setDescription($command->getMessage());
 
         $designation->markAsLimited();
 
