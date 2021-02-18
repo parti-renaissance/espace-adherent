@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d37afbfddad092445aa562f1321524d8",
+    "content-hash": "bdfd7426e9e17f5608f9102d61cd2ebe",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -16600,6 +16600,57 @@
                 "Symfony2"
             ],
             "time": "2017-12-05T13:58:49+00:00"
+        },
+        {
+            "name": "bex/behat-skip-tests",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tkotosz/behat-skip-tests.git",
+                "reference": "218ee4e310a59b4e5ad2637e4efa12cfe407d37c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tkotosz/behat-skip-tests/zipball/218ee4e310a59b4e5ad2637e4efa12cfe407d37c",
+                "reference": "218ee4e310a59b4e5ad2637e4efa12cfe407d37c",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "behat/mink-selenium2-driver": "^1.3.0",
+                "bex/behat-test-runner": "dev-master",
+                "jakoch/phantomjs-installer": "^1.9.8",
+                "phpspec/phpspec": "2.4.0-alpha2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tibor Kotosz",
+                    "email": "kotosy@gmail.com",
+                    "homepage": "https://github.com/tkotosz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Extension for behat to enable skipping tests without excluding them from the output",
+            "homepage": "https://github.com/tkotosz/behat-skip-tests",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "TDD"
+            ],
+            "time": "2018-05-19T09:19:49+00:00"
         },
         {
             "name": "coduo/php-matcher",
