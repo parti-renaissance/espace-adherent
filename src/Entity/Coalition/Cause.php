@@ -21,14 +21,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "pagination_client_items_per_page": true,
- *         "order": {"name": "ASC"}
+ *         "order": {"name": "ASC"},
+ *         "normalization_context": {
+ *             "groups": {"cause_read", "image_owner_exposed"}
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
  *             "path": "/causes",
- *             "normalization_context": {
- *                 "groups": {"cause_read", "image_owner_exposed"}
- *             },
  *         },
  *     },
  *     itemOperations={
