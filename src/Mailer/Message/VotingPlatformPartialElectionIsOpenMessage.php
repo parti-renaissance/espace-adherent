@@ -16,8 +16,7 @@ final class VotingPlatformPartialElectionIsOpenMessage extends Message
         Designation $designation,
         string $messageContent,
         string $name,
-        array $adherents,
-        string $url
+        array $adherents
     ): self {
         $first = array_shift($adherents);
 
@@ -25,7 +24,6 @@ final class VotingPlatformPartialElectionIsOpenMessage extends Message
             'vote_end_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             'name' => $name,
             'election_type' => $designation->getType(),
-            'page_url' => $url,
             'message_content' => $messageContent,
         ];
 
