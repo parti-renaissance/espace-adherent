@@ -41,7 +41,7 @@
         "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "^2.5",
-        "egulias/email-validator": "^2.1",
+        "egulias/email-validator": "^3.0",
         "endroid/qr-code-bundle": "^3.4.2",
         "enmarche/majority-judgment": "^0.0.3",
         "exercise/htmlpurifier-bundle": "^1.0",
