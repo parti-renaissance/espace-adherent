@@ -14,7 +14,7 @@
     "react": "^16.14.0",
     "react-countup": "^3.0.3",
     "react-dom": "^16.14.0",
-    "react-redux": "^5.0.7",
+    "react-redux": "^5.1.2",
     "react-responsive": "^5.0.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
