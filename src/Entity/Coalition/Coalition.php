@@ -3,6 +3,7 @@
 namespace App\Entity\Coalition;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Event\CoalitionEvent;
@@ -93,9 +94,11 @@ class Coalition implements ExposedImageOwnerInterface
     /**
      * @var CoalitionEvent[]|Collection
      *
-     * @ORM\OneToMany(
+     * @ApiSubresource
+     *
+     * @ORM\ManyToMany(
      *     targetEntity="App\Entity\Event\CoalitionEvent",
-     *     mappedBy="coalition",
+     *     mappedBy="coalitions",
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
