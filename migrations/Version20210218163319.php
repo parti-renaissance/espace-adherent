@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20210218154910 extends AbstractMigration
+final class Version20210218163319 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -32,7 +32,9 @@ final class Version20210218154910 extends AbstractMigration
         $this->addSql('ALTER TABLE 
           cause 
         ADD 
-          CONSTRAINT FK_F0DA7FBFF675F31B FOREIGN KEY (author_id) REFERENCES adherents (id)');
+          CONSTRAINT FK_F0DA7FBFF675F31B FOREIGN KEY (author_id) REFERENCES adherents (id) ON DELETE 
+        SET 
+          NULL');
     }
 
     public function down(Schema $schema): void
