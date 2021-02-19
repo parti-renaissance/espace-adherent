@@ -2,6 +2,7 @@
 
 namespace App\Admin\Jecoute;
 
+use App\Entity\Administrator;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\JeMarche\JeMarcheDeviceNotifier;
@@ -183,6 +184,11 @@ class NewsAdmin extends AbstractAdmin
     {
         parent::postPersist($object);
 
+        /** @var Administrator $administrator */
+        $administrator = $this->security->getUser();
+
+        $object->setCreatedBy($administrator);
+
         if ($object->isNotification()) {
             $this->dispatchNotification($object);
         }
@@ -191,5 +197,13 @@ class NewsAdmin extends AbstractAdmin
     private function dispatchNotification(News $news): void
     {
         $this->deviceNotifier->sendNotification($news);
+    }
+
+    /**
+     * @required
+     */
+    public function setSecurity(Security $security)
+    {
+        $this->security = $security;
     }
 }

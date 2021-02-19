@@ -6,12 +6,12 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Validator\Jecoute\NewsTarget;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -157,12 +157,18 @@ class News
     /**
      * @var Administrator|null
      *
-     * @Gedmo\Blameable(on="create")
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $createdBy;
+
+    /**
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $author;
 
     /**
      * @var bool
@@ -287,5 +293,15 @@ class News
     public function setNotification(bool $notification): void
     {
         $this->notification = $notification;
+    }
+
+    public function getAuthor(): ?Adherent
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(Adherent $author): void
+    {
+        $this->author = $author;
     }
 }
