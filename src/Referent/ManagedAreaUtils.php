@@ -12,7 +12,10 @@ class ManagedAreaUtils extends AreaUtils
         $localCode = static::getLocalCode($entity);
 
         return array_filter(
-            array_merge([$localCode], static::getRelatedCodes($localCode), [static::getMetropolisCode($entity)])
+            array_merge(
+                [$localCode, static::getMetropolisCode($entity), static::get69DCode($entity)],
+                static::getRelatedCodes($localCode)
+            )
         );
     }
 

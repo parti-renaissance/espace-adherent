@@ -22,7 +22,7 @@ class ManagedAreaUtilsTest extends TestCase
         $adherent->expects(self::any())->method('getPostalCode')->willReturn($postalCode);
         $adherent->expects(self::any())->method('getInseeCode')->willReturn($inseeCode);
 
-        $this->assertSame($expectedCodes, ManagedAreaUtils::getLocalCodes($adherent));
+        $this->assertEqualsCanonicalizing($expectedCodes, ManagedAreaUtils::getLocalCodes($adherent));
     }
 
     public function provideLocationsAndTags(): \Generator
@@ -43,5 +43,6 @@ class ManagedAreaUtilsTest extends TestCase
         yield ['MC', '98000', ['MC']];
         yield ['FR', '34570', ['34', '34M'], '34295'];
         yield ['FR', '69110', ['69', '69M'], '69202'];
+        yield ['FR', '69440', ['69', '69D'], '69051'];
     }
 }
