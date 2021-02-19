@@ -1,30 +1,56 @@
 {% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE_IN_COMMITTEE', committee) %}
 
+{% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+    {% set candidate_button = 'Je candidate en binôme' %}
+    {% set update_candidature_button = 'Modifier ma demande de binôme' %}
+{% else %}
+    {% set candidate_button = 'Je candidate' %}
+    {% set update_candidature_button = 'Modifier mes informations' %}
+{% endif %}
+
 <section class="instance__elections-box b__nudge--bottom-larger">
-    <div class="l__row">
-        <h2 class="text--medium box-el">Élection du binôme paritaire d'Animateurs locaux</h2>
-    </div>
+    {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+        <div class="l__row">
+            <h2 class="text--medium box-el">Élection du binôme paritaire d'Animateurs locaux</h2>
+        </div>
 
-    <div class="text--body text--dark b__nudge--top instance__elections-box--text">
-        Candidatez en binôme pour animer le comité local du Mouvement. <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark box-el" target="_blank">En savoir plus</a>.
-        <br/>Quel est le rôle des animateurs locaux paritaires
+        <div class="text--body text--dark b__nudge--top instance__elections-box--text">
+            Candidatez en binôme pour animer le comité local du Mouvement. <a href="https://storage.googleapis.com/en-marche-fr/Site%20Media/Votes_Animateurs_locaux.pdf" class="link--no-decor text--blue--dark box-el" target="_blank">En savoir plus</a>.
+            <br/>Quel est le rôle des animateurs locaux paritaires
 
-        <div class="em-tooltip">
-            <span class="em-tooltip--trigger em-tooltip--trigger-circle">?</span>
-            <div class="em-tooltip--content em-tooltip--content-big em-tooltip--content-bordered">
-                <p><strong>Quel est le rôle du binôme d’animateurs locaux ?</strong></p>
+            <div class="em-tooltip">
+                <span class="em-tooltip--trigger em-tooltip--trigger-circle">?</span>
+                <div class="em-tooltip--content em-tooltip--content-big em-tooltip--content-bordered">
+                    <p><strong>Quel est le rôle du binôme d’animateurs locaux ?</strong></p>
 
-                <ul>
-                    <li>Accueillir les adhérents et animer le comité local</li>
-                    <li>Œuvrer au développement du comité</li>
-                    <li>Mobiliser les adhérents pour les actions de terrain et la réflexion menée par le mouvement sur les territoires</li>
-                    <li>Organiser, sur le territoire du comité, le soutien aux candidats soutenus par LaREM pour les élections locales et nationales</li>
-                </ul>
+                    <ul>
+                        <li>Accueillir les adhérents et animer le comité local</li>
+                        <li>Œuvrer au développement du comité</li>
+                        <li>Mobiliser les adhérents pour les actions de terrain et la réflexion menée par le mouvement sur les territoires</li>
+                        <li>Organiser, sur le territoire du comité, le soutien aux candidats soutenus par LaREM pour les élections locales et nationales</li>
+                    </ul>
 
-                <p>Le binôme paritaire d'animateurs locaux est élu pour deux ans par les membres du comité local.</p>
+                    <p>Le binôme paritaire d'animateurs locaux est élu pour deux ans par les membres du comité local.</p>
+                </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="l__row">
+            <h2 class="text--medium box-el">
+                Désignation du binôme d'adhérents siégeant au Conseil territorial
+
+                <div class="em-tooltip">
+                    <span class="em-tooltip--trigger em-tooltip--trigger-circle">?</span>
+                    <div class="em-tooltip--content em-tooltip--content-bordered">
+                        <p>
+                            <strong>Le Conseil territorial</strong> est le parlement de LaREM dans chaque territoire – il comprend,
+                            outre les adhérents désignés par les comités, tous les animateurs locaux et tous les élus LaREM du territoire.
+                        </p>
+                    </div>
+                </div>
+            </h2>
+        </div>
+    {% endif %}
 
     <p class="text--body text--bold b__nudge--top b__nudge--bottom-large instance__elections-box--text">
         {% if committee_election.isCandidacyPeriodActive %}
@@ -45,27 +71,34 @@
                     {% if candidacy.isConfirmed %}
                         {% if candidacy.binome %}
                             <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top elections-icon-container">
-                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
+                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" alt="confirm-logo"/>
                                 Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.binome.committeeMembership.fullName }}.<br />
                                 Vous ne pouvez plus retirer votre candidature.
                             </p>
                         {% else %}
                             <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container l__col--half">
-                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" />
-                                Vous êtes candidat{{ candidacy.isFemale ? 'e' }} seul{{ candidacy.isFemale ? 'e' }} à titre dérogatoire.
+                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" alt="confirm-logo"/>
+
+                                {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+                                    Vous êtes candidat{{ candidacy.isFemale ? 'e' }} seul{{ candidacy.isFemale ? 'e' }} à titre dérogatoire.
+                                {% else %}
+                                    Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }}. Vous ne pouvez plus retirer votre candidature.
+                                {% endif %}
                             </p>
                         {% endif %}
 
-                        <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Modifier ma demande de binôme</span>
-                    {% elseif candidacy.hasPendingInvitation %}
-                        <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
-                            <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" />
-                            {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
-                        </p>
+                        <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">{{ update_candidature_button }}</span>
+                    {% elseif designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+                        {% if candidacy.hasPendingInvitation %}
+                            <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
+                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" alt="waiting-logo" />
+                                {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
+                            </p>
 
-                        <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier ma demande de binôme</a>
-                    {% else %}
-                        <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap b__nudge--right box-el">Je choisis un binôme</a>
+                            <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier ma demande de binôme</a>
+                        {% else %}
+                            <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap b__nudge--right box-el">Je choisis un binôme</a>
+                        {% endif %}
                     {% endif %}
 
                     <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier mes informations</a>
@@ -73,7 +106,7 @@
                     {% if app.user.isOtherGender() %}
                         <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el em-modal--trigger"
                            data-content-element="#candidacy-gender-choice-content"
-                        >Je candidate en binôme</a>
+                        >{{ candidate_button }}</a>
 
                         <div class="hidden" id="candidacy-gender-choice-content">
                             <div class="text--center font-roboto">
@@ -88,14 +121,12 @@
                             </div>
                         </div>
                     {% else %}
-                        <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el">Je candidate en binôme</a>
+                        <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el">{{ candidate_button }}</a>
                     {% endif %}
                 {% endif %}
             {% else %}
                 <div class="em-tooltip">
-                    <span class="em-tooltip--trigger b__nudge--right btn btn--disabled">
-                        Je candidate en binôme
-                    </span>
+                    <span class="em-tooltip--trigger b__nudge--right btn btn--disabled">{{ candidate_button }}</span>
 
                     <div class="em-tooltip--content em-tooltip--content-bordered">
                         {% set ref_date = committee_election.getVoteEndDate ?? date() %}
@@ -129,14 +160,16 @@
                 {% if voting_platform_election.isVotePeriodActive %}
                     {% if voting_platform_election.isSecondRoundVotePeriodActive %}
                         <p class="text--dark text--small instance__elections-box--text">
-                            À la suite de cette première élection il y a eu une égalité entre les candidats,
+                            À la suite de cette première {{ designation.getDenomination() }} il y a eu une égalité entre les candidats,
                             nous vous invitions à voter de nouveau.
                         </p>
+
                         <p class="text--small text--dark instance__elections-box--text">Consulter les
                             <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="link--no-decor text--blue--dark box-el">
                                 résultats incomplets
                             </a>
                         </p>
+
                         <hr/>
                     {% endif %}
 
@@ -144,7 +177,7 @@
                         <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
                             <span class="text--dark text--small">Il vous reste</span>
                             <span class="clock-container"></span>
-                            <span class="text--dark text--small">pour participer à l'élection.</span>
+                            <span class="text--dark text--small">pour participer à {{ designation.getDenomination(true) }}.</span>
                         </div>
 
                         <p>
@@ -191,13 +224,51 @@
                         </div>
                     {% endif %}
                 {% elseif voting_platform_election.isResultPeriodActive %}
-                    <p class="text--small text--dark instance__elections-box--text">
-                        {% if voting_platform_election.getElectionResult %}
+                    {% if voting_platform_election.getElectionResult %}
+                        <p class="text--small text--dark instance__elections-box--text">
                             Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" id="committee-toggle-candidacy" class="link--no-decor text--blue--dark box-el">résultats détaillés</a>
-                        {% else %}
-                            Le dépouillement est en cours, encore quelques secondes !
+                        </p>
+
+                        {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_ADHERENT') %}
+                            {% set election_result = voting_platform_election.electionResult %}
+                            {% set elected_pool_results = election_result.electedPoolResults %}
+
+                            {% import 'voting_platform/_macros.html.twig' as helper %}
+
+                            <div class="l__row l__row--h-stretch l__row-- b__nudge--top-0 l__row--v-stretch">
+                                {% for pool_result in elected_pool_results|sort((a, b) => a.electionPool.code <=> b.electionPool.code) %}
+                                    {% set candidate_group_result = pool_result.electedCandidateGroupResults|first %}
+                                    {% set candidate_group = candidate_group_result.candidateGroup %}
+                                    {% set candidate = candidate_group.candidates|first %}
+
+                                    <div class="instance__elections-box--result elected text--center b__nudge--top">
+                                        <div class="l__row b__nudge--bottom-small">
+                                            <div class="candidate-photo avatar-initials avatar--large avatar--style-01">
+                                                {{ helper.display_candidate_photo(candidate) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="l__row font-gillsans text--medium b__nudge--bottom-small">
+                                            {{ candidate.fullName }}
+                                            <span class="candidate-gender b__nudge--left-small l__col l__col--center">{{ candidate.isFemale ? 'F' : 'H' }}</span>
+                                        </div>
+
+                                        <div class="b__nudge--bottom-small">
+                                            <div><span class="text--default-large text--bold">{{ candidate_group_result.rate }}% des voix</span> <span class="text--small text--darker">({{ candidate_group_result.total }} bulletin{{ candidate_group_result.total > 1 ? 's' }})</span></div>
+                                        </div>
+
+                                        <div class="elected-tag text--body text--on-yellow text--bold text--small">
+                                            Adhérent{{ candidate.isFemale ? 'e' }} désigné{{ candidate.isFemale ? 'e' }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         {% endif %}
-                    </p>
+                    {% else %}
+                        <p class="text--small text--dark instance__elections-box--text">
+                            Le dépouillement est en cours, encore quelques secondes !
+                        </p>
+                    {% endif %}
                 {% endif %}
             {% else %}
                 <p class="text--small text--dark instance__elections-box--text">

@@ -15,11 +15,21 @@
         </div>
 
         <div class="l__wrapper--slim">
-            <h2 class="font-roboto text--medium b__nudge--bottom{{ not command.pool ? '-large' }} b__nudge--top-50">{{ ('designation.label.type_' ~ command.designationType)|trans }} (partielle)</h2>
-
-            {% if command.pool %}
-                <h4 class="font-roboto b__nudge--bottom-large">Genre : {{ ('common.' ~ command.pool)|trans }}</h4>
-            {% endif %}
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">
+                {% if command.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+                    {% if command.pool %}
+                        Renouvellement de l'animat{{ command.pool == 'female' ? 'rice' : 'eur' }} local{{ command.pool == 'female' ? 'e' }}
+                    {% else %}
+                        Élection du binôme d'animateurs locaux
+                    {% endif %}
+                {% elseif command.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_ADHERENT') %}
+                    {% if command.pool %}
+                        Renouvellement de l'adhérent{{ command.pool == 'female' ? 'e' }} désigné{{ command.pool == 'female' ? 'e' }}
+                    {% else %}
+                        Désignation du binôme d'adhérents
+                    {% endif %}
+                {% endif %}
+            </h2>
 
             <div class="committee__warning">
                 Les candidatures seront ouvertes immédiatement.<br/>

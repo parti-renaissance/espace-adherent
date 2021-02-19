@@ -82,10 +82,10 @@
                                 {% set route_params = {committee_slug: committee.slug, type: constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_ADHERENT')} %}
 
                                 {% if row['total_designed_adherents'] == 0 %}
-                                    <a href="{{ path('app_referent_designations_create_partial', route_params) }}">Lancer une partielle Binôme d'adhérents</a>
+                                    <a href="{{ path('app_referent_designations_create_partial', route_params) }}">Désigner le binôme d'adhérents</a>
                                 {% else %}
                                     <a href="{{ path('app_referent_designations_create_partial', route_params|merge({pool: row['total_designed_adherents_female'] < 1 ? constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::FEMALE') : constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::MALE')})) }}">
-                                        Lancer une partielle Binôme d'adhérents pour {{ row['total_designed_adherents_female'] < 1 ? 'Femme' : 'Homme' }}
+                                        {{ row['total_designed_adherents_female'] < 1 ? 'Renouveler l\'adhérente désignée' : 'Renouveler l\'adhérent désigné' }}
                                     </a>
                                 {% endif %}
 
@@ -96,10 +96,10 @@
                                 {% set route_params = {committee_slug: committee.slug, type: constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR')} %}
 
                                 {% if row['total_supervisors'] == 0 %}
-                                    <a href="{{ path('app_referent_designations_create_partial', route_params) }}" class="btn--as-link">Lancer une partielle Binôme d'animateurs locaux</a>
+                                    <a href="{{ path('app_referent_designations_create_partial', route_params) }}" class="btn--as-link">Élire le binôme d'animateurs locaux</a>
                                 {% else %}
                                     <a href="{{ path('app_referent_designations_create_partial', route_params|merge({pool: row['total_supervisors_female'] < 1 ? constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::FEMALE') : constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::MALE')})) }}">
-                                        Lancer une partielle Binôme d'animateurs locaux pour {{ row['total_supervisors_female'] < 1 ? 'Femme' : 'Homme' }}
+                                        {{ row['total_supervisors_female'] < 1 ? 'Renouveler l\'animatrice locale' : 'Renouveler l\'animateur local' }}
                                     </a>
                                 {% endif %}
                             {% endif %}

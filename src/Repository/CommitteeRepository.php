@@ -822,12 +822,12 @@ class CommitteeRepository extends ServiceEntityRepository
         int $limit = 100
     ): array {
         $qb = $this->createQueryBuilder('committee')
-            ->addSelect('SUM(CASE WHEN mandate.quality IS NULL THEN 1 ELSE 0 END) AS total_designed_adherents')
-            ->addSelect('SUM(CASE WHEN mandate.quality IS NULL AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_designed_adherents_female')
-            ->addSelect('SUM(CASE WHEN mandate.quality IS NULL AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_designed_adherents_male')
-            ->addSelect('SUM(CASE WHEN mandate.quality = :supervisor AND mandate.provisional = :false THEN 1 ELSE 0 END) AS total_supervisors')
-            ->addSelect('SUM(CASE WHEN mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_supervisors_female')
-            ->addSelect('SUM(CASE WHEN mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_supervisors_male')
+            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL THEN 1 ELSE 0 END) AS total_designed_adherents')
+            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_designed_adherents_female')
+            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_designed_adherents_male')
+            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false THEN 1 ELSE 0 END) AS total_supervisors')
+            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_supervisors_female')
+            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_supervisors_male')
             ->leftJoin('committee.adherentMandates', 'mandate', Join::WITH, 'mandate.finishAt IS NULL')
             ->leftJoin('committee.currentDesignation', 'designation')
             ->where('committee.status = :status')

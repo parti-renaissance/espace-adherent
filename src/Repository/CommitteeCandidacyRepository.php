@@ -62,7 +62,7 @@ class CommitteeCandidacyRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('candidacy')
             ->addSelect('binome')
-            ->innerJoin('candidacy.binome', 'binome')
+            ->leftJoin('candidacy.binome', 'binome')
             ->where('candidacy.committeeElection = :election')
             ->andWhere('candidacy.status = :confirmed')
             ->setParameters([
