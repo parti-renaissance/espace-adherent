@@ -124,6 +124,8 @@ class Coalition implements ExposedImageOwnerInterface
     /**
      * @var Cause[]|Collection
      *
+     * @ApiSubresource
+     *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Coalition\Cause",
      *     mappedBy="coalition",
