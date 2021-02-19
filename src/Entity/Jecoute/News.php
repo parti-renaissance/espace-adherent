@@ -169,13 +169,21 @@ class News
      */
     private $global = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $notification;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
         string $text = null,
         string $topic = null,
         string $externalLink = null,
-        Zone $zone = null
+        Zone $zone = null,
+        bool $notification = false
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;
@@ -183,6 +191,7 @@ class News
         $this->topic = $topic;
         $this->externalLink = $externalLink;
         $this->zone = $zone;
+        $this->notification = $notification;
     }
 
     public function __toString()
@@ -268,5 +277,15 @@ class News
     public function setGlobal(bool $global): void
     {
         $this->global = $global;
+    }
+
+    public function isNotification(): bool
+    {
+        return $this->notification;
+    }
+
+    public function setNotification(bool $notification): void
+    {
+        $this->notification = $notification;
     }
 }

@@ -78,6 +78,10 @@ class NewsAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Audience', ['class' => 'col-md-6'])
+                ->add('notification', CheckboxType::class, [
+                    'label' => 'Notification',
+                    'help' => 'Cochez cette case pour notifier les utilisateurs mobile',
+                ])
                 ->add('global', CheckboxType::class, [
                     'label' => '⚠ Notification sur toute la France ⚠',
                     'required' => false,
@@ -131,6 +135,9 @@ class NewsAdmin extends AbstractAdmin
             ->add('text', null, [
                 'label' => 'Texte',
             ])
+            ->add('notification', null, [
+                'label' => 'Notification',
+            ])
         ;
     }
 
@@ -149,6 +156,9 @@ class NewsAdmin extends AbstractAdmin
             ->add('zone', null, [
                 'label' => 'Audience',
                 'template' => 'admin/jecoute/news/list_zone.html.twig',
+            ])
+            ->add('notification', null, [
+                'label' => 'Notification',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date',
@@ -173,7 +183,9 @@ class NewsAdmin extends AbstractAdmin
     {
         parent::postPersist($object);
 
-        $this->dispatchNotification($object);
+        if ($object->isNotification()) {
+            $this->dispatchNotification($object);
+        }
     }
 
     private function dispatchNotification(News $news): void
