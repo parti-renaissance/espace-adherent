@@ -241,7 +241,13 @@
         .em-form__legend { @include em-form-legend; }
         .em-form--error { @include em-form-error; }
 
-        .character-count { @include em-form-chars-count; }
+        .character-count {
+            @include em-form-chars-count;
+
+            &.form__error {
+                color: $error;
+            }
+        }
 
         .em-form__file {
             box-sizing: border-box;

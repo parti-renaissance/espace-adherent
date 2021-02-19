@@ -89,9 +89,44 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         ]));
 
         $this
-            ->buildViolation('common.date_range.invalid_interval')
+            ->buildViolation('common.date_range.invalid_date')
             ->atPath('property.path.endDate')
             ->setParameter('{{ limit }}', '18 mai 2018 à 13:00') // in UTC
+            ->assertRaised()
+        ;
+    }
+
+    public function testWithInvalidInterval(): void
+    {
+        \Locale::setDefault('fr');
+
+        $object = new \stdClass();
+        $object->startDate = new \DateTime('2018-05-15 15:00:00+02:00');
+        $object->endDate = new \DateTime('2018-05-16 15:00:00+02:00');
+
+        $this->validator->validate($object, $constraint = new DateRange([
+            'startDateField' => 'startDate',
+            'endDateField' => 'endDate',
+            'interval' => '3 days|5 days',
+        ]));
+
+        $violation = $this->buildViolation('common.date_range.invalid_interval');
+
+        $violation
+            ->atPath('property.path.endDate')
+            ->setParameter('{{ dateMin }}', '18 mai 2018 à 13:00')
+            ->setParameter('{{ dateMax }}', '20 mai 2018 à 13:00')
+            ->assertRaised()
+        ;
+
+        $object->endDate = new \DateTime('2018-05-22 15:00:00+02:00');
+
+        $this->validator->validate($object, $constraint);
+
+        $violation->buildNextViolation('common.date_range.invalid_interval')
+            ->atPath('property.path.endDate')
+            ->setParameter('{{ dateMin }}', '18 mai 2018 à 13:00')
+            ->setParameter('{{ dateMax }}', '20 mai 2018 à 13:00')
             ->assertRaised()
         ;
     }

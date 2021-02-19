@@ -4,10 +4,18 @@ namespace App\VotingPlatform\Designation;
 
 use App\Entity\Committee;
 use App\Validator\CommitteePartialDesignation as AssertCommitteePartialDesignation;
+use App\Validator\DateRange as AssertDateRange;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertCommitteePartialDesignation
+ * @Assert\GroupSequence({"CreatePartialDesignationCommand", "Strict"})
+ * @AssertCommitteePartialDesignation(groups={"Strict"})
+ * @AssertDateRange(
+ *     startDateField="voteStartDate",
+ *     endDateField="voteEndDate",
+ *     interval="7 days|14 days",
+ *     messageInterval="Vous pouvez choisir d'ouvrir le vote dans 2 à 4 semaines et de le cloturer 7 à 14 jours plus tard."
+ * )
  */
 class CreatePartialDesignationCommand
 {
@@ -53,7 +61,7 @@ class CreatePartialDesignationCommand
      * @var string|null
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=5000)
+     * @Assert\Length(max=2000, maxMessage="Oups, votre message semble plus long qu'il n'en a l'air. Essayez de le raccourcir pour continuer.")
      */
     private $message;
 

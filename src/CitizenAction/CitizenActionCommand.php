@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  *     startDateField="beginAt",
  *     endDateField="finishAt",
  *     interval="3 days",
- *     message="citizen_project.action.invalid_finish_date"
+ *     messageDate="citizen_project.action.invalid_finish_date"
  * )
  */
 class CitizenActionCommand extends BaseEventCommand

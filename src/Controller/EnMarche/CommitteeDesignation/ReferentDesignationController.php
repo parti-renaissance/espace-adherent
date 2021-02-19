@@ -65,7 +65,6 @@ class ReferentDesignationController extends AbstractDesignationController
                     $messageContent = $transactionalMailer->renderMessage($message = VotingPlatformPartialElectionIsOpenMessage::create(
                         $designation,
                         $command->getMessage(),
-                        $committee->getName(),
                         [$adherent],
                     ));
                 } elseif ($form->get('confirm')->isClicked()) {

@@ -3,6 +3,7 @@
 {% block designation_content %}
     <section class="l__wrapper b__nudge--bottom-huge">
         {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
         <div class="b__nudge--bottom">
             <div class="{{ step == 'form' ? 'hidden' }}">
                 {{ form_widget(form.back, { label: '⟵ Retour', defaultClass: false, attr: {class: 'btn--as-link text--body text--blue--dark'} }) }}
@@ -19,6 +20,12 @@
             {% if command.pool %}
                 <h4 class="font-roboto b__nudge--bottom-large">Genre : {{ ('common.' ~ command.pool)|trans }}</h4>
             {% endif %}
+
+            <div class="committee__warning">
+                Les candidatures seront ouvertes immédiatement.<br/>
+                Vous pouvez choisir d'ouvrir le vote dans 2 à 4 semaines et de le cloturer 7 à 14 jours plus tard.<br/>
+                Les candidatures seront closes automatiquement 24h avant l'ouverture des votes.
+            </div>
 
             <div class="{{ step == 'confirm' ? 'hidden' }}">
                 {{ form_errors(form) }}
@@ -70,7 +77,7 @@
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            {{ js.microCkeditor('partial_designation_message', 300, 5000) }}
+            {{ js.microCkeditor('partial_designation_message', 300, form.message.vars.attr.maxlength ?? 2000) }}
         });
     </script>
 {% endblock %}

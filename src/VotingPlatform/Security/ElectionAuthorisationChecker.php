@@ -39,6 +39,12 @@ class ElectionAuthorisationChecker
             return false;
         }
 
+        $designation = $election->getDesignation();
+
+        if ($designation->getPools() && !\in_array($adherent->getGender(), $designation->getPools(), true)) {
+            return false;
+        }
+
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
             if (
                 $adherent->isReferent()

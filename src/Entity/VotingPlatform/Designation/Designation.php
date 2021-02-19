@@ -451,6 +451,11 @@ class Designation
         $this->description = $description;
     }
 
+    public function isLimited(): bool
+    {
+        return $this->limited;
+    }
+
     public static function createPartialFromCommand(CreatePartialDesignationCommand $command): self
     {
         $designation = new self();
@@ -466,7 +471,7 @@ class Designation
         }
 
         $designation->setCandidacyStartDate(new \DateTime());
-        $designation->setCandidacyEndDate((clone $command->getVoteStartDate())->modify('-2 hours'));
+        $designation->setCandidacyEndDate((clone $command->getVoteStartDate())->modify('-24 hours'));
 
         $designation->setVoteStartDate($command->getVoteStartDate());
         $designation->setVoteEndDate($command->getVoteEndDate());
