@@ -6,7 +6,9 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadCauseData |
+      | LoadAdherentData      |
+      | LoadClientData        |
+      | LoadCauseData         |
 
   Scenario: As a non logged-in user I can see first page of active causes
     Given I add "Accept" header equal to "application/json"
@@ -31,12 +33,13 @@ Feature:
           },
           "coalition": {
             "name": "Education",
-            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
           },
           "name": "Cause pour l'education",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         },
         {
@@ -47,12 +50,13 @@ Feature:
           },
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "name": "Cause pour la culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
-          "followers_count": "@number@",
+          "followers_count": 3,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         }
       ]
@@ -80,7 +84,8 @@ Feature:
           "description": "Description de la cause pour la culture 2",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
@@ -88,7 +93,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         },
         {
@@ -96,7 +101,8 @@ Feature:
           "description": "Description de la cause pour la culture 3",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "5f8a6d40-9e69-4311-a45b-67c00d30ad41",
           "author": {
@@ -104,7 +110,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": null
         }
       ]
@@ -132,7 +138,8 @@ Feature:
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Education",
-            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
           },
           "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
           "author": {
@@ -140,7 +147,7 @@ Feature:
             "first_name": "Jacques",
             "last_name_initial": "P."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         },
         {
@@ -148,7 +155,8 @@ Feature:
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
@@ -156,7 +164,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 3,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
@@ -164,7 +172,8 @@ Feature:
           "description": "Description de la cause pour la culture 2",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
@@ -172,7 +181,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         },
         {
@@ -180,7 +189,8 @@ Feature:
           "description": "Description de la cause pour la culture 3",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "5f8a6d40-9e69-4311-a45b-67c00d30ad41",
           "author": {
@@ -188,7 +198,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": null
         },
         {
@@ -196,7 +206,8 @@ Feature:
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Justice",
-            "uuid": "5b8db218-4da6-4f7f-a53e-29a7a349d45c"
+            "uuid": "5b8db218-4da6-4f7f-a53e-29a7a349d45c",
+            "followers_count": 0
           },
           "uuid": "44249b1d-ea10-41e0-b288-5eb74fa886ba",
           "author": {
@@ -204,7 +215,7 @@ Feature:
             "first_name": "Jacques",
             "last_name_initial": "P."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": null
         }
       ]
@@ -232,7 +243,8 @@ Feature:
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Education",
-            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
           },
           "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
           "author": {
@@ -240,7 +252,7 @@ Feature:
             "first_name": "Jacques",
             "last_name_initial": "P."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         }
       ]
@@ -266,7 +278,8 @@ Feature:
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Education",
-            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+            "followers_count": 0
           },
           "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
           "author": {
@@ -274,7 +287,7 @@ Feature:
             "first_name": "Jacques",
             "last_name_initial": "P."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
         },
         {
@@ -282,7 +295,8 @@ Feature:
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
@@ -290,7 +304,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 3,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         }
       ]
@@ -312,12 +326,13 @@ Feature:
         },
         "coalition": {
           "name": "Education",
-          "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+          "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65",
+          "followers_count": 0
         },
         "name": "Cause pour l'education",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-        "followers_count": "@number@",
+        "followers_count": 0,
         "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
       }
     """
@@ -348,7 +363,8 @@ Feature:
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "author": {
@@ -356,7 +372,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 3,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
@@ -364,7 +380,8 @@ Feature:
           "description": "Description de la cause pour la culture 2",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "017491f9-1953-482e-b491-20418235af1f",
           "author": {
@@ -372,7 +389,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": "http://test.enmarche.code/assets/images/causes/73a6283e0b639cbeb50b9b28d401eaca.png"
         }
       ]
@@ -400,7 +417,8 @@ Feature:
           "description": "Description de la cause pour la culture 3",
           "coalition": {
             "name": "Culture",
-            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315",
+            "followers_count": 4
           },
           "uuid": "5f8a6d40-9e69-4311-a45b-67c00d30ad41",
           "author": {
@@ -408,9 +426,51 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": "@number@",
+          "followers_count": 0,
           "image_url": null
         }
       ]
     }
     """
+
+  Scenario Outline: As a non logged-in user I can not follow/unfollow a cause
+    Given I add "Accept" header equal to "application/json"
+    When I send a "<method>" request to "<url>"
+    Then the response status code should be 401
+    Examples:
+      | method  | url                                                           |
+      | PUT    | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
+      | DELETE  | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
+
+  Scenario: As a logged-in user I can follow a cause
+    Given I add "Accept" header equal to "application/json"
+    And I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                 |
+      | client_id     | 138140b3-1dd2-11b2-ad7e-2348ad4fef66  |
+      | client_secret | Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ     |
+      | grant_type    | password                              |
+      | username      | gisele-berthoux@caramail.com          |
+      | password      | secret!12345                          |
+    And I add the access token to the Authorization header
+    When I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@string@"
+    }
+    """
+
+  Scenario: As a logged-in user I can unfollow a cause
+    Given I add "Accept" header equal to "application/json"
+    And I send a "POST" request to "/oauth/v2/token" with parameters:
+      | key           | value                                 |
+      | client_id     | 138140b3-1dd2-11b2-ad7e-2348ad4fef66  |
+      | client_secret | Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ     |
+      | grant_type    | password                              |
+      | username      | gisele-berthoux@caramail.com          |
+      | password      | secret!12345                          |
+    And I add the access token to the Authorization header
+    When I send a "DELETE" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
+    Then the response status code should be 204
