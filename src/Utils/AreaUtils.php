@@ -218,19 +218,15 @@ class AreaUtils
 
     public static function getMetropolisCode(EntityPostAddressInterface $entity): ?string
     {
-        $metropolisCode = null;
-
         if (self::CODE_FRANCE === $entity->getCountry()) {
             foreach (self::METROPOLIS as $codeM => $codes) {
-                $metropolisCode = \in_array($entity->getInseeCode(), $codes) ? $codeM : null;
-
-                if ($metropolisCode) {
-                    break;
+                if (\in_array($entity->getInseeCode(), $codes, true)) {
+                    return $codeM;
                 }
             }
         }
 
-        return $metropolisCode;
+        return null;
     }
 
     public static function get69DCode(EntityPostAddressInterface $entity): ?string

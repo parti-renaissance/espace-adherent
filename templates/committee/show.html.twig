@@ -130,7 +130,7 @@
                 {% set designation = committee_election.designation %}
                 {% set candidacy = membership.committeeCandidacy(committee_election) %}
 
-                {% include "committee/election_box/_#{committee_election.designation.type}.html.twig" %}
+                {% include "committee/_election_box.html.twig" %}
             {% endif %}
         {% endif %}
 
