@@ -8,7 +8,7 @@ use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Mailer\MailerService;
 use App\Mailer\Message\VotingPlatformPartialElectionIsOpenMessage;
-use App\Producer\MailerProducer;
+use App\Producer\MailerProducerInterface;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
 use App\VotingPlatform\Command\NotifyPartialElectionVoterCommand;
@@ -28,7 +28,7 @@ class NotifyPartialElectionVoterCommandHandler implements MessageHandlerInterfac
         CommitteeRepository $committeeRepository,
         CommitteeMembershipRepository $committeeMembershipRepository,
         UrlGeneratorInterface $urlGenerator,
-        MailerProducer $mailerProducer
+        MailerProducerInterface $mailerProducer
     ) {
         $this->mailer = $transactionalMailer;
         $this->committeeRepository = $committeeRepository;
