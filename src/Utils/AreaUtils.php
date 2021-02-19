@@ -10,6 +10,7 @@ class AreaUtils
 {
     public const CODE_CORSICA_A = '2A';
     public const CODE_CORSICA_B = '2B';
+    public const CODE_RHONE = '69';
     public const CODE_NOUVEAU_RHONE = '69D';
     public const CODE_METROPOLIS_MONTPELLIER = '34M';
     public const CODE_METROPOLIS_LYON = '69M';
@@ -230,6 +231,15 @@ class AreaUtils
         }
 
         return $metropolisCode;
+    }
+
+    public static function get69DCode(EntityPostAddressInterface $entity): ?string
+    {
+        return (self::CODE_FRANCE === $entity->getCountry()
+                && self::CODE_RHONE === substr($entity->getPostalCode(), 0, 2)
+                && !\in_array($entity->getInseeCode(), self::METROPOLIS[self::CODE_METROPOLIS_LYON]))
+            ? self::CODE_NOUVEAU_RHONE
+            : null;
     }
 
     public static function getRelatedCodes(string $code): array

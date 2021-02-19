@@ -101,6 +101,42 @@ class AreaUtilsTest extends TestCase
         $this->assertEquals($expectedCode, AreaUtils::getMetropolisCode($entity));
     }
 
+    /**
+     * @dataProvider provideCodes
+     */
+    public function testGet69DCode(?string $expectedCode, string $country, string $postalCode, string $inseeCode): void
+    {
+        $entity = new class($country, $inseeCode, $postalCode) implements EntityPostAddressInterface {
+            public $country;
+            public $inseeCode;
+            public $postalCode;
+
+            public function __construct(string $country, string $inseeCode, string $postalCode)
+            {
+                $this->country = $country;
+                $this->inseeCode = $inseeCode;
+                $this->postalCode = $postalCode;
+            }
+
+            public function getCountry(): ?string
+            {
+                return $this->country;
+            }
+
+            public function getPostalCode(): ?string
+            {
+                return $this->postalCode;
+            }
+
+            public function getInseeCode(): ?string
+            {
+                return $this->inseeCode;
+            }
+        };
+
+        $this->assertEquals($expectedCode, AreaUtils::get69DCode($entity));
+    }
+
     public function provideMetropolis(): \Generator
     {
         yield ['34M', 'FR', '34058'];
@@ -109,6 +145,16 @@ class AreaUtilsTest extends TestCase
         yield ['69M', 'FR', '69003'];
         yield [null, 'FR', '75056'];
         yield [null, 'CH', '57340'];
+    }
+
+    public function provideCodes(): \Generator
+    {
+        yield [null, 'FR', '34160', '34058'];
+        yield [null, 'FR', '69001', '69123'];
+        yield [null, 'FR', '69266', '69100'];
+        yield ['69D', 'FR', '69440', '69051'];
+        yield [null, 'FR', '75001', '75056'];
+        yield [null, 'CH', '57340', '57662'];
     }
 
     /**
