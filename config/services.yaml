@@ -240,3 +240,5 @@ services:
         arguments:
             $apiPathPrefix: '%env(API_PATH_PREFIX)%'
             $firewallMap: '@security.firewall.map'
+
+    App\Producer\MailerProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'

@@ -196,10 +196,6 @@ workflows:
                     - build
 
             - deployment:
-                requires:
-                    - phpunit
-                    - behat
-                    - lint
                 filters:
                     branches:
                         only:
