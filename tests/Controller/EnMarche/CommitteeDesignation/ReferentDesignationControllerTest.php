@@ -25,11 +25,11 @@ class ReferentDesignationControllerTest extends WebTestCase
         self::assertCount(2, $tableRows = $crawler->filter('table.datagrid__table-manager tbody tr'));
 
         self::assertStringContainsString('En Marche Dammarie-les-Lys', $tableRows->eq(0)->text());
-        self::assertStringContainsString('Lancer une partielle Binôme d\'animateurs locaux pour Femme', $tableRows->eq(0)->text());
+        self::assertStringContainsString('Renouveler l\'animatrice locale', $tableRows->eq(0)->text());
 
         self::assertStringContainsString('Antenne En Marche de Fontainebleau', $tableRows->eq(1)->text());
-        self::assertStringContainsString('Lancer une partielle Binôme d\'adhérents', $tableRows->eq(1)->text());
-        self::assertStringContainsString('Lancer une partielle Binôme d\'animateurs locaux pour Femme', $tableRows->eq(1)->text());
+        self::assertStringContainsString('Désigner le binôme d\'adhérents', $tableRows->eq(1)->text());
+        self::assertStringContainsString('Renouveler l\'animatrice locale', $tableRows->eq(1)->text());
 
         self::assertStringNotContainsStringIgnoringCase('Homme', $tableRows->text());
     }
@@ -49,10 +49,9 @@ class ReferentDesignationControllerTest extends WebTestCase
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/comites/designations/partielles');
 
-        $crawler = $this->client->clickLink('Lancer une partielle Binôme d\'animateurs locaux pour Femme');
+        $crawler = $this->client->clickLink('Renouveler l\'animatrice locale');
 
-        self::assertStringContainsString('Élection du binôme paritaire d\'Animateurs locaux (partielle)', $crawler->filter('form.em-form h2')->text());
-        self::assertStringContainsString('Genre : Femme', $crawler->filter('form.em-form h4')->text());
+        self::assertStringContainsString('Renouvellement de l\'animatrice locale', $crawler->filter('form.em-form h2')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Suivant →')->form());
 

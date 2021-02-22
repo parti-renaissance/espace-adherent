@@ -332,7 +332,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
         $manager->persist($membership = $adherent20->followCommittee($committee7));
         $membership->enableVote();
         $manager->persist($adherent3->followCommittee($committee7));
-        $manager->persist($assessor->followCommittee($committee7));
+        $manager->persist($assessor->followCommittee($committee7, new \DateTime('-2 months')));
 
         // Committee 8
         $manager->persist($membership = $adherent11->followCommittee($committee8));
