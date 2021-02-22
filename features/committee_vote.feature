@@ -120,9 +120,6 @@ Feature:
     When I am on "/comites/en-marche-comite-de-rouen"
     Then I should see "JE CANDIDATE"
 
-    When I am on "/comites/en-marche-comite-de-berlin"
-    Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations."
-
     When I am on "/espace-adherent/mes-comites"
     And I click the ".adherent__activity--committee:nth-child(3) .switch" selector
     Then I should see "Changement du comité de vote"
@@ -132,12 +129,9 @@ Feature:
     When I click the "button.btn.btn--blue" selector
     Then I wait 3 second until I see "En Marche - Comité de Évry"
 
-    When I am on "/comites/en-marche-comite-de-rouen"
-    Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations."
-
     Given I am on "/comites/en-marche-comite-de-berlin"
     Then I should see "JE CANDIDATE"
-    When I follow "committee-toggle-candidacy"
+    When I follow "Je candidate"
     Then I should be on "/comites/en-marche-comite-de-berlin/candidature"
     When I press "Passer cette étape"
     Then I should be on "/comites/en-marche-comite-de-berlin"
@@ -241,9 +235,9 @@ Feature:
   Scenario: As member of the committee, I can see its candidacies modal
     Given I am logged as "assesseur@en-marche-dev.fr"
     When I am on "/comites/en-marche-comite-de-rouen"
-    Then I should see "Retirer ma candidature"
+    Then I should see "Retirer ma pré-candidature"
     And I should see "Consulter la liste des candidats"
 
-    When I click the "candidacies-list-modal--trigger" element
-    Then I wait 5 second until I see "Liste des candidat(e)s :"
+    When I follow "la liste des candidats"
+    Then I should be on "/comites/en-marche-comite-de-rouen/candidature/liste"
     And I should see "Bob Assesseur"

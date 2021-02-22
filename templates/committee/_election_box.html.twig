@@ -68,7 +68,7 @@
                 {% if candidacy %}
                     {% set with_two_rows = true %}
 
-                    {% if candidacy.isConfirmed %}
+                    {% if candidacy.isConfirmed and designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
                         {% if candidacy.binome %}
                             <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top elections-icon-container">
                                 <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" alt="confirm-logo"/>
@@ -78,30 +78,27 @@
                         {% else %}
                             <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container l__col--half">
                                 <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" alt="confirm-logo"/>
-
-                                {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
-                                    Vous êtes candidat{{ candidacy.isFemale ? 'e' }} seul{{ candidacy.isFemale ? 'e' }} à titre dérogatoire.
-                                {% else %}
-                                    Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }}. Vous ne pouvez plus retirer votre candidature.
-                                {% endif %}
+                                Vous êtes candidat{{ candidacy.isFemale ? 'e' }} seul{{ candidacy.isFemale ? 'e' }} à titre dérogatoire.
                             </p>
                         {% endif %}
 
                         <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">{{ update_candidature_button }}</span>
-                    {% elseif designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
-                        {% if candidacy.hasPendingInvitation %}
-                            <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
-                                <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" alt="waiting-logo" />
-                                {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
-                            </p>
+                    {% else %}
+                        {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+                            {% if candidacy.hasPendingInvitation %}
+                                <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top-large elections-icon-container">
+                                    <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_on-waiting.svg') }}" alt="waiting-logo" />
+                                    {{ candidacy.invitation.membership.fullName }} doit accepter votre demande pour que votre candidature soit confirmée
+                                </p>
 
-                            <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier ma demande de binôme</a>
-                        {% else %}
-                            <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap b__nudge--right box-el">Je choisis un binôme</a>
+                                <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier ma demande de binôme</a>
+                            {% else %}
+                                <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap b__nudge--right box-el">Je choisis un binôme</a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
 
-                    <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier mes informations</a>
+                        <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">{{ update_candidature_button }}</a>
+                    {% endif %}
                 {% else %}
                     {% if app.user.isOtherGender() %}
                         <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el em-modal--trigger"
@@ -283,7 +280,12 @@
             </p>
         {% endif %}
 
-        {% if able_to_candidate and candidacy and candidacy.isDraft and committee_election.isCandidacyPeriodActive %}
+        {% if
+            able_to_candidate
+            and candidacy
+            and committee_election.isCandidacyPeriodActive
+            and (designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_ADHERENT') or candidacy.isDraft)
+        %}
             <p class="candidacy-remove text--body text--small b__nudge--top-large b__nudge--right">
                 <a href="{{ path('app_committee_candidature_remove', {slug: committee.slug, back: true}) }}"
                    class="link--no-decor text--blue--dark em-confirm--trigger box-el"

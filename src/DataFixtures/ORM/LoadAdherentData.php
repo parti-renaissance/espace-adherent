@@ -757,6 +757,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
             'phone' => '+33673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
+        $assessor->certify();
         $assessor->setAssessorRole(new AssessorRoleAssociation($this->getReference('vote-place-lille-wazemmes')));
         $assessor->setElectionResultsReporter(true);
         $this->addReference('assessor-1', $assessor);
