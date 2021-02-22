@@ -7,7 +7,7 @@
     "axios": "^0.21.1",
     "history": "^4.7.2",
     "localforage": "^1.9.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
     "prop-types": "^15.6.1",
