@@ -8,9 +8,14 @@ use Doctrine\ORM\QueryBuilder;
 trait GeoZoneTrait
 {
     public function withGeoZones(
-        QueryBuilder $queryBuilder,
         array $zones,
-        string $zoneAlias = 'zone',
+        QueryBuilder $queryBuilder,
+        string $rootAlias,
+        string $entityClass,
+        string $entityClassAlias,
+        string $zoneRelation,
+        string $zoneRelationAlias,
+        callable $queryModifier = null,
         bool $withParents = true,
         string $zoneParentAlias = 'zone_parent'
     ): QueryBuilder {
@@ -18,10 +23,21 @@ trait GeoZoneTrait
             return $queryBuilder;
         }
 
+        $zoneQueryBuilder = $queryBuilder
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select($select = sprintf('%s.id', $entityClassAlias))
+            ->from($entityClass, $entityClassAlias)
+            ->innerJoin(sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
+            ->groupBy($select)
+        ;
+
         $orX = $queryBuilder->expr()->orX();
-        $orX->add($queryBuilder->expr()->in($zoneAlias, array_map(static function (Zone $zone): int {
+        $orX->add(sprintf('%s IN (:zone_ids)', $zoneRelationAlias));
+
+        $queryBuilder->setParameter('zone_ids', array_map(static function (Zone $zone): int {
             return $zone->getId();
-        }, $zones)));
+        }, $zones));
 
         if ($withParents) {
             $parents = array_filter(array_map(static function (Zone $zone): ?int {
@@ -30,13 +46,22 @@ trait GeoZoneTrait
 
             if ($parents) {
                 if (!\in_array($zoneParentAlias, $queryBuilder->getAllAliases(), true)) {
-                    $queryBuilder->innerJoin($zoneAlias.'.parents', $zoneParentAlias);
+                    $zoneQueryBuilder->innerJoin($zoneRelationAlias.'.parents', $zoneParentAlias);
                 }
 
-                $orX->add($queryBuilder->expr()->in($zoneParentAlias, $parents));
+                $orX->add(sprintf('%s IN (:zone_parent_ids)', $zoneParentAlias));
+                $queryBuilder->setParameter('zone_parent_ids', $parents);
             }
         }
 
-        return $queryBuilder->andWhere($orX);
+        $zoneQueryBuilder->where($orX);
+
+        if ($queryModifier) {
+            $queryModifier($zoneQueryBuilder, $entityClassAlias);
+        }
+
+        $queryBuilder->andWhere(sprintf('%s.id IN (%s)', $rootAlias, $zoneQueryBuilder->getDQL()));
+
+        return $queryBuilder;
     }
 }

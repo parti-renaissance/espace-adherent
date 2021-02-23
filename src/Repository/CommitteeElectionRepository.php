@@ -14,6 +14,7 @@ use App\Entity\VotingPlatform\ElectionEntity;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CommitteeElectionRepository extends ServiceEntityRepository
@@ -147,7 +148,18 @@ class CommitteeElectionRepository extends ServiceEntityRepository
         }
 
         if ($filter->getZones()) {
-            $this->withGeoZones($qb->innerJoin('committee.zones', 'zone'), $filter->getZones());
+            $this->withGeoZones(
+                $filter->getZones(),
+                $qb,
+                'committee',
+                Committee::class,
+                'c2',
+                'zones',
+                'z2',
+                function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                    $zoneQueryBuilder->andWhere(sprintf('%s.status = :approved', $entityClassAlias));
+                }
+            );
         }
 
         return $this->configurePaginator($qb, $page, $limit);

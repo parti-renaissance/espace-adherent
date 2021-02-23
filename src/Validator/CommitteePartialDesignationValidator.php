@@ -37,6 +37,15 @@ class CommitteePartialDesignationValidator extends ConstraintValidator
 
         $committee = $value->getCommittee();
 
+        if ($committee->getApprovedAt() > (new \DateTime())->modify('-30 days')) {
+            $this->context
+                ->buildViolation($constraint->errorCommitteeApprovedAt)
+                ->addViolation()
+            ;
+
+            return;
+        }
+
         if ($committee->getCurrentDesignation() && $committee->getCurrentDesignation()->isOngoing()) {
             $this->context
                 ->buildViolation($constraint->errorCommitteeAlreadyHasActiveDesignation)

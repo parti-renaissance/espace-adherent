@@ -215,7 +215,18 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('published', true)
         ;
 
-        $this->withZoneCondition($qb, $zones);
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'e',
+            CommitteeEvent::class,
+            'e2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(sprintf('%s.published = :published', $entityClassAlias));
+            }
+        );
 
         return $this->configurePaginator(
             $qb,
@@ -771,18 +782,5 @@ SQL;
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'e'): QueryBuilder
-    {
-        if (!$zones) {
-            return $qb;
-        }
-
-        if (!\in_array('zone', $qb->getAllAliases(), true)) {
-            $qb->innerJoin("$alias.zones", 'zone');
-        }
-
-        return $this->withGeoZones($qb, $zones);
     }
 }

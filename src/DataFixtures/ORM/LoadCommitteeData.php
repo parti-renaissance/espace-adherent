@@ -90,7 +90,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'address' => PostAddress::createFrenchAddress('40 Rue Grande', '77300-77186', null, 48.4047652, 2.6987591),
             'phone' => '+33673654349',
         ]);
-        $committee4->approved();
+        $committee4->approved('-35 days');
         $committee4->setCurrentElection(new CommitteeElection($this->getReference('designation-3')));
         $this->addReference('committee-4', $committee4);
 
