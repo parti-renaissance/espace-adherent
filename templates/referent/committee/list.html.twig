@@ -15,9 +15,7 @@
             <a href="{{ path("app_referent_create_committee") }}" class="btn-secondary btn-secondary--blue">
                 + Créer un comité
             </a>
-        {% endif %}
 
-        {% if is_granted('ROLE_REFERENT') %}
             <a href="{{ path("app_#{space_type}_committees_designations_partials") }}" class="btn-secondary btn-secondary--blue b__nudge--left-small">
                 + Créer une partielle
             </a>

@@ -222,7 +222,12 @@ class CommitteeRepository extends ServiceEntityRepository
         int $page = 1,
         int $limit = 100
     ): PaginatorInterface {
-        return $this->configurePaginator($this->createRequestsFilterQueryBuilder($filter), $page, $limit);
+        $queryBuilder = $this->createRequestsFilterQueryBuilder($filter->getZones() ?: $filter->getManagedZones())
+            ->orderBy('c.createdAt', 'DESC')
+            ->groupBy('c.id')
+        ;
+
+        return $this->configurePaginator($queryBuilder, $page, $limit);
     }
 
     /**
@@ -231,10 +236,8 @@ class CommitteeRepository extends ServiceEntityRepository
     public function countRequestsForZones(array $zones, string $status = null): int
     {
         $qb = $this
-            ->createQueryBuilder('c')
+            ->createRequestsFilterQueryBuilder($zones)
             ->select('COUNT(DISTINCT c.id)')
-            ->where('c.createdAt > :from')
-            ->setParameter('from', new \DateTime('2021-01-01'))
         ;
 
         if ($status) {
@@ -242,10 +245,6 @@ class CommitteeRepository extends ServiceEntityRepository
                 ->andWhere('c.status = :status')
                 ->setParameter('status', $status)
             ;
-        }
-
-        if ($zones) {
-            $this->withZoneCondition($qb, $zones);
         }
 
         return (int) $qb
@@ -268,9 +267,18 @@ class CommitteeRepository extends ServiceEntityRepository
             ])
         ;
 
-        if ($zones) {
-            $this->withZoneCondition($qb, $zones);
-        }
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'c',
+            Committee::class,
+            'c2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+            }
+        );
 
         return (int) $qb
             ->getQuery()
@@ -732,7 +740,7 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    private function createFilterQueryBuilder($filter): QueryBuilder
+    private function createFilterQueryBuilder(CommitteeListFilter $filter): QueryBuilder
     {
         $qb = $this
             ->createQueryBuilder('c')
@@ -777,43 +785,44 @@ class CommitteeRepository extends ServiceEntityRepository
             ->groupBy('c.id')
         ;
 
-        $zones = $filter->getZones() ?: $filter->getManagedZones();
-        if ($zones) {
-            $this->withZoneCondition($qb, $zones);
-        }
+        $this->withGeoZones(
+            $filter->getZones() ?: $filter->getManagedZones(),
+            $qb,
+            'c',
+            Committee::class,
+            'c2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+            }
+        );
 
         return $qb;
     }
 
-    private function createRequestsFilterQueryBuilder(CommitteeListFilter $filter): QueryBuilder
+    private function createRequestsFilterQueryBuilder(array $zones): QueryBuilder
     {
         $qb = $this
             ->createQueryBuilder('c')
             ->where('c.createdAt > :from')
             ->setParameter('from', new \DateTime('2021-01-01 00:00:00'))
-            ->orderBy('c.createdAt', 'DESC')
-            ->groupBy('c.id')
         ;
 
-        $zones = $filter->getZones() ?: $filter->getManagedZones();
-        if ($zones) {
-            $this->withZoneCondition($qb, $zones);
-        }
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'c',
+            Committee::class,
+            'c2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(sprintf('%s.createdAt > :from', $entityClassAlias));
+            }
+        );
 
         return $qb;
-    }
-
-    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'c'): QueryBuilder
-    {
-        if (!$zones) {
-            return $qb;
-        }
-
-        if (!\in_array('zone', $qb->getAllAliases(), true)) {
-            $qb->leftJoin($alias.'.zones', 'zone');
-        }
-
-        return $this->withGeoZones($qb, $zones);
     }
 
     public function findAvailableForPartials(
@@ -831,6 +840,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->leftJoin('committee.adherentMandates', 'mandate', Join::WITH, 'mandate.finishAt IS NULL')
             ->leftJoin('committee.currentDesignation', 'designation')
             ->where('committee.status = :status')
+            ->andWhere('committee.approvedAt <= :d30')
             ->andWhere('(designation IS NULL OR designation.voteEndDate < :now)')
             ->groupBy('committee.id')
             ->orderBy('committee.membersCount', 'DESC')
@@ -841,6 +851,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 'false' => false,
                 'status' => Committee::APPROVED,
                 'now' => new \DateTime(),
+                'd30' => (new \DateTime())->modify('-30 days'),
             ])
             ->having('total_designed_adherents < 2 OR total_supervisors < 2')
         ;
@@ -853,7 +864,18 @@ class CommitteeRepository extends ServiceEntityRepository
         }
 
         if ($filter->getZones()) {
-            $this->withGeoZones($qb->innerJoin('committee.zones', 'zone'), $filter->getZones());
+            $this->withGeoZones(
+                $filter->getZones(),
+                $qb,
+                'committee',
+                Committee::class,
+                'c2',
+                'zones',
+                'z2',
+                function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                    $zoneQueryBuilder->andWhere(sprintf('%1$s.status = :status AND %1$s.approvedAt <= :d30', $entityClassAlias));
+                }
+            );
         }
 
         return $qb

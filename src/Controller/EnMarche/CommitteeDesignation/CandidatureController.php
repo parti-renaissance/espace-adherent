@@ -323,6 +323,7 @@ class CandidatureController extends AbstractController
             'election' => $election,
             'membership' => $membership ?? null,
             'committee' => $committee,
+            'designation' => $election->getDesignation(),
         ]);
     }
 

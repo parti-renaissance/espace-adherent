@@ -1,6 +1,14 @@
 {% extends 'committee/_candidacy_layout.html.twig' %}
 
-{% block page_title 'Candidats en binômes' %}
+{% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+    {% set title = 'Candidats en binômes' %}
+    {% set description = 'Ne s\'affichent ici que les candidatures confirmées, en binômes partitaires.' %}
+{% else %}
+    {% set title = 'Candidat(e)s' %}
+    {% set description = '' %}
+{% endif %}
+
+{% block page_title title %}
 
 {% block candidacy_content %}
     <section class="l__wrapper b__nudge--bottom-huge">
@@ -8,11 +16,9 @@
             <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
         </div>
 
-        <h2 class="b__nudge--bottom-larger">Candidats en binômes</h2>
+        <h2 class="b__nudge--bottom-larger">{{ title }}</h2>
 
-        <p class="text--body text--gray text--small b__nudge--bottom-50">
-            Ne s'affichent ici que les candidatures confirmées, en binômes partitaires.
-        </p>
+        <p class="text--body text--gray text--small b__nudge--bottom-50">{{ description }}</p>
 
         <div class="committee__candidacies b__nudge--bottom-larger">
             {% for candidacy in candidacies if not candidacy.isTaken %}
@@ -63,12 +69,15 @@
                                 <p class="text--body text--dark">{{ first_candidacy.binome.biography|nl2br }}</p>
                             {% endif %}
 
-                            <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                            {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or first_candidacy.isPublicFaithStatement %}
-                                <p class="text--body text--dark">{{ first_candidacy.faithStatement|nl2br }}</p>
-                            {% else %}
-                                <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
+                            {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
+                                <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
+
+                                {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or first_candidacy.isPublicFaithStatement %}
+                                    <p class="text--body text--dark">{{ first_candidacy.faithStatement|nl2br }}</p>
+                                {% else %}
+                                    <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>

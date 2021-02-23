@@ -88,6 +88,20 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.microCkeditor('partial_designation_message', 300, form.message.vars.attr.maxlength ?? 2000) }}
+
+            // date fields
+            var startDateElement = dom('#partial_designation_voteStartDate');
+            var endDateElement = dom('#partial_designation_voteEndDate');
+
+            on(startDateElement, 'change', function (event) {
+                var minDate = new Date(event.currentTarget._flatpickr.selectedDates[0].getTime());
+                minDate.setDate(minDate.getDate() + 7);
+                var maxDate = new Date(minDate.getTime());
+                maxDate.setDate(maxDate.getDate() + 7);
+
+                endDateElement._flatpickr.set('minDate', minDate);
+                endDateElement._flatpickr.set('maxDate', maxDate);
+            });
         });
     </script>
 {% endblock %}

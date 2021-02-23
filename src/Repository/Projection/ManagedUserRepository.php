@@ -58,8 +58,18 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        $zones = $filter->getZones() ?: $filter->getManagedZones();
-        $this->withZoneCondition($qb, $zones);
+        $this->withGeoZones(
+            $filter->getZones() ?: $filter->getManagedZones(),
+            $qb,
+            'u',
+            ManagedUser::class,
+            'm2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+            }
+        );
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();
@@ -269,26 +279,26 @@ class ManagedUserRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('u')
             ->select('COUNT(DISTINCT u.id)')
+            ->where('u.status = :status')
+            ->setParameter('status', ManagedUser::STATUS_READY)
         ;
 
-        $this->withZoneCondition($qb, $zones);
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'u',
+            ManagedUser::class,
+            'm2',
+            'zones',
+            'z2',
+            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
+                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+            }
+        );
 
         return (int) $qb
             ->getQuery()
             ->getSingleScalarResult()
         ;
-    }
-
-    private function withZoneCondition(QueryBuilder $qb, array $zones, string $alias = 'u'): QueryBuilder
-    {
-        if (!$zones) {
-            return $qb;
-        }
-
-        if (!\in_array('zone', $qb->getAllAliases(), true)) {
-            $qb->innerJoin("$alias.zones", 'zone');
-        }
-
-        return $this->withGeoZones($qb, $zones);
     }
 }
