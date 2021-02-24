@@ -22,7 +22,7 @@ final class VotingPlatformPartialElectionIsOpenMessage extends Message
 
         $params = [
             'candidature_end_date' => static::formatDate($designation->getCandidacyEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
-            'vote_start_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
+            'vote_start_date' => static::formatDate($designation->getVoteStartDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             'vote_end_date' => static::formatDate($designation->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
             'election_type' => mb_strtoupper(mb_substr($designation->getDenomination(), 0, 1)).mb_substr($designation->getDenomination(), 1).'s',
             'mail_subject' => $designation->isCommitteeType() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !',
