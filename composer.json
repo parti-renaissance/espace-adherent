@@ -145,7 +145,7 @@
         "friendsofphp/php-cs-fixer": "^2.18",
         "league/flysystem-memory": "^1.0",
         "liip/functional-test-bundle": "^4.2",
-        "pedrotroller/php-cs-custom-fixer": "2.11.0",
+        "pedrotroller/php-cs-custom-fixer": "2.23.1",
         "phpstan/phpstan": "^0.12.66",
         "phpunit/phpunit": "^8.0",
         "steevanb/doctrine-stats": "^1.3",
