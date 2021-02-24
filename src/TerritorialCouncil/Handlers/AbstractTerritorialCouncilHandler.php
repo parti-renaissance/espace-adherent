@@ -268,6 +268,19 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
             );
         }
 
+        // if has a CoPol mandate
+        if (
+            \in_array($qualityName, TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE, true)
+            && $adherent->hasTerritorialCouncilMembership()
+            && $this->tcMandateRepository->findActiveMandateWithQuality(
+                $adherent,
+                $actualMembership->getTerritorialCouncil(),
+                $qualityName
+            )
+        ) {
+            return 'l\'adhérent a un mandat avec cette qualité dans le CoPol.';
+        }
+
         // if has a mayor or leader Political committee quality
         if (\in_array($qualityName, [TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::CITY_COUNCILOR])
             && $adherent->hasPoliticalCommitteeMembership()
