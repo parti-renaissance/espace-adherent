@@ -81,7 +81,7 @@ abstract class AbstractConsumer implements ConsumerInterface
         return false;
     }
 
-    private function validate(array $data): ? array
+    private function validate(array $data): ?array
     {
         $violations = $this->getValidator()->validate($data, new Assert\Collection([
             'allowExtraFields' => $this->isExtraFieldsAllowed(),

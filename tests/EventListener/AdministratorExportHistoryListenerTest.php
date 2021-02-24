@@ -12,12 +12,12 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class AdministratorExportHistoryListenerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var EntityRepository
      */
     private $historyRepository;
-
-    use ControllerTestTrait;
 
     protected function setUp(): void
     {

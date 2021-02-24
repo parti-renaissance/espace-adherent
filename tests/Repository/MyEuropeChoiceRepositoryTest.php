@@ -12,12 +12,12 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class MyEuropeChoiceRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var MyEuropeChoiceRepository
      */
     private $repository;
-
-    use ControllerTestTrait;
 
     public function testGetMailIntroductionAndConclusion()
     {

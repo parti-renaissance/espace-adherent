@@ -15,6 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ThematicCommunity implements ImageOwnerInterface
 {
+    use EntityIdentityTrait;
+    use EntityNameSlugTrait;
+    use ImageTrait;
+
     public const COLORS = [
         'sante' => '#FF4D89',
         'ecole' => '#6F80FF',
@@ -23,10 +27,6 @@ class ThematicCommunity implements ImageOwnerInterface
         'pme' => '#FF6955',
         'ecologie' => '#61E9D5',
     ];
-
-    use EntityIdentityTrait;
-    use EntityNameSlugTrait;
-    use ImageTrait;
 
     /**
      * @var string

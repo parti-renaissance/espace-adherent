@@ -125,7 +125,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
     public function findByCountry(string $country): array
     {
-        return  $this
+        return $this
             ->createQueryBuilder('votePlace')
             ->andWhere('votePlace.country = :country')
             ->andWhere('votePlace.enabled = :true')
@@ -140,7 +140,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
     public function findByPostalCode(string $postalCode): array
     {
-        return  $this
+        return $this
             ->createQueryBuilder('votePlace')
             ->andWhere('FIND_IN_SET(:postalCode, votePlace.postalCode) > 0')
             ->andWhere('votePlace.enabled = :true')

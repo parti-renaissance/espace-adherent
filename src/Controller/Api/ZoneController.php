@@ -16,6 +16,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ZoneController extends AbstractController
 {
+    use AccessDelegatorTrait;
+
     private const SUGGESTIONS_PER_TYPE = 5;
     private const ACTIVE_ONLY = true;
 
@@ -32,8 +34,6 @@ class ZoneController extends AbstractController
         Zone::CANTON,
         Zone::BOROUGH,
     ];
-
-    use AccessDelegatorTrait;
 
     /**
      * @Route("/zone/autocompletion", name="api_zone_autocomplete", condition="request.isXmlHttpRequest()", methods={"GET"})

@@ -17,10 +17,10 @@ use Tests\App\MessengerTestTrait;
  */
 class ElectedRepresentativeAdminTest extends WebTestCase
 {
-    private const EDIT_URI_PATTERN = '/admin/app/electedrepresentative-electedrepresentative/%s/edit';
-
     use ControllerTestTrait;
     use MessengerTestTrait;
+
+    private const EDIT_URI_PATTERN = '/admin/app/electedrepresentative-electedrepresentative/%s/edit';
 
     /**
      * @var ElectedRepresentativeRepository

@@ -7,6 +7,7 @@ ENV LANG="en_US.UTF-8" \
     DEBIAN_FRONTEND="noninteractive" \
     NODE_VERSION=10.20.1 \
     GOSU_VERSION=1.11 \
+    PHP_SECURITY_CHECHER_VERSION=1.0.0 \
     COMPOSER_ALLOW_SUPERUSER=1
 
 EXPOSE 80
@@ -47,9 +48,9 @@ RUN apt-get update -q && \
         php7.3-xml \
         php7.3-zip \
         php7.3-amqp \
-        php-apcu \
-        php-uuid \
-        php-imagick \
+        php7.3-apcu \
+        php7.3-uuid \
+        php7.3-imagick \
         ghostscript \
         supervisor \
         tzdata \
@@ -64,12 +65,13 @@ RUN apt-get update -q && \
 
     cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \
 
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --1 && \
-
     curl -L -o /tmp/nodejs.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz && \
     tar xfvz /tmp/nodejs.tar.gz -C /usr/local --strip-components=1 && \
     rm -f /tmp/nodejs.tar.gz && \
     npm install yarn -g && \
+
+    curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SECURITY_CHECHER_VERSION}/local-php-security-checker_${PHP_SECURITY_CHECHER_VERSION}_linux_$(dpkg --print-architecture) --output /usr/local/bin/local-php-security-checker && \
+    chmod +x /usr/local/bin/local-php-security-checker && \
 
     mkdir /run/php
 
@@ -78,17 +80,7 @@ RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gos
     addgroup enmarche && \
     adduser --home=/home/enmarche --shell=/bin/bash --ingroup=enmarche --disabled-password --quiet enmarche
 
-# Blackfire
-RUN wget -O - https://packages.blackfire.io/gpg.key | apt-key add - \
-    && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list \
-    && apt-get update \
-    && apt-get install blackfire-agent \
-    && version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
-    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
-    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
-    && mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.3/cli/conf.d/blackfire.ini \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.3/fpm/conf.d/blackfire.ini
+COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
 COPY php.ini /etc/php/7.3/cli/conf.d/50-setting.ini
 COPY php.ini /etc/php/7.3/fpm/conf.d/50-setting.ini

@@ -543,7 +543,7 @@ class ProcurationProxy
         }
     }
 
-    public function getVoteCityName(): ?String
+    public function getVoteCityName(): ?string
     {
         return $this->voteCityName;
     }

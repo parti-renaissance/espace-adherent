@@ -21,6 +21,8 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class AdherentRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var AdherentRepository
      */
@@ -30,8 +32,6 @@ class AdherentRepositoryTest extends WebTestCase
      * @var ReferentTagRepository
      */
     private $referentTagRepository;
-
-    use ControllerTestTrait;
 
     public function testLoadUserByUsername()
     {

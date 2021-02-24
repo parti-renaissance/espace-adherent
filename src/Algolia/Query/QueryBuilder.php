@@ -50,7 +50,7 @@ class QueryBuilder
 
     public function getQuery(array $parameters = []): string
     {
-        if ($parameters === []) {
+        if ([] === $parameters) {
             $parameters = $this->parameters;
         }
 

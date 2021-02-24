@@ -18,7 +18,7 @@ class AdminIdeaControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    /** @var IdeaRepository $ideaRepository */
+    /** @var IdeaRepository */
     private $ideaRepository;
 
     public function testDisableAction(): void

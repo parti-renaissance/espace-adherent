@@ -106,6 +106,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ImageOwnerInterface
 {
+    use EntityIdentityTrait;
+    use EntityCrudTrait;
+    use EntityPostAddressTrait;
+    use EntityReferentTagTrait;
+    use EntityZoneTrait;
+    use EntityTimestampableTrait;
+    use ImageTrait;
+
     public const STATUS_SCHEDULED = 'SCHEDULED';
     public const STATUS_CANCELLED = 'CANCELLED';
 
@@ -117,14 +125,6 @@ abstract class BaseEvent implements GeoPointInterface, ReferentTaggableEntity, A
     public const ACTIVE_STATUSES = [
         self::STATUS_SCHEDULED,
     ];
-
-    use EntityIdentityTrait;
-    use EntityCrudTrait;
-    use EntityPostAddressTrait;
-    use EntityReferentTagTrait;
-    use EntityZoneTrait;
-    use EntityTimestampableTrait;
-    use ImageTrait;
 
     /**
      * @var Collection|ReferentTag[]

@@ -15,9 +15,9 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class AdherentAdminTest extends WebTestCase
 {
-    private const ADHERENT_EDIT_URI_PATTERN = '/admin/app/adherent/%d/edit';
-
     use ControllerTestTrait;
+
+    private const ADHERENT_EDIT_URI_PATTERN = '/admin/app/adherent/%d/edit';
 
     private $adherentRepository;
 

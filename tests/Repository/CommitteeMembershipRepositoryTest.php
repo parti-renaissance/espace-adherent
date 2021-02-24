@@ -14,12 +14,12 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class CommitteeMembershipRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var CommitteeMembershipRepository
      */
     private $repository;
-
-    use ControllerTestTrait;
 
     public function testFindCommitteeMembersMemberships()
     {

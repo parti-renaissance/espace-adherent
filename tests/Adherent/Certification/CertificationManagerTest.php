@@ -14,6 +14,8 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class CertificationManagerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var AdherentRepository
      */
@@ -23,8 +25,6 @@ class CertificationManagerTest extends WebTestCase
      * @var CertificationManager
      */
     private $certificationManager;
-
-    use ControllerTestTrait;
 
     /**
      * @dataProvider provideCreateRequest
