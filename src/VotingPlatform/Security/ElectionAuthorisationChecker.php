@@ -45,6 +45,10 @@ class ElectionAuthorisationChecker
             return false;
         }
 
+        if (!$adherent->isCertified()) {
+            return false;
+        }
+
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
             if (
                 $adherent->isReferent()
@@ -59,10 +63,6 @@ class ElectionAuthorisationChecker
         }
 
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
-            if (!$adherent->isCertified()) {
-                return false;
-            }
-
             if ($membership->getSubscriptionDate()->modify('+1 months') > $refDate) {
                 return false;
             }
@@ -91,6 +91,10 @@ class ElectionAuthorisationChecker
             return false;
         }
 
+        if (!$adherent->isCertified()) {
+            return false;
+        }
+
         $refDate = $election->getVoteEndDate() ?? new \DateTime();
 
         if (
@@ -103,10 +107,6 @@ class ElectionAuthorisationChecker
         }
 
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
-            if (!$adherent->isCertified()) {
-                return false;
-            }
-
             if ($membership->getSubscriptionDate()->modify('+1 months') > $refDate) {
                 return false;
             }
