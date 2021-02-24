@@ -42,9 +42,9 @@ RUN apt-get update -q && \
         php7.3-xml \
         php7.3-zip \
         php7.3-amqp \
-        php-apcu \
-        php-uuid \
-        php-imagick \
+        php7.3-apcu \
+        php7.3-uuid \
+        php7.3-imagick \
         ghostscript \
         supervisor \
         tzdata \
@@ -55,21 +55,9 @@ RUN apt-get update -q && \
 
     sed -i -e "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<policy domain=\"coder\" rights=\"read|write\" pattern=\"PDF\" \/>/g" /etc/ImageMagick-6/policy.xml && \
 
-    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \
+    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone
 
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --1 && \
-
-    # Blackfire
-    wget -O - https://packages.blackfire.io/gpg.key | apt-key add - \
-    && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list \
-    && apt-get update -q \
-    && apt-get install -qy blackfire-agent \
-    && version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
-    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
-    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
-    && mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://\${BLACKFIRE_HOST}:8707\n" > /etc/php/7.3/cli/conf.d/blackfire.ini \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://\${BLACKFIRE_HOST}:8707\n" > /etc/php/7.3/fpm/conf.d/blackfire.ini
+COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
 COPY . /app
 
@@ -98,4 +86,4 @@ RUN chmod 0444 gcloud-service-key.json && \
 
     rm -rf docker composer.lock
 
-    CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

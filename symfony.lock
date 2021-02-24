@@ -272,9 +272,6 @@
     "fig/http-message-util": {
         "version": "1.1.5"
     },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "firebase/php-jwt": {
         "version": "v5.2.0"
     },
@@ -687,9 +684,6 @@
     },
     "psr/http-message": {
         "version": "1.0.1"
-    },
-    "psr/link": {
-        "version": "1.0.0"
     },
     "psr/log": {
         "version": "1.1.3"

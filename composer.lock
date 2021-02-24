@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51df0764c07e55cce66804c7a9fb9843",
+    "content-hash": "3c7d045584198f13f1bb7142459a9cd7",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -2808,25 +2808,25 @@
         },
         {
             "name": "endroid/installer",
-            "version": "1.1.6",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/installer.git",
-                "reference": "2014fd3ee358dda50700e392d0b1ed78631a1264"
+                "reference": "e98dedd5bcf7532ba6f9fcc95cc480fa9baa51d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/installer/zipball/2014fd3ee358dda50700e392d0b1ed78631a1264",
-                "reference": "2014fd3ee358dda50700e392d0b1ed78631a1264",
+                "url": "https://api.github.com/repos/endroid/installer/zipball/e98dedd5bcf7532ba6f9fcc95cc480fa9baa51d4",
+                "reference": "e98dedd5bcf7532ba6f9fcc95cc480fa9baa51d4",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.1",
-                "php": ">=7.2"
+                "composer-plugin-api": "^1.1 || ^2.0",
+                "php": "^7.3||^8.0"
             },
             "require-dev": {
-                "composer/composer": "^1.8",
-                "endroid/test": "dev-master"
+                "composer/composer": "^2.0",
+                "endroid/quality": "dev-master"
             },
             "type": "composer-plugin",
             "extra": {
@@ -2850,7 +2850,18 @@
                     "email": "info@endroid.nl"
                 }
             ],
-            "time": "2019-11-06T09:09:16+00:00"
+            "description": "Composer plugin for installing configuration files",
+            "support": {
+                "issues": "https://github.com/endroid/installer/issues",
+                "source": "https://github.com/endroid/installer/tree/1.3.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/endroid",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-12-05T12:15:35+00:00"
         },
         {
             "name": "endroid/qr-code",
@@ -17227,60 +17238,6 @@
             "time": "2020-12-18T16:50:48+00:00"
         },
         {
-            "name": "fig/link-util",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/link-util.git",
-                "reference": "1a07821801a148be4add11ab0603e4af55a72fac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/link-util/zipball/1a07821801a148be4add11ab0603e4af55a72fac",
-                "reference": "1a07821801a148be4add11ab0603e4af55a72fac",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0",
-                "psr/link": "~1.0@dev"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.1",
-                "squizlabs/php_codesniffer": "^2.3.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Fig\\Link\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common utility implementations for HTTP links",
-            "keywords": [
-                "http",
-                "http-link",
-                "link",
-                "psr",
-                "psr-13",
-                "rest"
-            ],
-            "time": "2016-10-17T18:31:11+00:00"
-        },
-        {
             "name": "friendsofphp/php-cs-fixer",
             "version": "v2.16.0",
             "source": {
@@ -18323,55 +18280,6 @@
                 }
             ],
             "time": "2020-06-22T07:06:58+00:00"
-        },
-        {
-            "name": "psr/link",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/link.git",
-                "reference": "eea8e8662d5cd3ae4517c9b864493f59fca95562"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/link/zipball/eea8e8662d5cd3ae4517c9b864493f59fca95562",
-                "reference": "eea8e8662d5cd3ae4517c9b864493f59fca95562",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Link\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interfaces for HTTP links",
-            "keywords": [
-                "http",
-                "http-link",
-                "link",
-                "psr",
-                "psr-13",
-                "rest"
-            ],
-            "time": "2016-10-28T16:06:13+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -19528,5 +19436,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
