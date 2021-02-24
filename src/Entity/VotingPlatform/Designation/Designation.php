@@ -319,6 +319,11 @@ class Designation
      */
     public function hasValidZone(): bool
     {
+        // no need to have a zone for committee partial elections
+        if ($this->isCommitteeType() && $this->isLimited()) {
+            return true;
+        }
+
         return
             ($this->isCommitteeType() && !empty($this->zones))
             || (DesignationTypeEnum::COPOL === $this->type && !$this->referentTags->isEmpty())

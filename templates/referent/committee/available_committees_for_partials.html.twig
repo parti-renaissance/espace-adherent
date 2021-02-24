@@ -92,7 +92,7 @@
                                 <br/>
                             {% endif %}
 
-                            {% if row['total_supervisors'] < 2 %}
+                            {% if is_canary_enabled() and row['total_supervisors'] < 2 %}
                                 {% set route_params = {committee_slug: committee.slug, type: constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR')} %}
 
                                 {% if row['total_supervisors'] == 0 %}

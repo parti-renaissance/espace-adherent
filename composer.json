@@ -69,6 +69,7 @@
         "myclabs/php-enum": "^1.5",
         "nelmio/cors-bundle": "^1.5",
         "ninsuo/symfony-collection": "^2.1",
+        "nyholm/psr7": "^1.4",
         "odolbeau/phone-number-bundle": "^3.3",
         "php-amqplib/rabbitmq-bundle": "^1.12",
         "phpdocumentor/reflection-docblock": "^3.0 || ^4.0",
