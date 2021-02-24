@@ -37,7 +37,6 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Le don que vous vous apprêtez à faire est trop élevé, car vous avez déjà donné 200 euros cette année. Les dons étant limités à 7500 euros par an et par personne, vous pouvez encore donner 7300 euros."
 
   @javascript
-  @pending
   Scenario: An anonymous user can donate successfully
     Given the following fixtures are loaded:
       | LoadDonatorIdentifierData |
@@ -68,18 +67,16 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I wait 2 seconds
-    And I press "pbx-card-button-choice1"
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "2" "img" element
+    When I click on the "1" "img" element
     Then I should see "Continuons à transformer notre pays ensemble !"
 
   @javascript
-  @pending
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
     Given the following fixtures are loaded:
       | LoadDonatorIdentifierData |
@@ -112,10 +109,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "2" "img" element
+    When I click on the "1" "img" element
     And I simulate IPN call with "00000" code for the last donation of "jean.dupont@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
@@ -151,7 +148,6 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And the "Adresse e-mail" field should contain "jean.dupont@en-marche.fr"
 
   @javascript
-  @pending
   Scenario: The logged user can subscribe to donate each month successfully but can't have a second subscription without unsubscribe before
     Given the following fixtures are loaded:
       | LoadAdherentData          |
@@ -179,10 +175,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "2" "img" element
+    When I click on the "1" "img" element
     And I simulate IPN call with "00000" code for the last donation of "jacques.picard@en-marche.fr"
     Then I should see "Continuons à transformer notre pays ensemble !"
 
@@ -206,7 +202,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I follow "vous rendre sur votre profil"
     Then I should be on "/parametres/mon-compte/modifier"
 
-    When I follow "Mes dons"
+    When I am on "/parametres/mes-activites"
     And I follow "Mettre fin à mon don mensuel"
     And I press "Oui"
     Then I should see "Votre don mensuel a bien été annulé. Vous recevrez bientôt un mail de confirmation."
@@ -232,14 +228,13 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "2" "img" element
+    When I click on the "1" "img" element
     Then I should see "Continuons à transformer notre pays ensemble !"
 
   @javascript
-  @pending
   Scenario: The logged user can continue to donate punctually with a subscription currently running
     Given the following fixtures are loaded:
       | LoadDonationData          |
@@ -276,12 +271,11 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | NUMERO_CARTE | 4012001037141112 |
       | CVVX         | 123              |
     And I wait 2 seconds
-    And I press "pbx-card-button-choice1"
     And I select "12" from "MOIS_VALIDITE"
     And I select "34" from "AN_VALIDITE"
     And I press "VALIDER"
-    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
+    Then I should be on "https://preprod-tpeweb.paybox.com/cgi/PbxACSMock.cgi" wait otherwise
     And I wait 7 second until I see "PAIEMENT ACCEPTÉ"
 
-    When I click on the "2" "img" element
+    When I click on the "1" "img" element
     Then I should see "Continuons à transformer notre pays ensemble !"
