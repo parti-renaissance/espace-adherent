@@ -86,6 +86,11 @@ jobs:
                       - ./public/apps/projets-citoyens/node_modules
                   key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
 
+            -   run: |
+                    set -x
+                    rm -rf ./public/apps/projets-citoyens/node_modules
+                    rm -rf ./public/apps/atelier-des-idees/node_modules
+
             - persist_to_workspace:
                   root: ./
                   paths:
@@ -126,7 +131,7 @@ jobs:
                 mkdir -p ./phpunit
                 make tfp-rabbitmq tfp-db
 
-                $DOCKER_COMPOSE exec app ./vendor/bin/phpunit --log-junit ./phpunit/junit.xml
+                $DOCKER_COMPOSE exec app ./vendor/bin/phpunit -v --log-junit ./phpunit/junit.xml
             - store_test_results:
                 path: ./phpunit
 
