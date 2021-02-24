@@ -92,10 +92,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, \Serializable, EntityMediaInterface, EquatableInterface
 {
-    public const ENABLED = 'ENABLED';
-    public const TO_DELETE = 'TO_DELETE';
-    public const DISABLED = 'DISABLED';
-
     use EntityCrudTrait;
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
@@ -103,6 +99,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use LazyCollectionTrait;
     use EntityReferentTagTrait;
     use EntityZoneTrait;
+
+    public const ENABLED = 'ENABLED';
+    public const TO_DELETE = 'TO_DELETE';
+    public const DISABLED = 'DISABLED';
 
     /**
      * @ORM\Column(length=25, unique=true, nullable=true)

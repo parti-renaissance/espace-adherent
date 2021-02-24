@@ -12,6 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SocialShare
 {
+    use EntityTimestampableTrait;
+    use PositionTrait;
+
     const TYPE_IMAGE = 'image';
     const TYPE_VIDEO = 'video';
     const TYPE_PDF = 'pdf';
@@ -21,9 +24,6 @@ class SocialShare
         self::TYPE_VIDEO,
         self::TYPE_PDF,
     ];
-
-    use EntityTimestampableTrait;
-    use PositionTrait;
 
     /**
      * @ORM\Column(type="bigint")

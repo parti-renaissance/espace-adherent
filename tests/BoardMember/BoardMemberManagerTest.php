@@ -19,6 +19,8 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class BoardMemberManagerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var AdherentRepository
      */
@@ -28,8 +30,6 @@ class BoardMemberManagerTest extends WebTestCase
      * @var BoardMemberManager
      */
     private $boardMemberManager;
-
-    use ControllerTestTrait;
 
     public function testSearchMembers()
     {

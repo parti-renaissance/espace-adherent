@@ -42,7 +42,7 @@ class FormationAdminTest extends WebTestCase
         yield ['/admin/app/formation-path/create'];
         yield ['/admin/app/formation-axe/list'];
         yield ['/admin/app/formation-axe/create'];
-        yield['/admin/app/formation-module/list'];
-        yield['/admin/app/formation-module/create'];
+        yield ['/admin/app/formation-module/list'];
+        yield ['/admin/app/formation-module/create'];
     }
 }

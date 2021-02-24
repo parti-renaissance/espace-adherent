@@ -11,12 +11,12 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class CommitteeRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var CommitteeRepository
      */
     private $repository;
-
-    use ControllerTestTrait;
 
     public function testCountApprovedCommittees()
     {

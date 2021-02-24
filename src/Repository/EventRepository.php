@@ -30,10 +30,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class EventRepository extends ServiceEntityRepository
 {
-    public const TYPE_PAST = 'past';
-    public const TYPE_UPCOMING = 'upcoming';
-    public const TYPE_ALL = 'all';
-
     use PaginatorTrait;
     use GeoZoneTrait;
     use GeoFilterTrait;
@@ -42,6 +38,9 @@ class EventRepository extends ServiceEntityRepository
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
+    public const TYPE_PAST = 'past';
+    public const TYPE_UPCOMING = 'upcoming';
+    public const TYPE_ALL = 'all';
 
     public function __construct(ManagerRegistry $registry, string $className = CommitteeEvent::class)
     {

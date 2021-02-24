@@ -16,6 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface
 {
+    use EntityTimestampableTrait;
+    use EntitySoftDeletableTrait;
+    use EntityContentTrait;
+    use EntityMediaTrait;
+
     public const LAYOUT_DEFAULT = 'default';
     public const LAYOUT_DEFAULT_WITH_HEADER_IMAGE = 'default_with_header_image';
     public const LAYOUT_MUNICIPALES = 'municipales';
@@ -25,11 +30,6 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
         self::LAYOUT_DEFAULT_WITH_HEADER_IMAGE,
         self::LAYOUT_MUNICIPALES,
     ];
-
-    use EntityTimestampableTrait;
-    use EntitySoftDeletableTrait;
-    use EntityContentTrait;
-    use EntityMediaTrait;
 
     /**
      * @var int|null

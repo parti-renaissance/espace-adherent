@@ -17,15 +17,15 @@ use Ramsey\Uuid\UuidInterface;
  */
 abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface, ReportableInterface
 {
-    public const APPROVED = 'APPROVED';
-    public const PENDING = 'PENDING';
-    public const REFUSED = 'REFUSED';
-
     use CoordinatorAreaTrait;
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
+
+    public const APPROVED = 'APPROVED';
+    public const PENDING = 'PENDING';
+    public const REFUSED = 'REFUSED';
 
     /**
      * The group current status.

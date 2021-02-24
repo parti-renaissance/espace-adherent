@@ -11,10 +11,10 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class NewsletterSubscriptionRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /** @var NewsletterSubscriptionRepository */
     private $repository;
-
-    use ControllerTestTrait;
 
     public function testFindAllManagedBy()
     {

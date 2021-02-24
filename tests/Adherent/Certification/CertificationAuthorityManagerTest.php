@@ -18,6 +18,8 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class CertificationAuthorityManagerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var AdherentRepository
      */
@@ -27,8 +29,6 @@ class CertificationAuthorityManagerTest extends WebTestCase
      * @var CertificationAuthorityManager
      */
     private $certificationAuthorityManager;
-
-    use ControllerTestTrait;
 
     public function testCertify(): void
     {

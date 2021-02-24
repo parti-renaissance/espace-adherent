@@ -33,6 +33,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class CommitteeMembership implements UuidEntityInterface
 {
+    use EntityIdentityTrait;
+
     public const COMMITTEE_HOST = 'HOST';
     public const COMMITTEE_FOLLOWER = 'FOLLOWER';
 
@@ -40,8 +42,6 @@ class CommitteeMembership implements UuidEntityInterface
         self::COMMITTEE_HOST,
         self::COMMITTEE_FOLLOWER,
     ];
-
-    use EntityIdentityTrait;
 
     /**
      * @var Adherent

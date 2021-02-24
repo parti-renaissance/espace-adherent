@@ -12,12 +12,12 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class TonMacronChoiceRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var TonMacronChoiceRepository
      */
     private $repository;
-
-    use ControllerTestTrait;
 
     public function testGetMailIntroductionAndConclusion()
     {

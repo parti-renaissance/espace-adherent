@@ -34,7 +34,7 @@ class DataSurvey
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Device")
-     * @ORM\JoinCOlumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $device;
 

@@ -22,6 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class ThematicCommunityMembership
 {
+    use EntityIdentityTrait;
+    use EntityUserListDefinitionTrait;
+
     public const TYPE_ADHERENT = 'adherent';
     public const TYPE_ELECTED_REPRESENTATIVE = 'electedRepresentative';
     public const TYPE_CONTACT = 'contact';
@@ -44,9 +47,6 @@ abstract class ThematicCommunityMembership
 
     public const STATUS_PENDING = 'pending';
     public const STATUS_VERIFIED = 'verified';
-
-    use EntityIdentityTrait;
-    use EntityUserListDefinitionTrait;
 
     /**
      * @var ThematicCommunity

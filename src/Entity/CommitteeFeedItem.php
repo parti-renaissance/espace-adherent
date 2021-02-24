@@ -15,11 +15,11 @@ use Ramsey\Uuid\UuidInterface;
  */
 class CommitteeFeedItem implements UserDocumentInterface
 {
-    const MESSAGE = 'message';
-    const EVENT = 'event';
-
     use EntityIdentityTrait;
     use UserDocumentTrait;
+
+    const MESSAGE = 'message';
+    const EVENT = 'event';
 
     /**
      * @ORM\Column(length=18)

@@ -141,7 +141,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "fabpot/goutte": "^3.2",
         "fakerphp/faker": "^1.13",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "^2.18",
         "league/flysystem-memory": "^1.0",
         "liip/functional-test-bundle": "^4.2",
         "pedrotroller/php-cs-custom-fixer": "2.11.0",

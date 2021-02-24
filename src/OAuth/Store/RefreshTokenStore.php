@@ -7,7 +7,7 @@ use App\OAuth\Model\RefreshToken as InMemoryRefreshToken;
 use App\OAuth\PersistentTokenFactory;
 use App\Repository\OAuth\RefreshTokenRepository;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface as  OAuthRefreshTokenRepositoryInterface;
+use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface as OAuthRefreshTokenRepositoryInterface;
 
 class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
 {

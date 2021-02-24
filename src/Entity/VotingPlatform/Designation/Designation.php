@@ -20,11 +20,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Designation
 {
-    public const DENOMINATION_DESIGNATION = 'désignation';
-    public const DENOMINATION_ELECTION = 'élection';
-
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
+
+    public const DENOMINATION_DESIGNATION = 'désignation';
+    public const DENOMINATION_ELECTION = 'élection';
 
     /**
      * @var string|null

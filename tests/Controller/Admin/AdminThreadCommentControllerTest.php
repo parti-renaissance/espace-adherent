@@ -18,7 +18,7 @@ class AdminThreadCommentControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    /** @var ThreadCommentRepository $threadCommentRepository */
+    /** @var ThreadCommentRepository */
     private $threadCommentRepository;
 
     public function testDisableAction(): void

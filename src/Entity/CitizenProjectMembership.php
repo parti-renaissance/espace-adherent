@@ -28,6 +28,8 @@ use Ramsey\Uuid\UuidInterface;
  */
 class CitizenProjectMembership
 {
+    use EntityIdentityTrait;
+
     public const CITIZEN_PROJECT_ADMINISTRATOR = 'HOST';
     public const CITIZEN_PROJECT_FOLLOWER = 'FOLLOWER';
 
@@ -35,8 +37,6 @@ class CitizenProjectMembership
         self::CITIZEN_PROJECT_ADMINISTRATOR,
         self::CITIZEN_PROJECT_FOLLOWER,
     ];
-
-    use EntityIdentityTrait;
 
     /**
      * @var CitizenProject

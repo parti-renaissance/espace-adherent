@@ -14,12 +14,12 @@ use Tests\App\Controller\ControllerTestTrait;
  */
 class EventRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var EventRepository
      */
     private $repository;
-
-    use ControllerTestTrait;
 
     public function testCountEvents()
     {
