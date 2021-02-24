@@ -69,7 +69,7 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\Candidacy", mappedBy="membership")
      */
-    private $candidacies;
+    protected $candidacies;
 
     public function __construct(
         TerritorialCouncil $territorialCouncil = null,

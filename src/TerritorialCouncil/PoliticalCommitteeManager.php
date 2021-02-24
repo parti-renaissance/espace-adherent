@@ -14,7 +14,7 @@ use App\Repository\ElectedRepresentative\MandateRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository;
 use App\TerritorialCouncil\Exception\PoliticalCommitteeMembershipException;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PoliticalCommitteeManager
 {
