@@ -141,7 +141,7 @@
                 <tr>
                     <th width="200px">Prénom nom</th>
                     <th width="50px">Âge</th>
-                    {% if is_canary_enabled() and is_supervisor %}
+                    {% if is_supervisor %}
                         <th width="140px">Téléphone</th>
                     {% endif %}
                     <th width="50px">CP</th>
@@ -182,9 +182,9 @@
                             {% endif %}
                         </td>
                         <td class="member-age">{{ member.age|default('~') }}</td>
-                        {% if is_canary_enabled() and is_supervisor %}
+                        {% if is_supervisor %}
                             <td class="member-phone">
-                                {% if membership.isVotingCommittee %}
+                                {% if member.phone %}
                                     <a href="tel:{{ member.phone|phone_number_format }}">
                                         {{ member.phone|phone_number_format }}
                                     </a>
