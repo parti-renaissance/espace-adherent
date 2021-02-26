@@ -6,6 +6,7 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
+      | LoadGeoZoneData       |
       | LoadJecouteNewsData   |
       | LoadClientData        |
       | LoadOAuthTokenData    |
@@ -102,6 +103,58 @@ Feature:
   Scenario: As an authenticated user I can filter the news list
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
     When I send a "GET" request to "/api/jecoute/news?title=rassem"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "metadata": {
+          "total_items": 1,
+          "items_per_page": 2,
+          "count": 1,
+          "current_page": 1,
+          "last_page": 1
+        },
+        "items": [
+          {
+            "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
+            "title": "Rassemblement",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
+            "external_link": "https://en-marche.fr",
+            "created_at": "@string@.isDateTime()"
+          }
+        ]
+      }
+    """
+
+  Scenario: As an authenticated user I can filter the news list by postal code
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jemarche_app"
+    When I send a "GET" request to "/api/jecoute/news?zipCode=59000"
+    Then the response status code should be 200
+    Then print last response
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      {
+        "metadata": {
+          "total_items": 1,
+          "items_per_page": 2,
+          "count": 1,
+          "current_page": 1,
+          "last_page": 1
+        },
+        "items": [
+          {
+            "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
+            "title": "Nouveau sondage disponible",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
+            "external_link": null,
+            "created_at": "@string@.isDateTime()"
+          }
+        ]
+      }
+    """
+    When I send a "GET" request to "/api/jecoute/news?zipCode=92270"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
