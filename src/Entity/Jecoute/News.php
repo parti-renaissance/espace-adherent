@@ -12,6 +12,7 @@ use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
+use App\Filter\JecouteNewsZipCodeFilter;
 use App\Validator\Jecoute\NewsTarget;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -67,6 +68,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "normalization_context": {"groups": {"jecoute_news_read"}},
  *         "access_control": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
+ *         "filters": {JecouteNewsZipCodeFilter::class},
  *         "order": {"createdAt": "DESC"},
  *     },
  * )
@@ -132,6 +134,7 @@ class News implements AuthoredInterface
      *
      * @ORM\Column(type="text")
      *
+     * @Assert\Length(max=1000)
      * @Assert\NotBlank
      *
      * @SymfonySerializer\Groups({"jecoute_news_read"})

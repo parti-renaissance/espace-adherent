@@ -1,13 +1,13 @@
 <div class="em-form__group">
     {{ form_errors(form.title) }}
     {{ form_label(form.title, 'Titre de l\'actualité', { label_attr: { class: 'em-form__label' } }) }}
-    {{ form_widget(form.title, { attr: { class: 'em-form__field committee_event__form__name', placeholder: '64 caractères maximum' } }) }}
+    {{ form_widget(form.title, { attr: { class: 'em-form__field committee_event__form__name', placeholder: '120 caractères maximum' } }) }}
 </div>
 
 <div class="em-form__group">
     {{ form_errors(form.text) }}
     {{ form_label(form.text, 'Texte de l\'actualité', { label_attr: { class: 'em-form__label' } }) }}
-    {{ form_widget(form.text, { attr: { class: 'em-form__field committee_event__form__name', placeholder: '128 caractères maximum' } }) }}
+    {{ form_widget(form.text, { attr: { class: 'em-form__field committee_event__form__name', placeholder: '1000 caractères maximum' } }) }}
 </div>
 
 <div class="em-form__group">

@@ -384,10 +384,10 @@ security:
 
         ROLE_CANDIDATE_REGIONAL_LEADER:
             - ROLE_CANDIDATE
+            - ROLE_JECOUTE_NEWS
 
         ROLE_CANDIDATE_DEPARTMENTAL:
             - ROLE_CANDIDATE
-            - ROLE_JECOUTE_NEWS
 
     access_decision_manager:
         strategy: unanimous
