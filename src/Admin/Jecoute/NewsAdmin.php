@@ -2,10 +2,10 @@
 
 namespace App\Admin\Jecoute;
 
+use App\Entity\Administrator;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
-use App\JeMarche\JeMarcheDeviceNotifier;
-use App\JeMarche\NotificationTopicBuilder;
+use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -33,8 +33,7 @@ class NewsAdmin extends AbstractAdmin
 
     private $security;
     private $zoneRepository;
-    private $deviceNotifier;
-    private $topicBuilder;
+    private $newsHandler;
 
     public function __construct(
         $code,
@@ -42,15 +41,13 @@ class NewsAdmin extends AbstractAdmin
         $baseControllerName,
         Security $security,
         ZoneRepository $zoneRepository,
-        JeMarcheDeviceNotifier $deviceNotifier,
-        NotificationTopicBuilder $topicBuilder
+        NewsHandler $newsHandler
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->security = $security;
         $this->zoneRepository = $zoneRepository;
-        $this->deviceNotifier = $deviceNotifier;
-        $this->topicBuilder = $topicBuilder;
+        $this->newsHandler = $newsHandler;
     }
 
     public function getTemplate($name)
@@ -77,9 +74,9 @@ class NewsAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Audience', ['class' => 'col-md-6'])
+            ->with('Zone', ['class' => 'col-md-6'])
                 ->add('global', CheckboxType::class, [
-                    'label' => '⚠ Notification sur toute la France ⚠',
+                    'label' => '⚠ Sur toute la France ⚠',
                     'required' => false,
                 ])
                 ->add('zone', EntityType::class, [
@@ -98,6 +95,18 @@ class NewsAdmin extends AbstractAdmin
                     },
                 ])
             ->end()
+            ->with('Audience', ['class' => 'col-md-6'])
+                ->add('published', CheckboxType::class, [
+                    'label' => 'Publication',
+                    'required' => false,
+                    'help' => 'Cochez cette case pour publier l\'actualité',
+                ])
+                ->add('notification', CheckboxType::class, [
+                    'label' => 'Notification',
+                    'required' => false,
+                    'help' => 'Cochez cette case pour notifier les utilisateurs mobile',
+                ])
+            ->end()
         ;
 
         $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
@@ -108,9 +117,7 @@ class NewsAdmin extends AbstractAdmin
         /** @var News $news */
         $news = $event->getData();
 
-        $topic = $this->topicBuilder->buildTopic($news->getZone());
-
-        $news->setTopic($topic);
+        $this->newsHandler->buildTopic($news);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -131,6 +138,12 @@ class NewsAdmin extends AbstractAdmin
             ->add('text', null, [
                 'label' => 'Texte',
             ])
+            ->add('notification', null, [
+                'label' => 'Notification',
+            ])
+            ->add('published', null, [
+                'label' => 'Publiée',
+            ])
         ;
     }
 
@@ -149,6 +162,12 @@ class NewsAdmin extends AbstractAdmin
             ->add('zone', null, [
                 'label' => 'Audience',
                 'template' => 'admin/jecoute/news/list_zone.html.twig',
+            ])
+            ->add('notification', null, [
+                'label' => 'Notification',
+            ])
+            ->add('published', null, [
+                'label' => 'Publiée',
             ])
             ->add('createdAt', null, [
                 'label' => 'Date',
@@ -173,11 +192,24 @@ class NewsAdmin extends AbstractAdmin
     {
         parent::postPersist($object);
 
+        /** @var Administrator $administrator */
+        $administrator = $this->security->getUser();
+
+        $object->setCreatedBy($administrator);
+
         $this->dispatchNotification($object);
     }
 
     private function dispatchNotification(News $news): void
     {
-        $this->deviceNotifier->sendNotification($news);
+        $this->newsHandler->handleNotification($news);
+    }
+
+    /**
+     * @required
+     */
+    public function setSecurity(Security $security)
+    {
+        $this->security = $security;
     }
 }

@@ -6,12 +6,14 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\AuthoredInterface;
+use App\Entity\AuthoredTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Validator\Jecoute\NewsTarget;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -76,12 +78,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="jecoute_news")
  * @ORM\Entity
+ * @ORM\AssociationOverrides({
+ *     @ORM\AssociationOverride(name="author",
+ *         joinColumns={
+ *             @ORM\JoinColumn(onDelete="SET NULL")
+ *         }
+ *     )
+ * })
  *
  * @NewsTarget
  */
-class News
+class News implements AuthoredInterface
 {
     use EntityTimestampableTrait;
+    use AuthoredTrait;
 
     /**
      * @var int|null
@@ -142,7 +152,7 @@ class News
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=false)
+     * @ORM\Column(nullable=true)
      */
     private $topic;
 
@@ -157,8 +167,6 @@ class News
     /**
      * @var Administrator|null
      *
-     * @Gedmo\Blameable(on="create")
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
@@ -169,13 +177,29 @@ class News
      */
     private $global = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $notification = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $published = true;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $title = null,
         string $text = null,
         string $topic = null,
         string $externalLink = null,
-        Zone $zone = null
+        Zone $zone = null,
+        bool $notification = false,
+        bool $published = true
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;
@@ -183,6 +207,8 @@ class News
         $this->topic = $topic;
         $this->externalLink = $externalLink;
         $this->zone = $zone;
+        $this->notification = $notification;
+        $this->published = $published;
     }
 
     public function __toString()
@@ -268,5 +294,30 @@ class News
     public function setGlobal(bool $global): void
     {
         $this->global = $global;
+    }
+
+    public function isNotification(): bool
+    {
+        return $this->notification;
+    }
+
+    public function setNotification(bool $notification): void
+    {
+        $this->notification = $notification;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): void
+    {
+        $this->published = $published;
+    }
+
+    public function setAuthor(Adherent $author): void
+    {
+        $this->author = $author;
     }
 }

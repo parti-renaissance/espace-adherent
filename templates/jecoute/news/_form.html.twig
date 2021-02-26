@@ -1,0 +1,35 @@
+<div class="em-form__group">
+    {{ form_errors(form.title) }}
+    {{ form_label(form.title, 'Titre de l\'actualité', { label_attr: { class: 'em-form__label' } }) }}
+    {{ form_widget(form.title, { attr: { class: 'em-form__field committee_event__form__name', placeholder: '64 caractères maximum' } }) }}
+</div>
+
+<div class="em-form__group">
+    {{ form_errors(form.text) }}
+    {{ form_label(form.text, 'Texte de l\'actualité', { label_attr: { class: 'em-form__label' } }) }}
+    {{ form_widget(form.text, { attr: { class: 'em-form__field committee_event__form__name', placeholder: '128 caractères maximum' } }) }}
+</div>
+
+<div class="em-form__group">
+    {{ form_errors(form.externalLink) }}
+    {{ form_label(form.externalLink, 'Lien', { label_attr: { class: 'em-form__label' } }) }}
+    {{ form_widget(form.externalLink, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'https://...' } }) }}
+</div>
+
+<div class="em-form__group em-form__checkbox--inline">
+    <label class="em-form__label required">Zone concernée</label>
+    {{ form_widget(form.zone, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Sélectionner une seule zone" } }) }}
+    {{ form_errors(form.zone) }}
+</div>
+
+<div class="em-form__group em-form__group--cgu">
+    <div class="form__checkbox">
+        {{ form_errors(form.notification) }}
+        {{ form_widget(form.notification, { attr: { class: 'committee_event__form__name' } }) }}
+        {{ form_label(form.notification, 'Envoyer une notification aux marcheurs') }}
+    </div>
+</div>
+
+<div class="form__row text--center b__nudge--top">
+    <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top">Enregistrer l'actualité</button>
+</div>

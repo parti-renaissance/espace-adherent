@@ -381,6 +381,12 @@ survey.age_range.between_55_64: Entre 55 et 64 ans
 survey.age_range.between_65_80: Entre 65 et 80 ans
 survey.age_range.greater_than_80: Plus de 80 ans
 
+jecoute_news.create.success: L'actualité a bien été créée
+jecoute_news.edit.success: L'actualité a bien été éditée
+jecoute_news.publish.success: L'actualité a bien été publiée
+jecoute_news.unpublish.success: L'actualité a bien été dépubliée
+
+
 #
 # Procuration
 #

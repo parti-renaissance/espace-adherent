@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Controller\EnMarche\Jecoute\News;
+
+use App\Entity\Adherent;
+use App\Jecoute\JecouteSpaceEnum;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/espace-candidat/actualites", name="app_jecoute_news_candidate_")
+ *
+ * @Security("is_granted('ROLE_JECOUTE_NEWS')")
+ */
+class NewsCandidateController extends AbstractNewsController
+{
+    protected function getSpaceName(): string
+    {
+        return JecouteSpaceEnum::CANDIDATE_SPACE;
+    }
+
+    protected function getZones(Adherent $adherent): array
+    {
+        return [$adherent->getCandidateManagedArea()->getZone()];
+    }
+}
