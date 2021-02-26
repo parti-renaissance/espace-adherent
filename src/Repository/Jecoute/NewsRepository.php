@@ -15,4 +15,15 @@ class NewsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, News::class);
     }
+
+    public function listForZone(array $zones): array
+    {
+        return $this->createQueryBuilder('n')
+            ->where('n.zone IN (:zones)')
+            ->setParameter('zones', $zones)
+            ->addOrderBy('n.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

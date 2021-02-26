@@ -172,7 +172,7 @@ abstract class AbstractNewsController extends AbstractController
      */
     protected function getNews(Adherent $adherent): array
     {
-        return $this->newsRepository->findByZone($this->getZones($adherent));
+        return $this->newsRepository->listForZone($this->getZones($adherent));
     }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
