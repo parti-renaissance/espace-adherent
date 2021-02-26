@@ -10,6 +10,7 @@ use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\NewsRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,6 +92,8 @@ abstract class AbstractNewsController extends AbstractController
      *     requirements={"uuid": "%pattern_uuid%"},
      *     methods={"GET|POST"}
      * )
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', news)")
      */
     public function jecouteNewsEditAction(Request $request, News $news, ObjectManager $manager): Response
     {
@@ -121,6 +124,8 @@ abstract class AbstractNewsController extends AbstractController
      *     requirements={"uuid": "%pattern_uuid%"},
      *     methods={"GET|POST"}
      * )
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', news)")
      */
     public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
@@ -142,6 +147,8 @@ abstract class AbstractNewsController extends AbstractController
      *     requirements={"uuid": "%pattern_uuid%"},
      *     methods={"GET|POST"}
      * )
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', news)")
      */
     public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
     {

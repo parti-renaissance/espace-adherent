@@ -8,6 +8,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\AuthoredInterface;
+use App\Entity\AuthoredTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Validator\Jecoute\NewsTarget;
@@ -76,12 +78,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="jecoute_news")
  * @ORM\Entity
+ * @ORM\AssociationOverrides({
+ *     @ORM\AssociationOverride(name="author",
+ *         joinColumns={
+ *             @ORM\JoinColumn(onDelete="SET NULL")
+ *         }
+ *     )
+ * })
  *
  * @NewsTarget
  */
-class News
+class News implements AuthoredInterface
 {
     use EntityTimestampableTrait;
+    use AuthoredTrait;
 
     /**
      * @var int|null
@@ -161,14 +171,6 @@ class News
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $createdBy;
-
-    /**
-     * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private $author;
 
     /**
      * @var bool
@@ -312,11 +314,6 @@ class News
     public function setPublished(bool $published): void
     {
         $this->published = $published;
-    }
-
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
     }
 
     public function setAuthor(Adherent $author): void
