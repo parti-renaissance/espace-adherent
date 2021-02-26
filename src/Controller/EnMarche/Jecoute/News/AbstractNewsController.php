@@ -77,7 +77,7 @@ abstract class AbstractNewsController extends AbstractController
 
             $this->addFlash('info', 'jecoute_news.create.success');
 
-            return $this->redirectToNewseRoute('news_list');
+            return $this->redirectToNewsRoute('news_list');
         }
 
         return $this->renderTemplate('jecoute/news/create.html.twig', [
@@ -109,7 +109,7 @@ abstract class AbstractNewsController extends AbstractController
 
             $this->addFlash('info', 'jecoute_news.edit.success');
 
-            return $this->redirectToNewseRoute('news_list');
+            return $this->redirectToNewsRoute('news_list');
         }
 
         return $this->renderTemplate('jecoute/news/create.html.twig', [
@@ -122,7 +122,7 @@ abstract class AbstractNewsController extends AbstractController
      *     path="/{uuid}/publier",
      *     name="news_publish",
      *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET|POST"}
+     *     methods={"GET"}
      * )
      *
      * @Security("is_granted('IS_AUTHOR_OF', news)")
@@ -137,7 +137,7 @@ abstract class AbstractNewsController extends AbstractController
 
         $this->addFlash('info', 'jecoute_news.publish.success');
 
-        return $this->redirectToNewseRoute('news_list');
+        return $this->redirectToNewsRoute('news_list');
     }
 
     /**
@@ -145,7 +145,7 @@ abstract class AbstractNewsController extends AbstractController
      *     path="/{uuid}/depublier",
      *     name="news_unpublish",
      *     requirements={"uuid": "%pattern_uuid%"},
-     *     methods={"GET|POST"}
+     *     methods={"GET"}
      * )
      *
      * @Security("is_granted('IS_AUTHOR_OF', news)")
@@ -160,7 +160,7 @@ abstract class AbstractNewsController extends AbstractController
 
         $this->addFlash('info', 'jecoute_news.unpublish.success');
 
-        return $this->redirectToNewseRoute('news_list');
+        return $this->redirectToNewsRoute('news_list');
     }
 
     abstract protected function getSpaceName(): string;
@@ -186,7 +186,7 @@ abstract class AbstractNewsController extends AbstractController
         ));
     }
 
-    protected function redirectToNewseRoute(string $subName, array $parameters = []): Response
+    protected function redirectToNewsRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_jecoute_news_{$this->getSpaceName()}_${subName}", $parameters);
     }
