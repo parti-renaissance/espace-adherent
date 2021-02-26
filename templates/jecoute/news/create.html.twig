@@ -1,19 +1,5 @@
 {% extends 'jecoute/_layout.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
-{% endblock %}
-
-{% block final_javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/jquery.collection.js') }}"></script>
-
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-        });
-    </script>
-{% endblock %}
-
 {% block jecoute_content %}
     {% form_theme form with ['jquery.collection.html.twig', 'jecoute/_form_theme.html.twig'] %}
 
