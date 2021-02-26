@@ -142,7 +142,7 @@ class News
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=false)
+     * @ORM\Column(nullable=true)
      */
     private $topic;
 
@@ -180,7 +180,14 @@ class News
      *
      * @ORM\Column(type="boolean", options={"default": 0})
      */
-    private $notification;
+    private $notification = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $published = true;
 
     public function __construct(
         UuidInterface $uuid = null,
@@ -189,7 +196,8 @@ class News
         string $topic = null,
         string $externalLink = null,
         Zone $zone = null,
-        bool $notification = false
+        bool $notification = false,
+        bool $published = true
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;
@@ -198,6 +206,7 @@ class News
         $this->externalLink = $externalLink;
         $this->zone = $zone;
         $this->notification = $notification;
+        $this->published = $published;
     }
 
     public function __toString()
@@ -293,6 +302,16 @@ class News
     public function setNotification(bool $notification): void
     {
         $this->notification = $notification;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): void
+    {
+        $this->published = $published;
     }
 
     public function getAuthor(): ?Adherent

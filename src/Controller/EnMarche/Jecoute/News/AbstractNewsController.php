@@ -5,15 +5,15 @@ namespace App\Controller\EnMarche\Jecoute\News;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Adherent;
 use App\Entity\Jecoute\News;
-use App\Form\ConfirmActionType;
 use App\Form\Jecoute\NewsFormType;
-use App\JeMarche\NotificationTopicBuilder;
+use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\NewsRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -50,7 +50,7 @@ abstract class AbstractNewsController extends AbstractController
     public function jecouteNewsCreateAction(
         Request $request,
         ObjectManager $manager,
-        NotificationTopicBuilder $topicBuilder,
+        NewsHandler $handler,
         UserInterface $user
     ): Response {
         /** @var Adherent $user */
@@ -66,13 +66,13 @@ abstract class AbstractNewsController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $topic = $topicBuilder->buildTopic($news->getZone());
-
-            $news->setTopic($news);
             $news->setAuthor($user);
+            $handler->buildTopic($news);
 
             $manager->persist($news);
             $manager->flush();
+
+            $handler->handleNotification($news);
 
             $this->addFlash('info', 'jecoute_news.create.success');
 
@@ -116,30 +116,44 @@ abstract class AbstractNewsController extends AbstractController
 
     /**
      * @Route(
-     *     path="/{uuid}/supprimer",
-     *     name="news_delete",
+     *     path="/{uuid}/publier",
+     *     name="news_publish",
      *     requirements={"uuid": "%pattern_uuid%"},
      *     methods={"GET|POST"}
      * )
      */
-    public function jecouteNewsDeleteAction(Request $request, News $news, ObjectManager $manager): Response
+    public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
-        $form = $this->createForm(ConfirmActionType::class)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->remove($news);
-            $manager->flush();
-
-            $this->addFlash('info', 'jecoute_news.delete.success');
-
-            return $this->redirectToNewseRoute('news_list');
+        if ($news->isPublished()) {
+            throw new BadRequestHttpException('This news is already published.');
         }
 
-        return $this->renderTemplate('jecoute/news/delete.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $handler->publish($news);
+
+        $this->addFlash('info', 'jecoute_news.publish.success');
+
+        return $this->redirectToNewseRoute('news_list');
+    }
+
+    /**
+     * @Route(
+     *     path="/{uuid}/depublier",
+     *     name="news_unpublish",
+     *     requirements={"uuid": "%pattern_uuid%"},
+     *     methods={"GET|POST"}
+     * )
+     */
+    public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
+    {
+        if (!$news->isPublished()) {
+            throw new BadRequestHttpException('This news is already unpublished.');
+        }
+
+        $handler->unpublish($news);
+
+        $this->addFlash('info', 'jecoute_news.unpublish.success');
+
+        return $this->redirectToNewseRoute('news_list');
     }
 
     abstract protected function getSpaceName(): string;

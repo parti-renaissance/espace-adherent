@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20210219175042 extends AbstractMigration
+final class Version20210226133019 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -14,7 +14,10 @@ final class Version20210219175042 extends AbstractMigration
         ADD 
           author_id INT UNSIGNED DEFAULT NULL, 
         ADD 
-          notification TINYINT(1) DEFAULT \'0\' NOT NULL');
+          notification TINYINT(1) DEFAULT \'0\' NOT NULL, 
+        ADD 
+          published TINYINT(1) DEFAULT \'1\' NOT NULL, 
+          CHANGE topic topic VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE 
           jecoute_news 
         ADD 
@@ -29,6 +32,14 @@ final class Version20210219175042 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE jecoute_news DROP FOREIGN KEY FK_3436209F675F31B');
         $this->addSql('DROP INDEX IDX_3436209F675F31B ON jecoute_news');
-        $this->addSql('ALTER TABLE jecoute_news DROP author_id, DROP notification');
+        $this->addSql('ALTER TABLE 
+          jecoute_news 
+        DROP 
+          author_id, 
+        DROP 
+          notification, 
+        DROP 
+          published, 
+          CHANGE topic topic VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
     }
 }

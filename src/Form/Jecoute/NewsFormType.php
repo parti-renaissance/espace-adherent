@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,6 +17,8 @@ class NewsFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $isEdition = $options['edit'];
+
         $builder
             ->add('title', TextType::class, [
                 'filter_emojis' => true,
@@ -23,19 +26,19 @@ class NewsFormType extends AbstractType
             ->add('text', TextareaType::class, [
                 'filter_emojis' => true,
             ])
+            ->add('externalLink', UrlType::class, [
+                'required' => false,
+            ])
+            ->add('notification', CheckboxType::class, [
+                'required' => false,
+                'disabled' => $isEdition,
+            ])
+            ->add('zone', EntityType::class, [
+                'class' => Zone::class,
+                'choices' => $options['zones'],
+                'disabled' => $isEdition,
+            ])
         ;
-
-        if (false === $options['edit']) {
-            $builder
-                ->add('notification', CheckboxType::class, [
-                    'required' => false,
-                ])
-                ->add('zone', EntityType::class, [
-                    'class' => Zone::class,
-                    'choices' => $options['zones'],
-                ])
-            ;
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

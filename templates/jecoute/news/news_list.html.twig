@@ -28,6 +28,13 @@
                         },
                     },
                     {
+                        key: 'published',
+                        name: "Publication",
+                        style: {
+                            width: 70,
+                        },
+                    },
+                    {
                         key: 'createdAt',
                         name: 'Date de création',
                     },
@@ -47,19 +54,32 @@
                             text: data.text,
                             createdAt: data.createdAt|date('d/m/Y'),
                             zone: '<span class="adherent-dashboard-tag">'~('geo_zone.'~zone.type)|trans~'</span><br>'
-                            ~"<div class=\"b__nudge--top-10\">#{zone.name} (#{zone.code})</span>",
+                                ~"<div class=\"b__nudge--top-10\">#{zone.name} (#{zone.code})</span>",
+                            published: data.published ? '<span class="status status__1">Publiée</span>' :
+                                '<span class="status status__2">Non publiée</span>',
                         } %}
 
                         {% set menu = [
                             {
                                 label: 'Éditer',
                                 url: path("app_jecoute_news_#{space_name}_news_edit", {uuid: data.uuid})
-                            },
-                            {
-                                label: 'Supprimer',
-                                url: path("app_jecoute_news_#{space_name}_news_delete", {uuid: data.uuid})
-                            },
+                            }
                         ] %}
+                        {% if data.published %}
+                            {% set menu = menu|merge([
+                                {
+                                    label: 'Dépublier',
+                                    url: path("app_jecoute_news_#{space_name}_news_unpublish", {uuid: data.uuid})
+                                }
+                            ]) %}
+                        {% else %}
+                            {% set menu = menu|merge([
+                                {
+                                    label: 'Publier',
+                                    url: path("app_jecoute_news_#{space_name}_news_publish", {uuid: data.uuid})
+                                }
+                            ]) %}
+                        {% endif %}
 
                         {% set row = row|merge({
                             menu: menu
@@ -79,9 +99,14 @@
         <div class="datagrid__pre-table b__nudge--bottom-larger">
             <h3>Actualités</h3>
             <a href="{{ path("app_jecoute_news_#{space_name}_news_create") }}" class="btn-secondary btn-secondary--blue">
-                + Créer une actualité
+                + Publier une actualité sur l'application
             </a>
         </div>
+    </div>
+
+    <div class="alert alert--tips b__nudge--bottom-60">
+        Gérez ici les actualités de votre campagne terrain.<br>
+        Une fois publiées, elles seront visibles sur l'application Je Marche, aux adhérents de votre territoire.
     </div>
 
     <div id="datagrid"></div>

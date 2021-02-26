@@ -23,7 +23,7 @@
 
     <div class="jecoute-survey l__wrapper--slim">
         <div class="form__title b__nudge--bottom-larger">
-            <h3 class="text--medium">Créer une actualité</h3>
+            <h3 class="text--medium">Publier une actualité</h3>
         </div>
 
         {% if not form.vars.valid %}
@@ -31,7 +31,19 @@
         {% endif %}
 
         {{ form_start(form, { attr: { class: 'em-form b__nudge--top-40' } }) }}
-
+            <div class="information__modal inf-modl--pale-blue b__nudge--top-50 b__nudge--bottom-large">
+                Une fois publiée, votre actualité sera visible sur la page d'accueil de l'application Je Marche,
+                aux adhérents de votre territoire d'action. <br>
+                <br>
+                Si cette actualité est importante, cochez « Envoyer une notification aux marcheurs »,
+                elle apparaitra en notification push sur le téléphone des adhérents.
+                N'en abusez pas, au risque de provoquer du mécontentement et des désinstallations.<br>
+                <br>
+                Seul le titre apparaitra sur la page d'accueil et dans la notification,
+                soignez donc particulièrement sa rédaction.<br>
+                <br>
+                Le texte sera lui lisible après avoir cliqué sur le titre ou la notification.
+            </div>
             {{ include('jecoute/news/_form.html.twig') }}
 
         {{ form_end(form) }}
