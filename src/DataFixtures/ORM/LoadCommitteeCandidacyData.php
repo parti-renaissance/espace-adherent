@@ -40,7 +40,7 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
                 'committee' => 'committee-4',
             ],
             [
-                'adherent' => 'senatorial-candidate',
+                'adherent' => 'adherent-49',
                 'committee' => 'committee-12',
                 'binome' => 'municipal-manager-1',
                 'public_faith_statement' => true,

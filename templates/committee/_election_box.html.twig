@@ -141,6 +141,10 @@
                             Vous devez <a href="{{ path('app_certification_request_home') }}" class="link--no-decor text--blue--dark">certifier votre profil</a> pour participer.
                         {% elseif candidacy_membership and candidacy_membership != membership %}
                             Vous êtes déjà candidat{{ app.user.isFemale ? 'e' }} dans le comité {{ candidacy_membership.committee.name }}.
+                        {% elseif app.user.isSupervisor(false) %}
+                            Les animateurs locaux ne peuvent pas candidater à cette élection.
+                        {% elseif designation.getPools() is not empty and app.user.getGender() not in designation.getPools() %}
+                            Seule la partie {{ (('common.' ~ (designation.getPools()|first))|trans) }} du binôme paritaire est renouvelée lors de cette désignation.
                         {% endif %}
                     </div>
                 </div>

@@ -110,7 +110,7 @@ Feature: Merge committees from admin panel
     And I should not see "francis.brioul@yahoo.com"
 
   Scenario: All candidacies of merged committee should be transferred to the new committee
-    Given I am logged as "senatorial-candidate@en-marche-dev.fr"
+    Given I am logged as "adherent-male-49@en-marche-dev.fr"
     When I am on "/comites/en-marche-allemagne"
     Then I should see "Isabelle Responsable Communal doit accepter votre demande pour que votre candidature soit confirmée"
 
@@ -121,12 +121,12 @@ Feature: Merge committees from admin panel
       | ID du comité de destination | 10 |
     And I press "Fusionner"
     Then the response status code should be 200
-    And I should see "l'arrivée de 3 nouveau(x) membre(s) au sein du comité de destination En Marche - Suisse (10)"
+    And I should see "l'arrivée de 4 nouveau(x) membre(s) au sein du comité de destination En Marche - Suisse (10)"
     Then I press "Confirmer la fusion"
     And the response status code should be 200
     And I should be on "/admin/app/reporting-committeemergehistory/list"
 
-    Given I am logged as "senatorial-candidate@en-marche-dev.fr"
+    Given I am logged as "adherent-male-49@en-marche-dev.fr"
     When I am on "/comites/en-marche-allemagne"
     Then the response status code should be 403
 

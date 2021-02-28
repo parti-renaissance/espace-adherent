@@ -310,10 +310,10 @@ class CommitteeMembership implements UuidEntityInterface
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
     }
 
-    public function hasActiveCommitteeCandidacy(): bool
+    public function hasActiveCommitteeCandidacy(bool $confirmed = null): bool
     {
         foreach ($this->committeeCandidacies as $candidacy) {
-            if ($candidacy->isOngoing()) {
+            if ($candidacy->isOngoing() && (!$confirmed || $candidacy->isConfirmed())) {
                 return true;
             }
         }
