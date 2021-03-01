@@ -92,12 +92,12 @@
                                 <br/>
                             {% endif %}
 
-                            {% if is_canary_enabled() and row['total_supervisors'] < 2 %}
+                            {% if row['total_supervisors'] < 2 %}
                                 {% set route_params = {committee_slug: committee.slug, type: constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR')} %}
 
                                 {% if row['total_supervisors'] == 0 %}
                                     <a href="{{ path('app_referent_designations_create_partial', route_params) }}" class="btn--as-link">Élire le binôme d'animateurs locaux</a>
-                                {% else %}
+                                {% elseif is_canary_enabled() %}
                                     <a href="{{ path('app_referent_designations_create_partial', route_params|merge({pool: row['total_supervisors_female'] < 1 ? constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::FEMALE') : constant('App\\Entity\\VotingPlatform\\ElectionPoolCodeEnum::MALE')})) }}">
                                         {{ row['total_supervisors_female'] < 1 ? 'Renouveler l\'animatrice locale' : 'Renouveler l\'animateur local' }}
                                     </a>

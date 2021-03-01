@@ -4,7 +4,7 @@ namespace App\Committee\EventListener;
 
 use App\Committee\CommitteeManager;
 use App\Entity\CommitteeCandidacy;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Election\Event\NewVote;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CommitteeCandidacyEvent;
 use App\VotingPlatform\Events;
@@ -23,12 +23,13 @@ class UpdateVotingCommitteeOnCandidateListener implements EventSubscriberInterfa
     {
         return [
             Events::CANDIDACY_CREATED => 'onCandidacyCreated',
+            NewVote::class => 'onVoteCreated',
         ];
     }
 
     public function onCandidacyCreated(BaseCandidacyEvent $event): void
     {
-        if (!$event instanceof CommitteeCandidacyEvent || DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $event->getCandidacy()->getType()) {
+        if (!$event instanceof CommitteeCandidacyEvent) {
             return;
         }
 
@@ -39,5 +40,22 @@ class UpdateVotingCommitteeOnCandidateListener implements EventSubscriberInterfa
             $candidacy->getCommitteeMembership(),
             $candidacy->getAdherent()
         );
+    }
+
+    public function onVoteCreated(NewVote $event): void
+    {
+        if (!$committee = $event->getElection()->getElectionEntity()->getCommittee()) {
+            return;
+        }
+
+        if (!$adherent = $event->getVoter()->getAdherent()) {
+            return;
+        }
+
+        if (!$membership = $adherent->getMembershipFor($committee)) {
+            return;
+        }
+
+        $this->committeeManager->enableVoteInMembership($membership, $adherent);
     }
 }
