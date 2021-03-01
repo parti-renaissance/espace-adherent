@@ -16,7 +16,11 @@ use App\Entity\CommitteeMembership;
 use App\Entity\District;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Geo\Zone;
+use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\ElectionEntity;
+use App\Entity\VotingPlatform\Vote;
+use App\Entity\VotingPlatform\Voter;
 use App\Geocoder\Coordinates;
 use App\Intl\FranceCitiesBundle;
 use App\Search\SearchParametersFilter;
@@ -883,6 +887,45 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setFirstResult(($page - 1) * $limit)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function findCommitteeForRecentCandidate(Designation $designation, Adherent $adherent): ?Committee
+    {
+        return $this->createQueryBuilder('committee')
+            ->innerJoin('committee.committeeElections', 'election')
+            ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
+            ->innerJoin('election.candidacies', 'candidacy', Join::WITH, 'candidacy.status = :candidacy_status AND candidacy.createdAt >= :candidacy_date')
+            ->innerJoin('candidacy.committeeMembership', 'membership', Join::WITH, 'membership.adherent = :adherent')
+            ->setParameters([
+                'designation_type' => $designation->getType(),
+                'candidacy_status' => CandidacyInterface::STATUS_CONFIRMED,
+                'adherent' => $adherent,
+                'candidacy_date' => new \DateTime('-3 months'),
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findCommitteeForRecentVote(Designation $designation, Adherent $adherent): ?Committee
+    {
+        return $this->createQueryBuilder('committee')
+            ->innerJoin(ElectionEntity::class, 'election_entity', Join::WITH, 'election_entity.committee = committee')
+            ->innerJoin('election_entity.election', 'election')
+            ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
+            ->innerJoin('election.electionRounds', 'election_round')
+            ->innerJoin(Voter::class, 'voter', Join::WITH, 'voter.adherent = :adherent')
+            ->innerJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = election_round AND vote.votedAt >= :vote_date')
+            ->setParameters([
+                'designation_type' => $designation->getType(),
+                'adherent' => $adherent,
+                'vote_date' => new \DateTime('-3 months'),
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

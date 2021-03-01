@@ -9,6 +9,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
+use App\Repository\CommitteeRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoteResultRepository;
@@ -19,15 +20,18 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     private $electionRepository;
     private $voteRepository;
     private $voteResultRepository;
+    private $committeeRepository;
 
     public function __construct(
         ElectionRepository $electionRepository,
         VoteRepository $voteRepository,
-        VoteResultRepository $voteResultRepository
+        VoteResultRepository $voteResultRepository,
+        CommitteeRepository $committeeRepository
     ) {
         $this->electionRepository = $electionRepository;
         $this->voteRepository = $voteRepository;
         $this->voteResultRepository = $voteResultRepository;
+        $this->committeeRepository = $committeeRepository;
     }
 
     public function findElectionForCommittee(Committee $committee): ?Election
@@ -71,5 +75,15 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
         int $territorialCouncilId = null
     ): array {
         return $this->voteResultRepository->getResultsForCandidate($adherentId, $designationId, $committeeId, $territorialCouncilId);
+    }
+
+    public function findCommitteeForRecentCandidate(Designation $designation, Adherent $adherent): ?Committee
+    {
+        return $this->committeeRepository->findCommitteeForRecentCandidate($designation, $adherent);
+    }
+
+    public function findCommitteeForRecentVote(Designation $designation, Adherent $adherent): ?Committee
+    {
+        return $this->committeeRepository->findCommitteeForRecentVote($designation, $adherent);
     }
 }

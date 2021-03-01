@@ -116,11 +116,11 @@ class CommitteeMembershipCollection extends ArrayCollection
         return null;
     }
 
-    public function getCommitteeCandidacyMembership(): ?CommitteeMembership
+    public function getCommitteeCandidacyMembership(bool $confirmed = null): ?CommitteeMembership
     {
         /** @var CommitteeMembership $membership */
         foreach ($this as $membership) {
-            if ($membership->hasActiveCommitteeCandidacy()) {
+            if ($membership->hasActiveCommitteeCandidacy($confirmed)) {
                 return $membership;
             }
         }

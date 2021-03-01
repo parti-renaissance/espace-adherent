@@ -2630,6 +2630,20 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->adherentMandates->matching($criteria);
     }
 
+    /**
+     * @return CommitteeAdherentMandate[]
+     */
+    public function getActiveDesignatedAdherentMandates(): array
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('type', 'committee'))
+            ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->andWhere(Criteria::expr()->eq('quality', null))
+        ;
+
+        return $this->adherentMandates->matching($criteria)->toArray();
+    }
+
     public function findMandatesForQuality(string $quality, bool $active = false): array
     {
         return $this->adherentMandates->filter(function (AbstractAdherentMandate $mandate) use ($quality, $active) {

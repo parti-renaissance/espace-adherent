@@ -4,16 +4,21 @@ namespace App\VotingPlatform\Security;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Repository\CommitteeRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 
 class ElectionAuthorisationChecker
 {
     private $electedRepresentativeRepository;
+    private $committeeRepository;
 
-    public function __construct(ElectedRepresentativeRepository $electedRepresentativeRepository)
-    {
+    public function __construct(
+        ElectedRepresentativeRepository $electedRepresentativeRepository,
+        CommitteeRepository $committeeRepository
+    ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
+        $this->committeeRepository = $committeeRepository;
     }
 
     public function canCandidateOnCommittee(Committee $committee, Adherent $adherent): bool
@@ -26,22 +31,15 @@ class ElectionAuthorisationChecker
             return false;
         }
 
-        $refDate = $election->getVoteEndDate() ?? new \DateTime();
-
-        if (
-            ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership())
-            && !$candidateMembership->getCommittee()->equals($committee)
-        ) {
-            return false;
-        }
-
-        if ($adherent->isMinor($refDate)) {
-            return false;
-        }
-
         $designation = $election->getDesignation();
 
         if ($designation->getPools() && !\in_array($adherent->getGender(), $designation->getPools(), true)) {
+            return false;
+        }
+
+        $refDate = $election->getVoteEndDate() ?? new \DateTime();
+
+        if ($adherent->isMinor($refDate)) {
             return false;
         }
 
@@ -49,40 +47,49 @@ class ElectionAuthorisationChecker
             return false;
         }
 
+        if ($adherent->isSupervisor(false)) {
+            return false;
+        }
+
+        if ($this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent)) {
+            return false;
+        }
+
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
             if (
                 $adherent->isReferent()
-                || $adherent->isSupervisor()
                 || $adherent->isDeputy()
                 || $adherent->isSenator()
+                || $adherent->getActiveDesignatedAdherentMandates()
             ) {
                 return false;
             }
+        } else {
+            if ($membership->getSubscriptionDate()->modify('30 days') > $refDate) {
+                return false;
+            }
 
-            return true;
+            if (!($registrationDate = $adherent->getRegisteredAt()) || (clone $registrationDate)->modify('+3 months') > $refDate) {
+                return false;
+            }
         }
 
-        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
-            if ($membership->getSubscriptionDate()->modify('+1 months') > $refDate) {
-                return false;
-            }
-
-            if (!$registrationDate = $adherent->getRegisteredAt()) {
-                return false;
-            }
-
-            if ((clone $registrationDate)->modify('+3 months') > $refDate) {
-                return false;
-            }
-
-            if ($this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent)) {
-                return false;
-            }
-
-            return true;
+        if (
+            ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership(true))
+            && !$candidateMembership->getCommittee()->equals($committee)
+        ) {
+            return false;
         }
 
-        return false;
+        if (($committeeRecentVote = $this->committeeRepository->findCommitteeForRecentVote($designation, $adherent)) && !$committeeRecentVote->equals($committee)) {
+            return false;
+        }
+
+        if (($committeeRecentCandidate = $this->committeeRepository->findCommitteeForRecentCandidate($designation, $adherent)) && !$committeeRecentCandidate->equals($committee)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function canVoteOnCommittee(Committee $committee, Adherent $adherent): bool
@@ -91,31 +98,39 @@ class ElectionAuthorisationChecker
             return false;
         }
 
+        $refDate = $election->getVoteEndDate() ?? new \DateTime();
+
+        if ($adherent->isMinor($refDate)) {
+            return false;
+        }
+
         if (!$adherent->isCertified()) {
             return false;
         }
 
-        $refDate = $election->getVoteEndDate() ?? new \DateTime();
-
         if (
-            ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership())
-            && ($candidacy = $candidateMembership->getCommitteeCandidacy($election))
-            && $candidacy->isConfirmed()
+            ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership(true))
             && !$candidateMembership->getCommittee()->equals($committee)
         ) {
             return false;
         }
 
+        $designation = $election->getDesignation();
+
+        if (($committeeRecentVote = $this->committeeRepository->findCommitteeForRecentVote($designation, $adherent)) && !$committeeRecentVote->equals($committee)) {
+            return false;
+        }
+
+        if (($committeeRecentCandidate = $this->committeeRepository->findCommitteeForRecentCandidate($designation, $adherent)) && !$committeeRecentCandidate->equals($committee)) {
+            return false;
+        }
+
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
-            if ($membership->getSubscriptionDate()->modify('+1 months') > $refDate) {
+            if ($membership->getSubscriptionDate()->modify('30 days') > $refDate) {
                 return false;
             }
 
-            if (!$registrationDate = $adherent->getRegisteredAt()) {
-                return false;
-            }
-
-            if ((clone $registrationDate)->modify('+3 months') > $refDate) {
+            if (!($registrationDate = $adherent->getRegisteredAt()) || (clone $registrationDate)->modify('+3 months') > $refDate) {
                 return false;
             }
         }
