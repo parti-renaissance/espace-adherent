@@ -5,7 +5,7 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Repository\AdherentMandate\AdherentMandateRepository;
 
-class MembershipVoter extends AbstractAdherentVoter
+class AdherentUnregistrationVoter extends AbstractAdherentVoter
 {
     public const PERMISSION_UNREGISTER = 'UNREGISTER';
 
@@ -24,14 +24,22 @@ class MembershipVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($adherent->isBasicAdherent() && !$this->adherentMandateRepository->hasActiveMandate($adherent)) {
-            return true;
-        }
-
         if ($adherent->isUser()) {
             return true;
         }
 
-        return false;
+        if ($adherent->getMemberships()->getCommitteeCandidacyMembership(true)) {
+            return false;
+        }
+
+        if (($coTerrMembership = $adherent->getTerritorialCouncilMembership()) && $coTerrMembership->getActiveCandidacy()) {
+            return false;
+        }
+
+        if ($this->adherentMandateRepository->hasActiveMandate($adherent)) {
+            return false;
+        }
+
+        return $adherent->isBasicAdherent();
     }
 }

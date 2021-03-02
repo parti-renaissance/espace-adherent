@@ -4,10 +4,10 @@ namespace Tests\App\Security\Voter;
 
 use App\Repository\AdherentMandate\AdherentMandateRepository;
 use App\Security\Voter\AbstractAdherentVoter;
-use App\Security\Voter\MembershipVoter;
+use App\Security\Voter\AdherentUnregistrationVoter;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class MembershipVoterTest extends AbstractAdherentVoterTest
+class AdherentUnregistrationVoterTest extends AbstractAdherentVoterTest
 {
     /** @var MockObject|AdherentMandateRepository */
     private $adherentMandateRepository;
@@ -16,12 +16,12 @@ class MembershipVoterTest extends AbstractAdherentVoterTest
     {
         $this->adherentMandateRepository = $this->createMock(AdherentMandateRepository::class);
 
-        return new MembershipVoter($this->adherentMandateRepository);
+        return new AdherentUnregistrationVoter($this->adherentMandateRepository);
     }
 
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, MembershipVoter::PERMISSION_UNREGISTER];
+        yield [false, true, AdherentUnregistrationVoter::PERMISSION_UNREGISTER];
     }
 
     /**
@@ -50,7 +50,7 @@ class MembershipVoterTest extends AbstractAdherentVoterTest
             ;
         }
 
-        $this->assertGrantedForAdherent($granted, true, $adherent, MembershipVoter::PERMISSION_UNREGISTER);
+        $this->assertGrantedForAdherent($granted, true, $adherent, AdherentUnregistrationVoter::PERMISSION_UNREGISTER);
     }
 
     public function provideBasicAdherentCases(): iterable
@@ -67,16 +67,11 @@ class MembershipVoterTest extends AbstractAdherentVoterTest
         $adherent = $this->createAdherentMock();
 
         $adherent->expects($this->once())
-            ->method('isBasicAdherent')
-            ->willReturn(false)
-        ;
-
-        $adherent->expects($this->once())
             ->method('isUser')
             ->willReturn($granted)
         ;
 
-        $this->assertGrantedForUser($granted, true, $adherent, MembershipVoter::PERMISSION_UNREGISTER);
+        $this->assertGrantedForUser($granted, true, $adherent, AdherentUnregistrationVoter::PERMISSION_UNREGISTER);
     }
 
     public function provideUserCases(): iterable
@@ -92,7 +87,7 @@ class MembershipVoterTest extends AbstractAdherentVoterTest
     {
         $adherent = $this->createAdherentMock();
 
-        $adherent->expects($this->once())
+        $adherent->expects($this->any())
             ->method('isBasicAdherent')
             ->willReturn(true)
         ;
@@ -104,7 +99,7 @@ class MembershipVoterTest extends AbstractAdherentVoterTest
             ->willReturn($granted)
         ;
 
-        $this->assertGrantedForAdherent(!$granted, true, $adherent, MembershipVoter::PERMISSION_UNREGISTER);
+        $this->assertGrantedForAdherent(!$granted, true, $adherent, AdherentUnregistrationVoter::PERMISSION_UNREGISTER);
     }
 
     public function provideWithActiveMandateCases(): iterable
