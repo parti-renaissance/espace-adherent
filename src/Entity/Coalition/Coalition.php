@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     attributes={
- *         "pagination_client_items_per_page": true,
+ *         "pagination_enabled": false,
  *         "order": {"name": "ASC"}
  *     },
  *     collectionOperations={
@@ -89,7 +89,7 @@ class Coalition implements ExposedImageOwnerInterface
      *
      * @ORM\Column(type="boolean", options={"default": true})
      */
-    private $enabled = true;
+    private $enabled;
 
     /**
      * @var CoalitionEvent[]|Collection
@@ -179,7 +179,6 @@ class Coalition implements ExposedImageOwnerInterface
     public function addEvent(CoalitionEvent $event): void
     {
         if (!$this->events->contains($event)) {
-            $event->setCoalition($this);
             $this->events->add($event);
         }
     }
@@ -222,5 +221,13 @@ class Coalition implements ExposedImageOwnerInterface
     public function removeCause(Cause $cause): void
     {
         $this->causes->removeElement($cause);
+    }
+
+    /**
+     * @SymfonySerializer\Groups({"coalition_read"})
+     */
+    public function getFollowersCount(): int
+    {
+        return rand(1, 100);
     }
 }

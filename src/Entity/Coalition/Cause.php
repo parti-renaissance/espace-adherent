@@ -148,4 +148,12 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
     {
         $this->coalition = $coalition;
     }
+
+    /**
+     * @SymfonySerializer\Groups({"cause_read"})
+     */
+    public function getFollowersCount(): int
+    {
+        return rand(1, 100);
+    }
 }

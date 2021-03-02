@@ -36,7 +36,8 @@ Feature:
           "name": "Cause pour l'education",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
-          "image_url": "http://test.enmarche.code/assets/images/causes/532c52e162feb2f6cfae99d5ed52d41f.png"
+          "followers_count": "@number@",
+          "image_url": "@string@.isUrl()"
         },
         {
           "author": {
@@ -51,7 +52,8 @@ Feature:
           "name": "Cause pour la culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
-          "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
+          "followers_count": "@number@",
+          "image_url": "@string@.isUrl()"
         }
       ]
     }
