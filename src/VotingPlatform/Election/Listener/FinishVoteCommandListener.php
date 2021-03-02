@@ -8,13 +8,13 @@ use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
-use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
 use App\Mailer\MailerService;
 use App\Mailer\Message\VotingPlatformElectionVoteConfirmationMessage;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
+use App\VotingPlatform\Election\Event\NewVote;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
 use App\VotingPlatform\Election\VoteCommandStorage;
@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class FinishVoteCommandListener implements EventSubscriberInterface
 {
@@ -32,6 +33,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
     private $candidateGroupRepository;
     private $storage;
     private $mailer;
+    private $eventDispatcher;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -40,7 +42,8 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         ElectionRepository $electionRepository,
         CandidateGroupRepository $candidateGroupRepository,
         VoteCommandStorage $storage,
-        MailerService $transactionalMailer
+        MailerService $transactionalMailer,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->entityManager = $entityManager;
         $this->security = $security;
@@ -49,6 +52,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $this->candidateGroupRepository = $candidateGroupRepository;
         $this->storage = $storage;
         $this->mailer = $transactionalMailer;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public static function getSubscribedEvents()
@@ -103,6 +107,8 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $this->saveVoterKeyInSession($voterKey);
 
         $this->sendVoteConfirmationEmail($vote, $voterKey);
+
+        $this->eventDispatcher->dispatch(new NewVote($election, $voter));
     }
 
     private function generateVote(ElectionRound $electionRound): Vote
