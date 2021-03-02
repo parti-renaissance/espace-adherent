@@ -4,6 +4,7 @@ namespace Tests\App\Adherent\Handler;
 
 use App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler;
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
@@ -24,7 +25,6 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQuality;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
-use App\Entity\UserListDefinitionEnum;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentMandate\TerritorialCouncilAdherentMandateRepository;
@@ -34,6 +34,7 @@ use App\Repository\ElectedRepresentative\MandateRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository;
 use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\TerritorialCouncil\Command\AdherentUpdateTerritorialCouncilMembershipsCommand;
+use App\TerritorialCouncil\Handlers\TerritorialCouncilActiveMandateHandler;
 use App\TerritorialCouncil\Handlers\TerritorialCouncilBoroughCouncilorHandler;
 use App\TerritorialCouncil\Handlers\TerritorialCouncilCityCouncilorHandler;
 use App\TerritorialCouncil\Handlers\TerritorialCouncilCommitteeSupervisorHandler;
@@ -159,208 +160,208 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
 
     public function provideData(): \Generator
     {
-//        yield 'add AL' => [[
-//            'al' => ['in_new_coterr'],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'new',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//        ]];
-//        yield 'no more CITY_COUNCILOR' => [[
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [],
-//        ]];
-//        yield 'add DEPARTMENT_COUNCILOR' => [[
-//            'external_mandates' => [
-//                'in_new_coterr' => [
-//                    MandateTypeEnum::DEPARTMENTAL_COUNCIL,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'new',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
-//                ],
-//            ],
-//        ]];
-//        yield 'still DEPARTMENT_COUNCILOR with a candidacy' => [[
-//            'external_mandates' => [
-//                'in_actual_coterr' => [
-//                    MandateTypeEnum::DEPARTMENTAL_COUNCIL,
-//                ],
-//            ],
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
-//                ],
-//                'candidacy' => TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
-//                ],
-//            ],
-//        ]];
-//        yield 'COMMITTEE_SUPERVISOR keeps his CoTerr membership because of a mandate in CoPol' => [[
-//            'internal_mandates' => [
-//                TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//            ],
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//                'copol_qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//                'copol_qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//        ]];
-//        yield 'no more COMMITTEE_SUPERVISOR' => [[
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [],
-//        ]];
-//        yield 'no more COMMITTEE_SUPERVISOR, no more CoPol member' => [[
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//                'copol_qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [],
-//        ]];
-//        yield 'still COMMITTEE_SUPERVISOR with a candidacy' => [[
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//                'candidacy' => TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//        ]];
-//        yield 'add ELECTED_CANDIDATE_ADHERENT' => [[
-//            'internal_mandates' => [
-//                TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'new',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//        ]];
-//        yield 'still ELECTED_CANDIDATE_ADHERENT because of a candidacy' => [[
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//                'candidacy' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//        ]];
-//        yield 'was COMMITTEE_SUPERVISOR, became ELECTED_CANDIDATE_ADHERENT' => [[
-//            'internal_mandates' => [
-//                TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//            ],
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//                'copol_qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//        ]];
-//        yield 'still ELECTED_CANDIDATE_ADHERENT because of a candidacy, even if qualities in another CoTerr' => [[
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//                'candidacy' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//            ],
-//            'external_mandates' => [
-//                'in_new_coterr' => [
-//                    MandateTypeEnum::DEPARTMENTAL_COUNCIL,
-//                    MandateTypeEnum::CITY_COUNCIL,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//        ]];
-//        yield 'was COMMITTEE_SUPERVISOR and ELECTED_CANDIDATE_ADHERENT, became only ELECTED_CANDIDATE_ADHERENT' => [[
-//            'internal_mandates' => [
-//                TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//            ],
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//        ]];
-//        yield 'was COMMITTEE_SUPERVISOR and ELECTED_CANDIDATE_ADHERENT, became only COMMITTEE_SUPERVISOR' => [[
-//            'internal_mandates' => [
-//                TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//            ],
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//        ]];
+        yield 'add AL' => [[
+            'al' => ['in_new_coterr'],
+            'expected_coterr_membership' => [
+                'coterr' => 'new',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+        ]];
+        yield 'no more CITY_COUNCILOR' => [[
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
+                ],
+            ],
+            'expected_coterr_membership' => [],
+        ]];
+        yield 'add DEPARTMENT_COUNCILOR' => [[
+            'external_mandates' => [
+                'in_new_coterr' => [
+                    MandateTypeEnum::DEPARTMENTAL_COUNCIL,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'new',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
+                ],
+            ],
+        ]];
+        yield 'still DEPARTMENT_COUNCILOR with a candidacy' => [[
+            'external_mandates' => [
+                'in_actual_coterr' => [
+                    MandateTypeEnum::DEPARTMENTAL_COUNCIL,
+                ],
+            ],
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
+                ],
+                'candidacy' => TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
+                ],
+            ],
+        ]];
+        yield 'COMMITTEE_SUPERVISOR keeps his CoTerr membership because of a mandate in CoPol' => [[
+            'internal_mandates' => [
+                TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+            ],
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+                'copol_qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+                'copol_qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+        ]];
+        yield 'no more COMMITTEE_SUPERVISOR' => [[
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+            'expected_coterr_membership' => [],
+        ]];
+        yield 'no more COMMITTEE_SUPERVISOR, no more CoPol member' => [[
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+                'copol_qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+            'expected_coterr_membership' => [],
+        ]];
+        yield 'still COMMITTEE_SUPERVISOR with a candidacy' => [[
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+                'candidacy' => TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+        ]];
+        yield 'add ELECTED_CANDIDATE_ADHERENT' => [[
+            'internal_mandates' => [
+                TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'new',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+        ]];
+        yield 'still ELECTED_CANDIDATE_ADHERENT because of a candidacy' => [[
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+                'candidacy' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+        ]];
+        yield 'was COMMITTEE_SUPERVISOR, became ELECTED_CANDIDATE_ADHERENT' => [[
+            'internal_mandates' => [
+                TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+            ],
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+                'copol_qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+        ]];
+        yield 'still ELECTED_CANDIDATE_ADHERENT because of a candidacy, even if qualities in another CoTerr' => [[
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+                'candidacy' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+            ],
+            'external_mandates' => [
+                'in_new_coterr' => [
+                    MandateTypeEnum::DEPARTMENTAL_COUNCIL,
+                    MandateTypeEnum::CITY_COUNCIL,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+        ]];
+        yield 'was COMMITTEE_SUPERVISOR and ELECTED_CANDIDATE_ADHERENT, became only ELECTED_CANDIDATE_ADHERENT' => [[
+            'internal_mandates' => [
+                TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+            ],
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+        ]];
+        yield 'was COMMITTEE_SUPERVISOR and ELECTED_CANDIDATE_ADHERENT, became only COMMITTEE_SUPERVISOR' => [[
+            'internal_mandates' => [
+                TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+            ],
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+        ]];
         yield 'still ELECTED_CANDIDATE_ADHERENT because of a candidacy and add another' => [[
             'external_mandates' => [
                 'in_actual_coterr' => [
@@ -383,79 +384,129 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                 ],
             ],
         ]];
-//        yield 'still ELECTED_CANDIDATE_ADHERENT because of a candidacy, but not COMMITTEE_SUPERVISOR' => [[
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//                'candidacy' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//        ]];
-//        yield 'remove all, except of ELECTED_CANDIDATE_ADHERENT because of a candidacy' => [[
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
-//                    TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
-//                    TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR,
-//                ],
-//                'candidacy' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
-//                ],
-//            ],
-//        ]];
-//        yield 'still CITY_COUNCIL in actual, even if COMMITTEE_SUPERVISOR in another' => [[
-//            'external_mandates' => [
-//                'in_actual_coterr' => [
-//                    MandateTypeEnum::CITY_COUNCIL,
-//                ],
-//            ],
-//            'al' => ['in_new_coterr'],
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'actual',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
-//                ],
-//            ],
-//        ]];
-//        yield 'becomes CITY_COUNCIL in a new, even if COMMITTEE_SUPERVISOR in actual' => [[
-//            'external_mandates' => [
-//                'in_new_coterr' => [
-//                    MandateTypeEnum::CITY_COUNCIL,
-//                ],
-//            ],
-//            'al' => [
-//                'in_actual_coterr',
-//            ],
-//            'actual_coterr_membership' => [
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
-//                ],
-//            ],
-//            'expected_coterr_membership' => [
-//                'coterr' => 'new',
-//                'qualities' => [
-//                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
-//                ],
-//            ],
-//        ]];
+        yield 'still ELECTED_CANDIDATE_ADHERENT because of a candidacy, but not COMMITTEE_SUPERVISOR' => [[
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+                'candidacy' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+        ]];
+        yield 'remove all, except of ELECTED_CANDIDATE_ADHERENT because of a candidacy' => [[
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
+                    TerritorialCouncilQualityEnum::DEPARTMENT_COUNCILOR,
+                    TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR,
+                ],
+                'candidacy' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                ],
+            ],
+        ]];
+        yield 'still CITY_COUNCIL in actual, even if COMMITTEE_SUPERVISOR in another' => [[
+            'external_mandates' => [
+                'in_actual_coterr' => [
+                    MandateTypeEnum::CITY_COUNCIL,
+                ],
+            ],
+            'al' => ['in_new_coterr'],
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
+                ],
+            ],
+        ]];
+        yield 'becomes CITY_COUNCIL in a new, even if COMMITTEE_SUPERVISOR in actual' => [[
+            'external_mandates' => [
+                'in_new_coterr' => [
+                    MandateTypeEnum::CITY_COUNCIL,
+                ],
+            ],
+            'al' => [
+                'in_actual_coterr',
+            ],
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'new',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
+                ],
+            ],
+        ]];
+        yield 'add COMMITTEE_SUPERVISOR because of the internal mandate' => [[
+            'internal_mandates' => [
+                TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+            ],
+            'actual_coterr_membership' => [
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'actual',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+        ]];
+        yield 'add COMMITTEE_SUPERVISOR because of the internal mandate, ignoring qualities in another TC' => [[
+            'external_mandates' => [
+                'in_new_coterr' => [
+                    MandateTypeEnum::CITY_COUNCIL,
+                ],
+            ],
+            'internal_mandates' => [
+                TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'new',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                ],
+            ],
+        ]];
+        yield 'add CITY_COUNCIL AND MAYOR' => [[
+            'external_mandates' => [
+                'in_new_coterr' => [
+                    MandateTypeEnum::CITY_COUNCIL => [
+                        'functions' => [
+                            PoliticalFunctionNameEnum::MAYOR,
+                        ],
+                    ],
+                ],
+            ],
+            'expected_coterr_membership' => [
+                'coterr' => 'new',
+                'qualities' => [
+                    TerritorialCouncilQualityEnum::CITY_COUNCILOR,
+                    TerritorialCouncilQualityEnum::MAYOR,
+                ],
+            ],
+        ]];
     }
 
     private function prepareAdherent(array $data, UuidInterface $uuid): void
@@ -468,7 +519,7 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                 $this->uuid = $uuid;
             }
 
-            public function addAdherentMandate(CommitteeAdherentMandate $mandate): void
+            public function addAdherentMandate(AbstractAdherentMandate $mandate): void
             {
                 if (!$this->adherentMandates->contains($mandate)) {
                     $this->adherentMandates->add($mandate);
@@ -491,6 +542,13 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                     return 1;
                 }
             };
+            $politicalCommittee = new PoliticalCommittee(
+                'PC for TC '.$territorialCouncil->getName(),
+                $territorialCouncil,
+                true
+            );
+            $territorialCouncil->setPoliticalCommittee($politicalCommittee);
+
             $tcMembership = new class($territorialCouncil, $this->adherent) extends TerritorialCouncilMembership {
                 public function addCandidacy(Candidacy $candidacy): void
                 {
@@ -513,14 +571,8 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
             }
 
             if (isset($data['actual_coterr_membership']['copol_qualities'])) {
-                $politicalCommittee = new PoliticalCommittee(
-                    'PC for TC '.$territorialCouncil->getName(),
-                    $territorialCouncil,
-                    true
-                );
-                $territorialCouncil->setPoliticalCommittee($politicalCommittee);
                 $pcMembership = new PoliticalCommitteeMembership(
-                    $politicalCommittee,
+                    $territorialCouncil->getPoliticalCommittee(),
                     $this->adherent,
                     new \DateTime('-1 day')
                 );
@@ -659,7 +711,7 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                 } elseif (\in_array($qualityName, TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE, true)) {
                     $tcMandate = new TerritorialCouncilAdherentMandate(
                         $this->adherent,
-                        $this->actualTC,
+                        $this->actualTC ?? $this->newTC,
                         $qualityName,
                         Genders::MALE,
                         new \DateTime('-1 day')
@@ -668,11 +720,14 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                         ->method('findActiveMandateWithQuality')
                         ->willReturnCallback(
                             function (Adherent $adherent, TerritorialCouncil $tc, string $quality) use ($qualityName, $tcMandate) {
-                                return ($quality === $qualityName && $adherent === $this->adherent && $tc === $this->actualTC)
+                                return ($quality === $qualityName
+                                    && $adherent === $this->adherent
+                                    && (($this->actualTC && $tc === $this->actualTC) || $tc === $this->newTC))
                                 ? $tcMandate
                                 : null;
                             })
                     ;
+                    $this->adherent->addAdherentMandate($tcMandate);
                 }
 
                 if (\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_OFFICIO_MEMBERS)
@@ -859,6 +914,15 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
             $tcMandateRepository
         );
 
+        $activeMandateHandler = new TerritorialCouncilActiveMandateHandler(
+            $entityManager,
+            $tcRepository,
+            $dispatcher,
+            $politicalCommitteeManager,
+            $committeeMandateRepository,
+            $tcMandateRepository
+        );
+
         return new \ArrayObject([
             $boroughCouncilorHandler,
             $cityCouncilorHandler,
@@ -875,6 +939,7 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
             $electedCandidateAdherentHandler,
             $committeeSupervisorHandler,
             $emptyMembershipHandler,
+            $activeMandateHandler,
         ]);
     }
 
@@ -885,22 +950,16 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
         MockObject $tcRepository
     ): void {
         $foundMandates = [];
+        $withFunctions = false;
         foreach ($mandates as $type => $mandateType) {
             if (isset($mandateType['functions'])) {
+                $withFunctions = true;
                 $functions = $mandateType['functions'];
                 $mandateType = $type;
+                $mandate = $this->createMandate($mandateType, $functions);
                 foreach ($functions as $function) {
-                    $mandate = $this->createMandate($mandateType, $functions);
                     if (\array_key_exists($function, self::QUALITIES_DEPENDING_ON_FUNCTION)) {
-                        $mandateRepository->expects($this->once())
-                            ->method('findByFunctionAndUserListDefinitionForAdherent')
-                            ->with(
-                                self::QUALITIES_DEPENDING_ON_FUNCTION[$function],
-                                UserListDefinitionEnum::CODE_ELECTED_REPRESENTATIVE_INSTANCES_MEMBER,
-                                $this->adherent
-                            )
-                            ->willReturn([$mandate])
-                        ;
+                        $foundMandates[$function] = $mandate;
                     }
                 }
             } else {
@@ -917,6 +976,15 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                 return \array_key_exists($types[0], $foundMandates) ? [$foundMandates[$types[0]]] : [];
             })
         ;
+        // find a mandate with a function
+        if ($withFunctions) {
+            $mandateRepository->expects($this->any())
+                ->method('findByFunctionAndUserListDefinitionForAdherent')
+                ->willReturnCallback(function (string $functionName) use ($foundMandates) {
+                    return \array_key_exists($functionName, $foundMandates) ? [$foundMandates[$functionName]] : [];
+                })
+            ;
+        }
         // find a TerritorialCouncil
         $tcRepository->expects($this->any())
             ->method('findByMandates')

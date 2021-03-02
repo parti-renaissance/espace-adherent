@@ -19,8 +19,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMembershipHandlerInterface
 {
-    private $em;
-    private $dispatcher;
+    protected $em;
+    protected $dispatcher;
     protected $repository;
     /** @var PoliticalCommitteeManager */
     protected $politicalCommitteeManager;
@@ -28,7 +28,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     protected $committeeMandateRepository;
     /** @var TerritorialCouncilAdherentMandateRepository */
     protected $tcMandateRepository;
-    private $eventDispatchingEnabled = true;
+    protected $eventDispatchingEnabled = true;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -202,7 +202,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
 
     abstract protected function getQualityZone(Adherent $adherent): string;
 
-    private function addMembership(
+    protected function addMembership(
         Adherent $adherent,
         TerritorialCouncil $territorialCouncil,
         TerritorialCouncilQuality $quality
