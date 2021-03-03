@@ -29,20 +29,21 @@ class EventsControllerTest extends WebTestCase
         $this->assertJson($content);
 
         // Check the payload
-        $this->assertGreaterThanOrEqual(7, \count(\GuzzleHttp\json_decode($content, true)));
+        $this->assertGreaterThanOrEqual(7, \count(json_decode($content, true)));
+        var_dump(json_decode($content, true));
         $this->assertEachJsonItemContainsKey('uuid', $content);
         $this->assertEachJsonItemContainsKey('slug', $content);
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('url', $content);
         $this->assertEachJsonItemContainsKey('position', $content);
-        $this->assertEachJsonItemContainsKey('committee_name', $content, 0);
-        $this->assertEachJsonItemContainsKey('committee_url', $content, 0);
+        $this->assertEachJsonItemContainsKey('committee_name', $content, [0, 5]);
+        $this->assertEachJsonItemContainsKey('committee_url', $content, [0, 5]);
     }
 
     /**
      * @dataProvider provideApiEventsCategories
      */
-    public function testApiUpcomingEventsForCategory(string $categoryCode, int $expectedCount)
+    public function testApiUpcomingEventsForCategory(string $categoryCode, int $expectedCount, array $exclude = [])
     {
         $categoryName = LoadEventCategoryData::LEGACY_EVENT_CATEGORIES[$categoryCode];
         $category = $this->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName]);
@@ -61,15 +62,15 @@ class EventsControllerTest extends WebTestCase
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('url', $content);
         $this->assertEachJsonItemContainsKey('position', $content);
-        $this->assertEachJsonItemContainsKey('committee_name', $content);
-        $this->assertEachJsonItemContainsKey('committee_url', $content);
+        $this->assertEachJsonItemContainsKey('committee_name', $content, $exclude);
+        $this->assertEachJsonItemContainsKey('committee_url', $content, $exclude);
     }
 
     public function provideApiEventsCategories()
     {
         return [
             ['CE011', 0],
-            ['CE001', 1],
+            ['CE001', 2, [0]],
             ['CE005', 1],
         ];
     }

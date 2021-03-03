@@ -23,17 +23,17 @@ class EventRepositoryTest extends WebTestCase
 
     public function testCountEvents()
     {
-        $this->assertSame(19, $this->repository->countElements());
+        $this->assertSame(20, $this->repository->countElements());
     }
 
     public function testFindUpcomingEvents()
     {
-        $this->assertCount(9, $this->repository->findUpcomingEvents());
+        $this->assertCount(10, $this->repository->findUpcomingEvents());
     }
 
     public function testCountUpcomingEvents()
     {
-        $this->assertSame(9, $this->repository->countUpcomingEvents());
+        $this->assertSame(10, $this->repository->countUpcomingEvents());
     }
 
     public function testSearchAllEvents()

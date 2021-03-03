@@ -32,12 +32,12 @@ trait ApiControllerTestTrait
         return json_decode($this->client->getResponse()->getContent(), true)['access_token'] ?? null;
     }
 
-    protected function assertEachJsonItemContainsKey($key, $json, int $excluding = null)
+    protected function assertEachJsonItemContainsKey($key, $json, array $excluding = [])
     {
         $data = \GuzzleHttp\json_decode($json, true);
 
         foreach ($data as $k => $item) {
-            if (isset($excluding) && $excluding === $k) {
+            if (\in_array($k, $excluding, true)) {
                 continue;
             }
             $this->assertArrayHasKey($key, $item, 'Item '.$k.' of JSON payload does not have '.$key.' key');

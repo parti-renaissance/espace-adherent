@@ -16,7 +16,7 @@ class ApiScheduleEventCreationCommandTest extends WebTestCase
         $output = $output->getDisplay();
 
         $this->assertStringContainsString('Starting synchronization.', $output);
-        $this->assertStringContainsString('21/21', $output);
+        $this->assertStringContainsString('22/22', $output);
         $this->assertStringContainsString('Successfully scheduled for synchronization!', $output);
     }
 }
