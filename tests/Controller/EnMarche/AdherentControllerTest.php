@@ -1058,6 +1058,8 @@ class AdherentControllerTest extends WebTestCase
         yield 'Host' => ['gisele-berthoux@caramail.com'];
         yield 'Referent' => ['referent@en-marche-dev.fr'];
         yield 'BoardMember' => ['carl999@example.fr'];
+        yield 'CommitteeCandidate' => ['adherent-female-36@en-marche-dev.fr'];
+        yield 'TerritorialCouncilCandidate' => ['senatorial-candidate@en-marche-dev.fr'];
     }
 
     /**

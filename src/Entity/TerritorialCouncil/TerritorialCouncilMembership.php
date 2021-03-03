@@ -222,6 +222,17 @@ class TerritorialCouncilMembership implements UuidEntityInterface
         return null;
     }
 
+    public function getActiveCandidacy(): ?Candidacy
+    {
+        foreach ($this->candidacies as $candidacy) {
+            if ($candidacy->isConfirmed() && $candidacy->isOngoing()) {
+                return $candidacy;
+            }
+        }
+
+        return null;
+    }
+
     public function hasCandidacies(): bool
     {
         return !$this->candidacies->isEmpty();
