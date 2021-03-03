@@ -75,7 +75,10 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->findOneBy(['canonicalName' => $canonicalName]);
     }
 
-    public function findOneApprovedByAddress(Address $address): ?Committee
+    /**
+     * @return Committee[]
+     */
+    public function findApprovedByAddress(Address $address, int $limit = null): array
     {
         return $this->createQueryBuilder('c')
             ->where('c.postAddress.address = :address AND c.postAddress.postalCode = :postal_code')
@@ -88,8 +91,9 @@ class CommitteeRepository extends ServiceEntityRepository
                 'country' => $address->getCountry(),
                 'approved' => BaseGroup::APPROVED,
             ])
+            ->setMaxResults($limit)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
 

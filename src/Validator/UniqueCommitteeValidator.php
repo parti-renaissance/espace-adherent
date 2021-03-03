@@ -41,8 +41,11 @@ class UniqueCommitteeValidator extends ConstraintValidator
             ;
         }
 
-        $found = $this->repository->findOneApprovedByAddress($value->getAddress());
-        if ($found instanceof Committee && (null === $committee || !$committee->equals($found))) {
+        $found = array_filter($this->repository->findApprovedByAddress($value->getAddress(), 2), function (Committee $a) use ($committee) {
+            return !$committee || !$a->equals($committee);
+        });
+
+        if ($found) {
             $this
                 ->context
                 ->buildViolation($constraint->messageAddress)
