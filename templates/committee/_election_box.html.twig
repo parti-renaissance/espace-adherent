@@ -2,11 +2,9 @@
 
 {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
     {% set candidate_button = 'Je candidate en binôme' %}
-    {% set update_candidature_button = 'Modifier ma demande de binôme' %}
     {% set remove_candidature_button = 'Retirer ma pré-candidature' %}
 {% else %}
     {% set candidate_button = 'Je candidate' %}
-    {% set update_candidature_button = 'Modifier mes informations' %}
     {% set remove_candidature_button = 'Retirer ma candidature' %}
 {% endif %}
 
@@ -84,7 +82,7 @@
                             </p>
                         {% endif %}
 
-                        <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">{{ update_candidature_button }}</span>
+                        <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">Modifier ma demande de binôme</span>
                     {% else %}
                         {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
                             {% if candidacy.hasPendingInvitation %}
@@ -98,9 +96,9 @@
                                 <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--pink btn--no-wrap b__nudge--right box-el">Je choisis un binôme</a>
                             {% endif %}
                         {% endif %}
-
-                        <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">{{ update_candidature_button }}</a>
                     {% endif %}
+
+                    <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap b__nudge--right box-el">Modifier mes informations</a>
                 {% else %}
                     {% if app.user.isOtherGender() %}
                         <a href="{{ path('app_committee_candidature_edit', {slug: committee.slug}) }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el em-modal--trigger"
