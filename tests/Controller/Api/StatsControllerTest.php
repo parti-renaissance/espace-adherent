@@ -28,7 +28,7 @@ class StatsControllerTest extends WebTestCase
 
         $this->assertArraySubset([
             'userCount' => 63,
-            'eventCount' => 19,
+            'eventCount' => 20,
             'committeeCount' => 13,
         ], $data);
     }
