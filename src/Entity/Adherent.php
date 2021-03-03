@@ -2649,11 +2649,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ;
     }
 
-    public function findMandatesForQuality(string $quality, bool $active = false): array
+    public function findTerritorialCouncilMandates(?string $quality = null, bool $active = false): array
     {
         return $this->adherentMandates->filter(function (AbstractAdherentMandate $mandate) use ($quality, $active) {
             return $mandate instanceof TerritorialCouncilAdherentMandate
-                && $mandate->getQuality() === $quality
+                && (null === $quality || $mandate->getQuality() === $quality)
                 && (false === $active || null === $mandate->getFinishAt())
             ;
         })->toArray();

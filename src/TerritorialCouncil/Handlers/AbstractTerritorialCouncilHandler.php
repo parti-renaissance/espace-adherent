@@ -19,8 +19,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMembershipHandlerInterface
 {
-    private $em;
-    private $dispatcher;
+    protected $em;
+    protected $dispatcher;
     protected $repository;
     /** @var PoliticalCommitteeManager */
     protected $politicalCommitteeManager;
@@ -28,7 +28,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
     protected $committeeMandateRepository;
     /** @var TerritorialCouncilAdherentMandateRepository */
     protected $tcMandateRepository;
-    private $eventDispatchingEnabled = true;
+    protected $eventDispatchingEnabled = true;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -163,10 +163,10 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
 
         // we check if no quality with removing constraints
         $msg = '';
-        foreach ($actualMembership->getQualities() as $quality) {
-            $constraintMsg = $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+        foreach ($actualMembership->getQualities() as $actualQuality) {
+            $constraintMsg = $this->getRemovingConstraintsMsg($actualQuality->getName(), $adherent, $actualMembership);
             if ('' !== $constraintMsg && false === strpos($msg, $constraintMsg)) {
-                $msg .= $this->getRemovingConstraintsMsg($quality->getName(), $adherent, $actualMembership);
+                $msg .= $this->getRemovingConstraintsMsg($actualQuality->getName(), $adherent, $actualMembership);
             }
         }
 
@@ -202,7 +202,7 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
 
     abstract protected function getQualityZone(Adherent $adherent): string;
 
-    private function addMembership(
+    protected function addMembership(
         Adherent $adherent,
         TerritorialCouncil $territorialCouncil,
         TerritorialCouncilQuality $quality
@@ -248,7 +248,8 @@ abstract class AbstractTerritorialCouncilHandler implements TerritorialCouncilMe
         if (\in_array($qualityName, TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_ELECTED_MEMBERS)
             && ($election = $actualMembership->getTerritorialCouncil()->getCurrentElection())
             && $election->isOngoing()
-            && $actualMembership->getCandidacyForElection($election)) {
+            && ($candidacy = $actualMembership->getCandidacyForElection($election))
+            && $qualityName === $candidacy->getQuality()) {
             return 'l\'adhérent a une candidature dans ce conseil territorial.';
         }
 

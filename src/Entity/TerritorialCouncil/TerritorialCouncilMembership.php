@@ -69,7 +69,7 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\Candidacy", mappedBy="membership")
      */
-    private $candidacies;
+    protected $candidacies;
 
     public function __construct(
         TerritorialCouncil $territorialCouncil = null,
@@ -133,9 +133,13 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      */
     public function addQuality(TerritorialCouncilQuality $quality): void
     {
-        if (!$this->hasQuality($quality->getName())) {
+        /** @var TerritorialCouncilQuality $existingQuality */
+        $existingQuality = $this->getQuality($quality->getName());
+        if (!$existingQuality) {
             $quality->setTerritorialCouncilMembership($this);
             $this->qualities->add($quality);
+        } elseif ($quality->getZone() !== $existingQuality->getZone()) {
+            $existingQuality->setZone($quality->getZone());
         }
     }
 
@@ -161,6 +165,17 @@ class TerritorialCouncilMembership implements UuidEntityInterface
     public function clearQualities(): void
     {
         $this->qualities->clear();
+    }
+
+    public function getQuality(string $name): ?TerritorialCouncilQuality
+    {
+        foreach ($this->qualities as $quality) {
+            if ($quality->getName() === $name) {
+                return $quality;
+            }
+        }
+
+        return null;
     }
 
     public function hasQuality(string $name): bool
