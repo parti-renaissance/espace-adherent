@@ -12,7 +12,7 @@
         </div>
 
         <div class="datagrid__pre-table b__nudge--bottom">
-            <h3>{{ "designation.label.type_#{designation.type}"|trans }}
+            <h3>{{ designation.getTitle() }}
                 <span class="text--muted">
                     {{ designation.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }} ~
                     {{ designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}

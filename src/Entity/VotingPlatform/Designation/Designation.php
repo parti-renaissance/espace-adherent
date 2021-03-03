@@ -279,16 +279,27 @@ class Designation
         $this->additionalRoundDuration = $additionalRoundDuration;
     }
 
-    public function getTitle(): string
+    public function getDetailedType(): string
     {
-        switch ($this->type) {
-            case DesignationTypeEnum::COMMITTEE_ADHERENT:
-                return 'Désignation du binôme d’adhérents siégeant au Conseil territorial';
-            case DesignationTypeEnum::COMMITTEE_SUPERVISOR:
-                return 'Élection du binôme paritaire d\'Animateurs locaux';
+        if ($this->pools) {
+            $suffix = null;
+            if (\in_array(ElectionPoolCodeEnum::FEMALE, $this->pools, true)) {
+                $suffix = ElectionPoolCodeEnum::FEMALE;
+            } elseif (\in_array(ElectionPoolCodeEnum::MALE, $this->pools, true)) {
+                $suffix = ElectionPoolCodeEnum::MALE;
+            }
+
+            if ($suffix) {
+                return sprintf('%s_%s', $this->type, strtolower($suffix));
+            }
         }
 
-        return '';
+        return $this->type;
+    }
+
+    public function getTitle(): string
+    {
+        return DesignationTypeEnum::TITLES[$this->getDetailedType()] ?? '';
     }
 
     public function getLockPeriodThreshold(): int

@@ -2,7 +2,6 @@
 
 {% set committee_candidacy_membership = app.user.memberships.committeeCandidacyMembership %}
 {% set is_adherent_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
-{% set last_vote = get_election_last_vote(app.user) %}
 
 {% block tab %}
     <div class="l__wrapper--narrow b__nudge--bottom-huge">

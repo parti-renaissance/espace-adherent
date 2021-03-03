@@ -1,5 +1,3 @@
-{% set last_vote = get_election_last_vote(app.user) %}
-
 <h1 class="text--medium-large">Mes comités</h1>
 
 <div class="l__col">
@@ -96,7 +94,7 @@
                                 {% endif %}
 
                                 {% if committee_election.isCandidacyPeriodActive %}
-                                    {% set help_text = 'Vous pouvez y candidater jusqu\'au ' ~ (committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi')) ~ '.' %}
+                                    {% set help_text = (candidacy_membership ? 'Vous pouvez modifier votre candidature jusqu\'au ' : 'Vous pouvez y candidater jusqu\'au ') ~ (committee_election.getCandidacyPeriodEndDate|date('d/m/Y H\\hi')) ~ '.' %}
                                 {% elseif not committee_election.isVotePeriodStarted %}
                                     {% set help_text = 'Vous pourrez y voter à partir du ' ~ (committee_election.getVoteStartDate|date('d/m/Y H\\hi')) ~ '.' %}
                                 {% elseif committee_election.isVotePeriodActive %}
@@ -166,7 +164,7 @@
 
                         <div>
                             <div class="text--pink b__nudge--bottom-tiny">
-                                <strong>{{ ('designation.label.type_' ~ designation.type)|trans }}</strong>
+                                <strong>{{ designation.getTitle() }}</strong>
                             </div>
 
                             {% if main_text %}

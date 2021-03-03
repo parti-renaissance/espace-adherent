@@ -71,13 +71,13 @@ class ReferentDesignationControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/comites/en-marche-dammarie-les-lys');
 
-        self::assertStringNotContainsStringIgnoringCase('Élection du binôme paritaire d\'Animateurs locaux', $crawler->filter('main.committee')->text());
+        self::assertStringNotContainsStringIgnoringCase('Élection du binôme paritaire d’Animateurs locaux', $crawler->filter('main.committee')->text());
 
         $token = $crawler->selectButton('Suivre ce comité')->attr('data-csrf-token');
         $this->client->request('POST', '/comites/en-marche-dammarie-les-lys/rejoindre', ['token' => $token], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $crawler = $this->client->request('GET', '/comites/en-marche-dammarie-les-lys');
-        self::assertStringContainsString('Élection du binôme paritaire d\'Animateurs locaux', $crawler->filter('main.committee')->text());
+        self::assertStringContainsString('Élection du binôme paritaire d’Animateurs locaux', $crawler->filter('main.committee')->text());
     }
 
     protected function setUp(): void

@@ -235,7 +235,7 @@ Feature:
   Scenario: As member of the committee, I can see its candidacies modal
     Given I am logged as "assesseur@en-marche-dev.fr"
     When I am on "/comites/en-marche-comite-de-rouen"
-    Then I should see "Retirer ma pré-candidature"
+    Then I should see "Retirer ma candidature"
     And I should see "Consulter la liste des candidats"
 
     When I follow "la liste des candidats"
@@ -246,10 +246,10 @@ Feature:
     Given I am logged as "assesseur@en-marche-dev.fr"
 
     When I am on "/comites/en-marche-comite-de-berlin"
-    Then I should see "Désignation du binôme d'adhérents siégeant au Conseil territorial"
+    Then I should see "Désignation du binôme d’adhérents siégeant au Conseil territorial"
     And I should not see "Quitter ce comité"
 
     When I am on "/comites/en-marche-comite-de-evry"
-    Then I should not see "Désignation du binôme d'adhérents siégeant au Conseil territorial"
-    And I should not see "Élection du binôme paritaire d'Animateurs locaux"
+    Then I should not see "Désignation du binôme d’adhérents siégeant au Conseil territorial"
+    And I should not see "Élection du binôme paritaire d’Animateurs locaux"
     And I should see "Quitter ce comité"

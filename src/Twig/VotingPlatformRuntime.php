@@ -58,11 +58,6 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
         return (bool) $this->voteRepository->findVoteForDesignation($adherent, $designation);
     }
 
-    public function findMyLastVote(Adherent $adherent): ?Vote
-    {
-        return $this->voteRepository->findLastForAdherent($adherent, new \DateTime('-3 months'));
-    }
-
     public function getElectionParticipationDetails(ElectionRound $electionRound): array
     {
         return $this->electionRepository->getSingleAggregatedData($electionRound);

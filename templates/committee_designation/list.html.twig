@@ -23,7 +23,7 @@
                         {% set election = data[0] %}
                         {% set designation = election.designation %}
                         <tr>
-                            <td>{{ "designation.label.type_#{designation.type}"|trans }}</td>
+                            <td>{{ constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::TITLES')[designation.type] }}</td>
                             <td>{{ designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}</td>
                             <td>
                                 {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') and election.status == constant('App\\VotingPlatform\\Election\\ElectionStatusEnum::OPEN') %}
