@@ -204,6 +204,90 @@ Feature:
     }
     """
 
+@debug
+  Scenario: As a non logged-in user I can filter causes by a list of exact coalition uuids
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/causes?coalition.uuid[]=fff11d8d-5cb5-4075-b594-fea265438d65"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 1,
+        "items_per_page": 2,
+        "count": 1,
+        "current_page": 1,
+        "last_page": 1
+      },
+      "items": [
+        {
+          "name": "Cause pour l'education",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "coalition": {
+            "name": "Education",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+          },
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name_initial": "P."
+          },
+          "image_url": "@string@.isUrl()"
+        }
+      ]
+    }
+    """
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/causes?coalition.uuid[]=fff11d8d-5cb5-4075-b594-fea265438d65&coalition.uuid[]=d5289058-2a35-4cf0-8f2f-a683d97d8315"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "metadata": {
+        "total_items": 4,
+        "items_per_page": 2,
+        "count": 2,
+        "current_page": 1,
+        "last_page": 2
+      },
+      "items": [
+        {
+          "name": "Cause pour l'education",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "coalition": {
+            "name": "Education",
+            "uuid": "fff11d8d-5cb5-4075-b594-fea265438d65"
+          },
+          "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
+          "author": {
+            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+            "first_name": "Jacques",
+            "last_name_initial": "P."
+          },
+          "image_url": "@string@.isUrl()"
+        },
+        {
+          "name": "Cause pour la culture",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "coalition": {
+            "name": "Culture",
+            "uuid": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+          },
+          "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
+          "author": {
+            "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9697",
+            "first_name": "Michelle",
+            "last_name_initial": "D."
+          },
+          "image_url": "@string@.isUrl()"
+        }
+      ]
+    }
+    """
+
   Scenario: As a non logged-in user I can get one cause by uuid
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/causes/fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8"
