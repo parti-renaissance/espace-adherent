@@ -51,7 +51,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
 
         $this->assertStringEndsWith('/espace-animateur/en-marche-paris-8/designations', $crawler->getUri());
 
-        $this->assertStringContainsString('Désignation des binômes d&#039;adhérents', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Désignation du binôme d’adhérents siégeant au Conseil territorial', $this->client->getResponse()->getContent());
         $this->assertCount(3, $crawler->filter('.datagrid__table-manager tbody tr'));
     }
 

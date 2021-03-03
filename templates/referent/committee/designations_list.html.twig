@@ -73,9 +73,7 @@
                     {% set committee = election.committee %}
 
                     <tr class="committee__item">
-                        <td>
-                            {{ ('designation.label.type_' ~ designation.type)|trans }}
-                        </td>
+                        <td>{{ designation.getTitle() }}</td>
                         <td>{{ committee.name }}</td>
                         <td class="text--center">{{ designation.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}</td>
                         <td>

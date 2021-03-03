@@ -336,7 +336,7 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
 
         $this->assertStringEndsWith('/espace-referent/comites/en-marche-allemagne-3/designations/13814072-1dd2-11b2-9593-b97d988be702', $crawler->getUri());
 
-        $this->assertStringContainsString('Élection du binôme paritaire d\'Animateurs locaux', $crawler->filter('.datagrid__pre-table')->text());
+        $this->assertStringContainsString('Élection du binôme paritaire d’Animateurs locaux', $crawler->filter('.datagrid__pre-table')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Liste d\'émargement')->link());
 
