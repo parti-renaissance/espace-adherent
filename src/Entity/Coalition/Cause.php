@@ -2,7 +2,9 @@
 
 namespace App\Entity\Coalition;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
@@ -39,6 +41,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     },
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={"coalition.uuid": "exact"})
  *
  * @ORM\Table(
  *     uniqueConstraints={
@@ -147,5 +151,13 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
     public function setCoalition(Coalition $coalition): void
     {
         $this->coalition = $coalition;
+    }
+
+    /**
+     * @SymfonySerializer\Groups({"cause_read"})
+     */
+    public function getFollowersCount(): int
+    {
+        return rand(1, 100);
     }
 }
