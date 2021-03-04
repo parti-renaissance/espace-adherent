@@ -89,7 +89,7 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                 'label' => 'Type',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => DesignationTypeEnum::toArray(),
+                    'choices' => DesignationTypeEnum::MAIN_TYPES,
                     'choice_label' => function (string $choice) {
                         return 'voting_platform.designation.type_'.$choice;
                     },

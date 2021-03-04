@@ -25,4 +25,10 @@ final class DesignationTypeEnum extends Enum
         self::COMMITTEE_ADHERENT_MALE => 'Désignation d’un adhérent siégeant au Conseil territorial',
         self::COPOL => 'Désignation des binômes au Copol',
     ];
+
+    public const MAIN_TYPES = [
+        self::COMMITTEE_SUPERVISOR,
+        self::COMMITTEE_ADHERENT,
+        self::COPOL,
+    ];
 }

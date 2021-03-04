@@ -30,7 +30,6 @@ class EventsControllerTest extends WebTestCase
 
         // Check the payload
         $this->assertGreaterThanOrEqual(7, \count(json_decode($content, true)));
-        var_dump(json_decode($content, true));
         $this->assertEachJsonItemContainsKey('uuid', $content);
         $this->assertEachJsonItemContainsKey('slug', $content);
         $this->assertEachJsonItemContainsKey('name', $content);

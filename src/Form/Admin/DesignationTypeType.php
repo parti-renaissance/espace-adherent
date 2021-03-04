@@ -17,7 +17,7 @@ class DesignationTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => array_combine(DesignationTypeEnum::toArray(), DesignationTypeEnum::toArray()),
+            'choices' => array_combine(DesignationTypeEnum::MAIN_TYPES, DesignationTypeEnum::MAIN_TYPES),
             'choice_label' => static function (string $type) {
                 return 'voting_platform.designation.type_'.$type;
             },
