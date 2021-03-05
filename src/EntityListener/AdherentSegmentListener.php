@@ -2,7 +2,7 @@
 
 namespace App\EntityListener;
 
-use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\AdherentMessage\Command\ManageStaticSegmentCommand;
 use App\AdherentMessage\Command\SynchronizeAdherentSegmentCommand;
 use App\Entity\AdherentSegment;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -20,7 +20,7 @@ class AdherentSegmentListener
 
     public function postPersist(AdherentSegment $segment): void
     {
-        $this->bus->dispatch(new CreateStaticSegmentCommand($segment->getUuid(), \get_class($segment)));
+        $this->bus->dispatch(new ManageStaticSegmentCommand($segment->getUuid(), \get_class($segment)));
     }
 
     public function preUpdate(AdherentSegment $segment, PreUpdateEventArgs $event): void

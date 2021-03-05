@@ -5,7 +5,7 @@ namespace App\AdherentMessage\Command;
 use App\Mailchimp\SynchronizeMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-class CreateStaticSegmentCommand implements SynchronizeMessageInterface
+class UpdateStaticSegmentCommand implements SynchronizeMessageInterface
 {
     private $uuid;
     private $entityClass;

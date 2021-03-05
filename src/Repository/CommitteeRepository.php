@@ -932,4 +932,20 @@ class CommitteeRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findMemberEmails(string $uuid): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('a.emailAddress AS email')
+            ->innerJoin(CommitteeMembership::class, 'cm', Join::WITH, 'c = cm.committee')
+            ->innerJoin('cm.adherent', 'a')
+            ->where('c.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+        ;
+
+        return array_map(function ($email) {
+            return $email;
+        }, array_column($query->getArrayResult(), 'email'));
+    }
 }

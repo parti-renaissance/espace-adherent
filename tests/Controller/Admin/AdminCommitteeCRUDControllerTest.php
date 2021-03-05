@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\Admin;
 
-use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\AdherentMessage\Command\ManageStaticSegmentCommand;
 use App\DataFixtures\ORM\LoadCommitteeData;
 use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use App\Mailer\Message\CommitteeApprovalReferentMessage;
@@ -43,7 +43,7 @@ class AdminCommitteeCRUDControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
-        $this->assertMessageIsDispatched(CreateStaticSegmentCommand::class);
+        $this->assertMessageIsDispatched(ManageStaticSegmentCommand::class);
 
         $this->client->followRedirect();
 

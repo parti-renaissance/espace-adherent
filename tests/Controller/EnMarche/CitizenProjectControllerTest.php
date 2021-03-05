@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\AdherentMessage\Command\ManageStaticSegmentCommand;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCitizenProjectData;
 use App\DataFixtures\ORM\LoadCommitteeData;
@@ -343,7 +343,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 
         // Email sent to the host
         $this->assertCountMails(1, CitizenProjectNewFollowerMessage::class, 'jacques.picard@en-marche.fr');
-        $this->assertMessageIsDispatched(CreateStaticSegmentCommand::class);
+        $this->assertMessageIsDispatched(ManageStaticSegmentCommand::class);
         $this->assertMessageIsDispatched(AddAdherentToStaticSegmentCommand::class);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -363,7 +363,7 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->client->request(Request::METHOD_POST, $citizenProjectUrl.'/quitter', ['token' => $token]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertMessageIsDispatched(CreateStaticSegmentCommand::class);
+        $this->assertMessageIsDispatched(ManageStaticSegmentCommand::class);
         $this->assertMessageIsDispatched(RemoveAdherentFromStaticSegmentCommand::class);
 
         // Refresh the committee details page

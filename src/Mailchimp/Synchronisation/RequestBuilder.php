@@ -496,6 +496,14 @@ class RequestBuilder implements LoggerAwareInterface
             $tags[] = MailchimpSegmentTagEnum::COMMITTEE_VOTER;
         }
 
+        foreach ($adherent->getMemberships() as $committeeMembership) {
+            $tags[] = $committeeMembership->getCommitteeUuid();
+        }
+
+        foreach ($adherent->getCitizenProjectMemberships() as $cpMembership) {
+            $tags[] = $cpMembership->getCitizenProjectUuid();
+        }
+
         return $tags;
     }
 

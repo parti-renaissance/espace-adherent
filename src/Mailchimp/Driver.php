@@ -142,6 +142,13 @@ class Driver implements LoggerAwareInterface
         ]);
     }
 
+    public function addSegmentMembers(int $segmentId, array $emails): bool
+    {
+        return $this->sendRequest('POST', sprintf('/lists/%s/segments/%d', $this->listId, $segmentId), [
+            'members_to_add' => $emails,
+        ]);
+    }
+
     public function deleteSegmentMember(int $segmentId, string $mail): bool
     {
         return $this->sendRequest(

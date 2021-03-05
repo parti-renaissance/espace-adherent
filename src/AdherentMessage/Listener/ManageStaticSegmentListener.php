@@ -2,7 +2,7 @@
 
 namespace App\AdherentMessage\Listener;
 
-use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\AdherentMessage\Command\ManageStaticSegmentCommand;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\CitizenProject\CitizenProjectWasUpdatedEvent;
 use App\Committee\CommitteeEvent;
@@ -10,7 +10,7 @@ use App\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class CreateStaticSegmentListener implements EventSubscriberInterface
+class ManageStaticSegmentListener implements EventSubscriberInterface
 {
     private $bus;
 
@@ -29,22 +29,20 @@ class CreateStaticSegmentListener implements EventSubscriberInterface
 
     public function onCitizenProjectUpdate(CitizenProjectWasUpdatedEvent $event): void
     {
-        if (($citizenProject = $event->getCitizenProject())->isApproved()) {
+        if (($citizenProject = $event->getCitizenProject())->isApproved() || $citizenProject->isRefused()) {
             $this->onUpdate($citizenProject);
         }
     }
 
     public function onCommitteeUpdate(CommitteeEvent $event): void
     {
-        if (($committee = $event->getCommittee())->isApproved()) {
+        if (($committee = $event->getCommittee())->isApproved() || $committee->isRefused()) {
             $this->onUpdate($committee);
         }
     }
 
     private function onUpdate(StaticSegmentInterface $object): void
     {
-        if (!$object->getMailchimpId()) {
-            $this->bus->dispatch(new CreateStaticSegmentCommand($object->getUuid(), \get_class($object)));
-        }
+        $this->bus->dispatch(new ManageStaticSegmentCommand($object->getUuid(), \get_class($object)));
     }
 }

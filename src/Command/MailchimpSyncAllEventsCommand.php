@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\AdherentMessage\Command\ManageStaticSegmentCommand;
 use App\Entity\CitizenProject;
 use App\Entity\CitizenProjectMembership;
 use App\Entity\Committee;
@@ -86,7 +86,7 @@ class MailchimpSyncAllEventsCommand extends Command
 
         do {
             foreach ($paginator->getIterator() as $object) {
-                $this->bus->dispatch(new CreateStaticSegmentCommand($object->getUuid(), \get_class($object)));
+                $this->bus->dispatch(new ManageStaticSegmentCommand($object->getUuid(), \get_class($object)));
 
                 $this->io->progressAdvance();
                 ++$offset;

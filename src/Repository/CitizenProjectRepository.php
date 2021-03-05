@@ -6,8 +6,10 @@ use App\Coordinator\Filter\CitizenProjectFilter;
 use App\Entity\Adherent;
 use App\Entity\BaseGroup;
 use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectMembership;
 use App\Geocoder\Coordinates;
 use App\Search\SearchParametersFilter;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
@@ -226,5 +228,21 @@ class CitizenProjectRepository extends AbstractGroupRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findMemberEmails(string $uuid): array
+    {
+        $query = $this->createQueryBuilder('cp')
+            ->select('a.emailAddress AS email')
+            ->innerJoin(CitizenProjectMembership::class, 'membership', Join::WITH, 'cp = membership.citizenProject')
+            ->innerJoin('membership.adherent', 'a')
+            ->where('cp.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+        ;
+
+        return array_map(function ($email) {
+            return $email;
+        }, array_column($query->getArrayResult(), 'email'));
     }
 }
