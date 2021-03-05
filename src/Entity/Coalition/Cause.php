@@ -8,9 +8,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
+use App\Entity\EntityFollowersTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\ExposedImageOwnerInterface;
+use App\Entity\FollowedInterface;
+use App\Entity\FollowerInterface;
 use App\Entity\ImageTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
@@ -36,7 +41,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get": {
  *             "path": "/causes/{id}",
- *             "normalization_context": {"groups": {"cause_read", "image_owner_exposed"}},
+ *             "requirements": {"id": "%pattern_uuid%"}
+ *         },
+ *         "follow": {
+ *             "method": "PUT|DELETE",
+ *             "denormalization_context": {"api_allow_update": false},
+ *             "path": "/v3/causes/{id}/follower",
+ *             "controller": "App\Controller\Api\FollowController::follower",
  *             "requirements": {"id": "%pattern_uuid%"}
  *         }
  *     },
@@ -59,12 +70,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     )
  * })
  */
-class Cause implements ExposedImageOwnerInterface, AuthoredInterface
+class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
     use ImageTrait;
     use AuthoredTrait;
+    use EntityFollowersTrait;
 
     /**
      * @var UploadedFile|null
@@ -95,6 +107,13 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
     private $description;
 
     /**
+     * @var Collection|CauseFollower[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Coalition\CauseFollower", mappedBy="cause", fetch="EXTRA_LAZY", cascade={"all"})
+     */
+    private $followers;
+
+    /**
      * @var Coalition|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="causes")
@@ -116,6 +135,8 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
         $this->description = $description;
         $this->coalition = $coalition;
         $this->author = $author;
+
+        $this->followers = new ArrayCollection();
     }
 
     public function getName(): string
@@ -153,11 +174,8 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface
         $this->coalition = $coalition;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"cause_read"})
-     */
-    public function getFollowersCount(): int
+    public function createFollower(Adherent $adherent): FollowerInterface
     {
-        return rand(1, 100);
+        return new CauseFollower($this, $adherent);
     }
 }

@@ -5,9 +5,12 @@ namespace App\Entity\Coalition;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\Adherent;
+use App\Entity\EntityFollowersTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Event\CoalitionEvent;
 use App\Entity\ExposedImageOwnerInterface;
+use App\Entity\FollowedInterface;
+use App\Entity\FollowerInterface;
 use App\Entity\ImageTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,22 +26,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "pagination_enabled": false,
- *         "order": {"name": "ASC"}
+ *         "order": {"name": "ASC"},
+ *         "normalization_context": {"groups": {"coalition_read", "image_owner_exposed"}},
  *     },
  *     collectionOperations={
- *         "get": {
- *             "path": "/coalitions",
- *             "normalization_context": {
- *                 "groups": {"coalition_read", "image_owner_exposed"}
- *             },
- *         },
+ *         "get": {"path": "/coalitions"},
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/coalitions/{id}",
- *             "normalization_context": {"groups": {"coalition_read", "image_owner_exposed"}},
  *             "requirements": {"id": "%pattern_uuid%"}
- *         }
+ *         },
+ *         "follow": {
+ *             "method": "PUT|DELETE",
+ *             "path": "/v3/coalitions/{id}/follower",
+ *             "denormalization_context": {"api_allow_update": false},
+ *             "controller": "App\Controller\Api\FollowController::follower",
+ *             "requirements": {"id": "%pattern_uuid%"}
+ *         },
  *     },
  * )
  *
@@ -50,11 +55,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity
  */
-class Coalition implements ExposedImageOwnerInterface
+class Coalition implements ExposedImageOwnerInterface, FollowedInterface
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
     use ImageTrait;
+    use EntityFollowersTrait;
 
     /**
      * @var UploadedFile|null
@@ -106,20 +112,11 @@ class Coalition implements ExposedImageOwnerInterface
     private $events;
 
     /**
-     * @var Collection|Adherent[]
+     * @var Collection|CoalitionFollower[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinTable(
-     *     name="coalition_follower",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="coalition_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="adherent_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
+     * @ORM\OneToMany(targetEntity="App\Entity\Coalition\CoalitionFollower", mappedBy="coalition", fetch="EXTRA_LAZY", cascade={"all"}, orphanRemoval=true)
      */
-    protected $followers;
+    private $followers;
 
     /**
      * @var Cause[]|Collection
@@ -188,23 +185,6 @@ class Coalition implements ExposedImageOwnerInterface
         $this->events->removeElement($event);
     }
 
-    public function getFollowers(): Collection
-    {
-        return $this->followers;
-    }
-
-    public function addFollower(Adherent $follower): void
-    {
-        if (!$this->followers->contains($follower)) {
-            $this->followers->add($follower);
-        }
-    }
-
-    public function removeFollower(Adherent $follower): void
-    {
-        $this->followers->remove($follower);
-    }
-
     public function getCauses(): Collection
     {
         return $this->causes;
@@ -223,11 +203,8 @@ class Coalition implements ExposedImageOwnerInterface
         $this->causes->removeElement($cause);
     }
 
-    /**
-     * @SymfonySerializer\Groups({"coalition_read"})
-     */
-    public function getFollowersCount(): int
+    public function createFollower(Adherent $adherent): FollowerInterface
     {
-        return rand(1, 100);
+        return new CoalitionFollower($this, $adherent);
     }
 }
