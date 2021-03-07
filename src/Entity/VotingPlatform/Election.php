@@ -301,4 +301,9 @@ class Election
     {
         return $this->votersList;
     }
+
+    public function hasElected(): bool
+    {
+        return $this->hasResult() && \count($this->electionResult->getElectedCandidateGroups()) > 0;
+    }
 }

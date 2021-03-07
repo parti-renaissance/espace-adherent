@@ -3,6 +3,7 @@
 namespace App\Entity\VotingPlatform\ElectionResult;
 
 use App\Entity\EntityIdentityTrait;
+use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionPool;
 use App\Entity\VotingPlatform\ElectionRound;
@@ -86,6 +87,16 @@ class ElectionResult
         }
 
         return $electedPoolResults;
+    }
+
+    /**
+     * @return CandidateGroup[]
+     */
+    public function getElectedCandidateGroups(): array
+    {
+        return array_merge(...array_map(function (ElectionPoolResult $result) {
+            return $result->getElectedCandidateGroups();
+        }, $this->getElectedPoolResults()));
     }
 
     /**

@@ -112,9 +112,13 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
         }, $activeMandates);
     }
 
-    public function closeCommitteeMandate(Committee $committee, string $reason, \DateTime $finishAt = null): void
-    {
-        $this->createQueryBuilder('m')
+    public function closeCommitteeMandate(
+        Committee $committee,
+        string $reason,
+        \DateTime $finishAt = null,
+        string $gender = null
+    ): void {
+        $qb = $this->createQueryBuilder('m')
             ->update()
             ->where('m.committee = :committee')
             ->andWhere('m.finishAt IS NULL')
@@ -125,8 +129,15 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
                 'finish_at' => $finishAt ?? new \DateTime(),
                 'reason' => $reason,
             ])
-            ->getQuery()
-            ->execute()
         ;
+
+        if ($gender) {
+            $qb
+                ->andWhere('m.gender = :gender')
+                ->setParameter('gender', $gender)
+            ;
+        }
+
+        $qb->getQuery()->execute();
     }
 }
