@@ -254,6 +254,7 @@ class Manager implements LoggerAwareInterface
 
     public function createStaticSegment(string $name, string $listId = null, array $emails = []): ?int
     {
+        $listId = $listId ?? $this->mailchimpObjectIdMapping->getMainListId();
         $response = $this->driver->createStaticSegment(
             $name,
             $listId ?? $this->mailchimpObjectIdMapping->getMainListId(),

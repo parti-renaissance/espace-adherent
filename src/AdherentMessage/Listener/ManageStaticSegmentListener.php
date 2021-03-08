@@ -29,14 +29,14 @@ class ManageStaticSegmentListener implements EventSubscriberInterface
 
     public function onCitizenProjectUpdate(CitizenProjectWasUpdatedEvent $event): void
     {
-        if (($citizenProject = $event->getCitizenProject())->isApproved() || $citizenProject->isRefused()) {
+        if (($citizenProject = $event->getCitizenProject())->isApproved()) {
             $this->onUpdate($citizenProject);
         }
     }
 
     public function onCommitteeUpdate(CommitteeEvent $event): void
     {
-        if (($committee = $event->getCommittee())->isApproved() || $committee->isRefused()) {
+        if (($committee = $event->getCommittee())->isApproved()) {
             $this->onUpdate($committee);
         }
     }
