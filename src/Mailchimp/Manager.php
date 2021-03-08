@@ -75,10 +75,10 @@ class Manager implements LoggerAwareInterface
         );
 
         if ($result) {
-            // Active/Inactive member's tags
-            $this->driver->updateMemberTags(
-                $requestBuilder->createMemberTagsRequest($adherent->getEmailAddress(), $message->getRemovedTags()),
-                $this->mailchimpObjectIdMapping->getMainListId()
+            $this->updateMemberTags(
+                $message->getEmailAddress(),
+                $this->mailchimpObjectIdMapping->getMainListId(),
+                $requestBuilder
             );
         }
     }
@@ -250,10 +250,8 @@ class Manager implements LoggerAwareInterface
 
     public function createStaticSegment(string $name, string $listId = null): ?int
     {
-        $response = $this->driver->createStaticSegment(
-            $name,
-            $listId ?? $this->mailchimpObjectIdMapping->getMainListId()
-        );
+        $listId = $listId ?? $this->mailchimpObjectIdMapping->getMainListId();
+        $response = $this->driver->createStaticSegment($name, $listId);
 
         $responseData = $this->driver->toArray($response);
 
