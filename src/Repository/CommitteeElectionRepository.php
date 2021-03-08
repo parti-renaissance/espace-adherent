@@ -10,7 +10,8 @@ use App\Entity\CommitteeElection;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\Entity\VotingPlatform\ElectionEntity;
+use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\Vote;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -122,13 +123,29 @@ class CommitteeElectionRepository extends ServiceEntityRepository
                     ->andWhere('sub_voting_platform_election.designation = designation')
                     ->getDQL()
             ))
-            ->addSelect('voting_platform_election.uuid as voting_platform_election_uuid')
+            ->addSelect(sprintf('(%s) AS voters',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('COUNT(1)')
+                    ->from(Vote::class, 'sub_voting_platform_vote')
+                    ->innerJoin('sub_voting_platform_vote.electionRound', 'sub_voting_platform_election_round', Join::WITH, 'sub_voting_platform_election_round.isActive = :true')
+                    ->innerJoin('sub_voting_platform_election_round.election', 'sub_voting_platform_election2')
+                    ->innerJoin('sub_voting_platform_election2.electionEntity', 'sub_voting_platform_election_entity2')
+                    ->andWhere('sub_voting_platform_election_entity2.committee = committee')
+                    ->andWhere('sub_voting_platform_election2.designation = designation')
+                    ->getDQL()
+            ))
+            ->addSelect(sprintf('(%s) AS voting_platform_election_uuid',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('sub_voting_platform_election3.uuid')
+                    ->from(Election::class, 'sub_voting_platform_election3')
+                    ->innerJoin('sub_voting_platform_election3.electionEntity', 'sub_voting_platform_election_entity3')
+                    ->andWhere('sub_voting_platform_election_entity3.committee = committee')
+                    ->andWhere('sub_voting_platform_election3.designation = designation')
+                    ->getDQL()
+            ))
             ->innerJoin('committee_election.committee', 'committee')
             ->innerJoin('committee_election.designation', 'designation')
-            ->leftJoin(ElectionEntity::class, 'voting_platform_election_entity', Join::WITH, 'voting_platform_election_entity.committee = committee')
-            ->leftJoin('voting_platform_election_entity.election', 'voting_platform_election')
             ->where('committee.status = :approved')
-            ->andWhere('voting_platform_election.designation = designation')
             ->setParameters([
                 'approved' => Committee::APPROVED,
                 'male' => Genders::MALE,
@@ -144,6 +161,13 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             $qb
                 ->andWhere('committee.name LIKE :committee_name')
                 ->setParameter('committee_name', '%'.$filter->getCommitteeName().'%')
+            ;
+        }
+
+        if ($committee = $filter->getCommittee()) {
+            $qb
+                ->andWhere('committee.id = :committee_id')
+                ->setParameter('committee_id', $committee->getId())
             ;
         }
 

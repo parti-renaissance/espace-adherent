@@ -113,21 +113,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         // -------------------------------------------
 
-        // Election with started second round
-        $election = new Election(
-            $this->getReference('designation-3'),
-            Uuid::fromString(self::ELECTION_UUID6),
-            [$round = new ElectionRound()]
-        );
-        $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
-
-        $this->loadCommitteeAdherentElectionCandidates($election);
-        $votersList = $this->loadVoters($election);
-        $this->loadResults($round, $votersList);
-
-        // -------------------------------------------
-
         $election = new Election(
             $this->getReference('designation-3'),
             Uuid::fromString(self::ELECTION_UUID4),
@@ -158,6 +143,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         // -------------------------------------------
 
+        // Election with started second round
         $election = new Election(
             $this->getReference('designation-3'),
             Uuid::fromString(self::ELECTION_UUID5),

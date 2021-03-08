@@ -2,6 +2,7 @@
 
 namespace App\Committee\Filter;
 
+use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,9 +20,15 @@ class CommitteeDesignationsListFilter
      */
     private $committeeName;
 
-    public function __construct(array $zones)
+    /**
+     * @var Committee|null
+     */
+    private $committee;
+
+    public function __construct(array $zones = [], Committee $committee = null)
     {
         $this->zones = $zones;
+        $this->committee = $committee;
     }
 
     /**
@@ -48,6 +55,16 @@ class CommitteeDesignationsListFilter
     public function setCommitteeName(?string $committeeName): void
     {
         $this->committeeName = $committeeName;
+    }
+
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function setCommittee(?Committee $committee): void
+    {
+        $this->committee = $committee;
     }
 
     public function toArray(): array

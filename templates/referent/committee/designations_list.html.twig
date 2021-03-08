@@ -74,7 +74,11 @@
 
                     <tr class="committee__item">
                         <td>{{ designation.getTitle() }}</td>
-                        <td>{{ committee.name }}</td>
+                        <td>
+                            <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">
+                                {{ committee.name }}
+                            </a>
+                        </td>
                         <td class="text--center">{{ designation.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}</td>
                         <td>
                             {% set status = election.status %}
@@ -83,7 +87,9 @@
                             </span>
                         </td>
                         <td>
-                            {% if row.winners %}
+                            {% if election.isVotePeriodActive %}
+                                {{ row.voters }} vote{{ row.voters > 1 ? 's' }}
+                            {% elseif row.winners %}
                                 {% for winner in row.winners|split(',')|sort((a, b) => a|split('|', 1) <=> b|split('|', 1)) %}
                                     {% set winner = winner|split('|') %}
 
@@ -95,8 +101,13 @@
                                 {% set total_confirmed_candidatures = row.total_confirmed_candidacy_male + row.total_confirmed_candidacy_female %}
                                 {% set total_draft_candidatures = row.total_draft_candidacy_male + row.total_draft_candidacy_female %}
 
-                                <span>{{ total_confirmed_candidatures }} candidature{{ total_confirmed_candidatures > 1 ? 's' }}</span><br/>
-                                <span>{{ total_draft_candidatures }} pré-candidature{{ total_draft_candidatures > 1 ? 's' }}</span>
+                                {% if total_confirmed_candidatures > 0 %}
+                                    <a href="{{ path('app_referent_committee_candidacy_list', {uuid: committee.uuid}) }}" target="_blank" rel="noopener noreferrer">{{ total_confirmed_candidatures }} candidature{{ total_confirmed_candidatures > 1 ? 's' }}</a>
+                                {% else %}
+                                    <span>{{ total_confirmed_candidatures }} candidature{{ total_confirmed_candidatures > 1 ? 's' }}</span>
+                                {% endif %}
+
+                                <br><span>{{ total_draft_candidatures }} pré-candidature{{ total_draft_candidatures > 1 ? 's' }}</span>
                             {% endif %}
                         </td>
                         <td class="text--center">

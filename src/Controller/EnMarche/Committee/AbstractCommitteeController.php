@@ -16,6 +16,7 @@ use App\Form\Committee\CommitteeFilterType;
 use App\Form\CommitteeCommandType;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\AdherentRepository;
+use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeElectionRepository;
 use App\Repository\CommitteeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -155,6 +156,28 @@ abstract class AbstractCommitteeController extends AbstractController
             'elections' => $committeeElectionRepository->findElections($filter, $request->query->getInt('page', 1)),
             'form' => $form->createView(),
             'filter' => $filter,
+        ]);
+    }
+
+    /**
+     * @Route("/designations/{uuid}/candidatures", name="committee_candidacy_list", methods={"GET"})
+     */
+    public function committeeCandidaturesListAction(
+        Committee $committee,
+        CommitteeCandidacyRepository $repository
+    ): Response {
+        if (!$election = $committee->getCurrentElection()) {
+            $this->addFlash('warning', 'Une erreur est survenue');
+
+            return $this->redirectToRoute(sprintf('app_%s_committees_designations', $this->getSpaceType()));
+        }
+
+        return $this->render('committee/candidacy/candidacy_list.html.twig', [
+            'candidacies' => $repository->findAllConfirmedForElection($election),
+            'election' => $election,
+            'committee' => $committee,
+            'designation' => $election->getDesignation(),
+            'back_route' => sprintf('app_%s_committees_designations', $this->getSpaceType()),
         ]);
     }
 

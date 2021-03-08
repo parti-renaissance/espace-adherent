@@ -10,33 +10,57 @@
             <table class="datagrid__table-manager">
                 <thead>
                     <tr>
-                        <th>Type</th>
-                        <th>Date</th>
-                        <th>Participation</th>
-                        <th>Candidats</th>
-                        <th>Action</th>
+                        <th width="250">Type</th>
+                        <th width="150" class="text--center">Date</th>
+                        <th width="150">Statut</th>
+                        <th width="300">Détails</th>
+                        <th width="100" class="text--center">Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {% for data in elections %}
-                        {% set election = data[0] %}
+                    {% for row in elections %}
+                        {% set election = row[0] %}
                         {% set designation = election.designation %}
+                        {% set committee = election.committee %}
+
                         <tr>
-                            <td>{{ constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::TITLES')[designation.type] }}</td>
-                            <td>{{ designation.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}</td>
+                            <td>{{ designation.getTitle() }}</td>
+                            <td class="text--center">{{ designation.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}</td>
                             <td>
-                                {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') and election.status == constant('App\\VotingPlatform\\Election\\ElectionStatusEnum::OPEN') %}
-                                    {{ data.votes_count }}
+                                {% set status = election.status %}
+                                <span class="status {{ status in constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::ACTIVE_STATUSES') ? 'status__1' : 'status__2' }}">
+                                    {{ ('designation.status.'~status)|trans }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if election.isVotePeriodActive %}
+                                    {{ row.voters }} vote{{ row.voters > 1 ? 's' }}
+                                {% elseif row.winners %}
+                                    {% for winner in row.winners|split(',')|sort((a, b) => a|split('|', 1) <=> b|split('|', 1)) %}
+                                        {% set winner = winner|split('|') %}
+
+                                        <span>{{ winner[1] }} {{ winner[2] }}</span>
+                                        <span class="candidate-gender l__col l__col--center">{{ winner[0] == 'female' ? 'F' : 'H' }}</span>
+                                        <br/>
+                                    {% endfor %}
                                 {% else %}
-                                    {{ data.voters_count ? (data.votes_count * 100 / data.voters_count)|round(2) : 0 }} %
+                                    {% set total_confirmed_candidatures = row.total_confirmed_candidacy_male + row.total_confirmed_candidacy_female %}
+                                    {% set total_draft_candidatures = row.total_draft_candidacy_male + row.total_draft_candidacy_female %}
+
+                                    {% if total_confirmed_candidatures > 0 %}
+                                        <a href="{{ path('app_committee_candidature_candidacy_list', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">{{ total_confirmed_candidatures }} candidature{{ total_confirmed_candidatures > 1 ? 's' }}</a>
+                                    {% else %}
+                                        <span>{{ total_confirmed_candidatures }} candidature{{ total_confirmed_candidatures > 1 ? 's' }}</span>
+                                    {% endif %}
+
+                                    <br><span>{{ total_draft_candidatures }} pré-candidature{{ total_draft_candidatures > 1 ? 's' }}</span>
                                 {% endif %}
                             </td>
-                            <td>{{ data.woman_count }} F / {{ data.man_count }} H</td>
                             <td>
-                                {% if designation.voteStartDate > 'now'|date %}
+                                {% if row.voting_platform_election_uuid %}
                                     {% set items = [{
-                                        href: path("app_#{space_type}_designations_dashboard", {committee_slug: committee.slug, uuid: election.uuid}),
+                                        href: path("app_#{space_type}_designations_dashboard", {committee_slug: committee.slug, uuid: row.voting_platform_election_uuid}),
                                         label: 'Voir les détails',
                                         linkAttr: {class: 'row-action link--no-decor'}
                                     }] %}
