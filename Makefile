@@ -22,9 +22,9 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up db rabbitmq-fabric public/built assets-amp var/public.key perm  ## Install and start the project
+start: build up config/packages/assets_version.yaml db rabbitmq-fabric public/built assets-amp var/public.key perm  ## Install and start the project
 
-start-mac: build up db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
+start-mac: build up config/packages/assets_version.yaml db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill
@@ -247,5 +247,5 @@ web-built-mac:
 	yarn install
 	yarn build-dev
 
-config/packages/assets_version.yaml:
+config/packages/assets_version.yaml: node_modules
 	 $(EXEC) yarn build-prod
