@@ -52,7 +52,7 @@ class SupervisorDesignationControllerTest extends WebTestCase
         $this->assertStringEndsWith('/espace-animateur/en-marche-paris-8/designations', $crawler->getUri());
 
         $this->assertStringContainsString('Désignation du binôme d’adhérents siégeant au Conseil territorial', $this->client->getResponse()->getContent());
-        $this->assertCount(3, $crawler->filter('.datagrid__table-manager tbody tr'));
+        $this->assertCount(2, $crawler->filter('.datagrid__table-manager tbody tr'));
     }
 
     public function testSupervisorCanSeeSubscribedVotersCommittee(): void

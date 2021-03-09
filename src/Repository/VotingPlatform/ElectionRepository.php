@@ -134,7 +134,7 @@ class ElectionRepository extends ServiceEntityRepository
             ->orderBy('designation.voteEndDate', 'DESC')
             ->groupBy('election.id')
             ->getQuery()
-            ->getArrayResult()
+            ->getResult()
         ;
     }
 

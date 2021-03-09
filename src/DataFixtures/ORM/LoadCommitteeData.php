@@ -54,6 +54,8 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'twitter_nickname' => 'enmarche75008',
         ]);
         $committee1->approved('2017-01-12 15:54:18');
+        $committee1->addElection(new CommitteeElection($this->getReference('designation-3')));
+        $committee1->addElection(new CommitteeElection($this->getReference('designation-4')));
         $this->addReference('committee-1', $committee1);
 
         $committee2 = $this->committeeFactory->createFromArray([
@@ -79,6 +81,7 @@ class LoadCommitteeData extends Fixture implements DependentFixtureInterface
             'name_locked' => true,
         ]);
         $committee3->approved('2017-01-27 09:18:33');
+        $committee3->addElection(new CommitteeElection($this->getReference('designation-3')));
         $this->addReference('committee-3', $committee3);
 
         $committee4 = $this->committeeFactory->createFromArray([

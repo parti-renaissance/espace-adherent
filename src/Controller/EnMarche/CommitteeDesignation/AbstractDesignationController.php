@@ -2,10 +2,12 @@
 
 namespace App\Controller\EnMarche\CommitteeDesignation;
 
+use App\Committee\Filter\CommitteeDesignationsListFilter;
 use App\Entity\Committee;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionResult\ElectionPoolResult;
 use App\Entity\VotingPlatform\ElectionRound;
+use App\Repository\CommitteeElectionRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteResultRepository;
 use App\Repository\VotingPlatform\VoterRepository;
@@ -27,10 +29,13 @@ abstract class AbstractDesignationController extends AbstractController
     /**
      * @Route("", name="_list", methods={"GET"})
      */
-    public function listDesignationsAction(Request $request, Committee $committee): Response
-    {
+    public function listDesignationsAction(
+        Request $request,
+        Committee $committee,
+        CommitteeElectionRepository $repository
+    ): Response {
         return $this->renderTemplate('committee_designation/list.html.twig', $request, [
-            'elections' => $this->electionRepository->getAllAggregatedDataForCommittee($committee),
+            'elections' => $repository->findElections(new CommitteeDesignationsListFilter([], $committee), 1, 200),
         ]);
     }
 
@@ -42,6 +47,7 @@ abstract class AbstractDesignationController extends AbstractController
     public function dashboardAction(
         Request $request,
         Committee $committee,
+        // used in Security notation in concretes classes
         Election $election,
         ElectionRound $electionRound = null
     ): Response {

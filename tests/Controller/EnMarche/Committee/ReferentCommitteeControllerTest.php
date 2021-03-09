@@ -307,16 +307,25 @@ Il ne manque plus que la validation d\'un coordinateur régional pour qu\'il soi
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/comites/designations');
 
-        $this->assertCount(2, $table = $crawler->filter('tbody tr'));
+        $this->assertCount(4, $table = $crawler->filter('.datagrid__table-manager tbody tr'));
 
         $this->assertStringContainsString('En Marche - Comité de Rouen', $table->eq(0)->text());
         $this->assertStringContainsString('Programmée', $table->eq(0)->text());
         $this->assertStringContainsString('2 candidatures', $table->eq(0)->text());
         $this->assertStringContainsString('0 pré-candidature', $table->eq(0)->text());
+        $this->assertStringNotContainsString('Détails', $table->eq(0)->text());
 
-        $this->assertStringContainsString('Antenne En Marche de Fontainebleau', $table->eq(1)->text());
-        $this->assertStringContainsString('Terminée', $table->eq(1)->text());
-        $this->assertStringContainsString('Détails', $table->eq(1)->text());
+        $this->assertStringContainsString('En Marche - Suisse', $table->eq(1)->text());
+        $this->assertStringContainsString('Programmée', $table->eq(1)->text());
+        $this->assertStringNotContainsString('Détails', $table->eq(1)->text());
+
+        $this->assertStringContainsString('En Marche Dammarie-les-Lys', $table->eq(2)->text());
+        $this->assertStringContainsString('Terminée', $table->eq(2)->text());
+        $this->assertStringContainsString('Détails', $table->eq(2)->text());
+
+        $this->assertStringContainsString('Antenne En Marche de Fontainebleau', $table->eq(3)->text());
+        $this->assertStringContainsString('Terminée', $table->eq(3)->text());
+        $this->assertStringContainsString('Détails', $table->eq(3)->text());
 
         $form = $crawler->selectButton('Appliquer')->form();
         $crawler = $this->client->submit($form, ['f' => ['committeeName' => 'Fontainebleau']]);

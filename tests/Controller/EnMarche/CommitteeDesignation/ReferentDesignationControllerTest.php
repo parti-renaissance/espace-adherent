@@ -77,7 +77,7 @@ class ReferentDesignationControllerTest extends WebTestCase
         $this->client->request('POST', '/comites/en-marche-dammarie-les-lys/rejoindre', ['token' => $token], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $crawler = $this->client->request('GET', '/comites/en-marche-dammarie-les-lys');
-        self::assertStringContainsString('Élection du binôme paritaire d’Animateurs locaux', $crawler->filter('main.committee')->text());
+        self::assertStringContainsString('Élection de l’Animatrice locale du comité', $crawler->filter('main.committee')->text());
     }
 
     protected function setUp(): void

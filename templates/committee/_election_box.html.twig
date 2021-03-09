@@ -11,7 +11,7 @@
 <section class="instance__elections-box b__nudge--bottom-larger">
     {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
         <div class="l__row">
-            <h2 class="text--medium box-el">{{ constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::TITLES')[designation.type] }}</h2>
+            <h2 class="text--medium box-el">{{ designation.getTitle() }}</h2>
         </div>
 
         <div class="text--body text--dark b__nudge--top instance__elections-box--text">
@@ -37,7 +37,7 @@
     {% else %}
         <div class="l__row">
             <h2 class="text--medium box-el">
-                {{ constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::TITLES')[designation.type] }}
+                {{ designation.getTitle() }}
 
                 <div class="em-tooltip">
                     <span class="em-tooltip--trigger em-tooltip--trigger-circle">?</span>
