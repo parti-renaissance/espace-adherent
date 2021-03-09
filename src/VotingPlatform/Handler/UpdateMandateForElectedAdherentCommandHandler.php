@@ -2,6 +2,7 @@
 
 namespace App\VotingPlatform\Handler;
 
+use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
@@ -39,14 +40,23 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
 
     private function closeExistingMandates(Election $election): void
     {
+        $designation = $election->getDesignation();
+
         switch ($election->getDesignationType()) {
             case DesignationTypeEnum::COMMITTEE_ADHERENT:
+            case DesignationTypeEnum::COMMITTEE_SUPERVISOR:
+                // do not close any committee mandate if an election has 0 elected candidate
+                if (!$election->hasElected()) {
+                    return;
+                }
+
                 $repository = $this->entityManager->getRepository(CommitteeAdherentMandate::class);
 
                 $repository->closeCommitteeMandate(
                     $election->getElectionEntity()->getCommittee(),
                     AbstractAdherentMandate::REASON_ELECTION,
-                    $election->getVoteEndDate()
+                    $election->getVoteEndDate(),
+                    $designation->getPools() ? current($designation->getPools()) : null
                 );
 
                 break;
@@ -90,7 +100,8 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
                     $candidate->getAdherent(),
                     $candidate->getGender(),
                     $election->getElectionEntity()->getCommittee(),
-                    $election->getVoteEndDate()
+                    $election->getVoteEndDate(),
+                    DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? CommitteeAdherentMandateTypeEnum::TYPE_SUPERVISOR : null
                 );
             }
         ;
@@ -121,7 +132,7 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
         }
 
         array_map(function (array $row) use ($mandateFactory, $election) {
-            $mandate = $mandateFactory($row['candidate'], $election, $row['quality'], isset($row['additionally_elected']) ? $row['additionally_elected'] : false);
+            $mandate = $mandateFactory($row['candidate'], $election, $row['quality'], !empty($row['additionally_elected']));
             $this->entityManager->persist($mandate);
         }, $candidates);
 
