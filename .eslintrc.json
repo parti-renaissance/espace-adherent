@@ -1,11 +1,4 @@
 {
-  "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "webpack.development.js"
-      }
-    }
-  },
   "extends": [
     "eslint:recommended",
     "airbnb-base"
@@ -44,7 +37,7 @@
     "removeClass": true,
     "App": true,
     "google": true,
-    "getUrlParameter": true,
+    "getUrlParameter": true
   },
   "rules": {
     "indent": ["error", 4],
