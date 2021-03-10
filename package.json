@@ -5,7 +5,7 @@
     "build-prod": "node_modules/.bin/webpack --config webpack.production.js",
     "build-apps": "bin/build-react-apps.js",
     "build-dev": "node_modules/.bin/webpack --config webpack.development.js",
-    "watch": "node_modules/.bin/webpack --config webpack.development.js --progress --colors --watch",
+    "watch": "node_modules/.bin/webpack --config webpack.development.js --progress --color --watch",
     "test": "node_modules/.bin/mocha-webpack --webpack-config webpack.development.js --recursive front/tests",
     "lint": "node_modules/.bin/esw webpack.* front/**/*.js",
     "lint:fix": "npm run lint -- --fix",
