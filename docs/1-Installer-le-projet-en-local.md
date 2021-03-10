@@ -124,6 +124,12 @@ deps:            Install the project PHP and JS dependencies
 Tout d'abord, créez une copie du fichier `docker-compose.override.yml.dist` appelée `docker-compose.override.yml`
 afin de choisir le port à utiliser pour le projet.
 
+Si vous avez décommenté la section `networks` de votre fichier `docker-compose.override.yml`, créez votre réseau `enmarche` :
+
+```
+$ docker network create enmarche
+```
+
 Lancez l'initialisation du projet avec `make start` :
 
 ```
