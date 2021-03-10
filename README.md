@@ -18,7 +18,7 @@ n'existe que par ses membres. Nous serions donc bien évidemment ravis que vous 
 [la documentation](docs).
 * Regardez la [liste de nos projets](https://github.com/EnMarche/en-marche.fr/issues) pour trouver quelque chose qui vous intéresse.
 
-Questions ? Besoin d'aide ? Rejoignez-nous dans [notre channel publique](https://t.me/joinchat/EmY0ew-4jl32FzOdRXvKrw) sur Telegram.
+Questions ? Besoin d'aide ? Discutez avec nous sur [le forum du repository](https://github.com/EnMarche/en-marche.fr/discussions) sur GitHub Discussions.
 
 [Remerciez](https://github.com/symfony/thanks) la communauté open-source PHP, qui a rendu ce projet possible, en
 lancant `composer thanks` à la racine du projet, une fois téléchargé.
@@ -40,7 +40,7 @@ members. Thus we would be glad to help you contribute!
 * To install the project locally, follow [the developer documentation (French)](docs).
 * Look at [our current projects](https://github.com/EnMarche/en-marche.fr/issues) to find something that interests you
 
-Questions? Need help? Say hello in [our public Telegram channel](http://safersm.ml/cgi-bin/bounce.pl?sh58=TtE8aDoZraoFeiDerPAiiq).
+Questions? Need help? Say hello [in GitHub Discussions](https://github.com/EnMarche/en-marche.fr/discussions).
 
 Give [thanks](https://github.com/symfony/thanks) to the open-source PHP community, which made this project
 possible, by running `composer thanks` in the project root once downloaded!
