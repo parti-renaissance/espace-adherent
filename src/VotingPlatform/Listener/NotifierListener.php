@@ -36,7 +36,7 @@ class NotifierListener implements EventSubscriberInterface
     {
         $election = $event->getElection();
 
-        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $election->getDesignationType()) {
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $election->getDesignationType() || $election->getDesignation()->isLimited()) {
             $this->notifier->notifyElectionVoteIsOpen($election);
         }
     }

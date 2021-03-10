@@ -44,7 +44,17 @@ class ElectionNotifier
 
     public function notifyElectionVoteIsOpen(Election $election): void
     {
-        $adherents = $this->getAdherentForElection($election);
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType()) {
+            $committeeMemberships = $this->committeeMembershipRepository->findVotingForElectionMemberships(
+                $election->getElectionEntity()->getCommittee(),
+                $election->getDesignation(),
+                false
+            );
+
+            $adherents = array_map(function (CommitteeMembership $membership) { return $membership->getAdherent(); }, $committeeMemberships);
+        } else {
+            $adherents = $this->getAdherentForElection($election);
+        }
 
         if ($adherents) {
             $this->mailer->sendMessage(VotingPlatformElectionVoteIsOpenMessage::create(
