@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import noResultImg from './../../public/images/icons/icn_no-result.svg';
 
 export default class DataGrid extends React.Component {

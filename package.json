@@ -48,6 +48,7 @@
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "prop-types": "^15.7.2",
     "randomatic": "^3.0.0",
     "raven-js": "^3.8.0",
     "react": "^16.5.0",

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Modal from './Modal';
 import Loader from './Loader';
 import successImage from './../../public/images/icons/icn_success.svg';

@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
 export default class FacebookPictureChooser extends React.Component {
