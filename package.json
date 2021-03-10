@@ -31,6 +31,7 @@
     "deep-extend": "^0.6.0",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^11.0.0",
+    "eslint-import-resolver-webpack": "^0.13.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.9.0",
     "eslint-watch": "7.0.0",
