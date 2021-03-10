@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import AmountChooser from './AmountChooser';
 
 const maxAbonnementAmount = 625;
