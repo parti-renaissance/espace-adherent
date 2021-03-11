@@ -153,7 +153,7 @@ class LoadClientData extends Fixture
             'Coalition App',
             'Coalition App',
             'Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ',
-            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN, GrantTypeEnum::PASSWORD],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
         $client11->setAskUserForAuthorization(true);
