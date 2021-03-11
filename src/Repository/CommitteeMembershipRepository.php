@@ -215,6 +215,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
     /**
      * Returns the list of all members of a committee.
+     *
+     * @return Adherent[]|AdherentCollection
      */
     public function findMembers(Committee $committee): AdherentCollection
     {
