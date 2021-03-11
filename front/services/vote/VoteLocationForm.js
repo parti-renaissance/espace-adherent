@@ -82,7 +82,7 @@ export default class VoteLocationForm {
 
         this.replaceCityNameInputWithConsulateSelector();
 
-        for (let key in this._state.consulates) {
+        for (const key in this._state.consulates) {
             const value = this._state.consulates[key];
             const option = this.createOption(value, value);
 
@@ -111,8 +111,8 @@ export default class VoteLocationForm {
             return;
         }
 
-        for (let inseeCode in this._state.cities) {
-            const value = this._state.postalCode+'-'+inseeCode;
+        for (const inseeCode in this._state.cities) {
+            const value = `${this._state.postalCode}-${inseeCode}`;
             const option = this.createOption(value, this._state.cities[inseeCode]);
 
             if (value === this._initialCity) {

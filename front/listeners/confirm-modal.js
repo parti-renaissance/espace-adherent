@@ -20,7 +20,7 @@ function contentCallback(element) {
             </p>
             <div>
                 <a href={'#'} onClick={event => cancelCallback(event)}
-                   className="btn btn--ghosting--blue toggleModal b__nudge--right-small"
+                    className="btn btn--ghosting--blue toggleModal b__nudge--right-small"
                 >
                     Annuler
                 </a>

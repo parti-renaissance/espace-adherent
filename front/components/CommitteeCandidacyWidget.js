@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Loader from './Loader';
 import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
@@ -58,7 +59,7 @@ export default class CommitteeCandidacyWidget extends React.Component {
                                 </div>
                             </label>
                         </div>)
-                        )}
+                    )}
                 </div>
             );
         }
@@ -68,10 +69,10 @@ export default class CommitteeCandidacyWidget extends React.Component {
                 <div className="em-form__group">
                     <div className="em-form__field--ctn">
                         <input type="search" placeholder="Rechercher un membre..."
-                               id="member-search"
-                               className="em-form__field form form__field"
-                               onKeyPress={event => 'Enter' === event.key && event.preventDefault()}
-                               onChange={this.handleSearchChange}
+                            id="member-search"
+                            className="em-form__field form form__field"
+                            onKeyPress={event => 'Enter' === event.key && event.preventDefault()}
+                            onChange={this.handleSearchChange}
                         />
                     </div>
                 </div>

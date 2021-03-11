@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class Breadcrumbs extends React.Component {
     render() {
@@ -6,7 +7,7 @@ export default class Breadcrumbs extends React.Component {
 
         if (this.props.isSearching) {
             breadcrumbs.push(
-                <a href="#" className={"link--no--decor text--blue--dark"} onClick={this.props.onExitClick}>
+                <a href="#" className={'link--no--decor text--blue--dark'} onClick={this.props.onExitClick}>
                     Annuler la recherche
                 </a>
             );

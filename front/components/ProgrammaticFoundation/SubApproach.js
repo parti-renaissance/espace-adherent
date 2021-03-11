@@ -1,12 +1,13 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Measure from './Measure';
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 
 export default class SubApproach extends React.Component {
     render() {
         const sectionIdentifierParts = [
             this.props.parentSectionIdentifier,
-            this.props.subApproach.position
+            this.props.subApproach.position,
         ];
 
         const sectionIdentifier = sectionIdentifierParts.join('.');
@@ -26,12 +27,10 @@ export default class SubApproach extends React.Component {
 
                     <div className="programmatic-foundation__children programmatic-foundation__measures">
                         <div className="programmatic-foundation__items-type">Mesures</div>
-                        {this.props.subApproach.measures.map(measure => {
-                            return <Measure
-                                key={measure.position+measure.uuid}
-                                measure={measure}
-                            />
-                          })}
+                        {this.props.subApproach.measures.map(measure => <Measure
+                            key={measure.position + measure.uuid}
+                            measure={measure}
+                        />)}
                     </div>
                 </div>
             </div>
@@ -40,16 +39,16 @@ export default class SubApproach extends React.Component {
 
     scrollToMyRef() {
         setTimeout(() => {
-            ReactDOM.findDOMNode(this).scrollIntoView({behavior: "smooth"});
+            ReactDOM.findDOMNode(this).scrollIntoView({ behavior: 'smooth' });
         }, 200);
     }
 
     toggleActiveSubApproach(event) {
         if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
-            let items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
+            const items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
                 .getElementsByClassName('programmatic-foundation__sub-approach');
 
-            for (var i=0; i<items.length; ++i) {
+            for (let i = 0; i < items.length; ++i) {
                 if (hasClass(items[i], 'expanded')) {
                     removeClass(items[i], 'expanded');
                 }

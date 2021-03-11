@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SubApproach from './SubApproach';
 
 export default class Approach extends React.Component {
@@ -10,13 +11,11 @@ export default class Approach extends React.Component {
                 <div className="content" dangerouslySetInnerHTML={{ __html: this.props.approach.content }} />
 
                 <div className="programmatic-foundation__sub-approaches programmatic-foundation__children">
-                    {this.props.approach.sub_approaches.map((subApproach, index) => {
-                        return <SubApproach
-                            key={index+subApproach.uuid}
-                            parentSectionIdentifier={this.props.approach.position}
-                            subApproach={subApproach}
-                        />
-                    })}
+                    {this.props.approach.sub_approaches.map((subApproach, index) => <SubApproach
+                        key={index + subApproach.uuid}
+                        parentSectionIdentifier={this.props.approach.position}
+                        subApproach={subApproach}
+                    />)}
                 </div>
             </div>
         );

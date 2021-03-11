@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import Modal from './Modal';
 import Loader from './Loader';
@@ -93,7 +94,7 @@ export default class CandidaciesListWidget extends Modal {
                                     : Math.round(
                                         (this.state.data.metadata.males * 100) / this.state.data.metadata.total
                                     )
-                                )} %)
+                            )} %)
                             </span>
                         </div>
                     </div>
@@ -107,7 +108,7 @@ export default class CandidaciesListWidget extends Modal {
                                     : Math.round(
                                         (this.state.data.metadata.females * 100) / this.state.data.metadata.total
                                     )
-                                )} %)
+                            )} %)
                             </span>
                         </div>
                     </div>

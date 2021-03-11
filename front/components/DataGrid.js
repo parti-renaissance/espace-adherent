@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import noResultImg from './../../public/images/icons/icn_no-result.svg';
 
 export default class DataGrid extends React.Component {
@@ -137,17 +138,17 @@ export default class DataGrid extends React.Component {
                         ${this.state.loading ? 'datagrid__table--loading' : ''}`
                     }>
                         <thead>
-                        <tr>
-                            {this._buildColumns(this.props.columns)}
-                        </tr>
+                            <tr>
+                                {this._buildColumns(this.props.columns)}
+                            </tr>
                         </thead>
                         <tbody>
-                        {this._buildResultsList(
-                            this.props.columns,
-                            this.state.results,
-                            this.state.selected,
-                            currentPage)
-                        }
+                            {this._buildResultsList(
+                                this.props.columns,
+                                this.state.results,
+                                this.state.selected,
+                                currentPage)
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -184,14 +185,14 @@ export default class DataGrid extends React.Component {
         pagesList.push(
             <li key={`page-${position}-prec`}>
                 <button type="button"
-                        className="pager__action switch"
-                        disabled={1 === current}
-                        onClick={() => this.handlePagerClick(Math.max(1, current - 1))}>
+                    className="pager__action switch"
+                    disabled={1 === current}
+                    onClick={() => this.handlePagerClick(Math.max(1, current - 1))}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
-                      <polygon
-                        fill="#444"
-                        points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571"
-                        transform="rotate(45 30.642 -5.743)"/>
+                        <polygon
+                            fill="#444"
+                            points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571"
+                            transform="rotate(45 30.642 -5.743)"/>
                     </svg>
                 </button>
             </li>
@@ -200,14 +201,14 @@ export default class DataGrid extends React.Component {
         pagesList.push(
             <li key={`page-${position}-suiv`}>
                 <button type="button"
-                        className="pager__action switch"
-                        disabled={pagesCount === current}
-                        onClick={() => this.handlePagerClick(Math.min(pagesCount, current + 1))}>
+                    className="pager__action switch"
+                    disabled={pagesCount === current}
+                    onClick={() => this.handlePagerClick(Math.min(pagesCount, current + 1))}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
-                      <polygon
-                        fill="#444"
-                        points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571"
-                        transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
+                        <polygon
+                            fill="#444"
+                            points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571"
+                            transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
                     </svg>
                 </button>
             </li>
@@ -223,8 +224,8 @@ export default class DataGrid extends React.Component {
             columnsList.push(
                 <th key={'column-select'} style={{ width: 25 }}>
                     <input type="checkbox"
-                           onChange={this.handleHeaderCheckboxChange}
-                           checked={this.state.headerCheckboxChecked} />
+                        onChange={this.handleHeaderCheckboxChange}
+                        checked={this.state.headerCheckboxChecked} />
                 </th>
             );
         }
@@ -239,10 +240,10 @@ export default class DataGrid extends React.Component {
                             href={`?sort=${columns[i].key}&order=${
                                 this.state.sort === columns[i].key && 'd' === this.state.order ? 'a' : 'd'
                             }`}
-                           onClick={this.handleSortableClick}
-                           className={`sort-link sort-link--order-${
-                               this.state.sort === columns[i].key ? this.state.order : 'd'
-                           }`}>
+                            onClick={this.handleSortableClick}
+                            className={`sort-link sort-link--order-${
+                                this.state.sort === columns[i].key ? this.state.order : 'd'
+                            }`}>
                             {columns[i].name}
                         </a>
                         : columns[i].name
@@ -272,10 +273,10 @@ export default class DataGrid extends React.Component {
                 resultColumns.push(
                     <td key={`result${i}-column-select`}>
                         <input type="checkbox"
-                               onChange={(event) => {
-                                   this.handleCheckboxChange(i, event);
-                               }}
-                               checked={'undefined' !== typeof selected[i] && selected[i]} />
+                            onChange={(event) => {
+                                this.handleCheckboxChange(i, event);
+                            }}
+                            checked={'undefined' !== typeof selected[i] && selected[i]} />
                     </td>
                 );
             }
@@ -289,8 +290,8 @@ export default class DataGrid extends React.Component {
                             style={columns[j].style || null}
                             className={columns[j].className || ''}>
                             <a target={targetBlank ? '_blank' : '_self'}
-                               href={result[columns[j].key].url}
-                               dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}
+                                href={result[columns[j].key].url}
+                                dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}
                             />
                         </td>
                     );

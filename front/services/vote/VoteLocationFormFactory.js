@@ -8,11 +8,11 @@ export default class VoteLocationFormFactory {
     createVoteLocationForm(country, postalCode, city, cityName, office) {
         return new VoteLocationForm(
             this._api,
-            dom('#'+country),
-            dom('#'+postalCode),
-            dom('#'+city),
-            dom('#'+cityName),
-            dom('#'+office)
+            dom(`#${country}`),
+            dom(`#${postalCode}`),
+            dom(`#${city}`),
+            dom(`#${cityName}`),
+            dom(`#${office}`)
         );
     }
 }

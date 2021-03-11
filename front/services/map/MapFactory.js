@@ -1,4 +1,4 @@
-import MarkerClusterer from "@google/markerclusterer";
+import MarkerClusterer from '@google/markerclusterer';
 
 export default class MapFactory {
     createMap(element, options) {
@@ -60,7 +60,7 @@ export default class MapFactory {
     }
 
     addMarker(map, options) {
-        return this.createMarker(Object.assign(options, {map: map}));
+        return this.createMarker(Object.assign(options, { map }));
     }
 
     createMarker(options) {
@@ -75,7 +75,7 @@ export default class MapFactory {
             markers,
             Object.assign({
                 maxZoom: 15,
-                imagePath: 'https://storage.googleapis.com/en-marche-prod/images/cluster-committees/m'
+                imagePath: 'https://storage.googleapis.com/en-marche-prod/images/cluster-committees/m',
             }, options)
         );
     }

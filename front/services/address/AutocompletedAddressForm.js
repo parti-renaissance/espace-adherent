@@ -3,7 +3,7 @@ import GooglePlaceAutocomplete from './GooglePlaceAutocomplete';
 
 export default class AutocompletedAddressForm extends EventEmitter {
     constructor(autocompleteWrapper, addressBlock, addressObject, helpMessageBlock = null,
-                showWhenFilled = false, showOnlyAutocomplete = false) {
+        showWhenFilled = false, showOnlyAutocomplete = false) {
         super();
 
         this._autocompleteWrapper = autocompleteWrapper;
@@ -26,8 +26,8 @@ export default class AutocompletedAddressForm extends EventEmitter {
                 this._autocompleteWrapper,
                 this._address,
                 'form form--full form__field em-form__field',
-                typeof this._address._address.attributes.disabled !== 'undefined'
-                    && this._address._address.attributes.disabled.value === 'disabled'
+                'undefined' !== typeof this._address._address.attributes.disabled
+                    && 'disabled' === this._address._address.attributes.disabled.value
             );
 
             autocomplete.build();

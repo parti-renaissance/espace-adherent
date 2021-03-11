@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Loader from './Loader';
 import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
@@ -101,42 +102,42 @@ export default class UserListDefinitionWidget extends React.Component {
                 <div className="pst--relative">
                     {0 < length ?
                         <div className={`btn-secondary btn-secondary--blue ${1 > length ? 'btn-secondary--disabled'
-                        : ''}`}
+                            : ''}`}
                         onClick={this.getUserListDefinitionsForType}>
                             ({length}) Ajouter un label
                         </div>
-                    : ''}
+                        : ''}
 
                     { this.state.processing ? <div className="label-list--loader">{this.renderLoader()}</div> :
                         <div style={{ display: this.state.displayList && 0 < length ? 'block' : 'none' }}
-                             className="label-list">
+                            className="label-list">
                             {this.state.membersDataLoaded
                                 ? this.state.userListDefinitions.map((userListDefinition, index) => (
                                     <div key={index} id={userListDefinition.code}
-                                         className="label"
-                                         onClick={this.changeListStatus}>
+                                        className="label"
+                                        onClick={this.changeListStatus}>
                                         <i className={STATUS_CLASS[userListDefinition.newStatus]} />
                                         {userListDefinition.label}
                                     </div>))
                                 : ''}
                             <a style={{ display: this.state.canApply ? 'block' : 'none' }}
-                               href="#"
-                               className="text--blue--dark link--no-decor apply-btn"
-                               onClick={this.saveUserListDefinitionMembers}>Appliquer</a>
+                                href="#"
+                                className="text--blue--dark link--no-decor apply-btn"
+                                onClick={this.saveUserListDefinitionMembers}>Appliquer</a>
                         </div>
                     }
                 </div>
 
                 {0 < length ?
                     <a href="#"
-                       className="btn-secondary btn-secondary--black b__nudge--left-small"
-                       onClick={this.handleResetClick}>Effacer la sélection
+                        className="btn-secondary btn-secondary--black b__nudge--left-small"
+                        onClick={this.handleResetClick}>Effacer la sélection
                     </a>
-                : ''}
+                    : ''}
 
                 {this.state.error ? <p className={'text--error b__nudge--top-10 b__nudge--bottom-medium'}>
                     {this.state.error}</p>
-                : ''}
+                    : ''}
 
             </div>
         );

@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ReqwestApiClient from '../../services/api/ReqwestApiClient';
 import Content from './Content';
@@ -7,7 +8,7 @@ import icnClose from './../../../public/images/icons/icn_close.svg';
 import logoPQM from './../../../public/images/projets-qui-marchent-logo-horizontal.svg';
 import Breadcrumbs from './Breadcrumbs';
 import Loader from '../Loader';
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 
 export default class ProgrammaticFoundation extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ export default class ProgrammaticFoundation extends React.Component {
                 <span className="background-stripe-02"></span>
                 <div className="programmatic-foundation__left">
                     <div className="content l__col">
-                        <a href={"/projets-qui-marchent"} className="socle-logo">
+                        <a href={'/projets-qui-marchent'} className="socle-logo">
                             <img
                                 src={logoPQM}
                                 alt="Socle programmatique - Des projets qui marchent"
@@ -67,41 +68,41 @@ export default class ProgrammaticFoundation extends React.Component {
 
                 <div className="programmatic-foundation__right">
 
-                        <div className="programmatic-foundation__ressources b__nudge--top-40">
-                            <a className="thumbnail thumbnail--one" href="https://storage.googleapis.com/en-marche-fr/pole_idees/Municipales/recueil_municipales.pdf" target="_blank">
-                                <div className="thumbnail__content">
+                    <div className="programmatic-foundation__ressources b__nudge--top-40">
+                        <a className="thumbnail thumbnail--one" href="https://storage.googleapis.com/en-marche-fr/pole_idees/Municipales/recueil_municipales.pdf" target="_blank">
+                            <div className="thumbnail__content">
                                     300 projets qui marchent : le recueil →
-                                </div>
-                            </a>
-                            <a className="thumbnail thumbnail--two" href="https://storage.googleapis.com/en-marche-fr/pole_idees/Municipales/12_idees_emblematiques.pdf" target="_blank">
-                                <div className="thumbnail__content">
+                            </div>
+                        </a>
+                        <a className="thumbnail thumbnail--two" href="https://storage.googleapis.com/en-marche-fr/pole_idees/Municipales/12_idees_emblematiques.pdf" target="_blank">
+                            <div className="thumbnail__content">
                                     Les 12 idées emblématiques →
-                                </div>
-                            </a>
-                        </div>
-
-                        <div className="l__row l__row--h-stretch l__row--wrap">
-                            <div className="programmatic-foundation__legend">
-                                <span className="legend-item basic-measure">Mesure</span>
-                                <span className="legend-item project">Projet illustratif</span>
                             </div>
+                        </a>
+                    </div>
+
+                    <div className="l__row l__row--h-stretch l__row--wrap">
+                        <div className="programmatic-foundation__legend">
+                            <span className="legend-item basic-measure">Mesure</span>
+                            <span className="legend-item project">Projet illustratif</span>
                         </div>
+                    </div>
 
-                        {this.state.isLoading ?
-                            <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/> :
+                    {this.state.isLoading ?
+                        <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/> :
 
-                            <div>
-                                <Breadcrumbs isSearching={isSearching} onExitClick={this.handleSearchExit}/>
+                        <div>
+                            <Breadcrumbs isSearching={isSearching} onExitClick={this.handleSearchExit}/>
 
-                                <Content
-                                    isSearching={isSearching}
-                                    filterIsLeading={this.state.filterIsLeading}
-                                    filterText={this.state.filterText}
-                                    filterCity={this.state.filterCity}
-                                    approaches={this.initialApproaches}
-                                />
-                            </div>
-                        }
+                            <Content
+                                isSearching={isSearching}
+                                filterIsLeading={this.state.filterIsLeading}
+                                filterText={this.state.filterText}
+                                filterCity={this.state.filterCity}
+                                approaches={this.initialApproaches}
+                            />
+                        </div>
+                    }
                 </div>
 
             </div>
@@ -121,55 +122,44 @@ export default class ProgrammaticFoundation extends React.Component {
 
     scrollToMyRef() {
         setTimeout(() => {
-            ReactDOM.findDOMNode(this).scrollIntoView({behavior: "smooth"});
+            ReactDOM.findDOMNode(this).scrollIntoView({ behavior: 'smooth' });
         }, 200);
     }
 
     handleFilterTextChange(text) {
-        this.setState({filterText: text});
+        this.setState({ filterText: text });
 
         this.scrollToMyRef();
     }
 
     handleFilterCityChange(text) {
-        this.setState({filterCity: text});
+        this.setState({ filterCity: text });
 
         this.scrollToMyRef();
     }
 
     handleLeadingMeasuresChange(value) {
-        this.setState({filterIsLeading: value});
+        this.setState({ filterIsLeading: value });
 
         this.scrollToMyRef();
     }
 
     extractAllCities() {
-        return _.uniq(_.flatMap(this.initialApproaches, (approach) => {
-            return _.flatMap(approach.sub_approaches, (subApproaches) => {
-                return _.flatMap(subApproaches.measures, (measure) => {
-                    return _.flatMap(measure.projects, (project) => {
-                        return project.city;
-                    });
-                });
-            });
-        })).sort((a, b) => a.localeCompare(b)).sort(function(a,b) {
-            var importantResults = {
+        return _.uniq(_.flatMap(this.initialApproaches, approach => _.flatMap(approach.sub_approaches, subApproaches => _.flatMap(subApproaches.measures, measure => _.flatMap(measure.projects, project => project.city))))).sort((a, b) => a.localeCompare(b)).sort((a, b) => {
+            const importantResults = {
                 'Petite commune': 1,
                 'Ville moyenne': 2,
-                'Métropole': 3,
-                'Autre': 4,
+                Métropole: 3,
+                Autre: 4,
             };
 
-            var importantA = importantResults[a],
+            let importantA = importantResults[a],
                 importantB = importantResults[b],
                 ret;
 
-            if (importantA && !importantB) {ret = -1}
-            else if (importantB && !importantA) {ret = 1}
-            else if (importantA && importantB) {ret = importantA - importantB}
-            else {ret = 0}
+            if (importantA && !importantB) { ret = -1; } else if (importantB && !importantA) { ret = 1; } else if (importantA && importantB) { ret = importantA - importantB; } else { ret = 0; }
 
-            return(ret);
+            return (ret);
         });
     }
 
@@ -184,7 +174,7 @@ export default class ProgrammaticFoundation extends React.Component {
             filterText: '',
             filterCity: '',
             filterIsLeading: false,
-        })
+        });
     }
 }
 

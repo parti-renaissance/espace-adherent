@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Loader from './Loader';
 import numberFormat from '../utils/number';
 import ReqwestApiClient from '../services/api/ReqwestApiClient';
@@ -54,25 +55,25 @@ export default class MessageStatusLoader extends React.Component {
     renderActionBlock() {
         if (this.state.recipientCount) {
             return <div>
-                    {this.props.sendLocked ?
-                        <p className="text--medium-small">
+                {this.props.sendLocked ?
+                    <p className="text--medium-small">
                             Vous avez atteint la limite d'envoi de mails pour ce mois-ci
-                        </p> :
-                        <p className="text--medium-small">
+                    </p> :
+                    <p className="text--medium-small">
                             Vous allez envoyer un message à&nbsp;
-                            <span className="text--bold text--blue--dark">
-                                {numberFormat(this.state.recipientCount)}
-                            </span>
+                        <span className="text--bold text--blue--dark">
+                            {numberFormat(this.state.recipientCount)}
+                        </span>
                             &nbsp;contact{1 < this.state.recipientCount ? 's' : ''} !
-                        </p>
-                    }
+                    </p>
+                }
                 <p>
                     <a href={this.props.sendLocked ? '#' : './send'}
-                       className={`btn btn--large-and-full b__nudge--top em-confirm--trigger ${
-                        this.props.sendLocked ? ' btn--disabled' : ' btn--blue'}`}
-                       data-confirm-title="Confirmation"
-                       data-confirm-content={`Êtes-vous sûr de vouloir envoyer le message à ${
-                           this.state.recipientCount} contact${1 < this.state.recipientCount ? 's' : ''} ?`}>
+                        className={`btn btn--large-and-full b__nudge--top em-confirm--trigger ${
+                            this.props.sendLocked ? ' btn--disabled' : ' btn--blue'}`}
+                        data-confirm-title="Confirmation"
+                        data-confirm-content={`Êtes-vous sûr de vouloir envoyer le message à ${
+                            this.state.recipientCount} contact${1 < this.state.recipientCount ? 's' : ''} ?`}>
                         Envoyer
                     </a>
                     {this.renderActionButtons()}

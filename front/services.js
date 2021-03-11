@@ -12,77 +12,54 @@ import DateFieldsSynchronizer from './services/form/DateFieldsSynchronizer';
  * @param {Container} di
  */
 export default (di) => {
-
     /*
      * Reqwest (AJAX library)
      * https://github.com/ded/reqwest
      */
-    di.set('reqwest', () => {
-        return reqwest;
-    });
+    di.set('reqwest', () => reqwest);
 
     /*
      * Cookies library
      * https://github.com/js-cookie/js-cookie
      */
-    di.set('cookies', () => {
-        return Cookies;
-    });
+    di.set('cookies', () => Cookies);
 
     /*
      * Slugifier
      */
-    di.set('slugifier', () => {
-        return new Slugifier();
-    });
+    di.set('slugifier', () => new Slugifier());
 
     /*
      * Sharer
      */
-    di.set('sharer', () => {
-        return new Sharer(di.get('sharer.dialog_factory'));
-    });
+    di.set('sharer', () => new Sharer(di.get('sharer.dialog_factory')));
 
-    di.set('sharer.dialog_factory', () => {
-        return new ShareDialogFactory();
-    });
+    di.set('sharer.dialog_factory', () => new ShareDialogFactory());
 
     /*
      * API
      */
-    di.set('api', () => {
-        return new ReqwestApiClient(di.get('reqwest'));
-    });
+    di.set('api', () => new ReqwestApiClient(di.get('reqwest')));
 
     /*
      * Donation
      */
-    di.set('donation.tax_return_provider', () => {
-        return new TaxReturnProvider();
-    });
+    di.set('donation.tax_return_provider', () => new TaxReturnProvider());
 
     /*
      * Address form
      */
-    di.set('address.form_factory', () => {
-        return new AddressFormFactory(di.get('api'));
-    });
+    di.set('address.form_factory', () => new AddressFormFactory(di.get('api')));
 
     /*
      * Vote office form
      */
-    di.set('vote_location.form_factory', () => {
-        return new VoteLocationFormFactory(di.get('api'));
-    });
+    di.set('vote_location.form_factory', () => new VoteLocationFormFactory(di.get('api')));
 
     /*
      * Map factory
      */
-    di.set('map_factory', () => {
-        return new MapFactory();
-    });
+    di.set('map_factory', () => new MapFactory());
 
-    di.set('form.date_synchronizer', () => {
-        return new DateFieldsSynchronizer();
-    });
+    di.set('form.date_synchronizer', () => new DateFieldsSynchronizer());
 };
