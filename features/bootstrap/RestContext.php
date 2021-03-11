@@ -84,9 +84,10 @@ class RestContext extends BehatchRestContext
     }
 
     /**
+     * @Given I am logged with :email via OAuth client :clientName
      * @Given I am logged with :email via OAuth client :clientName with scope :scope
      */
-    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, string $scope): void
+    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, ?string $scope = null): void
     {
         $identifier = uniqid();
 
@@ -103,7 +104,9 @@ class RestContext extends BehatchRestContext
             $clientRepository->findOneBy(['name' => $clientName])
         );
 
-        $accessToken->addScope($scope);
+        if ($scope) {
+            $accessToken->addScope($scope);
+        }
 
         $this->entityManager->persist($accessToken);
         $this->entityManager->flush();
