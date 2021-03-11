@@ -2,7 +2,7 @@
 
 namespace App\Committee;
 
-use App\Committee\Event\UnfollowCommitteeEvent;
+use App\Committee\Event\CommitteeMergeEvent;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\Administrator;
 use App\Entity\Committee;
@@ -12,7 +12,6 @@ use App\Entity\Reporting\CommitteeMembershipAction;
 use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Entity\Reporting\CommitteeMergeHistory;
 use App\Events;
-use App\Membership\UserEvents;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\CommitteeCandidacyRepository;
 use App\Repository\CommitteeMembershipRepository;
@@ -119,20 +118,10 @@ class CommitteeMergeCommandHandler
             throw $exception;
         }
 
-        foreach ($newFollowers as $follower) {
-            $this->dispatchUpdateCommitteePrivilege($follower, $destinationCommittee);
-        }
-
-        foreach ($sourceHostMemberships as $membership) {
-            $this->dispatchUpdateCommitteePrivilege($membership, $sourceCommittee);
-        }
-
-        foreach ($destinationHostMemberships as $membership) {
-            $this->dispatchUpdateCommitteePrivilege($membership, $destinationCommittee);
-        }
-
         $this->dispatchCommitteeUpdate($sourceCommittee);
         $this->dispatchCommitteeUpdate($destinationCommittee);
+
+        $this->dispatcher->dispatch(new CommitteeMergeEvent($sourceCommittee, $destinationCommittee));
     }
 
     public function revert(CommitteeMergeHistory $committeeMergeHistory, Administrator $administrator): void
@@ -161,15 +150,10 @@ class CommitteeMergeCommandHandler
             throw $exception;
         }
 
-        foreach ($mergedMemberships as $membership) {
-            $this->dispatcher->dispatch(
-                new UnfollowCommitteeEvent($membership->getAdherent(), $destinationCommittee),
-                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
-            );
-        }
-
         $this->dispatchCommitteeUpdate($sourceCommittee);
         $this->dispatchCommitteeUpdate($destinationCommittee);
+
+        $this->dispatcher->dispatch(new CommitteeMergeEvent($sourceCommittee, $destinationCommittee));
     }
 
     private function revertDestinationCommitteeMemberships(Committee $committee, array $memberships): void
@@ -253,13 +237,5 @@ class CommitteeMergeCommandHandler
 
             $this->em->flush();
         }
-    }
-
-    private function dispatchUpdateCommitteePrivilege(CommitteeMembership $membership, Committee $committee): void
-    {
-        $this->dispatcher->dispatch(
-            new UnfollowCommitteeEvent($membership->getAdherent(), $committee),
-            UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
-        );
     }
 }
