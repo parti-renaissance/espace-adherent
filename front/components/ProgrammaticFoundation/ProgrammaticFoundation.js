@@ -153,9 +153,9 @@ export default class ProgrammaticFoundation extends React.Component {
                 Autre: 4,
             };
 
-            let importantA = importantResults[a],
-                importantB = importantResults[b],
-                ret;
+            const importantA = importantResults[a];
+            const importantB = importantResults[b];
+            let ret;
 
             if (importantA && !importantB) { ret = -1; } else if (importantB && !importantA) { ret = 1; } else if (importantA && importantB) { ret = importantA - importantB; } else { ret = 0; }
 
