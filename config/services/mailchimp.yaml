@@ -48,6 +48,12 @@ services:
         calls:
             - ['setLogger', ['@logger']]
 
+    App\Mailchimp\Synchronisation\Handler\DataSurveyCreateCommandHandler:
+        tags:
+            - { name: 'monolog.logger', channel: 'mailchimp_sync' }
+        calls:
+            - ['setLogger', ['@logger']]
+
     App\Mailchimp\Synchronisation\RequestBuilder:
         tags:
             - { name: 'monolog.logger', channel: 'mailchimp_sync' }

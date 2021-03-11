@@ -5,18 +5,22 @@ namespace App\Jecoute;
 use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\Jecoute\DataSurvey;
+use App\Mailchimp\Synchronisation\Command\DataSurveyCreateCommand;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DataSurveyAnswerHandler
 {
     private $manager;
     private $dispatcher;
+    private $bus;
 
-    public function __construct(ObjectManager $manager, EventDispatcherInterface $dipatcher)
+    public function __construct(ObjectManager $manager, EventDispatcherInterface $dipatcher, MessageBusInterface $bus)
     {
         $this->manager = $manager;
         $this->dispatcher = $dipatcher;
+        $this->bus = $bus;
     }
 
     public function handle(DataSurvey $dataSurvey, Adherent $user): void
@@ -39,5 +43,6 @@ class DataSurveyAnswerHandler
         $this->manager->flush();
 
         $this->dispatcher->dispatch(new DataSurveyEvent($dataSurvey), SurveyEvents::DATA_SURVEY_ANSWERED);
+        $this->bus->dispatch(new DataSurveyCreateCommand($dataSurvey->getEmailAddress()));
     }
 }

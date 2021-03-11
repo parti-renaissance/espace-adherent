@@ -220,4 +220,21 @@ class Zone implements GeoInterface
             (self::COUNTRY === $this->type && 'FR' === $this->code)
         ;
     }
+
+    /**
+     * @return self[]
+     */
+    public function getWithParents(array $types = []): array
+    {
+        $parents = $this->parents->toArray();
+
+        return array_merge(
+            [$this],
+            empty($types)
+                ? $parents
+                : array_filter($parents, function (Zone $zone) use ($types) {
+                    return \in_array($zone->getType(), $types);
+                })
+        );
+    }
 }

@@ -8,6 +8,7 @@ use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
+use App\Entity\Jecoute\DataSurvey;
 use App\Entity\PostAddress;
 use App\Entity\SubscriptionType;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -57,6 +58,10 @@ class RequestBuilder implements LoggerAwareInterface
     private $zoneCountry;
 
     private $teamCode;
+
+    private $codeCanton;
+    private $codeDepartment;
+    private $codeRegion;
 
     public function __construct(
         MailchimpObjectIdMapping $mailchimpObjectIdMapping,
@@ -123,6 +128,22 @@ class RequestBuilder implements LoggerAwareInterface
             ->setTakenForCity($applicationRequest->getTakenForCity())
             ->setActiveTags($activeTags)
         ;
+    }
+
+    public function updateFromDataSurvey(DataSurvey $dataSurvey, array $zones): self
+    {
+        $this
+            ->setEmail($dataSurvey->getEmailAddress())
+            ->setFirstName($dataSurvey->getFirstName())
+            ->setLastName($dataSurvey->getLastName())
+            ->setZipCode($dataSurvey->getPostalCode())
+        ;
+
+        foreach ($zones as $zone) {
+            $this->setZoneCode($zone);
+        }
+
+        return $this;
     }
 
     public function setEmail(string $email): self
@@ -291,6 +312,26 @@ class RequestBuilder implements LoggerAwareInterface
         }
     }
 
+    private function setZoneCode(Zone $zone): void
+    {
+        switch ($zone->getType()) {
+            case Zone::CANTON:
+                $this->codeCanton = $zone->getCode();
+
+                break;
+            case Zone::DEPARTMENT:
+                $this->codeDepartment = $zone->getCode();
+
+                break;
+            case Zone::REGION:
+                $this->codeRegion = $zone->getCode();
+
+                break;
+            default:
+                break;
+        }
+    }
+
     public function setTeamCode(Adherent $adherent): self
     {
         if ($adherent->isParisResident()) {
@@ -411,6 +452,18 @@ class RequestBuilder implements LoggerAwareInterface
 
         if ($this->zoneCountry) {
             $mergeFields[MemberRequest::getMergeFieldFromZone($this->zoneCountry)] = (string) $this->zoneCountry;
+        }
+
+        if ($this->codeCanton) {
+            $mergeFields[MemberRequest::MERGE_FIELD_CODE_CANTON] = $this->codeCanton;
+        }
+
+        if ($this->codeDepartment) {
+            $mergeFields[MemberRequest::MERGE_FIELD_CODE_DEPARTMENT] = $this->codeDepartment;
+        }
+
+        if ($this->codeRegion) {
+            $mergeFields[MemberRequest::MERGE_FIELD_CODE_REGION] = $this->codeRegion;
         }
 
         if ($this->teamCode) {
