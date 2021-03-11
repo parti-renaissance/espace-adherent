@@ -48,8 +48,7 @@ class ClientStore implements OAuthClientRepositoryInterface
                 null !== $clientSecret
                 || !\in_array($grantType, [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN])
             )
-            && !$client->verifySecret($clientSecret))
-        {
+            && !$client->verifySecret($clientSecret)) {
             return false;
         }
 
