@@ -1,7 +1,7 @@
 /*
  * Manage the participants of event/citizen action
  */
-export default() => {
+export default () => {
     const allCheckboxes = dom('#members-check-all');
     const contactButton = dom('#members-contact-button');
     const contactSelection = dom('#members-contact-selection');

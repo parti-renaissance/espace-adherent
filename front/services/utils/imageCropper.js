@@ -3,10 +3,10 @@ import { render } from 'react-dom';
 import Modal from '../../components/Modal';
 import Cropper from 'cropperjs';
 
-let modal,
-    cropper,
-    fileElement,
-    croppedImageElement;
+let modal;
+let cropper;
+let fileElement;
+let croppedImageElement;
 
 export default (inputFileElement, inputCroppedImageElement) => {
     fileElement = inputFileElement;
