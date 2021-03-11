@@ -6,9 +6,9 @@ import AmountChooser from '../components/AmountChooser';
  * Create amount chooser inputs
  */
 export default () => {
-    findAll(document, '.amount-chooser').forEach((element) => {
+    findAll(document, 'input.amount-chooser').forEach((element) => {
         const name = element.name;
-        const value = parseFloat(element.value);
+        const value = parseFloat(element.value) || 0;
         const chooser = document.createElement('div');
 
         insertAfter(element, chooser);

@@ -81,7 +81,7 @@ export default class AmountChooser extends React.Component {
                         onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
                         onKeyPress={this.handleInputKeyPress}
-                        defaultValue={-1 < this.props.amounts.indexOf(this.props.value) ? null : this.props.value}
+                        defaultValue={this.props.value <= 0 || -1 < this.props.amounts.indexOf(this.props.value) ? null : this.props.value}
                     />
 
                     <label htmlFor="amount-chooser__other__input" className="amount-chooser__other__label">
