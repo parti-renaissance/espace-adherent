@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SubApproach from './SubApproach';
 
 export default class Approach extends React.Component {
