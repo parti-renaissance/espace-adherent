@@ -99,7 +99,6 @@ class OAuthServerControllerTest extends WebTestCase
         // Get one valid refresh_token
         $this->client->request('POST', '/oauth/v2/token', [
             'client_id' => '661cc3b7-322d-4441-a510-ab04eda71737',
-            'client_secret' => 'y866p4gbcbrsl84ptnhas7751iw3on319983a13e6y862tb9c2',
             'code' => $this->getEncryptedCode($this->findAuthorizationCode('0c33b1711015b5e3d930f65b5dc87c398bfb3b29401028ee119c882bdf87cf9dcbf9a562629535e5')),
             'grant_type' => 'authorization_code',
             'redirect_uri' => 'http://client-oauth.docker:8000/client/receive_authcode',
@@ -110,7 +109,6 @@ class OAuthServerControllerTest extends WebTestCase
         $encryptedRefreshToken = json_decode($response->getContent(), true)['refresh_token'];
         $this->client->request('POST', '/oauth/v2/token', [
             'client_id' => '661cc3b7-322d-4441-a510-ab04eda71737',
-            'client_secret' => 'y866p4gbcbrsl84ptnhas7751iw3on319983a13e6y862tb9c2',
             'grant_type' => 'refresh_token',
             'refresh_token' => $encryptedRefreshToken,
         ]);
@@ -124,7 +122,6 @@ class OAuthServerControllerTest extends WebTestCase
         // 2nd request with the same refresh token must fail because refresh token are valid one time only
         $this->client->request('POST', '/oauth/v2/token', [
             'client_id' => '661cc3b7-322d-4441-a510-ab04eda71737',
-            'client_secret' => 'y866p4gbcbrsl84ptnhas7751iw3on319983a13e6y862tb9c2',
             'grant_type' => 'refresh_token',
             'refresh_token' => $encryptedRefreshToken,
         ]);
@@ -138,7 +135,6 @@ class OAuthServerControllerTest extends WebTestCase
         $encryptedRefreshToken2 = $this->expireRefreshToken($encryptedRefreshToken2);
         $this->client->request('POST', '/oauth/v2/token', [
             'client_id' => '661cc3b7-322d-4441-a510-ab04eda71737',
-            'client_secret' => 'y866p4gbcbrsl84ptnhas7751iw3on319983a13e6y862tb9c2',
             'grant_type' => 'refresh_token',
             'refresh_token' => $encryptedRefreshToken2,
         ]);
@@ -153,7 +149,6 @@ class OAuthServerControllerTest extends WebTestCase
     {
         $this->client->request('POST', '/oauth/v2/token', [
             'client_id' => 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19',
-            'client_secret' => '2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs',
             'code' => $this->getEncryptedCode($this->findAuthorizationCode('aa56a0ab28aade7ef4a554adc02b297ebd4d5bfe587c6b847512b5f46c59cad26ce53766f8766248')),
             'grant_type' => 'authorization_code',
             'redirect_uri' => 'http://client-oauth.docker:8000/client/receive_authcode',
@@ -170,7 +165,6 @@ class OAuthServerControllerTest extends WebTestCase
     {
         $this->client->request('POST', '/oauth/v2/token', [
             'client_id' => 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19',
-            'client_secret' => '2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs',
             'code' => $this->getEncryptedCode($this->findAuthorizationCode('673b3b128a9b5237b25a47e319e27d8c7d40255520269b3c382ea96012606f00d743927cf3af49f7')),
             'grant_type' => 'authorization_code',
             'redirect_uri' => 'http://client-oauth.docker:8000/client/receive_authcode',
@@ -188,7 +182,6 @@ class OAuthServerControllerTest extends WebTestCase
         $this->client->request('POST', '/oauth/v2/token', [
             // Client ID & Secret belong to the first client
             'client_id' => 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19',
-            'client_secret' => '2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs',
             // Authorization code was issued for another client
             'code' => $this->getEncryptedCode($this->findAuthorizationCode('0c33b1711015b5e3d930f65b5dc87c398bfb3b29401028ee119c882bdf87cf9dcbf9a562629535e5')),
             'grant_type' => 'authorization_code',
@@ -222,7 +215,6 @@ class OAuthServerControllerTest extends WebTestCase
 
         $this->client->request('POST', '/oauth/v2/token', [
             'client_id' => 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19',
-            'client_secret' => '2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs',
             'code' => $matches['code'],
             'grant_type' => 'authorization_code',
             'redirect_uri' => 'http://client-oauth.docker:8000/client/receive_authcode',
@@ -268,7 +260,6 @@ class OAuthServerControllerTest extends WebTestCase
         // 5. Now the client is able to ask for an Access Token
         $this->client->request('POST', '/oauth/v2/token', [
             'client_id' => 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19',
-            'client_secret' => '2x26pszrpag408so88w4wwo4gs8o8ok4osskcw00ow80sgkkcs',
             'code' => $matches['code'],
             'grant_type' => 'authorization_code',
             'redirect_uri' => 'http://client-oauth.docker:8000/client/receive_authcode',

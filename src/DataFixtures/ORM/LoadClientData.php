@@ -153,10 +153,10 @@ class LoadClientData extends Fixture
             'Coalition App',
             'Coalition App',
             'Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ',
-            [GrantTypeEnum::PASSWORD, GrantTypeEnum::REFRESH_TOKEN],
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://client-oauth.docker:8000/client/receive_authcode']
         );
-        $client11->setAskUserForAuthorization(false);
+        $client11->setAskUserForAuthorization(true);
         $client11->addSupportedScope(Scope::WRITE_EVENT);
 
         $manager->persist($client11);
