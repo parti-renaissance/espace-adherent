@@ -2,8 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import DataGrid from '../../components/DataGrid';
 
-export default class DataGridFactory
-{
+export default class DataGridFactory {
     constructor(searchEngine) {
         this.searchEngine = searchEngine;
     }
@@ -16,11 +15,11 @@ export default class DataGridFactory
                 orderBy={orderBy}
                 rows={items}
                 perPage={perPage}
-                pagerClassName={classPrefix+"__pager"}
-                tableClassName={classPrefix+"__table"}
-                searchClassName={classPrefix+"__search"}
-                onSelectedChange={onSelectedChange ? onSelectedChange : () => {}}
-                disableSelect={onSelectedChange === null}
+                pagerClassName={`${classPrefix}__pager`}
+                tableClassName={`${classPrefix}__table`}
+                searchClassName={`${classPrefix}__search`}
+                onSelectedChange={onSelectedChange || (() => {})}
+                disableSelect={null === onSelectedChange}
             />
         );
     }

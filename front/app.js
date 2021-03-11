@@ -249,7 +249,7 @@ class App {
     }
 
     runUserListDefinitions(memberType, type, wrapperSelector, checkboxSelector, mainCheckboxSelector,
-                           postApplyCallback) {
+        postApplyCallback) {
         System.import('pages/user_list_definition').catch((error) => { throw error; }).then((module) => {
             module.default(
                 memberType,

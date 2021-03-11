@@ -94,18 +94,18 @@ export default class FacebookPictureChooser extends React.Component {
                                 <div className="facebook__chooser__choice" key={picture.dataUrl}>
                                     <div className="facebook__chooser__image">
                                         <img alt={`je_vote_macron_${key + 1}.jpg`}
-                                             src={`data:image/jpeg;base64,${picture.data}`} />
+                                            src={`data:image/jpeg;base64,${picture.data}`} />
                                     </div>
 
                                     <div className="facebook__chooser__choice__button">
                                         <a download={`je_vote_macron_${key + 1}.jpg`}
-                                           href={`data:image/jpeg;base64,${picture.data}`}
-                                           className="btn btn--small btn--blue">
+                                            href={`data:image/jpeg;base64,${picture.data}`}
+                                            className="btn btn--small btn--blue">
                                             Télécharger
                                         </a>
                                         <br />
                                         <a href={picture.uploadUrl}
-                                           className="btn btn--small btn--facebook b__nudge--top">
+                                            className="btn btn--small btn--facebook b__nudge--top">
                                             Envoyer sur Facebook
                                         </a>
                                         <br />

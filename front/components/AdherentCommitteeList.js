@@ -69,14 +69,14 @@ export default class AdherentCommitteeList extends React.Component {
                         <div key={index} className="adherent__committees--item">
                             <div>
                                 <a className="link--no-decor link--blue--dark"
-                                   href={`/comites/${membership.committee.slug}`}
-                                   target="_blank"
+                                    href={`/comites/${membership.committee.slug}`}
+                                    target="_blank"
                                 >
                                     {membership.committee.name}
                                     {membership.voting_committee ?
                                         <span className="b__nudge--left-nano">
                                             <img src={'/images/icons/icn_vote.svg'} alt={'vote icon'}
-                                                 title={'Vote dans ce comité'} />
+                                                title={'Vote dans ce comité'} />
                                         </span> :
                                         ''
                                     }
@@ -85,11 +85,11 @@ export default class AdherentCommitteeList extends React.Component {
                             <div className="text--small text--silver-gray">
                                 <span className="text--bold">{this.getMembershipLabel(membership.privilege)} </span>
                                 depuis le {
-                                membership.subscription_date.split('T')[0].replace(
-                                    /([0-9]{4})-([0-9]{2})-([0-9]{2})/,
-                                    '$3/$2/$1'
-                                )
-                            }
+                                    membership.subscription_date.split('T')[0].replace(
+                                        /([0-9]{4})-([0-9]{2})-([0-9]{2})/,
+                                        '$3/$2/$1'
+                                    )
+                                }
                             </div>
                         </div>
                     ))

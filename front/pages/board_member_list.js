@@ -17,7 +17,7 @@ export default (api) => {
             element.innerHTML = 'Profil sauvegardé';
             reloadIfNeeded(element);
             element.className = element.className.replace('btn-add-member-list',
-            'btn-remove-member-list newbtn--green');
+                'btn-remove-member-list newbtn--green');
         }).catch((err) => {
             element.innerHTML = 'Sauvegarder ce profil';
             /* eslint-disable no-alert */

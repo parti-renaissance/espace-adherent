@@ -28,13 +28,11 @@ export default class SearchResults extends React.Component {
             <div className="measures">
                 <div className="programmatic-foundation__items-type">Mesures</div>
                 <div className="programmatic-foundation__children programmatic-foundation__measures">
-                    {this.props.measures.map((measure, index) => {
-                        return <Measure
-                            key={index+measure.uuid}
-                            measure={measure}
-                            preventAutoExpand={true}
-                        />
-                    })}
+                    {this.props.measures.map((measure, index) => <Measure
+                        key={index + measure.uuid}
+                        measure={measure}
+                        preventAutoExpand={true}
+                    />)}
                 </div>
             </div>
         );
@@ -45,13 +43,11 @@ export default class SearchResults extends React.Component {
             <div className="projects">
                 <div className="programmatic-foundation__items-type">Projets illustratifs</div>
                 <div className="programmatic-foundation__children programmatic-foundation__projects">
-                    {this.props.projects.map((project, index) => {
-                        return <Project
-                            key={index+project.uuid}
-                            project={project}
-                            preventAutoExpand={true}
-                        />
-                    })}
+                    {this.props.projects.map((project, index) => <Project
+                        key={index + project.uuid}
+                        project={project}
+                        preventAutoExpand={true}
+                    />)}
                 </div>
             </div>
         );

@@ -61,9 +61,9 @@ export default class AmountChooser extends React.Component {
 
                 {this.props.amounts.map(amount => (
                     <button className={`amount-chooser__button ${amount === state ? classSelected : ''}`}
-                            type="button"
-                            onClick={() => this.handleButtonClicked(amount)}
-                            key={`amount_${amount}`}>
+                        type="button"
+                        onClick={() => this.handleButtonClicked(amount)}
+                        key={`amount_${amount}`}>
                         {amount} €
                     </button>
                 ))}
@@ -81,7 +81,10 @@ export default class AmountChooser extends React.Component {
                         onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
                         onKeyPress={this.handleInputKeyPress}
-                        defaultValue={this.props.value <= 0 || -1 < this.props.amounts.indexOf(this.props.value) ? null : this.props.value}
+                        defaultValue={
+                            0 >= this.props.value || -1 < this.props.amounts.indexOf(this.props.value)
+                                ? null : this.props.value
+                        }
                     />
 
                     <label htmlFor="amount-chooser__other__input" className="amount-chooser__other__label">

@@ -20,7 +20,7 @@ export default class Modal extends React.Component {
     render() {
         return (
             <div className={`em-modal ${this.props.side ? `em-modal--side-${this.props.side}` : ''}`}
-                 style={{ display: this.state.display ? 'block' : 'none' }}>
+                style={{ display: this.state.display ? 'block' : 'none' }}>
                 <div
                     className="modal-background"
                     {...(this.props.withClose ? { onClick: () => this.hideModal({ closed: true }) } : {})}

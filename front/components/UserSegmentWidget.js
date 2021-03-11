@@ -8,7 +8,6 @@ import ReqwestApiClient from '../services/api/ReqwestApiClient';
 const STORAGE_KEY = 'su';
 
 export default class UserSegmentManager extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -84,8 +83,8 @@ export default class UserSegmentManager extends React.Component {
         return (
             <div className="b__nudge--bottom-large">
                 <a href="#"
-                   className={`btn-secondary btn-secondary--blue ${1 > length ? 'btn-secondary--disabled' : ''}`}
-                   onClick={this.handleOpenModal}
+                    className={`btn-secondary btn-secondary--blue ${1 > length ? 'btn-secondary--disabled' : ''}`}
+                    onClick={this.handleOpenModal}
                 >
                     Créer ma liste
                     ({0 < length ? <span>{this.getCreateButtonCounter(length)}</span> : '0'})
@@ -93,7 +92,7 @@ export default class UserSegmentManager extends React.Component {
 
                 {0 < length ?
                     <a href="#" className="btn-secondary btn-secondary--black b__nudge--left-small"
-                       onClick={this.handleResetClick}>Effacer la sélection</a> : ''}
+                        onClick={this.handleResetClick}>Effacer la sélection</a> : ''}
             </div>
         );
     }
@@ -132,18 +131,18 @@ export default class UserSegmentManager extends React.Component {
                 <div className="form__row">
                     <label className="form__label">Nom de la liste</label>
                     <input type="text"
-                           name="list_name"
-                           className="form__field"
-                           value={this.state.segmentName}
-                           required={true}
-                           onChange={this.handleSegmentNameChange}
-                           placeholder="Entrez un nom pour cette liste"
+                        name="list_name"
+                        className="form__field"
+                        value={this.state.segmentName}
+                        required={true}
+                        onChange={this.handleSegmentNameChange}
+                        placeholder="Entrez un nom pour cette liste"
                     />
                     {this.state.error ? <p className={'text--error b__nudge--top-10 b__nudge--bottom-medium'}>
                         {this.state.error}</p> : ''}
                 </div>
                 <button className="btn btn--blue btn--large-and-full form btn"
-                        onClick={this.handleSaveSegmentClick}>OK</button>
+                    onClick={this.handleSaveSegmentClick}>OK</button>
             </div>
         );
     }

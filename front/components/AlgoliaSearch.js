@@ -172,8 +172,8 @@ export default class AlgoliaSearch extends React.Component {
                     <div className="g-search__search l__wrapper--slim text--center">
                         <form>
                             <input type="text" placeholder="Rechercher" id="search-input"
-                                   onChange={this.handleTermChange}
-                                   onKeyPress={this.handleKeyPress} />
+                                onChange={this.handleTermChange}
+                                onKeyPress={this.handleKeyPress} />
                         </form>
                         <div className="b__nudge--top">
                             {`${this.state.nbHits} résultat${1 < this.state.nbHits ? 's' : ''}`}
@@ -204,15 +204,15 @@ export default class AlgoliaSearch extends React.Component {
                                         <div className="share">
                                             Partagez
                                             <span role="button"
-                                                  onClick={() => {
-                                                      App.share('facebook', link, this._createTitle(hit));
-                                                  }}>
+                                                onClick={() => {
+                                                    App.share('facebook', link, this._createTitle(hit));
+                                                }}>
                                                 <i className="fa fa-facebook-square" />
                                             </span>
                                             <span role="button"
-                                                  onClick={() => {
-                                                      App.share('twitter', link, this._createTitle(hit));
-                                                  }}>
+                                                onClick={() => {
+                                                    App.share('twitter', link, this._createTitle(hit));
+                                                }}>
                                                 <i className="fa fa-twitter" />
                                             </span>
                                         </div>

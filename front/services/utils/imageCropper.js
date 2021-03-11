@@ -3,7 +3,10 @@ import { render } from 'react-dom';
 import Modal from '../../components/Modal';
 import Cropper from 'cropperjs';
 
-let modal, cropper, fileElement, croppedImageElement;
+let modal,
+    cropper,
+    fileElement,
+    croppedImageElement;
 
 export default (inputFileElement, inputCroppedImageElement) => {
     fileElement = inputFileElement;
@@ -11,7 +14,7 @@ export default (inputFileElement, inputCroppedImageElement) => {
 
     const files = inputFileElement.files;
 
-    if (!files || files.length < 1) {
+    if (!files || 1 > files.length) {
         return;
     }
 
@@ -24,7 +27,7 @@ export default (inputFileElement, inputCroppedImageElement) => {
         reader.onload = () => displayCropperModal(reader.result);
         reader.readAsDataURL(file);
     }
-}
+};
 
 function displayCropperModal(url) {
     modal = render(
