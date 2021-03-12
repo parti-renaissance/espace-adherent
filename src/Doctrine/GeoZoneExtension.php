@@ -18,7 +18,7 @@ class GeoZoneExtension implements ContextAwareQueryCollectionExtensionInterface
     ) {
         if (Zone::class === $resourceClass) {
             $queryBuilder
-                ->andWhere(sprintf('%s.enabled = :true', $queryBuilder->getRootAliases()[0]))
+                ->andWhere(sprintf('%s.active = :true', $queryBuilder->getRootAliases()[0]))
                 ->setParameter('true', true)
             ;
         }
