@@ -43,6 +43,7 @@ trait EntityIdentityTrait
      *     "event_list_read",
      *     "coalition_read",
      *     "cause_read",
+     *     "zone_read",
      * })
      *
      * @ApiProperty(
