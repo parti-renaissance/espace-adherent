@@ -242,6 +242,16 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
         return false;
     }
 
+    /**
+     * @return CandidacyInvitationInterface[]
+     */
+    public function getPendingInvitations(): array
+    {
+        return $this->invitations->filter(function (CandidacyInvitationInterface $invitation) {
+            return $invitation->isPending();
+        })->toArray();
+    }
+
     public function getFirstInvitation(): ?CandidacyInvitationInterface
     {
         return !$this->invitations->isEmpty() ? $this->invitations->first() : null;

@@ -5,6 +5,7 @@ namespace App\Entity\TerritorialCouncil;
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\Validator\TerritorialCouncil\ValidTerritorialCouncilCandidacyInvitation;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -17,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
  * @Assert\Expression("(this.hasImageName() && !this.isRemoveImage()) || this.getImage()", message="Photo est obligatoire")
+ *
+ * @ValidTerritorialCouncilCandidacyInvitation(groups={"national_council_election"})
  */
 class Candidacy extends BaseCandidacy
 {
@@ -41,7 +44,10 @@ class Candidacy extends BaseCandidacy
      *
      * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\CandidacyInvitation", mappedBy="candidacy", cascade={"all"})
      *
-     * @Assert\Valid(groups={"invitation_edit"})
+     * @Assert\NotBlank
+     * @Assert\Count(value=1, groups={"copol_election"}, exactMessage="This value should not be blank.")
+     * @Assert\Count(value=2, groups={"national_council_election"})
+     * @Assert\Valid(groups={"copol_election", "national_council_election"})
      */
     protected $invitations;
 

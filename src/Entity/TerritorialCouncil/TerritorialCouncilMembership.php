@@ -52,6 +52,8 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      *     mappedBy="territorialCouncilMembership",
      *     orphanRemoval=true
      * )
+     *
+     * @Groups({"api_candidacy_read"})
      */
     private $qualities;
 
@@ -247,6 +249,10 @@ class TerritorialCouncilMembership implements UuidEntityInterface
 
     public function getQualitiesWithZones(): array
     {
+        if ($this->qualities->isEmpty()) {
+            return [];
+        }
+
         return array_merge(...array_map(function (TerritorialCouncilQuality $quality) {
             return [$quality->getName() => $quality->getZone()];
         }, $this->qualities->toArray()));

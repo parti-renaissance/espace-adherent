@@ -121,7 +121,7 @@ class CandidacyManager
         $this->updateCandidature($candidacy);
 
         $this->eventDispatcher->dispatch(
-            new CandidacyInvitationEvent($candidacy, $invitation, $previouslyInvitedMembership),
+            new CandidacyInvitationEvent($candidacy, [$invitation], [$previouslyInvitedMembership]),
             Events::CANDIDACY_INVITATION_UPDATE
         );
     }
@@ -139,7 +139,7 @@ class CandidacyManager
         $this->updateCandidature($acceptedBy, $membership->getAdherent(), $membership->getCommittee());
 
         $this->eventDispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
             Events::CANDIDACY_INVITATION_ACCEPT
         );
     }
@@ -151,7 +151,7 @@ class CandidacyManager
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
             Events::CANDIDACY_INVITATION_DECLINE
         );
     }

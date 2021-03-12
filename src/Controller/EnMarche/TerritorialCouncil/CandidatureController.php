@@ -6,12 +6,12 @@ use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\Entity\TerritorialCouncil\Election;
-use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\TerritorialCouncil\CandidacyQualityType;
 use App\Form\VotingPlatform\Candidacy\TerritorialCouncilCandidacyType;
 use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
 use App\TerritorialCouncil\CandidacyManager;
 use App\ValueObject\Genders;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,15 +70,7 @@ class CandidatureController extends AbstractController
         }
 
         $form = $this
-            ->createForm(
-                TerritorialCouncilCandidacyType::class,
-                $candidacy,
-                [
-                    'with_accept' => !$membership->containsQualities(
-                        [TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, TerritorialCouncilQualityEnum::CITY_COUNCILOR]
-                    ),
-                ]
-            )
+            ->createForm(TerritorialCouncilCandidacyType::class, $candidacy)
             ->handleRequest($request)
         ;
 
@@ -148,34 +140,42 @@ class CandidatureController extends AbstractController
         }
 
         if ($candidacy->hasInvitation()) {
-            $invitation = $candidacy->getFirstInvitation();
+            $previouslyInvitedMemberships = [];
 
-            if ($invitation->isAccepted()) {
-                return $this->redirectToRoute('app_territorial_council_index');
+            foreach ($candidacy->getInvitations() as $invitation) {
+                if ($invitation->isAccepted()) {
+                    return $this->redirectToRoute('app_territorial_council_index');
+                }
+
+                $previouslyInvitedMemberships[] = $invitation->getMembership();
             }
-
-            $previouslyInvitedMembership = $invitation->getMembership();
         }
 
         $form = $this
             ->createForm(
                 CandidacyQualityType::class,
                 $candidacy,
-                ['qualities' => $membership->getAvailableForCandidacyQualityNames()]
+                [
+                    'qualities' => $membership->getAvailableForCandidacyQualityNames(),
+                    'validation_groups' => [
+                        'Default',
+                        DesignationTypeEnum::COPOL === $election->getDesignationType() ? 'copol_election' : 'national_council_election',
+                    ],
+                ]
             )
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($invitation = $candidacy->getFirstInvitation()) {
-                $this->manager->updateInvitation($invitation, $candidacy, $previouslyInvitedMembership ?? null);
+            if ($invitations = $candidacy->getPendingInvitations()) {
+                $this->manager->updateInvitation($candidacy, $invitations, $previouslyInvitedMemberships ?? []);
 
                 $this->addFlash('info', 'Votre invitation a bien été envoyée');
 
                 return $this->redirectToRoute('app_territorial_council_candidature_select_pair_candidate_finish');
             }
 
-            $this->manager->saveSingleCandidature($candidacy, $previouslyInvitedMembership ?? null);
+            $this->manager->saveSingleCandidature($candidacy, $previouslyInvitedMemberships ?? []);
 
             $this->addFlash('info', 'Votre candidature a bien été enregistrée');
 
@@ -185,6 +185,8 @@ class CandidatureController extends AbstractController
         return $this->render('territorial_council/candidacy_step2_invitation.html.twig', [
             'form' => $form->createView(),
             'invitation' => $candidacy->getFirstInvitation(),
+            'candidacy' => $candidacy,
+            'election' => $election,
         ]);
     }
 
@@ -203,12 +205,13 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
-        if (!($candidacy = $membership->getCandidacyForElection($election)) || !($invitation = $candidacy->getFirstInvitation())) {
+        if (!($candidacy = $membership->getCandidacyForElection($election)) || !$candidacy->hasInvitation()) {
             return $this->redirectToRoute('app_territorial_council_candidature_edit');
         }
 
         return $this->render('territorial_council/candidacy_step3_confirmation.html.twig', [
-            'invitation' => $invitation,
+            'invitations' => $candidacy->getInvitations(),
+            'election' => $election,
         ]);
     }
 
@@ -271,12 +274,7 @@ class CandidatureController extends AbstractController
             ->createForm(
                 TerritorialCouncilCandidacyType::class,
                 $acceptedBy,
-                [
-                    'validation_groups' => ['Default', 'accept_invitation'],
-                    'with_accept' => !$membership->containsQualities(
-                        [TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, TerritorialCouncilQualityEnum::CITY_COUNCILOR]
-                    ),
-                ]
+                ['validation_groups' => ['Default', 'accept_invitation']]
             )
             ->handleRequest($request)
         ;
