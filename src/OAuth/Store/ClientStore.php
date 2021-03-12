@@ -4,6 +4,7 @@ namespace App\OAuth\Store;
 
 use App\Entity\OAuth\Client as EntityClient;
 use App\OAuth\Model\Client as InMemoryClient;
+use App\OAuth\Model\GrantTypeEnum;
 use App\Repository\OAuth\ClientRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface as OAuthClientRepositoryInterface;
@@ -42,7 +43,12 @@ class ClientStore implements OAuthClientRepositoryInterface
             return false;
         }
 
-        if (!$client->verifySecret($clientSecret)) {
+        if (
+            (
+                null !== $clientSecret
+                || !\in_array($grantType, [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN])
+            )
+            && !$client->verifySecret($clientSecret)) {
             return false;
         }
 

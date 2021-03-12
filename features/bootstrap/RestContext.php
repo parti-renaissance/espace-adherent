@@ -11,11 +11,14 @@ use App\Repository\AdherentRepository;
 use App\Repository\OAuth\ClientRepository;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Driver\BrowserKitDriver;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behatch\Context\RestContext as BehatchRestContext;
 use Behatch\HttpCall\HttpCallResultPool;
 use Behatch\HttpCall\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use League\OAuth2\Server\CryptKey;
+use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 
 class RestContext extends BehatchRestContext
@@ -28,6 +31,7 @@ class RestContext extends BehatchRestContext
      * @var string|null
      */
     private $accessToken;
+    private $authorizationCode;
 
     public function __construct(
         Request $request,
@@ -80,9 +84,10 @@ class RestContext extends BehatchRestContext
     }
 
     /**
+     * @Given I am logged with :email via OAuth client :clientName
      * @Given I am logged with :email via OAuth client :clientName with scope :scope
      */
-    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, string $scope): void
+    public function iAmLoggedViaOAuthWithClientAndScope(string $email, string $clientName, ?string $scope = null): void
     {
         $identifier = uniqid();
 
@@ -99,7 +104,9 @@ class RestContext extends BehatchRestContext
             $clientRepository->findOneBy(['name' => $clientName])
         );
 
-        $accessToken->addScope($scope);
+        if ($scope) {
+            $accessToken->addScope($scope);
+        }
 
         $this->entityManager->persist($accessToken);
         $this->entityManager->flush();
@@ -160,6 +167,50 @@ class RestContext extends BehatchRestContext
         return parent::iSendARequestToWithBody($method, $url, $body);
     }
 
+    /**
+     * Follow redirect instructions.
+     *
+     * @param string $page
+     *
+     * @return void
+     *
+     * @Then /^I (?:am|should be) redirected(?: to "([^"]*)")?$/
+     */
+    public function iAmRedirected($page = null)
+    {
+        $headers = $this->getSession()->getResponseHeaders();
+
+        if (empty($headers['Location']) && empty($headers['location'])) {
+            throw new \RuntimeException('The response should contain a "Location" header');
+        }
+
+        if (null !== $page) {
+            $header = empty($headers['Location']) ? $headers['location'] : $headers['Location'];
+            if (\is_array($header)) {
+                $header = current($header);
+            }
+
+            Assert::assertEquals($this->locatePath($header), $this->locatePath($page), 'The "Location" header points to the correct URI');
+        }
+
+        $client = $this->getClient();
+
+        $baseRedirectStrategy = $client->isFollowingRedirects();
+        $client->followRedirects(true);
+        $client->followRedirect();
+        $client->followRedirects($baseRedirectStrategy);
+    }
+
+    /**
+     * @Given /^I stop following redirections$/
+     */
+    public function iDontFollowRedirections()
+    {
+        $client = $this->getClient();
+
+        $client->followRedirects(false);
+    }
+
     private function addAccessTokenToTheAuthorizationHeader(): void
     {
         if (!$this->accessToken) {
@@ -167,6 +218,21 @@ class RestContext extends BehatchRestContext
         }
 
         $this->iAddHeaderEqualTo('Authorization', 'Bearer '.$this->accessToken);
+    }
+
+    /**
+     * Checks, whether the header name matches to given pattern
+     *
+     * @Then the header :name should match :value
+     */
+    public function theHeaderShouldMatch($name, $pattern)
+    {
+        $actual = $this->request->getHttpHeader($name);
+
+        $this->assert(
+            preg_match($pattern, $actual) > 0,
+            "The header '$actual' does not match the pattern '$pattern'."
+        );
     }
 
     private function getJwtFromAccessToken(AccessToken $accessToken): string
@@ -186,5 +252,25 @@ class RestContext extends BehatchRestContext
         }
 
         return (string) $token;
+    }
+
+    /**
+     * Returns current active mink session.
+     *
+     * @return \Symfony\Component\BrowserKit\Client
+     *
+     * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+     */
+    protected function getClient()
+    {
+        $driver = $this->getSession()->getDriver();
+
+        if (!$driver instanceof BrowserKitDriver) {
+            $message = 'This step is only supported by the browserkit drivers';
+
+            throw new UnsupportedDriverActionException($message, $driver);
+        }
+
+        return $driver->getClient();
     }
 }

@@ -439,19 +439,11 @@ Feature:
     Then the response status code should be 401
     Examples:
       | method  | url                                                           |
-      | PUT    | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
+      | PUT     | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
       | DELETE  | /api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower  |
 
   Scenario: As a logged-in user I can follow a cause
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                 |
-      | client_id     | 138140b3-1dd2-11b2-ad7e-2348ad4fef66  |
-      | client_secret | Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ     |
-      | grant_type    | password                              |
-      | username      | gisele-berthoux@caramail.com          |
-      | password      | secret!12345                          |
-    And I add the access token to the Authorization header
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     When I send a "PUT" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
     Then the response status code should be 200
     And the response should be in JSON
@@ -463,14 +455,6 @@ Feature:
     """
 
   Scenario: As a logged-in user I can unfollow a cause
-    Given I add "Accept" header equal to "application/json"
-    And I send a "POST" request to "/oauth/v2/token" with parameters:
-      | key           | value                                 |
-      | client_id     | 138140b3-1dd2-11b2-ad7e-2348ad4fef66  |
-      | client_secret | Ca1#79T6s^kCxqLc9sp$WbtqdOOsdf1iQ     |
-      | grant_type    | password                              |
-      | username      | gisele-berthoux@caramail.com          |
-      | password      | secret!12345                          |
-    And I add the access token to the Authorization header
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
     Then the response status code should be 204

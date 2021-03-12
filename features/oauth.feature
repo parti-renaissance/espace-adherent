@@ -6,9 +6,10 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
 
   Background:
     Given the following fixtures are loaded:
-      | LoadClientData |
-      | LoadAdminData  |
-      | LoadUserData   |
+      | LoadClientData   |
+      | LoadAdminData    |
+      | LoadAdherentData |
+      | LoadUserData     |
 
   Scenario: OAuth is not allowed for admin
     Given I am logged as "superadmin@en-marche-dev.fr" admin
@@ -28,6 +29,25 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
         "message":"Client authentication failed"
       }
     """
+
+  Scenario: Retrieve authorization code on redirect URI after login
+    Given I send a "GET" request to "/oauth/v2/auth" with parameters:
+      | key           | value                                |
+      | client_id     | 138140b3-1dd2-11b2-ad7e-2348ad4fef66 |
+      | response_type | code                                 |
+    Then I should be redirected to "/connexion"
+    Then I should see "Connectez-vous avec votre compte"
+    When I fill in the following:
+      | _login_email    | carl999@example.fr |
+      | _login_password | secret!12345       |
+    And I press "Connexion"
+    Then I should be on "/oauth/v2/auth"
+    And the response status code should be 200
+    And I should see "Je me connecte à Coalition App avec mon compte En Marche."
+    Given I stop following redirections
+    Then I press "Accepter"
+    Then the response status code should be 302
+    And the header "Location" should match "#^http://client-oauth.docker:8000/client/receive_authcode\?code=.+$#"
 
   Scenario: Client credentials authentication
     Given I add "Accept" header equal to "application/json"
