@@ -704,9 +704,9 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Test
                     );
 
                     $committeeMandateRepository->expects($this->any())
-                        ->method('findActiveMandateInTerritorialCouncil')
-                        ->with($this->adherent, $this->actualTC)
-                        ->willReturn($committeeMandate)
+                        ->method('findActiveCommitteeMandates')
+                        ->with($this->adherent, [])
+                        ->willReturn([$committeeMandate])
                     ;
                 } elseif (\in_array($qualityName, TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE, true)) {
                     $tcMandate = new TerritorialCouncilAdherentMandate(
