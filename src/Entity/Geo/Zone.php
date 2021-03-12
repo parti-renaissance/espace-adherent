@@ -2,12 +2,39 @@
 
 namespace App\Entity\Geo;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *         "pagination_client_items_per_page": true,
+ *         "order": {"name": "ASC"},
+ *         "normalization_context": {
+ *             "groups": {"zone_read"}
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/zones",
+ *         },
+ *     },
+ * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "name": "partial",
+ *     "type": "exact"
+ * })
+ *
  * @ORM\Entity(repositoryClass="App\Repository\Geo\ZoneRepository")
  * @ORM\Table(
  *     name="geo_zone",
@@ -44,11 +71,25 @@ class Zone implements GeoInterface
         self::DEPARTMENT,
         self::REGION,
     ];
+    /**
+     * The internal primary identity key.
+     *
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid")
+     *
+     * @SymfonySerializer\Groups({"zone_read"})
+     *
+     * @ApiProperty(identifier=true)
+     */
+    protected $uuid;
 
     /**
      * @var string
      *
      * @ORM\Column
+     *
+     * @SymfonySerializer\Groups({"zone_read"})
      */
     private $type;
 
@@ -78,13 +119,19 @@ class Zone implements GeoInterface
      */
     private $children;
 
-    public function __construct(string $type, string $code, string $name)
+    public function __construct(string $type, string $code, string $name, UuidInterface $uuid = null)
     {
+        $this->uuid = $uuid ?: Uuid::uuid4();
         $this->type = $type;
         $this->code = $code;
         $this->name = $name;
         $this->parents = new ArrayCollection();
         $this->children = new ArrayCollection();
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getType(): string
