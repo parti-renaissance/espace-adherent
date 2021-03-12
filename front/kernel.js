@@ -42,12 +42,12 @@ window.Kernel = class {
             throw error;
         };
 
-        System.import('vendor').catch(handleError).then(() => {
+        import('vendor').catch(handleError).then(() => {
             vendor = true;
             runIfReady();
         });
 
-        System.import('app').catch(handleError).then(() => {
+        import('app').catch(handleError).then(() => {
             app = true;
             runIfReady();
         });
