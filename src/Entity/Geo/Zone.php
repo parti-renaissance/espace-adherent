@@ -28,6 +28,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *             "path": "/zones",
  *         },
  *     },
+ *     itemOperations={},
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={
