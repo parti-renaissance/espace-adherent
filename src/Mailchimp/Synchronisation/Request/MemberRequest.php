@@ -108,8 +108,6 @@ class MemberRequest implements MemberRequestInterface
     public static function getMergeCodeFieldFromZone(Zone $zone): string
     {
         switch ($zone->getType()) {
-            case Zone::CITY:
-                return self::MERGE_FIELD_ZIP_CODE;
             case Zone::CANTON:
                 return self::MERGE_FIELD_CODE_CANTON;
             case Zone::DEPARTMENT:

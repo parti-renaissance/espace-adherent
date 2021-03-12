@@ -11,6 +11,7 @@ use App\Form\AdherentMessage\AdherentGeoZoneFilterType;
 use App\Form\AdherentMessage\AdherentZoneFilterType;
 use App\Form\AdherentMessage\CommitteeFilterType;
 use App\Form\AdherentMessage\ElectedRepresentativeFilterType;
+use App\Form\AdherentMessage\JecouteFilterType;
 use App\Form\AdherentMessage\MunicipalChiefFilterType;
 use App\Form\AdherentMessage\ReferentElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\ReferentFilterType;
@@ -83,6 +84,10 @@ class FilterFormFactory
             case AdherentMessageTypeEnum::CANDIDATE:
                 return $this->formFactory->create(AdherentGeoZoneFilterType::class, $data, [
                     'space_type' => AdherentMessageTypeEnum::CANDIDATE,
+                ]);
+            case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
+                return $this->formFactory->create(JecouteFilterType::class, $data, [
+                    'space_type' => AdherentMessageTypeEnum::CANDIDATE_JECOUTE,
                 ]);
         }
 

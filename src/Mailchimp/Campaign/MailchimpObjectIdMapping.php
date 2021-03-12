@@ -107,11 +107,14 @@ class MailchimpObjectIdMapping
 
     public function getListIdByMessageType(string $messageType): string
     {
-        if (AdherentMessageTypeEnum::MUNICIPAL_CHIEF === $messageType) {
-            return $this->applicationRequestCandidateListId;
+        switch ($messageType) {
+            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
+                return $this->applicationRequestCandidateListId;
+            case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
+                return $this->jecouteListId;
+            default:
+                return $this->mainListId;
         }
-
-        return $this->mainListId;
     }
 
     public function getApplicationRequestTagIds(): array

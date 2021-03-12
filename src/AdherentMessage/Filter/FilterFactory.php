@@ -7,6 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\LreManagerElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
@@ -38,6 +39,8 @@ abstract class FilterFactory
                 return static::createLegislativeCandidateFilter($user);
             case AdherentMessageTypeEnum::CANDIDATE:
                 return static::createCandidateFilter($user);
+            case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
+                return static::createCandidateJecouteFilter($user);
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
@@ -129,5 +132,14 @@ abstract class FilterFactory
         }
 
         return new AdherentGeoZoneFilter($user->getCandidateManagedArea()->getZone());
+    }
+
+    private static function createCandidateJecouteFilter(Adherent $user): JecouteFilter
+    {
+        if (!$user->isCandidate()) {
+            throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a candidate');
+        }
+
+        return new JecouteFilter($user->getCandidateManagedArea()->getZone());
     }
 }

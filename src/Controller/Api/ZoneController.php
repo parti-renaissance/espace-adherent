@@ -35,6 +35,12 @@ class ZoneController extends AbstractController
         Zone::BOROUGH,
     ];
 
+    private const CANDIDATE_TYPES = [
+        Zone::CANTON,
+        Zone::DEPARTMENT,
+        Zone::REGION,
+    ];
+
     /**
      * @Route("/zone/autocompletion", name="api_zone_autocomplete", condition="request.isXmlHttpRequest()", methods={"GET"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
@@ -59,7 +65,7 @@ class ZoneController extends AbstractController
         $zones = $repository->searchByTermAndManagedZonesGroupedByType(
             $term,
             $managedZones,
-            self::TYPES,
+            ManagedZoneProvider::CANDIDATE_JECOUTE === $spaceType ? self::CANDIDATE_TYPES : self::TYPES,
             $activeOnly,
             $max
         );
