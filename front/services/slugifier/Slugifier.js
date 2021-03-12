@@ -27,7 +27,7 @@ export default class Slugifier {
     }
 
     extractKeywords(string) {
-        return this.slugify(string).split('-').filter((keyword) => 0 < keyword.length);
+        return this.slugify(string).split('-').filter(keyword => 0 < keyword.length);
     }
 }
 

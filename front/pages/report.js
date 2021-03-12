@@ -1,7 +1,7 @@
 /*
  * Report form listener
  */
-export default() => {
+export default () => {
     const otherReasonCheckbox = dom('#report_command_reasons_other');
     const commentContentField = dom('#report_command_comment');
 

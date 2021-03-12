@@ -1,4 +1,4 @@
-export default(api) => {
+export default (api) => {
     const emojiCanvas = dom('#profil-emoji');
 
     if (!emojiCanvas) {

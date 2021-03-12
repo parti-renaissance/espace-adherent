@@ -10,8 +10,8 @@ window.Kernel = class {
         Kernel.release = release;
         Kernel.sentryDsn = sentryDsn;
 
-        let app = false,
-            vendor = false;
+        let app = false;
+        let vendor = false;
 
         const runIfReady = () => {
             if (app && vendor) {
