@@ -265,6 +265,13 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
+        // Temporary lock this action 🙈
+        if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
+            $this->addFlash('warning', 'Une erreur est survenue. Veuillez réessayer dans quelques instants.');
+
+            return $this->redirectToRoute('app_territorial_council_index');
+        }
+
         $acceptedBy->setBinome($invitedBy = $invitation->getCandidacy());
         $invitedBy->setBinome($acceptedBy);
 
@@ -315,6 +322,13 @@ class CandidatureController extends AbstractController
             $this->addFlash('error', 'Vous ne pouvez pas décliner cette invitation');
 
             return $this->redirectToRoute('app_territorial_council_candidature_invitation_list');
+        }
+
+        // Temporary lock this action 🙈
+        if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
+            $this->addFlash('warning', 'Une erreur est survenue. Veuillez réessayer dans quelques instants.');
+
+            return $this->redirectToRoute('app_territorial_council_index');
         }
 
         $this->manager->declineInvitation($invitation);
