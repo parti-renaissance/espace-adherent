@@ -29,7 +29,7 @@ class DeclinePendingCandidacyInvitationsListener implements EventSubscriberInter
 
     public function onCandidacyInvitationAccept(CandidacyInvitationEvent $event): void
     {
-        if (!($invitation = $event->getInvitation()) instanceof CommitteeCandidacyInvitation) {
+        if (!($invitation = current($event->getInvitations())) instanceof CommitteeCandidacyInvitation) {
             return;
         }
 

@@ -9,30 +9,37 @@ use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 
 class CandidacyInvitationEvent extends BaseCandidacyEvent
 {
-    private $invitation;
-    private $previouslyInvitedMembership;
+    private $invitations;
+    private $previouslyInvitedMemberships;
 
     /**
-     * @param TerritorialCouncilMembership|CommitteeMembership $previouslyInvitedMembership
+     * @param CandidacyInvitationInterface[]                       $invitations
+     * @param TerritorialCouncilMembership[]|CommitteeMembership[] $previouslyInvitedMemberships
      */
     public function __construct(
         CandidacyInterface $candidacy,
-        CandidacyInvitationInterface $invitation = null,
-        $previouslyInvitedMembership = null
+        array $invitations = [],
+        array $previouslyInvitedMemberships = []
     ) {
         parent::__construct($candidacy);
 
-        $this->invitation = $invitation;
-        $this->previouslyInvitedMembership = $previouslyInvitedMembership;
+        $this->invitations = $invitations;
+        $this->previouslyInvitedMemberships = $previouslyInvitedMemberships;
     }
 
-    public function getInvitation(): ?CandidacyInvitationInterface
+    /**
+     * @return CandidacyInvitationInterface[]
+     */
+    public function getInvitations(): array
     {
-        return $this->invitation;
+        return $this->invitations;
     }
 
-    public function getPreviouslyInvitedMembership(): ?object
+    /**
+     * @return TerritorialCouncilMembership[]|CommitteeMembership[]
+     */
+    public function getPreviouslyInvitedMemberships(): array
     {
-        return $this->previouslyInvitedMembership;
+        return $this->previouslyInvitedMemberships;
     }
 }

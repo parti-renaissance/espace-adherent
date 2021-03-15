@@ -5,6 +5,7 @@ namespace App\Form\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\Candidacy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -15,6 +16,9 @@ class CandidacyQualityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var Candidacy $candidacy */
+        $candidacy = $builder->getData();
+
         $builder
             ->add('quality', ChoiceType::class, [
                 'choices' => array_combine($options['qualities'], $options['qualities']),
@@ -22,14 +26,21 @@ class CandidacyQualityType extends AbstractType
                     return 'territorial_council.membership.quality.'.$choice;
                 },
             ])
-            ->add('invitation', CandidacyInvitationType::class)
+            ->add('invitations', CollectionType::class, [
+                'entry_type' => CandidacyInvitationType::class,
+                'allow_add' => true,
+                'error_bubbling' => false,
+                'entry_options' => [
+                    'label' => false,
+                ],
+            ])
             ->add('save', SubmitType::class)
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 /** @var Candidacy $model */
                 $model = $event->getData();
 
-                if (!$model->getInvitation()->getMembership() && $model->isCouncilor()) {
-                    $model->setInvitation(null);
+                if (($invitation = $model->getFirstInvitation()) && !$invitation->getMembership() && $model->isCouncilor()) {
+                    $model->removeInvitation($invitation);
                 }
             })
         ;
@@ -39,8 +50,8 @@ class CandidacyQualityType extends AbstractType
     {
         $resolver
             ->setDefaults([
+                'allow_extra_fields' => true,
                 'data_class' => Candidacy::class,
-                'validation_groups' => ['Default', 'invitation_edit'],
             ])
             ->setRequired('qualities')
             ->setAllowedTypes('qualities', 'array')

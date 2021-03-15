@@ -479,10 +479,11 @@ certification_request.document.mime_type: Seuls les fichiers jpg et png sont acc
 # TerritorialCouncil
 #
 territorial_council.member.unique: "{{ adherent }} est déjà nommé \"{{ quality }}\" au sein du conseil territorial \"{{ territorialCouncil }}\". Vous devez retirer l'affectation de cet adhérent afin de nommer un nouveau."
-territorial_council.candidacy.invitation.invalid_gender: Votre binôme doit être du sexe opposé
-territorial_council.candidacy.invitation.membership_already_candidate: Vous ne pouvez pas inviter un membre avec une candidature validée
-territorial_council.candidacy.invitation.membership_not_available: Ce membre n'est pas disponible
-territorial_council.candidacy.invitation.invalid_membership_quality: La qualité choisie n'est pas compatible avec votre choix de binôme
+territorial_council.candidacy.invitation.invalid_gender: Votre binôme doit être du sexe opposé.
+territorial_council.candidacy.invitation.membership_already_candidate: Vous ne pouvez pas inviter un membre avec une candidature validée.
+territorial_council.candidacy.invitation.membership_not_available: Ce membre n'est pas disponible.
+territorial_council.candidacy.invitation.invalid_membership_quality: La qualité choisie n'est pas compatible avec votre choix.
+territorial_council.candidacy.invitation.invalid_parity: Les membres du trinôme ne respectent pas la parité.
 
 territorail_council.official_report.no_file: Vous devez ajouter un fichier.
 territorail_council.official_report.mime_type: Seuls les fichiers .pdf sont acceptés.

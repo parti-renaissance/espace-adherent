@@ -5,6 +5,7 @@ namespace App\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CandidacyInvitationEvent;
@@ -70,7 +71,7 @@ class CandidacyManager
         $this->updateCandidature($acceptedBy);
 
         $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
             Events::CANDIDACY_INVITATION_ACCEPT
         );
 
@@ -78,7 +79,7 @@ class CandidacyManager
             $invitation->decline();
 
             $this->dispatcher->dispatch(
-                new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation),
+                new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
                 Events::CANDIDACY_INVITATION_DECLINE
             );
         }
@@ -93,30 +94,37 @@ class CandidacyManager
         $this->entityManager->flush();
 
         $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), $invitation),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
             Events::CANDIDACY_INVITATION_DECLINE
         );
     }
 
+    /**
+     * @param TerritorialCouncilMembership[] $previouslyInvitedMemberships
+     * @param CandidacyInvitationInterface[] $invitations
+     */
     public function updateInvitation(
-        CandidacyInvitation $invitation,
         Candidacy $candidacy,
-        TerritorialCouncilMembership $previouslyInvitedMembership = null
+        array $invitations,
+        array $previouslyInvitedMemberships = []
     ): void {
-        $invitation->resetStatus();
+        array_walk($invitations, function (CandidacyInvitation $invitation) {
+            $invitation->resetStatus();
+        });
 
         $this->updateCandidature($candidacy);
 
         $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($candidacy, $invitation, $previouslyInvitedMembership),
+            new CandidacyInvitationEvent($candidacy, $invitations, $previouslyInvitedMemberships),
             Events::CANDIDACY_INVITATION_UPDATE
         );
     }
 
-    public function saveSingleCandidature(
-        Candidacy $candidacy,
-        TerritorialCouncilMembership $previouslyInvitedMembership = null
-    ): void {
+    /**
+     * @param TerritorialCouncilMembership[] $previouslyInvitedMemberships
+     */
+    public function saveSingleCandidature(Candidacy $candidacy, array $previouslyInvitedMemberships = []): void
+    {
         if (!$candidacy->isCouncilor()) {
             throw new \RuntimeException(sprintf('Candidacy "%s" is not allowed to candidate without another member.', $candidacy->getUuid()));
         }
@@ -126,7 +134,7 @@ class CandidacyManager
         $this->updateCandidature($candidacy);
 
         $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($candidacy, null, $previouslyInvitedMembership),
+            new CandidacyInvitationEvent($candidacy, [], $previouslyInvitedMemberships),
             Events::CANDIDACY_INVITATION_UPDATE
         );
     }

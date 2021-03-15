@@ -155,21 +155,25 @@ class CandidatureControllerTest extends WebTestCase
         self::assertCount(1, $errors = $crawler->filter('.form__error'));
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
 
-        $crawler = $this->client->submit($form, [
-            'candidacy_quality[quality]' => 'department_councilor',
-            'candidacy_quality[invitation][membership]' => LoadTerritorialCouncilMembershipData::MEMBERSHIP_UUID1,
-        ]);
+        $values = $form->getPhpValues();
+        $values['candidacy_quality']['quality'] = 'department_councilor';
+        $values['candidacy_quality']['invitations'] = [[
+            'membership' => LoadTerritorialCouncilMembershipData::MEMBERSHIP_UUID1,
+        ]];
+
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $values);
 
         self::assertCount(1, $errors = $crawler->filter('.form__error'));
-        self::assertSame('La qualité choisie n\'est pas compatible avec votre choix de binôme', $errors->eq(0)->text());
+        self::assertSame('La qualité choisie n\'est pas compatible avec votre choix.', $errors->eq(0)->text());
 
-        $this->client->submit($form, [
-            'candidacy_quality[quality]' => 'city_councilor',
-            'candidacy_quality[invitation][membership]' => LoadTerritorialCouncilMembershipData::MEMBERSHIP_UUID1,
-        ]);
+        $values['candidacy_quality']['quality'] = 'city_councilor';
+        $values['candidacy_quality']['invitations'] = [[
+            'membership' => LoadTerritorialCouncilMembershipData::MEMBERSHIP_UUID1,
+        ]];
+
+        $this->client->request($form->getMethod(), $form->getUri(), $values);
 
         $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/choix-de-binome/fini', $this->client);
-
         $this->assertCountMails(1, VotingPlatformCandidacyInvitationCreatedMessage::class, 'kiroule.p@blabla.tld');
     }
 

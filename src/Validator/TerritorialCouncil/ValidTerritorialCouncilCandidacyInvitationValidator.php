@@ -2,74 +2,100 @@
 
 namespace App\Validator\TerritorialCouncil;
 
-use App\Entity\TerritorialCouncil\CandidacyInvitation;
+use App\Entity\TerritorialCouncil\Candidacy;
+use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
+use App\TerritorialCouncil\Candidacy\NationalCouncilCandidacyConfigurator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class ValidTerritorialCouncilCandidacyInvitationValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($candidacy, Constraint $constraint)
     {
         if (!$constraint instanceof ValidTerritorialCouncilCandidacyInvitation) {
             throw new UnexpectedTypeException($constraint, ValidTerritorialCouncilCandidacyInvitation::class);
         }
 
-        if (null === $value) {
+        if (null === $candidacy) {
             return;
         }
 
-        if (!$value instanceof CandidacyInvitation) {
-            throw new UnexpectedTypeException($value, CandidacyInvitation::class);
+        if (!$candidacy instanceof Candidacy) {
+            throw new UnexpectedValueException($candidacy, Candidacy::class);
         }
 
-        if (!$invitedMembership = $value->getMembership()) {
-            return;
+        $gendersConfig = NationalCouncilCandidacyConfigurator::getAvailableGenders($candidacy);
+
+        foreach ($candidacy->getInvitations() as $invitation) {
+            if (0 > --$gendersConfig[$invitation->getMembership()->getAdherent()->getGender()]) {
+                $this->context
+                    ->buildViolation($constraint->messageInvalidGender)
+                    ->atPath('membership')
+                    ->addViolation()
+                ;
+
+                return;
+            }
         }
 
-        $candidacy = $value->getCandidacy();
-        $invitedMembership = $value->getMembership();
+        $configQualities = NationalCouncilCandidacyConfigurator::getNeededQualitiesForNationalCouncilDesignation();
+        $foundCandidacy = [];
 
-        if ($candidacy->getGender() === $invitedMembership->getAdherent()->getGender()) {
-            $this->context
-                ->buildViolation($constraint->messageInvalidGender)
-                ->atPath('membership')
-                ->addViolation()
-            ;
+        foreach ($candidacy->getInvitations() as $invitation) {
+            /** @var TerritorialCouncilMembership $invitedMembership */
+            $invitedMembership = $invitation->getMembership();
 
-            return;
-        }
+            if ($invitedMembership->hasForbiddenForCandidacyQuality()) {
+                $this->context
+                    ->buildViolation($constraint->messageMembershipNotAvailable)
+                    ->atPath('invitations')
+                    ->addViolation()
+                ;
 
-        if ($invitedMembership->hasForbiddenForCandidacyQuality()) {
-            $this->context
-                ->buildViolation($constraint->messageMembershipNotAvailable)
-                ->atPath('membership')
-                ->addViolation()
-            ;
+                return;
+            }
 
-            return;
-        }
+            $invitedCandidacy = $invitedMembership->getCandidacyForElection($candidacy->getElection());
 
-        $invitedCandidacy = $invitedMembership->getCandidacyForElection($candidacy->getElection());
+            if ($invitedCandidacy && $invitedCandidacy->isConfirmed()) {
+                $this->context
+                    ->buildViolation($constraint->messageMembershipAlreadyCandidate)
+                    ->atPath('invitations')
+                    ->addViolation()
+                ;
 
-        if ($invitedCandidacy && $invitedCandidacy->isConfirmed()) {
-            $this->context
-                ->buildViolation($constraint->messageMembershipAlreadyCandidate)
-                ->atPath('membership')
-                ->addViolation()
-            ;
+                return;
+            }
 
-            return;
-        }
+            foreach ($configQualities as $index => $allowedQualities) {
+                if (array_intersect($allowedQualities, $invitedMembership->getQualityNames())) {
+                    if (\in_array($index, $foundCandidacy)) {
+                        $this->context
+                            ->buildViolation($constraint->messageInvalidQuality)
+                            ->atPath('invitations')
+                            ->addViolation()
+                        ;
 
-        if (!\in_array($candidacy->getQuality(), $invitedMembership->getQualityNames(), true)) {
-            $this->context
-                ->buildViolation($constraint->messageInvalidQuality)
-                ->atPath('membership')
-                ->addViolation()
-            ;
+                        return;
+                    }
 
-            return;
+                    $foundCandidacy[] = $index;
+
+                    continue 2;
+                }
+            }
+
+            if (3 !== \count($foundCandidacy)) {
+                $this->context
+                    ->buildViolation($constraint->messageInvalidParity)
+                    ->atPath('invitations')
+                    ->addViolation()
+                ;
+
+                return;
+            }
         }
     }
 }

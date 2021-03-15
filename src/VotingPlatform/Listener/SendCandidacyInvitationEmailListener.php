@@ -42,54 +42,60 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
     public function onInvitationUpdate(CandidacyInvitationEvent $event): void
     {
         $candidacy = $event->getCandidacy();
-        $invitation = $event->getInvitation();
-        $previouslyInvitedMembership = $event->getPreviouslyInvitedMembership();
-
-        $invitedMembership = $invitation->getMembership();
+        $invitations = $event->getInvitations();
+        $previouslyInvitedMemberships = $event->getPreviouslyInvitedMemberships();
         $designation = $candidacy->getElection()->getDesignation();
 
-        if ($invitation && (!$previouslyInvitedMembership || $previouslyInvitedMembership !== $invitation->getMembership())) {
-            if ($designation->isCommitteeType()) {
-                /** @var CommitteeMembership $invitedMembership */
-                $committee = $invitedMembership->getCommittee();
-                $url = $this->urlGenerator->generate('app_committee_candidature_invitation_list', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
-                $params = ['committee_name' => $committee->getName()];
-            } else {
-                $url = $this->urlGenerator->generate('app_territorial_council_candidature_invitation_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
-                $params = ['quality' => $this->translator->trans('territorial_council.membership.quality.'.$candidacy->getQuality())];
-            }
+        $invitedMemberships = [];
 
-            $this->mailer->sendMessage(
-                VotingPlatformCandidacyInvitationCreatedMessage::create(
-                    $invitedMembership->getAdherent(),
-                    $candidacy->getMembership()->getAdherent(),
-                    $designation,
-                    $url,
-                    $params
-                )
-            );
+        foreach ($invitations as $invitation) {
+            $invitedMemberships[] = $invitedMembership = $invitation->getMembership();
+
+            if ($invitation && (!$previouslyInvitedMemberships || !\in_array($invitation->getMembership(), $previouslyInvitedMemberships))) {
+                if ($designation->isCommitteeType()) {
+                    /** @var CommitteeMembership $invitedMembership */
+                    $committee = $invitedMembership->getCommittee();
+                    $url = $this->urlGenerator->generate('app_committee_candidature_invitation_list', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $params = ['committee_name' => $committee->getName()];
+                } else {
+                    $url = $this->urlGenerator->generate('app_territorial_council_candidature_invitation_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $params = ['quality' => $this->translator->trans('territorial_council.membership.quality.'.$candidacy->getQuality())];
+                }
+
+                $this->mailer->sendMessage(
+                    VotingPlatformCandidacyInvitationCreatedMessage::create(
+                        $invitedMembership->getAdherent(),
+                        $candidacy->getMembership()->getAdherent(),
+                        $designation,
+                        $url,
+                        $params
+                    )
+                );
+            }
         }
 
-        if ($previouslyInvitedMembership && (!$invitation || $previouslyInvitedMembership !== $invitation->getMembership())) {
-            if ($designation->isCommitteeType()) {
-                $url = $this->urlGenerator->generate('app_committee_show', ['slug' => $invitedMembership->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
-            } else {
-                $url = $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
-            }
+        foreach ($previouslyInvitedMemberships as $invitedMembership) {
+            if (!$invitations || !\in_array($invitedMembership, $invitedMemberships)) {
+                if ($designation->isCommitteeType()) {
+                    $url = $this->urlGenerator->generate('app_committee_show', ['slug' => $invitedMembership->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+                } else {
+                    $url = $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                }
 
-            $this->mailer->sendMessage(VotingPlatformCandidacyInvitationRemovedMessage::create(
-                $previouslyInvitedMembership->getAdherent(),
-                $candidacy->getMembership()->getAdherent(),
-                $candidacy->getElection()->getDesignation(),
-                $url
-            ));
+                $this->mailer->sendMessage(VotingPlatformCandidacyInvitationRemovedMessage::create(
+                    $invitedMembership->getAdherent(),
+                    $candidacy->getMembership()->getAdherent(),
+                    $candidacy->getElection()->getDesignation(),
+                    $url
+                ));
+            }
         }
     }
 
     public function onInvitationDecline(CandidacyInvitationEvent $event): void
     {
         $candidacy = $event->getCandidacy();
-        $invitation = $event->getInvitation();
+        $invitation = current($event->getInvitations());
 
         $invitedMembership = $invitation->getMembership();
         $designation = $candidacy->getElection()->getDesignation();
@@ -112,7 +118,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
     public function onInvitationAccept(CandidacyInvitationEvent $event): void
     {
         $candidacy = $event->getCandidacy();
-        $invitation = $event->getInvitation();
+        $invitation = current($event->getInvitations());
 
         $invitedMembership = $invitation->getMembership();
         $designation = $candidacy->getElection()->getDesignation();

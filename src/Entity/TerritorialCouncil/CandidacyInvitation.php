@@ -3,7 +3,7 @@
 namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\VotingPlatform\Designation\BaseCandidacyInvitation;
-use App\Validator\TerritorialCouncil\ValidTerritorialCouncilCandidacyInvitation;
+use App\Validator\TerritorialCouncil\ValidTerritorialCouncilCandidacyForCopolInvitation;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,14 +11,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="territorial_council_candidacy_invitation")
  *
- * @ValidTerritorialCouncilCandidacyInvitation(groups={"Default", "invitation_edit"})
+ * @ValidTerritorialCouncilCandidacyForCopolInvitation(groups={"copol_election"})
  */
 class CandidacyInvitation extends BaseCandidacyInvitation
 {
     /**
      * @var Candidacy
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\Candidacy", mappedBy="invitation", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\Candidacy", inversedBy="invitations")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     protected $candidacy;
 
@@ -28,7 +29,7 @@ class CandidacyInvitation extends BaseCandidacyInvitation
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @Assert\NotBlank(groups={"Default", "invitation_edit"})
+     * @Assert\NotBlank(groups={"Default", "national_council_election", "copol_election"})
      */
     protected $membership;
 

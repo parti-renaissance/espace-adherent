@@ -1,0 +1,85 @@
+{% extends 'territorial_council/_slim_header_layout.html.twig' %}
+
+{% block page_title 'Choix de votre trinôme' %}
+
+{% block territorial_council_content %}
+    <div class="territorial-council l__wrapper b__nudge--bottom-huge">
+        <div>
+            <a href="{{ path('app_territorial_council_index') }}" class="text--body link--no-decor link--blue--dark">⟵ Retour</a>
+        </div>
+
+        <div class="l__wrapper--slim">
+            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Choix de votre trinôme</h2>
+
+            <p class="text--body text--gray text--small b__nudge--bottom-50">
+                Les membres non sélectionnables ne sont pas éligibles car ...
+            </p>
+
+            {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
+            {{ form_errors(form) }}
+
+            <div class="em-form__group">
+                {{ form_label(form.quality, 'Je candidate en tant que', {label_attr: {class: 'em-form__label'}}) }}
+
+                {{ form_errors(form.quality) }}
+
+                <div class="em-form__field--ctn">
+                    {{ form_widget(form.quality, {attr: {class: 'em-form__field', 'data-qualities': app.user.territorialCouncilMembership.getQualitiesWithZones|json_encode}}) }}
+                </div>
+            </div>
+
+            <div class="em-form__group">
+                {{ form_errors(form.invitations) }}
+
+                {{ form_label(form.invitations, 'Sélectionnez deux autres membres pour composer votre trinôme', {label_attr: {class: 'em-form__label'}}) }}
+
+                {{ form_widget(form.invitations) }}
+
+                <div class="membership-widget-wrapper"></div>
+            </div>
+
+            <div>
+                {{ form_row(form.save, {label: 'Envoyer l\'invitation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+
+                {% if not invitation or not invitation.id %}
+                    <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                        Étape précédente
+                    </a>
+                {% endif %}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% set invitations = [] %}
+
+    {% for invite in form.invitations.vars.value %}
+        {% set invitations = invitations|merge([{
+            uuid: invite.getMembership().getUuid().toString(),
+            adherent: {
+                full_name: invite.getMembership().getAdherent().getFullName(),
+                gender: invite.getMembership().getAdherent().getGender(),
+                initials: invite.getMembership().getAdherent().getInitials(),
+            },
+            qualities: invite.getMembership().getQualities()|map(quality => {name: quality.getName()})
+        }]) %}
+    {% endfor %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runNationalCouncilCandidacy(
+                '#{{ form.quality.vars.id }}',
+                '#{{ form.save.vars.id }}',
+                '.membership-widget-wrapper',
+                {{ constant('App\\Entity\\TerritorialCouncil\\TerritorialCouncilQualityEnum::ABLE_TO_CANDIDATE')|map((value, key) => {key: value, label: ('territorial_council.membership.quality.' ~ value)|trans})|json_encode|raw }},
+                {{ get_available_genders_for_candidacy(candidacy)|json_encode|raw }},
+                {{ get_needed_qualities_for_national_council_designation()|json_encode|raw }},
+                {{ invitations|json_encode|raw }}
+            );
+        });
+    </script>
+{% endblock %}
