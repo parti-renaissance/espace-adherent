@@ -105,7 +105,7 @@ class RestContext extends BehatchRestContext
             $clientRepository->findOneBy(['name' => $clientName])
         );
 
-        if ($scope) {
+        if ($scopes) {
             foreach (explode(' ', $scopes) as $scope) {
                 $accessToken->addScope($scope);
             }
