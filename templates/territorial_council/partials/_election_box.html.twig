@@ -12,6 +12,8 @@
     {% set update_invitation_button_label = 'Modifier ma demande de trinôme' %}
 {% endif %}
 
+{% set able_to_candidate = is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', app.user) %}
+
 <section class="instance__elections-box b__nudge--bottom-larger">
     <div class="l__row">
         <h2 class="text--medium box-el">{{ designation.getTitle() }}</h2>
@@ -33,7 +35,7 @@
 
     {% if election.voteStartDate is null %}
         <p class="text--body text--bold b__nudge--bottom-large b__nudge--top-0">
-            La date du {{ instance_title }} n'a pas encore été fixée par votre référent
+            La date du du vote n'a pas encore été fixée par votre référent.
         </p>
     {% else %}
         <p class="text--body b__nudge--bottom-large b__nudge--top-0">
@@ -52,8 +54,8 @@
 
     <div class="text--body l__row l__row--wrap">
         {% if election.isCandidacyPeriodActive %}
-            {% if able_to_candidate %}
-                <div class="b__nudge--top-large">
+            <div class="b__nudge--top-large">
+                {% if able_to_candidate %}
                     {% if candidacy %}
                         {% set with_two_rows = true %}
 
@@ -78,10 +80,10 @@
                                 {% set pending_invitations = candidacy.getPendingInvitations() %}
 
                                 {% if pending_invitations|length == 1 %}
-                                    {{ pending_invitations|first.getMembership().getFullName() }} doit accepter votre demande pour que votre candidature soit confirmée
+                                    {{ pending_invitations|first.getMembership().getFullName() }} doit accepter votre demande pour que votre candidature soit confirmée.
                                 {% else %}
-                                    {{ pending_invitations|map(invitation => invitation.getMembership().getFullName())|join(', ') }}
-                                    doivent accepter votre demande pour que votre candidature soit confirmée
+                                    {{ pending_invitations|map(invitation => invitation.getMembership().getFullName())|join(' et ') }}
+                                    doivent accepter votre demande pour que votre candidature soit confirmée.
                                 {% endif %}
                             </div>
 
@@ -113,10 +115,10 @@
                             <a href="{{ path('app_territorial_council_candidature_edit') }}" class="btn btn--pink b__nudge--right btn--no-wrap box-el">{{ candidate_button_label }}</a>
                         {% endif %}
                     {% endif %}
-                </div>
-            {% else %}
-                <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">{{ candidate_button_label }}</span>
-            {% endif %}
+                {% else %}
+                    <span class="btn btn--ghosting--pink btn--no-wrap box-el b__nudge--right btn--disabled">{{ candidate_button_label }}</span>
+                {% endif %}
+            </div>
         {% elseif not election.isVotePeriodStarted %}
             <div class="em-countdown-clock l__col--full" data-event-timestamp="{{ election.voteStartDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
                 <span class="text--dark text--small">Le vote ouvrira dans :</span>

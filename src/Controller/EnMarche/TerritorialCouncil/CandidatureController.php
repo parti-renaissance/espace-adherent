@@ -8,7 +8,6 @@ use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\Entity\TerritorialCouncil\Election;
 use App\Form\TerritorialCouncil\CandidacyQualityType;
 use App\Form\VotingPlatform\Candidacy\TerritorialCouncilCandidacyType;
-use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
 use App\TerritorialCouncil\CandidacyManager;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
@@ -216,30 +215,6 @@ class CandidatureController extends AbstractController
     }
 
     /**
-     * @Route("/mes-invitations", name="_invitation_list", methods={"GET"})
-     *
-     * @param Adherent $adherent
-     */
-    public function invitationListAction(UserInterface $adherent, CandidacyInvitationRepository $repository): Response
-    {
-        $membership = $adherent->getTerritorialCouncilMembership();
-        $council = $membership->getTerritorialCouncil();
-
-        /** @var Election $election */
-        if (!($election = $council->getCurrentElection()) || !$election->isCandidacyPeriodActive()) {
-            return $this->redirectToRoute('app_territorial_council_index');
-        }
-
-        if (($candidacy = $membership->getCandidacyForElection($election)) && $candidacy->isConfirmed()) {
-            return $this->redirectToRoute('app_territorial_council_index');
-        }
-
-        return $this->render('territorial_council/invitation_list.html.twig', [
-            'invitations' => $repository->findAllPendingForMembership($membership, $election),
-        ]);
-    }
-
-    /**
      * @Route("/mes-invitations/{uuid}/accepter", name="_invitation_accept", methods={"GET", "POST"})
      *
      * @Security("invitation.getMembership() == user.getTerritorialCouncilMembership()")
@@ -267,7 +242,7 @@ class CandidatureController extends AbstractController
 
         // Temporary lock this action 🙈
         if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
-            $this->addFlash('warning', 'Une erreur est survenue. Veuillez réessayer dans quelques instants.');
+            $this->addFlash('error', 'Une erreur est survenue. Veuillez réessayer dans quelques instants.');
 
             return $this->redirectToRoute('app_territorial_council_index');
         }
@@ -321,12 +296,12 @@ class CandidatureController extends AbstractController
         if (!$invitation->isPending()) {
             $this->addFlash('error', 'Vous ne pouvez pas décliner cette invitation');
 
-            return $this->redirectToRoute('app_territorial_council_candidature_invitation_list');
+            return $this->redirectToRoute('app_territorial_council_index');
         }
 
         // Temporary lock this action 🙈
         if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
-            $this->addFlash('warning', 'Une erreur est survenue. Veuillez réessayer dans quelques instants.');
+            $this->addFlash('error', 'Une erreur est survenue. Veuillez réessayer dans quelques instants.');
 
             return $this->redirectToRoute('app_territorial_council_index');
         }
@@ -335,6 +310,6 @@ class CandidatureController extends AbstractController
 
         $this->addFlash('info', 'Invitation a bien été déclinée');
 
-        return $this->redirectToRoute('app_territorial_council_candidature_invitation_list');
+        return $this->redirectToRoute('app_territorial_council_index');
     }
 }

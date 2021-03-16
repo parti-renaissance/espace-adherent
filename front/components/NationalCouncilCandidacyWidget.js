@@ -46,7 +46,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
         const isValidQualities = this.isValidQualities();
         const isValidGenders = this.isValidGenders();
 
-        hide(this.submitButton);
+        this.toggleSubmitButton(false);
 
         if (this.state.isLoading) {
             content = <Loader wrapperClassName={'text--center space--30-0'} />;
@@ -55,8 +55,8 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
                 {this.state.error}
             </p>;
         } else {
-            if (isValidQualities && isValidGenders) {
-                show(this.submitButton);
+            if (isValidQualities && isValidGenders && 2 === _.size(this.state.activeMemberships)) {
+                this.toggleSubmitButton(true);
             }
 
             content = (
@@ -172,6 +172,13 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
 
         return (
             <div className={'national-council-candidacy--container'}>
+                <div>
+                    <ul className="election-config-list">
+                        <li>{this.getGenderConfigText()}</li>
+                        <li>{this.getQualityConfigText()}</li>
+                    </ul>
+                </div>
+
                 <div className="l__row b__nudge--top b__nudge--bottom-large selected-memberships--row">
                     {members}
                 </div>
@@ -273,7 +280,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
             }
         }
 
-        return true;
+        return 0 < foundKeys.length;
     }
 
     handleCandidacyClick(membership) {
@@ -310,6 +317,42 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
         }
 
         return null;
+    }
+
+    getGenderConfigText() {
+        if (0 === this.props.availableGenders.female) {
+            return `${1 === this.props.availableGenders.male ?
+                'un' : 'deux'} homme${1 < this.props.availableGenders.male ? 's' : ''}`;
+        } else if (0 === this.props.availableGenders.male) {
+            return `${1 === this.props.availableGenders.female ?
+                'une' : 'deux'} femme${1 < this.props.availableGenders.female ? 's' : ''}`;
+        }
+
+        return `${1 === this.props.availableGenders.male ?
+            'un' : 'deux'} homme${1 < this.props.availableGenders.male ? 's' : ''} /
+            ${1 === this.props.availableGenders.female ?
+        'une' : 'deux'} femme${1 < this.props.availableGenders.female ? 's' : ''}`;
+    }
+
+    getQualityConfigText() {
+        const neededQualities = [];
+
+        // eslint-disable-next-line no-restricted-syntax
+        for (const k in this.props.neededQualities) {
+            if (-1 === this.props.neededQualities[k].indexOf(this.state.quality)) {
+                if (1 < this.props.neededQualities[k].length) {
+                    neededQualities.push('un(e) élu(e)');
+                } else {
+                    neededQualities.push(this.transQuality(this.props.neededQualities[k][0]));
+                }
+            }
+        }
+
+        return neededQualities.join(' et ').toLocaleLowerCase();
+    }
+
+    toggleSubmitButton(enable) {
+        this.submitButton.disabled = !enable;
     }
 }
 

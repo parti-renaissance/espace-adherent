@@ -20,20 +20,6 @@
         </div>
     {% endif %}
 
-    {% if able_to_candidate and (not candidacy or candidacy.isDraft) %}
-        <div class="territorial-council__aside--section">
-            <h5>Candidature & invitations</h5>
-            <p class="text--body text--dark b__nudge--bottom">
-                Gérez, modifiez ou annulez votre candidature ou vos invitations.
-            </p>
-            <div>
-                <a href="{{ path('app_territorial_council_candidature_invitation_list') }}" class="btn btn--ghosting--pink btn--no-wrap">
-                    Gérer
-                </a>
-            </div>
-        </div>
-    {% endif %}
-
     <div class="territorial-council__aside--section">
         <h5>FAQ des désignations</h5>
         <p class="text--body text--dark b__nudge--bottom">

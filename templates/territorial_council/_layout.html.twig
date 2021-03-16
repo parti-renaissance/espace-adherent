@@ -8,7 +8,6 @@
 {% endif %}
 
 {% set candidacy = territorial_council.currentElection and membership is not empty ? membership.candidacyForElection(territorial_council.currentElection) : null %}
-{% set able_to_candidate = is_granted('ABLE_TO_BECOME_TERRITORIAL_COUNCIL_CANDIDATE', app.user) %}
 {% set route_part = '' %}
 {% set route_params = {} %}
 

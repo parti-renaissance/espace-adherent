@@ -7,6 +7,16 @@
             {% set election = territorial_council.currentElection %}
             {% include 'territorial_council/partials/_election_box.html.twig' %}
 
+            {% if membership %}
+                {% set my_invitations = get_all_coterr_candidacy_invitations_for_membership(membership, election) %}
+
+                {% if my_invitations|length > 0 %}
+                    {% include 'territorial_council/partials/_my_candidate_invitations.html.twig' %}
+
+                    <hr/>
+                {% endif %}
+            {% endif %}
+
             {% if election.electionPoll %}
                 {% include 'territorial_council/partials/_election_poll.html.twig' %}
             {% endif %}
