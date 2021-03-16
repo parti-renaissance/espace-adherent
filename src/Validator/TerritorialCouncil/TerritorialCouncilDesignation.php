@@ -14,8 +14,6 @@ class TerritorialCouncilDesignation extends Constraint
     public $messageVoteStartDateInvalid = 'La date de début du vote n\'est pas le même jour que la date du Conseil territorial';
     public $messageMeetingStartDateTooFarAway = 'La date de début de la réunion ne doit pas dépasser le {{date}}';
     public $messageMeetingEndDateInvalid = 'La durée de la réunion ne doit pas dépasser 12 heures.';
-    public $messageElectionPollChoiceInvalid = 'Les choix du sondage sont invalides.';
-    public $messageElectionPollChoiceZeroMissing = 'Le sondage doit avoir la valeur zéro.';
     public $messageAddressEmpty = 'L\'adresse ne doit pas être vide.';
     public $messageUrlEmpty = 'L\'URL de la réunion ne doit pas être vide.';
 

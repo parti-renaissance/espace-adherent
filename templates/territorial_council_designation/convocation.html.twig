@@ -133,39 +133,11 @@
                 {{ form_widget(form.voteEndDate) }}
             </div>
 
-            <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Equilibrage des membres au Comité politique</h2>
-
-            <p>Afin de répondre à l'un des objectifs de notre mouvement, avoir plus de parité dans nos instances, le Conseil
-                territorial peut désigner des membres supplémentaires au Comité politique pour rééquilibrer sa composition
-                entre les membres de droit et les membres désignés (<a href="{{ path('app_territorial_council_faq', {_fragment: 'rules'}) }}">en savoir plus</a>).
-            </p>
-
-            <div class="em-form__group">
-                {{ form_errors(form.withPoll) }}
-                {{ form_widget(form.withPoll) }}
-            </div>
-
-            <div class="em-form__group election-poll-container" style="display: {{ form.withPoll.vars.value ? 'block' : 'none' }}">
-                <div class="em-form__group">
-                    {{ form_label(form.electionPollGender, 'Ajouter des sièges pour le genre :', {label_attr: {class: 'em-form__label'}}) }}
-                    {{ form_errors(form.electionPollGender) }}
-                    {{ form_widget(form.electionPollGender) }}
-                </div>
-
-                <div class="em-form__group">
-                    {{ form_label(form.electionPollChoices, 'Ajoutez entre 1 et 5 choix au sondage. Ces choix seront soumis aux membres du Conseil territorial jusqu\'à l\'ouverture du vote.', {label_attr: {class: 'em-form__label'}}) }}
-                    {{ form_errors(form.electionPollChoices) }}
-                    {{ form_widget(form.electionPollChoices) }}
-                </div>
-            </div>
-
-            <div class="alert alert--error b__nudge--top-60 b__nudge--bottom-60">
+            <div class="alert alert--error b__nudge--top-large b__nudge--bottom-large">
                 Une fois ce formulaire validé, vous ne pourrez plus le modifier. Les membres du Conseil territorial seront informés des dates du Conseil territorial par un e-mail automatique.
             </div>
 
-            <div>
-                {{ form_row(form.save, {label: 'Envoyer la convocation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
-            </div>
+            {{ form_row(form.save, {label: 'Envoyer la convocation', attr: {class: 'btn btn--blue btn--large-and-full'}}) }}
 
             {{ form_end(form) }}
         </div>
@@ -206,29 +178,6 @@
                         show(meetingUrlContainer);
                     }
                 });
-            });
-
-            var pollContainer = dom('.election-poll-container');
-
-            findAll(document, 'input[name="{{ form.withPoll.vars.full_name }}"').forEach(function(radio) {
-                on(radio, 'change', function (event) {
-                    if (event.target.value == 1) {
-                        show(pollContainer);
-                    } else {
-                        hide(pollContainer);
-                    }
-                });
-            });
-
-            $('.poll-collection').collection({
-                init_with_n_elements: 1,
-                add: '<a href="#" class="btn-secondary btn-secondary--blue">Ajouter un nouvel élément</a>',
-                remove: '<a href="#" class="btn-secondary btn-secondary--blue">-</a>',
-                allow_up: false,
-                allow_down: false,
-                add_at_the_end: true,
-                drag_drop: false,
-                max: 5,
             });
         });
     </script>

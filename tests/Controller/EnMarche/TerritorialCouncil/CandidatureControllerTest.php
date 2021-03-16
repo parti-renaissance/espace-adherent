@@ -243,10 +243,9 @@ class CandidatureControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/conseil-territorial');
         $crawler = $this->client->click($crawler->selectLink('Modifier mes informations')->link());
         $form = $crawler->selectButton('Enregistrer')->form();
-        $values = $form->getValues();
-//        self::assertArraySubset([
-//            'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
-//        ], $values = $form->getValues());
+        self::assertArraySubset([
+            'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
+        ], $values = $form->getValues());
         self::assertArrayNotHasKey('territorial_council_candidacy[isPublicFaithStatement]', $values);
     }
 

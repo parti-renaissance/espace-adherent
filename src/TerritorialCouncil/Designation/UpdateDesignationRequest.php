@@ -81,23 +81,6 @@ class UpdateDesignationRequest
      */
     private $questions;
 
-    /**
-     * @var bool
-     */
-    private $withPoll = false;
-
-    /**
-     * @var string|null
-     */
-    private $electionPollGender;
-
-    /**
-     * @var array|null
-     *
-     * @Assert\Count(max=5)
-     */
-    private $electionPollChoices;
-
     public function getVoteMode(): ?string
     {
         return $this->voteMode;
@@ -181,40 +164,6 @@ class UpdateDesignationRequest
     public function isMeetingMode(): bool
     {
         return DesignationVoteModeEnum::VOTE_MODE_MEETING === $this->voteMode;
-    }
-
-    public function isWithPoll(): bool
-    {
-        return $this->withPoll;
-    }
-
-    public function setWithPoll(bool $withPoll): void
-    {
-        $this->withPoll = $withPoll;
-    }
-
-    public function getElectionPollGender(): ?string
-    {
-        return $this->electionPollGender;
-    }
-
-    public function setElectionPollGender(?string $electionPollGender): void
-    {
-        $this->electionPollGender = $electionPollGender;
-    }
-
-    public function getElectionPollChoices(): ?array
-    {
-        return $this->electionPollChoices;
-    }
-
-    public function setElectionPollChoices(?array $electionPollChoices): void
-    {
-        if ($electionPollChoices) {
-            sort($electionPollChoices);
-        }
-
-        $this->electionPollChoices = $electionPollChoices;
     }
 
     public function getMeetingUrl(): ?string

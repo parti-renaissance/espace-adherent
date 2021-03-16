@@ -9,13 +9,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class TerritorialCouncilDesignationValidator extends ConstraintValidator
 {
-    private $meetingMaxStartDate;
-
-    public function __construct(int $meetingMaxStartDate)
-    {
-        $this->meetingMaxStartDate = $meetingMaxStartDate;
-    }
-
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof TerritorialCouncilDesignation) {
@@ -43,38 +36,6 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
                 $this->context
                     ->buildViolation($constraint->messageUrlEmpty)
                     ->atPath('meetingUrl')
-                    ->addViolation()
-                ;
-            }
-        }
-
-        if ($value->isWithPoll()) {
-            if (empty(array_filter($value->getElectionPollChoices()))) {
-                $this->context
-                    ->buildViolation($constraint->messageElectionPollChoiceInvalid)
-                    ->atPath('electionPollChoices')
-                    ->addViolation()
-                ;
-
-                return;
-            }
-
-            foreach ($value->getElectionPollChoices() as $choice) {
-                if (!\is_integer($choice) || $choice > 10 || $choice < 0) {
-                    $this->context
-                        ->buildViolation($constraint->messageElectionPollChoiceInvalid)
-                        ->atPath('electionPollChoices')
-                        ->addViolation()
-                    ;
-
-                    return;
-                }
-            }
-
-            if (!\in_array(0, $value->getElectionPollChoices(), true)) {
-                $this->context
-                    ->buildViolation($constraint->messageElectionPollChoiceZeroMissing)
-                    ->atPath('electionPollChoices')
                     ->addViolation()
                 ;
             }
@@ -123,7 +84,7 @@ class TerritorialCouncilDesignationValidator extends ConstraintValidator
             ;
         }
 
-        if ($meetingStartDate > $date = (new \DateTime())->setTimestamp($this->meetingMaxStartDate)) {
+        if ($meetingStartDate > ($date = new \DateTime('+3 months'))) {
             $this->context
                 ->buildViolation($constraint->messageMeetingStartDateTooFarAway)
                 ->atPath('meetingStartDate')
