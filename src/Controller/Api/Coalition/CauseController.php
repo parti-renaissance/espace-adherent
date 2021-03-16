@@ -19,8 +19,8 @@ class CauseController
      */
     public function followed(Request $request, UserInterface $user, CauseRepository $causeRepository): JsonResponse
     {
-        /** @var string[]|array $uuids */
-        $uuids = $request->request->get('uuids');
+        $body = json_decode($request->getContent(), true);
+        $uuids = $body['uuids'] ?? null;
 
         if (!\is_array($uuids) || empty($uuids)) {
             throw new BadRequestHttpException('Parameter "uuids" should be an array of uuids.');
