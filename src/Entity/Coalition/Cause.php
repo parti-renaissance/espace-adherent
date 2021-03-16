@@ -37,12 +37,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/causes",
  *         },
- *         "followed": {
- *             "method": "GET",
- *             "path": "/v3/causes/followed",
- *             "access_control": "is_granted('IS_AUTHENTICATED_FULLY')",
- *             "controller": "App\Controller\Api\Coalition\CauseController::followed",
- *         },
  *     },
  *     itemOperations={
  *         "get": {
