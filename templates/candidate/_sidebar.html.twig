@@ -15,14 +15,16 @@
                     Aux adhérents
                 </a>
             </li>
-            <li class="{{ is_active_route(app.request, 'app_message_candidate_jecoute_*') ? 'active' }}">
-                <a href="{{ path('app_message_candidate_jecoute_list') }}" class="messaging jecoute">
-                    <svg width="16" height="16" viewBox="0 0 16 16">
-                        <use xlink:href="/images/icons/icons.svg#messaging"></use>
-                    </svg>
-                    Je marche !
-                </a>
-            </li>
+            {% if is_canary_enabled() %}
+                <li class="{{ is_active_route(app.request, 'app_message_candidate_jecoute_*') ? 'active' }}">
+                    <a href="{{ path('app_message_candidate_jecoute_list') }}" class="messaging jecoute">
+                        <svg width="16" height="16" viewBox="0 0 16 16">
+                            <use xlink:href="/images/icons/icons.svg#messaging"></use>
+                        </svg>
+                        Je marche !
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     {% endif %}
 
