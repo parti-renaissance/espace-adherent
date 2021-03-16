@@ -10,6 +10,7 @@ class MailchimpObjectIdMapping
     private $newsletterListId;
     private $electedRepresentativeListId;
     private $applicationRequestCandidateListId;
+    private $jecouteListId;
     private $folderIds;
     private $templateIds;
     private $interestIds;
@@ -24,6 +25,7 @@ class MailchimpObjectIdMapping
         string $newsletterListId,
         string $electedRepresentativeListId,
         string $applicationRequestCandidateListId,
+        string $jecouteListId,
         array $folderIds,
         array $templateIds,
         array $interestIds,
@@ -37,6 +39,7 @@ class MailchimpObjectIdMapping
         $this->newsletterListId = $newsletterListId;
         $this->electedRepresentativeListId = $electedRepresentativeListId;
         $this->applicationRequestCandidateListId = $applicationRequestCandidateListId;
+        $this->jecouteListId = $jecouteListId;
         $this->folderIds = $folderIds;
         $this->templateIds = $templateIds;
         $this->interestIds = $interestIds;
@@ -97,13 +100,21 @@ class MailchimpObjectIdMapping
         return $this->applicationRequestCandidateListId;
     }
 
+    public function getJecouteListId(): string
+    {
+        return $this->jecouteListId;
+    }
+
     public function getListIdByMessageType(string $messageType): string
     {
-        if (AdherentMessageTypeEnum::MUNICIPAL_CHIEF === $messageType) {
-            return $this->applicationRequestCandidateListId;
+        switch ($messageType) {
+            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
+                return $this->applicationRequestCandidateListId;
+            case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
+                return $this->jecouteListId;
+            default:
+                return $this->mainListId;
         }
-
-        return $this->mainListId;
     }
 
     public function getApplicationRequestTagIds(): array

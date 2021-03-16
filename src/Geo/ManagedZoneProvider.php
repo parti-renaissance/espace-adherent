@@ -14,6 +14,7 @@ class ManagedZoneProvider
     public const SENATOR = 'senator';
     public const SENATORIAL_CANDIDATE = 'senatorial_candidate';
     public const CANDIDATE = 'candidate';
+    public const CANDIDATE_JECOUTE = 'candidate_jecoute';
     public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
 
     /**
@@ -53,7 +54,7 @@ class ManagedZoneProvider
             return $zones;
         }
 
-        if (self::CANDIDATE === $spaceType) {
+        if (\in_array($spaceType, [self::CANDIDATE, self::CANDIDATE_JECOUTE], true)) {
             return [$adherent->getCandidateManagedArea()->getZone()];
         }
 

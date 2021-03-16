@@ -79,23 +79,7 @@ class ZoneMatcher
         return array_values(array_filter(array_unique($zones)));
     }
 
-    /**
-     * @param Zone[] $parents
-     *
-     * @return Zone[]
-     */
-    private function matchGeoPoint(GeoPointInterface $geoPoint, array $types, array $parents): array
-    {
-        $latitude = $geoPoint->getLatitude();
-        $longitude = $geoPoint->getLongitude();
-        if (!$latitude || !$longitude) {
-            return [];
-        }
-
-        return $this->repository->findByCoordinatesAndTypes($latitude, $longitude, $types, $parents);
-    }
-
-    private function matchPostalCode(?string $postalCode): ?Zone
+    public function matchPostalCode(?string $postalCode): ?Zone
     {
         if (!$postalCode) {
             return null;
@@ -114,6 +98,22 @@ class ZoneMatcher
         }
 
         return $this->repository->findByZoneable($cities[0]);
+    }
+
+    /**
+     * @param Zone[] $parents
+     *
+     * @return Zone[]
+     */
+    private function matchGeoPoint(GeoPointInterface $geoPoint, array $types, array $parents): array
+    {
+        $latitude = $geoPoint->getLatitude();
+        $longitude = $geoPoint->getLongitude();
+        if (!$latitude || !$longitude) {
+            return [];
+        }
+
+        return $this->repository->findByCoordinatesAndTypes($latitude, $longitude, $types, $parents);
     }
 
     /**

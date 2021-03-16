@@ -7,6 +7,7 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
+use App\Entity\Jecoute\DataSurvey;
 use App\Entity\MailchimpSegment;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
@@ -151,6 +152,23 @@ class Manager implements LoggerAwareInterface
         }
     }
 
+    public function editJecouteContact(DataSurvey $dataSurvey, array $zones): void
+    {
+        $emailAddress = $dataSurvey->getEmailAddress();
+        $listId = $this->mailchimpObjectIdMapping->getJecouteListId();
+
+        /** @var RequestBuilder $requestBuilder */
+        $requestBuilder = $this->requestBuildersLocator
+            ->get(RequestBuilder::class)
+            ->updateFromDataSurvey($dataSurvey, $zones)
+        ;
+
+        $this->driver->editMember(
+            $requestBuilder->buildMemberRequest($emailAddress),
+            $listId
+        );
+    }
+
     public function getCampaignContent(MailchimpCampaign $campaign): string
     {
         if (!$campaign->getExternalId()) {
@@ -196,7 +214,7 @@ class Manager implements LoggerAwareInterface
     {
         $this->checkMessageExternalId($campaign);
 
-        /** @var CampaignContentRequestBuilder $requestBuilder */
+        /** @var CampaignContentRequestBuilder $contentRequestBuilder */
         $contentRequestBuilder = $this->requestBuildersLocator->get(CampaignContentRequestBuilder::class);
 
         if (!$this->driver->editCampaignContent(

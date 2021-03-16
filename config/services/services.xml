@@ -276,6 +276,7 @@
             <argument type="string">%env(MAILCHIMP_NEWSLETTER_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_APPLICATION_REQUEST_CANDIDATE_LIST_ID)%</argument>
+            <argument type="string">%env(MAILCHIMP_JECOUTE_LIST_ID)%</argument>
             <argument type="string">%env(json:MAILCHIMP_CAMPAIGN_FOLDER_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_TEMPLATE_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>

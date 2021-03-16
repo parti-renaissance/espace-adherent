@@ -104,6 +104,29 @@ class DataSurveyRepository extends ServiceEntityRepository
         return $this->countByDevice($device, (new \DateTime('now'))->modify('-1 month'));
     }
 
+    public function createAvailableToContactQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('data_survey')
+            ->andWhere('data_survey.emailAddress IS NOT NULL AND data_survey.emailAddress != :empty')
+            ->andWhere('data_survey.agreedToStayInContact = :true')
+            ->andWhere('data_survey.postalCode IS NOT NULL AND data_survey.postalCode != :empty')
+            ->setParameter('true', true)
+            ->setParameter('empty', '')
+        ;
+    }
+
+    public function findLastAvailableToContactByEmail(string $email): ?DataSurvey
+    {
+        return $this->createAvailableToContactQueryBuilder()
+            ->andWhere('data_survey.emailAddress = :email')
+            ->setParameter('email', $email)
+            ->orderBy('data_survey.postedAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     private function createCountByDeviceQueryBuilder(Device $device): QueryBuilder
     {
         return $this->createQueryBuilder('data_survey')

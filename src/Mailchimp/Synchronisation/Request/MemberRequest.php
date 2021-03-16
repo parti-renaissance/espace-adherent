@@ -28,6 +28,9 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_ZONE_REGION = 'ZONE_REGIO';
     public const MERGE_FIELD_ZONE_COUNTRY = 'ZONE_CNTRY';
     public const MERGE_FIELD_TEAM_CODE = 'TEAM_CODE';
+    public const MERGE_FIELD_CODE_CANTON = 'CODE_CNTN';
+    public const MERGE_FIELD_CODE_DEPARTMENT = 'CODE_DPT';
+    public const MERGE_FIELD_CODE_REGION = 'CODE_REGIO';
 
     private $memberIdentifier;
 
@@ -99,6 +102,20 @@ class MemberRequest implements MemberRequestInterface
                 return self::MERGE_FIELD_ZONE_COUNTRY;
             default:
                 throw new \InvalidArgumentException(sprintf('Zone type "%s" is not synchronized with mailchimp.', $zone->getType()));
+        }
+    }
+
+    public static function getMergeCodeFieldFromZone(Zone $zone): string
+    {
+        switch ($zone->getType()) {
+            case Zone::CANTON:
+                return self::MERGE_FIELD_CODE_CANTON;
+            case Zone::DEPARTMENT:
+                return self::MERGE_FIELD_CODE_DEPARTMENT;
+            case Zone::REGION:
+                return self::MERGE_FIELD_CODE_REGION;
+            default:
+                throw new \InvalidArgumentException(sprintf('Zone code type "%s" is not synchronized with mailchimp.', $zone->getType()));
         }
     }
 }

@@ -506,6 +506,7 @@
 
                         &.adherent svg { fill: $blue--dark; }
                         &.elected svg { fill: $orange; }
+                        &.jecoute svg { fill: $yellow--europe; }
                         &.council svg { fill: $green--territory; }
                     }
                 }
@@ -527,6 +528,7 @@
                         &.messaging {
                             &.adherent { color: $blue--dark; &:before { background-color: $blue--dark; } }
                             &.elected { color: $orange; &:before { background-color: $orange; } }
+                            &.jecoute { color: $yellow--europe; &:before { background-color: $yellow--europe; } }
                             &.council { color: $green--territory; &:before { background-color: $green--territory; } }
                         }
                     }

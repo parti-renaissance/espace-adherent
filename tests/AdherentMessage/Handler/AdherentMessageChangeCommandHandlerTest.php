@@ -870,6 +870,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'newsletter_list_id',
                     'elected_representative_list_id',
                     'application_request_candidate_list_id',
+                    'jecoute_list_id',
                     [
                         'referent' => 1,
                         'deputy' => 2,
