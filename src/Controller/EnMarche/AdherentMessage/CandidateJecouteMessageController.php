@@ -17,4 +17,9 @@ class CandidateJecouteMessageController extends AbstractMessageController
     {
         return AdherentMessageTypeEnum::CANDIDATE_JECOUTE;
     }
+
+    protected function isCanary(): bool
+    {
+        return true;
+    }
 }
