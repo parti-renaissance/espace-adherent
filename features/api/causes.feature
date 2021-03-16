@@ -458,3 +458,30 @@ Feature:
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
     When I send a "DELETE" request to "/api/v3/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower"
     Then the response status code should be 204
+
+  Scenario: As a logged-in user I can check if I follow causes
+    Given I am logged with "carl999@example.fr" via OAuth client "Coalition App"
+    When I send a "POST" request to "/api/v3/causes/followed" with body:
+    """
+    {
+      "uuids": [
+        "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
+        "44249b1d-ea10-41e0-b288-5eb74fa886ba"
+      ]
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+      "55056e7c-2b5f-4ef6-880e-cde0511f79b2"
+    ]
+    """
+
+  Scenario: As a non logged-in user I can not check if I follow causes
+    When I send a "POST" request to "/api/v3/causes/followed" with parameters:
+      | key     | value                                |
+      | uuids[] | 55056e7c-2b5f-4ef6-880e-cde0511f79b2 |
+      | uuids[] | 44249b1d-ea10-41e0-b288-5eb74fa886ba |
+    Then the response status code should be 401
