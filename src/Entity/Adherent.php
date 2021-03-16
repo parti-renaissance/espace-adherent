@@ -75,7 +75,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 }
  *             }
  *         }
- *     },
+ *     }
  * )
  *
  * @ORM\Table(name="adherents", uniqueConstraints={
@@ -134,12 +134,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(length=6, nullable=true)
      *
      * @JMS\Groups({"adherent_change_diff"})
-     * @SymfonySerializer\Groups({"api_candidacy_read"})
+     * @SymfonySerializer\Groups({"api_candidacy_read", "profile_read"})
      */
     private $gender;
 
     /**
      * @ORM\Column(length=80, nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $customGender;
 
@@ -149,12 +151,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @JMS\Groups({"adherent_change_diff", "public"})
      * @JMS\SerializedName("emailAddress")
      *
-     * @SymfonySerializer\Groups({"user_profile"})
+     * @SymfonySerializer\Groups({"user_profile", "profile_read"})
      */
     private $emailAddress;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $phone;
 
@@ -162,11 +166,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(type="date", nullable=true)
      *
      * @JMS\Groups({"adherent_change_diff"})
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $birthdate;
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $position;
 
@@ -214,6 +222,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var SubscriptionType[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="SubscriptionType", cascade={"persist"})
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $subscriptionTypes;
 
@@ -441,6 +451,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $facebookPageUrl;
 
@@ -452,6 +464,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $twitterPageUrl;
 
@@ -463,6 +477,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="legislative_candidate.linkedin_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $linkedinPageUrl;
 
@@ -473,6 +489,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Assert\Url(groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $telegramPageUrl;
 
@@ -480,6 +498,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $job;
 
@@ -487,6 +507,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $activityArea;
 
@@ -494,6 +516,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var string|null
      *
      * @ORM\Column(length=2, nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $nationality;
 
@@ -1240,6 +1264,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->job = $adherentProfile->getJob();
         $this->activityArea = $adherentProfile->getActivityArea();
         $this->mandates = $adherentProfile->getMandates();
+        $this->interests = $adherentProfile->getInterests();
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;

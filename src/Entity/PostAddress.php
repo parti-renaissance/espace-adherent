@@ -10,6 +10,7 @@ use App\Geocoder\GeoPointInterface;
 use App\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ORM\Embeddable
@@ -24,6 +25,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $address;
 
@@ -33,6 +36,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $postalCode;
 
@@ -51,6 +56,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $cityName;
 
@@ -60,11 +67,15 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @var string
      *
      * @ORM\Column(length=2, nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $country;
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     private $region;
 
@@ -149,6 +160,9 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return $this->country;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"profile_read"})
+     */
     public function getCity(): ?string
     {
         return $this->city;

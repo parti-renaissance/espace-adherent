@@ -4,6 +4,7 @@ namespace App\AdherentProfile;
 
 use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
+use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentEvents;
@@ -12,31 +13,22 @@ use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
+use App\Repository\SubscriptionTypeRepository;
+use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentProfileHandler
 {
-    /** @var EventDispatcherInterface */
     private $dispatcher;
-
-    /** @var EntityManagerInterface */
     private $manager;
-
-    /** @var PostAddressFactory */
     private $addressFactory;
-
-    /** @var AdherentChangeEmailHandler */
     private $emailHandler;
-
-    /** @var ReferentTagManager */
     private $referentTagManager;
-
-    /** @var ReferentZoneManager */
     private $referentZoneManager;
-
-    /** @var EmailSubscriptionHistoryHandler */
     private $emailSubscriptionHistoryHandler;
+    private $subscriptionTypeRepository;
+    private $subscriptionHandler;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -45,7 +37,9 @@ class AdherentProfileHandler
         AdherentChangeEmailHandler $emailHandler,
         ReferentTagManager $referentTagManager,
         ReferentZoneManager $referentZoneManager,
-        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
+        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
+        SubscriptionTypeRepository $subscriptionTypeRepository,
+        SubscriptionHandler $subscriptionHandler
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
@@ -54,23 +48,37 @@ class AdherentProfileHandler
         $this->referentTagManager = $referentTagManager;
         $this->referentZoneManager = $referentZoneManager;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
+        $this->subscriptionTypeRepository = $subscriptionTypeRepository;
+        $this->subscriptionHandler = $subscriptionHandler;
     }
 
     public function update(Adherent $adherent, AdherentProfile $adherentProfile): void
     {
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
 
+        $this->updateSubscriptions($adherent, $adherentProfile->getSubscriptionTypes());
+
         if ($adherent->getEmailAddress() !== $adherentProfile->getEmailAddress()) {
             $this->emailHandler->handleRequest($adherent, $adherentProfile->getEmailAddress());
         }
 
         $adherent->updateProfile($adherentProfile, $this->addressFactory->createFromAddress($adherentProfile->getAddress()));
+
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($adherent);
 
         $this->manager->flush();
 
         $this->dispatcher->dispatch(new AdherentProfileWasUpdatedEvent($adherent), AdherentEvents::PROFILE_UPDATED);
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
+    }
+
+    private function updateSubscriptions(Adherent $adherent, array $subscriptionTypeCodes): void
+    {
+        $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
+
+        $adherent->setSubscriptionTypes($this->findSubscriptionTypes($subscriptionTypeCodes));
+
+        $this->subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
     }
 
     private function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void
@@ -84,5 +92,15 @@ class AdherentProfileHandler
         if ($this->referentZoneManager->isUpdateNeeded($adherent)) {
             $this->referentZoneManager->assignZone($adherent);
         }
+    }
+
+    /**
+     * @param string[]|array $subscriptionTypeCodes
+     *
+     * @return SubscriptionType[]|array
+     */
+    private function findSubscriptionTypes(array $subscriptionTypeCodes): array
+    {
+        return $this->subscriptionTypeRepository->findByCodes($subscriptionTypeCodes);
     }
 }

@@ -14,6 +14,8 @@ trait EntityPostAddressTrait
      * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
+     *
+     * @SymfonySerializer\Groups({"profile_read"})
      */
     protected $postAddress;
 

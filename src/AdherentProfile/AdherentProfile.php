@@ -5,9 +5,11 @@ namespace App\AdherentProfile;
 use App\Address\Address;
 use App\Entity\Adherent;
 use App\Membership\MembershipInterface;
+use App\Validator\AdherentInterests;
 use App\Validator\UniqueMembership;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,11 +26,15 @@ class AdherentProfile implements MembershipInterface
      *     message="common.gender.invalid_choice",
      *     strict=true,
      * )
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $gender;
 
     /**
      * @var string|null
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $customGender;
 
@@ -43,6 +49,8 @@ class AdherentProfile implements MembershipInterface
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length",
      * )
+     *
+     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
     private $firstName;
 
@@ -57,6 +65,8 @@ class AdherentProfile implements MembershipInterface
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length",
      * )
+     *
+     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
     private $lastName;
 
@@ -64,6 +74,8 @@ class AdherentProfile implements MembershipInterface
      * @var Address
      *
      * @Assert\Valid
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $address;
 
@@ -75,6 +87,8 @@ class AdherentProfile implements MembershipInterface
      *     message="adherent.activity_position.invalid_choice",
      *     strict=true,
      * )
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $position;
 
@@ -83,6 +97,8 @@ class AdherentProfile implements MembershipInterface
      *
      * @Assert\NotBlank
      * @Assert\Country(message="common.nationality.invalid")
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $nationality;
 
@@ -92,6 +108,8 @@ class AdherentProfile implements MembershipInterface
      * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $emailAddress;
 
@@ -99,6 +117,8 @@ class AdherentProfile implements MembershipInterface
      * @var PhoneNumber|null
      *
      * @AssertPhoneNumber(defaultRegion="FR")
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $phone;
 
@@ -112,6 +132,8 @@ class AdherentProfile implements MembershipInterface
      *     minMessage="adherent.birthdate.maximum_required_age",
      *     maxMessage="adherent.birthdate.minimum_required_age"
      * )
+     *
+     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
     private $birthdate;
 
@@ -119,6 +141,8 @@ class AdherentProfile implements MembershipInterface
      * @var string
      *
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="adherent_profile.facebook_page_url.invalid")
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $facebookPageUrl;
 
@@ -126,6 +150,8 @@ class AdherentProfile implements MembershipInterface
      * @var string
      *
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="adherent_profile.twitter_page_url.invalid")
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $twitterPageUrl;
 
@@ -133,6 +159,8 @@ class AdherentProfile implements MembershipInterface
      * @var string
      *
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="adherent_profile.linkedin_page_url.invalid")
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $linkedinPageUrl;
 
@@ -140,16 +168,34 @@ class AdherentProfile implements MembershipInterface
      * @var string
      *
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?t.me\/#", message="adherent_profile.telegram_page_url.invalid")
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $telegramPageUrl;
 
     /**
      * @var string
+     *
+     * @Assert\Choice(
+     *     choices=App\Entity\JobEnum::JOBS,
+     *     message="adherent.job.invalid_choice",
+     *     strict=true,
+     * )
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $job;
 
     /**
      * @var string
+     *
+     * @Assert\Choice(
+     *     choices=App\Entity\ActivityAreaEnum::ACTIVITIES,
+     *     message="adherent.activity_area.invalid_choice",
+     *     strict=true,
+     * )
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
      */
     private $activityArea;
 
@@ -162,6 +208,28 @@ class AdherentProfile implements MembershipInterface
      * )
      */
     private $mandates = [];
+
+    /**
+     * @var array
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
+     *
+     * @AdherentInterests
+     */
+    private $interests = [];
+
+    /**
+     * @var array
+     *
+     * @Assert\Choice(
+     *     choices=App\Subscription\SubscriptionTypeEnum::ADHERENT_TYPES,
+     *     multiple=true,
+     *     strict=true
+     * )
+     *
+     * @SymfonySerializer\Groups({"profile_write"})
+     */
+    private $subscriptionTypes = [];
 
     public function __construct()
     {
@@ -188,6 +256,8 @@ class AdherentProfile implements MembershipInterface
         $dto->job = $adherent->getJob();
         $dto->activityArea = $adherent->getActivityArea();
         $dto->mandates = $adherent->getMandates();
+        $dto->interests = $adherent->getInterests();
+        $dto->subscriptionTypes = $adherent->getSubscriptionTypeCodes();
 
         return $dto;
     }
@@ -360,5 +430,25 @@ class AdherentProfile implements MembershipInterface
     public function setMandates(?array $mandates): void
     {
         $this->mandates = $mandates;
+    }
+
+    public function getInterests(): array
+    {
+        return $this->interests;
+    }
+
+    public function setInterests(array $interests): void
+    {
+        $this->interests = $interests;
+    }
+
+    public function getSubscriptionTypes(): array
+    {
+        return $this->subscriptionTypes;
+    }
+
+    public function setSubscriptionTypes(array $subscriptionTypes): void
+    {
+        $this->subscriptionTypes = $subscriptionTypes;
     }
 }

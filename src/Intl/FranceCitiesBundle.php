@@ -95,10 +95,8 @@ class FranceCitiesBundle
 
     /**
      * Returns the city for the given postal code and INSEE code or null if the city was not found.
-     *
-     * @return string|null
      */
-    public static function getCity(string $postalCode, ?string $inseeCode)
+    public static function getCity(string $postalCode, ?string $inseeCode): ?string
     {
         return self::$cities[$postalCode][$inseeCode] ?? self::$cities[$postalCode][ltrim($inseeCode, '0')] ?? null;
     }
@@ -119,6 +117,21 @@ class FranceCitiesBundle
         }
 
         return $citiesByInsee;
+    }
+
+    public static function getCityInseeCode(string $postalCode, string $name): ?string
+    {
+        $normalizedName = self::canonicalizeCityName($name);
+
+        $cities = self::getPostalCodeCities($postalCode);
+
+        foreach ($cities as $inseeCode => $cityName) {
+            if (self::canonicalizeCityName($cityName) === $normalizedName) {
+                return $inseeCode;
+            }
+        }
+
+        return null;
     }
 
     /**

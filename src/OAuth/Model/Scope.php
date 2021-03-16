@@ -11,7 +11,12 @@ use MyCLabs\Enum\Enum;
  * @method static READ_USERS()
  * @method static READ_UNSUBCRIPTIONS()
  * @method static READ_TYPEFORMS()
+ * @method static READ_STATS()
  * @method static JECOUTE_SURVEYS()
+ * @method static JEMARCHE_APP()
+ * @method static CRM_PARIS()
+ * @method static READ_PROFILE()
+ * @method static WRITE_PROFILE()
  */
 final class Scope extends Enum implements ScopeEntityInterface
 {
@@ -28,6 +33,8 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const JECOUTE_SURVEYS = 'jecoute_surveys';
     public const JEMARCHE_APP = 'jemarche_app';
     public const CRM_PARIS = 'crm_paris';
+    public const READ_PROFILE = 'read:profile';
+    public const WRITE_PROFILE = 'write:profile';
 
     public function __toString()
     {
