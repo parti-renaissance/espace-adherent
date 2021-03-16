@@ -16,6 +16,7 @@ class TerritorialCouncilExtension extends AbstractExtension
             new TwigFunction('get_votes_stats', [TerritorialCouncilRuntime::class, 'getVotesStats']),
             new TwigFunction('get_available_genders_for_candidacy', [NationalCouncilCandidacyConfigurator::class, 'getAvailableGenders']),
             new TwigFunction('get_needed_qualities_for_national_council_designation', [NationalCouncilCandidacyConfigurator::class, 'getNeededQualitiesForNationalCouncilDesignation']),
+            new TwigFunction('get_all_coterr_candidacy_invitations_for_membership', [TerritorialCouncilRuntime::class, 'getAllCoterrCandidacyInvitationsForMembership']),
         ];
     }
 }

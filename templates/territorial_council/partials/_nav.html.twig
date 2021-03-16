@@ -16,7 +16,7 @@
 
         {% if territorial_council.hasActiveElection and not territorial_council.currentElection.isResultPeriodStarted %}
             <li class="{{ is_active_route(app.request, ['app_territorial_council_candidacy_list', 'app_territorial_council_selected_candidacy_list']) ? 'active' }}" id="tab-candidacy-list">
-                <a href="{{ path("app_territorial_council#{route_part}_candidacy_list", route_params|merge({'_fragment': 'tab-candidacy-list'})) }}" class="tabs-nav__item">Candidatures au Copol</a>
+                <a href="{{ path("app_territorial_council#{route_part}_candidacy_list", route_params|merge({'_fragment': 'tab-candidacy-list'})) }}" class="tabs-nav__item">Candidatures</a>
             </li>
         {% endif %}
     </ul>

@@ -311,6 +311,18 @@
     }
 
     .national-council-candidacy--container {
+        .election-config-list {
+            list-style: disc;
+
+            li {
+                margin-left: 40px;
+
+                &:first-letter {
+                    text-transform: capitalize;
+                }
+            }
+        }
+
         .selected-memberships--row {
             & > .l__col--half {
                 & > .cursor--pointer {
@@ -355,6 +367,11 @@
                     &.is-error {
                         h4 {
                             color: $error;
+                        }
+
+                        .identity .candidate-gender.text--error {
+                            color: $error;
+                            border-color: $error;
                         }
 
                         .nok-img {

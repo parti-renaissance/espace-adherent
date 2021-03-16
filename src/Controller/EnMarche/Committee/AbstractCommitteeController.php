@@ -167,7 +167,7 @@ abstract class AbstractCommitteeController extends AbstractController
         CommitteeCandidacyRepository $repository
     ): Response {
         if (!$election = $committee->getCurrentElection()) {
-            $this->addFlash('warning', 'Une erreur est survenue');
+            $this->addFlash('error', 'Une erreur est survenue');
 
             return $this->redirectToRoute(sprintf('app_%s_committees_designations', $this->getSpaceType()));
         }

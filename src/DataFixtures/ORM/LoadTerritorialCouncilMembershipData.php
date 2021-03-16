@@ -100,10 +100,14 @@ class LoadTerritorialCouncilMembershipData extends Fixture implements DependentF
                 $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REGIONAL_COUNCILOR, 'Nord'));
             } elseif (0 === $i % 3) {
                 $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, 'Lille'));
-            } elseif (0 === $i % 2) {
+            } elseif (0 === $i % 2 || 0 === $i % 5) {
                 $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, 'Comité de Lille'));
             } else {
                 $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::DEPUTY, 'Député de Lille'));
+            }
+
+            if (40 === $i) {
+                $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REFERENT, '59'));
             }
         }
 

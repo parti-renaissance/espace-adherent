@@ -58,7 +58,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
                     $url = $this->urlGenerator->generate('app_committee_candidature_invitation_list', ['slug' => $committee->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
                     $params = ['committee_name' => $committee->getName()];
                 } else {
-                    $url = $this->urlGenerator->generate('app_territorial_council_candidature_invitation_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $url = $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
                     $params = ['quality' => $this->translator->trans('territorial_council.membership.quality.'.$candidacy->getQuality())];
                 }
 

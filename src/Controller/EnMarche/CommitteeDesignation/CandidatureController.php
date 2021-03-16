@@ -301,7 +301,7 @@ class CandidatureController extends AbstractController
         if (!$invitation->isPending()) {
             $this->addFlash('error', 'Vous ne pouvez pas décliner cette invitation');
 
-            return $this->redirectToRoute('app_territorial_council_candidature_invitation_list');
+            return $this->redirectToRoute('app_committee_candidature_invitation_list');
         }
 
         $this->candidatureManager->declineInvitation($invitation);
