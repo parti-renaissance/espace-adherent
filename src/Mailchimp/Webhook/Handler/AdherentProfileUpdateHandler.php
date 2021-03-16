@@ -7,7 +7,7 @@ use App\Mailchimp\Webhook\EventTypeEnum;
 use App\Membership\UserEvent;
 use App\Membership\UserEvents;
 use App\Subscription\SubscriptionHandler;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;

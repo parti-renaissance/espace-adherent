@@ -6,7 +6,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\AdherentMessage\Sender\SenderInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentMessageManager

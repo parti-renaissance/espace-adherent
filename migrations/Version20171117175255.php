@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20171117175255 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574AFE54D947');
         $this->addSql('ALTER TABLE group_feed_items DROP FOREIGN KEY FK_C35CDB43FE54D947');
@@ -33,7 +33,7 @@ class Version20171117175255 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_5387574A712CD107 ON events (citizen_action_category_id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A712CD107');
         $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574AB3584533');

@@ -6,7 +6,7 @@ use App\Entity\Email;
 use App\Mailer\Event\MailerEvent;
 use App\Mailer\Event\MailerEvents;
 use App\Repository\EmailRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EmailPersisterEventSubscriber implements EventSubscriberInterface

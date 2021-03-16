@@ -9,7 +9,7 @@ use App\Mailer\Event\MailerEvent;
 use App\Mailer\EventSubscriber\EmailPersisterEventSubscriber;
 use App\Mailer\Message\CommitteeMessageNotificationMessage;
 use App\Repository\EmailRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Tests\App\Test\Mailer\DummyEmailTemplate;

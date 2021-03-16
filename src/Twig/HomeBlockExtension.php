@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\HomeBlock;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

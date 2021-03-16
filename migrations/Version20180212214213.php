@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180212214213 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE event_user_documents (event_id INT UNSIGNED NOT NULL, user_document_id INT UNSIGNED NOT NULL, INDEX IDX_7D14491F71F7E88B (event_id), INDEX IDX_7D14491F6A24B1A2 (user_document_id), PRIMARY KEY(event_id, user_document_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE committee_feed_item_user_documents (committee_feed_item_id INT UNSIGNED NOT NULL, user_document_id INT UNSIGNED NOT NULL, INDEX IDX_D269D0AABEF808A3 (committee_feed_item_id), INDEX IDX_D269D0AA6A24B1A2 (user_document_id), PRIMARY KEY(committee_feed_item_id, user_document_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
@@ -18,7 +18,7 @@ class Version20180212214213 extends AbstractMigration
         $this->addSql('ALTER TABLE committee_feed_item_user_documents ADD CONSTRAINT FK_D269D0AA6A24B1A2 FOREIGN KEY (user_document_id) REFERENCES user_documents (id) ON DELETE CASCADE');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE event_user_documents DROP FOREIGN KEY FK_7D14491F6A24B1A2');
         $this->addSql('ALTER TABLE committee_feed_item_user_documents DROP FOREIGN KEY FK_D269D0AA6A24B1A2');

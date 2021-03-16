@@ -221,7 +221,7 @@ up:
 	$(DOCKER_COMPOSE) up -d --remove-orphans
 
 perm:
-	$(EXEC) chmod -R 777 var app/data/images app/data/files
+	$(EXEC) chmod -R 777 app/data/images app/data/files
 	$(EXEC) chmod 660 var/public.key var/private.key
 
 # Rules from files

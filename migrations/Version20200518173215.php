@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use App\Entity\UserListDefinitionEnum;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20200518173215 extends AbstractMigration
 {
@@ -42,7 +42,7 @@ final class Version20200518173215 extends AbstractMigration
           has_followed_training has_followed_training TINYINT(1) DEFAULT \'0\' NOT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $this->connection->insert('user_list_definition', [
             'type' => UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,

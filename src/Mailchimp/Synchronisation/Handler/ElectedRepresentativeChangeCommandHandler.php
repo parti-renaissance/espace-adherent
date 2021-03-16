@@ -6,7 +6,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommandInterface;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;

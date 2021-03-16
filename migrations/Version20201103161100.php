@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20201103161100 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->connection->executeQuery(
             'INSERT INTO event_group_category (`name`, `slug`) VALUES (\'Évènements de campagne\', \'evenements-de-campagne\')',
@@ -28,7 +28,7 @@ class Version20201103161100 extends AbstractMigration
         ]);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }

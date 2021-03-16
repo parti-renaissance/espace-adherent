@@ -3,19 +3,19 @@
 namespace Migrations;
 
 use Cocur\Slugify\Slugify;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180219104140 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE citizen_action_categories ADD slug VARCHAR(100) NOT NULL');
         $this->addSql('ALTER TABLE events_categories ADD slug VARCHAR(100) NOT NULL');
         $this->addSql('ALTER TABLE citizen_project_categories ADD slug VARCHAR(100) NOT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         foreach ($this->connection->fetchAll('SELECT id, name FROM citizen_action_categories') as $category) {
             $slugify = new Slugify();
@@ -52,7 +52,7 @@ class Version20180219104140 extends AbstractMigration
         $this->connection->executeQuery('CREATE UNIQUE INDEX citizen_project_category_slug_unique ON citizen_project_categories (slug)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('DROP INDEX citizen_action_category_slug_unique ON citizen_action_categories');
         $this->addSql('ALTER TABLE citizen_action_categories DROP slug');

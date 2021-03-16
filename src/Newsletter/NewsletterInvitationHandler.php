@@ -5,7 +5,7 @@ namespace App\Newsletter;
 use App\Entity\NewsletterInvite;
 use App\Mailer\MailerService;
 use App\Mailer\Message\NewsletterInvitationMessage;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class NewsletterInvitationHandler

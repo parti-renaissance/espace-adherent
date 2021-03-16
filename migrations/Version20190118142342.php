@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use App\Entity\AdherentTagEnum;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190118142342 extends AbstractMigration
 {

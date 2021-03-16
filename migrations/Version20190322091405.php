@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190322091405 extends AbstractMigration
 {
-    public function preUp(Schema $schema)
+    public function preUp(Schema $schema): void
     {
         $this->connection->executeUpdate(
             'UPDATE adherent_message_filters AS f 

@@ -11,7 +11,7 @@ use App\Repository\AdherentMessageRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\MunicipalEventRepository;
 use App\Security\Voter\MunicipalChiefVoter;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

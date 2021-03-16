@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180524165445 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql(
 <<<'SQL'
@@ -28,7 +28,7 @@ SQL
         $this->addSql('ALTER TABLE adherent_email_subscription_history_referent_tag ADD CONSTRAINT FK_6FFBE6E89C262DB3 FOREIGN KEY (referent_tag_id) REFERENCES referent_tags (id) ON DELETE CASCADE');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('DELETE FROM adherent_email_subscription_history_referent_tag');
         $this->addSql('DELETE FROM adherent_email_subscription_histories');

@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use App\Entity\Donation;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180502142950 extends AbstractMigration
 {

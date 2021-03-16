@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Entity\ApplicationRequest\RunningMateRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

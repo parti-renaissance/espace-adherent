@@ -2,8 +2,8 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20181102165220 extends AbstractMigration
 {
@@ -29,7 +29,7 @@ final class Version20181102165220 extends AbstractMigration
         $this->addSql('ALTER TABLE jecoute_survey CHANGE published published TINYINT(1) NOT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $this->connection->executeUpdate("UPDATE jecoute_question SET discr = 'question'");
     }

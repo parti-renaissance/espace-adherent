@@ -4,7 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\Adherent;
 use App\Entity\ReferentSpaceAccessInformation;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

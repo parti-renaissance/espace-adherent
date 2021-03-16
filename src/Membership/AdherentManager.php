@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Repository\AdherentRepository;
 use Cake\Chronos\Chronos;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class AdherentManager
 {

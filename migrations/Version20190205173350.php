@@ -2,8 +2,8 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190205173350 extends AbstractMigration
 {
@@ -12,7 +12,7 @@ final class Version20190205173350 extends AbstractMigration
         $this->addSql('ALTER TABLE ideas_workshop_theme ADD position SMALLINT UNSIGNED NOT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $position = 1;
 

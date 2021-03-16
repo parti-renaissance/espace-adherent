@@ -3,7 +3,7 @@
 namespace App\Donation;
 
 use App\Repository\AdherentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DonatorSubscriber implements EventSubscriberInterface

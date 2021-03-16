@@ -7,7 +7,7 @@ use App\Mailchimp\Manager;
 use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
 use App\Newsletter\NewsletterValueObject;
 use App\Repository\NewsletterSubscriptionRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class MailchimpSyncNewsletterSubscriptionEntityCommandHandler implements MessageHandlerInterface

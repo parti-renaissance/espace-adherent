@@ -8,7 +8,7 @@ use App\Form\Jecoute\RegionType;
 use App\Jecoute\RegionManager;
 use App\Repository\Geo\RegionRepository as GeoRegionRepository;
 use App\Repository\Jecoute\RegionRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +30,7 @@ class JecouteRegionController extends AbstractController
      */
     public function editJecouteRegion(
         Request $request,
-        ObjectManager $manager,
+        EntityManagerInterface $manager,
         GeoRegionRepository $geoRegionRepository,
         RegionRepository $regionRepository,
         RegionManager $regionManager

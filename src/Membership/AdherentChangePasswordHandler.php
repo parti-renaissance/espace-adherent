@@ -3,7 +3,7 @@
 namespace App\Membership;
 
 use App\Entity\Adherent;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdherentChangePasswordHandler

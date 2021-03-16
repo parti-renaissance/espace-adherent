@@ -6,7 +6,7 @@ use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -19,7 +19,7 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
     public function __construct(
         AdherentMessageRepository $repository,
         Manager $mailchimpManager,
-        ObjectManager $entityManager
+        EntityManagerInterface $entityManager
     ) {
         $this->repository = $repository;
         $this->mailchimpManager = $mailchimpManager;

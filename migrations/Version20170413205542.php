@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20170413205542 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE clarifications ADD keywords VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE proposals ADD keywords VARCHAR(255) DEFAULT NULL');
@@ -17,7 +17,7 @@ class Version20170413205542 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2074E575EA9FDD75 ON pages (media_id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE articles DROP keywords');
         $this->addSql('ALTER TABLE clarifications DROP keywords');

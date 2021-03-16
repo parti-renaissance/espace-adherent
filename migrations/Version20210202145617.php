@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use App\Event\EventTypeEnum;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20210202145617 extends AbstractMigration
 {

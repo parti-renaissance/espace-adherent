@@ -5,7 +5,7 @@ namespace App\TonMacron;
 use App\Entity\TonMacronFriendInvitation;
 use App\Mailer\MailerService;
 use App\Mailer\Message\TonMacronFriendMessage;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;
 

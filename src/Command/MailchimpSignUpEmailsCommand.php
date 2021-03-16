@@ -6,7 +6,7 @@ use App\Entity\SubscriptionType;
 use App\Mailchimp\SignUp\SignUpHandler;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command;

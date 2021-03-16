@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20171227163801 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('UPDATE pages SET slug=\'emmanuel-macron\' WHERE slug= \'emmanuel-macron-ce-que-je-suis\'');
         $this->addSql('UPDATE pages SET slug=\'emmanuel-macron/revolution\' WHERE slug= \'emmanuel-macron-revolution\'');
@@ -20,7 +20,7 @@ class Version20171227163801 extends AbstractMigration
         $this->addSql('UPDATE pages SET slug=\'nos-offres\' WHERE slug= \'jobs\'');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('UPDATE pages SET slug=\'emmanuel-macron-ce-que-je-suis\' WHERE slug= \'emmanuel-macron\'');
         $this->addSql('UPDATE pages SET slug=\'emmanuel-macron-revolution\' WHERE slug= \'emmanuel-macron/revolution\'');

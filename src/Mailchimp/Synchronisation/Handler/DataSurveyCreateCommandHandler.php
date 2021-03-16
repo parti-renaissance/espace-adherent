@@ -9,7 +9,7 @@ use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\DataSurveyCommandInterface;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\DataSurveyRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -30,7 +30,7 @@ class DataSurveyCreateCommandHandler implements MessageHandlerInterface, LoggerA
         DataSurveyRepository $dataSurveyRepository,
         ZoneRepository $zoneRepository,
         ZoneMatcher $zoneMatcher,
-        ObjectManager $entityManager
+        EntityManagerInterface $entityManager
     ) {
         $this->manager = $manager;
         $this->entityManager = $entityManager;

@@ -5,7 +5,7 @@ namespace App\Event;
 use App\Entity\CommitteeFeedItem;
 use App\Entity\Event\CommitteeEvent;
 use App\Events;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventCommandHandler

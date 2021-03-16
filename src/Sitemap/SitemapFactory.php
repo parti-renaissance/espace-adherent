@@ -13,7 +13,7 @@ use App\Entity\OrderArticle;
 use App\Entity\Page;
 use App\Exception\SitemapException;
 use App\Repository\MediaRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tackk\Cartographer\ChangeFrequency;

@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20191011155432 extends AbstractMigration
 {

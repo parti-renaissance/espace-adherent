@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20171229105402 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE timeline_measures (id BIGINT AUTO_INCREMENT NOT NULL, title VARCHAR(100) NOT NULL, link VARCHAR(255) DEFAULT NULL, status VARCHAR(50) NOT NULL, updated_at DATETIME NOT NULL, global TINYINT(1) DEFAULT \'0\' NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE timeline_measures_profiles (measure_id BIGINT NOT NULL, profile_id BIGINT NOT NULL, INDEX IDX_B83D81AE5DA37D00 (measure_id), INDEX IDX_B83D81AECCFA12B8 (profile_id), PRIMARY KEY(measure_id, profile_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
@@ -21,7 +21,7 @@ class Version20171229105402 extends AbstractMigration
         $this->addSql('ALTER TABLE timeline_themes_measures ADD CONSTRAINT FK_EB8A7B0C5DA37D00 FOREIGN KEY (measure_id) REFERENCES timeline_measures (id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE timeline_measures_profiles DROP FOREIGN KEY FK_B83D81AE5DA37D00');
         $this->addSql('ALTER TABLE timeline_themes_measures DROP FOREIGN KEY FK_EB8A7B0C5DA37D00');

@@ -7,7 +7,7 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use App\Exception\EventRegistrationException;
 use App\Repository\EventRegistrationRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class EventRegistrationManager
 {

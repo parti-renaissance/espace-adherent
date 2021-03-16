@@ -7,7 +7,7 @@ use App\Entity\Event\EventInvite;
 use App\Mailer\MailerService;
 use App\Mailer\Message\EventInvitationMessage;
 use App\Routing\RemoteUrlGenerator;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class EventInvitationHandler
 {

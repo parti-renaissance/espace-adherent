@@ -7,7 +7,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\DonationThanksMessage;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Lexik\Bundle\PayboxBundle\Event\PayboxEvents;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;
 use Psr\Log\LoggerInterface;

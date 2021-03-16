@@ -11,7 +11,7 @@ use App\Entity\ReferentTeamMember;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Security\Core\Security;

@@ -7,7 +7,7 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CitizenAction;
 use App\Entity\Event\CommitteeEvent;
 use App\Events;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180108135550 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         // Profiles
         $this->addSql('CREATE TABLE timeline_profile_translations (id INT AUTO_INCREMENT NOT NULL, translatable_id BIGINT DEFAULT NULL, title VARCHAR(100) NOT NULL, slug VARCHAR(100) NOT NULL, description LONGTEXT NOT NULL, locale VARCHAR(10) NOT NULL, INDEX IDX_41B3A6DA2C2AC5D3 (translatable_id), UNIQUE INDEX UNIQ_41B3A6DA2C2AC5D34180C698 (translatable_id, locale), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
@@ -45,7 +45,7 @@ SQL
         $this->addSql('ALTER TABLE timeline_measures DROP title');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // Profiles
         $this->addSql('ALTER TABLE timeline_profiles ADD title VARCHAR(100) NOT NULL COLLATE utf8_unicode_ci, ADD slug VARCHAR(100) NOT NULL COLLATE utf8_unicode_ci, ADD description LONGTEXT NOT NULL COLLATE utf8_unicode_ci');

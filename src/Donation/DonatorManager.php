@@ -4,7 +4,7 @@ namespace App\Donation;
 
 use App\Entity\DonatorIdentifier;
 use App\Repository\DonatorIdentifierRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class DonatorManager
 {

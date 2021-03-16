@@ -5,7 +5,7 @@ namespace App\Mailchimp\Synchronisation\Handler;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class AddApplicationRequestCandidateCommandHandler implements MessageHandlerInterface

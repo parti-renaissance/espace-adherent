@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\ReferentTag;
 use App\Repository\ReferentTagRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Command\Command;
