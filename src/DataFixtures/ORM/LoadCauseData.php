@@ -116,13 +116,11 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
         Adherent $author,
         bool $withImage = false
     ): Cause {
-        $cause = new Cause(
-            Uuid::fromString($uuid),
-            $name,
-            $description,
-            $coalition,
-            $author
-        );
+        $cause = new Cause(Uuid::fromString($uuid));
+        $cause->setCoalition($coalition);
+        $cause->setName($name);
+        $cause->setDescription($description);
+        $cause->setAuthor($author);
 
         if ($withImage) {
             $cause->setImage(new UploadedFile(

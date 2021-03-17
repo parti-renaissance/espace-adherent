@@ -8,8 +8,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
+use App\Entity\AuthorInterface;
 use App\Entity\EntityFollowersTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityNameSlugTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\FollowedInterface;
 use App\Entity\FollowerInterface;
@@ -20,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,11 +35,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "normalization_context": {
  *             "groups": {"cause_read", "image_owner_exposed"}
  *         },
+ *         "denormalization_context": {
+ *             "groups": {"cause_write"}
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
  *             "path": "/causes",
  *         },
+ *         "post": {
+ *             "path": "/v3/causes",
+ *             "access_control": "is_granted('IS_AUTHENTICATED_FULLY')",
+ *             "normalization_context": {"groups": {"cause_read"}}
+ *         }
  *     },
  *     itemOperations={
  *         "get": {
@@ -69,9 +80,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     )
  * })
+ *
+ * @UniqueEntity(fields={"name"})
  */
-class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedInterface
+class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedInterface, AuthorInterface
 {
+    use EntityNameSlugTrait;
     use EntityIdentityTrait;
     use TimestampableEntity;
     use ImageTrait;
@@ -93,16 +107,21 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"cause_read"})
+     * @SymfonySerializer\Groups({"cause_read", "cause_write"})
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text")
      *
-     * @SymfonySerializer\Groups({"cause_read"})
+     * @SymfonySerializer\Groups({"cause_read", "cause_write"})
+     *
+     * @Assert\NotBlank
      */
     private $description;
 
@@ -119,34 +138,17 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition", inversedBy="causes")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @SymfonySerializer\Groups({"cause_read"})
+     * @SymfonySerializer\Groups({"cause_read", "cause_write"})
+     *
+     * @Assert\NotBlank
      */
     private $coalition;
 
-    public function __construct(
-        UuidInterface $uuid = null,
-        string $name = null,
-        string $description = null,
-        Coalition $coalition = null,
-        Adherent $author = null
-    ) {
+    public function __construct(UuidInterface $uuid = null)
+    {
         $this->uuid = $uuid ?? Uuid::uuid4();
-        $this->name = $name;
-        $this->description = $description;
-        $this->coalition = $coalition;
-        $this->author = $author;
 
         $this->followers = new ArrayCollection();
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
     }
 
     public function getDescription(): string
@@ -177,5 +179,10 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function createFollower(Adherent $adherent): FollowerInterface
     {
         return new CauseFollower($this, $adherent);
+    }
+
+    public function setAuthor(Adherent $adherent): void
+    {
+        $this->author = $adherent;
     }
 }

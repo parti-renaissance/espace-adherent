@@ -14,7 +14,15 @@ trait EntityNameSlugTrait
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "idea_vote_read", "adherent_committees_modal", "jecoute_region_read"})
+     * @SymfonySerializer\Groups({
+     *     "idea_list_read",
+     *     "my_committees",
+     *     "idea_vote_read",
+     *     "adherent_committees_modal",
+     *     "jecoute_region_read",
+     *     "cause_read",
+     *     "cause_write",
+     * })
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $name;
@@ -33,7 +41,13 @@ trait EntityNameSlugTrait
      *
      * @Gedmo\Slug(fields={"canonicalName"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "adherent_committees_modal", "jecoute_region_read"})
+     * @SymfonySerializer\Groups({
+     *     "idea_list_read",
+     *     "my_committees",
+     *     "adherent_committees_modal",
+     *     "jecoute_region_read",
+     *     "cause_read",
+     * })
      * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
      */
     protected $slug;
