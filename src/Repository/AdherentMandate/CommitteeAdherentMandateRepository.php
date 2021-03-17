@@ -2,6 +2,7 @@
 
 namespace App\Repository\AdherentMandate;
 
+use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
@@ -127,6 +128,7 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
         Committee $committee,
         string $reason,
         \DateTime $finishAt = null,
+        string $quality = null,
         string $gender = null
     ): void {
         $qb = $this->createQueryBuilder('m')
@@ -141,6 +143,18 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
                 'reason' => $reason,
             ])
         ;
+
+        if ($quality) {
+            if (CommitteeAdherentMandateTypeEnum::TYPE_DESIGNED_ADHERENT) {
+                // null value for DesignedAdherent mandate
+                $qb->andWhere('m.quality IS NULL');
+            } else {
+                $qb
+                    ->andWhere('m.quality = :quality')
+                    ->setParameter('quality', $quality)
+                ;
+            }
+        }
 
         if ($gender) {
             $qb
