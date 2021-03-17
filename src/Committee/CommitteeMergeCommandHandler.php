@@ -100,7 +100,6 @@ class CommitteeMergeCommandHandler
             ));
 
             $this->mandateRepository->closeCommitteeMandate($sourceCommittee, AbstractAdherentMandate::REASON_COMMITTEE_MERGE);
-            $this->mandateRepository->closeCommitteeMandate($destinationCommittee, AbstractAdherentMandate::REASON_COMMITTEE_MERGE);
 
             $this->em->flush();
 

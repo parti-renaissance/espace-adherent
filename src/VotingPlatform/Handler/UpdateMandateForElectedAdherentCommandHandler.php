@@ -56,6 +56,9 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
                     $election->getElectionEntity()->getCommittee(),
                     AbstractAdherentMandate::REASON_ELECTION,
                     $election->getVoteEndDate(),
+                    DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ?
+                        CommitteeAdherentMandateTypeEnum::TYPE_SUPERVISOR :
+                        CommitteeAdherentMandateTypeEnum::TYPE_DESIGNED_ADHERENT,
                     $designation->getPools() ? current($designation->getPools()) : null
                 );
 

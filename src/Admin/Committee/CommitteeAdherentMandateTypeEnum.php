@@ -7,6 +7,7 @@ use MyCLabs\Enum\Enum;
 class CommitteeAdherentMandateTypeEnum extends Enum
 {
     public const TYPE_SUPERVISOR = 'supervisor';
+    public const TYPE_DESIGNED_ADHERENT = 'designed_adherent';
 
     public const SUPERVISOR_FEMALE = 'supervisor_female';
     public const SUPERVISOR_MALE = 'supervisor_male';

@@ -91,9 +91,8 @@ Feature: Merge committees from admin panel
     And I should see "francis.brioul@yahoo.com"
     And I should see 0 ".label-primary:contains('Co-animateur')" elements
     When I am on "/admin/committee/1/mandates"
-    And I should see "Pas de mandats" in the ".committee-active-mandates tbody tr" element
-    Then I should see 1 ".committee-active-mandates tbody tr" elements
-    And I should see 5 ".committee-inactive-mandates tbody tr" elements
+    Then I should see 3 ".committee-active-mandates tbody tr" elements
+    And I should see 2 ".committee-inactive-mandates tbody tr" elements
 
     Given I clean the queues
     And I am on "/admin/app/reporting-committeemergehistory/list"
