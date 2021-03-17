@@ -155,6 +155,11 @@ class Zone implements GeoInterface
         return Zone::CITY === $this->type;
     }
 
+    public function isRegion(): bool
+    {
+        return Zone::REGION === $this->type;
+    }
+
     public function isCityGrouper(): bool
     {
         return \in_array($this->type, [

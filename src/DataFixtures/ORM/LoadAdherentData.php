@@ -203,6 +203,7 @@ class LoadAdherentData extends Fixture implements DependentFixtureInterface
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-4'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_canton_9209'));
+        $adherent5->addCharter(new CandidateCharter());
         $adherent5->addCharter(new CommitteeHostCharter());
         $this->addReference('adherent-5', $adherent5);
 

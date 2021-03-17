@@ -5,8 +5,7 @@ namespace App\Admin\Jecoute;
 use App\Entity\Geo\Region as GeoRegion;
 use App\Entity\Jecoute\Region;
 use App\Jecoute\RegionColorEnum;
-use League\Flysystem\AdapterInterface;
-use League\Flysystem\FilesystemInterface;
+use App\Jecoute\RegionManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -17,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RegionAdmin extends AbstractAdmin
 {
@@ -28,13 +26,13 @@ class RegionAdmin extends AbstractAdmin
         '_sort_by' => 'label',
     ];
 
-    private $storage;
+    private $regionManager;
 
-    public function __construct(string $code, string $class, string $baseControllerName, FilesystemInterface $storage)
+    public function __construct(string $code, string $class, string $baseControllerName, RegionManager $regionManager)
     {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->storage = $storage;
+        $this->regionManager = $regionManager;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -113,7 +111,7 @@ class RegionAdmin extends AbstractAdmin
     {
         parent::prePersist($region);
 
-        $this->handleFile($region);
+        $this->regionManager->handleFile($region);
     }
 
     /**
@@ -123,7 +121,7 @@ class RegionAdmin extends AbstractAdmin
     {
         parent::preUpdate($region);
 
-        $this->handleFile($region);
+        $this->regionManager->handleFile($region);
     }
 
     /**
@@ -133,69 +131,6 @@ class RegionAdmin extends AbstractAdmin
     {
         parent::postRemove($region);
 
-        if ($region->hasBannerUploaded()) {
-            $filePath = $region->getBannerPathWithDirectory();
-
-            if ($this->storage->has($filePath)) {
-                $this->storage->delete($filePath);
-            }
-        }
-    }
-
-    public function handleFile(Region $region): void
-    {
-        $filepath = $region->getBannerPathWithDirectory();
-
-        if ($region->getRemoveBanner() && $this->storage->has($filepath)) {
-            $this->storage->delete($filepath);
-            $region->removeBanner();
-
-            return;
-        }
-
-        $this->uploadLogo($region);
-        $this->uploadBanner($region);
-    }
-
-    public function uploadLogo(Region $region): void
-    {
-        $uploadedFile = $region->getLogoFile();
-
-        if (null === $uploadedFile) {
-            return;
-        }
-
-        if (!$uploadedFile instanceof UploadedFile) {
-            throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
-        }
-
-        $region->setLogoFromUploadedFile();
-
-        $this->storage->put(
-            $region->getLogoPathWithDirectory(),
-            file_get_contents($uploadedFile->getPathname()),
-            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
-        );
-    }
-
-    public function uploadBanner(Region $region): void
-    {
-        $uploadedFile = $region->getBannerFile();
-
-        if (null === $uploadedFile) {
-            return;
-        }
-
-        if (!$uploadedFile instanceof UploadedFile) {
-            throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
-        }
-
-        $region->setBannerFromUploadedFile();
-
-        $this->storage->put(
-            $region->getBannerPathWithDirectory(),
-            file_get_contents($uploadedFile->getPathname()),
-            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
-        );
+        $this->regionManager->removeBanner($region);
     }
 }

@@ -381,6 +381,7 @@ security:
         ROLE_CANDIDATE_REGIONAL_HEADED:
             - ROLE_CANDIDATE
             - ROLE_JECOUTE_NEWS
+            - ROLE_JECOUTE_REGION
 
         ROLE_CANDIDATE_REGIONAL_LEADER:
             - ROLE_CANDIDATE

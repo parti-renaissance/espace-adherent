@@ -16,6 +16,7 @@ class DelegatedAccessesVoter extends Voter
     private const HAS_DELEGATED_ACCESS_COMMITTEE = 'HAS_DELEGATED_ACCESS_COMMITTEE';
     private const HAS_DELEGATED_ACCESS_MESSAGES = 'HAS_DELEGATED_ACCESS_MESSAGES';
     private const HAS_DELEGATED_ACCESS_JECOUTE = 'HAS_DELEGATED_ACCESS_JECOUTE';
+    private const HAS_DELEGATED_ACCESS_JECOUTE_REGION = 'HAS_DELEGATED_ACCESS_JECOUTE_REGION';
     private const HAS_DELEGATED_ACCESS_JECOUTE_NEWS = 'HAS_DELEGATED_ACCESS_JECOUTE_NEWS';
     private const HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS = 'HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS';
     private const HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES = 'HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES';
@@ -61,6 +62,8 @@ class DelegatedAccessesVoter extends Voter
                 return \in_array(DelegatedAccess::ACCESS_MESSAGES, $delegatedAccess->getAccesses(), true);
             case self::HAS_DELEGATED_ACCESS_JECOUTE:
                 return \in_array(DelegatedAccess::ACCESS_JECOUTE, $delegatedAccess->getAccesses(), true);
+            case self::HAS_DELEGATED_ACCESS_JECOUTE_REGION:
+                return \in_array(DelegatedAccess::ACCESS_JECOUTE_REGION, $delegatedAccess->getAccesses(), true);
             case self::HAS_DELEGATED_ACCESS_JECOUTE_NEWS:
                 return \in_array(DelegatedAccess::ACCESS_JECOUTE_NEWS, $delegatedAccess->getAccesses(), true);
             case self::HAS_DELEGATED_ACCESS_CITIZEN_PROJECTS:
