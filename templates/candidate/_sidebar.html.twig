@@ -54,7 +54,7 @@
                 </li>
             {% endif %}
 
-            {% if is_granted('ROLE_JECOUTE_NEWS') %}
+            {% if is_granted('ROLE_JECOUTE_NEWS') or is_granted('HAS_DELEGATED_ACCESS_JECOUTE_NEWS') %}
                 <li class="{{ is_active_route(app.request, 'app_jecoute_news_candidate_*') ? 'active' }}">
                     <a href="{{ path('app_jecoute_news_candidate_news_list') }}">Actualités</a>
                 </li>

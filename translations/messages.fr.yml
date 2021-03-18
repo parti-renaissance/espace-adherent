@@ -942,6 +942,7 @@ delegated_access.form.access.events: Événements
 delegated_access.form.access.adherents: Adhérents
 delegated_access.form.access.committee: Comités
 delegated_access.form.access.jecoute: Questionnaires
+delegated_access.form.access.jecoute_news: Actualités
 delegated_access.form.access.citizen_projects: Projets citoyens
 delegated_access.form.access.elected_representatives: Élus
 delegated_access.form.access.files: Documents
