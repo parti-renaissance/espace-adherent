@@ -106,6 +106,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             DelegatedAccess::ACCESS_EVENTS,
             DelegatedAccess::ACCESS_FILES,
             DelegatedAccess::ACCESS_JECOUTE,
+            DelegatedAccess::ACCESS_JECOUTE_NEWS,
         ]);
         $delegatedAccess8->setRestrictedCities(['77288', '59002']);
         $delegatedAccess8->setRestrictedCommittees([$this->getReference('committee-4')]);
