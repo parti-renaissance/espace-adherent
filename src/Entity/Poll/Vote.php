@@ -3,6 +3,7 @@
 namespace App\Entity\Poll;
 
 use App\Entity\Adherent;
+use App\Entity\Device;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,10 +41,34 @@ class Vote
      */
     private $adherent;
 
-    public function __construct(Choice $choice, ?Adherent $adherent = null)
+    /**
+     * @var Device|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Device")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $device;
+
+    public function __construct(Choice $choice, ?Adherent $adherent = null, ?Device $device = null)
     {
         $this->choice = $choice;
         $this->adherent = $adherent;
+        $this->device = $device;
+    }
+
+    public static function createForAdherent(Choice $choice, Adherent $adherent): self
+    {
+        return new self($choice, $adherent);
+    }
+
+    public static function createForDevice(Choice $choice, Device $device): self
+    {
+        return new self($choice, null, $device);
+    }
+
+    public static function createForAnonymous(Choice $choice): self
+    {
+        return new self($choice);
     }
 
     public function getId(): ?int
@@ -59,5 +84,10 @@ class Vote
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;
+    }
+
+    public function getDevice(): ?Device
+    {
+        return $this->device;
     }
 }

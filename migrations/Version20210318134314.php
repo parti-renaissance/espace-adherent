@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20210208043223 extends AbstractMigration
+final class Version20210318134314 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -24,10 +24,12 @@ final class Version20210208043223 extends AbstractMigration
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           choice_id INT UNSIGNED NOT NULL, 
           adherent_id INT UNSIGNED DEFAULT NULL, 
+          device_id INT UNSIGNED DEFAULT NULL, 
           created_at DATETIME NOT NULL, 
           updated_at DATETIME NOT NULL, 
           INDEX IDX_ED568EBE998666D1 (choice_id), 
           INDEX IDX_ED568EBE25F06C53 (adherent_id), 
+          INDEX IDX_ED568EBE94A4C7D4 (device_id), 
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE poll (
@@ -54,6 +56,12 @@ final class Version20210208043223 extends AbstractMigration
           poll_vote 
         ADD 
           CONSTRAINT FK_ED568EBE25F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) ON DELETE 
+        SET 
+          NULL');
+        $this->addSql('ALTER TABLE 
+          poll_vote 
+        ADD 
+          CONSTRAINT FK_ED568EBE94A4C7D4 FOREIGN KEY (device_id) REFERENCES devices (id) ON DELETE 
         SET 
           NULL');
         $this->addSql('ALTER TABLE 
