@@ -2337,6 +2337,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->certifiedAt;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"user_profile", "profile_read"})
+     */
     public function isCertified(): bool
     {
         return null !== $this->certifiedAt;
