@@ -123,6 +123,7 @@ Feature:
       "use_nickname": false,
       "elected": false,
       "larem": false,
+      "certified": false,
       "comments_cgu_accepted": false,
       "detailed_roles": [
         {
@@ -170,6 +171,7 @@ Feature:
       "elected": false,
       "larem": true,
       "comments_cgu_accepted": false,
+      "certified": true,
       "detailed_roles": [],
       "emailAddress":"jacques.picard@en-marche.fr",
       "firstName":"Jacques",

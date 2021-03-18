@@ -28,6 +28,7 @@ Feature:
         "postal_code": "73100",
         "nickname": "pont",
         "use_nickname": false,
+        "certified": false,
         "comments_cgu_accepted": false,
         "elected": false,
         "larem": false,

@@ -40,6 +40,7 @@ Feature:
           "number": "01 11 22 33 44"
         },
         "birthdate": "1950-07-08T00:00:00+01:00",
+        "certified": false,
         "facebook_page_url": null,
         "twitter_page_url": null,
         "linkedin_page_url": null,
