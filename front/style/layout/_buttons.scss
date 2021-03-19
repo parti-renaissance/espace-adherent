@@ -15,7 +15,6 @@
     box-sizing: border-box;
     font-family: $font-gillsans;
     border-radius: 0;
-    font-weight: normal;
     line-height: 24px;
     font-weight: 500;
 
@@ -66,7 +65,6 @@
     border: 1px solid transparent;
     padding: 18px 30px;
     font-weight: bold;
-    background: white;
     color: white;
     @include text--default;
     transition: all 0.45s;
@@ -346,6 +344,7 @@ input {
 .btn--as-link {
     &--error {
         color: $red;
+
         &:hover {
             border-color: $red;
             color: $red;
@@ -585,7 +584,7 @@ button.btn {
 
         &:hover {
             path {
-                stroke: rgba(0,0,0,.4);
+                stroke: rgba(0, 0, 0, .4);
             }
         }
 

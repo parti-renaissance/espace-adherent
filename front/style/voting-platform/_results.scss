@@ -116,7 +116,9 @@
                                 border-left: 1px solid $lines-grey;
                                 border-bottom: 1px solid $lines-grey;
 
-                                &:last-child { border-right: 1px solid $lines-grey; }
+                                &:last-child {
+                                    border-right: 1px solid $lines-grey;
+                                }
 
                                 &.elected {
                                     min-width: 340px;
@@ -153,7 +155,9 @@
                                 box-sizing: border-box;
                                 border-left: 1px solid $lines-grey;
 
-                                &:last-child { border-right: 1px solid $lines-grey; }
+                                &:last-child {
+                                    border-right: 1px solid $lines-grey;
+                                }
 
                                 &.elected {
                                     min-width: 340px;
@@ -347,6 +351,7 @@
                         align-self: center;
                     }
                 }
+
                 &__progress {
                     display: block;
                 }
@@ -355,10 +360,24 @@
     }
 
     &__mention--bg {
-        &__excellent { background-color: $excellent; }
-        &__very_good { background-color: $very-good; }
-        &__good { background-color: $good; }
-        &__fair { background-color: $fair; }
-        &__insufficient { background-color: $insufficient; }
+        &__excellent {
+            background-color: $excellent;
+        }
+
+        &__very_good {
+            background-color: $very-good;
+        }
+
+        &__good {
+            background-color: $good;
+        }
+
+        &__fair {
+            background-color: $fair;
+        }
+
+        &__insufficient {
+            background-color: $insufficient;
+        }
     }
 }

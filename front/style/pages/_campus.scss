@@ -83,12 +83,12 @@
                     top: -40px;
                     height: 500px;
                     background-image: url('/images/campus/campus-computer.png'),
-                                      url('/images/campus/campus-notebook.png'),
-                                      url('/images/campus/campus-plane.png'),
-                                      url('/images/campus/campus-flag.png');
+                    url('/images/campus/campus-notebook.png'),
+                    url('/images/campus/campus-plane.png'),
+                    url('/images/campus/campus-flag.png');
                     background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
                     background-size: 160px, 80px, 215px, 0;
-                    background-position: 85% 0%, 32% 1%, 5% 25%, 90% bottom;
+                    background-position: 85% 0, 32% 1%, 5% 25%, 90% bottom;
                 }
             }
 

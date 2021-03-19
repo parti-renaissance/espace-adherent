@@ -187,7 +187,6 @@
     margin: 0;
     -webkit-transition: -webkit-transform 0.5s ease 0s;
     transition: -webkit-transform 0.5s ease 0s;
-    transition: transform 0.5s ease 0s;
     transition: transform 0.5s ease 0s, -webkit-transform 0.5s ease 0s;
 }
 
@@ -249,11 +248,13 @@
     height: 30px;
     width: 30px;
 }
+
 @media (max-width: 400px) {
     .carousel {
         max-width: 300px;
     }
 }
+
 @-webkit-keyframes carousel-show-slide {
     from {
         opacity: 0;
@@ -263,6 +264,7 @@
         opacity: 1;
     }
 }
+
 @keyframes carousel-show-slide {
     from {
         opacity: 0;

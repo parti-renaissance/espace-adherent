@@ -9,7 +9,7 @@
         top: 0;
         bottom: 0;
         left: 0;
-        width: calc((100% - 1200px) / 2 );
+        width: calc((100% - 1200px) / 2);
         min-width: 200px;
 
         @media (min-width: $tablet) {
@@ -102,12 +102,12 @@
 
             &:not(:first-child)::before {
                 content: '';
-                display : inline-block;
-                height : 0;
-                width : 0;
-                border-top : 5px solid transparent;
-                border-bottom : 5px solid transparent;
-                border-left : 5px solid $silver-grey;
+                display: inline-block;
+                height: 0;
+                width: 0;
+                border-top: 5px solid transparent;
+                border-bottom: 5px solid transparent;
+                border-left: 5px solid $silver-grey;
                 opacity: 0.4;
                 margin: 0 10px;
             }
@@ -171,6 +171,7 @@
                 &:before {
                     opacity: 0;
                 }
+
                 &:after {
                     opacity: 1;
                 }
@@ -195,7 +196,7 @@
         .icn-close {
             position: absolute;
             cursor: pointer;
-            right: 0px;
+            right: 0;
             top: 15px;
             opacity: 0.5;
 
@@ -272,6 +273,7 @@
 
             &.leading-measure {
                 color: $pink--hit;
+
                 &::before {
                     background-color: $pink--hit;
                 }
@@ -279,6 +281,7 @@
 
             &.basic-measure {
                 color: $blue--dodger;
+
                 &::before {
                     background-color: $blue--dodger;
                 }
@@ -286,6 +289,7 @@
 
             &.project {
                 color: $green--ocean;
+
                 &::before {
                     background-color: $green--ocean;
                 }

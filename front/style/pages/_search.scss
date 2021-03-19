@@ -101,14 +101,13 @@
 
         .search-city {
             border: 0;
-            background: none;
             color: white;
             @include text--body;
             margin-left: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, .5);
             transition: all .2s;
             box-sizing: border-box;
-            background-repeat: no-repeat;
+            background: none no-repeat;
             background-size: contain;
         }
 
@@ -136,7 +135,6 @@
                     display: flex;
                     align-items: center;
                     height: 100%;
-                    padding: 0 20px;
                     width: 100%;
                     box-sizing: border-box;
                     padding: 16px 20px 14px;
@@ -217,7 +215,7 @@
 
             > div,
             > a {
-              margin-top: 5px;
+                margin-top: 5px;
             }
 
             .btn {

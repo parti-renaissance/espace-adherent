@@ -99,6 +99,7 @@
             &:before {
                 opacity: 0;
             }
+
             &:after {
                 opacity: 1;
             }
@@ -211,6 +212,7 @@
             &:before {
                 opacity: 0;
             }
+
             &:after {
                 opacity: 1;
             }
@@ -218,7 +220,7 @@
     }
 
     &--content {
-      width: 32%;
+        width: 32%;
     }
 
     &--1,
@@ -368,6 +370,7 @@
                 &:before {
                     opacity: 0;
                 }
+
                 &:after {
                     opacity: 1;
                 }
@@ -398,15 +401,13 @@
 
     @media (max-width: $tablet + 100px) {
         .card--small {
-            .background-container
-            .background {
+            .background-container .background {
                 height: 160px;
             }
         }
 
         .card--medium {
-            .background-container
-            .background {
+            .background-container .background {
                 height: 280px;
             }
         }
@@ -528,7 +529,7 @@
                         background: $gradient-hover;
                         background-repeat: no-repeat;
                         background-position: center;
-                   }
+                    }
                 }
 
                 .background-container {
@@ -693,11 +694,25 @@
         text-transform: uppercase;
         margin-bottom: 15px;
 
-        &--adi { color : $blue--adi; }
-        &--committee { color : $blue; }
-        &--event { color : $pink; }
-        &--citizen { color : $yellow--orange; }
-        &--instance { color : $green--territory; }
+        &--adi {
+            color: $blue--adi;
+        }
+
+        &--committee {
+            color: $blue;
+        }
+
+        &--event {
+            color: $pink;
+        }
+
+        &--citizen {
+            color: $yellow--orange;
+        }
+
+        &--instance {
+            color: $green--territory;
+        }
     }
 
     &__title {

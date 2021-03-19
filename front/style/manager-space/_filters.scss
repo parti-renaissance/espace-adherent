@@ -31,7 +31,7 @@
     margin: 0;
     height: 40px;
     border: solid $filter-field-border;
-    border-width: 1px 1px 1px 0px;
+    border-width: 1px 1px 1px 0;
     background-color: $white;
     line-height: 40px;
     text-align: center;
@@ -121,11 +121,11 @@
 
             &:disabled {
                 background-color: #EEF2F7;
-                color: rgba(123,136,155,0.5);
+                color: rgba(123, 136, 155, 0.5);
                 cursor: not-allowed;
 
                 &::placeholder {
-                    color: rgba(123,136,155,0.5) !important;
+                    color: rgba(123, 136, 155, 0.5) !important;
                 }
             }
         }
@@ -170,7 +170,7 @@
                     @include filter-radio-input;
                 }
 
-                input[type='radio']:checked+label {
+                input[type='radio']:checked + label {
                     font-weight: bold;
                     background: #f1f6ff;
                 }
@@ -183,6 +183,7 @@
                             flex-basis: 33%;
                         }
                     }
+
                     &--4 {
                         .filter__radio__tab {
                             flex-basis: 25%;
@@ -205,7 +206,7 @@
 
         .form__checkbox {
             input:disabled + .form__label {
-                color: rgba(123,136,155,0.5);
+                color: rgba(123, 136, 155, 0.5);
                 cursor: not-allowed;
 
                 &:before {

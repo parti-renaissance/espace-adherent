@@ -236,7 +236,7 @@
             width: 100%;
         }
 
-        .form__checkbox input[type="checkbox"]:checked+label:before {
+        .form__checkbox input[type="checkbox"]:checked + label:before {
             transition: all 1s;
             border-color: $green--apple;
             background: $green--apple;

@@ -27,7 +27,7 @@
         justify-content: center;
         background: $yellow;
         margin: -30px auto;
-        box-shadow: 0 2px 5px rgba(0,0,0,.15);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
         border-radius: 50%;
     }
 
@@ -79,7 +79,6 @@
         counter-increment: concrete-numbers;
         display: flex;
         width: 100%;
-        margin-bottom: 0.5rem;
         margin: 20px 0 0 20px;
         @include text--medium-small;
 

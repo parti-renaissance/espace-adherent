@@ -112,6 +112,7 @@ $purple: #8d9aff;
                         width: 99px;
                         background-color: rgba($yellow--europe, 0);
                     }
+
                     &.is-active,
                     &:hover {
                         border-color: $yellow--europe;
@@ -157,6 +158,7 @@ $purple: #8d9aff;
                 &.explorer-les-projects {
                     border-color: rgba($pink, 0);
                     width: 100%;
+
                     & span:after {
                         width: 94px;
                         background-color: rgba($pink, 0);
@@ -167,9 +169,11 @@ $purple: #8d9aff;
                             width: 58px;
                         }
                     }
+
                     &.is-active {
                         width: 100%;
                     }
+
                     &.is-active,
                     &:hover {
                         border-color: $pink;
@@ -191,6 +195,7 @@ $purple: #8d9aff;
                 @media (max-width: $tablet) {
                 }
             }
+
             .is--active {
                 border: 10px solid $yellow--europe;
 
@@ -215,6 +220,7 @@ $purple: #8d9aff;
             @include text--larger;
             margin-bottom: 40px;
         }
+
         h3 {
             @include text--medium-large;
             margin: 70px 0;
@@ -243,7 +249,6 @@ $purple: #8d9aff;
         a {
             color: $dark;
             border-bottom: 1px solid $yellow--europe;
-            transition: all 0.5s;
             font-size: 23px;
             letter-spacing: 0.3px;
             line-height: 1.5;
@@ -384,15 +389,16 @@ h3.citizen__helplist-header {
         background-color: white;
 
         @media (max-width: $mobile) {
-            padding: 0px;
+            padding: 0;
         }
+
         h2 {
             @include text--large;
             margin: 0;
             text-align: left;
 
             @media (max-width: $mobile) {
-                padding: 20px 0px 0px 20px;
+                padding: 20px 0 0 20px;
             }
         }
 
@@ -584,9 +590,9 @@ h3.citizen__helplist-header {
         padding: 3px;
 
         @media (max-width: $mobile) {
-          overflow: initial;
-          padding: 0;
-          margin-bottom: 24px;
+            overflow: initial;
+            padding: 0;
+            margin-bottom: 24px;
         }
 
         &--item {
@@ -677,18 +683,18 @@ h3.citizen__helplist-header {
 
     &__dropdown {
         .Select-control {
-          border-radius: 0;
-          border-color: $green-citizen;
-          border-width: 2px;
+            border-radius: 0;
+            border-color: $green-citizen;
+            border-width: 2px;
         }
 
         .Select-value {
-          line-height: 63px !important;
-          cursor: pointer;
+            line-height: 63px !important;
+            cursor: pointer;
         }
 
         .Select-input {
-          height: 63px !important;
+            height: 63px !important;
         }
     }
 }
@@ -731,6 +737,7 @@ h3.citizen__helplist-header {
             }
         }
     }
+
     &--green {
         position: relative;
         padding-bottom: 39.25%;
@@ -970,7 +977,7 @@ a.citizen__project__item {
 
         &:hover {
             transition: all 0.5s;
-            box-shadow: 10px 10px 47px 0px rgba(224, 224, 224, 1);
+            box-shadow: 10px 10px 47px 0 rgba(224, 224, 224, 1);
             cursor: pointer;
             border-bottom: 3px solid $pink !important;
             top: -4px;
@@ -1037,8 +1044,7 @@ a.citizen__project__item {
             flex-direction: column;
 
             .district {
-                color: $purple ;
-                text-align: center;
+                color: $purple;
                 font-size: 14px;
                 text-align: left;
             }
@@ -1056,6 +1062,7 @@ a.citizen__project__item {
             font-weight: initial;
         }
     }
+
     &__grid {
         display: flex;
         justify-content: flex-start;
@@ -1078,9 +1085,7 @@ a.citizen__project__item {
 
         &--more {
             appearance: none;
-            border: none;
             font-family: $font-gillsans;
-            color: white;
             font-size: 19px;
             padding: 12px 48px;
             letter-spacing: 0.5px;

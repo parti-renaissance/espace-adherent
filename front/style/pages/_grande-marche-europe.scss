@@ -82,7 +82,7 @@
                 height: 270px;
             }
 
-             ::-webkit-media-controls {
+            ::-webkit-media-controls {
                 display: none !important;
             }
         }
@@ -159,7 +159,6 @@
             position: relative;
             text-align: center;
             font-size: $text--size-extra-large--medium;
-            margin-bottom: 0.5em;
             line-height: 70px;
             width: 80%;
             margin: 0 auto;
@@ -201,7 +200,6 @@
                 transition: all 1.5s;
                 width: 40%;
                 padding: 20px;
-                font-size: 30px;
                 font-family: $font-roboto;
                 font-weight: 200;
                 margin: 0;

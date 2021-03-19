@@ -80,7 +80,7 @@
         margin: 0;
     }
 
-    &>p {
+    & > p {
         display: flex;
 
         &:hover {
@@ -116,7 +116,6 @@
             top: 0;
             left: 0;
             display: inline-block;
-            margin-left: -1px;
             margin-left: 0;
         }
 
@@ -131,7 +130,7 @@
         &--outer {
             border-left: 9px solid transparent;
             border-right: 8px solid transparent;
-            border-bottom: 14px solid rgba(0, 0 ,0 , 0.07);
+            border-bottom: 14px solid rgba(0, 0, 0, 0.07);
             height: auto;
             width: auto;
             left: 0;
@@ -155,7 +154,7 @@
         box-sizing: border-box;
 
         li {
-            font-size:15px;
+            font-size: 15px;
             line-height: 1.73;
             white-space: nowrap;
         }
@@ -211,6 +210,7 @@
         > ul, > div {
             flex: 1;
             border-right: 1px solid $gray--light;
+
             &:last-child {
                 border: 0;
             }
@@ -281,9 +281,10 @@
 
         ul {
             display: block;
+
             li a {
                 width: auto;
-           }
+            }
         }
     }
 }
@@ -313,8 +314,13 @@
         }
 
         &--mobile {
-            .head { margin-bottom: 5px; }
-            .items li { margin: 5px 0; }
+            .head {
+                margin-bottom: 5px;
+            }
+
+            .items li {
+                margin: 5px 0;
+            }
         }
     }
 }
@@ -332,7 +338,7 @@
 
 // ADHERENT DROPDOWN NAV LAYOUT
 .em-nav-dropdown {
-    position: initial!important;
+    position: initial !important;
 
     .em-dropdown--container {
         background-color: $white;
@@ -349,9 +355,11 @@
 
         ul {
             padding: 0;
+
             li {
                 a {
                     padding: 0;
+
                     &:hover {
                         background: transparent;
                     }
@@ -373,6 +381,8 @@
         flex-grow: 1;
         margin-right: 24px;
 
-        &:last-child { margin-right: 0; }
+        &:last-child {
+            margin-right: 0;
+        }
     }
 }
