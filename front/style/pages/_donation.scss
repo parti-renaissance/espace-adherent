@@ -6,7 +6,6 @@
 
     &__button,
     &__other {
-        border: 0;
         font-family: $font-roboto;
         cursor: pointer;
         width: 24%;
@@ -271,7 +270,7 @@
             margin: 0;
         }
 
-        &.donate-adhesion{
+        &.donate-adhesion {
             margin: auto;
 
             .amount-chooser {
@@ -454,8 +453,8 @@
                     border-radius: 3px;
                     color: $dark;
                     position: absolute;
-                    left: 0px;
-                    right: 0px;
+                    left: 0;
+                    right: 0;
                     bottom: 35px;
                     transition: 0.125s opacity ease-in-out;
                     -webkit-transition: 0.125s opacity ease-in-out;
@@ -542,7 +541,6 @@
         }
 
         svg {
-            margin-right: 5px;
             padding: 2px;
             border-radius: 30px;
             margin-right: 8px;
@@ -559,7 +557,7 @@
         svg {
             fill: white;
             background-color: transparent;
-            border: 1px solid rgba(255,255,255,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.25);
         }
     }
 }
@@ -705,7 +703,7 @@
             right: 0;
             bottom: 0;
             height: 438px;
-            background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5));
+            background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
         }
 
         &__container {
@@ -819,10 +817,10 @@
         }
 
         &.flipped {
-          -webkit-transform: rotateY(-180deg);
-          -moz-transform: rotateY(-180deg);
-          -ms-transform: rotateY(-180deg);
-          transform: rotateY(-180deg);
+            -webkit-transform: rotateY(-180deg);
+            -moz-transform: rotateY(-180deg);
+            -ms-transform: rotateY(-180deg);
+            transform: rotateY(-180deg);
         }
     }
 

@@ -15,7 +15,7 @@ body {
 
     // Sets the default color in case the visitor has changed them
     background-color: $defaultBackgroundColor;
-    color : $defaultTextColor;
+    color: $defaultTextColor;
 }
 
 svg path,
@@ -117,7 +117,9 @@ ul, li {
 ul {
     list-style: none;
 
-    &.circle { list-style: circle; }
+    &.circle {
+        list-style: circle;
+    }
 }
 
 hr {
@@ -204,7 +206,7 @@ table {
                 border: none;
 
                 &:hover {
-                    color: rgba(0,0,0,0.4);
+                    color: rgba(0, 0, 0, 0.4);
                 }
             }
 

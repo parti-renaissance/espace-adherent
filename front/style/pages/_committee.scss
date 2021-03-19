@@ -181,7 +181,7 @@
 
                 .dropdown-content {
                     background-color: #fff;
-                    box-shadow: 0 2px 4px 0 rgba(99,98,150,.25);
+                    box-shadow: 0 2px 4px 0 rgba(99, 98, 150, .25);
                     border-radius: 3px;
                     min-width: 200px;
                     padding: 5px 0;
@@ -367,6 +367,7 @@
             label {
                 margin-left: 5%;
             }
+
             select {
                 width: 90%;
                 margin-left: 5%;
@@ -501,6 +502,7 @@
                 content: '\f230';
             }
         }
+
         &--google_plus {
             .fa:before {
                 content: '\f2b3';
@@ -512,10 +514,8 @@
         // An event within the timeline
         background: $gray--lighter;
         min-height: 200px;
-        margin: 0 auto;
         display: flex;
-        margin-top: 20px;
-        margin-bottom: 10px;
+        margin: 20px auto 10px;
 
         &-map {
             width: 200px;
@@ -549,26 +549,32 @@
                         color: $black;
                     }
                 }
+
                 .box-header {
                     &:hover {
-                       h2 {
-                           color: $black--half;
-                       }
+                        h2 {
+                            color: $black--half;
+                        }
                     }
+
                     h2 {
                         margin-bottom: 15px;
                     }
+
                     .search-map {
                         max-height: 240px;
                     }
+
                     .fa {
                         margin-right: 5px;
                     }
                 }
+
                 .box-bottom {
                     h4 {
                         float: left;
                     }
+
                     .share {
                         float: right;
                         margin-right: 22px;
@@ -582,7 +588,7 @@
     .action-menu-oval {
         padding: 0;
 
-        &> a .oval {
+        & > a .oval {
             background-color: $white;
         }
     }
@@ -672,6 +678,7 @@
         label {
             display: block;
         }
+
         .form__checkbox label {
             display: flex;
         }

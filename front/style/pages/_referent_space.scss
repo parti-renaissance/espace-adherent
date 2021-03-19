@@ -12,7 +12,7 @@
             & > div {
                 &:before {
                     counter-increment: poll-choice-counter;
-                    content: "#" counter(poll-choice-counter) ;
+                    content: "#" counter(poll-choice-counter);
                     margin-right: 10px;
                     display: flex;
                     padding: 5px 13px;

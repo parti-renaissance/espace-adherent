@@ -17,10 +17,10 @@
         margin: 0 auto;
         width: 15px;
         height: 15px;
-        border: 6px solid rgba(239,239,239,1);
+        border: 6px solid rgba(239, 239, 239, 1);
         border-radius: 50%;
-        border-left-color: rgba(213,213,213,1);
-        border-top-color: rgba(213,213,213,1);
+        border-left-color: rgba(213, 213, 213, 1);
+        border-top-color: rgba(213, 213, 213, 1);
 
         &--small {
             animation: bigSpin .8s linear infinite;
@@ -46,6 +46,7 @@
     width: 35px;
     height: 35px;
 }
+
 .spin-loader {
     display: inline-block;
     vertical-align: middle;
@@ -64,6 +65,7 @@
     -webkit-animation: spinload 1.1s infinite linear;
     animation: spinload 1.1s infinite linear;
 }
+
 @-webkit-keyframes spinload {
     0% {
         -webkit-transform: rotate(0deg);

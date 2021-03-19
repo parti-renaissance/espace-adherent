@@ -109,14 +109,29 @@
                 background-position: left center;
                 background-repeat: no-repeat;
 
-                &.menu-section-informations { background-image: url('/images/icons/adherent_menu/default/informations.svg'); }
-                &.menu-section-informations.active { background-image: url('/images/icons/adherent_menu/active/informations.svg'); }
+                &.menu-section-informations {
+                    background-image: url('/images/icons/adherent_menu/default/informations.svg');
+                }
 
-                &.menu-section-activity { background-image: url('/images/icons/adherent_menu/default/activity.svg'); }
-                &.menu-section-activity.active { background-image: url('/images/icons/adherent_menu/active/activity.svg'); }
+                &.menu-section-informations.active {
+                    background-image: url('/images/icons/adherent_menu/active/informations.svg');
+                }
 
-                &.menu-section-documents { background-image: url('/images/icons/adherent_menu/default/documents.svg'); }
-                &.menu-section-documents.active { background-image: url('/images/icons/adherent_menu/active/documents.svg'); }
+                &.menu-section-activity {
+                    background-image: url('/images/icons/adherent_menu/default/activity.svg');
+                }
+
+                &.menu-section-activity.active {
+                    background-image: url('/images/icons/adherent_menu/active/activity.svg');
+                }
+
+                &.menu-section-documents {
+                    background-image: url('/images/icons/adherent_menu/default/documents.svg');
+                }
+
+                &.menu-section-documents.active {
+                    background-image: url('/images/icons/adherent_menu/active/documents.svg');
+                }
 
                 .icon-container {
                     width: 20px;

@@ -175,7 +175,7 @@
 
     &--sticky-scroll {
         position: sticky;
-        top: 0px;
+        top: 0;
         z-index: 4;
     }
 
@@ -250,8 +250,13 @@
                 }
             }
 
-            th:first-child { padding-left: 20px; }
-            th:last-child { padding-right: 20px; }
+            th:first-child {
+                padding-left: 20px;
+            }
+
+            th:last-child {
+                padding-right: 20px;
+            }
         }
     }
 
@@ -267,9 +272,8 @@
             }
 
             td {
-                padding: 16px 0;
                 line-height: normal;
-                padding-right: 20px;
+                padding: 16px 20px 16px 0;
 
                 &.adherent-identity {
                     .adherent-name {
@@ -353,6 +357,7 @@
 
                     &__1 {
                         color: $status-green;
+
                         &:before {
                             background-color: $status-green;
                         }
@@ -360,6 +365,7 @@
 
                     &__2 {
                         color: $silver-grey;
+
                         &:before {
                             border: 2px solid $silver-grey;
                         }
@@ -367,6 +373,7 @@
 
                     &__3 {
                         color: $status-red;
+
                         &:before {
                             border: 2px solid $status-red;
                         }
@@ -374,6 +381,7 @@
 
                     &__4 {
                         color: $status-orange;
+
                         &:before {
                             border: 2px solid $status-orange;
                         }
@@ -397,8 +405,13 @@
                 }
             }
 
-            td:first-child { padding-left: 20px; }
-            td:last-child { padding-right: 20px; }
+            td:first-child {
+                padding-left: 20px;
+            }
+
+            td:last-child {
+                padding-right: 20px;
+            }
         }
 
     }
@@ -553,7 +566,7 @@
         width: 14px;
         height: 14px;
         padding: 2px;
-        margin-right : 12px;
+        margin-right: 12px;
         border-radius: 1px;
         border: solid 1px $filter-field-border;
         background-color: #ffffff;

@@ -12,7 +12,6 @@
             justify-content: flex-end;
             box-sizing: border-box;
             background-color: $gray--muted;
-            position: relative;
             height: 180px;
             padding: 20px;
             border: none;
@@ -37,14 +36,26 @@
                 transition: opacity 0.125s;
             }
 
-            &::before { background: linear-gradient(20deg, rgba(0,0,0,0.6), rgba(0,0,0,0)); opacity: 1; }
-            &::after { background: linear-gradient(20deg, rgba(0,0,0,0.1), rgba(0,0,0,0.5)); opacity: 0; }
+            &::before {
+                background: linear-gradient(20deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+                opacity: 1;
+            }
+
+            &::after {
+                background: linear-gradient(20deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+                opacity: 0;
+            }
 
             &:hover {
                 transform: translateY(-1px);
 
-                &::before { opacity: 0; }
-                &::after { opacity: 1; }
+                &::before {
+                    opacity: 0;
+                }
+
+                &::after {
+                    opacity: 1;
+                }
             }
 
             h2 {

@@ -78,7 +78,7 @@
                 top: -50px;
                 height: 900px;
                 background-image: url('/images/campus/campus-plane.png'),
-                                  url('/images/campus/campus-notebook.png');
+                url('/images/campus/campus-notebook.png');
                 background-repeat: no-repeat, no-repeat;
                 background-size: 120px, 145px;
                 background-position: 80% 0, 20% 20%;
@@ -146,6 +146,7 @@
                 .mooc__week--right {
                     display: none;
                 }
+
                 .mooc__week--left {
                     order: 2;
                     text-align: left;

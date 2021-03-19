@@ -1,7 +1,6 @@
 .programme__banner,
 .bercy__banner {
     background-repeat: no-repeat;
-    background-size: cover;
     background-position: center 53%;
     background-size: 54%;
     background-color: black;
@@ -39,7 +38,6 @@
 .bercy__banner {
     background-color: #060608;
     background-position: left center;
-    background-size: 40%;
     background-size: contain;
 
     &:before,
@@ -86,7 +84,7 @@
                 text-align: center;
             }
 
-            div:child(2) {
+            div:nth-child(2) {
                 display: flex;
                 justify-content: center;
             }

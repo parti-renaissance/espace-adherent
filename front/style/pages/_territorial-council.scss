@@ -157,8 +157,7 @@
             }
 
             .role {
-                list-style: disc;
-                list-style-position: inside;
+                list-style: disc inside;
                 font-size: 14px;
             }
         }
@@ -241,7 +240,7 @@
                 max-width: 400px;
                 margin: 5px 0;
 
-                &__choice{
+                &__choice {
                     min-width: 40px;
                     margin-right: 10px;
                 }
@@ -401,10 +400,21 @@
 
 .quality-title {
     &-11,
-    &-10 { color: $green--territory; }
-    &-12 { color: $red--nation; }
-    &-15 { color: $blue; }
-    &-16 { color: $blue--dark; }
+    &-10 {
+        color: $green--territory;
+    }
+
+    &-12 {
+        color: $red--nation;
+    }
+
+    &-15 {
+        color: $blue;
+    }
+
+    &-16 {
+        color: $blue--dark;
+    }
 }
 
 .official-report {

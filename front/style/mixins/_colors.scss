@@ -1,6 +1,6 @@
 // Base colors
-$defaultBackgroundColor : white;
-$defaultTextColor : black;
+$defaultBackgroundColor: white;
+$defaultTextColor: black;
 
 // Colors
 $black: #000000;
@@ -123,7 +123,6 @@ $fair: #f8971d;
 $insufficient: #e14244;
 
 
-
 // Information modals
 // --yellow
 $inf-modl--text-yellow: #9a895f;
@@ -142,9 +141,9 @@ $google: #db4437;
 $instagram: #cd486b;
 
 // Gradients
-$gradient--light: linear-gradient(20deg ,rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-$gradient: linear-gradient(20deg ,rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
-$gradient-hover: linear-gradient(20deg , rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+$gradient--light: linear-gradient(20deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
+$gradient: linear-gradient(20deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+$gradient-hover: linear-gradient(20deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
 $filter: rgba(0, 0, 0, 0.3);
 $filter--pink: rgba(255, 54, 128, 0.80);
 $filter--dark: rgba(0, 0, 0, 0.75);

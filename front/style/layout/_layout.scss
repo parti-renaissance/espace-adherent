@@ -36,6 +36,7 @@
         &-left {
             margin-right: 30px;
         }
+
         @media (max-width: $tablet) {
             order: 2;
             margin: 0;
@@ -249,6 +250,7 @@
         }
     }
 }
+
 // Blocks
 .space {
     &--100-0 {
@@ -348,6 +350,7 @@
         &--none {
             margin: 0;
         }
+
         &--top-60 {
             margin-top: 60px;
         }
@@ -421,7 +424,7 @@
         }
 
         &--right-0 {
-            margin-right: 0px;
+            margin-right: 0;
         }
 
         &--right-nano {
@@ -469,6 +472,7 @@
         }
     }
 }
+
 // TODO: need better way to manage bg images, maybe a scss file just for that
 .topstory-side {
     flex: 1;
@@ -501,7 +505,7 @@
     }
 
     &--left {
-      @include flex(start, row);
+        @include flex(start, row);
     }
 }
 
@@ -553,7 +557,7 @@
         position: absolute;
         top: -10px;
         left: calc(50% - 25px);
-        font-family: "Roboto",Helvetica,sans-serif;
+        font-family: "Roboto", Helvetica, sans-serif;
         width: 50px;
         text-align: center;
     }
@@ -587,6 +591,7 @@
 
     &-buttonpane {
         margin-top: -4px;
+
         .ui-dialog-buttonset button {
             font-size: 1.2em;
             @include btn;

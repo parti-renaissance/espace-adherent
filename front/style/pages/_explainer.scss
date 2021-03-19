@@ -22,9 +22,8 @@
 
             > li {
                 @include text--medium;
-                padding: 20px 0 0;
                 list-style: disc outside url(/images/icons/icon__dot--blue.svg);
-                padding-left: 8px;
+                padding: 20px 0 0 8px;
 
                 a {
                     @include link--no-decor;
@@ -81,7 +80,7 @@
 
                     iframe {
                         position: absolute;
-                        top:0;
+                        top: 0;
                         left: 0;
                         width: 100%;
                         height: 100%;

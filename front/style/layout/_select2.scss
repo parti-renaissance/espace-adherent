@@ -1,5 +1,9 @@
 .select2 {
-    &.select2-container { font-family: $font-roboto; width: 100% !important;}
+    &.select2-container {
+        font-family: $font-roboto;
+        width: 100% !important;
+    }
+
     &.select2-container--default {
 
         // -------------------
@@ -112,9 +116,7 @@
                         }
 
                         .select2-selection__choice {
-                            margin: 0;
-                            margin-right: 6px;
-                            margin-bottom: 6px;
+                            margin: 0 6px 6px 0;
                             padding: 0 8px 0 2px;
                             border-radius: 2px;
                             background-color: $filter-tag-bkg;
@@ -146,8 +148,7 @@
 
             .select2-search--inline {
                 .select2-search__field {
-                    margin: 0;
-                    margin-bottom: 7px;
+                    margin: 0 0 7px;
                     height: 24px;
                     outline: 0;
                     float: none;
@@ -160,10 +161,10 @@
                     &--multiple {
                         background-color: #EEF2F7;
                         cursor: not-allowed;
-                        color: rgba(123,136,155,0.5);
+                        color: rgba(123, 136, 155, 0.5);
 
                         input::placeholder {
-                            color: rgba(123,136,155,0.5) !important;
+                            color: rgba(123, 136, 155, 0.5) !important;
                         }
 
                     }

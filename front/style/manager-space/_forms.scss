@@ -26,27 +26,28 @@
     transition: border 0.2s;
     -webkit-transition: border 0.2s;
 
-        &::placeholder {
-            color: $neutral-grey;
-            font-weight: normal;
-        }
+    &::placeholder {
+        color: $neutral-grey;
+        font-weight: normal;
+    }
+
+    &:hover {
+        border-color: $lines-hover-grey;
+    }
+
+    &:focus {
+        border-color: $blue--dark;
+    }
+
+    &:disabled {
+        background-color: $pale-grey;
+        color: $silver-grey;
+        cursor: default;
 
         &:hover {
-            border-color: $lines-hover-grey;
+            border-color: $lines-grey;
         }
-
-        &:focus {
-            border-color: $blue--dark;
-        }
-
-        &:disabled {
-            background-color: $pale-grey;
-            color: $silver-grey;
-            cursor: default;
-            &:hover {
-                border-color: $lines-grey;
-            }
-        }
+    }
 }
 
 .manager-space,

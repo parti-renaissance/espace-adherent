@@ -186,7 +186,6 @@
                     background-color: #f6f9fc;
                     transition: all 0.2s;
                     border-radius: 3px;
-                    border: solid 4px $black;
                     border-width: 0 0 0 4px;
 
                     &:hover {
@@ -243,11 +242,19 @@
 
     // // Espace-formation article page
     article {
-        h1 { @include text--medium-large }
-        h2 { @include text--medium }
-        h3 { @include text--medium-small }
+        h1 {
+            @include text--medium-large
+        }
 
-        h1,h2,h3,h4 {
+        h2 {
+            @include text--medium
+        }
+
+        h3 {
+            @include text--medium-small
+        }
+
+        h1, h2, h3, h4 {
             margin-bottom: 10px;
         }
     }

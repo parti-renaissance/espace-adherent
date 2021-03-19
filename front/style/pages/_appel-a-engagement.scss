@@ -91,9 +91,17 @@
                 height: 12px;
                 background: pink;
 
-                &:nth-child(1) { background-color: $red--nation; }
-                &:nth-child(2) { background-color: $white; }
-                &:nth-child(3) { background-color: $blue--nation; }
+                &:nth-child(1) {
+                    background-color: $red--nation;
+                }
+
+                &:nth-child(2) {
+                    background-color: $white;
+                }
+
+                &:nth-child(3) {
+                    background-color: $blue--nation;
+                }
             }
         }
     }

@@ -66,8 +66,7 @@
 @mixin em-form-legend {
     color: $neutral-grey;
     font-family: $font-roboto;
-    margin: 0;
-    margin-top: 5px;
+    margin: 5px 0 0;
     padding-bottom: 10px;
     font-size: 14px;
     line-height: normal;
@@ -76,8 +75,7 @@
 @mixin em-form-error {
     color: $error;
     font-family: $font-roboto;
-    margin: 0;
-    margin-top: 5px;
+    margin: 5px 0 0;
     padding-bottom: 10px;
     font-size: 14px;
     line-height: normal;
@@ -230,16 +228,37 @@
             }
         }
 
-        .em-form__field--ctn { position: relative; }
+        .em-form__field--ctn {
+            position: relative;
+        }
 
-        .em-form__field { @include em-form-field;}
-        textarea.em-form__field { @include em-form-textarea; }
-        select.em-form__field { @include em-form-select; }
-        .em-form__search { @include em-form-search; }
+        .em-form__field {
+            @include em-form-field;
+        }
 
-        & > .em-form__label { @include em-form-label; }
-        .em-form__legend { @include em-form-legend; }
-        .em-form--error { @include em-form-error; }
+        textarea.em-form__field {
+            @include em-form-textarea;
+        }
+
+        select.em-form__field {
+            @include em-form-select;
+        }
+
+        .em-form__search {
+            @include em-form-search;
+        }
+
+        & > .em-form__label {
+            @include em-form-label;
+        }
+
+        .em-form__legend {
+            @include em-form-legend;
+        }
+
+        .em-form--error {
+            @include em-form-error;
+        }
 
         .character-count {
             @include em-form-chars-count;
@@ -303,10 +322,21 @@
                 background-repeat: no-repeat;
                 background-position: center center;
 
-                &--fb { background-image: url('/images/icons/socials/facebook.svg'); }
-                &--tw { background-image: url('/images/icons/socials/twitter.svg'); }
-                &--lk { background-image: url('/images/icons/socials/linkedin.svg'); }
-                &--tl { background-image: url('/images/icons/socials/telegram.svg'); }
+                &--fb {
+                    background-image: url('/images/icons/socials/facebook.svg');
+                }
+
+                &--tw {
+                    background-image: url('/images/icons/socials/twitter.svg');
+                }
+
+                &--lk {
+                    background-image: url('/images/icons/socials/linkedin.svg');
+                }
+
+                &--tl {
+                    background-image: url('/images/icons/socials/telegram.svg');
+                }
 
             }
 
@@ -452,10 +482,21 @@
         }
 
         .em-form__width {
-            &--1 { flex-grow: 1; }
-            &--2 { flex-grow: 2; }
-            &--3 { flex-grow: 3; }
-            &--100 { width: 100%; }
+            &--1 {
+                flex-grow: 1;
+            }
+
+            &--2 {
+                flex-grow: 2;
+            }
+
+            &--3 {
+                flex-grow: 3;
+            }
+
+            &--100 {
+                width: 100%;
+            }
         }
     }
 
@@ -618,9 +659,9 @@ ul.em-form__autocomplete.ui-autocomplete {
                 right: 0;
                 bottom: 0;
                 background-color: $gray--light;
-                -webkit-transition: all .4s cubic-bezier(.35,0,.25,1);
-                -o-transition: all .4s cubic-bezier(.35,0,.25,1);
-                transition: all .4s cubic-bezier(.35,0,.25,1);
+                -webkit-transition: all .4s cubic-bezier(.35, 0, .25, 1);
+                -o-transition: all .4s cubic-bezier(.35, 0, .25, 1);
+                transition: all .4s cubic-bezier(.35, 0, .25, 1);
                 border-radius: 34px;
 
                 &:before {
@@ -632,9 +673,9 @@ ul.em-form__autocomplete.ui-autocomplete {
                     left: 2px;
                     bottom: 2px;
                     background-color: #a3a8ae;
-                    -webkit-transition: all .4s cubic-bezier(.35,0,.25,1);
-                    -o-transition: all .4s cubic-bezier(.35,0,.25,1);
-                    transition: all .4s cubic-bezier(.35,0,.25,1);
+                    -webkit-transition: all .4s cubic-bezier(.35, 0, .25, 1);
+                    -o-transition: all .4s cubic-bezier(.35, 0, .25, 1);
+                    transition: all .4s cubic-bezier(.35, 0, .25, 1);
                     -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
                 }

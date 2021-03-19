@@ -34,9 +34,23 @@
         .ornament {
             position: absolute;
 
-            &--3 { width: 230px; left: 0; top: 0; }
-            &--2 { width: 278px; left: calc(50% - (278px / 2)); top: 0;}
-            &--1 { width: 227px; right: 0; top: 0;}
+            &--3 {
+                width: 230px;
+                left: 0;
+                top: 0;
+            }
+
+            &--2 {
+                width: 278px;
+                left: calc(50% - (278px / 2));
+                top: 0;
+            }
+
+            &--1 {
+                width: 227px;
+                right: 0;
+                top: 0;
+            }
         }
     }
 
@@ -166,7 +180,7 @@
             }
         }
 
-        .election__ballots-detail  {
+        .election__ballots-detail {
             .candidate-gender {
                 display: inline-flex;
                 vertical-align: text-bottom;
@@ -220,10 +234,7 @@
             z-index: 3;
 
             @media (min-width: $tablet) {
-                margin-left: auto;
-                margin-right: initial;
-                margin-top: -200px;
-                margin-bottom: 50px;
+                margin: -200px initial 50px auto;
             }
         }
 
@@ -251,7 +262,7 @@
             position: relative;
             text-align: center;
 
-            >  svg {
+            > svg {
                 width: 100%;
                 max-width: 460px;
                 margin: 0 auto;
@@ -333,17 +344,36 @@
 
     &.voting-platform-theme {
         &__copol {
-            .candidate-names li::before { background-color: $green--territory; }
-            .election-results .candidate__box.elected { border: solid 3px $green--territory; }
-            .election-results .progress-bar__gauge .slider { background: $green--territory; }
+            .candidate-names li::before {
+                background-color: $green--territory;
+            }
+
+            .election-results .candidate__box.elected {
+                border: solid 3px $green--territory;
+            }
+
+            .election-results .progress-bar__gauge .slider {
+                background: $green--territory;
+            }
         }
 
         &__committee_adherent,
         &__committee_supervisor {
-            .candidate-names li::before { background-color: $blue; }
-            .election-results .candidate__box.elected { border: solid 3px $blue; }
-            .election-results .progress-bar__gauge .slider { background: $blue; }
-            .election-results .ballots-detail__candidates-group.elected { border-left: solid 3px $blue !important; }
+            .candidate-names li::before {
+                background-color: $blue;
+            }
+
+            .election-results .candidate__box.elected {
+                border: solid 3px $blue;
+            }
+
+            .election-results .progress-bar__gauge .slider {
+                background: $blue;
+            }
+
+            .election-results .ballots-detail__candidates-group.elected {
+                border-left: solid 3px $blue !important;
+            }
         }
 
         &__committee_adherent,
@@ -517,6 +547,7 @@
 
                     input[value="excellent"][type='radio']:checked + label {
                         border-color: $excellent;
+
                         &:before {
                             border-color: $excellent;
                         }
@@ -524,6 +555,7 @@
 
                     input[value="very_good"][type='radio']:checked + label {
                         border-color: $very-good;
+
                         &:before {
                             border-color: $very-good;
                         }
@@ -531,6 +563,7 @@
 
                     input[value="good"][type='radio']:checked + label {
                         border-color: $good;
+
                         &:before {
                             border-color: $good;
                         }
@@ -538,6 +571,7 @@
 
                     input[value="fair"][type='radio']:checked + label {
                         border-color: $fair;
+
                         &:before {
                             border-color: $fair;
                         }
@@ -545,6 +579,7 @@
 
                     input[value="insufficient"][type='radio']:checked + label {
                         border-color: $insufficient;
+
                         &:before {
                             border-color: $insufficient;
                         }
@@ -661,9 +696,33 @@
         background-color: $black;
     }
 
-    &__excellent { &:before { background-color: $excellent; } }
-    &__very_good { &:before { background-color: $very-good; } }
-    &__good { &:before { background-color: $good; } }
-    &__fair { &:before { background-color: $fair; } }
-    &__insufficient { &:before { background-color: $insufficient; } }
+    &__excellent {
+        &:before {
+            background-color: $excellent;
+        }
+    }
+
+    &__very_good {
+        &:before {
+            background-color: $very-good;
+        }
+    }
+
+    &__good {
+        &:before {
+            background-color: $good;
+        }
+    }
+
+    &__fair {
+        &:before {
+            background-color: $fair;
+        }
+    }
+
+    &__insufficient {
+        &:before {
+            background-color: $insufficient;
+        }
+    }
 }
