@@ -298,6 +298,25 @@ class ZoneRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findRegionByPostalCode(string $postalCode): ?Zone
+    {
+        return $this->createQueryBuilder('zone')
+            ->leftJoin('zone.children', 'child')
+            ->innerJoin(City::class, 'city', Join::WITH, 'child.code = city.code')
+            ->where('(city.postalCode LIKE :postal_code_1 OR city.postalCode LIKE :postal_code_2)')
+            ->andWhere('zone.type = :region AND child.type = :city')
+            ->setParameters([
+                'postal_code_1' => $postalCode.'%',
+                'postal_code_2' => '%,'.$postalCode.'%',
+                'region' => Zone::REGION,
+                'city' => Zone::CITY,
+            ])
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+        ;
+    }
+
     /**
      * Finds zones by coordinates of the point.
      *

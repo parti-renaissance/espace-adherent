@@ -18,7 +18,6 @@ use Ramsey\Uuid\Uuid;
 class LoadPollData extends Fixture implements DependentFixtureInterface
 {
     public const NATIONAL_POLL_01_UUID = '8adca369-938c-450b-92e9-9c2b1f206fa3';
-    public const NATIONAL_POLL_02_UUID = 'b2bf60e1-c1cf-4bbf-8371-913fdfa665b0';
     public const LOCAL_POLL_01_UUID = '655d7534-9592-4aed-83e6-cad8fbb3668f';
     public const LOCAL_POLL_02_UUID = 'c45f204d-cf49-4bf7-9a51-bd1fc89a7260';
     public const LOCAL_POLL_03_UUID = 'f91b332e-efef-4bf6-89ad-b9675e42a3f5';
@@ -154,8 +153,16 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
     private function addChoices(Poll $poll, array $choices): void
     {
         foreach ($choices as $value => $adherents) {
-            $choice = new Choice($value);
-            $poll->addChoice($choice);
+            foreach ($poll->getChoices() as $existingChoice) {
+                if ($value === $existingChoice->getValue()) {
+                    $choice = $existingChoice;
+                }
+            }
+
+            if (!isset($choice)) {
+                $choice = new Choice($value);
+                $poll->addChoice($choice);
+            }
 
             foreach ($adherents as $adherent) {
                 $vote = $this->createVote($choice, $adherent);

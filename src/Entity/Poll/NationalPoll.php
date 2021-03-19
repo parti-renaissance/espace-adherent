@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ApiResource(
@@ -52,6 +53,9 @@ class NationalPoll extends Poll
         return $this->administrator;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"poll_read"})
+     */
     public function getType(): string
     {
         return PollTypeEnum::NATIONAL;
