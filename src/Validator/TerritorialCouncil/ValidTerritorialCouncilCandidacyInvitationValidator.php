@@ -3,6 +3,7 @@
 namespace App\Validator\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\Candidacy;
+use App\Entity\TerritorialCouncil\CandidacyInvitation;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\TerritorialCouncil\Candidacy\NationalCouncilCandidacyConfigurator;
 use Symfony\Component\Validator\Constraint;
@@ -31,7 +32,7 @@ class ValidTerritorialCouncilCandidacyInvitationValidator extends ConstraintVali
         foreach ($candidacy->getInvitations() as $invitation) {
             if (0 > --$gendersConfig[$invitation->getMembership()->getAdherent()->getGender()]) {
                 $this->context
-                    ->buildViolation($constraint->messageInvalidGender)
+                    ->buildViolation($constraint->messageInvalidParity)
                     ->atPath('membership')
                     ->addViolation()
                 ;
@@ -39,9 +40,6 @@ class ValidTerritorialCouncilCandidacyInvitationValidator extends ConstraintVali
                 return;
             }
         }
-
-        $configQualities = NationalCouncilCandidacyConfigurator::getNeededQualitiesForNationalCouncilDesignation();
-        $foundCandidacy = [];
 
         foreach ($candidacy->getInvitations() as $invitation) {
             /** @var TerritorialCouncilMembership $invitedMembership */
@@ -68,34 +66,85 @@ class ValidTerritorialCouncilCandidacyInvitationValidator extends ConstraintVali
 
                 return;
             }
+        }
 
-            foreach ($configQualities as $index => $allowedQualities) {
-                if (array_intersect($allowedQualities, $invitedMembership->getQualityNames())) {
-                    if (\in_array($index, $foundCandidacy)) {
-                        $this->context
-                            ->buildViolation($constraint->messageInvalidQuality)
-                            ->atPath('invitations')
-                            ->addViolation()
-                        ;
+        if (!$this->isValidateMembers($candidacy)) {
+            $this->context
+                ->buildViolation($constraint->messageInvalidQuality)
+                ->atPath('invitations')
+                ->addViolation()
+            ;
 
-                        return;
-                    }
+            return;
+        }
+    }
 
-                    $foundCandidacy[] = $index;
+    private function isValidateMembers(Candidacy $candidacy): bool
+    {
+        $qualitiesToCheck = array_filter(NationalCouncilCandidacyConfigurator::getNeededQualitiesForNationalCouncilDesignation(), function (array $qualities) use ($candidacy) {
+            return !\in_array($candidacy->getQuality(), $qualities);
+        });
 
-                    continue 2;
+        $simplifiedInvitations = array_map(function (CandidacyInvitation $invitation): array {
+            return [
+                'uuid' => $invitation->getUuid()->toString(),
+                'qualities' => $invitation->getMembership()->getQualityNames(),
+            ];
+        }, $candidacy->getInvitations());
+
+        return $this->validateMembers($simplifiedInvitations, $qualitiesToCheck);
+    }
+
+    private function validateMembers(array $invitations, array $qualitiesToCheck): bool
+    {
+        if (\count($invitations) <= 0 || \count($qualitiesToCheck) <= 0) {
+            return true;
+        }
+
+        $invitationsCopy = $this->prepareInvitationsForValidation($invitations);
+        $invitationToCheck = array_shift($invitationsCopy);
+
+        if (0 === \count($invitationToCheck['qualities'])) {
+            foreach ($invitations as $invitationOriginal) {
+                if ($invitationOriginal['uuid'] === $invitationToCheck['uuid']) {
+                    break;
                 }
             }
 
-            if (3 !== \count($foundCandidacy)) {
-                $this->context
-                    ->buildViolation($constraint->messageInvalidParity)
-                    ->atPath('invitations')
-                    ->addViolation()
-                ;
+            $invitationToCheck['qualities'] = $invitationOriginal['qualities'];
+        }
 
-                return;
+        foreach ($qualitiesToCheck as $subQualities) {
+            foreach ($subQualities as $quality) {
+                if (\in_array($quality, $invitationToCheck['qualities'], true)) {
+                    return $this->validateMembers(
+                        array_filter($invitations, function (array $invitation) use ($invitationToCheck) {
+                            return $invitation['uuid'] !== $invitationToCheck['uuid'];
+                        }),
+                        array_filter($qualitiesToCheck, function (array $qualities) use ($quality) {
+                            return !\in_array($quality, $qualities);
+                        })
+                    );
+                }
             }
         }
+
+        return false;
+    }
+
+    private function prepareInvitationsForValidation(array $invitations): array
+    {
+        $qualitiesToDelete = array_keys(array_filter(
+            array_count_values(array_merge(...array_column($invitations, 'qualities'))),
+            function ($value) {
+                return $value > 1;
+            }
+        ));
+
+        array_walk($invitations, function (array &$invitation) use ($qualitiesToDelete) {
+            $invitation['qualities'] = array_diff($invitation['qualities'], $qualitiesToDelete);
+        });
+
+        return $invitations;
     }
 }

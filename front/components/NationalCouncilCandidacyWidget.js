@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -260,27 +261,69 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
     }
 
     isValidQualities() {
-        const members = {
-            ...{ 1: { qualities: [{ name: this.state.quality }] } },
-            ...this.state.activeMemberships,
-        };
+        const qualitiesToValidate = _.filter(
+            this.props.neededQualities,
+            qualities => -1 === qualities.indexOf(this.state.quality)
+        );
 
-        const foundKeys = [];
+        return this.validateMembers(
+            _.flatMap(this.state.activeMemberships, member => ({
+                uuid: member.uuid,
+                qualities: _.map(member.qualities, 'name'),
+            })),
+            qualitiesToValidate,
+        );
+    }
 
-        for (const [i, y] of Object.entries(members)) {
-            // eslint-disable-next-line no-restricted-syntax
-            for (const k in this.props.neededQualities) {
-                if (0 < _.intersection(this.props.neededQualities[k], _.map(y.qualities, 'name')).length) {
-                    if (-1 === foundKeys.indexOf(k)) {
-                        foundKeys.push(k);
-                    } else {
-                        return false;
-                    }
+    validateMembers(members, qualities) {
+        if (0 >= members.length || 0 >= qualities.length) {
+            return true;
+        }
+
+        const membersCopy = this._prepareMembersForValidation(_.cloneDeep(members));
+        const memberToCheck = membersCopy.shift();
+
+        if (0 === memberToCheck.qualities.length) {
+            const memberOriginal = _.find(members, member => member.uuid === memberToCheck.uuid);
+            memberToCheck.qualities = memberOriginal.qualities;
+        }
+
+        for (const subQualities of qualities) {
+            for (const quality of subQualities) {
+                if (-1 !== memberToCheck.qualities.indexOf(quality)) {
+                    return this.validateMembers(
+                        _.filter(members, member => member.uuid !== memberToCheck.uuid),
+                        _.filter(qualities, obj => -1 === obj.indexOf(quality))
+                    );
                 }
             }
         }
 
-        return 0 < foundKeys.length;
+        return false;
+    }
+
+    _prepareMembersForValidation(members) {
+        const qualitiesToDelete = [];
+
+        members.forEach((member) => {
+            _.forEach(member.qualities, (quality) => {
+                for (const anotherMember of members) {
+                    if (
+                        anotherMember.uuid !== member.uuid
+                        && -1 !== anotherMember.qualities.indexOf(quality)
+                        && -1 === qualitiesToDelete.indexOf(quality)
+                    ) {
+                        qualitiesToDelete.push(quality);
+                    }
+                }
+            });
+        });
+
+        members.forEach((member) => {
+            member.qualities = _.filter(member.qualities, quality => -1 === qualitiesToDelete.indexOf(quality));
+        });
+
+        return members;
     }
 
     handleCandidacyClick(membership) {
@@ -337,7 +380,6 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
     getQualityConfigText() {
         const neededQualities = [];
 
-        // eslint-disable-next-line no-restricted-syntax
         for (const k in this.props.neededQualities) {
             if (-1 === this.props.neededQualities[k].indexOf(this.state.quality)) {
                 if (1 < this.props.neededQualities[k].length) {

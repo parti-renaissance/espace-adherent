@@ -109,6 +109,10 @@ class LoadTerritorialCouncilMembershipData extends Fixture implements DependentF
             if (40 === $i) {
                 $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::REFERENT, '59'));
             }
+
+            if (32 === $i) {
+                $membership->addQuality(new TerritorialCouncilQuality(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, 'Comité de Lille'));
+            }
         }
 
         $manager->flush();
