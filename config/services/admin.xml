@@ -378,6 +378,7 @@
             <argument />
             <argument>App\Entity\Jecoute\Region</argument>
             <argument />
+            <argument type="service" id="App\Jecoute\RegionManager" />
         </service>
 
         <service id="app.admin.jecoute_suggested_question" class="App\Admin\JecouteSuggestedQuestionAdmin">
