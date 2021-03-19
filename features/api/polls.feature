@@ -59,7 +59,12 @@ Feature:
   }
   """
 
-  When I send a "POST" request to "/api/polls/26aba15c-b49a-4cb7-99ef-585e12bcff50/vote"
+  When I send a "POST" request to "/api/polls/vote" with body:
+    """
+    {
+      "uuid": "26aba15c-b49a-4cb7-99ef-585e12bcff50"
+    }
+    """
   Then the response status code should be 201
   And the response should be in JSON
   And the JSON should be equal to:
