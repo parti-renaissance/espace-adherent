@@ -66,6 +66,7 @@ class DelegatedAccess
     public const ACCESS_EVENTS = 'events';
     public const ACCESS_ADHERENTS = 'adherents';
     public const ACCESS_COMMITTEE = 'committee';
+    public const ACCESS_POLLS = 'polls';
     public const ACCESS_JECOUTE = 'jecoute';
     public const ACCESS_JECOUTE_REGION = 'jecoute_region';
     public const ACCESS_JECOUTE_NEWS = 'jecoute_news';

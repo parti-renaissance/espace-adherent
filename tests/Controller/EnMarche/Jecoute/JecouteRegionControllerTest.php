@@ -36,7 +36,7 @@ class JecouteRegionControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
         self::assertStringContainsString($linkName, $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
-        $crawler = $this->client->click($crawler->selectLink($linkName)->link());
+        $this->client->click($crawler->selectLink($linkName)->link());
 
         $this->assertResponseStatusCode(302, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/espace-candidat/utilisateurs', $this->client);

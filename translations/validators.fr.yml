@@ -230,6 +230,14 @@ jemarche.postal_code.not_blank: Vous devez entrer un code postal.
 jemarche.postal_code.invalid: Ce code postal n'est pas valide.
 
 #
+# Poll
+#
+poll.question.not_blank: La question est requise.
+poll.question.min_length: La question doit contenir au moins {{ limit }} caractères.
+poll.question.max_length: La question ne doit pas contenir plus de {{ limit }} caractères.
+poll.finish_at.not_null: La date de fin est requise.
+
+#
 # Election
 #
 election.rounds.min_count: Une élection doit avoir au moins un tour.

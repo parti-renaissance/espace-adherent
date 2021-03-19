@@ -1,0 +1,86 @@
+{% extends 'poll/_layout.html.twig' %}
+
+{% block polls_content %}
+    <div class="datagrid__table__tabs">
+        <div class="datagrid__pre-table b__nudge--bottom-larger">
+            <h3>Question du jour</h3>
+            <a href="{{ path("app_#{space_name}_polls_local_create") }}" class="btn-secondary btn-secondary--blue">
+                + Créer une question
+            </a>
+        </div>
+    </div>
+
+    <div class="datagrid">
+        <div class="b__nudge--bottom-larger">
+            <div class="datagrid__table-container">
+                <table class="datagrid__table-manager">
+                    <thead>
+                    <tr>
+                        <th style="width: 15px;">ID</th>
+                        <th>Nom de la question</th>
+                        <th style="width: 120px;">Date de création</th>
+                        <th style="width: 90px;">Date de fin</th>
+                        <th style="width: 30px;">Oui</th>
+                        <th style="width: 30px;">Non</th>
+                        <th>Zone</th>
+                        <th>Créateur</th>
+                        <th style="width: 90px;">Publication</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in polls %}
+                        {% set poll = item.0 %}
+                        <tr class="event__item">
+                            <td>{{ poll.id }}</td>
+                            <td>{{ poll.question }}</td>
+                            <td>{{ poll.createdAt|date('d/m/Y') }}</td>
+                            <td>{{ poll.finishAt|date('d/m/Y') }}</td>
+                            <td>{{ item.yes_count }}</td>
+                            <td>{{ item.no_count }}</td>
+                            <td>
+                                <span class="adherent-dashboard-tag">{{ ('geo_zone.'~poll.zone.type)|trans }}</span><br>
+                                <div class="b__nudge--top-10">{{ poll.zone }}</div>
+                            </td>
+                            <td>{{ poll.author ? poll.author.fullName : 'Ancien adhérent' }}</td>
+                            <td>
+                                <span class="status status__{{ poll.published ? '1' : '2' }}">
+                                    {{ poll.published ? 'Publiée' : 'Non publiée' }}
+                                </span>
+                            </td>
+                            <td>
+                                {% set publish = poll.isPublished ? 'unpublish' : 'publish' %}
+                                {% set items = [
+                                    {
+                                        href: path("app_#{space_name}_polls_local_edit", {uuid: poll.uuid}),
+                                        label: 'Editer',
+                                        linkAttr: {
+                                            class: 'row-action',
+                                        }
+                                    },
+                                    {
+                                        href: path("app_#{space_name}_polls_#{publish}", {uuid: poll.uuid}),
+                                        label: poll.isPublished ? 'Dépublier' : 'Publier',
+                                        linkAttr: {
+                                            class: 'row-action text--' ~ (poll.isPublished ? 'plue' : 'pink') ~ ' link--no-decor',
+                                        }
+                                    }
+                                ] %}
+
+                                {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="10" class="text--center">
+                                <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                Aucun résultat
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

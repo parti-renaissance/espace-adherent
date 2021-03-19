@@ -2,8 +2,6 @@
 
 namespace App\Entity\Poll;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Administrator;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,20 +13,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     collectionOperations={
- *         "get": {
- *             "path": "/polls",
- *             "method": "GET",
- *         }
- *     },
- *     attributes={
- *         "normalization_context": {"groups": {"poll_read"}},
- *         "order": {"finishAt": "ASC"}
- *     }
- * )
- *
- * @ORM\Entity(repositoryClass="App\Repository\Poll\PollRepository")
+ * @ORM\Entity
  *
  * @ORM\Table(
  *     name="poll",
@@ -36,8 +21,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\UniqueConstraint(name="poll_uuid_unique", columns="uuid")
  *     }
  * )
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     PollTypeEnum::LOCAL: "App\Entity\Poll\LocalPoll",
+ *     PollTypeEnum::NATIONAL: "App\Entity\Poll\NationalPoll"
+ * })
  */
-class Poll
+abstract class Poll
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -78,23 +69,20 @@ class Poll
     private $choices;
 
     /**
-     * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $createdBy;
+    private $published;
 
     public function __construct(
         UuidInterface $uuid = null,
         string $question = null,
         \DateTimeInterface $finishAt = null,
-        Administrator $createdBy = null
+        bool $published = false
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->question = $question;
         $this->finishAt = $finishAt;
-        $this->createdBy = $createdBy;
+        $this->published = $published;
         $this->choices = new ArrayCollection();
     }
 
@@ -118,19 +106,19 @@ class Poll
         return $this->finishAt;
     }
 
-    public function setFinishAt(\DateTimeInterface $finishAt): void
+    public function setFinishAt(?\DateTimeInterface $finishAt): void
     {
         $this->finishAt = $finishAt;
     }
 
-    public function getCreatedBy(): ?Administrator
+    public function isPublished(): bool
     {
-        return $this->createdBy;
+        return $this->published;
     }
 
-    public function setCreatedBy(?Administrator $createdBy): void
+    public function setPublished(bool $published): void
     {
-        $this->createdBy = $createdBy;
+        $this->published = $published;
     }
 
     /**

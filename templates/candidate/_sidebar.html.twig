@@ -52,6 +52,12 @@
                 </li>
             {% endif %}
 
+            {% if is_granted('ROLE_CANDIDATE_REGIONAL_HEADED') or is_granted('HAS_DELEGATED_ACCESS_POLLS') %}
+                <li class="{{ is_active_route(app.request, 'app_candidate_polls_*') ? 'active' }}">
+                    <a href="{{ path('app_candidate_polls_local_list') }}">Question du jour</a>
+                </li>
+            {% endif %}
+
             {% if is_granted('ROLE_JECOUTE_NEWS') or is_granted('HAS_DELEGATED_ACCESS_JECOUTE_NEWS') %}
                 <li class="{{ is_active_route(app.request, 'app_jecoute_news_candidate_*') ? 'active' }}">
                     <a href="{{ path('app_jecoute_news_candidate_news_list') }}">Actualités</a>
