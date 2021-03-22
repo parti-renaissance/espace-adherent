@@ -47,7 +47,7 @@ class CommitteeCandidacy extends BaseCandidacy
      *
      * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidacyInvitation", mappedBy="candidacy", cascade={"all"})
      *
-     * @Assert\Valid(groups={"invitation_edit"})
+     * @Assert\Count(value=1, groups={"invitation_edit"}, exactMessage="This value should not be blank.")
      */
     protected $invitations;
 

@@ -4,6 +4,7 @@ namespace App\Form\Committee;
 
 use App\Entity\CommitteeCandidacy;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +14,14 @@ class CandidacyBinomeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('invitation', CommitteeCandidacyInvitationType::class)
+            ->add('invitations', CollectionType::class, [
+                'entry_type' => CommitteeCandidacyInvitationType::class,
+                'error_bubbling' => false,
+                'allow_add' => true,
+                'entry_options' => [
+                    'label' => false,
+                ],
+            ])
             ->add('save', SubmitType::class)
         ;
     }
