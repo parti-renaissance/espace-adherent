@@ -121,7 +121,7 @@ class CandidacyManager
         $this->updateCandidature($candidacy);
 
         $this->eventDispatcher->dispatch(
-            new CandidacyInvitationEvent($candidacy, [$invitation], [$previouslyInvitedMembership]),
+            new CandidacyInvitationEvent($candidacy, [$invitation], $previouslyInvitedMembership ? [$previouslyInvitedMembership] : []),
             Events::CANDIDACY_INVITATION_UPDATE
         );
     }

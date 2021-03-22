@@ -22,9 +22,11 @@
             {{ form_errors(form) }}
 
             <div class="em-form__group">
-                {{ form_label(form.invitation, 'Sélectionnez un membre pour composer votre binôme', {label_attr: {class: 'em-form__label'}}) }}
+                {{ form_errors(form.invitations) }}
 
-                {{ form_widget(form.invitation) }}
+                {{ form_label(form.invitations, 'Sélectionnez un membre pour composer votre binôme', {label_attr: {class: 'em-form__label'}}) }}
+
+                {{ form_widget(form.invitations) }}
 
                 <div class="membership-widget-wrapper"></div>
             </div>
@@ -49,7 +51,6 @@
         Kernel.onLoad(function() {
             App.runCommitteeCandidacy(
                 '{{ committee.slug }}',
-                '#{{ form.invitation.membership.vars.id }}',
                 '#{{ form.save.vars.id }}',
                 '.membership-widget-wrapper'
             );

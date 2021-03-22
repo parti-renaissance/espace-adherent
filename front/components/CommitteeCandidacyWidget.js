@@ -7,7 +7,6 @@ export default class CommitteeCandidacyWidget extends React.Component {
     constructor(props) {
         super(props);
 
-        this.membershipInput = dom(props.membershipFieldSelector);
         this.submitButton = dom(props.submitButtonSelector);
 
         this.state = {
@@ -43,7 +42,7 @@ export default class CommitteeCandidacyWidget extends React.Component {
                         <div className="form__radio" key={key}>
                             <input
                                 type="radio"
-                                name={'candidacy_binome[invitation][membership]'}
+                                name={'candidacy_binome[invitations][0][membership]'}
                                 required="required" id={`membership_${membership.uuid}`} value={membership.uuid} />
 
                             <label className="form form__label required" htmlFor={`membership_${membership.uuid}`}>
@@ -136,6 +135,5 @@ export default class CommitteeCandidacyWidget extends React.Component {
 CommitteeCandidacyWidget.propTypes = {
     api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
     slug: PropTypes.string.isRequired,
-    membershipFieldSelector: PropTypes.string.isRequired,
     submitButtonSelector: PropTypes.string.isRequired,
 };
