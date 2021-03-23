@@ -89,16 +89,16 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     protected $invitations;
 
     /**
-     * @var CandidacyInterface|null
-     */
-    protected $binome;
-
-    /**
      * Helps to render two or single candidate
      *
      * @var bool
      */
     private $taken = false;
+
+    /**
+     * @var BaseCandidaciesGroup|null
+     */
+    protected $candidaciesGroup;
 
     public function __construct(string $gender = null, UuidInterface $uuid = null)
     {
@@ -242,6 +242,17 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
         return false;
     }
 
+    public function hasOnlyAcceptedInvitations(): bool
+    {
+        foreach ($this->invitations as $invitation) {
+            if (!$invitation->isAccepted()) {
+                return false;
+            }
+        }
+
+        return !$this->invitations->isEmpty();
+    }
+
     /**
      * @return CandidacyInvitationInterface[]
      */
@@ -278,27 +289,15 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
         $this->invitations->removeElement($invitation);
     }
 
-    public function getBinome(): ?CandidacyInterface
-    {
-        return $this->binome;
-    }
-
-    public function setBinome(?CandidacyInterface $binome): void
-    {
-        $this->binome = $binome;
-    }
-
     public function isOngoing(): bool
     {
         return $this->getElection()->isOngoing();
     }
 
-    public function updateFromBinome(): void
+    public function updateFromCandidacy(BaseCandidacy $candidacy): void
     {
-        if ($this->binome) {
-            $this->faithStatement = $this->binome->getFaithStatement();
-            $this->isPublicFaithStatement = $this->binome->isPublicFaithStatement();
-        }
+        $this->faithStatement = $candidacy->getFaithStatement();
+        $this->isPublicFaithStatement = $candidacy->isPublicFaithStatement();
     }
 
     public function isTaken(): bool
@@ -310,4 +309,56 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     {
         $this->taken = true;
     }
+
+    public function hasOtherCandidacies(): bool
+    {
+        return $this->candidaciesGroup && 0 < $this->candidaciesGroup->count();
+    }
+
+    /**
+     * @return CandidacyInterface[]
+     */
+    public function getOtherCandidacies(): array
+    {
+        if (!$this->candidaciesGroup) {
+            return [];
+        }
+
+        return array_filter($this->candidaciesGroup->getCandidacies(), function (CandidacyInterface $candidacy) {
+            return $candidacy !== $this;
+        });
+    }
+
+    public function getCandidaciesGroup(): ?BaseCandidaciesGroup
+    {
+        return $this->candidaciesGroup;
+    }
+
+    public function setCandidaciesGroup(?BaseCandidaciesGroup $candidaciesGroup): void
+    {
+        $this->candidaciesGroup = $candidaciesGroup;
+    }
+
+    public function candidateWith(CandidacyInterface $candidacy): void
+    {
+        if (null === $this->candidaciesGroup) {
+            $this->candidaciesGroup = $this->createCandidaciesGroup();
+            $this->candidaciesGroup->addCandidacy($this);
+        }
+
+        $this->candidaciesGroup->addCandidacy($candidacy);
+    }
+
+    public function syncWithOtherCandidacies(): void
+    {
+        if (!$this->hasOtherCandidacies()) {
+            return;
+        }
+
+        foreach ($this->candidaciesGroup->getCandidacies() as $candidacy) {
+            $candidacy->updateFromCandidacy($this);
+        }
+    }
+
+    abstract protected function createCandidaciesGroup(): BaseCandidaciesGroup;
 }

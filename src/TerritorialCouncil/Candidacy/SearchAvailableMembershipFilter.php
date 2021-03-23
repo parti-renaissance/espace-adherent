@@ -2,12 +2,8 @@
 
 namespace App\TerritorialCouncil\Candidacy;
 
-use App\Validator\TerritorialCouncil\ValidSearchAvailableMembershipFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ValidSearchAvailableMembershipFilter
- */
 class SearchAvailableMembershipFilter
 {
     /**
@@ -19,6 +15,8 @@ class SearchAvailableMembershipFilter
 
     /**
      * @var string|null
+     *
+     * @Assert\NotBlank(message="Veuillez utiliser la recherche pour retrouver des candidats")
      */
     private $query;
 

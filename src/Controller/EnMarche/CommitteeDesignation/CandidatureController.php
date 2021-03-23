@@ -256,10 +256,9 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        $acceptedBy->setBinome($invitedBy = $invitation->getCandidacy());
-        $invitedBy->setBinome($acceptedBy);
-
-        $acceptedBy->updateFromBinome();
+        $invitedBy = $invitation->getCandidacy();
+        $acceptedBy->setFaithStatement($invitedBy->getFaithStatement());
+        $acceptedBy->setIsPublicFaithStatement($invitedBy->isPublicFaithStatement());
 
         $form = $this
             ->createCandidacyForm($acceptedBy, ['validation_groups' => ['Default', 'accept_invitation']])

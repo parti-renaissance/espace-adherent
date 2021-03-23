@@ -3,6 +3,7 @@
 namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\Adherent;
+use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Validator\TerritorialCouncil\ValidTerritorialCouncilCandidacyInvitation;
@@ -66,6 +67,13 @@ class Candidacy extends BaseCandidacy
      */
     protected $binome;
 
+    /**
+     * @var CandidaciesGroup|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\CandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
+     */
+    protected $candidaciesGroup;
+
     public function __construct(
         TerritorialCouncilMembership $membership,
         Election $election,
@@ -113,23 +121,6 @@ class Candidacy extends BaseCandidacy
         $this->quality = $quality;
     }
 
-    public function updateFromBinome(): void
-    {
-        if ($this->binome) {
-            parent::updateFromBinome();
-
-            $this->quality = $this->binome->getQuality();
-        }
-    }
-
-    /**
-     * @Assert\IsTrue(groups={"accept_invitation"})
-     */
-    public function isValidForConfirmation(): bool
-    {
-        return $this->binome && $this->binome->hasInvitation() && $this->binome->isDraft();
-    }
-
     public function isCouncilor(): bool
     {
         return
@@ -149,5 +140,10 @@ class Candidacy extends BaseCandidacy
     public function getAdherent(): Adherent
     {
         return $this->membership->getAdherent();
+    }
+
+    protected function createCandidaciesGroup(): BaseCandidaciesGroup
+    {
+        return new CandidaciesGroup();
     }
 }

@@ -16,9 +16,6 @@ class CandidacyQualityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var Candidacy $candidacy */
-        $candidacy = $builder->getData();
-
         $builder
             ->add('quality', ChoiceType::class, [
                 'choices' => array_combine($options['qualities'], $options['qualities']),

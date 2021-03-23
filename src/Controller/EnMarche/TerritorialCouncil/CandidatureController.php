@@ -120,7 +120,7 @@ class CandidatureController extends AbstractController
     }
 
     /**
-     * @Route("/choix-de-binome", name="_select_pair_candidate", methods={"GET", "POST"})
+     * @Route("/invitation", name="_select_pair_candidate", methods={"GET", "POST"})
      *
      * @param Adherent $adherent
      */
@@ -166,7 +166,7 @@ class CandidatureController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($invitations = $candidacy->getPendingInvitations()) {
+            if ($invitations = $candidacy->getInvitations()) {
                 $this->manager->updateInvitation($candidacy, $invitations, $previouslyInvitedMemberships ?? []);
 
                 $this->addFlash('info', 'Votre invitation a bien été envoyée');
@@ -190,7 +190,7 @@ class CandidatureController extends AbstractController
     }
 
     /**
-     * @Route("/choix-de-binome/fini", name="_select_pair_candidate_finish", methods={"GET"})
+     * @Route("/fini", name="_select_pair_candidate_finish", methods={"GET"})
      *
      * @param Adherent $adherent
      */
@@ -240,24 +240,19 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
-        // Temporary lock this action 🙈
-        if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
+        $invitedBy = $invitation->getCandidacy();
+
+        if ($invitedBy->isConfirmed()) {
             $this->addFlash('error', 'Une erreur est survenue. Veuillez réessayer dans quelques instants.');
 
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
-        $acceptedBy->setBinome($invitedBy = $invitation->getCandidacy());
-        $invitedBy->setBinome($acceptedBy);
-
-        $acceptedBy->updateFromBinome();
+        $acceptedBy->setFaithStatement($invitedBy->getFaithStatement());
+        $acceptedBy->setIsPublicFaithStatement($invitedBy->isPublicFaithStatement());
 
         $form = $this
-            ->createForm(
-                TerritorialCouncilCandidacyType::class,
-                $acceptedBy,
-                ['validation_groups' => ['Default', 'accept_invitation']]
-            )
+            ->createForm(TerritorialCouncilCandidacyType::class, $acceptedBy)
             ->handleRequest($request)
         ;
 
@@ -299,16 +294,9 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_territorial_council_index');
         }
 
-        // Temporary lock this action 🙈
-        if (DesignationTypeEnum::NATIONAL_COUNCIL === $election->getDesignationType()) {
-            $this->addFlash('error', 'Une erreur est survenue. Veuillez réessayer dans quelques instants.');
-
-            return $this->redirectToRoute('app_territorial_council_index');
-        }
-
         $this->manager->declineInvitation($invitation);
 
-        $this->addFlash('info', 'Invitation a bien été déclinée');
+        $this->addFlash('info', 'Invitation a bien été déclinée.');
 
         return $this->redirectToRoute('app_territorial_council_index');
     }

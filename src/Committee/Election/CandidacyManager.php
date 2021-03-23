@@ -41,9 +41,7 @@ class CandidacyManager
     ): void {
         // if UPDATE
         if ($candidacy->getId()) {
-            if ($binome = $candidacy->getBinome()) {
-                $binome->updateFromBinome();
-            }
+            $candidacy->syncWithOtherCandidacies();
 
             $this->entityManager->flush();
 
@@ -130,8 +128,12 @@ class CandidacyManager
     {
         $invitation->accept();
 
-        $invitation->getCandidacy()->updateFromBinome();
-        $invitation->getCandidacy()->confirm();
+        $invitedBy = $invitation->getCandidacy();
+        $invitedBy->candidateWith($acceptedBy);
+
+        $acceptedBy->syncWithOtherCandidacies();
+
+        $invitedBy->confirm();
         $acceptedBy->confirm();
 
         $membership = $invitation->getMembership();

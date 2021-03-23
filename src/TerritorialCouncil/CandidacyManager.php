@@ -39,9 +39,7 @@ class CandidacyManager
             $this->entityManager->persist($candidacy);
         }
 
-        if ($candidacy->isConfirmed() && $candidacy->getBinome()) {
-            $candidacy->getBinome()->updateFromBinome();
-        }
+        $candidacy->syncWithOtherCandidacies();
 
         $this->entityManager->flush();
 
@@ -64,9 +62,31 @@ class CandidacyManager
     {
         $invitation->accept();
 
-        $invitation->getCandidacy()->updateFromBinome();
-        $invitation->getCandidacy()->confirm();
-        $acceptedBy->confirm();
+        /** @var Candidacy $invitedBy */
+        $invitedBy = $invitation->getCandidacy();
+        $invitedBy->setFaithStatement($acceptedBy->getFaithStatement());
+        $invitedBy->setIsPublicFaithStatement($acceptedBy->isPublicFaithStatement());
+
+        $election = $invitedBy->getElection();
+
+        if ($invitedBy->hasOnlyAcceptedInvitations()) {
+            $invitedBy->confirm();
+
+            foreach ($invitedBy->getInvitations() as $otherInvitation) {
+                if ($invitation === $otherInvitation) {
+                    $candidacy = $acceptedBy;
+                } else {
+                    /** @var TerritorialCouncilMembership $membership */
+                    $membership = $otherInvitation->getMembership();
+                    $candidacy = $membership->getCandidacyForElection($election);
+                }
+
+                $invitedBy->candidateWith($candidacy);
+                $candidacy->confirm();
+            }
+
+            $invitedBy->syncWithOtherCandidacies();
+        }
 
         $this->updateCandidature($acceptedBy);
 
