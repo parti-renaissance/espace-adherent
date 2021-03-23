@@ -1,0 +1,6 @@
+{
+    "schedule": "monthly",
+    "aggressiveCompression": "true",
+    "compressWiki": "true",
+    "minKBReduced": null
+}
