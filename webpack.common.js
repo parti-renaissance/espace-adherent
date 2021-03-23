@@ -1,6 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 module.exports = {
     context: path.join(__dirname, './front'),
@@ -69,5 +71,6 @@ module.exports = {
                 { from: path.resolve(__dirname, 'node_modules/cropperjs/dist/cropper.min.css'), to: './../css/' },
             ],
         }),
+        new BundleAnalyzerPlugin()
     ],
 };
