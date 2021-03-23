@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { uniq, flatMap} from 'lodash';
 import ReqwestApiClient from '../../services/api/ReqwestApiClient';
 import Content from './Content';
 import SearchBar from './SearchBar';
@@ -145,7 +145,7 @@ export default class ProgrammaticFoundation extends React.Component {
     }
 
     extractAllCities() {
-        return _.uniq(_.flatMap(this.initialApproaches, approach => _.flatMap(approach.sub_approaches, subApproaches => _.flatMap(subApproaches.measures, measure => _.flatMap(measure.projects, project => project.city))))).sort((a, b) => a.localeCompare(b)).sort((a, b) => {
+        return uniq(flatMap(this.initialApproaches, approach => flatMap(approach.sub_approaches, subApproaches => flatMap(subApproaches.measures, measure => flatMap(measure.projects, project => project.city))))).sort((a, b) => a.localeCompare(b)).sort((a, b) => {
             const importantResults = {
                 'Petite commune': 1,
                 'Ville moyenne': 2,

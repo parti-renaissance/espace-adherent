@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { size, filter, flatMap, map, cloneDeep, find, forEach, clone } from 'lodash';
 import Loader from './Loader';
 import ReqwestApiClient from '../services/api/ReqwestApiClient';
 
@@ -56,7 +56,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
                 {this.state.error}
             </p>;
         } else {
-            if (isValidQualities && isValidGenders && 2 === _.size(this.state.activeMemberships)) {
+            if (isValidQualities && isValidGenders && 2 === size(this.state.activeMemberships)) {
                 this.toggleSubmitButton(true);
             }
 
@@ -261,15 +261,15 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
     }
 
     isValidQualities() {
-        const qualitiesToValidate = _.filter(
+        const qualitiesToValidate = filter(
             this.props.neededQualities,
             qualities => -1 === qualities.indexOf(this.state.quality)
         );
 
         return this.validateMembers(
-            _.flatMap(this.state.activeMemberships, member => ({
+            flatMap(this.state.activeMemberships, member => ({
                 uuid: member.uuid,
-                qualities: _.map(member.qualities, 'name'),
+                qualities: map(member.qualities, 'name'),
             })),
             qualitiesToValidate,
         );
@@ -280,11 +280,11 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
             return true;
         }
 
-        const membersCopy = this._prepareMembersForValidation(_.cloneDeep(members));
+        const membersCopy = this._prepareMembersForValidation(cloneDeep(members));
         const memberToCheck = membersCopy.shift();
 
         if (0 === memberToCheck.qualities.length) {
-            const memberOriginal = _.find(members, member => member.uuid === memberToCheck.uuid);
+            const memberOriginal = find(members, member => member.uuid === memberToCheck.uuid);
             memberToCheck.qualities = memberOriginal.qualities;
         }
 
@@ -292,8 +292,8 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
             for (const quality of subQualities) {
                 if (-1 !== memberToCheck.qualities.indexOf(quality)) {
                     return this.validateMembers(
-                        _.filter(members, member => member.uuid !== memberToCheck.uuid),
-                        _.filter(qualities, obj => -1 === obj.indexOf(quality))
+                        filter(members, member => member.uuid !== memberToCheck.uuid),
+                        filter(qualities, obj => -1 === obj.indexOf(quality))
                     );
                 }
             }
@@ -306,7 +306,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
         const qualitiesToDelete = [];
 
         members.forEach((member) => {
-            _.forEach(member.qualities, (quality) => {
+            forEach(member.qualities, (quality) => {
                 for (const anotherMember of members) {
                     if (
                         anotherMember.uuid !== member.uuid
@@ -320,7 +320,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
         });
 
         members.forEach((member) => {
-            member.qualities = _.filter(member.qualities, quality => -1 === qualitiesToDelete.indexOf(quality));
+            member.qualities = filter(member.qualities, quality => -1 === qualitiesToDelete.indexOf(quality));
         });
 
         return members;
@@ -340,7 +340,7 @@ export default class NationalCouncilCandidacyWidget extends React.Component {
     }
 
     isValidGenders() {
-        const genders = _.clone(this.props.availableGenders);
+        const genders = clone(this.props.availableGenders);
 
         for (const [i, y] of Object.entries(this.state.activeMemberships)) {
             genders[y.adherent.gender] -= 1;

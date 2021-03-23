@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { filter, cloneDeep } from 'lodash';
 import SearchResults from './SearchResults';
 import Approach from './Approach';
 import SearchEngine from '../../services/programmatic-foundation/SearchEngine';
@@ -23,9 +23,9 @@ export default class Content extends React.Component {
     }
 
     filterApproachesByIsLeading(approaches) {
-        return _.filter(_.cloneDeep(approaches), (approach) => {
-            const subApproaches = _.filter(approach.sub_approaches, (sub_approach) => {
-                const measures = _.filter(sub_approach.measures, measure => measure.isLeading);
+        return filter(cloneDeep(approaches), (approach) => {
+            const subApproaches = filter(approach.sub_approaches, (sub_approach) => {
+                const measures = filter(sub_approach.measures, measure => measure.isLeading);
 
                 if (measures.length) {
                     sub_approach.measures = measures;

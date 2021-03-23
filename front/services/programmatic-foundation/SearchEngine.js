@@ -1,19 +1,19 @@
-import _ from 'lodash';
+import { flatMap, filter, uniq} from 'lodash';
 
 export default class SearchEngine {
     static search(approaches, filters) {
-        let measures = _.flatMap(approaches, approach => _.flatMap(approach.sub_approaches, subApproach => _.flatMap(subApproach.measures)));
+        let measures = flatMap(approaches, approach => flatMap(approach.sub_approaches, subApproach => flatMap(subApproach.measures)));
 
-        let projects = _.flatMap(measures, measure => _.flatMap(measure.projects));
+        let projects = flatMap(measures, measure => flatMap(measure.projects));
 
         if (filters.isLeading) {
-            measures = _.filter(measures, {
+            measures = filter(measures, {
                 ...(filters.isLeading ? { isLeading: true } : {}),
             });
         }
 
         if (filters.city) {
-            projects = _.filter(projects, {
+            projects = filter(projects, {
                 ...(filters.city ? { city: filters.city } : {}),
             });
         }
@@ -26,11 +26,11 @@ export default class SearchEngine {
         }
 
         const filterCallback = item => -1 !== this.normalize(item.title).indexOf(this.normalize(filters.query))
-                || -1 !== this.normalize(_.uniq(_.flatMap(item.tags, tag => tag.label)).join()).indexOf(this.normalize(filters.query));
+                || -1 !== this.normalize(uniq(flatMap(item.tags, tag => tag.label)).join()).indexOf(this.normalize(filters.query));
 
         return {
-            measures: _.filter(measures, filterCallback),
-            projects: _.filter(projects, filterCallback),
+            measures: filter(measures, filterCallback),
+            projects: filter(projects, filterCallback),
         };
     }
 

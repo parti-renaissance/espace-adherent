@@ -1,5 +1,5 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-en-marche';
-import _ from 'lodash';
+import { mergeWith, isArray, merge } from 'lodash';
 
 function createCKEditor(element, customOptions = {}) {
     element.required = false;
@@ -24,17 +24,17 @@ function createCKEditor(element, customOptions = {}) {
         ],
     };
 
-    return ClassicEditor.create(element, _.mergeWith(
+    return ClassicEditor.create(element, mergeWith(
         defaultOptions,
         customOptions,
-        (objValue, srcValue) => { if (_.isArray(objValue)) { return objValue.concat(srcValue); } }
+        (objValue, srcValue) => { if (isArray(objValue)) { return objValue.concat(srcValue); } }
     ));
 }
 
 export default function createCKEditorWithUpload(elementSelector, uploadUrl, customOptions = {}) {
     const element = dom(elementSelector);
 
-    return createCKEditor(element, _.merge(customOptions, {
+    return createCKEditor(element, merge(customOptions, {
         ckfinder: {
             uploadUrl,
         },

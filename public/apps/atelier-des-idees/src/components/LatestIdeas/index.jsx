@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { shuffle} from 'lodash';
 import { Link } from 'react-router-dom';
 import IdeaCard from './../IdeaCard';
 
@@ -11,8 +11,8 @@ function LatestIdeas(props) {
 
     // / Merge and mix all the finalized and pending ideas;
     const allIdeas = [...finalized, ...pending];
-    const mergeAllIdeas = _.shuffle(allIdeas);
-    const mergeAllIdeasSecond = _.shuffle(mergeAllIdeas);
+    const mergeAllIdeas = shuffle(allIdeas);
+    const mergeAllIdeasSecond = shuffle(mergeAllIdeas);
 
     for (let i = 0; 2 > i; i++) {
         allIdeas.push(...finalized, ...pending);
