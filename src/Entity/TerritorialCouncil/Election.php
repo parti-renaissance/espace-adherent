@@ -48,13 +48,6 @@ class Election extends AbstractElectionEntity implements GeoPointInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $questions;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(nullable=true)
      */
     private $electionMode;
@@ -117,16 +110,6 @@ class Election extends AbstractElectionEntity implements GeoPointInterface
     public function setDescription(?string $description): void
     {
         $this->description = $description;
-    }
-
-    public function getQuestions(): ?string
-    {
-        return $this->questions;
-    }
-
-    public function setQuestions(?string $questions): void
-    {
-        $this->questions = $questions;
     }
 
     public function getElectionMode(): ?string
