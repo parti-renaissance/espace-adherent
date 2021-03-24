@@ -61,8 +61,6 @@ class CommitteeCandidacyRepository extends ServiceEntityRepository
     public function findAllConfirmedForElection(CommitteeElection $election): array
     {
         return $this->createQueryBuilder('candidacy')
-            ->addSelect('binome')
-            ->leftJoin('candidacy.binome', 'binome')
             ->where('candidacy.committeeElection = :election')
             ->andWhere('candidacy.status = :confirmed')
             ->setParameters([

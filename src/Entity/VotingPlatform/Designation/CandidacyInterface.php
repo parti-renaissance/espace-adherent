@@ -50,4 +50,19 @@ interface CandidacyInterface extends ImageOwnerInterface
     public function getUpdatedAt(): \DateTimeInterface;
 
     public function getElection(): ElectionEntityInterface;
+
+    public function setCandidaciesGroup(?BaseCandidaciesGroup $candidaciesGroup): void;
+
+    public function getCandidaciesGroup(): ?BaseCandidaciesGroup;
+
+    public function hasOtherCandidacies(): bool;
+
+    public function candidateWith(CandidacyInterface $candidacy): void;
+
+    public function syncWithOtherCandidacies(): void;
+
+    /**
+     * @return CandidacyInterface[]
+     */
+    public function getOtherCandidacies(): array;
 }

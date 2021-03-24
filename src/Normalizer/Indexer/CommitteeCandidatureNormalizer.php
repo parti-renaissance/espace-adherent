@@ -32,7 +32,9 @@ class CommitteeCandidatureNormalizer extends AbstractDesignationCandidatureNorma
         if (DesignationTypeEnum::COMMITTEE_SUPERVISOR === $object->getType()) {
             return [
                 'project' => $object->getFaithStatement(),
-                'binome_ids' => $object->getBinome() ? [$object->getBinome()->getId()] : null,
+                'binome_ids' => $object->hasOtherCandidacies() ? [
+                    current($object->getOtherCandidacies())->getId(),
+                ] : null,
             ];
         }
 

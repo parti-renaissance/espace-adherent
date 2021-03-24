@@ -83,7 +83,9 @@ class ElectionResult
         $electedPoolResults = [];
 
         foreach ($this->electionRoundResults as $roundResult) {
-            array_push($electedPoolResults, ...$roundResult->getElectedPoolResults());
+            if ($elected = $roundResult->getElectedPoolResults()) {
+                array_push($electedPoolResults, ...$elected);
+            }
         }
 
         return $electedPoolResults;
@@ -94,9 +96,15 @@ class ElectionResult
      */
     public function getElectedCandidateGroups(): array
     {
-        return array_merge(...array_map(function (ElectionPoolResult $result) {
+        $electedCandidateGroups = array_map(function (ElectionPoolResult $result) {
             return $result->getElectedCandidateGroups();
-        }, $this->getElectedPoolResults()));
+        }, $this->getElectedPoolResults());
+
+        if ($electedCandidateGroups) {
+            return array_merge(...$electedCandidateGroups);
+        }
+
+        return [];
     }
 
     /**

@@ -2,8 +2,10 @@
 
 namespace App\Command\VotingPlatform;
 
+use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
+use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
@@ -183,35 +185,17 @@ class ConfigureCommand extends Command
                 continue;
             }
 
-            $adherent = $candidacy->getMembership()->getAdherent();
-
             $group = new CandidateGroup();
-            $group->addCandidate($candidate = new Candidate(
-                $adherent->getFirstName(),
-                $adherent->getLastName(),
-                $candidacy->getGender(),
-                $adherent
-            ));
+            $group->addCandidate($this->createTerritorialCouncilCandidate($candidacy));
 
-            $candidate->setImagePath($candidacy->getImagePath());
-            $candidate->setBiography($candidacy->getBiography());
-            $candidate->setFaithStatement($candidacy->getFaithStatement());
-            $candidacy->take();
+            if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
+                foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
+                    if ($candidacy->isTaken()) {
+                        continue;
+                    }
 
-            if ($binome = $candidacy->getBinome()) {
-                $adherent = $binome->getMembership()->getAdherent();
-
-                $group->addCandidate($candidate = new Candidate(
-                    $adherent->getFirstName(),
-                    $adherent->getLastName(),
-                    $binome->getGender(),
-                    $adherent
-                ));
-
-                $candidate->setImagePath($binome->getImagePath());
-                $candidate->setBiography($binome->getBiography());
-                $candidate->setFaithStatement($binome->getFaithStatement());
-                $binome->take();
+                    $group->addCandidate($this->createTerritorialCouncilCandidate($candidacy));
+                }
             }
 
             if (!isset($pools[$candidacy->getQuality()])) {
@@ -256,14 +240,12 @@ class ConfigureCommand extends Command
             ];
 
             foreach ($candidacies as $candidacy) {
-                $adherent = $candidacy->getCommitteeMembership()->getAdherent();
-
                 $group = new CandidateGroup();
                 $group->addCandidate($candidate = new Candidate(
-                    $adherent->getFirstName(),
-                    $adherent->getLastName(),
+                    $candidacy->getFirstName(),
+                    $candidacy->getLastName(),
                     $candidacy->getGender(),
-                    $adherent
+                    $candidacy->getAdherent()
                 ));
 
                 $candidate->setImagePath($candidacy->getImagePath());
@@ -285,39 +267,20 @@ class ConfigureCommand extends Command
                     continue;
                 }
 
-                $adherent = $candidacy->getCommitteeMembership()->getAdherent();
-
                 $group = new CandidateGroup();
-                $group->addCandidate($candidate = new Candidate(
-                    $adherent->getFirstName(),
-                    $adherent->getLastName(),
-                    $candidacy->getGender(),
-                    $adherent
-                ));
+                $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
 
-                $candidate->setImagePath($candidacy->getImagePath());
-                $candidate->setBiography($candidacy->getBiography());
-                $candidate->setFaithStatement($candidacy->getFaithStatement());
+                if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
+                    foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
+                        if ($candidacy->isTaken()) {
+                            continue;
+                        }
+
+                        $group->addCandidate($this->createCommitteeSupervisorCandidate($candidacy));
+                    }
+                }
 
                 $pool->addCandidateGroup($group);
-                $candidacy->take();
-
-                if ($binome = $candidacy->getBinome()) {
-                    $adherent = $binome->getCommitteeMembership()->getAdherent();
-
-                    $group->addCandidate($candidate = new Candidate(
-                        $adherent->getFirstName(),
-                        $adherent->getLastName(),
-                        $binome->getGender(),
-                        $adherent
-                    ));
-
-                    $candidate->setImagePath($binome->getImagePath());
-                    $candidate->setBiography($binome->getBiography());
-                    $candidate->setFaithStatement($binome->getFaithStatement());
-
-                    $binome->take();
-                }
             }
         }
 
@@ -422,6 +385,40 @@ class ConfigureCommand extends Command
         }
 
         return true;
+    }
+
+    private function createTerritorialCouncilCandidate(Candidacy $candidacy): Candidate
+    {
+        $candidate = new Candidate(
+            $candidacy->getFirstName(),
+            $candidacy->getLastName(),
+            $candidacy->getGender(),
+            $candidacy->getAdherent()
+        );
+
+        $candidate->setImagePath($candidacy->getImagePath());
+        $candidate->setBiography($candidacy->getBiography());
+        $candidate->setFaithStatement($candidacy->getFaithStatement());
+        $candidacy->take();
+
+        return $candidate;
+    }
+
+    private function createCommitteeSupervisorCandidate(CommitteeCandidacy $candidacy): Candidate
+    {
+        $candidate = new Candidate(
+            $candidacy->getFirstName(),
+            $candidacy->getLastName(),
+            $candidacy->getGender(),
+            $candidacy->getAdherent()
+        );
+
+        $candidate->setImagePath($candidacy->getImagePath());
+        $candidate->setBiography($candidacy->getBiography());
+        $candidate->setFaithStatement($candidacy->getFaithStatement());
+        $candidacy->take();
+
+        return $candidate;
     }
 
     /** @required */

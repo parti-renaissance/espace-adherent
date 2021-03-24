@@ -60,11 +60,19 @@
                         {% set with_two_rows = true %}
 
                         {% if candidacy.isConfirmed %}
-                            {% if candidacy.binome %}
+                            {% if candidacy.hasOtherCandidacies() %}
                                 <div class="font-roboto text--bold b__nudge--bottom-large elections-icon-container">
                                     <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" alt="elections-icon"/>
-                                    Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.binome.membership.fullName }}.<br />
-                                    Vous ne pouvez plus retirer votre candidature.
+
+                                    {% set candidacies = candidacy.getOtherCandidacies() %}
+
+                                    {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COPOL') %}
+                                        Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacies|first.membership.fullName }}.<br />
+                                        Vous ne pouvez plus retirer votre candidature.
+                                    {% else %}
+                                        Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en trinôme avec {{ candidacies|map(candidacy => candidacy.membership.fullName)|join(' et ') }}.<br />
+                                        Vous ne pouvez plus retirer votre candidature.
+                                    {% endif %}
                                 </div>
                             {% else %}
                                 <div class="font-roboto text--bold b__nudge--bottom-large elections-icon-container l__col--half">

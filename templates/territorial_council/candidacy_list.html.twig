@@ -12,51 +12,49 @@
             {% set current_quality = null %}
 
             {% for candidacy in candidacies|sort((a, b) => a.qualityPriority <=> b.qualityPriority) if not candidacy.isTaken %}
-                {% if current_quality is null or current_quality != candidacy.quality %}
-                    {% set current_quality = candidacy.quality %}
+                {% if candidacy.getElection().getDesignationType() == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COPOL') %}
+                    {% if current_quality is null or current_quality != candidacy.quality %}
+                        {% set current_quality = candidacy.quality %}
 
-                    <h4 class="text--muted text--normal text--uppercase b__nudge--top-large b__nudge--bottom-large quality-title-{{ candidacy.qualityPriority }}">
-                        {{ ('territorial_council.membership.qualities.' ~ current_quality)|trans }}
-                    </h4>
+                        <h4 class="text--muted text--normal text--uppercase b__nudge--top-large b__nudge--bottom-large quality-title-{{ candidacy.qualityPriority }}">
+                            {{ ('territorial_council.membership.qualities.' ~ current_quality)|trans }}
+                        </h4>
+                    {% endif %}
                 {% endif %}
 
                 <div class="territorial-council__candidacies l__row l__row--wrap">
-                    {% set first_candidacy = candidacy.isFemale ? candidacy : (candidacy.binome ? candidacy.binome : candidacy) %}
+                    {% if candidacy.hasOtherCandidacies() %}
+                        {% set candidacies_sub_array = candidacy.getCandidaciesGroup().getCandidacies()|sort((a, b) => b.isFemale <=> a.isFemale) %}
+                    {% else %}
+                        {% set candidacies_sub_array = [candidacy] %}
+                    {% endif %}
 
-                    {{ first_candidacy.take() }}
-                    <div class="territorial-council__candidate">
-                        {{ helper.display_candidate_identity(first_candidacy, '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.isFemale ? 'F' : 'H') ~ '</span>') }}
-                    </div>
-
-                    {% if first_candidacy.binome %}
-                        {{ first_candidacy.binome.take() }}
+                    {% for cand in candidacies_sub_array %}
+                        {{ cand.take() }}
 
                         <div class="territorial-council__candidate">
-                            {{ helper.display_candidate_identity(first_candidacy.binome, '<span class="candidate-gender l__col l__col--center">' ~ (first_candidacy.binome.isFemale ? 'F' : 'H') ~ '</span>') }}
+                            {{ helper.display_candidate_identity(cand, '<span class="candidate-gender l__col l__col--center">' ~ (cand.isFemale ? 'F' : 'H') ~ '</span>') }}
                         </div>
-                    {% endif %}
+                    {% endfor %}
 
                     <div>
                         <a href="#" class="text--body text--blue--dark b__nudge--none em-modal--trigger territorial-council__biography"
-                           data-content-element="#candidate-biography-content-{{ first_candidacy.uuid }}"
+                           data-content-element="#candidate-biography-content-{{ candidacy.uuid }}"
                            data-modal-side="right"
                         > <img src="{{ asset('/images/icons/chevron-down.svg') }}" /> </a>
 
-                        <div id="candidate-biography-content-{{ first_candidacy.uuid }}" class="hidden">
+                        <div id="candidate-biography-content-{{ candidacy.uuid }}" class="hidden">
                             <h3 class="text--muted text--normal text--uppercase b__nudge--bottom">Présentations</h3>
 
-                            <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.membership.fullName }}</h2>
-                            <p class="text--body text--dark">{{ first_candidacy.biography|nl2br }}</p>
-
-                            {% if first_candidacy.binome %}
-                                <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ first_candidacy.binome.membership.fullName }}</h2>
-                                <p class="text--body text--dark">{{ first_candidacy.binome.biography|nl2br }}</p>
-                            {% endif %}
+                            {% for cand in candidacies_sub_array %}
+                                <h2 class="text--medium-large b__nudge--bottom-larger b__nudge--top-60">{{ cand.membership.fullName }}</h2>
+                                <p class="text--body text--dark">{{ cand.biography|nl2br }}</p>
+                            {% endfor %}
 
                             <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                            {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or first_candidacy.isPublicFaithStatement %}
-                                <p class="text--body text--dark">{{ first_candidacy.faithStatement|nl2br }}</p>
+                            {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or candidacy.isPublicFaithStatement %}
+                                <p class="text--body text--dark">{{ candidacy.faithStatement|nl2br }}</p>
                             {% else %}
                                 <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>
                             {% endif %}

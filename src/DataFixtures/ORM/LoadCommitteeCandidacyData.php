@@ -137,9 +137,9 @@ class LoadCommitteeCandidacyData extends Fixture implements DependentFixtureInte
 
                 if (!empty($row['confirmed'])) {
                     $candidacyBinome = $this->createCandidacy($committee, $invited, !empty($row['with_photo']));
-                    $candidacy->setBinome($candidacyBinome);
-                    $candidacyBinome->setBinome($candidacy);
-                    $candidacyBinome->updateFromBinome();
+                    $manager->persist($candidacyBinome);
+                    $candidacy->candidateWith($candidacyBinome);
+                    $candidacy->syncWithOtherCandidacies();
 
                     $candidacy->confirm();
                     $candidacyBinome->confirm();

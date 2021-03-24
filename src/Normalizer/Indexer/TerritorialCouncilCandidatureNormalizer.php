@@ -31,9 +31,15 @@ class TerritorialCouncilCandidatureNormalizer extends AbstractDesignationCandida
      */
     protected function normalizeCustomFields(CandidacyInterface $object): array
     {
+        if ($object->hasOtherCandidacies()) {
+            $ids = array_map(function (Candidacy $candidacy) {
+                return $candidacy->getId();
+            }, $object->getCandidaciesGroup()->getCandidacies());
+        }
+
         return [
             'project' => $object->getFaithStatement(),
-            'binome_ids' => $object->getBinome() ? [$object->getBinome()->getId()] : null,
+            'binome_ids' => $ids ?? null,
         ];
     }
 }

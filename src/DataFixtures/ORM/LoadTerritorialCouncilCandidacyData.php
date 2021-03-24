@@ -59,9 +59,9 @@ class LoadTerritorialCouncilCandidacyData extends Fixture implements DependentFi
             __DIR__.'/../../../app/data/dist/avatar_femme_01.jpg'
         );
 
-        $candidacy->setBinome($invitedCandidate);
-        $invitedCandidate->setBinome($candidacy);
-        $invitedCandidate->updateFromBinome();
+        $manager->persist($invitedCandidate);
+        $candidacy->candidateWith($invitedCandidate);
+        $candidacy->syncWithOtherCandidacies();
 
         $candidacy->confirm();
         $invitedCandidate->confirm();
@@ -92,9 +92,9 @@ class LoadTerritorialCouncilCandidacyData extends Fixture implements DependentFi
             __DIR__.'/../../../app/data/dist/avatar_homme_01.jpg'
         );
 
-        $candidacy->setBinome($invitedCandidate);
-        $invitedCandidate->setBinome($candidacy);
-        $invitedCandidate->updateFromBinome();
+        $manager->persist($invitedCandidate);
+        $candidacy->candidateWith($invitedCandidate);
+        $candidacy->syncWithOtherCandidacies();
 
         $candidacy->confirm();
         $invitedCandidate->confirm();

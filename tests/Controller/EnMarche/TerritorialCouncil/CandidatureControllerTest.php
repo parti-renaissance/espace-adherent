@@ -143,7 +143,7 @@ class CandidatureControllerTest extends WebTestCase
             'territorial_council_candidacy[faithStatement]' => 'ma profession de foi',
         ]);
 
-        $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/choix-de-binome', $this->client);
+        $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/invitation', $this->client);
 
         // Choice of membership
         $crawler = $this->client->followRedirect();
@@ -172,7 +172,7 @@ class CandidatureControllerTest extends WebTestCase
 
         $this->client->request($form->getMethod(), $form->getUri(), $values);
 
-        $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/choix-de-binome/fini', $this->client);
+        $this->assertClientIsRedirectedTo('/conseil-territorial/candidature/fini', $this->client);
         $this->assertCountMails(1, VotingPlatformCandidacyInvitationCreatedMessage::class, 'kiroule.p@blabla.tld');
     }
 

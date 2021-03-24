@@ -69,10 +69,10 @@
                     {% set with_two_rows = true %}
 
                     {% if candidacy.isConfirmed and designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
-                        {% if candidacy.binome %}
+                        {% if candidacy.hasOtherCandidacies() %}
                             <p class="font-roboto text--bold b__nudge--bottom-large b__nudge--top elections-icon-container">
                                 <img class="elections-icon" src="{{ asset('images/icons/election-box/icn_confirmed.svg') }}" alt="confirm-logo"/>
-                                Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.binome.committeeMembership.fullName }}.<br />
+                                Vous êtes maintenant candidat{{ candidacy.isFemale ? 'e' }} en binôme avec {{ candidacy.getOtherCandidacies()|first.committeeMembership.fullName }}.<br />
                                 Vous ne pouvez plus retirer votre candidature.
                             </p>
                         {% else %}

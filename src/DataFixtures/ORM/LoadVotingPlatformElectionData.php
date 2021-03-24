@@ -272,17 +272,23 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
             $candidate->setFaithStatement($committeeCandidacy->getFaithStatement());
             $committeeCandidacy->take();
 
-            if ($committeeCandidacy = $committeeCandidacy->getBinome()) {
-                $group->addCandidate($candidate = new Candidate(
-                    $committeeCandidacy->getFirstName(),
-                    $committeeCandidacy->getLastName(),
-                    $committeeCandidacy->getGender(),
-                    $committeeCandidacy->getAdherent()
-                ));
-                $candidate->setImagePath($committeeCandidacy->getImagePath());
-                $candidate->setBiography($committeeCandidacy->getBiography());
-                $candidate->setFaithStatement($committeeCandidacy->getFaithStatement());
-                $committeeCandidacy->take();
+            if ($committeeCandidaciesGroup = $committeeCandidacy->getCandidaciesGroup()) {
+                foreach ($committeeCandidaciesGroup->getCandidacies() as $committeeCandidacy) {
+                    if ($committeeCandidacy->isTaken()) {
+                        continue;
+                    }
+
+                    $group->addCandidate($candidate = new Candidate(
+                        $committeeCandidacy->getFirstName(),
+                        $committeeCandidacy->getLastName(),
+                        $committeeCandidacy->getGender(),
+                        $committeeCandidacy->getAdherent()
+                    ));
+                    $candidate->setImagePath($committeeCandidacy->getImagePath());
+                    $candidate->setBiography($committeeCandidacy->getBiography());
+                    $candidate->setFaithStatement($committeeCandidacy->getFaithStatement());
+                    $committeeCandidacy->take();
+                }
             }
 
             $pool->addCandidateGroup($group);
@@ -430,22 +436,35 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
                 }
 
                 $group = new CandidateGroup();
-                $adherent = $candidacy->getMembership()->getAdherent();
-                $candidate = new Candidate($adherent->getFirstName(), $adherent->getLastName(), $candidacy->getGender(), $adherent);
+
+                $group->addCandidate($candidate = new Candidate(
+                    $candidacy->getFirstName(),
+                    $candidacy->getLastName(),
+                    $candidacy->getGender(),
+                    $candidacy->getAdherent()
+                ));
                 $candidate->setImagePath($candidacy->getImagePath());
                 $candidate->setFaithStatement($candidacy->getFaithStatement());
                 $candidate->setBiography($candidacy->getBiography());
-                $group->addCandidate($candidate);
                 $candidacy->take();
 
-                if ($binome = $candidacy->getBinome()) {
-                    $adherent = $binome->getMembership()->getAdherent();
-                    $candidate = new Candidate($adherent->getFirstName(), $adherent->getLastName(), $binome->getGender(), $adherent);
-                    $candidate->setImagePath($binome->getImagePath());
-                    $candidate->setFaithStatement($binome->getFaithStatement());
-                    $candidate->setBiography($binome->getBiography());
-                    $group->addCandidate($candidate);
-                    $binome->take();
+                if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
+                    foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
+                        if ($candidacy->isTaken()) {
+                            continue;
+                        }
+
+                        $group->addCandidate($candidate = new Candidate(
+                            $candidacy->getFirstName(),
+                            $candidacy->getLastName(),
+                            $candidacy->getGender(),
+                            $candidacy->getAdherent()
+                        ));
+                        $candidate->setImagePath($candidacy->getImagePath());
+                        $candidate->setFaithStatement($candidacy->getFaithStatement());
+                        $candidate->setBiography($candidacy->getBiography());
+                        $candidacy->take();
+                    }
                 }
 
                 $pool->addCandidateGroup($group);

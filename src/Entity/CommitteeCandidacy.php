@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\TerritorialCouncil\Candidacy;
+use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
@@ -52,12 +53,21 @@ class CommitteeCandidacy extends BaseCandidacy
     protected $invitations;
 
     /**
+     * todo: remove
+     *
      * @var Candidacy|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\CommitteeCandidacy", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $binome;
+
+    /**
+     * @var CommitteeCandidaciesGroup|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeCandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
+     */
+    protected $candidaciesGroup;
 
     public function __construct(CommitteeElection $election, string $gender = null, UuidInterface $uuid = null)
     {
@@ -117,9 +127,17 @@ class CommitteeCandidacy extends BaseCandidacy
      */
     public function isValidForConfirmation(): bool
     {
-        return DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $this->type
-            || ($this->binome && $this->binome->hasInvitation() && $this->binome->isDraft())
-        ;
+        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $this->type) {
+            return true;
+        }
+
+        if (!$this->candidaciesGroup || !$otherCandidacies = $this->getOtherCandidacies()) {
+            return false;
+        }
+
+        $binome = current($otherCandidacies);
+
+        return $binome->hasInvitation() && $binome->isDraft();
     }
 
     /**
@@ -130,5 +148,10 @@ class CommitteeCandidacy extends BaseCandidacy
         return $this->hasImageName() && !$this->isRemoveImage()
             || $this->getImage()
         ;
+    }
+
+    protected function createCandidaciesGroup(): BaseCandidaciesGroup
+    {
+        return new CommitteeCandidaciesGroup();
     }
 }
