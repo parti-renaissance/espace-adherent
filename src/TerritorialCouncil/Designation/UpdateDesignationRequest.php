@@ -74,13 +74,6 @@ class UpdateDesignationRequest
      */
     private $description;
 
-    /**
-     * @var string|null
-     *
-     * @WysiwygLength(max=2000)
-     */
-    private $questions;
-
     public function getVoteMode(): ?string
     {
         return $this->voteMode;
@@ -149,16 +142,6 @@ class UpdateDesignationRequest
     public function setDescription(?string $description): void
     {
         $this->description = $description;
-    }
-
-    public function getQuestions(): ?string
-    {
-        return $this->questions;
-    }
-
-    public function setQuestions(?string $questions): void
-    {
-        $this->questions = $questions;
     }
 
     public function isMeetingMode(): bool

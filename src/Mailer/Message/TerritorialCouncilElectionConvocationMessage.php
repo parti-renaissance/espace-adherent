@@ -34,7 +34,6 @@ final class TerritorialCouncilElectionConvocationMessage extends Message
                 'address' => $election->getInlineFormattedAddress(),
                 'meeting_start_date' => self::dateToString($election->getMeetingStartDate()),
                 'description' => $election->getDescription(),
-                'questions' => $election->getQuestions() ?? 'null',
                 'referent_first_name' => $president->getAdherent()->getFirstName(),
                 'referent_last_name' => $president->getAdherent()->getLastName(),
                 'online_mode' => $election->isOnlineMode(),

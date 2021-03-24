@@ -36,7 +36,6 @@ class UpdateDesignationHandler
         $election->setMeetingStartDate($request->getMeetingStartDate());
         $election->setMeetingEndDate($request->getMeetingEndDate());
         $election->setDescription($request->getDescription());
-        $election->setQuestions($request->getQuestions());
         $election->setElectionMode($request->getVoteMode());
 
         if ($election->isOnlineMode()) {
