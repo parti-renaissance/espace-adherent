@@ -14,10 +14,10 @@ use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
 use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMemberValidator;
 use App\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UniqueTerritorialCouncilMemberValidatorTest extends ConstraintValidatorTestCase
 {
