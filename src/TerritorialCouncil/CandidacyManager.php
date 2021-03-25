@@ -4,6 +4,7 @@ namespace App\TerritorialCouncil;
 
 use App\Entity\TerritorialCouncil\Candidacy;
 use App\Entity\TerritorialCouncil\CandidacyInvitation;
+use App\Entity\TerritorialCouncil\Election;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 use App\Repository\TerritorialCouncil\CandidacyInvitationRepository;
@@ -52,8 +53,15 @@ class CandidacyManager
 
     public function removeCandidacy(Candidacy $candidacy): void
     {
+        $invitations = $candidacy->getInvitations();
+
         $this->entityManager->remove($candidacy);
         $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(
+            new CandidacyInvitationEvent($candidacy, $invitations),
+            VotingPlatformEvents::CANDIDACY_INVITATION_REMOVE
+        );
 
         $this->dispatcher->dispatch(new BaseCandidacyEvent($candidacy), VotingPlatformEvents::CANDIDACY_REMOVED);
     }
@@ -92,19 +100,8 @@ class CandidacyManager
 
         $this->dispatcher->dispatch(
             new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
-            Events::CANDIDACY_INVITATION_ACCEPT
+            VotingPlatformEvents::CANDIDACY_INVITATION_ACCEPT
         );
-
-        foreach ($this->invitationRepository->findAllPendingForMembership($invitation->getMembership(), $acceptedBy->getElection()) as $invitation) {
-            $invitation->decline();
-
-            $this->dispatcher->dispatch(
-                new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
-                Events::CANDIDACY_INVITATION_DECLINE
-            );
-        }
-
-        $this->entityManager->flush();
     }
 
     public function declineInvitation(CandidacyInvitation $invitation): void
@@ -115,7 +112,7 @@ class CandidacyManager
 
         $this->dispatcher->dispatch(
             new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
-            Events::CANDIDACY_INVITATION_DECLINE
+            VotingPlatformEvents::CANDIDACY_INVITATION_DECLINE
         );
     }
 
@@ -136,7 +133,7 @@ class CandidacyManager
 
         $this->dispatcher->dispatch(
             new CandidacyInvitationEvent($candidacy, $invitations, $previouslyInvitedMemberships),
-            Events::CANDIDACY_INVITATION_UPDATE
+            VotingPlatformEvents::CANDIDACY_INVITATION_UPDATE
         );
     }
 
@@ -155,7 +152,15 @@ class CandidacyManager
 
         $this->dispatcher->dispatch(
             new CandidacyInvitationEvent($candidacy, [], $previouslyInvitedMemberships),
-            Events::CANDIDACY_INVITATION_UPDATE
+            VotingPlatformEvents::CANDIDACY_INVITATION_UPDATE
         );
+    }
+
+    /**
+     * @return CandidacyInvitationInterface[]
+     */
+    public function getInvitationsToDecline(TerritorialCouncilMembership $membership, Election $election): array
+    {
+        return $this->invitationRepository->findAllPendingForMembership($membership, $election);
     }
 }

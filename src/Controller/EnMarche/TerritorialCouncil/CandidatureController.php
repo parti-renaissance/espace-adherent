@@ -142,10 +142,6 @@ class CandidatureController extends AbstractController
             $previouslyInvitedMemberships = [];
 
             foreach ($candidacy->getInvitations() as $invitation) {
-                if ($invitation->isAccepted()) {
-                    return $this->redirectToRoute('app_territorial_council_index');
-                }
-
                 $previouslyInvitedMemberships[] = $invitation->getMembership();
             }
         }

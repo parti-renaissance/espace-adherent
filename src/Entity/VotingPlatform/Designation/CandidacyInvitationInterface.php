@@ -8,5 +8,7 @@ interface CandidacyInvitationInterface
     public const STATUS_ACCEPTED = 'accepted';
     public const STATUS_DECLINED = 'declined';
 
+    public function setCandidacy(CandidacyInterface $candidacy): void;
+
     public function isPending(): bool;
 }

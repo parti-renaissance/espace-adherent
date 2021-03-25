@@ -88,7 +88,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         // 3. create vote result with unique key
         $voteResult = $this->createVoteResult($electionRound, $command, $voterKey);
 
-        // 4. delete voters from others voters lists for the same designation
+        // 4. delete voters from other voters lists for the same designation
         $voter = $vote->getVoter();
         foreach ($voter->getVotersListsForDesignation($election->getDesignation()) as $list) {
             if ($list->getId() === $election->getVotersList()->getId()) {
