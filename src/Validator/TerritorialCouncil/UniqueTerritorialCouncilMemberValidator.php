@@ -4,11 +4,11 @@ namespace App\Validator\TerritorialCouncil;
 
 use App\Entity\Adherent;
 use App\Repository\AdherentRepository;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UniqueTerritorialCouncilMemberValidator extends ConstraintValidator
 {

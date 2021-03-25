@@ -4,7 +4,7 @@ namespace App\Timeline;
 
 use App\Entity\Timeline\Measure;
 use App\Repository\Timeline\MeasureRepository;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TimelineImageFactory
 {

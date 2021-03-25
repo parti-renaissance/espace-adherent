@@ -5,10 +5,10 @@ namespace App\Validator\ChezVous;
 use App\ChezVous\Measure\BaisseNombreChomeurs;
 use App\ChezVous\Measure\CouvertureFibre;
 use App\ChezVous\MeasureChoiceLoader;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MeasurePayloadValidator extends ConstraintValidator
 {

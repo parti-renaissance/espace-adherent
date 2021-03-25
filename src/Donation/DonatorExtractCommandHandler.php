@@ -8,7 +8,7 @@ use App\Entity\Donator;
 use App\Extract\AbstractEmailExtractCommandHandler;
 use App\Repository\DonatorRepository;
 use App\Utils\PhoneNumberUtils;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
 {

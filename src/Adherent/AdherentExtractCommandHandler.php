@@ -6,7 +6,7 @@ use App\Csv\CsvResponseFactory;
 use App\Extract\AbstractEmailExtractCommandHandler;
 use App\Repository\AdherentRepository;
 use App\Utils\PhoneNumberUtils;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
 {

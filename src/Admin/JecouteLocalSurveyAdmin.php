@@ -12,13 +12,9 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class JecouteLocalSurveyAdmin extends AbstractAdmin
 {
-    /** @var TranslatorInterface */
-    protected $translator;
-
     protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
@@ -129,13 +125,5 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');
-    }
-
-    /**
-     * @required
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
     }
 }

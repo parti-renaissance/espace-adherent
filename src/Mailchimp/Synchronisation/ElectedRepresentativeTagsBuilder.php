@@ -3,7 +3,7 @@
 namespace App\Mailchimp\Synchronisation;
 
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ElectedRepresentativeTagsBuilder
 {

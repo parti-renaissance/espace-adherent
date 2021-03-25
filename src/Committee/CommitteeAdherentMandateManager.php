@@ -12,7 +12,7 @@ use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CommitteeAdherentMandateManager
 {

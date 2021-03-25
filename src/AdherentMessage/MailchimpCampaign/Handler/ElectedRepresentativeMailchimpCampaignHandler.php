@@ -10,7 +10,7 @@ use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
 use App\Entity\MailchimpSegment;
 use App\Mailchimp\Synchronisation\ElectedRepresentativeTagsBuilder;
 use App\Repository\MailchimpSegmentRepository;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ElectedRepresentativeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {
