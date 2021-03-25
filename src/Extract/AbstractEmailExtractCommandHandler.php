@@ -5,7 +5,7 @@ namespace App\Extract;
 use App\Csv\CsvResponseFactory;
 use League\Csv\Writer;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractEmailExtractCommandHandler
 {

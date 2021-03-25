@@ -9,7 +9,7 @@ use App\Repository\AssessorRequestRepository;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssessorsExporter
 {

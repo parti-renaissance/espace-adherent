@@ -6,8 +6,8 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\AssessorRequestAssociateMessage;
 use App\Mailer\Message\AssessorRequestConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssessorRequestNotifier implements EventSubscriberInterface
 {
