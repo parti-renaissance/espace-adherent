@@ -8,11 +8,11 @@ use App\Mailer\Message\VotingPlatformCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationCreatedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationDeclinedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationRemovedMessage;
-use App\TerritorialCouncil\Events;
 use App\VotingPlatform\Event\CandidacyInvitationEvent;
+use App\VotingPlatform\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
 {
@@ -36,6 +36,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
             Events::CANDIDACY_INVITATION_UPDATE => 'onInvitationUpdate',
             Events::CANDIDACY_INVITATION_DECLINE => 'onInvitationDecline',
             Events::CANDIDACY_INVITATION_ACCEPT => 'onInvitationAccept',
+            Events::CANDIDACY_INVITATION_REMOVE => 'onInvitationRemove',
         ];
     }
 
@@ -89,6 +90,28 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
                     $url
                 ));
             }
+        }
+    }
+
+    public function onInvitationRemove(CandidacyInvitationEvent $event): void
+    {
+        foreach ($event->getInvitations() as $invitation) {
+            $candidacy = $invitation->getCandidacy();
+            $invitedMembership = $invitation->getMembership();
+            $designation = $candidacy->getElection()->getDesignation();
+
+            if ($designation->isCommitteeType()) {
+                $url = $this->urlGenerator->generate('app_committee_show', ['slug' => $invitedMembership->getCommittee()->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+            } else {
+                $url = $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            }
+
+            $this->mailer->sendMessage(VotingPlatformCandidacyInvitationRemovedMessage::create(
+                $invitedMembership->getAdherent(),
+                $candidacy->getMembership()->getAdherent(),
+                $designation,
+                $url
+            ));
         }
     }
 

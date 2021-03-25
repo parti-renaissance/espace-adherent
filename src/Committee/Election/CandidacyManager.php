@@ -9,8 +9,9 @@ use App\Entity\CommitteeCandidacyInvitation;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
+use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 use App\Repository\AdherentRepository;
-use App\TerritorialCouncil\Events;
+use App\Repository\CommitteeCandidacyInvitationRepository;
 use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CandidacyInvitationEvent;
 use App\VotingPlatform\Event\CommitteeCandidacyEvent;
@@ -23,15 +24,18 @@ class CandidacyManager
     private $entityManager;
     private $eventDispatcher;
     private $adherentRepository;
+    private $candidacyInvitationRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
-        AdherentRepository $repository
+        AdherentRepository $adherentRepository,
+        CommitteeCandidacyInvitationRepository $candidacyInvitationRepository
     ) {
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->adherentRepository = $repository;
+        $this->adherentRepository = $adherentRepository;
+        $this->candidacyInvitationRepository = $candidacyInvitationRepository;
     }
 
     public function updateCandidature(
@@ -94,8 +98,15 @@ class CandidacyManager
         $membership = $adherent->getMembershipFor($committee);
 
         if ($membership && $candidacy = $membership->getCommitteeCandidacy($committeeElection)) {
+            $invitations = $candidacy->getInvitations();
+
             $this->entityManager->remove($candidacy);
             $this->entityManager->flush();
+
+            $this->eventDispatcher->dispatch(
+                new CandidacyInvitationEvent($candidacy, $invitations),
+                VotingPlatformEvents::CANDIDACY_INVITATION_REMOVE
+            );
 
             $this->eventDispatcher->dispatch(
                 new CommitteeCandidacyEvent(
@@ -120,7 +131,7 @@ class CandidacyManager
 
         $this->eventDispatcher->dispatch(
             new CandidacyInvitationEvent($candidacy, [$invitation], $previouslyInvitedMembership ? [$previouslyInvitedMembership] : []),
-            Events::CANDIDACY_INVITATION_UPDATE
+            VotingPlatformEvents::CANDIDACY_INVITATION_UPDATE
         );
     }
 
@@ -142,7 +153,7 @@ class CandidacyManager
 
         $this->eventDispatcher->dispatch(
             new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
-            Events::CANDIDACY_INVITATION_ACCEPT
+            VotingPlatformEvents::CANDIDACY_INVITATION_ACCEPT
         );
     }
 
@@ -154,7 +165,15 @@ class CandidacyManager
 
         $this->eventDispatcher->dispatch(
             new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
-            Events::CANDIDACY_INVITATION_DECLINE
+            VotingPlatformEvents::CANDIDACY_INVITATION_DECLINE
         );
+    }
+
+    /**
+     * @return CandidacyInvitationInterface[]
+     */
+    public function getInvitationsToDecline(CommitteeMembership $membership, CommitteeElection $election): array
+    {
+        return $this->candidacyInvitationRepository->findAllPendingForMembership($membership, $election);
     }
 }
