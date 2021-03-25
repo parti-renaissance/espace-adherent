@@ -9,6 +9,7 @@ Feature:
       | LoadAdherentData      |
       | LoadClientData        |
       | LoadCauseData         |
+      | LoadGeoZoneData       |
 
   Scenario: As a non logged-in user I can see first page of active causes
     Given I add "Accept" header equal to "application/json"
@@ -56,7 +57,7 @@ Feature:
           "name": "Cause pour la culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
-          "followers_count": 3,
+          "followers_count": 5,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         }
       ]
@@ -164,7 +165,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": 3,
+          "followers_count": 5,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
@@ -304,7 +305,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": 3,
+          "followers_count": 5,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         }
       ]
@@ -372,7 +373,7 @@ Feature:
             "first_name": "Michelle",
             "last_name_initial": "D."
           },
-          "followers_count": 3,
+          "followers_count": 5,
           "image_url": "http://test.enmarche.code/assets/images/causes/644d1c64512ab5489ab8590a3b313517.png"
         },
         {
@@ -433,7 +434,7 @@ Feature:
     }
     """
 
-  Scenario Outline: As a non logged-in user I can not follow/unfollow a cause
+  Scenario Outline: As a non logged-in user I can not follow/unfollow a cause as an adherent
     Given I add "Accept" header equal to "application/json"
     When I send a "<method>" request to "<url>"
     Then the response status code should be 401
@@ -485,3 +486,116 @@ Feature:
       | uuids[] | 55056e7c-2b5f-4ef6-880e-cde0511f79b2 |
       | uuids[] | 44249b1d-ea10-41e0-b288-5eb74fa886ba |
     Then the response status code should be 401
+
+  Scenario: As a non logged-in user I can follow a cause
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
+    """
+    {
+        "email_address": "adherent@en-marche-dev.fr",
+        "first_name": "Pierre",
+        "zone": "e3f274b8-906e-11eb-a875-0242ac150002",
+        "cgu_accepted": true,
+        "cause_subscription": true,
+        "coalition_subscription": true
+    }
+    """
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+      "OK"
+    """
+
+  Scenario: As a non logged-in user I can not follow a cause if no all required data
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
+    """
+    {}
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "first_name: Cette valeur ne doit pas être vide.\nemail_address: Cette valeur ne doit pas être vide.\nzone: Cette valeur ne doit pas être vide.\ncgu_accepted: Cette valeur ne doit pas être vide.",
+        "violations": [
+            {
+                "propertyPath": "first_name",
+                "message": "Cette valeur ne doit pas être vide."
+            },
+            {
+                "propertyPath": "email_address",
+                "message": "Cette valeur ne doit pas être vide."
+            },
+            {
+                "propertyPath": "zone",
+                "message": "Cette valeur ne doit pas être vide."
+            },
+            {
+                "propertyPath": "cgu_accepted",
+                "message": "Cette valeur ne doit pas être vide."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can not follow a cause that I am already follow
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/causes/55056e7c-2b5f-4ef6-880e-cde0511f79b2/follower" with body:
+    """
+    {
+        "email_address": "adherent@en-marche-dev.fr",
+        "first_name": "Pierre",
+        "zone": "e3f274b8-906e-11eb-a875-0242ac150002",
+        "cause": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
+        "cgu_accepted": true
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "email_address: Vous avez déjà soutenu cette cause.",
+        "violations": [
+            {
+                "propertyPath": "email_address",
+                "message": "Vous avez déjà soutenu cette cause."
+            }
+        ]
+    }
+    """
+
+  Scenario: As a non logged-in user I can not follow a cause if I have already an account
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "PUT" request to "/api/causes/017491f9-1953-482e-b491-20418235af1f/follower" with body:
+    """
+    {
+        "email_address": "jacques.picard@en-marche.fr",
+        "first_name": "jacques",
+        "zone": "e3f274b8-906e-11eb-a875-0242ac150002",
+        "cause": "017491f9-1953-482e-b491-20418235af1f",
+        "cgu_accepted": true
+    }
+    """
+    Then the response status code should be 400
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+        "type": "https://tools.ietf.org/html/rfc2616#section-10",
+        "title": "An error occurred",
+        "detail": "email_address: L'utilisateur avec cette adresse e-mail existe déjà. Veuillez vous connecter pour soutenir la cause.",
+        "violations": [
+            {
+                "propertyPath": "email_address",
+                "message": "L'utilisateur avec cette adresse e-mail existe déjà. Veuillez vous connecter pour soutenir la cause."
+            }
+        ]
+    }
+    """

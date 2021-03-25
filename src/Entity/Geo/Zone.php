@@ -72,6 +72,7 @@ class Zone implements GeoInterface
         self::DEPARTMENT,
         self::REGION,
     ];
+
     /**
      * The internal primary identity key.
      *
@@ -81,7 +82,16 @@ class Zone implements GeoInterface
      *
      * @SymfonySerializer\Groups({"zone_read"})
      *
-     * @ApiProperty(identifier=true)
+     * @ApiProperty(
+     *     identifier=true,
+     *     attributes={
+     *         "swagger_context": {
+     *             "type": "string",
+     *             "format": "uuid",
+     *             "example": "b4219d47-3138-5efd-9762-2ef9f9495084"
+     *         }
+     *     }
+     * )
      */
     protected $uuid;
 

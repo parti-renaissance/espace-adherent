@@ -17,8 +17,6 @@ class LoadGeoZoneData extends Fixture
         /** @var Connection $conn */
         $conn = $manager->getConnection();
         $conn->exec(file_get_contents(__DIR__.'/../../../dump/all-geo-zone.sql'));
-
-        $conn->exec('UPDATE geo_zone SET uuid = uuid();');
     }
 
     public static function getZoneReference(EntityManagerInterface $manager, string $reference): ?Zone

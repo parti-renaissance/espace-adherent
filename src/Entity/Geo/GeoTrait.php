@@ -2,6 +2,7 @@
 
 namespace App\Entity\Geo;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Entity\GeoData;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -16,6 +17,8 @@ trait GeoTrait
      * @ORM\GeneratedValue
      *
      * @SymfonySerializer\Groups({"autocomplete"})
+     *
+     * @ApiProperty(identifier=false)
      */
     private $id;
 
