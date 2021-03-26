@@ -8,6 +8,7 @@ use App\Mailer\Message\VotingPlatformCandidacyInvitationAcceptedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationCreatedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationDeclinedMessage;
 use App\Mailer\Message\VotingPlatformCandidacyInvitationRemovedMessage;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Event\CandidacyInvitationEvent;
 use App\VotingPlatform\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -60,7 +61,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
                     $params = ['committee_name' => $committee->getName()];
                 } else {
                     $url = $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
-                    $params = ['quality' => $this->translator->trans('territorial_council.membership.quality.'.$candidacy->getQuality())];
+                    $params = ['quality' => DesignationTypeEnum::COPOL === $designation->getType() ? $this->translator->trans('territorial_council.membership.quality.'.$candidacy->getQuality()) : null];
                 }
 
                 $this->mailer->sendMessage(
@@ -141,9 +142,9 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
     public function onInvitationAccept(CandidacyInvitationEvent $event): void
     {
         $candidacy = $event->getCandidacy();
-        $invitation = current($event->getInvitations());
+        $invitedCandidacy = $event->getInvitedCandidacy();
 
-        $invitedMembership = $invitation->getMembership();
+        $invitedMembership = $invitedCandidacy->getMembership();
         $designation = $candidacy->getElection()->getDesignation();
 
         if ($designation->isCommitteeType()) {
@@ -156,9 +157,9 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
         }
 
         $this->mailer->sendMessage(VotingPlatformCandidacyInvitationAcceptedMessage::create(
-            $invitation->getMembership()->getAdherent(),
-            $candidacy->getMembership()->getAdherent(),
-            $candidacy->getElection()->getDesignation(),
+            $event->getInvitedCandidacy(),
+            $candidacy,
+            $designation,
             $url,
             $params ?? []
         ));

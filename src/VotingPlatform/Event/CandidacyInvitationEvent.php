@@ -9,6 +9,7 @@ use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 
 class CandidacyInvitationEvent extends BaseCandidacyEvent
 {
+    private $invitedCandidacy;
     private $invitations;
     private $previouslyInvitedMemberships;
 
@@ -18,13 +19,20 @@ class CandidacyInvitationEvent extends BaseCandidacyEvent
      */
     public function __construct(
         CandidacyInterface $candidacy,
+        ?CandidacyInterface $invitedCandidacy,
         array $invitations = [],
         array $previouslyInvitedMemberships = []
     ) {
         parent::__construct($candidacy);
 
+        $this->invitedCandidacy = $invitedCandidacy;
         $this->invitations = $invitations;
         $this->previouslyInvitedMemberships = $previouslyInvitedMemberships;
+    }
+
+    public function getInvitedCandidacy(): ?CandidacyInterface
+    {
+        return $this->invitedCandidacy;
     }
 
     /**

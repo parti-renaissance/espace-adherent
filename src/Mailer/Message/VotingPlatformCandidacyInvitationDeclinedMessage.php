@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Ramsey\Uuid\Uuid;
 
-final class VotingPlatformCandidacyInvitationDeclinedMessage extends AbstractVotingPlatformCandidacyInvitationMessage
+final class VotingPlatformCandidacyInvitationDeclinedMessage extends AbstractVotingPlatformMessage
 {
     public static function create(
         Adherent $invited,
@@ -14,20 +14,21 @@ final class VotingPlatformCandidacyInvitationDeclinedMessage extends AbstractVot
         Designation $designation,
         string $invitationFormUrl
     ): self {
-        $isCommittee = $designation->isCommitteeType();
+        $emailTitle = self::getMailSubjectPrefix($designation);
 
         return new self(
             Uuid::uuid4(),
             $candidate->getEmailAddress(),
             $candidate->getFullName(),
-            sprintf('%s %s a décliné votre invitation', self::getMailSubjectPrefix($isCommittee), $invited->getFirstName()),
+            sprintf('[%s] %s a décliné votre invitation', $emailTitle, $invited->getFirstName()),
             [
-                'is_committee' => $isCommittee,
+                'email_title' => $emailTitle,
+                'election_type' => $designation->getType(),
                 'candidate_first_name' => $candidate->getFirstName(),
                 'invited_first_name' => $invited->getFirstName(),
                 'invited_last_name' => $invited->getLastName(),
                 'candidacy_end_date' => self::dateToString($designation->getCandidacyEndDate()),
-                'invitation_form_url' => $invitationFormUrl,
+                'page_url' => $invitationFormUrl,
             ]
         );
     }
