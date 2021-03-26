@@ -58,10 +58,12 @@ class CandidacyManager
         $this->entityManager->remove($candidacy);
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($candidacy, $invitations),
-            VotingPlatformEvents::CANDIDACY_INVITATION_REMOVE
-        );
+        if ($invitations) {
+            $this->dispatcher->dispatch(
+                new CandidacyInvitationEvent($candidacy, null, $invitations),
+                VotingPlatformEvents::CANDIDACY_INVITATION_REMOVE
+            );
+        }
 
         $this->dispatcher->dispatch(new BaseCandidacyEvent($candidacy), VotingPlatformEvents::CANDIDACY_REMOVED);
     }
@@ -99,7 +101,7 @@ class CandidacyManager
         $this->updateCandidature($acceptedBy);
 
         $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), $acceptedBy, [$invitation]),
             VotingPlatformEvents::CANDIDACY_INVITATION_ACCEPT
         );
     }
@@ -111,7 +113,7 @@ class CandidacyManager
         $this->entityManager->flush();
 
         $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), null, [$invitation]),
             VotingPlatformEvents::CANDIDACY_INVITATION_DECLINE
         );
     }
@@ -132,7 +134,7 @@ class CandidacyManager
         $this->updateCandidature($candidacy);
 
         $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($candidacy, $invitations, $previouslyInvitedMemberships),
+            new CandidacyInvitationEvent($candidacy, null, $invitations, $previouslyInvitedMemberships),
             VotingPlatformEvents::CANDIDACY_INVITATION_UPDATE
         );
     }
@@ -151,7 +153,7 @@ class CandidacyManager
         $this->updateCandidature($candidacy);
 
         $this->dispatcher->dispatch(
-            new CandidacyInvitationEvent($candidacy, [], $previouslyInvitedMemberships),
+            new CandidacyInvitationEvent($candidacy, null, [], $previouslyInvitedMemberships),
             VotingPlatformEvents::CANDIDACY_INVITATION_UPDATE
         );
     }

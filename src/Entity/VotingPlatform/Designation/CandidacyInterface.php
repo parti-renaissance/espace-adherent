@@ -43,6 +43,8 @@ interface CandidacyInterface extends ImageOwnerInterface
 
     public function getStatus(): string;
 
+    public function isConfirmed(): bool;
+
     public function getQuality(): ?string;
 
     public function getCreatedAt(): \DateTimeInterface;
@@ -57,12 +59,13 @@ interface CandidacyInterface extends ImageOwnerInterface
 
     public function hasOtherCandidacies(): bool;
 
+    /** @return CandidacyInvitationInterface[] */
+    public function getInvitations(): array;
+
     public function candidateWith(CandidacyInterface $candidacy): void;
 
     public function syncWithOtherCandidacies(): void;
 
-    /**
-     * @return CandidacyInterface[]
-     */
+    /** @return CandidacyInterface[] */
     public function getOtherCandidacies(): array;
 }

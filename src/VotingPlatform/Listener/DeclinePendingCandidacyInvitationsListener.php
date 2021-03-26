@@ -69,7 +69,7 @@ class DeclinePendingCandidacyInvitationsListener implements EventSubscriberInter
             $this->entityManager->flush();
 
             $this->eventDispatcher->dispatch(
-                new CandidacyInvitationEvent($candidacy, [$invitation]),
+                new CandidacyInvitationEvent($candidacy, null, [$invitation]),
                 Events::CANDIDACY_INVITATION_REMOVE
             );
         }

@@ -103,10 +103,12 @@ class CandidacyManager
             $this->entityManager->remove($candidacy);
             $this->entityManager->flush();
 
-            $this->eventDispatcher->dispatch(
-                new CandidacyInvitationEvent($candidacy, $invitations),
-                VotingPlatformEvents::CANDIDACY_INVITATION_REMOVE
-            );
+            if ($invitations) {
+                $this->eventDispatcher->dispatch(
+                    new CandidacyInvitationEvent($candidacy, null, $invitations),
+                    VotingPlatformEvents::CANDIDACY_INVITATION_REMOVE
+                );
+            }
 
             $this->eventDispatcher->dispatch(
                 new CommitteeCandidacyEvent(
@@ -130,7 +132,7 @@ class CandidacyManager
         $this->updateCandidature($candidacy);
 
         $this->eventDispatcher->dispatch(
-            new CandidacyInvitationEvent($candidacy, [$invitation], $previouslyInvitedMembership ? [$previouslyInvitedMembership] : []),
+            new CandidacyInvitationEvent($candidacy, null, [$invitation], $previouslyInvitedMembership ? [$previouslyInvitedMembership] : []),
             VotingPlatformEvents::CANDIDACY_INVITATION_UPDATE
         );
     }
@@ -152,7 +154,7 @@ class CandidacyManager
         $this->updateCandidature($acceptedBy, $membership->getAdherent(), $membership->getCommittee());
 
         $this->eventDispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), null, [$invitation]),
             VotingPlatformEvents::CANDIDACY_INVITATION_ACCEPT
         );
     }
@@ -164,7 +166,7 @@ class CandidacyManager
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), [$invitation]),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), null, [$invitation]),
             VotingPlatformEvents::CANDIDACY_INVITATION_DECLINE
         );
     }
