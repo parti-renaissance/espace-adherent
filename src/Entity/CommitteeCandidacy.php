@@ -123,24 +123,6 @@ class CommitteeCandidacy extends BaseCandidacy
     }
 
     /**
-     * @Assert\IsTrue(groups={"accept_invitation"})
-     */
-    public function isValidForConfirmation(): bool
-    {
-        if (DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $this->type) {
-            return true;
-        }
-
-        if (!$this->candidaciesGroup || !$otherCandidacies = $this->getOtherCandidacies()) {
-            return false;
-        }
-
-        $binome = current($otherCandidacies);
-
-        return $binome->hasInvitation() && $binome->isDraft();
-    }
-
-    /**
      * @Assert\IsTrue(groups={"committee_supervisor_candidacy", "accept_invitation"}, message="Photo est obligatoire")
      */
     public function isValid(): bool

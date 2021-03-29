@@ -154,7 +154,7 @@ class CandidacyManager
         $this->updateCandidature($acceptedBy, $membership->getAdherent(), $membership->getCommittee());
 
         $this->eventDispatcher->dispatch(
-            new CandidacyInvitationEvent($invitation->getCandidacy(), null, [$invitation]),
+            new CandidacyInvitationEvent($invitation->getCandidacy(), $acceptedBy, [$invitation]),
             VotingPlatformEvents::CANDIDACY_INVITATION_ACCEPT
         );
     }
