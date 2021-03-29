@@ -60,14 +60,6 @@ class Candidacy extends BaseCandidacy
     private $quality;
 
     /**
-     * @var Candidacy|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\Candidacy", cascade={"all"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    protected $binome;
-
-    /**
      * @var CandidaciesGroup|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\CandidaciesGroup", inversedBy="candidacies", cascade={"persist"})

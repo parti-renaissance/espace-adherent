@@ -86,7 +86,7 @@ jobs:
                       - ./public/apps/projets-citoyens/node_modules
                   key: npm-cp-{{ .Environment.CACHE_VERSION }}-{{ checksum "./public/apps/projets-citoyens/yarn.lock" }}
 
-            -   run: |
+            - run: |
                     set -x
                     rm -rf ./public/apps/projets-citoyens/node_modules
                     rm -rf ./public/apps/atelier-des-idees/node_modules

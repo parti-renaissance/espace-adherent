@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="territorial_council_candidacies_group")
  */
 class CandidaciesGroup extends BaseCandidaciesGroup
 {
