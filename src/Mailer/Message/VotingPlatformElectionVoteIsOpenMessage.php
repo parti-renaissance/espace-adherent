@@ -4,10 +4,9 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-final class VotingPlatformElectionVoteIsOpenMessage extends Message
+final class VotingPlatformElectionVoteIsOpenMessage extends AbstractVotingPlatformMessage
 {
     /**
      * @param Adherent[] $adherents
@@ -20,7 +19,7 @@ final class VotingPlatformElectionVoteIsOpenMessage extends Message
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            sprintf('[%s] Le vote est ouvert !', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? 'Élections internes' : 'Désignations'),
+            sprintf('[%s] Le vote est ouvert !', self::getMailSubjectPrefix($election->getDesignation())),
             [
                 'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'name' => $election->getElectionEntity()->getName(),

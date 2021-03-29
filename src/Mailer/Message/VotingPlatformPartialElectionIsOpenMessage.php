@@ -4,10 +4,9 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-final class VotingPlatformPartialElectionIsOpenMessage extends Message
+final class VotingPlatformPartialElectionIsOpenMessage extends AbstractVotingPlatformMessage
 {
     /**
      * @param Adherent[] $adherents
@@ -36,7 +35,7 @@ final class VotingPlatformPartialElectionIsOpenMessage extends Message
             $first->getFullName(),
             sprintf(
                 '[%s] %s',
-                DesignationTypeEnum::COMMITTEE_SUPERVISOR === $designation->getType() ? 'Élections partielles' : 'Désignations partielles',
+                self::getMailSubjectPrefix($designation, true),
                 $designation->isCommitteeType() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !'
             ),
             $params,

@@ -4,10 +4,9 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-final class VotingPlatformElectionSecondRoundNotificationMessage extends Message
+final class VotingPlatformElectionSecondRoundNotificationMessage extends AbstractVotingPlatformMessage
 {
     /**
      * @param Adherent[] $adherents
@@ -22,7 +21,7 @@ final class VotingPlatformElectionSecondRoundNotificationMessage extends Message
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            sprintf('[%s] Vous avez %d jours pour voter à nouveau.', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? 'Élections internes' : 'Désignations', $daysLeft),
+            sprintf('[%s] Vous avez %d jours pour voter à nouveau.', self::getMailSubjectPrefix($election->getDesignation()), $daysLeft),
             [
                 'election_type' => $election->getDesignationType(),
                 'days_left' => $daysLeft,
