@@ -61,7 +61,7 @@
                             {% if designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') %}
                                 <h3 class="text--muted text--normal text--uppercase b__nudge--bottom b__nudge--top-60">Notre projet</h3>
 
-                                {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or first_candidacy.isPublicFaithStatement %}
+                                {% if (election.isCandidacyPeriodStarted() and not election.isCandidacyPeriodActive()) or candidacy.isPublicFaithStatement %}
                                     <p class="text--body text--dark">{{ candidacy.faithStatement|nl2br }}</p>
                                 {% else %}
                                     <p class="text--body text--gray text--small">Le projet de ce binôme n'a pas encore été publié.</p>

@@ -237,6 +237,11 @@ class CommitteeMembership implements UuidEntityInterface
         return null;
     }
 
+    public function getCandidacyForElection(CommitteeElection $election): ?CommitteeCandidacy
+    {
+        return $this->getCommitteeCandidacy($election);
+    }
+
     public function addCommitteeCandidacy(CommitteeCandidacy $committeeCandidacy): void
     {
         if (
