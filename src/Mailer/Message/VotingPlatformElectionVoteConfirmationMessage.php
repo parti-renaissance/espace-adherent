@@ -3,10 +3,9 @@
 namespace App\Mailer\Message;
 
 use App\Entity\VotingPlatform\Vote;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-final class VotingPlatformElectionVoteConfirmationMessage extends Message
+final class VotingPlatformElectionVoteConfirmationMessage extends AbstractVotingPlatformMessage
 {
     public static function create(Vote $vote, string $voterKey): self
     {
@@ -17,7 +16,7 @@ final class VotingPlatformElectionVoteConfirmationMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            sprintf('[%s] Félicitations, vos bulletins sont dans l\'urne !', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? 'Élections internes' : 'Désignations'),
+            sprintf('[%s] Félicitations, vos bulletins sont dans l\'urne !', self::getMailSubjectPrefix($election->getDesignation())),
             [
                 'first_name' => $adherent->getFirstName(),
                 'voter_key' => static::escape($voterKey),

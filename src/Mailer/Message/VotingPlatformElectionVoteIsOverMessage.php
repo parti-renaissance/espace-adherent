@@ -4,10 +4,9 @@ namespace App\Mailer\Message;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Ramsey\Uuid\Uuid;
 
-final class VotingPlatformElectionVoteIsOverMessage extends Message
+final class VotingPlatformElectionVoteIsOverMessage extends AbstractVotingPlatformMessage
 {
     /**
      * @param Adherent[] $adherents
@@ -20,7 +19,7 @@ final class VotingPlatformElectionVoteIsOverMessage extends Message
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            sprintf('[%s] Les résultats sont disponibles', DesignationTypeEnum::COMMITTEE_SUPERVISOR === $election->getDesignationType() ? 'Élections internes' : 'Désignations'),
+            sprintf('[%s] Les résultats sont disponibles', self::getMailSubjectPrefix($election->getDesignation())),
             [
                 'election_type' => $election->getDesignationType(),
                 'name' => static::escape($election->getElectionEntity()->getName()),
