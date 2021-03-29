@@ -50,11 +50,8 @@ RUN apt-get update -q && \
         tzdata \
         wget \
         wkhtmltopdf && \
-
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-
     sed -i -e "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<policy domain=\"coder\" rights=\"read|write\" pattern=\"PDF\" \/>/g" /etc/ImageMagick-6/policy.xml && \
-
     cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone
 
 COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
@@ -66,16 +63,12 @@ COPY docker/prod/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 RUN chmod 0444 gcloud-service-key.json && \
-
     mkdir /run/php && \
     mkdir var && \
-
     APP_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
     APP_ENV=prod bin/console cache:clear --no-warmup && \
     APP_ENV=prod bin/console cache:warmup && \
-
     chown -R www-data:www-data var && \
-
     cp docker/prod/php.ini /etc/php/7.3/cli/conf.d/50-setting.ini && \
     mv docker/prod/php.ini /etc/php/7.3/fpm/conf.d/50-setting.ini && \
     rm -rf /etc/php/7.3/fpm/pool.d/www.conf && \
@@ -83,7 +76,6 @@ RUN chmod 0444 gcloud-service-key.json && \
     rm -rf /etc/nginx/nginx.conf && \
     mv docker/prod/nginx.conf /etc/nginx/nginx.conf && \
     mv docker/prod/supervisord.conf /etc/supervisor/conf.d/ && \
-
     rm -rf docker composer.lock
 
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
