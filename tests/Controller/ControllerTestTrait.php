@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
@@ -82,6 +83,25 @@ trait ControllerTestTrait
         }
 
         $this->authenticate($client, $user, 'admin');
+    }
+
+    protected function authenticateAsAdherentWithChoosingSpace(string $email, string $spaceLinkName): void
+    {
+        $this->authenticateAsAdherent($this->client, $email);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/');
+
+        self::assertStringContainsString($spaceLinkName, $crawler->filter('.nav-dropdown__menu > ul.list__links')->text());
+        $this->client->click($crawler->selectLink($spaceLinkName)->link());
+
+        $path = '';
+        if (0 == strpos($spaceLinkName, 'Espace candidat')) {
+            $path = '/espace-candidat/utilisateurs';
+        }
+        $this->assertResponseStatusCode(302, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo($path, $this->client);
+        $this->client->followRedirect();
+        $this->isSuccessful($this->client->getResponse());
     }
 
     protected function seeDefaultCitizenProjectImage(): bool

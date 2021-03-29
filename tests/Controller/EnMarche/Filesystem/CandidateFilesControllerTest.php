@@ -131,6 +131,49 @@ class CandidateFilesControllerTest extends WebTestCase
         self::assertStringContainsString('dpt link for all', $files->eq(0)->text());
     }
 
+    public function testFilesListIsDisplayedSuccessfullyForDelegatedHeadedRegionalCandidate(): void
+    {
+        $this->authenticateAsAdherentWithChoosingSpace(
+            'gisele-berthoux@caramail.com',
+            'Espace candidat partagé (Île-de-France)'
+        );
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat/documents');
+
+        $files = $crawler->filter('tbody tr');
+
+        self::assertSame(4, $files->count());
+        self::assertSame(3, $crawler->filter('tbody tr:contains("Dossier")')->count());
+        self::assertSame(1, $crawler->filter('tbody tr:contains("Lien externe")')->count());
+        self::assertStringContainsString('documents/', $files->eq(0)->text());
+        self::assertStringContainsString('dpt link', $files->eq(1)->text());
+        self::assertStringContainsString('images/', $files->eq(2)->text());
+        self::assertStringContainsString('videos/', $files->eq(3)->text());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat/documents/documents');
+
+        $files = $crawler->filter('tbody tr');
+
+        self::assertSame(2, $files->count());
+        self::assertStringContainsString('external link for regional candidates', $files->eq(0)->text());
+        self::assertStringContainsString('PDF for all.pdf', $files->eq(1)->text());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat/documents/images');
+
+        $files = $crawler->filter('tbody tr');
+
+        self::assertSame(2, $files->count());
+        self::assertStringContainsString('Image for all.png', $files->eq(0)->text());
+        self::assertStringContainsString('Image for candidates.jpg', $files->eq(1)->text());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat/documents/videos');
+
+        $files = $crawler->filter('tbody tr');
+
+        self::assertSame(1, $files->count());
+        self::assertStringContainsString('dpt link for all', $files->eq(0)->text());
+    }
+
     /**
      * @dataProvider getFiles
      */
