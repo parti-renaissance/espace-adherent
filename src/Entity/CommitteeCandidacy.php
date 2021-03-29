@@ -53,16 +53,6 @@ class CommitteeCandidacy extends BaseCandidacy
     protected $invitations;
 
     /**
-     * todo: remove
-     *
-     * @var Candidacy|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\CommitteeCandidacy", cascade={"all"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    protected $binome;
-
-    /**
      * @var CommitteeCandidaciesGroup|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeCandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
