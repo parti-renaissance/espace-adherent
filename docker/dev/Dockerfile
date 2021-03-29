@@ -56,23 +56,22 @@ RUN apt-get update -q && \
         tzdata \
         wget \
         wkhtmltopdf && \
-
+    # Disable XDEBUG by default
     phpdismod xdebug && \
-
+    # Clean
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-
+    # Config ImageMagick lib
     sed -i -e "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<policy domain=\"coder\" rights=\"read|write\" pattern=\"PDF\" \/>/g" /etc/ImageMagick-6/policy.xml && \
-
+    # Config TimeZone
     cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \
-
+    # Install Node & npm
     curl -L -o /tmp/nodejs.tar.gz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz && \
     tar xfvz /tmp/nodejs.tar.gz -C /usr/local --strip-components=1 && \
     rm -f /tmp/nodejs.tar.gz && \
     npm install yarn -g && \
-
+    # Install Symfony security checker
     curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SECURITY_CHECHER_VERSION}/local-php-security-checker_${PHP_SECURITY_CHECHER_VERSION}_linux_$(dpkg --print-architecture) --output /usr/local/bin/local-php-security-checker && \
     chmod +x /usr/local/bin/local-php-security-checker && \
-
     mkdir /run/php
 
 RUN curl -L https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture) --output /usr/local/bin/gosu && \
