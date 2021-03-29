@@ -5,6 +5,7 @@ namespace App\Adherent\SessionModal;
 use App\Entity\Adherent;
 use App\Entity\CommitteeMembership;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -67,7 +68,8 @@ class SessionModalActivatorListener implements EventSubscriberInterface
 
         $availableCommitteeMemberships = array_filter($memberships, function (CommitteeMembership $membership) use ($refDate) {
             return $membership->getSubscriptionDate() <= $refDate->modify('-30 days')
-                && $membership->getCommittee()->hasActiveElection();
+                && $membership->getCommittee()->hasActiveElection()
+                && DesignationTypeEnum::COMMITTEE_SUPERVISOR === $membership->getCommittee()->getCurrentElection()->getDesignationType();
         });
 
         if (!$availableCommitteeMemberships) {
