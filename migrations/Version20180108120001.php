@@ -2,8 +2,8 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180108120001 extends AbstractMigration
 {
@@ -26,14 +26,14 @@ class Version20180108120001 extends AbstractMigration
     private $requestsToRounds = [];
     private $proposalsToRounds = [];
 
-    public function preUp(Schema $schema)
+    public function preUp(Schema $schema): void
     {
         // Save legacy data
         $this->requests = $this->selectLegacyRounds(self::REQUESTS_TABLE);
         $this->proposals = $this->selectLegacyRounds(self::PROXIES_TABLE);
     }
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE procuration_requests_to_election_rounds (procuration_request_id INT NOT NULL, election_round_id INT NOT NULL, INDEX IDX_A47BBD53128D9C53 (procuration_request_id), INDEX IDX_A47BBD53FCBF5E32 (election_round_id), PRIMARY KEY(procuration_request_id, election_round_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE procuration_proxies_to_election_rounds (procuration_proxy_id INT NOT NULL, election_round_id INT NOT NULL, INDEX IDX_D075F5A9E15E419B (procuration_proxy_id), INDEX IDX_D075F5A9FCBF5E32 (election_round_id), PRIMARY KEY(procuration_proxy_id, election_round_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
@@ -48,7 +48,7 @@ class Version20180108120001 extends AbstractMigration
         $this->addSql('ALTER TABLE procuration_proxies DROP election_presidential_first_round, DROP election_presidential_second_round, DROP election_legislative_first_round, DROP election_legislative_second_round');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         // Insert new data
         $presidentialsId = $this->insertElection('Élections Présidentielles 2017', <<<INTRODUCTION
@@ -118,7 +118,7 @@ INTRODUCTION
         }
     }
 
-    public function preDown(Schema $schema)
+    public function preDown(Schema $schema): void
     {
         // Keep current data ids
         $this->roundIds = [
@@ -133,7 +133,7 @@ INTRODUCTION
         $this->proposalsToRounds = $this->selectJoinedRounds(self::PROXIES_TABLE);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE election_rounds DROP FOREIGN KEY FK_37C02EA0A708DAFF');
         $this->addSql('ALTER TABLE procuration_requests_to_election_rounds DROP FOREIGN KEY FK_A47BBD53FCBF5E32');
@@ -146,7 +146,7 @@ INTRODUCTION
         $this->addSql('ALTER TABLE procuration_requests ADD election_presidential_first_round TINYINT(1) NOT NULL, ADD election_presidential_second_round TINYINT(1) NOT NULL, ADD election_legislative_first_round TINYINT(1) NOT NULL, ADD election_legislative_second_round TINYINT(1) NOT NULL');
     }
 
-    public function postDown(Schema $schema)
+    public function postDown(Schema $schema): void
     {
         foreach ($this->requestsToRounds as $r) {
             $this->updateLegacyRoundField(self::REQUESTS_TABLE, $this->roundIds[$r['election_round_id']], $r[self::REQUEST_JOIN_FIELD]);

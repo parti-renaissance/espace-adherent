@@ -11,7 +11,7 @@ use App\Entity\CommitteeMembership;
 use App\Events;
 use App\Form\UnitedNationsCountryType;
 use App\Intl\UnitedNationsBundle;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

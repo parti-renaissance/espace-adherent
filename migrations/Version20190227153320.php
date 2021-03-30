@@ -2,14 +2,14 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190227153320 extends AbstractMigration
 {
     private $procurationMatches = [];
 
-    public function preUp(Schema $schema)
+    public function preUp(Schema $schema): void
     {
         foreach ($this->connection->fetchAll('SELECT id AS procuration_proxy_id, procuration_request_id, vote_country FROM procuration_proxies WHERE procuration_request_id IS NOT NULL') as $procurationProxy) {
             $this->procurationMatches[] = [
@@ -41,7 +41,7 @@ final class Version20190227153320 extends AbstractMigration
         $this->addSql('ALTER TABLE procuration_requests ADD request_from_france TINYINT(1) DEFAULT \'1\' NOT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         foreach ($this->procurationMatches as $procurationMatch) {
             $this->connection->executeUpdate(
@@ -64,7 +64,7 @@ final class Version20190227153320 extends AbstractMigration
         }
     }
 
-    public function preDown(Schema $schema)
+    public function preDown(Schema $schema): void
     {
         foreach ($this->connection->fetchAll('SELECT id AS procuration_request_id, found_proxy_id AS procuration_proxy_id FROM procuration_requests WHERE found_proxy_id IS NOT NULL') as $procurationRequest) {
             $this->procurationMatches[] = [
@@ -89,7 +89,7 @@ final class Version20190227153320 extends AbstractMigration
         $this->addSql('ALTER TABLE procuration_requests DROP request_from_france');
     }
 
-    public function postDown(Schema $schema)
+    public function postDown(Schema $schema): void
     {
         foreach ($this->procurationMatches as $procurationMatch) {
             $this->connection->executeUpdate(

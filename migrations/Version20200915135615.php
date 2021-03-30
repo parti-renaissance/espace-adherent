@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20200915135615 extends AbstractMigration
 {
@@ -14,7 +14,7 @@ final class Version20200915135615 extends AbstractMigration
         $this->addSql('ALTER TABLE political_committee ADD is_active TINYINT(1) DEFAULT \'0\' NOT NULL');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         /** @var Connection $connection */
         $connection = $this->connection;

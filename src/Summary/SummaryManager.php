@@ -8,7 +8,7 @@ use App\Entity\MemberSummary\Language;
 use App\Entity\MemberSummary\Training;
 use App\Entity\Summary;
 use App\Repository\SummaryRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Flysystem\FilesystemInterface;
 use League\Glide\Server;
 use League\Glide\Signatures\SignatureFactory;

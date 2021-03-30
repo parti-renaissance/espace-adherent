@@ -15,7 +15,7 @@ use App\Entity\CitizenProject;
 use App\Form\AdherentMessage\AdherentMessageType;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

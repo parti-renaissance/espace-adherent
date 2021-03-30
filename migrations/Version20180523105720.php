@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180523105720 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql(
             'CREATE TABLE republican_silence (
@@ -35,7 +35,7 @@ class Version20180523105720 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_5387574A7B00651C ON events (status)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE republican_silence_referent_tag DROP FOREIGN KEY FK_543DED2612359909');
         $this->addSql('DROP TABLE republican_silence');

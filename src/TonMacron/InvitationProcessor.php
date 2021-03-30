@@ -4,7 +4,7 @@ namespace App\TonMacron;
 
 use App\Entity\TonMacronChoice;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class InvitationProcessor

@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20200423124633 extends AbstractMigration
 {

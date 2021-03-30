@@ -3,7 +3,7 @@
 namespace App\Committee\Feed;
 
 use App\Entity\CommitteeFeedItem;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class CommitteeFeedManager
 {

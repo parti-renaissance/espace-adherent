@@ -5,7 +5,7 @@ namespace App\JeMarche;
 use App\Entity\JeMarcheReport;
 use App\Mailer\MailerService;
 use App\Mailer\Message\JeMarcheReportMessage;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class JeMarcheReportHandler
 {

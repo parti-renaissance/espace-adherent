@@ -16,7 +16,7 @@ use App\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
 use App\Membership\ActivityPositions;
 use App\Membership\AdherentAccountWasCreatedEvent;
 use App\Membership\AdherentProfileWasUpdatedEvent;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;

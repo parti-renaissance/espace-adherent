@@ -12,7 +12,7 @@ use App\VotingPlatform\Event\BaseCandidacyEvent;
 use App\VotingPlatform\Event\CandidacyInvitationEvent;
 use App\VotingPlatform\Event\TerritorialCouncilCandidacyEvent;
 use App\VotingPlatform\Events as VotingPlatformEvents;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CandidacyManager

@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
 use App\Repository\NewsletterSubscriptionRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

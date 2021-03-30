@@ -5,7 +5,7 @@ namespace App\Committee;
 use App\Address\PostAddressFactory;
 use App\Events;
 use App\Referent\ReferentTagManager;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeUpdateCommandHandler

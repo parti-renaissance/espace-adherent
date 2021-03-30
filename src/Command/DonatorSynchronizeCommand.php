@@ -6,7 +6,7 @@ use App\Donation\DonatorManager;
 use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Repository\DonatorRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Console\Command\Command;

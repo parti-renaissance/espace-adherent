@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Entity\Jecoute\DataSurvey;
 use App\Mailchimp\Synchronisation\Command\DataSurveyCreateCommand;
 use App\Repository\Jecoute\DataSurveyRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +26,7 @@ class MailchimpSyncJecouteCommand extends Command
 
     public function __construct(
         DataSurveyRepository $dataSurveyRepository,
-        ObjectManager $entityManager,
+        EntityManagerInterface $entityManager,
         MessageBusInterface $bus
     ) {
         $this->dataSurveyRepository = $dataSurveyRepository;

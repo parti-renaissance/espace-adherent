@@ -8,7 +8,7 @@ use App\Entity\Election\MinistryListTotalResult;
 use App\Entity\Election\MinistryVoteResult;
 use App\Repository\CityRepository;
 use App\Repository\Election\MinistryVoteResultRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command;

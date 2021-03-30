@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\Jecoute\DataSurvey;
 use App\Mailchimp\Synchronisation\Command\DataSurveyCreateCommand;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

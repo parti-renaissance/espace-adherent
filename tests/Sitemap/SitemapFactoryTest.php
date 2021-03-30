@@ -14,7 +14,7 @@ use App\Repository\CommitteeRepository;
 use App\Repository\OrderArticleRepository;
 use App\Repository\PageRepository;
 use App\Sitemap\SitemapFactory;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;

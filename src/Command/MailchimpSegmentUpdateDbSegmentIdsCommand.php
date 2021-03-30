@@ -7,7 +7,7 @@ use App\Entity\Committee;
 use App\Repository\CitizenProjectRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\ReferentTagRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

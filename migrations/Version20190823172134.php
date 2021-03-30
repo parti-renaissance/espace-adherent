@@ -2,8 +2,8 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190823172134 extends AbstractMigration
 {
@@ -51,7 +51,7 @@ final class Version20190823172134 extends AbstractMigration
         $this->addSql('ALTER TABLE donations DROP donator_id');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $this->connection->insert('donator_identifier', ['identifier' => '000050']);
     }

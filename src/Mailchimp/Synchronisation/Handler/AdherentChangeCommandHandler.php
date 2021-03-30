@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use App\Repository\AdherentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;

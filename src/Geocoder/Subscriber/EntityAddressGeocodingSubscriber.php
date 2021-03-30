@@ -11,7 +11,7 @@ use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Membership\AdherentEvents;
 use App\Membership\AdherentProfileWasUpdatedEvent;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EntityAddressGeocodingSubscriber implements EventSubscriberInterface

@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180117113145 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574AE03E2EB9');
         $this->addSql('DROP TABLE citizen_initiative_categories');
@@ -23,7 +23,7 @@ class Version20180117113145 extends AbstractMigration
         $this->addSql('DELETE FROM events WHERE type=\'citizen_initiative\'');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('CREATE TABLE citizen_initiative_categories (id INT UNSIGNED AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL COLLATE utf8_unicode_ci, status VARCHAR(10) DEFAULT \'ENABLED\' NOT NULL COLLATE utf8_unicode_ci, UNIQUE INDEX citizen_initiative_category_name_unique (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE citizen_initiative_skills (citizen_initiative_id INT UNSIGNED NOT NULL, skill_id INT NOT NULL, INDEX IDX_F936A5506FBEFC74 (citizen_initiative_id), INDEX IDX_F936A5505585C142 (skill_id), PRIMARY KEY(citizen_initiative_id, skill_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');

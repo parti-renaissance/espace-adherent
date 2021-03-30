@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\IdeasWorkshop\ThreadComment;
 use App\IdeasWorkshop\Events;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -17,7 +17,7 @@ use App\Mailer\Message\AdherentTerminateMembershipMessage;
 use App\OAuth\CallbackManager;
 use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

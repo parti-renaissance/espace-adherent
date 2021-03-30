@@ -10,7 +10,7 @@ use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
 use App\Mailchimp\Synchronisation\Command\UpdateStaticSegmentCommandInterface;
 use App\Repository\AdherentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class UpdateStaticSegmentHandler implements MessageHandlerInterface

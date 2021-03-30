@@ -4,7 +4,7 @@ namespace App\Deputy;
 
 use App\Entity\DeputyManagedUsersMessage;
 use App\Producer\DeputyMessageDispatcherProducerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class DeputyMessageNotifier
 {

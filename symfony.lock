@@ -236,6 +236,9 @@
     "doctrine/reflection": {
         "version": "1.2.2"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "egulias/email-validator": {
         "version": "2.1.7"
     },
@@ -286,6 +289,9 @@
         "files": [
             ".php_cs.dist"
         ]
+    },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.3"
     },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.35"
@@ -362,9 +368,6 @@
     "intervention/image": {
         "version": "2.4.2"
     },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
-    },
     "jms/metadata": {
         "version": "1.6.0"
     },
@@ -433,6 +436,15 @@
             "version": "0.17",
             "ref": "89a8c10882c422723d1c7f80a41f7008b17f608c"
         }
+    },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.0"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.2.0"
     },
     "lcobucci/jwt": {
         "version": "3.4.1"
@@ -547,9 +559,6 @@
         "files": [
             "config/packages/nyholm_psr7.yaml"
         ]
-    },
-    "ocramius/proxy-manager": {
-        "version": "2.2.3"
     },
     "odolbeau/phone-number-bundle": {
         "version": "3.0",
@@ -1264,13 +1273,7 @@
     "willdurand/negotiation": {
         "version": "v2.3.1"
     },
-    "zendframework/zend-code": {
-        "version": "3.4.1"
-    },
     "zendframework/zend-diactoros": {
         "version": "2.2.1"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     }
 }

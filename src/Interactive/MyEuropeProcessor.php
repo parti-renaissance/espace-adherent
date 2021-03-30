@@ -5,7 +5,7 @@ namespace App\Interactive;
 use App\Entity\MyEuropeChoice;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class MyEuropeProcessor

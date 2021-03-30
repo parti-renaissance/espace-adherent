@@ -3,7 +3,7 @@
 namespace App\Referent;
 
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class OrganizationalChartManager
 {

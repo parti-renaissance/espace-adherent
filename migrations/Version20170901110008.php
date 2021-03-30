@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20170901110008 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->connection->insert('pages', [
             'title' => 'Les ordonnances expliquées',
@@ -21,7 +21,7 @@ class Version20170901110008 extends AbstractMigration
         ]);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->connection->delete('pages', [
             'title' => 'Les ordonnances expliquées',

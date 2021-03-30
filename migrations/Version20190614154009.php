@@ -2,8 +2,8 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190614154009 extends AbstractMigration
 {
@@ -39,7 +39,7 @@ final class Version20190614154009 extends AbstractMigration
         }
     }
 
-    public function preDown(Schema $schema)
+    public function preDown(Schema $schema): void
     {
         foreach (['application_request_running_mate', 'application_request_volunteer'] as $table) {
             $select = $this->connection->createQueryBuilder();

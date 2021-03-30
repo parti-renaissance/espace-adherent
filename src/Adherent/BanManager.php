@@ -7,7 +7,7 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\BannedAdherent;
 use App\Membership\MembershipRequestHandler;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class BanManager
 {

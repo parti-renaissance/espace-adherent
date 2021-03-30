@@ -3,7 +3,7 @@
 namespace App\Mailchimp\Webhook\Handler;
 
 use App\Mailchimp\Webhook\EventTypeEnum;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class AdherentSubscribeHandler extends AbstractAdherentHandler
 {

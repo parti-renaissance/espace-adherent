@@ -8,7 +8,7 @@ use App\Entity\CitizenProjectMembership;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;

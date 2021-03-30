@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180201194021 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE reports CHANGE status status VARCHAR(16) DEFAULT \'unresolved\' NOT NULL');
         $this->addSql('ALTER TABLE reports ADD citizen_action_id INT UNSIGNED DEFAULT NULL, ADD committee_id INT UNSIGNED DEFAULT NULL, ADD community_event_id INT UNSIGNED DEFAULT NULL');
@@ -19,7 +19,7 @@ class Version20180201194021 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_F11FA74583B12DAC ON reports (community_event_id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE reports DROP FOREIGN KEY FK_F11FA745A2DD3412');
         $this->addSql('ALTER TABLE reports DROP FOREIGN KEY FK_F11FA745ED1A100B');
