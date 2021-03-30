@@ -4,7 +4,10 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
 use App\Entity\Coalition\Cause;
+use App\Entity\Coalition\CauseFollower;
 use App\Entity\Coalition\Coalition;
+use App\Entity\FollowerInterface;
+use App\Entity\Geo\Zone;
 use App\Image\ImageManagerInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -44,6 +47,22 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
         $causeCulture1->addFollower($causeCulture1->createFollower($jacques));
         $causeCulture1->addFollower($causeCulture1->createFollower($carl));
         $causeCulture1->addFollower($causeCulture1->createFollower($referent));
+        $causeCulture1->addFollower($this->createFollowerByEmail(
+            $causeCulture1,
+            'adherent@en-marche-dev.fr',
+            'Follower',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'),
+            true,
+            true,
+            true
+        ));
+        $causeCulture1->addFollower($this->createFollowerByEmail(
+            $causeCulture1,
+            'adherent-2@en-marche-dev.fr',
+            'Gisele',
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
+            false
+        ));
 
         $causeCulture2 = $this->createCause(
             self::CAUSE_2_UUID,
@@ -120,11 +139,32 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
         return $cause;
     }
 
+    public function createFollowerByEmail(
+        Cause $cause,
+        string $email,
+        string $firstName,
+        Zone $zone,
+        bool $cguAccepted,
+        bool $causeSubscription = null,
+        bool $coalitionSubscription = null
+    ): FollowerInterface {
+        $follower = new CauseFollower($cause);
+        $follower->setEmailAddress($email);
+        $follower->setFirstName($firstName);
+        $follower->setZone($zone);
+        $follower->setCguAccepted($cguAccepted);
+        $follower->setCauseSubscription($causeSubscription ?? false);
+        $follower->setCoalitionSubscription($coalitionSubscription ?? false);
+
+        return $follower;
+    }
+
     public function getDependencies()
     {
         return [
             LoadAdherentData::class,
             LoadCoalitionData::class,
+            LoadGeoZoneData::class,
         ];
     }
 }

@@ -502,3 +502,9 @@ lre_area.all_tags_and_one_selected: Vous ne pouvez pas cocher "La République En
 file.validation.filename_length: Le nom du document (avec l'extension) ne peut pas dépasser 255 caractères.
 file.validation.file_or_link: Vous pouvez ajouter soit un fichier, soit un lien.
 file.validation.name.not_unique: Ce nom de dossier est déjà utilisé.
+
+#
+# Coalition / Cause
+#
+cause_follower.adherent.exists: L'utilisateur avec cette adresse e-mail existe déjà. Veuillez vous connecter pour soutenir la cause.
+cause_follower.exists: Vous avez déjà soutenu cette cause.
