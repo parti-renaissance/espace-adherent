@@ -123,6 +123,7 @@
         "syslogic/doctrine-json-functions": "^2.1",
         "tackk/cartographer": "^1.1",
         "tetranz/select2entity-bundle": "^2.10",
+        "twig/extensions": "^1.5",
         "twig/twig": "^2.13",
         "webmozart/assert": "^1.3",
         "willdurand/geocoder-bundle": "^5.12",
