@@ -267,11 +267,13 @@ class TerritorialCouncilMembership implements UuidEntityInterface
 
     public function getManagedInAdminQualityNames(): array
     {
-        return array_map(function (TerritorialCouncilQuality $quality) {
+        return array_filter(array_map(function (TerritorialCouncilQuality $quality) {
             if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_MANAGED_IN_ADMIN_MEMBERS)) {
                 return $quality->getName();
             }
-        }, $this->qualities->toArray());
+
+            return null;
+        }, $this->qualities->toArray()));
     }
 
     public function hasForbiddenForCandidacyQuality(): bool
@@ -291,9 +293,23 @@ class TerritorialCouncilMembership implements UuidEntityInterface
             unset($qualities[$index]);
         }
 
-        if (
-            false !== ($index = array_search(TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, $qualities, true))
-            && \count($qualities) > 1
+        /*
+         * Remove DESIGNED_ADHERENT quality when:
+         *  - adherent has other qualities with which he can candidate
+         *  - adherent has no related active mandate
+         */
+        if (false !== ($index = array_search(TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT, $qualities, true))
+            && (
+                \count($qualities) > 1
+                || 0 === \count($this->adherent->getActiveDesignatedAdherentMandates())
+            )
+        ) {
+            unset($qualities[$index]);
+        }
+
+        // Remove SUPERVISOR quality when adherent has no related active mandate
+        if (false !== ($index = array_search(TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR, $qualities, true))
+            && $this->adherent->getSupervisorMandates()->isEmpty()
         ) {
             unset($qualities[$index]);
         }

@@ -192,10 +192,12 @@ class PoliticalCommitteeMembership
 
     public function getManagedInAdminQualityNames(): array
     {
-        return array_map(function (PoliticalCommitteeQuality $quality) {
+        return array_filter(array_map(function (PoliticalCommitteeQuality $quality) {
             if (\in_array($quality->getName(), TerritorialCouncilQualityEnum::POLITICAL_COMMITTEE_MANAGED_IN_ADMIN_MEMBERS)) {
                 return $quality->getName();
             }
-        }, $this->qualities->toArray());
+
+            return null;
+        }, $this->qualities->toArray()));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Repository\TerritorialCouncil;
 
 use App\Entity\Adherent;
+use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
 use App\Entity\ElectedRepresentative\Zone;
 use App\Entity\TerritorialCouncil\Candidacy;
@@ -55,6 +56,30 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
                     ->andWhere('t2.name IN (:forbidden_qualities)')
                     ->getDQL()
             ))
+            ->andWhere(sprintf('membership.id NOT IN (%s)',
+                $this->createQueryBuilder('t3')
+                    ->select('t3.id')
+                    ->innerJoin('t3.qualities', 't4')
+                    ->innerJoin('t3.adherent', 't5')
+                    ->leftJoin('t5.adherentMandates', 't6', Join::WITH, 't6.committee IS NOT NULL AND t6.quality IS NULL AND t6.finishAt IS NULL')
+                    ->where('t3.territorialCouncil = :council')
+                    ->andWhere('t6.id IS NULL')
+                    ->having('GROUP_CONCAT(t4.name) = :ad_quality')
+                    ->groupBy('t3.id')
+                    ->getDQL()
+            ))
+            ->andWhere(sprintf('membership.id NOT IN (%s)',
+                $this->createQueryBuilder('t7')
+                    ->select('t7.id')
+                    ->innerJoin('t7.qualities', 't8')
+                    ->innerJoin('t7.adherent', 't9')
+                    ->leftJoin('t9.adherentMandates', 't10', Join::WITH, 't10.committee IS NOT NULL AND t10.quality = :al_mandate_quality AND t10.finishAt IS NULL')
+                    ->where('t7.territorialCouncil = :council')
+                    ->andWhere('t10.id IS NULL')
+                    ->having('GROUP_CONCAT(t8.name) = :al_quality')
+                    ->groupBy('t7.id')
+                    ->getDQL()
+            ))
             ->andWhere('adherent.status = :adherent_status')
             ->setParameters([
                 'candidacy_draft_status' => CandidacyInterface::STATUS_DRAFT,
@@ -63,6 +88,9 @@ class TerritorialCouncilMembershipRepository extends ServiceEntityRepository
                 'membership_id' => $membership->getId(),
                 'forbidden_qualities' => TerritorialCouncilQualityEnum::FORBIDDEN_TO_CANDIDATE,
                 'adherent_status' => Adherent::ENABLED,
+                'al_quality' => TerritorialCouncilQualityEnum::COMMITTEE_SUPERVISOR,
+                'ad_quality' => TerritorialCouncilQualityEnum::ELECTED_CANDIDATE_ADHERENT,
+                'al_mandate_quality' => CommitteeMandateQualityEnum::SUPERVISOR,
             ])
             ->orderBy('adherent.lastName')
             ->addOrderBy('adherent.firstName')
