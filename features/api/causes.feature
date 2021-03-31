@@ -38,6 +38,7 @@ Feature:
             "followers_count": 0
           },
           "name": "Cause pour l'education",
+          "slug": "cause-pour-leducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
           "followers_count": 0,
@@ -55,6 +56,7 @@ Feature:
             "followers_count": 4
           },
           "name": "Cause pour la culture",
+          "slug": "cause-pour-la-culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "uuid": "55056e7c-2b5f-4ef6-880e-cde0511f79b2",
           "followers_count": 5,
@@ -82,6 +84,7 @@ Feature:
       "items": [
         {
           "name": "Cause pour la culture 2",
+          "slug": "cause-pour-la-culture-2",
           "description": "Description de la cause pour la culture 2",
           "coalition": {
             "name": "Culture",
@@ -99,6 +102,7 @@ Feature:
         },
         {
           "name": "Cause pour la culture 3",
+          "slug": "cause-pour-la-culture-3",
           "description": "Description de la cause pour la culture 3",
           "coalition": {
             "name": "Culture",
@@ -136,6 +140,7 @@ Feature:
       "items": [
         {
           "name": "Cause pour l'education",
+          "slug": "cause-pour-leducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Education",
@@ -153,6 +158,7 @@ Feature:
         },
         {
           "name": "Cause pour la culture",
+          "slug": "cause-pour-la-culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Culture",
@@ -170,6 +176,7 @@ Feature:
         },
         {
           "name": "Cause pour la culture 2",
+          "slug": "cause-pour-la-culture-2",
           "description": "Description de la cause pour la culture 2",
           "coalition": {
             "name": "Culture",
@@ -187,6 +194,7 @@ Feature:
         },
         {
           "name": "Cause pour la culture 3",
+          "slug": "cause-pour-la-culture-3",
           "description": "Description de la cause pour la culture 3",
           "coalition": {
             "name": "Culture",
@@ -204,6 +212,7 @@ Feature:
         },
         {
           "name": "Cause pour la justice",
+          "slug": "cause-pour-la-justice",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Justice",
@@ -241,6 +250,7 @@ Feature:
       "items": [
         {
           "name": "Cause pour l'education",
+          "slug": "cause-pour-leducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Education",
@@ -276,6 +286,7 @@ Feature:
       "items": [
         {
           "name": "Cause pour l'education",
+          "slug": "cause-pour-leducation",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Education",
@@ -293,6 +304,7 @@ Feature:
         },
         {
           "name": "Cause pour la culture",
+          "slug": "cause-pour-la-culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Culture",
@@ -331,6 +343,7 @@ Feature:
           "followers_count": 0
         },
         "name": "Cause pour l'education",
+        "slug": "cause-pour-leducation",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "uuid": "fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8",
         "followers_count": 0,
@@ -361,6 +374,7 @@ Feature:
       "items": [
         {
           "name": "Cause pour la culture",
+          "slug": "cause-pour-la-culture",
           "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "coalition": {
             "name": "Culture",
@@ -378,6 +392,7 @@ Feature:
         },
         {
           "name": "Cause pour la culture 2",
+          "slug": "cause-pour-la-culture-2",
           "description": "Description de la cause pour la culture 2",
           "coalition": {
             "name": "Culture",
@@ -415,6 +430,7 @@ Feature:
       "items": [
         {
           "name": "Cause pour la culture 3",
+          "slug": "cause-pour-la-culture-3",
           "description": "Description de la cause pour la culture 3",
           "coalition": {
             "name": "Culture",
@@ -599,3 +615,21 @@ Feature:
         ]
     }
     """
+
+  Scenario: As a logged-in user I can create a cause
+    Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
+    When I add "Content-Type" header equal to "application/json"
+    And I send a "POST" request to "/api/v3/causes" with body:
+    """
+    {
+      "name": "Nouvelle cause sur la culture",
+      "description": "Description de la nouvelle cause sur la culture",
+      "coalition": "d5289058-2a35-4cf0-8f2f-a683d97d8315"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | name           | Nouvelle cause sur la culture                   |
+      | description    | Description de la nouvelle cause sur la culture |
+      | coalition.uuid | d5289058-2a35-4cf0-8f2f-a683d97d8315            |
