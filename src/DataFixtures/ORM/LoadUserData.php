@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
+use App\Entity\AdherentResetPasswordToken;
 use App\Entity\PostAddress;
 use App\Membership\AdherentFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,6 +15,8 @@ class LoadUserData extends Fixture
     public const USER_1_UUID = '313bd28f-efc8-57c9-8ab7-2106c8be9699';
     public const USER_2_UUID = '413bd28f-57c9-efc8-8ab7-2106c8be9690';
     public const USER_3_UUID = '513bd28f-8ab7-57c9-efc8-2106c8be9690';
+
+    public const USER_3_TOKEN = 'c997dd323ef4b53b3d31881fa495bddb3d0c3b55';
 
     private $adherentFactory;
 
@@ -58,6 +61,8 @@ class LoadUserData extends Fixture
         $key3 = AdherentActivationToken::generate($user3);
         $user3->activate($key3, '2017-01-25 19:34:02');
         $user3->setStatus(Adherent::DISABLED);
+        $resetPasswordToken = AdherentResetPasswordToken::create(self::USER_3_UUID, self::USER_3_TOKEN);
+        $manager->persist($resetPasswordToken);
 
         $manager->persist($user1);
         $manager->persist($user2);
