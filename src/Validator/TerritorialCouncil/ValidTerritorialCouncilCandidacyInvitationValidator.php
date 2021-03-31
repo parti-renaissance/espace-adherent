@@ -88,7 +88,7 @@ class ValidTerritorialCouncilCandidacyInvitationValidator extends ConstraintVali
         $simplifiedInvitations = array_map(function (CandidacyInvitation $invitation): array {
             return [
                 'uuid' => $invitation->getUuid()->toString(),
-                'qualities' => $invitation->getMembership()->getQualityNames(),
+                'qualities' => $invitation->getMembership()->getAvailableForCandidacyQualityNames(),
             ];
         }, $candidacy->getInvitations());
 
