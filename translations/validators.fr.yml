@@ -508,3 +508,5 @@ file.validation.name.not_unique: Ce nom de dossier est déjà utilisé.
 #
 cause_follower.adherent.exists: L'utilisateur avec cette adresse e-mail existe déjà. Veuillez vous connecter pour soutenir la cause.
 cause_follower.exists: Vous avez déjà soutenu cette cause.
+
+The value {{ value }} is not valid.: Cette valeur n'est pas valide.
