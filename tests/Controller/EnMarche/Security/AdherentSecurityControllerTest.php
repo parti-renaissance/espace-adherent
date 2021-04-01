@@ -3,6 +3,8 @@
 namespace Tests\App\Controller\EnMarche\Security;
 
 use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\Adherent;
+use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
 use App\Mailer\Message\AdherentResetPasswordMessage;
 use App\Repository\AdherentRepository;
@@ -180,7 +182,7 @@ class AdherentSecurityControllerTest extends WebTestCase
     public function testResetPasswordAction(): void
     {
         $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
-        $token = $this->getFirstAdherentResetPasswordToken();
+        $token = $this->getAdherentResetPasswordToken($adherent);
         $oldPassword = $adherent->getPassword();
 
         $this->assertNull($token->getUsageDate());
@@ -234,8 +236,8 @@ class AdherentSecurityControllerTest extends WebTestCase
         parent::tearDown();
     }
 
-    private function getFirstAdherentResetPasswordToken()
+    private function getAdherentResetPasswordToken(Adherent $adherent): AdherentResetPasswordToken
     {
-        return current($this->getResetPasswordTokenRepository()->findAll());
+        return $this->getResetPasswordTokenRepository()->findOneBy(['adherentUuid' => $adherent->getUuidAsString()]);
     }
 }

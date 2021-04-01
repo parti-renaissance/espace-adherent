@@ -89,6 +89,22 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         );
     }
 
+    public static function create(
+        string $adherentUuid,
+        string $hash,
+        string $lifetime = '+1 day'
+    ): AdherentExpirableTokenInterface {
+        $timestamp = new \DateTime('now');
+
+        return new static(
+            static::createUuid((string) $adherentUuid),
+            Uuid::fromString($adherentUuid),
+            $timestamp,
+            new \DateTime($lifetime),
+            SHA1::fromString($hash)
+        );
+    }
+
     public static function createUuid(string $adherentUuid): UuidInterface
     {
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $adherentUuid);

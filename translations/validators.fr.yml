@@ -76,6 +76,7 @@ adherent.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 
 adherent.email_address.not_unique: Cette adresse e-mail existe déjà.
 
 adherent.plain_password.min_length: Votre mot de passe doit comporter au moins 8 caractères.
+adherent.plain_password.not_blank: Le mot de passe ne doit pas être vide.
 
 adherent.activity_position.invalid_choice: Le statut d'activité n'est pas valide.
 adherent.job.invalid_choice: Le métier n'est pas valide.
