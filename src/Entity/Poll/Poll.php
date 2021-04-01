@@ -188,7 +188,7 @@ class Poll
         $total = $result['total'];
 
         foreach ($result['choices'] as $id => $choice) {
-            $result['choices'][$id]['percentage'] = $total !== 0
+            $result['choices'][$id]['percentage'] = 0 !== $total
                 ? round($choice['count'] / $total * 100, 1)
                 : 0
             ;
