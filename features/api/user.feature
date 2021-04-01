@@ -85,21 +85,17 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-      "Le mot de passe est vide."
-    """
-
-  Scenario: As a non logged-in user I can not create my password if not correct format
-    When I send a "POST" request to "/api/profile/mot-de-passe/513bd28f-8ab7-57c9-efc8-2106c8be9690/c997dd323ef4b53b3d31881fa495bddb3d0c3b55" with body:
-    """
     {
-      "password": 123
+      "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "password: Le mot de passe ne doit pas être vide.",
+      "violations": [
+        {
+          "propertyPath": "password",
+          "message": "Le mot de passe ne doit pas être vide."
+        }
+      ]
     }
-    """
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-      "Le mot de passe n'est pas une chaîne de caractères."
     """
 
   Scenario: As a non logged-in user I can not create my password if it's short
@@ -113,7 +109,17 @@ Feature:
     And the response should be in JSON
     And the JSON should be equal to:
     """
-      "Votre mot de passe doit comporter au moins 8 caractères."
+    {
+      "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
+      "title": "An error occurred",
+      "detail": "password: Votre mot de passe doit comporter au moins 8 caractères.",
+      "violations": [
+        {
+          "propertyPath": "password",
+          "message": "Votre mot de passe doit comporter au moins 8 caractères."
+        }
+      ]
+    }
     """
 
   Scenario: As a non logged-in user I can create my password

@@ -2,6 +2,8 @@
 
 namespace App\Controller\Api;
 
+use ApiPlatform\Core\Problem\Serializer\ConstraintViolationListNormalizer;
+use App\AdherentProfile\Password;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
@@ -21,9 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
@@ -91,7 +92,7 @@ class UserController extends AbstractController
      *     path="/profile/mot-de-passe/{user_uuid}/{create_password_token}",
      *     name="user_create_password",
      *     requirements={
-     *         "adherent_uuid": "%pattern_uuid%",
+     *         "user_uuid": "%pattern_uuid%",
      *         "reset_password_token": "%pattern_sha1%"
      *     },
      *     methods={"POST"}
@@ -104,34 +105,27 @@ class UserController extends AbstractController
         Adherent $user,
         AdherentResetPasswordToken $createPasswordToken,
         AdherentResetPasswordHandler $handler,
+        SerializerInterface $serializer,
         ValidatorInterface $validator
     ): Response {
         if ($createPasswordToken->getUsageDate()) {
             return $this->createBadRequestResponse('Pas de Token de création de mot de passe disponible');
         }
 
-        $data = json_decode($request->getContent(), true);
-        $password = $data['password'] ?? null;
+        /** @var Password $password */
+        $password = $serializer->deserialize($request->getContent(), Password::class, JsonEncoder::FORMAT);
 
-        if (!$password) {
-            return $this->createBadRequestResponse('Le mot de passe est vide.');
-        }
-
-        if (!\is_string($password)) {
-            return $this->createBadRequestResponse('Le mot de passe n\'est pas une chaîne de caractères.');
-        }
-
-        $errors = $validator->validate($password, [
-            new NotBlank(),
-            new Length(['min' => 8, 'minMessage' => 'adherent.plain_password.min_length']),
-        ]);
+        $errors = $validator->validate($password);
 
         if (0 !== $errors->count()) {
-            return $this->createBadRequestResponse('Votre mot de passe doit comporter au moins 8 caractères.');
+            return JsonResponse::fromJsonString(
+                $serializer->serialize($errors, ConstraintViolationListNormalizer::FORMAT),
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
         try {
-            $handler->reset($user, $createPasswordToken, $password);
+            $handler->reset($user, $createPasswordToken, $password->getPassword());
             // activate account if necessary
             if (!$user->getActivatedAt()) {
                 $user->activate(AdherentActivationToken::generate($user));
