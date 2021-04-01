@@ -7691,16 +7691,16 @@
         },
         {
             "name": "ninsuo/symfony-collection",
-            "version": "2.1.30",
+            "version": "2.1.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ninsuo/symfony-collection.git",
-                "reference": "88db2caea7bba13cd7a7beb938fa706a340b38e9"
+                "reference": "231f790eee9ea2c3301ac45f5fe4fbb09ec4289c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ninsuo/symfony-collection/zipball/88db2caea7bba13cd7a7beb938fa706a340b38e9",
-                "reference": "88db2caea7bba13cd7a7beb938fa706a340b38e9",
+                "url": "https://api.github.com/repos/ninsuo/symfony-collection/zipball/231f790eee9ea2c3301ac45f5fe4fbb09ec4289c",
+                "reference": "231f790eee9ea2c3301ac45f5fe4fbb09ec4289c",
                 "shasum": ""
             },
             "type": "library",
@@ -7720,7 +7720,11 @@
                 }
             ],
             "description": "A jQuery plugin that manages adding, deleting and moving elements from a Symfony collection",
-            "time": "2018-07-01T15:06:12+00:00"
+            "support": {
+                "issues": "https://github.com/ninsuo/symfony-collection/issues",
+                "source": "https://github.com/ninsuo/symfony-collection/tree/2.1.33"
+            },
+            "time": "2020-01-13T12:54:48+00:00"
         },
         {
             "name": "nyholm/psr7",
