@@ -459,10 +459,21 @@ security:
                 path: logout
                 target: homepage
             user_checker: App\Security\UserChecker
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
-                entry_point: App\Security\LoginFormAuthenticator
+            form_login:
+                login_path: app_user_login
+                check_path: app_user_login_check
+
+                default_target_path: app_search_events
+                use_referer: true
+
+                username_parameter: _login_email
+                password_parameter: _login_password
+                csrf_parameter: _login_csrf
+                csrf_token_id: authenticate
+                csrf_token_generator: security.csrf.token_manager
+
+#                success_handler: App\Security\Http\AnonymousFollowerAuthenticationSuccessHandler
+#                failure_handler: App\Security\Http\AuthenticationFailureHandler
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }
