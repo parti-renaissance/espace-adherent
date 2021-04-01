@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Doctrine;
+namespace App\Api\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\Event\MunicipalEvent;
+use App\Entity\Coalition\Cause;
 use Doctrine\ORM\QueryBuilder;
 
-class MunicipalEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
+class CauseExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {
     public function applyToItem(
         QueryBuilder $queryBuilder,
@@ -32,15 +32,15 @@ class MunicipalEventExtension implements QueryItemExtensionInterface, QueryColle
 
     private function modifyQuery(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (MunicipalEvent::class === $resourceClass) {
-            $alias = $queryBuilder->getRootAliases()[0];
-
-            $queryBuilder
-                ->andWhere("$alias.status = :status")
-                ->setParameter('status', MunicipalEvent::STATUS_SCHEDULED)
-                ->andWhere("$alias.finishAt > :now")
-                ->setParameter('now', new \DateTime())
-            ;
+        if (Cause::class !== $resourceClass) {
+            return;
         }
+
+        $alias = $queryBuilder->getRootAliases()[0];
+
+        $queryBuilder
+            ->andWhere("$alias.status = :approved")
+            ->setParameter('approved', Cause::STATUS_APPROVED)
+        ;
     }
 }

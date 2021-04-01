@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Doctrine;
+namespace App\Api\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\Jecoute\News;
+use App\Entity\Geo\Zone;
 use Doctrine\ORM\QueryBuilder;
 
-class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterface
+class GeoZoneExtension implements ContextAwareQueryCollectionExtensionInterface
 {
     public function applyToCollection(
         QueryBuilder $queryBuilder,
@@ -16,9 +16,10 @@ class JecouteNewsExtension implements ContextAwareQueryCollectionExtensionInterf
         string $operationName = null,
         array $context = []
     ) {
-        if (News::class === $resourceClass) {
+        if (Zone::class === $resourceClass) {
             $queryBuilder
-                ->andWhere(sprintf('%s.published = 1', $queryBuilder->getRootAliases()[0]))
+                ->andWhere(sprintf('%s.active = :true', $queryBuilder->getRootAliases()[0]))
+                ->setParameter('true', true)
             ;
         }
     }

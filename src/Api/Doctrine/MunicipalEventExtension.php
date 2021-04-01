@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Doctrine;
+namespace App\Api\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\Coalition\Coalition;
+use App\Entity\Event\MunicipalEvent;
 use Doctrine\ORM\QueryBuilder;
 
-class CoalitionExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
+class MunicipalEventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {
     public function applyToItem(
         QueryBuilder $queryBuilder,
@@ -32,12 +32,14 @@ class CoalitionExtension implements QueryItemExtensionInterface, QueryCollection
 
     private function modifyQuery(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Coalition::class === $resourceClass) {
+        if (MunicipalEvent::class === $resourceClass) {
             $alias = $queryBuilder->getRootAliases()[0];
 
             $queryBuilder
-                ->andWhere("$alias.enabled = :true")
-                ->setParameter('true', true)
+                ->andWhere("$alias.status = :status")
+                ->setParameter('status', MunicipalEvent::STATUS_SCHEDULED)
+                ->andWhere("$alias.finishAt > :now")
+                ->setParameter('now', new \DateTime())
             ;
         }
     }

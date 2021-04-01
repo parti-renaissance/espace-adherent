@@ -22,6 +22,8 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
     public const CAUSE_3_UUID = '5f8a6d40-9e69-4311-a45b-67c00d30ad41';
     public const CAUSE_4_UUID = 'fa6bd29c-48b7-490e-90fb-48ab5fb2ddf8';
     public const CAUSE_5_UUID = '44249b1d-ea10-41e0-b288-5eb74fa886ba';
+    public const CAUSE_6_UUID = '13814069-1dd2-11b2-98d6-2fdf8179626a';
+    public const CAUSE_7_UUID = '253b0ed7-7426-15f8-97f9-2bb32d0a4d17';
 
     private $imageManager;
 
@@ -95,9 +97,26 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
             'Cause pour la justice',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             $this->getReference('coalition-justice'),
-            $this->getReference('adherent-3'),
-            false
+            $this->getReference('adherent-3')
         );
+
+        $manager->persist($this->createCause(
+            self::CAUSE_6_UUID,
+            'Cause d\'une coalition désactivée',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            $this->getReference('coalition-inactive'),
+            $this->getReference('adherent-3')
+        ));
+
+        $manager->persist($this->createCause(
+            self::CAUSE_7_UUID,
+            'Cause en attente',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            $this->getReference('coalition-justice'),
+            $this->getReference('adherent-3'),
+            false,
+            Cause::STATUS_PENDING
+        ));
 
         $manager->persist($causeCulture1);
         $manager->persist($causeCulture2);
@@ -114,13 +133,15 @@ class LoadCauseData extends Fixture implements DependentFixtureInterface
         string $description,
         Coalition $coalition,
         Adherent $author,
-        bool $withImage = false
+        bool $withImage = false,
+        string $status = Cause::STATUS_APPROVED
     ): Cause {
         $cause = new Cause(Uuid::fromString($uuid));
         $cause->setCoalition($coalition);
         $cause->setName($name);
         $cause->setDescription($description);
         $cause->setAuthor($author);
+        $cause->setStatus($status);
 
         if ($withImage) {
             $cause->setImage(new UploadedFile(

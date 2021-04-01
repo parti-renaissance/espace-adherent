@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Doctrine;
+namespace App\Api\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\IdeasWorkshop\Consultation;
+use App\Entity\IdeasWorkshop\Idea;
 use Doctrine\ORM\QueryBuilder;
 
-class ConsultationExtension implements ContextAwareQueryCollectionExtensionInterface
+class IdeaExtension implements ContextAwareQueryCollectionExtensionInterface
 {
     public function applyToCollection(
         QueryBuilder $queryBuilder,
@@ -16,10 +16,9 @@ class ConsultationExtension implements ContextAwareQueryCollectionExtensionInter
         string $operationName = null,
         array $context = []
     ) {
-        if (Consultation::class === $resourceClass) {
+        if (Idea::class === $resourceClass && !isset($context['filters']['author.uuid'])) {
             $queryBuilder
-                ->andWhere(sprintf('%s.endedAt >= :now', $queryBuilder->getRootAliases()[0]))
-                ->setParameter('now', new \DateTime())
+                ->andWhere(sprintf('%s.publishedAt IS NOT NULL', $queryBuilder->getRootAliases()[0]))
             ;
         }
     }

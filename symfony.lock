@@ -853,9 +853,6 @@
             "ref": "2f69bd1995730b73a5211a9707622fb25a925df7"
         }
     },
-    "sonata-project/datagrid-bundle": {
-        "version": "2.5.0"
-    },
     "sonata-project/doctrine-extensions": {
         "version": "1.5.1"
     },
@@ -1070,6 +1067,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.22.1"
+    },
     "symfony/polyfill-intl-idn": {
         "version": "v1.20.0"
     },
@@ -1134,6 +1134,9 @@
     },
     "symfony/stopwatch": {
         "version": "v4.4.17"
+    },
+    "symfony/string": {
+        "version": "v5.2.6"
     },
     "symfony/templating": {
         "version": "v4.4.17"
@@ -1248,6 +1251,12 @@
         "files": [
             "config/packages/twig_extensions.yaml"
         ]
+    },
+    "twig/extra-bundle": {
+        "version": "v3.3.0"
+    },
+    "twig/string-extra": {
+        "version": "v3.3.0"
     },
     "twig/twig": {
         "version": "v2.14.1"

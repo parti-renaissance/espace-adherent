@@ -82,6 +82,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @UniqueEntity(fields={"name"})
+ *
+ * @Assert\Expression("this.getSecondCoalition() === null || this.getSecondCoalition() !== this.getCoalition()", message="Veuillez choisir une autre coalition en tant que secondaire.")
  */
 class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedInterface, AuthorInterface
 {
@@ -91,6 +93,10 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     use ImageTrait;
     use AuthoredTrait;
     use EntityFollowersTrait;
+
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_APPROVED = 'approved';
+    public const STATUS_REFUSED = 'refused';
 
     /**
      * @var UploadedFile|null
@@ -117,11 +123,9 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      *
      * @SymfonySerializer\Groups({"cause_read", "cause_write"})
-     *
-     * @Assert\NotBlank
      */
     private $description;
 
@@ -143,6 +147,22 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
      * @Assert\NotBlank
      */
     private $coalition;
+
+    /**
+     * @var Coalition|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Coalition\Coalition")
+     *
+     * @SymfonySerializer\Groups({"cause_read", "cause_write"})
+     */
+    private $secondCoalition;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $status = self::STATUS_PENDING;
 
     public function __construct(UuidInterface $uuid = null)
     {
@@ -176,6 +196,16 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
         $this->coalition = $coalition;
     }
 
+    public function getSecondCoalition(): ?Coalition
+    {
+        return $this->secondCoalition;
+    }
+
+    public function setSecondCoalition(?Coalition $secondCoalition): void
+    {
+        $this->secondCoalition = $secondCoalition;
+    }
+
     public function createFollower(Adherent $adherent): FollowerInterface
     {
         return new CauseFollower($this, $adherent);
@@ -184,5 +214,15 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function setAuthor(Adherent $adherent): void
     {
         $this->author = $adherent;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 }
