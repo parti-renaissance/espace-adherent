@@ -420,11 +420,11 @@
             </call>
         </service>
 
-        <service id="app.admin.poll.poll" class="App\Admin\Poll\PollAdmin">
+        <service id="app.admin.poll.poll" class="App\Admin\Poll\NationalPollAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Sondages" group="Je marche app" />
 
             <argument />
-            <argument>App\Entity\Poll\Poll</argument>
+            <argument>App\Entity\Poll\NationalPoll</argument>
             <argument />
 
             <call method="setTemplate">

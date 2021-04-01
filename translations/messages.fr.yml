@@ -390,6 +390,12 @@ jecoute_region.create.success: La campagne régionale a été créée avec succ�
 jecoute_region.edit.success: La campagne régionale a été modifiée avec succès.
 
 #
+# Polls
+#
+poll.create.success: La question du jour a bien été enregistrée.
+poll.edit.success: La question du jour a bien été mise à jour.
+
+#
 # Procuration
 #
 procuration_manager.process.success: La demande de procuration a bien été marquée comme "Traitée".
@@ -943,6 +949,7 @@ delegated_access.form.access.messages: Messagerie
 delegated_access.form.access.events: Événements
 delegated_access.form.access.adherents: Adhérents
 delegated_access.form.access.committee: Comités
+delegated_access.form.access.polls: Question du jour
 delegated_access.form.access.jecoute: Questionnaires
 delegated_access.form.access.jecoute_region: Campagne
 delegated_access.form.access.jecoute_news: Actualités

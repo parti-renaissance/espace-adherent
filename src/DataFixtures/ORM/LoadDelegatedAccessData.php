@@ -105,6 +105,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
             DelegatedAccess::ACCESS_MESSAGES,
             DelegatedAccess::ACCESS_EVENTS,
             DelegatedAccess::ACCESS_FILES,
+            DelegatedAccess::ACCESS_POLLS,
             DelegatedAccess::ACCESS_JECOUTE,
             DelegatedAccess::ACCESS_JECOUTE_REGION,
             DelegatedAccess::ACCESS_JECOUTE_NEWS,

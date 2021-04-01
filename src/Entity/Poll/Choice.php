@@ -27,6 +27,9 @@ class Choice
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
+    public const YES = 'Oui';
+    public const NO = 'Non';
+
     /**
      * @var string
      *
@@ -57,7 +60,7 @@ class Choice
      */
     private $votes;
 
-    public function __construct(UuidInterface $uuid = null, string $value = null)
+    public function __construct(string $value = null, UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->value = $value;

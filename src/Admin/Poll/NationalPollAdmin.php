@@ -4,7 +4,7 @@ namespace App\Admin\Poll;
 
 use App\Entity\Administrator;
 use App\Entity\Poll\Poll;
-use App\Form\Admin\PollChoiceType;
+use App\Form\Admin\Poll\PollChoiceType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Security;
 
-class PollAdmin extends AbstractAdmin
+class NationalPollAdmin extends AbstractAdmin
 {
     /** @var Security */
     private $security;
@@ -44,7 +44,7 @@ class PollAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
             ])
-            ->add('createdBy', null, [
+            ->add('administrator', null, [
                 'label' => 'Créé par',
             ])
         ;
@@ -65,9 +65,9 @@ class PollAdmin extends AbstractAdmin
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
-            ->add('createdBy', null, [
+            ->add('administrator', null, [
                 'label' => 'Créé par',
-                'template' => 'admin/poll/list_created_by.html.twig',
+                'template' => 'admin/poll/list_administrator.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

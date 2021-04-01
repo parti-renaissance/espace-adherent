@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Admin;
+namespace App\Form\Admin\Poll;
 
 use App\Entity\Poll\Choice;
 use Symfony\Component\Form\AbstractType;

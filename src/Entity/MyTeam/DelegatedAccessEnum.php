@@ -39,6 +39,7 @@ class DelegatedAccessEnum extends Enum
             $accesses[] = DelegatedAccess::ACCESS_JECOUTE;
             $accesses[] = DelegatedAccess::ACCESS_JECOUTE_REGION;
             $accesses[] = DelegatedAccess::ACCESS_JECOUTE_NEWS;
+            $accesses[] = DelegatedAccess::ACCESS_POLLS;
             $accesses[] = DelegatedAccess::ACCESS_FILES;
         }
 
@@ -53,6 +54,7 @@ class DelegatedAccessEnum extends Enum
             DelegatedAccess::ACCESS_EVENTS => "app_{$type}_event_manager_events",
             DelegatedAccess::ACCESS_COMMITTEE => "app_{$type}_committees",
             DelegatedAccess::ACCESS_CITIZEN_PROJECTS => "app_{$type}_citizen_projects_list",
+            DelegatedAccess::ACCESS_POLLS => "app_{$type}_polls_local_list",
             DelegatedAccess::ACCESS_JECOUTE => "app_jecoute_{$type}_local_surveys_list",
             DelegatedAccess::ACCESS_JECOUTE_REGION => 'app_jecoute_candidate_region_edit',
             DelegatedAccess::ACCESS_JECOUTE_NEWS => 'app_jecoute_news_candidate_news_list',
