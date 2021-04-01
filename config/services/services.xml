@@ -215,31 +215,34 @@
         </service>
 
         <!-- DoctrineExtension -->
-        <service id="App\Doctrine\VisibleStatusesExtension">
+        <service id="App\Api\Doctrine\VisibleStatusesExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Doctrine\MyIdeaContributionExtension">
+        <service id="App\Api\Doctrine\MyIdeaContributionExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Doctrine\IdeaExtension">
+        <service id="App\Api\Doctrine\IdeaExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Doctrine\JecouteNewsExtension">
+        <service id="App\Api\Doctrine\JecouteNewsExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Doctrine\MunicipalEventExtension">
+        <service id="App\Api\Doctrine\MunicipalEventExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Doctrine\ConsultationExtension">
+        <service id="App\Api\Doctrine\ConsultationExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Doctrine\CoalitionExtension">
+        <service id="App\Api\Doctrine\CoalitionExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Doctrine\CoalitionEventExtension">
+        <service id="App\Api\Doctrine\CoalitionEventExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Doctrine\GeoZoneExtension">
+        <service id="App\Api\Doctrine\GeoZoneExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
+        <service id="App\Api\Doctrine\CauseExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
 
