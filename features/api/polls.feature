@@ -5,10 +5,12 @@ Feature:
 
   Background:
   Given the following fixtures are loaded:
-    | LoadPollData |
+    | LoadClientData |
+    | LoadPollData   |
 
   Scenario: As a non logged-in user I can retrieve polls, vote for it and see the results
-  When I send a "GET" request to "/api/polls"
+  Given I am logged with device "dd4SOCS-4UlCtO-gZiQGDA" via OAuth client "JeMarche App" with scope "jemarche_app"
+  When I send a "GET" request to "/api/v3/polls"
   Then the response status code should be 200
   And the JSON should be equal to:
   """
@@ -59,7 +61,7 @@ Feature:
   }
   """
 
-  When I send a "POST" request to "/api/polls/vote" with body:
+  When I send a "POST" request to "/api/v3/polls/vote" with body:
     """
     {
       "uuid": "26aba15c-b49a-4cb7-99ef-585e12bcff50"

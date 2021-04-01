@@ -20,7 +20,7 @@ class PollController extends AbstractController
 {
     /**
      * @Route(
-     *     "/polls/vote",
+     *     "/v3/polls/vote",
      *     name="api_polls_vote",
      *     requirements={"uuid": "%pattern_uuid%"},
      *     methods={"POST"}

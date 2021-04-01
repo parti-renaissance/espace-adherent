@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={
  *         "get": {
- *             "path": "/polls",
+ *             "path": "/v3/polls",
  *             "method": "GET",
  *         }
  *     },
