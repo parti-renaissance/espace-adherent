@@ -185,8 +185,13 @@ class Poll
             ];
         }
 
+        $total = $result['total'];
+
         foreach ($result['choices'] as $id => $choice) {
-            $result['choices'][$id]['percentage'] = round($choice['count'] / $result['total'] * 100, 1);
+            $result['choices'][$id]['percentage'] = $total !== 0
+                ? round($choice['count'] / $total * 100, 1)
+                : 0
+            ;
         }
 
         return $result;
