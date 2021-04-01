@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ApiResource(
  *     collectionOperations={
  *         "get": {
- *             "path": "/polls",
+ *             "path": "/v3/polls",
  *             "method": "GET",
  *         }
  *     },
