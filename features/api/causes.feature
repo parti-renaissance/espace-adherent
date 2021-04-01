@@ -637,9 +637,10 @@ Feature:
     Then the response status code should be 201
     And the response should be in JSON
     And the JSON nodes should match:
-      | name           | Nouvelle cause sur la culture                   |
-      | description    | Description de la nouvelle cause sur la culture |
-      | coalition.uuid | d5289058-2a35-4cf0-8f2f-a683d97d8315            |
+      | name            | Nouvelle cause sur la culture                   |
+      | description     | Description de la nouvelle cause sur la culture |
+      | coalition.uuid  | d5289058-2a35-4cf0-8f2f-a683d97d8315            |
+      | followers_count | 1                                               |
 
   Scenario: As a logged-in user I can create a cause with second coalition
     Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "Coalition App"
@@ -677,7 +678,7 @@ Feature:
         "first_name": "Gisele",
         "last_name_initial": "B."
       },
-      "followers_count": 0
+      "followers_count": 1
     }
     """
 
