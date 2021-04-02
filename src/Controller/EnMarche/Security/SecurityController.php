@@ -28,9 +28,18 @@ class SecurityController extends AbstractController
     /**
      * @Route("/connexion", name="app_user_login", methods={"GET"})
      */
-    public function loginAction(AuthenticationUtils $securityUtils, FormFactoryInterface $formFactory): Response
-    {
+    public function loginAction(
+        Request $request,
+        AuthenticationUtils $securityUtils,
+        FormFactoryInterface $formFactory
+    ): Response {
+        $coalition = $request->attributes->getBoolean('coalition');
+
         if ($this->getUser()) {
+            if ($coalition) {
+                return $this->redirect('//'.$this->getParameter('coalitions_host'));
+            }
+
             return $this->redirectToRoute('app_search_events');
         }
 
@@ -38,15 +47,12 @@ class SecurityController extends AbstractController
             '_login_email' => $securityUtils->getLastUsername(),
         ]);
 
-        return $this->render('security/adherent_login.html.twig', [
+        return $this->render($coalition ? 'security/coalition_user_login.html.twig' : 'security/adherent_login.html.twig', [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
     }
 
-    /**
-     * @Route("/connexion/check", name="app_user_login_check", methods={"POST"})
-     */
     public function loginCheckAction()
     {
     }

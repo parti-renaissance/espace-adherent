@@ -19,6 +19,7 @@ parameters:
     amp_host:                             "%env(AMP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     coalitions_host:                      "%env(COALITIONS_HOST)%"
+    coalitions_auth_host:                 "%env(COALITIONS_AUTH_HOST)%"
     nous_reussirons_host:                 "%env(NOUS_REUSSIRONS_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"
     api_path_prefix:                      "%env(API_PATH_PREFIX)%"
@@ -252,11 +253,6 @@ services:
 
     Sonata\AdminBundle\Builder\ShowBuilderInterface: '@sonata.admin.builder.orm_show'
     Sonata\Exporter\Exporter: '@sonata.exporter.exporter'
-
-    App\Security\EventListener\LastVisitedPageOnGetListener:
-        arguments:
-            $apiPathPrefix: '%env(API_PATH_PREFIX)%'
-            $firewallMap: '@security.firewall.map'
 
     App\Producer\MailerProducer: '@old_sound_rabbit_mq.mailer_transactional_producer'
 

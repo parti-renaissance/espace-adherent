@@ -169,6 +169,9 @@
     "doctrine/dbal": {
         "version": "v2.7.1"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
         "recipe": {
@@ -754,6 +757,9 @@
             "ref": "b5789cd9710e2ee555bf361079b991068a0f640b"
         }
     },
+    "scienta/doctrine-json-functions": {
+        "version": "4.3.0"
+    },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"
     },
@@ -1224,9 +1230,6 @@
     },
     "symfony/yaml": {
         "version": "v4.4.17"
-    },
-    "syslogic/doctrine-json-functions": {
-        "version": "2.1.0"
     },
     "tackk/cartographer": {
         "version": "1.1.0"

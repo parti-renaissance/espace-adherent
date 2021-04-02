@@ -1,0 +1,54 @@
+{% extends 'oauth/base.html.twig' %}
+
+{% block title 'Connectez-vous avec vos identifiants' %}
+
+{% block em_logo '' %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        body {
+            background-color: #fafafa;
+        }
+        @media (max-width: 650px) {
+            body {
+                background: white;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section class="l__inner b__nudge--top">
+        <h1>Connectez-vous avec votre compte</h1>
+
+        {% if error %}
+            <div id="auth-error" class="form__error">
+                {{- error.messageKey|trans(error.messageData)|raw -}}
+            </div>
+        {% endif %}
+
+        {{ form_start(form, { action: path('app_user_login_check', {app_domain: coalitions_auth_host}) }) }}
+            <ul class="form">
+                <li>
+                     {{ form_label(form._login_email, 'E-mail', { label_attr: { class: 'visually-hidden' } }) }}
+                     {{ form_errors(form._login_email) }}
+                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail', autocapitalize: 'off' } }) }}
+                </li>
+
+                <li>
+                    {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
+                    {{ form_errors(form._login_password) }}
+                    {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
+                </li>
+
+                <li>
+                    <button class="btn">Connexion</button>
+                </li>
+            </ul>
+        {{ form_end(form) }}
+    </section>
+
+    <section class="l__inner__footer">
+        <a href="//{{ coalitions_host }}/inscription">S’inscrire</a>
+    </section>
+{% endblock %}

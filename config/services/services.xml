@@ -61,6 +61,7 @@
         <service id="App\Security\Http\Session\AnonymousFollowerSession" public="true" />
         <service id="App\Security\LoginFormAuthenticator">
             <argument key="$apiPathPrefix" type="string">%api_path_prefix%</argument>
+            <argument key="$coalitionAuthHost" type="string">%coalitions_auth_host%</argument>
         </service>
         <service id="App\Security\UserChecker"/>
         <service id="app.security.user_provider" class="App\Security\UserProvider">
