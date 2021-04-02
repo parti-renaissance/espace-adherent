@@ -38,7 +38,6 @@
         "danhunsaker/flysystem-redis": "^1.0",
         "doctrine/dbal": "^2.13.0",
         "doctrine/doctrine-bundle": "^2.2",
-        "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "egulias/email-validator": "^3.0",
         "endroid/qr-code-bundle": "^3.4.2",
