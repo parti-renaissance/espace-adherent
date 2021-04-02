@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         {% if cookiebot_cbid %}
             <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="{{ cookiebot_cbid }}" data-blockingmode="auto" type="text/javascript"></script>
@@ -27,7 +27,7 @@
                 {% endfor %}
             {% endfor %}
 
-            <div class="text--logo">EM!</div>
+            {% block em_logo %}<div class="text--logo">EM!</div>{% endblock %}
 
             {% block content '' %}
         </section>

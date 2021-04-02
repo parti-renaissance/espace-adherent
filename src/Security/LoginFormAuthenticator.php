@@ -33,6 +33,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $anonymousFollowerSession;
     private $failedLoginAttemptRepository;
     private $apiPathPrefix;
+    /** @var Request|null */
+    private $currentRequest;
+    private $coalitionAuthHost;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
@@ -40,7 +43,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         UserPasswordEncoderInterface $passwordEncoder,
         AnonymousFollowerSession $anonymousFollowerSession,
         FailedLoginAttemptRepository $failedLoginAttemptRepository,
-        string $apiPathPrefix
+        string $apiPathPrefix,
+        string $coalitionAuthHost
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -48,6 +52,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->anonymousFollowerSession = $anonymousFollowerSession;
         $this->failedLoginAttemptRepository = $failedLoginAttemptRepository;
         $this->apiPathPrefix = $apiPathPrefix;
+        $this->coalitionAuthHost = $coalitionAuthHost;
     }
 
     public function supports(Request $request)
@@ -110,6 +115,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $this->failedLoginAttemptRepository->save(FailedLoginAttempt::createFromRequest($request));
 
+        $this->currentRequest = $request;
+
         return parent::onAuthenticationFailure($request, $exception);
     }
 
@@ -122,11 +129,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             return new JsonResponse('Unauthorized', 401);
         }
 
+        $this->currentRequest = $request;
+
         return parent::start($request, $authException);
     }
 
     protected function getLoginUrl()
     {
+        if ($this->currentRequest && $this->currentRequest->attributes->get('app_domain') === $this->coalitionAuthHost) {
+            return $this->urlGenerator->generate('app_coalition_login');
+        }
+
         return $this->urlGenerator->generate('app_user_login');
     }
 }
