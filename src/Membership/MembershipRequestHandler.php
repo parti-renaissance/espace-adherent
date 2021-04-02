@@ -69,6 +69,15 @@ class MembershipRequestHandler
         $this->referentTagManager->assignReferentLocalTags($adherent);
         $this->referentZoneManager->assignZone($adherent);
 
+        $this->dispatcher->dispatch(
+            new UserEvent(
+                $adherent,
+                false,
+                false
+            ),
+            UserEvents::USER_CREATED
+        );
+
         $this->emailSubscriptionHistoryHandler->handleSubscriptions($adherent);
 
         return $adherent;
