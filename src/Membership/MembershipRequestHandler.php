@@ -61,6 +61,30 @@ class MembershipRequestHandler
         $this->unregistrationHandler = $unregistrationHandler;
     }
 
+    public function registerLightUser(LightMembershipRequest $membershipRequest): Adherent
+    {
+        $adherent = $this->adherentFactory->createFromLightMembershipRequest($membershipRequest);
+        $this->manager->persist($adherent);
+
+        $this->referentTagManager->assignReferentLocalTags($adherent);
+        $this->referentZoneManager->assignZone($adherent);
+
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(
+            new UserEvent(
+                $adherent,
+                false,
+                false
+            ),
+            UserEvents::USER_CREATED
+        );
+
+        $this->emailSubscriptionHistoryHandler->handleSubscriptions($adherent);
+
+        return $adherent;
+    }
+
     public function registerAsUser(MembershipRequest $membershipRequest): Adherent
     {
         $adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest);

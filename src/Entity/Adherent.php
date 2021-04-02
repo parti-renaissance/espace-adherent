@@ -623,6 +623,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $certifiedAt;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $source;
+
+    /**
      * @var CertificationRequest[]|Collection
      *
      * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")
@@ -686,6 +693,31 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->handledThematicCommunities = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
+    }
+
+    public static function createLight(
+        UuidInterface $uuid,
+        string $emailAddress,
+        string $firstName,
+        PostAddress $postAddress,
+        string $password,
+        string $status = self::DISABLED,
+        ?string $source = null
+    ): self {
+        $adherent = new self();
+
+        $adherent->uuid = $uuid;
+        $adherent->firstName = $firstName;
+        $adherent->postAddress = $postAddress;
+        $adherent->emailAddress = $emailAddress;
+        $adherent->password = $password;
+        $adherent->referentTags = new ArrayCollection();
+        $adherent->status = $status;
+        $adherent->nicknameUsed = false;
+        $adherent->registeredAt = new \DateTime('now');
+        $adherent->source = $source;
+
+        return $adherent;
     }
 
     public static function create(
@@ -2732,5 +2764,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 && (null === $gender || $mandate->getGender() === $gender)
             ;
         });
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
+    public function setSource(?string $source): void
+    {
+        $this->source = $source;
     }
 }

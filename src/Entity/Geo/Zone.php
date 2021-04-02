@@ -160,9 +160,19 @@ class Zone implements GeoInterface
         $this->teamCode = $teamCode;
     }
 
+    public function isCountry(): bool
+    {
+        return Zone::COUNTRY === $this->type;
+    }
+
     public function isCity(): bool
     {
         return Zone::CITY === $this->type;
+    }
+
+    public function isBorough(): bool
+    {
+        return Zone::BOROUGH === $this->type;
     }
 
     public function isRegion(): bool

@@ -119,6 +119,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         return new self(self::FRANCE);
     }
 
+    public static function createCountryAddress(string $country): self
+    {
+        return new self($country);
+    }
+
     public static function createFrenchAddress(
         string $street,
         string $cityCode,
