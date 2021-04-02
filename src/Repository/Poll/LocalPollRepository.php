@@ -2,6 +2,7 @@
 
 namespace App\Repository\Poll;
 
+use App\Entity\Geo\Zone;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\LocalPoll;
 use App\Entity\Poll\Vote;
@@ -42,6 +43,22 @@ class LocalPollRepository extends AbstractPollRepository
             ->orderBy('poll.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function findOnePublishedByZone(Zone $zone): ?LocalPoll
+    {
+        return $this
+            ->createQueryBuilder('poll')
+            ->where('poll.published = :true AND poll.finishAt > :now AND poll.zone = :zone')
+            ->orderBy('poll.finishAt', 'desc')
+            ->setParameters([
+                'zone' => $zone,
+                'true' => 1,
+                'now' => new \DateTime(),
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

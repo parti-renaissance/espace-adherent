@@ -6,11 +6,15 @@ use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\Poll\Choice;
 use App\Entity\Poll\Vote;
+use App\Repository\Geo\ZoneRepository;
 use App\Repository\Poll\ChoiceRepository;
+use App\Repository\Poll\LocalPollRepository;
+use App\Repository\Poll\NationalPollRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,5 +70,23 @@ class PollController extends AbstractController
             [],
             true
         );
+    }
+
+    /**
+     * @Route("polls/{postalCode}", name="api_polls_by_postal_code", methods={"GET"})
+     */
+    public function getPollByPostalCode(
+        string $postalCode,
+        NationalPollRepository $nationalPollRepository,
+        LocalPollRepository $localPollRepository,
+        ZoneRepository $zoneRepository
+    ): JsonResponse {
+        $poll = $nationalPollRepository->findLastActivePoll();
+
+        if (!$poll && $region = $zoneRepository->findRegionByPostalCode($postalCode)) {
+            $poll = $localPollRepository->findOnePublishedByZone($region);
+        }
+
+        return $this->json($poll, Response::HTTP_OK, [], ['groups' => ['poll_read']]);
     }
 }
