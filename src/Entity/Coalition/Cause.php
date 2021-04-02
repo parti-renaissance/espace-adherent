@@ -97,6 +97,11 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public const STATUS_PENDING = 'pending';
     public const STATUS_APPROVED = 'approved';
     public const STATUS_REFUSED = 'refused';
+    public const STATUSES = [
+        self::STATUS_PENDING,
+        self::STATUS_APPROVED,
+        self::STATUS_REFUSED,
+    ];
 
     /**
      * @var UploadedFile|null
@@ -224,5 +229,10 @@ class Cause implements ExposedImageOwnerInterface, AuthoredInterface, FollowedIn
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function approve(): void
+    {
+        $this->status = self::STATUS_APPROVED;
     }
 }

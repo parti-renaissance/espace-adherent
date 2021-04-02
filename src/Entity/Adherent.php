@@ -928,6 +928,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_THEMATIC_COMMUNITY_CHIEF';
         }
 
+        if ($this->isCoalitionModerator()) {
+            $roles[] = 'ROLE_COALITION_MODERATOR';
+        }
+
         return array_merge(\array_unique($roles), $this->roles);
     }
 

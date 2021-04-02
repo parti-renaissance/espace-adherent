@@ -207,4 +207,9 @@ class Coalition implements ExposedImageOwnerInterface, FollowedInterface
     {
         return new CoalitionFollower($this, $adherent);
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
+    }
 }

@@ -82,6 +82,7 @@ class DelegatedAccessEnum extends Enum
             'municipal_manager_municipal_manager_supervisor_attribution' => 'app_municipal_manager_municipal_manager_supervisor_attribution_form',
             'lre_elected_representatives' => 'app_lre_elected_representatives_list',
             'thematic_community' => 'app_thematic_community_members_list',
+            'coalition' => 'app_coalition_causes_list',
         ][$type] ?? "app_{$type}_managed_users_list";
     }
 }

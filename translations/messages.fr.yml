@@ -1198,3 +1198,10 @@ file_permission.candidate_departmental: Candidat aux départementales
 file.type.directory: Dossier
 file.type.file: Fichier
 file.type.external_link: Lien externe
+
+#
+# Coalition / Cause
+#
+cause.pending: En attente
+cause.approved: Approuvée
+cause.refused: Refusée
