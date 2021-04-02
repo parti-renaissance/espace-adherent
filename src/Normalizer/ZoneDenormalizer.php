@@ -26,9 +26,7 @@ class ZoneDenormalizer implements DenormalizerInterface, DenormalizerAwareInterf
     {
         $context[self::ALREADY_CALLED] = true;
 
-        $zone = $this->zoneRepository->findOneByUuid($data);
-
-        return $zone;
+        return $this->zoneRepository->findOneByUuid($data);
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
