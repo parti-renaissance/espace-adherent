@@ -69,6 +69,8 @@ class MembershipRequestHandler
         $this->referentTagManager->assignReferentLocalTags($adherent);
         $this->referentZoneManager->assignZone($adherent);
 
+        $this->manager->flush();
+
         $this->dispatcher->dispatch(
             new UserEvent(
                 $adherent,

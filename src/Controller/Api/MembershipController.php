@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Membership\LightMembershipRequest;
 use App\Membership\MembershipRequestHandler;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,8 +25,7 @@ class MembershipController extends AbstractController
         AuthorizationCheckerInterface $authorizationChecker,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        MembershipRequestHandler $handler,
-        EntityManagerInterface $manager
+        MembershipRequestHandler $handler
     ): Response {
         if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw $this->createAccessDeniedException('Logged in users can not create account.');
@@ -43,7 +41,6 @@ class MembershipController extends AbstractController
         }
 
         $handler->registerLightUser($membershipRequest);
-        $manager->flush();
 
         return $this->json('OK', Response::HTTP_CREATED);
     }
