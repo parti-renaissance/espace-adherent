@@ -19,20 +19,6 @@
         </service>
 
         <!-- Adherents -->
-        <service id="App\Membership\MembershipRequestHandler">
-            <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="App\Membership\AdherentFactory"/>
-            <argument type="service" id="App\Address\PostAddressFactory"/>
-            <argument type="service" id="App\OAuth\CallbackManager"/>
-            <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="App\Referent\ReferentTagManager"/>
-            <argument type="service" id="App\Referent\ReferentZoneManager"/>
-            <argument type="service" id="App\Membership\MembershipRegistrationProcess"/>
-            <argument type="service" id="App\History\EmailSubscriptionHistoryHandler"/>
-            <argument type="service" id="App\Adherent\UnregistrationHandler"/>
-        </service>
-
         <service id="App\Contact\ContactMessageHandler">
             <argument type="service" id="app.mailer.campaign" />
         </service>
