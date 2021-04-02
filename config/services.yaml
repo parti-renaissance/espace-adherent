@@ -52,6 +52,12 @@ services:
             $tonMacronInvitationStateMachine: '@state_machine.ton_macron_invitation'
             $patternUuid: '%pattern_uuid%'
             $adherentInterests: '%adherent_interests%'
+            $mailchimpOrgId: '%env(MAILCHIMP_ORG_ID)%'
+            $mailchimpCampagnUrl: '%env(MAILCHIMP_CAMPAIGN_URL)%'
+            $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
+            $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
+            $enableMunicipalSpace: '%env(bool:ENABLE_MUNICIPAL_SPACE)%'
+            $timelineMaxItems: '%timeline_max_messages%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -74,10 +80,29 @@ services:
     # Imports
     App\:
         resource: '../src/*'
-        exclude: '../src/{Admin,Algolia,OAuth,Twig,Mailchimp,DependencyInjection,Controller,Entity,Security,Kernel.php}'
+        exclude:
+            - '../src/Admin'
+            - '../src/Algolia'
+            - '../src/OAuth'
+            - '../src/Twig'
+            - '../src/Mailchimp'
+            - '../src/DependencyInjection'
+            - '../src/Entity'
+            - '../src/Security'
+            - '../src/Kernel.php'
+
     App\Algolia\:
         resource: '../src/Algolia/'
         exclude: '../src/Algolia/Sonata/{Pager,ProxyQuery}'
+
+    App\Controller\:
+        resource: ../src/Controller/
+        tags: [ 'controller.service_arguments' ]
+
+    App\Controller\Admin\:
+        resource: ../src/Controller/Admin
+        public: true
+        tags: [ 'controller.service_arguments' ]
 
     # Services
 
