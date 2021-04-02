@@ -60,7 +60,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/causes/{id}/follower",
  *             "controller": "App\Controller\Api\FollowController::follower",
  *             "requirements": {"id": "%pattern_uuid%"}
- *         }
+ *         },
+ *         "update_image": {
+ *             "method": "POST",
+ *             "path": "/v3/causes/{uuid}/image",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\Coalition\CauseController::updateImage",
+ *         },
  *     },
  * )
  *
