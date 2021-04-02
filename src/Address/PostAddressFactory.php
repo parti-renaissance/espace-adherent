@@ -2,6 +2,7 @@
 
 namespace App\Address;
 
+use App\Entity\Geo\Zone;
 use App\Entity\NullablePostAddress;
 use App\Entity\PostAddress;
 
@@ -15,6 +16,26 @@ class PostAddressFactory
         ?string $region = null
     ): PostAddress {
         return PostAddress::createForeignAddress($country, $postalCode, $cityName, $address, $region);
+    }
+
+    public function createFromZone(Zone $zone): PostAddress
+    {
+        if ($zone->isCountry()) {
+            return PostAddress::createCountryAddress($zone->getCode());
+        }
+
+        $address = PostAddress::createEmptyAddress();
+
+        if ($zone->isCity() || $zone->isBorough()) {
+            if ($zone->isCity()) {
+                $address->setCity($zone->getCode());
+                $address->setCityName($zone->getName());
+            }
+
+            return $address;
+        }
+
+        return $address;
     }
 
     public function createFromAddress(Address $address): PostAddress

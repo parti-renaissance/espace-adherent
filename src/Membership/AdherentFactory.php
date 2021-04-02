@@ -19,6 +19,19 @@ class AdherentFactory
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
+    public function createFromLightMembershipRequest(LightMembershipRequest $request): Adherent
+    {
+        return Adherent::createLight(
+            Adherent::createUuid($request->getEmailAddress()),
+            $request->getEmailAddress(),
+            $request->getFirstName(),
+            $this->addressFactory->createFromZone($request->getZone()),
+            $this->encodePassword(Uuid::uuid4()),
+            Adherent::DISABLED,
+            $request->getSource()
+        );
+    }
+
     public function createFromMembershipRequest(MembershipRequest $request): Adherent
     {
         return Adherent::create(
