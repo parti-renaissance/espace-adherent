@@ -60,6 +60,8 @@ class AdherentRoleEnum extends Enum
     public const DELEGATED_CANDIDATE_REGIONAL_LEADER = 'delegated_candidate_regional_leader';
     public const DELEGATED_CANDIDATE_DEPARTMENTAL = 'delegated_candidate_departmental';
 
+    public const COALITION_MODERATOR = 'coalition_moderator';
+
     public static function getCandidates(): array
     {
         return [

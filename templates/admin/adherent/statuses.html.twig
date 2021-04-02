@@ -145,3 +145,7 @@
 {% if object.hasPrintPrivilege %}
     <span title="Accès LMI">&nbsp;🖨</span>
 {% endif %}
+
+{% if object.isCoalitionModerator %}
+    <span class="label label-primary" style="padding: 2px;">Responsable des coalitions</span><br/>
+{% endif %}
